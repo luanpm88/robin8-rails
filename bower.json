@@ -1,0 +1,17 @@
+{
+  "name": "robin8",
+  "version": "0.0.0",
+  "homepage": "https://github.com/AYLIEN/robin8",
+  "authors": [
+    "Pavlo Shabat <pavlo.shabat@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/assets/components",
+    "test",
+    "tests"
+  ]
+}
