@@ -1,4 +1,4 @@
-Robin.Routers.Main = Backbone.Router.extend({
+Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
 
   routes: {
     "": "index",
