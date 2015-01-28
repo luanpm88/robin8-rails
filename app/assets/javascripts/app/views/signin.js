@@ -1,4 +1,4 @@
-Robin.Views.signInView = Backbone.View.extend( {
+Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
   template: 'templates/users/signin',
 
   events: {

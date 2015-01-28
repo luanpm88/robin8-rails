@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require underscore
 //= require backbone
+//= require marionette
 
 //= require app/init
 //= require_tree ../templates

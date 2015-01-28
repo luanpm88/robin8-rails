@@ -198,7 +198,6 @@ DEPENDENCIES
   rails (= 4.2.0)
   rails-assets-bootstrap!
   rails-assets-marionette!
-  rails-assets-underscore!
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
