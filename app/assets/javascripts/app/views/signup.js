@@ -16,12 +16,25 @@ Robin.Views.signUpView = Backbone.Marionette.ItemView.extend( {
 
   signup: function(e) {
     e.preventDefault();
+    
+    el = $(this.el);
+    // el.find('input.btn-primary').button('loading');
+    el.find('.alert-error').remove();
+    el.find('.help-block').remove();
+    el.find('.control-group.error').removeClass('error');
+
     this.model.save(this.model.attributes, {
       success: function(userSession, response) {
-        console.log('success');
+         Robin.currentUser = new Robin.Models.User(response);
       },
       error: function(userSession, response) {
-        console.log('error');
+        var result = $.parseJSON(response.responseText);
+        _(result.errors).each(function(errors,field) {
+          $('#'+field+'_group').addClass('error');
+          _(errors).each(function(error, i) {
+            $('#'+field+'_group .controls').append(error);
+          });
+        });
       }
     });
   },

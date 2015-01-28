@@ -16,12 +16,16 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
 
   login: function(e) {
     e.preventDefault();
+
+    el = $(this.el);
+    
     this.model.save(this.model.attributes, {
       success: function(userSession, response) {
-        console.log('success');
+        Robin.currentUser = new Robin.Models.User(response);
       },
       error: function(userSession, response) {
-        console.log('error');
+        var result = $.parseJSON(response.responseText);
+        el.find('form').prepend(result.error);
       }
     });
   },
