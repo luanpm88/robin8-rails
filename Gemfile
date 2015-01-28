@@ -25,9 +25,13 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-bootstrap'
-  gem 'rails-assets-backbone.marionette'
+  gem 'rails-assets-bootstrap-sass'
+  gem 'rails-assets-font-awsome'
+  gem 'rails-assets-momentjs'
+  gem 'rails-assets-eonasdan-bootstrap-datetimepicker'
+  gem 'rails-assets-backbone.marionette', '2.2.1'
   gem 'rails-assets-backbone.modelbinder'
+  gem 'rails-assets-tweenlite'
 end
 
 gem 'devise'

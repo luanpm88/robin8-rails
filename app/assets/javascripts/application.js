@@ -13,11 +13,15 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require bootstrap-sass
 //= require underscore
+//= require momentjs
+//= require eonasdan-bootstrap-datetimepicker
 //= require backbone
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
+//= require tweenlite
 
 //= require app/init
 //= require_tree ../templates
