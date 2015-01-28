@@ -1,12 +1,19 @@
-//= require_self
-//= require_tree ./templates
-//= require_tree ./models
-//= require_tree ./views
-//= require_tree ./routers
-
 window.Robin = {
   Models: {},
   Collections: {},
+  Views: {},
   Routers: {},
-  Views: {}
+  initialize: function() {
+    console.log('initialize backbone app');
+    new Robin.Routers.Main();
+    Backbone.history.start();
+  }
 };
+$(document).ready(function() {
+  Robin.initialize();
+});
+
+$(document).on('page:load', function() {
+  Backbone.history.stop();
+  Robin.initialize();
+});
