@@ -15,7 +15,9 @@
 //= require turbolinks
 //= require underscore
 //= require backbone
-//= require marionette
+//= require backbone.modelbinder
+//= require backbone.wreqr
+//= require backbone.marionette
 
 //= require app/init
 //= require_tree ../templates

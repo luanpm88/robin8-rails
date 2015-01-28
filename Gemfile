@@ -26,10 +26,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap'
-  gem 'rails-assets-marionette'
+  gem 'rails-assets-backbone.marionette'
+  gem 'rails-assets-backbone.modelbinder'
 end
 
 gem 'devise'
+gem 'ejs'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

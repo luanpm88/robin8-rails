@@ -1,12 +1,12 @@
-Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
-  template: JST['users/signin'],
+Robin.Views.signUpView = Backbone.Marionette.ItemView.extend( {
+  template: JST['users/signup'],
 
   events: {
-    'submit form' : 'login'
+    'submit form' : 'signup'
   },
 
   initialize: function() {
-    this.model = new Robin.Models.UserSession();
+    this.model = new Robin.Models.UserRegistration();
     this.modelBinder = new Backbone.ModelBinder();
   },
 
@@ -14,7 +14,7 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
     this.modelBinder.bind(this.model, this.el);
   },
 
-  login: function(e) {
+  signup: function(e) {
     e.preventDefault();
     this.model.save(this.model.attributes, {
       success: function(userSession, response) {
