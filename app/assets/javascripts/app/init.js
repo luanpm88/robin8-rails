@@ -16,3 +16,7 @@ $(document).on('page:load', function() {
   Backbone.history.stop();
   Robin.start();
 });
+
+window.gplus_signin_button_callback = function( authResult ) {
+  console.log(authResult);
+}

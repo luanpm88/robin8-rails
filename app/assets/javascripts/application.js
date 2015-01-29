@@ -32,13 +32,38 @@
 //= require_tree ./app/views
 //= require_tree .
 
+var ready;
+ready = function() {
+  
+  //default options for Bootstrap Growl
+  $.growl(false, {
+    element: 'body',
+    placement: {
+      from: "bottom",
+      align: "left"
+    },
+    delay: 10000,
+  });
+  //end default options for Bootstrap Growl
 
-//default options for Bootstrap Growl
-$.growl(false, {
-  element: 'body',
-  placement: {
-    from: "bottom",
-    align: "left"
-  },
-  delay: 10000,
-});
+  // load the SDK Asynchronously
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1392633004376096',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+  // end load the SDK Asynchronously
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
