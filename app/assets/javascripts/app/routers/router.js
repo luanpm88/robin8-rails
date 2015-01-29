@@ -4,6 +4,7 @@ Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
     "": "index",
     "signin": "signin",
     "signup": "signup",
+    "forgot": "forgot",
   },
 
   initialize: function() {
@@ -25,5 +26,9 @@ Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
 
   signup: function() {
     Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.signUpView());
+  },
+
+  forgot: function() {
+    Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.forgotView());
   },
 });

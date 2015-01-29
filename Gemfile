@@ -45,6 +45,8 @@ source 'https://rails-assets.org' do
 end
 
 gem 'devise'
+gem 'omniauth'
+
 gem 'ejs'
 
 # Use ActiveModel has_secure_password

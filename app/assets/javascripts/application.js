@@ -56,7 +56,7 @@ ready = function() {
   // load the SDK Asynchronously
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : '1392633004376096',
+      appId      : '420339794748110', //need change id
       xfbml      : true,
       version    : 'v2.2'
     });
@@ -70,6 +70,16 @@ ready = function() {
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
   // end load the SDK Asynchronously
+
+  // load Google+ sdk
+  (function() {
+    var po = document.createElement('script');
+    po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://plus.google.com/js/client:plusone.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+  })()
+  // end load Google+ sdk
 };
 
 $(document).ready(ready);
