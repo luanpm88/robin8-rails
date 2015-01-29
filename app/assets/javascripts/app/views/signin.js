@@ -25,7 +25,9 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
       },
       error: function(userSession, response) {
         var result = $.parseJSON(response.responseText);
-        el.find('form').prepend(result.error);
+        $.growl(result.error, {
+          type: "danger",
+        });
       }
     });
   },

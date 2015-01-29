@@ -26,6 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
+  gem 'rails-assets-bootstrap.growl'
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker'

@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sass
+//= require bootstrap.growl
 //= require underscore
 //= require momentjs
 //= require eonasdan-bootstrap-datetimepicker
@@ -29,3 +30,14 @@
 //= require_tree ./app/models
 //= require_tree ./app/views
 //= require_tree .
+
+
+//default options for Bootstrap Growl
+$.growl(false, {
+  element: 'body',
+  placement: {
+    from: "bottom",
+    align: "left"
+  },
+  delay: 10000,
+});
