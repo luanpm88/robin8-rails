@@ -1,29 +1,36 @@
-window.gplusCallback = function( authResult ) {
+var signInProcess = function(token, response, provider){
+  authResponse = {
+    token: token,
+    uid: response.id,
+    email: response.email,
+    name: response.name,
+    provider: provider
+  }
+  $.ajax({
+    type: 'POST',
+    url: '/users/login_by_social',
+    dataType: 'json',
+    data: {info: authResponse},
+    success: function(data, textStatus, jqXHR) {
+      Robin.currentUser = new Robin.Models.User(data);
+      Robin.vent.trigger("authentication:logged_in");
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      $.growl(textStatus, {
+        type: "danger",
+      });
+    }
+  });
+};
+
+
+var gplusCallback = function( authResult ) {
   token = authResult.id_token
   if (authResult['status']['signed_in']) {
       if (authResult['status']['method'] == 'PROMPT') {
         gapi.client.load('oauth2', 'v2', function () {
-          gapi.client.oauth2.userinfo.get().execute(function (resp) {
-            authResponse = {
-              token: resp.token,
-              uid: resp.id,
-              email: resp.email,
-              name: resp.name,
-              provider: 'google_oauth2'
-            }
-            $.ajax({
-                type: 'POST',
-                url: '/users/login_by_gplus',
-                dataType: 'json',
-                data: {info: authResponse},
-                success: function(data, textStatus, jqXHR) {
-                  Robin.currentUser = new Robin.Models.User(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  console.log(textStatus);
-                }
-              });
-
+          gapi.client.oauth2.userinfo.get().execute(function (response) {
+            signInProcess(token, response, 'google_oauth2');
           })
         });
       }
@@ -71,25 +78,32 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
 
   loginFB: function(e) {
     e.preventDefault();
+    
     FB.login(function(response) {
-      if(response.authResponse) {
-        console.log(response.authResponse)
-        // $.ajax({
-        //   type: 'POST',
-        //   url: '/users/auth/facebook/callback',
-        //   dataType: 'json',
-        //   data: {signed_request: response.authResponse.signedRequest},
-        //   success: function(data, textStatus, jqXHR) {
-        //     // Handle success case
-        //   },
-        //   error: function(jqXHR, textStatus, errorThrown {
-        //     // Handle error case
-        //   })});
-      }});
-  },
+      if (response.status === 'connected') {        
+        if(response.authResponse) {
+          token = response.accessToken
+          FB.api('/me', function(response) {
+            if (response.verified) {
+              signInProcess(token, response, 'facebook');
+            } else {
+              $.growl('Your Facebook account is not verified', {
+                type: "danger",
+              });
+            }
+          });
+        }
+      } else if (response.status === 'not_authorized') {
+        $.growl('The person is logged into Facebook, but not your app.', {
+          type: "danger",
+        });
+      } else {
+        $.growl("The person is not logged into Facebook, so we're not sure if they are logged into this app or not.", {
+          type: "danger",
+        });
 
-  signin: function(e) {
-    console.log('fff');
+      }
+    });
   },
 
   loginGoogle: function(e) {
@@ -102,8 +116,5 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
         'callback': 'gplusCallback',
         'approvalprompt': 'force'
     });
-  },
- 
-
-
+  }
 });
