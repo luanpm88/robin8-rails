@@ -12,17 +12,19 @@ Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
 
   index: function() {
     console.log('index');
+    if(Robin.currentUser) {
+      Robin.main.show(Robin.layouts.main);
+    }
+    else {
+      document.location.hash = '#signin';
+    }
   },
 
   signin: function() {
-    var layoutView = new AppLayoutView();
-    $('#container').html(layoutView.render().el)
-    layoutView.getRegion('signUpForm').show(new Robin.Views.signInView());
+    Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.signInView());
   },
 
   signup: function() {
-    var layoutView = new AppLayoutView();
-    $('#container').html(layoutView.render().el)
-    layoutView.getRegion('signUpForm').show(new Robin.Views.signUpView());
+    Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.signUpView());
   },
 });

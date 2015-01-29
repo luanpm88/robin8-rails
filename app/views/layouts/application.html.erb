@@ -6,9 +6,15 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body id='main'>
+<script type="text/javascript">
+  <% if signed_in? -%>
+    Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
+  <% else -%>
+    Robin.currentUser = null;
+  <% end -%>
+</script>
 
 <%= yield %>
-
 </body>
 </html>
