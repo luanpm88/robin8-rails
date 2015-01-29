@@ -11,8 +11,13 @@
  * file per style scope.
  *
  *= require bootstrap-sass
+ *= require bootstrap-sweetalert
+ *= require blueimp-gallery
+ * require bootstrap3-wysihtml5-bower
  *= require eonasdan-bootstrap-datetimepicker
+ *= require bootstrap-sweetalert
  *= require font-awsome
+ *= require select2
  *= require_tree .
  *= require_self
  */

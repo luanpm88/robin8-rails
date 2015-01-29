@@ -27,6 +27,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
   gem 'rails-assets-bootstrap.growl'
+  gem 'rails-assets-bootstrap-sweetalert'
+  gem 'rails-assets-blueimp-gallery'
+  gem 'rails-assets-bootstrap3-wysihtml5-bower'
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker'
@@ -34,6 +37,11 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-tweenlite'
   gem 'rails-assets-underscore.string'
+  gem 'rails-assets-chance'
+  gem 'rails-assets-highcharts'
+  gem 'rails-assets-select2'
+  gem 'rails-assets-spinkit'
+  gem 'rails-assets-bootstrap-sweetalert'
 end
 
 gem 'devise'

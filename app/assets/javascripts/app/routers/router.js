@@ -11,7 +11,6 @@ Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
   },
 
   index: function() {
-    console.log('index');
     if(Robin.currentUser) {
       Robin.main.show(Robin.layouts.main);
     }

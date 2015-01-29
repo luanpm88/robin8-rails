@@ -14,16 +14,23 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sass
+//= require bootstrap-sweetalert
+//= require blueimp-gallery
+// require bootstrap3-wysihtml5-bower
+//= require bootstrap-sweetalert
 //= require bootstrap.growl
 //= require underscore
 //= require underscore.string
 //= require momentjs
 //= require eonasdan-bootstrap-datetimepicker
+//= require chance
 //= require backbone
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
 //= require tweenlite
+//= require highcharts
+//= require select2
 
 //= require app/init
 //= require_tree ../templates
