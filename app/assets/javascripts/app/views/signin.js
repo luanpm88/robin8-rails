@@ -58,6 +58,7 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
     this.model.save(this.model.attributes, {
       success: function(userSession, response) {
         Robin.currentUser = new Robin.Models.User(response);
+        Robin.vent.trigger("authentication:logged_in");
       },
       error: function(userSession, response) {
         var result = $.parseJSON(response.responseText);
