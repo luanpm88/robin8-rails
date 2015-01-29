@@ -18,10 +18,7 @@ Robin.Views.signUpView = Backbone.Marionette.ItemView.extend( {
     e.preventDefault();
     
     el = $(this.el);
-    // el.find('input.btn-primary').button('loading');
-    el.find('.alert-error').remove();
-    el.find('.help-block').remove();
-    el.find('.control-group.error').removeClass('error');
+    el.find('.controls').removeClass('error');
 
     this.model.save(this.model.attributes, {
       success: function(userSession, response) {
@@ -30,9 +27,13 @@ Robin.Views.signUpView = Backbone.Marionette.ItemView.extend( {
       error: function(userSession, response) {
         var result = $.parseJSON(response.responseText);
         _(result.errors).each(function(errors,field) {
-          $('#'+field+'_group').addClass('error');
+          $('input[name=' + field + ']').addClass('error');
           _(errors).each(function(error, i) {
-            $('#'+field+'_group .controls').append(error);
+            formatted_field = s(field).capitalize().value().replace('_', ' ');
+            
+            $.growl(formatted_field + ' ' + error, {
+              type: "danger",
+            });
           });
         });
       }

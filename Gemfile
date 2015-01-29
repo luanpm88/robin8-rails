@@ -33,6 +33,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-backbone.marionette', '2.2.1'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-tweenlite'
+  gem 'rails-assets-underscore.string'
 end
 
 gem 'devise'

@@ -21,7 +21,8 @@ Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
   },
 
   signup: function() {
-    var signUpView = new Robin.Views.signUpView();
-    $('#container').html(signUpView.render().el)
+    var layoutView = new AppLayoutView();
+    $('#container').html(layoutView.render().el)
+    layoutView.getRegion('signUpForm').show(new Robin.Views.signUpView());
   },
 });

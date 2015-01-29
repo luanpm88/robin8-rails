@@ -16,6 +16,7 @@
 //= require bootstrap-sass
 //= require bootstrap.growl
 //= require underscore
+//= require underscore.string
 //= require momentjs
 //= require eonasdan-bootstrap-datetimepicker
 //= require backbone

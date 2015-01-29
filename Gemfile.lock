@@ -139,6 +139,7 @@ GEM
     rails-assets-momentjs (2.9.0)
     rails-assets-tweenlite (1.11.5)
     rails-assets-underscore (1.6.0)
+    rails-assets-underscore.string (3.0.2)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.5)
@@ -232,6 +233,7 @@ DEPENDENCIES
   rails-assets-font-awsome!
   rails-assets-momentjs!
   rails-assets-tweenlite!
+  rails-assets-underscore.string!
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
