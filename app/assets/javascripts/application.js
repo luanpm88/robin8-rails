@@ -63,6 +63,16 @@ ready = function() {
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
   // end load the SDK Asynchronously
+
+  // load Google+ sdk
+  (function() {
+    var po = document.createElement('script');
+    po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://plus.google.com/js/client:plusone.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+  })()
+  // end load Google+ sdk
 };
 
 $(document).ready(ready);

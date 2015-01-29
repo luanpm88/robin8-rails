@@ -1,3 +1,37 @@
+window.gplusCallback = function( authResult ) {
+  token = authResult.id_token
+  if (authResult['status']['signed_in']) {
+      if (authResult['status']['method'] == 'PROMPT') {
+        gapi.client.load('oauth2', 'v2', function () {
+          gapi.client.oauth2.userinfo.get().execute(function (resp) {
+            authResponse = {
+              token: resp.token,
+              uid: resp.id,
+              email: resp.email,
+              name: resp.name,
+              provider: 'google_oauth2'
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/users/login_by_gplus',
+                dataType: 'json',
+                data: {info: authResponse},
+                success: function(data, textStatus, jqXHR) {
+                  Robin.currentUser = new Robin.Models.User(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus);
+                }
+              });
+
+          })
+        });
+      }
+  } else {
+    alert('Sign-in state: ' + authResult['error']);
+  }
+}
+
 Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
   template: JST['users/signin'],
 
@@ -63,8 +97,9 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
     gapi.auth.signIn({
         'clientid': '639174820348-qqkeokqa6lh7sirppbme6mpvg1s95na4.apps.googleusercontent.com',
         'cookiepolicy': 'single_host_origin',
-        'scope': 'https://www.googleapis.com/auth/plus.me',
-        'callback': 'gplus_signin_button_callback'
+        'scope': 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+        'callback': 'gplusCallback',
+        'approvalprompt': 'force'
     });
   },
  
