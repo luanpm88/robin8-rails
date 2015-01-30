@@ -1,0 +1,74 @@
+<div class="panel panel-default panel-custom">
+  <ul class="nav nav-tabs panel-heading" role="tablist">
+    <li role="presentation" class="active"><a href="#social-scheduled" aria-controls="social-scheduled" role="tab" data-toggle="tab">Scheduled Posts</a></li>
+    <li role="presentation"><a href="#social-profiles" aria-controls="social-profiles" role="tab" data-toggle="tab">Social Profiles</a></li>
+  </ul>
+  
+  <div class="panel-body">
+    <div role="tabpanel">
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="social-scheduled">
+          <h5>Review Scheduled Posts</h5>
+          <p><%- chance.paragraph({sentences: 2}) %></p>
+          <br>
+          <small>Today</small>
+          <ul class="list-group">
+          <% for(var i=0; i<4; i++) { %>
+            <li class="list-group-item">
+              <small><%- chance.hour() + ':' + chance.minute() + ' ' + chance.ampm().toUpperCase() %></small>
+              <span class="editable" data-type="textarea" data-pk="1" data-url="/post" data-title="Enter username"><%- chance.sentence({words: 12}) %></span>
+              <div class="pull-right" style="display: inline-block;">
+                <span class="social-networks">
+                  <a href="#" class="btn btn-xs" data-toggle="tooltip" title="Post to @aylien"><i class="fa fa-twitter"></i></a>
+                  <a href="#" class="btn btn-xs" data-toggle="tooltip" title="Post to Aylien page"><i class="fa fa-facebook"></i></a>
+                  <a href="#" class="btn btn-xs" data-toggle="tooltip" title="Post to Aylien company page" disabled><i class="fa fa-linkedin"></i></a>
+                  <a href="#" class="btn btn-xs" data-toggle="tooltip" title="Post to Aylien page" disabled><i class="fa fa-google-plus"></i></a>
+                </span>
+                <a href="#" class="btn btn-xs btn-default" style="margin-left: 4px;" data-toggle="tooltip" title="Edit post"><i class="fa fa-pencil"></i></a>
+                <a href="#" class="btn btn-xs btn-danger" data-toggle="tooltip" title="Delete post"><i class="fa fa-close"></i></a>
+              </div>
+            </li>
+          <% } %>
+          </ul>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="social-profiles">
+          <h5>Manage Connected Social Profiles</h5>
+          <p><%- chance.paragraph({words: 35}) %></p>
+          <br>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="pull-right"><i class="fa fa-check"></i> Connected to <a href="#">@_aylien</a> &bull; <a href="#">Disconnect</a></span>
+              <span>Twitter</span>
+            </li>
+            <li class="list-group-item">
+              <span class="pull-right">
+                <a class="btn btn-xs btn-social btn-facebook">
+                  <i class="fa fa-facebook"></i>
+                  Connect Facebook
+                </a>
+              </span>
+              <span>Facebook</span>
+            </li>
+            <li class="list-group-item">
+              <span class="pull-right">
+                <a class="btn btn-xs btn-social btn-google-plus">
+                  <i class="fa fa-google-plus"></i>
+                  Connect Google+
+                </a>
+              </span>
+              <span>Google+</span>
+            </li>
+            <li class="list-group-item">
+              <span class="pull-right">
+                <a class="btn btn-xs btn-social btn-linkedin">
+                  <i class="fa fa-linkedin"></i>
+                  Connect LinkedIn
+                </a>
+              </span>
+              <span>LinkedIn</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+  </div>
+</div>
