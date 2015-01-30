@@ -61,6 +61,8 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
     e.preventDefault();
 
     el = $(this.el);
+
+    this.modelBinder.copyViewValuesToModel();
     
     this.model.save(this.model.attributes, {
       success: function(userSession, response) {
