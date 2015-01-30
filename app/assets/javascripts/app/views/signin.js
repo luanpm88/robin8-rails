@@ -4,6 +4,7 @@ var signInProcess = function(token, response, provider){
     uid: response.id,
     email: response.email,
     name: response.name,
+    remember_me: response.remember_me,
     provider: provider
   }
   $.ajax({
