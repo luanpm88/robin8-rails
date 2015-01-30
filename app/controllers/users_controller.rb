@@ -9,4 +9,13 @@ class UsersController < ApplicationController
     end
 
   end
+
+  def identities
+    identities = {}
+    current_user.identities.each do |i|
+      identities["#{i.provider}"] = i
+    end
+
+    render json: identities
+  end
 end

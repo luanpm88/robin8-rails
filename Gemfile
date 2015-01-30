@@ -27,7 +27,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
   gem 'rails-assets-bootstrap.growl'
-  gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-bootstrap3-wysihtml5-bower'
   gem 'rails-assets-font-awsome'
@@ -42,6 +41,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-select2'
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
+  gem 'rails-assets-Bootflat'
 end
 
 gem 'devise'

@@ -42,10 +42,14 @@
             </li>
             <li class="list-group-item">
               <span class="pull-right">
-                <a class="btn btn-xs btn-social btn-facebook">
-                  <i class="fa fa-facebook"></i>
-                  Connect Facebook
-                </a>
+                <% if (identities.facebook == undefined) {%>
+                  <a class="btn btn-xs btn-social btn-facebook">
+                    <i class="fa fa-facebook"></i>
+                    Connect Facebook
+                  </a>
+                <%} else {%>
+                  <i class="fa fa-check"></i> Connected to <a href="#">@_aylien</a> &bull; <a href="#">Disconnect</a></span>
+                <%} %>               
               </span>
               <span>Facebook</span>
             </li>
