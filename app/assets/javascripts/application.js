@@ -36,6 +36,7 @@
 //= require_tree ../templates
 //= require_tree ./app/routers
 //= require_tree ./app/models
+//= require_tree ./app/collections
 //= require_tree ./app/views
 //= require_tree .
 

@@ -1,6 +1,7 @@
 window.Robin = new Backbone.Marionette.Application();
 Robin.Views = {};
 Robin.Views.Layouts = {};
+Robin.Collections = {};
 Robin.Models = {};
 Robin.Routers = {};
 

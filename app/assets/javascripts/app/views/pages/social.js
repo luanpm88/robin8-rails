@@ -1,28 +1,21 @@
-Robin.Views.Social = Backbone.Marionette.ItemView.extend({
-  template: JST['pages/social'],
+Robin.Views.Layouts.Social = Backbone.Marionette.LayoutView.extend({
+  template: JST['pages/social/social'],
 
-  events: {
-    'click .btn-facebook': 'connectFacebook',
-  },
-
-  // need change 
-  templateHelpers: function(){
-    return {
-      identities: function(){ 
-        $.get( "/users/identities", function( data ) {
-          return data;
-        });
-      }
-    }
+  regions: {
+    profiles: "#social-profiles",
+    scheduled: "#social-scheduled",
   },
 
   initialize: function() {
-    $.get( "/users/identities", function( data ) {
-      return data;
-    });
   },
 
-  connectFacebook: function() {
-    console.log('connectFacebook');
-  }
+  onRender: function() {
+    currentView = this;
+    var postsView = new Robin.Views.ScheduledPosts();
+    $.get( "/users/identities", function( data ) {
+      var viewPosts = new Robin.Views.SocialProfiles({collection: new Robin.Collections.Identities(data)});
+      currentView.getRegion('profiles').show(viewPosts);
+      currentView.getRegion('scheduled').show(postsView);
+    });
+  },
 });
