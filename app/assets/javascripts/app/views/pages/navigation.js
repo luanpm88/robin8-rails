@@ -9,6 +9,7 @@ Robin.Views.Navigation = Backbone.Marionette.ItemView.extend({
     'click #nav-releases': 'showReleases',
     'click #nav-social': 'showSocial',
     'click #nav-analytics': 'showAnalytics',
+    'click #nav-profile': 'showProfile',
   },
 
   initialize: function() {
@@ -47,5 +48,8 @@ Robin.Views.Navigation = Backbone.Marionette.ItemView.extend({
     console.log('showAnalytics');
   },
 
+  showProfile: function() {
+    Robin.layouts.main.getRegion('content').show(new Robin.Views.Profile());
+  },
   
 });
