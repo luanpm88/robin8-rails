@@ -28,6 +28,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
   gem 'rails-assets-bootstrap.growl'
   gem 'rails-assets-blueimp-gallery'
+  gem 'rails-assets-sass-bootstrap-glyphicons'
   gem 'rails-assets-bootstrap3-wysihtml5-bower'
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
