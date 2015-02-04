@@ -11,11 +11,24 @@ class UsersController < ApplicationController
   end
 
   def identities
-    identities = {}
-    current_user.identities.each do |i|
-      identities["#{i.provider}"] = i
+    render json: current_user.identities
+  end
+
+  def connect_social
+    @identity = Identity.find_for_oauth(params[:info])
+    if @identity.user != current_user
+      @identity.user = current_user
+      @identity.save
     end
 
-    render json: identities
+    render json: current_user.identities
   end
+
+  def disconnect_social
+    @identity = current_user.identities.where(provider: params[:provider]).first
+    @identity.destroy
+
+    render json: current_user.identities
+  end
+
 end

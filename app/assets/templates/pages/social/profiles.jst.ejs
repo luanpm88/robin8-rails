@@ -1,0 +1,55 @@
+<h5>Manage Connected Social Profiles</h5>
+<br>
+<ul class="list-group">
+  <li class="list-group-item">
+    <span class="pull-right">
+      <% var twitter = _.where(items, {provider: "twitter"})[0]%>
+      <% if (twitter == undefined) {%>
+        <a class="btn btn-xs btn-social btn-twitter">
+          <i class="fa fa-twitter"></i>
+          Connect Twitter
+        </a>
+      <%} else {%>
+        <i class="fa fa-check"></i> Connected to <a href="#"><%= twitter.name%></a> &bull; <a href="" class='disconnect' name='twitter'>Disconnect</a></span>
+      <%} %>
+    </span>
+    <span>Twitter</span>
+  </li>
+  <li class="list-group-item">
+    <span class="pull-right">
+      <% var facebook = _.where(items, {provider: "facebook"})[0]%>
+      <% if (facebook == undefined) {%>
+        <a class="btn btn-xs btn-social btn-facebook">
+          <i class="fa fa-facebook"></i>
+          Connect Facebook
+        </a>
+      <%} else {%>
+        <i class="fa fa-check"></i> Connected to <a href="#"><%= facebook.name%></a> &bull; <a href="" class='disconnect' name='facebook'>Disconnect</a></span>
+      <%} %>
+    </span>
+    <span>Facebook</span>
+  </li>
+  <li class="list-group-item">
+    <span class="pull-right">
+      <% var google = _.where(items, {provider: "google_oauth2"})[0]%>
+      <% if (google == undefined) {%>
+        <a class="btn btn-xs btn-social btn-google-plus">
+          <i class="fa fa-google-plus"></i>
+          Connect Google+
+        </a>
+      <%} else {%>
+        <i class="fa fa-check"></i> Connected to <a href="#"><%= google.name%></a> &bull; <a href="" class='disconnect' name='google_oauth2'>Disconnect</a></span>
+      <%} %>
+    </span>
+    <span>Google+</span>
+  </li>
+  <li class="list-group-item">
+    <span class="pull-right">
+      <a class="btn btn-xs btn-social btn-linkedin">
+        <i class="fa fa-linkedin"></i>
+        Connect LinkedIn
+      </a>
+    </span>
+    <span>LinkedIn</span>
+  </li>
+</ul>

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations", passwords: "users/passwords" }
   post 'users/login_by_social' => 'users#login_by_social'
+  post '/users/connect_social' => 'users#connect_social'
+  delete '/users/disconnect_social' => 'users#disconnect_social'
+
   get 'users/identities' => 'users#identities'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

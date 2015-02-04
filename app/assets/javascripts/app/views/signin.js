@@ -26,7 +26,7 @@ var signInProcess = function(token, response, provider){
 
 
 var gplusCallback = function( authResult ) {
-  token = authResult.id_token
+  token = authResult.access_token
   if (authResult['status']['signed_in']) {
       if (authResult['status']['method'] == 'PROMPT') {
         gapi.client.load('oauth2', 'v2', function () {
@@ -36,7 +36,9 @@ var gplusCallback = function( authResult ) {
         });
       }
   } else {
-    alert('Sign-in state: ' + authResult['error']);
+    $.growl('Sign-in state: ' + authResult['error'], {
+        type: "danger",
+      });
   }
 }
 

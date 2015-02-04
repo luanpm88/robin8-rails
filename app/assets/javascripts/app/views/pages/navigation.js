@@ -9,6 +9,7 @@ Robin.Views.Navigation = Backbone.Marionette.ItemView.extend({
     'click #nav-releases': 'showReleases',
     'click #nav-social': 'showSocial',
     'click #nav-analytics': 'showAnalytics',
+    'click #nav-profile': 'showProfile',
   },
 
   initialize: function() {
@@ -36,12 +37,19 @@ Robin.Views.Navigation = Backbone.Marionette.ItemView.extend({
   },
 
   showSocial: function() {
-    Robin.layouts.main.getRegion('content').show(new Robin.Views.Social());
+    // $.get( "/users/identities", function( data ) {
+      // var identities = new Robin.Collections.Identities(data);
+    var view = new Robin.Views.Layouts.Social();
+    Robin.layouts.main.getRegion('content').show(view);
+    // });
   },
 
   showAnalytics: function() {
     console.log('showAnalytics');
   },
 
+  showProfile: function() {
+    Robin.layouts.main.getRegion('content').show(new Robin.Views.Profile());
+  },
   
 });
