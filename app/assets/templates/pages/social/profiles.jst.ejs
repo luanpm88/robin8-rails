@@ -45,10 +45,15 @@
   </li>
   <li class="list-group-item">
     <span class="pull-right">
-      <a class="btn btn-xs btn-social btn-linkedin">
+      <% var linkedin = _.where(items, {provider: "linkedin"})[0]%>
+      <% if (linkedin == undefined) {%>
+        <a class="btn btn-xs btn-social btn-linkedin">
         <i class="fa fa-linkedin"></i>
-        Connect LinkedIn
-      </a>
+          Connect linkedin
+        </a>
+      <%} else {%>
+        <i class="fa fa-check"></i> Connected to <a href="#"><%= linkedin.name%></a> &bull; <a href="" class='disconnect' name='linkedin'>Disconnect</a></span>
+      <%} %>
     </span>
     <span>LinkedIn</span>
   </li>

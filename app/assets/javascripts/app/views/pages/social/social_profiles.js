@@ -1,9 +1,9 @@
 var connectSocial = function(token, response, provider, currentView){
   authResponse = {
-    token: token,
+    token: token || null,
     uid: response.id,
-    email: response.email,
-    name: response.name,
+    email: response.email || '',
+    name: response.name || (response.firstName + ' ' + response.lastName),
     provider: provider
   }
   $.ajax({
@@ -65,6 +65,8 @@ Robin.Views.SocialProfiles = Backbone.Marionette.ItemView.extend({
   events: {
     'click .btn-facebook': 'connectFacebook',
     'click .btn-google-plus': 'connectGoogle',
+    'click .btn-twitter': 'connectTwitter',
+    'click .btn-linkedin': 'connectLinkedin',
     'click .disconnect': 'disconnect'
   },
 
@@ -113,6 +115,72 @@ Robin.Views.SocialProfiles = Backbone.Marionette.ItemView.extend({
       'callback': 'googleCallback',
       'approvalprompt': 'force'
     });
+  },
+
+  connectTwitter: function(e) {
+    e.preventDefault();
+    
+    authResponse = {
+      oauth_consumer_key: "chfbNFBkf56gJT2BDzmCNNfgv", 
+      oauth_nonce: "74a3f508a9a7384b7283751518e17bda", 
+      oauth_signature: "vR6oMDbA2BDqz8DpNctNimqeCGw%3D", 
+      oauth_signature_method: "HMAC-SHA1", 
+      oauth_token: "1277473896-KtaOxg0DgAqz5gVHEiGC7p8nKNHj5InRNvVEYVU", 
+      oauth_version: "1.0"
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: 'https://api.twitter.com/oauth/authenticate',
+      dataType: 'json',
+      data: authResponse,
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        // currentView.collection = new Robin.Collections.Identities(data);
+        // currentView.render();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        $.growl(textStatus, {
+          type: "danger",
+        });
+      }
+    });
+  },
+
+  connectLinkedin: function(e) {
+    e.preventDefault();
+    currentView = this;
+
+    IN.User.authorize(function() {
+      IN.API.Profile("me").result( function(me) {
+        connectSocial('', me.values[0], 'linkedin', currentView);
+      });
+    });
+
+    // authResponse = {
+    //   state: "DCEEFWF45453sdffef424", 
+    //   scope: "r_fullprofile", 
+    //   response_type: 'code', 
+    //   client_id: "77pzzhbbrahh62",
+    //   redirect_uri: "http://localhost:3000/"
+    // };
+
+    // $.ajax({
+    //   type: 'GET',
+    //   url: 'https://www.linkedin.com/uas/oauth2/authorization',
+    //   dataType: 'jsonp',
+    //   data: authResponse,
+    //   success: function(data, textStatus, jqXHR) {
+    //     console.log(data);
+    //     // currentView.collection = new Robin.Collections.Identities(data);
+    //     // currentView.render();
+    //   },
+    //   error: function(jqXHR, textStatus, errorThrown) {
+    //     $.growl(textStatus, {
+    //       type: "danger",
+    //     });
+    //   }
+    // });
   },
 
   disconnect: function(e) {
