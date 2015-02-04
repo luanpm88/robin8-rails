@@ -32,12 +32,18 @@
 //= require highcharts
 //= require select2
 
-//= require app/init
 //= require_tree ../templates
-//= require_tree ./app/routers
-//= require_tree ./app/models
-//= require_tree ./app/views
-//= require_tree .
+//= require backbone/init
+//= require_tree ./backbone/models
+//= require_tree ./backbone/layouts
+//= require_tree ./backbone/modules
+
+// require app/init
+// require_tree ../templates
+// require_tree ./app/routers
+// require_tree ./app/models
+// require_tree ./app/views
+// require_tree .
 
 var ready;
 ready = function() {
