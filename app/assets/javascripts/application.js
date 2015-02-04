@@ -35,6 +35,7 @@
 //= require_tree ../templates
 //= require backbone/init
 //= require_tree ./backbone/models
+//= require_tree ./backbone/collections
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/modules
 

@@ -1,6 +1,7 @@
 var Robin = new Backbone.Marionette.Application();
 Robin.Views = {};
 Robin.Views.Layouts = {};
+Robin.Collections = {};
 Robin.Models = {};
 Robin.Routers = {};
 
@@ -25,11 +26,6 @@ Robin.addInitializer(function(options){
   new Robin.Routers.Main();
 });
 
-// Robin.addInitializer(function(options){
-//   new Robin.Routers.Main();
-//   Backbone.history.start();
-// });
-
 Robin.vent.on("authentication:logged_in", function() {
   Robin.layouts.main = new Robin.Views.Layouts.Main();
   Robin.main.show(Robin.layouts.main);
@@ -48,13 +44,3 @@ Robin.bind("before:start", function() {
     Robin.vent.trigger("authentication:logged_out");
   }
 });
-
-// ~~~~~~~ application.erb file ~~~~~
-// $(document).ready(function() {
-//   Robin.start();
-// });
-
-// $(document).on('page:load', function() {
-//   Backbone.history.stop();
-//   Robin.start();
-// });
