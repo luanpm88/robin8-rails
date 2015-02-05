@@ -21,16 +21,17 @@ Robin.on('start', function(){
 Robin.addInitializer(function(options){
   if (Robin.currentUser) {
     Robin.module('Navigation').start();
+    Robin.module('SaySomething').start();
   } else {
     Robin.module('Authentication').start();
   }
 });
 
 Robin.vent.on("authentication:logged_in", function() {
-  console.log('vent logged_in')
   Robin.layouts.main = new Robin.Views.Layouts.Main();
   Robin.main.show(Robin.layouts.main);
   Robin.module('Navigation').start();
+  Robin.module('SaySomething').start();
 });
 
 Robin.vent.on("authentication:logged_out", function() {
