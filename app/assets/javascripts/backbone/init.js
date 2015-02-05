@@ -1,6 +1,7 @@
 var Robin = new Backbone.Marionette.Application();
 Robin.Views = {};
 Robin.Views.Layouts = {};
+Robin.Collections = {};
 Robin.Models = {};
 Robin.Routers = {};
 
@@ -45,13 +46,3 @@ Robin.bind("before:start", function() {
     Robin.vent.trigger("authentication:logged_out");
   }
 });
-
-// ~~~~~~~ application.erb file ~~~~~
-// $(document).ready(function() {
-//   Robin.start();
-// });
-
-// $(document).on('page:load', function() {
-//   Backbone.history.stop();
-//   Robin.start();
-// });

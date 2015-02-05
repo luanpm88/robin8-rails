@@ -37,7 +37,7 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     showSocial: function() {
-      Robin.layouts.main.getRegion('content').show(new Robin.Views.Social());
+      Robin.module('Social').start();
     },
 
     showAnalytics: function() {

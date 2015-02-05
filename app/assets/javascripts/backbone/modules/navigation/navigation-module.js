@@ -2,7 +2,7 @@ Robin.module("Navigation", function(Navigation, Robin, Backbone, Marionette, $, 
 
   this.startWithParent = false;
 
-  API = {
+  var API = {
     showNavigation: function() {
       Navigation.Show.Controller.showNavigation();
     }

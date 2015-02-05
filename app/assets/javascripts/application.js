@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
+//= require uploadcare
 //= require blueimp-gallery
 // require bootstrap3-wysihtml5-bower
 //= require bootstrap-sweetalert
@@ -36,6 +37,7 @@
 //= require_tree ../templates
 //= require backbone/init
 //= require_tree ./backbone/models
+//= require_tree ./backbone/collections
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/modules
 
