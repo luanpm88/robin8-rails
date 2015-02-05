@@ -3,7 +3,7 @@ Robin.Views.Profile = Backbone.Marionette.ItemView.extend({
 
   events: {
     'submit form' : 'updateProfile',
-    'reset form': 'showSocial',  //Should be replaced with Dashboard when ready
+    'reset form'  :'showSocial',  //Should be replaced with Dashboard when ready,
   },
 
   initialize: function() {
@@ -13,6 +13,15 @@ Robin.Views.Profile = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     this.modelBinder.bind(this.model, this.el);
+
+    //Avatar uploader
+    setTimeout(function(){
+      uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
+        console.log('Im here', info.cdnUrl);
+        document.getElementById("avatar-image").src = info.cdnUrl;
+        // custom Amazon S3 image storage is needed in order to actually store the image
+      });
+    }, 0);
   },
 
   updateProfile: function(e) {
@@ -22,7 +31,6 @@ Robin.Views.Profile = Backbone.Marionette.ItemView.extend({
     this.modelBinder.copyViewValuesToModel();
     this.model.save(this.model.attributes, {
       success: function(userSession, response) {
-        document.getElementById('alert-box').innerHTML="goood";
         $.growl({message: 'Your account data has been successfully changed'
         },{
           type: 'success',
@@ -47,6 +55,6 @@ Robin.Views.Profile = Backbone.Marionette.ItemView.extend({
 
   //Should be replaced with Dashboard when ready
   showSocial: function() {
-    Robin.layouts.main.getRegion('content').show(new Robin.Views.Social());
+    Robin.layouts.main.getRegion('content').show(new Robin.Views.Layouts.Social());
   },
 });

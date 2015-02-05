@@ -158,6 +158,8 @@ GEM
     rails-assets-tweenlite (1.11.5)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.string (3.0.2)
+    rails-assets-uploadcare (1.5.5)
+      rails-assets-jquery (>= 1.10.2)
     rails-assets-wysihtml5 (0.3.0)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
@@ -263,6 +265,7 @@ DEPENDENCIES
   rails-assets-spinkit!
   rails-assets-tweenlite!
   rails-assets-underscore.string!
+  rails-assets-uploadcare!
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
