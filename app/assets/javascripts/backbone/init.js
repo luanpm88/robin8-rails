@@ -47,3 +47,10 @@ Robin.bind("before:start", function() {
     Robin.vent.trigger("authentication:logged_out");
   }
 });
+
+//Uploadcare params:
+UPLOADCARE_PUBLIC_KEY = "demopublickey";
+UPLOADCARE_AUTOSTORE = true;
+//The UPLOADCARE_PUBLIC_KEY should be changed as soon as paid
+// account is avaialble. example:
+//UPLOADCARE_PUBLIC_KEY = "a51f0572e52df821db41";

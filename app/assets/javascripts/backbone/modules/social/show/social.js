@@ -1,6 +1,6 @@
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.SocialPage = Backbone.Marionette.LayoutView.extend({
-    template: JST['pages/social/social'],
+    template: 'modules/social/show/templates/social',
 
     regions: {
       profiles: "#social-profiles",

@@ -1,7 +1,7 @@
 Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
 
   Show.NavigationView = Backbone.Marionette.ItemView.extend({
-    template: JST['pages/navigation'],
+    template: 'modules/navigation/show/templates/navigation',
     events: {
       'click #nav-dashboard': 'showDashboard',
       'click #nav-robin8': 'showRobin',
@@ -10,6 +10,7 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #nav-releases': 'showReleases',
       'click #nav-social': 'showSocial',
       'click #nav-analytics': 'showAnalytics',
+      'click #nav-profile': 'showProfile',
     },
 
     initialize: function() {
@@ -43,8 +44,11 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     showAnalytics: function() {
       console.log('showAnalytics');
     },
+
+    showProfile: function() {
+      console.log('showProfile');
+      Robin.module('Profile').start();
+    },
   });
-
-
 
 });

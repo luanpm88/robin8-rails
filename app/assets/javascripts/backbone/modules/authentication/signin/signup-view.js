@@ -1,7 +1,7 @@
 Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette, $, _){
 
   SignIn.SignUpView = Backbone.Marionette.ItemView.extend( {
-    template: JST['users/signup'],
+    template: 'modules/authentication/signin/templates/signup',
 
     events: {
       'submit form' : 'signup'
