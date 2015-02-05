@@ -1,5 +1,5 @@
 Robin.Views.Layouts.Unauthenticated = Backbone.Marionette.LayoutView.extend({
-  template: JST['layouts/unauthenticated'],
+  template: 'layouts/templates/unauthenticated',
 
   regions: {
     signUpForm: "#signInContainer",

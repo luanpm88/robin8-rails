@@ -1,6 +1,6 @@
 Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.ProfilePage = Backbone.Marionette.LayoutView.extend({
-    template: JST['pages/profile'],
+    template: 'modules/profile/show/templates/profile',
 
     events: {
       'submit form' : 'updateProfile',

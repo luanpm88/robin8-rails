@@ -13,14 +13,11 @@
       <form class="navbar-form navbar-left">
         <a href="#"><span class="badge badge-danger badge-lg">2</span></a>
       </form>
-      <div class="collapse navbar-collapse" id='say-something' style='float: right'>
-        
-      </div>
-      
+      <div class="collapse navbar-collapse" id='say-something' style='float: right; z-index: 10'></div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/users/sign_out" method='delete'>Log Out</a></li>
+        <li><a href="/users/sign_out" data-method='delete'>Log Out</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-shopping-cart"></i><span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -35,8 +32,6 @@
             <li><a href="#"><i class="fa fa-smile-o"></i> Profile</a></li>
             <li><a href="#"><i class="fa fa-dollar"></i> Billing Settings</a></li>
             <li class="divider"></li>
-            <li>
-              <a href="/users/sign_out" data-method="delete"><i class="fa fa-sign-out"></i> Logout</a>
           </ul>
         </li>
       </ul>
@@ -47,7 +42,7 @@
 
 <div id="wrapper" class="active">
   <!-- Sidebar -->
-  <div id="navigationRegion"></div>
+  <div id="sidebar-wrapper"></div>
   <!-- Page content -->
   <div id="page-content-wrapper">
     <!-- Keep all page content within the page-content inset div! -->

@@ -1,7 +1,7 @@
 Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
   Say.SayView = Backbone.Marionette.ItemView.extend({
-    template: JST['pages/say'],
+    template: 'modules/say-something/say/templates/say',
 
     events: {
       'focus form input': 'showContainer'

@@ -61,7 +61,7 @@ var disconnectSocial = function(provider, currentView){
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
   Show.SocialProfiles = Backbone.Marionette.ItemView.extend({
-    template: JST['pages/social/profiles'],
+    template: 'modules/social/show/templates/profiles',
 
     events: {
       'click .btn-facebook': 'connectFacebook',
