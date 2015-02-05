@@ -1,14 +1,8 @@
 Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
 
   routes: {
-    "": "index",
-    "signin": "signin",
     "signup": "signup",
     "forgot": "forgot",
-  },
-
-  initialize: function() {
-    console.log('routes init');
   },
 
   index: function() {

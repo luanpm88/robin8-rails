@@ -7,32 +7,29 @@ Robin.Routers = {};
 Robin.layouts = {};
 
 Robin.addRegions({
-  main: '#main',
-  navigationRegion: '#navigationRegion'
+  main: '#main'
 });
 
 Robin.on('start', function(){
-  Backbone.history.start();
+  if (Backbone.history){
+    Robin.addInitializer();
+    Backbone.history.start();
+  }
 });
 
 Robin.addInitializer(function(options){
   if (Robin.currentUser) {
     Robin.module('Navigation').start();
-    console.log('Navigation is started because of currentUser is true.');
   } else {
-    console.log('Navigation is NOT started because of currentUser is false.');
+    Robin.module('Authentication').start();
   }
-  new Robin.Routers.Main();
 });
 
-// Robin.addInitializer(function(options){
-//   new Robin.Routers.Main();
-//   Backbone.history.start();
-// });
-
 Robin.vent.on("authentication:logged_in", function() {
+  console.log('vent logged_in')
   Robin.layouts.main = new Robin.Views.Layouts.Main();
   Robin.main.show(Robin.layouts.main);
+  Robin.module('Navigation').start();
 });
 
 Robin.vent.on("authentication:logged_out", function() {

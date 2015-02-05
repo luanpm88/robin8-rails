@@ -1,14 +1,8 @@
 Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
 
   routes: {
-    "": "index",
-    "signin": "signin",
-    "signup": "signup",
-    "forgot": "forgot",
-  },
-
-  initialize: function() {
-    console.log('routes init');
+    "signup": 'signup',
+    "forgot": "forgot"
   },
 
   index: function() {
@@ -20,15 +14,12 @@ Robin.Routers.Main = Backbone.Marionette.AppRouter.extend({
     }
   },
 
-  signin: function() {
-    Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.signInView());
-  },
-
   signup: function() {
-    Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.signUpView());
+    console.log('main router signup!')
+    // Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.signUpView());
   },
 
   forgot: function() {
-    Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.forgotView());
+    // Robin.layouts.unauthenticated.getRegion('signUpForm').show(new Robin.Views.forgotView());
   },
 });
