@@ -3,10 +3,13 @@ Robin.module("SaySomething", function(SaySomething, Robin, Backbone, Marionette,
   this.startWithParent = false;
 
   var API = {
-
+    showSaySomething: function() {
+      SaySomething.Say.Controller.showSayView();
+    }
   }
 
   SaySomething.on('start', function(){
+    API.showSaySomething()
     console.log('SaySomething module is initialized');
   })
   
