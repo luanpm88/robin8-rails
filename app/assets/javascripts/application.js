@@ -49,21 +49,6 @@
 // require_tree ./app/views
 // require_tree .
 
-
-var ShrinkedLink = {
-  shrink : function(url) {
-    BitlyClient.shorten(url, function(data) {
-      console.log(data);
-    });
-  },
-
-  unshrink : function(url) {
-    BitlyClient.expand(url, function(data) {
-      console.log(data.results)
-    });
-  },
-}
-
 var ready;
 ready = function() {
   
@@ -105,28 +90,6 @@ ready = function() {
     s.parentNode.insertBefore(po, s);
   })()
   // end load Google+ sdk
-
-  // test - need move to backbone view
-  $(document).on("change", '#shrink-links', function(e) {
-    var saySomethingContent = $('#say-something').val();
-    if ($(e.target).is(':checked')) {
-      var regexp = /(\b(https?|www):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i
-      var urls = regexp.exec(saySomethingContent)
-      console.log(urls);
-      $.each(urls, function( index, value ) {
-        // console.log(value);
-        ShrinkedLink.shrink(value)
-      });
-
-    } else {
-      
-      $.each(urls, function( index, value ) {
-        ShrinkedLink.unshrink(value)
-      });
-
-    }
-  });
-  //
 
   // $('#sidebar-wrapper, #page-content-wrapper').click(function() {
   //   $('.navbar-search-lg').hide();
