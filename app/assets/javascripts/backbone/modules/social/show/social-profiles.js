@@ -127,13 +127,13 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       params = 'location=0,status=0,width=800,height=600';
       currentView.twitter_window = window.open(url, "twitter_window", params);
 
-      window.setInterval((function() {
+      currentView.interval = window.setInterval((function() {
         if (currentView.twitter_window.closed) {
           $.get( "/users/identities", function( data ) {
             currentView.collection = new Robin.Collections.Identities(data);
             currentView.render();
+            window.clearInterval(currentView.interval);
           });
-          return false;
         }
       }), 500);
     },
