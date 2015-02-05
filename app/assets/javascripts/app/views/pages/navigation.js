@@ -13,7 +13,6 @@ Robin.Views.Navigation = Backbone.Marionette.ItemView.extend({
   },
 
   initialize: function() {
-    console.log('navigation');
   },
 
   showDashboard: function() {
