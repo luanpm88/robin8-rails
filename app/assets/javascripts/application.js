@@ -90,12 +90,12 @@ ready = function() {
   })()
   // end load Google+ sdk
 
-  $('html').click(function() {
-    $('.navbar-search-lg').hide();
-    // $('.navbar-search-sm').show().find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
-    $('.navbar-search-sm').show()
-    $('.progressjs-progress').hide();
-  });
+  // $('#sidebar-wrapper, #page-content-wrapper').click(function() {
+  //   $('.navbar-search-lg').hide();
+  //   // $('.navbar-search-sm').show().find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+  //   $('.navbar-search-sm').show()
+  //   $('.progressjs-progress').hide();
+  // });
 };
 
 $(document).ready(ready);

@@ -11,12 +11,12 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       $(e.target).parent().parent().hide();
       $('.navbar-search-lg').show().find('textarea').focus();
       $('.progressjs-progress').show();
+      return false
     }
     
   });
 
   Robin.vent.on("saySomething:hide", function() {
-    console.log('triggered!!!');
     $('.navbar-search-lg').hide();
     $('.navbar-search-sm').show().find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
     $('.progressjs-progress').hide();
