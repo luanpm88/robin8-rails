@@ -1,5 +1,4 @@
 var googleCallback = function( authResult ) {
-  console.log(window.currentView);
   token = authResult.access_token;
   if (authResult['status']['signed_in']) {
       if (authResult['status']['method'] == 'PROMPT') {
@@ -114,7 +113,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       gapi.auth.signIn({
         'clientid': '639174820348-qqkeokqa6lh7sirppbme6mpvg1s95na4.apps.googleusercontent.com',
         'cookiepolicy': 'single_host_origin',
-        'scope': 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+        'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email',
         'callback': 'googleCallback',
         'approvalprompt': 'force'
       });
@@ -122,37 +121,26 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     connectTwitter: function(e) {
       e.preventDefault();
+      var currentView = this;
       
-      authResponse = {
-        oauth_consumer_key: "chfbNFBkf56gJT2BDzmCNNfgv", 
-        oauth_nonce: "74a3f508a9a7384b7283751518e17bda", 
-        oauth_signature: "vR6oMDbA2BDqz8DpNctNimqeCGw%3D", 
-        oauth_signature_method: "HMAC-SHA1", 
-        oauth_token: "1277473896-KtaOxg0DgAqz5gVHEiGC7p8nKNHj5InRNvVEYVU", 
-        oauth_version: "1.0"
-      };
+      var url = '/users/auth/twitter',
+      params = 'location=0,status=0,width=800,height=600';
+      currentView.twitter_window = window.open(url, "twitter_window", params);
 
-      $.ajax({
-        type: 'POST',
-        url: 'https://api.twitter.com/oauth/authenticate',
-        dataType: 'json',
-        data: authResponse,
-        success: function(data, textStatus, jqXHR) {
-          console.log(data);
-          // currentView.collection = new Robin.Collections.Identities(data);
-          // currentView.render();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          $.growl(textStatus, {
-            type: "danger",
+      window.setInterval((function() {
+        if (currentView.twitter_window.closed) {
+          $.get( "/users/identities", function( data ) {
+            currentView.collection = new Robin.Collections.Identities(data);
+            currentView.render();
           });
+          return false;
         }
-      });
+      }), 500);
     },
 
     connectLinkedin: function(e) {
       e.preventDefault();
-      currentView = this;
+      var currentView = this;
 
       IN.User.authorize(function() {
         IN.API.Profile("me").result( function(me) {
