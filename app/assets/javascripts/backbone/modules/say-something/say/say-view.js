@@ -34,19 +34,37 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     shrinkLinkProcess: function(e) {
-      var saySomethingContent = $('#say-something-field').val();
       if ($(e.target).is(':checked')) {
-        // var regexp = /(\b(https?|www):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i
-        // var urls = regexp.exec(saySomethingContent)
-        // $.each(urls, function( index, value ) {
-          // console.log(value);
-        ShrinkedLink.shrink(saySomethingContent)
-        // });
-      } else {
+        var saySomethingContent = $('#say-something-field').val();
+        var www_pattern = /(^|[\s\n]|<br\/?>)((www).[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var www_urls = saySomethingContent.match(www_pattern);
         
-        // $.each(urls, function( index, value ) {
-        ShrinkedLink.unshrink(saySomethingContent)
-        // });
+        if (www_urls != null) {
+          $.each(www_urls, function( index, value ) {
+            var result = saySomethingContent.replace(value, 'http://' + $.trim(value));
+            $('#say-something-field').val(result);
+          });
+          var saySomethingContent = $('#say-something-field').val();
+        }
+
+        var pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var urls = saySomethingContent.match(pattern);
+
+        if (urls != null) {
+          $.each(urls, function( index, value ) {
+            ShrinkedLink.shrink($.trim(value))
+          });
+        }
+      } else {
+        var saySomethingContent = $('#say-something-field').val();
+
+        var pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var urls = saySomethingContent.match(pattern)
+        if (urls != null) {
+          $.each(urls, function( index, value ) {
+            ShrinkedLink.unshrink($.trim(value))
+          });
+        }
       }
     }
     

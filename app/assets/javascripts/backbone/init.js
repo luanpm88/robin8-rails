@@ -1,3 +1,4 @@
+
 var Robin = new Backbone.Marionette.Application();
 Robin.Views = {};
 Robin.Views.Layouts = {};
@@ -12,7 +13,9 @@ Robin.addRegions({
 });
 
 Robin.on('start', function(){
+  console.log('fff')
   if (Backbone.history){
+    console.log('start')
     Robin.addInitializer();
     Backbone.history.start();
   }

@@ -8,18 +8,25 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
     },
     signUp: function() {
       Authentication.SignIn.Controller.showSignUp();
+    },
+    forgot: function() {
+      console.log('fff');
+      Authentication.SignIn.Controller.showForgot();
     }
   }
 
   Authentication.Router = Backbone.Marionette.AppRouter.extend({
     routes: {
       "signin": "signIn",
-      "signup": "signUp"
+      "signup": "signUp",
+      "forgot": "forgot"
     },
 
     signUp: function() { API.signUp(); },
 
-    signIn: function() { API.signIn(); }
+    signIn: function() { API.signIn(); },
+
+    forgot: function() { API.forgot(); }
 
   });
 
