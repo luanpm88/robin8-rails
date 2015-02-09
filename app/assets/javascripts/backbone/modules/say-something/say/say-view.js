@@ -87,7 +87,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         
         if (www_urls != null) {
           $.each(www_urls, function( index, value ) {
-            var result = saySomethingContent.replace(value, 'http://' + $.trim(value));
+            value = $.trim(value)
+            var result = saySomethingContent.replace(value, 'http://' + value);
             $('#say-something-field').val(result);
           });
           var saySomethingContent = $('#say-something-field').val();
