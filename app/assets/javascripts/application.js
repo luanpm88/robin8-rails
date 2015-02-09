@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require bootstrap-sass
+//= require bootstrap
 //= require bootstrap-sweetalert
 //= require uploadcare
 //= require progressjs
