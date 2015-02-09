@@ -1,4 +1,7 @@
+require 'sidekiq/web'
+require 'sidetiq/web'
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations", passwords: "users/passwords",
                                     omniauth_callbacks: "users/omniauth_callbacks" }
   post 'users/login_by_social' => 'users#login_by_social'
