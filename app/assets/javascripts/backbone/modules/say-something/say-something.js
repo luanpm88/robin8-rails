@@ -10,7 +10,6 @@ Robin.module("SaySomething", function(SaySomething, Robin, Backbone, Marionette,
 
   SaySomething.on('start', function(){
     API.showSaySomething()
-    console.log('SaySomething module is initialized');
   })
   
 });

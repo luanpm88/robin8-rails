@@ -65,7 +65,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
   
     //Should be replaced with Dashboard when ready
     showSocial: function() {
-      Robin.layouts.main.getRegion('content').show(new Robin.Views.Layouts.Social());
+      Robin.module('Social').start();
     },
   });
 });

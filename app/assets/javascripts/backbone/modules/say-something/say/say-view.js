@@ -23,14 +23,60 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     events: {
       'focus form input': 'showContainer',
-      'change #shrink-links': 'shrinkLinkProcess'
+      'change #shrink-links': 'shrinkLinkProcess',
+      'submit form': 'createPost',
+      'click a.btn-default': 'showPicker',
+      'click a.btn-danger' : 'hidePicker',
+      'keyup #say-text'    : 'setCounter',
+    },
+
+    initialize: function() {
+      this.model = new Robin.Models.Post();
+      this.modelBinder = new Backbone.ModelBinder();
+    },
+
+    onRender: function() {
+      this.modelBinder.bind(this.model, this.el);
+    },
+
+    ui:{
+      minDatePicker: "#schedule-datetimepicker"
+    },
+
+    onRender:function() {
+      this.ui.minDatePicker.datetimepicker();
+      this.modelBinder.bind(this.model, this.el);
     },
 
     showContainer: function(e) {
       // $(e.target).parent().parent().hide();
       $('.navbar-search-lg').show().find('textarea').focus();
       $('.progressjs-progress').show();
-      return false
+      // return false
+    },
+
+    setCounter: function() {
+      var prgjs = progressJs($("#say-text")).setOptions({ theme: 'blackRadiusInputs' }).start();
+      var sayText = $("#say-text");
+      var counter = $("#say-counter");
+      var limit = 140;
+      counter.text(limit - sayText.val().length);
+
+      if (sayText.val().length <= limit) {
+        prgjs.set(Math.floor(sayText.val().length * 100/limit));
+      } else {
+        var t = sayText.val().substring(0, limit);
+        sayText.val(t);
+        counter.text(0);
+      }
+    },
+
+    showPicker: function() {
+      $('a.btn-default').hide().next().show();
+    },
+
+    hidePicker: function() {
+      $('div.pull-right').hide().prev().show();
     },
 
     shrinkLinkProcess: function(e) {
@@ -66,6 +112,29 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
           });
         }
       }
+    },
+
+    createPost: function(e) {
+      e.preventDefault();
+      
+      this.modelBinder.copyViewValuesToModel();
+      this.model.save(this.model.attributes, {
+        success: function(userSession, response) {
+          console.log('created');
+          $.growl({message: "You've created a post"
+          },{
+            type: 'success'
+          });
+        },
+        error: function(userSession, response) {
+          console.log('failed');
+          $.growl({title: '<strong>Error:</strong> ',
+            message: 'Something went wrong.'
+          },{
+            type: 'danger'
+          });
+        }
+      });
     }
     
   });
