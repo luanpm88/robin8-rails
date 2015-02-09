@@ -7,8 +7,6 @@ class PostsController < ApplicationController
   end
 
   def create
-    p '~'*90
-    p params
     if current_user.posts.create(post_params)
       render nothing: true
     else
