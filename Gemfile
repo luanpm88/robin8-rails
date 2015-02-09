@@ -43,7 +43,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-select2'
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
-  gem 'rails-assets-Bootflat'
 end
 
 gem 'devise'

@@ -12,10 +12,15 @@ Robin.addRegions({
   main: '#main'
 });
 
+Robin.navigate = function(route, options){
+  options || (options = {});
+  Backbone.history.navigate(route, options);
+};
+
 Robin.on('start', function(){
-  console.log('fff')
-  if (Backbone.history){
-    console.log('start')
+  console.log('on start')
+  if (Backbone.history && !Backbone.History.started){
+    console.log('starting')
     Robin.addInitializer();
     Backbone.history.start();
   }
