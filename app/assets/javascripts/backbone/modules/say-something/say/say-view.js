@@ -27,7 +27,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       'submit form': 'createPost',
       'click a.btn-default': 'showPicker',
       'click a.btn-danger' : 'hidePicker',
-      'keyup #say-text'    : 'setCounter',
+      'keyup #say-something-field'    : 'setCounter',
       'click html' : 'closeContainer'
     },
 
@@ -67,8 +67,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     setCounter: function() {
-      var prgjs = progressJs($("#say-text")).setOptions({ theme: 'blackRadiusInputs' }).start();
-      var sayText = $("#say-text");
+      var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).start();
+      var sayText = $("#say-something-field");
       var counter = $("#say-counter");
       var limit = 140;
       counter.text(limit - sayText.val().length);
