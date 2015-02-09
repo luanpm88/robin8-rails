@@ -22,12 +22,13 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     template: 'modules/say-something/say/templates/say',
 
     events: {
-      'focus form input': 'showContainer',
+      'focus form input#text-field': 'showContainer',
       'change #shrink-links': 'shrinkLinkProcess',
       'submit form': 'createPost',
       'click a.btn-default': 'showPicker',
       'click a.btn-danger' : 'hidePicker',
       'keyup #say-text'    : 'setCounter',
+      'click html' : 'closeContainer'
     },
 
     initialize: function() {
@@ -49,10 +50,20 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     showContainer: function(e) {
-      // $(e.target).parent().parent().hide();
+      console.log('showContainer')
+      $(e.target).parent().parent().hide();
       $('.navbar-search-lg').show().find('textarea').focus();
       $('.progressjs-progress').show();
       // return false
+      e.stopPropagation();
+    },
+
+    closeContainer: function(e) {
+      console.log('closeContainer event')
+      $('.navbar-search-lg').hide();
+      // $('.navbar-search-sm').show().find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+      $('.navbar-search-sm').show();
+      $('.progressjs-progress').hide();
     },
 
     setCounter: function() {
@@ -140,11 +151,13 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     
   });
 
-  Robin.vent.on("saySomething:hide", function() {
-    $('.navbar-search-lg').hide();
-    $('.navbar-search-sm').show().find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
-    $('.progressjs-progress').hide();
-  });
+  // Robin.vent.on("saySomething:hide", function() {
+  //   $('.navbar-search-lg').hide();
+  //   $('.navbar-search-sm').show().find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+  //   $('.progressjs-progress').hide();
+  // });
+
+  
 
 
 
