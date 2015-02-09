@@ -24,7 +24,10 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     events: {
       'focus form input': 'showContainer',
       'change #shrink-links': 'shrinkLinkProcess',
-      'submit form': 'createPost'
+      'submit form': 'createPost',
+      'click a.btn-default': 'showPicker',
+      'click a.btn-danger' : 'hidePicker',
+      'keyup #say-text'    : 'setCounter',
     },
 
     initialize: function() {
@@ -36,11 +39,44 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
     },
 
+    ui:{
+      minDatePicker: "#schedule-datetimepicker"
+    },
+
+    onRender:function() {
+      this.ui.minDatePicker.datetimepicker();
+      this.modelBinder.bind(this.model, this.el);
+    },
+
     showContainer: function(e) {
       // $(e.target).parent().parent().hide();
       $('.navbar-search-lg').show().find('textarea').focus();
       $('.progressjs-progress').show();
       // return false
+    },
+
+    setCounter: function() {
+      var prgjs = progressJs($("#say-text")).setOptions({ theme: 'blackRadiusInputs' }).start();
+      var sayText = $("#say-text");
+      var counter = $("#say-counter");
+      var limit = 140;
+      counter.text(limit - sayText.val().length);
+
+      if (sayText.val().length <= limit) {
+        prgjs.set(Math.floor(sayText.val().length * 100/limit));
+      } else {
+        var t = sayText.val().substring(0, limit);
+        sayText.val(t);
+        counter.text(0);
+      }
+    },
+
+    showPicker: function() {
+      $('a.btn-default').hide().next().show();
+    },
+
+    hidePicker: function() {
+      $('div.pull-right').hide().prev().show();
     },
 
     shrinkLinkProcess: function(e) {

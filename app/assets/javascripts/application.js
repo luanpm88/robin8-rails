@@ -16,6 +16,7 @@
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
 //= require uploadcare
+//= require progressjs
 //= require blueimp-gallery
 // require bootstrap3-wysihtml5-bower
 //= require bootstrap-sweetalert
