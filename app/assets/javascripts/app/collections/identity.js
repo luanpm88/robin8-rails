@@ -1,1 +1,0 @@
-Robin.Collections.Identities = Backbone.Collection.extend();

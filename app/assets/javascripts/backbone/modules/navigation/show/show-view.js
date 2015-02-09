@@ -14,7 +14,6 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initialize: function() {
-      console.log('navigation');
     },
 
     showDashboard: function() {

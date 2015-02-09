@@ -23,14 +23,24 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     events: {
       'focus form input': 'showContainer',
-      'change #shrink-links': 'shrinkLinkProcess'
+      'change #shrink-links': 'shrinkLinkProcess',
+      'submit form': 'createPost'
+    },
+
+    initialize: function() {
+      this.model = new Robin.Models.Post();
+      this.modelBinder = new Backbone.ModelBinder();
+    },
+
+    onRender: function() {
+      this.modelBinder.bind(this.model, this.el);
     },
 
     showContainer: function(e) {
       // $(e.target).parent().parent().hide();
       $('.navbar-search-lg').show().find('textarea').focus();
       $('.progressjs-progress').show();
-      return false
+      // return false
     },
 
     shrinkLinkProcess: function(e) {
@@ -48,6 +58,29 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         ShrinkedLink.unshrink(saySomethingContent)
         // });
       }
+    },
+
+    createPost: function(e) {
+      e.preventDefault();
+      
+      this.modelBinder.copyViewValuesToModel();
+      this.model.save(this.model.attributes, {
+        success: function(userSession, response) {
+          console.log('created');
+          $.growl({message: "You've created a post"
+          },{
+            type: 'success'
+          });
+        },
+        error: function(userSession, response) {
+          console.log('failed');
+          $.growl({title: '<strong>Error:</strong> ',
+            message: 'Something went wrong.'
+          },{
+            type: 'danger'
+          });
+        }
+      });
     }
     
   });

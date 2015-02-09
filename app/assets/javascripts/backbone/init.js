@@ -48,6 +48,10 @@ Robin.bind("before:start", function() {
   }
 });
 
+Robin.vent.on('SaySomething:close', function(){
+  console.log('SaySomething:close triggered');
+})
+
 //Uploadcare params:
 UPLOADCARE_PUBLIC_KEY = "demopublickey";
 UPLOADCARE_AUTOSTORE = true;

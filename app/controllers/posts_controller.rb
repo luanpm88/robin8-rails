@@ -1,0 +1,36 @@
+class PostsController < ApplicationController
+
+  def index
+  end
+
+  def new
+  end
+
+  def create
+    p '~'*90
+    p params
+    if current_user.posts.create(post_params)
+      render nothing: true
+    else
+      render nothing: true
+    end
+  end
+
+  def edit
+  end
+
+  def update
+  end
+
+  def show
+  end
+
+  def set_post
+    @post = Question.find(params[:id])
+  end
+
+  def post_params
+    params.require(:post).permit(:text, :scheduled_date)
+  end
+
+end
