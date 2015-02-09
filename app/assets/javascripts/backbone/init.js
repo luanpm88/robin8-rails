@@ -1,3 +1,4 @@
+
 var Robin = new Backbone.Marionette.Application();
 Robin.Views = {};
 Robin.Views.Layouts = {};
@@ -11,8 +12,15 @@ Robin.addRegions({
   main: '#main'
 });
 
+Robin.navigate = function(route, options){
+  options || (options = {});
+  Backbone.history.navigate(route, options);
+};
+
 Robin.on('start', function(){
-  if (Backbone.history){
+  console.log('on start')
+  if (Backbone.history && !Backbone.History.started){
+    console.log('starting')
     Robin.addInitializer();
     Backbone.history.start();
   }

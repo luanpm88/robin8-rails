@@ -29,6 +29,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
         success: function(userSession, response) {
           Robin.currentUser = new Robin.Models.User(response);
           Robin.vent.trigger("authentication:logged_in");
+          $('body#main').removeClass('login');
+          Robin.navigate('/');
         },
         error: function(userSession, response) {
           var result = $.parseJSON(response.responseText);
@@ -80,50 +82,5 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
         'approvalprompt': 'force'
       });
     }
-
   });
-
-  var signInProcess = function(token, response, provider){
-    authResponse = {
-      token: token,
-      uid: response.id,
-      email: response.email,
-      name: response.name,
-      remember_me: response.remember_me,
-      provider: provider
-    }
-    $.ajax({
-      type: 'POST',
-      url: '/users/login_by_social',
-      dataType: 'json',
-      data: {info: authResponse},
-      success: function(data, textStatus, jqXHR) {
-        Robin.currentUser = new Robin.Models.User(data);
-        Robin.vent.trigger("authentication:logged_in");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        $.growl(textStatus, {
-          type: "danger",
-        });
-      }
-    });
-  };
-
-  var gplusCallback = function( authResult ) {
-    token = authResult.access_token
-    if (authResult['status']['signed_in']) {
-        if (authResult['status']['method'] == 'PROMPT') {
-          gapi.client.load('oauth2', 'v2', function () {
-            gapi.client.oauth2.userinfo.get().execute(function (response) {
-              signInProcess(token, response, 'google_oauth2');
-            })
-          });
-        }
-    } else {
-      $.growl('Sign-in state: ' + authResult['error'], {
-          type: "danger",
-        });
-    }
-  }
-
 });

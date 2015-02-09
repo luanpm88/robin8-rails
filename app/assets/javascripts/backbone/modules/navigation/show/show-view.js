@@ -37,7 +37,11 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     showSocial: function() {
-      Robin.module('Social').start();
+      if (Robin.Social._isInitialized){
+        Robin.Social.Show.Controller.showSocialPage();
+      } else {
+        Robin.module('Social').start();
+      }
     },
 
     showAnalytics: function() {
