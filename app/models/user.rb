@@ -32,4 +32,18 @@ class User < ActiveRecord::Base
     end
     user
   end
+
+  def twitter_identity
+    identities.where(provider: 'twitter').first
+  end
+
+  def twitter_post message
+    client = Twitter::REST::Client.new do |config|
+      config.consumer_key        = 'chfbNFBkf56gJT2BDzmCNNfgv'
+      config.consumer_secret     = 'WJvtq91oZgvGIJQl33J8kprn4eeWRlCzj4qlYulAyzwuxKATS3'
+      config.access_token        = twitter_identity.token
+      config.access_token_secret = twitter_identity.token_secret
+    end  
+    client.update(message)
+  end
 end

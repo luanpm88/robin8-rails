@@ -53,6 +53,8 @@ gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
 
+gem 'twitter'
+
 gem 'ejs'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

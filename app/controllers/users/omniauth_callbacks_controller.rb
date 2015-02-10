@@ -9,6 +9,8 @@ module Users
             params[:uid] = auth.uid
             params[:provider] = 'twitter'
             params[:token] = auth.credentials.token
+            p auth.credentials.secret
+            params[:token_secret] = auth.credentials.secret
             params[:name] = auth.info.name
 
             @identity = Identity.find_for_oauth(params)
