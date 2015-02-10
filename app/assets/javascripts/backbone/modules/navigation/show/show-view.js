@@ -49,8 +49,11 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     showProfile: function() {
-      console.log('showProfile');
-      Robin.module('Profile').start();
+      if (Robin.Profile._isInitialized){
+        Robin.Profile.Show.Controller.showProfilePage();
+      } else {
+        Robin.module('Profile').start();
+      }
     },
   });
 
