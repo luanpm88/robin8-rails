@@ -32,4 +32,29 @@ class User < ActiveRecord::Base
     end
     user
   end
+
+  def twitter_identity
+    identities.where(provider: 'twitter').first
+  end
+
+  def linkedin_identity
+    identities.where(provider: 'linkedin').first
+  end
+
+  def twitter_post message
+    client = Twitter::REST::Client.new do |config|
+      config.consumer_key        = 'chfbNFBkf56gJT2BDzmCNNfgv'
+      config.consumer_secret     = 'WJvtq91oZgvGIJQl33J8kprn4eeWRlCzj4qlYulAyzwuxKATS3'
+      config.access_token        = twitter_identity.token
+      config.access_token_secret = twitter_identity.token_secret
+    end  
+    client.update(message)
+  end
+
+  def linkedin_post message #need check
+    client = LinkedIn::Client.new('77pzzhbbrahh62', 'h9xZrB8SnYrx03KZ') 
+    client.authorize_from_access(linkedin_identity.token, linkedin_identity.token_secret)
+
+    client.add_share(:comment => message)
+  end
 end

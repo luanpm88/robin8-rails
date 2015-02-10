@@ -18,9 +18,7 @@ Robin.navigate = function(route, options){
 };
 
 Robin.on('start', function(){
-  console.log('on start')
   if (Backbone.history && !Backbone.History.started){
-    console.log('starting')
     Robin.addInitializer();
     Backbone.history.start();
   }
