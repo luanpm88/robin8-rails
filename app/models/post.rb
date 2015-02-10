@@ -1,4 +1,5 @@
 class Post < ActiveRecord::Base
+  serialize :social_networks, Hash
   belongs_to :user
   validates :text, presence: true
 

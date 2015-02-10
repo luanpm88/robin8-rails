@@ -4,6 +4,7 @@ Robin.Models.Post = Backbone.Model.extend({
 
   defaults: {
     "text": "",
-    "scheduled_date": ""
+    "scheduled_date": "",
+    "social_networks": {}
   }
 });

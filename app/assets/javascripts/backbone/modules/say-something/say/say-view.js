@@ -28,25 +28,37 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       'click a.btn-default': 'showPicker',
       'click a.btn-danger' : 'hidePicker',
       'keyup #say-something-field'    : 'setCounter',
-      'click html' : 'closeContainer'
+      'click html' : 'closeContainer',
+      'click .social-networks .btn': 'enableSocialNetwork'
     },
 
     initialize: function() {
       this.model = new Robin.Models.Post();
+      this.socialNetworks = new Robin.Models.SocialNetworks();
+      this.model.set('social_networks', this.socialNetworks);
       this.modelBinder = new Backbone.ModelBinder();
+      this.socialNetworksBinder = new Backbone.ModelBinder();
     },
 
     onRender: function() {
-      this.modelBinder.bind(this.model, this.el);
+      var postBindings = {
+        text: '[name=text]',
+        scheduled_date: '[name=scheduled_date]'
+      };
+      var socialNetworksBindings = {
+        twitter: '[name=twitter]',
+        facebook: '[name=facebook]',
+        linkedin: '[name=linkedin]',
+        google: '[name=google]'
+      }
+      this.ui.minDatePicker.datetimepicker();
+      this.modelBinder.bind(this.model, this.el, postBindings);
+      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
+
 
     ui:{
       minDatePicker: "#schedule-datetimepicker"
-    },
-
-    onRender:function() {
-      this.ui.minDatePicker.datetimepicker();
-      this.modelBinder.bind(this.model, this.el);
     },
 
     showContainer: function(e) {
@@ -128,8 +140,9 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     createPost: function(e) {
       e.preventDefault();
-      
+      this.socialNetworksBinder.copyViewValuesToModel();
       this.modelBinder.copyViewValuesToModel();
+
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           console.log('created');
@@ -147,6 +160,20 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
           });
         }
       });
+    },
+
+    enableSocialNetwork: function(e) {
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      var input = btn.next('input');
+      btn.toggleClass('btn-primary');
+      if (input.val() == 'false' || input.val() == '') {
+        console.log('true')
+        input.val('true')
+      } else {
+        console.log(false)
+        input.val('false')
+      }
     }
     
   });
