@@ -28,7 +28,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:text, :scheduled_date)
+    params.require(:post).permit(:text, :scheduled_date, social_networks: [:twitter, :facebook, :linkedin, :google])
   end
 
 end
