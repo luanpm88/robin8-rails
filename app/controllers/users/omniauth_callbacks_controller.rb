@@ -4,11 +4,13 @@ module Users
       class_eval %Q{
         def #{provider}
           auth = request.env['omniauth.auth']
-          if auth.provider == 'twitter'
+          if auth.provider == 'twitter' || 'linkedin'
             params = {}
             params[:uid] = auth.uid
-            params[:provider] = 'twitter'
+            params[:provider] = auth.provider
             params[:token] = auth.credentials.token
+            p auth.credentials.secret
+            params[:token_secret] = auth.credentials.secret
             params[:name] = auth.info.name
 
             @identity = Identity.find_for_oauth(params)
@@ -23,7 +25,7 @@ module Users
       }
     end
 
-    [:twitter].each do |provider|
+    [:twitter, :linkedin].each do |provider|
       provides_callback_for provider
     end
   end

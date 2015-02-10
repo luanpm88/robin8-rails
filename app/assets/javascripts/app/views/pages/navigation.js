@@ -36,11 +36,8 @@ Robin.Views.Navigation = Backbone.Marionette.ItemView.extend({
   },
 
   showSocial: function() {
-    // $.get( "/users/identities", function( data ) {
-      // var identities = new Robin.Collections.Identities(data);
     var view = new Robin.Views.Layouts.Social();
     Robin.layouts.main.getRegion('content').show(view);
-    // });
   },
 
   showAnalytics: function() {

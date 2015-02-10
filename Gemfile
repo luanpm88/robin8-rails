@@ -25,7 +25,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-bootstrap'
+  gem 'rails-assets-bootstrap-sass'
   gem 'rails-assets-bootstrap.growl'
   gem 'rails-assets-uploadcare'
   gem 'rails-assets-progressjs'
@@ -50,9 +50,13 @@ end
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'omniauth-linkedin'
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
+
+gem 'twitter'
+gem 'linkedin'
 
 gem 'ejs'
 # Use ActiveModel has_secure_password
