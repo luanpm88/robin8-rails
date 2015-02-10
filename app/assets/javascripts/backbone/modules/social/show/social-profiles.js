@@ -72,7 +72,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initialize: function() {
-      console.log('init social profile pages');
     },
 
     connectFacebook: function(e) {

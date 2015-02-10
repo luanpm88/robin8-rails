@@ -5,6 +5,8 @@ class Post < ActiveRecord::Base
 
   after_create :perform_worker
 
+  scope :todays, -> { where("scheduled_date > ? AND scheduled_date < ?", DateTime.new.at_beginning_of_day, DateTime.now) }
+
   def perform_worker
     PostWorker.perform_async()
   end

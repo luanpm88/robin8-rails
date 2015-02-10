@@ -27,6 +27,7 @@
 //= require eonasdan-bootstrap-datetimepicker
 //= require chance
 //= require backbone
+//= require backbone.babysitter
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette

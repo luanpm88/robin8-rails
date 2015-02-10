@@ -279,6 +279,7 @@ DEPENDENCIES
   omniauth
   omniauth-twitter
   rails (= 4.2.0)
+  rails-assets-backbone.babysitter!
   rails-assets-backbone.marionette (= 2.2.1)!
   rails-assets-backbone.modelbinder!
   rails-assets-blueimp-gallery!
