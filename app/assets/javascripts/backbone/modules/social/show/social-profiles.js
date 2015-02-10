@@ -29,8 +29,9 @@ var connectSocial = function(token, response, provider, currentView){
     dataType: 'json',
     data: {info: authResponse},
     success: function(data, textStatus, jqXHR) {
-      currentView.collection = new Robin.Collections.Identities(data);
+      Robin.setIdentities(data);
       currentView.render();
+      Robin.SaySomething.Say.Controller.showSayView();
     },
     error: function(jqXHR, textStatus, errorThrown) {
       $.growl(textStatus, {
@@ -47,8 +48,9 @@ var disconnectSocial = function(provider, currentView){
     dataType: 'json',
     data: {provider: provider},
     success: function(data, textStatus, jqXHR) {
-      currentView.collection = new Robin.Collections.Identities(data);
+      Robin.setIdentities(data);
       currentView.render();
+      Robin.SaySomething.Say.Controller.showSayView();
     },
     error: function(jqXHR, textStatus, errorThrown) {
       $.growl(textStatus, {
@@ -72,7 +74,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initialize: function() {
-      console.log('init social profile pages');
     },
 
     connectFacebook: function(e) {
@@ -130,8 +131,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       currentView.interval = window.setInterval((function() {
         if (currentView.twitter_window.closed) {
           $.get( "/users/identities", function( data ) {
-            currentView.collection = new Robin.Collections.Identities(data);
+            Robin.setIdentities(data);
             currentView.render();
+            Robin.SaySomething.Say.Controller.showSayView();
             window.clearInterval(currentView.interval);
           });
         }
@@ -149,8 +151,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       currentView.interval = window.setInterval((function() {
         if (currentView.linkedin_window.closed) {
           $.get( "/users/identities", function( data ) {
-            currentView.collection = new Robin.Collections.Identities(data);
+            Robin.setIdentities(data);
             currentView.render();
+            Robin.SaySomething.Say.Controller.showSayView();
             window.clearInterval(currentView.interval);
           });
         }

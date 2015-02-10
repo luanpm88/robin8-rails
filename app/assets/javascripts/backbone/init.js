@@ -17,6 +17,14 @@ Robin.navigate = function(route, options){
   Backbone.history.navigate(route, options);
 };
 
+Robin.setIdentities = function(data){
+  Robin.identities = {}
+  Robin.identities.twitter = _.where(data, {provider: "twitter"})[0];
+  Robin.identities.facebook = _.where(data, {provider: "facebook"})[0];
+  Robin.identities.google = _.where(data, {provider: "google_oauth2"})[0];
+  Robin.identities.linkedin = _.where(data, {provider: "linkedin"})[0];
+};
+
 Robin.on('start', function(){
   if (Backbone.history && !Backbone.History.started){
     Robin.addInitializer();

@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
 
   def index
+    @posts = current_user.posts.todays
   end
 
   def new
