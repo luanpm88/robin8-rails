@@ -49,11 +49,13 @@ end
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'omniauth-linkedin'
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
 
 gem 'twitter'
+gem 'linkedin'
 
 gem 'ejs'
 # Use ActiveModel has_secure_password

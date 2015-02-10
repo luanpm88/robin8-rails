@@ -141,12 +141,20 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     connectLinkedin: function(e) {
       e.preventDefault();
       var currentView = this;
+      
+      var url = '/users/auth/linkedin',
+      params = 'location=0,status=0,width=800,height=600';
+      currentView.linkedin_window = window.open(url, "linkedin_window", params);
 
-      IN.User.authorize(function() {
-        IN.API.Profile("me").result( function(me) {
-          connectSocial('', me.values[0], 'linkedin', currentView);
-        });
-      });
+      currentView.interval = window.setInterval((function() {
+        if (currentView.linkedin_window.closed) {
+          $.get( "/users/identities", function( data ) {
+            currentView.collection = new Robin.Collections.Identities(data);
+            currentView.render();
+            window.clearInterval(currentView.interval);
+          });
+        }
+      }), 500);
     },
 
     disconnect: function(e) {
