@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 gem 'bundler', '>= 1.7.0'
@@ -34,7 +33,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '3.1.3'
-  gem 'rails-assets-backbone.marionette'#, '2.2.1'
+  gem 'rails-assets-backbone.marionette', '2.1.0'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-tweenlite'
   gem 'rails-assets-underscore.string'
