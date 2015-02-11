@@ -52,7 +52,7 @@ gem 'omniauth-linkedin'
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
-gem 'rails_12factor', group: :production
+gem 'rails_12factor', group: [:production, :staging]
 
 gem 'twitter'
 gem 'linkedin'
