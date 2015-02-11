@@ -1,6 +1,4 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
-
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -25,7 +23,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-# source 'https://rails-assets.org' do
+source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
   gem 'rails-assets-bootstrap.growl'
   gem 'rails-assets-uploadcare'
@@ -46,7 +44,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
-# end
+end
 
 gem 'devise'
 gem 'omniauth'
