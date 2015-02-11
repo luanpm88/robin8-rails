@@ -104,8 +104,6 @@ ready = function() {
   $(document).on("click", '#sidebar li a', function(e) {
     $('#sidebar li.active').removeClass('active');
     $(this).parent().addClass('active');
-    var tab = $(this).attr('id').replace('nav-','');
-    $('.page-content').html(_.template($('#_'+tab).text(),{}));
   });
   // End Navigation
 
