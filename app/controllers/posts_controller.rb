@@ -15,6 +15,13 @@ class PostsController < ApplicationController
     end
   end
 
+  def destroy
+    p "*"*50
+    @posts = Post.find(params[:id])
+    @posts.destroy
+    render nothing: true
+  end
+  
   def edit
   end
 

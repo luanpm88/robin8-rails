@@ -1,5 +1,5 @@
 Robin.Models.Post = Backbone.Model.extend({
-  url: '/posts.json',
+  urlRoot: '/posts/',
   paramRoot: 'post',
 
   defaults: {

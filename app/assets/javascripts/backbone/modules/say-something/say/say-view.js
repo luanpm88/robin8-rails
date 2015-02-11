@@ -51,7 +51,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         google: '[name=google]'
       }
-      this.ui.minDatePicker.datetimepicker();
+      this.ui.minDatePicker.datetimepicker({ format: 'DD/MM/YYYY hh:mm'});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
