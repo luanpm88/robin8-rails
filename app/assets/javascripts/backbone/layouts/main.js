@@ -17,7 +17,6 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
   },
 
   showProfile: function() {
-    console.log("trololo");
     if (Robin.Profile._isInitialized){
       Robin.Profile.Show.Controller.showProfilePage();
     } else {

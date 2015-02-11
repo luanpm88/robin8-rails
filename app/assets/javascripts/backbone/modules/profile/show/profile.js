@@ -25,12 +25,16 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     },
   
     updateProfile: function(e) {
+      var r = this.model.attributes
+
       e.preventDefault();
       el = $(this.el);
-  
+
       this.modelBinder.copyViewValuesToModel();
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
+          Robin.currentUser.attributes = r;
+          Robin.currentUser.attributes.current_password = "";
           $.growl({message: 'Your account data has been successfully changed'
           },{
             element: '#growler-alert',
