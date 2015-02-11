@@ -82,7 +82,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       e.preventDefault();
       
       gapi.auth.signIn({
-        'clientid': '639174820348-qqkeokqa6lh7sirppbme6mpvg1s95na4.apps.googleusercontent.com',
+        'clientid': window.google_api_key,
         'cookiepolicy': 'single_host_origin',
         'scope': 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
         'callback': 'gplusCallback',

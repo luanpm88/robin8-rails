@@ -1,4 +1,12 @@
 Rails.application.configure do
+  GOOGLE_CLIENT_ID = '1093899821527-6lr9shuc8blj8g1f01e5dm1ffbus215l.apps.googleusercontent.com'
+  GOOGLE_CLIENT_SECRET = 'wJA71M_rI-O2rMmZs2Qaowhv'
+  FACEBOOK_APP_ID = '420339794748110'
+  FACEBOOK_APP_SECRET = 'a8a02193ddcb77a91d8035bd985b643a'
+  TWITTER_API_KEY = 'chfbNFBkf56gJT2BDzmCNNfgv'
+  TWITTER_API_SECRET = 'WJvtq91oZgvGIJQl33J8kprn4eeWRlCzj4qlYulAyzwuxKATS3'
+  LINKEDIN_API_KEY = '77pzzhbbrahh62'
+  LINKEDIN_API_SECRET = 'h9xZrB8SnYrx03KZ'
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
