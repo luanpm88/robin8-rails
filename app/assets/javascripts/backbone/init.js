@@ -1,4 +1,3 @@
-
 var Robin = new Backbone.Marionette.Application();
 Robin.Views = {};
 Robin.Views.Layouts = {};
