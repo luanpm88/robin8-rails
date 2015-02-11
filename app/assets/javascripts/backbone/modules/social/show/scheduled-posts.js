@@ -11,7 +11,28 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         text: this.model.get('text'),
         scheduled_date: this.model.get('scheduled_date')
       };
-    }
+    },
+
+    events: {
+      'click #delete-post': 'deletePost',
+    },
+
+    deletePost: function(e) {
+      var r = this.model;
+      swal({
+        title: "Delete Post?",
+        text: "You will not be able to recover this post.",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: 'Delete'
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          r.destroy({ dataType: "text"});
+        }
+      });
+    },
   });
   
   Show.ScheduledPostsComposite = Backbone.Marionette.CompositeView.extend({
