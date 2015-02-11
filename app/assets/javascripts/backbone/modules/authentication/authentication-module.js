@@ -16,6 +16,7 @@ var gplusCallback = function( authResult ) {
 };
 
 var signInProcess = function(token, response, provider){
+  console.log(response);
   authResponse = {
     token: token,
     uid: response.id,

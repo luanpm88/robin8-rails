@@ -1,4 +1,5 @@
 var signInProcess = function(token, response, provider){
+  console.log(response);
   authResponse = {
     token: token,
     uid: response.id,
@@ -90,6 +91,7 @@ Robin.Views.signInView = Backbone.Marionette.ItemView.extend( {
           token = response.accessToken
           FB.api('/me', function(response) {
             if (response.verified) {
+              console.log(response);
               signInProcess(token, response, 'facebook');
             } else {
               $.growl('Your Facebook account is not verified', {

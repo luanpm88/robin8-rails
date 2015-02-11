@@ -50,6 +50,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
             token = response.accessToken
             FB.api('/me', function(response) {
               if (response.verified) {
+                console.log(response);
                 signInProcess(token, response, 'facebook');
               } else {
                 $.growl('Your Facebook account is not verified', {

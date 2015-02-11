@@ -100,6 +100,17 @@ ready = function() {
     };
   });
 
+  // Navigation
+  $('#sidebar li a').on('click', function() {
+    console.log('!!!')
+    $('#sidebar li.active').removeClass('active');
+    $(this).parent().addClass('active');
+    var tab = $(this).attr('id').replace('nav-','');
+    $('.page-content').html(_.template($('#_'+tab).text(),{}));
+    if(inits[tab]) inits[tab]();
+  });
+  // End Navigation
+
 };
 
 $(document).ready(ready);
