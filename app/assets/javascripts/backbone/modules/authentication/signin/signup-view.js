@@ -27,9 +27,10 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           Robin.currentUser = new Robin.Models.User(response);
-          Robin.vent.trigger("authentication:logged_in");
-          $('body#main').removeClass('login');
-          Robin.navigate('/');
+          window.location = '#signin'
+          $.growl('You will receive an email with instructions for how to confirm your email address in a few minutes', {
+            type: "info",
+          });
         },
         error: function(userSession, response) {
           var result = $.parseJSON(response.responseText);
