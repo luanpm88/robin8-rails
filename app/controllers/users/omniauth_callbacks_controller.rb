@@ -4,15 +4,33 @@ module Users
       class_eval %Q{
         def #{provider}
           auth = request.env['omniauth.auth']
-          if auth.provider == 'twitter' || 'linkedin'
-            params = {}
-            params[:uid] = auth.uid
-            params[:provider] = auth.provider
-            params[:token] = auth.credentials.token
-            p auth.credentials.secret
-            params[:token_secret] = auth.credentials.secret
-            params[:name] = auth.info.name
+          
+          params = {}
+          params[:uid] = auth.uid
+          params[:provider] = auth.provider
+          params[:token] = auth.credentials.token
+          params[:token_secret] = auth.credentials.secret
+          params[:name] = auth.info.name
+          params[:email] = auth.info.email
 
+          params[:url] = case auth.provider
+          when 'facebook'
+            auth.extra.raw_info.link
+          when 'google_oauth2'
+            auth.extra.raw_info.profile
+          when 'twitter'
+            auth.info.urls[:Twitter]
+          when 'linkedin'
+            auth.info.urls.public_profile
+          end
+
+          
+          if current_user.nil?
+            @user = User.find_for_oauth(params)
+            if @user.persisted?
+              sign_in @user
+            end
+          else
             @identity = Identity.find_for_oauth(params)
             if @identity.user != current_user
               @identity.user = current_user
@@ -20,12 +38,12 @@ module Users
             end
           end
           
-          return render 'twitter_popup_close', :layout => false
+          render 'twitter_popup_close', :layout => false
         end
       }
     end
 
-    [:twitter, :linkedin].each do |provider|
+    [:twitter, :linkedin, :facebook, :google_oauth2].each do |provider|
       provides_callback_for provider
     end
   end

@@ -9,12 +9,21 @@
 </head>
 <body id="main" class="<%= current_user.blank? ? 'login' : 'main'%>">
 <script type="text/javascript">
+  
   $(document).ready(function() {
     Robin.start();
-    window.google_api_key = '<%= GOOGLE_CLIENT_ID.to_s %>' //temporary
-    window.fb_api_key = '<%= FACEBOOK_APP_ID.to_s %>' //temporary   
+    <% if signed_in? -%>    
+      window.loading_screen = window.pleaseWait({
+        logo: "assets/logo.png",
+        backgroundColor: 'rgb(81, 119, 155)',
+        loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
+      });
+      setTimeout(function(){
+        loading_screen.finish();
+      }, 1500)
+    <% end -%>
   });
-  <% if signed_in? -%>
+  <% if signed_in? -%>    
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
   <% else -%>
     Robin.currentUser = null;
