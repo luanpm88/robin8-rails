@@ -51,7 +51,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         google: '[name=google]'
       }
-      this.ui.minDatePicker.datetimepicker({ format: 'DD/MM/YYYY hh:mm'});
+      this.ui.minDatePicker.datetimepicker({minDate: moment(), format: 'DD/MM/YYYY hh:mm A'});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
@@ -142,6 +142,10 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       e.preventDefault();
       this.socialNetworksBinder.copyViewValuesToModel();
       this.modelBinder.copyViewValuesToModel();
+      
+      if (this.model.attributes.scheduled_date === ""){
+        this.model.attributes.scheduled_date = moment().format('DD/MM/YYYY hh:mm A');
+      }
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {

@@ -1,26 +1,9 @@
 class UsersController < ApplicationController
-  def login_by_social
-    @user = User.find_for_oauth(params[:info], current_user)
-    if @user.persisted?
-      sign_in @user
-      render json: current_user
-    else
-      p 'error'
-    end
-
+  def get_current_user
+    render json: current_user
   end
 
   def identities
-    render json: current_user.identities
-  end
-
-  def connect_social
-    @identity = Identity.find_for_oauth(params[:info])
-    if @identity.user != current_user
-      @identity.user = current_user
-      @identity.save
-    end
-
     render json: current_user.identities
   end
 

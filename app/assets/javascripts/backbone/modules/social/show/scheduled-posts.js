@@ -40,8 +40,14 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     childView: Show.ScheduledPost,
     childViewContainer: "ul",
     initialize: function() {
-      this.collection.fetch();
-    }
+      this.collection.fetch({
+        success: function(model, response){
+          if (model.length===0) {
+            this.parent.$("#today").hide().prev().show();
+          }
+        }
+      });
+    },
   });
 
 });

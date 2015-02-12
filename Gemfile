@@ -43,18 +43,22 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
+  gem 'rails-assets-please-wait'
 end
 
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-linkedin'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
+
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
 gem 'will_paginate', '~> 3.0.6'
 gem 'has_scope'
-gem 'rails_12factor', group: :production
+gem 'rails_12factor', group: [:production, :staging]
 
 gem 'twitter'
 gem 'linkedin'

@@ -1,4 +1,15 @@
 Rails.application.configure do
+  GOOGLE_CLIENT_ID = '912209437439-und79tfo5ptup4ggm4q0b1qbqj2cav0s.apps.googleusercontent.com'
+  GOOGLE_CLIENT_SECRET = 'HuKhpmfeUM1TNE5CzQmcYDLy'
+  # FACEBOOK_APP_ID = '1581983398705792'
+  # FACEBOOK_APP_SECRET = '35049632231f31ffe301af15b21ad218'
+  FACEBOOK_APP_ID = '420339794748110'
+  FACEBOOK_APP_SECRET = 'a8a02193ddcb77a91d8035bd985b643a'
+  TWITTER_API_KEY = 'GLL8kddaJYP4wInVaNS3FHun7'
+  TWITTER_API_SECRET = 'Nqyt5RebcockL8oddRATMPgRhkP6FAgcHqxcsb1ivhm41JqJFf'
+  LINKEDIN_API_KEY = '75s1i535irsxoq'
+  LINKEDIN_API_SECRET = 'GRA5rFo0xfBKLhIf'
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
