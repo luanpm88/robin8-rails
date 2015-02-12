@@ -44,6 +44,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
   gem 'rails-assets-please-wait'
+  gem 'rails-assets-x-editable'
 end
 
 gem 'devise'
