@@ -10,7 +10,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = 'notifications'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -258,4 +258,6 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.omniauth :twitter, TWITTER_API_KEY, TWITTER_API_SECRET
   config.omniauth :linkedin, LINKEDIN_API_KEY, LINKEDIN_API_SECRET
+  config.omniauth :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
+  config.omniauth :google_oauth2, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 end

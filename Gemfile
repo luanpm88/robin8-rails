@@ -21,6 +21,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'quiet_assets', group: [:development, :staging]
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
@@ -43,19 +44,29 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
+  gem 'rails-assets-please-wait'
+  gem 'rails-assets-x-editable'
+  gem 'rails-assets-jqueryui'
 end
 
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
-gem 'omniauth-linkedin'
+gem 'omniauth-linkedin-oauth2'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
+
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
+gem 'will_paginate', '~> 3.0.6'
+gem 'has_scope'
 gem 'rails_12factor', group: [:production, :staging]
 
 gem 'twitter'
-gem 'linkedin'
+# gem 'linkedin'
+# gem 'linkedin-oauth2'
+gem 'httparty'
 
 gem 'ejs'
 # Use ActiveModel has_secure_password

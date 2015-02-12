@@ -1,0 +1,24 @@
+<li class="newsroom">
+  <div class="thumbnail" style="padding: 0">
+    <div style="padding:4px;">
+      <img alt="300x200" style="width: 100%" src="http://lorempixel.com/400/300/?<%- chance.natural({min: 1, max: 5000}) %>">
+    </div>
+    <div class="caption">
+      <h2><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
+      <p><%= news_room.description %></p>
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-md-4"><a class="btn btn-primary" href="public/company.html" target="_blank"><i class="fa fa-eye"></i> Preview</a></div>
+        <div class="col-md-4"><button class="btn btn-info"><i class="fa fa-list-alt"></i> Releases</button></div>
+        <div class="col-md-4"><button class="btn btn-default" data-toggle="modal" data-target=".edit-newsroom"><i class="fa fa-pencil"></i> Edit</button></div>
+      </div>
+      <hr>
+      <div class="row" align="center">
+        <div class="col-md-4"><b>9999</b><br/><small>VIEWS</small></div>
+        <div class="col-md-4"><b>9999</b><br/><small>LIKES</small></div>
+        <div class="col-md-4"><b>99</b><br/><small>RELEASES</small></div>
+      </div>
+    </div>
+  </div>
+</li>

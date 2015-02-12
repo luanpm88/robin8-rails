@@ -6,7 +6,7 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #nav-dashboard': 'showDashboard',
       'click #nav-robin8': 'showRobin',
       'click #nav-monitoring': 'showMonitoring',
-      'click #nav-newsrooms': 'showNews',
+      'click #nav-newsrooms': 'showNewsRooms',
       'click #nav-releases': 'showReleases',
       'click #nav-social': 'showSocial',
       'click #nav-analytics': 'showAnalytics',
@@ -14,6 +14,12 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initialize: function() {
+    },
+
+    stopOtherModules: function(){
+      _.each(['Newsroom', 'Social', 'Profile'], function(module){
+        Robin.module(module).stop();
+      });
     },
 
     showDashboard: function() {
@@ -25,11 +31,17 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     showMonitoring: function() {
-      console.log('showMonitoring');
+      if (Robin.Monitoring._isInitialized){
+        Robin.Monitoring.Show.Controller.showMonitoringPage();
+      } else {
+        Robin.module('Monitoring').start();
+      }
     },
 
-    showNews: function() {
-      console.log('showNews');
+    showNewsRooms: function() {
+      this.stopOtherModules();
+      Robin.module("Newsroom").start();
+      Robin.module("Newsroom").controller.index();
     },
 
     showReleases: function() {

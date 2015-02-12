@@ -1,12 +1,14 @@
 class PostWorker
   include Sidekiq::Worker
 
-  def perform()
-    p '~'*90
-    p 'inside worker'
-    # if post.social_networks[:twitter] == 'true'
-    #   user = post.user
-    #   user.twitter_post(post.text) 
-    # end
+  def perform(post_id) 
+    post = Post.find(post_id)
+    user = post.user
+    if post.social_networks[:twitter] == 'true'
+      user.twitter_post(post.text) 
+    end
+    if post.social_networks[:linkedin] == 'true'
+      user.linkedin_post(post.text) 
+    end
   end
 end

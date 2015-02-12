@@ -762,3 +762,13 @@ ul {
   -webkit-animation: sk-wanderingCubeMove 1.8s infinite ease-in-out;
   animation: sk-wanderingCubeMove 1.8s infinite ease-in-out;
 }
+.pagination{
+  .active{
+    background: #CCD1D9;
+  }
+}
+
+#already-button {
+  margin: 10px;
+  display: inline-block;
+}

@@ -9,12 +9,14 @@
 </head>
 <body id="main" class="<%= current_user.blank? ? 'login' : 'main'%>">
 <script type="text/javascript">
+  
   $(document).ready(function() {
     Robin.start();
-    window.google_api_key = '<%= GOOGLE_CLIENT_ID.to_s %>' //temporary
-    window.fb_api_key = '<%= FACEBOOK_APP_ID.to_s %>' //temporary   
   });
-  <% if signed_in? -%>
+  <% if flash[:success_confirmation] -%>    
+    Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
+  <% end -%>
+  <% if signed_in? -%>    
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
   <% else -%>
     Robin.currentUser = null;

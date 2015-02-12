@@ -11,9 +11,28 @@ Robin.addRegions({
   main: '#main'
 });
 
-Robin.navigate = function(route, options){
+Robin.setUrl = function(route, options){
   options || (options = {});
   Backbone.history.navigate(route, options);
+};
+
+Robin.finishSignIn = function(data){
+  Robin.currentUser = new Robin.Models.User(data);
+  Robin.vent.trigger("authentication:logged_in");
+  Robin.loadPleaseWait();
+  $('body#main').removeClass('login');
+  Robin.setUrl('/');
+};
+
+Robin.loadPleaseWait = function(){
+  window.loading_screen = window.pleaseWait({
+    logo: "assets/logo.png",
+    backgroundColor: 'rgb(81, 119, 155)',
+    loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
+  });
+  setTimeout(function(){
+    loading_screen.finish();
+  }, 1500)
 };
 
 Robin.setIdentities = function(data){
@@ -28,6 +47,14 @@ Robin.on('start', function(){
   if (Backbone.history && !Backbone.History.started){
     Robin.addInitializer();
     Backbone.history.start();
+    if (Robin.currentUser) {
+      Robin.loadPleaseWait();
+    } else {
+      $.growl(Robin.afterConfirmationMessage,{
+        type: 'success'
+      });
+      Robin.afterConfirmationMessage = undefined
+    };
   }
 });
 
@@ -45,6 +72,7 @@ Robin.vent.on("authentication:logged_in", function() {
   Robin.main.show(Robin.layouts.main);
   Robin.module('Navigation').start();
   Robin.module('SaySomething').start();
+
 });
 
 Robin.vent.on("authentication:logged_out", function() {

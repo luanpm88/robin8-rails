@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :identities, dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_many :news_rooms, dependent: :destroy
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
     identity = Identity.find_for_oauth(auth)
@@ -43,8 +44,8 @@ class User < ActiveRecord::Base
 
   def twitter_post message
     client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = 'chfbNFBkf56gJT2BDzmCNNfgv'
-      config.consumer_secret     = 'WJvtq91oZgvGIJQl33J8kprn4eeWRlCzj4qlYulAyzwuxKATS3'
+      config.consumer_key        = TWITTER_API_KEY
+      config.consumer_secret     = TWITTER_API_SECRET
       config.access_token        = twitter_identity.token
       config.access_token_secret = twitter_identity.token_secret
     end  
@@ -52,9 +53,14 @@ class User < ActiveRecord::Base
   end
 
   def linkedin_post message #need check
-    client = LinkedIn::Client.new('77pzzhbbrahh62', 'h9xZrB8SnYrx03KZ') 
-    client.authorize_from_access(linkedin_identity.token, linkedin_identity.token_secret)
+    data = { comment: message, visibility: {code: 'anyone'} }
 
-    client.add_share(:comment => message)
+    p linkedin_identity.token
+
+    response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json", 
+              headers: { 'Content-Type' => 'application/json'}, 
+              query: {oauth2_access_token: linkedin_identity.token}, 
+              body: data.to_json)
+    puts response.body, response.code, response.message, response.headers.inspect
   end
 end
