@@ -28,7 +28,6 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       'click a.btn-default': 'showPicker',
       'click a.btn-danger' : 'hidePicker',
       'keyup #say-something-field'    : 'setCounter',
-      'click html' : 'closeContainer',
       'click .social-networks .btn': 'enableSocialNetwork'
     },
 
@@ -62,20 +61,10 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     showContainer: function(e) {
-      console.log('showContainer')
       $(e.target).parent().parent().hide();
       $('.navbar-search-lg').show().find('textarea').focus();
       $('.progressjs-progress').show();
-      // return false
       e.stopPropagation();
-    },
-
-    closeContainer: function(e) {
-      console.log('closeContainer event')
-      $('.navbar-search-lg').hide();
-      // $('.navbar-search-sm').show().find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
-      $('.navbar-search-sm').show();
-      $('.progressjs-progress').hide();
     },
 
     setCounter: function() {

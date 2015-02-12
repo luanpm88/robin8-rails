@@ -31,7 +31,11 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     showMonitoring: function() {
-      console.log('showMonitoring');
+      if (Robin.Monitoring._isInitialized){
+        Robin.Monitoring.Show.Controller.showMonitoringPage();
+      } else {
+        Robin.module('Monitoring').start();
+      }
     },
 
     showNewsRooms: function() {

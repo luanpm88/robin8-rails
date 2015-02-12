@@ -44,12 +44,14 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
   gem 'rails-assets-please-wait'
+  gem 'rails-assets-x-editable'
+  gem 'rails-assets-jqueryui'
 end
 
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
-gem 'omniauth-linkedin'
+gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 
@@ -61,7 +63,9 @@ gem 'has_scope'
 gem 'rails_12factor', group: [:production, :staging]
 
 gem 'twitter'
-gem 'linkedin'
+# gem 'linkedin'
+# gem 'linkedin-oauth2'
+gem 'httparty'
 
 gem 'ejs'
 # Use ActiveModel has_secure_password

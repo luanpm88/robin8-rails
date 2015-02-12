@@ -5,8 +5,8 @@ Rails.application.configure do
   FACEBOOK_APP_SECRET = '35049632231f31ffe301af15b21ad218'
   TWITTER_API_KEY = 'chfbNFBkf56gJT2BDzmCNNfgv'
   TWITTER_API_SECRET = 'WJvtq91oZgvGIJQl33J8kprn4eeWRlCzj4qlYulAyzwuxKATS3'
-  LINKEDIN_API_KEY = '77pzzhbbrahh62'
-  LINKEDIN_API_SECRET = 'h9xZrB8SnYrx03KZ'
+  LINKEDIN_API_KEY = '75qazimsj55zfi'
+  LINKEDIN_API_SECRET = 'UqTqTg4UCTBxo33u'
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on

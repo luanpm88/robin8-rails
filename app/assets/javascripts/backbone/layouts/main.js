@@ -8,11 +8,12 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
   },
 
   events: {
-    'click': 'hideSaySomething',
+    'click nav, div#main-wrapper': 'hideSaySomething',
     'click #nav-profile': 'showProfile',
   },
 
   hideSaySomething: function(e) {
+    console.log('clicked');
     // Robin.vent.trigger("saySomething:hide");
   },
 
