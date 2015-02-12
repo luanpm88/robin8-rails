@@ -33,7 +33,11 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     showReleases: function() {
-      console.log('showReleases');
+      if (Robin.Releases._isInitialized){
+        Robin.Releases.Show.Controller.showReleasesPage();
+      } else {
+        Robin.module('Releases').start();
+      }
     },
 
     showSocial: function() {
