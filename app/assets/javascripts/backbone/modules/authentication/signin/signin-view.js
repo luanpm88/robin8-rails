@@ -5,8 +5,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
     events: {
       'submit form' : 'login',
-      'click .btn-facebook' : 'loginFB',
-      'click .btn-google-plus' : 'loginGoogle',
+      'click .btn-facebook' : 'socialSignIn',
+      'click .btn-google-plus' : 'socialSignIn',
     },
 
     initialize: function() {
@@ -27,10 +27,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
-          Robin.currentUser = new Robin.Models.User(response);
-          Robin.vent.trigger("authentication:logged_in");
-          $('body#main').removeClass('login');
-          Robin.navigate('/');
+          Robin.finishSignIn(data);
         },
         error: function(userSession, response) {
           var result = $.parseJSON(response.responseText);
@@ -41,47 +38,30 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       });
     },
 
-    loginFB: function(e) {
+    socialSignIn: function(e) {
       e.preventDefault();
-      
-      FB.login(function(response) {
-        if (response.status === 'connected') {        
-          if(response.authResponse) {
-            token = response.accessToken
-            FB.api('/me', function(response) {
-              if (response.verified) {
-                console.log(response);
-                signInProcess(token, response, 'facebook');
-              } else {
-                $.growl('Your Facebook account is not verified', {
-                  type: "danger",
-                });
-              }
-            });
-          }
-        } else if (response.status === 'not_authorized') {
-          $.growl('The person is logged into Facebook, but not your app.', {
-            type: "danger",
-          });
-        } else {
-          $.growl("The person is not logged into Facebook, so we're not sure if they are logged into this app or not.", {
-            type: "danger",
-          });
+      var currentView = this;
 
+      if ($(e.target).children().length != 0) {
+        var provider = $(e.target).attr('id');
+      } else {
+        var provider = $(e.target).parent().attr('id');
+      };
+
+      var url = '/users/auth/' + provider,
+      params = 'location=0,status=0,width=800,height=600';
+      currentView.connect_window = window.open(url, "connect_window", params);
+
+      currentView.interval = window.setInterval((function() {
+        if (currentView.connect_window.closed) {
+          $.get( "/users/get_current_user", function( data ) {
+            window.clearInterval(currentView.interval);
+            if (data != undefined) {
+              Robin.finishSignIn(data);
+            } 
+          });
         }
-      });
-    },
-
-    loginGoogle: function(e) {
-      e.preventDefault();
-      
-      gapi.auth.signIn({
-        'clientid': window.google_api_key,
-        'cookiepolicy': 'single_host_origin',
-        'scope': 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
-        'callback': 'gplusCallback',
-        'approvalprompt': 'force'
-      });
+      }), 500);
     }
   });
 });

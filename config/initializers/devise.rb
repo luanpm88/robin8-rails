@@ -258,4 +258,6 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.omniauth :twitter, TWITTER_API_KEY, TWITTER_API_SECRET
   config.omniauth :linkedin, LINKEDIN_API_KEY, LINKEDIN_API_SECRET
+  config.omniauth :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
+  config.omniauth :google_oauth2, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 end

@@ -43,12 +43,16 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
+  gem 'rails-assets-please-wait'
 end
 
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-linkedin'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
+
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'

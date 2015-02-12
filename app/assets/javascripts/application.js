@@ -26,6 +26,7 @@
 //= require momentjs
 //= require eonasdan-bootstrap-datetimepicker
 //= require chance
+//= require please-wait
 //= require backbone
 //= require backbone.babysitter
 //= require backbone.modelbinder
@@ -44,13 +45,6 @@
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/modules
 
-// require app/init
-// require_tree ../templates
-// require_tree ./app/routers
-// require_tree ./app/models
-// require_tree ./app/views
-// require_tree .
-
 var ready;
 ready = function() {
   
@@ -65,40 +59,40 @@ ready = function() {
   });
   //end default options for Bootstrap Growl
 
-  // load the SDK Asynchronously
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : window.fb_api_key, //need change id
-      xfbml      : true,
-      version    : 'v2.2'
-    });
-  };
+  // // load the SDK Asynchronously
+  // window.fbAsyncInit = function() {
+  //   FB.init({
+  //     appId      : window.fb_api_key, //need change id
+  //     xfbml      : true,
+  //     version    : 'v2.2'
+  //   });
+  // };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-  // end load the SDK Asynchronously
+  // (function(d, s, id){
+  //    var js, fjs = d.getElementsByTagName(s)[0];
+  //    if (d.getElementById(id)) {return;}
+  //    js = d.createElement(s); js.id = id;
+  //    js.src = "//connect.facebook.net/en_US/sdk.js";
+  //    fjs.parentNode.insertBefore(js, fjs);
+  //  }(document, 'script', 'facebook-jssdk'));
+  // // end load the SDK Asynchronously
 
-  // load Google+ sdk
-  (function() {
-    var po = document.createElement('script');
-    po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://plus.google.com/js/client:plusone.js';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(po, s);
-  })()
-  // end load Google+ sdk
-  $('html').click(function(e) {
-    if ($(e.target).closest('form').length == 0) {
-      $('.navbar-search-lg').hide();
-      $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
-      $('.progressjs-progress').hide();
-    };
-  });
+  // // load Google+ sdk
+  // (function() {
+  //   var po = document.createElement('script');
+  //   po.type = 'text/javascript'; po.async = true;
+  //   po.src = 'https://plus.google.com/js/client:plusone.js';
+  //   var s = document.getElementsByTagName('script')[0];
+  //   s.parentNode.insertBefore(po, s);
+  // })()
+  // // end load Google+ sdk
+  // $('html').click(function(e) {
+  //   if ($(e.target).closest('form').length == 0) {
+  //     $('.navbar-search-lg').hide();
+  //     $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+  //     $('.progressjs-progress').hide();
+  //   };
+  // });
 
   // Navigation
   $(document).on("click", '#sidebar li a', function(e) {
