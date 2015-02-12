@@ -52,6 +52,8 @@ gem 'omniauth-linkedin'
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
+gem 'will_paginate', '~> 3.0.6'
+gem 'has_scope'
 gem 'rails_12factor', group: :production
 
 gem 'twitter'

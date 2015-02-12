@@ -28,7 +28,8 @@ Robin.Views.Navigation = Backbone.Marionette.ItemView.extend({
   },
 
   showNews: function() {
-    console.log('showNews');
+    // var view = new Robin.Views.Layouts.Social();
+    // Robin.layouts.main.getRegion('content').show(view);
   },
 
   showReleases: function() {
