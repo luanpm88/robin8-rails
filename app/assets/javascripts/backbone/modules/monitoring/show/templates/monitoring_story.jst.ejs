@@ -1,0 +1,15 @@
+<li>
+  <div class="media">
+    <a class="media-left" href="#">
+      <img src="http://lorempixel.com/64/64/?<%- chance.natural({min: 1, max: 5000}) %>" alt="...">
+    </a>
+    <div class="media-body">
+      <h4 class="media-heading"><%- name %></h4>
+      <p><%- text %></p>
+      <span class="pull-left label label-default likes"><i class="fa fa-thumbs-up"></i> <%- likes %></span>
+      <span class="pull-right label"><i class="fa fa-clock-o"></i> <%- timeago %>h ago</span>
+      <a class="read-more pull-right label label-default btn btn-xs btn-info"><i class="fa fa-sign-out"></i> Read more</a>
+      <a class="read-more pull-right label label-default btn btn-xs btn-info"><i class="fa fa-share-alt"></i></a>
+    </div>
+  </div>
+</li>
