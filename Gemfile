@@ -49,7 +49,7 @@ end
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
-gem 'omniauth-linkedin'
+gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 
@@ -59,7 +59,9 @@ gem 'sidetiq'
 gem 'rails_12factor', group: [:production, :staging]
 
 gem 'twitter'
-gem 'linkedin'
+# gem 'linkedin'
+# gem 'linkedin-oauth2'
+gem 'httparty'
 
 gem 'ejs'
 # Use ActiveModel has_secure_password
