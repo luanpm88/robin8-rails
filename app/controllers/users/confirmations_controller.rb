@@ -6,7 +6,7 @@ module Users
 
       if resource.errors.empty?
         flash[:success_confirmation] = "Your email address has been successfully confirmed."
-        respond_with_navigational(resource){ redirect_to after_confirmation_path_for(resource_name, resource) }
+        redirect_to root_path
       else
         respond_with_navigational(resource.errors, status: :unprocessable_entity){ render :new }
       end
