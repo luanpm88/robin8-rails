@@ -48,14 +48,12 @@ Robin.on('start', function(){
     Robin.addInitializer();
     Backbone.history.start();
     if (Robin.currentUser) {
-      window.loading_screen = window.pleaseWait({
-        logo: "assets/logo.png",
-        backgroundColor: 'rgb(81, 119, 155)',
-        loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
+      Robin.loadPleaseWait();
+    } else {
+      $.growl(Robin.afterConfirmationMessage,{
+        type: 'success'
       });
-      setTimeout(function(){
-        loading_screen.finish();
-      }, 1500)
+      Robin.afterConfirmationMessage = undefined
     };
   }
 });
