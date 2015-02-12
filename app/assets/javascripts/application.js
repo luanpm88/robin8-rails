@@ -37,7 +37,6 @@
 //= require select2
 //= require_directory ./lib
 
-//= require_tree ../templates
 //= require_tree ./backbone/config
 //= require backbone/init
 //= require_tree ./backbone/models
