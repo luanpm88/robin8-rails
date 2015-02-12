@@ -45,6 +45,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-backbone.babysitter'
   gem 'rails-assets-please-wait'
   gem 'rails-assets-x-editable'
+  gem 'rails-assets-jqueryui'
 end
 
 gem 'devise'
