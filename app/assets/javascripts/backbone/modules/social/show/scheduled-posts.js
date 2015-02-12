@@ -41,7 +41,15 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     childViewContainer: "ul",
     initialize: function() {
       this.collection.fetch();
-    }
+    },
+
+    onRender: function() {
+      if (this.collection.length===0) {
+        console.log("No items!!");
+        this.$("#today").hide().prev().show();
+       }
+    },
+
   });
 
 });
