@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   delete '/users/disconnect_social' => 'users#disconnect_social'
 
   resources :posts
+  resources :news_rooms
 
   get 'users/identities' => 'users#identities'
   # The priority is based upon order of creation: first created -> highest priority.

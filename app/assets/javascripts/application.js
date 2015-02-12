@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require jqueryui
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
 //= require uploadcare
@@ -37,7 +38,6 @@
 //= require select2
 //= require_directory ./lib
 
-//= require_tree ../templates
 //= require_tree ./backbone/config
 //= require backbone/init
 //= require_tree ./backbone/models
@@ -86,13 +86,13 @@ ready = function() {
   //   s.parentNode.insertBefore(po, s);
   // })()
   // // end load Google+ sdk
-  // $('html').click(function(e) {
-  //   if ($(e.target).closest('form').length == 0) {
-  //     $('.navbar-search-lg').hide();
-  //     $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
-  //     $('.progressjs-progress').hide();
-  //   };
-  // });
+  $('html').click(function(e) {
+    if ($(e.target).closest('form').length == 0) {
+      $('.navbar-search-lg').hide();
+      $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+      $('.progressjs-progress').hide();
+    };
+  });
 
   // Navigation
   $(document).on("click", '#sidebar li a', function(e) {
