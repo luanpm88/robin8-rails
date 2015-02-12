@@ -1,6 +1,6 @@
 user = User.last
 if user
-  20.times do |t|
+  40.times do |t|
     @news_room = NewsRoom.create!(
       user_id: user.id,
       company_name: "Company_#{t}",
