@@ -14,7 +14,7 @@
     Robin.start();
   });
   <% if flash[:success_confirmation] -%>    
-    Robin.afterConfirmationMessage = <%= flash[:success_confirmation] %>
+    Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
   <% if signed_in? -%>    
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
