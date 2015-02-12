@@ -13,6 +13,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       };
     },
 
+    onRender: function(){
+      $.fn.editable.defaults.mode = 'inline';
+      this.$el.find('span.editable').editable();
+    },
+
     events: {
       'click #delete-post': 'deletePost',
     },
