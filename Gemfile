@@ -56,6 +56,7 @@ gem 'omniauth-twitter'
 gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
+gem 'active_model_serializers', "~> 0.8.0"
 
 gem 'sinatra', require: nil
 gem 'sidekiq'
