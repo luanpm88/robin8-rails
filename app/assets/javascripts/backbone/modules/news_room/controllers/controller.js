@@ -18,7 +18,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
           Robin.layouts.main.getRegion('content').show(module.layout);
 
           var top_menu_view = new module.TopMenuView({
-            model: new Robin.Models.NewsRoom()
+            model: new Robin.Models.NewsRoom(),
+            collection: new Robin.Collections.Industries()
           });
 
           module.pagination_view = new module.PaginationView({

@@ -13,7 +13,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.modelBinder = new Backbone.ModelBinder();
       Robin.vent.on("news_room:open_edit_modal", function(data) {
         viewObj.openModalDialogEdit(data);
-      })
+      });
+      this.collection.fetch();
+    },
+    templateHelpers: function () {
+      return {
+        items: this.collection
+      };
     },
     openModalDialog: function(){
       this.model.clear();
@@ -36,7 +42,6 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       if (this.model.attributes.id) {
         this.model.save(this.model.attributes, {
           success: function(data){
-            console.warn('success', data);
             viewObj.$el.find('#newsroom_form').modal('hide');
             Robin.module("Newsroom").collection.add(data, {merge: true});
             Robin.module("Newsroom").collection.trigger('reset');
