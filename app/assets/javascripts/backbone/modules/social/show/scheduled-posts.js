@@ -64,10 +64,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
-    isEmpty: function(collection) {
-      return true;
-    }
-
   });
 
 });
