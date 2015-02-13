@@ -10,62 +10,48 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #nav-releases': 'showReleases',
       'click #nav-social': 'showSocial',
       'click #nav-analytics': 'showAnalytics',
-      'click #nav-profile': 'showProfile',
+      'click #nav-sidebar-profile': 'showProfile',
     },
 
     initialize: function() {
     },
 
-    stopOtherModules: function(){
-      _.each(['Newsroom', 'Social', 'Profile'], function(module){
-        Robin.module(module).stop();
-      });
-    },
-
     showDashboard: function() {
-      console.log('showDashboard');
+      Robin.stopOtherModules();
+      Robin.module('Dashboard').start();
     },
 
     showRobin: function() {
-      console.log('showRobin');
+      Robin.stopOtherModules();
     },
 
     showMonitoring: function() {
-      if (Robin.Monitoring._isInitialized){
-        Robin.Monitoring.Show.Controller.showMonitoringPage();
-      } else {
-        Robin.module('Monitoring').start();
-      }
+      Robin.stopOtherModules();
+      Robin.module('Monitoring').start();
     },
 
     showNewsRooms: function() {
-      this.stopOtherModules();
+      Robin.stopOtherModules();
       Robin.module("Newsroom").start();
       Robin.module("Newsroom").controller.index();
     },
 
     showReleases: function() {
-      console.log('showReleases');
+      Robin.stopOtherModules();
     },
 
     showSocial: function() {
-      if (Robin.Social._isInitialized){
-        Robin.Social.Show.Controller.showSocialPage();
-      } else {
-        Robin.module('Social').start();
-      }
+      Robin.stopOtherModules();
+      Robin.module('Social').start();
     },
 
     showAnalytics: function() {
-      console.log('showAnalytics');
+      Robin.stopOtherModules();
     },
 
     showProfile: function() {
-      if (Robin.Profile._isInitialized){
-        Robin.Profile.Show.Controller.showProfilePage();
-      } else {
-        Robin.module('Profile').start();
-      }
+      Robin.stopOtherModules();
+      Robin.module('Profile').start();
     },
   });
 

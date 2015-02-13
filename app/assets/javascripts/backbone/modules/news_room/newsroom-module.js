@@ -6,6 +6,7 @@ Robin.module("Newsroom", function(Newsroom, Robin, Backbone, Marionette, $, _){
     this.layout = new this.Layout();
     this.controller = new this.Controller();
     this.collection = new Robin.Collections.NewsRooms();
+    $('#nav-newsrooms').parent().addClass('active');
   });
 
   Newsroom.on("stop", function(){

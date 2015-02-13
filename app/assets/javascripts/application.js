@@ -95,10 +95,10 @@ ready = function() {
   });
 
   // Navigation
-  $(document).on("click", '#sidebar li a', function(e) {
-    $('#sidebar li.active').removeClass('active');
-    $(this).parent().addClass('active');
-  });
+  // $(document).on("click", '#sidebar li a', function(e) {
+    // $('#sidebar li.active').removeClass('active');
+    // $(this).parent().addClass('active');
+  // });
   // End Navigation
 
 };

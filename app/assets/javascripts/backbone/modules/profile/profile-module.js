@@ -9,7 +9,8 @@ Robin.module("Profile", function(Profile, Robin, Backbone, Marionette, $, _){
   }
 
   Profile.on('start', function(){
-     API.showProfilePage();
+    API.showProfilePage();
+    $('#nav-sidebar-profile').parent().addClass('active');
   })
   
 });
