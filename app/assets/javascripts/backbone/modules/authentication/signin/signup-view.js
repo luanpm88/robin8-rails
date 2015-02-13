@@ -33,17 +33,18 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
           });
         },
         error: function(userSession, response) {
-          var result = $.parseJSON(response.responseText);
-          _(result.errors).each(function(errors,field) {
-            $('input[name=' + field + ']').addClass('error');
-            _(errors).each(function(error, i) {
-              formatted_field = s(field).capitalize().value().replace('_', ' ');
+          $('.form-signup')
+          // var result = $.parseJSON(response.responseText);
+          // _(result.errors).each(function(errors,field) {
+          //   $('input[name=' + field + ']').addClass('error');
+          //   _(errors).each(function(error, i) {
+          //     formatted_field = s(field).capitalize().value().replace('_', ' ');
               
-              $.growl(formatted_field + ' ' + error, {
-                type: "danger",
-              });
-            });
-          });
+          //     $.growl(formatted_field + ' ' + error, {
+          //       type: "danger",
+          //     });
+          //   });
+          // });
         }
       });
     },

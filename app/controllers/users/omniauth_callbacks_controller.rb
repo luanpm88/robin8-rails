@@ -10,7 +10,7 @@ module Users
           params[:provider] = auth.provider
           params[:token] = auth.credentials.token
           params[:token_secret] = auth.credentials.secret
-          params[:name] = auth.info.name
+          params[:name] = auth.provider == 'twitter' ? auth.info.nickname : auth.info.name
           params[:email] = auth.info.email
 
           params[:url] = case auth.provider

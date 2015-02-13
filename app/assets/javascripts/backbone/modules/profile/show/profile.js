@@ -4,7 +4,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
     events: {
       'submit form' : 'updateProfile',
-      'reset form'  :'showSocial',  //Should be replaced with Dashboard when ready,
+      'reset form'  :'cancel',  //Should be replaced with Dashboard when ready,
     },
   
     initialize: function() {
@@ -75,8 +75,9 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     },
   
     //Should be replaced with Dashboard when ready
-    showSocial: function() {
-      Robin.module('Social').start();
+    cancel: function() {
+      Robin.stopOtherModules();
+      Robin.module('Dashboard').start();
     },
   });
 });

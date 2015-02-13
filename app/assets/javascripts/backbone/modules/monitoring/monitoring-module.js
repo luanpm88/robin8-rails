@@ -10,5 +10,7 @@ Robin.module("Monitoring", function(Monitoring, Robin, Backbone, Marionette, $, 
 
   Monitoring.on('start', function(){
     API.showMonitoringPage();
+    $('#sidebar li.active').removeClass('active');
+    $('#nav-monitoring').parent().addClass('active');
   })
 });

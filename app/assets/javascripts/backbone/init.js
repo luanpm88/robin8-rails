@@ -25,14 +25,16 @@ Robin.finishSignIn = function(data){
 };
 
 Robin.loadPleaseWait = function(){
-  window.loading_screen = window.pleaseWait({
-    logo: "assets/logo.png",
-    backgroundColor: 'rgb(81, 119, 155)',
-    loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
-  });
-  setTimeout(function(){
-    loading_screen.finish();
-  }, 1500)
+  if (Robin.showLoading) {
+    window.loading_screen = window.pleaseWait({
+      logo: "assets/logo.png",
+      backgroundColor: 'rgb(81, 119, 155)',
+      loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
+    });
+    setTimeout(function(){
+      loading_screen.finish();
+    }, 1500)
+  }
 };
 
 Robin.setIdentities = function(data){
@@ -43,19 +45,26 @@ Robin.setIdentities = function(data){
   Robin.identities.linkedin = _.where(data, {provider: "linkedin"})[0];
 };
 
+Robin.stopOtherModules = function(){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard'], function(module){
+    Robin.module(module).stop();
+  });
+  $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
+};
+
 Robin.on('start', function(){
   if (Backbone.history && !Backbone.History.started){
     Robin.addInitializer();
     Backbone.history.start();
     if (Robin.currentUser) {
-      window.loading_screen = window.pleaseWait({
-        logo: "assets/logo.png",
-        backgroundColor: 'rgb(81, 119, 155)',
-        loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
-      });
-      setTimeout(function(){
-        loading_screen.finish();
-      }, 1500)
+      Robin.loadPleaseWait();
+    } else {
+      if (Robin.afterConfirmationMessage != undefined) {
+        $.growl(Robin.afterConfirmationMessage,{
+          type: 'success'
+        });
+        Robin.afterConfirmationMessage = undefined
+      }
     };
   }
 });
@@ -63,6 +72,7 @@ Robin.on('start', function(){
 Robin.addInitializer(function(options){
   if (Robin.currentUser) {
     Robin.module('Navigation').start();
+    Robin.module('Dashboard').start();
     Robin.module('SaySomething').start();
   } else {
     Robin.module('Authentication').start();
