@@ -9,7 +9,7 @@ class Post < ActiveRecord::Base
   scope :todays, -> { where("scheduled_date > ? AND scheduled_date < ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day) }
 
   def perform_worker
-    PostWorker.perform_async(self.id)
+    PostWorker.perform_at(scheduled_date, id)
   end
 
 end
