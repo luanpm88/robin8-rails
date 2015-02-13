@@ -138,14 +138,15 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
-          console.log('created');
+          $('.navbar-search-lg').hide();
+          $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+          $('.progressjs-progress').hide();
           $.growl({message: "You've created a post"
           },{
             type: 'success'
           });
         },
         error: function(userSession, response) {
-          console.log('failed');
           $.growl({title: '<strong>Error:</strong> ',
             message: 'Something went wrong.'
           },{
