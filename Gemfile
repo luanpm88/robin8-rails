@@ -46,6 +46,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-please-wait'
   gem 'rails-assets-x-editable'
   gem 'rails-assets-jqueryui'
+  gem 'rails-assets-bootstrap-tagsinput'
 end
 
 gem 'devise'

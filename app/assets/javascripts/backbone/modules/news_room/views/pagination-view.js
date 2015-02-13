@@ -1,7 +1,7 @@
 Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
   Newsroom.PaginationView = Marionette.ItemView.extend({
-    template: 'modules/news_room/templates/pagination_view',
+    template: 'modules/news_room/templates/pagination-view',
     pageOffset: 3,
     tagName: 'nav',
     attributes: {

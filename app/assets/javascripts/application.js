@@ -37,6 +37,7 @@
 //= require highcharts
 //= require select2
 //= require_directory ./lib
+//= require bootstrap-tagsinput
 
 //= require_tree ./backbone/config
 //= require backbone/init
