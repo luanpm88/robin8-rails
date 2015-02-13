@@ -1,12 +1,20 @@
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   
+  Show.ScheduledEmptyView = Backbone.Marionette.ItemView.extend({
+    template: 'modules/social/show/templates/_scheduled-empty',
+    tagName: "li",
+    onRender: function(){
+      console.log(this.$el.closest('#today').length);
+      $('#today').hide();
+    }
+  });
+
   Show.ScheduledPost = Backbone.Marionette.ItemView.extend({
-    template: 'modules/social/show/templates/_scheduled_post',
+    template: 'modules/social/show/templates/_scheduled-post',
     tagName: "li",
     className: "list-group-item",
     model: Robin.Models.Post,
     serializeData : function() {
-      window.$thisModel = this.model;
       return {
         text: this.model.get('text'),
         scheduled_date: this.model.get('scheduled_date')
@@ -41,9 +49,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   });
   
   Show.ScheduledPostsComposite = Backbone.Marionette.CompositeView.extend({
-    template: "modules/social/show/templates/scheduled_posts",
+    collection: Robin.Collections.Posts,
+    template: "modules/social/show/templates/scheduled-posts",
     childView: Show.ScheduledPost,
     childViewContainer: "ul",
+    emptyView: Show.ScheduledEmptyView,
     initialize: function() {
       this.collection.fetch({
         success: function(model, response){
@@ -53,6 +63,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
     },
+
+    isEmpty: function(collection) {
+      return true;
+    }
+
   });
 
 });

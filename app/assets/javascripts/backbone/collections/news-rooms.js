@@ -1,6 +1,6 @@
 Robin.Collections.NewsRooms = Backbone.Collection.extend({
   model: Robin.Models.NewsRoom,
-  url: '/news_rooms.json',
+  url: '/news_rooms',
   parseSortParams: function(options){
     var paramsStr = "";
     _.each(options, function(k,v){

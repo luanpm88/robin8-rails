@@ -26,5 +26,6 @@
  *= require_directory ./bootflat
  *= require_directory ./lib
  *= require main
+ *= require bootstrap-tagsinput
  */
 @import "bootstrap";

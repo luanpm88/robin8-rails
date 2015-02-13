@@ -8,7 +8,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    if true #current_user.posts.create(post_params)
+    if current_user.posts.create(post_params)
       render json: {}
     else
       render nothing: true
