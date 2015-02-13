@@ -1,7 +1,7 @@
 class NewsRoomsController < ApplicationController
   def index
     set_paginate_headers NewsRoom, current_user.news_rooms.count
-    render json: current_user.news_rooms.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page])
+    render json: current_user.news_rooms.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: NewsRoomSerializer
   end
 
   def create
