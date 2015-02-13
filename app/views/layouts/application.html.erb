@@ -22,6 +22,12 @@
     Robin.currentUser = null;
   <% end -%>
 
+  <% if Rails.env == 'development' -%>
+    Robin.showLoading = false;
+  <% else -%>
+    Robin.showLoading = true;
+  <% end -%>
+
 </script>
 
 <!-- load bitly javascript sdk -->
