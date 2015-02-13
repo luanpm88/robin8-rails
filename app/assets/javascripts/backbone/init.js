@@ -57,10 +57,12 @@ Robin.on('start', function(){
     if (Robin.currentUser) {
       Robin.loadPleaseWait();
     } else {
-      $.growl(Robin.afterConfirmationMessage,{
-        type: 'success'
-      });
-      Robin.afterConfirmationMessage = undefined
+      if (Robin.afterConfirmationMessage != undefined) {
+        $.growl(Robin.afterConfirmationMessage,{
+          type: 'success'
+        });
+        Robin.afterConfirmationMessage = undefined
+      }
     };
   }
 });
