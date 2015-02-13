@@ -16,6 +16,17 @@ var ShrinkedLink = {
   },
 }
 
+var checkAbilityPosting = function(){
+  var condition1 = $("#say-something-field").val().length == 0;
+  var condition2 = $('.social-networks').find('.btn-primary').length == 0;
+
+  if (condition1 || condition2) {
+    $('.post-settings').find('input[type=submit]').addClass('disabled');
+  } else {
+    $('.post-settings').find('input[type=submit]').removeClass('disabled');
+  }
+};
+
 Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
   Say.SayView = Backbone.Marionette.ItemView.extend({
@@ -65,6 +76,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       $('.navbar-search-lg').show().find('textarea').focus();
       $('.progressjs-progress').show();
       e.stopPropagation();
+      checkAbilityPosting();
     },
 
     setCounter: function() {
@@ -73,6 +85,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       var counter = $("#say-counter");
       var limit = 140;
       counter.text(limit - sayText.val().length);
+
+      checkAbilityPosting();
 
       if (sayText.val().length <= limit) {
         prgjs.set(Math.floor(sayText.val().length * 100/limit));
@@ -162,24 +176,12 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       var input = btn.next('input');
       btn.toggleClass('btn-primary');
       if (input.val() == 'false' || input.val() == '') {
-        console.log('true')
         input.val('true')
       } else {
-        console.log(false)
         input.val('false')
       }
+      checkAbilityPosting();
     }
     
   });
-
-  // Robin.vent.on("saySomething:hide", function() {
-  //   $('.navbar-search-lg').hide();
-  //   $('.navbar-search-sm').show().find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
-  //   $('.progressjs-progress').hide();
-  // });
-
-  
-
-
-
 });

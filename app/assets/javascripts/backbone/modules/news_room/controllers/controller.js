@@ -3,12 +3,12 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
   Newsroom.Controller = Marionette.Controller.extend({
     initialize: function () {
       this.module = Robin.module("Newsroom");
+    },
+    index: function(){
       this.filterCriteria = {
         page: 1,
         per_page:9
       };
-    },
-    index: function(){
       var contrObj = this;
       var module = this.module;
       this.module.collection.filter({
@@ -17,9 +17,11 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
           Robin.layouts.main.getRegion('content').show(module.layout);
 
-          var top_menu_view = new module.TopMenuView({});
+          var top_menu_view = new module.TopMenuView({
+            model: new Robin.Models.NewsRoom()
+          });
 
-          var pagination_view = new module.PaginationView({
+          module.pagination_view = new module.PaginationView({
             model: new Robin.Models.Pagination ({
               page: contrObj.filterCriteria.page,
               per_page: contrObj.filterCriteria.per_page,
@@ -30,7 +32,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
           contrObj.renderCollectionView(collection, response);
           module.layout.topMenuRegion.show(top_menu_view);
-          module.layout.paginationRegion.show(pagination_view);
+          if(collection.length)
+            module.layout.paginationRegion.show(module.pagination_view);
         }
       })
     },
@@ -41,7 +44,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         params: contrObj.filterCriteria,
         success: function(collection, data, response){
           contrObj.renderCollectionView(collection, response);
-          $("html, body").animate({ scrollTop: $(document).height() }, 1000)
+          contrObj.module.pagination_view.model.set({
+            page: page,
+            per_page: contrObj.filterCriteria.per_page,
+            total_count: parseInt(response.xhr.getResponseHeader('Totalcount'),10),
+            total_pages: parseInt(response.xhr.getResponseHeader('Totalpages'),10)
+          });
+          $("html, body").animate({ scrollTop: $(document).height() }, 1000);
         }
       })
     },

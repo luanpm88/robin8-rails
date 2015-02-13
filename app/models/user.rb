@@ -55,8 +55,6 @@ class User < ActiveRecord::Base
   def linkedin_post message #need check
     data = { comment: message, visibility: {code: 'anyone'} }
 
-    p linkedin_identity.token
-
     response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json", 
               headers: { 'Content-Type' => 'application/json'}, 
               query: {oauth2_access_token: linkedin_identity.token}, 
