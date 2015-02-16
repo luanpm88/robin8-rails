@@ -25,6 +25,12 @@ class PostsController < ApplicationController
   end
 
   def update
+    @post = Post.find params[:id]
+    if @post.update_attributes(post_params)
+      render json: {}
+    else
+      render json: {}
+    end
   end
 
   def show
