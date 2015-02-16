@@ -9,7 +9,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     getMonitoringPageView: function(){
       return new Show.MonitoringPage();
-    },
+    }
   }
 
 });
