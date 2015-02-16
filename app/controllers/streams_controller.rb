@@ -6,8 +6,9 @@ class StreamsController < ApplicationController
   end
 
   def create
-    if current_user.streams.create(stream_params)
-      render json: {}
+    stream = current_user.streams.create(stream_params)
+    if stream.errors.none?
+      render json: stream.to_json
     else
       render nothing: true
     end
@@ -29,7 +30,7 @@ class StreamsController < ApplicationController
   end
 
   def stream_params
-    params.require(:stream).permit(:user_id, :name, :topics, :sources, :sort_by)
+    params.require(:stream).permit(:user_id, :name, :sort_column, topics: [], sources: [])
   end
 
 end

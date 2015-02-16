@@ -38,6 +38,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       // test hardcode
       this.model.set('topics', ['asd', 'add']);
       this.model.set('sources', ['asd', 'add']);
+      this.model.set('sort_column', 'published_at');
 
       console.log(this.model);
 
