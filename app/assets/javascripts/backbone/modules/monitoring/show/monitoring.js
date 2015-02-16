@@ -11,6 +11,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initialize: function() {
+      this.collection.fetch();
     },
 
     addStream: function() {

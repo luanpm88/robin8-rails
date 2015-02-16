@@ -7,6 +7,16 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .delete-stream': 'closeStream',
       'click .settings-button': 'settings',
       'click #close-settings': 'closeSettings',
+      'click #done': 'done',
+    },
+
+    initialize: function() {
+      this.model = new Robin.Models.Stream();
+      // this.modelBinder = new Backbone.ModelBinder();
+    },
+
+    onRender: function() {
+      // this.modelBinder.bind(this.model, this.el);
     },
 
     closeStream: function() {
@@ -19,7 +29,35 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     closeSettings: function(e) {
       e.preventDefault();
-      console.log($(this.el).find('.slider'));
+      $(this.el).find('.slider').addClass('closed');
+    },
+
+    done: function(e) {
+      e.preventDefault();
+
+      // test hardcode
+      this.model.set('topics', ['asd', 'add']);
+      this.model.set('sources', ['asd', 'add']);
+
+      console.log(this.model);
+
+      this.model.save(this.model.attributes, {
+        success: function(userSession, response) {
+          $(this.el).find('.slider').addClass('closed');
+          $.growl({message: "You've created a stream"
+          },{
+            type: 'success'
+          });
+        },
+        error: function(userSession, response) {
+          $.growl({title: '<strong>Error:</strong> ',
+            message: 'Something went wrong.'
+          },{
+            type: 'danger'
+          });
+        }
+      });
+
       $(this.el).find('.slider').addClass('closed');
     }
   });

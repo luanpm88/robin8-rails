@@ -8,7 +8,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     getMonitoringPageView: function(){
-      return new Show.MonitoringPage();
+      return new Show.MonitoringPage({ collection: new Robin.Collections.Streams() });
     }
   }
 
