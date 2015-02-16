@@ -3,4 +3,13 @@ class Stream < ActiveRecord::Base
   serialize :topic_ids, Array
   serialize :blog_ids, Array
   validates :sort_column, inclusion: { in: %w(published_at shares_count) }
+
+  def query_params
+    {
+      'blog_ids[]' => blog_ids,
+      'topics[]' => topic_ids,
+      sort_column: sort_column,
+      sort_direction: 'desc'
+    }
+  end
 end
