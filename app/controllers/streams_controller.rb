@@ -29,7 +29,7 @@ class StreamsController < ApplicationController
   end
 
   def stream_params
-    params.require(:stream).permit(:user_id, :name, :topics, :sources)
+    params.require(:stream).permit(:user_id, :name, :topics, :sources, :sort_by)
   end
 
 end
