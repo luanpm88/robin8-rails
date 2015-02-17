@@ -41,34 +41,84 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     onRender: function(){
       this.modelBinder.bind(this.model, this.el);
+      this.initFormValidation();
+    },
+    initFormValidation: function(){
+      this.form = $('#releaseForm').formValidation({
+        framework: 'bootstrap',
+        excluded: [':disabled'],
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          title: {
+            validators: {
+              notEmpty: {
+                message: 'The Title is required'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          }
+        }
+      })
+      .on('err.field.fv', function(e, data) {
+        // data.element --> The field element
+        var $tabPane = data.element.parents('.tab-pane'),
+          tabId    = $tabPane.attr('id');
+        $('a[href="#' + tabId + '"][data-toggle="tab"]')
+          .addClass('error-tab');
+      })
+        // Called when a field is valid
+      .on('success.field.fv', function(e, data) {
+          // data.fv      --> The FormValidation instance
+          // data.element --> The field element
+        var $tabPane = data.element.parents('.tab-pane'),
+          tabId    = $tabPane.attr('id');
+        $('a[href="#' + tabId + '"][data-toggle="tab"]')
+          .removeClass('error-tab');
+      });
     },
     saveRelease: function(e){
       var viewObj = this;
-      if (this.model.attributes.id) {
-        this.model.save(this.model.attributes, {
-          success: function(data){
-            viewObj.$el.find('#release_form').modal('hide');
-            Robin.module("Releases").collection.add(data, {merge: true});
-            Robin.module("Releases").collection.trigger('reset');
-          },
-          error: function(data){
-            console.warn('error', data);
-          }
-        });
-      }else{
-        this.model.save(this.model.attributes, {
-          success: function(data){
-            viewObj.$el.find('#release_form').modal('hide');
-            if (Robin.module("Releases").controller.filterCriteria.page == 1) {
-              Robin.module("Releases").collection.unshift(data);
-              Robin.module("Releases").collection.pop();
+      this.form.data('formValidation').validate();
+      if (this.form.data('formValidation').isValid()) {
+        if (this.model.attributes.id) {
+          this.model.save(this.model.attributes, {
+            success: function(data){
+              viewObj.$el.find('#release_form').modal('hide');
+              Robin.module("Releases").collection.add(data, {merge: true});
+              Robin.module("Releases").collection.trigger('reset');
+            },
+            error: function(data, response){
+              viewObj.processErrors(response);
             }
-          },
-          error: function(data){
-            console.warn('error', data);
-          }
-        });
+          });
+        }else{
+          this.model.save(this.model.attributes, {
+            success: function(data){
+              viewObj.$el.find('#release_form').modal('hide');
+              if (Robin.module("Releases").controller.filterCriteria.page == 1) {
+                Robin.module("Releases").collection.unshift(data);
+                Robin.module("Releases").collection.pop();
+              }
+            },
+            error: function(data, response){
+              viewObj.processErrors(response);
+            }
+          });
+        }
       }
+    },
+    processErrors: function(data){
+      var errors = JSON.parse(data.responseText).errors;
+      _.each(errors, function(value, key){
+        this.form.data('formValidation').updateStatus(key, 'INVALID', 'serverError')
+        this.form.data('formValidation').updateMessage(key, 'serverError', value.join(','))
+      }, this);
     },
     deleteRelease: function(){
       var viewObj = this;
@@ -88,6 +138,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
     },
     onDestroy: function(){
+      Robin.vent.off("release:open_edit_modal", this.openModalDialogEdit);
       this.modelBinder.unbind();
     }
   });

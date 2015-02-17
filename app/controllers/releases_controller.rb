@@ -10,8 +10,11 @@ class ReleasesController < ApplicationController
 
   def create
     release = current_user.releases.build release_params
-    release.save!
-    render json: release
+    if release.save
+      render json: release, serializer: ReleaseSerializer
+    else
+      render json: { errors: release.errors }, status: 422
+    end
   end
 
   def show
@@ -20,8 +23,11 @@ class ReleasesController < ApplicationController
 
   def update
     release = current_user.releases.find(params[:id])
-    release.update_attributes!(release_params)
-    render json: release
+    if release.update_attributes(release_params)
+      render json: release, serializer: ReleaseSerializer
+    else
+      render json: { errors: release.errors }, status: 422
+    end
   end
 
   def destroy
