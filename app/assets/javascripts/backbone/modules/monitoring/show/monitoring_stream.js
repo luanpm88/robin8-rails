@@ -2,6 +2,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
   Show.MonitoringStreamView = Backbone.Marionette.CompositeView.extend({
     template: 'modules/monitoring/show/templates/monitoring_stream',
+    tagName: "li",
+    className: "stream",
 
     events: {
       'click .delete-stream': 'closeStream',
@@ -81,7 +83,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     done: function(e) {
       e.preventDefault();
 
-      // test hardcode
       this.model.set('sort_column', 'published_at');
 
       this.model.save(this.model.attributes, {

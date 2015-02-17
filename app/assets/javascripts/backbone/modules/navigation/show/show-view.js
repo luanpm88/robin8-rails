@@ -38,7 +38,8 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
 
     showReleases: function() {
       Robin.stopOtherModules();
-      Robin.module('Releases').start();
+      Robin.module("Releases").start();
+      Robin.module("Releases").controller.index();
     },
 
     showSocial: function() {

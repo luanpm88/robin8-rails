@@ -1,50 +1,48 @@
-<li class="stream">
-  <div class="stream-settings slider">
-    <form role="form">
-      <div class="form-group">
-        <label for="topics">Topics</label>
-        <input type="text" class="form-control input-sm" id="topics-select" placeholder="Start typing to get suggestions...">
+<div class="stream-settings slider">
+  <form role="form">
+    <div class="form-group">
+      <label for="topics">Topics</label>
+      <input type="text" class="form-control input-sm" id="topics-select" placeholder="Start typing to get suggestions...">
+    </div>
+    <div class="form-group">
+      <label for="sources">Sources</label>
+      <input type="text" class="form-control input-sm" id="sources" name='sources' placeholder="Start typing to get suggestions...">
+    </div>
+    <div class="form-group sort-by">
+      <label>Sort by</label>
+      <div class="ui-select">
+        <select class="form-control">
+          <option value="published_at">Recency</option>
+          <option value="shares_count">Popularity</option>
+        </select>
       </div>
-      <div class="form-group">
-        <label for="sources">Sources</label>
-        <input type="text" class="form-control input-sm" id="sources" name='sources' placeholder="Start typing to get suggestions...">
+    </div>
+    <div class="form-group time-range">
+      <label>Time range</label>
+      <div class="ui-select">
+        <select class="form-control">
+          <option value="1">Last 24 hours</option>
+          <option value="2">Last week</option>
+          <option value="2">Last month</option>
+          <option value="2">All time</option>
+        </select>
       </div>
-      <div class="form-group sort-by">
-        <label>Sort by</label>
-        <div class="ui-select">
-          <select class="form-control">
-            <option value="published_at">Recency</option>
-            <option value="shares_count">Popularity</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group time-range">
-        <label>Time range</label>
-        <div class="ui-select">
-          <select class="form-control">
-            <option value="1">Last 24 hours</option>
-            <option value="2">Last week</option>
-            <option value="2">Last month</option>
-            <option value="2">All time</option>
-          </select>
-        </div>
-      </div>
-      <div class="pull-right">
-        <button class="btn btn-default btn-sm" id="close-settings">Cancel</button>
-        <button class="btn btn-success btn-sm" id="done" href="#"><i class="fa fa-check"></i> Done</button>
-      </div>
-    </form>
-  </div>
-  <div class="stream-header">
-    <i class="fa fa-reorder"></i>  
-    <button class="close pull-right delete-stream" data-toggle="tooltip" data-placement="left" title="Delete Stream">&times;</button>
-    <button class="close pull-right settings-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Stream Settings"><i class="fa fa-cog" style="color: #000;"></i></button>
-    <button class="close pull-right rss-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="RSS Feed"><i class="fa fa-rss" style="color: #000;"></i></button>
-  </div>
-  <div class="stream-body">
-    <ul class="stories"></ul>
-  </div>
-  <div class="stream-updates" align="center">
-    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Click to see updates"><i class="fa fa-refresh fa-spin"></i> new updates</a>
-  </div>
-</li>
+    </div>
+    <div class="pull-right">
+      <button class="btn btn-default btn-sm" id="close-settings">Cancel</button>
+      <button class="btn btn-success btn-sm" id="done" href="#"><i class="fa fa-check"></i> Done</button>
+    </div>
+  </form>
+</div>
+<div class="stream-header">
+  <i class="fa fa-reorder"></i>  
+  <button class="close pull-right delete-stream" data-toggle="tooltip" data-placement="left" title="Delete Stream">&times;</button>
+  <button class="close pull-right settings-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Stream Settings"><i class="fa fa-cog" style="color: #000;"></i></button>
+  <button class="close pull-right rss-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="RSS Feed"><i class="fa fa-rss" style="color: #000;"></i></button>
+</div>
+<div class="stream-body">
+  <ul class="stories"></ul>
+</div>
+<div class="stream-updates" align="center">
+  <a href="#" data-toggle="tooltip" data-placement="bottom" title="Click to see updates"><i class="fa fa-refresh fa-spin"></i> new updates</a>
+</div>

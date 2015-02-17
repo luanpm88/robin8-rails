@@ -6,7 +6,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     events: {
       'click #new_newsroom': 'openModalDialog',
       'click #save_news_room': 'saveNewsRoom',
-      'click #delete_news_room': 'deleteNewsRoom'
+      'click #delete_news_room': 'deleteNewsRoom',
+      'click .manage': 'manageUsers'
     },
     initialize: function(options){
       var viewObj = this;
@@ -35,35 +36,94 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
     onRender: function(){
       this.modelBinder.bind(this.model, this.el);
+      this.initFormValidation();
       this.$el.find("#tagsinput").tagsinput();
+    },
+    initFormValidation: function(){
+      this.form = $('#newsroomForm').formValidation({
+        framework: 'bootstrap',
+        excluded: [':disabled'],
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          company_name: {
+            validators: {
+              notEmpty: {
+                message: 'The Company name is required'
+              }
+            }
+          },
+          subdomain_name: {
+            validators: {
+              notEmpty: {
+                message: 'The Subdomain name is required'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          }
+        }
+      })
+      .on('err.field.fv', function(e, data) {
+        // data.element --> The field element
+
+        var $tabPane = data.element.parents('.tab-pane'),
+          tabId    = $tabPane.attr('id');
+        $('a[href="#' + tabId + '"][data-toggle="tab"]')
+          .addClass('error-tab');
+      })
+        // Called when a field is valid
+      .on('success.field.fv', function(e, data) {
+          // data.fv      --> The FormValidation instance
+          // data.element --> The field element
+
+        var $tabPane = data.element.parents('.tab-pane'),
+          tabId    = $tabPane.attr('id');
+        $('a[href="#' + tabId + '"][data-toggle="tab"]')
+          .removeClass('error-tab');
+      });
     },
     saveNewsRoom: function(e){
       var viewObj = this;
-      if (this.model.attributes.id) {
-        this.model.save(this.model.attributes, {
-          success: function(data){
-            viewObj.$el.find('#newsroom_form').modal('hide');
-            Robin.module("Newsroom").collection.add(data, {merge: true});
-            Robin.module("Newsroom").collection.trigger('reset');
-          },
-          error: function(data){
-            console.warn('error', data);
-          }
-        });
-      }else{
-        this.model.save(this.model.attributes, {
-          success: function(data){
-            viewObj.$el.find('#newsroom_form').modal('hide');
-            if (Robin.module("Newsroom").controller.filterCriteria.page == 1) {
-              Robin.module("Newsroom").collection.unshift(data);
-              Robin.module("Newsroom").collection.pop();
+      this.form.data('formValidation').validate();
+      if (this.form.data('formValidation').isValid()) {
+        if (this.model.attributes.id) {
+          this.model.save(this.model.attributes, {
+            success: function(data){
+              viewObj.$el.find('#newsroom_form').modal('hide');
+              Robin.module("Newsroom").collection.add(data, {merge: true});
+              Robin.module("Newsroom").collection.trigger('reset');
+            },
+            error: function(data, response){
+              viewObj.processErrors(response);
             }
-          },
-          error: function(data){
-            console.warn('error', data);
-          }
-        });
+          });
+        }else{
+          this.model.save(this.model.attributes, {
+            success: function(data){
+              viewObj.$el.find('#newsroom_form').modal('hide');
+              if (Robin.module("Newsroom").controller.filterCriteria.page == 1) {
+                Robin.module("Newsroom").collection.unshift(data);
+                Robin.module("Newsroom").collection.pop();
+              }
+            },
+            error: function(data, response){
+              viewObj.processErrors(response);
+            }
+          });
+        }
       }
+    },
+    processErrors: function(data){
+      var errors = JSON.parse(data.responseText).errors;
+      _.each(errors, function(value, key){
+        this.form.data('formValidation').updateStatus(key, 'INVALID', 'serverError')
+        this.form.data('formValidation').updateMessage(key, 'serverError', value.join(','))
+      }, this);
     },
     deleteNewsRoom: function(){
       var viewObj = this;
@@ -84,6 +144,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
     onDestroy: function(){
       this.modelBinder.unbind();
+    },
+    manageUsers: function() {
+      if (Robin.ManageUsers._isInitialized){
+        Robin.ManageUsers.Show.Controller.showManageUsersPage();
+      } else {
+        Robin.module('ManageUsers').start();
+      }
     }
   });
 });

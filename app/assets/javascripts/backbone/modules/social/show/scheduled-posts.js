@@ -22,6 +22,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       $.fn.editable.defaults.mode = 'inline';
       this.$el.find('span.editable').editable();
       this.modelBinder.bind(this.model, this.el);
+      sweetAlertInitialize();
     },
 
     events: {

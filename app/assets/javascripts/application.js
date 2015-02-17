@@ -13,10 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require uploadcare
 //= require jqueryui
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
-//= require uploadcare
 //= require progressjs
 //= require blueimp-gallery
 // require bootstrap3-wysihtml5-bower
@@ -38,6 +38,8 @@
 //= require select2
 //= require_directory ./lib
 //= require bootstrap-tagsinput
+//= require ./lib/formValidation/formValidation.min
+//= require ./lib/formValidation/js/bootstrap.min
 
 //= require_tree ./backbone/config
 //= require backbone/init
@@ -67,6 +69,17 @@ ready = function() {
     };
   });
 
+  //trimming space from both side of the string
+  String.prototype.normalizeRSpace = function(len) {
+    if (this.length == 0) {
+      return this;
+    }
+    if (this.length > len) {
+      return this.substring(0, len) + '...';
+    } else {
+      return this + new Array(len - this.length).join(' ');
+    }
+  }
 };
 
 $(document).ready(ready);

@@ -14,14 +14,23 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
   
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
-  
+
       //Avatar uploader
+      var that = this;
       setTimeout(function(){
         uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
           document.getElementById("avatar-image").src = info.cdnUrl;
+          that.model.set({avatar_url: info.cdnUrl});
           // custom Amazon S3 image storage is needed in order to actually store the image
         });
       }, 0);
+    },
+
+    onShow: function() {
+      var m = document.getElementById("avatar-image");
+      if (this.model.attributes.avatar_url) {
+        m.src = this.model.attributes.avatar_url;
+      }
     },
   
     updateProfile: function(e) {

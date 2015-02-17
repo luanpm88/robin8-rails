@@ -1,7 +1,7 @@
 class StreamsController < ApplicationController
 
   def index
-    @streams = current_user.streams
+    @streams = current_user.streams.order(:position)
     render json: @streams.to_json
   end
 
@@ -42,8 +42,15 @@ class StreamsController < ApplicationController
     render json: res.body
   end
 
+  def order
+    positions = params[:stream_ids].map.with_index{|id, i| {position: i}}
+    # ToDo: authorize updating stream
+    Stream.update(params[:stream_ids], positions)
+    render json: {}
+  end
+
   def stream_params
-    params.require(:stream).permit(:user_id, :name, :sort_column, topic_ids: [], blog_ids: [])
+    params.require(:stream).permit(:user_id, :name, :sort_column, topics: [:id, :name], blogs: [:id, :name])
   end
 
 end
