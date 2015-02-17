@@ -50,7 +50,7 @@ class StreamsController < ApplicationController
   end
 
   def stream_params
-    params.require(:stream).permit(:user_id, :name, :sort_column, topics: [:id, :name], blogs: [:id, :name])
+    params.require(:stream).permit(:user_id, :name, :sort_column, topics: [:id, :text], blogs: [:id, :text])
   end
 
 end

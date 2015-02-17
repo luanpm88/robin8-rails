@@ -45,7 +45,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     loadSources: function(e) {
-      $(this.el).find('#sources').select2({
+      var model = this.model;
+      $(this.el).find('#sources-select').select2({
         multiple: true,
         tags: true,
         ajax: {
@@ -54,10 +55,18 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           data: function(term, page) { return { term: term } },
           results: function(data, page) { return { results: data } }
         },
-        formatSelection: function(results) {
-          return 'id';
+        initSelection : function (element, callback) {
+          console.log('initselection');
         },
         minimumInputLength: 1,
+      }).on("select2-selecting", function(e) {
+        var array = model.get('blogs') == undefined ? [] : model.get('blogs');
+        var newValue = {
+          id: e.val,
+          text: e.object.text
+        };
+        array.push(newValue);
+        model.set('blogs', array);
       });
     },
 
