@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :posts
   resources :news_rooms
   resources :industries, only: :index
+  resources :releases
   get 'users/identities' => 'users#identities'
 
   resources :streams, only: [:index, :create, :update, :destroy, :order] do

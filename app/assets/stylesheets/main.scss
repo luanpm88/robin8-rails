@@ -282,9 +282,9 @@ ul {
 }
 .edit-newsroom #media > ul > li div .delete {
   color: #333;
-  position: absolute; 
-  top: 0px; 
-  right: 4px; 
+  position: absolute;
+  top: 0px;
+  right: 4px;
   font-size: 16px;
   display: none;
   z-index: 2;
@@ -305,15 +305,15 @@ ul {
   position: relative;
 }
 .edit-newsroom #media > ul > li .label {
-  position: absolute; 
-  bottom: 0; 
-  left: 0; 
-  width: 100%; 
-  display: block; 
-  text-align: center; 
-  background: rgba(0,0,0,0.5); 
-  font-size: 12px; 
-  color: #fff; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  text-align: center;
+  background: rgba(0,0,0,0.5);
+  font-size: 12px;
+  color: #fff;
   z-index: 1;
   border-radius: 0;
 }
@@ -369,6 +369,9 @@ ul {
 }
 #social-scheduled .list-group-item .social-icons li {
   display: inline;
+}
+.release-title {
+  height: 40px !important;
 }
 .release-item h3 a {
   color: #333;
@@ -438,9 +441,9 @@ ul {
 }
 .edit-release #release-media > ul > li div .delete {
   color: #333;
-  position: absolute; 
-  top: 0px; 
-  right: 4px; 
+  position: absolute;
+  top: 0px;
+  right: 4px;
   font-size: 16px;
   display: none;
   z-index: 2;
@@ -475,15 +478,15 @@ ul {
   position: relative;
 }
 .edit-release #release-media > ul > li .label {
-  position: absolute; 
-  bottom: 0; 
-  left: 0; 
-  width: 100%; 
-  display: block; 
-  text-align: center; 
-  background: rgba(0,0,0,0.5); 
-  font-size: 12px; 
-  color: #fff; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  text-align: center;
+  background: rgba(0,0,0,0.5);
+  font-size: 12px;
+  color: #fff;
   z-index: 1;
   border-radius: 0;
 }
@@ -567,8 +570,8 @@ ul {
   height: 50px;
   width: 50px;
 }
-.blast-release #blast-targets .nav-tabs > li.active > a, 
-.blast-release #blast-targets .nav-tabs > li.active > a:focus, 
+.blast-release #blast-targets .nav-tabs > li.active > a,
+.blast-release #blast-targets .nav-tabs > li.active > a:focus,
 .blast-release #blast-targets .nav-tabs > li.active > a:hover {
   background-color: #3BAFDA !important;
   color: #fff;

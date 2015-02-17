@@ -1,0 +1,34 @@
+<div class="col-sm-6 col-md-4">
+  <div class="thumbnail release-item">
+    <a href="public/release.html" target="_blank" class="release-image">
+      <img class="img-rounded" src="http://lorempixel.com/400/400/?<%- chance.natural({min: 1, max: 5000}) %>">
+      <div class="overlay">
+        Summary
+        <br><br>
+        <ul>
+          <li><i class="fa fa-eye"></i> <strong><%= release.views %></strong> Views</li>
+          <li><i class="fa fa-thumbs-up"></i> <strong><%= release.likes %></strong> Likes</li>
+          <li><i class="fa fa-reply"></i> <strong><%= release.coverages %></strong> Coverages</li>
+        </ul>
+      </div>
+    </a>
+    <div class="caption text-center">
+      <h3><a href="public/release.html" target="_blank"><%= release.title %></a></h3>
+      <small><i class="fa fa-clock-o"></i> <%= release.date %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room.company_name %></strong></small>
+      <p class="release-title">
+        <%= release.text.normalizeRSpace(115) %>
+      </p>
+      <p>
+        <% _.each(release.labels, function(label){ %>
+          <label class="label label-info"><%= label %></label>
+        <% }); %>
+      </p>
+      <hr>
+      <p align="center">
+        <a href="#" class="btn btn-sm btn-success" role="button" data-toggle="modal" data-target=".blast-release"><i class="fa fa-rocket"></i> Robin8</a>
+        <a href="public/release.html" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+        <a href="#" class="btn btn-sm btn-default" id="open_edit"><i class="fa fa-pencil"></i> Edit</a>
+      </p>
+    </div>
+  </div>
+</div>
