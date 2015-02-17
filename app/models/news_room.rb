@@ -9,6 +9,7 @@ class NewsRoom < ActiveRecord::Base
 
   validates :company_name, presence: true
   validates :user_id, presence: true
+  validates :subdomain_name, presence: true, uniqueness: true
   validates_inclusion_of :room_type, in: VALID_TYPES, allow_blank: true
   validates_inclusion_of :size, in: VALID_SIZES, allow_blank: true
 end

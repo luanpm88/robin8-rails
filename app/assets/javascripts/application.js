@@ -38,6 +38,8 @@
 //= require select2
 //= require_directory ./lib
 //= require bootstrap-tagsinput
+//= require ./lib/formValidation/formValidation.min
+//= require ./lib/formValidation/js/bootstrap.min
 
 //= require_tree ./backbone/config
 //= require backbone/init
