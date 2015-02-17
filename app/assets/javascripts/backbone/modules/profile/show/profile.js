@@ -16,9 +16,11 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
   
       //Avatar uploader
+      var that = this;
       setTimeout(function(){
         uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
           document.getElementById("avatar-image").src = info.cdnUrl;
+          that.model.set({avatar_url: info.cdnUrl});
           // custom Amazon S3 image storage is needed in order to actually store the image
         });
       }, 0);
