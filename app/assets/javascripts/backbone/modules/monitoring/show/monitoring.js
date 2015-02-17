@@ -64,10 +64,11 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       //   $(".stream-container").append(getStream());
       // });
 
-      // $(".stream-container").sortable({
-      //   handle: '.stream-header'
-      // });
-      // $(".stream-container").disableSelection();
+      this.$el.find(".stream-container").sortable({
+        handle: '.stream-header'
+      });
+
+      this.$el.find(".stream-container").disableSelection();
 
       // $('.delete-stream').on('click', function(){
       //   swal({
