@@ -7,19 +7,20 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     regions: {
-      streams: ".stream-container",
+      streamsRegion: ".stream-container",
     },
 
     initialize: function() {
-      this.collection.fetch();
     },
 
     addStream: function() {
       var monitoringStreamView = new Show.MonitoringStreamView();
-      $(this.getRegion('streams').el).append(monitoringStreamView.render().el);
+      $(this.getRegion('streamsRegion').el).append(monitoringStreamView.render().el);
     },
 
     onRender: function() {
+      var monitoringStreamsView = new Show.MonitoringStreamsView();
+      this.streamsRegion.show(monitoringStreamsView);
 
       // $addStreamBtn = this.$el.find('#add-stream');
 
