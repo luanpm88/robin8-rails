@@ -3,6 +3,9 @@ class Stream < ActiveRecord::Base
   serialize :topics, Array
   serialize :blogs, Array
   validates :sort_column, inclusion: { in: %w(published_at shares_count) }
+  validates :position, numericality: { greater_than_or_equal_to: 0 },
+                       uniqueness: { scope: :user_id },
+                       allow_nil: true
 
   def query_params
     {

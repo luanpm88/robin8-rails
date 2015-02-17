@@ -28,6 +28,7 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#company" aria-controls="home" role="tab" data-toggle="tab">Company Details</a></li>
+              <li role="presentation"><a href="#subdomain" aria-controls="subdomain" role="tab" data-toggle="tab">Subdomain</a></li>
               <li role="presentation"><a href="#general" aria-controls="messages" role="tab" data-toggle="tab">General</a></li>
               <li role="presentation"><a href="#address" aria-controls="profile" role="tab" data-toggle="tab">Address</a></li>
               <li role="presentation"><a href="#contact" aria-controls="settings" role="tab" data-toggle="tab">Contact</a></li>
@@ -35,29 +36,29 @@
             </ul>
 
             <!-- Tab panes -->
-            <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="company">
-                <div class="col-md-3">
-                  <div class="text-center">
-                    <img src="//placehold.it/200x200" class="avatar" alt="avatar">
-                    <h6>Upload a different logo</h6>
+            <form class="form-horizontal" id="newsroomForm" role="form">
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="company">
+                  <div class="col-md-3">
+                    <div class="text-center">
+                      <img src="//placehold.it/200x200" class="avatar" alt="avatar">
+                      <h6>Upload a different logo</h6>
 
-                    <input type="file" class="form-control">
-                  </div>
-                </div>
-
-                <div class="col-md-9 personal-info">
-                  <div class="alert alert-info alert-dismissable">
-                    <a class="panel-close close" data-dismiss="alert">×</a>
-                    <i class="fa fa-coffee"></i>
-                    This is an <strong>alert</strong>. Use this to show important messages to the user.
+                      <input type="file" class="form-control">
+                    </div>
                   </div>
 
-                  <form class="form-horizontal" role="form">
+                  <div class="col-md-9 personal-info">
+                    <!-- <div class="alert alert-info alert-dismissable">
+                      <a class="panel-close close" data-dismiss="alert">×</a>
+                      <i class="fa fa-coffee"></i>
+                      This is an <strong>alert</strong>. Use this to show important messages to the user.
+                    </div> -->
+
                     <div class="form-group">
                       <label class="col-lg-3 control-label">Company name:</label>
                       <div class="col-lg-8">
-                        <input class="form-control" name="company_name" type="text" value="">
+                        <input class="form-control" name="company_name" type="text" value="" />
                       </div>
                     </div>
                     <div class="form-group">
@@ -112,11 +113,17 @@
                         <input id="tagsinput" name="tags" class="form-control" type="text">
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="general">
-                <form class="form-horizontal" role="form">
+                <div role="tabpanel" class="tab-pane" id="subdomain">
+                  <div class="form-group">
+                    <label class="col-lg-3 control-label">Subdomain name:</label>
+                    <div class="col-lg-8">
+                      <input class="form-control" name="subdomain_name" type="text" value="" />
+                    </div>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="general">
                   <div class="form-group">
                     <label class="col-lg-3 control-label">Email:</label>
                     <div class="col-lg-8">
@@ -153,10 +160,8 @@
                       <textarea name="description" class="form-control"></textarea>
                     </div>
                   </div>
-                </form>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="address">
-                <form class="form-horizontal" role="form">
+                </div>
+                <div role="tabpanel" class="tab-pane" id="address">
                   <div class="form-group">
                     <label class="col-lg-3 control-label">Address 1:</label>
                     <div class="col-lg-8">
@@ -444,10 +449,8 @@
                       </div>
                     </div>
                   </div>
-                </form>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="contact">
-                <form class="form-horizontal" role="form">
+                </div>
+                <div role="tabpanel" class="tab-pane" id="contact">
                   <div class="form-group">
                     <label class="col-lg-3 control-label">Owner Name:</label>
                     <div class="col-lg-8">
@@ -490,70 +493,69 @@
                       <input name="instagram_link" class="form-control" type="text" value="">
                     </div>
                   </div>
-                </form>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="media">
+                  <h4><i class="fa fa-photo"></i> Photos</h4>
+                  <hr>
+                  <ul class="clearfix">
+                    <li>
+                      <div>
+                        <a href="http://lorempixel.com/800/600/?32891" data-gallery>
+                          <img src="http://lorempixel.com/100/100/?328149">
+                        </a>
+                        <a href="#" class="delete"><i class="fa fa-close"></i></a>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <a href="#" class="add-photo" style="text-align: center; font-size: 68px;">
+                          <i class="fa fa-plus-square"></i>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                  <h4><i class="fa fa-play-circle"></i> Videos</h4>
+                  <hr>
+                  <ul class="clearfix">
+                    <li>
+                      <div>
+                        <a href="http://lorempixel.com/800/600/?121" data-gallery>
+                          <img src="http://lorempixel.com/100/100?321">
+                        </a>
+                        <a href="#" class="delete"><i class="fa fa-close"></i></a>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <a href="#" class="add-photo" style="text-align: center; font-size: 68px;">
+                          <i class="fa fa-plus-square"></i>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                  <h4><i class="fa fa-file"></i> Files</h4>
+                  <hr>
+                  <ul class="clearfix">
+                    <li>
+                      <div>
+                        <a href="#" class="file">
+                          <i class="fa fa-file"></i>
+                        </a>
+                        <a href="#" class="delete"><i class="fa fa-close"></i></a>
+                        <span class="label">File dsia 2.xlsx</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <a href="#" class="add-photo" style="text-align: center; font-size: 68px;">
+                          <i class="fa fa-plus-square"></i>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div role="tabpanel" class="tab-pane" id="media">
-                <h4><i class="fa fa-photo"></i> Photos</h4>
-                <hr>
-                <ul class="clearfix">
-                  <li>
-                    <div>
-                      <a href="http://lorempixel.com/800/600/?32891" data-gallery>
-                        <img src="http://lorempixel.com/100/100/?328149">
-                      </a>
-                      <a href="#" class="delete"><i class="fa fa-close"></i></a>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <a href="#" class="add-photo" style="text-align: center; font-size: 68px;">
-                        <i class="fa fa-plus-square"></i>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-                <h4><i class="fa fa-play-circle"></i> Videos</h4>
-                <hr>
-                <ul class="clearfix">
-                  <li>
-                    <div>
-                      <a href="http://lorempixel.com/800/600/?121" data-gallery>
-                        <img src="http://lorempixel.com/100/100?321">
-                      </a>
-                      <a href="#" class="delete"><i class="fa fa-close"></i></a>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <a href="#" class="add-photo" style="text-align: center; font-size: 68px;">
-                        <i class="fa fa-plus-square"></i>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-                <h4><i class="fa fa-file"></i> Files</h4>
-                <hr>
-                <ul class="clearfix">
-                  <li>
-                    <div>
-                      <a href="#" class="file">
-                        <i class="fa fa-file"></i>
-                      </a>
-                      <a href="#" class="delete"><i class="fa fa-close"></i></a>
-                      <span class="label">File dsia 2.xlsx</span>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <a href="#" class="add-photo" style="text-align: center; font-size: 68px;">
-                        <i class="fa fa-plus-square"></i>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
+            </form>
           </div>
         </div>
         <div class="modal-footer">

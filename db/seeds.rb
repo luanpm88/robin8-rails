@@ -30,3 +30,13 @@ end
     Industry.create! name: name
   end
 
+news_room = NewsRoom.last
+if user
+  15.times do |t|
+    user.releases.create!(
+      title: "Title #{t}",
+      text: 'Donec id elit non mexiti porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.',
+      news_room_id: news_room.try(:id)
+    )
+  end
+end
