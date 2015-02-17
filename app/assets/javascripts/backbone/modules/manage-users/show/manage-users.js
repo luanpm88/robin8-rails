@@ -6,6 +6,10 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
     className: "list-group-item",
     model: Robin.Models.ManageableUser,
 
+    initialize: function() {
+      sweetAlertInitialize();
+    },
+
     events: {
       'click #remove-user': 'removeUser',
     },
