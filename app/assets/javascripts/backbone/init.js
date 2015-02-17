@@ -70,20 +70,25 @@ Robin.on('start', function(){
 });
 
 Robin.addInitializer(function(options){
-  if (Robin.currentUser) {
+  if (Robin.currentUser && !Robin.publicPages) {
     Robin.module('Navigation').start();
     Robin.module('Dashboard').start();
     Robin.module('SaySomething').start();
-  } else {
+  } else if (!Robin.publicPages) {
     Robin.module('Authentication').start();
   }
 });
 
 Robin.vent.on("authentication:logged_in", function() {
-  Robin.layouts.main = new Robin.Views.Layouts.Main();
-  Robin.main.show(Robin.layouts.main);
-  Robin.module('Navigation').start();
-  Robin.module('SaySomething').start();
+  if (Robin.publicPages) {
+    Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
+    Robin.main.show(Robin.layouts.main);
+  } else {
+    Robin.layouts.main = new Robin.Views.Layouts.Main();
+    Robin.main.show(Robin.layouts.main);
+    Robin.module('Navigation').start();
+    Robin.module('SaySomething').start();
+  }
 
 });
 
