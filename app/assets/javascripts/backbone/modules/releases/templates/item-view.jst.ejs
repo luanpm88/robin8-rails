@@ -14,7 +14,7 @@
     </a>
     <div class="caption text-center">
       <h3><a href="public/release.html" target="_blank"><%= release.title %></a></h3>
-      <small><i class="fa fa-clock-o"></i> <%= release.date %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room.company_name %></strong></small>
+      <small><i class="fa fa-clock-o"></i> <%= release.date %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
       <p class="release-title">
         <%= release.text.normalizeRSpace(115) %>
       </p>

@@ -14,6 +14,7 @@ Robin.module("Releases", function(Releases, Robin, Backbone, Marionette, $, _){
   Releases.on("stop", function(){
     this.layout.destroy();
     this.controller.destroy();
+    this.top_menu_view.destroy();
   });
 
 });
