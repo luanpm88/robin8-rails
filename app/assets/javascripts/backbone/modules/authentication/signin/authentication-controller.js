@@ -17,6 +17,16 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       Robin.layouts.unauthenticated.signUpForm.show(forgotView);
     },
 
+    showAccept: function(acceptToken){
+      var acceptView = this.getAcceptView(acceptToken);
+      Robin.layouts.unauthenticated.signUpForm.show(acceptView);
+    },
+
+    showReset: function(resetToken){
+      var resetView = this.getResetView(resetToken);
+      Robin.layouts.unauthenticated.signUpForm.show(resetView);
+    },
+
     getSignInView: function(){
       return new SignIn.SignInView();
     },
@@ -27,6 +37,14 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
     getForgotView: function(){
       return new SignIn.ForgotView();
+    },
+
+    getAcceptView: function(acceptToken){
+      return new SignIn.AcceptView({acceptToken: acceptToken});
+    },
+
+    getResetView: function(resetToken){
+      return new SignIn.ResetView({resetToken: resetToken});
     }
 
   };

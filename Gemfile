@@ -51,6 +51,7 @@ source 'https://rails-assets.org' do
 end
 
 gem 'devise'
+gem 'devise_invitable'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-linkedin-oauth2'

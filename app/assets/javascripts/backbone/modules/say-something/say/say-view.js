@@ -148,6 +148,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       
       if (this.model.attributes.scheduled_date === ""){
         this.model.attributes.scheduled_date = moment().utc().format('DD/MM/YYYY hh:mm A');
+      } else {
+        this.model.attributes.scheduled_date = moment(this.model.attributes.scheduled_date).utc();
       }
 
       this.model.save(this.model.attributes, {

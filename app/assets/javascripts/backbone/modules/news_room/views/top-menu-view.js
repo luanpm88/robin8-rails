@@ -6,7 +6,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     events: {
       'click #new_newsroom': 'openModalDialog',
       'click #save_news_room': 'saveNewsRoom',
-      'click #delete_news_room': 'deleteNewsRoom'
+      'click #delete_news_room': 'deleteNewsRoom',
+      'click .manage': 'manageUsers'
     },
     initialize: function(options){
       var viewObj = this;
@@ -84,6 +85,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
     onDestroy: function(){
       this.modelBinder.unbind();
+    },
+    manageUsers: function() {
+      if (Robin.ManageUsers._isInitialized){
+        Robin.ManageUsers.Show.Controller.showManageUsersPage();
+      } else {
+        Robin.module('ManageUsers').start();
+      }
     }
   });
 });

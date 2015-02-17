@@ -4,7 +4,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     template: 'modules/social/show/templates/_scheduled-empty',
     tagName: "li",
     onRender: function(){
-      console.log(this.$el.closest('#today').length);
       $('#today').hide();
     }
   });
@@ -14,20 +13,21 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     tagName: "li",
     className: "list-group-item",
     model: Robin.Models.Post,
-    serializeData : function() {
-      return {
-        text: this.model.get('text'),
-        scheduled_date: this.model.get('scheduled_date')
-      };
+
+    initialize: function() {
+      this.modelBinder = new Backbone.ModelBinder();
     },
 
     onRender: function(){
       $.fn.editable.defaults.mode = 'inline';
       this.$el.find('span.editable').editable();
+      this.modelBinder.bind(this.model, this.el);
     },
 
     events: {
       'click #delete-post': 'deletePost',
+      'click span.editable': 'editPost',
+      'click button[type="submit"]': 'updatePost'
     },
 
     deletePost: function(e) {
@@ -46,6 +46,24 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
     },
+
+    editPost: function() {
+      this.$el.find('textarea').attr('name', 'text')
+      this.modelBinder.bind(this.model, this.el);
+    },
+
+    updatePost: function() {
+      this.modelBinder.copyViewValuesToModel();
+      this.model.save(this.model.attributes, {
+        success: function(data){
+          console.log(data);
+        },
+        error: function(data){
+          console.warn('error', data);
+        }
+      });
+    }
+
   });
   
   Show.ScheduledPostsComposite = Backbone.Marionette.CompositeView.extend({
