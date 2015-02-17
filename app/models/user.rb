@@ -2,11 +2,14 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, :omniauthable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable, 
+         :omniauthable, :invitable
 
   has_many :identities, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :news_rooms, dependent: :destroy
+  has_many :releases, dependent: :destroy
+  has_many :streams, dependent: :destroy
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
     identity = Identity.find_for_oauth(auth)
@@ -48,16 +51,18 @@ class User < ActiveRecord::Base
       config.consumer_secret     = TWITTER_API_SECRET
       config.access_token        = twitter_identity.token
       config.access_token_secret = twitter_identity.token_secret
-    end  
+    end
     client.update(message)
   end
 
   def linkedin_post message #need check
     data = { comment: message, visibility: {code: 'anyone'} }
 
-    response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json", 
-              headers: { 'Content-Type' => 'application/json'}, 
-              query: {oauth2_access_token: linkedin_identity.token}, 
+    p linkedin_identity.token
+
+    response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
+              headers: { 'Content-Type' => 'application/json'},
+              query: {oauth2_access_token: linkedin_identity.token},
               body: data.to_json)
     puts response.body, response.code, response.message, response.headers.inspect
   end

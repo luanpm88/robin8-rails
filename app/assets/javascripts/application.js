@@ -104,6 +104,17 @@ ready = function() {
   // });
   // End Navigation
 
+  //trimming space from both side of the string
+  String.prototype.normalizeRSpace = function(len) {
+    if (this.length == 0) {
+      return this;
+    }
+    if (this.length > len) {
+      return this.substring(0, len) + '...';
+    } else {
+      return this + new Array(len - this.length).join(' ');
+    }
+  }
 };
 
 $(document).ready(ready);

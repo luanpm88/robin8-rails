@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
     protected
 
     def configure_permitted_parameters
-      devise_parameter_sanitizer.for(:account_update).push(:first_name, :last_name, :company, :time_zone, :name)
+      devise_parameter_sanitizer.for(:account_update).push(:first_name,
+        :last_name, :company, :time_zone, :name, :avatar_url)
     end
 
     def set_paginate_headers klass, count
