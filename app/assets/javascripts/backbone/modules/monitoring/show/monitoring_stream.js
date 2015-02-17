@@ -36,8 +36,11 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       e.preventDefault();
 
       // test hardcode
-      this.model.set('topic_ids', ['asd', 'add']);
-      this.model.set('blog_ids', ['asd', 'add']);
+      this.model.set('topics', [{"id": "Barack_Obama", "name":"Obama"}]);
+      this.model.set('blogs', [
+        {"id": 2107, "blog_name": "Journal Review"},
+        {"id": 217,  "blog_name": "Newsday "}
+      ]);
       this.model.set('sort_column', 'published_at');
 
       console.log(this.model);
