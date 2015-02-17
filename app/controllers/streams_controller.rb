@@ -1,7 +1,7 @@
 class StreamsController < ApplicationController
 
   def index
-    @streams = current_user.streams
+    @streams = current_user.streams.order(:position)
     render json: @streams.to_json
   end
 
@@ -40,6 +40,13 @@ class StreamsController < ApplicationController
 
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
     render json: res.body
+  end
+
+  def order
+    positions = params[:stream_ids].map.with_index{|id, i| {position: i}}
+    # ToDo: authorize updating stream
+    Stream.update(params[:stream_ids], positions)
+    render json: {}
   end
 
   def stream_params
