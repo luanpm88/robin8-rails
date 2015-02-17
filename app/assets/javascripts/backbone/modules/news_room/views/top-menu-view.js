@@ -10,11 +10,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       'click .manage': 'manageUsers'
     },
     initialize: function(options){
-      var viewObj = this;
       this.modelBinder = new Backbone.ModelBinder();
-      Robin.vent.on("news_room:open_edit_modal", function(data) {
-        viewObj.openModalDialogEdit(data);
-      });
+      Robin.vent.on("news_room:open_edit_modal", this.openModalDialogEdit, this);
       this.collection.fetch();
     },
     templateHelpers: function () {
@@ -143,6 +140,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       });
     },
     onDestroy: function(){
+      Robin.vent.off("news_room:open_edit_modal", this.openModalDialogEdit);
       this.modelBinder.unbind();
     },
     manageUsers: function() {
