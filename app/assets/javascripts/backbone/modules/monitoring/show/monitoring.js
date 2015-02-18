@@ -7,7 +7,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     regions: {
-      streamsRegion: ".stream-container",
+      streamsRegion: "#streams-content",
     },
 
     initialize: function() {
