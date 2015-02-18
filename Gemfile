@@ -83,10 +83,10 @@ gem 'ejs'
 
 group :development, :test do
   # Deploy with Capistrano
-  gem 'capistrano-rails', '~> 1.1.1'
-  gem 'capistrano-rbenv', '~> 2.0.2'
-  gem 'capistrano-bundler', '~> 1.1.2'
-  gem 'capistrano-sidekiq'
+  gem 'capistrano-rails', '~> 1.1.2'
+  gem 'capistrano-rbenv', '~> 2.0.3'
+  gem 'capistrano-bundler', '~> 1.1.4'
+  gem 'capistrano-sidekiq', '~> 0.4.0'
   
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

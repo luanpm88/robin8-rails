@@ -369,10 +369,10 @@ DEPENDENCIES
   bootstrap-wysihtml5-rails!
   bundler (>= 1.7.0)
   byebug
-  capistrano-bundler (~> 1.1.2)
-  capistrano-rails (~> 1.1.1)
-  capistrano-rbenv (~> 2.0.2)
-  capistrano-sidekiq
+  capistrano-bundler (~> 1.1.4)
+  capistrano-rails (~> 1.1.2)
+  capistrano-rbenv (~> 2.0.3)
+  capistrano-sidekiq (~> 0.4.0)
   coffee-rails (~> 4.1.0)
   devise
   devise_invitable
