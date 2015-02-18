@@ -1,6 +1,6 @@
 Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
-  Show.MonitoringStreamView = Backbone.Marionette.CompositeView.extend({
+  Show.StreamItemView = Backbone.Marionette.CompositeView.extend({
     template: 'modules/monitoring/show/templates/monitoring_stream',
     tagName: "li",
     className: "stream",
@@ -54,6 +54,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.loadInfo('topics');
       this.loadInfo('blogs');
       this.modelBinder.bind(this.model, this.el);
+
+      if(this.model.attributes.id)
+        this.$el.find('.stream-settings').addClass('closed');
     },
 
     closeStream: function() {
