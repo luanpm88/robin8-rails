@@ -65,7 +65,6 @@ gem 'sidekiq'
 gem 'sidetiq'
 gem 'will_paginate', '~> 3.0.6'
 gem 'has_scope'
-gem 'rails_12factor', group: [:production, :staging]
 
 gem 'twitter'
 # gem 'linkedin'
