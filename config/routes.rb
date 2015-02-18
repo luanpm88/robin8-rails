@@ -8,8 +8,7 @@ Rails.application.routes.draw do
       confirmations: "users/confirmations" }
 
   get '/users/manageable_users' => 'users#manageable_users'
-  delete '/users/:id' => 'users#destroy'
-
+  delete '/users/delete_user' => 'users#delete_user'
   get 'users/get_current_user' => 'users#get_current_user'
   delete '/users/disconnect_social' => 'users#disconnect_social'
 
@@ -31,9 +30,9 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  constraints(Subdomain) do
-    get '/' => 'news_rooms#preview'
-  end
+  # constraints(Subdomain) do
+  #   get '/' => 'news_rooms#preview'
+  # end
   root 'pages#home'
 
   # Example of regular route:

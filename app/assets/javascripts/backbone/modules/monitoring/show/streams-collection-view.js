@@ -1,8 +1,10 @@
 Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
-  Show.MonitoringStreamsView = Backbone.Marionette.CollectionView.extend({
+  Show.StreamsCollectionView = Backbone.Marionette.CollectionView.extend({
 
-    childView: Show.MonitoringStreamView,
+    tagName: "ul",
+    className: "stream-container",
+
     collection: new Robin.Collections.Streams(),
 
     initialize: function() {
