@@ -34,9 +34,11 @@ class NewsRoomsController < ApplicationController
   end
 
   def preview
-    p '~~~~~~~~'
-    p request.subdomain
-    @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
+    if request.subdomain = 'robin8-staging'
+      redirect_to root_path
+    else
+      @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
+    end
   end
 
 private
