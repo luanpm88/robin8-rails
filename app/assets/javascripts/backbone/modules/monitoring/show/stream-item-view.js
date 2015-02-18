@@ -125,9 +125,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.model.set('sort_column', 'published_at');
 
-      this.fetchStories();
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
+          this.fetchStories();
           $(this.el).find('.slider').addClass('closed');
           $.growl({message: "Your stream was saved!"
           },{
