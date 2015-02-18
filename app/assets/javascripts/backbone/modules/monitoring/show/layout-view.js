@@ -1,5 +1,5 @@
 Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
-  Show.MonitoringPage = Backbone.Marionette.LayoutView.extend({
+  Show.LayoutView = Backbone.Marionette.LayoutView.extend({
     template: 'modules/monitoring/show/templates/monitoring',
 
     events: {
@@ -16,12 +16,12 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     addStream: function() {
       var model = new Robin.Models.Stream();
       var stream = new Robin.Models.Stream({model: model});
-      this.monitoringStreamsView.collection.push(stream);
+      this.streamsCollectionView.collection.push(stream);
     },
 
     onRender: function() {
-      this.monitoringStreamsView = new Show.MonitoringStreamsView();
-      this.streamsRegion.show(this.monitoringStreamsView);
+      this.streamsCollectionView = new Show.StreamsCollectionView({childView: Show.StreamItemView});
+      this.streamsRegion.show(this.streamsCollectionView);
 
       // $addStreamBtn = this.$el.find('#add-stream');
 
