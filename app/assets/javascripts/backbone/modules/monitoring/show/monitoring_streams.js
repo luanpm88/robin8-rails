@@ -10,7 +10,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     onRender: function() {
-      console.log('rendered sasa')
     }
   });
 

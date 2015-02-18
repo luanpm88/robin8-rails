@@ -34,6 +34,8 @@ class NewsRoomsController < ApplicationController
   end
 
   def preview
+    p '~~~~~~~~'
+    p request.subdomain
     @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
   end
 
