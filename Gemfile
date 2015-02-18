@@ -83,10 +83,15 @@ gem 'ejs'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  # Deploy with Capistrano
+  gem 'capistrano-rails', '~> 1.1.1'
+  gem 'capistrano-rbenv', '~> 2.0.2'
+  gem 'capistrano-bundler', '~> 1.1.2'
+  gem 'capistrano-sidekiq'
+  
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails'
-  gem 'thin'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
@@ -94,4 +99,3 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-

@@ -77,14 +77,15 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.action_mailer.default_url_options = { host: 'robin8-staging.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
   ActionMailer::Base.smtp_settings = {
-    :port           => ENV['MAILGUN_SMTP_PORT'],
-    :address        => ENV['MAILGUN_SMTP_SERVER'],
-    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         => 'yourapp.heroku.com',
+    :user_name => Rails.application.secrets[:smtp][:user_name],
+    :password => Rails.application.secrets[:smtp][:password],
+    :domain => Rails.application.secrets[:smtp][:domain],
+    :address => Rails.application.secrets[:smtp][:address],
+    :port => Rails.application.secrets[:smtp][:port],
     :authentication => :plain,
+    :enable_starttls_auto => true
   }
   ActionMailer::Base.delivery_method = :smtp
 end
