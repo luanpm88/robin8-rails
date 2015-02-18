@@ -14,7 +14,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initialize: function() {
-      this.model = new Robin.Models.Stream();
       this.modelBinder = new Backbone.ModelBinder();
     },
 
@@ -77,7 +76,21 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     closeStream: function() {
-      this.destroy();
+      var r = this.model;
+      swal({
+        title: "Delete Post?",
+        text: "You will not be able to recover this post.",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: 'Delete'
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          console.log(r);
+          r.destroy({ dataType: "text"});
+        }
+      });
     },
 
     settings: function() {

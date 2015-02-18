@@ -14,13 +14,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     addStream: function() {
-      var monitoringStreamView = new Show.MonitoringStreamView();
-      $(this.getRegion('streamsRegion').el).append(monitoringStreamView.render().el);
+      var model = new Robin.Models.Stream();
+      var stream = new Robin.Models.Stream({model: model});
+      this.monitoringStreamsView.collection.push(stream);
     },
 
     onRender: function() {
-      var monitoringStreamsView = new Show.MonitoringStreamsView();
-      this.streamsRegion.show(monitoringStreamsView);
+      this.monitoringStreamsView = new Show.MonitoringStreamsView();
+      this.streamsRegion.show(this.monitoringStreamsView);
 
       // $addStreamBtn = this.$el.find('#add-stream');
 
