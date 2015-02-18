@@ -14,6 +14,10 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .editable-submit': 'updateTitle',
     },
 
+    modelEvents: {
+      "change": "fetchStories"
+    },
+
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
     },
@@ -28,6 +32,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (this.model.attributes.id) {
         this.$el.find('.stream-settings').addClass('closed');
       }
+      this.fetchStories();
     },
 
     editTitle: function() {
@@ -78,6 +83,19 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         currentModel.set(val, updatedTopics);
       });
       $(this.el).find('#' + val + '-select').select2('val', currentModel.attributes[val]);
+    },
+
+    fetchStories: function() {
+      var stream = this.model.attributes;
+      if(!stream.id) return;
+      this.$el.find('.stream-settings').addClass('closed');
+
+      var storiesCollectionView = new Show.StoriesCollectionView({
+        collection: new Robin.Collections.Stories([], {streamId: stream.id}),
+        childView: Show.StoryItemView
+      });
+
+      this.$el.find('.stream-body').html(storiesCollectionView.render().el);
     },
 
     closeStream: function() {
