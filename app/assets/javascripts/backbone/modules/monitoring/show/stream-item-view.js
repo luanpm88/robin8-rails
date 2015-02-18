@@ -114,7 +114,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           $(this.el).find('.slider').addClass('closed');
-          $.growl({message: "You've created a stream"
+          $.growl({message: "Your stream was saved!"
           },{
             type: 'success'
           });
