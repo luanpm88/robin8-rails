@@ -39,7 +39,8 @@ class StreamsController < ApplicationController
     req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
 
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
-    render json: res.body
+
+    render json: JSON.parse(res.body)['stories']
   end
 
   def order
