@@ -88,7 +88,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     fetchStories: function() {
       var stream = this.model.attributes;
       if(!stream.id) return;
-      this.$el.find('.stream-settings').addClass('closed');
+      // this.$el.find('.stream-settings').addClass('closed');
 
       var storiesCollectionView = new Show.StoriesCollectionView({
         collection: new Robin.Collections.Stories([], {streamId: stream.id}),
