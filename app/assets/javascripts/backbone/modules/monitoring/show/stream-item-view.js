@@ -10,12 +10,42 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .settings-button': 'settings',
       'click #close-settings': 'closeSettings',
       'click #done': 'done',
+      'click span.editable': 'editTitle',
+      'click .editable-submit': 'updateTitle',
     },
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
     },
 
+    onRender: function() {
+      $.fn.editable.defaults.mode = 'inline';
+      this.$el.find('span.editable').editable({inputclass: 'edit-title'});
+      this.loadInfo('topics');
+      this.loadInfo('blogs');
+      this.modelBinder.bind(this.model, this.el);
+
+      if (this.model.attributes.id) {
+        this.$el.find('.stream-settings').addClass('closed');
+      }
+    },
+
+    editTitle: function() {
+      this.$el.find('.edit-title').attr('name', 'name')
+      this.modelBinder.bind(this.model, this.el);
+    },
+
+    updateTitle: function() {
+      this.model.save(this.model.attributes, {
+        success: function(data){
+          console.log(data);
+        },
+        error: function(data){
+          console.warn('error', data);
+        }
+      });
+    },
+    
     loadInfo: function(val) {
       var currentModel = this.model;
       
@@ -48,15 +78,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         currentModel.set(val, updatedTopics);
       });
       $(this.el).find('#' + val + '-select').select2('val', currentModel.attributes[val]);
-    },
-
-    onRender: function() {
-      this.loadInfo('topics');
-      this.loadInfo('blogs');
-      this.modelBinder.bind(this.model, this.el);
-
-      if(this.model.attributes.id)
-        this.$el.find('.stream-settings').addClass('closed');
     },
 
     closeStream: function() {
