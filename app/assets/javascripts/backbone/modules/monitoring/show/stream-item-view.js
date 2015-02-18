@@ -73,6 +73,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.loadTopics();
       this.loadSources();
       this.modelBinder.bind(this.model, this.el);
+
+      if(this.model.attributes.id)
+        this.$el.find('.stream-settings').addClass('closed');
     },
 
     closeStream: function() {
