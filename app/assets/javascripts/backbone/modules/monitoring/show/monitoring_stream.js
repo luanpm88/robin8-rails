@@ -10,76 +10,57 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .settings-button': 'settings',
       'click #close-settings': 'closeSettings',
       'click #done': 'done',
-      'keydown #topics': 'loadTopics',
     },
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
     },
 
-    loadTopics: function(e) {
-      var model = this.model;
-      $(this.el).find('#topics-select').select2({
+    loadInfo: function(val) {
+      var currentModel = this.model;
+      
+      $(this.el).find('#' + val + '-select').select2({
         multiple: true,
         tags: true,
         ajax: {
-          url: '/autocompletes/topics',
+          url: '/autocompletes/' + val,
           dataType: 'json',
           data: function(term, page) { return { term: term } },
           results: function(data, page) { return { results: data } }
         },
         initSelection : function (element, callback) {
-          console.log('initselection');
+          callback(currentModel.attributes[val]);
         },
         minimumInputLength: 1,
       }).on("select2-selecting", function(e) {
-        var array = model.get('topics') == undefined ? [] : model.get('topics');
+        var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
         var newValue = {
           id: e.val,
           text: e.object.text
         };
-        array.push(newValue);
-        model.set('topics', array);
+        getTopics.push(newValue);
+        
+        currentModel.set(val, getTopics);
+      }).on("select2-removed", function(e) {
+        var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
+        var updatedTopics = _.reject(getTopics, function(k){ return k.id == e.val; });
+        
+        currentModel.set(val, updatedTopics);
       });
-    },
-
-    loadSources: function(e) {
-      var model = this.model;
-      $(this.el).find('#sources-select').select2({
-        multiple: true,
-        tags: true,
-        ajax: {
-          url: '/autocompletes/blogs',
-          dataType: 'json',
-          data: function(term, page) { return { term: term } },
-          results: function(data, page) { return { results: data } }
-        },
-        initSelection : function (element, callback) {
-          console.log('initselection');
-        },
-        minimumInputLength: 1,
-      }).on("select2-selecting", function(e) {
-        var array = model.get('blogs') == undefined ? [] : model.get('blogs');
-        var newValue = {
-          id: e.val,
-          text: e.object.text
-        };
-        array.push(newValue);
-        model.set('blogs', array);
-      });
+      $(this.el).find('#' + val + '-select').select2('val', currentModel.attributes[val]);
     },
 
     onRender: function() {
-      this.loadTopics();
-      this.loadSources();
+      this.loadInfo('topics');
+      this.loadInfo('blogs');
       this.modelBinder.bind(this.model, this.el);
     },
 
     closeStream: function() {
       var r = this.model;
       swal({
-        title: "Delete Post?",
-        text: "You will not be able to recover this post.",
+        title: "Delete Stream?",
+        text: "You will not be able to recover this stream.",
         type: "error",
         showCancelButton: true,
         confirmButtonClass: 'btn-danger',
@@ -87,7 +68,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       },
       function(isConfirm) {
         if (isConfirm) {
-          console.log(r);
           r.destroy({ dataType: "text"});
         }
       });
