@@ -14,10 +14,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .editable-submit': 'updateTitle',
     },
 
-    modelEvents: {
-      "change": "fetchStories"
-    },
-
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
     },
@@ -129,6 +125,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.model.set('sort_column', 'published_at');
 
+      this.fetchStories();
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           $(this.el).find('.slider').addClass('closed');
