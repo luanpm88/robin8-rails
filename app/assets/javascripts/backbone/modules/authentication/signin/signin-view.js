@@ -27,7 +27,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
-          Robin.finishSignIn(data);
+          Robin.finishSignIn(response);
         },
         error: function(userSession, response) {
           var result = $.parseJSON(response.responseText);
