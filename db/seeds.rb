@@ -1,9 +1,10 @@
 user = User.last
 if user
-  10.times do |t|
+  9.times do |t|
     @news_room = NewsRoom.create!(
       user_id: user.id,
       company_name: "Company_#{t}",
+      subdomain_name: "subdomain_#{t}",
       description: 'Donec id elit non mexiti porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.',
       email: "aaa@aaa_#{t}.aaa",
       room_type: 'Privately Held',
@@ -13,7 +14,7 @@ if user
   end
 end
 
-# Seed industries
+Seed industries
 
 ["Accounting","Airlines/Aviation","Alternative Dispute Resolution","Alternative Medicine","Animation","Apparel & Fashion","Architecture & Planning","Arts and Crafts","Automotive","Aviation & Aerospace","Banking","Biotechnology","Broadcast Media","Building Materials",
   "Business Supplies and Equipment","Capital Markets","Chemicals","Civic & Social Organization","Civil Engineering","Cleaning/Janitorial","Commercial Real Estate","Computer & Network Security","Computer Games","Computer Hardware","Computer Networking","Computer Software",
@@ -39,4 +40,4 @@ if user
       news_room_id: news_room.try(:id)
     )
   end
-end
+# end

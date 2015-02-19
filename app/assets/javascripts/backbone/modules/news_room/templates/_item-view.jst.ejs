@@ -1,7 +1,11 @@
 <li class="newsroom">
   <div class="thumbnail" style="padding: 0">
     <div style="padding:4px;">
-      <img alt="300x200" style="width: 100%" src="http://lorempixel.com/400/300/?<%- chance.natural({min: 1, max: 5000}) %>">
+      <% if(news_room.logo_url) {%>
+        <img alt="300x200" style="width: 100%" src="<%= news_room.logo_url %>">
+      <%} else {%>
+        <img alt="300x200" style="width: 100%" src="http://lorempixel.com/400/300/?<%- chance.natural({min: 1, max: 5000}) %>">
+      <%}%>
     </div>
     <div class="caption">
       <h2><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
