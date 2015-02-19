@@ -42,6 +42,11 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.initLogoView();
       this.initMediaView();
     },
+    onShow: function(){
+      if (Robin.currentUser.attributes.is_primary == false){
+        this.$el.find(".manage").hide();
+      }
+    },
     initLogoView: function(){
       this.logoRegion.show(new Robin.Views.LogoView({
         model: this.model,
