@@ -34,6 +34,10 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       }
     },
 
+    onDestroy: function() {
+      this.collection.stopPolling();
+    },
+
     editTitle: function() {
       this.$el.find('.edit-title').attr('name', 'name')
       this.modelBinder.bind(this.model, this.el);
@@ -88,7 +92,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if(!this.model.get('id')) return;
       this.collection = this.model.stories();
       this.listenTo(this.collection, 'add', this.render);
-      this.collection.fetch();
+      this.collection.startPolling();
     },
 
     closeStream: function() {
