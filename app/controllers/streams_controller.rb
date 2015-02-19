@@ -43,11 +43,12 @@ class StreamsController < ApplicationController
     render json: JSON.parse(res.body)['stories']
   end
 
-  def order
-    positions = params[:stream_ids].map.with_index{|id, i| {position: i}}
-    # ToDo: authorize updating stream
-    Stream.update(params[:stream_ids], positions)
-    render json: {}
+  def order    
+    params[:ids].each_with_index do |id, index|
+      stream = Stream.find(id)
+      stream.update_attribute(:position, index.to_i+1)
+    end
+    render nothing: true
   end
 
   def stream_params

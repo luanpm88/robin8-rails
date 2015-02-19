@@ -19,6 +19,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     onRender: function() {
+      this.$el.attr("data-pos",this.model.id)
       $.fn.editable.defaults.mode = 'inline';
       this.$el.find('span.editable').editable({inputclass: 'edit-title'});
       this.loadInfo('topics');
@@ -130,7 +131,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           curView.fetchStories();
-          $(this.el).find('.slider').addClass('closed');
+          $(curView.el).attr("data-pos",response.id);
+          $(curView.el).find('.slider').addClass('closed');
           $.growl({message: "Your stream was saved!"
           },{
             type: 'success'
