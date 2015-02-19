@@ -4,6 +4,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     template: 'modules/monitoring/show/templates/monitoring_stream',
     tagName: "li",
     className: "stream",
+    childViewContainer: ".stories",
 
     events: {
       'click .delete-stream': 'closeStream',
@@ -16,6 +17,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
+      this.childView = Show.StoryItemView;
+      this.fetchStories();
     },
 
     onRender: function() {
@@ -26,10 +29,13 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.loadInfo('blogs');
       this.modelBinder.bind(this.model, this.el);
 
-      if (this.model.attributes.id) {
-        this.$el.find('.stream-settings').addClass('closed');
+      if (!this.model.get('id')) {
+        this.$el.find('.stream-settings').removeClass('closed');
       }
-      this.fetchStories();
+    },
+
+    onDestroy: function() {
+      this.collection.stopPolling();
     },
 
     editTitle: function() {
@@ -47,10 +53,10 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
     },
-    
+
     loadInfo: function(val) {
       var currentModel = this.model;
-      
+
       $(this.el).find('#' + val + '-select').select2({
         multiple: true,
         tags: true,
@@ -71,28 +77,22 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           text: e.object.text
         };
         getTopics.push(newValue);
-        
+
         currentModel.set(val, getTopics);
       }).on("select2-removed", function(e) {
         var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
         var updatedTopics = _.reject(getTopics, function(k){ return k.id == e.val; });
-        
+
         currentModel.set(val, updatedTopics);
       });
       $(this.el).find('#' + val + '-select').select2('val', currentModel.attributes[val]);
     },
 
     fetchStories: function() {
-      var stream = this.model.attributes;
-      if(!stream.id) return;
-      // this.$el.find('.stream-settings').addClass('closed');
-
-      var storiesCollectionView = new Show.StoriesCollectionView({
-        collection: new Robin.Collections.Stories([], {streamId: stream.id}),
-        childView: Show.StoryItemView
-      });
-
-      this.$el.find('.stream-body').html(storiesCollectionView.render().el);
+      if(!this.model.get('id')) return;
+      this.collection = this.model.stories();
+      this.listenTo(this.collection, 'add', this.render);
+      this.collection.startPolling();
     },
 
     closeStream: function() {

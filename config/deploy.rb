@@ -38,6 +38,8 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 # Default value for default_env is {}
 set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:$PATH" }
 
+set :ssh_options, {:forward_agent => true}
+
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
