@@ -1,4 +1,4 @@
-var ShrinkedLink = {
+Robin.ShrinkedLink = {
   shrink : function(url) {
     BitlyClient.shorten(url, function(data) {
       var saySomethingContent = $('#say-something-field').val();
@@ -16,16 +16,16 @@ var ShrinkedLink = {
   },
 }
 
-var checkAbilityPosting = function(){
-  var condition1 = $("#say-something-field").val().length == 0;
-  var condition2 = $('.social-networks').find('.btn-primary').length == 0;
+// var this.checkAbilityPosting = function(){
+//   var condition1 = $("#say-something-field").val().length == 0;
+//   var condition2 = $('.social-networks').find('.btn-primary').length == 0;
 
-  if (condition1 || condition2) {
-    $('.post-settings').find('input[type=submit]').addClass('disabled');
-  } else {
-    $('.post-settings').find('input[type=submit]').removeClass('disabled');
-  }
-};
+//   if (condition1 || condition2) {
+//     $('.post-settings').find('input[type=submit]').addClass('disabled');
+//   } else {
+//     $('.post-settings').find('input[type=submit]').removeClass('disabled');
+//   }
+// };
 
 Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
@@ -76,7 +76,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       $('.navbar-search-lg').show().find('textarea').focus();
       $('.progressjs-progress').show();
       e.stopPropagation();
-      checkAbilityPosting();
+      this.checkAbilityPosting();
     },
 
     setCounter: function() {
@@ -86,7 +86,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       var limit = 140;
       counter.text(limit - sayText.val().length);
 
-      checkAbilityPosting();
+      this.checkAbilityPosting();
 
       if (sayText.val().length <= limit) {
         prgjs.set(Math.floor(sayText.val().length * 100/limit));
@@ -125,7 +125,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
         if (urls != null) {
           $.each(urls, function( index, value ) {
-            ShrinkedLink.shrink($.trim(value))
+            Robin.ShrinkedLink.shrink($.trim(value))
           });
         }
       } else {
@@ -135,9 +135,20 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         var urls = saySomethingContent.match(pattern)
         if (urls != null) {
           $.each(urls, function( index, value ) {
-            ShrinkedLink.unshrink($.trim(value))
+            Robin.ShrinkedLink.unshrink($.trim(value))
           });
         }
+      }
+    },
+
+    checkAbilityPosting: function(){
+      var condition1 = $("#say-something-field").val().length == 0;
+      var condition2 = $('.social-networks').find('.btn-primary').length == 0;
+
+      if (condition1 || condition2) {
+        $('.post-settings').find('input[type=submit]').addClass('disabled');
+      } else {
+        $('.post-settings').find('input[type=submit]').removeClass('disabled');
       }
     },
 
@@ -182,7 +193,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       } else {
         input.val('false')
       }
-      checkAbilityPosting();
+      this.checkAbilityPosting();
     }
     
   });
