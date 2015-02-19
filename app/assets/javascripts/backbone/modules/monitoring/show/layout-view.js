@@ -13,17 +13,37 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     initialize: function() {
     },
 
+    onRender: function() {
+      var currView = this;
+      currView.streamsCollectionView = new Show.StreamsCollectionView({childView: Show.StreamItemView});
+      currView.streamsRegion.show(currView.streamsCollectionView);
+      currView.$el.find(".stream-container").sortable({
+        handle: '.stream-header',
+        update: function(){
+          var listOrder = [];
+          $(currView.el).find('li.stream').each(function(i, list){
+            var list_id = $(list).data('pos');
+            listOrder.push(list_id);
+          })
+          $.ajax({
+            type: 'POST',
+            url: 'streams/order',
+            data: {ids: listOrder},
+            datatype: 'json',
+            complete: function(request){
+              console.log(request)
+            },
+     
+          })
+        }
+      });
+      currView.$el.find(".stream-container").disableSelection();
+    },
+    
     addStream: function() {
       var model = new Robin.Models.Stream();
       var stream = new Robin.Models.Stream({model: model});
       this.streamsCollectionView.collection.push(stream);
-    },
-
-    onRender: function() {
-      this.streamsCollectionView = new Show.StreamsCollectionView({childView: Show.StreamItemView});
-      this.streamsRegion.show(this.streamsCollectionView);
-      this.$el.find(".stream-container").sortable({handle: '.stream-header'});
-      this.$el.find(".stream-container").disableSelection();
     },
   });
 });
