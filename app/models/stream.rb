@@ -11,8 +11,8 @@ class Stream < ActiveRecord::Base
 
   def set_position
     last_stream = Stream.order('position DESC').first
-    self.position = last_stream.position + 1
-    self.save
+    self.position = last_stream == self ? 1 : last_stream.position + 1
+    self.save!
   end
 
   def query_params
