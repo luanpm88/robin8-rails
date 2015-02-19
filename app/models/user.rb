@@ -9,6 +9,9 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :streams, dependent: :destroy
 
+  has_many :payments
+  has_one :subscription , dependent: :destroy
+
   def self.find_for_oauth(auth, signed_in_resource = nil)
     identity = Identity.find_for_oauth(auth)
 
