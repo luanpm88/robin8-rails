@@ -16,17 +16,6 @@ Robin.ShrinkedLink = {
   },
 }
 
-// var this.checkAbilityPosting = function(){
-//   var condition1 = $("#say-something-field").val().length == 0;
-//   var condition2 = $('.social-networks').find('.btn-primary').length == 0;
-
-//   if (condition1 || condition2) {
-//     $('.post-settings').find('input[type=submit]').addClass('disabled');
-//   } else {
-//     $('.post-settings').find('input[type=submit]').removeClass('disabled');
-//   }
-// };
-
 Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
   Say.SayView = Backbone.Marionette.ItemView.extend({
