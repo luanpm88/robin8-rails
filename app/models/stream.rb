@@ -7,6 +7,14 @@ class Stream < ActiveRecord::Base
                        uniqueness: { scope: :user_id },
                        allow_nil: true
 
+  after_create :set_position
+
+  def set_position
+    last_stream = Stream.order('position DESC').first
+    self.position = last_stream.position + 1
+    self.save
+  end
+
   def query_params
     {
       'blog_ids[]' => blogs.map{|blog| blog[:id]},

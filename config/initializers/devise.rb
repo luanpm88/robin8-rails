@@ -4,7 +4,7 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  config.secret_key = '08d9741592f4729aae97cbd8f3ff37300b164d99cefdebca6b9c4561dc46fda14b8bca0a5e160cbe13404e1bfac8d75476ac64f10d1fafceb9a98117ee101736'
+  config.secret_key = Rails.application.secrets[:devise][:secret_key]
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -256,8 +256,12 @@ Devise.setup do |config|
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
-  config.omniauth :twitter, TWITTER_API_KEY, TWITTER_API_SECRET
-  config.omniauth :linkedin, LINKEDIN_API_KEY, LINKEDIN_API_SECRET
-  config.omniauth :facebook, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
-  config.omniauth :google_oauth2, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+  config.omniauth :twitter, Rails.application.secrets.twitter[:api_key], 
+    Rails.application.secrets.twitter[:api_secret]
+  config.omniauth :linkedin, Rails.application.secrets.linkedin[:api_key],
+    Rails.application.secrets.linkedin[:api_secret]
+  config.omniauth :facebook, Rails.application.secrets.facebook[:app_id],
+    Rails.application.secrets.facebook[:app_secret]
+  config.omniauth :google_oauth2, Rails.application.secrets.google[:client_id],
+    Rails.application.secrets.google[:client_secret]
 end

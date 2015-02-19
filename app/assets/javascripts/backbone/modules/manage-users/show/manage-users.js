@@ -33,7 +33,20 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       },
       function(isConfirm) {
         if (isConfirm) {
-          r.destroy({ dataType: "text"});
+          $.ajax({
+            type: 'DELETE',
+            url: '/users/delete_user',
+            dataType: 'json',
+            data: r.attributes,
+            success: function(data, textStatus, jqXHR) {
+              r.collection.fetch()
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              $.growl(textStatus, {
+                type: "danger",
+              });
+            }
+          });
         }
       });
     },

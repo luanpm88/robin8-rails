@@ -39,14 +39,16 @@ class StreamsController < ApplicationController
     req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
 
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
-    render json: res.body
+
+    render json: JSON.parse(res.body)['stories']
   end
 
-  def order
-    positions = params[:stream_ids].map.with_index{|id, i| {position: i}}
-    # ToDo: authorize updating stream
-    Stream.update(params[:stream_ids], positions)
-    render json: {}
+  def order    
+    params[:ids].each_with_index do |id, index|
+      stream = Stream.find(id)
+      stream.update_attribute(:position, index.to_i+1)
+    end
+    render nothing: true
   end
 
   def stream_params

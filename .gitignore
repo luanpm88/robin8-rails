@@ -13,3 +13,5 @@
 /tmp
 /db/schema.rb
 dump.rdb
+config/secrets.yml
+config/database.yml
