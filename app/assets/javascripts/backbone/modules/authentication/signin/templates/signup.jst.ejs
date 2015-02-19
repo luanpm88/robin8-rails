@@ -2,24 +2,40 @@
 <p style="font-weight: normal;">
   Please enter your <strong>Email</strong> and <strong>Password</strong> or use <strong>Social Sign-up</strong>.
 </p>
-<form accept-charset="UTF-8" role="form" class="form-signup">
-  <fieldset>
+
+<form accept-charset="UTF-8" class="form-signup" id="formSignup">
+
     <label class="panel-login">
       <div class="login_result"></div>
     </label>
-    <input class="form-control" placeholder="Email" name='email' id="email" type="text" />
-    <input class="form-control" placeholder="Password" name='password' id="sign-up-password" type="password" />
-    <input class="form-control" placeholder="Password Confirmation" name='password_confirmation' id="sign-up-confirmation" type="password" />
+
+    <div class="form-group">
+        <input type="text" class="form-control" name="email" placeholder="Email"/>
+    </div>
+
+    <div class="form-group">
+        <input type="password" class="form-control" name="password" minlength="8"
+               data-fv-stringlength-message="The password name must be at least 8 characters long" />
+    </div>
+
+    <div class="form-group">
+        <input type="password" class="form-control" name="password_confirmation"/>
+    </div>
+
     <br>
-    <button class="btn btn-lg btn-success btn-block" type="submit"><i class="fa fa-sign-in"></i> Register</button>
-    <a id="already-button" href="#signin">Already have an account? Login here.</a>
-    <button class="btn btn-md btn-google-plus btn-block" id="google_oauth2">
-      <i class="fa fa-google-plus-square"></i> 
-      Login using <strong>Google+</strong>
-    </button>
-    <button class="btn btn-md btn-facebook btn-block" id="facebook">
-      <i class="fa fa-facebook-square"></i> 
-      Login using <strong>Facebook</strong>
-    </button>
-  </fieldset>
+    <button class="btn btn-lg btn-success btn-block" type="button" id="register"><i class="fa fa-sign-in"></i> Register</button>
+
 </form>
+
+<a id="already-button" href="#signin">Already have an account? Login here.</a>
+<button class="btn btn-md btn-google-plus btn-block" id="google_oauth2">
+  <i class="fa fa-google-plus-square"></i> 
+  Login using <strong>Google+</strong>
+</button>
+<button class="btn btn-md btn-facebook btn-block" id="facebook">
+  <i class="fa fa-facebook-square"></i> 
+  Login using <strong>Facebook</strong>
+</button>
+
+
+
