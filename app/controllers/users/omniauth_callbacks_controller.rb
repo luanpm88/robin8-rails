@@ -24,12 +24,6 @@ module Users
             auth.info.urls.public_profile
           end
 
-          p '!!!!!!!debugin'
-          p current_user
-          p user_signed_in?
-          p '!!!!!!! end debugin'
-
-
           if current_user.nil?
             @user = User.find_for_oauth(params)
             if @user.persisted?
@@ -46,6 +40,11 @@ module Users
           
         end
       }
+    end
+
+    def failure
+      p params
+      render 'twitter_popup_close', :layout => false
     end
 
     [:twitter, :linkedin, :facebook, :google_oauth2].each do |provider|
