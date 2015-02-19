@@ -37,8 +37,9 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
               notEmpty: {
                 message: 'The email address is required'
               },
-              emailAddress: {
-                message: 'The input is not a valid email address'
+              regexp: {
+                regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: 'The data you have entered is not a valid email'
               },
               serverError: {
                 message: 'something went wrong'
@@ -49,10 +50,6 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
             validators: {
               notEmpty: {
                 message: 'The password is required'
-              },
-              different: {
-                field: 'username',
-                message: 'The password cannot be the same as username'
               },
               serverError: {
                 message: 'something went wrong'
