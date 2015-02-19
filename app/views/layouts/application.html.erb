@@ -19,7 +19,7 @@
   <% if signed_in? -%>    
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
     <% unless request.subdomain.blank? %>
-      Robin.publicPages = false
+      Robin.publicPages = true
     <% end %>
   <% else -%>
     Robin.currentUser = null;
