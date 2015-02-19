@@ -83,6 +83,9 @@ Robin.vent.on("authentication:logged_in", function() {
   if (Robin.publicPages) {
     Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
     Robin.main.show(Robin.layouts.main);
+    Robin.stopOtherModules();
+    Robin.module('NewsRoomPublic').start();
+    Robin.module("NewsRoomPublic").controller.index();
   } else {
     Robin.layouts.main = new Robin.Views.Layouts.Main();
     Robin.main.show(Robin.layouts.main);
