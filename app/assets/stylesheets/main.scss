@@ -176,10 +176,23 @@ ul {
   padding: 5px;
   border-bottom: 2px solid #0C2E66;
 }
+
+.stream-header #title {
+  cursor: pointer;
+}
+
+.stream-header .editable-container {
+  position: absolute;
+  z-index: 999;
+  background: rgba(202, 202, 202, 0.5);
+  padding: 5px;
+  border-radius: 4px;
+}
+
 .stream-header .close {
   margin-right: 6px;
 }
-.stream-header i {
+.stream-header i.grey {
   color: rgba(255,255,255,0.5);
 }
 .stream-header .pull-right i {
@@ -782,5 +795,6 @@ ul {
   color: #DA4453 !important;
 }
 
-
-
+.sweet-alert {
+  z-index: 20000 !important;
+}

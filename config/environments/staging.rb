@@ -29,8 +29,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = true
-  config.serve_static_files = true
+  config.assets.compile = false
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
@@ -40,7 +39,7 @@ Rails.application.configure do
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
-  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
@@ -77,14 +76,15 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.action_mailer.default_url_options = { host: 'robin8-staging.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
   ActionMailer::Base.smtp_settings = {
-    :port           => ENV['MAILGUN_SMTP_PORT'],
-    :address        => ENV['MAILGUN_SMTP_SERVER'],
-    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         => 'yourapp.heroku.com',
+    :user_name => Rails.application.secrets[:smtp][:user_name],
+    :password => Rails.application.secrets[:smtp][:password],
+    :domain => Rails.application.secrets[:smtp][:domain],
+    :address => Rails.application.secrets[:smtp][:address],
+    :port => Rails.application.secrets[:smtp][:port],
     :authentication => :plain,
+    :enable_starttls_auto => true
   }
   ActionMailer::Base.delivery_method = :smtp
 end
