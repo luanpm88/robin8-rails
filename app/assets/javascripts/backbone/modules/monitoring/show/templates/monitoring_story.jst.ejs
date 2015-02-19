@@ -1,15 +1,13 @@
-<li>
-  <div class="media">
-    <a class="media-left" href="<%= story.link%>" target="blank">
-      <img src="<%= story.image%>" width='64px' height='64px'>
-    </a>
-    <div class="media-body">
-      <h4 class="media-heading js-open-story"><%= story.blog_name %></h4>
-      <p class="js-open-story"><%= story.title %></p>
-      <span class="pull-left label label-default likes"><i class="fa fa-thumbs-up"></i> <%= story.likes %></span>
-      <span class="pull-right label"><i class="fa fa-clock-o"></i> <%= story.timeago %>h ago</span>
-      <a href="<%= story.link%>" target="blank" class="read-more pull-right label label-default btn btn-xs btn-info"><i class="fa fa-sign-out"></i> Read more</a>
-      <a class="read-more pull-right label label-default btn btn-xs btn-info"><i class="fa fa-share-alt"></i></a>
-    </div>
+<div class="media">
+  <a class="media-left" href="<%= story.link%>" target="blank">
+    <img src="<%= story.image%>" width='64px' height='64px'>
+  </a>
+  <div class="media-body">
+    <h4 class="media-heading js-open-story"><%= story.blog_name %></h4>
+    <p class="js-open-story"><%= story.title %></p>
+    <span class="pull-left label label-default likes"><i class="fa fa-thumbs-up"></i> <%= story.likes %></span>
+    <span class="pull-right label"><i class="fa fa-clock-o"></i> <%= story.timeago %>h ago</span>
+    <a href="<%= story.link%>" target="blank" class="read-more pull-right label label-default btn btn-xs btn-info"><i class="fa fa-sign-out"></i> Read more</a>
+    <a class="read-more share pull-right label label-default btn btn-xs btn-info"><i class="fa fa-share-alt"></i></a>
   </div>
-</li>
+</div>

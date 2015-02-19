@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
+  skip_before_filter :verify_authenticity_token
 
   before_action :configure_permitted_parameters, if: :devise_controller?
     protected
@@ -10,6 +11,7 @@ class ApplicationController < ActionController::Base
     def configure_permitted_parameters
       devise_parameter_sanitizer.for(:account_update).push(:first_name,
         :last_name, :company, :time_zone, :name, :avatar_url)
+      devise_parameter_sanitizer.for(:invite).push(:is_primary)
     end
 
     def set_paginate_headers klass, count

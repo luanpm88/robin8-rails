@@ -74,6 +74,8 @@ GEM
     capistrano-sidekiq (0.4.0)
       capistrano
       sidekiq
+    capistrano-ssh-doctor (1.0.0)
+      capistrano (>= 3.1)
     capistrano-stats (1.1.1)
     celluloid (0.16.0)
       timers (~> 4.0.0)
@@ -373,6 +375,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.1.2)
   capistrano-rbenv (~> 2.0.3)
   capistrano-sidekiq (~> 0.4.0)
+  capistrano-ssh-doctor (~> 1.0.0)
   coffee-rails (~> 4.1.0)
   devise
   devise_invitable

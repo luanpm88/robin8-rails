@@ -72,7 +72,7 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       var that = this;
       e.preventDefault();
       var email = $("#email").val()
-      $.post("/users/invitation.json", {user:{email: email}})
+      $.post("/users/invitation.json", {user:{email: email, is_primary: false}})
         .done(function() {
           that.collection.fetch();
         })
