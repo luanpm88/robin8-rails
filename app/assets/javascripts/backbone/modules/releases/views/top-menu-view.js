@@ -42,6 +42,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     onRender: function(){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
+      $('.wysihtml5').wysihtml5({});
     },
     initFormValidation: function(){
       this.form = $('#releaseForm').formValidation({
@@ -84,6 +85,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     saveRelease: function(e){
       var viewObj = this;
+      var iframe = document.getElementsByClassName("wysihtml5-sandbox");
+      this.model.set('text', $(iframe).contents().find('body').html());
       this.form.data('formValidation').validate();
       if (this.form.data('formValidation').isValid()) {
         if (this.model.attributes.id) {
@@ -122,18 +125,30 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     deleteRelease: function(){
       var viewObj = this;
-      this.model.destroy({
-        success: function(model, response){
-          viewObj.$el.find('#release_form').modal('hide');
-          var page = Robin.module("Releases").controller.filterCriteria.page;
-          if(Robin.module("Releases").collection.length == 1 && page > 1 || page == 1) {
-            Robin.module("Releases").controller.paginate(1);
-          }else {
-            Robin.module("Releases").controller.paginate(page);
-          }
-        },
-        error: function(data){
-          console.warn('error', data);
+      swal({
+        title: "Remove this release?",
+        text: "You will not be able to recover this release.",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: 'Delete'
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          viewObj.model.destroy({
+            success: function(model, response){
+              viewObj.$el.find('#release_form').modal('hide');
+              var page = Robin.module("Releases").controller.filterCriteria.page;
+              if(Robin.module("Releases").collection.length == 1 && page > 1 || page == 1) {
+                Robin.module("Releases").controller.paginate(1);
+              }else {
+                Robin.module("Releases").controller.paginate(page);
+              }
+            },
+            error: function(data){
+              console.warn('error', data);
+            }
+          });
         }
       });
     },

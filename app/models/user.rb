@@ -47,8 +47,8 @@ class User < ActiveRecord::Base
 
   def twitter_post message
     client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = TWITTER_API_KEY
-      config.consumer_secret     = TWITTER_API_SECRET
+      config.consumer_key        = Rails.application.secrets.twitter[:api_key]
+      config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
       config.access_token        = twitter_identity.token
       config.access_token_secret = twitter_identity.token_secret
     end
@@ -57,9 +57,6 @@ class User < ActiveRecord::Base
 
   def linkedin_post message #need check
     data = { comment: message, visibility: {code: 'anyone'} }
-
-    p linkedin_identity.token
-
     response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
               headers: { 'Content-Type' => 'application/json'},
               query: {oauth2_access_token: linkedin_identity.token},

@@ -35,14 +35,13 @@
   </form>
 </div>
 <div class="stream-header">
-  <i class="fa fa-reorder"></i>  
+  <i class="fa fa-reorder grey"></i>  
+  <span class='editable' id='title'> <%= stream.name %></span>
   <button class="close pull-right delete-stream" data-toggle="tooltip" data-placement="left" title="Delete Stream">&times;</button>
   <button class="close pull-right settings-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Stream Settings"><i class="fa fa-cog" style="color: #000;"></i></button>
   <button class="close pull-right rss-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="RSS Feed"><i class="fa fa-rss" style="color: #000;"></i></button>
 </div>
-<div class="stream-body">
-  <ul class="stories"></ul>
-</div>
+<div class="stream-body"></div>
 <div class="stream-updates" align="center">
   <a href="#" data-toggle="tooltip" data-placement="bottom" title="Click to see updates"><i class="fa fa-refresh fa-spin"></i> new updates</a>
 </div>

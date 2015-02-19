@@ -10,12 +10,43 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .settings-button': 'settings',
       'click #close-settings': 'closeSettings',
       'click #done': 'done',
+      'click span.editable': 'editTitle',
+      'click .editable-submit': 'updateTitle',
     },
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
     },
 
+    onRender: function() {
+      $.fn.editable.defaults.mode = 'inline';
+      this.$el.find('span.editable').editable({inputclass: 'edit-title'});
+      this.loadInfo('topics');
+      this.loadInfo('blogs');
+      this.modelBinder.bind(this.model, this.el);
+
+      if (this.model.attributes.id) {
+        this.$el.find('.stream-settings').addClass('closed');
+      }
+      this.fetchStories();
+    },
+
+    editTitle: function() {
+      this.$el.find('.edit-title').attr('name', 'name')
+      this.modelBinder.bind(this.model, this.el);
+    },
+
+    updateTitle: function() {
+      this.model.save(this.model.attributes, {
+        success: function(data){
+          console.log(data);
+        },
+        error: function(data){
+          console.warn('error', data);
+        }
+      });
+    },
+    
     loadInfo: function(val) {
       var currentModel = this.model;
       
@@ -50,13 +81,17 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       $(this.el).find('#' + val + '-select').select2('val', currentModel.attributes[val]);
     },
 
-    onRender: function() {
-      this.loadInfo('topics');
-      this.loadInfo('blogs');
-      this.modelBinder.bind(this.model, this.el);
+    fetchStories: function() {
+      var stream = this.model.attributes;
+      if(!stream.id) return;
+      // this.$el.find('.stream-settings').addClass('closed');
 
-      if(this.model.attributes.id)
-        this.$el.find('.stream-settings').addClass('closed');
+      var storiesCollectionView = new Show.StoriesCollectionView({
+        collection: new Robin.Collections.Stories([], {streamId: stream.id}),
+        childView: Show.StoryItemView
+      });
+
+      this.$el.find('.stream-body').html(storiesCollectionView.render().el);
     },
 
     closeStream: function() {
@@ -90,10 +125,13 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.model.set('sort_column', 'published_at');
 
+      var curView = this;
+
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
+          curView.fetchStories();
           $(this.el).find('.slider').addClass('closed');
-          $.growl({message: "You've created a stream"
+          $.growl({message: "Your stream was saved!"
           },{
             type: 'success'
           });
