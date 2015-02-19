@@ -51,7 +51,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
             total_count: parseInt(response.xhr.getResponseHeader('Totalcount'),10),
             total_pages: parseInt(response.xhr.getResponseHeader('Totalpages'),10)
           });
-          $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+          // $("html, body").animate({ scrollTop: $(document).height() }, 1000);
         }
       })
     },

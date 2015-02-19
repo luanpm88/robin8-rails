@@ -1,8 +1,12 @@
 Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
-  Newsroom.TopMenuView = Marionette.ItemView.extend({
+  Newsroom.TopMenuView = Marionette.LayoutView.extend({
     template: 'modules/news_room/templates/top-menu-view',
     className: 'row',
+    regions: {
+      logoRegion: '.logo',
+      mediaRegion: '.media_region'
+    },
     events: {
       'click #new_newsroom': 'openModalDialog',
       'click #save_news_room': 'saveNewsRoom',
@@ -35,6 +39,19 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       this.$el.find("#tagsinput").tagsinput();
+      this.initLogoView();
+      this.initMediaView();
+    },
+    initLogoView: function(){
+      this.logoRegion.show(new Robin.Views.LogoView({
+        model: this.model,
+        field: 'logo_url'
+      }));
+    },
+    initMediaView: function(){
+      this.mediaRegion.show(new Robin.Views.MediaView({
+        model: this.model
+      }));
     },
     initFormValidation: function(){
       this.form = $('#newsroomForm').formValidation({
@@ -101,11 +118,19 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
           });
         }else{
           this.model.save(this.model.attributes, {
-            success: function(data){
+            success: function(model, data, response){
               viewObj.$el.find('#newsroom_form').modal('hide');
               if (Robin.module("Newsroom").controller.filterCriteria.page == 1) {
+                if (Robin.module("Newsroom").collection.length == Robin.module("Newsroom").controller.filterCriteria.per_page) {
+                  Robin.module("Newsroom").collection.pop();
+                }
                 Robin.module("Newsroom").collection.unshift(data);
-                Robin.module("Newsroom").collection.pop();
+                Robin.module("Newsroom").pagination_view.model.set({
+                  page: Robin.module("Newsroom").controller.filterCriteria.page,
+                  per_page:  Robin.module("Newsroom").controller.filterCriteria.per_page,
+                  total_count: parseInt(response.xhr.getResponseHeader('Totalcount'),10),
+                  total_pages: parseInt(response.xhr.getResponseHeader('Totalpages'),10)
+                });
               }
             },
             error: function(data, response){

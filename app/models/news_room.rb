@@ -6,6 +6,8 @@ class NewsRoom < ActiveRecord::Base
 
   belongs_to :user
   has_and_belongs_to_many :industries
+  has_many :attachments, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :attachments, allow_destroy: true
 
   validates :company_name, presence: true
   validates :user_id, presence: true

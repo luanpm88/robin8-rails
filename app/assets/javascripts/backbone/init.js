@@ -116,6 +116,20 @@ Robin.vent.on('SaySomething:close', function(){
 //Uploadcare params:
 UPLOADCARE_PUBLIC_KEY = "demopublickey";
 UPLOADCARE_AUTOSTORE = true;
+UPLOADCARE_LOCALE_TRANSLATIONS = {
+  // messages for widget
+  errors: {
+    'fileType': 'This type of files is not allowed.'
+  },
+  // messages for dialog's error page
+  dialog: { tabs: { preview: { error: {
+    'fileType': {  
+      title: 'Title.',
+      text: 'Text.',
+      back: 'Back'
+    }
+  } } } }
+};
 //The UPLOADCARE_PUBLIC_KEY should be changed as soon as paid
 // account is avaialble. example:
 //UPLOADCARE_PUBLIC_KEY = "a51f0572e52df821db41";
