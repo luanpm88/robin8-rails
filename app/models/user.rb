@@ -72,9 +72,9 @@ class User < ActiveRecord::Base
     graph = Koala::Facebook::API.new(facebook_identity.token)
     Rails.logger.info graph.inspect
     graph.put_wall_post("I've posted a new Post!", {
-      "name": '',
-      "link": '',
-      "description": message
+      "name" => '',
+      "link" => '',
+      "description" => message
     })
   end
 end
