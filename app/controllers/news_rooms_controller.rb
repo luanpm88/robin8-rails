@@ -35,6 +35,10 @@ class NewsRoomsController < ApplicationController
 
   def preview
     @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
+    respond_to do |format|
+      format.html
+      format.json { render json: @news_room }
+    end
   end
 
 private

@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   delete '/users/disconnect_social' => 'users#disconnect_social'
 
   resources :posts
-  resources :news_rooms
+  resources :news_rooms do
+    get 'preview', on: :collection
+  end
   resources :industries, only: :index
   resources :releases
   get 'users/identities' => 'users#identities'
