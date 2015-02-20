@@ -68,8 +68,6 @@ gem 'has_scope'
 
 gem 'twitter'
 gem "koala", "~> 1.11.0rc" #flexible library for Facebook
-# gem 'linkedin'
-# gem 'linkedin-oauth2'
 gem 'httparty'
 
 gem 'ejs'
