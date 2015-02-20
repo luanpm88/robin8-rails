@@ -14,9 +14,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       'click .manage': 'manageUsers'
     },
     initialize: function(options){
+      this.collection.fetch();
       this.modelBinder = new Backbone.ModelBinder();
       Robin.vent.on("news_room:open_edit_modal", this.openModalDialogEdit, this);
-      this.collection.fetch();
     },
     templateHelpers: function () {
       return {
@@ -154,18 +154,30 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
     deleteNewsRoom: function(){
       var viewObj = this;
-      this.model.destroy({
-        success: function(model, response){
-          viewObj.$el.find('#newsroom_form').modal('hide');
-          var page = Robin.module("Newsroom").controller.filterCriteria.page
-          if(Robin.module("Newsroom").collection.length == 1 && page > 1 || page == 1) {
-            Robin.module("Newsroom").controller.paginate(1);
-          }else {
-            Robin.module("Newsroom").controller.paginate(page);
-          }
-        },
-        error: function(data){
-          console.warn('error', data);
+      swal({
+        title: "Delete this newsroom?",
+        text: "You will not be able to recover it!",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: 'Delete'
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          viewObj.model.destroy({
+            success: function(model, response){
+              viewObj.$el.find('#newsroom_form').modal('hide');
+              var page = Robin.module("Newsroom").controller.filterCriteria.page
+              if(Robin.module("Newsroom").collection.length == 1 && page > 1 || page == 1) {
+                Robin.module("Newsroom").controller.paginate(1);
+              }else {
+                Robin.module("Newsroom").controller.paginate(page);
+              }
+            },
+            error: function(data){
+              console.warn('error', data);
+            }
+          });
         }
       });
     },
