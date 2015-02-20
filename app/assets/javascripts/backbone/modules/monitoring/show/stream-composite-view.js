@@ -13,6 +13,11 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #done': 'done',
       'click span.editable': 'editTitle',
       'click .editable-submit': 'updateTitle',
+      'click .js-show-new-stories': 'showNewStories'
+    },
+
+    collectionEvents: {
+      add: 'onAdded'
     },
 
     initialize: function() {
@@ -36,10 +41,15 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (!this.model.get('id')) {
         this.$el.find('.stream-settings').removeClass('closed');
       }
+      this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
     },
 
     onDestroy: function() {
       this.collection.stopPolling();
+    },
+
+    onAdded: function(story, collection) {
+      this.model.set('newStoriesCount', this.collection.where({isNew: true}).length);
     },
 
     editTitle: function() {
@@ -147,6 +157,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       });
 
       $(this.el).find('.slider').addClass('closed');
+    },
+
+    showNewStories: function() {
+      this.collection.where({isNew: true}).forEach(function(story) {
+        story.set('isNew', false);
+      });
+      this.model.set('newStoriesCount', 0);
+      this.collection.refreshInitialFetchAt();
     }
   });
 

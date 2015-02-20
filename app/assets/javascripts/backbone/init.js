@@ -4,6 +4,7 @@ Robin.Views.Layouts = {};
 Robin.Collections = {};
 Robin.Models = {};
 Robin.Routers = {};
+Robin.Controllers = {};
 
 Robin.layouts = {};
 
@@ -71,9 +72,10 @@ Robin.on('start', function(){
 
 Robin.addInitializer(function(options){
   if (Robin.currentUser && !Robin.publicPages) {
-    Robin.module('Navigation').start();
-    Robin.module('Dashboard').start();
-    Robin.module('SaySomething').start();
+    // Robin.module('Navigation').start();
+    // Robin.module('Dashboard').start();
+    // Robin.module('SaySomething').start();
+    // new Robin.Routers.AppRouter({controller: new Robin.Controllers.AppController()});
   } else if (!Robin.publicPages) {
     Robin.module('Authentication').start();
   }
@@ -88,8 +90,10 @@ Robin.vent.on("authentication:logged_in", function() {
   } else {
     Robin.layouts.main = new Robin.Views.Layouts.Main();
     Robin.main.show(Robin.layouts.main);
-    Robin.module('Navigation').start();
-    Robin.module('SaySomething').start();
+    Backbone.history.handlers = [];
+    new Robin.Routers.AppRouter({controller: new Robin.Controllers.AppController()});
+    // Robin.module('Navigation').start();
+    // Robin.module('SaySomething').start();
   }
 
 });

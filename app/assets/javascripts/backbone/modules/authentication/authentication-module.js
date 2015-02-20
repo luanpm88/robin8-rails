@@ -42,10 +42,11 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
   });
 
   Robin.addInitializer = function() {
-    new Authentication.Router();
+    // new Authentication.Router();
   };
 
   Authentication.on('start', function(){
+    new Authentication.Router();
     API.signIn();
   });
   
