@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/Nerian/bootstrap-wysihtml5-rails.git
+  revision: 5a88697c1d0855c1176b51e172dc85df4033e2d7
+  specs:
+    bootstrap-wysihtml5-rails (0.3.3.4)
+      railties (>= 3.0)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -50,6 +57,26 @@ GEM
       columnize (~> 0.8)
       debugger-linecache (~> 1.2)
       slop (~> 3.6)
+    capistrano (3.3.5)
+      capistrano-stats (~> 1.1.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (~> 1.3)
+    capistrano-bundler (1.1.4)
+      capistrano (~> 3.1)
+      sshkit (~> 1.2)
+    capistrano-rails (1.1.2)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-rbenv (2.0.3)
+      capistrano (~> 3.1)
+      sshkit (~> 1.3)
+    capistrano-sidekiq (0.4.0)
+      capistrano
+      sidekiq
+    capistrano-ssh-doctor (1.0.0)
+      capistrano (>= 3.1)
+    capistrano-stats (1.1.1)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     coffee-rails (4.1.0)
@@ -58,7 +85,8 @@ GEM
     coffee-script (2.3.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.9.0)
+    coffee-script-source (1.9.1)
+    colorize (0.7.5)
     columnize (0.9.0)
     connection_pool (2.1.1)
     debug_inspector (0.0.2)
@@ -70,6 +98,9 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise_invitable (1.4.1)
+      actionmailer (>= 3.2.6, < 5)
+      devise (>= 3.2.0)
     diff-lcs (1.2.5)
     ejs (1.1.1)
     equalizer (0.0.9)
@@ -93,7 +124,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
     ice_cube (0.11.1)
-    jbuilder (2.2.6)
+    jbuilder (2.2.7)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-rails (4.0.3)
@@ -114,8 +145,11 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    mysql2 (0.3.17)
+    mysql2 (0.3.18)
     naught (1.0.0)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.9.2)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     oauth (0.4.7)
@@ -133,6 +167,8 @@ GEM
     omniauth-google-oauth2 (0.2.6)
       omniauth (> 1.0)
       omniauth-oauth2 (~> 1.1)
+    omniauth-linkedin (0.2.0)
+      omniauth-oauth (~> 1.0)
     omniauth-linkedin-oauth2 (0.1.5)
       omniauth (~> 1.0)
       omniauth-oauth2
@@ -167,10 +203,10 @@ GEM
       railties (= 4.2.0)
       sprockets-rails
     rails-assets-backbone (1.1.2)
-      rails-assets-underscore (>= 1.5.0)
+      rails-assets-underscore (>= 1.3.3, <= 1.6.0)
     rails-assets-backbone.babysitter (0.1.6)
       rails-assets-backbone (>= 1.0.0, < 1.1.3)
-      rails-assets-underscore (>= 1.4.0, <= 1.6.0)
+      rails-assets-underscore (>= 1.4.4, < 1.6.1)
     rails-assets-backbone.marionette (2.1.0)
       rails-assets-backbone (>= 1.0.0, < 1.1.3)
       rails-assets-backbone.babysitter (>= 0.1.0, < 0.2)
@@ -185,7 +221,7 @@ GEM
       rails-assets-backbone (>= 0.9.9, <= 1.1.2)
       rails-assets-underscore (>= 1.3.3, <= 1.7.0)
     rails-assets-blueimp-gallery (2.15.2)
-    rails-assets-bootstrap (3.1.1)
+    rails-assets-bootstrap (3.3.2)
       rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-sass (3.3.3)
       rails-assets-jquery (>= 1.9.0)
@@ -194,21 +230,16 @@ GEM
     rails-assets-bootstrap.growl (2.0.1)
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
-    rails-assets-bootstrap3-wysihtml5-bower (0.2.9)
-      rails-assets-bootstrap (~> 3.1.0)
-      rails-assets-handlebars (~> 1.3.0)
-      rails-assets-wysihtml5 (~> 0.3.0)
     rails-assets-chance (0.7.3)
     rails-assets-eonasdan-bootstrap-datetimepicker (3.1.3)
       rails-assets-bootstrap (>= 3.0)
       rails-assets-jquery (>= 1.8.3)
       rails-assets-moment (>= 2.8.0)
     rails-assets-font-awsome (4.3.0)
-    rails-assets-handlebars (1.3.0)
-    rails-assets-highcharts (4.0.4)
+    rails-assets-highcharts (4.1.1)
     rails-assets-jquery (2.1.0)
     rails-assets-jqueryui (1.11.3)
-      rails-assets-jquery (>= 1.7.0)
+      rails-assets-jquery (>= 1.6)
     rails-assets-moment (2.9.0)
     rails-assets-momentjs (2.9.0)
     rails-assets-please-wait (0.0.2)
@@ -222,7 +253,6 @@ GEM
     rails-assets-underscore.string (3.0.3)
     rails-assets-uploadcare (1.5.5)
       rails-assets-jquery (>= 1.10.2)
-    rails-assets-wysihtml5 (0.3.0)
     rails-assets-x-editable (1.5.1)
       rails-assets-jquery (>= 1.6)
     rails-deprecated_sanitizer (1.0.3)
@@ -233,11 +263,6 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.1)
       loofah (~> 2.0)
-    rails_12factor (0.0.3)
-      rails_serve_static_assets
-      rails_stdout_logging
-    rails_serve_static_assets (0.0.4)
-    rails_stdout_logging (0.0.3)
     railties (4.2.0)
       actionpack (= 4.2.0)
       activesupport (= 4.2.0)
@@ -268,7 +293,7 @@ GEM
       rspec-mocks (~> 3.2.0)
       rspec-support (~> 3.2.0)
     rspec-support (3.2.1)
-    sass (3.4.11)
+    sass (3.4.12)
     sass-rails (5.0.1)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.1)
@@ -294,7 +319,7 @@ GEM
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
     slop (3.6.0)
-    spring (1.3.1)
+    spring (1.3.2)
     sprockets (2.12.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -304,6 +329,10 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    sshkit (1.6.1)
+      colorize (>= 0.7.0)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
@@ -311,7 +340,7 @@ GEM
       hitimes
     turbolinks (2.5.3)
       coffee-rails
-    twitter (5.13.0)
+    twitter (5.14.0)
       addressable (~> 2.3)
       buftok (~> 0.2.0)
       equalizer (~> 0.0.9)
@@ -341,10 +370,17 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.8.0)
+  bootstrap-wysihtml5-rails!
   bundler (>= 1.7.0)
   byebug
+  capistrano-bundler (~> 1.1.4)
+  capistrano-rails (~> 1.1.2)
+  capistrano-rbenv (~> 2.0.3)
+  capistrano-sidekiq (~> 0.4.0)
+  capistrano-ssh-doctor (~> 1.0.0)
   coffee-rails (~> 4.1.0)
   devise
+  devise_invitable
   ejs
   has_scope
   httparty
@@ -354,35 +390,34 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   omniauth-google-oauth2
+  omniauth-linkedin
   omniauth-linkedin-oauth2
   omniauth-twitter
   quiet_assets
   rails (= 4.2.0)
-  rails-assets-backbone.babysitter!
-  rails-assets-backbone.marionette (= 2.1.0)!
-  rails-assets-backbone.modelbinder!
+  rails-assets-backbone.babysitter
+  rails-assets-backbone.marionette (= 2.1.0)
+  rails-assets-backbone.modelbinder
   rails-assets-blueimp-gallery!
   rails-assets-bootstrap-sass!
-  rails-assets-bootstrap-sweetalert!
-  rails-assets-bootstrap-tagsinput!
+  rails-assets-bootstrap-sweetalert
+  rails-assets-bootstrap-tagsinput
   rails-assets-bootstrap.growl!
-  rails-assets-bootstrap3-wysihtml5-bower!
-  rails-assets-chance!
-  rails-assets-eonasdan-bootstrap-datetimepicker (= 3.1.3)!
-  rails-assets-font-awsome!
-  rails-assets-highcharts!
-  rails-assets-jqueryui!
-  rails-assets-momentjs!
-  rails-assets-please-wait!
+  rails-assets-chance
+  rails-assets-eonasdan-bootstrap-datetimepicker (= 3.1.3)
+  rails-assets-font-awsome
+  rails-assets-highcharts
+  rails-assets-jqueryui
+  rails-assets-momentjs
+  rails-assets-please-wait
   rails-assets-progressjs!
   rails-assets-sass-bootstrap-glyphicons!
-  rails-assets-select2!
-  rails-assets-spinkit!
-  rails-assets-tweenlite!
-  rails-assets-underscore.string!
+  rails-assets-select2
+  rails-assets-spinkit
+  rails-assets-tweenlite
+  rails-assets-underscore.string
   rails-assets-uploadcare!
-  rails-assets-x-editable!
-  rails_12factor
+  rails-assets-x-editable
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

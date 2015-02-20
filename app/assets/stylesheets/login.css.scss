@@ -60,7 +60,11 @@ body.login {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
-    .form-signup input[type="password"] {
+    .form-signup input[name="password"] {
+        margin-bottom: 10px;
+        border-radius: 0;
+    }
+    .form-signup input[name="password_confirmation"] {
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;

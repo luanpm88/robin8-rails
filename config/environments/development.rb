@@ -1,12 +1,4 @@
 Rails.application.configure do
-  GOOGLE_CLIENT_ID = '411343306765-qaokd4h3f7tivl2oo423shd54k30a6eo.apps.googleusercontent.com'
-  GOOGLE_CLIENT_SECRET = '356dA9S4y5IbB-WpIhcX06rh'
-  FACEBOOK_APP_ID = '1581983398705792'
-  FACEBOOK_APP_SECRET = '35049632231f31ffe301af15b21ad218'
-  TWITTER_API_KEY = 'chfbNFBkf56gJT2BDzmCNNfgv'
-  TWITTER_API_SECRET = 'WJvtq91oZgvGIJQl33J8kprn4eeWRlCzj4qlYulAyzwuxKATS3'
-  LINKEDIN_API_KEY = '75qazimsj55zfi'
-  LINKEDIN_API_SECRET = 'UqTqTg4UCTBxo33u'
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -47,5 +39,9 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
+  
+  # Configure to use with mailcatcher - for more information (http://mailcatcher.me/)
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
 end

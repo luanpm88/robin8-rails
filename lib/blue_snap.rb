@@ -1,12 +1,13 @@
 module BlueSnap
 
   class Shopper
-    URL = "https://sandbox.bluesnap.com/services/2/shoppers"
+    # URL = "https://sandbox.bluesnap.com/services/2/shoppers"
+    URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
 
     def self.new request,user_profile,params
 
-      shopper =  {"shopper"=> {"web-info" => web_info(request),
-                               "shopper-info" => shopper_info(params,user_profile)}, "order" => order_info()
+      shopper =  {"shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
+                               "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)}, "order" => BlueSnap::Shopper.order_info()
       }
 
       xml_data =  shopper.to_xml(root: "batch-order")
@@ -23,7 +24,7 @@ module BlueSnap
     end
 
     def self.web_info(request)
-      {"ip" => request.ip}
+      {"ip" => "117.102.37.217"}
     end
 
     def self.shopper_info(params,user_profile)
@@ -49,8 +50,8 @@ module BlueSnap
       {"encrypted-card-number" => params[:encryptedCreditCard],
        "encrypted-security-code" => params[:encryptedCvv],
        "card-type"=>params[:card][:credit_card_type],
-       "expiration-month" => params[:card]["expiration_date(2i)"],
-       "expiration-year" => params[:card]["expiration_date(1i)"]
+       "expiration-month" => params[:card][:"expiration_date(2i)"],
+       "expiration-year" => params[:card][:"expiration_date(1i)"]
       }
     end
   end
@@ -65,10 +66,9 @@ module BlueSnap
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       request = Net::HTTP::Post.new(uri.request_uri)
-      request.basic_auth("API_14177682984271105511385", "Myprgenie123")
+      request.basic_auth("API_14177682984271105511385", "Robin123")
       request.body = data
       request["Content-Type"] ='application/xml'
-      puts"data is #{data.inspect}"
       response = http.request(request)
 
 

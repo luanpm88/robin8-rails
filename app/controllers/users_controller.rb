@@ -3,6 +3,13 @@ class UsersController < ApplicationController
     render json: current_user
   end
 
+  def delete_user
+    manageable_users = User.where(invited_by_id: current_user.id)
+    manageable_users.find(params[:id]).destroy
+
+    render json: manageable_users
+  end
+
   def identities
     render json: current_user.identities
   end
@@ -12,6 +19,11 @@ class UsersController < ApplicationController
     @identity.destroy
 
     render json: current_user.identities
+  end
+
+  def manageable_users
+    manageable_users = User.where(invited_by_id: current_user.id)
+    render json: manageable_users
   end
 
 end

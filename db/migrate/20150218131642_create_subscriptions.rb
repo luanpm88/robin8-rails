@@ -10,7 +10,7 @@ class CreateSubscriptions < ActiveRecord::Migration
       t.float :recurring_amount
       t.string :recurring_currency
       t.date :next_charge_date
-      t.boolean :auto_renew
+      t.boolean :auto_renew,:default=>true
 
       t.timestamps null: false
     end

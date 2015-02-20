@@ -30,49 +30,51 @@
 
 
       <div class="row fields"></div>
-      <form class="form-horizontal" role="form" action="/subscription" method="POST" id="checkout-form">
+      <!--<form class="form-horizontal" role="form" action="/subscription" method="POST" id="checkout-form">-->
+      <%= form_for @subscription, :html =>{:class=>"frmContact",:id=>"checkout-form"} do |f|  %>
+          <div class="row">
+            <div class="col-sm-offset-1 col-sm-10">
+              <h3 class="title">Checkout Form</h3>
+              <div class="row">
+                <input type="hidden" name="id" value="<%=@package.blank? ? params[:id] : @package.id%>"/>
 
-        <div class="row">
-          <div class="col-sm-offset-1 col-sm-10">
-            <h3 class="title">Checkout Form</h3>
-            <div class="row">
-              <input type="hidden" name="id" value="<%=@package.blank? ? params[:id] : @package.id%>"/>
-              <div class="form-group col-sm-6">
-                <label for="ccno" class="col-sm-4 control-label">Credit Card Type</label>
-                <div class="col-sm-8">
-                  <!--<input type="text" class="form-control" id="ccno" placeholder="">-->
-                  <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'master'],["American Express", 'american_express'],["Discover", 'discover']], {}, {:class => "form-control"} %>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Credit Card Type</label>
+                  <div class="col-sm-8">
+                    <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'master'],["American Express", 'american_express'],["Discover", 'discover']], {}, {:class => "form-control"} %>
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group col-sm-6">
-                <label for="ccno" class="col-sm-4 control-label">Credit Card Number</label>
-                <div class="col-sm-8">
-                  <!--<input type="text" class="form-control" id="ccno" placeholder="">-->
-                  <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard" %>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Credit Card Number</label>
+                  <div class="col-sm-8">
+                    <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard" %>
+                  </div>
                 </div>
-              </div>
-              <div class="form-group col-sm-6">
-                <label for="cvc" class="col-sm-4 control-label">CVC</label>
-                <div class="col-sm-8">
-                  <!--<input type="text" class="form-control" id="cvc" placeholder="">-->
-                  <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv" %>
+
+                <div class="form-group col-sm-6">
+                  <label for="cvc" class="col-sm-4 control-label">CVC</label>
+                  <div class="col-sm-8">
+                    <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv" %>
+                  </div>
                 </div>
-              </div>
-              <div class="form-group col-sm-6">
-                <label for="cvc" class="col-sm-4 control-label">Exp. Date</label>
-                <div class="col-sm-6">
-                  <%=date_select("card", "expiration_date", {:discard_day => true, :order=>[:month, :year], :start_year => Time.now.utc.year, :end_year=>Time.now.utc.year + 10, :include_blank => true}, {:class=>"form-control"}) %>
-                  <!--<input type="text" class="form-control" id="cvc" placeholder="">-->
+
+                <div class="form-group col-sm-6">
+                  <label for="cvc" class="col-sm-4 control-label">Exp. Date</label>
+                  <div class="col-sm-6">
+                    <%=date_select("card", "expiration_date", {:discard_day => true, :order=>[:month, :year], :start_year => Time.now.utc.year, :end_year=>Time.now.utc.year + 10, :include_blank => true}, {:class=>"form-control"}) %>
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
-        </div>
-        <div>
-          <button type="submit"> Save</button>
-        </div>
-      </form>
+          <div>
+            <%= submit_tag "SUBMIT", :class=>"btn-lg" %>
+            <!--<button type="submit"> Save</button>-->
+          </div>
+      <%end%>
+      <!--</form>-->
     </div>
   </div>
 </section>

@@ -30,7 +30,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-progressjs'
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
-  gem 'rails-assets-bootstrap3-wysihtml5-bower'
+  gem 'bootstrap-wysihtml5-rails', github: 'Nerian/bootstrap-wysihtml5-rails'
+
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '3.1.3'
@@ -51,9 +52,11 @@ source 'https://rails-assets.org' do
 end
 
 gem 'devise'
+gem 'devise_invitable'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-linkedin-oauth2'
+gem 'omniauth-linkedin'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'active_model_serializers', "~> 0.8.0"
@@ -63,7 +66,6 @@ gem 'sidekiq'
 gem 'sidetiq'
 gem 'will_paginate', '~> 3.0.6'
 gem 'has_scope'
-gem 'rails_12factor', group: [:production, :staging]
 
 gem 'twitter'
 # gem 'linkedin'
@@ -81,6 +83,13 @@ gem 'ejs'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  # Deploy with Capistrano
+  gem 'capistrano-rails', '~> 1.1.2'
+  gem 'capistrano-rbenv', '~> 2.0.3'
+  gem 'capistrano-bundler', '~> 1.1.4'
+  gem 'capistrano-sidekiq', '~> 0.4.0'
+  gem 'capistrano-ssh-doctor', '~> 1.0.0'
+  
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails'
@@ -91,4 +100,3 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-

@@ -1,15 +1,28 @@
 Robin.Models.Release = Backbone.Model.extend({
-  urlRoot: '/posts/',
-  paramRoot: 'release',
+  urlRoot: '/releases',
+  // paramRoot: 'release',
 
   defaults: {
-    "text": "",
-    "scheduled_date": "",
-    "social_networks": {}
+    statistics: {
+      characters: 0,
+      words: 0,
+      sentences: 0,
+      paragraphs: 0,
+      nouns: 0,
+      adjectives: 0,
+      adverbs: 0,
+      score: 0,
+      score_title: 'Too short'
+    },
+    date: '15 Jan 2015',
+    labels: ['Startups', 'Success', 'Technology', 'Computers', 'Artificial Intelligence'],
+    views: '5.2k',
+    likes: 223,
+    coverages: 3
   },
 
-  fetch: function(){
-    var model = this;
-    model.set({yourStatic: "Json Here"});
+  toJSON: function() {
+      var release = _.clone( this.attributes );
+      return { release: release };
   }
 });

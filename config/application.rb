@@ -24,6 +24,7 @@ module Robin8
     config.active_record.raise_in_transactional_callbacks = true
 
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
+    config.autoload_paths += %W(#{config.root}/lib)
   end
   require Rails.root.to_s + '/lib/blue_snap.rb'
 end

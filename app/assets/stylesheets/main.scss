@@ -1,3 +1,7 @@
+html, body { 
+  height: 100%;
+}
+
 body {
   padding-top: 50px;
   background-color: #eee;
@@ -142,17 +146,26 @@ ul {
 }
 .stream-container {
   list-style: none;
-  overflow-x: scroll;
-  width: 100000px;
+  white-space: nowrap;
 }
 .stream {
   width: 360px;
   background-color: #EEE;
-  float: left;
   margin-left: 15px;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 3px #ccc;
   position: relative;
+  display: inline-block;
+}
+.stream-input {
+  height: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  .select2-choices {
+    margin: 0 -10px;
+    border: none;
+    background: none;
+  }
 }
 .ui-state-highlight {
 
@@ -176,10 +189,23 @@ ul {
   padding: 5px;
   border-bottom: 2px solid #0C2E66;
 }
+
+.stream-header #title {
+  cursor: pointer;
+}
+
+.stream-header .editable-container {
+  position: absolute;
+  z-index: 999;
+  background: rgba(202, 202, 202, 0.5);
+  padding: 5px;
+  border-radius: 4px;
+}
+
 .stream-header .close {
   margin-right: 6px;
 }
-.stream-header i {
+.stream-header i.grey {
   color: rgba(255,255,255,0.5);
 }
 .stream-header .pull-right i {
@@ -218,7 +244,6 @@ ul {
 }
 .stream-settings {
   width: 94%;
-  height: 262px;
   background-color: rgba(40,40,40,0.8);
   position: absolute;
   top: 32px;
@@ -282,9 +307,9 @@ ul {
 }
 .edit-newsroom #media > ul > li div .delete {
   color: #333;
-  position: absolute; 
-  top: 0px; 
-  right: 4px; 
+  position: absolute;
+  top: 0px;
+  right: 4px;
   font-size: 16px;
   display: none;
   z-index: 2;
@@ -305,15 +330,15 @@ ul {
   position: relative;
 }
 .edit-newsroom #media > ul > li .label {
-  position: absolute; 
-  bottom: 0; 
-  left: 0; 
-  width: 100%; 
-  display: block; 
-  text-align: center; 
-  background: rgba(0,0,0,0.5); 
-  font-size: 12px; 
-  color: #fff; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  text-align: center;
+  background: rgba(0,0,0,0.5);
+  font-size: 12px;
+  color: #fff;
   z-index: 1;
   border-radius: 0;
 }
@@ -369,6 +394,9 @@ ul {
 }
 #social-scheduled .list-group-item .social-icons li {
   display: inline;
+}
+.release-title {
+  height: 40px !important;
 }
 .release-item h3 a {
   color: #333;
@@ -438,9 +466,9 @@ ul {
 }
 .edit-release #release-media > ul > li div .delete {
   color: #333;
-  position: absolute; 
-  top: 0px; 
-  right: 4px; 
+  position: absolute;
+  top: 0px;
+  right: 4px;
   font-size: 16px;
   display: none;
   z-index: 2;
@@ -475,15 +503,15 @@ ul {
   position: relative;
 }
 .edit-release #release-media > ul > li .label {
-  position: absolute; 
-  bottom: 0; 
-  left: 0; 
-  width: 100%; 
-  display: block; 
-  text-align: center; 
-  background: rgba(0,0,0,0.5); 
-  font-size: 12px; 
-  color: #fff; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  text-align: center;
+  background: rgba(0,0,0,0.5);
+  font-size: 12px;
+  color: #fff;
   z-index: 1;
   border-radius: 0;
 }
@@ -567,8 +595,8 @@ ul {
   height: 50px;
   width: 50px;
 }
-.blast-release #blast-targets .nav-tabs > li.active > a, 
-.blast-release #blast-targets .nav-tabs > li.active > a:focus, 
+.blast-release #blast-targets .nav-tabs > li.active > a,
+.blast-release #blast-targets .nav-tabs > li.active > a:focus,
 .blast-release #blast-targets .nav-tabs > li.active > a:hover {
   background-color: #3BAFDA !important;
   color: #fff;
@@ -628,10 +656,6 @@ ul {
 }
 #wrapper.active #sidebar-wrapper {
     left: 180px;
-}
-
-#page-content-wrapper {
-  width: 100%;
 }
 
 #sidebar_menu li a, .sidebar-nav li a {
@@ -773,4 +797,12 @@ ul {
 #already-button {
   margin: 10px;
   display: inline-block;
+}
+
+.error-tab {
+  color: #DA4453 !important;
+}
+
+.sweet-alert {
+  z-index: 20000 !important;
 }
