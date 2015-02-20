@@ -66,7 +66,7 @@ module BlueSnap
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       request = Net::HTTP::Post.new(uri.request_uri)
-      request.basic_auth("API_14177682984271105511385", "Robin123")
+      request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
       request.body = data
       request["Content-Type"] ='application/xml'
       response = http.request(request)
