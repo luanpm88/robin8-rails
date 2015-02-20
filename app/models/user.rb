@@ -45,6 +45,10 @@ class User < ActiveRecord::Base
     identities.where(provider: 'linkedin').first
   end
 
+  def facebook_identity
+    identities.where(provider: 'facebook').first
+  end
+
   def twitter_post message
     client = Twitter::REST::Client.new do |config|
       config.consumer_key        = Rails.application.secrets.twitter[:api_key]
@@ -62,5 +66,15 @@ class User < ActiveRecord::Base
               query: {oauth2_access_token: linkedin_identity.token},
               body: data.to_json)
     puts response.body, response.code, response.message, response.headers.inspect
+  end
+
+  def facebook_post message
+    graph = Koala::Facebook::API.new(facebook_identity.token)
+    Rails.logger.info graph.inspect
+    graph.put_wall_post("I've posted a new Post!", {
+      "name" => '',
+      "link" => '',
+      "description" => message
+    })
   end
 end
