@@ -5,7 +5,7 @@ class CreatePackages < ActiveRecord::Migration
       t.boolean :is_active
       t.float :price
       t.string :status
-      t.integer :interval_length
+      t.integer :interval
 
       t.timestamps null: false
     end

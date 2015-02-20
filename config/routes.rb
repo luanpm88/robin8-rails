@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get 'users/get_current_user' => 'users#get_current_user'
   delete '/users/disconnect_social' => 'users#disconnect_social'
 
+  resources :blue_snap
+  resources :subsrciption
+
   resources :posts
   resources :news_rooms
   resources :industries, only: :index

@@ -2,6 +2,7 @@ class CreateSubscriptions < ActiveRecord::Migration
   def change
     create_table :subscriptions do |t|
       t.integer :user_id
+      t.integer :package_id
       t.string :status
       t.string :cancellation_reason
       t.string :underlying_sku_id

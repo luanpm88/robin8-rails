@@ -9,14 +9,14 @@
 </head>
 <body id="main" class="<%= current_user.blank? ? 'login' : 'main'%>">
 <script type="text/javascript">
-  
+
   $(document).ready(function() {
     Robin.start();
   });
-  <% if flash[:success_confirmation] -%>    
+  <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
-  <% if signed_in? -%>    
+  <% if signed_in? -%>
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
   <% else -%>
     Robin.currentUser = null;

@@ -1,10 +1,7 @@
 class Package < ActiveRecord::Base
 
   has_many :payments
+  has_many :subscriptions
 
-  validates :slug, presence: true
-  validates :is_active, presence: true
-  validates :price, presence: true
-  validates :interval_length, presence: true
-
+  validates :slug, :price, :interval, presence: true
 end

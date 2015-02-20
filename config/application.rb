@@ -25,4 +25,5 @@ module Robin8
 
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
   end
+  require Rails.root.to_s + '/lib/blue_snap.rb'
 end
