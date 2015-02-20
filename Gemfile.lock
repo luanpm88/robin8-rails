@@ -133,6 +133,10 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.2)
     jwt (1.2.1)
+    koala (1.11.1)
+      addressable
+      faraday
+      multi_json
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -167,8 +171,9 @@ GEM
     omniauth-google-oauth2 (0.2.6)
       omniauth (> 1.0)
       omniauth-oauth2 (~> 1.1)
-    omniauth-linkedin (0.2.0)
-      omniauth-oauth (~> 1.0)
+    omniauth-linkedin-oauth2 (0.1.5)
+      omniauth (~> 1.0)
+      omniauth-oauth2
     omniauth-oauth (1.0.1)
       oauth
       omniauth (~> 1.0)
@@ -383,11 +388,12 @@ DEPENDENCIES
   httparty
   jbuilder (~> 2.0)
   jquery-rails
+  koala (~> 1.11.0rc)
   mysql2
   omniauth
   omniauth-facebook
   omniauth-google-oauth2
-  omniauth-linkedin
+  omniauth-linkedin-oauth2
   omniauth-twitter
   quiet_assets
   rails (= 4.2.0)

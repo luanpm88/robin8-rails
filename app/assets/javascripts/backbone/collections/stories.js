@@ -1,15 +1,16 @@
 Robin.Collections.Stories = Backbone.Collection.extend({
   model: Robin.Models.Story,
   url: function() {
+    if(!this.streamId) return;
     return '/streams/' + this.streamId + '/stories';
   },
 
   initialize: function(models, options) {
-    this.streamId = options.streamId;
     _.bindAll(this, 'executePolling', 'onFetch');
   },
 
   startPolling: function () {
+    if(this.isPollingOn) return;
     this.isPollingOn = true;
     this.pollingInterval = 1;
     this.executePolling();
@@ -20,7 +21,11 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   },
 
   executePolling: function () {
-    this.fetch({success : this.onFetch});
+    if(this.url()) {
+      this.fetch({success: this.onFetch});
+    } else {
+      this.onFetch();
+    }
   },
 
   onFetch: function () {
