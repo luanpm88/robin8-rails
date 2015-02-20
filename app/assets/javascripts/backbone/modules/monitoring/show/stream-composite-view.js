@@ -1,6 +1,6 @@
 Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
-  Show.StreamItemView = Backbone.Marionette.CompositeView.extend({
+  Show.StreamCompositeView = Backbone.Marionette.CompositeView.extend({
     template: 'modules/monitoring/show/templates/monitoring_stream',
     tagName: "li",
     className: "stream",
@@ -17,8 +17,12 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
+
+      this.collection = new Robin.Collections.Stories();
+      this.collection.streamId = this.model.get('id');
+      this.collection.startPolling();
+
       this.childView = Show.StoryItemView;
-      this.fetchStories();
     },
 
     onRender: function() {
@@ -88,13 +92,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       $(this.el).find('#' + val + '-select').select2('val', currentModel.attributes[val]);
     },
 
-    fetchStories: function() {
-      if(!this.model.get('id')) return;
-      this.collection = this.model.stories();
-      this.listenTo(this.collection, 'add', this.render);
-      this.collection.startPolling();
-    },
-
     closeStream: function() {
       var r = this.model;
       swal({
@@ -130,7 +127,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
-          curView.fetchStories();
+          curView.collection.streamId = response.id;
+          curView.collection.fetch({reset: true});
+
           $(curView.el).attr("data-pos",response.id);
           $(curView.el).find('.slider').addClass('closed');
           $.growl({message: "Your stream was saved!"

@@ -15,7 +15,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onRender: function() {
       var currView = this;
-      currView.streamsCollectionView = new Show.StreamsCollectionView({childView: Show.StreamItemView});
+      currView.streamsCollectionView = new Show.StreamsCollectionView({childView: Show.StreamCompositeView});
       currView.streamsRegion.show(currView.streamsCollectionView);
       currView.$el.find(".stream-container").sortable({
         handle: '.stream-header',
