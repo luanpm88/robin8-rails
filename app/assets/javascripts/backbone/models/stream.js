@@ -2,7 +2,8 @@ Robin.Models.Stream = Backbone.Model.extend({
   urlRoot: '/streams/',
 
   defaults: {
-    "name": 'Untitled Stream',
+    name: 'Untitled Stream',
+    newStoriesCount: 0
   },
 
   toJSON: function() {
