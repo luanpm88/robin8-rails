@@ -14,9 +14,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       'click .manage': 'manageUsers'
     },
     initialize: function(options){
+      this.collection.fetch();
       this.modelBinder = new Backbone.ModelBinder();
       Robin.vent.on("news_room:open_edit_modal", this.openModalDialogEdit, this);
-      this.collection.fetch();
     },
     templateHelpers: function () {
       return {
