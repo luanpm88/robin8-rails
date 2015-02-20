@@ -4,6 +4,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
 
+  after_filter :set_csrf_headers
+
+  def set_csrf_headers
+    response.headers['X-CSRF-Token'] = form_authenticity_token if protect_against_forgery?
+  end
+
   before_action :configure_permitted_parameters, if: :devise_controller?
     protected
 
