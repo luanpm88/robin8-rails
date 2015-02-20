@@ -56,6 +56,7 @@ gem 'devise_invitable'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-linkedin-oauth2'
+gem 'omniauth-linkedin'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'active_model_serializers', "~> 0.8.0"

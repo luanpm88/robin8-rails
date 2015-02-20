@@ -10,13 +10,13 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   },
 
   startPolling: function () {
-    this.polling = true;
-    this.minutes = 1;
+    this.isPollingOn = true;
+    this.pollingInterval = 1;
     this.executePolling();
   },
 
   stopPolling: function () {
-    this.polling = false;
+    this.isPollingOn = false;
   },
 
   executePolling: function () {
@@ -24,7 +24,7 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   },
 
   onFetch: function () {
-    if (!this.polling) return;
-    setTimeout(this.executePolling, moment.duration(this.minutes, 'minutes').asMilliseconds());
+    if (!this.isPollingOn) return;
+    setTimeout(this.executePolling, moment.duration(this.pollingInterval, 'minutes').asMilliseconds());
   }
 });
