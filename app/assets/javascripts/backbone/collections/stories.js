@@ -18,7 +18,7 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   startPolling: function () {
     if(this.isPollingOn) return;
     this.isPollingOn = true;
-    this.pollingInterval = 0.1;
+    this.pollingInterval = 1;
     this.executePolling();
   },
 
@@ -41,7 +41,6 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   onFetch: function () {
     if (!this.isPollingOn) return;
     this.initialFetchAt = this.initialFetchAt || new Date();
-    this.sort();
     setTimeout(this.executePolling, moment.duration(this.pollingInterval, 'minutes').asMilliseconds());
   },
 
