@@ -75,6 +75,34 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
               }
             }
           },
+          email: {
+            validators: {
+              emailAddress: {
+                message: 'The value is not a valid email address'
+              }
+            }
+          },
+          phone_number: {
+            validators: {
+              digits: {
+                message: 'Digits only'
+              }
+            }
+          },
+          toll_free_number: {
+            validators: {
+              digits: {
+                message: 'Digits only'
+              }
+            }
+          },
+          fax: {
+            validators: {
+              digits: {
+                message: 'Digits only'
+              }
+            }
+          },
           subdomain_name: {
             validators: {
               notEmpty: {
