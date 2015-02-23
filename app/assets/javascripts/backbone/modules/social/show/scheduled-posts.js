@@ -16,6 +16,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
+      this.socialNetworksBinder = new Backbone.ModelBinder();
     },
 
     onRender: function(){
@@ -28,7 +29,20 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     events: {
       'click #delete-post': 'deletePost',
       'click span.editable': 'editPost',
-      'click button[type="submit"]': 'updatePost'
+      'click button[type="submit"]': 'updatePost',
+      'click .social-networks .btn': 'enableSocialNetwork'
+    },
+
+    enableSocialNetwork: function(e) {
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      var input = btn.next('input');
+      btn.toggleClass('btn-primary');
+      if (input.val() == 'false' || input.val() == '') {
+        input.val('true')
+      } else {
+        input.val('false')
+      }
     },
 
     deletePost: function(e) {
@@ -49,19 +63,33 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     editPost: function() {
-      var row = this.$el.find('.settings-row');
-      console.log(row);
+      var row = this.$el.find('.edit-settings-row').clone();
       this.$el.find('textarea').parent().append(row);
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
+      
+      this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
+      this.model.set('social_networks', this.socialNetworks);
+
+      var socialNetworksBindings = {
+        twitter: '.edit-settings-row [name=twitter]',
+        facebook: '.edit-settings-row [name=facebook]',
+        linkedin: '.edit-settings-row [name=linkedin]',
+        google: '.edit-settings-row [name=google]'
+      }
       this.modelBinder.bind(this.model, this.el);
+      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
 
     updatePost: function() {
-      this.modelBinder.copyViewValuesToModel();
-      this.model.save(this.model.attributes, {
+      var view = this;
+      
+      view.socialNetworksBinder.copyViewValuesToModel();
+      view.modelBinder.copyViewValuesToModel();
+
+      view.model.save(view.model.attributes, {
         success: function(data){
-          console.log(data);
+          view.render();
         },
         error: function(data){
           console.warn('error', data);

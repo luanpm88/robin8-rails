@@ -9,6 +9,7 @@ Robin.module("Social", function(Social, Robin, Backbone, Marionette, $, _){
   }
 
   Social.on('start', function(){
+    this.postsCollection = new Robin.Collections.Posts();
     API.showSocialPage();
     $('#nav-social').parent().addClass('active');
   })

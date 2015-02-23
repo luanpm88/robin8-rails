@@ -1,15 +1,16 @@
 class PostsController < ApplicationController
 
   def index
-    @posts = current_user.posts#.todays
+    render json: current_user.posts.todays.order('scheduled_date desc'), each_serializer: PostSerializer
   end
 
   def new
   end
 
   def create
-    if current_user.posts.create(post_params)
-      render json: {}
+    @post = current_user.posts.new(post_params)
+    if @post.save
+      render json: @post
     else
       render nothing: true
     end
@@ -27,7 +28,7 @@ class PostsController < ApplicationController
   def update
     @post = Post.find params[:id]
     if @post.update_attributes(post_params)
-      render json: {}
+      render json: @post
     else
       render json: {}
     end
@@ -41,7 +42,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:text, :scheduled_date, social_networks: [:twitter, :facebook, :linkedin, :google])
+    params.require(:post).permit(:text, :scheduled_date, :shrinked_links, social_networks: [:twitter, :facebook, :linkedin, :google])
   end
 
 end

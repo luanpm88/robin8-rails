@@ -27,6 +27,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
+          window.location = '#signin'
           $.growl({message: 'An email with password reset information has been sent'
           },{
             type: 'success'
