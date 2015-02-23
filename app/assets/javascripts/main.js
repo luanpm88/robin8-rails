@@ -28,8 +28,6 @@ $(function(){
     }
   });
 
-  $('#schedule-datetimepicker').datetimepicker();
-
   $('.navbar-search .post-settings .schedule').on('click', function(){
     $(this).hide().next().show();
   });
