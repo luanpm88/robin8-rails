@@ -7,6 +7,7 @@ class CreatePackages < ActiveRecord::Migration
       t.string :status
       t.integer :interval
       t.string :name
+      t.integer :sku_id
       t.string :description
       t.timestamps null: false
     end

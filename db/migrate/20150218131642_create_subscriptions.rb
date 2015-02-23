@@ -5,10 +5,10 @@ class CreateSubscriptions < ActiveRecord::Migration
       t.integer :package_id
       t.string :status
       t.string :cancellation_reason
-      t.string :underlying_sku_id
       t.string :shopper_id
       t.float :recurring_amount
-      t.string :recurring_currency
+      t.float :charged_amount
+      t.float :total_amount
       t.date :next_charge_date
       t.boolean :auto_renew,:default=>true
 

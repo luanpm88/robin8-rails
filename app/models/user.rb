@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
 
+  has_one :subscription, dependent: :destroy
+
   has_many :payments
   has_one :subscription , dependent: :destroy
 

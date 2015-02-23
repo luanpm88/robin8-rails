@@ -28,9 +28,11 @@
         </div>
       </div>
 
-
       <div class="row fields"></div>
-      <!--<form class="form-horizontal" role="form" action="/subscription" method="POST" id="checkout-form">-->
+      <%flash[:errors].each do |e|%>
+          <p><%=e%></p>
+      <%end if flash[:errors]%>
+
       <%= form_for @subscription, :html =>{:class=>"frmContact",:id=>"checkout-form"} do |f|  %>
           <div class="row">
             <div class="col-sm-offset-1 col-sm-10">
@@ -71,10 +73,8 @@
           </div>
           <div>
             <%= submit_tag "SUBMIT", :class=>"btn-lg" %>
-            <!--<button type="submit"> Save</button>-->
           </div>
       <%end%>
-      <!--</form>-->
     </div>
   </div>
 </section>
