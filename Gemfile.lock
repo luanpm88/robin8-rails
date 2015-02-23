@@ -253,7 +253,7 @@ GEM
     rails-assets-tweenlite (1.11.5)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.string (3.0.3)
-    rails-assets-uploadcare (1.5.5)
+    rails-assets-uploadcare (2.0.0)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-x-editable (1.5.1)
       rails-assets-jquery (>= 1.6)
@@ -404,7 +404,7 @@ DEPENDENCIES
   rails-assets-bootstrap-sass!
   rails-assets-bootstrap-sweetalert
   rails-assets-bootstrap-tagsinput
-  rails-assets-bootstrap.growl!
+  rails-assets-bootstrap.growl (= 2.0.1)!
   rails-assets-chance
   rails-assets-eonasdan-bootstrap-datetimepicker (= 3.1.3)
   rails-assets-font-awsome

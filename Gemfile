@@ -25,7 +25,7 @@ gem 'quiet_assets', group: [:development, :staging]
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
-  gem 'rails-assets-bootstrap.growl'
+  gem 'rails-assets-bootstrap.growl', '2.0.1'
   gem 'rails-assets-uploadcare'
   gem 'rails-assets-progressjs'
   gem 'rails-assets-blueimp-gallery'
