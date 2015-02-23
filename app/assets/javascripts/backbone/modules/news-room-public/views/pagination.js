@@ -1,12 +1,12 @@
-Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
+Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionette, $, _){
 
-  Newsroom.PaginationView = Marionette.ItemView.extend({
-    template: 'modules/news_room/templates/pagination-view',
+  NewsRoomPublic.PaginationView = Marionette.ItemView.extend({
+    template: 'modules/news-room-public/templates/pagination-view',
     pageOffset: 3,
-    tagName: 'nav',
-    attributes: {
-      align: 'center'
-    },
+    // tagName: 'nav',
+    // attributes: {
+    //   align: 'center'
+    // },
     modelEvents: {
       "change": "modelChanged"
     },
@@ -16,10 +16,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       'click .next_page': 'nextPage'
     },
     templateHelpers: function () {
-      return {
+    return {
         leftEdge: this.leftEdge,
-        rightEdge: this.rightEdge,
-        total_pages: this.model.get('total_pages')
+        rightEdge: this.rightEdge
       };
     },
     onBeforeRender: function(){
@@ -40,7 +39,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         this.model.set('page', this.model.get('page') + 1 );
     },
     modelChanged: function(model){
-      Robin.Newsroom.controller.paginate(this.model.get('page'));
+      Robin.NewsRoomPublic.controller.paginate(this.model.get('page'));
       this.render();
     }
   });

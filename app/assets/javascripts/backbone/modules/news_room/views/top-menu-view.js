@@ -15,6 +15,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
     initialize: function(options){
       this.collection.fetch();
+      sweetAlertInitialize();
       this.modelBinder = new Backbone.ModelBinder();
       Robin.vent.on("news_room:open_edit_modal", this.openModalDialogEdit, this);
     },
@@ -72,6 +73,34 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
             validators: {
               notEmpty: {
                 message: 'The Company name is required'
+              }
+            }
+          },
+          email: {
+            validators: {
+              emailAddress: {
+                message: 'The value is not a valid email address'
+              }
+            }
+          },
+          phone_number: {
+            validators: {
+              digits: {
+                message: 'Digits only'
+              }
+            }
+          },
+          toll_free_number: {
+            validators: {
+              digits: {
+                message: 'Digits only'
+              }
+            }
+          },
+          fax: {
+            validators: {
+              digits: {
+                message: 'Digits only'
               }
             }
           },
@@ -154,32 +183,44 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
     deleteNewsRoom: function(){
       var viewObj = this;
-      swal({
-        title: "Delete this newsroom?",
-        text: "You will not be able to recover it!",
-        type: "error",
-        showCancelButton: true,
-        confirmButtonClass: 'btn-danger',
-        confirmButtonText: 'Delete'
-      },
-      function(isConfirm) {
-        if (isConfirm) {
-          viewObj.model.destroy({
-            success: function(model, response){
-              viewObj.$el.find('#newsroom_form').modal('hide');
-              var page = Robin.module("Newsroom").controller.filterCriteria.page
-              if(Robin.module("Newsroom").collection.length == 1 && page > 1 || page == 1) {
-                Robin.module("Newsroom").controller.paginate(1);
-              }else {
-                Robin.module("Newsroom").controller.paginate(page);
+      if (this.model.get('default_news_room')){
+        swal({
+          title: "This is default newsroom",
+          text: "You are not able to delete it!",
+          type: "error",
+          showCancelButton: false,
+          confirmButtonClass: 'btn',
+          confirmButtonText: 'ok'
+        });
+      }else{
+        swal({
+          title: "Delete this newsroom?",
+          text: "You will not be able to recover it!",
+          type: "error",
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          confirmButtonText: 'Delete'
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+            viewObj.model.destroy({
+              success: function(model, response){
+                viewObj.$el.find('#newsroom_form').modal('hide');
+                var page = Robin.module("Newsroom").controller.filterCriteria.page
+                if(Robin.module("Newsroom").collection.length == 1 && page > 1 || page == 1) {
+                  Robin.module("Newsroom").controller.paginate(1);
+                }else {
+                  Robin.module("Newsroom").controller.paginate(page);
+                }
+              },
+              error: function(data){
+                console.warn('error', data);
               }
-            },
-            error: function(data){
-              console.warn('error', data);
-            }
-          });
-        }
-      });
+            });
+          }
+        });
+      }
+      
     },
     onDestroy: function(){
       Robin.vent.off("news_room:open_edit_modal", this.openModalDialogEdit);

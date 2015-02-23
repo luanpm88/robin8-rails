@@ -3,12 +3,25 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.StoryItemView = Backbone.Marionette.ItemView.extend({
     template: 'modules/monitoring/show/templates/monitoring_story',
     tagName: "li",
+
     events: {
       'click .js-open-story': 'openStory',
       'click .share': 'shareStory',
     },
+
+    modelEvents: {
+      change: 'render'
+    },
+
     onRender: function() {
       var shares = this.model.attributes.shares_count;
+
+      if(this.model.get('isNew')) {
+        this.$el.addClass('hidden');
+      } else {
+        this.$el.removeClass('hidden');
+      }
+
       if(shares) {
         this.$el.find('.likes').tooltip({
           title: '<i class="fa fa-facebook-square"></i> ' + shares.facebook + ' \

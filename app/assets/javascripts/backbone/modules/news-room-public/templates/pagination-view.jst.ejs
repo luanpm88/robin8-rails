@@ -1,0 +1,19 @@
+<ul class="pagination">
+  <li>
+    <a class='prev_page' href="javascript:void(0)" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  <% for(i=leftEdge;i<=rightEdge;i++) {%>
+    <% if (i==page) { %>
+      <li><a class='page active' href="javascript:void(0)"><%= i %></a></li>
+    <% } else { %>
+      <li><a class='page' href="javascript:void(0)"><%= i %></a></li>
+    <% } %>
+  <%}%>
+  <li>
+    <a class='next_page' href="javascript:void(0)" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+</ul>
