@@ -36,7 +36,6 @@
 //= require backbone.marionette
 //= require tweenlite
 //= require highcharts
-//= require highcharts/highcharts-more
 //= require select2
 //= require_directory ./lib
 //= require bootstrap-tagsinput
