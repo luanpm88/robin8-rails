@@ -16,9 +16,10 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       'click .next_page': 'nextPage'
     },
     templateHelpers: function () {
-    return {
+      return {
         leftEdge: this.leftEdge,
-        rightEdge: this.rightEdge
+        rightEdge: this.rightEdge,
+        total_pages: this.model.get('total_pages')
       };
     },
     onBeforeRender: function(){
