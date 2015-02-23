@@ -42,7 +42,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     onRender: function() {
       var postBindings = {
         text: '[name=text]',
-        scheduled_date: '[name=scheduled_date]'
+        scheduled_date: '[name=scheduled_date]',
+        shrinked_links: '[name=shrinked_links]'
       };
       var socialNetworksBindings = {
         twitter: '[name=twitter]',
@@ -50,7 +51,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         google: '[name=google]'
       }
-      this.ui.minDatePicker.datetimepicker({minDate: moment().utc(), format: 'DD/MM/YYYY hh:mm A'});
+      this.ui.minDatePicker.datetimepicker({minDate: moment().utc(), format: 'MM/DD/YYYY hh:mm A'});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
@@ -147,9 +148,9 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       this.modelBinder.copyViewValuesToModel();
       
       if (this.model.attributes.scheduled_date === ""){
-        this.model.attributes.scheduled_date = moment().utc().format('DD/MM/YYYY hh:mm A');
+        this.model.attributes.scheduled_date = moment().utc().format('MM/DD/YYYY hh:mm A');
       } else {
-        this.model.attributes.scheduled_date = moment(this.model.attributes.scheduled_date).utc();
+        this.model.attributes.scheduled_date = moment(new Date(this.model.attributes.scheduled_date)).utc();
       }
 
       this.model.save(this.model.attributes, {
@@ -157,6 +158,11 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
           $('.navbar-search-lg').hide();
           $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
           $('.progressjs-progress').hide();
+          
+          if (Robin.Social._isInitialized){            
+            Robin.module("Social").postsCollection.fetch();
+          } 
+
           $.growl({message: "You've created a post"
           },{
             type: 'success'
