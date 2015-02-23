@@ -4,6 +4,7 @@ Robin.Views.Layouts = {};
 Robin.Collections = {};
 Robin.Models = {};
 Robin.Routers = {};
+Robin.Controllers = {};
 
 Robin.layouts = {};
 
@@ -27,7 +28,7 @@ Robin.finishSignIn = function(data){
 Robin.loadPleaseWait = function(){
   if (Robin.showLoading) {
     window.loading_screen = window.pleaseWait({
-      logo: "assets/logo.png",
+      logo: AppAssets.path('logo.png'),
       backgroundColor: 'rgb(81, 119, 155)',
       loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
     });
@@ -46,7 +47,7 @@ Robin.setIdentities = function(data){
 };
 
 Robin.stopOtherModules = function(){
-  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard'], function(module){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
@@ -70,20 +71,30 @@ Robin.on('start', function(){
 });
 
 Robin.addInitializer(function(options){
-  if (Robin.currentUser) {
-    Robin.module('Navigation').start();
-    Robin.module('Dashboard').start();
-    Robin.module('SaySomething').start();
-  } else {
+  if (Robin.currentUser && !Robin.publicPages) {
+    // Robin.module('Navigation').start();
+    // Robin.module('Dashboard').start();
+    // Robin.module('SaySomething').start();
+    // new Robin.Routers.AppRouter({controller: new Robin.Controllers.AppController()});
+  } else if (!Robin.publicPages) {
     Robin.module('Authentication').start();
   }
 });
 
 Robin.vent.on("authentication:logged_in", function() {
-  Robin.layouts.main = new Robin.Views.Layouts.Main();
-  Robin.main.show(Robin.layouts.main);
-  Robin.module('Navigation').start();
-  Robin.module('SaySomething').start();
+  if (Robin.publicPages) {
+    Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
+    Robin.main.show(Robin.layouts.main);
+    Robin.stopOtherModules();
+    Robin.module('NewsRoomPublic').start();
+  } else {
+    Robin.layouts.main = new Robin.Views.Layouts.Main();
+    Robin.main.show(Robin.layouts.main);
+    Backbone.history.handlers = [];
+    new Robin.Routers.AppRouter({controller: new Robin.Controllers.AppController()});
+    // Robin.module('Navigation').start();
+    // Robin.module('SaySomething').start();
+  }
 
 });
 
@@ -108,6 +119,20 @@ Robin.vent.on('SaySomething:close', function(){
 //Uploadcare params:
 UPLOADCARE_PUBLIC_KEY = "demopublickey";
 UPLOADCARE_AUTOSTORE = true;
+UPLOADCARE_LOCALE_TRANSLATIONS = {
+  // messages for widget
+  errors: {
+    'fileType': 'This type of files is not allowed.'
+  },
+  // messages for dialog's error page
+  dialog: { tabs: { preview: { error: {
+    'fileType': {  
+      title: 'Title.',
+      text: 'Text.',
+      back: 'Back'
+    }
+  } } } }
+};
 //The UPLOADCARE_PUBLIC_KEY should be changed as soon as paid
 // account is avaialble. example:
 //UPLOADCARE_PUBLIC_KEY = "a51f0572e52df821db41";

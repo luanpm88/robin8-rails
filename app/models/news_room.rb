@@ -6,9 +6,12 @@ class NewsRoom < ActiveRecord::Base
 
   belongs_to :user
   has_and_belongs_to_many :industries
+  has_many :attachments, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :attachments, allow_destroy: true
 
   validates :company_name, presence: true
   validates :user_id, presence: true
+  validates :subdomain_name, presence: true, uniqueness: true
   validates_inclusion_of :room_type, in: VALID_TYPES, allow_blank: true
   validates_inclusion_of :size, in: VALID_SIZES, allow_blank: true
 end

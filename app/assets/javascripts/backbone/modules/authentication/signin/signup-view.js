@@ -4,7 +4,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     template: 'modules/authentication/signin/templates/signup',
 
     events: {
-      'submit form' : 'signup',
+      'click #register' : 'signup',
       'click .btn-facebook' : 'socialSignIn',
       'click .btn-google-plus' : 'socialSignIn',
     },
@@ -18,35 +18,108 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       this.modelBinder.bind(this.model, this.el);
     },
 
+    onShow: function() {
+      this.initFormValidation();
+    },
+
+    initFormValidation: function(){
+      this.form = $('#formSignup').formValidation({
+        framework: 'bootstrap',
+        excluded: [':disabled'],
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          email: {
+            validators: {
+              notEmpty: {
+                message: 'The email address is required'
+              },
+              regexp: {
+                regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: 'The data you have entered is not a valid email'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+          password: {
+            validators: {
+              notEmpty: {
+                message: 'The password is required'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+          password_confirmation: {
+            validators: {
+              notEmpty: {
+                message: 'The password confirmation is required'
+              },
+              identical: {
+                field: 'password',
+                message: 'The password confirmation must be the same as original one'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+        }
+      })
+      .on('err.field.fv', function(e, data) {
+        // data.element --> The field element
+        var $tabPane = data.element.parents('.tab-pane'),
+          tabId    = $tabPane.attr('id');
+        $('a[href="#' + tabId + '"][data-toggle="tab"]')
+          .addClass('error-tab');
+      })
+        // Called when a field is valid
+      .on('success.field.fv', function(e, data) {
+          // data.fv      --> The FormValidation instance
+          // data.element --> The field element
+        var $tabPane = data.element.parents('.tab-pane'),
+          tabId    = $tabPane.attr('id');
+        $('a[href="#' + tabId + '"][data-toggle="tab"]')
+          .removeClass('error-tab');
+      });
+    },
+
     signup: function(e) {
       e.preventDefault();
-      
-      el = $(this.el);
-      el.find('.controls').removeClass('error');
+      var viewObj = this;
+      this.form.data('formValidation').validate();
+      if (this.form.data('formValidation').isValid()) {
+        this.model.save(this.model.attributes, {
+          success: function(userSession, response) {
+            Robin.currentUser = new Robin.Models.User(response);
+            window.location = '#signin'
+            $.growl('You will receive an email with instructions for how to confirm your email address in a few minutes', {
+              type: "info",
+            });
+          },
+          error: function(data, response) {
+            viewObj.processErrors(response);
+          }
+        });
+      }
+    },
 
-      this.model.save(this.model.attributes, {
-        success: function(userSession, response) {
-          Robin.currentUser = new Robin.Models.User(response);
-          window.location = '#signin'
-          $.growl('You will receive an email with instructions for how to confirm your email address in a few minutes', {
-            type: "info",
-          });
-        },
-        error: function(userSession, response) {
-          $('.form-signup')
-          // var result = $.parseJSON(response.responseText);
-          // _(result.errors).each(function(errors,field) {
-          //   $('input[name=' + field + ']').addClass('error');
-          //   _(errors).each(function(error, i) {
-          //     formatted_field = s(field).capitalize().value().replace('_', ' ');
-              
-          //     $.growl(formatted_field + ' ' + error, {
-          //       type: "danger",
-          //     });
-          //   });
-          // });
+    processErrors: function(data){
+      var errors = JSON.parse(data.responseText).errors;
+      _.each(errors, function(value, key){
+        this.form.data('formValidation').updateStatus(key, 'INVALID', 'serverError')
+        var val = value.join(',');
+        if (val === "has already been taken") {
+          val = "This email " + val;
         }
-      });
+        this.form.data('formValidation').updateMessage(key, 'serverError', val)
+      }, this);
     },
 
     socialSignIn: function(e) {

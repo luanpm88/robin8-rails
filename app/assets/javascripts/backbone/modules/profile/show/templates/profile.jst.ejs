@@ -11,13 +11,14 @@
           <h6>Upload a different photo...</h6>
           <input type="hidden" id="avatar-upload" role="uploadcare-uploader"
             data-crop="200x200 upscale"
+            data-max-size="3145728"
             data-images-only="true"/>
         </div>
       </div>
       <!-- edit form column -->
       <div class="col-md-9 personal-info">
         <h3>Personal info</h3>
-        <form class="form-horizontal" role="form" autocomplete="off">
+        <form class="form-horizontal" role="form" autocomplete="off" id="profileForm">
           <div class="form-group">
             <label class="col-lg-3 control-label">First name:</label>
             <div class="col-lg-8">
@@ -204,7 +205,7 @@
             </div>
           </div>
           <hr>
-           <div class="form-group">
+           <div class="form-group" id="currentPassword">
             <label class="col-md-3 control-label">Current password:</label>
             <div class="col-md-8">
               <input class="form-control" name="current_password" type="password" value="">
@@ -213,7 +214,8 @@
           <div class="form-group">
             <label class="col-md-3 control-label">New password:</label>
             <div class="col-md-8">
-              <input class="form-control" name="password" type="password" value="">
+              <input class="form-control" name="password" type="password" value="" minlength="8"
+               data-fv-stringlength-message="A new password must be at least 8 characters long">
             </div>
           </div>
           <div class="form-group">
@@ -225,7 +227,7 @@
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-              <input type="submit" class="btn btn-primary" value="Save Changes">
+              <input type="button" id="saveChanges" class="btn btn-primary" value="Save Changes">
               <span></span>
               <input type="reset" class="btn btn-default" value="Cancel">
             </div>
