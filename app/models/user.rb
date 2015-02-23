@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, 
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable,
          :omniauthable, :invitable
 
   has_many :identities, dependent: :destroy
@@ -10,9 +10,10 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
-
   has_many :payments
   has_one :subscription , dependent: :destroy
+
+  after_create :create_default_news_room
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
     identity = Identity.find_for_oauth(auth)
@@ -80,4 +81,13 @@ class User < ActiveRecord::Base
       "description" => message
     })
   end
+
+  private
+    def create_default_news_room
+      self.news_rooms.create(
+        company_name: "#{self.email}'s Default Newsroom",
+        subdomain_name: "#{self.email}'s Default Subdomain",
+        default_news_room: true
+      )
+    end
 end

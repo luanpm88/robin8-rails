@@ -6,7 +6,8 @@ class Post < ActiveRecord::Base
 
   after_create :perform_worker
 
-  scope :todays, -> { where("scheduled_date > ? AND scheduled_date < ?", DateTime.now.beginning_of_day, DateTime.now.end_of_day) }
+  scope :todays, -> { where("scheduled_date > ? AND scheduled_date < ?", DateTime.now.utc, DateTime.now.utc.end_of_day) }
+  scope :tomorrows, -> { where("scheduled_date > ? AND scheduled_date < ?", DateTime.now.utc.beginning_of_day + 1, DateTime.now.utc.end_of_day + 1) }
 
   def perform_worker
     PostWorker.perform_at(scheduled_date, id)
