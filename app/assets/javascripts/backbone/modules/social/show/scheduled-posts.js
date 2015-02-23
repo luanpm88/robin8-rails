@@ -49,6 +49,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     editPost: function() {
+      var row = this.$el.find('.settings-row');
+      console.log(row);
+      this.$el.find('textarea').parent().append(row);
+      row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
       this.modelBinder.bind(this.model, this.el);
     },

@@ -1,6 +1,6 @@
 Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
-  Show.StreamItemView = Backbone.Marionette.CompositeView.extend({
+  Show.StreamCompositeView = Backbone.Marionette.CompositeView.extend({
     template: 'modules/monitoring/show/templates/monitoring_stream',
     tagName: "li",
     className: "stream",
@@ -13,12 +13,21 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #done': 'done',
       'click span.editable': 'editTitle',
       'click .editable-submit': 'updateTitle',
+      'click .js-show-new-stories': 'showNewStories'
+    },
+
+    collectionEvents: {
+      add: 'onAdded'
     },
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
+
+      this.collection = new Robin.Collections.Stories();
+      this.collection.streamId = this.model.get('id');
+      this.collection.startPolling();
+
       this.childView = Show.StoryItemView;
-      this.fetchStories();
     },
 
     onRender: function() {
@@ -32,10 +41,15 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (!this.model.get('id')) {
         this.$el.find('.stream-settings').removeClass('closed');
       }
+      this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
     },
 
     onDestroy: function() {
       this.collection.stopPolling();
+    },
+
+    onAdded: function(story, collection) {
+      this.model.set('newStoriesCount', this.collection.where({isNew: true}).length);
     },
 
     editTitle: function() {
@@ -88,13 +102,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       $(this.el).find('#' + val + '-select').select2('val', currentModel.attributes[val]);
     },
 
-    fetchStories: function() {
-      if(!this.model.get('id')) return;
-      this.collection = this.model.stories();
-      this.listenTo(this.collection, 'add', this.render);
-      this.collection.startPolling();
-    },
-
     closeStream: function() {
       var r = this.model;
       swal({
@@ -130,7 +137,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
-          curView.fetchStories();
+          curView.collection.streamId = response.id;
+          curView.collection.fetch({reset: true});
+
           $(curView.el).attr("data-pos",response.id);
           $(curView.el).find('.slider').addClass('closed');
           $.growl({message: "Your stream was saved!"
@@ -148,6 +157,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       });
 
       $(this.el).find('.slider').addClass('closed');
+    },
+
+    showNewStories: function() {
+      this.collection.where({isNew: true}).forEach(function(story) {
+        story.set('isNew', false);
+      });
+      this.model.set('newStoriesCount', 0);
+      this.collection.refreshInitialFetchAt();
     }
   });
 

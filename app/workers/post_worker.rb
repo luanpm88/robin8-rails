@@ -10,5 +10,8 @@ class PostWorker
     if post.social_networks[:linkedin] == 'true'
       user.linkedin_post(post.text) 
     end
+    if post.social_networks[:facebook] == 'true'
+      user.facebook_post(post.text) 
+    end
   end
 end

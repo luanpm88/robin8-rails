@@ -68,8 +68,7 @@ gem 'will_paginate', '~> 3.0.6'
 gem 'has_scope'
 
 gem 'twitter'
-# gem 'linkedin'
-# gem 'linkedin-oauth2'
+gem "koala", "~> 1.11.0rc" #flexible library for Facebook
 gem 'httparty'
 
 gem 'ejs'

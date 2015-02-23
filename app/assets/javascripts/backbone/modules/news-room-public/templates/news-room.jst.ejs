@@ -1,12 +1,15 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-12">
-      <h1><%- news_room.company_name %></h1>
-      <p><%- news_room.description %></p>
-      <p>You can follow us on Twitter via <code>@acme</code> or using the <code>#acmecorp</code> hashtag.</p>
-      <a href="#" class="btn btn-default"><i class="fa fa-image"></i> Press kit</a>
-      <a href="#" class="btn btn-default"><i class="fa fa-newspaper-o"></i> Follow</a>
+      <div id='content-head'>
+        <h1><%- news_room.company_name %></h1>
+        <p><%- news_room.description %></p>
+        <p>You can follow us on Twitter via <code>@acme</code> or using the <code>#acmecorp</code> hashtag.</p>
+        <a href="#" class="btn btn-default"><i class="fa fa-image"></i> Press kit</a>
+        <a href="#" class="btn btn-default"><i class="fa fa-newspaper-o"></i> Follow</a>
+      </div>
       <hr>
+      <div id='releases'>
         <h4>Press Releases</h4>
         <div class="row">
           <div class="col-sm-6 col-md-4">
@@ -79,27 +82,28 @@
             </div>
           </div>        
         </div>
-        <nav align="center">
-          <ul class="pagination">
-            <li>
-              <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-              <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+      </div>
+      <nav align="center">
+        <ul class="pagination">
+          <li>
+            <a href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li>
+            <a href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
       <hr>
-      <div>
+      <div id='content-footer'>
         <h4>About ACME Corp</h4>
         <p></p><p>
           <strong>Location:</strong> Headquarters in Melbourne, Australia. Remote team located around the world.

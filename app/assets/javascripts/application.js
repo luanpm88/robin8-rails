@@ -45,6 +45,8 @@
 
 //= require_tree ./backbone/config
 //= require backbone/init
+//= require_tree ./backbone/routers
+//= require_tree ./backbone/controllers
 //= require_tree ./backbone/models
 //= require_tree ./backbone/collections
 //= require_tree ./backbone/layouts

@@ -26,8 +26,12 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       this.modelBinder.copyViewValuesToModel();
       
       this.model.save(this.model.attributes, {
-        success: function(userSession, response) {
-          Robin.finishSignIn(response);
+        success: function(data, response, jqXHR){
+          var token = jqXHR.xhr.getResponseHeader('X-CSRF-Token');
+          if (token) {
+            $("meta[name='csrf-token']").attr('content', token);
+            Robin.finishSignIn(response);
+          }
         },
         error: function(userSession, response) {
           var result = $.parseJSON(response.responseText);

@@ -23,9 +23,9 @@ class StreamsController < ApplicationController
   def update
     @stream = Stream.find params[:id]
     if @stream.update_attributes(stream_params)
-      render json: {}
+      render json: @stream.to_json
     else
-      render json: {}
+      render nothing: true
     end
   end
 
