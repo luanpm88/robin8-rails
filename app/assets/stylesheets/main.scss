@@ -389,6 +389,10 @@ ul {
   margin-left: 2px;
   float: left;
 }
+#social-scheduled .list-group-item .editable-post {
+  width: 100%;
+  max-width: 650px;
+}
 #social-scheduled small {
   text-transform: uppercase;
   font-weight: bold;
