@@ -41,6 +41,7 @@
 //= require ./lib/formValidation/formValidation.min
 //= require ./lib/formValidation/js/bootstrap.min
 //= require bootstrap-wysihtml5
+//= require timeago
 
 //= require_tree ./backbone/config
 //= require backbone/init
