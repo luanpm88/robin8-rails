@@ -148,9 +148,9 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       this.modelBinder.copyViewValuesToModel();
       
       if (this.model.attributes.scheduled_date === ""){
-        this.model.attributes.scheduled_date = moment().utc().format('MM/DD/YYYY hh:mm A');
+        this.model.attributes.scheduled_date = moment().utc();
       } else {
-        this.model.attributes.scheduled_date = moment(new Date(this.model.attributes.scheduled_date)).utc();
+        this.model.attributes.scheduled_date = moment(new Date(this.model.attributes.scheduled_date));
       }
 
       this.model.save(this.model.attributes, {
