@@ -25,6 +25,8 @@ module Robin8
 
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
     config.autoload_paths += %W(#{config.root}/lib)
+
+    config.action_dispatch.perform_deep_munge = false
   end
   require Rails.root.to_s + '/lib/blue_snap.rb'
 end

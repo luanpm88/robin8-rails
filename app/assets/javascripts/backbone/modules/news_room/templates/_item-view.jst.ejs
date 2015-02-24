@@ -9,13 +9,15 @@
     </div>
     <div class="caption">
       <h2><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
-      <p><%= news_room.description %></p>
+      <div class="description_area">
+        <p ><%= news_room.description %></p>
+      </div>
     </div>
     <div class="modal-footer">
       <div class="row">
         <div class="col-xs-12 text-center">
           <a class="btn btn-primary" href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target="_blank"><i class="fa fa-eye"></i> Preview</a>
-          <a class="btn btn-info" href="http://<%- news_room.subdomain_name != 'null' ? news_room.subdomain_name + '.' : '' %><%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>
+          <a class="btn btn-info" href="http://<%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>
           <button class="btn btn-default" id="open_edit"><i class="fa fa-pencil"></i> Edit</button>
         </div>
       </div>

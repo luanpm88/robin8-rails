@@ -1,7 +1,15 @@
 <div class="col-sm-6 col-md-4">
   <div class="thumbnail release-item">
     <a href="public/release.html" target="_blank" class="release-image">
-      <img class="img-rounded" src="http://lorempixel.com/400/400/?<%- chance.natural({min: 1, max: 5000}) %>">
+      <% if(release.logo_url) {%>
+        <img class="img-rounded" src="<%= release.logo_url %>">
+      <%} else {%>
+        <% if(release.attachments.length > 0) {%>
+          <img class="img-rounded" src="<%= release.attachments[0].url %>">
+        <%} else {%>
+          <img class="img-rounded" src="http://lorempixel.com/400/400/?<%- chance.natural({min: 1, max: 5000}) %>">
+        <%}%>
+      <%}%>
       <div class="overlay">
         Summary
         <br><br>
@@ -14,7 +22,7 @@
     </a>
     <div class="caption text-center">
       <h3><a href="public/release.html" target="_blank"><%= release.title %></a></h3>
-      <small><i class="fa fa-clock-o"></i> <%= release.date %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
+      <small><i class="fa fa-clock-o"></i> <%= moment(release.created_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
       <p class="release-title">
         <%= release.text.normalizeRSpace(115) %>
       </p>

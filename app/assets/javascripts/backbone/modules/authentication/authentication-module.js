@@ -22,6 +22,7 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
 
   Authentication.Router = Backbone.Marionette.AppRouter.extend({
     routes: {
+      "": "signIn",
       "signin": "signIn",
       "signup": "signUp",
       "forgot": "forgot",

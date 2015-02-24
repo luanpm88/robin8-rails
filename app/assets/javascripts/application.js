@@ -13,7 +13,6 @@
 //= require assets
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require uploadcare
 //= require jqueryui
 //= require bootstrap-sass
@@ -34,7 +33,6 @@
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-//= require tweenlite
 //= require highcharts
 //= require select2
 //= require_directory ./lib
@@ -42,6 +40,8 @@
 //= require ./lib/formValidation/formValidation.min
 //= require ./lib/formValidation/js/bootstrap.min
 //= require bootstrap-wysihtml5
+//= require jquery.dotdotdot
+//= require timeago
 
 //= require_tree ./backbone/config
 //= require backbone/init
@@ -59,8 +59,8 @@ ready = function() {
   $.growl(false, {
     element: 'body',
     placement: {
-      from: "bottom",
-      align: "left"
+      from: "top",
+      align: "right"
     },
     delay: 10000,
   });
@@ -73,6 +73,28 @@ ready = function() {
     };
   });
 
+  // default values for timeago widget
+  $.timeago.settings.strings = {
+    prefixAgo: null,
+    prefixFromNow: null,
+    suffixAgo: "ago",
+    suffixFromNow: "from now",
+    seconds: "about a minute",
+    minute: "about a minute",
+    minutes: "%d minutes",
+    hour: "about an hour",
+    hours: "about %d hours",
+    day: "a day",
+    days: "%d days",
+    month: "about a month",
+    months: "%d months",
+    year: "about a year",
+    years: "%d years",
+    wordSeparator: " ",
+    numbers: []
+  };
+  //end default values for timeago widget
+
   //trimming space from both side of the string
   String.prototype.normalizeRSpace = function(len) {
     if (this.length == 0) {
@@ -84,6 +106,7 @@ ready = function() {
       return this + new Array(len - this.length).join(' ');
     }
   }
+  //end trimming space from both side of the string
 };
 
 $(document).ready(ready);

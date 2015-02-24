@@ -1,8 +1,12 @@
 Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
-  Releases.TopMenuView = Marionette.ItemView.extend({
+  Releases.TopMenuView = Marionette.LayoutView.extend({
     template: 'modules/releases/templates/top-menu-view',
     className: 'row',
+    regions: {
+      logoRegion: '.logo',
+      mediaRegion: '.media_region'
+    },
     events: {
       'click #new_release': 'openModalDialog',
       'click #newsroom_filter': 'filterBy',
@@ -31,7 +35,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     openModalDialog: function(){
       this.model.clear();
       this.model.set(Robin.module("Releases").controller.filterCriteria);
-      this.render()
+      this.render();
       this.$el.find('#release_form').modal({ backdrop: 'static', keyboard: false });
     },
     openModalDialogEdit: function(data){
@@ -43,6 +47,19 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       $('.wysihtml5').wysihtml5({});
+      this.initLogoView();
+      this.initMediaView();
+    },
+    initLogoView: function(){
+      this.logoRegion.show(new Robin.Views.LogoView({
+        model: this.model,
+        field: 'logo_url'
+      }));
+    },
+    initMediaView: function(){
+      this.mediaRegion.show(new Robin.Views.MediaView({
+        model: this.model
+      }));
     },
     initFormValidation: function(){
       this.form = $('#releaseForm').formValidation({
@@ -91,7 +108,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.form.data('formValidation').isValid()) {
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
-            success: function(data){
+            success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
               Robin.module("Releases").collection.add(data, {merge: true});
               Robin.module("Releases").collection.trigger('reset');
@@ -105,8 +122,16 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             success: function(data){
               viewObj.$el.find('#release_form').modal('hide');
               if (Robin.module("Releases").controller.filterCriteria.page == 1) {
+                if (Robin.module("Releases").collection.length == Robin.module("Releases").controller.filterCriteria.per_page) {
+                  Robin.module("Releases").collection.pop();
+                }
                 Robin.module("Releases").collection.unshift(data);
-                Robin.module("Releases").collection.pop();
+                Robin.module("Releases").pagination_view.model.set({
+                  page: Robin.module("Releases").controller.filterCriteria.page,
+                  per_page:  Robin.module("Releases").controller.filterCriteria.per_page,
+                  total_count: parseInt(response.xhr.getResponseHeader('Totalcount'),10),
+                  total_pages: parseInt(response.xhr.getResponseHeader('Totalpages'),10)
+                });
               }
             },
             error: function(data, response){

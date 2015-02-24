@@ -30,7 +30,6 @@
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-//= require tweenlite
 //= require select2
 //= require_directory ./lib
 //= require bootstrap-tagsinput

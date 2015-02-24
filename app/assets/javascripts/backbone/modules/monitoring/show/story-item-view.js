@@ -24,9 +24,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       if(shares) {
         this.$el.find('.likes').tooltip({
-          title: '<i class="fa fa-facebook-square"></i> ' + shares.facebook + ' \
-                  <i class="fa fa-twitter-square"></i> ' + shares.twitter + ' \
-                  <i class="fa fa-google-plus-square"></i> ' + shares.google_plus,
+          title: JST['backbone/modules/monitoring/show/templates/shares_tooltip'](shares),
           trigger: 'hover',
           placement: 'right',
           html: true
@@ -35,6 +33,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
       this.$el.find('.stream-body').height($(window).height() - 90 - 12);
+      this.$el.find('.js-story-img').nailthumb({width: 64, height: 64});
     },
     openStory: function() {
       var win = window.open(this.model.attributes.link, '_blank');
