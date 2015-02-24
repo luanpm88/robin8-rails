@@ -86,7 +86,7 @@ group :development, :test do
   gem 'capistrano-bundler', '~> 1.1.4'
   gem 'capistrano-sidekiq', '~> 0.4.0'
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
-  
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails'

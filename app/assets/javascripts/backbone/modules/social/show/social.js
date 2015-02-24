@@ -12,12 +12,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onRender: function() {
       var currentView = this;
-      // var postsCollection = new Robin.Collections.Posts();
-      var postsView = new Show.ScheduledPostsComposite({ collection: Robin.module("Social").postsCollection });
       $.get( "/users/identities", function( data ) {
-        var viewPosts = new Show.SocialProfiles({collection: new Robin.Collections.Identities(data)});
-        currentView.getRegion('profiles').show(viewPosts);
-        currentView.getRegion('scheduled').show(postsView);
+        var viewProfiles = new Show.SocialProfiles({collection: new Robin.Collections.Identities(data)});
+        currentView.getRegion('profiles').show(viewProfiles);
+        currentView.getRegion('scheduled').show(Robin.module("Social").postsView);
       });
     },
   });
