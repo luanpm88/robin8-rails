@@ -42,6 +42,7 @@
 //= require bootstrap-wysihtml5
 //= require jquery.dotdotdot
 //= require timeago
+//= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
 
 //= require_tree ./backbone/config
 //= require backbone/init
