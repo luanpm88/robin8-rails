@@ -37,7 +37,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '3.1.3'
   gem 'rails-assets-backbone.marionette', '2.1.0'
   gem 'rails-assets-backbone.modelbinder'
-  gem 'rails-assets-tweenlite'
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
   gem 'rails-assets-highcharts'
