@@ -194,7 +194,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
       // set date to utc format
       var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
-      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+      var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+
+      $('.edit-datetimepicker').find('input').val(datedate).change();
       $('.edit-datetimepicker').datetimepicker();
     },
 
