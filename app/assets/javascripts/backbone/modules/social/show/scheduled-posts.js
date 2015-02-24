@@ -21,7 +21,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.ScheduledEmptyView = Backbone.Marionette.ItemView.extend({
     template: 'modules/social/show/templates/_scheduled-empty',
     tagName: "li",
-    onRender: function(){
+    onShow: function(){
       $('#today').hide();
     }
   });
@@ -181,8 +181,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
       this.$el.find('textarea').attr('id', 'edit-post-textarea')
-      this.setCounter();
-
       this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
       this.model.set('social_networks', this.socialNetworks);
 
@@ -193,6 +191,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, this.socialNetworksBindings);
+      this.setCounter();
 
       // set date to utc format
       var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
@@ -224,7 +223,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       var sayText = this.$("#edit-post-textarea");
       var counter = view.$el.find('div.edit-settings-row:nth-child(2)').find('#edit-counter');
       var limit = 140;
-      var selectedNetworks = this.model.attributes.social_networks;
+      var selectedNetworks = this.model.attributes.social_networks.attributes;
       //set character limit
       if (selectedNetworks.twitter == "true") {
         limit = 140;
