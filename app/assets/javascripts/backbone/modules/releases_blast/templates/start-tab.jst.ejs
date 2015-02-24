@@ -1,0 +1,21 @@
+<div id="blast-home" class="tab-pane active" role="tabpanel">
+  <h5><i class="fa fa-rocket"></i> Welcome to Robin8</h5>
+  <p>Tek ujuhe wibofre fumipu katdu nednoso pilito igoih wuvekis lez sim kon. Ah mi umiba hiarois kufgi jeca dut bezan belocge jongibdag icricva dahwi. Dew gepiw gibedmej marahgol ha jawitmu wom tiozefa neke coesos co zof cagiwjuf mo butihsi mafvecipe dow mon. Wizaw ihbifjot ceruruk rudil afeso vajriefe umidibda pur zop wahbivop ru deghuz fun gih iwi bu nisajfa ned. Loj hofhe fikiwi ovu kapbeofi hevigolew do sisovvuf eplitdi nevmow nifofu we vawsuem jaflosce edo cizkegib godwi.</p>
+  <br>
+  <form>
+    <div class="form-group">
+      <label for="exampleInputFile">Select a release to start:</label>
+      <div class="ui-select">
+        <select class="form-control">
+          <option value="-1">Select...</option>
+          <option value="-2">+ New Release</option>
+          <% _.each(items, function(item){ %>
+            <option value="<%= item.id %>"><%= item.attributes.title %></option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+    <button id="analyze" class="btn btn-primary pull-right" type="submit"><i class="fa fa-cogs"></i> Analyze</button>
+    <button style="display: none;" id="new-release" class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"></i> New Release</button>
+  </form>
+</div>

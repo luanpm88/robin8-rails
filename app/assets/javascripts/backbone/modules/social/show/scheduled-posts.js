@@ -34,16 +34,21 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
+      this.socialNetworksBinder = new Backbone.ModelBinder();
     },
 
     onRender: function(){
       var view = this;
 
       $.fn.editable.defaults.mode = 'inline';
+      $.fn.editable.defaults.onblur = 'ignore';
+      $.fn.editable.defaults.inputclass = 'editable-post';
       view.$el.find('span.editable').editable().on('hidden', function(e, reason) {
         view.$el.find('.edit-post').removeClass('disabled');
+        view.$el.find('.social-networks a').removeClass('disabled');
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
+        view.$el.find('.social-networks a').addClass('disabled');
       });
 
       view.modelBinder.bind(view.model, view.el);
@@ -55,6 +60,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click span.editable': 'editPost',
       'click button[type="submit"]': 'updatePost',
       'click .social-networks .btn': 'enableSocialNetwork',
+      'click .edit-social-networks .btn': 'editSocialNetwork',
       'click .edit-post': 'enableEditableMode',
       'change #edit-shrink-links': 'shrinkLinkProcess',
       'keyup .input-large' : 'setCounter'
@@ -64,6 +70,18 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       e.stopPropagation();
       this.$el.find('span.editable').editable('show');
       this.editPost();
+    },
+
+    editSocialNetwork: function(e) {
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      var input = btn.next('input');
+      btn.toggleClass('btn-primary');
+      if (input.val() == 'false' || input.val() == '') {
+        input.val('true')
+      } else {
+        input.val('false')
+      }
     },
 
     enableSocialNetwork: function(e) {
@@ -79,8 +97,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         this.model.attributes.social_networks[provider] = 'false'
       }
 
+      var view = this;
       this.model.updateSocial(this.model.attributes.social_networks).done(function(data){
-        btn.toggleClass('btn-primary');
+        view.render();
       });
     },
 
@@ -154,23 +173,34 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
       this.$el.find('textarea').attr('id', 'edit-post-textarea')
-      
-      //set date to utc format
-      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
-      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
-      
+
+      this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
+      this.model.set('social_networks', this.socialNetworks);
+
+      var socialNetworksBindings = {
+        twitter: '.edit-settings-row [name=twitter]',
+        facebook: '.edit-settings-row [name=facebook]',
+        linkedin: '.edit-settings-row [name=linkedin]',
+        google: '.edit-settings-row [name=google]'
+      }
+
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
         shrinked_links: '[name=shrinked_links]'
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
+      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
 
+      // set date to utc format
+      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
+      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
       $('.edit-datetimepicker').datetimepicker();
     },
 
     updatePost: function() {
       var view = this;
+      view.socialNetworksBinder.copyViewValuesToModel();
       view.modelBinder.copyViewValuesToModel();
 
       view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date));
