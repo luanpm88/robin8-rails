@@ -24,7 +24,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       $.fn.editable.defaults.mode = 'inline';
       view.$el.find('span.editable').editable().on('hidden', function(e, reason) {
         view.$el.find('.edit-post').removeClass('disabled');
-        // view.$el.find('.edit-datetimepicker').datetimepicker('destroy');
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
       });
@@ -93,6 +92,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
       
+      //set date to utc format
+      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
+      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+      
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
@@ -100,9 +103,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
 
-      date = moment.utc(new Date(this.model.attributes.scheduled_date));
-      console.log(date);
-      $('.edit-datetimepicker').datetimepicker({minDate: date, format: 'MM/DD/YYYY hh:mm A'});
+      $('.edit-datetimepicker').datetimepicker();
     },
 
     updatePost: function() {
