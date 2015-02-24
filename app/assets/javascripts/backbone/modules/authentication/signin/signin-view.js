@@ -35,9 +35,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
         },
         error: function(userSession, response) {
           var result = $.parseJSON(response.responseText);
-          $.growl(result.error, {
-            type: "danger",
-          });
+          this.$('#alert-danger').show();
+          this.$('#alert-danger').text(result.error);
         }
       });
     },

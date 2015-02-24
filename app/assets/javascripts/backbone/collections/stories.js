@@ -6,6 +6,10 @@ Robin.Collections.Stories = Backbone.Collection.extend({
     return '/streams/' + this.streamId + '/stories';
   },
 
+  parse: function(response) {
+    return response.stories;
+  },
+
   comparator: function(story) {
     if(this.sortByPopularity) {
       return -story.get('likes');
