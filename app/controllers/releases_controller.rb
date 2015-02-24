@@ -2,7 +2,7 @@ class ReleasesController < ApplicationController
   has_scope :by_news_room
 
   def index
-    set_paginate_headers Release, current_user.releases.count
+    set_paginate_headers Release, apply_scopes(current_user.releases).count
 
     render json: apply_scopes(current_user.releases).order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
   end
@@ -38,6 +38,6 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.require(:release).permit(:title, :text, :news_room_id)
+    params.require(:release).permit(:title, :text, :news_room_id, attachments_attributes: [:id, :url, :attachment_type, :_destroy])
   end
 end

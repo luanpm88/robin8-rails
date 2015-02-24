@@ -146,12 +146,15 @@ ul {
 }
 .stream-container {
   list-style: none;
+<<<<<<< HEAD
   white-space: nowrap;
   position: absolute;
   overflow-x: scroll;
   top: 58px;
   bottom: 80px;
   left: 180px;
+=======
+>>>>>>> 136bfd3b828e18f36b2e06d297cea6143e0bc84b
 }
 .stream {
   width: 360px;
@@ -404,7 +407,6 @@ ul {
 #social-scheduled .list-group-item .social-icons li {
   display: inline;
 }
-
 #social-scheduled .list-group-item .edit-settings-row {
   height: 45px;
   padding-top: 5px;
@@ -413,7 +415,6 @@ ul {
   border-bottom: 1px solid rgb(170, 178, 189);
   border-radius: 0px 0px 4px 4px;
 }
-
 .release-title {
   height: 40px !important;
 }
@@ -824,4 +825,7 @@ ul {
 
 .sweet-alert {
   z-index: 20000 !important;
+}
+.alert.animated {
+  z-index: 10000 !important;
 }

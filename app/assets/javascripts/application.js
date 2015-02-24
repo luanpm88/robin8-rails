@@ -34,7 +34,6 @@
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-//= require tweenlite
 //= require highcharts
 //= require select2
 //= require_directory ./lib
@@ -42,6 +41,7 @@
 //= require ./lib/formValidation/formValidation.min
 //= require ./lib/formValidation/js/bootstrap.min
 //= require bootstrap-wysihtml5
+//= require timeago
 
 //= require_tree ./backbone/config
 //= require backbone/init
@@ -59,8 +59,8 @@ ready = function() {
   $.growl(false, {
     element: 'body',
     placement: {
-      from: "bottom",
-      align: "left"
+      from: "top",
+      align: "right"
     },
     delay: 10000,
   });

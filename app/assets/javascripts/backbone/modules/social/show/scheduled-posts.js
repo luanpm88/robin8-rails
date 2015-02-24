@@ -16,13 +16,19 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
-      this.socialNetworksBinder = new Backbone.ModelBinder();
     },
 
     onRender: function(){
+      var view = this;
+
       $.fn.editable.defaults.mode = 'inline';
-      this.$el.find('span.editable').editable();
-      this.modelBinder.bind(this.model, this.el);
+      view.$el.find('span.editable').editable().on('hidden', function(e, reason) {
+        view.$el.find('.edit-post').removeClass('disabled');
+      }).on('shown', function(e, reason) {
+        view.$el.find('.edit-post').addClass('disabled');
+      });
+
+      view.modelBinder.bind(view.model, view.el);
       sweetAlertInitialize();
     },
 
@@ -30,19 +36,37 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #delete-post': 'deletePost',
       'click span.editable': 'editPost',
       'click button[type="submit"]': 'updatePost',
-      'click .social-networks .btn': 'enableSocialNetwork'
+      'click .social-networks .btn': 'enableSocialNetwork',
+      'click .edit-post': 'enableEditableMode',
+    },
+
+    enableEditableMode: function(e) {
+      e.stopPropagation();
+      this.$el.find('span.editable').editable('show');
+      this.editPost();
     },
 
     enableSocialNetwork: function(e) {
       var el = $(e.target);
       var btn = el.closest('.btn');
-      var input = btn.next('input');
-      btn.toggleClass('btn-primary');
-      if (input.val() == 'false' || input.val() == '') {
-        input.val('true')
+      
+      var provider = $(btn).data('provider');
+      var providerValue = this.model.attributes.social_networks[provider];
+
+      if (providerValue == 'false' || providerValue == '') {
+        this.model.attributes.social_networks[provider] = 'true'
       } else {
-        input.val('false')
+        this.model.attributes.social_networks[provider] = 'false'
       }
+
+      this.model.save(this.model.attributes, {
+        success: function(data){
+          btn.toggleClass('btn-primary');
+        },
+        error: function(data){
+          console.warn('error', data);
+        }
+      });
     },
 
     deletePost: function(e) {
@@ -68,25 +92,25 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
       
-      this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
-      this.model.set('social_networks', this.socialNetworks);
+      //set date to utc format
+      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
+      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+      
+      var postBindings = {
+        text: '[name=text]',
+        scheduled_date: '[name=scheduled_date]',
+        shrinked_links: '[name=shrinked_links]'
+      };
+      this.modelBinder.bind(this.model, this.el, postBindings);
 
-      var socialNetworksBindings = {
-        twitter: '.edit-settings-row [name=twitter]',
-        facebook: '.edit-settings-row [name=facebook]',
-        linkedin: '.edit-settings-row [name=linkedin]',
-        google: '.edit-settings-row [name=google]'
-      }
-      this.modelBinder.bind(this.model, this.el);
-      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
+      $('.edit-datetimepicker').datetimepicker();
     },
 
     updatePost: function() {
       var view = this;
-      
-      view.socialNetworksBinder.copyViewValuesToModel();
       view.modelBinder.copyViewValuesToModel();
 
+      view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date));
       view.model.save(view.model.attributes, {
         success: function(data){
           view.render();

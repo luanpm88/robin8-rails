@@ -25,7 +25,7 @@ gem 'quiet_assets', group: [:development, :staging]
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
-  gem 'rails-assets-bootstrap.growl'
+  gem 'rails-assets-bootstrap.growl', '2.0.1'
   gem 'rails-assets-uploadcare'
   gem 'rails-assets-progressjs'
   gem 'rails-assets-blueimp-gallery'
@@ -37,7 +37,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '3.1.3'
   gem 'rails-assets-backbone.marionette', '2.1.0'
   gem 'rails-assets-backbone.modelbinder'
-  gem 'rails-assets-tweenlite'
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
   gem 'rails-assets-highcharts'
@@ -49,6 +48,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-x-editable'
   gem 'rails-assets-jqueryui'
   gem 'rails-assets-bootstrap-tagsinput'
+  gem 'rails-assets-timeago'
 end
 
 gem 'devise'
@@ -87,7 +87,7 @@ group :development, :test do
   gem 'capistrano-bundler', '~> 1.1.4'
   gem 'capistrano-sidekiq', '~> 0.4.0'
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
-  
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails'
