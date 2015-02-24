@@ -57,6 +57,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .social-networks .btn': 'enableSocialNetwork',
       'click .edit-post': 'enableEditableMode',
       'change #edit-shrink-links': 'shrinkLinkProcess',
+      'keyup .input-large' : 'setCounter'
     },
 
     enableEditableMode: function(e) {
@@ -181,7 +182,38 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
           console.warn('error', data);
         }
       });
-    }
+    },
+
+    setCounter: function() {
+      var prgjs = progressJs($(".input-large")).setOptions({ theme: 'blackRadiusInputs' }).start();
+      var sayText = $(".input-large");
+      var counter = $(".input-large").next().find("#edit-counter");
+      var limit = 140;
+
+      //.input-large
+
+      var charsLeft = limit - sayText.val().length;
+      counter.text(charsLeft);
+
+      //set color:
+      if (charsLeft >= limit*0.8) {
+        counter.css("background-color", "#8CC152");
+      } else if (charsLeft >= limit*0.5) {
+        counter.css("background-color", "#E3D921");
+      } else if (charsLeft >= limit*0.2) {
+        counter.css("background-color", "#FF9813");
+      } else {
+        counter.css("background-color", "#E62E00");
+      }
+
+      if (sayText.val().length <= limit) {
+        prgjs.set(Math.floor(sayText.val().length * 100/limit));
+      } else {
+        var t = sayText.val().substring(0, limit);
+        sayText.val(t);
+        counter.text(0);
+      }
+    },
 
   });
   
