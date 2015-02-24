@@ -35,6 +35,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
       this.$el.find('.stream-body').height($(window).height() - 90 - 12);
+      this.$el.find('.js-story-img').nailthumb({width: 64, height: 64});
     },
     openStory: function() {
       var win = window.open(this.model.attributes.link, '_blank');
