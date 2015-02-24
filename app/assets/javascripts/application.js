@@ -34,7 +34,6 @@
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-//= require tweenlite
 //= require highcharts
 //= require select2
 //= require_directory ./lib
