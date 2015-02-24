@@ -25,5 +25,7 @@ module Robin8
 
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
     config.autoload_paths += %W(#{config.root}/lib)
+
+    config.action_dispatch.perform_deep_munge = false
   end
 end
