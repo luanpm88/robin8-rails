@@ -151,8 +151,8 @@ ul {
   overflow-x: scroll;
   top: 58px;
   bottom: 8px;
-  left: 180px;
-  vertical-align: top;
+  left: 180px; 
+  right: 0; 
 }
 .stream {
   width: 360px;
@@ -164,6 +164,7 @@ ul {
   display: inline-block;
   white-space: normal;
   height: 100%;
+  vertical-align: top;
 }
 .stream-input {
   height: auto;
