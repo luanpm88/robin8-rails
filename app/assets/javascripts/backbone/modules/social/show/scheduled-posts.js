@@ -34,16 +34,27 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
+      this.socialNetworksBinder = new Backbone.ModelBinder();
+      this.socialNetworksBindings = {
+        twitter: '.edit-settings-row [name=twitter]',
+        facebook: '.edit-settings-row [name=facebook]',
+        linkedin: '.edit-settings-row [name=linkedin]',
+        google: '.edit-settings-row [name=google]'
+      };
     },
 
     onRender: function(){
       var view = this;
 
       $.fn.editable.defaults.mode = 'inline';
+      $.fn.editable.defaults.onblur = 'ignore';
+      $.fn.editable.defaults.inputclass = 'editable-post';
       view.$el.find('span.editable').editable().on('hidden', function(e, reason) {
         view.$el.find('.edit-post').removeClass('disabled');
+        view.$el.find('.social-networks a').removeClass('disabled');
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
+        view.$el.find('.social-networks a').addClass('disabled');
       });
 
       view.modelBinder.bind(view.model, view.el);
@@ -55,15 +66,30 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click span.editable': 'editPost',
       'click button[type="submit"]': 'updatePost',
       'click .social-networks .btn': 'enableSocialNetwork',
+      'click .edit-social-networks .btn': 'editSocialNetwork',
       'click .edit-post': 'enableEditableMode',
       'change #edit-shrink-links': 'shrinkLinkProcess',
-      'keyup .input-large' : 'setCounter'
+      'keyup #edit-post-textarea' : 'setCounter'
     },
 
     enableEditableMode: function(e) {
       e.stopPropagation();
       this.$el.find('span.editable').editable('show');
       this.editPost();
+    },
+
+    editSocialNetwork: function(e) {
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      var input = btn.next('input');
+      btn.toggleClass('btn-primary');
+      if (input.val() == 'false' || input.val() == '') {
+        input.val('true')
+      } else {
+        input.val('false')
+      }
+      this.socialNetworksBinder.copyViewValuesToModel();
+      this.setCounter();
     },
 
     enableSocialNetwork: function(e) {
@@ -79,8 +105,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         this.model.attributes.social_networks[provider] = 'false'
       }
 
+      var view = this;
       this.model.updateSocial(this.model.attributes.social_networks).done(function(data){
-        btn.toggleClass('btn-primary');
+        view.render();
       });
     },
 
@@ -154,23 +181,29 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
       this.$el.find('textarea').attr('id', 'edit-post-textarea')
-      
-      //set date to utc format
-      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
-      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
-      
+
+      this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
+      this.model.set('social_networks', this.socialNetworks);
+
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
         shrinked_links: '[name=shrinked_links]'
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
+      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, this.socialNetworksBindings);
 
+      // set date to utc format
+      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
+      var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+
+      $('.edit-datetimepicker').find('input').val(datedate).change();
       $('.edit-datetimepicker').datetimepicker();
     },
 
     updatePost: function() {
       var view = this;
+      view.socialNetworksBinder.copyViewValuesToModel();
       view.modelBinder.copyViewValuesToModel();
 
       view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date));
@@ -185,12 +218,20 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     setCounter: function() {
-      var prgjs = progressJs($(".input-large")).setOptions({ theme: 'blackRadiusInputs' }).start();
-      var sayText = $(".input-large");
-      var counter = $(".input-large").next().find("#edit-counter");
+      var view = this;
+      var prgjs = progressJs(this.$("#edit-post-textarea")).setOptions({ theme: 'blackRadiusInputs' }).start();
+      var sayText = this.$("#edit-post-textarea");
+      var counter = view.$el.find('div.edit-settings-row:nth-child(2)').find('#edit-counter');
       var limit = 140;
-
-      //.input-large
+      var selectedNetworks = this.model.attributes.social_networks.attributes;
+      //set character limit
+      if (selectedNetworks.twitter == "true") {
+        limit = 140;
+      } else if (selectedNetworks.linkedin == "true") {
+        limit = 689;
+      } else if (selectedNetworks.facebook == "true") {
+        limit = 2000;
+      }
 
       var charsLeft = limit - sayText.val().length;
       counter.text(charsLeft);
@@ -199,7 +240,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       if (charsLeft >= limit*0.8) {
         counter.css("background-color", "#8CC152");
       } else if (charsLeft >= limit*0.5) {
-        counter.css("background-color", "#E3D921");
+        counter.css("background-color", "#E6E300");
       } else if (charsLeft >= limit*0.2) {
         counter.css("background-color", "#FF9813");
       } else {

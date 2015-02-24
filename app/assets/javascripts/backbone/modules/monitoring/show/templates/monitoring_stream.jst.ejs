@@ -45,9 +45,7 @@
   <ul class="stories"></ul>
 </div>
 <div class="stream-updates" align="center">
-  <% if(stream.newStoriesCount > 0) { %>
-    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Click to see updates" class="js-show-new-stories">
-      <i class="fa fa-refresh fa-spin"></i> <span name="newStoriesCount"><%= stream.newStoriesCount %></span> new updates
-    </a>
-  <% } %>
+  <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Click to see updates" class="js-show-new-stories hidden">
+    <i class="fa fa-refresh fa-spin"></i> <span name="newStoriesCount"><%= stream.newStoriesCount %></span> new updates
+  </a>
 </div>
