@@ -100,8 +100,15 @@ Robin.vent.on("authentication:logged_in", function() {
 });
 
 Robin.vent.on("authentication:logged_out", function() {
-  Robin.layouts.unauthenticated = new Robin.Views.Layouts.Unauthenticated();
-  Robin.main.show(Robin.layouts.unauthenticated);
+  if (Robin.publicPages) {
+    Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
+    Robin.main.show(Robin.layouts.main);
+    Robin.stopOtherModules();
+    Robin.module('NewsRoomPublic').start(); 
+  } else {
+    Robin.layouts.unauthenticated = new Robin.Views.Layouts.Unauthenticated();
+    Robin.main.show(Robin.layouts.unauthenticated);
+  }
 });
 
 Robin.bind("before:start", function() {
