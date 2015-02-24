@@ -50,6 +50,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onAdded: function(story, collection) {
       this.model.set('newStoriesCount', this.collection.where({isNew: true}).length);
+      this.render();
     },
 
     editTitle: function() {
@@ -163,6 +164,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       });
       this.model.set('newStoriesCount', 0);
       this.collection.refreshInitialFetchAt();
+      this.render();
     }
   });
 
