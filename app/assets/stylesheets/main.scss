@@ -146,15 +146,13 @@ ul {
 }
 .stream-container {
   list-style: none;
-<<<<<<< HEAD
   white-space: nowrap;
   position: absolute;
   overflow-x: scroll;
   top: 58px;
-  bottom: 80px;
+  bottom: 8px;
   left: 180px;
-=======
->>>>>>> 136bfd3b828e18f36b2e06d297cea6143e0bc84b
+  vertical-align: top;
 }
 .stream {
   width: 360px;
@@ -182,9 +180,12 @@ ul {
 }
 #add-stream {
   position: fixed;
-  bottom: 15px;
-  right: 15px;
+  bottom: 30px;
+  right: 30px;
   font-size: 20px;
+}
+.label-default:not(.btn-info):hover, .label-default:not(.btn-info):focus {
+  background-color: #5e5e5e;
 }
 .stream-body {
   border-bottom: 1px solid #ccc;
@@ -241,6 +242,9 @@ ul {
 }
 .stories .media-body {
   width: 100%;
+  .label-default:hover, .label-default:focus {
+    background-color: #48CFAD;
+  }
 }
 .stories .media-body .read-more {
   padding: 2px 4px;
@@ -289,6 +293,12 @@ ul {
   float: left;
   width: 360px;
   padding-left: 15px;
+}
+.newsroom .picture {
+  padding: 4px;
+  img {
+    width: 100%;
+  }
 }
 .edit-newsroom .bootstrap-tagsinput {
   min-width: 100%;
