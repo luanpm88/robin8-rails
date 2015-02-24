@@ -131,8 +131,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     done: function(e) {
       e.preventDefault();
 
-      this.model.set('sort_column', 'published_at');
-
       var curView = this;
 
       this.model.save(this.model.attributes, {

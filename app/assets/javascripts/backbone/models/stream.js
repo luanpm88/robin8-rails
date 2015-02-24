@@ -3,7 +3,8 @@ Robin.Models.Stream = Backbone.Model.extend({
 
   defaults: {
     name: 'Untitled Stream',
-    newStoriesCount: 0
+    newStoriesCount: 0,
+    sort_column: 'shares_count'
   },
 
   toJSON: function() {

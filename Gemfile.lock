@@ -250,6 +250,8 @@ GEM
     rails-assets-select2 (3.5.2)
       rails-assets-jquery (>= 1.7.1)
     rails-assets-spinkit (1.0.1)
+    rails-assets-timeago (1.4.1)
+      rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.string (3.0.3)
     rails-assets-uploadcare (2.0.0)
@@ -415,6 +417,7 @@ DEPENDENCIES
   rails-assets-sass-bootstrap-glyphicons!
   rails-assets-select2
   rails-assets-spinkit
+  rails-assets-timeago
   rails-assets-underscore.string
   rails-assets-uploadcare!
   rails-assets-x-editable
