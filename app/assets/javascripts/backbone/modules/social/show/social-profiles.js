@@ -7,6 +7,7 @@ var disconnectSocial = function(provider, currentView){
     success: function(data, textStatus, jqXHR) {
       Robin.setIdentities(data);
       currentView.render();
+      Robin.module("Social").postsView.render();
       Robin.SaySomething.Say.Controller.showSayView();
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -53,6 +54,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
           $.get( "/users/identities", function( data ) {
             Robin.setIdentities(data);
             currentView.render();
+            Robin.module("Social").postsView.render();
             Robin.SaySomething.Say.Controller.showSayView();
             window.clearInterval(currentView.interval);
           });

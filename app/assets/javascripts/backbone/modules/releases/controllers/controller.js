@@ -7,24 +7,25 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     initialize: function () {
       this.module = Robin.module("Releases");
     },
+    indexBy: function(newsroom){
+      this.index({by_news_room: newsroom});
+    },
     index: function(params){
       var controller  = this;
-      if (controller.filterCriteria){
-        if (params){
-          _.each(params, function(v,k){
-            if (v !== ""){
-              controller.filterCriteria[k] = v;
-            } else {
-              delete controller.filterCriteria[k];
-            }
-          });
-        }
-      } else {
+
       controller.filterCriteria = {
         page: controller.page,
         per_page: controller.per_page
       };
 
+      if (params){
+        _.each(params, function(v,k){
+          if (v !== ""){
+            controller.filterCriteria[k] = v;
+          } else {
+            delete controller.filterCriteria[k];
+          }
+        });
       }
       var contrObj = this;
       var module = this.module;
