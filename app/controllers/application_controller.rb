@@ -6,6 +6,13 @@ class ApplicationController < ActionController::Base
   rescue_from Exception, with: :handle_exception
 
   after_filter :set_csrf_headers
+  before_filter :require_active_subscription
+
+  def require_active_subscription
+    if user_signed_in?
+      # return redirect_to :pricing if current_user.active_subscription.blank?
+    end
+  end
 
   def set_csrf_headers
     response.headers['X-CSRF-Token'] = form_authenticity_token if protect_against_forgery?

@@ -12,7 +12,7 @@ module BlueSnap
     URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
 
     def self.new request,user_profile,params,package
-      shopper ={
+      shopper = {
           "shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
                        "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)},
           "order" => BlueSnap::Shopper.order_info(request,package)
@@ -104,6 +104,14 @@ module BlueSnap
     end
   end
 
+  class Subscription
+    def self.destroy(subscription_id)
+      sub = Subscription.find(subscription_id)
+      {"subscription-id" => subscription_id, "underlying-sku-id"=>sub.sku_id, "status"=> "C","shopper-id"=>sub.shopper_id} # status C is for cancel :s
+      Request.post(URL,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+    end
+  end
+
   class Request
     require 'net/http'
     def self.post(url,data)
@@ -160,22 +168,22 @@ module BlueSnap
   end
 
 end
-# dir = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
-# require File.join(dir, 'httparty')
-#
+
+
+
 # class BlueSnap
 #   include HTTParty
-#   base_uri 'sandbox.bluesnap.com'
+#   base_uri 'https://sandbox.bluesnap.com'
 #   def initialize(u, p)
 #     @auth = {username: u, password: p}
 #   end
 #
-#   def product(id)
+#   def product(id,options= {})
 #     options.merge!({basic_auth: @auth})
 #     self.class.get("/services/2/catalog/products/#{id}", options)
 #   end
 #
-#   def shopper(id)
+#   def shopper(id,options= {})
 #     options.merge!({basic_auth: @auth})
 #     self.class.get("/services/2/catalog/shoppers/#{id}", options)
 #   end

@@ -12,4 +12,7 @@ class Subscription < ActiveRecord::Base
     #send email to user about sucessfully transaction
   end
 
+  def is_cancelled?
+    expiry.blank? ? false : true
+  end
 end

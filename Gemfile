@@ -70,6 +70,7 @@ gem 'has_scope'
 gem 'twitter'
 gem "koala", "~> 1.11.0rc" #flexible library for Facebook
 gem 'httparty'
+gem 'activeresource'
 
 gem 'ejs'
 # Use ActiveModel has_secure_password

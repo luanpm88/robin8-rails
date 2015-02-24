@@ -45,6 +45,10 @@ class User < ActiveRecord::Base
     identities.where(provider: 'twitter').first
   end
 
+  def active_subscription
+    Subscription.where("user_id ='#{self.id}' AND expiry is NULL OR expiry >'#{Time.now.utc}'")
+  end
+
   def linkedin_identity
     identities.where(provider: 'linkedin').first
   end

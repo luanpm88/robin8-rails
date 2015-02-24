@@ -1,5 +1,5 @@
 class SubscriptionsController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+  skip_before_filter :require_active_subscription
   layout false
 
   #before_filter :force_ssl
