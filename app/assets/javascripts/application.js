@@ -59,8 +59,8 @@ ready = function() {
   $.growl(false, {
     element: 'body',
     placement: {
-      from: "bottom",
-      align: "left"
+      from: "top",
+      align: "right"
     },
     delay: 10000,
   });
