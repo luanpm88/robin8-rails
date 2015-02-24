@@ -49,6 +49,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-x-editable'
   gem 'rails-assets-jqueryui'
   gem 'rails-assets-bootstrap-tagsinput'
+  gem 'rails-assets-jquery.dotdotdot'
 end
 
 gem 'devise'

@@ -13,7 +13,6 @@
 //= require assets
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require uploadcare
 //= require jqueryui
 //= require bootstrap-sass
@@ -42,6 +41,7 @@
 //= require ./lib/formValidation/formValidation.min
 //= require ./lib/formValidation/js/bootstrap.min
 //= require bootstrap-wysihtml5
+//= require jquery.dotdotdot
 
 //= require_tree ./backbone/config
 //= require backbone/init

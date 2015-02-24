@@ -14,7 +14,7 @@ Robin.addRegions({
 
 Robin.setUrl = function(route, options){
   options || (options = {});
-  Backbone.history.navigate(route, options);
+  Backbone.history.navigate(route, {trigger: true, replace: true});
 };
 
 Robin.finishSignIn = function(data){
