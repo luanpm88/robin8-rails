@@ -32,6 +32,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (streamId && !Robin.cachedStories[streamId]) {
         Robin.cachedStories[streamId] = new Robin.Collections.Stories();
         Robin.cachedStories[streamId].streamId = streamId;
+        Robin.cachedStories[streamId].sortByPopularity = this.model.get('sort_column') == 'shares_count';
+
       }
 
       this.collection = Robin.cachedStories[streamId] || new Robin.Collections.Stories();
@@ -148,6 +150,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           curView.collection.fetch({reset: true});
 
           Robin.cachedStories[response.id] = curView.collection;
+          Robin.cachedStories[response.id].sortByPopularity = curView.model.get('sort_column') == 'shares_count';
 
           $(curView.el).attr("data-pos",response.id);
           $(curView.el).find('.slider').addClass('closed');
