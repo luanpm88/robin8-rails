@@ -2,11 +2,11 @@ Robin.Models.NewsRoom = Backbone.Model.extend({
   urlRoot: '/news_rooms',
   preview: function(status, options) {
     var model = this,
-      url = model.url() + '/preview',
-      options = {
-        url: url,
-        type: 'GET'
-      };
+    url = model.url() + '/preview',
+    options = {
+      url: url,
+      type: 'GET'
+    };
     var success = options.success;
     options.success = function(resp) {
       if (!model.set(model.parse(resp, options), options)) return false;

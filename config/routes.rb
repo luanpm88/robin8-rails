@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   get 'users/get_current_user' => 'users#get_current_user'
   delete '/users/disconnect_social' => 'users#disconnect_social'
 
-  resources :posts
+  resources :posts do
+    put 'update_social', on: :member
+  end
   resources :news_rooms do
     get 'preview', on: :collection
   end

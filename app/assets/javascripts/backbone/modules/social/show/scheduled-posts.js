@@ -1,3 +1,21 @@
+Robin.ShrinkedLink = {
+  shrink : function(url) {
+    BitlyClient.shorten(url, function(data) {
+      var saySomethingContent = $('#say-something-field').val();
+      var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
+      $('#say-something-field').val(result);
+    });
+  },
+
+  unshrink : function(url) {
+    BitlyClient.expand(url, function(data) {
+      var saySomethingContent = $('#say-something-field').val();
+      var result = saySomethingContent.replace(url, _.values(data.results)[0].longUrl);
+      $('#say-something-field').val(result);
+    });
+  },
+}
+
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   
   Show.ScheduledEmptyView = Backbone.Marionette.ItemView.extend({
@@ -38,6 +56,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click button[type="submit"]': 'updatePost',
       'click .social-networks .btn': 'enableSocialNetwork',
       'click .edit-post': 'enableEditableMode',
+      'change #edit-shrink-links': 'shrinkLinkProcess',
     },
 
     enableEditableMode: function(e) {
@@ -59,14 +78,56 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         this.model.attributes.social_networks[provider] = 'false'
       }
 
-      this.model.save(this.model.attributes, {
-        success: function(data){
-          btn.toggleClass('btn-primary');
-        },
-        error: function(data){
-          console.warn('error', data);
-        }
+      this.model.updateSocial(this.model.attributes.social_networks).done(function(data){
+        btn.toggleClass('btn-primary');
       });
+    },
+
+    shrinkLinkProcess: function(e) {
+      var view = this;
+      if ($(e.target).is(':checked')) {
+        var editPostContent = view.$el.find('#edit-post-textarea').val();
+        var www_pattern = /(^|[\s\n]|<br\/?>)((www).[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var www_urls = editPostContent.match(www_pattern);
+        
+        if (www_urls != null) {
+          $.each(www_urls, function( index, value ) {
+            value = $.trim(value)
+            var result = editPostContent.replace(value, 'http://' + value);
+            view.$el.find('#edit-post-textarea').val(result);
+          });
+          var editPostContent = view.$el.find('#edit-post-textarea').val();
+        }
+
+        var pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var urls = editPostContent.match(pattern);
+
+        if (urls != null) {
+          $.each(urls, function( index, value ) {
+            var url = $.trim(value)
+            BitlyClient.shorten(url, function(data) {
+              var saySomethingContent = view.$el.find('#edit-post-textarea').val();
+              var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
+              view.$el.find('#edit-post-textarea').val(result);
+            });
+          });
+        }
+      } else {
+        var editPostContent = view.$el.find('#edit-post-textarea').val();
+
+        var pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var urls = editPostContent.match(pattern)
+        if (urls != null) {
+          $.each(urls, function( index, value ) {
+            var url = $.trim(value)
+            BitlyClient.expand(url, function(data) {
+              var saySomethingContent = view.$el.find('#edit-post-textarea').val();
+              var result = saySomethingContent.replace(url, _.values(data.results)[0].longUrl);
+              view.$el.find('#edit-post-textarea').val(result);
+            });
+          });
+        }
+      }
     },
 
     deletePost: function(e) {
@@ -91,6 +152,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('textarea').parent().append(row);
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
+      this.$el.find('textarea').attr('id', 'edit-post-textarea')
       
       //set date to utc format
       var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
