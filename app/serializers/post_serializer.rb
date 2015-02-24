@@ -1,5 +1,5 @@
 class PostSerializer < ActiveModel::Serializer
-  attributes :id, :text, :scheduled_date, :social_networks, :shrinked_links, :formamtted_scheduled_date
+  attributes :id, :text, :scheduled_date, :social_networks, :shrinked_links, :formamtted_scheduled_date, :created_at
 
   def formamtted_scheduled_date
     object.scheduled_date.strftime('%I:%M %P')
