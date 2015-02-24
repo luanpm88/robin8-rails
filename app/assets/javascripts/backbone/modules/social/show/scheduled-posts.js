@@ -1,3 +1,21 @@
+Robin.ShrinkedLink = {
+  shrink : function(url) {
+    BitlyClient.shorten(url, function(data) {
+      var saySomethingContent = $('#say-something-field').val();
+      var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
+      $('#say-something-field').val(result);
+    });
+  },
+
+  unshrink : function(url) {
+    BitlyClient.expand(url, function(data) {
+      var saySomethingContent = $('#say-something-field').val();
+      var result = saySomethingContent.replace(url, _.values(data.results)[0].longUrl);
+      $('#say-something-field').val(result);
+    });
+  },
+}
+
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   
   Show.ScheduledEmptyView = Backbone.Marionette.ItemView.extend({
@@ -16,16 +34,21 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
+      this.socialNetworksBinder = new Backbone.ModelBinder();
     },
 
     onRender: function(){
       var view = this;
 
       $.fn.editable.defaults.mode = 'inline';
+      $.fn.editable.defaults.onblur = 'ignore';
+      $.fn.editable.defaults.inputclass = 'editable-post';
       view.$el.find('span.editable').editable().on('hidden', function(e, reason) {
         view.$el.find('.edit-post').removeClass('disabled');
+        view.$el.find('.social-networks a').removeClass('disabled');
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
+        view.$el.find('.social-networks a').addClass('disabled');
       });
 
       view.modelBinder.bind(view.model, view.el);
@@ -37,13 +60,28 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click span.editable': 'editPost',
       'click button[type="submit"]': 'updatePost',
       'click .social-networks .btn': 'enableSocialNetwork',
+      'click .edit-social-networks .btn': 'editSocialNetwork',
       'click .edit-post': 'enableEditableMode',
+      'change #edit-shrink-links': 'shrinkLinkProcess',
+      'keyup .input-large' : 'setCounter'
     },
 
     enableEditableMode: function(e) {
       e.stopPropagation();
       this.$el.find('span.editable').editable('show');
       this.editPost();
+    },
+
+    editSocialNetwork: function(e) {
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      var input = btn.next('input');
+      btn.toggleClass('btn-primary');
+      if (input.val() == 'false' || input.val() == '') {
+        input.val('true')
+      } else {
+        input.val('false')
+      }
     },
 
     enableSocialNetwork: function(e) {
@@ -59,14 +97,57 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         this.model.attributes.social_networks[provider] = 'false'
       }
 
-      this.model.save(this.model.attributes, {
-        success: function(data){
-          btn.toggleClass('btn-primary');
-        },
-        error: function(data){
-          console.warn('error', data);
-        }
+      var view = this;
+      this.model.updateSocial(this.model.attributes.social_networks).done(function(data){
+        view.render();
       });
+    },
+
+    shrinkLinkProcess: function(e) {
+      var view = this;
+      if ($(e.target).is(':checked')) {
+        var editPostContent = view.$el.find('#edit-post-textarea').val();
+        var www_pattern = /(^|[\s\n]|<br\/?>)((www).[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var www_urls = editPostContent.match(www_pattern);
+        
+        if (www_urls != null) {
+          $.each(www_urls, function( index, value ) {
+            value = $.trim(value)
+            var result = editPostContent.replace(value, 'http://' + value);
+            view.$el.find('#edit-post-textarea').val(result);
+          });
+          var editPostContent = view.$el.find('#edit-post-textarea').val();
+        }
+
+        var pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var urls = editPostContent.match(pattern);
+
+        if (urls != null) {
+          $.each(urls, function( index, value ) {
+            var url = $.trim(value)
+            BitlyClient.shorten(url, function(data) {
+              var saySomethingContent = view.$el.find('#edit-post-textarea').val();
+              var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
+              view.$el.find('#edit-post-textarea').val(result);
+            });
+          });
+        }
+      } else {
+        var editPostContent = view.$el.find('#edit-post-textarea').val();
+
+        var pattern = /(^|[\s\n]|<br\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
+        var urls = editPostContent.match(pattern)
+        if (urls != null) {
+          $.each(urls, function( index, value ) {
+            var url = $.trim(value)
+            BitlyClient.expand(url, function(data) {
+              var saySomethingContent = view.$el.find('#edit-post-textarea').val();
+              var result = saySomethingContent.replace(url, _.values(data.results)[0].longUrl);
+              view.$el.find('#edit-post-textarea').val(result);
+            });
+          });
+        }
+      }
     },
 
     deletePost: function(e) {
@@ -91,23 +172,35 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('textarea').parent().append(row);
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
-      
-      //set date to utc format
-      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
-      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
-      
+      this.$el.find('textarea').attr('id', 'edit-post-textarea')
+
+      this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
+      this.model.set('social_networks', this.socialNetworks);
+
+      var socialNetworksBindings = {
+        twitter: '.edit-settings-row [name=twitter]',
+        facebook: '.edit-settings-row [name=facebook]',
+        linkedin: '.edit-settings-row [name=linkedin]',
+        google: '.edit-settings-row [name=google]'
+      }
+
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
         shrinked_links: '[name=shrinked_links]'
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
+      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
 
+      // set date to utc format
+      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
+      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
       $('.edit-datetimepicker').datetimepicker();
     },
 
     updatePost: function() {
       var view = this;
+      view.socialNetworksBinder.copyViewValuesToModel();
       view.modelBinder.copyViewValuesToModel();
 
       view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date));
@@ -119,7 +212,38 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
           console.warn('error', data);
         }
       });
-    }
+    },
+
+    setCounter: function() {
+      var prgjs = progressJs($(".input-large")).setOptions({ theme: 'blackRadiusInputs' }).start();
+      var sayText = $(".input-large");
+      var counter = $(".input-large").next().find("#edit-counter");
+      var limit = 140;
+
+      //.input-large
+
+      var charsLeft = limit - sayText.val().length;
+      counter.text(charsLeft);
+
+      //set color:
+      if (charsLeft >= limit*0.8) {
+        counter.css("background-color", "#8CC152");
+      } else if (charsLeft >= limit*0.5) {
+        counter.css("background-color", "#E3D921");
+      } else if (charsLeft >= limit*0.2) {
+        counter.css("background-color", "#FF9813");
+      } else {
+        counter.css("background-color", "#E62E00");
+      }
+
+      if (sayText.val().length <= limit) {
+        prgjs.set(Math.floor(sayText.val().length * 100/limit));
+      } else {
+        var t = sayText.val().substring(0, limit);
+        sayText.val(t);
+        counter.text(0);
+      }
+    },
 
   });
   

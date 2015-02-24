@@ -34,7 +34,18 @@ class PostsController < ApplicationController
     end
   end
 
+  def update_social
+    @post = Post.find params[:id]
+    if @post.update_attributes(social_networks: post_params[:social_networks])
+      render json: @post
+    else
+      render json: {}
+    end
+  end
+
   def show
+    @post = Post.find params[:id]
+    render json: @post
   end
 
   def set_post

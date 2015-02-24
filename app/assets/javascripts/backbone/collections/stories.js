@@ -6,8 +6,16 @@ Robin.Collections.Stories = Backbone.Collection.extend({
     return '/streams/' + this.streamId + '/stories';
   },
 
+  parse: function(response) {
+    return response.stories;
+  },
+
   comparator: function(story) {
-    return -new Date(story.get('published_at'));
+    if(this.sortByPopularity) {
+      return -story.get('likes');
+    } else {
+      return -new Date(story.get('published_at'));
+    }
   },
 
   initialize: function(models, options) {

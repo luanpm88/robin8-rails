@@ -4,6 +4,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     template: 'modules/releases/templates/top-menu-view',
     className: 'row',
     regions: {
+      logoRegion: '.logo',
       mediaRegion: '.media_region'
     },
     events: {
@@ -46,7 +47,14 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       $('.wysihtml5').wysihtml5({});
+      this.initLogoView();
       this.initMediaView();
+    },
+    initLogoView: function(){
+      this.logoRegion.show(new Robin.Views.LogoView({
+        model: this.model,
+        field: 'logo_url'
+      }));
     },
     initMediaView: function(){
       this.mediaRegion.show(new Robin.Views.MediaView({

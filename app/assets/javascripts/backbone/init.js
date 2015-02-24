@@ -5,6 +5,7 @@ Robin.Collections = {};
 Robin.Models = {};
 Robin.Routers = {};
 Robin.Controllers = {};
+Robin.cachedStories = {};
 
 Robin.layouts = {};
 
@@ -14,7 +15,7 @@ Robin.addRegions({
 
 Robin.setUrl = function(route, options){
   options || (options = {});
-  Backbone.history.navigate(route, options);
+  Backbone.history.navigate(route, {trigger: true, replace: true});
 };
 
 Robin.finishSignIn = function(data){
@@ -47,7 +48,7 @@ Robin.setIdentities = function(data){
 };
 
 Robin.stopOtherModules = function(){
-  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases'], function(module){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
@@ -99,8 +100,15 @@ Robin.vent.on("authentication:logged_in", function() {
 });
 
 Robin.vent.on("authentication:logged_out", function() {
-  Robin.layouts.unauthenticated = new Robin.Views.Layouts.Unauthenticated();
-  Robin.main.show(Robin.layouts.unauthenticated);
+  if (Robin.publicPages) {
+    Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
+    Robin.main.show(Robin.layouts.main);
+    Robin.stopOtherModules();
+    Robin.module('NewsRoomPublic').start(); 
+  } else {
+    Robin.layouts.unauthenticated = new Robin.Views.Layouts.Unauthenticated();
+    Robin.main.show(Robin.layouts.unauthenticated);
+  }
 });
 
 Robin.bind("before:start", function() {

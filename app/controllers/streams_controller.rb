@@ -40,7 +40,7 @@ class StreamsController < ApplicationController
 
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
 
-    render json: JSON.parse(res.body)['stories']
+    render json: JSON.parse(res.body)
   end
 
   def order    
