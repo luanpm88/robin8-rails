@@ -5,6 +5,7 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
     appRoutes: {
       "news-room": "index",
       "presskit": "presskit",
+      "follow": "follow",
       "release/:id": "release"
     }
 

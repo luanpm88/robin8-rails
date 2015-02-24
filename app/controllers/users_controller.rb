@@ -26,4 +26,14 @@ class UsersController < ApplicationController
     render json: manageable_users
   end
 
+  def follow
+    maillist = Rails.application.secrets.mailgun[:maillist]
+    @mailgun = Mailgun(api_key: Rails.application.secrets.mailgun[:api_key])
+    if @mailgun
+      mail_list = @mailgun.lists.find maillist
+      @mailgun.lists.create maillist unless mail_list
+      @mailgun.list_members.add maillist, params[:email]
+    end
+  end
+
 end

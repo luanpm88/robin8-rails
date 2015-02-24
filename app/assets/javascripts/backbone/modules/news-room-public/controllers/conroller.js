@@ -88,6 +88,15 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
       });
     },
 
+    follow: function() {
+      var module = this.module;
+      var newsRoom = new Robin.Models.NewsRoom();
+      var followView = new module.FollowView({});
+      newsRoom.preview().done(function(data){
+        module.layout.content.show(followView);
+      });
+    },
+
     release: function(id) {
       var module = this.module;
       var release = new Robin.Models.Release({id: id});
