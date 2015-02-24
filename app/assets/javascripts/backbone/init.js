@@ -5,6 +5,7 @@ Robin.Collections = {};
 Robin.Models = {};
 Robin.Routers = {};
 Robin.Controllers = {};
+Robin.cachedStories = {};
 
 Robin.layouts = {};
 
