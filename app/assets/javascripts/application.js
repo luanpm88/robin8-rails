@@ -34,7 +34,6 @@
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-//= require tweenlite
 //= require highcharts
 //= require select2
 //= require_directory ./lib
@@ -59,8 +58,8 @@ ready = function() {
   $.growl(false, {
     element: 'body',
     placement: {
-      from: "bottom",
-      align: "left"
+      from: "top",
+      align: "right"
     },
     delay: 10000,
   });
