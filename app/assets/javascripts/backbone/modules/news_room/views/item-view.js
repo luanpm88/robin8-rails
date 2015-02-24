@@ -5,6 +5,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     events: {
       'click #open_edit': 'openEditModal'
     },
+    onShow: function(){
+      $(".description_area").dotdotdot();
+    },
     openEditModal: function(){
       Robin.vent.trigger("news_room:open_edit_modal", this.model);
     }

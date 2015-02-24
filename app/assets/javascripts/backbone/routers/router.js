@@ -1,5 +1,6 @@
 Robin.Routers.AppRouter = Backbone.Marionette.AppRouter.extend({
   appRoutes: {
+    '': 'showDashboard',
     'dashboard(/*path)': 'showDashboard',
     'robin8(/*path)': 'showRobin',
     'monitoring(/*path)': 'showMonitoring',

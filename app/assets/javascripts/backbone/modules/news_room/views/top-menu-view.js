@@ -28,13 +28,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.model.clear();
       // this.$el.find("#tagsinput").tagsinput('removeAll')
       this.render()
-      this.$el.find('#newsroom_form').modal({ backdrop: 'static', keyboard: false });
+      this.$el.find('#newsroom_form').modal({keyboard: false });
     },
     openModalDialogEdit: function(data){
       this.model.set(data.toJSON().news_room);
       this.render()
       this.$el.find("#tagsinput").tagsinput('add', this.model.get('tags'));
-      this.$el.find('#newsroom_form').modal({ backdrop: 'static', keyboard: false });
+      this.$el.find('#newsroom_form').modal({keyboard: false });
     },
     onRender: function(){
       this.modelBinder.bind(this.model, this.el);
@@ -131,8 +131,10 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
         var $tabPane = data.element.parents('.tab-pane'),
           tabId    = $tabPane.attr('id');
-        $('a[href="#' + tabId + '"][data-toggle="tab"]')
-          .removeClass('error-tab');
+        if (data.fv.isValidContainer($tabPane)){
+          $('a[href="#' + tabId + '"][data-toggle="tab"]')
+            .removeClass('error-tab');
+        }
       });
     },
     saveNewsRoom: function(e){
