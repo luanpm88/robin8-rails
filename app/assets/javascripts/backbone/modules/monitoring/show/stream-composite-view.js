@@ -20,12 +20,24 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       add: 'onAdded'
     },
 
+    modelEvents: {
+      change: 'render'
+    },
+
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
 
-      this.collection = new Robin.Collections.Stories();
-      this.collection.streamId = this.model.get('id');
+      var streamId = this.model.get('id');
+
+      if (streamId && !Robin.cachedStories[streamId]) {
+        Robin.cachedStories[streamId] = new Robin.Collections.Stories();
+        Robin.cachedStories[streamId].streamId = streamId;
+      }
+
+      this.collection = Robin.cachedStories[streamId] || new Robin.Collections.Stories();
       this.collection.startPolling();
+
+      this.refreshNewStoriesCount();
 
       this.childView = Show.StoryItemView;
     },
@@ -44,12 +56,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
     },
 
-    onDestroy: function() {
-      this.collection.stopPolling();
-    },
-
     onAdded: function(story, collection) {
-      this.model.set('newStoriesCount', this.collection.where({isNew: true}).length);
+      this.refreshNewStoriesCount();
+      this.render();
     },
 
     editTitle: function() {
@@ -131,14 +140,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     done: function(e) {
       e.preventDefault();
 
-      this.model.set('sort_column', 'published_at');
-
       var curView = this;
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           curView.collection.streamId = response.id;
           curView.collection.fetch({reset: true});
+
+          Robin.cachedStories[response.id] = curView.collection;
 
           $(curView.el).attr("data-pos",response.id);
           $(curView.el).find('.slider').addClass('closed');
@@ -165,6 +174,11 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       });
       this.model.set('newStoriesCount', 0);
       this.collection.refreshInitialFetchAt();
+      this.render();
+    },
+
+    refreshNewStoriesCount: function() {
+      this.model.set('newStoriesCount', this.collection.where({isNew: true}).length);
     }
   });
 

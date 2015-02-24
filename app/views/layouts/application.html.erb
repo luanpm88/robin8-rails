@@ -55,6 +55,21 @@
   e.src = h+"//"+u+"/p.js"; r.appendChild(e);
 })("script", "parsely", document);
 </script>
+<% unless signed_in? -%>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $.easing.smoothmove = function (x, t, b, c, d) {
+        return -c *(t/=d)*(t-2) + b;
+      };
+      $('body').mousemove(function(event) {
+        $('body').animate({
+          'background-position-x': event.pageX/8,
+          'background-position-y': event.pageY/12
+        }, {queue:false,duration:200,easing:'smoothmove'});
+      });
+    });
+  </script>
+<% end %>
 <!-- END Parse.ly Include -->
 </body>
 </html>

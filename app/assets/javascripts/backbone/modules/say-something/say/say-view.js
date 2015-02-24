@@ -73,8 +73,31 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).start();
       var sayText = $("#say-something-field");
       var counter = $("#say-counter");
+      var selectedNetworks = this.model.attributes.social_networks.attributes;
       var limit = 140;
-      counter.text(limit - sayText.val().length);
+
+      //set character limit
+      if (selectedNetworks.twitter == "true") {
+        limit = 140;
+      } else if (selectedNetworks.linkedin == "true") {
+        limit = 689;
+      } else if (selectedNetworks.facebook == "true") {
+        limit = 2000;
+      }
+
+      var charsLeft = limit - sayText.val().length;
+      counter.text(charsLeft);
+
+      //set color:
+      if (charsLeft >= limit*0.8) {
+        counter.css("background-color", "#8CC152");
+      } else if (charsLeft >= limit*0.5) {
+        counter.css("background-color", "#E3D921");
+      } else if (charsLeft >= limit*0.2) {
+        counter.css("background-color", "#FF9813");
+      } else {
+        counter.css("background-color", "#E62E00");
+      }
 
       this.checkAbilityPosting();
 
@@ -148,9 +171,9 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       this.modelBinder.copyViewValuesToModel();
       
       if (this.model.attributes.scheduled_date === ""){
-        this.model.attributes.scheduled_date = moment().utc().format('MM/DD/YYYY hh:mm A');
+        this.model.attributes.scheduled_date = moment().utc();
       } else {
-        this.model.attributes.scheduled_date = moment(new Date(this.model.attributes.scheduled_date)).utc();
+        this.model.attributes.scheduled_date = moment(new Date(this.model.attributes.scheduled_date));
       }
 
       this.model.save(this.model.attributes, {
@@ -188,6 +211,9 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       } else {
         input.val('false')
       }
+      this.socialNetworksBinder.copyViewValuesToModel();
+      this.modelBinder.copyViewValuesToModel();
+      this.setCounter();
       this.checkAbilityPosting();
     }
     
