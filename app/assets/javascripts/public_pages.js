@@ -25,6 +25,7 @@
 //= require momentjs
 //= require eonasdan-bootstrap-datetimepicker
 //= require chance
+//= require highcharts
 //= require backbone
 //= require backbone.babysitter
 //= require backbone.modelbinder

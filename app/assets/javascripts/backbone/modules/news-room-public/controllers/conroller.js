@@ -85,6 +85,15 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
       });
     },
 
+    release: function(id) {
+      var module = this.module;
+      var release = new Robin.Models.Release({id: id});
+      var releaseView = new module.ReleaseItemView({ model: release });
+      release.fetch().done(function(data){
+        module.layout.content.show(releaseView);
+      });
+    },
+
     renderCollectionView: function (collection, response){
       var view = new this.module.ReleasesCompositeView({
         collection:  collection,
