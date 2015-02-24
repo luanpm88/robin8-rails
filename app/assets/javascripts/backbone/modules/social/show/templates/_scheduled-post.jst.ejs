@@ -18,7 +18,8 @@
     </div>
   </div>
 </div>
-<small><%- post.formamtted_scheduled_date %></small>
+<% var date = moment.utc(post.scheduled_date).toDate() %>
+<small><%- moment(date).format('hh:mm A') %></small>
 <span class="editable" data-type="textarea" data-name="text"><%- post.text %></span>
 <div class="pull-right" style="display: inline-block;">
   <span class="social-networks">

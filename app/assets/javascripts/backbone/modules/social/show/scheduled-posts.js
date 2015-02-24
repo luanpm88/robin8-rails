@@ -100,14 +100,16 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
 
-      $('.edit-datetimepicker').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
+      date = moment.utc(new Date(this.model.attributes.scheduled_date));
+      console.log(date);
+      $('.edit-datetimepicker').datetimepicker({minDate: date, format: 'MM/DD/YYYY hh:mm A'});
     },
 
     updatePost: function() {
       var view = this;
       view.modelBinder.copyViewValuesToModel();
 
-      view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date)).utc();
+      view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date));
       view.model.save(view.model.attributes, {
         success: function(data){
           view.render();
