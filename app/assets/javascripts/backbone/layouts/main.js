@@ -20,8 +20,6 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
     var email = Robin.currentUser.attributes.email;
     if (fName!= null && fName!=0 && lName!= null && lName!=0){
       nameHolder.text(fName + ' ' + lName);
-    } else if (name.length > 0) {
-      nameHolder.text(name);
     } else if (email.length > 0) {
       nameHolder.text(email);
     }
