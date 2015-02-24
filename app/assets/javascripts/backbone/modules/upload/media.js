@@ -16,7 +16,7 @@ Robin.Views.MediaView = Backbone.Marionette.ItemView.extend({
             viewObj.setModelParams(arguments, 'image');
             $.each(arguments, function(i, fileInfo) {
               var src = fileInfo.cdnUrl + '-/scale_crop/160x160/center/';
-              $(".photos_list").append("<li><div><img src="+src+"><a href='#' class='delete'><i class='fa fa-close'></i></a></div></li>");
+              $(".photos_list").append("<li><div><img src="+src+"></div></li>");
             });
           });
         }
@@ -47,7 +47,7 @@ Robin.Views.MediaView = Backbone.Marionette.ItemView.extend({
             viewObj.setModelParams(arguments, 'file');
             $.each(arguments, function(i, fileInfo) {
               var src = fileInfo.cdnUrl + '-/scale_crop/160x160/center/';
-              $(".files_list").append("<li><div><a href="+fileInfo.cdnUrl+" class='delete'>"+fileInfo.name+"</a></div></li>");
+              $(".files_list").append("<li><div><a href="+fileInfo.cdnUrl+" class='file'><i class='fa fa-file'></i></a><span class='label'>"+fileInfo.name+"</span></div></li>");
             });
           });
         }
