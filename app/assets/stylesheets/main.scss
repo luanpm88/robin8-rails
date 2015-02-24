@@ -147,6 +147,11 @@ ul {
 .stream-container {
   list-style: none;
   white-space: nowrap;
+  position: absolute;
+  overflow-x: scroll;
+  top: 58px;
+  bottom: 80px;
+  left: 180px;
 }
 .stream {
   width: 360px;
@@ -157,6 +162,7 @@ ul {
   position: relative;
   display: inline-block;
   white-space: normal;
+  height: 100%;
 }
 .stream-input {
   height: auto;
@@ -173,14 +179,16 @@ ul {
 }
 #add-stream {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 15px;
+  right: 15px;
   font-size: 20px;
 }
 .stream-body {
   border-bottom: 1px solid #ccc;
-  height: 500px;
   overflow-y: auto;
+  position: absolute;
+  top: 32px;
+  bottom: 0;
 }
 .stream-header {
   background-color: #4B77BE;
