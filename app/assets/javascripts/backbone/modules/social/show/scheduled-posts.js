@@ -35,6 +35,12 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
       this.socialNetworksBinder = new Backbone.ModelBinder();
+      this.socialNetworksBindings = {
+        twitter: '.edit-settings-row [name=twitter]',
+        facebook: '.edit-settings-row [name=facebook]',
+        linkedin: '.edit-settings-row [name=linkedin]',
+        google: '.edit-settings-row [name=google]'
+      };
     },
 
     onRender: function(){
@@ -63,7 +69,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .edit-social-networks .btn': 'editSocialNetwork',
       'click .edit-post': 'enableEditableMode',
       'change #edit-shrink-links': 'shrinkLinkProcess',
-      'keyup .input-large' : 'setCounter'
+      'keyup #edit-post-textarea' : 'setCounter'
     },
 
     enableEditableMode: function(e) {
@@ -82,6 +88,8 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       } else {
         input.val('false')
       }
+      this.socialNetworksBinder.copyViewValuesToModel();
+      this.setCounter();
     },
 
     enableSocialNetwork: function(e) {
@@ -173,16 +181,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       row.removeClass('hidden');
       this.$el.find('textarea').attr('name', 'text')
       this.$el.find('textarea').attr('id', 'edit-post-textarea')
+      this.setCounter();
 
       this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
       this.model.set('social_networks', this.socialNetworks);
-
-      var socialNetworksBindings = {
-        twitter: '.edit-settings-row [name=twitter]',
-        facebook: '.edit-settings-row [name=facebook]',
-        linkedin: '.edit-settings-row [name=linkedin]',
-        google: '.edit-settings-row [name=google]'
-      }
 
       var postBindings = {
         text: '[name=text]',
@@ -190,11 +192,13 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         shrinked_links: '[name=shrinked_links]'
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
-      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
+      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, this.socialNetworksBindings);
 
       // set date to utc format
       var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
-      this.model.attributes.scheduled_date = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+      var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+
+      $('.edit-datetimepicker').find('input').val(datedate).change();
       $('.edit-datetimepicker').datetimepicker();
     },
 
@@ -215,12 +219,20 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     setCounter: function() {
-      var prgjs = progressJs($(".input-large")).setOptions({ theme: 'blackRadiusInputs' }).start();
-      var sayText = $(".input-large");
-      var counter = $(".input-large").next().find("#edit-counter");
+      var view = this;
+      var prgjs = progressJs(this.$("#edit-post-textarea")).setOptions({ theme: 'blackRadiusInputs' }).start();
+      var sayText = this.$("#edit-post-textarea");
+      var counter = view.$el.find('div.edit-settings-row:nth-child(2)').find('#edit-counter');
       var limit = 140;
-
-      //.input-large
+      var selectedNetworks = this.model.attributes.social_networks;
+      //set character limit
+      if (selectedNetworks.twitter == "true") {
+        limit = 140;
+      } else if (selectedNetworks.linkedin == "true") {
+        limit = 689;
+      } else if (selectedNetworks.facebook == "true") {
+        limit = 2000;
+      }
 
       var charsLeft = limit - sayText.val().length;
       counter.text(charsLeft);
@@ -229,7 +241,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       if (charsLeft >= limit*0.8) {
         counter.css("background-color", "#8CC152");
       } else if (charsLeft >= limit*0.5) {
-        counter.css("background-color", "#E3D921");
+        counter.css("background-color", "#E6E300");
       } else if (charsLeft >= limit*0.2) {
         counter.css("background-color", "#FF9813");
       } else {

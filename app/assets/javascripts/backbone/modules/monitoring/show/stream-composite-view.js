@@ -21,7 +21,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     modelEvents: {
-      change: 'render'
+      change: 'setShowUpdatesButtonVisibility'
     },
 
     initialize: function() {
@@ -56,11 +56,13 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         this.$el.find('.stream-settings').removeClass('closed');
       }
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
+
+      this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
     },
 
     onAdded: function(story, collection) {
       this.refreshNewStoriesCount();
-      this.render();
+      this.setShowUpdatesButtonVisibility();
     },
 
     editTitle: function() {
@@ -177,11 +179,28 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       });
       this.model.set('newStoriesCount', 0);
       this.collection.refreshInitialFetchAt();
-      this.render();
+      this.setShowUpdatesButtonVisibility();
     },
 
     refreshNewStoriesCount: function() {
       this.model.set('newStoriesCount', this.collection.where({isNew: true}).length);
+    },
+
+    checkScroll: function(view) {
+      return function () {
+        var triggerPoint = 100;
+        if( !view.isLoading && this.scrollTop + this.clientHeight + triggerPoint > this.scrollHeight ) {
+          view.collection.fetchPreviousPage();
+        }
+      }
+    },
+
+    setShowUpdatesButtonVisibility: function() {
+      if(this.model.get('newStoriesCount') > 0) {
+        this.$el.find('.js-show-new-stories').removeClass('hidden');
+      } else {
+        this.$el.find('.js-show-new-stories').addClass('hidden');
+      }
     }
   });
 

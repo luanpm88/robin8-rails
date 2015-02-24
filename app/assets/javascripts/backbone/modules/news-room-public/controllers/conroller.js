@@ -79,7 +79,10 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
     presskit: function() {
       var module = this.module;
       var newsRoom = new Robin.Models.NewsRoom();
-      var presskitView = new module.PresskitView({ model: newsRoom });
+      var presskitView = new module.PresskitView({
+        collection: newsRoom.get('attachments'),
+        childView: module.PresskitItemView
+      });
       newsRoom.preview().done(function(data){
         module.layout.content.show(presskitView);
       });

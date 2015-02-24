@@ -2,6 +2,7 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
 
   NewsRoomPublic.ReleaseItemView = Marionette.ItemView.extend({
     template: 'modules/news-room-public/templates/release-view',
+    model: Robin.Models.Attachment
   });
   
 });
