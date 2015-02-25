@@ -20,22 +20,51 @@ class Subscription < ActiveRecord::Base
     suspended_at.blank? ? false : true
   end
 
-  def batch_create
+  def process_initial_invoice
     where("next_charge_date is NULL").each do |s|
       begin
         resp = BlueSnap::Subscription.find_last_by_shopper_id(s.shopper_id)
         if resp.present?
+          bss = Blue::Subscription.find(resp[:subscription_id])
+          s.update_attributes(bluesnap_subscription_id: bss.subscription_id,
+                              status: bss.status,
+                              next_charge_date: Date.parse(bss.next_charge_date)) #add bluesnap_subscription_id and status string to subscriptions table
           Payment.create!(
               subscription_id: s.id,
               package_id: s.package_id,
-              total_amount: resp[:catalog_recurring_charge][:amount], #to be renamed to amount
+              total_amount:  bss.catalog_recurring_charge.amount, #to be renamed to amount
               user_id: current_user.id,
-              order_id: resp[:subscription_id], #to be named bluesnap_subscription_id
-              card_last_four_digits: resp[:credit_card][:card_last_four_digits],
-              card_type:    resp[:credit_card][:card_type],
-              status: resp[:status] #status field to be added
+              card_last_four_digits:  bss.credit_card.card_last_four_digits,
+              card_type: bss.credit_card.card_type
           )
-          s.update_attribute(:next_charge_date,Date.parse(resp[:next_charge_date]))
+        end
+      rescue Exception => e
+        next
+      end
+    end
+  end
+
+
+
+  def process_recurring_invoice
+    where("next_charge_date <= #{Date.today} AND status = 'A'").each do |s|
+      begin
+        resp = BlueSnap::Subscription.find_last_by_shopper_id(s.shopper_id)
+        if resp.present?
+          bss = Blue::Subscription.find(resp[:subscription_id])
+          s.update_attributes(status: bss.status,
+                              next_charge_date: Date.parse(bss.next_charge_date)) #add bluesnap_subscription_id and status string to subscriptions table
+
+          if bss.status == "A"
+            Payment.create!(
+                subscription_id: s.id,
+                package_id: s.package_id,
+                total_amount:  bss.catalog_recurring_charge.amount, #to be renamed to amount
+                user_id: current_user.id,
+                card_last_four_digits:  bss.credit_card.card_last_four_digits,
+                card_type: bss.credit_card.card_type
+            )
+          end
         end
       rescue Exception => e
         next
@@ -45,7 +74,7 @@ class Subscription < ActiveRecord::Base
 
 
   def batch_suspend
-    where("next_charge_date < #{Date.today + 3.days}").each do |s|
+    where("next_charge_date < #{Date.today + 3.days} AND status = ''").each do |s|
       s.update_attribute(:suspended_at: Time.now.utc) #suspended_at field to be added
     end
   end

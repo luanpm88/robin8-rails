@@ -19,7 +19,7 @@ class SubscriptionsController < ApplicationController
         @subscription = Subscription.create!(
             package_id: @package.id,
             user_id: current_user.id,
-            shopper_id: resp["batch_order"]["shopper"]["shopper_info"]["shopper_id"],
+            shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
             recurring_amount: @package.price,
             charged_amount: @package.price,
             total_amount: @package.price,
@@ -44,7 +44,9 @@ class SubscriptionsController < ApplicationController
   end
 
   def destroy #to cancel account
-
+    BlueSnap::Subscription.destroy(current_user.payments.last.subscription_id) if current_user.payments
+    #add response message
+    redirect_to :back
   end
 
   def index

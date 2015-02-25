@@ -3,7 +3,7 @@ require 'active_resource'
 module Blue
   class Base <  ActiveResource::Base
     self.site = "https://sandbox.bluesnap.com/services/2"
-    self.format = :XmlCustomFormat
+    self.format = :xml
     self.include_format_in_path = false
     self.auth_type = :basic
     self.user = Rails.application.secrets[:bluesnap_user]
@@ -24,9 +24,9 @@ module Blue
   end
 
 
-  def OrderShopper < Base
-    self.site = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
-  end
+  # def OrderShopper < Base
+  #   self.site = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
+  # end
 
 
   class Subscription < Base
