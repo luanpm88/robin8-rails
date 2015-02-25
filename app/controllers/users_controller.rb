@@ -35,5 +35,6 @@ class UsersController < ApplicationController
       @mailgun.list_members.add maillist, params[:email]
     end
   end
+  # @mailgun.list_members('test@mg.robin8.com').add('mykola.bokhonko@perfectial.com',{name: 'Vasa', vars: '{"newsroom": "1"}'})
 
 end
