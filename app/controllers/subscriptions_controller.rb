@@ -23,21 +23,9 @@ class SubscriptionsController < ApplicationController
             recurring_amount: @package.price,
             charged_amount: @package.price,
             total_amount: @package.price,
-            next_charge_date: Date.today + @package.interval.days
+            next_charge_date: nil # to be set by invoice generation
         )
 
-        Payment.create!(
-            subscription_id: @subscription.id,
-            package_id: @package.id,
-            total_amount: @package.price,
-            charged_amount: @package.price,
-            user_id: current_user.id,
-            order_id: resp["batch_order"]["order"]["order_id"], #to be moved to httparty
-            card_last_four_digits: resp["batch_order"]["order"]["post_sale_info"]["invoices"]["invoice"]["financial_transactions"]["financial_transaction"]["credit_card"]["card_last_four_digits"],
-            card_type:    resp["batch_order"]["order"]["post_sale_info"]["invoices"]["invoice"]["financial_transactions"]["financial_transaction"]["credit_card"]["card_type"],
-            expiration_year:   resp["batch_order"]["order"]["post_sale_info"]["invoices"]["invoice"]["financial_transactions"]["financial_transaction"]["credit_card"]["expiration_year"],
-            expiration_month:    resp["batch_order"]["order"]["post_sale_info"]["invoices"]["invoice"]["financial_transactions"]["financial_transaction"]["credit_card"]["expiration_month"]
-        )
       rescue Exception=> ex
         flash[:errors] = ["We are sorry, something is not right. Please fill in all details and try again"]
       end

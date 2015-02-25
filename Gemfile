@@ -75,6 +75,7 @@ gem 'activeresource'
 
 gem 'ejs'
 gem 'countries'
+gem 'whenever'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

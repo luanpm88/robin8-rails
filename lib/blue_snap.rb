@@ -122,10 +122,18 @@ module BlueSnap
       Request.post(URL,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
     end
 
-    def self.get_by_shopper_id(shopper_id)
+    def self.find_all_by_shopper_id(shopper_id)
       # url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{subscription_id}"
       url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
-      Request.get(url)
+      errors,resp = Request.get(url)
+      resp[:shopper_subscriptions][:subscriptions] if errors.blank?
+    end
+
+    def self.find_last_by_shopper_id(shopper_id)
+      # url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{subscription_id}"
+      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      errors,resp = Request.get(url)
+      resp[:shopper_subscriptions][:subscriptions][:subscription].class == Array ? resp[:shopper_subscriptions][:subscriptions][:subscription].last : resp[:shopper_subscriptions][:subscriptions][:subscription] if errors.blank?
     end
 
   end
