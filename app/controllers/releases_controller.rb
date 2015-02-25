@@ -2,9 +2,10 @@ class ReleasesController < ApplicationController
   has_scope :by_news_room
 
   def index
-    set_paginate_headers Release, apply_scopes(current_user.releases).count
+    releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
+    set_paginate_headers Release, releases.count
 
-    render json: apply_scopes(current_user.releases).order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
+    render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
   end
 
   def create

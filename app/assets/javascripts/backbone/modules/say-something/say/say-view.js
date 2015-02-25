@@ -40,6 +40,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     onRender: function() {
+      this.$el.find('.social-networks .btn').tooltip();
+
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
