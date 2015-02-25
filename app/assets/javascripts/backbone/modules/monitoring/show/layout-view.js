@@ -2,6 +2,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.LayoutView = Backbone.Marionette.LayoutView.extend({
     template: 'modules/monitoring/show/templates/monitoring',
 
+    tagName: "div",
+    className: "streams-content",
+
     events: {
       'click #add-stream': 'addStream',
     },
@@ -20,6 +23,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       currView.streamsRegion.show(currView.streamsCollectionView);
       currView.$el.find(".stream-container").sortable({
         handle: '.stream-header',
+        start: function(e, ui) {
+          $(e.target).data("ui-sortable").floating = true;
+        },
         update: function(){
           var listOrder = [];
           $(currView.el).find('li.stream').each(function(i, list){
