@@ -18,7 +18,7 @@ class ReleasesController < ApplicationController
   end
 
   def show
-    render json: current_user.releases.find(params[:id])
+    render json: Release.where(id: params[:id], is_private: false).first
   end
 
   def update

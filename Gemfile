@@ -71,6 +71,8 @@ gem 'twitter'
 gem "koala", "~> 1.11.0rc" #flexible library for Facebook
 gem 'httparty'
 
+gem 'aylien_text_api'
+
 gem 'ejs'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
