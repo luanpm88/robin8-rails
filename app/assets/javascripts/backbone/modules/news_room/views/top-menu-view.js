@@ -40,6 +40,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       this.$el.find("#tagsinput").tagsinput();
+      this.$el.find("#industries").select2();
       this.initLogoView();
       this.initMediaView();
     },

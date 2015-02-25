@@ -850,3 +850,9 @@ ul {
 .alert.animated {
   z-index: 10000 !important;
 }
+
+#industry-select .select2-choices {
+  margin: 0 -10px;
+  border: none;
+  background: none;
+}
