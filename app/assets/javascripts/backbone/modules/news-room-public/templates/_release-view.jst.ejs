@@ -1,5 +1,15 @@
 <div class="thumbnail release-item">
-  <a href="release.html"><img class="img-rounded" src="http://lorempixel.com/400/400/?1"></a>
+  <a href="release.html">
+    <% if(release.logo_url) {%>
+      <img class="img-rounded" src="<%= release.logo_url %>">
+    <%} else {%>
+      <% if(release.attachments.length > 0) {%>
+        <img class="img-rounded" src="<%= release.attachments[0].url %>">
+      <%} else {%>
+        <img class="img-rounded" src="http://placehold.it/542x542">
+      <%}%>
+    <%}%>
+  </a>
   <div class="caption text-center">
     <h3><a href="/#release/<%- release.id %>"><%- release.title %></a></h3>
     <small>15 Jan 2015</small>
