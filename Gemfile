@@ -83,6 +83,8 @@ gem 'ejs'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'mailgun'
+
 group :development, :test do
   # Deploy with Capistrano
   gem 'capistrano-rails', '~> 1.1.2'

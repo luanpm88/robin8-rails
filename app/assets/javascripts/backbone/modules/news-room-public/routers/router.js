@@ -4,7 +4,9 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
 
     appRoutes: {
       "news-room": "index",
-      "presskit": "presskit"
+      "presskit": "presskit",
+      "follow": "follow",
+      "release/:id": "release"
     }
 
   });

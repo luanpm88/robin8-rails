@@ -1,7 +1,8 @@
 Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionette, $, _){
 
-  NewsRoomPublic.PresskitView = Marionette.ItemView.extend({
+  NewsRoomPublic.PresskitView = Marionette.CompositeView.extend({
     template: 'modules/news-room-public/templates/presskit',
+    childViewContainer: '#presskit',
     events: {
       'click #presskit': 'enableBlueimp'
     },

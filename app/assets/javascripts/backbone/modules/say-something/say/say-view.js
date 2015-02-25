@@ -51,7 +51,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         google: '[name=google]'
       }
-      this.ui.minDatePicker.datetimepicker({minDate: moment().utc(), format: 'MM/DD/YYYY hh:mm A'});
+      this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
@@ -92,7 +92,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       if (charsLeft >= limit*0.8) {
         counter.css("background-color", "#8CC152");
       } else if (charsLeft >= limit*0.5) {
-        counter.css("background-color", "#E3D921");
+        counter.css("background-color", "#E6E300");
       } else if (charsLeft >= limit*0.2) {
         counter.css("background-color", "#FF9813");
       } else {
@@ -212,7 +212,6 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         input.val('false')
       }
       this.socialNetworksBinder.copyViewValuesToModel();
-      this.modelBinder.copyViewValuesToModel();
       this.setCounter();
       this.checkAbilityPosting();
     }

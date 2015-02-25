@@ -6,6 +6,12 @@ Robin.Collections.Stories = Backbone.Collection.extend({
     return '/streams/' + this.streamId + '/stories';
   },
 
+  parse: function(response) {
+    this.nextPageCursor = response.next_page_cursor;
+    this.isLastPage = response.is_last_page;
+    return response.stories;
+  },
+
   comparator: function(story) {
     if(this.sortByPopularity) {
       return -story.get('likes');
@@ -49,8 +55,19 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   },
 
   onAdded: function(story, collection) {
-    if(this.initialFetchAt < new Date()) {
+    if(new Date(story.get('published_at')) > this.initialFetchAt) {
       story.set('isNew', true);
     }
+  },
+
+  fetchPreviousPage: function() {
+    if(!this.nextPageCursor || this.isLastPage || this.previousPageBeingFetched) return;
+
+    var collection = this;
+    this.previousPageBeingFetched = true;
+
+    this.fetch({data: {cursor: this.nextPageCursor}, remove: false, success: function() {
+      collection.previousPageBeingFetched = false;
+    }});
   }
 });

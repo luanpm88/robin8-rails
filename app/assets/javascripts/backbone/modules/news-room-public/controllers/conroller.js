@@ -79,9 +79,30 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
     presskit: function() {
       var module = this.module;
       var newsRoom = new Robin.Models.NewsRoom();
-      var presskitView = new module.PresskitView({ model: newsRoom });
+      var presskitView = new module.PresskitView({
+        collection: newsRoom.get('attachments'),
+        childView: module.PresskitItemView
+      });
       newsRoom.preview().done(function(data){
         module.layout.content.show(presskitView);
+      });
+    },
+
+    follow: function() {
+      var module = this.module;
+      var newsRoom = new Robin.Models.NewsRoom();
+      var followView = new module.FollowView({});
+      newsRoom.preview().done(function(data){
+        module.layout.content.show(followView);
+      });
+    },
+
+    release: function(id) {
+      var module = this.module;
+      var release = new Robin.Models.Release({id: id});
+      var releaseView = new module.ReleaseItemView({ model: release });
+      release.fetch().done(function(data){
+        module.layout.content.show(releaseView);
       });
     },
 
