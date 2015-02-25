@@ -1,4 +1,6 @@
 class SubscriptionsController < ApplicationController
+  before_action :authenticate_user!
+
   skip_before_filter :require_active_subscription
   layout false
 
@@ -55,6 +57,10 @@ class SubscriptionsController < ApplicationController
 
   def destroy #to cancel account
 
+  end
+
+  def index
+    @subscription = current_user.subscription
   end
 
 
