@@ -9,6 +9,18 @@ module BlueSnap
   end
 
   class Shopper
+
+    def self.get_subscription_id(shopper_id)
+      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      begin
+        error,hash = Request.get(url)
+        hash[:shopper_subscriptions][:ordering_shopper][:shopper_id] if error.blank?
+        resuce Exception => ex
+        return nil
+      end
+    end
+
+
     URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
 
     def self.new request,user_profile,params,package
@@ -109,6 +121,13 @@ module BlueSnap
       {"subscription-id" => subscription_id, "underlying-sku-id"=>sub.sku_id, "status"=> "C","shopper-id"=>sub.shopper_id} # status C is for cancel :s
       Request.post(URL,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
     end
+
+    def self.get_by_shopper_id(shopper_id)
+      # url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{subscription_id}"
+      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      Request.get(url)
+    end
+
   end
 
   class Request
@@ -122,6 +141,8 @@ module BlueSnap
       request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
       request.body = data
       request["Content-Type"] ='application/xml'
+      puts"************************************************************************"
+      puts data
       response = http.request(request)
       Response.parse(response)
     end
@@ -134,15 +155,16 @@ module BlueSnap
       request = Net::HTTP::Get.new(uri.request_uri)
       request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
       response = http.request(request)
+      Response.parse(response)
     end
   end
 
   class Response
     def self.parse(response)
       puts"orignal is :#{response.inspect}"
-      resp = Hash.from_xml(response.body)
+      resp = Hash.from_xml(response.body).deep_symbolize_keys
       puts resp
-      return get_errors(resp.deep_symbolize_keys),nil  if response.code == 400
+      return get_errors(resp),nil  if response.code == 400 || response.code == 401
       return nil,resp
     end
 

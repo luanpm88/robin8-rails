@@ -74,6 +74,7 @@ gem 'httparty'
 gem 'activeresource'
 
 gem 'ejs'
+gem 'countries'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
