@@ -30,6 +30,10 @@ Rails.application.routes.draw do
 
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
+  
+  post 'textapi/classify'
+  post 'textapi/concepts'
+  post 'textapi/summarize'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
