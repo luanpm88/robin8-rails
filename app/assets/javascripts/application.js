@@ -108,6 +108,16 @@ ready = function() {
     }
   }
   //end trimming space from both side of the string
+  
+  /**
+   * Indicates whether or not this string starts with the specified string.
+   * @param {Object} string
+   */
+  String.prototype.startsWith = function(string){
+      if (!string) 
+          return false;
+      return this.indexOf(string) == 0;
+  }
 };
 
 $(document).ready(ready);

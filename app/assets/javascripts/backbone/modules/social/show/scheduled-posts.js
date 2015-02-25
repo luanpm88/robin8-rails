@@ -41,6 +41,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         linkedin: '.edit-settings-row [name=linkedin]',
         google: '.edit-settings-row [name=google]'
       };
+      this.progressBar = null;
     },
 
     onRender: function(){
@@ -221,6 +222,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     setCounter: function() {
       var sayText = this.$el.find("#edit-post-textarea");
       var counter = this.$el.find('div.edit-settings-row:nth-child(2)').find('#edit-counter');
+      var prgjs = progressJs(sayText).setOptions({ theme: 'blackRadiusInputs' }).start();
       var limit = 140;
       var selectedNetworks = this.model.attributes.social_networks.attributes;
 
@@ -246,7 +248,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         counter.css("background-color", "#E62E00");
       }
 
-      var prgjs = progressJs(sayText).setOptions({ theme: 'blackRadiusInputs' }).start();
       if (sayText.val().length <= limit) {
         prgjs.set(Math.floor(sayText.val().length * 100/limit));
       } else {
@@ -257,9 +258,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     hideCounter: function() {
+      $('.progressjs-inner').hide();
       var prgjs = progressJs(this.$el.find("#edit-post-textarea")).setOptions({ theme: 'blackRadiusInputs' }).end();
     },
-
+ 
   });
   
   Show.ScheduledPostsComposite = Backbone.Marionette.CompositeView.extend({

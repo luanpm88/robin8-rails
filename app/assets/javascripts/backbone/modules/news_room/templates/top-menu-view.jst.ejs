@@ -507,7 +507,9 @@
           <% if(news_room.id) {%>
             <a href="javascript:void(0)" id="delete_news_room" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Delete Newsroom</a>
           <% } %>
-          <a href="javascript:void(0)" id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+          <% if(news_room.id && news_room.publish_on_website) {%>
+            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+          <% } %>
           <a href="javascript:void(0)" id="save_news_room" class="btn btn-success"><i class="fa fa-save"></i> Save changes</a>
         </div>
     </div>

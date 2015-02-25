@@ -73,6 +73,8 @@ gem "koala", "~> 1.11.0rc" #flexible library for Facebook
 gem 'httparty'
 gem 'activeresource'
 
+gem 'aylien_text_api'
+
 gem 'ejs'
 gem 'countries'
 gem 'whenever'
