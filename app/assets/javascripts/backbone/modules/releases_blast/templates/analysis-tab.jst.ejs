@@ -2,21 +2,17 @@
   <h5><i class="fa fa-bar-chart"></i> Analysis</h5>
   <p>Here's the analysis report for <strong>"First Press Release"</strong>. Please make any necessary changes, and click on <strong>Next</strong> when you're finished.</p>
 
-  <p><i style="color: #A0D468;" class="fa fa-check"></i> <strong>"First Press Release"</strong> is about <strong>"<a data-value="Computers and information technology - Software" data-title="Select a category" data-url="/post" data-pk="1" data-type="text" id="release-category" href="#" class="editable editable-click">Computers and information technology - Software</a>"</strong> and the following topics are mentioned in it: <strong><a data-title="Select topics" data-url="/post" data-value="ai, nlp" data-pk="1" data-type="select2" id="release-topics" href="#" class="editable editable-click">Artificial Intelligence, Natural Language Processing</a></strong>.</p>
+  <p>
+    <i style="color: #A0D468;" class="fa fa-check"></i> <strong>"First Press Release"</strong> is about <strong>
+    "<a data-value="<%= textapiResult['classify'] %>" data-title="Select a category" data-url="/post" data-pk="1" data-type="text" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong><a data-title="Select topics" data-url="/post" data-value="ai, nlp" data-pk="1" data-type="select2" id="release-topics" href="#" class="editable editable-click"><%= _.map(textapiResult["concepts"], function(item){ return item.topic }).join(", ") %></a></strong>.</p>
 
   <p><i style="color: #A0D468;" class="fa fa-check"></i> Here's a summary of what <strong>"First Press Release"</strong> is all about:</p>
 
   <ul style="margin-left: 38px; margin-bottom: 10px;">
-    <li><strong>DUBLIN</strong>, February 17, 2014- AYLIEN, Inc., a <strong>Dublin</strong>-based technology firm backed by <strong>SOS</strong> Ventures, this week announced the availability of its <strong>Text Analysis</strong> <strong>API</strong>, a suite of eight <strong>Natural Language Processing</strong>, <strong>Information Retrieval</strong> and Machine Learning <strong>APIs</strong> that enable developers and news organizations to extract meaningful insights from nearly any document.
-    </li>
-    <li>AYLIEN's <strong>Text Analysis</strong> <strong>API</strong> offers distinct advantages over existing solutions, most notably with automatic <strong>hashtag</strong> suggestions for <strong>social media</strong> platforms.</li>
-    <li>The package consists of eight <strong>APIs</strong>, each with unique capabilities: Article Extraction: strips <strong>HTML</strong> documents of ads, navigation elements, and other extraneous information, leaving only text and embedded content such as video and images.
-    </li>
-    <li>Entity Extraction: extracts entities such as people, location, and organizations, and values such as URLs, emails, phone numbers, currency amounts and percentages mentioned in a document.
-    </li>
-    <li>Concept Extraction: extracts concepts from a document, linking them to both relevant <strong>DBPedia</strong> and <strong>Linked Data</strong> entries, and semantic types such as <strong>DBPedia</strong> and schema.org types.
-    </li>
+    <% _.each(textapiResult["summarize"], function(item){ %>
+      <li><%= item %></li>
+    <% }); %>
   </ul>
   <br>
-  <button class="btn btn-primary pull-right"><i class="fa fa-chevron-right"></i> Next</button>
+  <button class="btn btn-primary pull-right" id="btn-next"><i class="fa fa-chevron-right"></i> Next</button>
 </div>

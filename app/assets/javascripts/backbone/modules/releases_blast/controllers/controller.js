@@ -6,11 +6,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     start: function(params){
       Robin.layouts.main.getRegion('content').show(this.module.layout);
-      var releasesCollection = new Robin.Collections.Releases();
-      releasesCollection.fetch({reset: true});
+      this.module.collection.fetch({reset: true});
       var topMenuView = new this.module.TopMenuView({level: 1});
       var startTabView = new this.module.StartTabView({
-        collection: releasesCollection,
+        collection: this.module.collection,
       });
       
       this.module.layout.topMenuRegion.show(topMenuView);
@@ -18,8 +17,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     analysis: function(params){
       Robin.layouts.main.getRegion('content').show(this.module.layout);
+      var releaseModel = this.module.collection.get(params.release_id);
       var topMenuView = new this.module.TopMenuView({level: 2});
-      var analysisTabView = new this.module.AnalysisTabView(params);
+      var analysisTabView = new this.module.AnalysisTabView({model: releaseModel});
       
       this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(analysisTabView);

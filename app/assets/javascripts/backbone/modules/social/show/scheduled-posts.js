@@ -41,6 +41,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         linkedin: '.edit-settings-row [name=linkedin]',
         google: '.edit-settings-row [name=google]'
       };
+      this.progressBar = null;
     },
 
     onRender: function(){
@@ -69,7 +70,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .edit-social-networks .btn': 'editSocialNetwork',
       'click .edit-post': 'enableEditableMode',
       'change #edit-shrink-links': 'shrinkLinkProcess',
-      'keyup #edit-post-textarea' : 'setCounter'
+      'keyup #edit-post-textarea' : 'setCounter',
+      'focus #edit-post-textarea': 'setCounter',
+      'focusout #edit-post-textarea': 'hideCounter'
     },
 
     enableEditableMode: function(e) {
@@ -191,7 +194,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, this.socialNetworksBindings);
-      this.setCounter();
 
       // set date to utc format
       var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
@@ -218,12 +220,12 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     setCounter: function() {
-      var view = this;
-      var prgjs = progressJs(this.$("#edit-post-textarea")).setOptions({ theme: 'blackRadiusInputs' }).start();
-      var sayText = this.$("#edit-post-textarea");
-      var counter = view.$el.find('div.edit-settings-row:nth-child(2)').find('#edit-counter');
+      var sayText = this.$el.find("#edit-post-textarea");
+      var counter = this.$el.find('div.edit-settings-row:nth-child(2)').find('#edit-counter');
+      var prgjs = progressJs(sayText).setOptions({ theme: 'blackRadiusInputs' }).start();
       var limit = 140;
       var selectedNetworks = this.model.attributes.social_networks.attributes;
+
       //set character limit
       if (selectedNetworks.twitter == "true") {
         limit = 140;
@@ -232,7 +234,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       } else if (selectedNetworks.facebook == "true") {
         limit = 2000;
       }
-
       var charsLeft = limit - sayText.val().length;
       counter.text(charsLeft);
 
@@ -256,6 +257,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       }
     },
 
+    hideCounter: function() {
+      $('.progressjs-inner').hide();
+      var prgjs = progressJs(this.$el.find("#edit-post-textarea")).setOptions({ theme: 'blackRadiusInputs' }).end();
+    },
+ 
   });
   
   Show.ScheduledPostsComposite = Backbone.Marionette.CompositeView.extend({

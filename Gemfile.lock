@@ -48,6 +48,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.7)
     arel (6.0.0)
+    aylien_text_api (0.1.0)
     bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -381,6 +382,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.8.0)
+  aylien_text_api
   bootstrap-wysihtml5-rails!
   bundler (>= 1.7.0)
   byebug

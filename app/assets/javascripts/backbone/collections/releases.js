@@ -1,6 +1,6 @@
 Robin.Collections.Releases = Backbone.Collection.extend({
   model: Robin.Models.Release,
-  url: '/releases.json',
+  url: '/releases',
   parseSortParams: function(options){
     var paramsStr = "";
     _.each(options, function(k,v){
@@ -13,6 +13,7 @@ Robin.Collections.Releases = Backbone.Collection.extend({
       return this.url;
     }
   },
+  
   filter: function(options){
     this.fetch({
       url: this.parseSortParams(options.params),

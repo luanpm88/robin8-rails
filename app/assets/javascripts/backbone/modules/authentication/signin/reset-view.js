@@ -4,7 +4,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     template: 'modules/authentication/signin/templates/reset',
 
     events: {
-      'submit form' : 'submit',
+      'click #login' : 'login',
       'keyup #password' : 'removeAlert',
       'keyup #password_confirmation' : 'removeAlert',
     },
@@ -19,8 +19,65 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       this.modelBinder.bind(this.model, this.el);
     },
 
-    submit: function(e) {
-      e.preventDefault();
+    onShow: function() {
+      this.initFormValidation();
+    },
+
+    initFormValidation: function(){
+      this.form = $('#formReset').formValidation({
+        framework: 'bootstrap',
+        excluded: [':disabled'],
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          password: {
+            validators: {
+              notEmpty: {
+                message: 'The password is required'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+          password_confirmation: {
+            validators: {
+              notEmpty: {
+                message: 'The password confirmation is required'
+              },
+              identical: {
+                field: 'password',
+                message: 'The password confirmation must be the same as original one'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+        }
+      })
+      .on('err.field.fv', function(e, data) {
+        // data.element --> The field element
+        var $tabPane = data.element.parents('.tab-pane'),
+          tabId    = $tabPane.attr('id');
+        $('a[href="#' + tabId + '"][data-toggle="tab"]')
+          .addClass('error-tab');
+      })
+        // Called when a field is valid
+      .on('success.field.fv', function(e, data) {
+          // data.fv      --> The FormValidation instance
+          // data.element --> The field element
+        var $tabPane = data.element.parents('.tab-pane'),
+          tabId    = $tabPane.attr('id');
+        $('a[href="#' + tabId + '"][data-toggle="tab"]')
+          .removeClass('error-tab');
+      });
+    },
+
+    login: function() {
       el = $(this.el);
 
       this.modelBinder.copyViewValuesToModel();
@@ -57,6 +114,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     removeAlert: function() {
       this.$('.alert').hide();
     },
+
+
 
   });
 });
