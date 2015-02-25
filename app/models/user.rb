@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def active_subscription
-    Subscription.where("user_id ='#{self.id}' AND expiry is NULL OR expiry >'#{Time.now.utc}'")
+    Subscription.where("user_id ='#{self.id}' AND expiry is NULL OR expiry >'#{Time.now.utc}'").first
   end
 
   def linkedin_identity
