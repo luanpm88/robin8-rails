@@ -3,4 +3,5 @@ class ReleaseSerializer < ActiveModel::Serializer
 
   has_many :attachments
   has_one :news_room
+
 end
