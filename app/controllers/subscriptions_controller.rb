@@ -40,7 +40,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-
+    # http://docs.bluesnap.com/api/services/subscriptions/update-subscription#update-subscription-switch-contract
   end
 
   def destroy #to cancel account

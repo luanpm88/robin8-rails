@@ -117,9 +117,17 @@ module BlueSnap
 
   class Subscription
     def self.destroy(subscription_id)
+      url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
       sub = Subscription.find(subscription_id)
       {"subscription-id" => subscription_id, "underlying-sku-id"=>sub.sku_id, "status"=> "C","shopper-id"=>sub.shopper_id} # status C is for cancel :s
-      Request.post(URL,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+      Request.post(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+    end
+
+    def self.update(subscription_id, new_sku_id)
+     url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
+     sub = Subscription.find(subscription_id)
+     {"subscription-id" => subscription_id, "underlying-sku-id"=>new_sku_id, "status"=> "A","shopper-id"=>sub.shopper_id}
+     Request.post(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
     end
 
     def self.find_all_by_shopper_id(shopper_id)
