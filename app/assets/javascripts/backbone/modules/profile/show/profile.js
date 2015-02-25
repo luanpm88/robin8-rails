@@ -6,12 +6,12 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #saveChanges': 'updateProfile',
       'reset form': 'cancel',  //Should be replaced with Dashboard when ready,
     },
-  
+
     initialize: function() {
       this.model = new Robin.Models.UserProfile(Robin.currentUser.attributes)
       this.modelBinder = new Backbone.ModelBinder();
     },
-  
+
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
 
@@ -33,7 +33,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         m.src = this.model.attributes.avatar_url;
       }
     },
-  
+
     initFormValidation: function(){
       this.form = $('#profileForm').formValidation({
         framework: 'bootstrap',
@@ -142,6 +142,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
           success: function(userSession, response) {
             Robin.currentUser.attributes = r;
             Robin.currentUser.attributes.current_password = "";
+            Robin.layouts.main.onShow();
             $.growl({message: 'Your account data has been successfully changed'
             },{
               element: '#growler-alert',
@@ -174,7 +175,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         this.form.data('formValidation').updateMessage(key, 'serverError', val)
       }, this);
     },
-  
+
     //Should be replaced with Dashboard when ready
     cancel: function() {
       Robin.stopOtherModules();

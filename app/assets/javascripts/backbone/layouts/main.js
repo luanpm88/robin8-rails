@@ -16,6 +16,7 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
     var nameHolder = this.$el.find('#userDropdown');
     var fName = Robin.currentUser.attributes.first_name;
     var lName = Robin.currentUser.attributes.last_name;
+    var name = Robin.currentUser.attributes.name;
     var email = Robin.currentUser.attributes.email;
     if (fName!= null && fName!=0 && lName!= null && lName!=0){
       nameHolder.text(fName + ' ' + lName);

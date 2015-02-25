@@ -5,6 +5,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
     events: {
       'submit form' : 'submit',
+      'keyup #password' : 'removeAlert',
+      'keyup #password_confirmation' : 'removeAlert',
     },
 
     initialize: function(options) {
@@ -26,6 +28,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       var pass = this.model.attributes.password;
       var confirm = this.model.attributes.password_confirmation;
       var token = this.model.attributes.reset_password_token;
+      var that = this;
 
       $.post("/users/password.json", { _method:'PUT', autocomplete:"off", utf8: "&#x2713;", user:{reset_password_token: token, password: pass, password_confirmation: confirm}})
         .done(function(response) {
@@ -37,16 +40,23 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
         })
         .fail(function(response) {
           var result = $.parseJSON(response.responseText);
+          var message = "";
           _(result.errors).each(function(errors,field) {
             $('input[name=' + field + ']').addClass('error');
             _(errors).each(function(error, i) {
               formatted_field = s(field).capitalize().value().replace('_', ' ');
-              $.growl(formatted_field + ' ' + error, {
-                type: "danger",
-              });
+              message += (formatted_field + ' ' + error + '<br>');
             });
+          });
+          console.log(message);
+          that.$('#alert-danger').show();
+          that.$('#alert-danger').html(message);
         });
-      });
     },
+
+    removeAlert: function() {
+      this.$('.alert').hide();
+    },
+
   });
 });

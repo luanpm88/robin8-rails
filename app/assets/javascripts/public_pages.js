@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require assets
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
@@ -25,6 +26,7 @@
 //= require momentjs
 //= require eonasdan-bootstrap-datetimepicker
 //= require chance
+//= require highcharts
 //= require backbone
 //= require backbone.babysitter
 //= require backbone.modelbinder

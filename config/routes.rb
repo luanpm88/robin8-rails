@@ -3,7 +3,7 @@ require 'sidetiq/web'
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions",
-      registrations: "users/registrations", passwords: "users/passwords", 
+      registrations: "users/registrations", passwords: "users/passwords",
       invitations: "users/invitations",  omniauth_callbacks: "users/omniauth_callbacks",
       confirmations: "users/confirmations" }
 
@@ -11,9 +11,9 @@ Rails.application.routes.draw do
   delete '/users/delete_user' => 'users#delete_user'
   get 'users/get_current_user' => 'users#get_current_user'
   delete '/users/disconnect_social' => 'users#disconnect_social'
-  
   # resources :blue_snap
   resources :subscriptions
+  post '/users/follow' => 'users#follow'
 
   resources :posts do
     put 'update_social', on: :member

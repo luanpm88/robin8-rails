@@ -31,16 +31,18 @@ class StreamsController < ApplicationController
 
   def stories
     stream = Stream.find(params[:id]) # ToDo: authorize reading stream
+    req_params = stream.query_params
+    req_params.merge!(cursor: params[:cursor]) if params[:cursor]
 
     uri = URI(Rails.application.secrets.robin_api_url + '/stories')
-    uri.query = URI.encode_www_form stream.query_params
+    uri.query = URI.encode_www_form req_params
 
     req = Net::HTTP::Get.new(uri)
     req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
 
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
 
-    render json: JSON.parse(res.body)['stories']
+    render json: JSON.parse(res.body)
   end
 
   def order    
