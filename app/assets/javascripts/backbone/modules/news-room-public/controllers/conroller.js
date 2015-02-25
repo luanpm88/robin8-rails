@@ -24,7 +24,8 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
 
       this.filterCriteria = {
         page: 1,
-        per_page:3
+        per_page:3,
+        public: true
       };
       var contrObj = this;
 
@@ -33,7 +34,7 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
         module.layout.content.show(module.contentLayout);
         module.contentLayout.contentHead.show(contentHeadView);
         module.contentLayout.contentFooter.show(contentFooterView);
-
+        contrObj.filterCriteria.id = newsRoom.get('id');
         releases.filter({
           params: contrObj.filterCriteria,
           success: function(collection, data, response){

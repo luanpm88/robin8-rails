@@ -2,6 +2,7 @@ Robin.Models.Release = Backbone.Model.extend({
   urlRoot: '/releases',
   // paramRoot: 'release',
 
+
   defaults: {
     statistics: {
       characters: 0,
