@@ -45,19 +45,19 @@ module BlueSnap
 
     def self.shopper_info(params,user)
       {
-          "shopper-contact-info" => shopper_contact_info(user),
+          "shopper-contact-info" => shopper_contact_info(user,params),
           "store-id" => Rails.application.secrets[:bluesnap_store_id],
           "shopper-currency"=>"USD",
           "locale"=>'en',
-          "payment-info" => credit_cards(params)
+          "payment-info" => credit_cards(user,params)
       }
     end
 
-    def self.credit_cards(params)
+    def self.credit_cards(user,params)
       {"credit-cards-info"=>
            {"credit-card-info" =>
                 {"credit-card"=> credit_card(params),
-                 "billing-contact-info" => billing_info()
+                 "billing-contact-info" => billing_info(user, params)
                 }
            }
       }
@@ -73,32 +73,31 @@ module BlueSnap
       }
     end
 
-    def self.billing_info
+    def self.billing_info(user, params)
       {
-          "first-name" => "Razee",
-          "last-name" => "Khan",
-          "address1" => "abc",
+          "first-name" => user.first_name,
+          "last-name" => user.last_name,
+          "address1" => params[:contact][:address1],
           # "address2" => "abc",
-          "city"=> "Lahore",
+          "city"=> params[:contact][:city],
           # "state" => "pu",
-          "zip" => "5400",
-          "country"=> "pk"
+          "zip" => params[:contact][:zip],
+          "country"=> params[:contact][:country]
       }
     end
 
-    def self.shopper_contact_info(user)
+    def self.shopper_contact_info(user, params)
       {
           "title" => "Mr",
           "first-name" => user.first_name,
           "last-name" => user.last_name,
           "email" => user.email,
-          # "company-name" => "abc",
-          "address1" => "138 abc",
-          "city"=> "Lahore",
-          "zip" => "54000",
+          "address1" => params[:contact][:address1],
+          "city"=> params[:contact][:city],
           # "state" => "pu",
-          "country"=> "pk",
-          "phone" => "03317970187"
+          "zip" => params[:contact][:zip],
+          "country"=> params[:contact][:country],
+          "phone" => params[:contact][:phone]
 
       }
     end

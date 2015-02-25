@@ -41,11 +41,72 @@
                 <input type="hidden" name="id" value="<%=@package.blank? ? params[:id] : @package.id%>"/>
 
                 <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Title</label>
+                  <div class="col-sm-8">
+                    <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "form-control"} %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">First Name</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Last Name <%= current_user.last_name %></label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Address</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "address1" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">City</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "city" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Zip</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "zip" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">State</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "state" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Country</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "country" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Phone</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "phone" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+
+                <div class="form-group col-sm-6">
                   <label for="ccno" class="col-sm-4 control-label">Credit Card Type</label>
                   <div class="col-sm-8">
                     <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'master'],["American Express", 'american_express'],["Discover", 'discover']], {}, {:class => "form-control"} %>
                   </div>
                 </div>
+
 
                 <div class="form-group col-sm-6">
                   <label for="ccno" class="col-sm-4 control-label">Credit Card Number</label>
