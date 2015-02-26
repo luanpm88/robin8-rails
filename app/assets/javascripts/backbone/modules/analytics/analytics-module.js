@@ -13,8 +13,8 @@ Robin.module("Analytics", function(Analytics, Robin, Backbone, Marionette, $, _)
     $('#nav-analytics').parent().addClass('active');
   })
 
-  Analytics.on("stop", function(){
-    this.Show.Controller.layout.destroy();
-  });
+  // Analytics.on("stop", function(){
+  //   this.Show.Controller.layout.destroy();
+  // });
   
 });

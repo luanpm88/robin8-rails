@@ -40,6 +40,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       this.$el.find("#tagsinput").tagsinput();
+      this.$el.find("#industries").select2({
+        placeholder: 'Select...'
+      });
       this.initLogoView();
       this.initMediaView();
     },
@@ -113,7 +116,36 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
                 message: 'something went wrong'
               }
             }
-          }
+          },
+          facebook_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          twitter_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          instagram_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          linkedin_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid',
+                allowEmptyProtocol: true
+              }
+            }
+          },
         }
       })
       .on('err.field.fv', function(e, data) {
@@ -135,7 +167,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
           $('a[href="#' + tabId + '"][data-toggle="tab"]')
             .removeClass('error-tab');
         }
-      });
+        if (data.element.val() === '') {
+          var $parent = data.element.parents('.form-group');
+          $parent.removeClass('has-success');
+          data.element.data('fv.icon').hide();
+        }
+      })
+      // 
     },
     saveNewsRoom: function(e){
       var viewObj = this;

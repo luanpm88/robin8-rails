@@ -850,3 +850,25 @@ ul {
 .alert.animated {
   z-index: 10000 !important;
 }
+
+#industry-select {
+  .select2-container {
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    z-index: 99999;
+  }
+  .select2-choices {
+    margin: 0 -10px;
+    border: none;
+    background: none;
+  }
+}
+
+.select2-drop-mask {
+  z-index: 19999;
+}
+
+.select2-drop {
+  z-index: 21000;
+}
