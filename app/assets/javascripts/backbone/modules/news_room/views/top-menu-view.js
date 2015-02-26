@@ -116,7 +116,36 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
                 message: 'something went wrong'
               }
             }
-          }
+          },
+          facebook_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          twitter_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          instagram_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          linkedin_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid',
+                allowEmptyProtocol: true
+              }
+            }
+          },
         }
       })
       .on('err.field.fv', function(e, data) {
@@ -137,6 +166,17 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         if (data.fv.isValidContainer($tabPane)){
           $('a[href="#' + tabId + '"][data-toggle="tab"]')
             .removeClass('error-tab');
+        }
+      })
+      .on('success.field.fv', function(e, data) {
+        if (data.element.val() === '') {
+            var $parent = data.element.parents('.form-group');
+
+            // Remove the has-success class
+            $parent.removeClass('has-success');
+
+            // Hide the success icon
+            data.element.data('fv.icon').hide();
         }
       });
     },
