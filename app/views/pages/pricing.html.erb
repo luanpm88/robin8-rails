@@ -1,0 +1,20 @@
+<%= javascript_include_tag :application %>
+<%= csrf_meta_tag %>
+<ul>
+  <%@packages.each do |p|%>
+      <li>
+        <%=link_to "Subscribe to "+ p.name,"/subscribe/#{p.slug}" if current_user.active_subscription.blank?%>
+        <%=link_to "Upgrade to " + p.name,"/upgrade/#{p.slug}" if current_user.active_subscription.present? && current_user.active_subscription.package_id != p.id%>
+      </li>
+  <%end%>
+
+</ul>
+
+
+<br/><br/>
+<%=link_to "Cancel Subscrption", subscription_path(current_user.active_subscription),:method=> :delete,:confirm=>"Are you sure??" if current_user.active_subscription.present?%>
+
+
+
+
+

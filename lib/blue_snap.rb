@@ -24,16 +24,20 @@ module BlueSnap
     URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
 
     def self.new request,user_profile,params,package
-      errors = BlueSnap::Shopper.validate_params(params,user_profile)
-      if errors.blank?
-        shopper = {
-            "shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
-                         "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)},
-            "order" => BlueSnap::Shopper.order_info(request,package)
-        }
-        Request.post(URL,shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new))
-      else
-        return errors,nil
+      begin
+        errors = BlueSnap::Shopper.validate_params(params,user_profile)
+        if errors.blank?
+          shopper = {
+              "shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
+                           "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)},
+              "order" => BlueSnap::Shopper.order_info(request,package)
+          }
+          Request.post(URL,shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new))
+        else
+          return errors,nil
+        end
+      rescue Exception => ex
+        return ["Something is not right with your payment. Please try again"],nil
       end
     end
 
@@ -46,9 +50,9 @@ module BlueSnap
       errors << "City cannot be blank." if !params[:contact][:city].present?
       errors << "Zip cannot be blank." if !params[:contact][:zip].present?
       errors << "Country cannot be blank." if !params[:contact][:country].present?
-      errors << "phone cannot be blank." if !params[:contact][:phone].present?
+      errors << "Phone cannot be blank." if !params[:contact][:phone].present?
       errors << "Credit Card cannot be blank." if !params[:encryptedCreditCard].present?
-      errors << "Credit Card must be equal to 16 digits." if params[:encryptedCreditCard].length != 16
+      # errors << "Credit Card is not valid" if params[:encryptedCreditCard].length != 16
       errors << "CVC cannot be blank." if !params[:encryptedCvv].present?
       errors << "Credit Card Type cannot be blank." if !params[:card][:credit_card_type].present?
       errors << "Expiration Month cannot be blank." if !params[:card][:"expiration_date(2i)"].present?
@@ -58,7 +62,7 @@ module BlueSnap
 
 
     def self.ordering_shopper request
-      {"web-info" =>{"ip" =>request.ip,"remote-host"=> "www.myprgenie.com","user-agent" => request.user_agent} } #change to 127.0.0.1 to local
+      {"web-info" =>{"ip" =>"127.0.0.1","remote-host"=> "www.myprgenie.com","user-agent" => request.user_agent} } #change to 127.0.0.1 to local
     end
 
     def self.order_info(request,package)
@@ -141,29 +145,34 @@ module BlueSnap
   end
 
   class Subscription
-    def self.destroy(subscription_id)
-      url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
-      sub = Subscription.find(subscription_id)
-      {"subscription-id" => subscription_id, "underlying-sku-id"=>sub.sku_id, "status"=> "C","shopper-id"=>sub.shopper_id} # status C is for cancel :s
-      Request.post(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+    def self.destroy(subscription_id,shopper_id,sku_id)
+      begin
+        url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
+        shopper = {"subscription-id" => subscription_id, "underlying-sku-id"=>sku_id, "status"=> "C","shopper-id"=>shopper_id.to_s} # status C is for cancel :s
+        Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+      rescue Exception => ex
+        return "Sorry we could not cancel your subscription at this time."
+      end
+
     end
 
-    def self.update(subscription_id, new_sku_id)
-      url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
-      sub = Subscription.find(subscription_id)
-      {"subscription-id" => subscription_id, "underlying-sku-id"=>new_sku_id, "status"=> "A","shopper-id"=>sub.shopper_id}
-      Request.post(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+    def self.update(subscription_id,shopper_id ,new_sku_id)
+      begin
+        url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
+        shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id"=>new_sku_id.to_s, "status"=> "A","shopper-id"=>shopper_id.to_s}
+        Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+      rescue Exception => ex
+        return "Sorry we could not update your subscription at this time."
+      end
     end
 
     def self.find_all_by_shopper_id(shopper_id)
-      # url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{subscription_id}"
       url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       errors,resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions] if errors.blank?
     end
 
     def self.find_last_by_shopper_id(shopper_id)
-      # url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{subscription_id}"
       url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       errors,resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions][:subscription].class == Array ? resp[:shopper_subscriptions][:subscriptions][:subscription].last : resp[:shopper_subscriptions][:subscriptions][:subscription] if errors.blank?
@@ -188,6 +197,22 @@ module BlueSnap
       Response.parse(response)
     end
 
+    def self.put(url,data)
+      uri = URI.parse(url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Put.new(uri.request_uri)
+      request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
+      request.body = data
+      puts "******************************"
+      puts data
+      request["Content-Type"] ='application/xml'
+      response = http.request(request)
+      puts "response is #{response} AND #{response.body}***************************"
+      response.body
+    end
+
     def self.get(url)
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
@@ -205,7 +230,7 @@ module BlueSnap
       puts"orignal is :#{response.inspect}"
       resp = Hash.from_xml(response.body).deep_symbolize_keys
       puts resp
-      return get_errors(resp),nil  if response.code == 400 || response.code == 401
+      return get_errors(resp),nil  if response.code.to_i == 400 || response.code.to_i == 401
       return nil,resp
     end
 

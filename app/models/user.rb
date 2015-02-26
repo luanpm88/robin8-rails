@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
-  has_many :payments
-  has_one :subscription , dependent: :destroy
+  has_many :payments,through: :subscription
+  has_many :subscription , dependent: :destroy
 
   after_create :create_default_news_room
 
@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def active_subscription
-    Subscription.where("user_id ='#{self.id}' AND expiry is NULL OR expiry >'#{Time.now.utc}'").first
+    subscriptions.where("user_id ='#{self.id}' AND (expiry is NULL OR expiry >'#{Time.now.utc}') AND status ='A'").last
   end
 
   def linkedin_identity

@@ -18,16 +18,16 @@
                   Package Selected:
                   <span class="selected"><%=@package.slug%></span>
                 </span>
-            <span class="payment">Payments every <span class="selected"><%=@package.interval == 12 ? "Year" : "Month"%></span></span>
+            <span class="payment">Payments every <span class="selected"><%=@package.interval == 365 ? "Year" : "Month"%></span></span><br/>
                 <span class="total-down">
-                  Total charged now: <span class="value"><%=@package.price%></span>
+                  Total charged now: <span class="value"><%=@package.price%></span><br/>
                 </span>
-            <span class="next-date">Next charge at <span class="date"><%=(Time.now.utc + 1.months).strftime("%d-%m-%Y")%></span></span>
+            <span class="next-date">Next charge at <span class="date"><%=(Time.now.utc + @package.interval.days).strftime("%d-%m-%Y")%></span></span>
             <div class="clearfix"></div>
           </div>
         </div>
       </div>
-
+      <%=flash[:success]%>
       <div class="row fields"></div>
       <%flash[:errors].each do |e|%>
           <p><%=e%></p>
@@ -38,15 +38,13 @@
             <div class="col-sm-offset-1 col-sm-10">
               <h3 class="title">Checkout Form</h3>
               <div class="row">
-                <input type="hidden" name="id" value="<%=@package.blank? ? params[:id] : @package.id%>"/>
-
                 <div class="form-group col-sm-6">
                   <label for="ccno" class="col-sm-4 control-label">Title</label>
                   <div class="col-sm-8">
                     <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "form-control"} %>
                   </div>
                 </div>
-
+                <input type="hidden" name="slug" value="<%=@package.slug%>" />
                 <div class="form-group col-sm-6">
                   <label for="ccno" class="col-sm-4 control-label">First Name</label>
                   <div class="col-sm-8">
