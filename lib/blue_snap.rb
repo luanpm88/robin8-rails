@@ -24,13 +24,34 @@ module BlueSnap
     URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
 
     def self.new request,user_profile,params,package
-      shopper = {
-          "shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
-                       "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)},
-          "order" => BlueSnap::Shopper.order_info(request,package)
-      }
-      Request.post(URL,shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new))
+      if BlueSnap::Shopper.validate_params(params,user_profile)
+        shopper = {
+            "shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
+                         "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)},
+            "order" => BlueSnap::Shopper.order_info(request,package)
+        }
+        Request.post(URL,shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new))
+      else
+        errors = "Please fill the all required information given in the form"
+        return errors,nil
+      end
     end
+
+    def self.validate_params(params,user)
+      (user.present? &&
+          params[:contact][:address1].present?&&
+          params[:contact][:city].present?&&
+          params[:contact][:zip].present?&&
+          params[:contact][:country].present?&&
+          params[:contact][:phone].present?&&
+          params[:encryptedCreditCard].present?&&
+          params[:encryptedCvv].present? &&
+          params[:card][:credit_card_type].present?&&
+          params[:card][:"expiration_date(2i)"].present?&&
+          params[:card][:"expiration_date(1i)"].present?) ?
+          true : false
+    end
+
 
     def self.ordering_shopper request
       {"web-info" =>{"ip" =>request.ip,"remote-host"=> "www.myprgenie.com","user-agent" => request.user_agent} } #change to 127.0.0.1 to local
@@ -124,10 +145,10 @@ module BlueSnap
     end
 
     def self.update(subscription_id, new_sku_id)
-     url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
-     sub = Subscription.find(subscription_id)
-     {"subscription-id" => subscription_id, "underlying-sku-id"=>new_sku_id, "status"=> "A","shopper-id"=>sub.shopper_id}
-     Request.post(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+      url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
+      sub = Subscription.find(subscription_id)
+      {"subscription-id" => subscription_id, "underlying-sku-id"=>new_sku_id, "status"=> "A","shopper-id"=>sub.shopper_id}
+      Request.post(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
     end
 
     def self.find_all_by_shopper_id(shopper_id)

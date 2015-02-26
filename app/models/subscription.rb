@@ -75,7 +75,7 @@ class Subscription < ActiveRecord::Base
 
   def batch_suspend
     where("next_charge_date < #{Date.today + 3.days} AND status = 'D'").each do |s|
-      s.update_attribute(:suspended_at: Time.now.utc) #suspended_at field to be added
+      s.update_attribute(suspended_at: Time.now.utc) #suspended_at field to be added
     end
   end
 
