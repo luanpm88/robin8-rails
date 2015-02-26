@@ -23,7 +23,7 @@ Robin.finishSignIn = function(data){
   Robin.vent.trigger("authentication:logged_in");
   Robin.loadPleaseWait();
   $('body#main').removeClass('login');
-  Robin.setUrl('/');
+  Robin.setUrl('/#dashboard');
 };
 
 Robin.loadPleaseWait = function(){
@@ -48,7 +48,7 @@ Robin.setIdentities = function(data){
 };
 
 Robin.stopOtherModules = function(){
-  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast'], function(module){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast', 'Analytics'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');

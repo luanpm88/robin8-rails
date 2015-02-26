@@ -270,7 +270,7 @@ GEM
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.string (3.0.3)
-    rails-assets-uploadcare (2.0.1)
+    rails-assets-uploadcare (2.0.2)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-x-editable (1.5.1)
       rails-assets-jquery (>= 1.6)
