@@ -25,7 +25,7 @@ module BlueSnap
 
     def self.new request,user_profile,params,package
       errors = BlueSnap::Shopper.validate_params(params,user_profile)
-      if !errors.present?
+      if errors.blank?
         shopper = {
             "shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
                          "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)},
@@ -38,33 +38,22 @@ module BlueSnap
     end
 
     def self.validate_params(params,user)
-      if !user.present?
-        "Please fill User information given in the form"
-      elsif !params[:contact][:address1].present?
-        "Please fill Address1 information given in the form"
-      elsif !params[:contact][:city].present?
-        "Please fill City information given in the form"
-      elsif !params[:contact][:zip].present?
-        "Please fill Zip information given in the form"
-      elsif !params[:contact][:country].present?
-        "Please fill Country information given in the form"
-      elsif !params[:contact][:phone].present?
-        "Please fill Phone information given in the form"
-      elsif !params[:encryptedCreditCard].present?
-        "Please fill Credit Card information given in the form"
-      elsif !params[:encryptedCreditCard].length != 16
-        "Credit Card must be equal to 16 digits"
-      elsif !params[:encryptedCvv].present?
-        "Please fill CVC information given in the form"
-      elsif !params[:card][:credit_card_type].present?
-        "Please fill Credit Card Type information given in the form"
-      elsif !params[:card][:"expiration_date(2i)"].present?
-        "Please fill Expiration Month information given in the form"
-      elsif !params[:card][:"expiration_date(1i)"].present?
-        "Please fill Expiration Year information given in the form"
-      else
-        return errors
-      end
+      errors = []
+      errors << "Sur Name cannot be blank." if !params[:contact][:title].present?
+      errors << "First name cannot be blank." if !params[:contact][:first_name].present?
+      errors << "Last name cannot be blank." if !params[:contact][:last_name].present?
+      errors << "Address1 cannot be blank." if !params[:contact][:address1].present?
+      errors << "City cannot be blank." if !params[:contact][:city].present?
+      errors << "Zip cannot be blank." if !params[:contact][:zip].present?
+      errors << "Country cannot be blank." if !params[:contact][:country].present?
+      errors << "phone cannot be blank." if !params[:contact][:phone].present?
+      errors << "Credit Card cannot be blank." if !params[:encryptedCreditCard].present?
+      errors << "Credit Card must be equal to 16 digits." if params[:encryptedCreditCard].length != 16
+      errors << "CVC cannot be blank." if !params[:encryptedCvv].present?
+      errors << "Credit Card Type cannot be blank." if !params[:card][:credit_card_type].present?
+      errors << "Expiration Month cannot be blank." if !params[:card][:"expiration_date(2i)"].present?
+      errors << "Expiration Year cannot be blank." if !params[:card][:"expiration_date(1i)"].present?
+      return errors
     end
 
 
@@ -105,7 +94,7 @@ module BlueSnap
       {"credit-cards-info"=>
            {"credit-card-info" =>
                 {"credit-card"=> credit_card(params),
-                 "billing-contact-info" => billing_info(user, params)
+                 "billing-contact-info" => billing_info(params)
                 }
            }
       }
@@ -121,10 +110,10 @@ module BlueSnap
       }
     end
 
-    def self.billing_info(user, params)
+    def self.billing_info(params)
       {
-          "first-name" => user.first_name,
-          "last-name" => user.last_name,
+          "first-name" => params[:contact][:first_name],
+          "last-name" => params[:contact][:last_name],
           "address1" => params[:contact][:address1],
           # "address2" => "abc",
           "city"=> params[:contact][:city],
@@ -136,9 +125,9 @@ module BlueSnap
 
     def self.shopper_contact_info(user, params)
       {
-          "title" => "Mr",
-          "first-name" => user.first_name,
-          "last-name" => user.last_name,
+          "title" => params[:contact][:title],
+          "first-name" => params[:contact][:first_name],
+          "last-name" => params[:contact][:last_name],
           "email" => user.email,
           "address1" => params[:contact][:address1],
           "city"=> params[:contact][:city],
