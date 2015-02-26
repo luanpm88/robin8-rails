@@ -26,8 +26,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     targets: function(params){
       Robin.layouts.main.getRegion('content').show(this.module.layout);
+      var releaseModel = this.module.collection.get(params.release_id);
       var topMenuView = new this.module.TopMenuView({level: 3});
-      var targetsTabView = new this.module.TargetsTabView();
+      var targetsTabView = new this.module.TargetsTabView({model: releaseModel});
       
       this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(targetsTabView);

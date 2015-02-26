@@ -50,6 +50,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
+  gem 'rails-assets-DataTables'
 end
 
 gem 'devise'

@@ -30,6 +30,8 @@ Rails.application.routes.draw do
 
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
+  post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'
+  get 'robin8_api/influencers', to: 'robin_api#influencers'
   
   post 'textapi/classify'
   post 'textapi/concepts'
