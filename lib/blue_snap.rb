@@ -24,7 +24,8 @@ module BlueSnap
     URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
 
     def self.new request,user_profile,params,package
-      if BlueSnap::Shopper.validate_params(params,user_profile)
+      errors = BlueSnap::Shopper.validate_params(params,user_profile)
+      if !errors.present?
         shopper = {
             "shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
                          "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)},
@@ -32,24 +33,38 @@ module BlueSnap
         }
         Request.post(URL,shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new))
       else
-        errors = "Please fill the all required information given in the form"
         return errors,nil
       end
     end
 
     def self.validate_params(params,user)
-      (user.present? &&
-          params[:contact][:address1].present?&&
-          params[:contact][:city].present?&&
-          params[:contact][:zip].present?&&
-          params[:contact][:country].present?&&
-          params[:contact][:phone].present?&&
-          params[:encryptedCreditCard].present?&&
-          params[:encryptedCvv].present? &&
-          params[:card][:credit_card_type].present?&&
-          params[:card][:"expiration_date(2i)"].present?&&
-          params[:card][:"expiration_date(1i)"].present?) ?
-          true : false
+      if !user.present?
+        "Please fill User information given in the form"
+      elsif !params[:contact][:address1].present?
+        "Please fill Address1 information given in the form"
+      elsif !params[:contact][:city].present?
+        "Please fill City information given in the form"
+      elsif !params[:contact][:zip].present?
+        "Please fill Zip information given in the form"
+      elsif !params[:contact][:country].present?
+        "Please fill Country information given in the form"
+      elsif !params[:contact][:phone].present?
+        "Please fill Phone information given in the form"
+      elsif !params[:encryptedCreditCard].present?
+        "Please fill Credit Card information given in the form"
+      elsif !params[:encryptedCreditCard].length != 16
+        "Credit Card must be equal to 16 digits"
+      elsif !params[:encryptedCvv].present?
+        "Please fill CVC information given in the form"
+      elsif !params[:card][:credit_card_type].present?
+        "Please fill Credit Card Type information given in the form"
+      elsif !params[:card][:"expiration_date(2i)"].present?
+        "Please fill Expiration Month information given in the form"
+      elsif !params[:card][:"expiration_date(1i)"].present?
+        "Please fill Expiration Year information given in the form"
+      else
+        return errors
+      end
     end
 
 
