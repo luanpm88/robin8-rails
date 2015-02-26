@@ -167,18 +167,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
           $('a[href="#' + tabId + '"][data-toggle="tab"]')
             .removeClass('error-tab');
         }
-      })
-      .on('success.field.fv', function(e, data) {
         if (data.element.val() === '') {
-            var $parent = data.element.parents('.form-group');
-
-            // Remove the has-success class
-            $parent.removeClass('has-success');
-
-            // Hide the success icon
-            data.element.data('fv.icon').hide();
+          var $parent = data.element.parents('.form-group');
+          $parent.removeClass('has-success');
+          data.element.data('fv.icon').hide();
         }
-      });
+      })
+      // 
     },
     saveNewsRoom: function(e){
       var viewObj = this;
