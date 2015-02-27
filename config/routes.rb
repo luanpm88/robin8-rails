@@ -35,6 +35,8 @@ Rails.application.routes.draw do
   post 'textapi/concepts'
   post 'textapi/summarize'
 
+  post 'followers/add/', to: 'followers#add'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
