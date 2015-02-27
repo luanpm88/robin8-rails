@@ -1,7 +1,18 @@
 class RobinApiController < ApplicationController
+  before_action :authenticate_user!, :set_client
 
-  before_action :authenticate_user!
-
+  def suggested_authors
+    response = @client.suggested_authors params
+    
+    render json: response[:authors]
+  end
+  
+  def influencers
+    response = @client.influencers params
+    
+    render json: response
+  end
+   
   def proxy
     uri = URI(Rails.application.secrets.robin_api_url + request.fullpath)
     req = Net::HTTP::Get.new(uri)
@@ -21,4 +32,9 @@ class RobinApiController < ApplicationController
     render json: new_array
   end
 
+  private
+  
+  def set_client
+    @client = AylienPressrApi::Client.new
+  end
 end

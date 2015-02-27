@@ -61,10 +61,11 @@
   </li>
   <li>
     <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets"><i class="fa fa-twitter"></i> Latest Tweets</a>
+    <%= console.log(news_room.twitter_link == null || news_room.twitter_link == '') %>
     <div class="collapse collapsible" id="collapseTweets" style="padding: 6px !important;">
-      <a class="twitter-timeline <%= news_room.twitter_link == null ? 'hidden' : '' %>" href="<%= news_room.twitter_link%>"  data-screen-name="<%= _.last(news_room.twitter_link.split('/'))%>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a>
+      <a class="twitter-timeline <%= (news_room.twitter_link == null || news_room.twitter_link == '') ? 'hidden' : '' %>" href="<%= news_room.twitter_link%>"  data-screen-name="<%= (news_room.twitter_link == null || news_room.twitter_link == '')? '' : _.last(news_room.twitter_link.split('/'))%>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a>
       
-      <span class="<%= news_room.twitter_link != null ? 'hidden' : '' %>"> Twitter user's page is not set</span>
+      <span class="<%= (news_room.twitter_link == null || news_room.twitter_link == '') ? '' : 'hidden' %>"> Twitter user's page is not set</span>
     </div>
   </li>
   <li>

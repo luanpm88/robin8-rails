@@ -40,7 +40,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     openTargetsTab: function(){
-      ReleasesBlast.controller.targets();
+      ReleasesBlast.controller.targets({release_id: this.model.id});
     },
     getTextApiResult: function(){
       var that = this;
@@ -51,6 +51,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       ];
       
       var resultReady = _.after(endpoints.length + 1, function(){
+        that.model.save(that.model.attributes);
         that.trigger("textapi_result:ready");
       });
       
@@ -114,6 +115,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 }).value();
                 that.textapiResult["concepts"] = renderedTopics;
                 
+                var concepts = _.pluck(that.textapiResult["concepts"], 'uri');
+                concepts = _.map(concepts, function(item){
+                  return item.replace("http://dbpedia.org/resource/", '');
+                });
+                that.model.set({concepts: JSON.stringify(concepts)});
+                
                 boldTopicsInSummary();
                 resultReady();
                 break;
@@ -121,6 +128,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 that.textapiResult["classify"] = _(response[0].label.split(" - ")).map(function(p) {
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
+                
+                var iptc_categories = _.chain(response).pluck('code').uniq().value();
+                that.model.set({iptc_categories: JSON.stringify(iptc_categories)});
+                
                 resultReady();
                 break;
               case 'textapi/summarize':
