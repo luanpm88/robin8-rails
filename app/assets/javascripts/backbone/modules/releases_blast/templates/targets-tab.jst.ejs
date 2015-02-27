@@ -9,7 +9,7 @@
 </ul>
 <div class="tab-content">
   <div id="targets-blogs" class="tab-pane active" role="tabpanel">
-    <table class="display">
+    <table class="table table-hover targets">
       <thead>
         <tr>
           <th>Author</th>
@@ -22,7 +22,7 @@
       </thead>
       
       <tbody>
-        <% _.each(suggestedAuthors, function(author){ %>
+        <% _.each(suggestedAuthors.models, function(author){ %>
           <tr>
             <td>
               <div class="media targets-author">
@@ -31,7 +31,7 @@
                 </a>
                 <div class="media-body">
                   <h4 class="media-heading">
-                    <%= getFullname(author.first_name, author.last_name) %>
+                    <%= getFullname(author.get("first_name"), author.get("last_name")) %>
                   </h4>
                   <a class="btn btn-xs btn-primary" href="#">
                     <i class="fa fa-search"></i> Inspect
@@ -39,11 +39,14 @@
                 </div>
               </div>
             </td>
-            <td><%= author.blog_name %></td>
+            <td><%= author.get("blog_name") %></td>
             <td>
               <div class="progress active">
-                <div class="progress-bar" role="progressbar" aria-valuenow="99.56" 
-                  aria-valuemin="0" aria-valuemax="100" style="width: 99%;">99%
+                <div class="progress-bar" role="progressbar" 
+                  aria-valuenow="<%= author.get('levelOfInterest') %>" 
+                  aria-valuemin="0" aria-valuemax="100" 
+                  style="width: <%= author.get('levelOfInterest') %>%;">
+                    <%= author.get('levelOfInterest') %>%
                 </div>
               </div>
             </td>

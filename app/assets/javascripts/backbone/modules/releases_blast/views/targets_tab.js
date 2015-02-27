@@ -7,14 +7,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       "click #next-step": "openPitchTab"
     },
     initialize: function(){
-      this.on("suggested_authors:ready", this.render);
-      this.on("social_targets:ready", this.renderSocialTargets)
-      this.getSuggestedAuthors();
+      this.on("social_targets:ready", this.renderSocialTargets);
+      this.suggestedAuthors = new Robin.Collections.SuggestedAuthors({
+        releaseModel: this.model
+      });
       this.getSocialTargets();
-      this.suggestedAuthors = {};
+      this.listenTo(this.suggestedAuthors, "reset", this.render);
       this.influencers = {};
     },
-    onRender: function () {
+    onRender: function() {
       // Get rid of that pesky wrapping-div.
       // Assumes 1 child element present in template.
       this.$el = this.$el.children();
@@ -44,24 +45,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     openPitchTab: function(){
       ReleasesBlast.controller.pitch();
-    },
-    getSuggestedAuthors: function(){
-      var that = this;
-      
-      $.ajax({
-        url: 'robin8_api/suggested_authors',
-        dataType: 'json',
-        method: 'POST',
-        data: {
-          title: that.model.attributes.title, 
-          body: that.model.attributes.text,
-          per_page: 50
-        },
-        success: function(response){
-          that.suggestedAuthors = response;
-          that.trigger("suggested_authors:ready");
-        }
-      });
     },
     getSocialTargets: function(){
       var that = this;

@@ -19,7 +19,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       // nesting elements during re-render.
       this.$el.unwrap();
       this.setElement(this.$el);
-      console.log(this.$el.find('table'));
       this.$el.find('table').DataTable({
         "info": false,
         "searching": false,
