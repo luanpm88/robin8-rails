@@ -3,12 +3,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
   ReleasesBlast.SocialTargetsView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/social_targets',
     className: 'row',
-    initialize: function(options){
-      this.influencers = options.influencers;
+    collection: Robin.Collections.Influencers,
+    initialize: function(){
+      this.listenTo(this.collection, "reset", this.render);
     },
     templateHelpers: function(){
       return {
-        influencers: this.influencers
+        influencers: this.collection
       }
     },
     onRender: function () {
@@ -23,15 +24,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "info": false,
         "searching": false,
         "lengthChange": false,
-        "ordering": false,
+        "order": [[ 4, 'desc' ]],
         "columns": [
-          { "width": "50%" },
-          { "width": "5%" },
-          { "width": "12%" },
-          { "width": "12%" },
-          { "width": "12%" },
-          { "width": "5%" },
-          { "width": "5%" },
+          { "width": "30% !important" },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
         ]
       });
     }

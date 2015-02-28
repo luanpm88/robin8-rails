@@ -12,54 +12,60 @@
       </tr>
     </thead>
     <tbody>
-      <% _.each(influencers, function(user){ %>
+      <% _.each(influencers.models, function(user){ %>
         <tr>
           <td>
             <div class="media targets-author">
-              <a class="pull-left" href="http://twitter.com/<%= user.screen_name %>" target="_blank">
-                <img class="media-object" src="<%= user.profile_image_url %>">
+              <a class="pull-left" 
+                href="http://twitter.com/<%= user.get('screen_name') %>" 
+                target="_blank">
+                <img class="media-object" src="<%= user.get('profile_image_url') %>">
               </a>
               <div class="media-body">
-                <h4 class="media-heading"><%= getFullname(user.firstName, user.lastName) %></h4>
-                <% if (user.location) { %>
+                <h4 class="media-heading">
+                  <%= getFullname(user.get('firstName'), user.get('lastName')) %>
+                </h4>
+                <% if (user.get('location')) { %>
                   <div style="display: inline;">
-                    <span class="badge badge-default"><i class="fa fa-map-marker"></i> <%= user.location %></span>
+                    <span class="badge badge-default">
+                      <i class="fa fa-map-marker"></i> <%= user.get('location') %>
+                    </span>
                   </div>
                 <% } %>
-                <% if (user.skills) { %>
+                <% if (user.get('skills')) { %>
                   <% _.each(_.range(3), function(index){ %>
-                    <% if (user.skills[index]) { %>
-                      <span class="badge badge-default"><i class="fa fa-tag"></i> <%= user.skills[index] %></span>
+                    <% if (user.get('skills')[index]) { %>
+                      <span class="badge badge-default">
+                        <i class="fa fa-tag"></i> <%= user.get('skills')[index] %>
+                      </span>
                     <% } %>
                   <% }) %>
                 <% } %>
               </div>
             </div>
           </td>
-          <td><%= user.followers_count %></td>
+          <td><%= user.get('followers_count') %></td>
           
-          <% var userAmpScore = Math.round(user.ampScore) %>
-          <% var userReachScore = Math.round(user.reachScore) %>
-          <% var userRelScore = Math.round(user.relScore) %>
-              
           <td>
             <div class="progress active">
-              <div style="width: <%= userReachScore %>%;" aria-valuemax="100" aria-valuemin="0"
-                aria-valuenow="99.56" role="progressbar" class="progress-bar"><%= userReachScore %>%
+              <div style="width: <%= user.get('reachScore') %>%;" aria-valuemax="100" aria-valuemin="0"
+                aria-valuenow="<%= user.get('reachScore') %>" role="progressbar" class="progress-bar"><%= user.get('reachScore') %>%
               </div>
             </div>
           </td>
           <td>
             <div class="progress active">
-              <div style="width: <%= userAmpScore %>%;" aria-valuemax="100" aria-valuemin="0"
-                aria-valuenow="99.56" role="progressbar" class="progress-bar"><%= userAmpScore %>%
+              <div style="width: <%= user.get('ampScore') %>%;" 
+                aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%= user.get('ampScore') %>"
+                role="progressbar" class="progress-bar"><%= user.get('ampScore') %>%
               </div>
             </div>
           </td>
           <td>
             <div class="progress active">
-              <div style="width: <%= userRelScore %>%;" aria-valuemax="100" aria-valuemin="0"
-                aria-valuenow="99.56" role="progressbar" class="progress-bar"><%= userRelScore %>%
+              <div style="width: <%= user.get('relScore') %>%;" aria-valuemax="100" aria-valuemin="0"
+                aria-valuenow="<%= user.get('relScore') %>" 
+                role="progressbar" class="progress-bar"><%= user.get('relScore') %>%
               </div>
             </div>
           </td>
@@ -72,7 +78,7 @@
             </a>
           </td>
           <td>
-            <a href="http://twitter.com/<%= user.screen_name %>" target="_blank">
+            <a href="http://twitter.com/<%= user.get('screen_name') %>" target="_blank">
               <i class="fa fa-twitter"></i>
             </a>
           </td>

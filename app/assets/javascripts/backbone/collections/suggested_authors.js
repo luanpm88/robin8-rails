@@ -5,8 +5,6 @@ Robin.Collections.SuggestedAuthors = Backbone.Collection.extend({
     this.max_min = null;
     this.releaseModel = options.releaseModel;
     this.getSuggestedAuthors();
-    
-    var self = this;
   },
   calculateLevelOfInterest: function(score, author_name) {
     if (this.max_min == null)
