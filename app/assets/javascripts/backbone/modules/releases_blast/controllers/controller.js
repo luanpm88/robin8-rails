@@ -36,20 +36,23 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var suggestedAuthorsCollection = new Robin.Collections.SuggestedAuthors({
         releaseModel: releaseModel
       });
+      suggestedAuthorsCollection.fetchAuthors({
+        success: function(collection, data, response){
+          var blogTargetView = new ReleasesBlast.BlogTargetsCompositeView({
+            collection: collection
+          });
+          targetsTabLayout.blogsRegion.show(blogTargetView);
+        }
+      });
       
       var influencersCollection = new Robin.Collections.Influencers({
         releaseModel: releaseModel
-      });
-      
-      var blogTargetView = new ReleasesBlast.BlogTargetsView({
-        collection: suggestedAuthorsCollection
       });
       
       var socialTargetsView = new ReleasesBlast.SocialTargetsView({
         collection: influencersCollection
       });
       
-      targetsTabLayout.blogsRegion.show(blogTargetView);
       targetsTabLayout.socialRegion.show(socialTargetsView);
     },
     pitch: function(params){
