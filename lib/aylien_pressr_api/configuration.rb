@@ -27,7 +27,8 @@ module AylienPressrApi
 
     ENDPOINTS = {
       suggested_authors:  'suggested_authors',
-      influencers: 'influencers'
+      influencers: 'influencers',
+      author_stats: 'authors/:id/stats'
     }
 
     # Build accessor methods for every config options so we can do this, for example:

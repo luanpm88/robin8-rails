@@ -44,7 +44,7 @@
               </div>
             </div>
           </td>
-          <td><%= user.get('followers_count') %></td>
+          <td><%= s.numberFormat(parseInt(user.get('followers_count'))) %></td>
           
           <td>
             <div class="progress active">

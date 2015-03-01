@@ -3,8 +3,9 @@ class RobinApiController < ApplicationController
 
   def suggested_authors
     response = @client.suggested_authors params
+    ids = response[:authors].map{|a| a[:id]}
     
-    render json: response[:authors]
+    render json: merge_stats_with_authors(response[:authors], author_stats(ids))
   end
   
   def influencers
@@ -12,7 +13,7 @@ class RobinApiController < ApplicationController
     
     render json: response[:influencers].map{|key, val| val}
   end
-   
+  
   def proxy
     uri = URI(Rails.application.secrets.robin_api_url + request.fullpath)
     req = Net::HTTP::Get.new(uri)
@@ -36,5 +37,27 @@ class RobinApiController < ApplicationController
   
   def set_client
     @client = AylienPressrApi::Client.new
+  end
+  
+  def author_stats(ids)
+    threads = {}
+    ids.each do |id|
+      threads[id] = Thread.new do
+        @client.author_stats id: id
+      end
+    end
+    threads.each(&:join)
+    threads.inject({}) do |memo, val|
+      memo[val[0]] = val[1].value
+      memo
+    end
+  end
+  
+  def merge_stats_with_authors(authors, author_stats)
+    authors.collect do |author|
+      author_stats[author[:id]].delete(:id)
+      author[:stats] = author_stats[author[:id]]
+      author
+    end
   end
 end
