@@ -1,27 +1,22 @@
 Robin.Collections.Influencers = Backbone.Collection.extend({
   model: Robin.Models.Influencer,
+  url: '/robin8_api/influencers',
   
   initialize: function(options) {
     this.releaseModel = options.releaseModel;
-    this.getSocialTargets();
   },
-  getSocialTargets: function(){
+  fetchInfluencers: function(options){
     var self = this;
-    
     var skills = _.chain(self.releaseModel.get('iptc_categories')).map(function(i){
       return self.mapIptcCategoryToTwtrland(i);
     }).uniq().value();
     
-    $.ajax({
-      url: 'robin8_api/influencers',
-      dataType: 'json',
-      method: 'GET',
+    this.fetch({
+      url: this.url,
       data: {
         "skills[]": skills
       },
-      success: function(response){
-        self.reset(response);
-      }
+      success: options.success
     });
   },
   mapIptcCategoryToTwtrland: function(code) {

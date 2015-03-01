@@ -48,12 +48,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var influencersCollection = new Robin.Collections.Influencers({
         releaseModel: releaseModel
       });
-      
-      var socialTargetsView = new ReleasesBlast.SocialTargetsView({
-        collection: influencersCollection
+      influencersCollection.fetchInfluencers({
+        success: function(collection, data, response){
+          var socialTargetsView = new ReleasesBlast.SocialTargetsCompositeView({
+            collection: collection
+          });
+          
+          targetsTabLayout.socialRegion.show(socialTargetsView);
+        }
       });
-      
-      targetsTabLayout.socialRegion.show(socialTargetsView);
     },
     pitch: function(params){
       Robin.layouts.main.getRegion('content').show(this.module.layout);

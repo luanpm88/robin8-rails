@@ -1,7 +1,7 @@
 Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette, $, _){
 
   ReleasesBlast.AuthorView = Marionette.ItemView.extend({
-    template: 'modules/releases_blast/templates/author-item-view',
+    template: 'modules/releases_blast/templates/author-item',
     tagName: "tr",
     model: Robin.Models.Author,
     templateHelpers: function(){

@@ -1,7 +1,7 @@
 Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette, $, _){
 
   ReleasesBlast.BlogTargetsCompositeView = Marionette.CompositeView.extend({
-    template: 'modules/releases_blast/templates/blog_targets',
+    template: 'modules/releases_blast/templates/blog-targets',
     childView: ReleasesBlast.AuthorView,
     childViewContainer: "tbody",
     collection: Robin.Collections.SuggestedAuthors,

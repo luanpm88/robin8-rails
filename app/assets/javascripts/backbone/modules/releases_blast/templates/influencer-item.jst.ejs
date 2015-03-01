@@ -1,0 +1,68 @@
+<td>
+  <div class="media targets-author">
+    <a class="pull-left" 
+      href="http://twitter.com/<%= user.get('screen_name') %>" 
+      target="_blank">
+      <img class="media-object" src="<%= user.get('profile_image_url') %>">
+    </a>
+    <div class="media-body">
+      <h4 class="media-heading">
+        <%= getFullname(user.get('firstName'), user.get('lastName')) %>
+      </h4>
+      <% if (user.get('location')) { %>
+        <div style="display: inline;">
+          <span class="badge badge-default">
+            <i class="fa fa-map-marker"></i> <%= user.get('location') %>
+          </span>
+        </div>
+      <% } %>
+      <% if (user.get('skills')) { %>
+        <% _.each(_.range(3), function(index){ %>
+          <% if (user.get('skills')[index]) { %>
+            <span class="badge badge-default">
+              <i class="fa fa-tag"></i> <%= user.get('skills')[index] %>
+            </span>
+          <% } %>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</td>
+<td><%= s.numberFormat(parseInt(user.get('followers_count'))) %></td>
+
+<td>
+  <div class="progress active">
+    <div style="width: <%= user.get('reachScore') %>%;" aria-valuemax="100" aria-valuemin="0"
+      aria-valuenow="<%= user.get('reachScore') %>" role="progressbar" class="progress-bar"><%= user.get('reachScore') %>%
+    </div>
+  </div>
+</td>
+<td>
+  <div class="progress active">
+    <div style="width: <%= user.get('ampScore') %>%;" 
+      aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%= user.get('ampScore') %>"
+      role="progressbar" class="progress-bar"><%= user.get('ampScore') %>%
+    </div>
+  </div>
+</td>
+<td>
+  <div class="progress active">
+    <div style="width: <%= user.get('relScore') %>%;" aria-valuemax="100" aria-valuemin="0"
+      aria-valuenow="<%= user.get('relScore') %>" 
+      role="progressbar" class="progress-bar"><%= user.get('relScore') %>%
+    </div>
+  </div>
+</td>
+<td>
+  <a class="btn btn-xs btn-success" href="#">
+    <i class="fa fa-check"></i> Yes
+  </a> 
+  <a disabled="" class="btn btn-xs btn-danger" href="#">
+    <i class="fa fa-close"></i> No
+  </a>
+</td>
+<td>
+  <a href="http://twitter.com/<%= user.get('screen_name') %>" target="_blank">
+    <i class="fa fa-twitter"></i>
+  </a>
+</td>
