@@ -16,6 +16,12 @@ class RobinApiController < ApplicationController
     render json: merge_stats_with_authors(authors, author_stats(ids))
   end
   
+  def related_stories
+    response = @client.related_stories! params
+
+    render json: response
+  end
+  
   def influencers
     response = @client.influencers params
     

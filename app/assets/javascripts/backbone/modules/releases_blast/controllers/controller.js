@@ -39,7 +39,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       suggestedAuthorsCollection.fetchAuthors({
         success: function(collection, data, response){
           var blogTargetView = new ReleasesBlast.BlogTargetsCompositeView({
-            collection: collection
+            collection: collection,
+            releaseModel: releaseModel
           });
           targetsTabLayout.blogsRegion.show(blogTargetView);
         }
