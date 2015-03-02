@@ -41,11 +41,21 @@ class StreamsController < ApplicationController
     req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
 
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
-
-    render json: JSON.parse(res.body)
+    respond_to do |format|
+      format.json { render json: JSON.parse(res.body)}
+      format.rss {
+        render layout: false,
+        locals: {
+          stories: JSON.parse(res.body),
+          stream_id: params[:id],
+          topicsForRss: params[:topicsForRss],
+          blogsForRss: params[:blogsForRss]
+        }
+      }
+    end
   end
 
-  def order    
+  def order
     params[:ids].each_with_index do |id, index|
       stream = Stream.find(id)
       stream.update_attribute(:position, index.to_i+1)
