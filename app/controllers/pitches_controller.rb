@@ -4,7 +4,7 @@ class PitchesController < ApplicationController
   # GET /pitches
   # GET /pitches.json
   def index
-    @pitches = Pitch.all
+    @pitches = current_user.pitches.all
     
     respond_to do |format|
       format.json
@@ -19,7 +19,7 @@ class PitchesController < ApplicationController
   # POST /pitches
   # POST /pitches.json
   def create
-    @pitch = Pitch.new(pitch_params)
+    @pitch = current_user.pitches.new(pitch_params)
 
     respond_to do |format|
       if @pitch.save
@@ -45,11 +45,11 @@ class PitchesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pitch
-      @pitch = Pitch.find(params[:id])
+      @pitch = current_user.pitches.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def pitch_params
-      params.require(:pitch).permit(:user_id, :sent, :twitter_pitch, :email_pitch, :summary_length, :email_address)
+      params.require(:pitch).permit(:sent, :twitter_pitch, :email_pitch, :summary_length, :email_address)
     end
 end

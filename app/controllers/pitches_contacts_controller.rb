@@ -2,7 +2,7 @@ class PitchesContactsController < ApplicationController
   before_action :set_pitches_contact, only: [:show, :edit, :update, :destroy]
   
   def index
-    @pitches_contacts = PitchesContact.all
+    @pitches_contacts = current_user.pitches_contacts.all
     
     respond_to do |format|
       format.json
@@ -13,7 +13,7 @@ class PitchesContactsController < ApplicationController
   end
 
   def create
-    @pitches_contact = PitchesContact.new(pitches_contact_params)
+    @pitches_contact = current_user.pitches_contacts.new(pitches_contact_params)
 
     respond_to do |format|
       if @pitches_contact.save
@@ -37,7 +37,7 @@ class PitchesContactsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pitches_contact
-      @pitches_contact = PitchesContact.find(params[:id])
+      @pitches_contact = current_user.pitches_contacts.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
