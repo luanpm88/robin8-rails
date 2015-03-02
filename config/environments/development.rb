@@ -39,7 +39,17 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
+  # config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
+  # ActionMailer::Base.smtp_settings = {
+  #   :user_name => Rails.application.secrets[:smtp][:user_name],
+  #   :password => Rails.application.secrets[:smtp][:password],
+  #   :domain => Rails.application.secrets[:smtp][:domain],
+  #   :address => Rails.application.secrets[:smtp][:address],
+  #   :port => Rails.application.secrets[:smtp][:port],
+  #   :authentication => :plain,
+  #   :enable_starttls_auto => true
+  # }
+  # ActionMailer::Base.delivery_method = :smtp
   
   # Configure to use with mailcatcher - for more information (http://mailcatcher.me/)
   config.action_mailer.delivery_method = :smtp

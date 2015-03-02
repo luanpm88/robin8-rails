@@ -48,10 +48,16 @@ Robin.setIdentities = function(data){
 };
 
 Robin.stopOtherModules = function(){
-  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast', 'Analytics'], function(module){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast', 'Analytics', 'Authentication'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
+};
+
+Robin.stopMainModules = function(){
+  _.each(['Navigation', 'Dashboard', 'SaySomething'], function(module){
+    Robin.module(module).stop();
+  });
 };
 
 Robin.on('start', function(){
@@ -71,17 +77,6 @@ Robin.on('start', function(){
   }
 });
 
-Robin.addInitializer(function(options){
-  if (Robin.currentUser && !Robin.publicPages) {
-    // Robin.module('Navigation').start();
-    // Robin.module('Dashboard').start();
-    // Robin.module('SaySomething').start();
-    // new Robin.Routers.AppRouter({controller: new Robin.Controllers.AppController()});
-  } else if (!Robin.publicPages) {
-    Robin.module('Authentication').start();
-  }
-});
-
 Robin.vent.on("authentication:logged_in", function() {
   if (Robin.publicPages) {
     Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
@@ -93,8 +88,6 @@ Robin.vent.on("authentication:logged_in", function() {
     Robin.main.show(Robin.layouts.main);
     Backbone.history.handlers = [];
     new Robin.Routers.AppRouter({controller: new Robin.Controllers.AppController()});
-    // Robin.module('Navigation').start();
-    // Robin.module('SaySomething').start();
   }
 
 });
@@ -108,6 +101,8 @@ Robin.vent.on("authentication:logged_out", function() {
   } else {
     Robin.layouts.unauthenticated = new Robin.Views.Layouts.Unauthenticated();
     Robin.main.show(Robin.layouts.unauthenticated);
+    Robin.stopMainModules();
+    Robin.module('Authentication').start();
   }
 });
 

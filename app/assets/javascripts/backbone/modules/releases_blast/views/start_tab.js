@@ -3,7 +3,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
   ReleasesBlast.StartTabView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/start-tab',
     className: 'row',
-    model: Robin.Models.Release,
+    collection: Robin.Collections.Releases,
     collectionEvents: {
       "reset": "render"
     },

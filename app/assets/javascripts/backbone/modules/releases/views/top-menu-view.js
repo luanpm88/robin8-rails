@@ -36,12 +36,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.model.clear();
       this.model.set(Robin.module("Releases").controller.filterCriteria);
       this.render();
-      this.$el.find('#release_form').modal({ backdrop: 'static', keyboard: false });
+      this.$el.find('#release_form').modal({ keyboard: false });
     },
     openModalDialogEdit: function(data){
       this.model.set(data.toJSON().release);
       this.render();
-      this.$el.find('#release_form').modal({ backdrop: 'static', keyboard: false });
+      this.$el.find('#release_form').modal({ keyboard: false });
     },
     onRender: function(){
       this.modelBinder.bind(this.model, this.el);
@@ -119,7 +119,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           });
         }else{
           this.model.save(this.model.attributes, {
-            success: function(data){
+            success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
               if (Robin.module("Releases").controller.filterCriteria.page == 1) {
                 if (Robin.module("Releases").collection.length == Robin.module("Releases").controller.filterCriteria.per_page) {

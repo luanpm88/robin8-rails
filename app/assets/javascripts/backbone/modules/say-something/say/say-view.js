@@ -206,7 +206,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     enableSocialNetwork: function(e) {
       var el = $(e.target);
       var btn = el.closest('.btn');
-      var input = btn.next('input');
+      var input = btn.nextAll('input').first();
       btn.toggleClass('btn-primary');
       if (input.val() == 'false' || input.val() == '') {
         input.val('true')

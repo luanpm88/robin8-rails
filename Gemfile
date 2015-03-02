@@ -50,6 +50,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
+  gem 'rails-assets-DataTables'
 end
 
 gem 'devise'
@@ -92,6 +93,7 @@ group :development, :test do
   gem 'capistrano-bundler', '~> 1.1.4'
   gem 'capistrano-sidekiq', '~> 0.4.0'
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
+  gem 'pry-rails'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

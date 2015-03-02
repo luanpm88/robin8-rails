@@ -73,6 +73,7 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       e.preventDefault();
       var email = $("#email").val()
       $.post("/users/invitation.json", {user:{email: email, is_primary: false}})
+        .always(function(){$(".invite").blur();})
         .done(function() {
           that.collection.fetch();
         })
