@@ -1,6 +1,11 @@
 require 'sidekiq/web'
 require 'sidetiq/web'
 Rails.application.routes.draw do
+  resources :media_lists, only: [:index, :create, :show, :destroy]
+  resources :contacts, only: [:index, :create, :show]
+  resources :pitches, only: [:index, :create, :show]
+  resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions",
       registrations: "users/registrations", passwords: "users/passwords",
