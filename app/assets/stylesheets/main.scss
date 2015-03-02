@@ -875,3 +875,8 @@ ul {
 .select2-drop {
   z-index: 21000;
 }
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
