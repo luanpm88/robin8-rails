@@ -30,10 +30,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     childView: ReleasesBlast.EmailTargetItemView,
     childViewContainer: "tbody",
 
+    ui: {
+      count: 'span.badge-success'
+    },
+
+    modelRemoved: function() {
+      this.ui.count.text(this.collection.length);
+    },
+
     templateHelpers: function() {
       return {
         size: this.collection.length
       }
+    },
+
+    collectionEvents: {
+      "remove": "modelRemoved"
     }
   });
 
@@ -64,10 +76,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     childView: ReleasesBlast.TwitterTargetItemView,
     childViewContainer: "tbody",
 
+    ui: {
+      count: 'span.badge-success'
+    },
+
     templateHelpers: function () {
       return {
         size: this.collection.length
       }
+    },
+
+    modelRemoved: function() {
+      this.ui.count.text(this.collection.length);
+    },
+
+    collectionEvents: {
+      "remove": "modelRemoved"
     }
   });
 
@@ -76,7 +100,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
     ui: {
       mergeTag: 'label.label a',
-      textarea: '#email-pitch-textarea'
+      textarea: '#email-pitch-textarea',
+      summarySlider: '#summary-slider',
+      summarySliderAmount: '#summary-slider-amount'
     },
 
     events: {
@@ -95,6 +121,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           'Outlet', 'Link', 'Title'
         ]
       }
+    },
+
+    onRender: function() {
+      var self = this;
+      this.ui.summarySlider.slider({
+        value: 3, min: 0, max: 10, step: 1,
+        slide: function(event, ui) {
+          self.ui.summarySliderAmount.text(ui.value + ' sentences');
+        }
+      });
+      this.ui.summarySliderAmount.text(this.ui.summarySlider.slider("value") + " sentences");
     }
   });
 
