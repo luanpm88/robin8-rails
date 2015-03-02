@@ -8,7 +8,9 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
     },
 
     loadTwitterWidget: function (){
-      twttr.widgets.load();
+      if (this.model.attributes.twitter_link != null && this.model.attributes.twitter_link != '') {
+        twttr.widgets.load();
+      }
     }
   });
 });

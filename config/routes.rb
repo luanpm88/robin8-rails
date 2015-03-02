@@ -35,10 +35,15 @@ Rails.application.routes.draw do
 
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
+  post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'
+  get 'robin8_api/influencers', to: 'robin_api#influencers'
+  get 'robin8_api/author_stats', to: 'robin_api#author_stats'
   
   post 'textapi/classify'
   post 'textapi/concepts'
   post 'textapi/summarize'
+
+  post 'followers/add/', to: 'followers#add'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

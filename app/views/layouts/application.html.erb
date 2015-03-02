@@ -6,8 +6,21 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "headline": "Zipf's Law of the Internet: Explaining Online Behavior",
+      "url": "http://blog.parsely.com/post/57821746552",
+      "thumbnailUrl": "http://blog.parsely.com/inline_mra670hTvL1qz4rgp.png",
+      "dateCreated": "2013-08-15T13:00:00Z",
+      "articleSection": "Programming",
+      "creator": "Alan Alexander Milne",
+      "keywords": ["statistics","zipf","internet","behavior"]
+    }
+  </script>
 </head>
-<body id="main" class="<%= current_user.blank? ? 'login' : 'main'%>">
+<body id="main">
 <script type="text/javascript">
 
   $(document).ready(function() {
@@ -63,9 +76,9 @@
       };
       $('body').mousemove(function(event) {
         $('body').animate({
-          'background-position-x': event.pageX/8,
-          'background-position-y': event.pageY/12
-        }, {queue:false,duration:200,easing:'smoothmove'});
+          backgroundPositionX: event.pageX/8,
+          backgroundPositionY: event.pageY/12
+        }, {queue:false,duration:0,easing:'smoothmove'});
       });
     });
   </script>

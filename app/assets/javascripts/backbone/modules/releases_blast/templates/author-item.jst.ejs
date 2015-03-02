@@ -1,0 +1,47 @@
+<td>
+  <div class="media targets-author">
+    <a href="#" class="media-left">
+      <img alt="..." src="http://lorempixel.com/50/50/?0">
+    </a>
+    <div class="media-body">
+      <h4 class="media-heading">
+        <%= author.get('full_name') %>
+      </h4>
+      <a class="btn btn-xs btn-primary" href="#">
+        <i class="fa fa-search"></i> Inspect
+      </a>
+    </div>
+  </div>
+</td>
+<td><%= author.get('blog_name') %></td>
+<td>
+  <div class="progress active">
+    <div class="progress-bar" role="progressbar" 
+      aria-valuenow="<%= author.get('level_of_interest') %>" 
+      aria-valuemin="0" aria-valuemax="100" 
+      style="width: <%= author.get('level_of_interest') %>%;">
+        <%= author.get('level_of_interest') %>%
+    </div>
+  </div>
+</td>
+
+<td>
+  <span class="article-length-tooltip" data-toggle="tooltip" 
+  data-title="<i class='fa fa-info-circle'></i> <%= wordMapper(author.get('stats').syntactic.words_count.mean).tooltip %>" 
+  data-html="true">
+    <%= wordMapper(author.get('stats').syntactic.words_count.mean).label %>
+  </span>
+</td>
+<td>
+  <a href="#" class="btn btn-xs btn-success" disabled="">
+    <i class="fa fa-check"></i> Yes
+  </a> 
+  <a href="#" class="btn btn-xs btn-danger">
+    <i class="fa fa-close"></i> No
+  </a>
+</td>
+<td>
+  <a href="#">
+    <i class="fa fa-envelope"></i>
+  </a>
+</td>
