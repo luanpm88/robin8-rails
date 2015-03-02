@@ -13,7 +13,7 @@ xml.rss :version => "2.0", "xmlns:media" => 'http://search.yahoo.com/mrss/' do
         xml.link story['link']
         xml.guid "#{story['link']}-#{story['id']}"
         if story['images'].length
-          xml.media :content, url: story['images'][0], height: 50, width:50, type:"image/jpeg"
+          xml.media :thumbnail, url: story['images'][0], height: 50, width:50, type:"image/jpeg"
         end
       end
     end
