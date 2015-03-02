@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Robin8</title>
+
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -24,7 +25,10 @@
 <script type="text/javascript">
   
   $(document).ready(function() {
-    Robin.start();
+    signed_in = <%= signed_in? %>
+    if (signed_in || window.location.pathname != '' || window.location.hash != '') {
+      Robin.start();
+    }
   });
   <% if flash[:success_confirmation] -%>    
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
@@ -68,21 +72,6 @@
   e.src = h+"//"+u+"/p.js"; r.appendChild(e);
 })("script", "parsely", document);
 </script>
-<% unless signed_in? -%>
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $.easing.smoothmove = function (x, t, b, c, d) {
-        return -c *(t/=d)*(t-2) + b;
-      };
-      $('body').mousemove(function(event) {
-        $('body').animate({
-          backgroundPositionX: event.pageX/8,
-          backgroundPositionY: event.pageY/12
-        }, {queue:false,duration:0,easing:'smoothmove'});
-      });
-    });
-  </script>
-<% end %>
 <!-- END Parse.ly Include -->
 </body>
 </html>

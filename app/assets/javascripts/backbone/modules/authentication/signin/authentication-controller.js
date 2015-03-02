@@ -2,19 +2,29 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
   SignIn.Controller = {
 
-    showSignIn: function(){
-      var signInView = this.getSignInView();
-      Robin.layouts.unauthenticated.signUpForm.show(signInView);
+    showStep1: function(){
+      var step1View = this.getStep1View();
+      Robin.layouts.unauthenticated.signUpForm.show(step1View);
     },
 
-    showSignUp: function(){
-      var signUpView = this.getSignUpView();
-      Robin.layouts.unauthenticated.signUpForm.show(signUpView);
+    showStep2: function(){
+      var step2View = this.getStep2View();
+      Robin.layouts.unauthenticated.signUpForm.show(step2View);
     },
 
-    showForgot: function(){
-      var forgotView = this.getForgotView();
-      Robin.layouts.unauthenticated.signUpForm.show(forgotView);
+    showStep3: function(){
+      var step3View = this.getStep3View();
+      Robin.layouts.unauthenticated.signUpForm.show(step3View);
+    },
+
+    showStep4: function(){
+      var step4View = this.getStep4View();
+      Robin.layouts.unauthenticated.signUpForm.show(step4View);
+    },
+
+    showConfirmation: function(){
+      var confirmationView = this.getComfirmationView();
+      Robin.layouts.unauthenticated.signUpForm.show(confirmationView);
     },
 
     showAccept: function(acceptToken){
@@ -27,12 +37,24 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       Robin.layouts.unauthenticated.signUpForm.show(resetView);
     },
 
-    getSignInView: function(){
-      return new SignIn.SignInView();
+    getStep1View: function(){
+      return new SignIn.Step1View();
     },
 
-    getSignUpView: function(){
-      return new SignIn.SignUpView();
+    getStep2View: function(){
+      return new SignIn.Step2View();
+    },
+
+    getStep3View: function(){
+      return new SignIn.Step3View();
+    },
+
+    getStep4View: function(){
+      return new SignIn.Step4View();
+    },
+
+    getComfirmationView: function(){
+      return new SignIn.ConfirmationView();
     },
 
     getForgotView: function(){

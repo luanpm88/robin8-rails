@@ -3,14 +3,21 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
   this.startWithParent = false;
 
   var API = {
-    signIn: function() {
-      Authentication.SignIn.Controller.showSignIn();
+    step1: function() {
+      console.log('gggg');
+      Authentication.SignIn.Controller.showStep1();
     },
-    signUp: function() {
-      Authentication.SignIn.Controller.showSignUp();
+    step2: function() {
+      Authentication.SignIn.Controller.showStep2();
     },
-    forgot: function() {
-      Authentication.SignIn.Controller.showForgot();
+    step3: function() {
+      Authentication.SignIn.Controller.showStep3();
+    },
+    step4: function() {
+      Authentication.SignIn.Controller.showStep4();
+    },
+    confirmationStep: function() {
+      Authentication.SignIn.Controller.showConfirmation();
     },
     accept: function(acceptToken) {
       Authentication.SignIn.Controller.showAccept(acceptToken);
@@ -22,19 +29,27 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
 
   Authentication.Router = Backbone.Marionette.AppRouter.extend({
     routes: {
-      "": "signIn",
-      "signin": "signIn",
-      "signup": "signUp",
+      "step1": "step1",
+      "step2": "step2",
+      "step3": "step3",
+      "step4": "step4",
+      "confirmation-step": "confirmationStep",
       "forgot": "forgot",
       "accept/:acceptToken": "accept",
       "reset/:resetToken": "reset",
     },
 
-    signUp: function() { API.signUp(); },
+    // signUp: function() { API.signUp(); },
 
-    signIn: function() { API.signIn(); },
+    step1: function() { API.step1(); },
 
-    forgot: function() { API.forgot(); },
+    step2: function() { API.step2(); },
+
+    step3: function() { API.step3(); },
+
+    step4: function() { API.step4(); },
+
+    confirmationStep: function() { API.confirmationStep(); },
 
     accept: function(acceptToken) {API.accept(acceptToken);},
 
@@ -49,7 +64,6 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
   Authentication.on('start', function(){
     new Authentication.Router();
     $('body#main').addClass('login');
-    API.signIn();
   });
   
 });

@@ -13,3 +13,4 @@ end
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 Rails.application.config.assets.precompile += %w( public_pages.js public_pages.css )
+Rails.application.config.assets.precompile += %w( landing.js landing.css )
