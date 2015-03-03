@@ -11,6 +11,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "searching": false,
         "lengthChange": false,
         "order": [[ 4, 'desc' ]],
+        "pageLength": 5,
         "columns": [
           { "width": "30% !important" },
           null,

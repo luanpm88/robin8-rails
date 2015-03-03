@@ -11,7 +11,7 @@ Robin.Collections.SuggestedAuthors = Backbone.Collection.extend({
       data: {
         title: this.releaseModel.get("title"), 
         body: this.releaseModel.get("text"),
-        per_page: 50
+        per_page: 25
       },
       method: "POST",
       success: options.success

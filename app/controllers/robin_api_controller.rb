@@ -25,7 +25,7 @@ class RobinApiController < ApplicationController
   def influencers
     response = @client.influencers params
     
-    render json: response[:influencers].map{|key, val| val}
+    render json: response[:influencers].map{|key, val| val}.take(25)
   end
   
   def proxy
