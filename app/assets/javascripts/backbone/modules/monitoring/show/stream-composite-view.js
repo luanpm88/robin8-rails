@@ -22,7 +22,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     modelEvents: {
-      change: 'setShowUpdatesButtonVisibility'
+      change: 'setShowUpdatesButtonVisibility',
+      'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
     templateHelpers: function () {
@@ -78,6 +79,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
 
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
+
+      this.refreshTimeRangeVisibility();
     },
 
     onAdded: function(story, collection) {
@@ -227,6 +230,17 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         this.$el.find('.js-show-new-stories').removeClass('hidden');
       } else {
         this.$el.find('.js-show-new-stories').addClass('hidden');
+      }
+    },
+
+    refreshTimeRangeVisibility: function(){
+      var val = this.model.get('sort_column');
+      if(val == "shares_count") {
+        this.$el.find('.stream-settings .time-range').show();
+        this.$el.find('.stream-settings').addClass('expand');
+      } else if(val == "published_at") {
+        this.$el.find('.stream-settings .time-range').hide();
+        this.$el.find('.stream-settings').removeClass('expand');
       }
     }
   });
