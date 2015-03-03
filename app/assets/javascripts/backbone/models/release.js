@@ -15,7 +15,6 @@ Robin.Models.Release = Backbone.Model.extend({
       score: 0,
       score_title: 'Too short'
     },
-    labels: ['Startups', 'Success', 'Technology', 'Computers', 'Artificial Intelligence'],
     views: '5.2k',
     likes: 223,
     coverages: 3
