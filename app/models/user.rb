@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
-  has_many :payments,through: :subscription
-  has_many :subscription , dependent: :destroy
+  has_many :payments,through: :subscriptions
+  has_many :subscriptions , dependent: :destroy
   has_many :media_lists, dependent: :destroy
   has_many :pitches
   has_many :pitches_contacts, through: :pitches
