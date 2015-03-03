@@ -54,6 +54,8 @@ Rails.application.routes.draw do
     get '/' => 'news_rooms#preview'
   end
   root 'pages#home'
+  get '/signup', to: 'pages#signup'
+  get '/signin', to: 'pages#signin'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

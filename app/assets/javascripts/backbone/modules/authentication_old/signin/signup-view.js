@@ -1,4 +1,4 @@
-Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette, $, _){
+Robin.module('AuthenticationOld.SignIn', function(SignIn, App, Backbone, Marionette, $, _){
 
   SignIn.SignUpView = Backbone.Marionette.ItemView.extend( {
     template: 'modules/authentication/signin/templates/signup',

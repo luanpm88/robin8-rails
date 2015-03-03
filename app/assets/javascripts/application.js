@@ -59,7 +59,6 @@
 
 var ready;
 ready = function() {
-  
   //default options for Bootstrap Growl
   $.growl(false, {
     element: 'body',
