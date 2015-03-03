@@ -28,6 +28,12 @@ class RobinApiController < ApplicationController
     render json: response[:influencers].map{|key, val| val}.take(25)
   end
   
+  def authors
+    response = @client.authors params
+    
+    render json: response
+  end
+  
   def proxy
     uri = URI(Rails.application.secrets.robin_api_url + request.fullpath)
     req = Net::HTTP::Get.new(uri)
