@@ -1,0 +1,26 @@
+<div class="panel-heading"><i class="fa fa-twitter"></i> Twitter pitch</div>
+<div class="panel-body">
+  <form role="form">
+    <div class="form-group">
+      <label>Pitch text</label>
+      <textarea id="twitter-pitch-textarea" style="width: 100%; height: 140px;" class="form-control">Hey @[Name] here's a press release you might find interesting: @[Link]
+      </textarea>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Suggested hashtags </label>
+          <br>
+          <%= _(hashTags).map(function(m) { return '<a href="#"><label class="label label-info hashtag">' + m + '</label></a>' }).join("\n") %>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Available merge tags</label>
+          <br>
+          <%= _(mergeTags).map(function(m) { return '<label class="label label-default mergetag"><a href="#">' + m + '</a></label>' }).join("\n") %>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -39,7 +39,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       suggestedAuthorsCollection.fetchAuthors({
         success: function(collection, data, response){
           var blogTargetView = new ReleasesBlast.BlogTargetsCompositeView({
-            collection: collection
+            collection: collection,
+            releaseModel: releaseModel
           });
           targetsTabLayout.blogsRegion.show(blogTargetView);
         }
@@ -62,9 +63,29 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       Robin.layouts.main.getRegion('content').show(this.module.layout);
       var topMenuView = new this.module.TopMenuView({level: 4});
       var pitchTabView = new this.module.PitchTabView();
-      
       this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(pitchTabView);
+
+      var emailTargetsCollection = new ReleasesBlast.EmailTargetsCollection();
+      _.chain(_.range(7)).map(function(i) {
+        return new ReleasesBlast.EmailTargetModel({name: 'Target ' + i, outlet: i});
+      }).each(function(m) { emailTargetsCollection.add(m); })
+      var emailTargetsView = new ReleasesBlast.EmailTargetsView({
+        collection: emailTargetsCollection
+      });
+
+      var twitterTargetsCollection = new ReleasesBlast.TwitterTargetsCollection();
+      _.chain(_.range(5)).map(function(i) {
+        return new ReleasesBlast.TwitterTargetModel({name: 'Target ' + i, handle: '@target' + i});
+      }).each(function(m) { twitterTargetsCollection.add(m); });
+      var twitterTargetsView = new ReleasesBlast.TwitterTargetsView({
+        collection: twitterTargetsCollection
+      });
+
+      pitchTabView.emailTargets.show(emailTargetsView);
+      pitchTabView.twitterTargets.show(twitterTargetsView);
+      pitchTabView.emailPitch.show(new ReleasesBlast.EmailPitchView());
+      pitchTabView.twitterPitch.show(new ReleasesBlast.TwitterPitchView({hashTags: ["#ios", "#android"]}));
     }
   });
 });
