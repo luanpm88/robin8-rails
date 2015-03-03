@@ -10,7 +10,8 @@ Robin.cachedStories = {};
 Robin.layouts = {};
 
 Robin.addRegions({
-  main: '#main'
+  main: '#main',
+  modal: ModalRegion
 });
 
 Robin.setUrl = function(route, options){
@@ -22,7 +23,7 @@ Robin.finishSignIn = function(data){
   Robin.currentUser = new Robin.Models.User(data);
   Robin.vent.trigger("authentication:logged_in");
   Robin.loadPleaseWait();
-  $('body#main').removeClass('login');
+  $('#main').removeClass('login');
   Robin.setUrl('/#dashboard');
 };
 
@@ -139,3 +140,6 @@ UPLOADCARE_LOCALE_TRANSLATIONS = {
 //The UPLOADCARE_PUBLIC_KEY should be changed as soon as paid
 // account is avaialble. example:
 //UPLOADCARE_PUBLIC_KEY = "a51f0572e52df821db41";
+
+//Filepicker key here:
+filepicker.setKey("AqjCqgTScSa65fXp8iGAgz");

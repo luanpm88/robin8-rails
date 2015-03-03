@@ -51,6 +51,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
   gem 'rails-assets-DataTables'
+  gem 'rails-assets-jquery.caret'
 end
 
 gem 'devise'

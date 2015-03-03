@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
   has_many :streams, dependent: :destroy
   has_many :payments,through: :subscription
   has_many :subscription , dependent: :destroy
+  has_many :media_lists, dependent: :destroy
+  has_many :pitches
+  has_many :pitches_contacts, through: :pitches
 
   after_create :create_default_news_room
 

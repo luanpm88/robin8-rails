@@ -41,9 +41,11 @@
 //= require ./lib/formValidation/js/bootstrap.min
 //= require bootstrap-wysihtml5
 //= require jquery.dotdotdot
+//= require jquery.caret/dist/jquery.caret-1.5.2
 //= require timeago
 //= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
 //= require DataTables
+//= require ./lib/iptc
 // require dataTables.bootstrap
 
 //= require_tree ./backbone/config

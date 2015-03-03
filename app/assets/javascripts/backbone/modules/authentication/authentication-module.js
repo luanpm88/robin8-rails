@@ -48,7 +48,7 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
 
   Authentication.on('start', function(){
     new Authentication.Router();
-    $('body#main').addClass('login');
+    $('#main').addClass('login');
     API.signIn();
   });
   
