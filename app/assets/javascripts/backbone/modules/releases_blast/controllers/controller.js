@@ -20,7 +20,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var releaseModel = this.module.collection.get(params.release_id);
       var topMenuView = new this.module.TopMenuView({level: 2});
       var analysisTabView = new this.module.AnalysisTabView({model: releaseModel});
-      
+      this.module.pitch = new Robin.Models.Pitch().savePitch({
+        release_id: releaseModel.get('id')
+      });
       this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(analysisTabView);
     },
