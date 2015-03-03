@@ -4,7 +4,6 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
 
   var API = {
     signIn: function() {
-      console.log('signin');
       Authentication.SignIn.Controller.showSignIn();
     },
     step1: function() {
@@ -68,7 +67,7 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
 
   Authentication.on('start', function(){
     new Authentication.Router();
-    $('#main').addClass('login');
+    $('body').addClass('login');
     API.signIn();
   });
   

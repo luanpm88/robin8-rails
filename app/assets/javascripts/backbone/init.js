@@ -23,7 +23,7 @@ Robin.finishSignIn = function(data){
   Robin.currentUser = new Robin.Models.User(data);
   Robin.vent.trigger("authentication:logged_in");
   Robin.loadPleaseWait();
-  $('#main').removeClass('login');
+  $('body').removeClass('login');
   Robin.setUrl('/#dashboard');
 };
 

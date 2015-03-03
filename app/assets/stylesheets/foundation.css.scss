@@ -1,18 +1,22 @@
-  html,
-  body.login {
-    font-size: 100%; }
+html,
+body.login {
+  font-size: 100%; }
 
-  body.login {
-    background: #fff;
-    color: #222222;
-    padding: 0;
-    margin: 0;
-    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-    font-weight: normal;
-    font-style: normal;
-    line-height: 1.5;
-    position: relative;
-    cursor: auto; }
+body.login {
+  background: #fff;
+  color: #222222;
+  padding: 0;
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1.5;
+  position: relative;
+  cursor: auto; 
+  #main {
+    padding: 0px;
+  }
+}
 
 body.login {
   meta.foundation-version {

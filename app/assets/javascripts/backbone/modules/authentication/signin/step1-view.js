@@ -22,7 +22,6 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     },
 
     onShow: function() {
-      console.log(this);
       this.initFormValidation();
     },
 
