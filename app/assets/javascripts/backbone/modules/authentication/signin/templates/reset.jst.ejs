@@ -1,25 +1,27 @@
-<h4><i class="fa fa-users"></i> Sign in to Robin</h4>
-<p style="font-weight: normal;">
-  Please enter your <strong>new Password</strong> and <strong>Password confirmation</strong> in order to proceed.
-</p>
-<form accept-charset="UTF-8" role="form" id="formReset" class="form-signup" autocomplete="off">
-  <label class="panel-login">
-    <div class="login_result"></div>
-  </label>
-  <div class="form-group">
-    <input class="form-control" placeholder="Password" name='password' type="password" 
-      style='border-radius: 0; border-top-left-radius: 4px; border-top-right-radius: 4px' 
-      minlength="8"
-      data-fv-stringlength-message="The password must be at least 8 characters long"/>
+<div class="form-login"> 
+  <div class="row">
+    <div class="small-12 columns">
+      <p class="loginintro" style="margin-bottom: 0px;"> Sign in to Robin</p>
+      <p class="loginintro">Please enter your <strong>new Password</strong> and <strong>Password confirmation</strong> in order to proceed.</p>
+      <form accept-charset="UTF-8" role="form" id="formReset" class="form-signup" autocomplete="off">
+        <label class="panel-login">
+          <div class="login_result"></div>
+        </label>
+        <div class="form-group">
+          <input class="form-control" placeholder="Password" name='password' type="password" 
+            minlength="8"
+            data-fv-stringlength-message="The password must be at least 8 characters long"/>
+        </div>
+        <div class="form-group">
+          <input class="form-control" placeholder="Password confirmation" name='password_confirmation'
+            type="password" minlength="8" data-fv-stringlength-message="The password confirmation must be at least 8 characters long"/>
+        </div>
+        <br>
+        <div id="alert-danger" class="alert alert-danger" role="alert" style="display: none;"></div>
+        <div class="submit-wrap" style="margin-top: 0">
+          <button id="login" class="button button-signup" id="send" type="button"> Login </button>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="form-group">
-    <input class="form-control" placeholder="Password confirmation" name='password_confirmation'
-      type="password" style='border-radius: 0; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px'
-      minlength="8" data-fv-stringlength-message="The password confirmation must be at least 8 characters long"/>
-  </div>
-  <br>
-  <div id="alert-danger" class="alert alert-danger" role="alert" style="display: none;"></div>
-  <button id="login" class="btn btn-lg btn-success btn-block" type="button">
-    <i class="fa fa-sign-in"></i> Login
-  </button>
-</form>
+</div>

@@ -32,7 +32,13 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       Robin.layouts.unauthenticated.signUpForm.show(confirmationView);
     },
 
+    showForgot: function(){
+      var forgotView = this.getForgotView();
+      Robin.layouts.unauthenticated.signUpForm.show(forgotView);
+    },
+
     showAccept: function(acceptToken){
+      console.log('accept');
       var acceptView = this.getAcceptView(acceptToken);
       Robin.layouts.unauthenticated.signUpForm.show(acceptView);
     },

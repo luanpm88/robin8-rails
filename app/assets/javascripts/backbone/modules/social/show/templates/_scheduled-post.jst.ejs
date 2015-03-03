@@ -13,8 +13,6 @@
     <input type='hidden' name="facebook" />
     <a class="btn <%= Robin.identities.linkedin == undefined ? 'disabled' : '' %> <%= post.social_networks.linkedin == 'true' ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.linkedin != undefined ? Robin.identities.linkedin.name : '' %> page"><i class="fa fa-linkedin"></i></a>
     <input type='hidden' name="linkedin" />
-    <a class="btn <%= Robin.identities.google == undefined ? 'disabled' : '' %> <%= post.social_networks.google == 'true' ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.google != undefined ? Robin.identities.google.name : '' %> page"><i class="fa fa-google-plus"></i></a>
-    <input type='hidden' name="google" />
   </div>
   <div class="col-xs-4 schedule" style="width: 35%;">
     <div class="form-group pull-right">
@@ -42,7 +40,6 @@
     <a data-provider='twitter' class="btn btn-xs <%= Robin.identities.twitter == undefined ? 'disabled' : '' %> <%= post.social_networks.twitter == 'true' ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to @<%= Robin.identities.twitter == undefined ? '' : Robin.identities.twitter.name %>"><i class="fa fa-twitter"></i></a>
     <a data-provider='facebook' class="btn btn-xs <%= Robin.identities.facebook == undefined ? 'disabled' : '' %> <%= post.social_networks.facebook == 'true' ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.facebook == undefined ? '' : Robin.identities.facebook.name %>"><i class="fa fa-facebook"></i></a>
     <a data-provider='linkedin' class="btn btn-xs <%= Robin.identities.linkedin == undefined ? 'disabled' : '' %> <%= post.social_networks.linkedin == 'true' ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.linkedin == undefined ? '' : Robin.identities.linkedin.name %>"><i class="fa fa-linkedin"></i></a>
-    <a data-provider='google' class="btn btn-xs <%= Robin.identities.google == undefined ? 'disabled' : '' %> <%= post.social_networks.google == 'true' ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.google == undefined ? '' : Robin.identities.google.name %>"><i class="fa fa-google-plus"></i></a>
   </span>
   <a class="btn btn-xs btn-default edit-post" style="margin-left: 4px;" data-toggle="tooltip" title="Edit post"><i class="fa fa-pencil"></i></a>
   <a id="delete-post"  class="btn btn-xs btn-danger" data-toggle="tooltip" title="Delete post"><i class="fa fa-close"></i></a>
