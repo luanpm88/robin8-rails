@@ -8,7 +8,15 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div id="main"></div>
+  <div id="main">
+    <%= yield %>
+    
+    <!-- START Parse.ly Include: Standard -->
+    <div id="parsely-root" style="display: none">
+      <div id="parsely-cfg" data-parsely-site="robin8.com"></div>
+    </div>
+  </div>
+  
   <div class="modal fade" id="modal" tabindex="-1" 
     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 
@@ -42,20 +50,14 @@
 </script>
 <!-- end load bitly javascript sdk -->
 
-<%= yield %>
-<!-- START Parse.ly Include: Standard -->
-<div id="parsely-root" style="display: none">
-  <div id="parsely-cfg" data-parsely-site="robin8.com"></div>
-</div>
-
 <% unless signed_in? -%>
   <script type="text/javascript">
     $(document).ready(function(){
       $.easing.smoothmove = function (x, t, b, c, d) {
         return -c *(t/=d)*(t-2) + b;
       };
-      $('body').mousemove(function(event) {
-        $('body').animate({
+      $('#main').mousemove(function(event) {
+        $('#main').animate({
           backgroundPositionX: event.pageX/8,
           backgroundPositionY: event.pageY/12
         }, {queue:false,duration:0,easing:'smoothmove'});
