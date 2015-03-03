@@ -50,6 +50,7 @@ class PitchesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def pitch_params
-      params.require(:pitch).permit(:sent, :twitter_pitch, :email_pitch, :summary_length, :email_address)
+      params.require(:pitch).permit(:twitter_pitch, :email_pitch, 
+        :summary_length, :email_address, :email_subject, :release_id)
     end
 end
