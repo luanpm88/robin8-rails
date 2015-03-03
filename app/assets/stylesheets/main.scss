@@ -3,8 +3,10 @@ html, body {
 }
 
 body {
-  padding-top: 50px;
   background-color: #eee;
+}
+#main {
+  padding-top: 50px;
 }
 ul {
   padding: 0;
@@ -879,4 +881,8 @@ ul {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.tag-wrapper {
+  height: 42px;
+  overflow: hidden;
 }

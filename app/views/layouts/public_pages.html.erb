@@ -6,18 +6,15 @@
   <%= stylesheet_link_tag    'public_pages', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'public_pages', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "NewsArticle",
-      "headline": "Zipf's Law of the Internet: Explaining Online Behavior",
-      "url": "http://blog.parsely.com/post/57821746552",
-      "thumbnailUrl": "http://blog.parsely.com/inline_mra670hTvL1qz4rgp.png",
-      "dateCreated": "2013-08-15T13:00:00Z",
-      "articleSection": "Programming",
-      "creator": "Alan Alexander Milne",
-      "keywords": ["statistics","zipf","internet","behavior"]
-    }
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-60261179-1', 'auto');
+    ga('send', 'pageview');
+
   </script>
 </head>
 <body id="main">
@@ -58,17 +55,6 @@
 <div id="parsely-root" style="display: none">
   <div id="parsely-cfg" data-parsely-site="robin8.com"></div>
 </div>
-<script>
-(function(s, p, d) {
-  var h=d.location.protocol, i=p+"-"+s,
-      e=d.getElementById(i), r=d.getElementById(p+"-root"),
-      u=h==="https:"?"d1z2jf7jlzjs58.cloudfront.net"
-      :"static."+p+".com";
-  if (e) return;
-  e = d.createElement(s); e.id = i; e.async = true;
-  e.src = h+"//"+u+"/p.js"; r.appendChild(e);
-})("script", "parsely", document);
-</script>
 <!-- END Parse.ly Include -->
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 

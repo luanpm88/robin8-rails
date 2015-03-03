@@ -10,7 +10,8 @@ Robin.cachedStories = {};
 Robin.layouts = {};
 
 Robin.addRegions({
-  main: '#main'
+  main: '#main',
+  modal: ModalRegion
 });
 
 Robin.setUrl = function(route, options){
@@ -22,7 +23,7 @@ Robin.finishSignIn = function(data){
   Robin.currentUser = new Robin.Models.User(data);
   Robin.vent.trigger("authentication:logged_in");
   Robin.loadPleaseWait();
-  $('body#main').removeClass('login');
+  $('body').removeClass('login');
   Robin.setUrl('/#dashboard');
 };
 
