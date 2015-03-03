@@ -137,9 +137,3 @@ UPLOADCARE_LOCALE_TRANSLATIONS = {
     }
   } } } }
 };
-//The UPLOADCARE_PUBLIC_KEY should be changed as soon as paid
-// account is avaialble. example:
-//UPLOADCARE_PUBLIC_KEY = "a51f0572e52df821db41";
-
-//Filepicker key here:
-filepicker.setKey("AqjCqgTScSa65fXp8iGAgz");

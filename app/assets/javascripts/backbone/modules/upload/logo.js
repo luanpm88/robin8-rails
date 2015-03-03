@@ -10,7 +10,7 @@ Robin.Views.LogoView = Backbone.Marionette.ItemView.extend({
         viewObj.model.set(viewObj.options.field,  info.cdnUrl);
       });
     if (this.model.get(this.options.field)){
-      this.widget.value( this.model.get(this.options.field));
+      $("#logo-image").attr('src', this.model.get(this.options.field));
     }
   },
 });

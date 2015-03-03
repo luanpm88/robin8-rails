@@ -26,9 +26,9 @@
       <p class="release-title">
         <%= release.text.normalizeRSpace(115) %>
       </p>
-      <p>
-        <% _.each(release.labels, function(label){ %>
-          <label class="label label-info"><%= label %></label>
+      <p class="tag-wrapper">
+        <% _.each(release.concepts, function(concept){ %>
+          <label class="label label-info"><%= concept %></label>
         <% }); %>
       </p>
       <hr>
