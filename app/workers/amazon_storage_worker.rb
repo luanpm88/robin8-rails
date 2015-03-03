@@ -1,11 +1,17 @@
 class AmazonStorageWorker
   include Sidekiq::Worker
-  
-  def perform(news_room_id, new_logo, old_logo)
-    news_room = NewsRoom.find(news_room_id)
+
+  def perform(object_type, object_id, new_url, old_url)
+    if object_type == "news_room"
+      object = NewsRoom.find(object_id)
+      obj_attr = :logo_url
+    elsif object_type == "user"
+      obj_attr = :avatar_url
+      object = User.find(object_id)
+    end
     puts "*"*50
     puts 'Storing to Amazon S3...'
-    uuid = new_logo
+    uuid = new_url
     q = HTTParty.post("https://api.uploadcare.com/files/", body: {source: uuid, target: "robin8-main"}, headers: {"Authorization" => "Uploadcare.Simple eaef90e4420402169d1f:09b94a326a95086338d6"})
     amazon_url = q.parsed_response
     puts amazon_url.class
@@ -17,9 +23,9 @@ class AmazonStorageWorker
       amazon_url.sub! 's3:/', 'http://s3.amazonaws.com'
     end
     puts "final url: " + amazon_url
-    news_room.update_attribute(:logo_url, amazon_url)
-    if old_logo
-      AmazonDeleteWorker.perform_async(old_logo)
+    object.update_attribute(obj_attr, amazon_url)
+    if old_url
+      AmazonDeleteWorker.perform_in(20.seconds, old_url)
     end
 
   end

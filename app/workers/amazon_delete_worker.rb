@@ -2,6 +2,8 @@ class AmazonDeleteWorker
   include Sidekiq::Worker
   
   def perform(stored_image)
+    puts "the following file will be deleted:"
+    puts stored_image
     if stored_image.include? "http://s3.amazonaws.com"
       puts "destroying an old image now..."
       access_key_id = "AKIAJBAZFWNSWK6XHBQQ"
@@ -11,7 +13,7 @@ class AmazonDeleteWorker
       bucket = s3.buckets['robin8-main']
       amazon_file_key = stored_image.sub 'http://s3.amazonaws.com', 's3:/'
       bucket.objects.delete(amazon_file_key)
-      puts "deleted!"
+      puts "deleted."
     end
   end
 end
