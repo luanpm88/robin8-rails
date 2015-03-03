@@ -3,8 +3,11 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
   this.startWithParent = false;
 
   var API = {
+    signIn: function() {
+      console.log('signin');
+      Authentication.SignIn.Controller.showSignIn();
+    },
     step1: function() {
-      console.log('gggg');
       Authentication.SignIn.Controller.showStep1();
     },
     step2: function() {
@@ -29,6 +32,8 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
 
   Authentication.Router = Backbone.Marionette.AppRouter.extend({
     routes: {
+      "": "signIn",
+      "signin": "signIn",
       "step1": "step1",
       "step2": "step2",
       "step3": "step3",
@@ -64,6 +69,7 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
   Authentication.on('start', function(){
     new Authentication.Router();
     $('body#main').addClass('login');
+    API.signIn();
   });
   
 });

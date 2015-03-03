@@ -2,6 +2,11 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
   SignIn.Controller = {
 
+    showSignIn: function(){
+      var signInView = this.getSignInView();
+      Robin.layouts.unauthenticated.signUpForm.show(signInView);
+    },
+
     showStep1: function(){
       var step1View = this.getStep1View();
       Robin.layouts.unauthenticated.signUpForm.show(step1View);
@@ -35,6 +40,10 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     showReset: function(resetToken){
       var resetView = this.getResetView(resetToken);
       Robin.layouts.unauthenticated.signUpForm.show(resetView);
+    },
+
+    getSignInView: function(){
+      return new SignIn.SignInView();
     },
 
     getStep1View: function(){

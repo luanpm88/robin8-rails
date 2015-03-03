@@ -25,10 +25,7 @@
 <script type="text/javascript">
   
   $(document).ready(function() {
-    signed_in = <%= signed_in? %>
-    if (signed_in || window.location.pathname != '' || window.location.hash != '') {
-      Robin.start();
-    }
+    Robin.start();
   });
   <% if flash[:success_confirmation] -%>    
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'

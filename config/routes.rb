@@ -44,15 +44,9 @@ Rails.application.routes.draw do
   constraints(Subdomain) do
     get '/' => 'news_rooms#preview'
   end
-  # root 'pages#home'
+  root 'pages#home'
   get '/signup', to: 'pages#signup'
-  authenticated :user do
-    root to: "pages#home", as: :root
-  end
-
-  unauthenticated do
-    root to: "pages#landing_page", as: :unauthenticated_root
-  end
+  get '/signin', to: 'pages#signin'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
