@@ -6,19 +6,6 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "NewsArticle",
-      "headline": "Zipf's Law of the Internet: Explaining Online Behavior",
-      "url": "http://blog.parsely.com/post/57821746552",
-      "thumbnailUrl": "http://blog.parsely.com/inline_mra670hTvL1qz4rgp.png",
-      "dateCreated": "2013-08-15T13:00:00Z",
-      "articleSection": "Programming",
-      "creator": "Alan Alexander Milne",
-      "keywords": ["statistics","zipf","internet","behavior"]
-    }
-  </script>
 </head>
 <body id="main">
 <script type="text/javascript">
@@ -57,17 +44,6 @@
   <div id="parsely-cfg" data-parsely-site="robin8.com"></div>
 </div>
 
-<script>
-(function(s, p, d) {
-  var h=d.location.protocol, i=p+"-"+s,
-      e=d.getElementById(i), r=d.getElementById(p+"-root"),
-      u=h==="https:"?"d1z2jf7jlzjs58.cloudfront.net"
-      :"static."+p+".com";
-  if (e) return;
-  e = d.createElement(s); e.id = i; e.async = true;
-  e.src = h+"//"+u+"/p.js"; r.appendChild(e);
-})("script", "parsely", document);
-</script>
 <% unless signed_in? -%>
   <script type="text/javascript">
     $(document).ready(function(){
