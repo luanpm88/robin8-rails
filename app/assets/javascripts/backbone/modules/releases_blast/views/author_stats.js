@@ -5,7 +5,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     onShow: function(){
       this.$el.highcharts({
         chart: {
-          type: 'column'
+          type: 'column',
+          width: '550'
         },
         title: {
           text: 'Average Syntactic Stats for ' + this.model.get("full_name")
