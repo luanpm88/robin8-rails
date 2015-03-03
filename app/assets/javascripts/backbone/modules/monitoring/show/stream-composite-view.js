@@ -137,6 +137,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     closeStream: function() {
       var r = this.model;
+      if(!r.get('id')) return r.destroy({ dataType: "text"});
       swal({
         title: "Delete Stream?",
         text: "You will not be able to recover this stream.",
@@ -163,6 +164,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     closeSettings: function(e) {
       e.preventDefault();
       $(this.el).find('.settings-dialog').addClass('closed');
+      if(!this.model.get('id')) this.closeStream();
     },
 
     done: function(e) {
