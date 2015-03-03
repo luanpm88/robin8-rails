@@ -3,7 +3,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     template: 'modules/profile/show/templates/profile',
 
     events: {
-      'click #filepicker': 'showPicker',
       'click #saveChanges': 'updateProfile',
       'reset form': 'cancel',  //Should be replaced with Dashboard when ready,
     },
@@ -11,7 +10,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     initialize: function() {
       this.model = new Robin.Models.UserProfile(Robin.currentUser.attributes)
       this.modelBinder = new Backbone.ModelBinder();
-      this.newAvatar = "";
     },
 
     onRender: function() {
@@ -19,25 +17,14 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     onShow: function() {
+      this.initFormValidation();
       if (this.model.attributes.avatar_url) {
         $("#avatar-image").attr('src', this.model.attributes.avatar_url);
-        jQuery('.circle-avatar').nailthumb({width:200,height:200,method:'crop',containerClass:'circle-avatar',replaceAnimation:null});
       }
-      this.initFormValidation();
       var viewObj = this;
-    },
-
-    showPicker: function(){
-      var viewObj = this;
-      var temporaryImage = this.newAvatar;
-      filepicker.setKey("AqjCqgTScSa65fXp8iGAgz");
-      filepicker.pick({mimetype:"image/*", maxSize:"3145728"},
-      function(InkBlobs){
-        $("#avatar-image").attr('src', InkBlobs.url);
-        jQuery('.circle-avatar').nailthumb({width:200,height:200,method:'crop',containerClass:'circle-avatar',replaceAnimation:'fade'});
-        viewObj.newAvatar = InkBlobs;
-        //hide window if it has not disappeared
-        $("#filepicker_dialog_container").find('a').click();
+      this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
+        $("#avatar-image").attr('src', info.cdnUrl);
+        viewObj.model.set({avatar_url: info.cdnUrl});
       });
     },
 
@@ -138,53 +125,32 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
-    saveProfile: function() {
-      var viewObj = this;
-      var r = this.model.attributes;
-      this.model.save(this.model.attributes, {
-        success: function(userSession, response) {
-          Robin.currentUser.attributes = r;
-          Robin.currentUser.attributes.current_password = "";
-          Robin.layouts.main.onShow();
-          $.growl({message: 'Your account data has been successfully changed'
-          },{
-            element: '#growler-alert',
-            type: 'success',
-            offset: 147,
-            placement: {
-              from: "top",
-              align: "right"
-            },
-          });
-        },
-        error: function(userSession, response) {
-          this.processErrors(response);
-        }
-      });
-    },
-
     updateProfile: function(e) {
       var viewObj = this;
+      var r = this.model.attributes;
       this.form.data('formValidation').validate();
       if (this.form.data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
-        if (this.newAvatar != ""){
-          var oldAvatar = this.model.attributes.avatar_url;
-          if (oldAvatar.length > 0) {
-            filepicker.remove(oldAvatar);
+        this.model.save(this.model.attributes, {
+          success: function(userSession, response) {
+            Robin.currentUser.attributes = r;
+            Robin.currentUser.attributes.current_password = "";
+            Robin.layouts.main.onShow();
+            $.growl({message: 'Your account data has been successfully changed'
+            },{
+              element: '#growler-alert',
+              type: 'success',
+              offset: 147,
+              placement: {
+                from: "top",
+                align: "right"
+              },
+            });
+          },
+          error: function(userSession, response) {
+            viewObj.processErrors(response);
           }
-          filepicker.store(viewObj.newAvatar,function(new_blob){
-            viewObj.model.attributes.avatar_url = new_blob.url;
-            //
-            viewObj.saveProfile();
-            //
-            viewObj.newAvatar = "";
-          });
-        } else {
-        //
-        viewObj.saveProfile();
-        //
-        }
+        });
       }
     },
 

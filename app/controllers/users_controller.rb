@@ -5,8 +5,11 @@ class UsersController < ApplicationController
 
   def delete_user
     manageable_users = User.where(invited_by_id: current_user.id)
-    manageable_users.find(params[:id]).destroy
-
+    @user = manageable_users.find(params[:id])
+    if @user.avatar_url
+      AmazonDeleteWorker.perform_in(20.seconds, @user.avatar_url)
+    end
+    @user.destroy
     render json: manageable_users
   end
 

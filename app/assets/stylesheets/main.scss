@@ -128,15 +128,6 @@ ul {
   margin-right: 1px;
   font-size: 18px;
 }
-.circle-avatar {
-  vertical-align: middle;
-  overflow:hidden;
-  border-radius:50%;
-  display: -moz-inline-box; /* Firefox 2 */
-  display: inline-block;
-  height: 200px;
-  width: 200px;
-}
 .bootstrap-datetimepicker-widget {
   background-color: #fff !important;
 }
@@ -890,4 +881,8 @@ ul {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.tag-wrapper {
+  height: 42px;
+  overflow: hidden;
 }

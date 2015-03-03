@@ -7,7 +7,11 @@ class NewsRoomsController < ApplicationController
 
   def create
     @news_room = current_user.news_rooms.build news_room_params
+    @new_logo = params[:news_room][:logo_url]
     if @news_room.save
+      if @new_logo
+        AmazonStorageWorker.perform_async("news_room", @news_room.id, @new_logo, nil)
+      end
       render json: @news_room, serializer: NewsRoomSerializer
     else
       render json: { errors: @news_room.errors }, status: 422
@@ -20,7 +24,12 @@ class NewsRoomsController < ApplicationController
 
   def update
     @news_room = NewsRoom.find(params[:id])
+    @old_logo = @news_room.logo_url
+    @new_logo = params[:news_room][:logo_url]
     if @news_room.update_attributes(news_room_params)
+      if @new_logo!=@old_logo
+        AmazonStorageWorker.perform_async("news_room", @news_room.id, @new_logo, @old_logo)
+      end
       render json: @news_room, serializer: NewsRoomSerializer
     else
       render json: { errors: @news_room.errors }, status: 422
@@ -29,6 +38,9 @@ class NewsRoomsController < ApplicationController
 
   def destroy
     @news_room = NewsRoom.find(params[:id])
+    if @news_room.logo_url
+       AmazonDeleteWorker.perform_in(20.seconds, @news_room.logo_url)
+    end
     @news_room.destroy
     render json: @news_room
   end
