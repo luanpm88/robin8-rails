@@ -12,7 +12,8 @@ class AmazonStorageWorker
     puts "*"*50
     puts 'Storing to Amazon S3...'
     uuid = new_url
-    q = HTTParty.post("https://api.uploadcare.com/files/", body: {source: uuid, target: "robin8-main"}, headers: {"Authorization" => "Uploadcare.Simple eaef90e4420402169d1f:09b94a326a95086338d6"})
+    auth = "Uploadcare.Simple " + Rails.application.secrets.uploadcare
+    q = HTTParty.post("https://api.uploadcare.com/files/", body: {source: uuid, target: "robin8-main"}, headers: {"Authorization" => auth})
     amazon_url = q.parsed_response
     puts amazon_url.class
     if amazon_url.is_a? String
