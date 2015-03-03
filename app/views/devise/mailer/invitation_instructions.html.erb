@@ -2,6 +2,6 @@
 
 <p><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
 
-<p><%= link_to "Accept invitation", root_url+"#accept/"+@token %></p>
+<p><%= link_to "Accept invitation", root_url+"signin/#accept/"+@token %></p>
 
 <p><%= t("devise.mailer.invitation_instructions.ignore").html_safe %></p>

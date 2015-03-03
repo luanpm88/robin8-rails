@@ -4,7 +4,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     template: 'modules/authentication/signin/templates/reset',
 
     events: {
-      'click #login' : 'login',
+      'click #send' : 'submit',
       'keyup #password' : 'removeAlert',
       'keyup #password_confirmation' : 'removeAlert',
     },

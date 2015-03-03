@@ -39,7 +39,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         twitter: '.edit-settings-row [name=twitter]',
         facebook: '.edit-settings-row [name=facebook]',
         linkedin: '.edit-settings-row [name=linkedin]',
-        google: '.edit-settings-row [name=google]'
+        // google: '.edit-settings-row [name=google]'
       };
       this.progressBar = null;
     },
