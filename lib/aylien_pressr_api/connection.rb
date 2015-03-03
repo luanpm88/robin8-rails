@@ -60,10 +60,9 @@ module AylienPressrApi
         @uri.query = URI.encode_www_form(@params)
         request = Net::HTTP::Get.new(@uri.request_uri)
       end
-      
       request['user-agent'] = @config[:user_agent]
       request.basic_auth @config[:username], @config[:password]
-
+      
       @request = request
     end
   end

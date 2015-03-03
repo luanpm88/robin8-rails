@@ -1,6 +1,6 @@
 <div class="media">
   <a class="media-left" href="<%= story.link%>" target="blank">
-    <img src="<%= story.image%>" onerror="this.src='/assets/news.png';" width='64px' height='64px' class='js-story-img'>
+    <img src="<%= story.image%>" onerror="this.src='<%= AppAssets.path('news.png') %>';" width='64px' height='64px' class='js-story-img'>
   </a>
   <div class="media-body">
     <h4 class="media-heading js-open-story"><%= story.blog_name %></h4>

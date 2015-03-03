@@ -1,4 +1,4 @@
-<div class="stream-settings slider closed">
+<div class="stream-settings settings-dialog slider closed">
   <form role="form">
     <div class="form-group">
       <label for="topics-select">Topics</label>
@@ -31,6 +31,18 @@
     <div class="pull-right">
       <button class="btn btn-default btn-sm" id="close-settings">Cancel</button>
       <button class="btn btn-success btn-sm" id="done" href="#"><i class="fa fa-check"></i> Done</button>
+    </div>
+  </form>
+</div>
+<div class="stream-settings rss-dialog slider closed">
+  <form role="form">
+    <div class="form-group">
+      <label for="topics-select">Rss Link</label>
+      <% if(stream.id) {%>
+        <input type="text" class="form-control input-sm" readonly value="<%= window.location.origin + '/streams/' + stream.id + '/stories.rss?topicsForRss='+topicsForRss()+'&blogsForRss='+blogsForRss()%>">
+      <% } else {%>
+        <div>Please save stream first</div>
+      <% } %>
     </div>
   </form>
 </div>

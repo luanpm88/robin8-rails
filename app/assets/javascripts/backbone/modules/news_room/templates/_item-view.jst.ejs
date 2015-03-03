@@ -9,7 +9,7 @@
       <%}%>
     </div>
     <div class="caption">
-      <h2><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
+      <h2 class="truncate"><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
       <div class="description_area">
         <p ><%= news_room.description %></p>
       </div>
@@ -25,8 +25,8 @@
       <hr>
       <div class="row" align="center">
         <div class="col-xs-4"><b>9999</b><br/><small>VIEWS</small></div>
-        <div class="col-xs-4"><b>9999</b><br/><small>LIKES</small></div>
-        <div class="col-xs-4"><b>99</b><br/><small>RELEASES</small></div>
+        <!-- <div class="col-xs-4"><b>9999</b><br/><small>LIKES</small></div> -->
+        <div class="col-xs-4"><b><%= news_room.releases_count %></b><br/><small>RELEASES</small></div>
       </div>
     </div>
   </div>

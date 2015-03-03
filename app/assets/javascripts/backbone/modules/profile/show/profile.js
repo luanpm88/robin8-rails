@@ -3,6 +3,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     template: 'modules/profile/show/templates/profile',
 
     events: {
+      'click #filepicker': 'showPicker',
       'click #saveChanges': 'updateProfile',
       'reset form': 'cancel',  //Should be replaced with Dashboard when ready,
     },
@@ -10,6 +11,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     initialize: function() {
       this.model = new Robin.Models.UserProfile(Robin.currentUser.attributes)
       this.modelBinder = new Backbone.ModelBinder();
+      this.newAvatar = "";
     },
 
     onRender: function() {
@@ -17,14 +19,25 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     onShow: function() {
-      this.initFormValidation();
       if (this.model.attributes.avatar_url) {
         $("#avatar-image").attr('src', this.model.attributes.avatar_url);
+        jQuery('.circle-avatar').nailthumb({width:200,height:200,method:'crop',containerClass:'circle-avatar',replaceAnimation:null});
       }
+      this.initFormValidation();
       var viewObj = this;
-      this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
-        $("#avatar-image").attr('src', info.cdnUrl);
-        viewObj.model.set({avatar_url: info.cdnUrl});
+    },
+
+    showPicker: function(){
+      var viewObj = this;
+      var temporaryImage = this.newAvatar;
+      filepicker.setKey("AqjCqgTScSa65fXp8iGAgz");
+      filepicker.pick({mimetype:"image/*", maxSize:"3145728"},
+      function(InkBlobs){
+        $("#avatar-image").attr('src', InkBlobs.url);
+        jQuery('.circle-avatar').nailthumb({width:200,height:200,method:'crop',containerClass:'circle-avatar',replaceAnimation:'fade'});
+        viewObj.newAvatar = InkBlobs;
+        //hide window if it has not disappeared
+        $("#filepicker_dialog_container").find('a').click();
       });
     },
 
@@ -92,7 +105,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       })
       .on('keyup', '[name="password"]', function() {
-        console.log("keyup");
         var isEmpty = $(this).val() == '';
         $('#profileForm')
           .formValidation('enableFieldValidators', 'current_password', !isEmpty)
@@ -126,32 +138,53 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
-    updateProfile: function(e) {
+    saveProfile: function() {
       var viewObj = this;
       var r = this.model.attributes;
+      this.model.save(this.model.attributes, {
+        success: function(userSession, response) {
+          Robin.currentUser.attributes = r;
+          Robin.currentUser.attributes.current_password = "";
+          Robin.layouts.main.onShow();
+          $.growl({message: 'Your account data has been successfully changed'
+          },{
+            element: '#growler-alert',
+            type: 'success',
+            offset: 147,
+            placement: {
+              from: "top",
+              align: "right"
+            },
+          });
+        },
+        error: function(userSession, response) {
+          this.processErrors(response);
+        }
+      });
+    },
+
+    updateProfile: function(e) {
+      var viewObj = this;
       this.form.data('formValidation').validate();
       if (this.form.data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
-        this.model.save(this.model.attributes, {
-          success: function(userSession, response) {
-            Robin.currentUser.attributes = r;
-            Robin.currentUser.attributes.current_password = "";
-            Robin.layouts.main.onShow();
-            $.growl({message: 'Your account data has been successfully changed'
-            },{
-              element: '#growler-alert',
-              type: 'success',
-              offset: 147,
-              placement: {
-                from: "top",
-                align: "right"
-              },
-            });
-          },
-          error: function(userSession, response) {
-            viewObj.processErrors(response);
+        if (this.newAvatar != ""){
+          var oldAvatar = this.model.attributes.avatar_url;
+          if (oldAvatar.length > 0) {
+            filepicker.remove(oldAvatar);
           }
-        });
+          filepicker.store(viewObj.newAvatar,function(new_blob){
+            viewObj.model.attributes.avatar_url = new_blob.url;
+            //
+            viewObj.saveProfile();
+            //
+            viewObj.newAvatar = "";
+          });
+        } else {
+        //
+        viewObj.saveProfile();
+        //
+        }
       }
     },
 
@@ -170,7 +203,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       }, this);
     },
 
-    //Should be replaced with Dashboard when ready
     cancel: function() {
       Robin.stopOtherModules();
       Robin.module('Dashboard').start();

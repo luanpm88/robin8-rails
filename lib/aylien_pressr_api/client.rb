@@ -31,19 +31,64 @@ module AylienPressrApi
       Configuration::VALID_CONFIG_KEYS.each do |key|
         send("#{key}=", merged_options[key])
       end
-
-      Configuration::ENDPOINTS.keys.each do |endpoint|
-        self.class.send(:define_method, "#{endpoint}") do |value=nil, params={}|
-          endpoint, params, config = common_endpoint(value, params, 
-            Configuration::ENDPOINTS[endpoint])
-          Connection.new(endpoint, params, config).request
-        end
-        
-        self.class.send(:define_method, "#{endpoint}!") do |value=nil, params={}|
-          endpoint, params, config = common_endpoint(value, params, 
-            Configuration::ENDPOINTS[endpoint])
-          Connection.new(endpoint, params, config).request!
-        end
+    end
+    
+    # Destructives methods
+    def suggested_authors!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:suggested_authors])
+      Connection.new(endpoint, params, config).request!
+    end
+    
+    def related_stories!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:related_stories])
+      Connection.new(endpoint, params, config).request!
+    end
+    
+    def influencers!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:influencers])
+      Connection.new(endpoint, params, config).request!
+    end
+    
+    def author_stats!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:author_stats])
+      Connection.new(endpoint, params, config).request!
+    end
+    # END Destructives methods
+    
+    
+    def suggested_authors(value=nil, params={})
+      begin
+        suggested_authors!(value, params)
+      rescue => e
+        nil
+      end
+    end
+    
+    def related_stories(value=nil, params={})
+      begin
+        related_stories!(value, params)
+      rescue => e
+        nil
+      end
+    end
+    
+    def influencers(value=nil, params={})
+      begin
+        influencers!(value, params)
+      rescue => e
+        nil
+      end
+    end
+    
+    def author_stats(value=nil, params={})
+      begin
+        author_stats!(value, params)
+      rescue => e
+        nil
       end
     end
 
@@ -65,6 +110,17 @@ module AylienPressrApi
           config[:method] = :post
         when Configuration::ENDPOINTS[:influencers]
           params["skills[]"] = params.delete("skills") if params.key?("skills")
+        when Configuration::ENDPOINTS[:author_stats]
+          endpoint = endpoint.scan(/:(\w+)/).inject("") do |memo, item|
+            memo = endpoint.gsub(":#{item[0]}", params[item[0].to_sym].to_s)
+            memo
+          end
+        when Configuration::ENDPOINTS[:related_stories]
+          config[:method] = :post
+          endpoint = endpoint.scan(/:(\w+)/).inject("") do |memo, item|
+            memo = endpoint.gsub(":#{item[0]}", params[item[0].to_sym].to_s)
+            memo
+          end
       end
       [endpoint, params, config]
     end

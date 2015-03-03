@@ -9,62 +9,7 @@
 </ul>
 <div class="tab-content">
   <div id="targets-blogs" class="tab-pane active" role="tabpanel">
-    <table class="display">
-      <thead>
-        <tr>
-          <th>Author</th>
-          <th>Outlet</th>
-          <th>Level of Interest</th>
-          <th>Average length</th>
-          <th>Pitch?</th>
-          <th>Contact</th>
-        </tr>
-      </thead>
-      
-      <tbody>
-        <% _.each(suggestedAuthors, function(author){ %>
-          <tr>
-            <td>
-              <div class="media targets-author">
-                <a href="#" class="media-left">
-                  <img alt="..." src="http://lorempixel.com/50/50/?0">
-                </a>
-                <div class="media-body">
-                  <h4 class="media-heading">
-                    <%= getFullname(author.first_name, author.last_name) %>
-                  </h4>
-                  <a class="btn btn-xs btn-primary" href="#">
-                    <i class="fa fa-search"></i> Inspect
-                  </a>
-                </div>
-              </div>
-            </td>
-            <td><%= author.blog_name %></td>
-            <td>
-              <div class="progress active">
-                <div class="progress-bar" role="progressbar" aria-valuenow="99.56" 
-                  aria-valuemin="0" aria-valuemax="100" style="width: 99%;">99%
-                </div>
-              </div>
-            </td>
-            <td>Very Short</td>
-            <td>
-              <a href="#" class="btn btn-xs btn-success" disabled="">
-                <i class="fa fa-check"></i> Yes
-              </a> 
-              <a href="#" class="btn btn-xs btn-danger">
-                <i class="fa fa-close"></i> No
-              </a>
-            </td>
-            <td>
-              <a href="#">
-                <i class="fa fa-envelope"></i>
-              </a>
-            </td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
+    
   </div>
   <div id="targets-social" class="tab-pane" role="tabpanel">
     

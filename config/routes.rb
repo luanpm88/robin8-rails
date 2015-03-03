@@ -1,6 +1,11 @@
 require 'sidekiq/web'
 require 'sidetiq/web'
 Rails.application.routes.draw do
+  resources :media_lists, only: [:index, :create, :show, :destroy]
+  resources :contacts, only: [:index, :create, :show]
+  resources :pitches, only: [:index, :create, :show]
+  resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions",
       registrations: "users/registrations", passwords: "users/passwords",
@@ -31,11 +36,15 @@ Rails.application.routes.draw do
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
   post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'
+  post 'robin8_api/related_stories', to: 'robin_api#related_stories'
   get 'robin8_api/influencers', to: 'robin_api#influencers'
+  get 'robin8_api/author_stats', to: 'robin_api#author_stats'
   
   post 'textapi/classify'
   post 'textapi/concepts'
   post 'textapi/summarize'
+
+  post 'followers/add/', to: 'followers#add'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -25,18 +25,31 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       // nesting elements during re-render.
       this.$el.unwrap();
       this.setElement(this.$el);
-      this.$el.find('#release-category').editable();
+      this.$el.find('#release-category').editable({
+        select2: {
+          name: 'category',
+          tags: _.map(iptc, function(item, id) {
+            return {id: id, text: item.label}
+          }),
+          multiple: true,
+          tokenSeparators: [",", " "],
+        },
+        success: function(r, newValue) {}
+      });
 
       this.$el.find('#release-topics').editable({
-        source: _.map(this.textapiResult["concepts"], function(item){
-          return {
-            id: item.topic.replace(/ /g, '_'),
-            text: item.topic
-          }
-        }),
+        inputclass: 'input-large',
         select2: {
-          multiple: true
-        }
+          tags: _.map(this.textapiResult["concepts"], function(item){
+            return {
+              id: item.topic.replace(/ /g, '_'),
+              text: item.topic
+            }
+          }),
+          multiple: true,
+          tokenSeparators: [",", " "]
+        },
+        success: function(r, newValue) {}
       });
     },
     openTargetsTab: function(){
