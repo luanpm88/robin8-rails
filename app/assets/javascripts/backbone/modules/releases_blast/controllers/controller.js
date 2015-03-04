@@ -90,18 +90,31 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(pitchTabView);
 
+      var grouped = this.module.pitchContactsCollection.groupBy(function(c) {
+        return c.get('origin');
+      });
+
       var emailTargetsCollection = new ReleasesBlast.EmailTargetsCollection();
-      _.chain(_.range(7)).map(function(i) {
-        return new ReleasesBlast.EmailTargetModel({name: 'Target ' + i, outlet: i});
-      }).each(function(m) { emailTargetsCollection.add(m); })
+      var emails = grouped['blog'] || [];
+      _.chain(emails).map(function(e) {
+        return new ReleasesBlast.EmailTargetModel({
+          name: [e.get('first_name'), e.get('last_name')].join(' '),
+          outlet: 1
+        });
+      }).each(function(e) { emailTargetsCollection.add(e); });
+
       var emailTargetsView = new ReleasesBlast.EmailTargetsView({
         collection: emailTargetsCollection
       });
 
       var twitterTargetsCollection = new ReleasesBlast.TwitterTargetsCollection();
-      _.chain(_.range(5)).map(function(i) {
-        return new ReleasesBlast.TwitterTargetModel({name: 'Target ' + i, handle: '@target' + i});
-      }).each(function(m) { twitterTargetsCollection.add(m); });
+      var twitters = grouped['influencer'] || [];
+      _.chain(twitters).map(function(t) {
+        return new ReleasesBlast.TwitterTargetModel({
+          name: [t.get('first_name'), t.get('last_name')].join(' '),
+          handle: '@' + t.get('twitter_screen_name')
+        })
+      }).each(function(t) { twitterTargetsCollection.add(t); });
       var twitterTargetsView = new ReleasesBlast.TwitterTargetsView({
         collection: twitterTargetsCollection
       });
@@ -119,7 +132,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       influencersCollection.findInfluencers(params, {
         success: function(collection, data, response){
           var influencersCompositeView = new ReleasesBlast.SocialTargetsCompositeView({
-            collection: collection
+            collection: collection,
+            pitchContactsCollection: self.module.pitchContactsCollection
           });
           
           self.module.searchLayout.searchResultRegion.show(influencersCompositeView);
