@@ -16,6 +16,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
+      $('.signup-tag').text('sign in');
     },
 
     login: function(e) {
@@ -31,7 +32,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
           if (token) {
             $("meta[name='csrf-token']").attr('content', token);
             Robin.finishSignIn(response);
-            window.history.pushState('', '', '/');
+            // window.history.pushState('', '', '/');
           }
         },
         error: function(userSession, response) {

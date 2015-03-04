@@ -24,7 +24,7 @@ Robin.finishSignIn = function(data){
   Robin.vent.trigger("authentication:logged_in");
   Robin.loadPleaseWait();
   $('body').removeClass('login');
-  Robin.setUrl('/#dashboard');
+  window.history.pushState('', '', '/');
 };
 
 Robin.loadPleaseWait = function(){
