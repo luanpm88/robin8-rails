@@ -1,22 +1,22 @@
 @font-face {
     font-family: ProximaNova;
-    src: url('/assets/ProximaNova-Regular.otf');
+    src: asset-url("ProximaNova-Regular.otf");
 }
 @font-face {
     font-family: ProximaNovaLight;
-    src: url('/assets/ProximaNova-Light.otf');
+    src: asset-url('ProximaNova-Light.otf');
 }
 @font-face {
     font-family: ProximaNovaSemibold;
-    src: url('/assets/ProximaNova-Semibold.otf');
+    src: asset-url('ProximaNova-Semibold.otf');
 }
 @font-face {
     font-family: ProximaNovaBold;
-    src: url('/assets/ProximaNova-Bold.otf');
+    src: asset-url('ProximaNova-Bold.otf');
 }
 @font-face {
     font-family: ProximaNovaBlack;
-    src: url('/assets/ProximaNova-Black.otf');
+    src: asset-url('ProximaNova-Black.otf');
 }
 body.login {
 
@@ -55,7 +55,7 @@ body.login {
   /* HEADER */
 
   header{
-    background:url("/assets/hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+    background: image-url("hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
     position: relative;
     text-align: center;
     min-height: 550px;
@@ -63,7 +63,7 @@ body.login {
   }
 
   header h1.logo{
-    background: url("/assets/header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
+    background: image-url("header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
       color: #ffffff;
       font-family: "ProximaNovaBlack";
       font-size: 58px;
@@ -87,7 +87,7 @@ body.login {
   }
 
   header a.learn-more{
-      background: url("/assets/learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+      background: image-url("learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
       bottom: 20px;
       color: #ffffff;
       display: block;
@@ -105,7 +105,7 @@ body.login {
 
   .screenpane{
 
-    /*background:url("/assets/screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
+    /*background: image-url("screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
   }
 
   .screenpane .videoembedsection{
@@ -197,7 +197,7 @@ body.login {
   }
 
   .bgpane{
-    background:url("/assets/bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+    background: image-url("bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
     background-size: cover;
     min-height: 640px;
   }
@@ -231,7 +231,7 @@ body.login {
   /* FOOTER */
 
   .ft-lead{
-    background: url("/assets/footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+    background: image-url("footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
       min-height: 300px;
       padding-bottom: 40px;
       text-align: center;
@@ -611,7 +611,7 @@ body.login {
   }
 
   .goback{
-      background: url("/assets/back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+      background: image-url("back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
       margin: 20px 0 40px;
       padding-left: 30px;
   }
@@ -701,7 +701,7 @@ body.login {
   }
 
   table .updown a{
-    background: url("/assets/updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: image-url("updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
       display: block;
       text-indent: -5555px;
       margin-top: 6px;
@@ -751,7 +751,7 @@ body.login {
       padding: 20px;
   } 
   .ui-selectmenu-button span.ui-selectmenu-text {
-      background: url("/assets/select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
+      background: image-url("select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
       margin-right: 15px;
       padding: 9px 20px;
   }
@@ -853,7 +853,7 @@ body.login {
   }
 
   .nav a.logo {
-      background: url("/assets/robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+      background: image-url("robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
       display: block;
       height: 38px;
       margin-left: 110px;
@@ -871,7 +871,7 @@ body.login {
 
 
   .nav.fixedscroll a.logo{
-    background: url("/assets/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
   }
 
   .nav ul{
@@ -960,7 +960,7 @@ body.login {
 
   /* INTERIOR HEADER STUFF */
   header.int-header {
-      background: url("/assets/int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+      background: image-url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
       min-height: 340px; 
   }
 
@@ -1125,11 +1125,11 @@ body.login {
   }
 
   .btn-facebook span{
-      background: url("/assets/Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+      background: image-url("Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
 
   }
   .btn-google-plus span{
-      background: url("/assets/Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+      background: image-url("Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
   }
 
   .btn-google-plus:hover {
@@ -1275,7 +1275,7 @@ body.login {
 
     .nav a.logo ,
     .nav.fixedscroll a.logo{
-      background: url("/assets/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+      background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
     }
     .top-bar .toggle-topbar.menu-icon a {
         color: #000000; 
