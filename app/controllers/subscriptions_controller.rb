@@ -18,7 +18,7 @@ class SubscriptionsController < ApplicationController
   def create
     errors,resp = BlueSnap::Shopper.new(request, current_user, params, @package)
     if errors.blank?
-      # begin
+      begin
         @subscription = current_user.subscriptions.create!(
             package_id: @package.id,
             bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
@@ -26,9 +26,9 @@ class SubscriptionsController < ApplicationController
             next_charge_date: nil # to be set by invoice generation
         )
         flash[:success]  = "Subscribed Sucessfully" #take to any page as required
-      # rescue Exception=> ex
-      #   flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
-      # end
+      rescue Exception=> ex
+        flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
+      end
     else
       flash[:errors] = errors
     end

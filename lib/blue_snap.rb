@@ -1,9 +1,7 @@
 module BlueSnap
-  base_uri = "https://sandbox.bluesnap.com"
-  #user httparty as listed below for complete API integration
   class Product
     def self.find(sku_id = 300406)
-      url = "https://sandbox.bluesnap.com/services/2/catalog/products/#{sku_id}"
+      url = "#{Rails.application.secrets[:bluesnap_base_url]}/catalog/products/#{sku_id}"
       Request.get(url)
     end
   end
@@ -11,7 +9,7 @@ module BlueSnap
   class Shopper
 
     def self.get_subscription_id(shopper_id)
-      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       begin
         error,hash = Request.get(url)
         hash[:shopper_subscriptions][:ordering_shopper][:shopper_id] if error.blank?
@@ -21,10 +19,10 @@ module BlueSnap
     end
 
 
-    URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
+    URL = "#{Rails.application.secrets[:bluesnap_base_url]}/batch/order-placement"
 
     def self.new request,user_profile,params,package
-      # begin
+      begin
         errors = BlueSnap::Shopper.validate_params(params,user_profile)
         if errors.blank?
           shopper = {
@@ -36,9 +34,9 @@ module BlueSnap
         else
           return errors,nil
         end
-      # rescue Exception => ex
-      #   return ["Something is not right with your payment. Please try again"],nil
-      # end
+      rescue Exception => ex
+        return ["Something is not right with your payment. Please try again"],nil
+      end
     end
 
     def self.validate_params(params,user)
@@ -147,7 +145,7 @@ module BlueSnap
   class Subscription
     def self.destroy(subscription_id,shopper_id,sku_id)
       begin
-        url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
+        url = "#{Rails.application.secrets[:bluesnap_base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id, "underlying-sku-id"=>sku_id, "status"=> "C","shopper-id"=>shopper_id.to_s} # status C is for cancel :s
         Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
@@ -157,8 +155,9 @@ module BlueSnap
     end
 
     def self.update(subscription_id,shopper_id ,new_sku_id)
+      puts "sub id is :#{subscription_id} shopper is :#{shopper_id} and #{new_sku_id}  ************************"
       begin
-        url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
+        url = "#{Rails.application.secrets[:bluesnap_base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id"=>new_sku_id.to_s, "status"=> "A","shopper-id"=>shopper_id.to_s}
         Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
@@ -167,13 +166,13 @@ module BlueSnap
     end
 
     def self.find_all_by_shopper_id(shopper_id)
-      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       errors,resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions] if errors.blank?
     end
 
     def self.find_last_by_shopper_id(shopper_id)
-      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       errors,resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions][:subscription].class == Array ? resp[:shopper_subscriptions][:subscriptions][:subscription].last : resp[:shopper_subscriptions][:subscriptions][:subscription] if errors.blank?
     end
@@ -257,7 +256,7 @@ end
 
 # class BlueSnap
 #   include HTTParty
-#   base_uri 'https://sandbox.bluesnap.com'
+#   Rails.application.secrets[:bluesnap_base_url] 'https://sandbox.bluesnap.com'
 #   def initialize(u, p)
 #     @auth = {username: u, password: p}
 #   end
