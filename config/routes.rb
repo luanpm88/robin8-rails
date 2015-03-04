@@ -13,10 +13,15 @@ Rails.application.routes.draw do
       invitations: "users/invitations",  omniauth_callbacks: "users/omniauth_callbacks",
       confirmations: "users/confirmations" }
 
+  get 'pricing' => 'pages#pricing'
+  get 'subscribe/:slug' => 'subscriptions#new'
+  get 'upgrade/:slug' => 'subscriptions#edit'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
   get 'users/get_current_user' => 'users#get_current_user'
   delete '/users/disconnect_social' => 'users#disconnect_social'
+  # resources :blue_snap
+  resources :subscriptions
   post '/users/follow' => 'users#follow'
 
   resources :posts do

@@ -1,0 +1,148 @@
+<section id="featured1" class="signupFields">
+  <div class="inwrap">
+    <div class="container-fluid content">
+      <div class="row content">
+        <div class="col-xs-12">
+          <div class="title text-center wow fadeInDown">
+            <h1>Complete below</h1>
+          </div>
+          <div class="subtitle text-center wow fadeInUp">
+          </div>
+        </div>
+      </div>
+      <div class="row top">
+        <div class="col-md-12">
+          <div class="plan-box">
+            <span class="your-plan">Your plan:</span>
+                <span class="package">
+                  Package Selected:
+                  <span class="selected"><%=@package.slug%></span>
+                </span>
+            <span class="payment">Payments every <span class="selected"><%=@package.interval == 365 ? "Year" : "Month"%></span></span><br/>
+                <span class="total-down">
+                  Total charged now: <span class="value"><%=@package.price%></span><br/>
+                </span>
+            <span class="next-date">Next charge at <span class="date"><%=(Time.now.utc + @package.interval.days).strftime("%d-%m-%Y")%></span></span>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+      <%=flash[:success]%>
+      <div class="row fields"></div>
+      <%flash[:errors].each do |e|%>
+          <p><%=e%></p>
+      <%end if flash[:errors]%>
+
+      <%= form_for @subscription, :html =>{:class=>"frmContact",:id=>"checkout-form"} do |f|  %>
+          <div class="row">
+            <div class="col-sm-offset-1 col-sm-10">
+              <h3 class="title">Checkout Form</h3>
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Title</label>
+                  <div class="col-sm-8">
+                    <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "form-control"} %>
+                  </div>
+                </div>
+                <input type="hidden" name="slug" value="<%=@package.slug%>" />
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">First Name</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Last Name <%= current_user.last_name %></label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Address</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "address1" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">City</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "city" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Zip</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "zip" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">State</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "state" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Country</label>
+                  <div class="col-sm-8">
+                    <%=select_tag "contact[country]",options_for_select(Country.all)%>
+                    <%#=text_field "contact", "country" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Phone</label>
+                  <div class="col-sm-8">
+                    <%=text_field "contact", "phone" , :class=>"form-control", :autocomplete=>"off" %>
+                  </div>
+                </div>
+
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Credit Card Type</label>
+                  <div class="col-sm-8">
+                    <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'master'],["American Express", 'american_express'],["Discover", 'discover']], {}, {:class => "form-control"} %>
+                  </div>
+                </div>
+
+
+                <div class="form-group col-sm-6">
+                  <label for="ccno" class="col-sm-4 control-label">Credit Card Number</label>
+                  <div class="col-sm-8">
+                    <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="cvc" class="col-sm-4 control-label">CVC</label>
+                  <div class="col-sm-8">
+                    <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv" %>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="cvc" class="col-sm-4 control-label">Exp. Date</label>
+                  <div class="col-sm-6">
+                    <%=date_select("card", "expiration_date", {:discard_day => true, :order=>[:month, :year], :start_year => Time.now.utc.year, :end_year=>Time.now.utc.year + 10, :include_blank => true}, {:class=>"form-control"}) %>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div>
+            <%= submit_tag "SUBMIT", :class=>"btn-lg" %>
+          </div>
+      <%end%>
+    </div>
+  </div>
+</section>
+
+
+<div class="clearfix"></div>
+<script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
+<script>BlueSnap.publicKey = "10001$e1c3042d3facf7bd48f4fe4149c0711ff96c350c4ff41c7a0515c06e32322531c6d609d45f292bc006907086963d4cdef11849a4dd8eb6d629cbd2fed35f7ac44b25ae61a5c9b449bad56802e7bed9a7530c71855cd3c698a90b03a3c46de1074b0af2773e0223ea87c86b5a86e7eab6cf50bdc6063864a422e1d03acd6d1e03dcaab283c126fa576871e4c233c6383658a9cc048d4aabaa2519fc4088a7b62e9ee670b2fe340969d1fefb5b1aab7d8f3339f1c4e974baeffcf00c2f7d6da5327341e00fa89cd27890d01f9cabf7f082a7cda87b86694b684485100309a14f96ebefcd28b64761c26c51f83c5f1bbe31564dac6863f5888877d97e5cbde56de7";
+BlueSnap.setTargetFormId("checkout-form");
+</script>
