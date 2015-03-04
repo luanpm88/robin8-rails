@@ -53,6 +53,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-timeago'
   gem 'rails-assets-DataTables'
   gem 'rails-assets-jquery.caret'
+  gem 'rails-assets-bootstrap-switch'
 end
 
 gem 'devise'

@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   post 'robin8_api/related_stories', to: 'robin_api#related_stories'
   get 'robin8_api/influencers', to: 'robin_api#influencers'
   get 'robin8_api/author_stats', to: 'robin_api#author_stats'
+  get 'robin8_api/authors', to: 'robin_api#authors'
   
   post 'textapi/classify'
   post 'textapi/concepts'

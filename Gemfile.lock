@@ -245,6 +245,9 @@ GEM
     rails-assets-bootstrap-sass (3.3.3)
       rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-sweetalert (0.4.3)
+    rails-assets-bootstrap-switch (3.3.2)
+      rails-assets-bootstrap (>= 2.3.2)
+      rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-tagsinput (0.3.14)
     rails-assets-bootstrap.growl (2.0.1)
       rails-assets-bootstrap (>= 2.0.0)
@@ -432,6 +435,7 @@ DEPENDENCIES
   rails-assets-blueimp-gallery!
   rails-assets-bootstrap-sass!
   rails-assets-bootstrap-sweetalert
+  rails-assets-bootstrap-switch
   rails-assets-bootstrap-tagsinput
   rails-assets-bootstrap.growl (= 2.0.1)!
   rails-assets-chance

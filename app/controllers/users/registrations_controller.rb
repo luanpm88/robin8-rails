@@ -18,7 +18,7 @@ module Users
         sign_in resource_name, resource, bypass: true
         respond_with resource, location: after_update_path_for(resource)
         if @new_avatar!=@old_avatar
-          AmazonStorageWorker.perform_async("user", self.resource.id, @new_avatar, @old_avatar)
+          AmazonStorageWorker.perform_async("user", self.resource.id, @new_avatar, @old_avatar, :avatar_url)
         end
       else
         clean_up_passwords resource

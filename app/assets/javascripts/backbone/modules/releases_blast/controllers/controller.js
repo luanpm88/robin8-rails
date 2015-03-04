@@ -60,6 +60,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           targetsTabLayout.socialRegion.show(socialTargetsView);
         }
       });
+      
+      var searchLayout = new ReleasesBlast.SearchLayout();
+      targetsTabLayout.searchRegion.show(searchLayout);
+      
+      var searchCriteriaView = new ReleasesBlast.SearchCriteriaView();
+      searchLayout.searchCriteriaRegion.show(searchCriteriaView);
     },
     pitch: function(params){
       Robin.layouts.main.getRegion('content').show(this.module.layout);
