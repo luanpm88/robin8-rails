@@ -16,6 +16,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
+      $('.signup-tag').text('sign up');
       $('html, body').animate({
         scrollTop: 0
       }, 600);
