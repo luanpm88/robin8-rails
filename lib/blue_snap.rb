@@ -55,8 +55,8 @@ module BlueSnap
       # errors << "Credit Card is not valid" if params[:encryptedCreditCard].length != 16
       errors << "CVC cannot be blank." if !params[:encryptedCvv].present?
       errors << "Credit Card Type cannot be blank." if !params[:card][:credit_card_type].present?
-      errors << "Expiration Month cannot be blank." if !params[:card][:"expiration_date(2i)"].present?
-      errors << "Expiration Year cannot be blank." if !params[:card][:"expiration_date(1i)"].present?
+      errors << "Expiration Month cannot be blank." if params[:card][:expiration_month].blank? #!params[:card][:"expiration_date(2i)"].present?
+      errors << "Expiration Year cannot be blank." if  params[:card][:expiration_year].blank? # !params[:card][:"expiration_date(1i)"].present?
       return errors
     end
 
@@ -109,8 +109,8 @@ module BlueSnap
           "encrypted-card-number" => params[:encryptedCreditCard],
           "encrypted-security-code" => params[:encryptedCvv],
           "card-type"=>params[:card][:credit_card_type].upcase,
-          "expiration-month" => params[:card][:"expiration_date(2i)"],
-          "expiration-year" => params[:card][:"expiration_date(1i)"]
+          "expiration-month" => params[:expiration_month], #params[:card][:"expiration_date(2i)"],
+          "expiration-year" => params[:expiration_year] #params[:card][:"expiration_date(1i)"]
       }
     end
 
@@ -229,7 +229,7 @@ module BlueSnap
     def self.parse(response)
       puts"orignal is :#{response.inspect}"
       resp = Hash.from_xml(response.body).deep_symbolize_keys
-      puts resp
+      puts get_errors(resp)
       return get_errors(resp),nil  if response.code.to_i == 400 || response.code.to_i == 401
       return nil,resp
     end

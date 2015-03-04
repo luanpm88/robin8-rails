@@ -1,8 +1,9 @@
 class SubscriptionsController < ApplicationController
+
   before_action :authenticate_user!
 
   skip_before_filter :require_active_subscription
-  layout false
+
   #before_filter :force_ssl
 
   before_filter :require_package ,:only => [:new,:create,:edit,:update]
@@ -11,6 +12,7 @@ class SubscriptionsController < ApplicationController
 
   def new
     @subscription = Subscription.new
+    render :layout => "website"
   end
 
   def create
@@ -31,7 +33,7 @@ class SubscriptionsController < ApplicationController
     else
       flash[:errors] = errors
     end
-    redirect_to :pricing
+    redirect_to :back
   end
 
   def edit #upgrade downgrade
