@@ -1,9 +1,7 @@
 module BlueSnap
-  base_uri = "https://sandbox.bluesnap.com"
-  #user httparty as listed below for complete API integration
   class Product
     def self.find(sku_id = 300406)
-      url = "https://sandbox.bluesnap.com/services/2/catalog/products/#{sku_id}"
+      url = "#{Rails.application.secrets[:bluesnap_base_url]}/catalog/products/#{sku_id}"
       Request.get(url)
     end
   end
@@ -11,7 +9,7 @@ module BlueSnap
   class Shopper
 
     def self.get_subscription_id(shopper_id)
-      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       begin
         error,hash = Request.get(url)
         hash[:shopper_subscriptions][:ordering_shopper][:shopper_id] if error.blank?
@@ -21,7 +19,7 @@ module BlueSnap
     end
 
 
-    URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
+    URL = "#{Rails.application.secrets[:bluesnap_base_url]}/batch/order-placement"
 
     def self.new request,user_profile,params,package
       begin
@@ -55,8 +53,8 @@ module BlueSnap
       # errors << "Credit Card is not valid" if params[:encryptedCreditCard].length != 16
       errors << "CVC cannot be blank." if !params[:encryptedCvv].present?
       errors << "Credit Card Type cannot be blank." if !params[:card][:credit_card_type].present?
-      errors << "Expiration Month cannot be blank." if !params[:card][:"expiration_date(2i)"].present?
-      errors << "Expiration Year cannot be blank." if !params[:card][:"expiration_date(1i)"].present?
+      errors << "Expiration Month cannot be blank." if params[:card][:expiration_month].blank? #!params[:card][:"expiration_date(2i)"].present?
+      errors << "Expiration Year cannot be blank." if  params[:card][:expiration_year].blank? # !params[:card][:"expiration_date(1i)"].present?
       return errors
     end
 
@@ -109,8 +107,8 @@ module BlueSnap
           "encrypted-card-number" => params[:encryptedCreditCard],
           "encrypted-security-code" => params[:encryptedCvv],
           "card-type"=>params[:card][:credit_card_type].upcase,
-          "expiration-month" => params[:card][:"expiration_date(2i)"],
-          "expiration-year" => params[:card][:"expiration_date(1i)"]
+          "expiration-month" => params[:card][:expiration_month], #params[:card][:"expiration_date(2i)"],
+          "expiration-year" => params[:card][:expiration_year] #params[:card][:"expiration_date(1i)"]
       }
     end
 
@@ -147,7 +145,7 @@ module BlueSnap
   class Subscription
     def self.destroy(subscription_id,shopper_id,sku_id)
       begin
-        url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
+        url = "#{Rails.application.secrets[:bluesnap_base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id, "underlying-sku-id"=>sku_id, "status"=> "C","shopper-id"=>shopper_id.to_s} # status C is for cancel :s
         Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
@@ -157,8 +155,9 @@ module BlueSnap
     end
 
     def self.update(subscription_id,shopper_id ,new_sku_id)
+      puts "sub id is :#{subscription_id} shopper is :#{shopper_id} and #{new_sku_id}  ************************"
       begin
-        url = "https://sandbox.bluesnap.com/services/2/subscriptions/#{subscription_id}"
+        url = "#{Rails.application.secrets[:bluesnap_base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id"=>new_sku_id.to_s, "status"=> "A","shopper-id"=>shopper_id.to_s}
         Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
@@ -167,13 +166,13 @@ module BlueSnap
     end
 
     def self.find_all_by_shopper_id(shopper_id)
-      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       errors,resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions] if errors.blank?
     end
 
     def self.find_last_by_shopper_id(shopper_id)
-      url = "https://sandbox.bluesnap.com/services/2/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       errors,resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions][:subscription].class == Array ? resp[:shopper_subscriptions][:subscriptions][:subscription].last : resp[:shopper_subscriptions][:subscriptions][:subscription] if errors.blank?
     end
@@ -191,9 +190,9 @@ module BlueSnap
       request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
       request.body = data
       request["Content-Type"] ='application/xml'
-      puts"************************************************************************"
-      puts data
       response = http.request(request)
+      puts"************************************************************************"
+      puts "response is #{response} AND #{response.body}***************************"
       Response.parse(response)
     end
 
@@ -205,8 +204,6 @@ module BlueSnap
       request = Net::HTTP::Put.new(uri.request_uri)
       request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
       request.body = data
-      puts "******************************"
-      puts data
       request["Content-Type"] ='application/xml'
       response = http.request(request)
       puts "response is #{response} AND #{response.body}***************************"
@@ -227,18 +224,17 @@ module BlueSnap
 
   class Response
     def self.parse(response)
-      puts"orignal is :#{response.inspect}"
       resp = Hash.from_xml(response.body).deep_symbolize_keys
-      puts resp
       return get_errors(resp),nil  if response.code.to_i == 400 || response.code.to_i == 401
       return nil,resp
     end
 
     def self.get_errors(resp)
-      resps = errs = []
-      resp[:messages][:message].collect{|x|  resps << x.values if x.class == Hash}
-      resps.collect{|i| errs << i[1] if i.class == Array }
-      errs
+      # resps = errs = []
+      # resp[:messages][:message].collect{|x|  resps << x.values if x.class == Hash}
+      # resps.collect{|i| errs << i[1] if i.class == Array }
+      # errs
+      ["Your card was declined. Please confirm your card details below and try again."]
     end
   end
 
@@ -260,7 +256,7 @@ end
 
 # class BlueSnap
 #   include HTTParty
-#   base_uri 'https://sandbox.bluesnap.com'
+#   Rails.application.secrets[:bluesnap_base_url] 'https://sandbox.bluesnap.com'
 #   def initialize(u, p)
 #     @auth = {username: u, password: p}
 #   end

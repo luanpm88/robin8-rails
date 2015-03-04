@@ -8,7 +8,7 @@ class Subscription < ActiveRecord::Base
   validates :user, :package, :bluesnap_shopper_id, :recurring_amount, presence: true
 
   def notify_user
-    #send email to user about sucessfully transaction
+    UserMailer.successfull_subscription(self).deliver
   end
 
   def is_cancelled?

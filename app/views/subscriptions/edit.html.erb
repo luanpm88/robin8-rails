@@ -1,58 +1,102 @@
-<section id="featured1" class="signupFields">
-  <div class="inwrap">
-    <div class="container-fluid content">
-      <div class="row content">
-        <div class="col-xs-12">
-          <div class="title text-center wow fadeInDown">
-            <h1>Complete below</h1>
-          </div>
-          <div class="subtitle text-center wow fadeInUp">
-          </div>
-        </div>
-      </div>
-      <div class="row top">
-        <div class="col-md-12">
-          <div class="plan-box">
-            <span class="your-plan">Your plan:</span>
-                <span class="package">
-                  Package Selected:
-                  <span class="selected"><%=@package.slug%></span>
-                </span>
-            <span class="payment">Payments every <span class="selected"><%=@package.interval == 365 ? "Year" : "Month"%></span></span><br/>
-                <span class="total-down">
-                  Total charged: <span class="value"><%=@package.price%></span><br/>
-                </span>
-            <span class="next-date">Next Charge at <span class="date"><%=(Time.now.utc + @package.interval.days).strftime("%d-%m-%Y")%></span></span>
-            <div class="clearfix"></div>
-          </div>
-        </div>
-      </div>
-      <%=flash[:success]%>
-      <div class="row fields"></div>
-      <%flash[:errors].each do |e|%>
-          <p><%=e%></p>
-      <%end if flash[:errors]%>
+<header class="formheader">
+  <div class="row">
+    <div class="large-12 columns">
+      <h1 class="logo">Robin8</h1>
+      <h2 class="signup-tag">Upgrade</h2>
+    </div>
+  </div>
+</header>
 
-      <%= form_for @subscription, :html =>{:class=>"frmContact",:id=>"checkout-form"} do |f|  %>
+
+<% if flash[:success].present? %>
+    <h2><%=flash[:success]%></h2>
+<%else%>
+    <%= form_for @subscription, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
+        <div class="row">
+          <div class="small-12 columns">
+            <div class="goback">
+              <a href="/pricing">Go back</a>
+            </div>
+          </div>
+        </div>
+        <div class="form-step step3">
+
           <div class="row">
-            <div class="col-sm-offset-1 col-sm-10">
-              <h3 class="title">Upgrade Now</h3>
-              <div class="row">
-                <input type="hidden" name="slug" value="<%=@package.slug%>" />
-              </div>
+            <div class="small-12 columns">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <th class="">Plan</th>
+                  <th></th>
+                  <th class="removecolumn"></th>
+                  <th class="price">Price</th>
+                </tr>
+                <tr id="checkout-item-1">
+                  <td class="">
+                    <%=@package.name.split(' ')[0]%> Plan
+                  </td>
+                  <td>
+                    <select name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
+                      <option value="<%=@package.slug%>">Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
+                      <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
+                    </select>
+                  </td>
+                  <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
+                  <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
+
+                  <input type="hidden" id="nbd-<%=@package.slug%>" value="<%=Date.today + @package.interval.days%>"/>
+                  <input type="hidden" id="nbd-<%=@package.monthly_package.slug%>" value="<%=Date.today+ @package.monthly_package.interval.days%>"/>
+
+                  <td class="remove">
+                    <a class="remove" data-remove="checkout-item-1">remove</a>
+                  </td>
+                  <td class="price" id="price-sub">
+                    <%=(@package.price).to_i %>
+                  </td>
+                </tr>
+                <tr class="totals">
+                  <td class="">
+                    TOTAL
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td class="price" id="price-total">
+                    <%=(@package.price).to_i %>
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
           <div>
-            <%= submit_tag "UPGRADE", :class=>"btn-lg" %>
+            <%=flash[:errors] if flash[:errors].present?%>
           </div>
-      <%end%>
-    </div>
-  </div>
-</section>
+          <div class="signup-footer ftform" id="checkoutdata">
+            <div class="row">
+              <div class="small-12 columns">
+                <h3>Payment Information</h3>
+              </div>
+            </div>
+            <input type="hidden" value="<%=@package.slug%>" name="slug" id="slug"/>
+            <div class="row">
+              <div class="small-12 columns">
+                <div class="submit-wrap">
+                  <%= submit_tag "UPGRADE", :class=>"button button-signup nextstep" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    <%end%>
+<%end%>
 
 
-<div class="clearfix"></div>
-<script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
-<script>BlueSnap.publicKey = "10001$e1c3042d3facf7bd48f4fe4149c0711ff96c350c4ff41c7a0515c06e32322531c6d609d45f292bc006907086963d4cdef11849a4dd8eb6d629cbd2fed35f7ac44b25ae61a5c9b449bad56802e7bed9a7530c71855cd3c698a90b03a3c46de1074b0af2773e0223ea87c86b5a86e7eab6cf50bdc6063864a422e1d03acd6d1e03dcaab283c126fa576871e4c233c6383658a9cc048d4aabaa2519fc4088a7b62e9ee670b2fe340969d1fefb5b1aab7d8f3339f1c4e974baeffcf00c2f7d6da5327341e00fa89cd27890d01f9cabf7f082a7cda87b86694b684485100309a14f96ebefcd28b64761c26c51f83c5f1bbe31564dac6863f5888877d97e5cbde56de7";
-BlueSnap.setTargetFormId("checkout-form");
+<script>
+    function updatePackage(){
+        $('#slug').val($('#payment-option').val());
+        $('#price-total').html($('#'+$('#slug').val()).val());
+        $('#t-price').html($('#'+$('#slug').val()).val() );
+        $('#price-sub').html($('#'+$('#slug').val()).val() );
+        $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
+    }
 </script>
