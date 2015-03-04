@@ -7,7 +7,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     events: {
       "click .inspect":         "openModal",
       "click a.btn-danger":     "removeAuthor",
-      "click a.btn-success":    "addAuthor"
+      "click a.btn-success":    "addAuthor",
+      "click a.contact-author": "openContactAuthorModal"
     },
     toggleAddRemove: function(e) {
       e.preventDefault();
@@ -58,6 +59,16 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       layout.statsRegion.show(authorStatItemView);
       layout.relatedStoriesRegion.show(relatedStoriesCollection);
+    },
+    openContactAuthorModal: function(e){
+      e.preventDefault();
+      
+      var contactAuthorFormView = new ReleasesBlast.ContactAuthorFormView({
+        model: this.model,
+        releaseModel: this.releaseModel
+      });
+      
+      Robin.modal.show(contactAuthorFormView);
     },
     wordMapper: function(word_count){
       if (word_count <= 150){
