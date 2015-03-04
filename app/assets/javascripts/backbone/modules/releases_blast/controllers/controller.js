@@ -148,7 +148,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       authorsCollection.fetchAuthors(params, {
         success: function(collection, data, response){
           var authorsCompositeView = new ReleasesBlast.AuthorsCompositeView({
-            collection: collection
+            collection: collection,
+            pitchContactsCollection: self.module.pitchContactsCollection
           });
           
           self.module.searchLayout.searchResultRegion.show(authorsCompositeView);
