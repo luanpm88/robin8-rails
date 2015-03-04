@@ -1,6 +1,6 @@
 class AmazonDeleteWorker
   include Sidekiq::Worker
-  
+
   def perform(stored_image)
     if stored_image.include? "http://s3.amazonaws.com"
       access_key_id = Rails.application.secrets.amazon[:key_id]
