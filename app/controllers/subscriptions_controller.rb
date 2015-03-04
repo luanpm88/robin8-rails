@@ -49,7 +49,7 @@ class SubscriptionsController < ApplicationController
       )
       flash[:success] = "Your package has been changed" # take to any page as required.
     end
-    redirect_to :back
+    redirect_to :root
   end
 
   def destroy #to cancel account
