@@ -54,6 +54,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-DataTables'
   gem 'rails-assets-jquery.caret'
   gem 'rails-assets-bootstrap-switch'
+  gem 'rails-assets-select2-bootstrap-css'
 end
 
 gem 'devise'

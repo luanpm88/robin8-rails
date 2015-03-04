@@ -282,6 +282,8 @@ GEM
     rails-assets-sass-bootstrap-glyphicons (1.0.0)
     rails-assets-select2 (3.5.2)
       rails-assets-jquery (>= 1.7.1)
+    rails-assets-select2-bootstrap-css (1.4.6)
+      rails-assets-select2 (>= 3.3.2, < 4)
     rails-assets-spinkit (1.0.1)
     rails-assets-timeago (1.4.1)
       rails-assets-jquery (>= 1.4)
@@ -467,6 +469,7 @@ DEPENDENCIES
   rails-assets-progressjs!
   rails-assets-sass-bootstrap-glyphicons!
   rails-assets-select2
+  rails-assets-select2-bootstrap-css
   rails-assets-spinkit
   rails-assets-timeago
   rails-assets-underscore.string

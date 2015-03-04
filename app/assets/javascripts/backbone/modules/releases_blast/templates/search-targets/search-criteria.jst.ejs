@@ -10,52 +10,47 @@
   <form role="form" class="form" id="find-authors">
     <div class="form-group">
       <label>Keywords</label>
-      <input type="text" autocomplete="off" placeholder="Enter keywords" class="typeahead form-control">
+      <input type="text" name="keywords" autocomplete="off" placeholder="Enter keywords" class="typeahead form-control">
     </div>
     <div class="form-group">
       <label>Contact name</label>
-      <input type="text" autocomplete="off" placeholder="Contact's first and last name" class="typeahead form-control">
+      <input type="text" name="contact_name" autocomplete="off" placeholder="Contact's first and last name" class="typeahead form-control">
     </div>
     <div class="form-group">
       <label>Outlet</label>
-      <input type="text" autocomplete="off" placeholder="Outlet website or blog name" class="typeahead form-control">
+      <input type="text" name="outlet" autocomplete="off" placeholder="Outlet website or blog name" class="typeahead form-control">
     </div>
-    <div class="form-group form-inline">
+    <div class="form-group">
       <label>Location</label>
-      <br>
-      <input type="text" autocomplete="off" placeholder="City" class="typeahead form-control">
-      <input type="text" autocomplete="off" placeholder="State/Province" class="typeahead form-control">
-      <input type="text" autocomplete="off" placeholder="Country" class="typeahead form-control">
+      <input type="text" name="location" autocomplete="off" 
+        placeholder="City or State/Province or Country" class="typeahead form-control">
     </div>
     <button class="btn btn-success pull-right btn-small" type="submit" id="social-search">Search</button>
   </form>
   
-  <form role="form" class="form-inline hide" id="find-influencers">
+  <form role="form" class="form hide" id="find-influencers">
     <div class="form-group">
       <label>Show me influencers for</label>
-      <input type="text" autocomplete="off" id="topic-input" placeholder="Topic" class="typeahead form-control">
+      <input type="text" autocomplete="off" name="topics" 
+        id="topic-input" placeholder="Topic" class="form-control">
     </div>
     <div class="form-group">
       <label>From</label>
-      <input type="text" autocomplete="off" id="location-input" placeholder="Location" class="typeahead form-control">
+      <input type="text" name="location" autocomplete="off" 
+        id="location-input" placeholder="Location" class="form-control">
     </div>
-    <br><br>
-    <div class="radio">
-      <label><strong> Who are</strong></label>
-      <label>
-        <input type="radio" checked="" name="socialTargetRadio" value="celebrities"> Celebrities
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="socialTargetRadio" value="powerusers"> Power users
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="socialTargetRadio" value="all-influencers"> All
-      </label>
-    </div>
+    
+    <label><strong> Who are</strong></label>
+    <label class="radio-inline">
+      <input type="radio" checked="" name="socialTargetRadio" value="celebrity"> Celebrities
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="socialTargetRadio" value="power_user"> Power users
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="socialTargetRadio" value=""> All
+    </label>
+    
     <button class="btn btn-success pull-right btn-small" type="submit" id="social-search">Search</button>
   </form>
 </div>

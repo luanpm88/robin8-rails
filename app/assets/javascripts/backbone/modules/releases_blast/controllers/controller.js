@@ -3,6 +3,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
   ReleasesBlast.Controller = Marionette.Controller.extend({
     initialize: function () {
       this.module = Robin.module("ReleasesBlast");
+      var self = this;
+      
+      Robin.vent.on("search:authors:clicked", function(params) {
+        self.searchAuthors(params);
+      });
+      
+      Robin.vent.on("search:influencers:clicked", function(params) {
+        self.searchInfluencers(params);
+      });
     },
     start: function(params){
       Robin.layouts.main.getRegion('content').show(this.module.layout);
@@ -65,11 +74,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         }
       });
       
-      var searchLayout = new ReleasesBlast.SearchLayout();
-      targetsTabLayout.searchRegion.show(searchLayout);
+      this.module.searchLayout = new ReleasesBlast.SearchLayout();
+      targetsTabLayout.searchRegion.show(this.module.searchLayout);
       
       var searchCriteriaView = new ReleasesBlast.SearchCriteriaView();
-      searchLayout.searchCriteriaRegion.show(searchCriteriaView);
+      this.module.searchLayout.searchCriteriaRegion.show(searchCriteriaView);
     },
     pitch: function(params){
       Robin.layouts.main.getRegion('content').show(this.module.layout);
@@ -98,6 +107,36 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       pitchTabView.twitterTargets.show(twitterTargetsView);
       pitchTabView.emailPitch.show(new ReleasesBlast.EmailPitchView());
       pitchTabView.twitterPitch.show(new ReleasesBlast.TwitterPitchView({hashTags: ["#ios", "#android"]}));
+    },
+
+    searchInfluencers: function(params){
+      var self = this;
+      var influencersCollection = new Robin.Collections.Influencers();
+      
+      influencersCollection.findInfluencers(params, {
+        success: function(collection, data, response){
+          var influencersCompositeView = new ReleasesBlast.SocialTargetsCompositeView({
+            collection: collection
+          });
+          
+          self.module.searchLayout.searchResultRegion.show(influencersCompositeView);
+        }
+      });
+    },
+    
+    searchAuthors: function(params){
+      var self = this;
+      var authorsCollection = new Robin.Collections.Authors();
+      
+      authorsCollection.fetchAuthors(params, {
+        success: function(collection, data, response){
+          var authorsCompositeView = new ReleasesBlast.AuthorsCompositeView({
+            collection: collection
+          });
+          
+          self.module.searchLayout.searchResultRegion.show(authorsCompositeView);
+        }
+      });
     }
   });
 });
