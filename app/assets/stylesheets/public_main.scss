@@ -189,18 +189,18 @@
 /* Social icons */
 @font-face {
     font-family: 'si';
-    src: url('../assets/socicon.eot');
-    src: url('../assets/socicon.eot?#iefix') format('embedded-opentype'),
-         url('../assets/socicon.woff') format('woff'),
-         url('../assets/socicon.ttf') format('truetype'),
-         url('../assets/socicon.svg#icomoonregular') format('svg');
+    src: asset-url('socicon.eot');
+    src: asset-url('socicon.eot?#iefix') format('embedded-opentype'),
+         asset-url('socicon.woff') format('woff'),
+         asset-url('socicon.ttf') format('truetype'),
+         asset-url('socicon.svg#icomoonregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     @font-face {
         font-family:si;
-        src: url(../assets/socicon.svg) format(svg);
+        src: image-url('socicon.svg') format(svg);
     }
 }
 .soc {
