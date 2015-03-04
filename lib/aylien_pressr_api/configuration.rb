@@ -29,7 +29,8 @@ module AylienPressrApi
       suggested_authors:  'suggested_authors',
       influencers: 'influencers',
       author_stats: 'authors/:id/stats',
-      related_stories: 'suggested_authors/:id/stories'
+      related_stories: 'suggested_authors/:id/stories',
+      authors: 'authors'
     }
 
     # Build accessor methods for every config options so we can do this, for example:

@@ -10,10 +10,12 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
+  has_many :payments,through: :subscriptions
+  has_many :subscriptions , dependent: :destroy
   has_many :media_lists, dependent: :destroy
   has_many :pitches
   has_many :pitches_contacts, through: :pitches
-  
+
   after_create :create_default_news_room
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
@@ -44,6 +46,10 @@ class User < ActiveRecord::Base
 
   def twitter_identity
     identities.where(provider: 'twitter').first
+  end
+
+  def active_subscription
+    subscriptions.where("user_id ='#{self.id}' AND (expiry is NULL OR expiry >'#{Time.now.utc}') AND status ='A'").last
   end
 
   def linkedin_identity

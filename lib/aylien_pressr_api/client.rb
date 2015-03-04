@@ -57,6 +57,12 @@ module AylienPressrApi
         Configuration::ENDPOINTS[:author_stats])
       Connection.new(endpoint, params, config).request!
     end
+    
+    def authors!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:authors])
+      Connection.new(endpoint, params, config).request!
+    end
     # END Destructives methods
     
     
@@ -87,6 +93,14 @@ module AylienPressrApi
     def author_stats(value=nil, params={})
       begin
         author_stats!(value, params)
+      rescue => e
+        nil
+      end
+    end
+    
+    def authors(value=nil, params={})
+      begin
+        authors!(value, params)
       rescue => e
         nil
       end

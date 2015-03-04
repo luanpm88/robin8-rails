@@ -45,7 +45,7 @@
 //= require timeago
 //= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
 //= require DataTables
-//= require ./lib/iptc
+//= require bootstrap-switch
 // require dataTables.bootstrap
 
 //= require_tree ./backbone/config

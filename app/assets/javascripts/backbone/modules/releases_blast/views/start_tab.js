@@ -2,7 +2,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.StartTabView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/start-tab',
-    className: 'row',
     collection: Robin.Collections.Releases,
     collectionEvents: {
       "reset": "render"
@@ -10,15 +9,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     events: {
       'change .form-control': 'selectChanged',
       'click #analyze': 'analyzeRelease' 
-    },
-    onRender: function () {
-      // Get rid of that pesky wrapping-div.
-      // Assumes 1 child element present in template.
-      this.$el = this.$el.children();
-      // Unwrap the element to prevent infinitely 
-      // nesting elements during re-render.
-      this.$el.unwrap();
-      this.setElement(this.$el);
     },
     serializeData: function(){
       return {

@@ -4,7 +4,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     template: 'modules/authentication/signin/templates/reset',
 
     events: {
-      'click #send' : 'submit',
+      'click #login' : 'login',
       'keyup #password' : 'removeAlert',
       'keyup #password_confirmation' : 'removeAlert',
     },
@@ -78,6 +78,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     },
 
     login: function() {
+      console.log('sdfsdfsdf');
       el = $(this.el);
 
       this.modelBinder.copyViewValuesToModel();
