@@ -136,6 +136,10 @@ ready = function() {
     else
       return "N/A"
   }
+
+  Marionette.Behaviors.behaviorsLookup = function() {
+    return window.Behaviors;
+  }
 };
 
 $(document).ready(ready);

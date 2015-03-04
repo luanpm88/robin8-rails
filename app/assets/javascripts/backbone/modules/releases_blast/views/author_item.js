@@ -5,7 +5,33 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     tagName: "tr",
     model: Robin.Models.Author,
     events: {
-      "click .inspect": "openModal"
+      "click .inspect":         "openModal",
+      "click a.btn-danger":     "removeAuthor",
+      "click a.btn-success":    "addAuthor"
+    },
+    toggleAddRemove: function(e) {
+      e.preventDefault();
+      var $e = $(e.target);
+      if (e.target.nodeName === 'I') $e = $e.parent();
+      var $other = $e.siblings();
+      $e.attr('disabled', 'disabled');
+      $other.removeAttr('disabled');
+    },
+    addAuthor: function(e) {
+      this.toggleAddRemove(e);
+      var authorId = this.model.get('id');
+      var model = new Robin.Models.Contact({
+        id: 'author_' + authorId,
+        author_id: authorId, origin: 'blog',
+        first_name: this.model.get('first_name'),
+        last_name: this.model.get('last_name'),
+        email: this.model.get('email')
+      });
+      this.pitchContactsCollection.add(model);
+    },
+    removeAuthor: function(e) {
+      this.toggleAddRemove(e);
+      this.pitchContactsCollection.remove('author_' + this.model.get('id'));
     },
     templateHelpers: function(){
       return {
@@ -15,6 +41,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
+      this.pitchContactsCollection = options.pitchContactsCollection
     },
     openModal: function(e){
       e.preventDefault();

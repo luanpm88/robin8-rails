@@ -5,6 +5,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     collection: Robin.Collections.Influencers,
     childView: ReleasesBlast.InfluencerView,
     childViewContainer: "tbody",
+    childViewOptions: function() {
+      return {
+        pitchContactsCollection: this.pitchContactsCollection
+      };
+    },
+    initialize: function(options){
+      this.pitchContactsCollection = options.pitchContactsCollection
+    },
     onRender: function () {
       this.$el.find('table').DataTable({
         "info": false,

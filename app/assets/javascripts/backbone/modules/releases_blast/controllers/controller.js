@@ -33,9 +33,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         model: releaseModel,
         iptcCategories: iptcCategories
       });
-      this.module.pitch = new Robin.Models.Pitch().savePitch({
-        release_id: releaseModel.get('id')
-      });
+      var pitchModel = new Robin.Models.Pitch({release_id: releaseModel.get('id')});
+      pitchModel.save();
+      this.module.pitch = pitchModel;
       this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(analysisTabView);
     },
@@ -51,11 +51,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var suggestedAuthorsCollection = new Robin.Collections.SuggestedAuthors({
         releaseModel: releaseModel
       });
+      var self = this;
       suggestedAuthorsCollection.fetchAuthors({
         success: function(collection, data, response){
           var blogTargetView = new ReleasesBlast.BlogTargetsCompositeView({
             collection: collection,
-            releaseModel: releaseModel
+            releaseModel: releaseModel,
+            pitchContactsCollection: self.module.pitchContactsCollection
           });
           targetsTabLayout.blogsRegion.show(blogTargetView);
         }
@@ -67,7 +69,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       influencersCollection.fetchInfluencers({
         success: function(collection, data, response){
           var socialTargetsView = new ReleasesBlast.SocialTargetsCompositeView({
-            collection: collection
+            collection: collection,
+            pitchContactsCollection: self.module.pitchContactsCollection
           });
           
           targetsTabLayout.socialRegion.show(socialTargetsView);

@@ -5,11 +5,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     childView: ReleasesBlast.AuthorView,
     childViewContainer: "tbody",
     collection: Robin.Collections.SuggestedAuthors,
-    itemViewOptions: {
-      releaseModel: this.releaseModel
+    childViewOptions: function() {
+      return {
+        releaseModel: this.releaseModel,
+        pitchContactsCollection: this.pitchContactsCollection
+      };
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
+      this.pitchContactsCollection = options.pitchContactsCollection
     },
     onRender: function() {
       this.$el.find('table').DataTable({
