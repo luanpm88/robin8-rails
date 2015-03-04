@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :contacts, only: [:index, :create, :show]
   resources :pitches, only: [:index, :create, :show]
   resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+  resources :iptc_categories, only: [:index]
 
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions",
