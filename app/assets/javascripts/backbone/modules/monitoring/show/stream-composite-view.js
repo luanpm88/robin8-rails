@@ -94,6 +94,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     updateTitle: function() {
+      this.modelBinder.copyViewValuesToModel();
       this.model.save(this.model.attributes, {
         success: function(data){
           console.log(data);
