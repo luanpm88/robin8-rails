@@ -24,11 +24,14 @@ class SubscriptionsController < ApplicationController
             recurring_amount: @package.price,
             next_charge_date: nil # to be set by invoice generation
         )
+        p @subscription
         flash[:success]  = "Subscribed Sucessfully" #take to any page as required
       rescue Exception=> ex
+        p ex
         flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
       end
     else
+      p errors
       flash[:errors] = errors
     end
     redirect_to :pricing

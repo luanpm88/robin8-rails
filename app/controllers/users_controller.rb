@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def get_current_user
-    render json: current_user
+    render json: current_user, serializer: UserSerializer
   end
 
   def delete_user
