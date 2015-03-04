@@ -6,206 +6,224 @@
     </div>
   </div>
 </header>
+<% if flash[:success].present? %>
 
-<%= form_for @subscription, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
-
-    <!--<form action="signup-confirmation.html" id="checkoutform" class="payment" data-abide>-->
+    <div class="row">
+      <div class="small-12 columns">
+        <h2><%=flash[:success]%></h2>
+      </div>
+    </div>
+    
     <div class="row">
       <div class="small-12 columns">
         <div class="goback">
-          <a href="#">Go back</a>
+          <a href="/">Continue</a>
         </div>
       </div>
     </div>
-    <div class="form-step step3">
 
-      <div class="row">
-        <div class="small-12 columns">
-          <table cellpadding="0" cellspacing="0">
-            <tr>
-              <th class="">Plan</th>
-              <th></th>
-              <th class="removecolumn"></th>
-              <th class="price">Price</th>
-            </tr>
-            <tr id="checkout-item-1">
-              <td class="">
-                <%=@package.name.split(' ')[0]%> Plan
-              </td>
-              <td>
-                <select name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
-                  <option value="<%=@package.slug%>">Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
-                  <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
-                </select>
-              </td>
-              <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
-              <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
+<%else%>
+    <%= form_for @subscription, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
 
-              <input type="hidden" id="nbd-<%=@package.slug%>" value="<%=Date.today + @package.interval.days%>"/>
-              <input type="hidden" id="nbd-<%=@package.monthly_package.slug%>" value="<%=Date.today+ @package.monthly_package.interval.days%>"/>
-
-              <td class="remove">
-                <a class="remove" data-remove="checkout-item-1">remove</a>
-              </td>
-              <td class="price" id="price-sub">
-                <%=(@package.price).to_i %>
-              </td>
-            </tr>
-            <tr class="totals">
-              <td class="">
-                TOTAL
-              </td>
-              <td>
-              </td>
-              <td>
-              </td>
-              <td class="price" id="price-total">
-                <%=(@package.price).to_i %>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div>
-        <ul>
-          <%flash[:errors].each do |e|%>
-              <li><%=e%></li>
-          <%end%>
-        </ul>
-      </div>
-      <div class="signup-footer ftform" id="checkoutdata">
+        <!--<form action="signup-confirmation.html" id="checkoutform" class="payment" data-abide>-->
         <div class="row">
           <div class="small-12 columns">
-            <h3>Payment Information</h3>
-          </div>
-        </div>
-        <input type="hidden" value="<%=@package.slug%>" name="slug" id="slug"/>
-        <div class="row">
-          <div class="small-2 medium-2 large-2 columns">
-            <label>Title
-              <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "form-control"} %>
-            </label>
-          </div>
-
-          <div class="small-10 medium-5 large-5 columns">
-            <label>First Name
-              <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-
-          <div class="small-12 medium-5 large-5 columns">
-            <label>Last Name
-              <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="small-12 columns">
-            <label>Phone
-              <%=text_field "contact", "phone" , :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="small-12 medium-6 large-8 columns">
-            <label>Address
-              <%=text_field "contact", "address1" , :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-
-          <div class="small-12 medium-6 large-4 columns">
-            <label>City
-              <%=text_field "contact", "city" , :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="small-12 medium-4 large-4 columns">
-            <label>State
-              <%=text_field "contact", "state" , :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-
-          <div class="small-12 medium-4 large-3 columns">
-            <label>Postal Code
-              <%=text_field "contact", "zip" , :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-
-          <div class="small-12 medium-4 large-5 columns">
-            <label>Country
-              <%=select_tag "contact[country]",options_for_select(Country.all)%>
-            </label>
-          </div>
-        </div>
-
-
-
-        <div class="row">
-          <div class="small-12 medium-12 large-4 columns">
-            <label>Credit Card Type
-              <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'master'],["American Express", 'american_express'],["Discover", 'discover']], {}, {:class => "form-control"} %>
-            </label>
-          </div>
-
-          <div class="small-8 medium-8 large-5 columns">
-            <label>Credit Card Number
-              <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard" %>
-            </label>
-          </div>
-
-          <div class="small-4 medium-4 large-3 columns">
-            <label>CVV
-              <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv" %>
-            </label>
-          </div>
-
-
-        </div>
-        <div class="row">
-          <div class="small-6 medium-6 large-3 columns">
-            <label>Exp. Month
-              <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-          <div class="small-6 medium-6 large-3 columns">
-            <label>Exp. Year
-              <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off" %>
-            </label>
-          </div>
-        </div>
-
-        <div class="row formdisclaimers">
-          <div class="small-12 columns">
-            <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days). <br />All prices in US Dollars.</p>
-            <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=(@package.price).to_i %></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @package.interval.to_i.days %></span></p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="small-12 columns">
-            <div class="submit-wrap">
-              <%= submit_tag "SUBMIT", :class=>"btn-lg" %>
+            <div class="goback">
+              <a href="/pricing">Go back</a>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-<%end%>
-<div class="clearfix"></div>
-<script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
-<script>BlueSnap.publicKey = "10001$e1c3042d3facf7bd48f4fe4149c0711ff96c350c4ff41c7a0515c06e32322531c6d609d45f292bc006907086963d4cdef11849a4dd8eb6d629cbd2fed35f7ac44b25ae61a5c9b449bad56802e7bed9a7530c71855cd3c698a90b03a3c46de1074b0af2773e0223ea87c86b5a86e7eab6cf50bdc6063864a422e1d03acd6d1e03dcaab283c126fa576871e4c233c6383658a9cc048d4aabaa2519fc4088a7b62e9ee670b2fe340969d1fefb5b1aab7d8f3339f1c4e974baeffcf00c2f7d6da5327341e00fa89cd27890d01f9cabf7f082a7cda87b86694b684485100309a14f96ebefcd28b64761c26c51f83c5f1bbe31564dac6863f5888877d97e5cbde56de7";
-BlueSnap.setTargetFormId("checkout-form");
-</script>
+        <div class="form-step step3">
 
-<script>
-    function updatePackage(){
-        $('#slug').val($('#payment-option').val());
-        $('#price-total').html($('#'+$('#slug').val()).val());
-        $('#t-price').html($('#'+$('#slug').val()).val() );
-        $('#price-sub').html($('#'+$('#slug').val()).val() );
-        $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
-    }
-</script>
+          <div class="row">
+            <div class="small-12 columns">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <th class="">Plan</th>
+                  <th></th>
+                  <th class="removecolumn"></th>
+                  <th class="price">Price</th>
+                </tr>
+                <tr id="checkout-item-1">
+                  <td class="">
+                    <%=@package.name.split(' ')[0]%> Plan
+                  </td>
+                  <td>
+                    <select name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
+                      <option value="<%=@package.slug%>">Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
+                      <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
+                    </select>
+                  </td>
+                  <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
+                  <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
+
+                  <input type="hidden" id="nbd-<%=@package.slug%>" value="<%=Date.today + @package.interval.days%>"/>
+                  <input type="hidden" id="nbd-<%=@package.monthly_package.slug%>" value="<%=Date.today+ @package.monthly_package.interval.days%>"/>
+
+                  <td class="remove">
+                    <a class="remove" data-remove="checkout-item-1">remove</a>
+                  </td>
+                  <td class="price" id="price-sub">
+                    <%=(@package.price).to_i %>
+                  </td>
+                </tr>
+                <tr class="totals">
+                  <td class="">
+                    TOTAL
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td class="price" id="price-total">
+                    <%=(@package.price).to_i %>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <ul>
+              <%flash[:errors].each do |e|%>
+                  <li><%=e%></li>
+              <%end if flash[:errors].present?%>
+            </ul>
+          </div>
+          <div class="signup-footer ftform" id="checkoutdata">
+            <div class="row">
+              <div class="small-12 columns">
+                <h3>Payment Information</h3>
+              </div>
+            </div>
+            <input type="hidden" value="<%=@package.slug%>" name="slug" id="slug"/>
+            <div class="row">
+              <div class="small-2 medium-2 large-2 columns">
+                <label>Title
+                  <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "form-control"} %>
+                </label>
+              </div>
+
+              <div class="small-10 medium-5 large-5 columns">
+                <label>First Name
+                  <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control"%>
+                </label>
+              </div>
+
+              <div class="small-12 medium-5 large-5 columns">
+                <label>Last Name
+                  <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control" %>
+                </label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="small-12 columns">
+                <label>Phone
+                  <%=text_field "contact", "phone" , :class=>"form-control" %>
+                </label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="small-12 medium-6 large-8 columns">
+                <label>Address
+                  <%=text_field "contact", "address1" , :class=>"form-control" %>
+                </label>
+              </div>
+
+              <div class="small-12 medium-6 large-4 columns">
+                <label>City
+                  <%=text_field "contact", "city" , :class=>"form-control" %>
+                </label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="small-12 medium-4 large-4 columns">
+                <label>State
+                  <%=text_field "contact", "state" , :class=>"form-control" %>
+                </label>
+              </div>
+
+              <div class="small-12 medium-4 large-3 columns">
+                <label>Postal Code
+                  <%=text_field "contact", "zip" , :class=>"form-control" %>
+                </label>
+              </div>
+
+              <div class="small-12 medium-4 large-5 columns">
+                <label>Country
+                  <%=select_tag "contact[country]",options_for_select(Country.all)%>
+                </label>
+              </div>
+            </div>
+
+
+
+            <div class="row">
+              <div class="small-12 medium-12 large-4 columns">
+                <label>Credit Card Type
+                  <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'master'],["American Express", 'american_express'],["Discover", 'discover']], {}, {:class => "form-control"} %>
+                </label>
+              </div>
+
+              <div class="small-8 medium-8 large-5 columns">
+                <label>Credit Card Number
+                  <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard" %>
+                </label>
+              </div>
+
+              <div class="small-4 medium-4 large-3 columns">
+                <label>CVV
+                  <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv" %>
+                </label>
+              </div>
+
+
+            </div>
+            <div class="row">
+              <div class="small-6 medium-6 large-3 columns">
+                <label>Exp. Month
+                  <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04" %>
+                </label>
+              </div>
+              <div class="small-6 medium-6 large-3 columns">
+                <label>Exp. Year
+                  <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015" %>
+                </label>
+              </div>
+            </div>
+
+            <div class="row formdisclaimers">
+              <div class="small-12 columns">
+                <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days). <br />All prices in US Dollars.</p>
+                <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=(@package.price).to_i %></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @package.interval.to_i.days %></span></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 columns">
+                <div class="submit-wrap">
+                  <%= submit_tag "SUBMIT", :class=>"button button-signup nextstep" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    <%end%>
+    <div class="clearfix"></div>
+    <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
+    <script>BlueSnap.publicKey = "10001$e1c3042d3facf7bd48f4fe4149c0711ff96c350c4ff41c7a0515c06e32322531c6d609d45f292bc006907086963d4cdef11849a4dd8eb6d629cbd2fed35f7ac44b25ae61a5c9b449bad56802e7bed9a7530c71855cd3c698a90b03a3c46de1074b0af2773e0223ea87c86b5a86e7eab6cf50bdc6063864a422e1d03acd6d1e03dcaab283c126fa576871e4c233c6383658a9cc048d4aabaa2519fc4088a7b62e9ee670b2fe340969d1fefb5b1aab7d8f3339f1c4e974baeffcf00c2f7d6da5327341e00fa89cd27890d01f9cabf7f082a7cda87b86694b684485100309a14f96ebefcd28b64761c26c51f83c5f1bbe31564dac6863f5888877d97e5cbde56de7";
+    BlueSnap.setTargetFormId("checkout-form");
+    </script>
+
+    <script>
+        function updatePackage(){
+            $('#slug').val($('#payment-option').val());
+            $('#price-total').html($('#'+$('#slug').val()).val());
+            $('#t-price').html($('#'+$('#slug').val()).val() );
+            $('#price-sub').html($('#'+$('#slug').val()).val() );
+            $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
+        }
+    </script>
+
+<%end%>

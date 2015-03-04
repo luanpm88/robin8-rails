@@ -29,10 +29,10 @@ class User < ActiveRecord::Base
 
       if user.nil?
         user = User.new(
-          name: auth[:name],
-          email: email,
-          password: Devise.friendly_token[0,20],
-          confirmed_at: DateTime.now
+            name: auth[:name],
+            email: email,
+            password: Devise.friendly_token[0,20],
+            confirmed_at: DateTime.now
         )
         user.save!
       end
@@ -73,28 +73,32 @@ class User < ActiveRecord::Base
   def linkedin_post message #need check
     data = { comment: message, visibility: {code: 'anyone'} }
     response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
-              headers: { 'Content-Type' => 'application/json'},
-              query: {oauth2_access_token: linkedin_identity.token},
-              body: data.to_json)
+                             headers: { 'Content-Type' => 'application/json'},
+                             query: {oauth2_access_token: linkedin_identity.token},
+                             body: data.to_json)
     puts response.body, response.code, response.message, response.headers.inspect
+  end
+
+  def name
+    super.present? ? super : "#{first_name} #{last_name}"
   end
 
   def facebook_post message
     graph = Koala::Facebook::API.new(facebook_identity.token)
     Rails.logger.info graph.inspect
     graph.put_wall_post("I've posted a new Post!", {
-      "name" => '',
-      "link" => '',
-      "description" => message
-    })
+                                                     "name" => '',
+                                                     "link" => '',
+                                                     "description" => message
+                                                 })
   end
 
   private
-    def create_default_news_room
-      self.news_rooms.create(
+  def create_default_news_room
+    self.news_rooms.create(
         company_name: "#{self.email}'s Default Newsroom",
         subdomain_name: "#{self.email}'s Default Subdomain",
         default_news_room: true
-      )
-    end
+    )
+  end
 end
