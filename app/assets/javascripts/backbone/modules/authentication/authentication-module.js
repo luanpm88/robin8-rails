@@ -21,6 +21,9 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
     confirmationStep: function() {
       Authentication.SignIn.Controller.showConfirmation();
     },
+    forgot: function() {
+      Authentication.SignIn.Controller.showForgot();
+    },
     accept: function(acceptToken) {
       Authentication.SignIn.Controller.showAccept(acceptToken);
     },
@@ -52,6 +55,8 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
     step3: function() { API.step3(); },
 
     step4: function() { API.step4(); },
+
+    forgot: function() { API.forgot(); },
 
     confirmationStep: function() { API.confirmationStep(); },
 
