@@ -10,7 +10,7 @@ class NewsRoomsController < ApplicationController
     @new_logo = params[:news_room][:logo_url]
     if @news_room.save
       if @new_logo
-        AmazonStorageWorker.perform_async("news_room", @news_room.id, @new_logo, nil)
+        AmazonStorageWorker.perform_async("news_room", @news_room.id, @new_logo, nil, :logo_url)
       end
       render json: @news_room, serializer: NewsRoomSerializer
     else
@@ -28,7 +28,7 @@ class NewsRoomsController < ApplicationController
     @new_logo = params[:news_room][:logo_url]
     if @news_room.update_attributes(news_room_params)
       if @new_logo!=@old_logo
-        AmazonStorageWorker.perform_async("news_room", @news_room.id, @new_logo, @old_logo)
+        AmazonStorageWorker.perform_async("news_room", @news_room.id, @new_logo, @old_logo, :logo_url)
       end
       render json: @news_room, serializer: NewsRoomSerializer
     else
