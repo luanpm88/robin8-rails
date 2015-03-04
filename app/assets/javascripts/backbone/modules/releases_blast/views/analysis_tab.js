@@ -2,13 +2,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.AnalysisTabView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/analysis-tab',
-    className: 'row',
     model: Robin.Models.Release,
     events: {
       'click #btn-next': 'openTargetsTab'
     },
-    initialize: function(){
+    initialize: function(options){
+      this.iptc = options.iptcCategories;
+      this.iptc.on('reset', this.render);
       this.on("textapi_result:ready", this.render);
+      this.iptc.fetch({reset: true});
       this.getTextApiResult();
       this.textapiResult = {};
     },
@@ -17,26 +19,23 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         textapiResult: this.textapiResult
       }
     },
-    onRender: function () {
-      // Get rid of that pesky wrapping-div.
-      // Assumes 1 child element present in template.
-      this.$el = this.$el.children();
-      // Unwrap the element to prevent infinitely 
-      // nesting elements during re-render.
-      this.$el.unwrap();
-      this.setElement(this.$el);
+    makeIptcCategoriesEditable: function(){
+      var tags = _(this.iptc.models).map(function(item){
+        return {id: item.get('label'), text: item.get('label')};
+      });
+
       this.$el.find('#release-category').editable({
         select2: {
           name: 'category',
-          tags: _.map(iptc, function(item, id) {
-            return {id: id, text: item.label}
-          }),
+          tags: tags,
           multiple: true,
-          tokenSeparators: [",", " "],
+          tokenSeparators: [",", " "]
         },
         success: function(r, newValue) {}
       });
-
+    },
+    onRender: function () {
+      this.makeIptcCategoriesEditable();
       this.$el.find('#release-topics').editable({
         inputclass: 'input-large',
         select2: {
