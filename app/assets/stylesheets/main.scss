@@ -321,18 +321,18 @@ ul {
   margin-bottom: 5px;
   margin-top: 0;
 }
-.edit-newsroom #media ul {
+#media ul {
 
 }
-.edit-newsroom #media ul > li {
+#media ul > li {
   float: left;
   margin: 3px;
   display: inline-block;
 }
-.edit-newsroom #media ul > li div {
+#media ul > li div {
   position: relative;
 }
-.edit-newsroom #media ul > li div .delete {
+#media ul > li div .delete {
   color: #333;
   position: absolute;
   top: 0px;
@@ -341,10 +341,10 @@ ul {
   display: none;
   z-index: 2;
 }
-.edit-newsroom #media ul > li div:hover .delete {
+#media ul > li div:hover .delete {
   display: block;
 }
-.edit-newsroom #media .file {
+#media .file {
   height: 100px;
   width: 100px;
   display: block;
@@ -356,7 +356,7 @@ ul {
   font-size: 46px;
   position: relative;
 }
-.edit-newsroom #media ul > li .label {
+#media ul > li .label {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -369,7 +369,7 @@ ul {
   z-index: 1;
   border-radius: 0;
 }
-.edit-newsroom #media ul > li img {
+#media ul > li img {
   height: 100px;
   width: 100px;
   border: 1px solid #ccc;
