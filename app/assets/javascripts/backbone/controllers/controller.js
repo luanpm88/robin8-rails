@@ -37,6 +37,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     Robin.module('Social').start();
   },
 
+  showBilling: function() {
+    this.stopAll();
+    Robin.module('Billing').start();
+  },
+
   showAnalytics: function() {
     this.stopAll();
     Robin.module('Analytics').start();

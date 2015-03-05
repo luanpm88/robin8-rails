@@ -29,4 +29,5 @@ module Robin8
 
     config.action_dispatch.perform_deep_munge = false
   end
+  require Rails.root.to_s + '/lib/blue_snap.rb'
 end

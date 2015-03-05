@@ -4,6 +4,6 @@ Robin.Models.SocialNetworks = Backbone.Model.extend({
     "twitter": "",
     "facebook": "",
     "linkedin": "",
-    "google": ""
+    // "google": ""
   }
 });

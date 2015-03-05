@@ -14,6 +14,8 @@
   </div>
 </td>
 <td><%= author.get('blog_name') %></td>
+
+<% if(author.get('level_of_interest')){ %>
 <td>
   <div class="progress active">
     <div class="progress-bar" role="progressbar" 
@@ -24,6 +26,7 @@
     </div>
   </div>
 </td>
+<% } %>
 
 <td>
   <span class="article-length-tooltip" data-toggle="tooltip" 
@@ -33,15 +36,15 @@
   </span>
 </td>
 <td>
-  <a href="#" class="btn btn-xs btn-success" disabled="">
+  <a href="#" class="btn btn-xs btn-success">
     <i class="fa fa-check"></i> Yes
   </a> 
-  <a href="#" class="btn btn-xs btn-danger">
+  <a href="#" class="btn btn-xs btn-danger" disabled="">
     <i class="fa fa-close"></i> No
   </a>
 </td>
 <td>
-  <a href="#">
+  <a href="#" class='contact-author'>
     <i class="fa fa-envelope"></i>
   </a>
 </td>

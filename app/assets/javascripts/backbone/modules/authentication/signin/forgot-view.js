@@ -1,10 +1,10 @@
 Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette, $, _){
 
-  SignIn.ForgotView = Backbone.Marionette.ItemView.extend( {
+  SignIn.ForgotView = Backbone.Marionette.ItemView.extend({
     template: 'modules/authentication/signin/templates/forgot',
 
     events: {
-    'submit form': 'retrievePassword',
+    'click #send': 'retrievePassword',
     'keyup #email' : 'removeAlert',
     },
 

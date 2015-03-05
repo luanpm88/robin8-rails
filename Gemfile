@@ -22,6 +22,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'quiet_assets', group: [:development, :staging]
+gem 'aws-sdk-v1'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
@@ -52,6 +53,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-timeago'
   gem 'rails-assets-DataTables'
   gem 'rails-assets-jquery.caret'
+  gem 'rails-assets-bootstrap-switch'
+  gem 'rails-assets-select2-bootstrap-css'
 end
 
 gem 'devise'
@@ -59,6 +62,7 @@ gem 'devise_invitable'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-linkedin-oauth2'
+gem 'omniauth-linkedin'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'active_model_serializers', "~> 0.8.0"
@@ -72,10 +76,13 @@ gem 'has_scope'
 gem 'twitter'
 gem "koala", "~> 1.11.0rc" #flexible library for Facebook
 gem 'httparty'
+gem 'activeresource'
 
 gem 'aylien_text_api'
 
 gem 'ejs'
+gem 'countries'
+gem 'whenever'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -22,7 +22,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     modelEvents: {
-      change: 'setShowUpdatesButtonVisibility'
+      change: 'setShowUpdatesButtonVisibility',
+      'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
     templateHelpers: function () {
@@ -78,6 +79,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
 
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
+
+      this.refreshTimeRangeVisibility();
     },
 
     onAdded: function(story, collection) {
@@ -91,6 +94,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     updateTitle: function() {
+      this.modelBinder.copyViewValuesToModel();
       this.model.save(this.model.attributes, {
         success: function(data){
           console.log(data);
@@ -137,6 +141,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     closeStream: function() {
       var r = this.model;
+      if(!r.get('id')) return r.destroy({ dataType: "text"});
       swal({
         title: "Delete Stream?",
         text: "You will not be able to recover this stream.",
@@ -163,6 +168,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     closeSettings: function(e) {
       e.preventDefault();
       $(this.el).find('.settings-dialog').addClass('closed');
+      if(!this.model.get('id')) this.closeStream();
     },
 
     done: function(e) {
@@ -225,6 +231,17 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         this.$el.find('.js-show-new-stories').removeClass('hidden');
       } else {
         this.$el.find('.js-show-new-stories').addClass('hidden');
+      }
+    },
+
+    refreshTimeRangeVisibility: function(){
+      var val = this.model.get('sort_column');
+      if(val == "shares_count") {
+        this.$el.find('.stream-settings .time-range').show();
+        this.$el.find('.stream-settings').addClass('expand');
+      } else if(val == "published_at") {
+        this.$el.find('.stream-settings .time-range').hide();
+        this.$el.find('.stream-settings').removeClass('expand');
       }
     }
   });

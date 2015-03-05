@@ -9,6 +9,7 @@ Robin.Routers.AppRouter = Backbone.Marionette.AppRouter.extend({
     'social(/*path)': "showSocial",
     'analytics(/*path)': "showAnalytics",
     'profile(/*path)': "showProfile",
+    'billing(/*path)': "showBilling",
   },
   initialize: function(options){
     Robin.routesCount = _.size(this.appRoutes);

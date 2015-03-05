@@ -1,25 +1,24 @@
 @font-face {
     font-family: ProximaNova;
-    src: url('/assets/ProximaNova-Regular.otf');
+    src: asset-url("ProximaNova-Regular.otf");
 }
 @font-face {
     font-family: ProximaNovaLight;
-    src: url('/assets/ProximaNova-Light.otf');
+    src: asset-url('ProximaNova-Light.otf');
 }
 @font-face {
     font-family: ProximaNovaSemibold;
-    src: url('/assets/ProximaNova-Semibold.otf');
+    src: asset-url('ProximaNova-Semibold.otf');
 }
 @font-face {
     font-family: ProximaNovaBold;
-    src: url('/assets/ProximaNova-Bold.otf');
+    src: asset-url('ProximaNova-Bold.otf');
 }
 @font-face {
     font-family: ProximaNovaBlack;
-    src: url('/assets/ProximaNova-Black.otf');
+    src: asset-url('ProximaNova-Black.otf');
 }
 body.login {
-
 
   /* GLOBAL */
 
@@ -56,15 +55,15 @@ body.login {
   /* HEADER */
 
   header{
-    background:url("/assets/hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+    background: image-url("hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
     position: relative;
     text-align: center;
     min-height: 550px;
     background-size: cover;
   }
 
-  header h1{
-    background: url("/assets/header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
+  header h1.logo{
+    background: image-url("header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
       color: #ffffff;
       font-family: "ProximaNovaBlack";
       font-size: 58px;
@@ -88,7 +87,7 @@ body.login {
   }
 
   header a.learn-more{
-      background: url("/assets/learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+      background: image-url("learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
       bottom: 20px;
       color: #ffffff;
       display: block;
@@ -106,7 +105,7 @@ body.login {
 
   .screenpane{
 
-    /*background:url("/assets//screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
+    /*background: image-url("screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
   }
 
   .screenpane .videoembedsection{
@@ -198,7 +197,7 @@ body.login {
   }
 
   .bgpane{
-    background:url("/assets/bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+    background: image-url("bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
     background-size: cover;
     min-height: 640px;
   }
@@ -232,7 +231,7 @@ body.login {
   /* FOOTER */
 
   .ft-lead{
-    background: url("/assets/footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+    background: image-url("footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
       min-height: 300px;
       padding-bottom: 40px;
       text-align: center;
@@ -299,24 +298,13 @@ body.login {
   }
 
   .signup form label input{
-    border: 1px solid #a7a7a7;
-    box-shadow: 0 0 0;
-    font-family: "ProximaNova";
-    font-size: 16px;
-    height: 40px;
-    line-height: 40px;
-    padding: 0 16px;
-    margin: 1em 0 0 0;
-  }
-
-  .signup form label .form-control-feedback{
-    top: 10px;
-  }
-
-  .signup form .help-block{
-    font-family: "ProximaNova";
-    margin: 0px;
-    font-size: 80%;
+   border: 1px solid #a7a7a7;
+      box-shadow: 0 0 0;
+      font-family: "ProximaNova";
+      font-size: 16px;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 16px;
   }
 
   .signup .step-one form {
@@ -338,14 +326,14 @@ body.login {
   }
 
   .signup form .submit-wrap{
-    margin: 1em 0 0 0;
     text-align: center;
     margin-bottom: 100px;
   }
 
   .error label, .error label.error {
-      border: 1px solid #c60f13;
+      border: 1px solid #df4a32;
       margin-bottom: 15px;
+      overflow: hidden;
   }
 
   /* SIGNUP PRICING PAGE */
@@ -623,7 +611,7 @@ body.login {
   }
 
   .goback{
-      background: url("/assets/back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+      background: image-url("back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
       margin: 20px 0 40px;
       padding-left: 30px;
   }
@@ -636,13 +624,24 @@ body.login {
   }
 
   .errorwarning{
-    margin: 10px auto !important; 
+    margin: 20px auto !important; 
   }
   .errorwarning p{
     margin: 10px auto !important;
     text-align: center !important;
-    color: #ff0000 !important;
+    color: #df4a32 !important;
+    font-size: 16px;
   }
+
+  form .errorwarning{
+    display: none;
+  }
+
+  .error .errorwarning{
+    display: block;
+  }
+   
+
 
   /* FORM STEP 3 */
 
@@ -702,7 +701,7 @@ body.login {
   }
 
   table .updown a{
-    background: url("/assets/updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: image-url("updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
       display: block;
       text-indent: -5555px;
       margin-top: 6px;
@@ -752,7 +751,7 @@ body.login {
       padding: 20px;
   } 
   .ui-selectmenu-button span.ui-selectmenu-text {
-      background: url("/assets/select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
+      background: image-url("select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
       margin-right: 15px;
       padding: 9px 20px;
   }
@@ -828,10 +827,480 @@ body.login {
   }
 
 
+  /* INTERIOR NAVIGATION */
+  .nav,
+  nav.top-bar{
+    height: 78px;
+    width: 100%; 
+    position: fixed;
+    top: 0px;
+    z-index: 9999999;
+      transition: background-color 0.5s ease;
+  }
+  body.f-topbar-fixed {
+      padding-top: 0px !important;
+  }
+  .nav.fixedscroll{ 
+    background-color: #ffffff;
+      transition: background-color 0.5s ease;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  .nav-left{
+    text-align: left;
+  }
+  .nav-right{
+    text-align: right;
+  }
+
+  .nav a.logo {
+      background: image-url("robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+      display: block;
+      height: 38px;
+      margin-left: 110px;
+      margin-top: 25px;
+      overflow: hidden;
+      text-indent: -55555px;
+      width: 158px;
+  }
+  .homeheader .nav a.logo {
+    visibility: hidden;
+  }
+  .homeheader .nav.fixedscroll a.logo {
+    visibility: visible;
+  }
+
+
+  .nav.fixedscroll a.logo{
+    background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  }
+
+  .nav ul{
+    list-style-type: none;
+    margin-top: 22px;
+    margin-right: 14px;
+  }
+  .nav ul li{ 
+  }
+
+  .nav ul li a{
+      font-family: "ProximaNova";
+      font-size: 15px;
+      color: #ffffff;
+      padding-left: 30px;
+  }
+
+  .nav.fixedscroll ul li a{
+    color: #484848;
+  }
+
+  .nav a .carat{
+     border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 5px solid #ffffff;
+      display: inline-block;
+      height: 0;
+      margin-left: 8px;
+      padding-top: 3px;
+      width: 0;
+  }
+  .top-bar-section ul.dropdown { 
+      margin-top: 0 !important; 
+  }
+  .top-bar {
+      background: none repeat scroll 0 0 transparent; 
+  }
+  .top-bar-section ul li,
+  .top-bar-section li:not(.has-form) a:not(.button),
+  .top-bar-section li:not(.has-form) a:hover:not(.button){
+    background: transparent !important;
+  }
+
+  .top-bar-section li:not(.has-form) a:hover:not(.button){
+      background: #268299 !important; 
+      color: #ffffff;
+  }
+  .fixedscroll .top-bar-section li:not(.has-form) a:hover:not(.button){
+      background: #ffffff !important; 
+      color: #268299;
+  }
+  .top-bar-section ul li:hover:not(.has-form) > a {
+      background: #ffffff !important; 
+      color: #268299;
+  }
+  .top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button)   {
+      background: #268299 !important; 
+  }
+  .fixedscroll .top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button)   {
+      background: #ffffff !important; 
+      color: #484848;
+  }
+  .fixedscroll .top-bar-section .dropdown li:not(.has-form):not(.active) > a:hover:not(.button)   { 
+      color: #268299;
+  }
+  .top-bar.expanded,
+  .top-bar.expanded .title-area {
+      background: none repeat scroll 0 0 #268299;
+      height: auto;
+  }
+
+  .top-bar.expanded .top-bar-section li:not(.has-form) a:hover:not(.button){
+    background:#1a7b94 !important;
+  }
+  .top-bar.expanded .toggle-topbar a span:after {
+      box-shadow: 0 0 0 1px #333333, 0 7px 0 1px #333333, 0 14px 0 1px #333333;
+  }
+  .top-bar.expanded .toggle-topbar a {
+      color: #333333;
+  }
+
+  @media(max-width: 640px){
+   
+
+  }
+
+  /* INTERIOR HEADER STUFF */
+  header.int-header {
+      background: image-url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+      min-height: 340px; 
+  }
+
+
+  header.int-header h1{
+    font-family: "ProximaNovaSemibold";
+    font-size: 30px;
+    font-weight: normal;
+    text-transform: uppercase;
+    margin-top: 165px;
+    color: #ffffff;
+  }
+
+  .team header.int-header h1 {
+    font-family: "ProximaNova";
+    text-transform: none;
+  }
+  .team header.int-header h1 strong{
+    font-family: "ProximaNovaSemibold";
+    text-transform: uppercase;
+  }
+
+  /* INTERIOR CONTENT */
+  .int-content{
+    padding: 60px 0;
+  }
+  .int-content .row { 
+      max-width: 840px; 
+  }
+  .int-content p{
+    font-size: 18px;
+    color: #666666;
+    margin-bottom: 30px;
+    line-height: 24px;
+    font-family: "ProximaNova";
+  }
+
+  /* DEMO */
+
+  .demopage .demo{
+    margin-top: -200px;
+  }
+
+  .int-content.demo{
+    text-align: center;
+  }
+
+  .int-content.demo h2{
+    font-family: "ProximaNovaSemibold";
+    font-size: 30px;
+    font-weight: normal;
+    color: #000000;
+    margin: 75px 0 0;
+  }
+  .int-content.demo h3{
+     color: #666666;
+      font-family: "ProximaNova";
+      font-size: 22px;
+      font-weight: normal;
+      margin: 50px auto 0;
+      max-width: 670px;
+  }
+
+  .youcanbookme{
+    margin: 75px 0;
+  }
+
+  .demopage .ft-content{
+    padding: 100px 0;
+    text-align: center; 
+    background: #eaeaea;
+  }
+
+  .demopage .ft-content .row{
+    text-align: center;
+  }
+  .demopage .ft-content p{
+    font-family: "ProximaNova";
+    font-size: 18px;
+    font-weight: normal;
+    color: #666666;
+    max-width: 840px;
+    max-width: 0 auto 30px;
+    display: inline-block;
+  }
+
+  @media(max-width: 640px){
+
+      .demopage .demo{
+        margin-top: -100px;
+      }
+
+  }
+
+  /* TEAM PAGE */
+
+  .team-content{
+    margin-top: -100px;
+  }
+
+  .team-box{
+    text-align: center;
+    padding-bottom: 60px;
+  }
+
+  .team-box img{
+
+  }
+
+  .team-box h3{
+    font-family: "ProximaNovaSemibold";
+    font-size: 24px;
+    color: #006481;
+    margin:30px auto 0;
+    font-weight: normal;
+  }
+  .team-box h4{
+    font-family: "ProximaNova";
+    font-size: 18px;
+    color: #484848;
+    margin:20px auto 0;
+    font-weight: normal;
+
+  }
+  .team-box p{
+    color: #484848;
+    font-family: "ProximaNova";
+    font-size: 16px;
+    margin:20px auto 0;
+    line-height: 22px;
+  }
+
+  /* LOGIN PAGE */
+  .btn-google-plus,
+  .btn-facebook  {  
+    max-width: 560px;
+    width: 100%;
+    margin: 0 auto 20px;
+    font-family: "ProximaNovaBold";
+    font-size: 18px; 
+    padding: 0;
+    height: 60px;
+    line-height: 60px;
+  }
+  .btn-facebook {
+      background-color: #3a579a; 
+    }
+  .btn-google-plus {
+      background-color: #df4a32; 
+    }
+
+  .btn-facebook i.fa,
+  .btn-google-plus i.fa{ 
+    display: none;
+  }
+
+  .btn-facebook span,
+  .btn-google-plus span{
+      display: inline-block;
+      height: 60px;
+      padding-left: 50px;  
+  }
+
+  .btn-facebook span{
+      background: image-url("Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+
+  }
+  .btn-google-plus span{
+      background: image-url("Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  }
+
+  .btn-google-plus:hover {
+      background-color: #df4a32;   
+
+    opacity: 0.8;
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  }
+  .btn-facebook:hover {
+      background-color: #3a579a; 
+    opacity: 0.8;
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  }
+
+  .form-login .social-login{
+    text-align: center;
+  }
+
+  .form-login{
+    margin:75px auto;
+  }
+
+  p.loginintro{ 
+      font-family: "ProximaNova";
+      font-size: 22px;
+      font-weight: normal;
+      margin-bottom: 50px;
+      text-align: center;
+  }
+  p.loginintro strong{ 
+    font-family: "ProximaNovaSemibold"; 
+  }
+
+  .signup .form-login form{
+    margin:0 auto;
+    max-width: 560px;
+
+  }
+
+  .signup .form-login form .submit-wrap{
+        margin-bottom: 40px;
+      margin-top: 50px;
+  }
+  .signup .form-login form.error .submit-wrap { 
+      margin-top: 20px;
+  }
+
+  .signup .form-login .rememberme,
+  .signup .form-login .forgotpass{
+    font-size: 18px;
+    font-family: "ProximaNova";
+    text-align: center;
+  }
+  .signup .form-login .forgotpass a{
+    color: #000000;
+  }
+  .signup .form-login .forgotpass a:hover{
+    text-decoration: underline;
+  }
+
+
+  .signup .form-login input[type="checkbox"]  {
+      display: inline-block; 
+      margin: 3px;
+      vertical-align: text-top; 
+  }
+
+  .or-line{
+    width: 100%;
+    max-width: 560px;
+    margin: 40px auto;
+    text-align: center;
+    border-top: 1px solid #7f7f7f
+  }
+  .or-line span{
+      background: none repeat scroll 0 0 #ffffff;
+      display: block;
+      font-family: "ProximaNova";
+      font-size: 24px;
+      margin: -17px auto 0;
+      text-align: center;
+      text-transform: uppercase;
+      width: 50px;
+  } 
+
+  /* CONTACT PAGE */
+
+  .contact .address-info{
+      font-family: "ProximaNova";
+      font-size: 16px;
+      font-style: normal;
+  }
+
+  .contact .contact-addresses{
+      font-family: "ProximaNova";
+      font-size: 16px;
+      font-style: normal;
+      margin-bottom: 20px;
+  }
+
+  .contact .address-info h3{
+    font-size: 18px;
+      font-family: "ProximaNovaSemibold";
+  }
+
+  .contact .address-info a{
+    color: #666666;
+  }
+  .contact .address-info a:hover{
+    text-decoration: underline;
+  }
+
+  .contact form textarea{
+    padding: 8px;
+  }
+
+  .contact .submit-wrap{
+    text-align: center;
+    padding: 40px 0;
+  }
+
 
   /* MOBILE */
 
   @media(max-width: 640px){
+    /* MOBILE NAV */
+    .nav a.logo {
+      margin-left: 20px;
+    }
+    .top-bar .title-area { 
+      text-align: left;
+    }
+
+    .nav.fixedscroll,
+    .nav{ 
+      background-color: #ffffff;
+        transition: background-color 0.5s ease;
+    } 
+
+    .nav a.logo ,
+    .nav.fixedscroll a.logo{
+      background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    }
+    .top-bar .toggle-topbar.menu-icon a {
+        color: #000000; 
+        font-family: "ProximaNova";
+    }
+
+    .top-bar .toggle-topbar.menu-icon a span:after {
+      box-shadow: 0 0 0 1px #000000, 0 7px 0 1px #000000, 0 14px 0 1px #000000;
+    }
+    .top-bar.expanded, .top-bar.expanded .title-area {
+      background: none repeat scroll 0 0 #ffffff; 
+    }
+    .nav ul li a { 
+      color: #000000;
+      font-family: "ProximaNova";
+      font-size: 20px;
+      padding-left: 0;
+    }
+    .top-bar-section .dropdown li.title h5 a, .top-bar-section .dropdown li.parent-link a {
+        color: #000000; 
+    }
+    .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button), .top-bar-section li:not(.has-form) a:hover:not(.button) {
+      
+      border-bottom: 1px solid #006481;
+    }
 
     header h2 {
       font-size: 24px;
@@ -999,7 +1468,5 @@ body.login {
         padding-top: 20px;
         margin-bottom: 40px;
       }
-
-
   }
 }

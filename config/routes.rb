@@ -5,6 +5,13 @@ Rails.application.routes.draw do
   resources :contacts, only: [:index, :create, :show]
   resources :pitches, only: [:index, :create, :show]
   resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+  resources :iptc_categories, only: [:index]
+  resources :autocompletes, only: [] do
+    collection do
+      get 'locations'
+      get 'skills'
+    end
+  end
 
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions",
@@ -12,10 +19,15 @@ Rails.application.routes.draw do
       invitations: "users/invitations",  omniauth_callbacks: "users/omniauth_callbacks",
       confirmations: "users/confirmations" }
 
+  get 'pricing' => 'pages#pricing'
+  get 'subscribe/:slug' => 'subscriptions#new'
+  get 'upgrade/:slug' => 'subscriptions#edit'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
   get 'users/get_current_user' => 'users#get_current_user'
   delete '/users/disconnect_social' => 'users#disconnect_social'
+  # resources :blue_snap
+  resources :subscriptions
   post '/users/follow' => 'users#follow'
 
   resources :posts do
@@ -33,12 +45,16 @@ Rails.application.routes.draw do
     get 'stories', on: :member
   end
 
+  resources :packages, only: [:index] do
+  end
+
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
   post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'
   post 'robin8_api/related_stories', to: 'robin_api#related_stories'
   get 'robin8_api/influencers', to: 'robin_api#influencers'
   get 'robin8_api/author_stats', to: 'robin_api#author_stats'
+  get 'robin8_api/authors', to: 'robin_api#authors'
   
   post 'textapi/classify'
   post 'textapi/concepts'

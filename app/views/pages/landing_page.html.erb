@@ -35,7 +35,7 @@
     <div class="medium-3 columns pr-types">
        <div class="icon-wrap">
           <div class="icon-img">
-            <img src="/assets/icon-upload.png" />
+            <%= image_tag "icon-upload.png" %>
           </div>
        </div>
        <div class="pr-content">
@@ -46,7 +46,7 @@
     <div class="medium-3 columns pr-types">
        <div class="icon-wrap">
           <div class="icon-img">
-            <img src="/assets/icon-target.png" />
+            <%= image_tag "icon-target.png" %>
           </div>
        </div>
        <div class="pr-content">
@@ -57,7 +57,7 @@
     <div class="medium-3 columns pr-types">
        <div class="icon-wrap">
           <div class="icon-img">
-            <img src="/assets/icon-track.png" />
+            <%= image_tag "icon-track.png" %>
           </div>
        </div>
        <div class="pr-content">
@@ -68,7 +68,7 @@
     <div class="medium-3 columns pr-types">
        <div class="icon-wrap">
           <div class="icon-img">
-            <img src="/assets/icon-recommend.png" />
+            <%= image_tag "icon-recommend.png" %>
           </div>
        </div>
        <div class="pr-content">
@@ -87,9 +87,12 @@
 <div class="row">
   <div class="large-12 columns"> 
     <h2>What can ROBIN8 do for you?</h2>
-    <p><span class="icon-img-wrap left"><img class="icon-left" src="/assets/icon-time.png" /></span> Spend less time doing database and research work and instead focus your efforts on actual pitches, contacts, planning, and content creation.</p>
-    <p><span class="icon-img-wrap left"><img class="icon-left" src="/assets/icon-machine.png" /></span> Uses algorithms and machine-learning technology to adapt PR recommendations and content personalized to you.</p>
-    <p><span class="icon-img-wrap left"><img class="icon-left" src="/assets/icon-return.png" /></span> Achieve a higher return on your marketing spend thanks to better earned media results.</p>
+    <p><span class="icon-img-wrap left">
+      <%= image_tag 'icon-time.png', class: 'icon-left' %></span> Spend less time doing database and research work and instead focus your efforts on actual pitches, contacts, planning, and content creation.</p>
+    <p><span class="icon-img-wrap left">
+      <%= image_tag 'icon-machine.png', class: 'icon-left' %></span> Uses algorithms and machine-learning technology to adapt PR recommendations and content personalized to you.</p>
+    <p><span class="icon-img-wrap left">
+      <%= image_tag 'icon-return.png', class: 'icon-left' %></span> Achieve a higher return on your marketing spend thanks to better earned media results.</p>
 
   </div>
 </div>
@@ -109,7 +112,7 @@
 <footer>
   <div class="row">
     <div class="small-12 medium-3 columns ft-logo right"> 
-      <img src="/assets/ROBIN8-logo.png" /> 
+      <%= image_tag 'ROBIN8-logo.png' %>
     </div>
     <div class="small-12 medium-9 columns left"> 
       &copy;2015 MyPRGenie, LLC. All rights reserved. <br class="show-for-small-only" /> <a class="ft-link privacy">Privacy</a><a class="ft-link privacy">Terms</a>

@@ -21,14 +21,14 @@
     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 
 <script type="text/javascript">
-  
+
   $(document).ready(function() {
     Robin.start();
   });
-  <% if flash[:success_confirmation] -%>    
+  <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
-  <% if signed_in? -%>    
+  <% if signed_in? -%>
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
     <% unless request.subdomain.blank? %>
       Robin.publicPages = true
@@ -49,6 +49,7 @@
 <script type="text/javascript" src="http://bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">
 </script>
 <!-- end load bitly javascript sdk -->
+<script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
 
 </body>
 </html>

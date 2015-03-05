@@ -24,7 +24,7 @@ Robin.finishSignIn = function(data){
   Robin.vent.trigger("authentication:logged_in");
   Robin.loadPleaseWait();
   $('body').removeClass('login');
-  Robin.setUrl('/#dashboard');
+  window.history.pushState('', '', '/');
 };
 
 Robin.loadPleaseWait = function(){
@@ -49,7 +49,7 @@ Robin.setIdentities = function(data){
 };
 
 Robin.stopOtherModules = function(){
-  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast', 'Analytics', 'Authentication'], function(module){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast', 'Analytics', 'Authentication', 'Billing'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
@@ -137,9 +137,3 @@ UPLOADCARE_LOCALE_TRANSLATIONS = {
     }
   } } } }
 };
-//The UPLOADCARE_PUBLIC_KEY should be changed as soon as paid
-// account is avaialble. example:
-//UPLOADCARE_PUBLIC_KEY = "a51f0572e52df821db41";
-
-//Filepicker key here:
-filepicker.setKey("AqjCqgTScSa65fXp8iGAgz");

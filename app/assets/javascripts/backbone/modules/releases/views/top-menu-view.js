@@ -5,7 +5,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     className: 'row',
     regions: {
       logoRegion: '.logo',
-      mediaRegion: '.media_region'
+      imagesRegion: '.images_region',
+      videosRegion: '.videos_region',
+      filesRegion: '.files_region'
     },
     events: {
       'click #new_release': 'openModalDialog',
@@ -48,7 +50,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.initFormValidation();
       $('.wysihtml5').wysihtml5({});
       this.initLogoView();
-      this.initMediaView();
+      this.initMediaTab();
     },
     initLogoView: function(){
       this.logoRegion.show(new Robin.Views.LogoView({
@@ -56,9 +58,21 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         field: 'logo_url'
       }));
     },
-    initMediaView: function(){
-      this.mediaRegion.show(new Robin.Views.MediaView({
-        model: this.model
+    initMediaTab: function(){
+      this.imagesRegion.show(new Robin.Views.ImagesCollectionView({
+        model: this.model,
+        collection: new Robin.Collections.Attachments(),
+        childView: Robin.Views.ImagesItemView
+      }));
+      this.videosRegion.show(new Robin.Views.VideosCollectionView({
+        model: this.model,
+        collection: new Robin.Collections.Attachments(),
+        childView: Robin.Views.VideosItemView
+      }));
+      this.filesRegion.show(new Robin.Views.FilesCollectionView({
+        model: this.model,
+        collection: new Robin.Collections.Attachments(),
+        childView: Robin.Views.FilesItemView
       }));
     },
     initFormValidation: function(){
@@ -75,6 +89,16 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             validators: {
               notEmpty: {
                 message: 'The Title is required'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+          news_room_id: {
+            validators: {
+              notEmpty: {
+                message: 'You should select a newsroom'
               },
               serverError: {
                 message: 'something went wrong'
