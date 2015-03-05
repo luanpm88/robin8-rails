@@ -4,6 +4,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
 
     events: {
       'change #subscription-selector': 'showForm',
+      'click #submit-checkout' : 'submit'
     },
 
     initialize: function() {
@@ -25,7 +26,16 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
 
     showForm: function() {
       this.$el.find('#checkout-form').removeClass('hidden');
-      this.model = new Robin.Models.Subscription();
+      BlueSnap.setTargetFormId("checkout-form");
+      // this.model = new Robin.Models.Subscription();
+    },
+
+    submit: function() {
+      console.log('wsfsdf');
+      this.$el.find('#checkout-form').submit( function () {
+        console.log('df');
+        return this;
+      } );
     },
 
   });
