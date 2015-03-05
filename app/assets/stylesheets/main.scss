@@ -374,12 +374,12 @@ ul {
   width: 100px;
   border: 1px solid #ccc;
 }
-/*.edit-newsroom #media ul > li:hover img {
+#media ul > li:hover img {
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
   filter: grayscale(100%);
   opacity: 0.8;
-}*/
+}
 .stream-updates > a {
   width: 60%;
   background-color: rgba(109, 120, 140, 0.8);

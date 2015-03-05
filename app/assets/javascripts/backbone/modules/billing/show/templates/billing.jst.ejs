@@ -1,3 +1,7 @@
+<script>BlueSnap.publicKey = "10001$e1c3042d3facf7bd48f4fe4149c0711ff96c350c4ff41c7a0515c06e32322531c6d609d45f292bc006907086963d4cdef11849a4dd8eb6d629cbd2fed35f7ac44b25ae61a5c9b449bad56802e7bed9a7530c71855cd3c698a90b03a3c46de1074b0af2773e0223ea87c86b5a86e7eab6cf50bdc6063864a422e1d03acd6d1e03dcaab283c126fa576871e4c233c6383658a9cc048d4aabaa2519fc4088a7b62e9ee670b2fe340969d1fefb5b1aab7d8f3339f1c4e974baeffcf00c2f7d6da5327341e00fa89cd27890d01f9cabf7f082a7cda87b86694b684485100309a14f96ebefcd28b64761c26c51f83c5f1bbe31564dac6863f5888877d97e5cbde56de7";
+// BlueSnap.setTargetFormId("checkout-form");
+</script>
+
 <%= Robin.currentUser.attributes.active_subscription == null ? "You don't have subscription" : Robin.currentUser.attributes.active_subscription %>
 
 <br/>
@@ -5,7 +9,8 @@
 
 <br/>
 
-<form class="frmContact hidden" id="checkout-form"  accept-charset="UTF-8" method="post">
+<form class="frmContact hidden" id="checkout-form" action="/subscriptions"  accept-charset="UTF-8" method="post">
+  <input type="hidden" name="authenticity_token" value="I6P5tKAnHCR6Nwczy7bW14WoFXQXzgCZn8xcyU5oi6DN0TgAadDLFJgGcxplCnfg2oNfSHJcS5Gf9Rtw8zNL6Q==">
   <div class="row">
     <div class="col-sm-offset-1 col-sm-10">
       <h3 class="title">Checkout Form</h3>
@@ -388,6 +393,6 @@
     </div>
   </div>
   <div>
-    <input type="submit" name="commit" value="SUBMIT" class="btn-lg">
+    <input type="submit" id="submit-checkout" name="commit" value="SUBMIT" class="btn-lg">
   </div>
 </form>
