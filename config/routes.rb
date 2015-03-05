@@ -27,7 +27,11 @@ Rails.application.routes.draw do
   get 'users/get_current_user' => 'users#get_current_user'
   delete '/users/disconnect_social' => 'users#disconnect_social'
   # resources :blue_snap
-  resources :subscriptions
+  resources :subscriptions do
+    post 'create_subscription', on: :collection
+    post 'update_subscription', on: :collection
+    delete 'destroy_subscription', on: :collection
+  end
   post '/users/follow' => 'users#follow'
 
   resources :posts do
@@ -47,6 +51,7 @@ Rails.application.routes.draw do
 
   resources :packages, only: [:index] do
   end
+  resources :payments, only: :index
 
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'

@@ -36,6 +36,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def create_subscription
+    @package = Package.find(params[:package_id])
     errors,resp = BlueSnap::Shopper.new(request, current_user, params, @package)
     if errors.blank?
       begin
@@ -45,12 +46,45 @@ class SubscriptionsController < ApplicationController
             recurring_amount: @package.price,
             next_charge_date: nil # to be set by invoice generation
         )
-        render json: 'ok'
+        render json: {subscription: @subscription, message: 'Your package has been created'} , status: :ok
       rescue Exception => ex
-        render json: "We are sorry, something is not right. Please contact support for more details."
+        render json:["We are sorry, something is not right. Please contact support for more details."], status: :bad_request
       end
     else
-      render json: errors
+      p errors
+      render json: errors, status: :bad_request
+    end
+  end
+
+  def update_subscription
+    @package = Package.find(params[:package_id])
+    errors,resp = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id, current_user.active_subscription.bluesnap_shopper_id, @package.sku_id)
+    p '!!'
+    p resp
+    if errors.blank?
+      begin
+        current_user.active_subscription.update_attributes(
+            package_id: @package.id,
+            recurring_amount: @package.price
+        )
+        render json: {subscription: current_user.active_subscription, message: 'Your package has been updated'} , status: :ok
+      rescue Exception => ex
+        render json: ["We are sorry, something is not right. Please contact support for more details."], status: :bad_request
+      end
+    else
+      render json: errors.responseJSON, status: :bad_request
+    end
+  end
+
+  def destroy_subscription
+    if current_user.active_subscription.present?
+      if current_user.active_subscription.cancel!
+        render json: { message: "Your package has been cancelled" }, status: :ok
+      else
+        render json: ["We could not cancel your package at this time."], status: :bad_request
+      end
+    else
+      render json: { message: "Your haven't active subscription" }, status: :ok
     end
   end
 
