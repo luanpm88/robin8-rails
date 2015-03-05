@@ -374,12 +374,12 @@ ul {
   width: 100px;
   border: 1px solid #ccc;
 }
-/*.edit-newsroom #media ul > li:hover img {
+#media ul > li:hover img {
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
   filter: grayscale(100%);
   opacity: 0.8;
-}*/
+}
 .stream-updates > a {
   width: 60%;
   background-color: rgba(109, 120, 140, 0.8);
@@ -885,4 +885,24 @@ ul {
 .tag-wrapper {
   height: 42px;
   overflow: hidden;
+}
+.rss-input {
+  cursor: text !important;
+}
+.rss-dialog {
+  max-height: 100px;
+}
+.image-preview-multiple-plus .uploadcare-widget-button-open {
+    font-size: 68px;
+    line-height: 100px;
+    padding: 0px;
+    background-color: #FFF;
+}
+.image-preview-multiple-plus .uploadcare-widget-button {
+    margin: 0px;
+    color: #3BAFDA;
+}
+.image-preview-multiple-plus .uploadcare-widget-button-open:hover {
+    color: #43C2E9;
+    background-color: #FFF;
 }

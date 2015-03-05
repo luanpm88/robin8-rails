@@ -24,6 +24,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'quiet_assets', group: [:development, :staging]
 gem 'aws-sdk-v1'
 
+gem 'htmlentities'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
   gem 'rails-assets-bootstrap.growl', '2.0.1'

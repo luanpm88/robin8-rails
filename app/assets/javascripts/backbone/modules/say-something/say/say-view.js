@@ -117,7 +117,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     hidePicker: function() {
-      $('div.pull-right').hide().prev().show();
+      $('div.pull-right.schedule-datetimepicker').hide().prev().show();
     },
 
     shrinkLinkProcess: function(e) {
@@ -125,7 +125,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         var saySomethingContent = $('#say-something-field').val();
         var www_pattern = /(^|[\s\n]|<br\/?>)((www).[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
         var www_urls = saySomethingContent.match(www_pattern);
-        
+
         if (www_urls != null) {
           $.each(www_urls, function( index, value ) {
             value = $.trim(value)
@@ -171,7 +171,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       e.preventDefault();
       this.socialNetworksBinder.copyViewValuesToModel();
       this.modelBinder.copyViewValuesToModel();
-      
+
       if (this.model.attributes.scheduled_date === ""){
         this.model.attributes.scheduled_date = moment().utc();
       } else {
@@ -183,10 +183,10 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
           $('.navbar-search-lg').hide();
           $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
           $('.progressjs-progress').hide();
-          
-          if (Robin.Social._isInitialized){            
+
+          if (Robin.Social._isInitialized){
             Robin.module("Social").postsCollection.fetch();
-          } 
+          }
 
           $.growl({message: "You've created a post"
           },{
@@ -217,6 +217,6 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       this.setCounter();
       this.checkAbilityPosting();
     }
-    
+
   });
 });
