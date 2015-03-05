@@ -64,6 +64,7 @@ Rails.application.routes.draw do
   post 'textapi/classify'
   post 'textapi/concepts'
   post 'textapi/summarize'
+  post 'textapi/extract'
 
   post 'followers/add/', to: 'followers#add'
 

@@ -25,6 +25,14 @@ class TextapiController < ApplicationController
       format.json { render json: response[:sentences]}
     end
   end
+
+  def extract
+    response = @client.extract url: params[:url]
+
+    respond_to do |format|
+      format.json { render json: response }
+    end
+  end
   
   private
   def set_client
