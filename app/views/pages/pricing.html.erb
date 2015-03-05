@@ -1,21 +1,309 @@
-<%= javascript_include_tag :application %>
-<%= csrf_meta_tag %>
-<ul>
-  <%@packages.each do |p|%>
-      <li>
-        <%=link_to "Subscribe to "+ p.name,"/subscribe/#{p.slug}" if user_signed_in? && current_user.active_subscription.blank?%>
-        <%=link_to "Upgrade to " + p.name,"/upgrade/#{p.slug}" if user_signed_in? && current_user.active_subscription.present? && current_user.active_subscription.package_id != p.id%>
-        <%=p.name + "at" + p.price.to_s%>
-      </li>
-  <%end%>
+<header class="formheader">
+  <div class="row">
+    <div class="large-12 columns">
+      <h1 class="logo">Robin8</h1>
+      <h2 class="signup-tag">Select Pricing Plan</h2>
+    </div>
+  </div>
+</header>
 
-</ul>
+<div class="form-step">
+  <form action="signup-step4.html" id="step2">
+    <div class="row">
+      <div class="small-12 columns">
+        <div class="tab-nav">
+          <a class="button button-signuptype active" id="selected-businesses">Businesses</a>
+          <a class="button button-signuptype" id="selected-agencies">Agencies</a>
+          <p class="selection-intro business-plans">Empower your business with Robin8's media monitoring and PR intelligence engine.  <br />Take the guesswork out of PR and get better results.</p>
+          <p class="selection-intro agency-plans">Exceed the demands of your clients with ease using Robin8's revolutionary intelligence engine.  <br />Take the guesswork out of PR and get better results.</p>
+        </div>
+
+        <p class="selection-intro-heading">Subscription Plans</p>
+        <p class="selection-guarantee">30 day money back guarantee!</p>
+      </div>
+    </div>
+    <div class="row business-plans" id="business-plans" data-equalizer>
+      <div class="small-12 medium-6 large-4 columns">
+        <div class="subscription-type" id="plantype-basic" data-plan="basic" data-equalizer-watch>
+          <h2><%= @packages[0].name.split(' ')[0] %></h2>
+          <div class="price-bubble">
+            <div class="price-amount">
+              $<%=(@packages[1].price/12).to_i %><span class="permonth">/mo</span>
+              <em>billed annually or<br />$<%=(@packages[0].price).to_i%> month-to-month </em>
+            </div>
+          </div>
+          <div class="plan-inclusions">
+            <ul>
+              <li><strong>1</strong> <span>Seat</span></li>
+              <li><strong>1</strong> <span>Newsroom</span></li>
+              <li><strong>5</strong> <span>Press Releases/month</span></li>
+              <li><strong>3</strong> <span>SmartReleases</span></li>
+              <li><strong></strong> <span></span></li>
+              <li><strong></strong> <span></span></li>
+              <li><strong></strong> <span></span></li>
+              <li><strong></strong> <span></span></li>
+            </ul>
+          </div>
+          <div class="selector-wrap">
+            <a class="button button-planselector" data-selected="basic" onclick="setPackage('<%=@packages[1].slug%>')" >Select</a>
+          </div>
+        </div>
+      </div><!--end plan type column -->
+      <div class="small-12 medium-6 large-4 columns">
+        <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch>
+          <h2><%= @packages[2].name.split(' ')[0] %></h2>
+          <div class="price-bubble">
+            <div class="price-amount">
+              $<%=(@packages[3].price/12).to_i %><span class="permonth">/mo</span>
+              <em>billed annually or<br />$<%=(@packages[2].price).to_i%> month-to-month </em>
+            </div>
+          </div>
+          <div class="plan-inclusions">
+            <ul>
+              <li><strong>1</strong> <span>Seat</span></li>
+              <li><strong>1</strong> <span>Newsroom</span></li>
+              <li><strong>10</strong> <span>Press Releases/month</span></li>
+              <li><strong>5</strong> <span>SmartReleases</span></li>
+              <li><strong>1</strong> <span>Personal Media Lists</span></li>
+              <li><strong>5</strong> <span>Streams for Media Monitoring</span></li>
+            </ul>
+          </div>
+          <div class="selector-wrap">
+            <a class="button button-planselector" data-selected="business" onclick="setPackage('<%=@packages[3].slug%>')">Select</a>
+          </div>
+        </div>
+      </div><!--end plan type column -->
+      <div class="small-12 medium-6 large-4 columns">
+        <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch>
+          <h2><%= @packages[4].name.split(' ')[0] %></h2>
+          <div class="price-bubble">
+            <div class="price-amount">
+              $<%=(@packages[5].price/12).to_i %><span class="permonth">/mo</span>
+              <em>billed annually or<br />$<%=(@packages[4].price).to_i%> month-to-month </em>
+            </div>
+          </div>
+          <div class="plan-inclusions">
+            <ul>
+              <li><strong>1</strong> <span>Seat</span></li>
+              <li><strong>1</strong> <span>Newsroom</span></li>
+              <li><strong>30</strong> <span>Press Releases/month</span></li>
+              <li><strong>15</strong> <span>SmartReleases</span></li>
+              <li><strong>20</strong> <span>Personal Media Lists</span></li>
+              <li><strong>25</strong> <span>Streams for Media Monitoring</span></li>
+            </ul>
+          </div>
+          <div class="selector-wrap">
+            <a class="button button-planselector" data-plan="enterprise" onclick="setPackage('<%=@packages[5].slug%>')">Select</a>
+          </div>
+        </div>
+      </div><!--end plan type column -->
+    </div><!-- end #business-plans -->
 
 
-<br/><br/>
-<%=link_to "Cancel Subscrption", subscription_path(current_user.active_subscription),:method=> :delete,:confirm=>"Are you sure??" if user_signed_in? && current_user.active_subscription.present?%>
+    <div class="row agency-plans" id="agency-plans" data-equalizer>
+      <div class="small-12 medium-6 large-4 columns">
+        <div class="subscription-type" id="plantype-pro" data-plan="pro" data-equalizer-watch>
+          <h2><%= @packages[6].name.split(' ')[0] %></h2>
+          <div class="price-bubble">
+            <div class="price-amount">
+              $<%=(@packages[7].price/12).to_i %><span class="permonth">/mo</span>
+              <em>billed annually or<br />$<%=(@packages[6].price).to_i%> month-to-month </em>
+            </div>
+          </div>
+          <div class="plan-inclusions">
+            <ul>
+              <li><strong>1</strong> <span>Seat</span></li>
+              <li><strong>5</strong> <span>Newsrooms</span></li>
+              <li><strong>30</strong> <span>Press Release Postings on Robin8/month</span></li>
+              <li><strong>15</strong> <span>SmartReleases</span></li>
+              <li><strong>3</strong> <span>Personal Media Lists</span></li>
+              <li><strong>5</strong> <span>Streams for Media Monitoring</span></li>
+            </ul>
+          </div>
+          <div class="selector-wrap">
+            <a class="button button-planselector" data-selected="pro" onclick="setPackage('<%=@packages[7].slug%>')">Select</a>
+          </div>
+        </div>
+      </div><!--end plan type column -->
+      <div class="small-12 medium-6 large-4 columns">
+        <div class="subscription-type" id="plantype-premium" data-plan="premium" data-equalizer-watch>
+          <h2><%= @packages[8].name.split(' ')[0] %></h2>
+          <div class="price-bubble">
+            <div class="price-amount">
+              $<%=(@packages[9].price/12).to_i %><span class="permonth">/mo</span>
+              <em>billed annually or<br />$<%=(@packages[8].price).to_i%> month-to-month </em>
+            </div>
+          </div>
+          <div class="plan-inclusions">
+            <ul>
+              <li><strong>1</strong> <span>Seat</span></li>
+              <li><strong>20</strong> <span>Newsroom</span></li>
+              <li><strong>75</strong> <span>Press Release Postings on Robin8/month</span></li>
+              <li><strong>45</strong> <span>SmartReleases</span></li>
+              <li><strong>5</strong> <span>Personal Media Lists</span></li>
+              <li><strong>10</strong> <span>Streams for Media Monitoring</span></li>
+            </ul>
+          </div>
+          <div class="selector-wrap">
+            <a class="button button-planselector" data-selected="premium" onclick="setPackage('<%=@packages[9].slug%>')">Select</a>
+          </div>
+        </div>
+      </div><!--end plan type column -->
+      <div class="small-12 medium-6 large-4 columns">
+        <div class="subscription-type" id="plantype-ultra" data-plan="ultra" data-equalizer-watch>
+          <h2><%= @packages[10].name.split(' ')[0] %></h2>
+          <div class="price-bubble">
+            <div class="price-amount">
+              $<%=(@packages[11].price/12).to_i %><span class="permonth">/mo</span>
+              <em>billed annually or<br />$<%=(@packages[10].price).to_i%> month-to-month </em>
+            </div>
+          </div>
+          <div class="plan-inclusions">
+            <ul>
+              <li><strong>1</strong> <span>Seat</span></li>
+              <li><strong>100</strong> <span>Newsroom</span></li>
+              <li><strong>400</strong> <span>Press Release Postings on Robin8/month</span></li>
+              <li><strong>200</strong> <span>SmartReleases</span></li>
+              <li><strong>10</strong> <span>Personal Media Lists</span></li>
+              <li><strong>25</strong> <span>Streams for Media Monitoring</span></li>
+            </ul>
+          </div>
+          <div class="selector-wrap">
+            <a class="button button-planselector" data-plan="ultra" onclick="setPackage('<%=@packages[11].slug%>')">Select</a>
+          </div>
+        </div>
+      </div><!--end plan type column -->
+    </div><!-- end #agency-plans -->
+
+    <div class="row">
+      <div class="small-12 columns">
+        <div class="submit-wrap">
+          <input type="button" onclick="checkout();" value="Checkout" class="button button-signup nextstep" id="planselect-button">
+        </div>
+      </div>
+    </div>
+    <input type="text" name="plan_selection" id="plan-selection" style="display:none;" val="" />
+  </form>
+</div>
 
 
+<div class="signup-footer">
+  <div class="row">
+    <div class="small-12 columns">
+      <h3>Service Details</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 medium-6 columns">
+      <div class="service-item">
+        <div class="icon-left">
+          <%= image_tag("img/icon-seat.png")%>
+          <!--<img src="img/icon-seat.png" />-->
+        </div>
+        <div class="details-right">
+          <h4>Seat</h4>
+          <p>Extra seat allows you to add another user to your account.</p>
+        </div>
+      </div><!-- end service-item -->
+      <div class="service-item">
+        <div class="icon-left">
+          <%= image_tag("img/icon-newsroom.png")%>
+          <!--<img src="img/icon-newsroom.png" />-->
+        </div>
+        <div class="details-right">
+          <h4>Newsroom</h4>
+          <p>Extra newsroom allows you add an extra newsroom on your account. A newsroom is a branded online profile where you can add your logo, releases, videos and images. </p>
+        </div>
+      </div><!-- end service-item -->
+      <div class="service-item">
+        <div class="icon-left">
+          <%= image_tag("img/icon-pressrelease.png")%>
+          <!--<img src="img/icon-pressrelease.png" />-->
+        </div>
+        <div class="details-right">
+          <h4>Press Release on MyPRGenie</h4>
+          <p>Post your release on Robin8 website. Get found on the web and share on social media outlets. </p>
+        </div>
+      </div><!-- end service-item -->
+      <div class="service-item">
+        <div class="icon-left">
+          <%= image_tag("img/icon-smartrelease.png")%>
+          <!--<img src="img/icon-smartrelease.png" />-->
+        </div>
+        <div class="details-right">
+          <h4>SmartRelease Distribution</h4>
+          <p>SmartRelease uses Robin8's proprietary predictive intelligence engine to recommend the 100 reporters and top social influencers most interested to cover your news. SmartRelease identifies these top reporters and influencers with 1 click. </p>
+        </div>
+      </div><!-- end service-item -->
+      <div class="service-item">
+        <div class="icon-left">
+          <%= image_tag("img/icon-mediamonitoring.png")%>
+          <!--<img src="img/icon-mediamonitoring.png" />-->
+        </div>
+        <div class="details-right">
+          <h4>Media Monitoring Streams</h4>
+          <p>Media Monitoring allows you to monitor online a specific brand or updates in an industry so you can listen and keep abreast on the latest news and updates. All updates are in real time.</p>
+        </div>
+      </div><!-- end service-item -->
 
+    </div>
+    <div class="small-12 medium-6 columns">
+      <div class="service-item">
+        <div class="icon-left">
+          <%= image_tag("img/icon-personalmedia.png")%>
+          <!--<img src="img/icon-personalmedia.png" />-->
+        </div>
+        <div class="details-right">
+          <h4>Personal Media Lists</h4>
+          <p>Upload your personal media list to Robin8 so you can manage and access it anytime</p>
+        </div>
+      </div><!-- end service-item -->
+      <div class="service-item">
+        <div class="icon-left">
+          <%= image_tag("img/icon-prnewswire.png")%>
+          <!--<img src="img/icon-prnewswire.png" />-->
+        </div>
+        <div class="details-right">
+          <h4>PR Newswire Distribution</h4>
+          <p>Distribute to more than 1,600 w​ebsites including Yahoo Finance​. You can also ​add an image to your message and drive even more traffic to your news. Distribution comes with a detailed, analytic report. </p>
+        </div>
+      </div><!-- end service-item -->
+      <div class="service-item">
+        <div class="icon-left">
+          <%= image_tag("img/icon-myprgenieweb.png")%>
+          <!--<img src="img/icon-myprgenieweb.png" />-->
+        </div>
+        <div class="details-right">
+          <h4>MyPRGenie Web Distribution</h4>
+          <p>MyPRGenie web distribution guarantees you placement on hundreds of top news websites including Boston Globe and Miami Herald. Each distribution comes with a report showing a sampling of the sites that posted your release.</p>
+        </div>
+      </div><!-- end service-item -->
+      <div class="service-item">
+        <div class="icon-left">
+        </div>
+        <%= image_tag("img/icon-accesswire.png")%>
+        <!--<img src="img/icon-accesswire.png" />-->
+      </div>
+      <div class="details-right">
+        <h4>Accesswire Distribution</h4>
+        <p>Distribute to thousands of websites including Yahoo Finance, investor networks and calendars​. You can also add an image to your message and drive even more buzz to your news. Distribution comes with a real-time, analytic report.​</p>
+      </div>
+    </div><!-- end service-item -->
+
+  </div>
+</div>
+<input type="hidden" value="" name="package" id="package"/>.
+<script>
+    function setPackage(slug){
+        $('#package').val(slug);
+    }
+    function checkout(){
+        if($('#package').val() != '') {
+            location.href='/subscribe/'+ $('#package').val();
+        }
+        return false;
+
+    }
+</script>
 
 
