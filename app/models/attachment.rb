@@ -5,9 +5,11 @@ class Attachment < ActiveRecord::Base
 
   after_create do |attachment|
     AmazonStorageWorker.perform_async("attachment", attachment.id, attachment.url, nil, :url)
+    AmazonStorageWorker.perform_async("attachment", attachment.id, attachment.thumbnail, nil, :thumbnail)
   end
 
   after_destroy do |attachment|
     AmazonDeleteWorker.perform_in(20.seconds, attachment.url)
+    AmazonDeleteWorker.perform_in(20.seconds, attachment.thumbnail)
   end
 end

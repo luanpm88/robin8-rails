@@ -35,6 +35,25 @@ class SubscriptionsController < ApplicationController
     redirect_to :back
   end
 
+  def create_subscription
+    errors,resp = BlueSnap::Shopper.new(request, current_user, params, @package)
+    if errors.blank?
+      begin
+        @subscription = current_user.subscriptions.create!(
+            package_id: @package.id,
+            bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
+            recurring_amount: @package.price,
+            next_charge_date: nil # to be set by invoice generation
+        )
+        render json: 'ok'
+      rescue Exception => ex
+        render json: "We are sorry, something is not right. Please contact support for more details."
+      end
+    else
+      render json: errors
+    end
+  end
+
   def edit #upgrade downgrade
     @subscription = current_user.active_subscription
     render :layout => "website"

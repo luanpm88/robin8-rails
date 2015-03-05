@@ -44,12 +44,12 @@ class User < ActiveRecord::Base
     user
   end
 
-  def twitter_identity
-    identities.where(provider: 'twitter').first
-  end
-
   def active_subscription
     @active_s ||= subscriptions.where("user_id ='#{self.id}' AND (expiry is NULL OR expiry >'#{Time.now.utc}') AND status ='A'").last
+  end
+
+  def twitter_identity
+    identities.where(provider: 'twitter').first
   end
 
   def linkedin_identity
@@ -91,6 +91,10 @@ class User < ActiveRecord::Base
                                                      "link" => '',
                                                      "description" => message
                                                  })
+  end
+
+  def as_json(options={})
+    super(methods: [:active_subscription])        
   end
 
   private

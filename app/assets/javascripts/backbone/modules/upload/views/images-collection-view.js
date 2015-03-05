@@ -16,8 +16,8 @@ Robin.Views.ImagesCollectionView = Robin.Views.BaseMediaView.extend({
           $.when.apply(null, fileGroup.files()).done(function() {
             viewObj.setModelParams(arguments, 'image');
             $.each(arguments, function(i, fileInfo) {
-              var src = fileInfo.cdnUrl;
-              viewObj.collection.add(new Robin.Models.Attachment({url: src }));
+              var src = fileInfo.cdnUrl + '-/scale_crop/160x160/center/';
+              viewObj.collection.add(new Robin.Models.Attachment({thumbnail: src }));
             });
             viewObj.photoWidget.value(null);
           });
