@@ -1,7 +1,5 @@
 Robin.Models.Release = Backbone.Model.extend({
   urlRoot: '/releases',
-  // paramRoot: 'release',
-
 
   defaults: {
     statistics: {
@@ -21,7 +19,7 @@ Robin.Models.Release = Backbone.Model.extend({
   },
 
   toJSON: function() {
-      var release = _.clone( this.attributes );
-      return { release: release };
+    var release = _.clone( this.attributes );
+    return { release: release };
   }
 });

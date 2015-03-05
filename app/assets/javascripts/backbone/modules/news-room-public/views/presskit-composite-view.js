@@ -1,6 +1,6 @@
 Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionette, $, _){
 
-  NewsRoomPublic.PresskitView = Marionette.CompositeView.extend({
+  NewsRoomPublic.PresskitCompositeView = Marionette.CompositeView.extend({
     template: 'modules/news-room-public/templates/presskit',
     childViewContainer: '#presskit',
     events: {
