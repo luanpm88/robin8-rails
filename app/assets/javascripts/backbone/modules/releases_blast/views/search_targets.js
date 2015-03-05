@@ -18,7 +18,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       influencersForm: '#find-influencers',
       title: '.panel-title strong',
       authorsSearch: '#find-authors button',
-      influencersSearch: '#find-influencers button'
+      influencersSearch: '#find-influencers button',
+      authorsKeywordsInput: '#find-authors [name=keywords]',
+      authorsContactNameInput: '#find-authors [name=contact_name]',
+      authorsOutletInput: '#find-authors [name=outlet]',
+      authorsLocationInput: '#find-authors [name=location]',
+      influencersTopicsInput: '#find-influencers [name=topics]',
+      influencersLocationInput: '#find-influencers [name=location]'
     },
     events: {
       'switchChange.bootstrapSwitch @ui.checkbox': 'changeFinder',
@@ -27,6 +33,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     onShow: function(){
       this.initSwitch();
+      this.initSelect2();
       this.on("authors:select", this.authorsSelect);
       this.on("influencers:select", this.influencersSelect);
     },
@@ -37,6 +44,75 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         offColor: "info",
         onText: "Authors",
         offText: "Influencers"
+      });
+    },
+    initSelect2: function(){
+      this.ui.authorsKeywordsInput.select2({
+        tags: []
+      });
+      
+      this.ui.influencersTopicsInput.select2({
+        placeholder: "Topics",
+        multiple: true,
+        formatResult: function (object, container, query) {
+          return object.text;
+        },
+        formatSelection: function (object, container) {
+          return object.text;
+        },
+        id: function (object) {
+          return object.id;
+        },
+        ajax: {
+          url: '/autocompletes/skills',
+          dataType: "JSON",
+          data: function (term, page) {
+            return {
+              term: term
+            };
+          },
+          results: function (data, page) {
+            return { 
+              results: _(data.skills).map(function(item) {
+                return { id: item['id'], text: item['name'] }; 
+              })
+            };
+          }
+        },
+        minimumInputLength: 1,
+        createSearchChoice: function () { return null }
+      });
+      
+      this.ui.influencersLocationInput.select2({
+        placeholder: "Locations",
+        multiple: false,
+        formatResult: function (object, container, query) {
+          return object.text;
+        },
+        formatSelection: function (object, container) {
+          return object.text.split(',')[0];
+        },
+        id: function (object) {
+          return object.id.split(',')[0];
+        },
+        ajax: {
+          url: "/autocompletes/locations",
+          dataType: "JSON",
+          data: function (term, page) {
+            return {
+              term: term
+            };
+          },
+          results: function (data, page) {
+            return {
+              results: _(data.locations).map(function (item) {
+                return { id: item['id'], text: item['name'] };
+              })
+            }
+          }
+        },
+        minimumInputLength: 2,
+        createSearchChoice: function () { return null }
       });
     },
     changeFinder: function(event, state){
@@ -58,11 +134,26 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.ui.authorsForm.addClass('hide');
       this.ui.influencersForm.removeClass('hide');
     },
-    searchAuthors: function(){
-      console.log("Author button clicked!");
+    searchAuthors: function(event){
+      event.preventDefault();
+      
+      var params = {};
+      params['keywords'] = this.ui.authorsKeywordsInput.select2('val');
+      params['contactName'] = this.ui.authorsContactNameInput.val();
+      params['outlet'] = this.ui.authorsOutletInput.val();
+      params['location'] = this.ui.authorsLocationInput.val();
+      
+      Robin.vent.trigger("search:authors:clicked", params);
     },
-    searchInfluencers: function(){
-      console.log("Influencers button clicked!");
+    searchInfluencers: function(event){
+      event.preventDefault();
+      
+      var params = {};
+      params['topics'] = this.ui.influencersTopicsInput.select2('val');
+      params['location'] = this.ui.influencersLocationInput.select2('val');
+      params['typecast'] = this.ui.influencersForm.find('[type=radio]:checked').val();
+      
+      Robin.vent.trigger("search:influencers:clicked", params);
     }
   });
 });

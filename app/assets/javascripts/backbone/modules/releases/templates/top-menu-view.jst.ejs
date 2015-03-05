@@ -23,7 +23,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <% if(release.news_room_id) {%>
-            <h4 class="modal-title"> Edit <%= release.title%> </h4>
+            <h4 class="modal-title truncate"> Edit <%= release.title%> </h4>
           <% } else {%>
             <h4 class="modal-title"> Create Release </h4>
           <% } %>
@@ -35,7 +35,7 @@
             <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#release-company" aria-controls="home" role="tab" data-toggle="tab">Basic</a></li>
               <li role="presentation"><a href="#website" aria-controls="home" role="tab" data-toggle="tab">Website</a></li>
-              <li role="presentation"><a href="#release-media" aria-controls="settings" role="tab" data-toggle="tab">Media</a></li>
+              <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab">Media</a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -97,8 +97,10 @@
                     </div>
                   </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="release-media">
-                  <div class='media_region'></div>
+                <div role="tabpanel" class="tab-pane" id="media">
+                  <div class='images_region'></div>
+                  <div class='videos_region'></div>
+                  <div class='files_region'></div>
                 </div>
             </div>
             </form>

@@ -3,7 +3,8 @@ Robin.Collections.Influencers = Backbone.Collection.extend({
   url: '/robin8_api/influencers',
   
   initialize: function(options) {
-    this.releaseModel = options.releaseModel;
+    if (options && options.releaseModel)
+      this.releaseModel = options.releaseModel;
   },
   fetchInfluencers: function(options){
     var self = this;
@@ -18,6 +19,35 @@ Robin.Collections.Influencers = Backbone.Collection.extend({
       },
       success: options.success
     });
+  },
+  findInfluencers: function(data, options){
+    this.fetch({
+      url: this.url,
+      data: this.parseParams(data),
+      success: options.success
+    });
+  },
+  parseParams: function(params){
+    var new_params = {};
+    
+    _(params).each(function(val, key){
+      switch(key){
+        case 'location':
+          if (val && val.length > 0)
+            new_params['location'] = val;
+          break;
+        case 'topics':
+          if (val && val.length > 0)
+            new_params['skills[]'] = val;
+          break;
+        case 'typecast':
+          if (val && val.length > 0)
+            new_params['typecast'] = val;
+          break;
+      }
+    });
+    
+    return new_params;
   },
   mapIptcCategoryToTwtrland: function(code) {
     var category = null;

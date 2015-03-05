@@ -63,6 +63,18 @@ module AylienPressrApi
         Configuration::ENDPOINTS[:authors])
       Connection.new(endpoint, params, config).request!
     end
+    
+    def locations_autocompletes!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:locations_autocompletes])
+      Connection.new(endpoint, params, config).request!
+    end
+    
+    def skills_autocompletes!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:skills_autocompletes])
+      Connection.new(endpoint, params, config).request!
+    end
     # END Destructives methods
     
     
@@ -105,6 +117,22 @@ module AylienPressrApi
         nil
       end
     end
+    
+    def locations_autocompletes(value=nil, params={})
+      begin
+        locations_autocompletes!(value, params)
+      rescue => e
+        nil
+      end
+    end
+    
+    def skills_autocompletes(value=nil, params={})
+      begin
+        skills_autocompletes!(value, params)
+      rescue => e
+        nil
+      end
+    end
 
     private
 
@@ -135,6 +163,8 @@ module AylienPressrApi
             memo = endpoint.gsub(":#{item[0]}", params[item[0].to_sym].to_s)
             memo
           end
+        when Configuration::ENDPOINTS[:authors]
+          params["keywords[]"] = params.delete("keywords") if params.key?("keywords")
       end
       [endpoint, params, config]
     end

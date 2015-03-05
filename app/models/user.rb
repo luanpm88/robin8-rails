@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   end
 
   def active_subscription
-    subscriptions.where("user_id ='#{self.id}' AND (expiry is NULL OR expiry >'#{Time.now.utc}') AND status ='A'").last
+    @active_s ||= subscriptions.where("user_id ='#{self.id}' AND (expiry is NULL OR expiry >'#{Time.now.utc}') AND status ='A'").last
   end
 
   def twitter_identity
