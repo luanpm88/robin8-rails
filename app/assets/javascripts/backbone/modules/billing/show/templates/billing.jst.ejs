@@ -1,15 +1,13 @@
-<script>BlueSnap.publicKey = "10001$e1c3042d3facf7bd48f4fe4149c0711ff96c350c4ff41c7a0515c06e32322531c6d609d45f292bc006907086963d4cdef11849a4dd8eb6d629cbd2fed35f7ac44b25ae61a5c9b449bad56802e7bed9a7530c71855cd3c698a90b03a3c46de1074b0af2773e0223ea87c86b5a86e7eab6cf50bdc6063864a422e1d03acd6d1e03dcaab283c126fa576871e4c233c6383658a9cc048d4aabaa2519fc4088a7b62e9ee670b2fe340969d1fefb5b1aab7d8f3339f1c4e974baeffcf00c2f7d6da5327341e00fa89cd27890d01f9cabf7f082a7cda87b86694b684485100309a14f96ebefcd28b64761c26c51f83c5f1bbe31564dac6863f5888877d97e5cbde56de7";
-// BlueSnap.setTargetFormId("checkout-form");
-</script>
-
 <%= Robin.currentUser.attributes.active_subscription == null ? "You don't have subscription" : Robin.currentUser.attributes.active_subscription %>
+<% var url = Robin.currentUser.attributes.active_subscription == null ? "create_subscription" : "update_subscription" %>
 
 <br/>
 <select id="subscription-selector"></select>
 
 <br/>
 
-<form class="frmContact hidden" id="checkout-form" action="/subscriptions"  accept-charset="UTF-8" method="post">
+<form class="frmContact hidden" id="checkout-form" action="/subscriptions/<%=url%>"  accept-charset="UTF-8" method="post" data-remote="true" data-type="json">
+  <input type="hidden" name="package_id">
   <input type="hidden" name="authenticity_token" value="I6P5tKAnHCR6Nwczy7bW14WoFXQXzgCZn8xcyU5oi6DN0TgAadDLFJgGcxplCnfg2oNfSHJcS5Gf9Rtw8zNL6Q==">
   <div class="row">
     <div class="col-sm-offset-1 col-sm-10">
@@ -333,9 +331,9 @@
           <label for="ccno" class="col-sm-4 control-label">Credit Card Type</label>
           <div class="col-sm-8">
             <select class="form-control" name="card[credit_card_type]" id="card_credit_card_type"><option value="visa">Visa</option>
-<option value="master">Master Card</option>
-<option value="american_express">American Express</option>
-<option value="discover">Discover</option></select>
+            <option value="master">Master Card</option>
+            <option value="american_express">American Express</option>
+            <option value="discover">Discover</option></select>
           </div>
         </div>
 
@@ -357,8 +355,8 @@
         <div class="form-group col-sm-6">
           <label for="cvc" class="col-sm-4 control-label">Exp. Date</label>
           <div class="col-sm-6">
-            <input type="hidden" id="card_expiration_date_3i" name="card[expiration_date(3i)]" value="1">
-            <select id="card_expiration_date_2i" name="card[expiration_date(2i)]" class="form-control">
+            <input type="hidden" id="card_expiration_month" name="card[expiration_month]" value="1">
+            <select id="card_expiration_month" name="card[expiration_month]" class="form-control">
               <option value=""></option>
               <option value="1">January</option>
               <option value="2">February</option>
@@ -373,7 +371,7 @@
               <option value="11">November</option>
               <option value="12">December</option>
             </select>
-            <select id="card_expiration_date_1i" name="card[expiration_date(1i)]" class="form-control">
+            <select id="card_expiration_year" name="card[expiration_year]" class="form-control">
               <option value=""></option>
               <option value="2015">2015</option>
               <option value="2016">2016</option>
@@ -396,3 +394,33 @@
     <input type="submit" id="submit-checkout" name="commit" value="SUBMIT" class="btn-lg">
   </div>
 </form>
+
+</br>
+<input type="button" id="cancel-subscription" value="CANCEL SUBSCRIPTION" class="btn-lg">
+
+</br>
+</br>
+
+<table border='1'>
+  <caption>Payment</caption>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Created at</th>
+      <th>Card last four</th>
+      <th>Card type</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% _.each(items, function(item) { %>
+    <tr class='payment'>
+      <!-- <td><%= i %></td> -->
+      <td><%= item.get('created_at') %></td>
+      <td><%= item.get('card_last_four_digits') %></td>
+      <td><%= item.get('card_type') %></td>
+      <td><%= item.get('amount') %></td>
+    </tr>
+  <% }); %>
+  </tbody>
+</table>

@@ -1,14 +1,18 @@
 Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
-  Show.BillingPage = Backbone.Marionette.LayoutView.extend({
+  Show.BillingPage = Backbone.Marionette.ItemView.extend({
     template: 'modules/billing/show/templates/billing',
 
     events: {
       'change #subscription-selector': 'showForm',
-      'click #submit-checkout' : 'submit'
+      'ajax:error #checkout-form' : 'errorSubmit',
+      'ajax:success #checkout-form' : 'successSubmit',
+      'click #cancel-subscription' : 'cancelSubscription'
     },
 
     initialize: function() {
+      this.collection.fetch();
       this.packages = new Robin.Collections.Packages();
+      BlueSnap.publicKey = BLueSnapKeys.publicKey;
     },
 
     onRender: function() {
@@ -24,18 +28,31 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
-    showForm: function() {
+    showForm: function(e) {
       this.$el.find('#checkout-form').removeClass('hidden');
+      this.$el.find('input[name="package_id"]').val(this.$el.find('#subscription-selector').val());
       BlueSnap.setTargetFormId("checkout-form");
-      // this.model = new Robin.Models.Subscription();
     },
 
-    submit: function() {
-      console.log('wsfsdf');
-      this.$el.find('#checkout-form').submit( function () {
-        console.log('df');
-        return this;
-      } );
+    successSubmit: function(event, data) {
+      $.growl('Your package was updated',{
+        type: 'success'
+      });
+      this.render();
+    },
+
+    errorSubmit: function(event, data) {
+      _(data.responseJSON).each(function(error, i) {
+        $.growl(error, {
+          type: "danger",
+        });
+      });
+    },
+
+    cancelSubscription: function(event) {
+      Robin.currentUser.cancelSubscription().done(function(data){
+        window.location.href = '/users/sign_out'
+      });
     },
 
   });

@@ -35,6 +35,7 @@ module BlueSnap
           return errors,nil
         end
       rescue Exception => ex
+        p ex
         return ["Something is not right with your payment. Please try again"],nil
       end
     end
@@ -79,7 +80,8 @@ module BlueSnap
     end
 
     def self.web_info(request)
-      {"ip" => "123.00.1.1"} #requst.ip
+      # {"ip" => "123.00.1.1"} #
+      request.ip
     end
 
     def self.shopper_info(params,user)
