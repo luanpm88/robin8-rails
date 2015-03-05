@@ -58,11 +58,12 @@ Robin.Views.BaseMediaView = Backbone.Marionette.CompositeView.extend({
     }
   },
   setModelParams: function(attachments_from_uploadcare, attachment_type){
+    var crop = '-/scale_crop/160x160/center/'
     if (this.model.get('attachments') && this.model.get('attachments').length && !this.model.get('attachments_attributes')){
       var arr = _.clone(this.model.get('attachments'));
       _.each(attachments_from_uploadcare, function(value, key){
         if (!_.find(arr, function(item){return item.url == value.cdnUrl})){
-          arr.push({url: value.cdnUrl, attachment_type: attachment_type, name: value.name});
+          arr.push({url: value.cdnUrl, attachment_type: attachment_type, name: value.name, thumbnail: value.cdnUrl + crop});
         }
       }, this);
       this.model.unset('attachments');
@@ -72,7 +73,7 @@ Robin.Views.BaseMediaView = Backbone.Marionette.CompositeView.extend({
         var arr = _.clone(this.model.get('attachments_attributes'));
         _.each(attachments_from_uploadcare, function(value, key){
           if (!_.find(arr, function(item){return item.url == value.cdnUrl})){
-            arr.push({url: value.cdnUrl, attachment_type: attachment_type, name: value.name});
+            arr.push({url: value.cdnUrl, attachment_type: attachment_type, name: value.name, thumbnail: value.cdnUrl + crop});
           }
         }, this);
         this.model.unset('attachments');
@@ -80,7 +81,7 @@ Robin.Views.BaseMediaView = Backbone.Marionette.CompositeView.extend({
       }else{
         var arr = [];
           _.each(attachments_from_uploadcare, function(value, key){
-            arr.push({url: value.cdnUrl, attachment_type: attachment_type, name: value.name});
+            arr.push({url: value.cdnUrl, attachment_type: attachment_type, name: value.name, thumbnail: value.cdnUrl + crop});
           }, this);
           this.model.set("attachments_attributes", arr);
       }
