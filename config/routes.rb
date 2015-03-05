@@ -45,6 +45,9 @@ Rails.application.routes.draw do
     get 'stories', on: :member
   end
 
+  resources :packages, only: [:index] do
+  end
+
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
   post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'
