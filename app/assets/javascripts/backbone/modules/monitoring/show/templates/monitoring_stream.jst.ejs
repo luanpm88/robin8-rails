@@ -39,7 +39,7 @@
     <div class="form-group">
       <label for="topics-select">Rss Link</label>
       <% if(stream.id) {%>
-        <input type="text" class="form-control input-sm" readonly value="<%= window.location.origin + '/streams/' + stream.id + '/stories.rss?topicsForRss='+topicsForRss()+'&blogsForRss='+blogsForRss()%>">
+        <input type="text" class="form-control input-sm rss-input" readonly value="<%= window.location.origin + '/streams/' + stream.id + '/stories.rss?topicsForRss='+topicsForRss()+'&blogsForRss='+blogsForRss()%>">
       <% } else {%>
         <div>Please save stream first</div>
       <% } %>

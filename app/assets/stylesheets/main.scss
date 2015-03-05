@@ -886,6 +886,11 @@ ul {
   height: 42px;
   overflow: hidden;
 }
+.rss-input {
+  cursor: text !important;
+}
+.rss-dialog {
+  max-height: 100px;
 
 .image-preview-multiple-plus .uploadcare-widget-button-open {
     font-size: 68px;
