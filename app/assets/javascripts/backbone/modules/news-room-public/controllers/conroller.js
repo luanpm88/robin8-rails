@@ -80,11 +80,12 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
     presskit: function() {
       var module = this.module;
       var newsRoom = new Robin.Models.NewsRoom();
-      var presskitCompositeView = new module.PresskitCompositeView({
-        collection: new Robin.Collections.Attachments(newsRoom.get('attachments')),
-        childView: module.PresskitItemView
-      });
+      
       newsRoom.preview().done(function(data){
+        var presskitCompositeView = new module.PresskitCompositeView({
+          collection: new Robin.Collections.Attachments(newsRoom.get('attachments')),
+          childView: module.PresskitItemView
+        });
         module.layout.content.show(presskitCompositeView);
       });
     },
