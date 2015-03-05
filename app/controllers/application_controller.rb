@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   after_filter :set_csrf_headers
   before_filter :require_active_subscription
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
   def require_active_subscription
     if user_signed_in?
@@ -18,10 +19,10 @@ class ApplicationController < ActionController::Base
     response.headers['X-CSRF-Token'] = form_authenticity_token if protect_against_forgery?
   end
 
-  before_action :configure_permitted_parameters, if: :devise_controller?
   protected
 
   def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up).push(:first_name, :last_name)
     devise_parameter_sanitizer.for(:account_update).push(:first_name,
                                                          :last_name, :company, :time_zone, :name, :avatar_url)
     devise_parameter_sanitizer.for(:invite).push(:is_primary)

@@ -1,6 +1,6 @@
 Robin.Views.ImagesCollectionView = Robin.Views.BaseMediaView.extend({
   template: 'modules/upload/templates/_images-view',
-  childViewContainer: "ul",
+  childViewContainer: "#images",
   initialize: function(options){
     if (this.model.get('attachments_attributes')){
       this.model.unset('attachments_attributes');
@@ -23,7 +23,9 @@ Robin.Views.ImagesCollectionView = Robin.Views.BaseMediaView.extend({
           });
         }
       });
+      viewObj.$el.find(".image-preview-multiple-plus .uploadcare-widget-button-open").text("");
+      viewObj.$el.find(".image-preview-multiple-plus .uploadcare-widget-button-open").addClass("fa fa-plus-square");
       viewObj.pushValidations();
     }, 0);
-  },
+  }
 })

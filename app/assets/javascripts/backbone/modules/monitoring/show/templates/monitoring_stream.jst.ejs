@@ -39,7 +39,7 @@
     <div class="form-group">
       <label for="topics-select">Rss Link</label>
       <% if(stream.id) {%>
-        <input type="text" class="form-control input-sm" readonly value="<%= window.location.origin + '/streams/' + stream.id + '/stories.rss?topicsForRss='+topicsForRss()+'&blogsForRss='+blogsForRss()%>">
+        <input type="text" class="form-control input-sm rss-input" readonly value="<%= window.location.origin + '/streams/' + stream.id + '/stories.rss?topicsForRss='+topicsForRss()+'&blogsForRss='+blogsForRss()%>">
       <% } else {%>
         <div>Please save stream first</div>
       <% } %>
@@ -48,7 +48,7 @@
 </div>
 <div class="stream-header">
   <i class="fa fa-reorder grey"></i>  
-  <span class='editable' id='title'> <%= stream.name %></span>
+  <span class='editable' id='title' data-emptytext=""> <%= stream.name %></span>
   <button class="close pull-right delete-stream" data-toggle="tooltip" data-placement="left" title="Delete Stream">&times;</button>
   <button class="close pull-right settings-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Stream Settings"><i class="fa fa-cog" style="color: #000;"></i></button>
   <button class="close pull-right rss-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="RSS Feed"><i class="fa fa-rss" style="color: #000;"></i></button>
