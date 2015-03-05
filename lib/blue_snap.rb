@@ -1,7 +1,7 @@
 module BlueSnap
   class Product
     def self.find(sku_id = 300406)
-      url = "#{Rails.application.secrets[:bluesnap_base_url]}/catalog/products/#{sku_id}"
+      url = "#{Rails.application.secrets[:bluesnap][:base_url]}/catalog/products/#{sku_id}"
       Request.get(url)
     end
   end
@@ -9,7 +9,7 @@ module BlueSnap
   class Shopper
 
     def self.get_subscription_id(shopper_id)
-      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       begin
         error,hash = Request.get(url)
         hash[:shopper_subscriptions][:ordering_shopper][:shopper_id] if error.blank?
@@ -19,7 +19,7 @@ module BlueSnap
     end
 
 
-    URL = "#{Rails.application.secrets[:bluesnap_base_url]}/batch/order-placement"
+    URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
     def self.new request,user_profile,params,package
       begin
@@ -41,7 +41,7 @@ module BlueSnap
 
     def self.validate_params(params,user)
       errors = []
-      errors << "Sur Name cannot be blank." if !params[:contact][:title].present?
+      errors << "Title Name cannot be blank." if !params[:contact][:title].present?
       errors << "First name cannot be blank." if !params[:contact][:first_name].present?
       errors << "Last name cannot be blank." if !params[:contact][:last_name].present?
       errors << "Address1 cannot be blank." if !params[:contact][:address1].present?
@@ -60,7 +60,7 @@ module BlueSnap
 
 
     def self.ordering_shopper request
-      {"web-info" =>{"ip" =>"127.0.0.1","remote-host"=> "www.myprgenie.com","user-agent" => request.user_agent} } #change to 127.0.0.1 to local
+      {"web-info" =>{"ip" =>"127.0.0.1","remote-host"=> "www.robin8.com","user-agent" => request.user_agent} } #change to 127.0.0.1 to local
     end
 
     def self.order_info(request,package)
@@ -85,7 +85,7 @@ module BlueSnap
     def self.shopper_info(params,user)
       {
           "shopper-contact-info" => shopper_contact_info(user,params),
-          "store-id" => Rails.application.secrets[:bluesnap_store_id],
+          "store-id" => Rails.application.secrets[:bluesnap][:store_id],
           "shopper-currency"=>"USD",
           "locale"=>'en',
           "payment-info" => credit_cards(user,params)
@@ -145,7 +145,7 @@ module BlueSnap
   class Subscription
     def self.destroy(subscription_id,shopper_id,sku_id)
       begin
-        url = "#{Rails.application.secrets[:bluesnap_base_url]}/subscriptions/#{subscription_id}"
+        url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id, "underlying-sku-id"=>sku_id, "status"=> "C","shopper-id"=>shopper_id.to_s} # status C is for cancel :s
         Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
@@ -157,7 +157,7 @@ module BlueSnap
     def self.update(subscription_id,shopper_id ,new_sku_id)
       puts "sub id is :#{subscription_id} shopper is :#{shopper_id} and #{new_sku_id}  ************************"
       begin
-        url = "#{Rails.application.secrets[:bluesnap_base_url]}/subscriptions/#{subscription_id}"
+        url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id"=>new_sku_id.to_s, "status"=> "A","shopper-id"=>shopper_id.to_s}
         Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
@@ -166,13 +166,13 @@ module BlueSnap
     end
 
     def self.find_all_by_shopper_id(shopper_id)
-      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       errors,resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions] if errors.blank?
     end
 
     def self.find_last_by_shopper_id(shopper_id)
-      url = "#{Rails.application.secrets[:bluesnap_base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
+      url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       errors,resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions][:subscription].class == Array ? resp[:shopper_subscriptions][:subscriptions][:subscription].last : resp[:shopper_subscriptions][:subscriptions][:subscription] if errors.blank?
     end
@@ -187,7 +187,7 @@ module BlueSnap
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Post.new(uri.request_uri)
-      request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
+      request.basic_auth(Rails.application.secrets[:bluesnap][:user_name], Rails.application.secrets[:bluesnap][:password])
       request.body = data
       request["Content-Type"] ='application/xml'
       response = http.request(request)
@@ -202,7 +202,7 @@ module BlueSnap
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Put.new(uri.request_uri)
-      request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
+      request.basic_auth(Rails.application.secrets[:bluesnap][:user_name], Rails.application.secrets[:bluesnap][:password])
       request.body = data
       request["Content-Type"] ='application/xml'
       response = http.request(request)
@@ -216,7 +216,7 @@ module BlueSnap
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Get.new(uri.request_uri)
-      request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
+      request.basic_auth(Rails.application.secrets[:bluesnap][:user_name], Rails.application.secrets[:bluesnap][:password])
       response = http.request(request)
       Response.parse(response)
     end

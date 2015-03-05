@@ -2,16 +2,16 @@ require 'rubygems'
 require 'active_resource'
 module Blue
   class Base <  ActiveResource::Base
-    self.site = "https://sandbox.bluesnap.com/services/2"
+    self.site = Rails.application.secrets[:bluesnap][:base_url]
     self.format = :xml
     self.include_format_in_path = false
     self.auth_type = :basic
-    self.user = Rails.application.secrets[:bluesnap_user]
-    self.password = Rails.application.secrets[:bluesnap_pass]
+    self.user = Rails.application.secrets[:bluesnap][:user_name]
+    self.password = Rails.application.secrets[:bluesnap][:password]
   end
 
   class Product < Base
-    self.site = "https://sandbox.bluesnap.com/services/2/catalog"
+    self.site = "#{Rails.application.secrets[:bluesnap][:base_url]}/catalog"
   end
 
   class Shopper < Base

@@ -40,13 +40,11 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
             complete: function(request){
               console.log(request)
             },
-     
           })
         }
       });
-      currView.$el.find(".stream-container").disableSelection();
     },
-    
+
     addStream: function() {
       var model = new Robin.Models.Stream();
       var stream = new Robin.Models.Stream({model: model});

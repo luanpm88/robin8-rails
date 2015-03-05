@@ -6,7 +6,7 @@
   </div>
 
   <div class="modal-body">
-    <p>Send your press release to <strong class="author-name"></strong>.</p>
+    <p>Send your press release to <strong class="author-name"><%= author.full_name %></strong>.</p>
 
     <div class="row">
       <div class="col-xs-6">
@@ -14,7 +14,7 @@
       </div>
 
       <div class="col-xs-6">
-        <label>Email</label> <input class="form-control" name="email" placeholder="Email" type="text">
+        <label>Email</label> <input class="form-control" name="email" placeholder="Email" type="text" value="<%= author.email %>">
       </div>
     </div>
     <hr>
@@ -23,21 +23,15 @@
       <div class="col-xs-12">
         <label for="numberOfSentences" id="number-of-sentences">Number of summary sentences: <span>5</span></label>
 
-        <div id="slider"></div><label>Message</label> 
-        <textarea class="form-control" rows="7">
-Hi Jane,
-
-Here's a press release you might find interesting:
-
-Regards,
-[Your Name]
-</textarea>
+        <div id="slider"></div><label>Message</label>
+        <div id="form-message">
+        </div>
       </div>
     </div>
   </div>
   
   <div class="modal-footer">
-    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button> <button class="btn btn-success"
-    type="button">Send</button>
+    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button> 
+    <button id="send-btn" class="btn btn-success" type="button">Send</button>
   </div>
 </div>
