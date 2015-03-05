@@ -1,8 +1,9 @@
 class SubscriptionsController < ApplicationController
+
   before_action :authenticate_user!
 
   skip_before_filter :require_active_subscription
-  layout false
+
   #before_filter :force_ssl
 
   before_filter :require_package ,:only => [:new,:create,:edit,:update]
@@ -10,35 +11,33 @@ class SubscriptionsController < ApplicationController
   before_filter :validate_subsription,:only=>[:new]
 
   def new
-    @subscription = Subscription.new
+    @subscription = current_user.subscriptions.new
+    render :layout => "website"
   end
 
   def create
     errors,resp = BlueSnap::Shopper.new(request, current_user, params, @package)
     if errors.blank?
       begin
-        @subscription = Subscription.create!(
+        @subscription = current_user.subscriptions.create!(
             package_id: @package.id,
-            user_id: current_user.id,
             bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
             recurring_amount: @package.price,
             next_charge_date: nil # to be set by invoice generation
         )
-        p @subscription
         flash[:success]  = "Subscribed Sucessfully" #take to any page as required
       rescue Exception=> ex
-        p ex
         flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
       end
     else
-      p errors
       flash[:errors] = errors
     end
-    redirect_to :pricing
+    redirect_to :back
   end
 
   def edit #upgrade downgrade
     @subscription = current_user.active_subscription
+    render :layout => "website"
   end
 
   def update
@@ -50,6 +49,7 @@ class SubscriptionsController < ApplicationController
       )
       flash[:success] = "Your package has been changed" # take to any page as required.
     end
+    redirect_to :root
   end
 
   def destroy #to cancel account
@@ -79,14 +79,15 @@ class SubscriptionsController < ApplicationController
 
   def validate_upgrade
     @package = Package.where(slug: params[:slug]).last
-    if @package.id == current_user.active_subscription.package_id
+    if current_user.active_subscription.present? && @package.id == current_user.active_subscription.package_id
       flash[:error] = "You are already subscribed to this package"
       return redirect_to :back
     end
   end
 
   def validate_subsription
-    return redirect_to :back if current_user.active_subscription.present?
+    @package = Package.where(slug: params[:slug]).last
+    return redirect_to "/upgrade/#{@package.slug}" if current_user.active_subscription.present?
   end
 
 end

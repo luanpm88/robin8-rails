@@ -17,7 +17,7 @@ class PagesController < ApplicationController
 
   def pricing
     @packages = Package.where(is_active: true)
-    render :layout => false
+    render :layout => "website"
   end
 
 end

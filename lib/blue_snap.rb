@@ -24,7 +24,7 @@ module BlueSnap
     URL = "https://sandbox.bluesnap.com/services/2/batch/order-placement"
 
     def self.new request,user_profile,params,package
-      begin
+      # begin
         errors = BlueSnap::Shopper.validate_params(params,user_profile)
         if errors.blank?
           shopper = {
@@ -36,9 +36,9 @@ module BlueSnap
         else
           return errors,nil
         end
-      rescue Exception => ex
-        return ["Something is not right with your payment. Please try again"],nil
-      end
+      # rescue Exception => ex
+      #   return ["Something is not right with your payment. Please try again"],nil
+      # end
     end
 
     def self.validate_params(params,user)
@@ -55,8 +55,8 @@ module BlueSnap
       # errors << "Credit Card is not valid" if params[:encryptedCreditCard].length != 16
       errors << "CVC cannot be blank." if !params[:encryptedCvv].present?
       errors << "Credit Card Type cannot be blank." if !params[:card][:credit_card_type].present?
-      errors << "Expiration Month cannot be blank." if !params[:card][:"expiration_date(2i)"].present?
-      errors << "Expiration Year cannot be blank." if !params[:card][:"expiration_date(1i)"].present?
+      errors << "Expiration Month cannot be blank." if params[:card][:expiration_month].blank? #!params[:card][:"expiration_date(2i)"].present?
+      errors << "Expiration Year cannot be blank." if  params[:card][:expiration_year].blank? # !params[:card][:"expiration_date(1i)"].present?
       return errors
     end
 
@@ -109,8 +109,8 @@ module BlueSnap
           "encrypted-card-number" => params[:encryptedCreditCard],
           "encrypted-security-code" => params[:encryptedCvv],
           "card-type"=>params[:card][:credit_card_type].upcase,
-          "expiration-month" => params[:card][:"expiration_date(2i)"],
-          "expiration-year" => params[:card][:"expiration_date(1i)"]
+          "expiration-month" => params[:card][:expiration_month], #params[:card][:"expiration_date(2i)"],
+          "expiration-year" => params[:card][:expiration_year] #params[:card][:"expiration_date(1i)"]
       }
     end
 
@@ -191,9 +191,9 @@ module BlueSnap
       request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
       request.body = data
       request["Content-Type"] ='application/xml'
-      puts"************************************************************************"
-      puts data
       response = http.request(request)
+      puts"************************************************************************"
+      puts "response is #{response} AND #{response.body}***************************"
       Response.parse(response)
     end
 
@@ -205,8 +205,6 @@ module BlueSnap
       request = Net::HTTP::Put.new(uri.request_uri)
       request.basic_auth(Rails.application.secrets[:bluesnap_user], Rails.application.secrets[:bluesnap_pass])
       request.body = data
-      puts "******************************"
-      puts data
       request["Content-Type"] ='application/xml'
       response = http.request(request)
       puts "response is #{response} AND #{response.body}***************************"
@@ -227,18 +225,17 @@ module BlueSnap
 
   class Response
     def self.parse(response)
-      puts"orignal is :#{response.inspect}"
       resp = Hash.from_xml(response.body).deep_symbolize_keys
-      puts resp
       return get_errors(resp),nil  if response.code.to_i == 400 || response.code.to_i == 401
       return nil,resp
     end
 
     def self.get_errors(resp)
-      resps = errs = []
-      resp[:messages][:message].collect{|x|  resps << x.values if x.class == Hash}
-      resps.collect{|i| errs << i[1] if i.class == Array }
-      errs
+      # resps = errs = []
+      # resp[:messages][:message].collect{|x|  resps << x.values if x.class == Hash}
+      # resps.collect{|i| errs << i[1] if i.class == Array }
+      # errs
+      ["Your card was declined. Please confirm your card details below and try again."]
     end
   end
 

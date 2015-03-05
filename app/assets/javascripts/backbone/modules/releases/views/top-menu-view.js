@@ -80,6 +80,16 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                 message: 'something went wrong'
               }
             }
+          },
+          news_room_id: {
+            validators: {
+              notEmpty: {
+                message: 'You should select a newsroom'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
           }
         }
       })
