@@ -1,6 +1,6 @@
 Robin.Views.FilesCollectionView = Robin.Views.BaseMediaView.extend({
   template: 'modules/upload/templates/_files-view',
-  childViewContainer: "ul",
+  childViewContainer: "#files",
   initialize: function(options){
     if (this.model.get('attachments_attributes')){
       this.model.unset('attachments_attributes');
@@ -26,6 +26,8 @@ Robin.Views.FilesCollectionView = Robin.Views.BaseMediaView.extend({
         }
       });
       viewObj.pushValidations();
+      viewObj.$el.find(".image-preview-multiple-plus .uploadcare-widget-button-open").text("");
+      viewObj.$el.find(".image-preview-multiple-plus .uploadcare-widget-button-open").addClass("fa fa-plus-square");
     }, 0);
   },
 })
