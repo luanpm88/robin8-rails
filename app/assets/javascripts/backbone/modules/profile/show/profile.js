@@ -3,12 +3,8 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     template: 'modules/profile/show/templates/profile',
 
     events: {
-      'click #saveChanges': 'verifyProfile',
+      'click #saveChanges': 'updateProfile',
       'reset form': 'cancel'
-    },
-
-    modelEvents: {
-      'change': 'updateProfile'
     },
 
     initialize: function() {
@@ -129,37 +125,36 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
-    verifyProfile: function() {
-      this.form.data('formValidation').validate();
-      if (this.form.data('formValidation').isValid()) {
-        this.modelBinder.copyViewValuesToModel();
-      }
-    },
-
     updateProfile: function() {
       var viewObj = this;
       var r = this.model.attributes;
-      this.model.save(this.model.attributes, {
-        success: function(userSession, response) {
-          Robin.currentUser.attributes = r;
-          Robin.currentUser.attributes.current_password = "";
-          Robin.layouts.main.onShow();
-          $.growl({message: 'Your account data has been successfully changed'
-          },{
-            element: '#growler-alert',
-            type: 'success',
-            offset: 147,
-            delay: 2000,
-            placement: {
-              from: "top",
-              align: "right"
-            },
-          });
-        },
-        error: function(userSession, response) {
-          viewObj.processErrors(response);
-        }
-      });
+      this.form.data('formValidation').validate();
+      changed = Object.keys(this.model.changed).length;
+      if (this.form.data('formValidation').isValid()&&changed>0){
+        this.modelBinder.copyViewValuesToModel();
+        this.model.save(this.model.attributes, {
+          success: function(userSession, response) {
+            console.log(r);
+            Robin.currentUser.attributes = r;
+            Robin.currentUser.attributes.current_password = "";
+            Robin.layouts.main.onShow();
+            $.growl({message: 'Your account data has been successfully changed'
+            },{
+              element: '#growler-alert',
+              type: 'success',
+              offset: 147,
+              delay: 2000,
+              placement: {
+                from: "top",
+                align: "right"
+              },
+            });
+          },
+          error: function(userSession, response) {
+            viewObj.processErrors(response);
+          }
+        });
+      }
     },
 
     processErrors: function(data){
