@@ -17,22 +17,6 @@
 //= require ./lib/foundation.min
 //= require ./lib/modernizr
 
-//= require underscore
-//= require backbone
-//= require backbone.babysitter
-//= require backbone.modelbinder
-//= require backbone.wreqr
-//= require backbone.marionette
-
-//= require_tree ./backbone/config
-//= require backbone/init
-//= require_tree ./backbone/routers
-//= require_tree ./backbone/controllers
-//= require_tree ./backbone/models
-//= require_tree ./backbone/collections
-//= require_tree ./backbone/layouts
-//= require_tree ./backbone/modules
-
 function setSizes(){
   $('.sizeheader').css('height',$(window).height()); 
 
