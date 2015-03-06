@@ -34,9 +34,9 @@
       Robin.publicPages = true
     <% end %>
   <% else -%>
-    console.log(Robin);
-    console.log('here1');
-    Robin.currentUser = null;
+    if (Robin) {
+      Robin.currentUser = null;
+    }
   <% end -%>
 
   <% if Rails.env == 'development' -%>
