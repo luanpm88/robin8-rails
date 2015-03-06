@@ -9,12 +9,31 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       videosRegion: '.videos_region',
       filesRegion: '.files_region'
     },
+    ui: {
+      wysihtml5:        'textarea.wysihtml5',
+      nounsCount:       '#nounsCount',
+      adverbsCount:     '#adverbsCount',
+      releaseTitle:     '#release-title-input',
+      adjectivesCount:  '#adjectivesCount'
+    },
     events: {
       'click #new_release': 'openModalDialog',
       'click #newsroom_filter': 'filterBy',
       'click #save_release': 'saveRelease',
-      'click #delete_release': 'deleteRelease'
+      'click #delete_release': 'deleteRelease',
+      'click #extract_url': 'extractURL'
     },
+    updateStats: _.debounce(function(e) {
+      var text = this.editor.getValue();
+      var words = new Lexer().lex(text);
+      var taggedWords = new POSTagger().tag(words);
+      var poses = _.chain(taggedWords).reject(function(w) {
+        return w[1].match(/^[,.]$/)
+      }).countBy(function(w) { return w[1].slice(0, 2); }).value();
+      this.ui.nounsCount.html(poses.NN || 0);
+      this.ui.adverbsCount.html(poses.RB || 0);
+      this.ui.adjectivesCount.html(poses.JJ || 0);
+    }, 500),
     initialize: function(options){
       var viewObj = this;
       this.modelBinder = new Backbone.ModelBinder();
@@ -45,10 +64,48 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.render();
       this.$el.find('#release_form').modal({ keyboard: false });
     },
+    extractURL: function(e) {
+      var url = prompt("Enter a link to grab the press release from:", "");
+      var self = this;
+      if (url) {
+        $.ajax({
+          url: 'textapi/extract',
+          dataType: 'json',
+          method: 'POST',
+          data: {
+            url: url
+          },
+          success: function(response) {
+            self.ui.releaseTitle.val(response.title);
+            var editor = self.ui.wysihtml5.data('wysihtml5').editor;
+            editor.composer.commands.exec("insertHTML", response.article);
+            editor.setValue(
+              '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
+            );
+          }
+        });
+      }
+    },
     onRender: function(){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
-      $('.wysihtml5').wysihtml5({});
+      var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
+      var customTemplates = {
+        extract: function(context) {
+          return extractButtonTemplate
+        }
+      };
+      this.ui.wysihtml5.wysihtml5({
+        toolbar: {
+          extract: true
+        },
+        customTemplates: customTemplates,
+      });
+      var self = this;
+      this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
+      _.each(['focus', 'blur', 'change', 'paste', 'newword:composer'], function(t) {
+        self.editor.on(t, function(e) { self.updateStats(e); });
+      });
       this.initLogoView();
       this.initMediaTab();
     },
