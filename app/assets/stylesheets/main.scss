@@ -892,17 +892,35 @@ ul {
 .rss-dialog {
   max-height: 100px;
 }
-.image-preview-multiple-plus .uploadcare-widget-button-open {
+
+.image-preview-multiple-plus {
+  .uploadcare-widget-button-open {
     font-size: 68px;
     line-height: 100px;
     padding: 0px;
     background-color: #FFF;
-}
-.image-preview-multiple-plus .uploadcare-widget-button {
-    margin: 0px;
-    color: #3BAFDA;
-}
-.image-preview-multiple-plus .uploadcare-widget-button-open:hover {
+  }
+  .uploadcare-widget-button-open:hover {
     color: #43C2E9;
     background-color: #FFF;
+  }
+  .uploadcare-widget-button {
+    margin: 0px;
+    color: #3BAFDA;
+  }
+}
+
+#formSignup {
+  div i {
+    line-height: 38px;
+  }
+  input {
+    margin: 1rem 0px 0px 0px;
+  }
+  button {
+    margin: 1rem;
+  }
+  small {
+    font-size: 80%;
+  }
 }
