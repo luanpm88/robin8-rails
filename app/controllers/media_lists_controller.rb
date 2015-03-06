@@ -1,10 +1,10 @@
 class MediaListsController < ApplicationController
   before_action :set_media_list, only: [:show, :edit, :update, :destroy]
-
+  
   # GET /media_lists
   # GET /media_lists.json
   def index
-    @media_lists = current_user.media_lists.all
+    @media_lists = current_user.media_lists.includes(:contacts).all
     
     respond_to do |format|
       format.json
@@ -20,6 +20,7 @@ class MediaListsController < ApplicationController
   # POST /media_lists.json
   def create
     @media_list = current_user.media_lists.new(media_list_params)
+    @media_list.name = media_list_params['attachment'].original_filename
 
     respond_to do |format|
       if @media_list.save
@@ -45,11 +46,11 @@ class MediaListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_media_list
-      @media_list = current_user.media_lists.find(params[:id])
+      @media_list = current_user.media_lists.includes(:contacts).find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def media_list_params
-      params.require(:media_list).permit(:name)
+      params.require(:media_list).permit(:attachment)
     end
 end

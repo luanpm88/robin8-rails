@@ -25,7 +25,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.toggleAddRemove(e);
       var influencerId = this.model.get('screen_name');
       var model = new Robin.Models.Contact({
-        id: 'influencer_' + influencerId, origin: 'influencer',
+        id: 'twtrland_' + influencerId, 
+        origin: 'twtrland',
         twitter_screen_name: influencerId,
         first_name: this.model.get('firstName'),
         last_name: this.model.get('lastName')
@@ -34,7 +35,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     removeInfluencer: function(e) {
       this.toggleAddRemove(e);
-      this.pitchContactsCollection.remove('influencer_' + this.model.get('screen_name'));
+      this.pitchContactsCollection.remove('twtrland_' + this.model.get('screen_name'));
     },
     initialize: function(options) {
       this.pitchContactsCollection = options.pitchContactsCollection

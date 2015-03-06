@@ -22,8 +22,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.toggleAddRemove(e);
       var authorId = this.model.get('id');
       var model = new Robin.Models.Contact({
-        id: 'author_' + authorId,
-        author_id: authorId, origin: 'blog',
+        id: 'pressr_' + authorId,
+        author_id: authorId, 
+        origin: 'pressr',
         first_name: this.model.get('first_name'),
         last_name: this.model.get('last_name'),
         email: this.model.get('email')
@@ -32,7 +33,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     removeAuthor: function(e) {
       this.toggleAddRemove(e);
-      this.pitchContactsCollection.remove('author_' + this.model.get('id'));
+      this.pitchContactsCollection.remove('pressr_' + this.model.get('id'));
     },
     templateHelpers: function(){
       return {

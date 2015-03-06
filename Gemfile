@@ -57,6 +57,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery.caret'
   gem 'rails-assets-bootstrap-switch'
   gem 'rails-assets-select2-bootstrap-css'
+  gem 'rails-assets-toastr'
 end
 
 gem 'devise'
@@ -95,6 +96,8 @@ gem 'whenever'
 # gem 'capistrano-rails', group: :development
 
 gem 'mailgun'
+
+gem 'paperclip', '~> 4.2.1'
 
 group :development, :test do
   # Deploy with Capistrano

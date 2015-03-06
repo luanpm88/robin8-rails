@@ -47,6 +47,7 @@
 //= require DataTables
 //= require bootstrap-switch
 // require dataTables.bootstrap
+//= require toastr
 
 //= require_tree ./backbone/config
 //= require backbone/init

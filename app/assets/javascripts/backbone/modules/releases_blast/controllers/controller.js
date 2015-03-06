@@ -5,6 +5,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.module = Robin.module("ReleasesBlast");
       var self = this;
       
+      Robin.layouts.main.getRegion('content').show(this.module.layout);
+      this.module.releasesBlastHeader = new Robin.Models.ReleasesBlastHeader();
+      this.module.releasesBlastHeader.set({ level: 1 });
+      this.module.topMenuView = new this.module.TopMenuView({
+        pitchContactsCollection: this.module.pitchContactsCollection,
+        model: this.module.releasesBlastHeader
+      });
+      this.module.layout.topMenuRegion.show(this.module.topMenuView);
+      
       Robin.vent.on("search:authors:clicked", function(params) {
         self.searchAuthors(params);
       });
@@ -14,20 +23,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     start: function(params){
-      Robin.layouts.main.getRegion('content').show(this.module.layout);
+      this.module.releasesBlastHeader.set({ level: 1 });
+      
       this.module.collection.fetch({reset: true});
-      var topMenuView = new this.module.TopMenuView({level: 1});
       var startTabView = new this.module.StartTabView({
         collection: this.module.collection,
       });
       
-      this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(startTabView);
     },
     analysis: function(params){
-      Robin.layouts.main.getRegion('content').show(this.module.layout);
+      this.module.releasesBlastHeader.set({ level: 2 });
+
       var releaseModel = this.module.collection.get(params.release_id);
-      var topMenuView = new this.module.TopMenuView({level: 2});
       var iptcCategories = new Robin.Collections.IptcCategories();
       var analysisTabView = new this.module.AnalysisTabView({
         model: releaseModel,
@@ -36,16 +44,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var pitchModel = new Robin.Models.Pitch({release_id: releaseModel.get('id')});
       pitchModel.save();
       this.module.pitch = pitchModel;
-      this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(analysisTabView);
     },
     targets: function(params){
-      Robin.layouts.main.getRegion('content').show(this.module.layout);
+      this.module.releasesBlastHeader.set({ level: 3 });
+
       var releaseModel = this.module.collection.get(params.release_id);
-      var topMenuView = new this.module.TopMenuView({level: 3});
       var targetsTabLayout = new ReleasesBlast.TargetsTabLayout();
       
-      this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(targetsTabLayout);
       
       var suggestedAuthorsCollection = new Robin.Collections.SuggestedAuthors({
@@ -77,17 +83,38 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         }
       });
       
+      // Load Search tab
       this.module.searchLayout = new ReleasesBlast.SearchLayout();
       targetsTabLayout.searchRegion.show(this.module.searchLayout);
       
       var searchCriteriaView = new ReleasesBlast.SearchCriteriaView();
       this.module.searchLayout.searchCriteriaRegion.show(searchCriteriaView);
+      
+      // Load Media List tab
+      var mediaListCollection = new Robin.Collections.MediaLists();
+      var selectedMediaListsCollection = new Robin.Collections.SelectedMediaLists();
+      
+      mediaListCollection.fetch({reset: true});
+      var mediaListLayout = new ReleasesBlast.MediaListLayout();
+      targetsTabLayout.mediaListRegion.show(mediaListLayout);
+      
+      var uploadMediaListView = new ReleasesBlast.UploadMediaListView({
+        collection: mediaListCollection,
+        pitchContactsCollection: self.module.pitchContactsCollection,
+        selectedMediaListsCollection: selectedMediaListsCollection
+      });
+      var selectedMediaListsView = new ReleasesBlast.SelectedMediaListsCompositeView({
+        collection: selectedMediaListsCollection,
+        pitchContactsCollection: self.module.pitchContactsCollection
+      });
+      
+      mediaListLayout.selectedMediaListsRegion.show(selectedMediaListsView);
+      mediaListLayout.uploadMediaListRegion.show(uploadMediaListView);
     },
     pitch: function(params){
-      Robin.layouts.main.getRegion('content').show(this.module.layout);
-      var topMenuView = new this.module.TopMenuView({level: 4});
+      this.module.releasesBlastHeader.set({ level: 4 });
+
       var pitchTabView = new this.module.PitchTabView();
-      this.module.layout.topMenuRegion.show(topMenuView);
       this.module.layout.tabContentRegion.show(pitchTabView);
 
       var grouped = this.module.pitchContactsCollection.groupBy(function(c) {
@@ -95,7 +122,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
 
       var emailTargetsCollection = new ReleasesBlast.EmailTargetsCollection();
-      var emails = grouped['blog'] || [];
+      var emails = grouped['pressr'] || [];
       _.chain(emails).map(function(e) {
         return new ReleasesBlast.EmailTargetModel({
           name: [e.get('first_name'), e.get('last_name')].join(' '),
@@ -108,7 +135,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
 
       var twitterTargetsCollection = new ReleasesBlast.TwitterTargetsCollection();
-      var twitters = grouped['influencer'] || [];
+      var twitters = grouped['twtrland'] || [];
       _.chain(twitters).map(function(t) {
         return new ReleasesBlast.TwitterTargetModel({
           name: [t.get('first_name'), t.get('last_name')].join(' '),
