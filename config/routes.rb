@@ -73,7 +73,7 @@ Rails.application.routes.draw do
     get '/' => 'news_rooms#preview'
   end
 
-  root 'pages#signin'
+  root 'pages#home'
   
   get '/signup', to: 'pages#signup'
   get '/signin', to: 'pages#signin'
