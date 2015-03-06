@@ -3,6 +3,10 @@ class UsersController < ApplicationController
     render json: current_user
   end
 
+  def get_active_subscription
+    render json: current_user.active_subscription
+  end
+
   def delete_user
     manageable_users = User.where(invited_by_id: current_user.id)
     @user = manageable_users.find(params[:id])

@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  skip_before_filter :validate_subscription
+
   def home
     if signed_in?
       render "home", :layout => 'application'

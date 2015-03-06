@@ -6,12 +6,12 @@ class ApplicationController < ActionController::Base
   # rescue_from Exception, with: :handle_exception
 
   after_filter :set_csrf_headers
-  before_filter :require_active_subscription
+  before_filter :validate_subscription, unless: :devise_controller?
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
-  def require_active_subscription
+  def validate_subscription
     if user_signed_in?
-      # return redirect_to :pricing if current_user.active_subscription.blank?
+      flash[:alert] = "You need an active subscription to continue"; return redirect_to :pricing if current_user.active_subscription.blank?
     end
   end
 
