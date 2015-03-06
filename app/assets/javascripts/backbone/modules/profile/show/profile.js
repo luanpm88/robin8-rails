@@ -129,8 +129,10 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       var viewObj = this;
       var r = this.model.attributes;
       this.form.data('formValidation').validate();
-      changed = Object.keys(this.model.changed).length;
-      if (this.form.data('formValidation').isValid()&&changed>0){
+      console.log(this.model.changed.email);
+      var changed = this.model.changed;
+      var changesLength = Object.keys(changed).length;
+      if (this.form.data('formValidation').isValid()&&changesLength>0){
         this.modelBinder.copyViewValuesToModel();
         this.model.save(this.model.attributes, {
           success: function(userSession, response) {
@@ -142,12 +144,25 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
               element: '#growler-alert',
               type: 'success',
               offset: 147,
-              delay: 2000,
+              delay: 5000,
               placement: {
                 from: "top",
                 align: "right"
               },
             });
+            if (changed.email) {
+              $.growl({message: 'You should receive a confirmation mail shortly'
+              },{
+                element: '#growler-alert',
+                type: 'success',
+                offset: 147,
+                delay: 5000,
+                placement: {
+                  from: "top",
+                  align: "right"
+                },
+              });
+            }
           },
           error: function(userSession, response) {
             viewObj.processErrors(response);
