@@ -1,8 +1,7 @@
 class SubscriptionsController < ApplicationController
 
   before_action :authenticate_user!
-
-  skip_before_filter :require_active_subscription
+  skip_before_filter :validate_subscription
 
   #before_filter :force_ssl
 
