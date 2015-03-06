@@ -1,9 +1,12 @@
 class PagesController < ApplicationController
   skip_before_filter :validate_subscription
-
+  before_action :authenticate_user!, only: [:pricing]
+  
   def home
-    if signed_in?
+    if signed_in? && current_user.subscriptions.length > 0
       render "home", :layout => 'application'
+    elsif signed_in?
+      redirect_to pricing_path
     else
       render "landing_page", :layout => 'landing'
     end

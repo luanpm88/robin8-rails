@@ -28,10 +28,11 @@ class SubscriptionsController < ApplicationController
       rescue Exception=> ex
         flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
       end
+      redirect_to root_path
     else
       flash[:errors] = errors
+      redirect_to :back
     end
-    redirect_to :back
   end
 
   def create_subscription
