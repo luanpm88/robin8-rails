@@ -57,6 +57,7 @@
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/modules
 
+console.log('application');
 var ready;
 ready = function() {
   //default options for Bootstrap Growl
