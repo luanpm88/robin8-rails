@@ -7,14 +7,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       logoRegion: '.logo',
       imagesRegion: '.images_region',
       videosRegion: '.videos_region',
-      filesRegion: '.files_region'
+      filesRegion: '.files_region',
+      characteristicsRegion: '#release-characteristics'
     },
     ui: {
       wysihtml5:        'textarea.wysihtml5',
-      nounsCount:       '#nounsCount',
-      adverbsCount:     '#adverbsCount',
       releaseTitle:     '#release-title-input',
-      adjectivesCount:  '#adjectivesCount'
     },
     events: {
       'click #new_release': 'openModalDialog',
@@ -30,9 +28,21 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var poses = _.chain(taggedWords).reject(function(w) {
         return w[1].match(/^[,.]$/)
       }).countBy(function(w) { return w[1].slice(0, 2); }).value();
-      this.ui.nounsCount.html(poses.NN || 0);
-      this.ui.adverbsCount.html(poses.RB || 0);
-      this.ui.adjectivesCount.html(poses.JJ || 0);
+      var sentences = _(text.match(/[^.!?]+(\.!\?)?/g) || []).filter(function(s) {
+        return s.length > 5;
+      });
+      this.releaseCharacteristicsModel.set({
+        numberOfNouns: poses.NN || 0,
+        numberOfAdverbs: poses.RB || 0,
+        numberOfAdjectives: poses.JJ || 0,
+        numberOfCharacters: text.length,
+        numberOfWords: words.length,
+        numberOfSentences: sentences.length,
+        numberOfParagraphs: words.length === 0 ? 0 : text.split(/\n+/).length,
+        readabilityScore: this.releaseCharacteristicsModel.getReadabilityScore(),
+        readabilityScoreTitle: this.releaseCharacteristicsModel.getReadabilityScoreTitle(),
+        numberOfNonSpaceCharacters: 0
+      });
     }, 500),
     initialize: function(options){
       var viewObj = this;
@@ -40,6 +50,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       Robin.vent.on("release:open_edit_modal", this.openModalDialogEdit, this);
       this.newsrooms = new Robin.Collections.NewsRooms();
       this.newsrooms.fetch();
+      this.releaseCharacteristicsModel = new Robin.Models.ReleaseCharacteristics;
     },
     filterBy: function(options){
       Robin.module("Releases").controller.index({
@@ -130,6 +141,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         model: this.model,
         collection: new Robin.Collections.Attachments(),
         childView: Robin.Views.FilesItemView
+      }));
+      this.characteristicsRegion.show(new Releases.CharacteristicsView({
+        model: this.releaseCharacteristicsModel
       }));
     },
     initFormValidation: function(){

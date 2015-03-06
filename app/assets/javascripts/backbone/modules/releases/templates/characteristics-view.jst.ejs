@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-md-12" align="center">
+    <span class="badge badge-default"><span class="badge" id="charactersCount"><%= numberOfCharacters %></span> Characters</span>
+    <span class="badge badge-default"><span class="badge" id="wordsCount"><%= numberOfWords %></span> Words</span>
+    <span class="badge badge-default"><span class="badge" id="sentencesCount"><%= numberOfSentences %></span> Sentences</span>
+    <span class="badge badge-default"><span class="badge" id="paragraphsCount"><%= numberOfParagraphs %></span> Paragraphs</span>
+    |
+    <span class="badge badge-default"><span class="badge" id="nounsCount"><%= numberOfNouns %></span> Nouns</span>
+    <span class="badge badge-default"><span class="badge" id="adjectivesCount"><%= numberOfAdjectives %></span> Adjectives</span>
+    <span class="badge badge-default"><span class="badge" id="adverbsCount"><%= numberOfAdverbs %></span> Adverbs</span>
+  </div>
+</div>
+<div class="row" style="margin-top: 12px;">
+  <div class="col-md-4" align="center">
+    <strong data-toggle="tooltip" data-placement="top" title="Automated Readability Index">Readability score</strong>:&nbsp;<span id="ari"><%= readabilityScore %></span> <span class="label label-default" id="ari-badge"><%= readabilityScoreTitle %></span>
+    <div class="progress progress-striped active" style="height: 10px; margin-top: 6px;">
+      <div class="progress-bar progress-bar-success" role="progressbar" style="width: <%= readabilityScore*5 %>%;" id="ari-progress"></div>
+    </div>
+  </div>
+  <div class="col-md-8" align="right">
+    <a href="#" id="highlight_textarea" class="btn btn-default btn-sm" role="button" style="margin-right: 4px;"><i class="fa fa-eraser"></i> Highlight</a>
+  </div>
+</div>
