@@ -113,7 +113,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     showPicker: function() {
-      $('a.btn-default').hide().next().show();
+      this.$el.find('a.btn-default').hide().next().show();
     },
 
     hidePicker: function() {

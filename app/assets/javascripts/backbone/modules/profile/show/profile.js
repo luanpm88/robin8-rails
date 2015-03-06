@@ -134,7 +134,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         this.modelBinder.copyViewValuesToModel();
         this.model.save(this.model.attributes, {
           success: function(userSession, response) {
-            console.log(r);
             Robin.currentUser.attributes = r;
             Robin.currentUser.attributes.current_password = "";
             Robin.layouts.main.onShow();
