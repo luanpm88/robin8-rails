@@ -94,7 +94,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(methods: [:active_subscription])        
+    super(methods: [:active_subscription, :sign_in_count])
   end
 
   private
