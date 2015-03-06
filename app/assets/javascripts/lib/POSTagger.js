@@ -110,9 +110,7 @@ POSTagger.prototype.tag = function(words){
 }
 
 POSTagger.prototype.prettyPrint = function(taggedWords) {
-	for (i in taggedWords) {
-        print(taggedWords[i][0] + "(" + taggedWords[i][1] + ")");
-    }
+  for (i in taggedWords) {
+    console.log(taggedWords[i][0] + "(" + taggedWords[i][1] + ")");
+  }
 }
-
-//print(new POSTagger().tag(["i", "went", "to", "the", "store", "to", "buy", "5.2", "gallons", "of", "milk"]));
