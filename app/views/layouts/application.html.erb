@@ -11,10 +11,6 @@
   <div id="main">
     <%= yield %>
     
-    <!-- START Parse.ly Include: Standard -->
-    <div id="parsely-root" style="display: none">
-      <div id="parsely-cfg" data-parsely-site="robin8.com"></div>
-    </div>
   </div>
   
   <div class="modal fade" id="modal" tabindex="-1" 
@@ -34,7 +30,9 @@
       Robin.publicPages = true
     <% end %>
   <% else -%>
-    Robin.currentUser = null;
+    if (Robin) {
+      Robin.currentUser = null;
+    }
   <% end -%>
 
   <% if Rails.env == 'development' -%>

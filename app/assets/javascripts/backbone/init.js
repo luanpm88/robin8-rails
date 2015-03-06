@@ -20,11 +20,12 @@ Robin.setUrl = function(route, options){
 };
 
 Robin.finishSignIn = function(data){
-  Robin.currentUser = new Robin.Models.User(data);
-  Robin.vent.trigger("authentication:logged_in");
-  Robin.loadPleaseWait();
-  $('body').removeClass('login');
-  window.history.pushState('', '', '/');
+  // Robin.currentUser = new Robin.Models.User(data);
+  // Robin.vent.trigger("authentication:logged_in");
+  // Robin.loadPleaseWait();
+  // $('body').removeClass('login');
+  // window.history.pushState('', '', '/');
+  location.href='/'
 };
 
 Robin.loadPleaseWait = function(){
