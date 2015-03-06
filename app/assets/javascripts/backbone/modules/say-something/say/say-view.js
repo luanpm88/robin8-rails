@@ -53,7 +53,9 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         // google: '[name=google]'
       }
-      this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
+      var nowDate = new Date();
+      var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+      this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A', minDate: today});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
@@ -187,6 +189,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
           if (Robin.Social._isInitialized){
             Robin.module("Social").postsCollection.fetch();
           }
+
+          Robin.SaySomething.Say.Controller.showSayView();
 
           $.growl({message: "You've created a post"
           },{

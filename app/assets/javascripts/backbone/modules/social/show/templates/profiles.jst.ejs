@@ -3,7 +3,7 @@
 <ul class="list-group">
   <li class="list-group-item">
     <span class="pull-right">
-      <% if (Robin.identities.twitter == undefined) {%>
+      <% if (typeof(Robin.identities) === 'undefined' || typeof(Robin.identities.twitter) === 'undefined') {%>
         <a class="btn btn-xs btn-social btn-twitter" name='twitter'>
           <i class="fa fa-twitter"></i>
           Connect Twitter
