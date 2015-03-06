@@ -19,12 +19,21 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #newsroom_filter': 'filterBy',
       'click #save_release': 'saveRelease',
       'click #delete_release': 'deleteRelease',
-      'click #extract_url': 'extractURL'
+      'click #extract_url': 'extractURL',
+      'click #highlight_textarea': 'highlightReleaseText'
+    },
+    highlightReleaseText: function(e) {
+      e.preventDefault();
     },
     updateStats: _.debounce(function(e) {
-      var text = this.editor.getValue();
+      var html = this.editor.getValue();
+      // strip HTML tags before parsing text
+      var div = document.createElement("div");
+      div.innerHTML = html;
+      var text = div.textContent || div.innerText || "";
       var words = new Lexer().lex(text);
       var taggedWords = new POSTagger().tag(words);
+      var numberOfNonSpaceCharacters = text.replace(/\W*/mg, '').length;
       var poses = _.chain(taggedWords).reject(function(w) {
         return w[1].match(/^[,.]$/)
       }).countBy(function(w) { return w[1].slice(0, 2); }).value();
@@ -38,10 +47,14 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         numberOfCharacters: text.length,
         numberOfWords: words.length,
         numberOfSentences: sentences.length,
+        numberOfNonSpaceCharacters: numberOfNonSpaceCharacters,
         numberOfParagraphs: words.length === 0 ? 0 : text.split(/\n+/).length,
-        readabilityScore: this.releaseCharacteristicsModel.getReadabilityScore(),
+      });
+      // set these in a separate batch becaue they rely on above set()
+      // mutates the model.
+      this.releaseCharacteristicsModel.set({
         readabilityScoreTitle: this.releaseCharacteristicsModel.getReadabilityScoreTitle(),
-        numberOfNonSpaceCharacters: 0
+        readabilityScore: this.releaseCharacteristicsModel.getReadabilityScore()
       });
     }, 500),
     initialize: function(options){
@@ -89,7 +102,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           success: function(response) {
             self.ui.releaseTitle.val(response.title);
             var editor = self.ui.wysihtml5.data('wysihtml5').editor;
-            editor.composer.commands.exec("insertHTML", response.article);
             editor.setValue(
               '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
             );
@@ -114,8 +126,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
       var self = this;
       this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
-      _.each(['focus', 'blur', 'change', 'paste', 'newword:composer'], function(t) {
-        self.editor.on(t, function(e) { self.updateStats(e); });
+      this.editor.on('load', function() {
+        $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', function(e) {
+          self.updateStats()
+        });
       });
       this.initLogoView();
       this.initMediaTab();
