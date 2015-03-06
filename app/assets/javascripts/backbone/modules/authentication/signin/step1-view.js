@@ -27,7 +27,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     },
 
     initFormValidation: function(){
-      this.form = $('#formSignIn').formValidation({
+      this.form = $('#formSignup').formValidation({
         framework: 'bootstrap',
         excluded: [':disabled'],
         icon: {
