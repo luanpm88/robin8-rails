@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   # rescue_from Exception, with: :handle_exception
 
   after_filter :set_csrf_headers
-  before_filter :validate_subscription, unless: :devise_controller?
+  # before_filter :validate_subscription, unless: :devise_controller?
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
   def validate_subscription

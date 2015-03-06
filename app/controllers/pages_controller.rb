@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  skip_before_filter :validate_subscription
+  # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:pricing]
   
   def home
