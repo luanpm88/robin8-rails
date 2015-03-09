@@ -40,7 +40,7 @@ class ReleasesController < ApplicationController
 
   def release_params
     params.require(:release).permit(:title, :text, :news_room_id, :is_private, 
-      :logo_url, :concepts, :iptc_categories, :summaries,
+      :logo_url, :concepts, :iptc_categories, :summaries, :hashtags,
       attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy])
   end
 end

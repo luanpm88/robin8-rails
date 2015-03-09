@@ -87,4 +87,14 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
   ActionMailer::Base.delivery_method = :smtp
+  
+  # S3 config for paperclip files
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      access_key_id: Rails.application.secrets[:s3][:access_key_id],
+      secret_access_key: Rails.application.secrets[:s3][:secret_access_key]
+    },
+    bucket: Rails.application.secrets[:s3][:bucket_name]
+  }
 end

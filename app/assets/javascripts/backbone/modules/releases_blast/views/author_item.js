@@ -3,7 +3,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
   ReleasesBlast.AuthorView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/author-item',
     tagName: "tr",
-    model: Robin.Models.Author,
     events: {
       "click .inspect":         "openModal",
       "click a.btn-danger":     "removeAuthor",
@@ -20,19 +19,30 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     addAuthor: function(e) {
       this.toggleAddRemove(e);
-      var authorId = this.model.get('id');
-      var model = new Robin.Models.Contact({
-        id: 'author_' + authorId,
-        author_id: authorId, origin: 'blog',
-        first_name: this.model.get('first_name'),
-        last_name: this.model.get('last_name'),
-        email: this.model.get('email')
+      var current_model = this.pitchContactsCollection.findWhere({
+        author_id: this.model.get('id'),
+        origin: 'pressr'
       });
-      this.pitchContactsCollection.add(model);
+      
+      if (current_model == null) {
+        var model = new Robin.Models.Contact({
+          author_id: this.model.get('id'),
+          origin: 'pressr',
+          first_name: this.model.get('first_name'),
+          last_name: this.model.get('last_name'),
+          email: this.model.get('email'),
+          outlet: this.model.get('blog_name')
+        });
+        this.pitchContactsCollection.add(model);
+      }
     },
     removeAuthor: function(e) {
       this.toggleAddRemove(e);
-      this.pitchContactsCollection.remove('author_' + this.model.get('id'));
+      var model = this.pitchContactsCollection.findWhere({
+        author_id: this.model.get('id'),
+        origin: 'pressr'
+      });
+      this.pitchContactsCollection.remove(model);
     },
     templateHelpers: function(){
       return {
@@ -42,7 +52,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
-      this.pitchContactsCollection = options.pitchContactsCollection
+      this.pitchContactsCollection = options.pitchContactsCollection;
     },
     openModal: function(e){
       e.preventDefault();

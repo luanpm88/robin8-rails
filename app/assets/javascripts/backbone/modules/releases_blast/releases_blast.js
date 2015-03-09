@@ -3,10 +3,11 @@ Robin.module("ReleasesBlast", function(ReleasesBlast, Robin, Backbone, Marionett
   this.startWithParent = false;
 
   ReleasesBlast.on("start", function(){
+    this.pitchModel = new Robin.Models.Pitch();
     this.layout = new this.Layout();
     this.controller = new this.Controller();
     this.collection = new Robin.Collections.Releases();
-    this.pitchContactsCollection = new Robin.Collections.PitchContacts();
+    
     this.router = new this.Router({controller: this.controller});
     
     $('#nav-robin8').parent().addClass('active');

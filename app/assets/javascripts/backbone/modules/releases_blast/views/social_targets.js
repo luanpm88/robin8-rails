@@ -2,18 +2,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.SocialTargetsCompositeView = Marionette.CompositeView.extend({
     template: 'modules/releases_blast/templates/social-targets',
-    collection: Robin.Collections.Influencers,
     childView: ReleasesBlast.InfluencerView,
     childViewContainer: "tbody",
     childViewOptions: function() {
-      return {
-        pitchContactsCollection: this.pitchContactsCollection
-      };
-    },
-    initialize: function(options){
-      this.pitchContactsCollection = options.pitchContactsCollection
+      return this.options;
     },
     onRender: function () {
+      this.initDataTable();
+    },
+    initDataTable: function(){
       this.$el.find('table').DataTable({
         "info": false,
         "searching": false,

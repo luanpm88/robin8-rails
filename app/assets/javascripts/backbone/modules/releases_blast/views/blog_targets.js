@@ -6,16 +6,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     childViewContainer: "tbody",
     collection: Robin.Collections.SuggestedAuthors,
     childViewOptions: function() {
-      return {
-        releaseModel: this.releaseModel,
-        pitchContactsCollection: this.pitchContactsCollection
-      };
-    },
-    initialize: function(options){
-      this.releaseModel = options.releaseModel;
-      this.pitchContactsCollection = options.pitchContactsCollection
+      return this.options;
     },
     onRender: function() {
+      this.initDataTable();
+    },
+    initDataTable: function(){
       this.$el.find('table').DataTable({
         "info": false,
         "searching": false,

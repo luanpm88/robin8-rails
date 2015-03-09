@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   post 'textapi/concepts'
   post 'textapi/summarize'
   post 'textapi/extract'
+  post 'textapi/hashtags'
 
   post 'followers/add/', to: 'followers#add'
 
