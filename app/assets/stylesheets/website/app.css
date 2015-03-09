@@ -58,7 +58,7 @@ input.button{
 /* HEADER */
 
 header{
-  background:url("../img/hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+  background:url("/assets/hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
   position: relative;
   text-align: center;
   min-height: 550px;
@@ -66,7 +66,7 @@ header{
 }
 
 header h1.logo{
-  background: url("../img/header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
+  background: url("/assets/header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
     color: #ffffff;
     font-family: "ProximaNovaBlack";
     font-size: 58px;
@@ -90,7 +90,7 @@ header h2{
 }
 
 header a.learn-more{
-    background: url("../img/learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+    background: url("/assets/learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
     bottom: 20px;
     color: #ffffff;
     display: block;
@@ -200,7 +200,7 @@ header a.learn-more{
 }
 
 .bgpane{
-  background:url("../img/bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  background:url("/assets/bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
   background-size: cover;
   min-height: 640px;
 }
@@ -234,7 +234,7 @@ header a.learn-more{
 /* FOOTER */
 
 .ft-lead{
-  background: url("../img/footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  background: url("/assets/footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
     min-height: 300px;
     padding-bottom: 40px;
     text-align: center;
@@ -614,7 +614,7 @@ footer a{
 }
 
 .goback{
-    background: url("../img/back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    background: url("/assets/back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
     margin: 20px 0 40px;
     padding-left: 30px;
 }
@@ -704,7 +704,7 @@ table .updown{
 }
 
 table .updown a{
-  background: url("../img/updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background: url("/assets/updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
     display: block;
     text-indent: -5555px;
     margin-top: 6px;
@@ -754,7 +754,7 @@ table tr:hover .updown{
     padding: 20px;
 } 
 .ui-selectmenu-button span.ui-selectmenu-text {
-    background: url("../img/select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
+    background: url("/assets/select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
     margin-right: 15px;
     padding: 9px 20px;
 }
@@ -856,7 +856,7 @@ body.f-topbar-fixed {
 }
 
 .nav a.logo {
-    background: url("../img/robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: url("/assets/robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
     display: block;
     height: 38px;
     margin-left: 110px;
@@ -874,7 +874,7 @@ body.f-topbar-fixed {
 
 
 .nav.fixedscroll a.logo{
-  background: url("../img/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background: url("/assets/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
 }
 
 .nav ul{
@@ -963,7 +963,7 @@ body.f-topbar-fixed {
 
 /* INTERIOR HEADER STUFF */
 header.int-header {
-    background: url("../img/int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+    background: url("/assets/int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
     min-height: 340px; 
 }
 
@@ -1128,11 +1128,11 @@ header.int-header h1{
 }
 
 .btn-facebook span{
-    background: url("../img/Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    background: url("/assets/Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
 
 }
 .btn-google-plus span{
-    background: url("../img/Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    background: url("/assets/Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
 }
 
 .btn-google-plus:hover {
@@ -1278,7 +1278,7 @@ p.loginintro strong{
 
   .nav a.logo ,
   .nav.fixedscroll a.logo{
-    background: url("../img/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: url("/assets/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
   }
   .top-bar .toggle-topbar.menu-icon a {
       color: #000000; 

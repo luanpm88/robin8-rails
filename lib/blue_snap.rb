@@ -22,7 +22,7 @@ module BlueSnap
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
     def self.new request,user_profile,params,package
-      begin
+      # begin
         errors = BlueSnap::Shopper.validate_params(params,user_profile)
         if errors.blank?
           shopper = {
@@ -34,10 +34,10 @@ module BlueSnap
         else
           return errors,nil
         end
-      rescue Exception => ex
-        p ex
-        return ["Something is not right with your payment. Please try again"],nil
-      end
+      # rescue Exception => ex
+      #   p ex
+      #   return ["Something is not right with your payment. Please try again"],nil
+      # end
     end
 
     def self.validate_params(params,user)
