@@ -58,7 +58,7 @@ input.button{
 /* HEADER */
 
 header{
-  background:url("hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+  background:asset-data-url("img/hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
   position: relative;
   text-align: center;
   min-height: 550px;
@@ -66,7 +66,7 @@ header{
 }
 
 header h1.logo{
-  background: url("header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
+  background: asset-data-url("img/header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
     color: #ffffff;
     font-family: "ProximaNovaBlack";
     font-size: 58px;
@@ -90,7 +90,7 @@ header h2{
 }
 
 header a.learn-more{
-    background: url("learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+    background:  asset-data-url("img/learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
     bottom: 20px;
     color: #ffffff;
     display: block;
@@ -108,7 +108,7 @@ header a.learn-more{
 
 .screenpane{
 
-  /*background:url("../img/screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
+  /*background: asset-data-url("img/../img/screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
 }
 
 .screenpane .videoembedsection{
@@ -200,7 +200,7 @@ header a.learn-more{
 }
 
 .bgpane{
-  background:url("bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  background: asset-data-url("img/bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
   background-size: cover;
   min-height: 640px;
 }
@@ -234,7 +234,7 @@ header a.learn-more{
 /* FOOTER */
 
 .ft-lead{
-  background: url("footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  background:  asset-data-url("img/footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
     min-height: 300px;
     padding-bottom: 40px;
     text-align: center;
@@ -614,7 +614,7 @@ footer a{
 }
 
 .goback{
-    background: url("back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    background:  asset-data-url("img/back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
     margin: 20px 0 40px;
     padding-left: 30px;
 }
@@ -704,7 +704,7 @@ table .updown{
 }
 
 table .updown a{
-  background: url("updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background:  asset-data-url("img/updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
     display: block;
     text-indent: -5555px;
     margin-top: 6px;
@@ -754,7 +754,7 @@ table tr:hover .updown{
     padding: 20px;
 } 
 .ui-selectmenu-button span.ui-selectmenu-text {
-    background: url("select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
+    background:  asset-data-url("img/select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
     margin-right: 15px;
     padding: 9px 20px;
 }
@@ -856,7 +856,7 @@ body.f-topbar-fixed {
 }
 
 .nav a.logo {
-    background: url("robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: asset-data-url("img/robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
     display: block;
     height: 38px;
     margin-left: 110px;
