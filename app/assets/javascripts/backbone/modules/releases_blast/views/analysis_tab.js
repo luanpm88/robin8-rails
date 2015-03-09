@@ -52,14 +52,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     openTargetsTab: function(){
-      ReleasesBlast.controller.targets({release_id: this.model.id});
+      ReleasesBlast.controller.targets();
     },
     getTextApiResult: function(){
       var that = this;
       var endpoints = [
         'textapi/classify', 
         'textapi/concepts', 
-        'textapi/summarize'
+        'textapi/summarize',
+        'textapi/hashtags'
       ];
       
       var resultReady = _.after(endpoints.length + 1, function(){
@@ -151,6 +152,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 that.textapiResult["summarize"] = _(response).first(5);
                 that.model.set({summaries: JSON.stringify(response)});
                 boldTopicsInSummary();
+                resultReady();
+                break;
+              case 'textapi/hashtags':
+                that.textapiResult["hashtags"] = response;
+                that.model.set({hashtags: JSON.stringify(response)});
                 resultReady();
                 break;
             }

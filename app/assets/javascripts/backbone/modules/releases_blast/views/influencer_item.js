@@ -23,19 +23,29 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     addInfluencer: function(e) {
       this.toggleAddRemove(e);
-      var influencerId = this.model.get('screen_name');
-      var model = new Robin.Models.Contact({
-        id: 'twtrland_' + influencerId, 
+      var current_model = this.pitchContactsCollection.findWhere({
         origin: 'twtrland',
-        twitter_screen_name: influencerId,
-        first_name: this.model.get('firstName'),
-        last_name: this.model.get('lastName')
+        twitter_screen_name: this.model.get('screen_name')
       });
-      this.pitchContactsCollection.add(model);
+      
+      if (current_model == null){
+        var model = new Robin.Models.Contact({
+          origin: 'twtrland',
+          twitter_screen_name: this.model.get('screen_name'),
+          first_name: this.model.get('firstName'),
+          last_name: this.model.get('lastName'),
+          outlet: "Twitter"
+        });
+        this.pitchContactsCollection.add(model);
+      }
     },
     removeInfluencer: function(e) {
       this.toggleAddRemove(e);
-      this.pitchContactsCollection.remove('twtrland_' + this.model.get('screen_name'));
+      var model = this.pitchContactsCollection.findWhere({
+        twitter_screen_name: this.model.get('screen_name'),
+        origin: 'twtrland'
+      });
+      this.pitchContactsCollection.remove(model);
     },
     initialize: function(options) {
       this.pitchContactsCollection = options.pitchContactsCollection

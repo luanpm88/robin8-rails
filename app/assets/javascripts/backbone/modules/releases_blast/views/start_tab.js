@@ -28,7 +28,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var selected_release = parseInt($('select.form-control').val());
       if ((selected_release != -1) || (selected_release != -2)){
         var the_release = this.collection.findWhere({id: selected_release});
-        ReleasesBlast.controller.analysis({release_id: the_release.id});
+        ReleasesBlast.controller.analysis({releaseModel: the_release});
       }
     }
   });

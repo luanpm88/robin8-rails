@@ -29,6 +29,7 @@
 //= require chance
 //= require please-wait
 //= require backbone
+//= require backbone-relational
 //= require backbone.babysitter
 //= require backbone.modelbinder
 //= require backbone.wreqr
@@ -58,7 +59,6 @@
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/modules
 
-console.log('application');
 var ready;
 ready = function() {
   //default options for Bootstrap Growl

@@ -3,14 +3,13 @@
   <form role="form">
     <div class="form-group">
       <label>Pitch text</label>
-      <textarea id="twitter-pitch-textarea" style="width: 100%; height: 140px;" class="form-control">Hey @[Name] here's a press release you might find interesting: @[Link]
-      </textarea>
+      <textarea id="twitter-pitch-textarea" style="width: 100%; height: 140px;" class="form-control"><%= pitch.get('twitter_pitch') %></textarea>
     </div>
     <div class="row">
       <div class="col-lg-6">
         <div class="form-group">
           <label>Suggested hashtags </label>
-          <br>
+          <br />
           <%= _(hashTags).map(function(m) { return '<a href="#"><label class="label label-info hashtag">' + m + '</label></a>' }).join("\n") %>
         </div>
       </div>

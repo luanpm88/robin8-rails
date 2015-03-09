@@ -38,7 +38,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '3.1.3'
-  gem 'rails-assets-backbone.marionette', '2.1.0'
+  gem 'rails-assets-backbone.marionette', '2.4.1'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
@@ -58,6 +58,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-switch'
   gem 'rails-assets-select2-bootstrap-css'
   gem 'rails-assets-toastr'
+  gem 'rails-assets-backbone-relational'
 end
 
 gem 'devise'

@@ -1,5 +1,5 @@
 # config valid only for Capistrano 3.1
-lock '3.3.5'
+lock '3.4.0'
 
 set :application, 'robin8'
 set :repo_url, "git@github.com:AYLIEN/#{fetch(:application)}.git"

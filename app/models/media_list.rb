@@ -5,12 +5,12 @@ class MediaList < ActiveRecord::Base
   
   has_attached_file :attachment
   
-  validates_attachment_presence :attachment
   validates_attachment_content_type :attachment, :content_type => 'text/csv'
   validates_attachment_size :attachment, :in => 0..2.kilobytes
+  validates_presence_of :name
   validates_uniqueness_of :name
   
-  before_save :import_contacts
+  before_save :import_contacts, :if => Proc.new {|model| model.attachment.exists? }
     
   private
   

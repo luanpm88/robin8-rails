@@ -7,7 +7,7 @@ Robin.Collections.SelectedMediaLists = Backbone.Collection.extend({
   removeContactsChilds: function(model, collection, options){
     _(model.get('contacts')).each(function(contact){
       var model = options.pitchContactsCollection.findWhere({
-        id: 'media_list_' + contact.id,
+        contact_id: contact.id,
         origin: 'media_list'
       });
       options.pitchContactsCollection.remove(model);
@@ -15,14 +15,22 @@ Robin.Collections.SelectedMediaLists = Backbone.Collection.extend({
   },
   addContactsChilds: function(model, collection, options){
     _(model.get('contacts')).each(function(contact){
-      var model = new Robin.Models.Contact({
-        id: 'media_list_' + contact.id, 
-        origin: 'media_list',
-        first_name: contact.first_name,
-        last_name: contact.last_name,
-        email: contact.email
+      var current_model = options.pitchContactsCollection.findWhere({
+        contact_id: contact.id,
+        origin: 'media_list'
       });
-      options.pitchContactsCollection.add(model);
+      
+      if (current_model == null){
+        var model = new Robin.Models.Contact({
+          contact_id: contact.id,
+          origin: 'media_list',
+          first_name: contact.first_name,
+          last_name: contact.last_name,
+          email: contact.email,
+          outlet: "Media List"
+        });
+        options.pitchContactsCollection.add(model);
+      }
     });
   }
 });

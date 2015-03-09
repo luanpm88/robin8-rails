@@ -2,7 +2,8 @@ class ReleaseSerializer < ActiveModel::Serializer
   attributes :id, :user_id, :news_room_id, 
     :news_room, :title, :text, 
     :is_private, :logo_url, :created_at,
-    :concepts, :iptc_categories, :summaries, :plain_title, :plain_text
+    :concepts, :iptc_categories, :summaries, :plain_title, :plain_text,
+    :hashtags
 
   has_many :attachments
   has_one :news_room
@@ -36,6 +37,14 @@ class ReleaseSerializer < ActiveModel::Serializer
   def summaries
     unless object.summaries.blank?
       JSON.parse(object.summaries)
+    else
+      []
+    end
+  end
+  
+  def hashtags
+    unless object.hashtags.blank?
+      JSON.parse(object.hashtags)
     else
       []
     end
