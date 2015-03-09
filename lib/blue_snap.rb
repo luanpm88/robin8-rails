@@ -22,7 +22,7 @@ module BlueSnap
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
     def self.new request,user_profile,params,package
-      # begin
+       begin
         errors = BlueSnap::Shopper.validate_params(params,user_profile)
         if errors.blank?
           shopper = {
@@ -34,10 +34,10 @@ module BlueSnap
         else
           return errors,nil
         end
-      # rescue Exception => ex
-      #   p ex
-      #   return ["Something is not right with your payment. Please try again"],nil
-      # end
+       rescue Exception => ex
+         Rails.logger.error ex
+         return ["Something is not right with your payment. Please try again"],nil
+       end
     end
 
     def self.validate_params(params,user)
@@ -150,18 +150,19 @@ module BlueSnap
         shopper = {"subscription-id" => subscription_id, "underlying-sku-id"=>sku_id, "status"=> "C","shopper-id"=>shopper_id.to_s} # status C is for cancel :s
         Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
+        Rails.logger.error ex
         return "Sorry we could not cancel your subscription at this time."
       end
 
     end
 
     def self.update(subscription_id,shopper_id ,new_sku_id)
-      puts "sub id is :#{subscription_id} shopper is :#{shopper_id} and #{new_sku_id}  ************************"
       begin
         url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id"=>new_sku_id.to_s, "status"=> "A","shopper-id"=>shopper_id.to_s}
         Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
+        Rails.logger.error ex
         return "Sorry we could not update your subscription at this time."
       end
     end
@@ -192,8 +193,8 @@ module BlueSnap
       request.body = data
       request["Content-Type"] ='application/xml'
       response = http.request(request)
-      puts"************************************************************************"
-      puts "response is #{response} AND #{response.body}***************************"
+      Rails.logger.info"************************************************************************"
+      Rails.logger.info "response is #{response} AND #{response.body}***************************"
       Response.parse(response)
     end
 
@@ -207,7 +208,7 @@ module BlueSnap
       request.body = data
       request["Content-Type"] ='application/xml'
       response = http.request(request)
-      puts "response is #{response} AND #{response.body}***************************"
+      Rails.logger.info "response is #{response} AND #{response.body}***************************"
       response.body
     end
 
