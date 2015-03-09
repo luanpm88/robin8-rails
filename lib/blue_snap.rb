@@ -80,8 +80,7 @@ module BlueSnap
     end
 
     def self.web_info(request)
-      # {"ip" => "123.00.1.1"} #
-      request.ip
+      {"ip"=>request.ip} #"use 127.0.0.1 for local testing"
     end
 
     def self.shopper_info(params,user)
