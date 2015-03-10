@@ -26,6 +26,18 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         $("#avatar-image").attr('src', info.cdnUrl);
         viewObj.model.set({avatar_url: info.cdnUrl});
       });
+      if (Robin.afterConfirmationMessage != undefined) {
+        $.growl(Robin.afterConfirmationMessage,{
+          offset: 65,
+          delay: 5000,
+          placement: {
+            from: "top",
+            align: "right"
+          },
+          type: 'success'
+        });
+        Robin.afterConfirmationMessage = undefined
+      }
     },
 
     initFormValidation: function(){
@@ -143,8 +155,8 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             },{
               element: '#growler-alert',
               type: 'success',
-              offset: 147,
-              delay: 5000,
+              offset: 65,
+              delay: 3500,
               placement: {
                 from: "top",
                 align: "right"
@@ -155,8 +167,8 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
               },{
                 element: '#growler-alert',
                 type: 'success',
-                offset: 147,
-                delay: 5000,
+                offset: 65,
+                delay: 7000,
                 placement: {
                   from: "top",
                   align: "right"

@@ -1,0 +1,31 @@
+<div class='col-sm-6 col-md-4'>
+  <div class="thumbnail release-item">
+    <a href="/#release/<%= release.id %>">
+      <% if release.logo_url %>
+        <img class="img" src="<%= release.logo_url %>">
+      <% else %>
+        <% if release.attachments.length > 0 %>
+          <img class="img" src="<%= release.attachments[0].url %>">
+        <% else %>
+          <img class="img" src="http://placehold.it/542x542">
+        <% end %>
+      <% end %>
+    </a>
+    <div class="caption text-center">
+      <h3><a href="/#release/<%- release.id %>"><%- release.title %></a></h3>
+      <small>15 Jan 2015</small>
+      <p><%= release.text %></p>
+      <p>
+        <label class="label label-success">Startups</label>
+        <label class="label label-success">Success</label>
+        <label class="label label-success">Technology</label>
+        <label class="label label-success">Computers</label>
+        <label class="label label-success">Artificial Intelligence</label>
+      </p>
+      <hr>
+      <p align="center">
+        <a href="/#release/<%= release.id %>" class="btn btn-info" role="button"><i class="fa fa-leanpub"></i> Read more</a>
+      </p>
+    </div>
+  </div>
+</div>
