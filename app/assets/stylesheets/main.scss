@@ -388,10 +388,14 @@ a {
 }
 
 .stories .media-body .label {
-    background-color: transparent;
-    font-size: 10px;
+  background-color: transparent;
+  font-size: 10px;
 }
 
+.stories .media-body .likes {
+  position: relative !important;
+  margin-top: -8px;
+}
 
 .stories .media-body .pull-left.label,
 .stories .media-body .pull-right.label{
