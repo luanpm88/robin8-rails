@@ -1,8 +1,26 @@
 <div  class="signup">
   <header class="formheader">
+    <div class="nav fixed">
+      <nav class="top-bar" data-topbar role="navigation"> 
+        <ul class="title-area"> 
+          <li><a class="logo" href="/">Robin8</a></li>
+          <li class="toggle-topbar menu-icon">
+            <a href="#"><span>Menu</span></a>
+          </li> 
+        </ul> 
+        <section class="top-bar-section"> 
+          <!-- Right Nav Section --> 
+          <ul class="right"> 
+            <li><a href="http://try.myprgenie.com/robin" target="_blank">Demo</a></li>
+            <!-- <li><a href="signup-step2.html">Pricing</a></li>  -->
+            <li><a href="/signin" id='login-link' >Log In</a></li>
+            <li class="signup-nav"><a href="/signup/#step1" id='signup-link'>Sign Up</a></li> 
+          </ul>  
+        </section> 
+      </nav> 
+    </div> 
     <div class="row">
       <div class="large-12 columns">
-        <h1 class="logo">Robin8</h1>
         <h2 class="signup-tag"></h2> 
       </div>
     </div> 
@@ -17,7 +35,7 @@
         <img src="<%= AppAssets.path('ROBIN8-logo.png') %>" /> 
       </div>
       <div class="small-12 medium-9 columns left"> 
-        &copy;2015 MyPRGenie, LLC. All rights reserved. <br class="show-for-small-only" /> <a class="ft-link privacy">Privacy</a><a class="ft-link privacy">Terms</a>
+        ©2015 MyPRGenie Inc. All rights reserved. <br class="show-for-medium-only"> <a href="about.html" class="ft-link privacy">About</a> <a href="/team" class="ft-link privacy">Team</a> <a href="/contact" class="ft-link privacy">Contact</a> <a href="/terms" class="ft-link privacy">Privacy &amp; Terms</a>
       </div>
     </div> 
   </footer>

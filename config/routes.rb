@@ -78,5 +78,9 @@ Rails.application.routes.draw do
   
   get '/signup', to: 'pages#signup'
   get '/signin', to: 'pages#signin'
+  get '/terms', to: 'pages#terms'
+  get '/team', to: 'pages#team'
+  get '/contact', to: 'pages#contact'
+  get '/about', to: 'pages#about'
 
 end

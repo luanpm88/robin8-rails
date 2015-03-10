@@ -20,6 +20,22 @@ class PagesController < ApplicationController
     render "home", :layout => 'application'
   end
 
+  def terms
+    render "terms", :layout => 'landing'
+  end
+  
+  def team
+    render "team", :layout => 'landing'
+  end
+  
+  def about
+    render "about", :layout => 'landing'
+  end
+  
+  def contact
+    render "contact", :layout => 'landing'
+  end
+
   def pricing
     @packages = Package.where(is_active: true)
     render :layout => "website"
