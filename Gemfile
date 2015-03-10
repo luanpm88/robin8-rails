@@ -57,7 +57,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery.caret'
   gem 'rails-assets-bootstrap-switch'
   gem 'rails-assets-select2-bootstrap-css'
-  gem 'rails-assets-toastr'
   gem 'rails-assets-backbone-relational'
 end
 
