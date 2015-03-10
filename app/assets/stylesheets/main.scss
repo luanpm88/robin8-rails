@@ -165,7 +165,8 @@ a {
 }
 .dropdown-menu li a:hover,
 .dropdown-menu li a:focus {
-    background:#006481;
+  background:#006481;
+  cursor: pointer;
 }
 .dropdown-menu .divider {
     background-color: #006481; 
