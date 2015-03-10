@@ -1,0 +1,19 @@
+<div class="nav fixed">
+  <nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+      <li><a class="logo" href="index.html">Robin8</a></li>
+      <li class="toggle-topbar menu-icon">
+        <a href="#"><span>Menu</span></a>
+      </li>
+    </ul>
+    <section class="top-bar-section">
+      <!-- Right Nav Section -->
+      <ul class="right">
+        <li><a href="http://try.myprgenie.com/robin" target="_blank">Demo</a></li>
+        <li><a href="/pricing" <%if params[:action] == "pricing"%> class="active" <%end%>>Pricing</a></li>
+        <li><a href="/signin">Log In</a></li>
+        <li class="signup-nav"><a href="/signup">Sign Up</a></li>
+      </ul>
+    </section>
+  </nav>
+</div>

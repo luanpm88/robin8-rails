@@ -1,14 +1,19 @@
-<header class="formheader">
-  <div class="row">
-    <div class="large-12 columns">
-      <h1 class="logo">Robin8</h1>
-      <h2 class="signup-tag">Select Pricing Plan</h2>
-    </div>
-  </div>
-</header>
+<!--<header class="formheader">-->
+  <!--<div class="row">-->
+    <!--<div class="large-12 columns">-->
+      <!--<h1 class="logo">Robin8</h1>-->
+      <!--<h2 class="signup-tag">Select Pricing Plan</h2>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</header>-->
+<div class="signup pricing">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+<%= render :partial => "pages/partials/page_banner", :locals => { :header => "Select Pricing Plan"}%>
 
+</header>
 <div class="form-step">
-  <form action="signup-step4.html" id="step2">
+  <form action="#" id="step2">
     <div class="row">
       <div class="small-12 columns">
         <div class="tab-nav">
@@ -45,7 +50,7 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-selected="basic" onclick="setPackage('<%=@packages[1].slug%>')" >Select</a>
+            <a class="button button-planselector" data-selected="basic" onclick="setPackage('<%=@packages[1].slug%>');$('#plantype-basic').addClass('active');" >Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
@@ -69,7 +74,7 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-selected="business" onclick="setPackage('<%=@packages[3].slug%>')">Select</a>
+            <a class="button button-planselector" data-selected="business" onclick="setPackage('<%=@packages[3].slug%>');$('#plantype-business').addClass('active');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
@@ -93,7 +98,7 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-plan="enterprise" onclick="setPackage('<%=@packages[5].slug%>')">Select</a>
+            <a class="button button-planselector" data-plan="enterprise" onclick="setPackage('<%=@packages[5].slug%>');$('#plantype-enterprise').addClass('active');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
@@ -121,7 +126,7 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-selected="pro" onclick="setPackage('<%=@packages[7].slug%>')">Select</a>
+            <a class="button button-planselector" data-selected="pro" onclick="setPackage('<%=@packages[7].slug%>');$('#plantype-pro').addClass('active');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
@@ -145,7 +150,7 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-selected="premium" onclick="setPackage('<%=@packages[9].slug%>')">Select</a>
+            <a class="button button-planselector" data-selected="premium" onclick="setPackage('<%=@packages[9].slug%>');$('#plantype-premium').addClass('active');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
@@ -169,7 +174,7 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-plan="ultra" onclick="setPackage('<%=@packages[11].slug%>')">Select</a>
+            <a class="button button-planselector" data-plan="ultra" onclick="setPackage('<%=@packages[11].slug%>');$('#plantype-ultra').addClass('active');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
