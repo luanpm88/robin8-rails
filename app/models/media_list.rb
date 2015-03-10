@@ -32,6 +32,7 @@ class MediaList < ActiveRecord::Base
         memo << Contact.find_or_create_by(email: contact[2]) do |c|
           c.first_name = contact[0]
           c.last_name  = contact[1]
+          c.outlet = 'Media List'
           c.origin     = 2
         end
       rescue ActiveRecord::RecordNotUnique

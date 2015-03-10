@@ -28,6 +28,7 @@ class PitchesController < ApplicationController
         end
         
         if @pitch.save
+          PitchWorker.perform_async(@pitch.id)
           format.json { render :show, status: :created, location: @pitch }
         else
           format.json { render json: @pitch.errors, status: :unprocessable_entity }
