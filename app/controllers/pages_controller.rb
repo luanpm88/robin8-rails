@@ -25,4 +25,25 @@ class PagesController < ApplicationController
     render :layout => "website"
   end
 
+  def terms
+    render :layout => "website"
+  end
+
+  def contact
+    if request.post?
+      UserMailer.contact_support(params[:user]).deliver if params[:user].present?
+      flash.now[:success] = "Thank you for contacting us. Someone from our team will contact you shortly"
+    end
+
+    render :layout => "website"
+  end
+
+  def team
+    render :layout => "website"
+  end
+
+  def about
+    render :layout => "website"
+  end
+
 end

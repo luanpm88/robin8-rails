@@ -1,24 +1,24 @@
 
 
 @font-face {
-    font-family: ProximaNova;
-    src: url('/fonts/ProximaNova-Regular.otf');
+  font-family: ProximaNova;
+  src: url('/fonts/ProximaNova-Regular.otf');
 }
 @font-face {
-    font-family: ProximaNovaLight;
-    src: url('/fonts/ProximaNova-Light.otf');
+  font-family: ProximaNovaLight;
+  src: url('/fonts/ProximaNova-Light.otf');
 }
 @font-face {
-    font-family: ProximaNovaSemibold;
-    src: url('/fonts/ProximaNova-Semibold.otf');
+  font-family: ProximaNovaSemibold;
+  src: url('/fonts/ProximaNova-Semibold.otf');
 }
 @font-face {
-    font-family: ProximaNovaBold;
-    src: url('/fonts/ProximaNova-Bold.otf');
+  font-family: ProximaNovaBold;
+  src: url('/fonts/ProximaNova-Bold.otf');
 }
 @font-face {
-    font-family: ProximaNovaBlack;
-    src: url('/fonts/ProximaNova-Black.otf');
+  font-family: ProximaNovaBlack;
+  src: url('/fonts/ProximaNova-Black.otf');
 }
 
 
@@ -58,30 +58,31 @@ input.button{
 /* HEADER */
 
 header{
-  background:asset-data-url("img/hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+  background:url("../img/hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
   position: relative;
   text-align: center;
   min-height: 550px;
   background-size: cover;
 }
 
-header h1.logo{
-  background: asset-data-url("img/header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
-    color: #ffffff;
-    font-family: "ProximaNovaBlack";
-    font-size: 58px;
-    font-weight: normal;
-    height: 99px;
-    line-height: 0;
-    margin: 0 auto 40px;
-    text-indent: -5555560px;
-    text-transform: uppercase;
-    background-size: contain;
+header h1.logo a{
+  background: asset-data-url("img/robin8-beta-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
+  color: #ffffff;
+  font-family: "ProximaNovaBlack";
+  font-size: 58px;
+  font-weight: normal;
+  height: 99px;
+  line-height: 0;
+  margin: 0 auto 40px;
+  text-indent: -5555560px;
+  text-transform: uppercase;
+  background-size: contain;
+  display: block;
 }
 header h2{
   font-size: 24px;
   font-family: 'ProximaNova';
-  font-weight: normal; 
+  font-weight: normal;
   color: #ffffff;
   text-align: center;
   max-width: 515px;
@@ -90,17 +91,17 @@ header h2{
 }
 
 header a.learn-more{
-    background:  asset-data-url("img/learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
-    bottom: 20px;
-    color: #ffffff;
-    display: block;
-    font-family: "ProximaNova";
-    font-size: 16px;
-    padding-bottom: 40px;
-    position: absolute;
-    text-align: center;
-    text-transform: uppercase;
-    width: 100%;
+  background: asset-data-url("img/learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  bottom: 20px;
+  color: #ffffff;
+  display: block;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  padding-bottom: 40px;
+  position: absolute;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
 }
 
 
@@ -108,11 +109,11 @@ header a.learn-more{
 
 .screenpane{
 
-  /*background: asset-data-url("img/../img/screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
+  /*background:asset-data-url("img/screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
 }
 
 .screenpane .videoembedsection{
-  padding-top: 85px; 
+  padding-top: 85px;
 }
 
 .screenpane .screenbg{
@@ -129,7 +130,7 @@ header a.learn-more{
   font-size: 15px;
   line-height: 18px;
   color: #666666;
-    font-family: "ProximaNova";
+  font-family: "ProximaNova";
   margin: 0 0 40px;
 
   max-width: 450px;
@@ -150,7 +151,7 @@ header a.learn-more{
   font-family: 'ProximaNovaSemibold';
   font-size: 24px;
   font-weight: normal;
-  margin: 80px 0 40px; 
+  margin: 80px 0 40px;
   text-align: center;
 }
 
@@ -158,7 +159,7 @@ header a.learn-more{
   font-size: 18px;
   line-height: 24px;
   color: #666666;
-    font-family: "ProximaNova";
+  font-family: "ProximaNova";
   margin: 0 0 40px;
   max-width: 1000px;
 
@@ -168,7 +169,7 @@ header a.learn-more{
 
 }
 .prsteps .pr-types .icon-wrap{
-  
+
 }
 .prsteps .pr-types .icon-wrap .icon-img{
   height: 106px;
@@ -182,17 +183,17 @@ header a.learn-more{
   margin: 13px;
 }
 .prsteps .pr-types .pr-content{
-  
+
 }
 .prsteps .pr-types .pr-content h3{
   font-size: 18px;
   text-transform: uppercase;
   font-family: 'ProximaNovaSemibold';
   font-weight: normal;
-  
+
 }
 .prsteps .pr-types .pr-content p{
-  font-size: 15px; 
+  font-size: 15px;
   font-family: 'ProximaNova';
   font-weight: normal;
   color: #666666;
@@ -200,7 +201,7 @@ header a.learn-more{
 }
 
 .bgpane{
-  background: asset-data-url("img/bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  background:asset-data-url("img/bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
   background-size: cover;
   min-height: 640px;
 }
@@ -209,14 +210,14 @@ header a.learn-more{
   font-family: 'ProximaNovaSemibold';
   font-size: 24px;
   font-weight: normal;
-  margin: 70px 0 50px; 
+  margin: 70px 0 50px;
   text-align: center;
 }
 
 .whatwedo p{
   font-size: 16px;
   color: #666666;
-    font-family: "ProximaNova";
+  font-family: "ProximaNova";
   margin: 0 0 80px;
   max-width: 1000px;
   line-height: 20px;
@@ -234,29 +235,29 @@ header a.learn-more{
 /* FOOTER */
 
 .ft-lead{
-  background:  asset-data-url("img/footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
-    min-height: 300px;
-    padding-bottom: 40px;
-    text-align: center;
-    width: 100%;
+  background: asset-data-url("img/footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  min-height: 300px;
+  padding-bottom: 40px;
+  text-align: center;
+  width: 100%;
 }
 .ft-lead h2{
   color: #ffffff;
   font-family: 'ProximaNovaSemibold';
   font-size: 24px;
   font-weight: normal;
-  margin: 80px 0 40px; 
+  margin: 80px 0 40px;
   text-align: center;
 }
 
 footer{
   color: #666666;
-    font-family: "ProximaNova";
-    font-size: 14px;
-    font-weight: normal;
-    text-align: left;
-    background: #f2f2f2;
-    padding: 30px 0 30px 0;
+  font-family: "ProximaNova";
+  font-size: 14px;
+  font-weight: normal;
+  text-align: left;
+  background: #f2f2f2;
+  padding: 30px 0 30px 0;
 }
 
 footer a{
@@ -272,9 +273,9 @@ footer a{
 /* FORM STEP 1 */
 
 .signup header {
-    background: #005979;
-    background-size: cover;
-    min-height: 300px;
+  background: asset-data-url("img/int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  background-size: cover;
+  min-height: 340px;
 }
 
 .signup header h1{
@@ -286,13 +287,14 @@ footer a{
 }
 
 .signup header h2 {
-  border-top: 1px solid #5394a5;
-  width: 450px;
-  text-transform: uppercase;
-  padding-top: 20px;
-  font-family: "ProximaNovaSemibold"; 
+  border-top: 0 solid #5394a5;
+  font-family: "ProximaNovaSemibold";
+  font-size: 30px;
   font-weight: normal;
-
+  margin-top: 165px;
+  padding-top: 0;
+  text-transform: uppercase;
+  width: 450px;
 }
 
 .signup form{
@@ -301,13 +303,13 @@ footer a{
 }
 
 .signup form label input{
- border: 1px solid #a7a7a7;
-    box-shadow: 0 0 0;
-    font-family: "ProximaNova";
-    font-size: 16px;
-    height: 40px;
-    line-height: 40px;
-    padding: 0 16px;
+  border: 1px solid #a7a7a7;
+  box-shadow: 0 0 0;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 16px;
 }
 
 .signup .step-one form {
@@ -332,11 +334,14 @@ footer a{
   text-align: center;
   margin-bottom: 100px;
 }
+.signup .step-one form .submit-wrap{
+  margin-bottom: 40px;
+}
 
 .error label, .error label.error {
-    border: 1px solid #df4a32;
-    margin-bottom: 15px;
-    overflow: hidden;
+  border: 1px solid #df4a32;
+  margin-bottom: 15px;
+  overflow: hidden;
 }
 
 /* SIGNUP PRICING PAGE */
@@ -349,12 +354,12 @@ footer a{
 
 .signup-footer h3{
   color: #ffffff;
-    font-family: "ProximaNovaSemibold";
-    font-size: 24px;
-    font-weight: normal;
-    line-height: 30px;
-    margin: 50px auto 60px;
-    text-align: center;
+  font-family: "ProximaNovaSemibold";
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 30px;
+  margin: 50px auto 60px;
+  text-align: center;
 
 }
 
@@ -371,7 +376,7 @@ footer a{
 }
 
 .signup-footer .service-item .icon-left img{
-  
+
 }
 
 .signup-footer .service-item .details-right{
@@ -389,19 +394,19 @@ footer a{
 
 .signup-footer .service-item .details-right p{
   font-family: "ProximaNova";
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 18px;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 18px;
 }
 
 .row#business-plans,
-.row#agency-plans { 
-    /*max-width: 1280px;*/
-  }
+.row#agency-plans {
+  /*max-width: 1280px;*/
+}
 
 
 .signup-footer .row{
-    max-width: 1180px;
+  max-width: 1180px;
 
 }
 
@@ -411,18 +416,18 @@ footer a{
 
 .form-step .tab-nav{
   text-align: center;
-  margin-top: 20px;
+  margin-top: 0px;
   height: 160px;
 }
 
 .form-step .tab-nav a.button.button-signuptype{
-   background: none repeat scroll 0 0 transparent;
-    border: 2px solid #006481;
-    color: #006481;
-    height: 60px;
-    line-height: 60px;
-    max-width: 250px;
-    border-radius: 30px;
+  background: none repeat scroll 0 0 transparent;
+  border: 2px solid #006481;
+  color: #006481;
+  height: 60px;
+  line-height: 60px;
+  max-width: 250px;
+  border-radius: 30px;
 }
 
 .step3 .tab-nav a.button.button-signuptype,
@@ -444,7 +449,7 @@ footer a{
 .signup .form-step form,
 .signup form.payment,
 .signup .form-step .confirmation {
-    margin-top:50px;
+  margin-top:40px;
 }
 .signup .form-step .confirmation {
   text-align: center;
@@ -466,11 +471,12 @@ footer a{
 .signup .form-step .confirmation p.selection-intro-heading{
   color: #006481;
   text-transform: uppercase;
-  font-size: 28px; 
+  font-size: 28px;
   line-height: 28px;
   font-family: "ProximaNovaSemibold";
   margin-bottom: 20px;
   text-align: center;
+  margin-top: 20px;
 }
 
 .signup .form-step  form p.selection-guarantee,
@@ -480,7 +486,7 @@ footer a{
   line-height: 24px;
   font-family: "ProximaNova";
   font-weight: normal;
-  margin: 0px 0 60px;
+  margin: 0px 0 40px;
   text-align: center;
 }
 
@@ -492,26 +498,26 @@ footer a{
 
 
 .subscription-type:hover,
-.subscription-type.active{ 
+.subscription-type.active{
   border:4px solid #006481;
 }
 .subscription-type h2{
   color: #005979;
-  text-transform: uppercase;
-  font-size: 24px; 
-  line-height: 24px;
   font-family: "ProximaNovaSemibold";
-  margin: 20px auto;
+  font-size: 20px;
+  line-height: 20px;
+  margin: 15px auto;
   text-align: center;
+  text-transform: uppercase;
 }
 .subscription-type .price-bubble{
-   background: none repeat scroll 0 0 #40bfcb;
-    border-radius: 120px;
-    color: #ffffff;
-    display: inline-block;
-    height: 190px;
-    margin: 0 auto;
-    width: 190px;
+  background: none repeat scroll 0 0 #40bfcb;
+  border-radius: 120px;
+  color: #ffffff;
+  display: inline-block;
+  height: 170px;
+  margin: 0 auto;
+  width: 170px;
 }
 
 .subscription-type#plantype-business .price-bubble,
@@ -527,14 +533,14 @@ footer a{
 
 .subscription-type .price-bubble .price-amount{
   font-family: "ProximaNovaSemibold";
-    font-size: 45px;
-    line-height: 45px;
-    margin-top: 55px;
+  font-size: 36px;
+  line-height: 36px;
+  margin-top: 44px;
 
 }
 .subscription-type .price-bubble .price-amount .permonth{
   margin-top: 100px;
-  font-size: 31px; 
+  font-size: 31px;
   line-height: 31px;
   font-family: "ProximaNova";
 
@@ -542,15 +548,15 @@ footer a{
 
 .subscription-type .price-bubble .price-amount em{
   display: block;
-    font-family: "ProximaNova";
-    font-size: 14px;
-    line-height: 18px !important;
-    margin-top: 12px;
-    font-style: normal;
+  font-family: "ProximaNova";
+  font-size: 14px;
+  font-style: normal;
+  line-height: 18px !important;
+  margin-top: 0;
 }
 
 .subscription-type .plan-inclusions{
-   margin-top: 20px;
+  margin-top: 15px;
 }
 
 .subscription-type .plan-inclusions ul{
@@ -561,13 +567,13 @@ footer a{
 }
 .subscription-type .plan-inclusions ul li{
   color: #333333;
-    font-family: "ProximaNova";
-    font-size: 18px;
-    line-height: 18px;
-    list-style-type: none;
-    margin-bottom: 18px;
-    overflow: hidden;
-    text-align: left;
+  font-family: "ProximaNova";
+  font-size: 15px;
+  line-height: 15px;
+  list-style-type: none;
+  margin-bottom: 15px;
+  overflow: hidden;
+  text-align: left;
 }
 
 .subscription-type .plan-inclusions ul li strong{
@@ -590,12 +596,12 @@ footer a{
   width: 100%;
 }
 .subscription-type .selector-wrap .button.button-planselector{
-   background: none repeat scroll 0 0 #bfbfbf;
-    height: 40px;
-    line-height: 40px;
-    max-width: 230px;
-    width: 100%;
-    font-size: 17px;
+  background: none repeat scroll 0 0 #bfbfbf;
+  height: 40px;
+  line-height: 40px;
+  max-width: 230px;
+  width: 100%;
+  font-size: 17px;
 }
 
 .subscription-type .selector-wrap .button.button-planselector:hover{
@@ -614,9 +620,9 @@ footer a{
 }
 
 .goback{
-    background:  asset-data-url("img/back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
-    margin: 20px 0 40px;
-    padding-left: 30px;
+  background: asset-data-url("img/back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  margin: 20px 0 40px;
+  padding-left: 30px;
 }
 
 .goback a{
@@ -627,7 +633,7 @@ footer a{
 }
 
 .errorwarning{
-  margin: 20px auto !important; 
+  margin: 20px auto !important;
 }
 .errorwarning p{
   margin: 10px auto !important;
@@ -643,7 +649,7 @@ form .errorwarning{
 .error .errorwarning{
   display: block;
 }
- 
+
 
 
 /* FORM STEP 3 */
@@ -663,10 +669,10 @@ form table th{
 }
 
 form table td{
-  background: #ffffff; 
+  background: #ffffff;
   margin: 0;
   border-bottom: 1px solid #f0f0f0;
-  padding: 15px 20px; 
+  padding: 15px 20px;
   font-family: "ProximaNova";
   font-size: 16px;
 }
@@ -674,10 +680,10 @@ form table td{
 form table th.qty,
 form table td.qty{
   max-width: 130px;
-  width: 130px; 
+  width: 130px;
 }
 form table th.price,
-form table td.price{ 
+form table td.price{
   text-align: right;
 }
 
@@ -704,10 +710,10 @@ table .updown{
 }
 
 table .updown a{
-  background:  asset-data-url("img/updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
-    display: block;
-    text-indent: -5555px;
-    margin-top: 6px;
+  background: asset-data-url("img/updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  display: block;
+  text-indent: -5555px;
+  margin-top: 6px;
 }
 
 table .updown a.qty-minus{
@@ -730,34 +736,44 @@ table tr:hover .updown{
 }
 
 .ui-selectmenu-button {
-   background: none repeat scroll 0 0 #ffffff;
-    border: 1px solid #a7a7a7;
-    border-radius: 0;
-    color: #333333;
-    font-family: "ProximaNova";
-    font-size: 16px;
-    height: 40px;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #a7a7a7;
+  border-radius: 0;
+  color: #333333;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  height: 40px;
 }
 .ui-menu .ui-menu-item {
-   background: none repeat scroll 0 0 #eeeeee;
-    border: 1px solid #a7a7a7;
-    border-radius: 0;
-    color: #333333;
-    font-family: "ProximaNova";
-    font-size: 16px;
-    height: 40px;
-    padding: 10px 20px;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #a7a7a7;
+  border-radius: 0;
+  color: #333333;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  height: 40px;
+  padding: 10px 20px;
 
-  }
-
-.span.ui-selectmenu-text { 
-    padding: 20px;
-} 
-.ui-selectmenu-button span.ui-selectmenu-text {
-    background:  asset-data-url("img/select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
-    margin-right: 15px;
-    padding: 9px 20px;
 }
+
+.span.ui-selectmenu-text {
+  padding: 20px;
+}
+.ui-selectmenu-button span.ui-selectmenu-text {
+  background: asset-data-url("img/select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
+  margin-right: 15px;
+  padding: 9px 20px;
+}
+
+
+.signup-footer.ftform .ui-selectmenu-button {
+  background: none repeat scroll 0 0 transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  height: 40px;
+  margin-top: 10px;
+}
+
 
 a.remove{
   color: #ff0000;
@@ -786,47 +802,54 @@ tr.totals td{
   font-size: 18px;
 }
 .signup form .signup-footer.ftform label input {
-    border: 1px solid #ffffff;
-    background: transparent;
-    box-shadow: 0 0 0;
-    font-family: "ProximaNova";
-    color: #ffffff;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 30px;
+  border: 1px solid #ffffff;
+  background: transparent;
+  box-shadow: 0 0 0;
+  font-family: "ProximaNova";
+  color: #ffffff;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 30px;
 }
 
 .signup-footer.ftform .error  label, .signup-footer.ftform  .error label.error {
-    border: 0px;
-    margin-bottom: 15px;
-    color: #ff0000;
+  border: 0px;
+  margin-bottom: 15px;
+  color: #ff0000;
 }
 
 
 .signup-footer.ftform .error  label input, .signup-footer.ftform  .error label.error input{
 
-    border: 1px dotted #ff0000;
+  border: 1px dotted #ff0000;
 }
 
 .signup-footer.ftform .formdisclaimers p{
   color: #ffffff;
-    font-family: "ProximaNova";
-    font-size: 16px;
+  font-family: "ProximaNova";
+  font-size: 16px;
 }
+.signup-footer.ftform .formdisclaimers p a{
+  color: #eeeeee;
+}
+.signup-footer.ftform .formdisclaimers p a:hover{
+  color: #ffffff;
+}
+
 .signup-footer.ftform .formdisclaimers p strong{
   color: #ffffff;
-    font-family: "ProximaNovaSemibold";
-    font-size: 18px;
-    font-weight: normal;
+  font-family: "ProximaNovaSemibold";
+  font-size: 18px;
+  font-weight: normal;
 }
-.signup-footer.ftform .formdisclaimers p.chargesummary{ 
-    font-family: "ProximaNova";
-    font-size: 22px;
-    margin-bottom: 0px;
+.signup-footer.ftform .formdisclaimers p.chargesummary{
+  font-family: "ProximaNova";
+  font-size: 22px;
+  margin-bottom: 0px;
 }
-.signup-footer.ftform .formdisclaimers p.chargesummary span{ 
-    font-family: "ProximaNovaSemibold";  
-    font-weight: normal;
+.signup-footer.ftform .formdisclaimers p.chargesummary span{
+  font-family: "ProximaNovaSemibold";
+  font-weight: normal;
 }
 
 
@@ -834,19 +857,19 @@ tr.totals td{
 .nav,
 nav.top-bar{
   height: 78px;
-  width: 100%; 
+  width: 100%;
   position: fixed;
   top: 0px;
   z-index: 9999999;
-    transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease;
 }
 body.f-topbar-fixed {
-    padding-top: 0px !important;
+  padding-top: 0px !important;
 }
-.nav.fixedscroll{ 
+.nav.fixedscroll{
   background-color: #ffffff;
-    transition: background-color 0.5s ease;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.5s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .nav-left{
   text-align: left;
@@ -856,25 +879,25 @@ body.f-topbar-fixed {
 }
 
 .nav a.logo {
-    background: asset-data-url("img/robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
-    display: block;
-    height: 38px;
-    margin-left: 110px;
-    margin-top: 25px;
-    overflow: hidden;
-    text-indent: -55555px;
-    width: 158px;
+  background: asset-data-url("img/robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  display: block;
+  height: 38px;
+  margin-left: 110px;
+  margin-top: 25px;
+  overflow: hidden;
+  text-indent: -55555px;
+  width: 158px;
 }
-.homeheader .nav a.logo {
+.homeheader .nav a.logo  {
   visibility: hidden;
 }
-.homeheader .nav.fixedscroll a.logo {
+.homeheader .nav.fixedscroll a.logo   {
   visibility: visible;
 }
 
 
 .nav.fixedscroll a.logo{
-  background: url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background: asset-data-url("img/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
 }
 
 .nav ul{
@@ -882,14 +905,14 @@ body.f-topbar-fixed {
   margin-top: 22px;
   margin-right: 14px;
 }
-.nav ul li{ 
+.nav ul li{
 }
 
 .nav ul li a{
-    font-family: "ProximaNova";
-    font-size: 15px;
-    color: #ffffff;
-    padding-left: 30px;
+  font-family: "ProximaNova";
+  font-size: 15px;
+  color: #ffffff;
+  padding-left: 30px;
 }
 
 .nav.fixedscroll ul li a{
@@ -897,20 +920,20 @@ body.f-topbar-fixed {
 }
 
 .nav a .carat{
-   border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 5px solid #ffffff;
-    display: inline-block;
-    height: 0;
-    margin-left: 8px;
-    padding-top: 3px;
-    width: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 5px solid #ffffff;
+  display: inline-block;
+  height: 0;
+  margin-left: 8px;
+  padding-top: 3px;
+  width: 0;
 }
-.top-bar-section ul.dropdown { 
-    margin-top: 0 !important; 
+.top-bar-section ul.dropdown {
+  margin-top: 0 !important;
 }
 .top-bar {
-    background: none repeat scroll 0 0 transparent; 
+  background: none repeat scroll 0 0 transparent;
 }
 .top-bar-section ul li,
 .top-bar-section li:not(.has-form) a:not(.button),
@@ -918,53 +941,61 @@ body.f-topbar-fixed {
   background: transparent !important;
 }
 
+
+.top-bar-section li:not(.has-form) a.active:not(.button){
+  border: 3px solid #a5cc63;
+  border-radius: 2px;
+  line-height: 39px !important;
+}
+
+
 .top-bar-section li:not(.has-form) a:hover:not(.button){
-    background: #268299 !important; 
-    color: #ffffff;
+  background: #268299 !important;
+  color: #ffffff;
 }
 .fixedscroll .top-bar-section li:not(.has-form) a:hover:not(.button){
-    background: #ffffff !important; 
-    color: #268299;
+  background: #ffffff !important;
+  color: #268299;
 }
 .top-bar-section ul li:hover:not(.has-form) > a {
-    background: #ffffff !important; 
-    color: #268299;
+  background: #ffffff !important;
+  color: #268299;
 }
 .top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button)   {
-    background: #268299 !important; 
+  background: #268299 !important;
 }
 .fixedscroll .top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button)   {
-    background: #ffffff !important; 
-    color: #484848;
+  background: #ffffff !important;
+  color: #484848;
 }
-.fixedscroll .top-bar-section .dropdown li:not(.has-form):not(.active) > a:hover:not(.button)   { 
-    color: #268299;
+.fixedscroll .top-bar-section .dropdown li:not(.has-form):not(.active) > a:hover:not(.button)   {
+  color: #268299;
 }
 .top-bar.expanded,
 .top-bar.expanded .title-area {
-    background: none repeat scroll 0 0 #268299;
-    height: auto;
+  background: none repeat scroll 0 0 #268299;
+  height: auto;
 }
 
 .top-bar.expanded .top-bar-section li:not(.has-form) a:hover:not(.button){
   background:#1a7b94 !important;
 }
 .top-bar.expanded .toggle-topbar a span:after {
-    box-shadow: 0 0 0 1px #333333, 0 7px 0 1px #333333, 0 14px 0 1px #333333;
+  box-shadow: 0 0 0 1px #333333, 0 7px 0 1px #333333, 0 14px 0 1px #333333;
 }
 .top-bar.expanded .toggle-topbar a {
-    color: #333333;
+  color: #333333;
 }
 
 @media(max-width: 640px){
- 
+
 
 }
 
 /* INTERIOR HEADER STUFF */
 header.int-header {
-    background: url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
-    min-height: 340px; 
+  background: asset-data-url("img/int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  min-height: 340px;
 }
 
 
@@ -990,8 +1021,8 @@ header.int-header h1{
 .int-content{
   padding: 60px 0;
 }
-.int-content .row { 
-    max-width: 840px; 
+.int-content .row {
+  max-width: 840px;
 }
 .int-content p{
   font-size: 18px;
@@ -1019,12 +1050,12 @@ header.int-header h1{
   margin: 75px 0 0;
 }
 .int-content.demo h3{
-   color: #666666;
-    font-family: "ProximaNova";
-    font-size: 22px;
-    font-weight: normal;
-    margin: 50px auto 0;
-    max-width: 670px;
+  color: #666666;
+  font-family: "ProximaNova";
+  font-size: 22px;
+  font-weight: normal;
+  margin: 50px auto 0;
+  max-width: 670px;
 }
 
 .youcanbookme{
@@ -1033,7 +1064,7 @@ header.int-header h1{
 
 .demopage .ft-content{
   padding: 100px 0;
-  text-align: center; 
+  text-align: center;
   background: #eaeaea;
 }
 
@@ -1052,9 +1083,9 @@ header.int-header h1{
 
 @media(max-width: 640px){
 
-    .demopage .demo{
-      margin-top: -100px;
-    }
+  .demopage .demo{
+    margin-top: -100px;
+  }
 
 }
 
@@ -1064,79 +1095,101 @@ header.int-header h1{
   margin-top: -100px;
 }
 
+.team-content .advisors{
+  margin-top: 120px;
+  padding-top: 40px;
+  border-top:2px solid #1a7b94;
+
+}
+
+.team-content .advisors h3{
+  color: #006481;
+  font-family: "ProximaNovaBold";
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 40px;
+  text-align: center;
+}
+.team-content .advisors h3 span{
+  color: #006481;
+  font-size: 24px;
+  font-family: "ProximaNova";
+  font-weight: normal;
+}
+
 .team-box{
   text-align: center;
-  padding-bottom: 60px;
+  padding-bottom: 40px;
 }
 
 .team-box img{
-
+  max-height: 180px;
 }
 
 .team-box h3{
-  font-family: "ProximaNovaSemibold";
-  font-size: 24px;
   color: #006481;
-  margin:30px auto 0;
+  font-family: "ProximaNovaSemibold";
+  font-size: 20px;
   font-weight: normal;
+  margin: 20px auto 0;
 }
 .team-box h4{
-  font-family: "ProximaNova";
-  font-size: 18px;
   color: #484848;
-  margin:20px auto 0;
+  font-family: "ProximaNova";
+  font-size: 16px;
   font-weight: normal;
+  margin: 10px auto 0;
 
 }
 .team-box p{
   color: #484848;
   font-family: "ProximaNova";
-  font-size: 16px;
-  margin:20px auto 0;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 20px auto 0;
 }
 
 /* LOGIN PAGE */
 .btn-google-plus,
-.btn-facebook  {  
+.btn-facebook  {
   max-width: 560px;
   width: 100%;
   margin: 0 auto 20px;
   font-family: "ProximaNovaBold";
-  font-size: 18px; 
+  font-size: 18px;
   padding: 0;
   height: 60px;
   line-height: 60px;
 }
 .btn-facebook {
-    background-color: #3a579a; 
-  }
+  background-color: #3a579a;
+}
 .btn-google-plus {
-    background-color: #df4a32; 
-  }
+  background-color: #df4a32;
+}
 
 .btn-facebook i.fa,
-.btn-google-plus i.fa{ 
+.btn-google-plus i.fa{
   display: none;
 }
 
 .btn-facebook span,
 .btn-google-plus span{
-    display: inline-block;
-    height: 60px;
-    padding-left: 50px;  
+  display: inline-block;
+  height: 60px;
+  padding-left: 50px;
 }
 
 .btn-facebook span{
-    background: url("Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  background: asset-data-url("img/Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
 
 }
 .btn-google-plus span{
-    background: url("Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  background: asset-data-url("img/Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
 }
 
 .btn-google-plus:hover {
-    background-color: #df4a32;   
+  background-color: #df4a32;
 
   opacity: 0.8;
   transition-property: all;
@@ -1144,14 +1197,14 @@ header.int-header h1{
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 .btn-facebook:hover {
-    background-color: #3a579a; 
+  background-color: #3a579a;
   opacity: 0.8;
   transition-property: all;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 
-.form-login .social-login{
+.social-login{
   text-align: center;
 }
 
@@ -1159,15 +1212,15 @@ header.int-header h1{
   margin:75px auto;
 }
 
-p.loginintro{ 
-    font-family: "ProximaNova";
-    font-size: 22px;
-    font-weight: normal;
-    margin-bottom: 50px;
-    text-align: center;
+p.loginintro{
+  font-family: "ProximaNova";
+  font-size: 22px;
+  font-weight: normal;
+  margin-bottom: 50px;
+  text-align: center;
 }
-p.loginintro strong{ 
-  font-family: "ProximaNovaSemibold"; 
+p.loginintro strong{
+  font-family: "ProximaNovaSemibold";
 }
 
 .signup .form-login form{
@@ -1177,11 +1230,11 @@ p.loginintro strong{
 }
 
 .signup .form-login form .submit-wrap{
-      margin-bottom: 40px;
-    margin-top: 50px;
+  margin-bottom: 40px;
+  margin-top: 50px;
 }
-.signup .form-login form.error .submit-wrap { 
-    margin-top: 20px;
+.signup .form-login form.error .submit-wrap {
+  margin-top: 20px;
 }
 
 .signup .form-login .rememberme,
@@ -1199,9 +1252,9 @@ p.loginintro strong{
 
 
 .signup .form-login input[type="checkbox"]  {
-    display: inline-block; 
-    margin: 3px;
-    vertical-align: text-top; 
+  display: inline-block;
+  margin: 3px;
+  vertical-align: text-top;
 }
 
 .or-line{
@@ -1212,34 +1265,34 @@ p.loginintro strong{
   border-top: 1px solid #7f7f7f
 }
 .or-line span{
-    background: none repeat scroll 0 0 #ffffff;
-    display: block;
-    font-family: "ProximaNova";
-    font-size: 24px;
-    margin: -17px auto 0;
-    text-align: center;
-    text-transform: uppercase;
-    width: 50px;
-} 
+  background: none repeat scroll 0 0 #ffffff;
+  display: block;
+  font-family: "ProximaNova";
+  font-size: 24px;
+  margin: -17px auto 0;
+  text-align: center;
+  text-transform: uppercase;
+  width: 50px;
+}
 
 /* CONTACT PAGE */
 
 .contact .address-info{
-    font-family: "ProximaNova";
-    font-size: 16px;
-    font-style: normal;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  font-style: normal;
 }
 
 .contact .contact-addresses{
-    font-family: "ProximaNova";
-    font-size: 16px;
-    font-style: normal;
-    margin-bottom: 20px;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  font-style: normal;
+  margin-bottom: 20px;
 }
 
 .contact .address-info h3{
   font-size: 18px;
-    font-family: "ProximaNovaSemibold";
+  font-family: "ProximaNovaSemibold";
 }
 
 .contact .address-info a{
@@ -1266,50 +1319,50 @@ p.loginintro strong{
   .nav a.logo {
     margin-left: 20px;
   }
-  .top-bar .title-area { 
+  .top-bar .title-area {
     text-align: left;
   }
 
   .nav.fixedscroll,
-  .nav{ 
+  .nav{
     background-color: #ffffff;
-      transition: background-color 0.5s ease;
-  } 
+    transition: background-color 0.5s ease;
+  }
 
   .nav a.logo ,
   .nav.fixedscroll a.logo{
-    background: url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: asset-data-url("img/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
   }
   .top-bar .toggle-topbar.menu-icon a {
-      color: #000000; 
-      font-family: "ProximaNova";
+    color: #000000;
+    font-family: "ProximaNova";
   }
 
   .top-bar .toggle-topbar.menu-icon a span:after {
     box-shadow: 0 0 0 1px #000000, 0 7px 0 1px #000000, 0 14px 0 1px #000000;
   }
   .top-bar.expanded, .top-bar.expanded .title-area {
-    background: none repeat scroll 0 0 #ffffff; 
+    background: none repeat scroll 0 0 #ffffff;
   }
-  .nav ul li a { 
+  .nav ul li a {
     color: #000000;
     font-family: "ProximaNova";
     font-size: 20px;
     padding-left: 0;
   }
   .top-bar-section .dropdown li.title h5 a, .top-bar-section .dropdown li.parent-link a {
-      color: #000000; 
+    color: #000000;
   }
   .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button), .top-bar-section li:not(.has-form) a:hover:not(.button) {
-    
+
     border-bottom: 1px solid #006481;
   }
 
   header h2 {
     font-size: 24px;
   }
-  .ft-lead h2 { 
-    font-size: 32px; 
+  .ft-lead h2 {
+    font-size: 32px;
     margin: 80px 0 55px;
   }
 
@@ -1322,12 +1375,12 @@ p.loginintro strong{
   }
 
 
-  
+
   header a.learn-more{
     display: none;
   }
 
-  .screenpane{ 
+  .screenpane{
     background-image: none;
   }
 
@@ -1351,10 +1404,10 @@ p.loginintro strong{
     text-align: center;
   }
   footer a {
-      color: #666666;
-      display: inline-block;
-      margin-right: 40px;
-      margin-left: 0px;
+    color: #666666;
+    display: inline-block;
+    margin-right: 40px;
+    margin-left: 0px;
   }
 
   .ft-logo{
@@ -1363,41 +1416,41 @@ p.loginintro strong{
   }
 
   .signup-footer .service-item .icon-left img {
-    margin-top: 12px; 
+    margin-top: 12px;
     width: 32px;
   }
 
 
-    form table th.qty,
-    form table td.qty{ 
-      width: auto; 
-    }
+  form table th.qty,
+  form table td.qty{
+    width: auto;
+  }
 
-    form table th,
-    form table td{ 
-      padding: 10px;
-    }
-    form table .updown{ display: none;}
+  form table th,
+  form table td{
+    padding: 10px;
+  }
+  form table .updown{ display: none;}
 
-    form table td{ 
-      font-size: 18px;
-    }
+  form table td{
+    font-size: 18px;
+  }
 
-  .signup-footer.ftform label { 
-      font-size: 16px;
+  .signup-footer.ftform label {
+    font-size: 16px;
   }
 
 
-  .bgpane{ 
+  .bgpane{
     background-size: cover;
     height: 300px !important;
     min-height: 300px !important;
   }
   .form-step .tab-nav a#selected-businesses.button.button-signuptype {
-      margin: 20px auto;
+    margin: 20px auto;
   }
-  .signup header h2 { 
-      width: auto;
+  .signup header h2 {
+    width: auto;
   }
   th.removecolumn, td.remove {
     font-size: 10px;
@@ -1407,50 +1460,50 @@ p.loginintro strong{
     width: 75px !important;
   }
 
-  form table td { 
-      font-size: 12px; 
-      padding: 5px;
-  }
-  form table th { 
-    font-size: 14px; 
+  form table td {
+    font-size: 12px;
     padding: 5px;
   }
-  .ui-selectmenu-button span.ui-selectmenu-text { 
+  form table th {
+    font-size: 14px;
     padding: 5px;
   }
-  .ui-selectmenu-button { 
+  .ui-selectmenu-button span.ui-selectmenu-text {
+    padding: 5px;
+  }
+  .ui-selectmenu-button {
     font-size: 13px;
     height: 31px;
   }
-  tr.totals td { 
-      font-size: 14px;
+  tr.totals td {
+    font-size: 14px;
   }
   .ft-logo img{
     margin-bottom: 20px;
   }
 
   .form-step .tab-nav {
-    height: auto; 
+    height: auto;
   }
   .signup .form-step form p.selection-intro, .signup .form-step .confirmation p.selection-intro {
     font-size: 15px;
   }
-  .subscription-type { 
-    margin: 0 20px 20px; 
+  .subscription-type {
+    margin: 0 20px 20px;
   }
-  .subscription-type .plan-inclusions ul li span { 
+  .subscription-type .plan-inclusions ul li span {
     max-width: 200px;
   }
 
   .subscription-type:hover{
-    border:2px solid #999999; 
+    border:2px solid #999999;
   }
 
 
-  .subscription-type.active:hover { 
+  .subscription-type.active:hover {
     border:4px solid #006481;
   }
-  
+
   .subscription-type:hover .selector-wrap .button.button-planselector,
   .subscription-type .selector-wrap .button.button-planselector:hover{
     background: #999999;
@@ -1460,17 +1513,17 @@ p.loginintro strong{
     background: #006481;
   }
   .screenpane .button.button-signup {
-    margin-bottom: 0px; 
+    margin-bottom: 0px;
   }
   .screenpane h2 ,
-  .screenpane p { 
+  .screenpane p {
     max-width: 100%;
   }
 
-    .screenpane .videoembedsection{ 
-      padding-top: 20px;
-      margin-bottom: 40px;
-    }
+  .screenpane .videoembedsection{
+    padding-top: 20px;
+    margin-bottom: 40px;
+  }
 
 
 }

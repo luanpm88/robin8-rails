@@ -163,9 +163,15 @@ a {
 .navbar-right .dropdown-menu {
     background:#91bc4d;
 }
+
+.navbar-right .dropdown-menu:hover #userDropdown{
+  color: #006481;
+}
+
 .dropdown-menu li a:hover,
 .dropdown-menu li a:focus {
-    background:#006481;
+  background:#006481;
+  cursor: pointer;
 }
 .dropdown-menu .divider {
     background-color: #006481; 
@@ -268,15 +274,20 @@ a {
 .stream-container {
   list-style: none;
   white-space: nowrap;
-  position: absolute;
   overflow-x: scroll;
   top: 58px;
   bottom: 8px;
   left: 180px; 
   right: 0; 
-  // width: 100000px;
 }
 .stream {
+  width: 360px;
+  margin-left: 15px;
+  position: relative;
+  display: inline-block;
+  white-space: normal;
+  height: 100%;
+  vertical-align: top;
   background-color: #f5f5f5;
     border: 0 none;
     float: left;
@@ -295,24 +306,24 @@ a {
   height: 61px;
   position: fixed;
   right: 8px;
-  text-indent: -55555px;
+  // text-indent: -55555px;
   width: 61px;
 }
 .stream-body {
   border-bottom: 1px solid #ccc;
-  height: 500px;
+  // height: 500px;
   overflow: scroll;
 }
 .stream-header {
   background-color: #006481;
-    border-bottom: 2px solid #006481;
-    color: #fff;
-    cursor: move;
-    font-size: 16px;
-    font-weight: bold;
-    height: 35px;
-    line-height: 17px;
-    padding: 8px 2px 8px 8px;
+  border-bottom: 2px solid #006481;
+  color: #fff;
+  cursor: move;
+  font-size: 16px;
+  font-weight: bold;
+  height: 35px;
+  line-height: 17px;
+  padding: 8px 2px 8px 8px;
 }
 .stream-header button.close {
   margin-right: 12px;
@@ -331,6 +342,25 @@ a {
 .stream-header .pull-right i {
   font-size: 17px;
   margin-top: -2px;
+}
+.stream-header .editable-container {
+  position: absolute;
+  z-index: 999;
+  background: rgba(202, 202, 202, 0.5);
+  padding: 5px;
+  border-radius: 4px;
+}
+.stream-header .editable-submit {
+  background-color: #D76363;
+  i {
+    padding-top: 1px;
+  }
+}
+.stream-header .editable-cancel {
+  i {
+    color: #929394;
+    padding-top: 1px;
+  }
 }
 .stream .stories {
   /*overflow: scroll;*/
@@ -363,10 +393,14 @@ a {
 }
 
 .stories .media-body .label {
-    background-color: transparent;
-    font-size: 10px;
+  background-color: transparent;
+  font-size: 10px;
 }
 
+.stories .media-body .likes {
+  position: relative !important;
+  margin-top: -8px;
+}
 
 .stories .media-body .pull-left.label,
 .stories .media-body .pull-right.label{
@@ -607,6 +641,22 @@ nav{text-align: center;}
   margin-right: 15px;
 }
 
+#social-scheduled .list-group-item .editable-post {
+  width: 100%;
+  max-width: 650px;
+}
+
+#social-scheduled .list-group-item .edit-settings-row {
+  height: 45px;
+  padding-top: 5px;
+  border-left: 1px solid rgb(170, 178, 189);
+  border-right: 1px solid rgb(170, 178, 189);
+  border-bottom: 1px solid rgb(170, 178, 189);
+  border-radius: 0px 0px 4px 4px;
+}
+.release-title {
+  height: 40px !important;
+}
 
 #social-scheduled .list-group-item .btn {
   margin-left: 2px;
@@ -619,6 +669,7 @@ nav{text-align: center;}
 }
 #social-scheduled .list-group-item textarea {
   width: 500px;
+  border-radius: 4px 4px 0px 0px;
 }
 #social-scheduled .list-group-item .editable-click {
   border-bottom: dashed 1px #D0D0D0;
@@ -628,6 +679,9 @@ nav{text-align: center;}
 }
 #social-scheduled .list-group-item .social-icons li {
   display: inline;
+}
+.releases-toolbar .btn {
+  margin-bottom: 5px;
 }
 .release-item h3 a {
   color: #333;
@@ -1134,19 +1188,16 @@ input.form-control[type="file"] {
     border-color: #3c9eb6;
 }
 
-#schedule-datetimepicker > div > ul > li.picker-switch.accordion-toggle > table > tbody > tr > td {
+.bootstrap-datetimepicker-widget li.picker-switch.accordion-toggle > table > tbody > tr > td {
   padding-right: 3px;
 }
-
-#schedule-datetimepicker > div > ul > li.picker-switch.accordion-toggle > table > tbody > tr > td > a {
+.bootstrap-datetimepicker-widget li.picker-switch.accordion-toggle > table > tbody > tr > td > a {
   background-color: transparent;
 }
-
-#schedule-datetimepicker > div > ul > li.picker-switch.accordion-toggle > table > tbody > tr > td > a > span{
+.bootstrap-datetimepicker-widget li.picker-switch.accordion-toggle > table > tbody > tr > td > a > span{
   background-color: #006481;
 }
-
-#schedule-datetimepicker > div > ul > li.picker-switch.accordion-toggle > table > tbody > tr > td > a > span:hover{
+.bootstrap-datetimepicker-widget li.picker-switch.accordion-toggle > table > tbody > tr > td > a > span:hover{
   background-color: #338299;
 }
 

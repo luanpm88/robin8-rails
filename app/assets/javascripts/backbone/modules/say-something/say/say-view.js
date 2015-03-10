@@ -177,6 +177,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       var selectedDate = moment($('#scheduled_date').val());
       this.socialNetworksBinder.copyViewValuesToModel();
       this.modelBinder.copyViewValuesToModel();
+      var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).end();
       if (this.model.attributes.scheduled_date === "" || selectedDate < moment()){
         this.model.attributes.scheduled_date = moment().utc();
       } else {
