@@ -19,7 +19,7 @@ class MediaList < ActiveRecord::Base
     contacts = CSV.read(path)
     self.contacts << contacts.inject([]) do |memo, contact|
       if (contact.size == 3) && !contact[0].blank? && 
-        !contact[1].blank? && !contact[2].blank? && validate_url(contact[2])
+        !contact[1].blank? && !contact[2].blank? && validate_email(contact[2])
         
         begin
           memo << Contact.find_or_create_by(email: contact[2]) do |c|
@@ -38,10 +38,15 @@ class MediaList < ActiveRecord::Base
   end
   
   def attachment?
-    attachment.exists?
+    if attachment.blank? || 
+      (attachment.queued_for_write[:original] == '/attachments/original/missing.png')
+      false
+    else
+      true
+    end
   end
   
-  def validate_url(url)
+  def validate_email(url)
     unless url =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
       false
     else
