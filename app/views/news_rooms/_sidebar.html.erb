@@ -3,24 +3,25 @@
     <a href="company.html">
       <img src="http://logos-vector.com/images/logo/xxl/1/3/1/1317/ACME_9fe0b_450x450.png" class="logo">
       <br>
-      <strong><%= news_room.company_name %></strong> Pressroom
+      <strong><%= news_room.company_name %></strong>
+      <br />Pressroom
     </a>
   </li>
-  <li>
-    <a data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseContact"><i class="fa fa-info-circle"></i> Contact</a>
+  <li class="navlinks">
+    <a data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseContact" class="collapsed"><i class="fa fa-info-circle"></i> Contact</a>
     <div class="collapse collapsible" id="collapseContact">
       <div>
         <% if (news_room.company_name) %>
-          <strong><%- news_room.company_name %></strong>
+          <strong class="subhead"><%- news_room.company_name %></strong>
         <% end %>
-        <p>Email: <a href="mailto:<%= news_room.email %>"><%= news_room.email %></a>
-        <br><%= news_room.address_1 %></p>
+        <p><strong>Email:</strong><br /> <a href="mailto:<%= news_room.email %>"><%= news_room.email %></a></p>
+        <p><strong>Address:</strong><br /><%= news_room.address_1 %></p>
         <ul class="contact-links">
           <li>
             <a href="#"><i class="fa fa-globe"></i> Main website</a>
           </li>
           <li>
-            <a href="#"><i class="fa fa-building"></i> Company blog</a>
+            <a href="#"><i class="fa fa-newspaper-o"></i> Company blog</a>
           </li>
           <li>
             <a href="#"><i class="fa fa-envelope"></i> Contact</a>
@@ -29,8 +30,8 @@
       </div>
     </div>
   </li>
-  <li>
-    <a data-toggle="collapse" href="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial"><i class="fa fa-bullhorn"></i> Social Media</a>
+  <li class="navlinks">
+    <a data-toggle="collapse" href="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial" class="collapsed"><i class="fa fa-users"></i> Social Media</a>
     <div class="collapse collapsible" id="collapseSocial">
       <ul class="soc">
         <li><a class="soc-twitter" target='_blank' href="<%= news_room.twitter_link.blank? ? 'javascript:void(0)' : news_room.twitter_link%>"></a></li>
@@ -40,8 +41,8 @@
       </ul>
     </div>
   </li>
-  <li>
-    <a data-toggle="collapse" href="#collapseSpokeperson" aria-expanded="false" aria-controls="collapseSpokeperson"><i class="fa fa-user"></i> Spokeperson</a>
+  <li class="navlinks">
+    <a data-toggle="collapse" href="#collapseSpokeperson" aria-expanded="false" aria-controls="collapseSpokeperson" class="collapsed"><i class="fa fa-user"></i> Spokeperson</a>
     <div class="collapse collapsible" id="collapseSpokeperson">
       <div class="media">
         <a class="media-left" href="#">
@@ -56,10 +57,14 @@
       </div>
     </div>
   </li>
-  <li>
-    <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets"><i class="fa fa-twitter"></i> Latest Tweets</a>
+  <li class="navlinks">
+    <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets" class="collapsed"><i class="fa fa-twitter"></i> Latest Tweets</a>
     <div class="collapse collapsible" id="collapseTweets" style="padding: 6px !important;">
-      <a class="twitter-timeline <%= news_room.blank? ? 'hidden' : '' %>" href="<%= news_room.twitter_link %>"  data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link %>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a>
+      <!-- <a class="twitter-timeline <%= news_room.blank? ? 'hidden' : '' %>" href="<%= news_room.twitter_link %>"  data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link %>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a> -->
+      <div class="twitter-wrap">
+        <a class="twitter-timeline" href="https://twitter.com/parsaghaffari" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      </div>
       
       <span class="<%= news_room.twitter_link.blank? ? '' : 'hidden' %>"> Twitter user's page is not set</span>
     </div>
@@ -67,13 +72,12 @@
   <li>
     <hr>
   </li>
-  <li>
+  <li class="btn-li">
     <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
       <i class="fa fa-image"></i> Press kit
     <% end %>
   </li>
-  <li>
-    <small style="padding-left: 27px;">Receive Updates</small><br>
+  <li class="btn-li">
     <a href="#follow" class="btn btn-md btn-default"><i class="fa fa-newspaper-o"></i> Follow pressroom</a>
   </li>
 </ul>
