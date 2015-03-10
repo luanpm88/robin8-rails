@@ -29,7 +29,7 @@
     </div>
     <div class="row business-plans" id="business-plans" data-equalizer>
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-basic" data-plan="basic" data-equalizer-watch>
+        <div class="subscription-type" id="plantype-basic" data-plan="basic" data-equalizer-watch onclick="setPackage('<%=@packages[1].slug%>');$('#plantype-basic').addClass('active');">
           <h2><%= @packages[0].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -55,7 +55,7 @@
         </div>
       </div><!--end plan type column -->
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch>
+        <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch onclick="setPackage('<%=@packages[3].slug%>');$('#plantype-business').addClass('active');">
           <h2><%= @packages[2].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -79,7 +79,7 @@
         </div>
       </div><!--end plan type column -->
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch>
+        <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch onclick="setPackage('<%=@packages[5].slug%>');$('#plantype-enterprise').addClass('active');">
           <h2><%= @packages[4].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -107,7 +107,7 @@
 
     <div class="row agency-plans" id="agency-plans" data-equalizer>
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-pro" data-plan="pro" data-equalizer-watch>
+        <div class="subscription-type" id="plantype-pro" data-plan="pro" data-equalizer-watch onclick="setPackage('<%=@packages[7].slug%>');$('#plantype-pro').addClass('active');">
           <h2><%= @packages[6].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -131,7 +131,7 @@
         </div>
       </div><!--end plan type column -->
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-premium" data-plan="premium" data-equalizer-watch>
+        <div class="subscription-type" id="plantype-premium" data-plan="premium" data-equalizer-watch onclick="setPackage('<%=@packages[9].slug%>');$('#plantype-premium').addClass('active');">
           <h2><%= @packages[8].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -155,7 +155,7 @@
         </div>
       </div><!--end plan type column -->
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-ultra" data-plan="ultra" data-equalizer-watch>
+        <div class="subscription-type" id="plantype-ultra" data-plan="ultra" data-equalizer-watch onclick="setPackage('<%=@packages[11].slug%>');$('#plantype-ultra').addClass('active');">
           <h2><%= @packages[10].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
