@@ -20,24 +20,29 @@ class PagesController < ApplicationController
     render "home", :layout => 'application'
   end
 
-  def terms
-    render "terms", :layout => 'landing'
-  end
-  
-  def team
-    render "team", :layout => 'landing'
-  end
-  
-  def about
-    render "about", :layout => 'landing'
-  end
-  
-  def contact
-    render "contact", :layout => 'landing'
-  end
-
   def pricing
     @packages = Package.where(is_active: true)
+    render :layout => "website"
+  end
+
+  def terms
+    render :layout => "website"
+  end
+
+  def contact
+    if request.post?
+      UserMailer.contact_support(params[:user]).deliver if params[:user].present?
+      flash.now[:success] = "Thank you for contacting us. Someone from our team will contact you shortly"
+    end
+
+    render :layout => "website"
+  end
+
+  def team
+    render :layout => "website"
+  end
+
+  def about
     render :layout => "website"
   end
 
