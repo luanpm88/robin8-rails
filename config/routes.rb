@@ -1,18 +1,6 @@
 require 'sidekiq/web'
 require 'sidetiq/web'
 Rails.application.routes.draw do
-  resources :media_lists, only: [:index, :create, :show, :destroy]
-  resources :contacts, only: [:index, :create, :show]
-  resources :pitches, only: [:index, :create, :show]
-  resources :pitches_contacts, only: [:index, :create, :show, :destroy]
-  resources :iptc_categories, only: [:index]
-  resources :autocompletes, only: [] do
-    collection do
-      get 'locations'
-      get 'skills'
-    end
-  end
-
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions",
       registrations: "users/registrations", passwords: "users/passwords",
@@ -55,7 +43,22 @@ Rails.application.routes.draw do
   resources :packages, only: [:index] do
   end
   resources :payments, only: :index
-
+  
+  resources :media_lists, only: [:index, :create, :show, :destroy]
+  resources :contacts, only: [:index, :create, :show]
+  resources :pitches, only: [:index, :create, :show]
+  resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+  resources :iptc_categories, only: [:index]
+  resources :autocompletes, only: [] do
+    collection do
+      get 'locations'
+      get 'skills'
+    end
+  end
+  
+  get 'share_by_email/show'
+  post 'share_by_email' => 'share_by_email#create'
+  
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
   post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'

@@ -5,6 +5,7 @@ class Pitch < ActiveRecord::Base
   belongs_to :release
   
   validates_inclusion_of :email_targets, :twitter_targets, in: [true, false]
+  validates :user, twitter_connect: true, if: :twitter_targets?
   validates_presence_of :user_id
   validates_presence_of :release_id
   validates_numericality_of :release_id
@@ -16,7 +17,7 @@ class Pitch < ActiveRecord::Base
   validates_presence_of :twitter_pitch, if: :twitter_targets?
   validates_presence_of :email_pitch, :email_subject, 
     :email_address, if: :email_targets?
-    
+  
   private
   
   def email_targets?

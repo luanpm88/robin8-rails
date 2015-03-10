@@ -21,10 +21,8 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.save
-#        format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
         format.json { render :show, status: :created, location: @contact }
       else
-#        format.html { render :new }
         format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
     end
@@ -38,6 +36,7 @@ class ContactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contact_params
-      params.require(:contact).permit(:author_id, :first_name, :last_name, :email, :twitter_screen_name)
+      params.require(:contact).permit(:author_id, :first_name, 
+        :last_name, :email, :twitter_screen_name)
     end
 end
