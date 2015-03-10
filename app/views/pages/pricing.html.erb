@@ -29,7 +29,7 @@
     </div>
     <div class="row business-plans" id="business-plans" data-equalizer>
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-basic" data-plan="basic" data-equalizer-watch onclick="setPackage('<%=@packages[1].slug%>');$('#plantype-basic').addClass('active');">
+        <div class="subscription-type" id="plantype-basic" data-plan="basic" data-equalizer-watch onclick="setPackage('<%=@packages[1].slug%>');">
           <h2><%= @packages[0].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -50,12 +50,12 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-selected="basic" onclick="setPackage('<%=@packages[1].slug%>');$('#plantype-basic').addClass('active');" >Select</a>
+            <a class="button button-planselector" data-selected="basic" onclick="setPackage('<%=@packages[1].slug%>');" >Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch onclick="setPackage('<%=@packages[3].slug%>');$('#plantype-business').addClass('active');">
+        <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch onclick="setPackage('<%=@packages[3].slug%>');">
           <h2><%= @packages[2].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -74,12 +74,12 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-selected="business" onclick="setPackage('<%=@packages[3].slug%>');$('#plantype-business').addClass('active');">Select</a>
+            <a class="button button-planselector" data-selected="business" onclick="setPackage('<%=@packages[3].slug%>');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch onclick="setPackage('<%=@packages[5].slug%>');$('#plantype-enterprise').addClass('active');">
+        <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch onclick="setPackage('<%=@packages[5].slug%>');">
           <h2><%= @packages[4].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -98,7 +98,7 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-plan="enterprise" onclick="setPackage('<%=@packages[5].slug%>');$('#plantype-enterprise').addClass('active');">Select</a>
+            <a class="button button-planselector" data-plan="enterprise" onclick="setPackage('<%=@packages[5].slug%>');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
@@ -107,7 +107,7 @@
 
     <div class="row agency-plans" id="agency-plans" data-equalizer>
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-pro" data-plan="pro" data-equalizer-watch onclick="setPackage('<%=@packages[7].slug%>');$('#plantype-pro').addClass('active');">
+        <div class="subscription-type" id="plantype-pro" data-plan="pro" data-equalizer-watch onclick="setPackage('<%=@packages[7].slug%>');">
           <h2><%= @packages[6].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -126,12 +126,12 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-selected="pro" onclick="setPackage('<%=@packages[7].slug%>');$('#plantype-pro').addClass('active');">Select</a>
+            <a class="button button-planselector" data-selected="pro" onclick="setPackage('<%=@packages[7].slug%>');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-premium" data-plan="premium" data-equalizer-watch onclick="setPackage('<%=@packages[9].slug%>');$('#plantype-premium').addClass('active');">
+        <div class="subscription-type" id="plantype-premium" data-plan="premium" data-equalizer-watch onclick="setPackage('<%=@packages[9].slug%>');">
           <h2><%= @packages[8].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -150,12 +150,12 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-selected="premium" onclick="setPackage('<%=@packages[9].slug%>');$('#plantype-premium').addClass('active');">Select</a>
+            <a class="button button-planselector" data-selected="premium" onclick="setPackage('<%=@packages[9].slug%>');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
       <div class="small-12 medium-6 large-4 columns">
-        <div class="subscription-type" id="plantype-ultra" data-plan="ultra" data-equalizer-watch onclick="setPackage('<%=@packages[11].slug%>');$('#plantype-ultra').addClass('active');">
+        <div class="subscription-type" id="plantype-ultra" data-plan="ultra" data-equalizer-watch onclick="setPackage('<%=@packages[11].slug%>');">
           <h2><%= @packages[10].name.split(' ')[0] %></h2>
           <div class="price-bubble">
             <div class="price-amount">
@@ -174,7 +174,7 @@
             </ul>
           </div>
           <div class="selector-wrap">
-            <a class="button button-planselector" data-plan="ultra" onclick="setPackage('<%=@packages[11].slug%>');$('#plantype-ultra').addClass('active');">Select</a>
+            <a class="button button-planselector" data-plan="ultra" onclick="setPackage('<%=@packages[11].slug%>');">Select</a>
           </div>
         </div>
       </div><!--end plan type column -->
@@ -301,6 +301,7 @@
 <script>
     function setPackage(slug){
         $('#package').val(slug);
+        return true;
     }
     function checkout(){
         if($('#package').val() != '') {
@@ -309,6 +310,54 @@
         return false;
 
     }
+
+    $( document ).ready(function() {
+    $( ".subscription-type" ).click(function() {
+
+        var disableclass='n';
+        if($(this).hasClass('active')){
+            disableclass='y';
+        }
+        $('input#plan-selection').val($(this).data('plan'));
+        $('.subscription-type').removeClass('active');
+        $('.button-planselector').text('Select');
+
+        if(disableclass == 'y'){
+            $('.active .button-planselector').text('Select');
+            $('input#plan-selection').val('');
+        }else{
+            $(this).addClass('active');
+            $('.active .button-planselector').text('Selected');
+        }
+
+
+    });
+
+
+        $('.business-plans').show();
+
+        $('.agency-plans').hide();
+
+
+        $( "#selected-businesses" ).click(function() {
+            if(!$(this).is('active')){
+                $('.agency-plans').fadeOut();
+                setTimeout(function(){ $('.business-plans').fadeIn();}, 500);
+                $('.tab-nav a').removeClass('active');
+                $(this).addClass('active');
+            }
+        });
+        $( "#selected-agencies" ).click(function() {
+            if(!$(this).is('active')){
+                $('.business-plans').fadeOut();
+                setTimeout(function(){ $('.agency-plans').fadeIn();}, 500);
+                $('.tab-nav a').removeClass('active');
+                $(this).addClass('active');
+            }
+        });
+
+    });
+
 </script>
 
 
