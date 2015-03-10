@@ -1,12 +1,12 @@
 <div class="thumbnail release-item">
   <a href="/#release/<%- release.id %>">
     <% if(release.logo_url) {%>
-      <img class="img-rounded" src="<%= release.logo_url %>">
+      <img class="img" src="<%= release.logo_url %>">
     <%} else {%>
       <% if(release.attachments.length > 0) {%>
-        <img class="img-rounded" src="<%= release.attachments[0].url %>">
+        <img class="img" src="<%= release.attachments[0].url %>">
       <%} else {%>
-        <img class="img-rounded" src="http://placehold.it/542x542">
+        <img class="img" src="http://placehold.it/542x542">
       <%}%>
     <%}%>
   </a>
