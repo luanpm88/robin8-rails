@@ -182,8 +182,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       var row = this.$el.find('.edit-settings-row').clone();
       this.$el.find('textarea').parent().append(row);
       row.removeClass('hidden');
-      this.$el.find('textarea').attr('name', 'text')
-      this.$el.find('textarea').attr('id', 'edit-post-textarea')
+      this.$el.find('textarea').attr('name', 'text');
+      this.$el.find('textarea').attr('id', 'edit-post-textarea');
+      this.$el.find('textarea').width("600px");
+      this.$el.find('textarea').css({"margin-bottom": "8px"});
       this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
       this.model.set('social_networks', this.socialNetworks);
 

@@ -1134,19 +1134,16 @@ input.form-control[type="file"] {
     border-color: #3c9eb6;
 }
 
-#schedule-datetimepicker > div > ul > li.picker-switch.accordion-toggle > table > tbody > tr > td {
+.bootstrap-datetimepicker-widget li.picker-switch.accordion-toggle > table > tbody > tr > td {
   padding-right: 3px;
 }
-
-#schedule-datetimepicker > div > ul > li.picker-switch.accordion-toggle > table > tbody > tr > td > a {
+.bootstrap-datetimepicker-widget li.picker-switch.accordion-toggle > table > tbody > tr > td > a {
   background-color: transparent;
 }
-
-#schedule-datetimepicker > div > ul > li.picker-switch.accordion-toggle > table > tbody > tr > td > a > span{
+.bootstrap-datetimepicker-widget li.picker-switch.accordion-toggle > table > tbody > tr > td > a > span{
   background-color: #006481;
 }
-
-#schedule-datetimepicker > div > ul > li.picker-switch.accordion-toggle > table > tbody > tr > td > a > span:hover{
+.bootstrap-datetimepicker-widget li.picker-switch.accordion-toggle > table > tbody > tr > td > a > span:hover{
   background-color: #338299;
 }
 
