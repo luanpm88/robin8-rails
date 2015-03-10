@@ -12,7 +12,9 @@
           <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
             <i class="fa fa-image"></i> Press kit
           <% end %>
-          <a href="#" class="btn btn-default"><i class="fa fa-user-plus"></i> Follow</a>
+          <%= link_to follow_news_rooms_path, class: 'btn btn-default' do %>
+            <i class="fa fa-user-plus"></i> Follow
+          <% end %>
           <hr>
           <div id='releases' class='row'>
             <h4>Press Releases</h4>

@@ -1,5 +1,5 @@
 class NewsRoomsController < ApplicationController
-  layout 'public_pages', only: [:preview, :presskit]
+  layout 'public_pages', only: [:preview, :presskit, :follow]
   def index
     set_paginate_headers NewsRoom, current_user.news_rooms.count
     render json: current_user.news_rooms.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: NewsRoomSerializer
@@ -54,6 +54,10 @@ class NewsRoomsController < ApplicationController
   end
 
   def presskit
+    @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
+  end
+
+  def follow
     @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
   end
 

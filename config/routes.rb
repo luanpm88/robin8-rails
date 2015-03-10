@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   resources :news_rooms do
     get 'preview', on: :collection
     get 'presskit', on: :collection
+    get 'follow', on: :collection
   end
   resources :industries, only: :index
   resources :releases

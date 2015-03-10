@@ -78,6 +78,8 @@
     <% end %>
   </li>
   <li class="btn-li">
-    <a href="#follow" class="btn btn-md btn-default"><i class="fa fa-newspaper-o"></i> Follow pressroom</a>
+    <%= link_to follow_news_rooms_path, class: 'btn btn-default' do %>
+      <i class="fa fa-user-plus"></i> Follow
+    <% end %>
   </li>
 </ul>
