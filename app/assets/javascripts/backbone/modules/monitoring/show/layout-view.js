@@ -2,8 +2,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.LayoutView = Backbone.Marionette.LayoutView.extend({
     template: 'modules/monitoring/show/templates/monitoring',
 
-    tagName: "div",
-    className: "streams-content",
+    // tagName: "div",
+    // className: "page-content",
 
     events: {
       'click #add-stream': 'addStream',
