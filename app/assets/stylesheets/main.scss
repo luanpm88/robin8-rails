@@ -163,6 +163,11 @@ a {
 .navbar-right .dropdown-menu {
     background:#91bc4d;
 }
+
+.navbar-right .dropdown-menu:hover #userDropdown{
+  color: #006481;
+}
+
 .dropdown-menu li a:hover,
 .dropdown-menu li a:focus {
   background:#006481;
@@ -278,7 +283,6 @@ a {
 .stream {
   width: 360px;
   margin-left: 15px;
-  box-shadow: 1px 1px 3px #ccc;
   position: relative;
   display: inline-block;
   white-space: normal;
@@ -637,6 +641,22 @@ nav{text-align: center;}
   margin-right: 15px;
 }
 
+#social-scheduled .list-group-item .editable-post {
+  width: 100%;
+  max-width: 650px;
+}
+
+#social-scheduled .list-group-item .edit-settings-row {
+  height: 45px;
+  padding-top: 5px;
+  border-left: 1px solid rgb(170, 178, 189);
+  border-right: 1px solid rgb(170, 178, 189);
+  border-bottom: 1px solid rgb(170, 178, 189);
+  border-radius: 0px 0px 4px 4px;
+}
+.release-title {
+  height: 40px !important;
+}
 
 #social-scheduled .list-group-item .btn {
   margin-left: 2px;
@@ -649,6 +669,7 @@ nav{text-align: center;}
 }
 #social-scheduled .list-group-item textarea {
   width: 500px;
+  border-radius: 4px 4px 0px 0px;
 }
 #social-scheduled .list-group-item .editable-click {
   border-bottom: dashed 1px #D0D0D0;
@@ -658,6 +679,9 @@ nav{text-align: center;}
 }
 #social-scheduled .list-group-item .social-icons li {
   display: inline;
+}
+.releases-toolbar .btn {
+  margin-bottom: 5px;
 }
 .release-item h3 a {
   color: #333;
