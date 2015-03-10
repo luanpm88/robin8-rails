@@ -288,15 +288,15 @@ a {
 
 }
 #add-stream {
-  background: url(/assets/add-column-icon.png) no-repeat scroll center center rgba(0, 0, 0, 0);
-    border: 0 none;
-    bottom: 8px;
-    font-size: 20px;
-    height: 61px;
-    position: fixed;
-    right: 8px;
-    text-indent: -55555px;
-    width: 61px;
+  background: image-url('add-column-icon.png') no-repeat scroll center center rgba(0, 0, 0, 0);
+  border: 0 none;
+  bottom: 8px;
+  font-size: 20px;
+  height: 61px;
+  position: fixed;
+  right: 8px;
+  text-indent: -55555px;
+  width: 61px;
 }
 .stream-body {
   border-bottom: 1px solid #ccc;
