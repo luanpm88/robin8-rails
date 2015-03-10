@@ -26,9 +26,10 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       'change #shrink-links': 'shrinkLinkProcess',
       'submit form': 'createPost',
       'click a.btn-default': 'showPicker',
-      'click a.btn-danger' : 'hidePicker',
-      'keyup #say-something-field'    : 'setCounter',
-      'click .social-networks .btn': 'enableSocialNetwork'
+      'click a.btn-danger': 'hidePicker',
+      'keyup #say-something-field': 'setCounter',
+      'click .social-networks .btn': 'enableSocialNetwork',
+      'click .input-group-addon': 'changeTime'
     },
 
     initialize: function() {
@@ -53,16 +54,18 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         // google: '[name=google]'
       }
-      var nowDate = new Date();
-      var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-      this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A', minDate: today});
+      this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A', minDate: moment()});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
 
-
     ui:{
       minDatePicker: "#schedule-datetimepicker"
+    },
+
+    changeTime: function() {
+      $('#scheduled_date').val(moment().format('MM/DD/YYYY hh:mm A'));
+      $('#schedule-datetimepicker').data("DateTimePicker").minDate(moment());
     },
 
     showContainer: function(e) {
@@ -171,10 +174,10 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     createPost: function(e) {
       e.preventDefault();
+      var selectedDate = moment($('#scheduled_date').val());
       this.socialNetworksBinder.copyViewValuesToModel();
       this.modelBinder.copyViewValuesToModel();
-
-      if (this.model.attributes.scheduled_date === ""){
+      if (this.model.attributes.scheduled_date === "" || selectedDate < moment()){
         this.model.attributes.scheduled_date = moment().utc();
       } else {
         this.model.attributes.scheduled_date = moment.utc(new Date(this.model.attributes.scheduled_date));
