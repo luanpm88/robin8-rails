@@ -37,7 +37,7 @@ source 'https://rails-assets.org' do
 
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '3.1.3'
+  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'
   gem 'rails-assets-backbone.marionette', '2.4.1'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
