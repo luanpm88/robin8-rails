@@ -49,7 +49,7 @@
                     <%=@package.name.split(' ')[0]%> Plan
                   </td>
                   <td>
-                    <select name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
+                    <select name="payment_option" id="payment-option" onchange="updatePackage()">
                       <option value="<%=@package.slug%>">Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
                       <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
                     </select>
@@ -61,7 +61,7 @@
                   <input type="hidden" id="nbd-<%=@package.monthly_package.slug%>" value="<%=Date.today+ @package.monthly_package.interval.days%>"/>
 
                   <td class="remove">
-                    <a class="remove" data-remove="checkout-item-1">remove</a>
+                    <!--<a class="remove" data-remove="checkout-item-1">remove</a>-->
                   </td>
                   <td class="price" id="price-sub">
                     $<%=(@package.price) %>
@@ -82,8 +82,8 @@
               </table>
             </div>
           </div>
-          <div role="alert" class="alert alert-danger" id="alert-danger">
-            <ul>
+          <div class="alert alert-danger">
+            <ul style="list-style:none;text-align:center;">
               <%flash[:errors].each do |e|%>
                   <li><%=e%></li>
               <%end if flash[:errors].present?%>
@@ -105,13 +105,15 @@
 
               <div class="small-10 medium-5 large-5 columns">
                 <label>First Name
-                  <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control"%>
+                  <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control","data-validation"=>"required",
+                                "data-validation-error-msg"=> "First name can't be blank"%>
                 </label>
               </div>
 
               <div class="small-12 medium-5 large-5 columns">
                 <label>Last Name
-                  <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control" %>
+                  <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control","data-validation"=>"required",
+                                "data-validation-error-msg"=> "Last name can't be blank" %>
                 </label>
               </div>
             </div>
@@ -119,7 +121,8 @@
             <div class="row">
               <div class="small-12 columns">
                 <label>Phone
-                  <%=text_field "contact", "phone" , :class=>"form-control" %>
+                  <%=text_field "contact", "phone" , :class=>"form-control","data-validation"=>"required",
+                                "data-validation-error-msg"=> "Phone can't be blank","data-validation"=>"number" %>
                 </label>
               </div>
             </div>
@@ -127,13 +130,16 @@
             <div class="row">
               <div class="small-12 medium-6 large-8 columns">
                 <label>Address
-                  <%=text_field "contact", "address1" , :class=>"form-control" %>
+                  <%=text_field "contact", "address1" , :class=>"form-control","data-validation"=>"required",
+                                "data-validation-error-msg"=> "Address can't be blank" %>
                 </label>
               </div>
 
               <div class="small-12 medium-6 large-4 columns">
                 <label>City
-                  <%=text_field "contact", "city" , :class=>"form-control" %>
+                  <%=text_field "contact", "city" , :class=>"form-control","data-validation"=>"required",
+                                "data-validation-error-msg"=> "City can't be blank"
+                  %>
                 </label>
               </div>
             </div>
@@ -141,19 +147,21 @@
             <div class="row">
               <div class="small-12 medium-4 large-4 columns">
                 <label>State
-                  <%=text_field "contact", "state" , :class=>"form-control" %>
+                  <%=text_field "contact", "state" , :class=>"form-control","data-validation"=>"required",
+                                "data-validation-error-msg"=> "State can't be blank" %>
                 </label>
               </div>
 
               <div class="small-12 medium-4 large-3 columns">
                 <label>Postal Code
-                  <%=text_field "contact", "zip" , :class=>"form-control" %>
+                  <%=text_field "contact", "zip" , :class=>"form-control","data-validation"=>"required",
+                                "data-validation-error-msg"=> "Postal Code/Zip can't be blank" %>
                 </label>
               </div>
 
               <div class="small-12 medium-4 large-5 columns">
                 <label>Country
-                  <%=select_tag "contact[country]",options_for_select(Country.all),{:class=>"select-checkout"}%>
+                  <%=select_tag "contact[country]",options_for_select(Country.all.sort),{:class=>"select-checkout"}%>
                 </label>
               </div>
             </div>
@@ -169,13 +177,16 @@
 
               <div class="small-8 medium-8 large-5 columns">
                 <label>Credit Card Number
-                  <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard" %>
+                  <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
+                                "data-validation-error-msg"=> "Card number can't be blank","data-validation"=>"number" %>
                 </label>
               </div>
 
               <div class="small-4 medium-4 large-3 columns">
                 <label>CVV
-                  <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv" %>
+                  <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
+                                "data-validation"=>"length", "data-validation-length"=>"min2",
+                                "data-validation-error-msg"=> "CVV must be greater then 2 characters","data-validation"=>"number"%>
                 </label>
               </div>
 
@@ -184,12 +195,14 @@
             <div class="row">
               <div class="small-6 medium-6 large-3 columns">
                 <label>Exp. Month
-                  <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04" %>
+                  <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
+                                "data-validation-error-msg"=> "Expiry Month can't be blank","data-validation"=>"number"  %>
                 </label>
               </div>
               <div class="small-6 medium-6 large-3 columns left">
                 <label>Exp. Year
-                  <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015" %>
+                  <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
+                                "data-validation-error-msg"=> "Expiry Year can't be blank and must be in YYYY format", "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
                 </label>
               </div>
             </div>
@@ -219,9 +232,9 @@
     <script>
         function updatePackage(){
             $('#slug').val($('#payment-option').val());
-            $('#price-total').html($('#'+$('#slug').val()).val());
-            $('#t-price').html($('#'+$('#slug').val()).val() );
-            $('#price-sub').html($('#'+$('#slug').val()).val() );
+            $('#price-total').html('$'+$('#'+$('#slug').val()).val());
+            $('#t-price').html('$'+$('#'+$('#slug').val()).val() );
+            $('#price-sub').html('$'+$('#'+$('#slug').val()).val() );
             $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
         }
 
@@ -236,18 +249,24 @@
 
 <%end%>
 <style>
-.ui-selectmenu-button {
-    margin-top:10px;
-}
-.ui-selectmenu-menu .ui-menu{
-    max-height: 200px;
-}
+    .ui-selectmenu-button {
+        margin-top:10px;
+    }
+    .ui-selectmenu-menu .ui-menu{
+        max-height: 200px;
+    }
 
-.signup-footer.ftform .ui-selectmenu-button {
-    background: none repeat scroll 0 0 transparent;
-    border: 1px solid #ffffff;
-    color: #ffffff;
-    height: 40px!important;
-    margin-top: 10px;
-}
+    .signup-footer.ftform .ui-selectmenu-button {
+        background: none repeat scroll 0 0 transparent;
+        border: 1px solid #ffffff;
+        color: #ffffff;
+        height: 40px!important;
+        margin-top: 10px;
+    }
 </style>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
+
+
+<script> $.validate(); </script>
