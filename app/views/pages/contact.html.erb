@@ -1,0 +1,83 @@
+
+<div class="contact">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Contact Robin8"}%>
+  </header>
+
+  <div class="int-content">
+    <div class="row ">
+      <!-- CONTENT -->
+
+      <div style="border-right: 1px solid #c1c1c1; padding-right: 15px;" class="small-4 columns address-info">
+        <h3>Main Office Address</h3>
+
+        <address class="contact-addresses">
+          MyPRGenie Inc.<br>
+          1745 Broadway, 17th Floor <br>
+          New York, NY 10019
+        </address>
+
+        <div class="contact-addresses">
+
+          General Inquires:
+          <a href="mailto:info@myprgenie.com"><br>info@robin8.com</a><br><br>
+
+          Phone (customer service):
+          <a href="#"><br>(212) 807-8300 Extension 3</a><br><br>
+
+        </div>
+
+      </div>
+      <!-- SIDEBAR -->
+      <div class="small-8 columns contact-form">
+        <%=flash[:success]%>
+        <form  action="/contact"  method="POST"  data-abide>
+          <div class="row">
+            <div class="columns small-12">
+              <div class="row">
+                <div class="columns small-6 form-group">
+                  <label>
+                    <input type="text" placeholder="First Name" class="form-control col-sm-12" required="" name="user[first_name]"></label>
+                </div>
+                <div class="columns small-6  form-group">
+                  <label>
+                    <input type="text" placeholder="Last Name" class="form-control col-sm-12" required="" name="user[last_name]"></label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="columns small-12 form-group">
+                  <label>
+                    <input type="email" placeholder="Email Address" class="form-control col-sm-12" required="" name="user[email]"></label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group columns small-12">
+                  <label>
+                    <select class="form-control columns small-12" id="subject" name="user[subject]" required>
+                      <option selected="" value="">Choose a Subject:</option>
+                      <option value="service">General Customer Service</option>
+                      <option value="suggestions">Suggestions</option>
+                      <option value="product">Product Support</option>
+                    </select></label>
+                </div>
+              </div>
+              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+              <div class="row">
+                <div class="columns small-12 form-group">
+                  <label>
+                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="Message"></textarea></label>
+                </div>
+              </div>
+              <div class="errorwarning">
+                <p>Please fill out all required fields</p>
+              </div>
+              <div class="submit-wrap">
+                <button class="button button-signup" type="submit">Send</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
