@@ -3,8 +3,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
   ReleasesBlast.AnalysisTabView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/analysis-tab/analysis-tab',
     model: Robin.Models.Release,
+    ui: {
+      nextButton: '#btn-next'
+    },
     events: {
-      'click #btn-next': 'openTargetsTab'
+      'click @ui.nextButton': 'openTargetsTab'
     },
     initialize: function(options){
       this.iptc = options.iptcCategories;
@@ -66,6 +69,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var resultReady = _.after(endpoints.length + 1, function(){
         that.model.save(that.model.attributes);
         that.trigger("textapi_result:ready");
+        that.ui.nextButton.prop('disabled', false);
       });
       
       var boldTopicsInSummary = _.after(2, function() {
