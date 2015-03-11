@@ -2,23 +2,23 @@
 
 @font-face {
   font-family: ProximaNova;
-  src: url('/fonts/ProximaNova-Regular.otf');
+  src: asset-url('ProximaNova-Regular.otf');
 }
 @font-face {
   font-family: ProximaNovaLight;
-  src: url('/fonts/ProximaNova-Light.otf');
+  src: asset-url('ProximaNova-Light.otf');
 }
 @font-face {
   font-family: ProximaNovaSemibold;
-  src: url('/fonts/ProximaNova-Semibold.otf');
+  src: asset-url('ProximaNova-Semibold.otf');
 }
 @font-face {
   font-family: ProximaNovaBold;
-  src: url('/fonts/ProximaNova-Bold.otf');
+  src: asset-url('ProximaNova-Bold.otf');
 }
 @font-face {
   font-family: ProximaNovaBlack;
-  src: url('/fonts/ProximaNova-Black.otf');
+  src: asset-url('ProximaNova-Black.otf');
 }
 
 
@@ -58,7 +58,7 @@ input.button{
 /* HEADER */
 
 header{
-  background:url("../img/hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+  background: image-url("hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
   position: relative;
   text-align: center;
   min-height: 550px;
@@ -66,7 +66,7 @@ header{
 }
 
 header h1.logo a{
-  background: asset-data-url("img/robin8-beta-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
+  background: image-url("robin8-beta-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
   color: #ffffff;
   font-family: "ProximaNovaBlack";
   font-size: 58px;
@@ -91,7 +91,7 @@ header h2{
 }
 
 header a.learn-more{
-  background: asset-data-url("img/learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  background: image-url("learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
   bottom: 20px;
   color: #ffffff;
   display: block;
@@ -109,7 +109,7 @@ header a.learn-more{
 
 .screenpane{
 
-  /*background:asset-data-url("img/screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
+  /*background: image-url("screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
 }
 
 .screenpane .videoembedsection{
@@ -201,7 +201,7 @@ header a.learn-more{
 }
 
 .bgpane{
-  background:asset-data-url("img/bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  background: image-url("bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
   background-size: cover;
   min-height: 640px;
 }
@@ -235,7 +235,7 @@ header a.learn-more{
 /* FOOTER */
 
 .ft-lead{
-  background: asset-data-url("img/footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  background: image-url("footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
   min-height: 300px;
   padding-bottom: 40px;
   text-align: center;
@@ -273,7 +273,7 @@ footer a{
 /* FORM STEP 1 */
 
 .signup header {
-  background: asset-data-url("img/int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  background: image-url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
   background-size: cover;
   min-height: 340px;
 }
@@ -620,7 +620,7 @@ footer a{
 }
 
 .goback{
-  background: asset-data-url("img/back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  background: image-url("back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
   margin: 20px 0 40px;
   padding-left: 30px;
 }
@@ -710,7 +710,7 @@ table .updown{
 }
 
 table .updown a{
-  background: asset-data-url("img/updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background: image-url("updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
   display: block;
   text-indent: -5555px;
   margin-top: 6px;
@@ -760,7 +760,7 @@ table tr:hover .updown{
   padding: 20px;
 }
 .ui-selectmenu-button span.ui-selectmenu-text {
-  background: asset-data-url("img/select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
+  background: image-url("select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
   margin-right: 15px;
   padding: 9px 20px;
 }
@@ -879,7 +879,7 @@ body.f-topbar-fixed {
 }
 
 .nav a.logo {
-  background: asset-data-url("img/robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background: image-url("robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
   display: block;
   height: 38px;
   margin-left: 110px;
@@ -897,7 +897,7 @@ body.f-topbar-fixed {
 
 
 .nav.fixedscroll a.logo{
-  background: asset-data-url("img/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
 }
 
 .nav ul{
@@ -994,7 +994,7 @@ body.f-topbar-fixed {
 
 /* INTERIOR HEADER STUFF */
 header.int-header {
-  background: asset-data-url("img/int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  background: image-url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
   min-height: 340px;
 }
 
@@ -1181,11 +1181,11 @@ header.int-header h1{
 }
 
 .btn-facebook span{
-  background: asset-data-url("img/Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  background: image-url("Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
 
 }
 .btn-google-plus span{
-  background: asset-data-url("img/Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  background: image-url("Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
 }
 
 .btn-google-plus:hover {
@@ -1331,7 +1331,7 @@ p.loginintro strong{
 
   .nav a.logo ,
   .nav.fixedscroll a.logo{
-    background: asset-data-url("img/robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
   }
   .top-bar .toggle-topbar.menu-icon a {
     color: #000000;

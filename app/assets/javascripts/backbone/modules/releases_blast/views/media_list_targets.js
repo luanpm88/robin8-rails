@@ -13,7 +13,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     collection: Robin.Collections.MediaLists,
     ui: {
       tooltipFormatInfo: "[data-toggle=tooltip]",
-      fileInput: "[type=file]",
+      fileInput: "[name=media_list_file]",
       form: "form",
       mediaListSelect: "select"
     },
@@ -26,7 +26,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       "change @ui.mediaListSelect": "mediaSelectChanged"
     },
     collectionEvents: {
-      "reset": "render",
+      "reset add remove": "render",
     },
     initialize: function(options){
       this.pitchContactsCollection = options.pitchContactsCollection;
@@ -51,6 +51,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       var formData = new FormData();
       formData.append('media_list[attachment]', this.ui.fileInput[0].files[0]);
+      this.ui.fileInput.val("");
       
       $.ajax({
         url: '/media_lists',
