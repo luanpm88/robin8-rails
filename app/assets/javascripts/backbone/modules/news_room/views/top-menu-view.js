@@ -287,5 +287,6 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         Robin.module('ManageUsers').start();
       }
     }
+
   });
 });
