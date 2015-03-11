@@ -21,7 +21,9 @@
     src: url(../fonts/ProximaNova-Black.otf);
 }
 
-
+.growl-animated {
+  z-index: 99999 !important;
+}
 
 
 body {
