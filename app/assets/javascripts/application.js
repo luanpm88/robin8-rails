@@ -144,5 +144,14 @@ ready = function() {
   }
 };
 
+$(window).on('scroll', function() {
+  scrollPosition = $(this).scrollTop();
+  if (scrollPosition >= 1) { 
+      $('.nav').addClass('fixedscroll'); 
+  }else{
+      $('.nav').removeClass('fixedscroll'); 
+  }
+});
+
 $(document).ready(ready);
 $(document).on('page:load', ready);

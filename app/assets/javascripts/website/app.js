@@ -47,49 +47,49 @@ $(document).ready(function(){
      }
      });*/
 
-    $('.business-plans').show();
-
-    $('.agency-plans').hide();
-
-
-    $( "#selected-businesses" ).click(function() {
-        if(!$(this).is('active')){
-            $('.agency-plans').fadeOut();
-            setTimeout(function(){ $('.business-plans').fadeIn();}, 500);
-            $('.tab-nav a').removeClass('active');
-            $(this).addClass('active');
-        }
-    });
-    $( "#selected-agencies" ).click(function() {
-        if(!$(this).is('active')){
-            $('.business-plans').fadeOut();
-            setTimeout(function(){ $('.agency-plans').fadeIn();}, 500);
-            $('.tab-nav a').removeClass('active');
-            $(this).addClass('active');
-        }
-    });
-
-
-    $( ".subscription-type" ).click(function() {
-
-        var disableclass='n';
-        if($(this).hasClass('active')){
-            disableclass='y';
-        }
-        $('input#plan-selection').val($(this).data('plan'));
-        $('.subscription-type').removeClass('active');
-        $('.button-planselector').text('Select');
-
-        if(disableclass == 'y'){
-            $('.active .button-planselector').text('Select');
-            $('input#plan-selection').val('');
-        }else{
-            $(this).addClass('active');
-            $('.active .button-planselector').text('Selected');
-        }
+    //$('.business-plans').show();
+    //
+    //$('.agency-plans').hide();
+    //
+    //
+    //$( "#selected-businesses" ).click(function() {
+    //    if(!$(this).is('active')){
+    //        $('.agency-plans').fadeOut();
+    //        setTimeout(function(){ $('.business-plans').fadeIn();}, 500);
+    //        $('.tab-nav a').removeClass('active');
+    //        $(this).addClass('active');
+    //    }
+    //});
+    //$( "#selected-agencies" ).click(function() {
+    //    if(!$(this).is('active')){
+    //        $('.business-plans').fadeOut();
+    //        setTimeout(function(){ $('.agency-plans').fadeIn();}, 500);
+    //        $('.tab-nav a').removeClass('active');
+    //        $(this).addClass('active');
+    //    }
+    //});
 
 
-    });
+    //$( ".subscription-type" ).click(function() {
+    //
+    //    var disableclass='n';
+    //    if($(this).hasClass('active')){
+    //        disableclass='y';
+    //    }
+    //    $('input#plan-selection').val($(this).data('plan'));
+    //    $('.subscription-type').removeClass('active');
+    //    $('.button-planselector').text('Select');
+    //
+    //    if(disableclass == 'y'){
+    //        $('.active .button-planselector').text('Select');
+    //        $('input#plan-selection').val('');
+    //    }else{
+    //        $(this).addClass('active');
+    //        $('.active .button-planselector').text('Selected');
+    //    }
+    //
+    //
+    //});
 
 
     /* QUANTITY FUNCTIONS FOR STEP 3 */
@@ -118,8 +118,6 @@ $(document).ready(function(){
         var removeid = "#"+ $(this).data('remove');
         $(removeid).remove();
     });
-
-
 
 
 

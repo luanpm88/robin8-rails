@@ -1,4 +1,8 @@
 Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette, $, _){
+  ReleasesBlast.ContactModel = Backbone.Model.extend({
+    urlRoot: "/share_by_email"
+  });
+  
   ReleasesBlast.ContactAuthorFormView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/contact-author/contact-form',
     model: Robin.Models.Author,
@@ -8,10 +12,18 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     ui: {
       summarizeSlider: "#slider",
-      formMessage: "#form-message"
+      formMessage: "#form-message",
+      subjectInput: "[name=subject]",
+      emailInput: "[name=email]"
+    },
+    templateHelpers: function(){
+      return {
+        currentUser: Robin.currentUser
+      };
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
+      this.contactModel = new ReleasesBlast.ContactModel();
     },
     onShow: function(){
       this.initSlider();
@@ -39,11 +51,36 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.ui.formMessage.html(messageTextarea.render().el);
     },
     sendBtnClicked: function(event){
-      console.log("Send Button clicked!");
       this.sendEmail();
     },
+    errorFields: {
+      "subject": "Subject",
+      "body": "Message",
+      "sender": "Your email",
+      "reciever": "Email target"
+    },
     sendEmail: function(){
-      console.log("Email sent!");
+      var self = this;
+      this.contactModel.set({
+        subject: this.ui.subjectInput.val(),
+        body: this.ui.formMessage.find('textarea').val(),
+        sender: this.ui.emailInput.val(),
+        reciever: this.model.get('email')
+      });
+      
+      this.contactModel.save({}, {
+        success: function(model, response, options){
+          Robin.modal.empty();
+        },
+        error: function(model, response, options){
+          _(response.responseJSON).each(function(val, key){
+            $.growl({message: self.errorFields[key] + ' ' + val[0]
+            },{
+              type: 'danger'
+            });
+          });
+        }
+      });
     }
   });
   
@@ -63,7 +100,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return {
         "author": this.authorModel,
         "summary": this.summary(),
-        "release": this.model
+        "release": this.model,
+        "currentUser": Robin.currentUser
       }
     },
     summary: function(){

@@ -173,10 +173,23 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           'First Name', 'Last Name', 'Summary', 'Related Articles',
           'Outlet', 'Link', 'Title'
         ],
-        pitch: this.model
+        pitch: this.getPitchModel()
       }
     },
-    
+    getPitchModel: function(){
+      var firstName = Robin.currentUser.get('first_name');
+      var emailPitch = this.model.get('email_pitch');
+      
+      if (!s.isBlank(firstName))
+        emailPitch = emailPitch.replace('@[UserFirstName]', (",\n" + firstName));
+      else
+        emailPitch = emailPitch.replace('@[UserFirstName]', '');
+      
+      this.model.set('email_pitch', emailPitch);
+      this.model.set('email_address', Robin.currentUser.get('email'));
+      
+      return this.model;
+    },
     onRender: function() {
       var self = this;
       this.ui.summarySlider.slider({
@@ -276,7 +289,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       "email_address": "Email address",
       "email_subject": "Subject line",
       "twitter_pitch": "Twitter pitch text",
-      "email_pitch": "Email pitch text"
+      "email_pitch": "Email pitch text",
+      "user": "Your account"
     },
     savePitch: function(){
       var self = this;

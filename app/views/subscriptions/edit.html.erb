@@ -1,12 +1,17 @@
-<header class="formheader">
-  <div class="row">
-    <div class="large-12 columns">
-      <h1 class="logo">Robin8</h1>
-      <h2 class="signup-tag">Upgrade</h2>
-    </div>
-  </div>
-</header>
+<!--<header class="formheader">-->
+  <!--<div class="row">-->
+    <!--<div class="large-12 columns">-->
+      <!--<h1 class="logo">Robin8</h1>-->
+      <!--<h2 class="signup-tag">Upgrade</h2>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</header>-->
 
+<div class="signup">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Upgrade"}%>
+  </header>
 
 <% if flash[:success].present? %>
     <h2><%=flash[:success]%></h2>

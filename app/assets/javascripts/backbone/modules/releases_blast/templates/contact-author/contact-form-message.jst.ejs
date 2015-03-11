@@ -7,4 +7,4 @@ Here's a press release you might find interesting:
 <%= summary %>
 
 Regards,
-[Your Name]
+<%= s.isBlank(currentUser.get('name')) ? '' : currentUser.get('name') %>
