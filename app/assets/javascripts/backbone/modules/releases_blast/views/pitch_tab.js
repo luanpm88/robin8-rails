@@ -170,7 +170,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     serializeData: function() {
       return {
         mergeTags: [
-          'First Name', 'Last Name', 'Summary', 'Related Articles',
+          'First Name', 'Last Name', 'Summary',
           'Outlet', 'Link', 'Title'
         ],
         pitch: this.getPitchModel()
