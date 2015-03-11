@@ -36,8 +36,7 @@ module Users
               @identity.save
             end
           end
-          
-          render 'twitter_popup_close', :layout => false
+          render 'twitter_popup_close', :layout => false          
         end
       }
     end

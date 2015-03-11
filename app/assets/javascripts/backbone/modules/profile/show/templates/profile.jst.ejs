@@ -10,44 +10,45 @@
           <img src="//placehold.it/200" id="avatar-image" class="avatar img-circle" alt="avatar">
           <h6>Upload a different photo...</h6>
           <input type="hidden" id="avatar-upload" role="uploadcare-uploader"
-            data-crop="200x200 upscale"
-            data-max-size="3145728"
-            data-images-only="true"/>
+          data-crop="200x200 upscale"
+          data-max-size="3145728"
+          data-images-only="true"/>
         </div>
       </div>
       <!-- edit form column -->
       <div class="col-md-9 personal-info">
         <h3>Personal info</h3>
         <form class="form-horizontal" role="form" autocomplete="off" id="profileForm">
-          <div class="form-group">
-            <label class="col-lg-3 control-label">First name:</label>
-            <div class="col-lg-8">
+          <div class="form-group col-md-6">
+            <label class="control-label">First name:</label>
+            <div>
               <input class="form-control" name="first_name" type="text" value="">
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Last name:</label>
-            <div class="col-lg-8">
+          <div class="form-group col-md-6">
+            <label class="control-label">Last name:</label>
+            <div>
               <input class="form-control" name="last_name" type="text" value="">
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Company:</label>
-            <div class="col-lg-8">
+          <div class="form-group col-md-6">
+            <label class="control-label">Company:</label>
+            <div>
               <input class="form-control" name="company" type="text" value="">
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Email:</label>
-            <div class="col-lg-8">
+          <div class="form-group col-md-6 pull-right">
+            <label class="control-label">Email:</label>
+            <div>
               <input class="form-control" name="email" type="text" value="">
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Time Zone:</label>
-            <div class="col-lg-8">
+          <div class="form-group col-md-12">
+            <label class="control-label">Time Zone:</label>
+            <div>
               <div class="ui-select">
                 <select id="user_time_zone" name="time_zone" class="form-control">
+                  <option value=""> -- select an option -- </option>
                   <option value="American Samoa">(-11:00) American Samoa </option>
                   <option value="International Date Line West">(-11:00) International Date Line West </option>
                   <option value="Midway Island">(-11:00) Midway Island </option>
@@ -198,29 +199,29 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Username:</label>
-            <div class="col-md-8">
+          <div class="form-group col-md-12">
+            <label class="control-label">Username:</label>
+            <div>
               <input class="form-control" name="name" type="text" value="">
             </div>
           </div>
           <hr>
-           <div class="form-group" id="currentPassword">
-            <label class="col-md-3 control-label">Current password:</label>
-            <div class="col-md-8">
+           <div class="form-group col-md-12" id="currentPassword">
+            <label class="control-label">Current password:</label>
+            <div>
               <input class="form-control" name="current_password" type="password" value="">
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">New password:</label>
-            <div class="col-md-8">
+          <div class="form-group col-md-12">
+            <label class="control-label">New password:</label>
+            <div>
               <input class="form-control" name="password" type="password" value="" minlength="8"
                data-fv-stringlength-message="A new password must be at least 8 characters long">
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Confirm new password:</label>
-            <div class="col-md-8">
+          <div class="form-group col-md-12">
+            <label class="control-label">Confirm new password:</label>
+            <div>
               <input class="form-control" name="password_confirmation" type="password" value="">
             </div>
           </div>

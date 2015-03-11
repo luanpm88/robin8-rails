@@ -3,10 +3,17 @@ class UsersController < ApplicationController
     render json: current_user
   end
 
+  def get_active_subscription
+    render json: current_user.active_subscription
+  end
+
   def delete_user
     manageable_users = User.where(invited_by_id: current_user.id)
-    manageable_users.find(params[:id]).destroy
-
+    @user = manageable_users.find(params[:id])
+    if @user.avatar_url
+      AmazonDeleteWorker.perform_in(20.seconds, @user.avatar_url)
+    end
+    @user.destroy
     render json: manageable_users
   end
 
@@ -25,16 +32,5 @@ class UsersController < ApplicationController
     manageable_users = User.where(invited_by_id: current_user.id)
     render json: manageable_users
   end
-
-  def follow
-    maillist = Rails.application.secrets.mailgun[:maillist]
-    @mailgun = Mailgun(api_key: Rails.application.secrets.mailgun[:api_key])
-    if @mailgun
-      mail_list = @mailgun.lists.find maillist
-      @mailgun.lists.create maillist unless mail_list
-      @mailgun.list_members.add maillist, params[:email]
-    end
-  end
-  # @mailgun.list_members('test@mg.robin8.com').add('mykola.bokhonko@perfectial.com',{name: 'Vasa', vars: '{"newsroom": "1"}'})
 
 end

@@ -78,6 +78,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     },
 
     login: function() {
+      console.log('sdfsdfsdf');
       el = $(this.el);
 
       this.modelBinder.copyViewValuesToModel();

@@ -3,7 +3,7 @@ Robin.Collections.Stories = Backbone.Collection.extend({
 
   url: function() {
     if(!this.streamId) return;
-    return '/streams/' + this.streamId + '/stories';
+    return '/streams/' + this.streamId + '/stories.json';
   },
 
   parse: function(response) {

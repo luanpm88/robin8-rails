@@ -1,13 +1,13 @@
 <div class="col-sm-6 col-md-4">
   <div class="thumbnail release-item">
-    <a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>#releases/<%- release.id %>" target="_blank" class="release-image">
+    <a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" target="_blank" class="release-image">
       <% if(release.logo_url) {%>
-        <img class="img-rounded" src="<%= release.logo_url %>">
+        <img class="img" src="<%= release.logo_url %>">
       <%} else {%>
         <% if(release.attachments.length > 0) {%>
-          <img class="img-rounded" src="<%= release.attachments[0].url %>">
+          <img class="img" src="<%= release.attachments[0].url %>">
         <%} else {%>
-          <img class="img-rounded" src="http://placehold.it/542x542">
+          <img class="img" src="http://placehold.it/542x542">
         <%}%>
       <%}%>
       <div class="overlay">
@@ -21,20 +21,20 @@
       </div>
     </a>
     <div class="caption text-center">
-      <h3><a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>#releases/<%- release.id %>" target="_blank"><%= release.title %></a></h3>
-      <small><i class="fa fa-clock-o"></i> <%= moment(release.created_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
+      <h3 class="truncate"><a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" target="_blank"><%= release.title %></a></h3>
+      <small class="truncate"><i class="fa fa-clock-o"></i> <%= moment(release.created_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
       <p class="release-title">
         <%= release.text.normalizeRSpace(115) %>
       </p>
-      <p>
-        <% _.each(release.labels, function(label){ %>
-          <label class="label label-info"><%= label %></label>
+      <p class="tag-wrapper">
+        <% _.each(release.concepts, function(concept){ %>
+          <label class="label label-info"><%= concept %></label>
         <% }); %>
       </p>
       <hr>
       <p align="center">
         <a href="#" class="btn btn-sm btn-success" role="button" data-toggle="modal" data-target=".blast-release"><i class="fa fa-rocket"></i> Robin8</a>
-        <a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>#releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+        <a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
         <button href="#" class="btn btn-sm btn-default" id="open_edit"><i class="fa fa-pencil"></i> Edit</button>
       </p>
     </div>

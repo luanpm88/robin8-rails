@@ -29,6 +29,7 @@
 //= require chance
 //= require please-wait
 //= require backbone
+//= require backbone-relational
 //= require backbone.babysitter
 //= require backbone.modelbinder
 //= require backbone.wreqr
@@ -41,8 +42,13 @@
 //= require ./lib/formValidation/js/bootstrap.min
 //= require bootstrap-wysihtml5
 //= require jquery.dotdotdot
+//= require jquery.caret/dist/jquery.caret-1.5.2
 //= require timeago
 //= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
+//= require DataTables
+//= require bootstrap-switch
+// require dataTables.bootstrap
+//= require toastr
 
 //= require_tree ./backbone/config
 //= require backbone/init
@@ -55,7 +61,6 @@
 
 var ready;
 ready = function() {
-  
   //default options for Bootstrap Growl
   $.growl(false, {
     element: 'body',
@@ -69,7 +74,7 @@ ready = function() {
   $('html').click(function(e) {
     if ($(e.target).closest('form').length == 0) {
       $('.navbar-search-lg').hide();
-      $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+      $('.navbar-search-sm').show();//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
       $('.progressjs-progress').hide();
     };
   });
@@ -118,7 +123,35 @@ ready = function() {
           return false;
       return this.indexOf(string) == 0;
   }
+  
+  /**
+   * Get fullname
+   *
+  **/
+  getFullname = function(firstName, lastName){
+    if (firstName && lastName)
+      return (firstName + ' ' + lastName);
+    else if (firstName)
+      return firstName;
+    else if (lastName)
+      return lastName;
+    else
+      return "N/A"
+  }
+
+  Marionette.Behaviors.behaviorsLookup = function() {
+    return window.Behaviors;
+  }
 };
+
+$(window).on('scroll', function() {
+  scrollPosition = $(this).scrollTop();
+  if (scrollPosition >= 1) { 
+      $('.nav').addClass('fixedscroll'); 
+  }else{
+      $('.nav').removeClass('fixedscroll'); 
+  }
+});
 
 $(document).ready(ready);
 $(document).on('page:load', ready);

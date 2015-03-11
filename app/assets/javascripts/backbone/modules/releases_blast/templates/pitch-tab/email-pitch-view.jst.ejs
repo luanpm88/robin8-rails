@@ -1,0 +1,39 @@
+<div class="panel-heading"><i class="fa fa-envelope"></i> Email pitch</div>
+<div class="panel-body">
+  <form role="form">
+    <div class="form-group">
+      <label>Subject line</label>
+      <input type="text" placeholder="Enter a catchy subject line..." 
+        class="form-control" value="<%= pitch.get('email_subject') %>" 
+        name="email_subject">
+    </div>
+    <div class="form-group">
+      <label>Your email address</label>
+      <input type="text" placeholder="Enter an email address..." 
+        class="form-control" value="<%= pitch.get('email_address') %>" 
+        name="email_address">
+    </div>
+    <div class="form-group">
+      <label>Pitch text</label>
+      <textarea id="email-pitch-textarea" style="width: 100%; height: 200px;" 
+        class="form-control"><%= pitch.get('email_pitch') %></textarea>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Summary length: </label>
+          <span id="summary-slider-amount"></span>
+          <div id="summary-slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><span tabindex="0" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 20%;"></span></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Available merge tags</label>
+          <br>
+          <%= _(mergeTags).map(function(m) { return '<label class="label label-default"><a href="#">' + m + '</a></label>' }).join("\n") %>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+

@@ -1,0 +1,1529 @@
+
+
+@font-face {
+  font-family: ProximaNova;
+  src: asset-url('ProximaNova-Regular.otf');
+}
+@font-face {
+  font-family: ProximaNovaLight;
+  src: asset-url('ProximaNova-Light.otf');
+}
+@font-face {
+  font-family: ProximaNovaSemibold;
+  src: asset-url('ProximaNova-Semibold.otf');
+}
+@font-face {
+  font-family: ProximaNovaBold;
+  src: asset-url('ProximaNova-Bold.otf');
+}
+@font-face {
+  font-family: ProximaNovaBlack;
+  src: asset-url('ProximaNova-Black.otf');
+}
+
+
+
+/* GLOBAL */
+
+.button{
+  height: 50px;
+  width: 275px;
+  border-radius: 25px;
+  font-family: 'ProximaNovaBold';
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 50px;
+  margin: auto;
+  padding: 0;
+  text-transform: uppercase;
+}
+.button.button-signup{
+  background: #a5cc63;
+}
+input.button{
+  height: 50px;
+  width: 275px;
+  border-radius: 25px;
+  font-family: 'ProximaNovaBold';
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 50px;
+  margin: auto;
+  padding: 0;
+  text-transform: uppercase;
+
+}
+
+
+/* HEADER */
+
+header{
+  background: image-url("hd-bg.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+  position: relative;
+  text-align: center;
+  min-height: 550px;
+  background-size: cover;
+}
+
+header h1.logo a{
+  background: image-url("robin8-beta-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
+  color: #ffffff;
+  font-family: "ProximaNovaBlack";
+  font-size: 58px;
+  font-weight: normal;
+  height: 99px;
+  line-height: 0;
+  margin: 0 auto 40px;
+  text-indent: -5555560px;
+  text-transform: uppercase;
+  background-size: contain;
+  display: block;
+}
+header h2{
+  font-size: 24px;
+  font-family: 'ProximaNova';
+  font-weight: normal;
+  color: #ffffff;
+  text-align: center;
+  max-width: 515px;
+  margin: 0 auto 40px;
+  line-height: 30px;
+}
+
+header a.learn-more{
+  background: image-url("learn-more-arrow.png") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  bottom: 20px;
+  color: #ffffff;
+  display: block;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  padding-bottom: 40px;
+  position: absolute;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+
+/* CONTENT */
+
+.screenpane{
+
+  /*background: image-url("screenpane-bg.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);*/
+}
+
+.screenpane .videoembedsection{
+  padding-top: 85px;
+}
+
+.screenpane .screenbg{
+}
+.screenpane h2{
+  font-family: 'ProximaNovaSemibold';
+  font-size: 24px;
+  font-weight: normal;
+  margin: 80px 0 40px;
+  max-width: 450px;
+}
+
+.screenpane p{
+  font-size: 15px;
+  line-height: 18px;
+  color: #666666;
+  font-family: "ProximaNova";
+  margin: 0 0 40px;
+
+  max-width: 450px;
+}
+
+.screenpane .button.button-signup{
+  width: 100%;
+  max-width: 415px;
+  margin-bottom: 80px;
+}
+
+
+.prsteps{
+  text-align: center;
+  background: #f2f2f2;
+}
+.prsteps h2{
+  font-family: 'ProximaNovaSemibold';
+  font-size: 24px;
+  font-weight: normal;
+  margin: 80px 0 40px;
+  text-align: center;
+}
+
+.prsteps p{
+  font-size: 18px;
+  line-height: 24px;
+  color: #666666;
+  font-family: "ProximaNova";
+  margin: 0 0 40px;
+  max-width: 1000px;
+
+}
+
+.prsteps .pr-types{
+
+}
+.prsteps .pr-types .icon-wrap{
+
+}
+.prsteps .pr-types .icon-wrap .icon-img{
+  height: 106px;
+  width: 106px;
+  margin: 0 auto 30px;
+  background: #ffffff;
+  border-radius: 55px;
+}
+
+.prsteps .pr-types .icon-wrap .icon-img img{
+  margin: 13px;
+}
+.prsteps .pr-types .pr-content{
+
+}
+.prsteps .pr-types .pr-content h3{
+  font-size: 18px;
+  text-transform: uppercase;
+  font-family: 'ProximaNovaSemibold';
+  font-weight: normal;
+
+}
+.prsteps .pr-types .pr-content p{
+  font-size: 15px;
+  font-family: 'ProximaNova';
+  font-weight: normal;
+  color: #666666;
+  line-height: 18px;
+}
+
+.bgpane{
+  background: image-url("bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  background-size: cover;
+  min-height: 640px;
+}
+
+.whatwedo h2{
+  font-family: 'ProximaNovaSemibold';
+  font-size: 24px;
+  font-weight: normal;
+  margin: 70px 0 50px;
+  text-align: center;
+}
+
+.whatwedo p{
+  font-size: 16px;
+  color: #666666;
+  font-family: "ProximaNova";
+  margin: 0 0 80px;
+  max-width: 1000px;
+  line-height: 20px;
+}
+
+.whatwedo p .icon-img-wrap{
+  display: inline-block;
+  margin-right: 24px;
+  margin-left: 24px;
+}
+.whatwedo p .icon-img-wrap img{
+  margin-top: -22px;
+}
+
+/* FOOTER */
+
+.ft-lead{
+  background: image-url("footer-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  min-height: 300px;
+  padding-bottom: 40px;
+  text-align: center;
+  width: 100%;
+}
+.ft-lead h2{
+  color: #ffffff;
+  font-family: 'ProximaNovaSemibold';
+  font-size: 24px;
+  font-weight: normal;
+  margin: 80px 0 40px;
+  text-align: center;
+}
+
+footer{
+  color: #666666;
+  font-family: "ProximaNova";
+  font-size: 14px;
+  font-weight: normal;
+  text-align: left;
+  background: #f2f2f2;
+  padding: 30px 0 30px 0;
+}
+
+footer a{
+  display: inline-block;
+  color: #666666;
+  margin-left: 40px;
+}
+
+.ft-logo{
+  text-align: right;
+}
+
+/* FORM STEP 1 */
+
+.signup header {
+  background: image-url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  background-size: cover;
+  min-height: 340px;
+}
+
+.signup header h1{
+  margin-bottom: 20px;
+}
+
+.formheader h1.logo{
+  margin-top: 70px;
+}
+
+.signup header h2 {
+  border-top: 0 solid #5394a5;
+  font-family: "ProximaNovaSemibold";
+  font-size: 30px;
+  font-weight: normal;
+  margin-top: 165px;
+  padding-top: 0;
+  text-transform: uppercase;
+  width: 450px;
+}
+
+.signup form{
+  margin-top: 140px;
+  margin-bottom: 0px;
+}
+
+.signup form label input{
+  border: 1px solid #a7a7a7;
+  box-shadow: 0 0 0;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 16px;
+}
+
+.signup .step-one form {
+  max-width: 560px;
+  margin: 30px auto;
+}
+
+.signup form p{
+  color: #333333;
+  font-size: 16px;
+  font-family: "ProximaNova";
+  text-align: left;
+  margin: 40px auto 20px;
+}
+
+.signup form p.agree{
+  text-align: center;
+  margin-top: 40px;
+}
+
+.signup form .submit-wrap{
+  text-align: center;
+  margin-bottom: 100px;
+}
+.signup .step-one form .submit-wrap{
+  margin-bottom: 40px;
+}
+
+.error label, .error label.error {
+  border: 1px solid #df4a32;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+/* SIGNUP PRICING PAGE */
+
+.signup-footer{
+  color: #ffffff;
+  background: #3c9eb6;
+
+}
+
+.signup-footer h3{
+  color: #ffffff;
+  font-family: "ProximaNovaSemibold";
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 30px;
+  margin: 50px auto 60px;
+  text-align: center;
+
+}
+
+.signup-footer .service-item{
+  margin-bottom: 40px;
+  clear: both;
+  overflow: hidden;
+  margin-right: 50px;
+}
+.signup-footer .service-item .icon-left{
+  float: left;
+  width: 20%;
+  text-align: center;
+}
+
+.signup-footer .service-item .icon-left img{
+
+}
+
+.signup-footer .service-item .details-right{
+  float: left;
+  width: 80%;
+}
+.signup-footer .service-item .details-right h4{
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 22px;
+  font-family: "ProximaNovaSemibold";
+  font-weight: normal;
+  margin: 10px 0 10px;
+}
+
+.signup-footer .service-item .details-right p{
+  font-family: "ProximaNova";
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 18px;
+}
+
+.row#business-plans,
+.row#agency-plans {
+  /*max-width: 1280px;*/
+}
+
+
+.signup-footer .row{
+  max-width: 1180px;
+
+}
+
+
+
+/* FORM STEP 2 */
+
+.form-step .tab-nav{
+  text-align: center;
+  margin-top: 0px;
+  height: 160px;
+}
+
+.form-step .tab-nav a.button.button-signuptype{
+  background: none repeat scroll 0 0 transparent;
+  border: 2px solid #006481;
+  color: #006481;
+  height: 60px;
+  line-height: 60px;
+  max-width: 250px;
+  border-radius: 30px;
+}
+
+.step3 .tab-nav a.button.button-signuptype,
+.step4 .tab-nav a.button.button-signuptype{
+  display: none;
+}
+
+
+
+.form-step .tab-nav a.button.button-signuptype#selected-businesses{
+  margin-right: 65px;
+}
+
+.form-step .tab-nav a.button.button-signuptype.active{
+  background:#006481;
+  color: #ffffff;
+}
+
+.signup .form-step form,
+.signup form.payment,
+.signup .form-step .confirmation {
+  margin-top:40px;
+}
+.signup .form-step .confirmation {
+  text-align: center;
+  margin: 100px auto;
+}
+
+.signup .form-step  form p.selection-intro,
+.signup .form-step .confirmation p.selection-intro{
+  color: #484848;
+  font-size: 18px;
+  line-height: 24px;
+  font-family: "ProximaNova";
+  font-weight: normal;
+  margin: 40px 0 50px;
+  text-align: center;
+}
+
+.signup .form-step  form p.selection-intro-heading,
+.signup .form-step .confirmation p.selection-intro-heading{
+  color: #006481;
+  text-transform: uppercase;
+  font-size: 28px;
+  line-height: 28px;
+  font-family: "ProximaNovaSemibold";
+  margin-bottom: 20px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup .form-step  form p.selection-guarantee,
+.signup .form-step .confirmation p.selection-guarantee{
+  color: #484848;
+  font-size: 24px;
+  line-height: 24px;
+  font-family: "ProximaNova";
+  font-weight: normal;
+  margin: 0px 0 40px;
+  text-align: center;
+}
+
+.subscription-type{
+  border:2px solid #999999;
+  text-align: center;
+  position: relative;
+}
+
+
+.subscription-type:hover,
+.subscription-type.active{
+  border:4px solid #006481;
+}
+.subscription-type h2{
+  color: #005979;
+  font-family: "ProximaNovaSemibold";
+  font-size: 20px;
+  line-height: 20px;
+  margin: 15px auto;
+  text-align: center;
+  text-transform: uppercase;
+}
+.subscription-type .price-bubble{
+  background: none repeat scroll 0 0 #40bfcb;
+  border-radius: 120px;
+  color: #ffffff;
+  display: inline-block;
+  height: 170px;
+  margin: 0 auto;
+  width: 170px;
+}
+
+.subscription-type#plantype-business .price-bubble,
+.subscription-type#plantype-premium .price-bubble{
+  background: #91bc4d;
+}
+
+.subscription-type#plantype-enterprise .price-bubble,
+.subscription-type#plantype-ultra .price-bubble{
+  background: #e76e15;
+}
+
+
+.subscription-type .price-bubble .price-amount{
+  font-family: "ProximaNovaSemibold";
+  font-size: 36px;
+  line-height: 36px;
+  margin-top: 44px;
+
+}
+.subscription-type .price-bubble .price-amount .permonth{
+  margin-top: 100px;
+  font-size: 31px;
+  line-height: 31px;
+  font-family: "ProximaNova";
+
+}
+
+.subscription-type .price-bubble .price-amount em{
+  display: block;
+  font-family: "ProximaNova";
+  font-size: 14px;
+  font-style: normal;
+  line-height: 18px !important;
+  margin-top: 0;
+}
+
+.subscription-type .plan-inclusions{
+  margin-top: 15px;
+}
+
+.subscription-type .plan-inclusions ul{
+  list-style-type: none;
+  margin: 0 auto 110px;
+  max-width: 330px;
+  display: block;
+}
+.subscription-type .plan-inclusions ul li{
+  color: #333333;
+  font-family: "ProximaNova";
+  font-size: 15px;
+  line-height: 15px;
+  list-style-type: none;
+  margin-bottom: 15px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.subscription-type .plan-inclusions ul li strong{
+  display: inline-block;
+  text-align: right;
+  width: 45px;
+  font-family: "ProximaNovaSemibold";
+  float: left;
+  padding-right: 5px;
+}
+
+.subscription-type .plan-inclusions ul li span{
+  float: left;
+  max-width: 240px;
+}
+
+.subscription-type .selector-wrap{
+  position: absolute;
+  bottom: 35px;
+  width: 100%;
+}
+.subscription-type .selector-wrap .button.button-planselector{
+  background: none repeat scroll 0 0 #bfbfbf;
+  height: 40px;
+  line-height: 40px;
+  max-width: 230px;
+  width: 100%;
+  font-size: 17px;
+}
+
+.subscription-type .selector-wrap .button.button-planselector:hover{
+  background: #006481;
+}
+.subscription-type .selector-wrap .button.button-planselector.active,
+.subscription-type:hover .selector-wrap .button.button-planselector,
+.subscription-type.active .selector-wrap .button.button-planselector{
+  background: #006481;
+}
+
+.button.button-signup.nextstep{
+  width: 100%;
+  max-width: 400px;
+  margin: 90px auto 0px;
+}
+
+.goback{
+  background: image-url("back-arrow.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  margin: 20px 0 40px;
+  padding-left: 30px;
+}
+
+.goback a{
+  color: #a5cc63;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-family: "ProximaNova";
+}
+
+.errorwarning{
+  margin: 20px auto !important;
+}
+.errorwarning p{
+  margin: 10px auto !important;
+  text-align: center !important;
+  color: #df4a32 !important;
+  font-size: 16px;
+}
+
+form .errorwarning{
+  display: none;
+}
+
+.error .errorwarning{
+  display: block;
+}
+
+
+
+/* FORM STEP 3 */
+
+form table{
+  width: 100%;
+  border:0;
+}
+form table th{
+  background: #f1f1f1;
+  font-size: 18px;
+  color: #333333;
+  font-family: "ProximaNovaSemibold";
+  font-weight: normal;
+  padding: 15px 20px;
+  margin: 0;
+}
+
+form table td{
+  background: #ffffff;
+  margin: 0;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 15px 20px;
+  font-family: "ProximaNova";
+  font-size: 16px;
+}
+
+form table th.qty,
+form table td.qty{
+  max-width: 130px;
+  width: 130px;
+}
+form table th.price,
+form table td.price{
+  text-align: right;
+}
+
+
+form table input[type="text"]{
+  width: 50px;
+  height: 50px;
+  border:1px solid #000000;
+  text-align: center;
+  color: #333333;
+  font-size: 24px;
+  font-family: "ProximaNova";
+  float: left;
+}
+form table td.qty input[type="text"]{
+  margin: 0;
+}
+
+table .updown{
+  float:left;
+  width: 20px;
+  margin-left: 5px;
+  visibility: hidden;
+}
+
+table .updown a{
+  background: image-url("updownarrow.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  display: block;
+  text-indent: -5555px;
+  margin-top: 6px;
+}
+
+table .updown a.qty-minus{
+  background-position: left bottom;
+}
+
+table tr:hover .updown{
+  visibility: visible;
+}
+
+/* FORM STEP 4 */
+
+
+.signup-footer.ftform {
+  margin-top: 80px;
+}
+
+.signup-footer.ftform .row{
+  max-width: 720px;
+}
+
+.ui-selectmenu-button {
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #a7a7a7;
+  border-radius: 0;
+  color: #333333;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  height: 40px;
+}
+.ui-menu .ui-menu-item {
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #a7a7a7;
+  border-radius: 0;
+  color: #333333;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  height: 40px;
+  padding: 10px 20px;
+
+}
+
+.span.ui-selectmenu-text {
+  padding: 20px;
+}
+.ui-selectmenu-button span.ui-selectmenu-text {
+  background: image-url("select-droparrow.png") no-repeat scroll right center rgba(0, 0, 0, 0);
+  margin-right: 15px;
+  padding: 9px 20px;
+}
+
+
+.signup-footer.ftform .ui-selectmenu-button {
+  background: none repeat scroll 0 0 transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  height: 40px;
+  margin-top: 10px;
+}
+
+
+a.remove{
+  color: #ff0000;
+}
+
+th.removecolumn,
+td.remove{
+  width:100px !important;
+}
+
+th.price,
+td.price{
+  width:100px !important;
+}
+
+tr.totals td{
+  color: #00556c;
+  font-size: 20px;
+  font-family: "ProximaNovaSemibold";
+
+}
+
+.signup-footer.ftform label{
+  color: #ffffff;
+  font-family: "ProximaNova";
+  font-size: 18px;
+}
+.signup form .signup-footer.ftform label input {
+  border: 1px solid #ffffff;
+  background: transparent;
+  box-shadow: 0 0 0;
+  font-family: "ProximaNova";
+  color: #ffffff;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.signup-footer.ftform .error  label, .signup-footer.ftform  .error label.error {
+  border: 0px;
+  margin-bottom: 15px;
+  color: #ff0000;
+}
+
+
+.signup-footer.ftform .error  label input, .signup-footer.ftform  .error label.error input{
+
+  border: 1px dotted #ff0000;
+}
+
+.signup-footer.ftform .formdisclaimers p{
+  color: #ffffff;
+  font-family: "ProximaNova";
+  font-size: 16px;
+}
+.signup-footer.ftform .formdisclaimers p a{
+  color: #eeeeee;
+}
+.signup-footer.ftform .formdisclaimers p a:hover{
+  color: #ffffff;
+}
+
+.signup-footer.ftform .formdisclaimers p strong{
+  color: #ffffff;
+  font-family: "ProximaNovaSemibold";
+  font-size: 18px;
+  font-weight: normal;
+}
+.signup-footer.ftform .formdisclaimers p.chargesummary{
+  font-family: "ProximaNova";
+  font-size: 22px;
+  margin-bottom: 0px;
+}
+.signup-footer.ftform .formdisclaimers p.chargesummary span{
+  font-family: "ProximaNovaSemibold";
+  font-weight: normal;
+}
+
+
+/* INTERIOR NAVIGATION */
+.nav,
+nav.top-bar{
+  height: 78px;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  z-index: 9999999;
+  transition: background-color 0.5s ease;
+}
+body.f-topbar-fixed {
+  padding-top: 0px !important;
+}
+.nav.fixedscroll{
+  background-color: #ffffff;
+  transition: background-color 0.5s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.nav-left{
+  text-align: left;
+}
+.nav-right{
+  text-align: right;
+}
+
+.nav a.logo {
+  background: image-url("robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  display: block;
+  height: 38px;
+  margin-left: 110px;
+  margin-top: 25px;
+  overflow: hidden;
+  text-indent: -55555px;
+  width: 158px;
+}
+.homeheader .nav a.logo  {
+  visibility: hidden;
+}
+.homeheader .nav.fixedscroll a.logo   {
+  visibility: visible;
+}
+
+
+.nav.fixedscroll a.logo{
+  background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+}
+
+.nav ul{
+  list-style-type: none;
+  margin-top: 22px;
+  margin-right: 14px;
+}
+.nav ul li{
+}
+
+.nav ul li a{
+  font-family: "ProximaNova";
+  font-size: 15px;
+  color: #ffffff;
+  padding-left: 30px;
+}
+
+.nav.fixedscroll ul li a{
+  color: #484848;
+}
+
+.nav a .carat{
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 5px solid #ffffff;
+  display: inline-block;
+  height: 0;
+  margin-left: 8px;
+  padding-top: 3px;
+  width: 0;
+}
+.top-bar-section ul.dropdown {
+  margin-top: 0 !important;
+}
+.top-bar {
+  background: none repeat scroll 0 0 transparent;
+}
+.top-bar-section ul li,
+.top-bar-section li:not(.has-form) a:not(.button),
+.top-bar-section li:not(.has-form) a:hover:not(.button){
+  background: transparent !important;
+}
+
+
+.top-bar-section li:not(.has-form) a.active:not(.button){
+  border: 3px solid #a5cc63;
+  border-radius: 2px;
+  line-height: 39px !important;
+}
+
+
+.top-bar-section li:not(.has-form) a:hover:not(.button){
+  background: #268299 !important;
+  color: #ffffff;
+}
+.fixedscroll .top-bar-section li:not(.has-form) a:hover:not(.button){
+  background: #ffffff !important;
+  color: #268299;
+}
+.top-bar-section ul li:hover:not(.has-form) > a {
+  background: #ffffff !important;
+  color: #268299;
+}
+.top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button)   {
+  background: #268299 !important;
+}
+.fixedscroll .top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button)   {
+  background: #ffffff !important;
+  color: #484848;
+}
+.fixedscroll .top-bar-section .dropdown li:not(.has-form):not(.active) > a:hover:not(.button)   {
+  color: #268299;
+}
+.top-bar.expanded,
+.top-bar.expanded .title-area {
+  background: none repeat scroll 0 0 #268299;
+  height: auto;
+}
+
+.top-bar.expanded .top-bar-section li:not(.has-form) a:hover:not(.button){
+  background:#1a7b94 !important;
+}
+.top-bar.expanded .toggle-topbar a span:after {
+  box-shadow: 0 0 0 1px #333333, 0 7px 0 1px #333333, 0 14px 0 1px #333333;
+}
+.top-bar.expanded .toggle-topbar a {
+  color: #333333;
+}
+
+@media(max-width: 640px){
+
+
+}
+
+/* INTERIOR HEADER STUFF */
+header.int-header {
+  background: image-url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+  min-height: 340px;
+}
+
+
+header.int-header h1{
+  font-family: "ProximaNovaSemibold";
+  font-size: 30px;
+  font-weight: normal;
+  text-transform: uppercase;
+  margin-top: 165px;
+  color: #ffffff;
+}
+
+.team header.int-header h1 {
+  font-family: "ProximaNova";
+  text-transform: none;
+}
+.team header.int-header h1 strong{
+  font-family: "ProximaNovaSemibold";
+  text-transform: uppercase;
+}
+
+/* INTERIOR CONTENT */
+.int-content{
+  padding: 60px 0;
+}
+.int-content .row {
+  max-width: 840px;
+}
+.int-content p{
+  font-size: 18px;
+  color: #666666;
+  margin-bottom: 30px;
+  line-height: 24px;
+  font-family: "ProximaNova";
+}
+
+/* DEMO */
+
+.demopage .demo{
+  margin-top: -200px;
+}
+
+.int-content.demo{
+  text-align: center;
+}
+
+.int-content.demo h2{
+  font-family: "ProximaNovaSemibold";
+  font-size: 30px;
+  font-weight: normal;
+  color: #000000;
+  margin: 75px 0 0;
+}
+.int-content.demo h3{
+  color: #666666;
+  font-family: "ProximaNova";
+  font-size: 22px;
+  font-weight: normal;
+  margin: 50px auto 0;
+  max-width: 670px;
+}
+
+.youcanbookme{
+  margin: 75px 0;
+}
+
+.demopage .ft-content{
+  padding: 100px 0;
+  text-align: center;
+  background: #eaeaea;
+}
+
+.demopage .ft-content .row{
+  text-align: center;
+}
+.demopage .ft-content p{
+  font-family: "ProximaNova";
+  font-size: 18px;
+  font-weight: normal;
+  color: #666666;
+  max-width: 840px;
+  max-width: 0 auto 30px;
+  display: inline-block;
+}
+
+@media(max-width: 640px){
+
+  .demopage .demo{
+    margin-top: -100px;
+  }
+
+}
+
+/* TEAM PAGE */
+
+.team-content{
+  margin-top: -100px;
+}
+
+.team-content .advisors{
+  margin-top: 120px;
+  padding-top: 40px;
+  border-top:2px solid #1a7b94;
+
+}
+
+.team-content .advisors h3{
+  color: #006481;
+  font-family: "ProximaNovaBold";
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 40px;
+  text-align: center;
+}
+.team-content .advisors h3 span{
+  color: #006481;
+  font-size: 24px;
+  font-family: "ProximaNova";
+  font-weight: normal;
+}
+
+.team-box{
+  text-align: center;
+  padding-bottom: 40px;
+}
+
+.team-box img{
+  max-height: 180px;
+}
+
+.team-box h3{
+  color: #006481;
+  font-family: "ProximaNovaSemibold";
+  font-size: 20px;
+  font-weight: normal;
+  margin: 20px auto 0;
+}
+.team-box h4{
+  color: #484848;
+  font-family: "ProximaNova";
+  font-size: 16px;
+  font-weight: normal;
+  margin: 10px auto 0;
+
+}
+.team-box p{
+  color: #484848;
+  font-family: "ProximaNova";
+  font-size: 14px;
+  line-height: 20px;
+  margin: 20px auto 0;
+}
+
+/* LOGIN PAGE */
+.btn-google-plus,
+.btn-facebook  {
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto 20px;
+  font-family: "ProximaNovaBold";
+  font-size: 18px;
+  padding: 0;
+  height: 60px;
+  line-height: 60px;
+}
+.btn-facebook {
+  background-color: #3a579a;
+}
+.btn-google-plus {
+  background-color: #df4a32;
+}
+
+.btn-facebook i.fa,
+.btn-google-plus i.fa{
+  display: none;
+}
+
+.btn-facebook span,
+.btn-google-plus span{
+  display: inline-block;
+  height: 60px;
+  padding-left: 50px;
+}
+
+.btn-facebook span{
+  background: image-url("Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+
+}
+.btn-google-plus span{
+  background: image-url("Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+}
+
+.btn-google-plus:hover {
+  background-color: #df4a32;
+
+  opacity: 0.8;
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+.btn-facebook:hover {
+  background-color: #3a579a;
+  opacity: 0.8;
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.social-login{
+  text-align: center;
+}
+
+.form-login{
+  margin:75px auto;
+}
+
+p.loginintro{
+  font-family: "ProximaNova";
+  font-size: 22px;
+  font-weight: normal;
+  margin-bottom: 50px;
+  text-align: center;
+}
+p.loginintro strong{
+  font-family: "ProximaNovaSemibold";
+}
+
+.signup .form-login form{
+  margin:0 auto;
+  max-width: 560px;
+
+}
+
+.signup .form-login form .submit-wrap{
+  margin-bottom: 40px;
+  margin-top: 50px;
+}
+.signup .form-login form.error .submit-wrap {
+  margin-top: 20px;
+}
+
+.signup .form-login .rememberme,
+.signup .form-login .forgotpass{
+  font-size: 18px;
+  font-family: "ProximaNova";
+  text-align: center;
+}
+.signup .form-login .forgotpass a{
+  color: #000000;
+}
+.signup .form-login .forgotpass a:hover{
+  text-decoration: underline;
+}
+
+
+.signup .form-login input[type="checkbox"]  {
+  display: inline-block;
+  margin: 3px;
+  vertical-align: text-top;
+}
+
+.or-line{
+  width: 100%;
+  max-width: 560px;
+  margin: 40px auto;
+  text-align: center;
+  border-top: 1px solid #7f7f7f
+}
+.or-line span{
+  background: none repeat scroll 0 0 #ffffff;
+  display: block;
+  font-family: "ProximaNova";
+  font-size: 24px;
+  margin: -17px auto 0;
+  text-align: center;
+  text-transform: uppercase;
+  width: 50px;
+}
+
+/* CONTACT PAGE */
+
+.contact .address-info{
+  font-family: "ProximaNova";
+  font-size: 16px;
+  font-style: normal;
+}
+
+.contact .contact-addresses{
+  font-family: "ProximaNova";
+  font-size: 16px;
+  font-style: normal;
+  margin-bottom: 20px;
+}
+
+.contact .address-info h3{
+  font-size: 18px;
+  font-family: "ProximaNovaSemibold";
+}
+
+.contact .address-info a{
+  color: #666666;
+}
+.contact .address-info a:hover{
+  text-decoration: underline;
+}
+
+.contact form textarea{
+  padding: 8px;
+}
+
+.contact .submit-wrap{
+  text-align: center;
+  padding: 40px 0;
+}
+
+
+/* MOBILE */
+
+@media(max-width: 640px){
+  /* MOBILE NAV */
+  .nav a.logo {
+    margin-left: 20px;
+  }
+  .top-bar .title-area {
+    text-align: left;
+  }
+
+  .nav.fixedscroll,
+  .nav{
+    background-color: #ffffff;
+    transition: background-color 0.5s ease;
+  }
+
+  .nav a.logo ,
+  .nav.fixedscroll a.logo{
+    background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+  }
+  .top-bar .toggle-topbar.menu-icon a {
+    color: #000000;
+    font-family: "ProximaNova";
+  }
+
+  .top-bar .toggle-topbar.menu-icon a span:after {
+    box-shadow: 0 0 0 1px #000000, 0 7px 0 1px #000000, 0 14px 0 1px #000000;
+  }
+  .top-bar.expanded, .top-bar.expanded .title-area {
+    background: none repeat scroll 0 0 #ffffff;
+  }
+  .nav ul li a {
+    color: #000000;
+    font-family: "ProximaNova";
+    font-size: 20px;
+    padding-left: 0;
+  }
+  .top-bar-section .dropdown li.title h5 a, .top-bar-section .dropdown li.parent-link a {
+    color: #000000;
+  }
+  .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button), .top-bar-section li:not(.has-form) a:hover:not(.button) {
+
+    border-bottom: 1px solid #006481;
+  }
+
+  header h2 {
+    font-size: 24px;
+  }
+  .ft-lead h2 {
+    font-size: 32px;
+    margin: 80px 0 55px;
+  }
+
+  .button{
+    width: 100%;
+  }
+
+  input.button{
+    width: 100%;
+  }
+
+
+
+  header a.learn-more{
+    display: none;
+  }
+
+  .screenpane{
+    background-image: none;
+  }
+
+  .whatwedo{
+    padding:15px 0;
+  }
+
+  .whatwedo p {
+    text-align: center;
+  }
+  .whatwedo p .icon-img-wrap {
+    clear: both;
+    display: block;
+    float: none;
+    margin: 24px 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+  }
+  footer{
+    text-align: center;
+  }
+  footer a {
+    color: #666666;
+    display: inline-block;
+    margin-right: 40px;
+    margin-left: 0px;
+  }
+
+  .ft-logo{
+    text-align: center;
+    padding-top:20px;
+  }
+
+  .signup-footer .service-item .icon-left img {
+    margin-top: 12px;
+    width: 32px;
+  }
+
+
+  form table th.qty,
+  form table td.qty{
+    width: auto;
+  }
+
+  form table th,
+  form table td{
+    padding: 10px;
+  }
+  form table .updown{ display: none;}
+
+  form table td{
+    font-size: 18px;
+  }
+
+  .signup-footer.ftform label {
+    font-size: 16px;
+  }
+
+
+  .bgpane{
+    background-size: cover;
+    height: 300px !important;
+    min-height: 300px !important;
+  }
+  .form-step .tab-nav a#selected-businesses.button.button-signuptype {
+    margin: 20px auto;
+  }
+  .signup header h2 {
+    width: auto;
+  }
+  th.removecolumn, td.remove {
+    font-size: 10px;
+    width: 74px !important;
+  }
+  th.price, td.price {
+    width: 75px !important;
+  }
+
+  form table td {
+    font-size: 12px;
+    padding: 5px;
+  }
+  form table th {
+    font-size: 14px;
+    padding: 5px;
+  }
+  .ui-selectmenu-button span.ui-selectmenu-text {
+    padding: 5px;
+  }
+  .ui-selectmenu-button {
+    font-size: 13px;
+    height: 31px;
+  }
+  tr.totals td {
+    font-size: 14px;
+  }
+  .ft-logo img{
+    margin-bottom: 20px;
+  }
+
+  .form-step .tab-nav {
+    height: auto;
+  }
+  .signup .form-step form p.selection-intro, .signup .form-step .confirmation p.selection-intro {
+    font-size: 15px;
+  }
+  .subscription-type {
+    margin: 0 20px 20px;
+  }
+  .subscription-type .plan-inclusions ul li span {
+    max-width: 200px;
+  }
+
+  .subscription-type:hover{
+    border:2px solid #999999;
+  }
+
+
+  .subscription-type.active:hover {
+    border:4px solid #006481;
+  }
+
+  .subscription-type:hover .selector-wrap .button.button-planselector,
+  .subscription-type .selector-wrap .button.button-planselector:hover{
+    background: #999999;
+  }
+  .subscription-type .selector-wrap .button.button-planselector.active,
+  .subscription-type.active .selector-wrap .button.button-planselector{
+    background: #006481;
+  }
+  .screenpane .button.button-signup {
+    margin-bottom: 0px;
+  }
+  .screenpane h2 ,
+  .screenpane p {
+    max-width: 100%;
+  }
+
+  .screenpane .videoembedsection{
+    padding-top: 20px;
+    margin-bottom: 40px;
+  }
+
+
+}

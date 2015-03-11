@@ -20,6 +20,7 @@ require 'capistrano/rbenv'
 require 'capistrano/bundler'
 require 'capistrano/rails/assets'
 require 'capistrano/rails/migrations'
+require "whenever/capistrano"
 require 'capistrano/sidekiq'
 require 'capistrano/ssh_doctor'
 

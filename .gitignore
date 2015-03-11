@@ -16,6 +16,7 @@ dump.rdb
 config/secrets.yml
 config/database.yml
 /.capistrano
+public/system
 
 perf - robin.sublime-project
 perf - robin.sublime-workspace

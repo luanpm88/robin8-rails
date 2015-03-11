@@ -4,7 +4,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
     events: {
       'click #saveChanges': 'updateProfile',
-      'reset form': 'cancel',  //Should be replaced with Dashboard when ready,
+      'reset form': 'cancel'
     },
 
     initialize: function() {
@@ -26,6 +26,18 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         $("#avatar-image").attr('src', info.cdnUrl);
         viewObj.model.set({avatar_url: info.cdnUrl});
       });
+      if (Robin.afterConfirmationMessage != undefined) {
+        $.growl(Robin.afterConfirmationMessage,{
+          offset: 65,
+          delay: 5000,
+          placement: {
+            from: "top",
+            align: "right"
+          },
+          type: 'success'
+        });
+        Robin.afterConfirmationMessage = undefined
+      }
     },
 
     initFormValidation: function(){
@@ -92,7 +104,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       })
       .on('keyup', '[name="password"]', function() {
-        console.log("keyup");
         var isEmpty = $(this).val() == '';
         $('#profileForm')
           .formValidation('enableFieldValidators', 'current_password', !isEmpty)
@@ -126,11 +137,14 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
-    updateProfile: function(e) {
+    updateProfile: function() {
       var viewObj = this;
       var r = this.model.attributes;
       this.form.data('formValidation').validate();
-      if (this.form.data('formValidation').isValid()) {
+      console.log(this.model.changed.email);
+      var changed = this.model.changed;
+      var changesLength = Object.keys(changed).length;
+      if (this.form.data('formValidation').isValid()&&changesLength>0){
         this.modelBinder.copyViewValuesToModel();
         this.model.save(this.model.attributes, {
           success: function(userSession, response) {
@@ -141,12 +155,26 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             },{
               element: '#growler-alert',
               type: 'success',
-              offset: 147,
+              offset: 65,
+              delay: 3500,
               placement: {
                 from: "top",
                 align: "right"
               },
             });
+            if (changed.email) {
+              $.growl({message: 'You should receive a confirmation mail shortly'
+              },{
+                element: '#growler-alert',
+                type: 'success',
+                offset: 65,
+                delay: 30000,
+                placement: {
+                  from: "top",
+                  align: "right"
+                },
+              });
+            }
           },
           error: function(userSession, response) {
             viewObj.processErrors(response);
@@ -170,7 +198,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       }, this);
     },
 
-    //Should be replaced with Dashboard when ready
     cancel: function() {
       Robin.stopOtherModules();
       Robin.module('Dashboard').start();

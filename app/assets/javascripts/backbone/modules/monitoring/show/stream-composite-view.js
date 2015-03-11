@@ -9,6 +9,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     events: {
       'click .delete-stream': 'closeStream',
       'click .settings-button': 'settings',
+      'click .rss-button': 'toggleRssDialog',
       'click #close-settings': 'closeSettings',
       'click #done': 'done',
       'click span.editable': 'editTitle',
@@ -21,7 +22,27 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     modelEvents: {
-      change: 'setShowUpdatesButtonVisibility'
+      change: 'setShowUpdatesButtonVisibility',
+      'change:sort_column': 'refreshTimeRangeVisibility'
+    },
+
+    templateHelpers: function () {
+      return {
+        topicsForRss: function(){
+          if (this.stream && this.stream.topics) {
+            var arr = this.stream.topics;
+            var str = _.pluck(arr.slice(0,3), 'text').join(',');
+            return arr.length > 3 ? (str+'...') : str
+          }
+        },
+        blogsForRss: function(){
+          if (this.stream && this.stream.blogs) {
+            var arr = this.stream.blogs;
+            var str = _.pluck(arr.slice(0,3), 'text').join(',');
+            return arr.length > 3 ? (str+'...') : str
+          }
+        }
+      };
     },
 
     initialize: function() {
@@ -53,11 +74,13 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
 
       if (!this.model.get('id')) {
-        this.$el.find('.stream-settings').removeClass('closed');
+        this.$el.find('.settings-dialog').removeClass('closed');
       }
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
 
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
+
+      this.refreshTimeRangeVisibility();
     },
 
     onAdded: function(story, collection) {
@@ -71,6 +94,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     updateTitle: function() {
+      this.modelBinder.copyViewValuesToModel();
       this.model.save(this.model.attributes, {
         success: function(data){
           console.log(data);
@@ -117,6 +141,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     closeStream: function() {
       var r = this.model;
+      if(!r.get('id')) return r.destroy({ dataType: "text"});
       swal({
         title: "Delete Stream?",
         text: "You will not be able to recover this stream.",
@@ -132,13 +157,18 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
+    toggleRssDialog: function(){
+      $(this.el).find('.rss-dialog').toggleClass('closed');
+    },
+
     settings: function() {
-      $(this.el).find('.slider').toggleClass('closed');
+      $(this.el).find('.settings-dialog').toggleClass('closed');
     },
 
     closeSettings: function(e) {
       e.preventDefault();
-      $(this.el).find('.slider').addClass('closed');
+      $(this.el).find('.settings-dialog').addClass('closed');
+      if(!this.model.get('id')) this.closeStream();
     },
 
     done: function(e) {
@@ -155,11 +185,12 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           Robin.cachedStories[response.id].sortByPopularity = curView.model.get('sort_column') == 'shares_count';
 
           $(curView.el).attr("data-pos",response.id);
-          $(curView.el).find('.slider').addClass('closed');
+          $(curView.el).find('.settings-dialog').addClass('closed');
           $.growl({message: "Your stream was saved!"
           },{
             type: 'success'
           });
+          curView.render();
         },
         error: function(userSession, response) {
           $.growl({title: '<strong>Error:</strong> ',
@@ -170,7 +201,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
 
-      $(this.el).find('.slider').addClass('closed');
+      $(this.el).find('.settings-dialog').addClass('closed');
     },
 
     showNewStories: function() {
@@ -200,6 +231,17 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         this.$el.find('.js-show-new-stories').removeClass('hidden');
       } else {
         this.$el.find('.js-show-new-stories').addClass('hidden');
+      }
+    },
+
+    refreshTimeRangeVisibility: function(){
+      var val = this.model.get('sort_column');
+      if(val == "shares_count") {
+        this.$el.find('.stream-settings .time-range').show();
+        this.$el.find('.stream-settings').addClass('expand');
+      } else if(val == "published_at") {
+        this.$el.find('.stream-settings .time-range').hide();
+        this.$el.find('.stream-settings').removeClass('expand');
       }
     }
   });

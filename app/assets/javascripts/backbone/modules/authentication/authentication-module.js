@@ -6,8 +6,20 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
     signIn: function() {
       Authentication.SignIn.Controller.showSignIn();
     },
-    signUp: function() {
-      Authentication.SignIn.Controller.showSignUp();
+    step1: function() {
+      Authentication.SignIn.Controller.showStep1();
+    },
+    step2: function() {
+      Authentication.SignIn.Controller.showStep2();
+    },
+    step3: function() {
+      Authentication.SignIn.Controller.showStep3();
+    },
+    step4: function() {
+      Authentication.SignIn.Controller.showStep4();
+    },
+    confirmationStep: function() {
+      Authentication.SignIn.Controller.showConfirmation();
     },
     forgot: function() {
       Authentication.SignIn.Controller.showForgot();
@@ -24,17 +36,29 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
     routes: {
       "": "signIn",
       "signin": "signIn",
-      "signup": "signUp",
+      "step1": "step1",
+      "step2": "step2",
+      "step3": "step3",
+      "step4": "step4",
+      "confirmation-step": "confirmationStep",
       "forgot": "forgot",
       "accept/:acceptToken": "accept",
       "reset/:resetToken": "reset",
     },
 
-    signUp: function() { API.signUp(); },
+    // signUp: function() { API.signUp(); },
 
-    signIn: function() { API.signIn(); },
+    step1: function() { API.step1(); },
+
+    step2: function() { API.step2(); },
+
+    step3: function() { API.step3(); },
+
+    step4: function() { API.step4(); },
 
     forgot: function() { API.forgot(); },
+
+    confirmationStep: function() { API.confirmationStep(); },
 
     accept: function(acceptToken) {API.accept(acceptToken);},
 
@@ -48,6 +72,7 @@ Robin.module("Authentication", function(Authentication, Robin, Backbone, Marione
 
   Authentication.on('start', function(){
     new Authentication.Router();
+    $('body').addClass('login');
     API.signIn();
   });
   

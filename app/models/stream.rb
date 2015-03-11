@@ -20,7 +20,8 @@ class Stream < ActiveRecord::Base
       'blog_ids[]' => blogs.map{|blog| blog[:id]},
       'topics[]' => topics.map{|topic| topic[:id]},
       sort_column: sort_column,
-      sort_direction: 'desc'
+      sort_direction: 'desc',
+      published_at: sort_column == 'shares_count' ? published_at : nil
     }
   end
 end

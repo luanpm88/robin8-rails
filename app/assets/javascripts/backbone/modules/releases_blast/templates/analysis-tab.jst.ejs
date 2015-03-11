@@ -4,7 +4,7 @@
 
   <p>
     <i style="color: #A0D468;" class="fa fa-check"></i> <strong>"First Press Release"</strong> is about <strong>
-    "<a data-value="<%= textapiResult['classify'] %>" data-title="Select a category" data-url="/post" data-pk="1" data-type="text" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong><a data-title="Select topics" data-url="/post" data-value="ai, nlp" data-pk="1" data-type="select2" id="release-topics" href="#" class="editable editable-click"><%= _.map(textapiResult["concepts"], function(item){ return item.topic }).join(", ") %></a></strong>.</p>
+    "<a data-value="<%= textapiResult['classify'] %>" data-title="Select a category" data-pk="1" data-type="select2" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong><a data-title="Select topics" data-pk="1" data-type="select2" id="release-topics" href="#" class="editable editable-click"><%= _.map(textapiResult["concepts"], function(item){ return item.topic }).join(", ") %></a></strong>.</p>
 
   <p><i style="color: #A0D468;" class="fa fa-check"></i> Here's a summary of what <strong>"First Press Release"</strong> is all about:</p>
 

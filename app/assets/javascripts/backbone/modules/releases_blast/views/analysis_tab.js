@@ -2,41 +2,53 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.AnalysisTabView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/analysis-tab',
-    className: 'row',
     model: Robin.Models.Release,
     events: {
       'click #btn-next': 'openTargetsTab'
     },
-    initialize: function(){
+    initialize: function(options){
+      this.iptc = options.iptcCategories;
+      this.iptc.on('reset', this.render);
       this.on("textapi_result:ready", this.render);
+      this.iptc.fetch({reset: true});
       this.getTextApiResult();
       this.textapiResult = {};
     },
-    templateHelpers: function(){
+    serializeData: function(){
       return {
         textapiResult: this.textapiResult
       }
     },
-    onRender: function () {
-      // Get rid of that pesky wrapping-div.
-      // Assumes 1 child element present in template.
-      this.$el = this.$el.children();
-      // Unwrap the element to prevent infinitely 
-      // nesting elements during re-render.
-      this.$el.unwrap();
-      this.setElement(this.$el);
-      this.$el.find('#release-category').editable();
+    makeIptcCategoriesEditable: function(){
+      var tags = _(this.iptc.models).map(function(item){
+        return {id: item.get('label'), text: item.get('label')};
+      });
 
-      this.$el.find('#release-topics').editable({
-        source: _.map(this.textapiResult["concepts"], function(item){
-          return {
-            id: item.topic.replace(/ /g, '_'),
-            text: item.topic
-          }
-        }),
+      this.$el.find('#release-category').editable({
         select2: {
-          multiple: true
-        }
+          name: 'category',
+          tags: tags,
+          multiple: true,
+          tokenSeparators: [",", " "]
+        },
+        success: function(r, newValue) {}
+      });
+    },
+    onRender: function () {
+      this.makeIptcCategoriesEditable();
+      this.$el.find('#release-topics').editable({
+        inputclass: 'input-large',
+        select2: {
+          tags: _.map(this.textapiResult["concepts"], function(item){
+            return {
+              id: item.topic.replace(/ /g, '_'),
+              text: item.topic
+            }
+          }),
+          multiple: true,
+          tokenSeparators: [",", " "]
+        },
+        success: function(r, newValue) {}
       });
     },
     openTargetsTab: function(){
@@ -47,10 +59,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var endpoints = [
         'textapi/classify', 
         'textapi/concepts', 
-        'textapi/summarize'
+        'textapi/summarize',
+        'textapi/hashtags'
       ];
       
       var resultReady = _.after(endpoints.length + 1, function(){
+        that.model.save(that.model.attributes);
         that.trigger("textapi_result:ready");
       });
       
@@ -75,13 +89,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           dataType: 'json',
           method: 'POST',
           data: {
-            title: that.model.attributes.title, 
-            text: that.model.attributes.text
+            title: that.model.get('title'), 
+            text: that.model.get('plain_text'),
+            sentences_number: 10
           },
           success: function(response){
             switch(endpoint) {
               case 'textapi/concepts':
-                var prBody = that.model.attributes.text;
+                var prBody = that.model.get('plain_text');
                 var countedTopics = _.chain(response).foldl(function(memo, t, z) {
                   _(t.surfaceForms).each(function(sf) {
                     var pattern = new RegExp('\\b' + sf.string + '\\b', 'ig');
@@ -114,6 +129,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 }).value();
                 that.textapiResult["concepts"] = renderedTopics;
                 
+                var concepts = _.pluck(that.textapiResult["concepts"], 'uri');
+                concepts = _.map(concepts, function(item){
+                  return item.replace("http://dbpedia.org/resource/", '');
+                });
+                that.model.set({concepts: JSON.stringify(concepts)});
+                
                 boldTopicsInSummary();
                 resultReady();
                 break;
@@ -121,11 +142,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 that.textapiResult["classify"] = _(response[0].label.split(" - ")).map(function(p) {
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
+                
+                var iptc_categories = _.chain(response).pluck('code').uniq().value();
+                that.model.set({iptc_categories: JSON.stringify(iptc_categories)});
+                
                 resultReady();
                 break;
               case 'textapi/summarize':
-                that.textapiResult["summarize"] = response;
+                that.textapiResult["summarize"] = _(response).first(5);
+                that.model.set({summaries: JSON.stringify(response)});
                 boldTopicsInSummary();
+                resultReady();
+                break;
+              case 'textapi/hashtags':
+                that.textapiResult["hashtags"] = response;
+                that.model.set({hashtags: JSON.stringify(response)});
                 resultReady();
                 break;
             }

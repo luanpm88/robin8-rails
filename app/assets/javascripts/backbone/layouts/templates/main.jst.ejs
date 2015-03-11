@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand logo" href="#">
-        <img src="<%= AppAssets.path('logo.png') %>" height="35">
+        <img src="<%= AppAssets.path('robin8-fixedlogo.png') %>" height="35">
       </a>
       <!-- <form class="navbar-form navbar-left">
         <a href="#"><span class="badge badge-danger badge-lg">2</span></a>
@@ -17,21 +17,23 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
+        <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-shopping-cart"></i><span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#" data-toggle="modal" data-target="#shopping-cart"><i class="fa fa-shopping-cart"></i> View Cart</a></li>
             <li><a href="#"><i class="fa fa-dollar"></i> Check Out</a></li>
           </ul>
-        </li>
+        </li> -->
         <li class="dropdown">
-          <a href="#" id="userDropdown" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user"></i> Anonymous <span class="caret"></span></a>
+          <a href="#" id="userDropdown" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <i class="fa fa-user"></i> <span class='text'> Anonymous</span> <span class="caret"></span>
+          </a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><i class="fa fa-cog"></i> Account Settings</a></li>
+            <!-- <li><a href="#"><i class="fa fa-cog"></i> Account Settings</a></li> -->
+            <li><a href="#billing"><i class="fa fa-dollar"></i> Billing Settings</a></li>
             <li><a id="nav-profile"><i class="fa fa-smile-o"></i> Profile</a></li>
-            <li><a href="#"><i class="fa fa-dollar"></i> Billing Settings</a></li>
             <li class="divider"></li>
-            <li><a href="/users/sign_out" data-method='get'><i class="fa fa-sign-out"></i> Log Out</a></li>
+            <li><a href='/users/sign_out'><i class="fa fa-sign-out"></i> Log Out</a></li>
           </ul>
         </li>
       </ul>

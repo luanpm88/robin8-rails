@@ -5,7 +5,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     className: 'row',
     regions: {
       logoRegion: '.logo',
-      mediaRegion: '.media_region'
+      imagesRegion: '.images_region',
+      videosRegion: '.videos_region',
+      filesRegion: '.files_region'
     },
     events: {
       'click #new_newsroom': 'openModalDialog',
@@ -44,7 +46,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         placeholder: 'Select...'
       });
       this.initLogoView();
-      this.initMediaView();
+      this.initMediaTab();
     },
     onShow: function(){
       if (Robin.currentUser.attributes.is_primary == false){
@@ -57,9 +59,21 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         field: 'logo_url'
       }));
     },
-    initMediaView: function(){
-      this.mediaRegion.show(new Robin.Views.MediaView({
-        model: this.model
+    initMediaTab: function(){
+      this.imagesRegion.show(new Robin.Views.ImagesCollectionView({
+        model: this.model,
+        collection: new Robin.Collections.Attachments(),
+        childView: Robin.Views.ImagesItemView
+      }));
+      this.videosRegion.show(new Robin.Views.VideosCollectionView({
+        model: this.model,
+        collection: new Robin.Collections.Attachments(),
+        childView: Robin.Views.VideosItemView
+      }));
+      this.filesRegion.show(new Robin.Views.FilesCollectionView({
+        model: this.model,
+        collection: new Robin.Collections.Attachments(),
+        childView: Robin.Views.FilesItemView
       }));
     },
     initFormValidation: function(){
@@ -116,7 +130,36 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
                 message: 'something went wrong'
               }
             }
-          }
+          },
+          facebook_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          twitter_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          instagram_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid'
+              }
+            }
+          },
+          linkedin_link: {
+            validators: {
+              uri: {
+                message: 'The website address is not valid',
+                allowEmptyProtocol: true
+              }
+            }
+          },
         }
       })
       .on('err.field.fv', function(e, data) {
@@ -138,7 +181,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
           $('a[href="#' + tabId + '"][data-toggle="tab"]')
             .removeClass('error-tab');
         }
-      });
+        if (data.element.val() === '') {
+          var $parent = data.element.parents('.form-group');
+          $parent.removeClass('has-success');
+          data.element.data('fv.icon').hide();
+        }
+      })
+      // 
     },
     saveNewsRoom: function(e){
       var viewObj = this;

@@ -4,7 +4,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     template: 'modules/authentication/signin/templates/accept',
 
     events: {
-      'submit form' : 'submit',
+      'click #send' : 'submit',
     },
 
     initialize: function(options) {

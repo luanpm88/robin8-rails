@@ -4,7 +4,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     template: 'modules/authentication/signin/templates/signin',
 
     events: {
-      'submit form' : 'login',
+      'click #login' : 'login',
       'click .btn-facebook' : 'socialSignIn',
       'click .btn-google-plus' : 'socialSignIn',
     },
@@ -16,6 +16,9 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
+      $('.signup-tag').text('login');
+      $('.nav.fixed a').removeClass('active');
+      $('#login-link').addClass('active');
     },
 
     login: function(e) {
@@ -39,7 +42,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
           this.$('#alert-danger').text(result.error);
         }
       });
-    },
+    },  
 
     socialSignIn: function(e) {
       e.preventDefault();
@@ -65,6 +68,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
           });
         }
       }), 500);
-    }
+    } 
+
   });
 });

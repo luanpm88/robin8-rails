@@ -11,7 +11,9 @@
     <a data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseContact"><i class="fa fa-info-circle"></i> Contact</a>
     <div class="collapse collapsible" id="collapseContact">
       <div>
-        <strong><%- news_room.company_name %></strong>
+        <% if (news_room.company_name) { %>
+          <strong><%- news_room.company_name %></strong>
+        <% } %>
         <p>Email: <a href="mailto:<%- news_room.email %>"><%- news_room.email %></a>
         <br><%- news_room.address_1 %></p>
         <ul class="contact-links">
@@ -32,13 +34,13 @@
     <a data-toggle="collapse" href="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial"><i class="fa fa-bullhorn"></i> Social Media</a>
     <div class="collapse collapsible" id="collapseSocial">
       <ul class="soc">
-        <li><a class="soc-twitter" href="#"></a></li>
-        <li><a class="soc-facebook" href="#"></a></li>
-        <li><a class="soc-google" href="#"></a></li>
-        <li><a class="soc-pinterest" href="#"></a></li>
-        <li><a class="soc-linkedin" href="#"></a></li>
-        <li><a class="soc-rss" href="#"></a></li>
-        <li><a class="soc-youtube soc-icon-last" href="#"></a></li>
+        <li><a class="soc-twitter" target='_blank' href="<%= news_room.twitter_link == null ? 'javascript:void(0)' : news_room.twitter_link%>"></a></li>
+        <li><a class="soc-facebook" target='_blank' href="<%= news_room.facebook_link == null ? 'javascript:void(0)' : news_room.facebook_link%>"></a></li>
+        <li><a class="soc-instagram" target='_blank' href="<%= news_room.instagram_link == null ? 'javascript:void(0)' : news_room.instagram_link%>"></a></li>
+        <li><a class="soc-linkedin" target='_blank' href="<%= news_room.linkedin_link == null ? 'javascript:void(0)' : news_room.linkedin_link%>"></a></li>
+        <!-- <li><a class="soc-google" href="#"></a></li> -->
+        <!-- <li><a class="soc-rss" href="#"></a></li> -->
+        <!-- <li><a class="soc-youtube soc-icon-last" href="#"></a></li> -->
       </ul>
     </div>
   </li>
@@ -50,20 +52,22 @@
           <img src="http://lorempixel.com/50/50" class="img-circle avatar">
         </a>
         <div class="media-body">
-          <h4 class="media-heading">John Smith</h4>
+          <h4 class="media-heading"><%= news_room.owner_name == null ? 'Not set' : news_room.owner_name %></h4>
           <p>
-            CEO, <a href="#">john@acme.org</a><br>
-            <a href="#"><i class="fa fa-twitter"></i> jsmith</a>
+            <%= news_room.job_title == null ? 'Not set' : news_room.job_title %>, <a href="#"><%= news_room.email == null ? 'Not set' : news_room.email %></a><br>
+            <!-- <a href="#"><i class="fa fa-twitter"></i> jsmith</a> -->
           </p>
         </div>
       </div>
     </div>
   </li>
   <li>
-    <a data-toggle="collapse" href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets"><i class="fa fa-twitter"></i> Latest Tweets</a>
+    <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets"><i class="fa fa-twitter"></i> Latest Tweets</a>
+    <%= console.log(news_room.twitter_link == null || news_room.twitter_link == '') %>
     <div class="collapse collapsible" id="collapseTweets" style="padding: 6px !important;">
-      <a class="twitter-timeline" href="https://twitter.com/parsaghaffari" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a>
-      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      <a class="twitter-timeline <%= (news_room.twitter_link == null || news_room.twitter_link == '') ? 'hidden' : '' %>" href="<%= news_room.twitter_link%>"  data-screen-name="<%= (news_room.twitter_link == null || news_room.twitter_link == '')? '' : _.last(news_room.twitter_link.split('/'))%>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a>
+      
+      <span class="<%= (news_room.twitter_link == null || news_room.twitter_link == '') ? '' : 'hidden' %>"> Twitter user's page is not set</span>
     </div>
   </li>
   <li>

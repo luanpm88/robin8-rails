@@ -1,10 +1,10 @@
 Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette, $, _){
 
-  SignIn.ForgotView = Backbone.Marionette.ItemView.extend( {
+  SignIn.ForgotView = Backbone.Marionette.ItemView.extend({
     template: 'modules/authentication/signin/templates/forgot',
 
     events: {
-    'submit form': 'retrievePassword',
+    'click #send': 'retrievePassword',
     'keyup #email' : 'removeAlert',
     },
 
@@ -25,7 +25,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
-          window.location = '#signin'
+          window.location = ''
           $.growl({message: 'An email with password reset information has been sent'
           },{
             type: 'success'

@@ -22,6 +22,9 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'quiet_assets', group: [:development, :staging]
+gem 'aws-sdk-v1'
+
+gem 'htmlentities'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
@@ -34,8 +37,8 @@ source 'https://rails-assets.org' do
 
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '3.1.3'
-  gem 'rails-assets-backbone.marionette', '2.1.0'
+  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'
+  gem 'rails-assets-backbone.marionette', '2.4.1'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
@@ -50,6 +53,12 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
+  gem 'rails-assets-DataTables'
+  gem 'rails-assets-jquery.caret'
+  gem 'rails-assets-bootstrap-switch'
+  gem 'rails-assets-select2-bootstrap-css'
+  gem 'rails-assets-toastr'
+  gem 'rails-assets-backbone-relational'
 end
 
 gem 'devise'
@@ -57,6 +66,7 @@ gem 'devise_invitable'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-linkedin-oauth2'
+gem 'omniauth-linkedin'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'active_model_serializers', "~> 0.8.0"
@@ -70,10 +80,13 @@ gem 'has_scope'
 gem 'twitter'
 gem "koala", "~> 1.11.0rc" #flexible library for Facebook
 gem 'httparty'
+gem 'activeresource'
 
 gem 'aylien_text_api'
 
 gem 'ejs'
+gem 'countries'
+gem 'whenever'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -85,6 +98,8 @@ gem 'ejs'
 
 gem 'mailgun'
 
+gem 'paperclip', '~> 4.2.1'
+
 group :development, :test do
   # Deploy with Capistrano
   gem 'capistrano-rails', '~> 1.1.2'
@@ -92,6 +107,7 @@ group :development, :test do
   gem 'capistrano-bundler', '~> 1.1.4'
   gem 'capistrano-sidekiq', '~> 0.4.0'
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
+  gem 'pry-rails'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

@@ -13,7 +13,6 @@
  *= require bootstrap-sass
  *= require bootstrap-sweetalert
  *= require sass-bootstrap-glyphicons
- *= require bootstrap-sweetalert
  *= require blueimp-gallery
  * require bootstrap3-wysihtml5-bower
  *= require eonasdan-bootstrap-datetimepicker
@@ -22,12 +21,20 @@
  *= require font-awsome
  *= require select2
  *= require_self
- *= require login
+ * require login
  *= require_directory ./bootflat
  *= require_directory ./lib
  *= require main
+ *= require foundation
+ *= require app
  *= require bootstrap-tagsinput
  *= require bootstrap-wysihtml5
  *= require x-editable/dist/bootstrap3-editable/css/bootstrap-editable
+ *= require DataTables
+ *= require jqueryui/themes/base/all
+ *= require bootstrap-switch
+ * require dataTables.bootstrap
+ *= require select2-bootstrap-css
+ *= require toastr
  */
 @import "bootstrap";

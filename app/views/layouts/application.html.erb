@@ -7,22 +7,32 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body id="main" class="<%= current_user.blank? ? 'login' : 'main'%>">
-<script type="text/javascript">
+<body>
+  <div id="main">
+    <%= yield %>
+    
+  </div>
   
+  <div class="modal fade" id="modal" tabindex="-1" 
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
+<script type="text/javascript">
+
   $(document).ready(function() {
     Robin.start();
   });
-  <% if flash[:success_confirmation] -%>    
+  <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
-  <% if signed_in? -%>    
+  <% if signed_in? -%>
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
     <% unless request.subdomain.blank? %>
       Robin.publicPages = true
     <% end %>
   <% else -%>
-    Robin.currentUser = null;
+    if (Robin) {
+      Robin.currentUser = null;
+    }
   <% end -%>
 
   <% if Rails.env == 'development' -%>
@@ -37,39 +47,7 @@
 <script type="text/javascript" src="http://bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">
 </script>
 <!-- end load bitly javascript sdk -->
+<script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
 
-<%= yield %>
-<!-- START Parse.ly Include: Standard -->
-<div id="parsely-root" style="display: none">
-  <div id="parsely-cfg" data-parsely-site="robin8.com"></div>
-</div>
-
-<script>
-(function(s, p, d) {
-  var h=d.location.protocol, i=p+"-"+s,
-      e=d.getElementById(i), r=d.getElementById(p+"-root"),
-      u=h==="https:"?"d1z2jf7jlzjs58.cloudfront.net"
-      :"static."+p+".com";
-  if (e) return;
-  e = d.createElement(s); e.id = i; e.async = true;
-  e.src = h+"//"+u+"/p.js"; r.appendChild(e);
-})("script", "parsely", document);
-</script>
-<% unless signed_in? -%>
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $.easing.smoothmove = function (x, t, b, c, d) {
-        return -c *(t/=d)*(t-2) + b;
-      };
-      $('body').mousemove(function(event) {
-        $('body').animate({
-          'background-position-x': event.pageX/8,
-          'background-position-y': event.pageY/12
-        }, {queue:false,duration:200,easing:'smoothmove'});
-      });
-    });
-  </script>
-<% end %>
-<!-- END Parse.ly Include -->
 </body>
 </html>

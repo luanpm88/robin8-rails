@@ -36,4 +36,8 @@ AppAssets = {
     // Otherwise, create a generic asset path.
     return '/assets/' + name;
   }
+},
+
+BLueSnapKeys = {
+  publicKey: "<%= Rails.application.secrets[:bluesnap_public_key]%>" 
 }

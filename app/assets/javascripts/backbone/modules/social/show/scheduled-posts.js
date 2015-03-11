@@ -39,7 +39,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         twitter: '.edit-settings-row [name=twitter]',
         facebook: '.edit-settings-row [name=facebook]',
         linkedin: '.edit-settings-row [name=linkedin]',
-        google: '.edit-settings-row [name=google]'
+        // google: '.edit-settings-row [name=google]'
       };
       this.progressBar = null;
     },
@@ -53,6 +53,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       view.$el.find('span.editable').editable().on('hidden', function(e, reason) {
         view.$el.find('.edit-post').removeClass('disabled');
         view.$el.find('.social-networks a').removeClass('disabled');
+        if(reason === 'cancel') {
+          view.model.fetch();
+          view.modelBinder.bind(view.model, view.el);
+          view.render();
+        } 
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
         view.$el.find('.social-networks a').addClass('disabled');
@@ -182,8 +187,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       var row = this.$el.find('.edit-settings-row').clone();
       this.$el.find('textarea').parent().append(row);
       row.removeClass('hidden');
-      this.$el.find('textarea').attr('name', 'text')
-      this.$el.find('textarea').attr('id', 'edit-post-textarea')
+      this.$el.find('textarea').attr('name', 'text');
+      this.$el.find('textarea').attr('id', 'edit-post-textarea');
+      this.$el.find('textarea').width("600px");
       this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
       this.model.set('social_networks', this.socialNetworks);
 

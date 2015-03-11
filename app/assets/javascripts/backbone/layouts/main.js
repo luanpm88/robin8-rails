@@ -10,10 +10,11 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
   events: {
     'click nav, div#main-wrapper': 'hideSaySomething',
     'click #nav-profile': 'showProfile',
+    'click #sign-out': 'signOut',
   },
 
   onShow: function(options) {
-    var nameHolder = this.$el.find('#userDropdown');
+    var nameHolder = this.$el.find('#userDropdown span.text');
     var fName = Robin.currentUser.attributes.first_name;
     var lName = Robin.currentUser.attributes.last_name;
     var name = Robin.currentUser.attributes.name;
@@ -27,7 +28,18 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
 
   hideSaySomething: function(e) {
     console.log('clicked');
-    // Robin.vent.trigger("saySomething:hide");
+  },
+
+  signOut: function(e) {
+    e.preventDefault();
+    Robin.stopOtherModules();
+    Robin.currentUser.signOut().done(function(data){
+      Robin.vent.trigger("authentication:logged_out");
+      $.growl('Signed out successfully.',{
+        type: 'success'
+      });
+    });
+   
   },
 
   showProfile: function() {

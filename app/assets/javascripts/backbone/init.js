@@ -10,7 +10,8 @@ Robin.cachedStories = {};
 Robin.layouts = {};
 
 Robin.addRegions({
-  main: '#main'
+  main: '#main',
+  modal: ModalRegion
 });
 
 Robin.setUrl = function(route, options){
@@ -19,18 +20,19 @@ Robin.setUrl = function(route, options){
 };
 
 Robin.finishSignIn = function(data){
-  Robin.currentUser = new Robin.Models.User(data);
-  Robin.vent.trigger("authentication:logged_in");
-  Robin.loadPleaseWait();
-  $('body#main').removeClass('login');
-  Robin.setUrl('/');
+  // Robin.currentUser = new Robin.Models.User(data);
+  // Robin.vent.trigger("authentication:logged_in");
+  // Robin.loadPleaseWait();
+  // $('body').removeClass('login');
+  // window.history.pushState('', '', '/');
+  location.href='/'
 };
 
 Robin.loadPleaseWait = function(){
   if (Robin.showLoading) {
     window.loading_screen = window.pleaseWait({
       logo: AppAssets.path('logo.png'),
-      backgroundColor: 'rgb(81, 119, 155)',
+      backgroundColor: '#3c9eb6',
       loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
     });
     setTimeout(function(){
@@ -48,10 +50,16 @@ Robin.setIdentities = function(data){
 };
 
 Robin.stopOtherModules = function(){
-  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast'], function(module){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast', 'Analytics', 'Authentication', 'Billing'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
+};
+
+Robin.stopMainModules = function(){
+  _.each(['Navigation', 'Dashboard', 'SaySomething'], function(module){
+    Robin.module(module).stop();
+  });
 };
 
 Robin.on('start', function(){
@@ -71,17 +79,6 @@ Robin.on('start', function(){
   }
 });
 
-Robin.addInitializer(function(options){
-  if (Robin.currentUser && !Robin.publicPages) {
-    // Robin.module('Navigation').start();
-    // Robin.module('Dashboard').start();
-    // Robin.module('SaySomething').start();
-    // new Robin.Routers.AppRouter({controller: new Robin.Controllers.AppController()});
-  } else if (!Robin.publicPages) {
-    Robin.module('Authentication').start();
-  }
-});
-
 Robin.vent.on("authentication:logged_in", function() {
   if (Robin.publicPages) {
     Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
@@ -93,8 +90,6 @@ Robin.vent.on("authentication:logged_in", function() {
     Robin.main.show(Robin.layouts.main);
     Backbone.history.handlers = [];
     new Robin.Routers.AppRouter({controller: new Robin.Controllers.AppController()});
-    // Robin.module('Navigation').start();
-    // Robin.module('SaySomething').start();
   }
 
 });
@@ -108,6 +103,8 @@ Robin.vent.on("authentication:logged_out", function() {
   } else {
     Robin.layouts.unauthenticated = new Robin.Views.Layouts.Unauthenticated();
     Robin.main.show(Robin.layouts.unauthenticated);
+    Robin.stopMainModules();
+    Robin.module('Authentication').start();
   }
 });
 
@@ -141,6 +138,3 @@ UPLOADCARE_LOCALE_TRANSLATIONS = {
     }
   } } } }
 };
-//The UPLOADCARE_PUBLIC_KEY should be changed as soon as paid
-// account is avaialble. example:
-//UPLOADCARE_PUBLIC_KEY = "a51f0572e52df821db41";

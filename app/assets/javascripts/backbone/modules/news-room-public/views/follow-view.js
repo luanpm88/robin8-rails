@@ -11,18 +11,19 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
       e.preventDefault();
 
       var data = {
-        mailing_type: $('#mailing_type').val(),
+        list: $('#list').val(),
         email: $('#follower_email').val(),
+        newsroom_id: $('#newsroom_id').val()
       };
 
       $.ajax({
         type: 'POST',
-        url: '/users/follow',
+        url: '/followers/add',
         data: data,
         datatype: 'json',
         success: function(){
-          $('#mailing_type').val('');
-          $('#follower_email').val('');
+          $('#list').val('');
+          // $('#follower_email').val('');
         }
       })
     }

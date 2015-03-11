@@ -1,0 +1,10 @@
+Hi <%= author.get('full_name') %>,
+
+Here's a press release you might find interesting:
+
+"<%= release.get('title') %>"
+
+<%= summary %>
+
+Regards,
+<%= s.isBlank(currentUser.get('name')) ? '' : currentUser.get('name') %>
