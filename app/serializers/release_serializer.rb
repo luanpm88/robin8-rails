@@ -5,21 +5,10 @@ class ReleaseSerializer < ActiveModel::Serializer
     :characters_count, :words_count, :sentences_count,
     :paragraphs_count, :adverbs_count, :adjectives_count,
     :nouns_count, :organizations_count, :places_count, :people_count,
-    :concepts, :iptc_categories, :summaries, :plain_title, :plain_text,
-    :hashtags
+    :concepts, :iptc_categories, :summaries, :hashtags, :plain_text
 
   has_many :attachments
   has_one :news_room
-  
-  def plain_title
-    coder = HTMLEntities.new
-    coder.decode ActionController::Base.helpers.strip_tags(object.title)
-  end
-  
-  def plain_text
-    coder = HTMLEntities.new
-    coder.decode ActionController::Base.helpers.strip_tags(object.text)
-  end
   
   def concepts
     unless object.concepts.blank?

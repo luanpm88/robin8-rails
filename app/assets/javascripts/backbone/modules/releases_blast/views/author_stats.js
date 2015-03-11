@@ -78,7 +78,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           ]
         }, {
           name: 'Your release',
-          data: _(this.releaseModel) [
+          data: [
             this.releaseModel.get('characters_count'),
             this.releaseModel.get('word_count'),
             this.releaseModel.get('sentences_count'),
