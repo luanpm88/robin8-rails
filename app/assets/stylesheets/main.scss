@@ -2,23 +2,23 @@
 
 @font-face {
     font-family: ProximaNova;
-    src: url(../fonts/ProximaNova-Regular.otf);
+    src: asset-url('../fonts/ProximaNova-Regular.otf');
 }
 @font-face {
     font-family: ProximaNovaLight;
-    src: url(../fonts/ProximaNova-Light.otf);
+    src: asset-url('../fonts/ProximaNova-Light.otf');
 }
 @font-face {
     font-family: ProximaNovaSemibold;
-    src: url(../fonts/ProximaNova-Semibold.otf);
+    src: asset-url('../fonts/ProximaNova-Semibold.otf');
 }
 @font-face {
     font-family: ProximaNovaBold;
-    src: url(../fonts/ProximaNova-Bold.otf);
+    src: asset-url('../fonts/ProximaNova-Bold.otf');
 }
 @font-face {
     font-family: ProximaNovaBlack;
-    src: url(../fonts/ProximaNova-Black.otf);
+    src: asset-url('../fonts/ProximaNova-Black.otf');
 }
 
 .growl-animated {
