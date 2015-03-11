@@ -70,7 +70,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.model.set('name', this.ui.mediaListNameInput.val());
     },
     errorFields: {
-      "name": "List name"
+      "name": "List name",
+      "contacts": "Contacts"
     },
     saveListButtonClicked: function(e){
       var self = this;
@@ -277,8 +278,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     events: {
       "click @ui.pitchButton": "pitchButtonClicked"
     },
+    modelEvents: {
+      'remove:contacts': 'contactRemovedFromPitch'
+    },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
+    },
+    contactRemovedFromPitch: function(){
+      if (this.model.get('contacts').length === 0 )
+        this.ui.pitchButton.prop('disabled', true);
     },
     pitchButtonClicked: function(e){
       e.preventDefault();

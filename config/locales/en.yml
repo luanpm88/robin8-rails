@@ -25,3 +25,11 @@ en:
     messages:
       email_format: is not valid
       twitter_connect: is not connected to twitter
+  activerecord:
+    errors:
+      models:
+        media_list:
+          attributes:
+            contacts:
+              association_count_greater_than_or_equal_to: |
+                should be greater than or equal to %{count}
