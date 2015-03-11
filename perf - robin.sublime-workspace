@@ -523,7 +523,23 @@
 			"file": ".gitignore",
 			"settings":
 			{
-				"buffer_size": 473,
+				"buffer_size": 503,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/secrets.yml",
+			"settings":
+			{
+				"buffer_size": 3964,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/assets/stylesheets/main.scss",
+			"settings":
+			{
+				"buffer_size": 16844,
 				"line_ending": "Unix"
 			}
 		}
@@ -616,6 +632,10 @@
 	],
 	"file_history":
 	[
+		"/Users/Sasha_Hladyschuk/perfectial/robin8/app/assets/javascripts/main.js",
+		"/Users/Sasha_Hladyschuk/perfectial/robin8/config/initializers/mailer.rb",
+		"/Users/Sasha_Hladyschuk/perfectial/robin8/app/controllers/users/sessions_controller.rb",
+		"/Users/Sasha_Hladyschuk/perfectial/robin8/bin/setup",
 		"/Volumes/Archiver 2.2.2 by Macappdowmload.Net/Archiver SN.rtf",
 		"/Users/Sasha_Hladyschuk/site-temp/baby_express/css/style.css",
 		"/Users/Sasha_Hladyschuk/site-temp/baby_express/gulpfile.js",
@@ -739,11 +759,7 @@
 		"/Users/Sasha_Hladyschuk/site-temp/MSHealthAllies/step-3.html",
 		"/Users/Sasha_Hladyschuk/site-temp/MSHealthAllies/step-2.html",
 		"/Users/Sasha_Hladyschuk/Library/Caches/Cleanup At Startup/Transmit/BAC12678-92F2-4A3A-8590-CFB8BC60F547/main.js",
-		"/Users/Sasha_Hladyschuk/Library/Caches/Cleanup At Startup/Transmit/B5D71497-4527-4107-845A-490CDAB4D02C/variables.less",
-		"/Users/Sasha_Hladyschuk/Library/Caches/Cleanup At Startup/Transmit/70B9D6BE-67F5-4FE3-8A48-EAB53D702C89/file-history.tpl.html",
-		"/Users/Sasha_Hladyschuk/Library/Caches/Cleanup At Startup/Transmit/B4F35699-ADA9-4659-B7E3-49FC63F7D040/main.less",
-		"/Users/Sasha_Hladyschuk/Library/Caches/Cleanup At Startup/Transmit/04C9619F-8528-40E9-B1A3-CA849EF74787/features-right.tpl.html",
-		"/Users/Sasha_Hladyschuk/Library/Caches/Cleanup At Startup/Transmit/EAEC9E5F-A922-44D4-841F-3135DD1F695B/file-history.tpl.html"
+		"/Users/Sasha_Hladyschuk/Library/Caches/Cleanup At Startup/Transmit/B5D71497-4527-4107-845A-490CDAB4D02C/variables.less"
 	],
 	"find":
 	{
@@ -908,24 +924,24 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
 					"file": ".gitignore",
-					"semi_transient": true,
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 473,
+						"buffer_size": 503,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								503,
+								503
 							]
 						],
 						"settings":
@@ -934,6 +950,66 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "config/secrets.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3964,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								785,
+								785
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 90.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/assets/stylesheets/main.scss",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16844,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								16673,
+								16673
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/SCSS/SCSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 12331.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -988,6 +1064,14 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"main",
+				"app/assets/stylesheets/main.scss"
+			],
+			[
+				"secre",
+				"config/secrets.yml"
+			],
 			[
 				"stream.js",
 				"armianskij-jazuk/node_modules/gulp-autoprefixer/node_modules/gulp-util/lib/isStream.js"
