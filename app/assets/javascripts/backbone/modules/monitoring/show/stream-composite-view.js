@@ -106,6 +106,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     loadInfo: function(val) {
+      var view = this; 
       var currentModel = this.model;
       var currentValue = '';
 
@@ -149,8 +150,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
             type: 'keyword'
           };
           getKeyword.push(newValue);
-
           currentModel.set('keywords', getKeyword);
+          e.object.text = e.object.id
         } else {
           var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
           var newValue = {
@@ -158,7 +159,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
             text: e.object.text
           };
           getTopics.push(newValue);
-
           currentModel.set(val, getTopics);
         }
       }).on("select2-removed", function(e) {
