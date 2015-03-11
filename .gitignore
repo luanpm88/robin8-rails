@@ -18,3 +18,4 @@ config/database.yml
 /.capistrano
 
 perf - robin.sublime-project
+perf - robin.sublime-workspace
