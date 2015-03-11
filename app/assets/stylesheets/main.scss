@@ -22,7 +22,8 @@
 }
 
 .growl-animated {
-  z-index: 99999 !important;
+  z-index: 10000000 !important;
+  padding-right: 40px;
 }
 
 .sweet-overlay {
@@ -31,6 +32,16 @@
 
 .sweet-alert {
   z-index: 99999 !important;
+}
+
+.alert-danger {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.alert {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 
 
