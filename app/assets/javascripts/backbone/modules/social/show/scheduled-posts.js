@@ -102,20 +102,57 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     enableSocialNetwork: function(e) {
       var el = $(e.target);
       var btn = el.closest('.btn');
-      
+
       var provider = $(btn).data('provider');
-      var providerValue = this.model.attributes.social_networks[provider];
+      var tempNetworks = (new Robin.Models.SocialNetworks(this.model.get('social_networks'))).attributes;
+      var providerValue = tempNetworks[provider];
+      var oldLimit = this.countLimit(tempNetworks);
 
       if (providerValue == 'false' || providerValue == '') {
-        this.model.attributes.social_networks[provider] = 'true'
+        tempNetworks[provider] = 'true';
       } else {
-        this.model.attributes.social_networks[provider] = 'false'
+        tempNetworks[provider] = 'false';
       }
 
       var view = this;
-      this.model.updateSocial(this.model.attributes.social_networks).done(function(data){
-        view.render();
-      });
+      var newLimit = this.countLimit(tempNetworks);
+      if (newLimit == 0){
+        swal({
+          title: "Your post won't be published",
+          text: "Please choose at least one social network!",
+          type: "error",
+          showCancelButton: false,
+          confirmButtonClass: 'btn',
+          confirmButtonText: 'ok'
+        });
+      }
+
+      var textLength = this.model.attributes.text.length;
+      if (textLength > newLimit && newLimit > 0) {
+        var trimmedText = this.model.attributes.text.substring(0, newLimit)
+        swal({
+          title: "Trim the message?",
+          text: "Your message is longer than a limit of one of selected social networks (" + textLength + "/" + newLimit + "). Proceed and trim the message? NOTE: This can not be undone!",
+          type: "error",
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          confirmButtonText: 'Trim the message'
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+            view.model.attributes.text = trimmedText;
+            view.model.attributes.social_networks[provider] = tempNetworks[provider];
+            view.model.updateSocial(view.model.attributes.social_networks);
+            view.updatePost();
+          }
+        });
+      } else {
+        var view = this;
+        view.model.attributes.social_networks[provider] = tempNetworks[provider];
+        view.model.updateSocial(view.model.attributes.social_networks).done(function(data){
+          view.render();
+        });
+      }
     },
 
     shrinkLinkProcess: function(e) {
@@ -206,6 +243,23 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
       $('.edit-datetimepicker').find('input').val(datedate).change();
       $('.edit-datetimepicker').datetimepicker();
+
+      //Counter here
+      var selectedNetworks = this.socialNetworks.attributes;
+      var limit = this.countLimit(selectedNetworks);
+      var counter = this.$el.find('.post-counter');
+      var charsLeft = limit - this.$el.find('textarea').val().length
+      counter.text(charsLeft);
+      //set color:
+      if (charsLeft >= limit*0.8) {
+        counter.css("background-color", "#8CC152");
+      } else if (charsLeft >= limit*0.5) {
+        counter.css("background-color", "#E6E300");
+      } else if (charsLeft >= limit*0.2) {
+        counter.css("background-color", "#FF9813");
+      } else {
+        counter.css("background-color", "#E62E00");
+      }
     },
 
     updatePost: function() {
@@ -232,13 +286,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       var selectedNetworks = this.model.attributes.social_networks.attributes;
 
       //set character limit
-      if (selectedNetworks.twitter == "true") {
-        limit = 140;
-      } else if (selectedNetworks.linkedin == "true") {
-        limit = 689;
-      } else if (selectedNetworks.facebook == "true") {
-        limit = 2000;
-      }
+      limit = this.countLimit(selectedNetworks);
       var charsLeft = limit - sayText.val().length;
       counter.text(charsLeft);
 
@@ -266,7 +314,21 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       $('.progressjs-inner').hide();
       var prgjs = progressJs(this.$el.find("#edit-post-textarea")).setOptions({ theme: 'blackRadiusInputs' }).end();
     },
- 
+
+    countLimit: function(networks) {
+      var limit;
+      if (networks.twitter == "true") {
+        limit = 140;
+      } else if (networks.linkedin == "true") {
+        limit = 689;
+      } else if (networks.facebook == "true") {
+        limit = 2000;
+      } else {
+        limit = 0;
+      }
+      return limit
+    }
+
   });
   
   Show.ScheduledPostsComposite = Backbone.Marionette.CompositeView.extend({
