@@ -375,8 +375,10 @@ a {
   padding: 5px;
   border-radius: 4px;
 }
+.stream-header .editable {
+  cursor: pointer;
+}
 .stream-header .editable-submit {
-  background-color: #D76363;
   i {
     padding-top: 1px;
   }
