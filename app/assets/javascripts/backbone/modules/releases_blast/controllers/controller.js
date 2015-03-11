@@ -71,7 +71,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         success: function(collection, data, response){
           var socialTargetsView = new ReleasesBlast.SocialTargetsCompositeView({
             collection: collection,
-            pitchContactsCollection: self.module.pitchModel.get('contacts')
+            pitchContactsCollection: self.module.pitchModel.get('contacts'),
+            releaseModel: self.module.releaseModel
           });
           
           targetsTabLayout.socialRegion.show(socialTargetsView);
@@ -159,7 +160,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         success: function(collection, data, response){
           var influencersCompositeView = new ReleasesBlast.SocialTargetsCompositeView({
             collection: collection,
-            pitchContactsCollection: self.module.pitchModel.get('contacts')
+            pitchContactsCollection: self.module.pitchModel.get('contacts'),
+            releaseModel: self.module.releaseModel
           });
           
           self.module.searchLayout.searchResultRegion.show(influencersCompositeView);

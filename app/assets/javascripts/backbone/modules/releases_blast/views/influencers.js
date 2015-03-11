@@ -21,10 +21,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     tweetContactButtonClicked: function(e){
       e.preventDefault();
-      
-      console.log("tweet button clicked!");
+      var self = this;
       
       var view = Robin.layouts.main.saySomething.currentView;
+      text = "Hey @@[Handle] here's a press release you might find interesting: @[Link]";
+      text = text.replace('@[Handle]', self.model.get('screen_name'));
+      text = text.replace('@[Link]', self.releaseModel.permalink);
+      
+      $('form.navbar-search-sm').hide();
+      $('#shrink-links').prop('checked', true);
+      $('#shrink-links').prop('disabled', true);
+      $('#createPost').find('textarea').val(text);
+      $('#createPost').show();
+      $('.progressjs-progress').show();
       
       view.checkAbilityPosting();
       view.setCounter();
@@ -57,7 +66,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.pitchContactsCollection.remove(model);
     },
     initialize: function(options) {
-      this.pitchContactsCollection = options.pitchContactsCollection
+      this.pitchContactsCollection = options.pitchContactsCollection;
+      this.releaseModel = options.releaseModel.toJSON().release;
     }
   });
 
