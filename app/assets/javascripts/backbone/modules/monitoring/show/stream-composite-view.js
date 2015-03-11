@@ -14,7 +14,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #done': 'done',
       'click span.editable': 'editTitle',
       'click .editable-submit': 'updateTitle',
-      'click .js-show-new-stories': 'showNewStories'
+      'click .js-show-new-stories': 'showNewStories',
     },
 
     collectionEvents: {
@@ -107,6 +107,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     loadInfo: function(val) {
       var currentModel = this.model;
+      var currentValue = '';
 
       $(this.el).find('#' + val + '-select').select2({
         multiple: true,
@@ -114,27 +115,64 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         ajax: {
           url: '/autocompletes/' + val,
           dataType: 'json',
-          data: function(term, page) { return { term: term } },
-          results: function(data, page) { return { results: data } }
+          data: function(term, page) { 
+            currentValue = term;
+            return { term: term } 
+          },
+          results: function(data, page) { 
+            if (data.length > 3) {
+              data.splice(0, 1);
+            } 
+            newValue = {
+              id: currentValue,
+              text: 'Add ' + currentValue + ' as keyword',
+              type: 'keyword'
+            };
+            data.unshift(newValue);
+            return { results: data }; 
+          }
         },
         initSelection : function (element, callback) {
-          callback(currentModel.attributes[val]);
+          if (val == 'topics') {
+            callback(currentModel.attributes[val].concat(currentModel.attributes['keywords']));
+          } else {
+            callback(currentModel.attributes[val]);
+          }
         },
         minimumInputLength: 1,
       }).on("select2-selecting", function(e) {
-        var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
-        var newValue = {
-          id: e.val,
-          text: e.object.text
-        };
-        getTopics.push(newValue);
+        if (e.object.type == 'keyword' && val == 'topics') {
+          var getKeyword = currentModel.get('keywords') == undefined ? [] : currentModel.get('keywords');;
+          var newValue = {
+            id: e.val,
+            text: e.val,
+            type: 'keyword'
+          };
+          getKeyword.push(newValue);
 
-        currentModel.set(val, getTopics);
+          currentModel.set('keywords', getKeyword);
+        } else {
+          var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
+          var newValue = {
+            id: e.val,
+            text: e.object.text
+          };
+          getTopics.push(newValue);
+
+          currentModel.set(val, getTopics);
+        }
       }).on("select2-removed", function(e) {
-        var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
-        var updatedTopics = _.reject(getTopics, function(k){ return k.id == e.val; });
+        if (e.choice.type == 'keyword' && val == 'topics') {
+          var getKeywords = currentModel.get('keywords') == undefined ? [] : currentModel.get('keywords');
+          var updatedKeywords = _.reject(getKeywords, function(k){ return k.id == e.val; });
 
-        currentModel.set(val, updatedTopics);
+          currentModel.set('keywords', updatedKeywords);
+        } else {
+          var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
+          var updatedTopics = _.reject(getTopics, function(k){ return k.id == e.val; });
+
+          currentModel.set(val, updatedTopics);
+        }
       });
       $(this.el).find('#' + val + '-select').select2('val', currentModel.attributes[val]);
     },
