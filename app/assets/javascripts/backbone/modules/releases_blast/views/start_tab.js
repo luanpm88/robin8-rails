@@ -1,7 +1,7 @@
 Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette, $, _){
 
   ReleasesBlast.StartTabView = Marionette.ItemView.extend({
-    template: 'modules/releases_blast/templates/start-tab',
+    template: 'modules/releases_blast/templates/start_tab/show',
     collection: Robin.Collections.Releases,
     collectionEvents: {
       "reset": "render"

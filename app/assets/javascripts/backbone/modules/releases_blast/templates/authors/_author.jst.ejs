@@ -1,11 +1,12 @@
 <td>
   <div class="media targets-author">
     <a href="#" class="media-left">
-      <img alt="..." src="http://lorempixel.com/50/50/?0">
+      <img alt="<%= author.full_name %>" 
+        src="<%= author.avatar_url %>" />
     </a>
     <div class="media-body">
       <h4 class="media-heading">
-        <%= author.get('full_name') %>
+        <%= author.full_name %>
       </h4>
       <a class="btn btn-xs btn-primary inspect" href="#">
         <i class="fa fa-search"></i> Inspect
@@ -13,16 +14,16 @@
     </div>
   </div>
 </td>
-<td><%= author.get('blog_name') %></td>
+<td><%= author.blog_name %></td>
 
-<% if(author.get('level_of_interest')){ %>
+<% if(author.level_of_interest){ %>
 <td>
   <div class="progress active">
     <div class="progress-bar" role="progressbar" 
-      aria-valuenow="<%= author.get('level_of_interest') %>" 
+      aria-valuenow="<%= author.level_of_interest %>" 
       aria-valuemin="0" aria-valuemax="100" 
-      style="width: <%= author.get('level_of_interest') %>%;">
-        <%= author.get('level_of_interest') %>%
+      style="width: <%= author.level_of_interest %>%;">
+        <%= author.level_of_interest %>%
     </div>
   </div>
 </td>
@@ -30,9 +31,9 @@
 
 <td>
   <span class="article-length-tooltip" data-toggle="tooltip" 
-  data-title="<i class='fa fa-info-circle'></i> <%= wordMapper(author.get('stats').syntactic.words_count.mean).tooltip %>" 
+  data-title="<i class='fa fa-info-circle'></i> <%= wordMapper(author.stats.syntactic.words_count.mean).tooltip %>" 
   data-html="true">
-    <%= wordMapper(author.get('stats').syntactic.words_count.mean).label %>
+    <%= wordMapper(author.stats.syntactic.words_count.mean).label %>
   </span>
 </td>
 <td>

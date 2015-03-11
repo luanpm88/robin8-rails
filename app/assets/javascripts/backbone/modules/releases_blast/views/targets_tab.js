@@ -1,7 +1,7 @@
 Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette, $, _){
 
   ReleasesBlast.TargetsTabLayout = Marionette.LayoutView.extend({
-    template: 'modules/releases_blast/templates/targets-tab-layout',
+    template: 'modules/releases_blast/templates/targets_tab/layout',
     events: {
       "click #next-step": "openPitchTab"
     },

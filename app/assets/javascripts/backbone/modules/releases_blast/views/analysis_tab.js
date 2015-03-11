@@ -1,7 +1,7 @@
 Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette, $, _){
 
   ReleasesBlast.AnalysisTabView = Marionette.ItemView.extend({
-    template: 'modules/releases_blast/templates/analysis-tab',
+    template: 'modules/releases_blast/templates/analysis-tab/analysis-tab',
     model: Robin.Models.Release,
     events: {
       'click #btn-next': 'openTargetsTab'

@@ -75,6 +75,12 @@ module AylienPressrApi
         Configuration::ENDPOINTS[:skills_autocompletes])
       Connection.new(endpoint, params, config).request!
     end
+    
+    def stories!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:stories])
+      Connection.new(endpoint, params, config).request!
+    end
     # END Destructives methods
     
     
@@ -133,6 +139,14 @@ module AylienPressrApi
         nil
       end
     end
+    
+    def stories(value=nil, params={})
+      begin
+        stories!(value, params)
+      rescue => e
+        nil
+      end
+    end
 
     private
 
@@ -165,6 +179,17 @@ module AylienPressrApi
           end
         when Configuration::ENDPOINTS[:authors]
           params["keywords[]"] = params.delete("keywords") if params.key?("keywords")
+        when Configuration::ENDPOINTS[:stories]
+          params["author_ids[]"] = params.delete("author_ids") if params.key?("author_ids")
+          params["blog_ids[]"] = params.delete("blog_ids") if params.key?("blog_ids")
+          params["facet_fields[]"] = params.delete("facet_fields") if params.key?("facet_fields")
+          params["group_fields[]"] = params.delete("group_fields") if params.key?("group_fields")
+          params["iptc_categories[]"] = params.delete("iptc_categories") if params.key?("iptc_categories")
+          params["iptc_categories_level_1[]"] = params.delete("iptc_categories_level_1") if params.key?("iptc_categories_level_1")
+          params["iptc_categories_level_2[]"] = params.delete("iptc_categories_level_2") if params.key?("iptc_categories_level_2")
+          params["iptc_categories_level_3[]"] = params.delete("iptc_categories_level_3") if params.key?("iptc_categories_level_3")
+          params["keywords[]"] = params.delete("keywords") if params.key?("keywords")
+          params["topics[]"] = params.delete("topics") if params.key?("topics")
       end
       [endpoint, params, config]
     end

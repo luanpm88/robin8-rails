@@ -2,6 +2,9 @@ class ReleaseSerializer < ActiveModel::Serializer
   attributes :id, :user_id, :news_room_id, 
     :news_room, :title, :text, 
     :is_private, :logo_url, :created_at,
+    :characters_count, :words_count, :sentences_count,
+    :paragraphs_count, :adverbs_count, :adjectives_count,
+    :nouns_count, :organizations_count, :places_count, :people_count,
     :concepts, :iptc_categories, :summaries, :plain_title, :plain_text,
     :hashtags
 
