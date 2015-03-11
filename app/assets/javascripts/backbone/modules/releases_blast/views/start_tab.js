@@ -2,34 +2,45 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.StartTabView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/start_tab/show',
-    collection: Robin.Collections.Releases,
     collectionEvents: {
       "reset": "render"
     },
+    ui: {
+      releasesSelect: 'select',
+      analyzeButton: '#analyze'
+    },
     events: {
-      'change .form-control': 'selectChanged',
-      'click #analyze': 'analyzeRelease' 
+      'change @ui.releasesSelect': 'releasesSelectChanged',
+      'click @ui.analyzeButton': 'analyzeButtonClicked'
     },
     serializeData: function(){
       return {
         "items": this.collection.models
       }
     },
-    selectChanged: function(e){
-      if($(e.currentTarget).val() == -2){
+    releasesSelectChanged: function(e){
+      if(this.ui.releasesSelect.val() == -2){
         this.openNewRelease();
+      } else if (this.ui.releasesSelect.val() == -1){
+        this.ui.analyzeButton.prop('disabled', true);
+      } else {
+        this.ui.analyzeButton.prop('disabled', false);
       }
     },
     openNewRelease: function(){
       Backbone.history.navigate('releases', {trigger: true});
     },
-    analyzeRelease: function(e){
+    analyzeButtonClicked: function(e){
       e.preventDefault();
-      var selected_release = parseInt($('select.form-control').val());
-      if ((selected_release != -1) || (selected_release != -2)){
-        var the_release = this.collection.findWhere({id: selected_release});
-        ReleasesBlast.controller.analysis({releaseModel: the_release});
+      
+      var selectValue = this.ui.releasesSelect.val();
+      if ((selectValue != -1) || (selectValue != -2)){
+        this.analyzeRelease(parseInt(selectValue));
       }
+    },
+    analyzeRelease: function(releaseId){
+      var the_release = this.collection.findWhere({id: releaseId});
+      ReleasesBlast.controller.analysis({releaseModel: the_release});
     }
   });
 });
