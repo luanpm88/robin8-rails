@@ -3,12 +3,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
   ReleasesBlast.InfluencerView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/influencers/_influencer',
     tagName: "tr",
-    model: Robin.Models.Influencer,
-    templateHelpers: function(){
-      return {
-        user: this.model
-      }
-    },
     ui: {
       tweetContactButton: '#tweet-contact-button'
     },

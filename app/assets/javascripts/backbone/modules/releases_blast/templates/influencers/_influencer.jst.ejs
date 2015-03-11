@@ -1,26 +1,26 @@
 <td>
   <div class="media targets-author">
     <a class="pull-left" 
-      href="http://twitter.com/<%= user.get('screen_name') %>" 
+      href="http://twitter.com/<%= influencer.screen_name %>" 
       target="_blank">
-      <img class="media-object" src="<%= user.get('profile_image_url') %>">
+      <img class="media-object" src="<%= influencer.profile_image_url %>">
     </a>
     <div class="media-body">
       <h4 class="media-heading">
-        <%= getFullname(user.get('firstName'), user.get('lastName')) %>
+        <%= influencer.fullName %>
       </h4>
-      <% if (user.get('location')) { %>
+      <% if (influencer.location) { %>
         <div style="display: inline;">
           <span class="badge badge-default">
-            <i class="fa fa-map-marker"></i> <%= user.get('location') %>
+            <i class="fa fa-map-marker"></i> <%= influencer.location %>
           </span>
         </div>
       <% } %>
-      <% if (user.get('skills')) { %>
+      <% if (influencer.skills) { %>
         <% _.each(_.range(3), function(index){ %>
-          <% if (user.get('skills')[index]) { %>
+          <% if (influencer.skills[index]) { %>
             <span class="badge badge-default">
-              <i class="fa fa-tag"></i> <%= user.get('skills')[index] %>
+              <i class="fa fa-tag"></i> <%= influencer.skills[index] %>
             </span>
           <% } %>
         <% }) %>
@@ -28,28 +28,29 @@
     </div>
   </div>
 </td>
-<td><%= s.numberFormat(parseInt(user.get('followers_count'))) %></td>
+<td><%= s.numberFormat(parseInt(influencer.followers_count)) %></td>
 
 <td>
   <div class="progress active">
-    <div style="width: <%= user.get('reachScore') %>%;" aria-valuemax="100" aria-valuemin="0"
-      aria-valuenow="<%= user.get('reachScore') %>" role="progressbar" class="progress-bar"><%= user.get('reachScore') %>%
+    <div style="width: <%= influencer.reachScore %>%;" aria-valuemax="100" aria-valuemin="0"
+      aria-valuenow="<%= influencer.reachScore %>" role="progressbar" class="progress-bar">
+        <%= influencer.reachScore %>%
     </div>
   </div>
 </td>
 <td>
   <div class="progress active">
-    <div style="width: <%= user.get('ampScore') %>%;" 
-      aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%= user.get('ampScore') %>"
-      role="progressbar" class="progress-bar"><%= user.get('ampScore') %>%
+    <div style="width: <%= influencer.ampScore %>%;" 
+      aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%= influencer.ampScore %>"
+      role="progressbar" class="progress-bar"><%= influencer.ampScore %>%
     </div>
   </div>
 </td>
 <td>
   <div class="progress active">
-    <div style="width: <%= user.get('relScore') %>%;" aria-valuemax="100" aria-valuemin="0"
-      aria-valuenow="<%= user.get('relScore') %>" 
-      role="progressbar" class="progress-bar"><%= user.get('relScore') %>%
+    <div style="width: <%= influencer.relScore %>%;" aria-valuemax="100" aria-valuemin="0"
+      aria-valuenow="<%= influencer.relScore %>" 
+      role="progressbar" class="progress-bar"><%= influencer.relScore %>%
     </div>
   </div>
 </td>
@@ -62,7 +63,7 @@
   </a>
 </td>
 <td>
-  <a id="tweet-contact-button" href="http://twitter.com/<%= user.get('screen_name') %>">
+  <a id="tweet-contact-button" href="http://twitter.com/<%= influencer.screen_name %>">
     <i class="fa fa-twitter"></i>
   </a>
 </td>

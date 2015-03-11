@@ -123,21 +123,6 @@ ready = function() {
       return this.indexOf(string) == 0;
   }
   
-  /**
-   * Get fullname
-   *
-  **/
-  getFullname = function(firstName, lastName){
-    if (firstName && lastName)
-      return (firstName + ' ' + lastName);
-    else if (firstName)
-      return firstName;
-    else if (lastName)
-      return lastName;
-    else
-      return "N/A"
-  }
-
   Marionette.Behaviors.behaviorsLookup = function() {
     return window.Behaviors;
   }
