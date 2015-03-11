@@ -47,7 +47,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.module.releasesBlastHeader.set({ level: 3 });
       var self = this;
 
-      var targetsTabLayout = new ReleasesBlast.TargetsTabLayout();
+      var targetsTabLayout = new ReleasesBlast.TargetsTabLayout({
+        collection: this.module.pitchModel.get('contacts')
+      });
       this.module.layout.tabContentRegion.show(targetsTabLayout);
       
       var suggestedAuthorsCollection = new Robin.Collections.SuggestedAuthors({
