@@ -74,7 +74,7 @@ ready = function() {
   $('html').click(function(e) {
     if ($(e.target).closest('form').length == 0) {
       $('.navbar-search-lg').hide();
-      $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+      $('.navbar-search-sm').show();//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
       $('.progressjs-progress').hide();
     };
   });
