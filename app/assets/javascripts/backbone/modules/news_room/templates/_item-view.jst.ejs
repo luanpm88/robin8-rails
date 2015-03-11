@@ -9,16 +9,24 @@
       <%}%>
     </div>
     <div class="caption">
-      <h2 class="truncate"><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
+      <h2 class="truncate-title" data-toggle="tooltip" data-original-title="<%= news_room.company_name %>"><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
       <div class="description_area">
-        <p ><%= news_room.description %></p>
+        <p style="height:60px;" data-toggle="tooltip" data-original-title="<%= news_room.description %>"><%= news_room.description %></p>
       </div>
     </div>
     <div class="modal-footer">
       <div class="row">
         <div class="col-xs-12 text-center">
-          <a class="btn btn-primary" href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target="_blank"><i class="fa fa-eye"></i> Preview</a>
-          <a class="btn btn-info" href="http://<%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>
+          <% if(news_room.id && news_room.publish_on_website) {%>
+            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+          <% } else {%>
+            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+          <% } %>
+          <% if (news_room.releases_count > 0) {%>
+            <a class="btn btn-info" href="http://<%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>
+          <%} else {%>
+            <a class="btn btn-info" href="http://<%- location.host %>#releases/newsroom/<%- news_room.id %>" disabled='disabled'><i class="fa fa-list-alt"></i> Releases</a>
+          <% } %>
           <button class="btn btn-default" id="open_edit"><i class="fa fa-pencil"></i> Edit</button>
         </div>
       </div>

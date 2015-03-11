@@ -8,7 +8,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     getBillingPageView: function(){
-      return new Show.BillingPage();
+      return new Show.BillingPage({collection: new Robin.Collections.Payments()});;
     },
   }
 

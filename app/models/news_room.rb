@@ -9,10 +9,20 @@ class NewsRoom < ActiveRecord::Base
   has_many :releases, dependent: :destroy
   has_many :attachments, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
+  before_create :set_campaign_name
 
   validates :company_name, presence: true
   validates :user_id, presence: true
   validates :subdomain_name, presence: true, uniqueness: true
+  # validates :campaign_name, uniqueness: true
   validates_inclusion_of :room_type, in: VALID_TYPES, allow_blank: true
   validates_inclusion_of :size, in: VALID_SIZES, allow_blank: true
+
+  
+  private
+  
+    def set_campaign_name
+      self.campaign_name = self.company_name
+    end
+    
 end

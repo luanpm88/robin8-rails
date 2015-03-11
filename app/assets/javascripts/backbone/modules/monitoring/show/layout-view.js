@@ -2,8 +2,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.LayoutView = Backbone.Marionette.LayoutView.extend({
     template: 'modules/monitoring/show/templates/monitoring',
 
-    tagName: "div",
-    className: "streams-content",
+    // tagName: "div",
+    // className: "page-content",
 
     events: {
       'click #add-stream': 'addStream',
@@ -40,13 +40,11 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
             complete: function(request){
               console.log(request)
             },
-     
           })
         }
       });
-      currView.$el.find(".stream-container").disableSelection();
     },
-    
+
     addStream: function() {
       var model = new Robin.Models.Stream();
       var stream = new Robin.Models.Stream({model: model});

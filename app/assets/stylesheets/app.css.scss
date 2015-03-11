@@ -62,18 +62,19 @@ body.login {
     background-size: cover;
   }
 
-  header h1.logo{
-    background: image-url("header-robin8-logo.png") no-repeat scroll center top rgba(0, 0, 0, 0);
-      color: #ffffff;
-      font-family: "ProximaNovaBlack";
-      font-size: 58px;
-      font-weight: normal;
-      height: 99px;
-      line-height: 0;
-      margin: 0 auto 40px;
-      text-indent: -5555560px;
-      text-transform: uppercase;
-      background-size: contain;
+  header h1.logo a{
+    background: image-url("robin8-beta-logo.png")  no-repeat scroll center top transparent;
+    color: #ffffff;
+    font-family: "ProximaNovaBlack";
+    font-size: 58px;
+    font-weight: normal;
+    height: 99px;
+    line-height: 0;
+    margin: 0 auto 40px;
+    text-indent: -5555560px;
+    text-transform: uppercase;
+    background-size: contain;
+    display: block;
   }
   header h2{
     font-size: 24px;
@@ -283,13 +284,14 @@ body.login {
   }
 
   .signup header h2 {
-    border-top: 1px solid #5394a5;
-    width: 450px;
-    text-transform: uppercase;
-    padding-top: 20px;
-    font-family: "ProximaNovaSemibold"; 
+    border-top: 0 solid #5394a5;
+    font-family: "ProximaNovaSemibold";
+    font-size: 30px;
     font-weight: normal;
-
+    margin-top: 165px;
+    padding-top: 0;
+    text-transform: uppercase;
+    width: 450px;
   }
 
   .signup form{
@@ -852,25 +854,25 @@ body.login {
     text-align: right;
   }
 
-  .nav a.logo {
-      background: image-url("robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
-      display: block;
-      height: 38px;
-      margin-left: 110px;
-      margin-top: 25px;
-      overflow: hidden;
-      text-indent: -55555px;
-      width: 158px;
+  .nav .title-area a.logo {
+    background: image-url("robin8-navlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+    display: block;
+    height: 38px;
+    margin-left: 110px;
+    margin-top: 25px !important;
+    overflow: hidden;
+    text-indent: -55555px;
+    width: 158px;
   }
-  .homeheader .nav a.logo {
+  .homeheader .nav .title-area a.logo {
     visibility: hidden;
   }
-  .homeheader .nav.fixedscroll a.logo {
+  .homeheader .nav.fixedscroll .title-area a.logo {
     visibility: visible;
   }
 
 
-  .nav.fixedscroll a.logo{
+  .nav.fixedscroll .title-area a.logo{
     background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
   }
 
@@ -913,6 +915,12 @@ body.login {
   .top-bar-section li:not(.has-form) a:not(.button),
   .top-bar-section li:not(.has-form) a:hover:not(.button){
     background: transparent !important;
+  }
+
+  .top-bar-section li:not(.has-form) a.active:not(.button){
+      border: 3px solid #a5cc63;
+      border-radius: 2px;
+      line-height: 39px !important;
   }
 
   .top-bar-section li:not(.has-form) a:hover:not(.button){
@@ -958,8 +966,14 @@ body.login {
 
   }
 
+  .about, .team, .contact {
+    header.int-header {
+      background: image-url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
+      min-height: 340px;
+    }
+  }
   /* INTERIOR HEADER STUFF */
-  header.int-header {
+  .signup header {
       background: image-url("int-bg.png") no-repeat scroll center center / cover rgba(0, 0, 0, 0);
       min-height: 340px; 
   }
@@ -1068,6 +1082,28 @@ body.login {
 
   .team-box img{
 
+  }
+
+  .team-content .advisors{
+  margin-top: 120px;
+  padding-top: 40px;
+  border-top:2px solid #1a7b94;
+
+  }
+
+  .team-content .advisors h3{
+    color: #006481;
+      font-family: "ProximaNovaBold";
+      font-size: 24px;
+      font-weight: normal;
+      margin-bottom: 40px;
+      text-align: center;
+  }
+  .team-content .advisors h3 span{ 
+    color: #006481;
+    font-size: 24px;
+    font-family: "ProximaNova";
+    font-weight: normal;
   }
 
   .team-box h3{
@@ -1395,6 +1431,7 @@ body.login {
     }
     .signup header h2 { 
         width: auto;
+        font-size: 20px;
     }
     th.removecolumn, td.remove {
       font-size: 10px;

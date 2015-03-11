@@ -20,6 +20,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       $('html, body').animate({
         scrollTop: 0
       }, 600);
+      $('.nav.fixed a').removeClass('active');
+      $('#signup-link').addClass('active');
     },
 
     onShow: function() {

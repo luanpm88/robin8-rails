@@ -1,4 +1,4 @@
-Robin.Models.Stream = Backbone.Model.extend({
+Robin.Models.Subscription = Backbone.Model.extend({
   urlRoot: '/subscriptions/',
 
   toJSON: function() {

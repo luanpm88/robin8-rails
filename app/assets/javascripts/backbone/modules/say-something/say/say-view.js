@@ -26,9 +26,10 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       'change #shrink-links': 'shrinkLinkProcess',
       'submit form': 'createPost',
       'click a.btn-default': 'showPicker',
-      'click a.btn-danger' : 'hidePicker',
-      'keyup #say-something-field'    : 'setCounter',
-      'click .social-networks .btn': 'enableSocialNetwork'
+      'click a.btn-danger': 'hidePicker',
+      'keyup #say-something-field': 'setCounter',
+      'click .social-networks .btn': 'enableSocialNetwork',
+      'click .input-group-addon': 'changeTime'
     },
 
     initialize: function() {
@@ -53,14 +54,18 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         // google: '[name=google]'
       }
-      this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
+      this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A', minDate: moment()});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
 
-
     ui:{
       minDatePicker: "#schedule-datetimepicker"
+    },
+
+    changeTime: function() {
+      $('#scheduled_date').val(moment().format('MM/DD/YYYY hh:mm A'));
+      $('#schedule-datetimepicker').data("DateTimePicker").minDate(moment());
     },
 
     showContainer: function(e) {
@@ -113,11 +118,11 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     showPicker: function() {
-      $('a.btn-default').hide().next().show();
+      this.$el.find('a.btn-default').hide().next().show();
     },
 
     hidePicker: function() {
-      $('div.pull-right').hide().prev().show();
+      $('div.pull-right.schedule-datetimepicker').hide().prev().show();
     },
 
     shrinkLinkProcess: function(e) {
@@ -125,7 +130,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         var saySomethingContent = $('#say-something-field').val();
         var www_pattern = /(^|[\s\n]|<br\/?>)((www).[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
         var www_urls = saySomethingContent.match(www_pattern);
-        
+
         if (www_urls != null) {
           $.each(www_urls, function( index, value ) {
             value = $.trim(value)
@@ -169,10 +174,11 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     createPost: function(e) {
       e.preventDefault();
+      var selectedDate = moment($('#scheduled_date').val());
       this.socialNetworksBinder.copyViewValuesToModel();
       this.modelBinder.copyViewValuesToModel();
-      
-      if (this.model.attributes.scheduled_date === ""){
+      var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).end();
+      if (this.model.attributes.scheduled_date === "" || selectedDate < moment()){
         this.model.attributes.scheduled_date = moment().utc();
       } else {
         this.model.attributes.scheduled_date = moment.utc(new Date(this.model.attributes.scheduled_date));
@@ -183,10 +189,12 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
           $('.navbar-search-lg').hide();
           $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
           $('.progressjs-progress').hide();
-          
-          if (Robin.Social._isInitialized){            
+
+          if (Robin.Social._isInitialized){
             Robin.module("Social").postsCollection.fetch();
-          } 
+          }
+
+          Robin.SaySomething.Say.Controller.showSayView();
 
           $.growl({message: "You've created a post"
           },{
@@ -217,6 +225,6 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       this.setCounter();
       this.checkAbilityPosting();
     }
-    
+
   });
 });

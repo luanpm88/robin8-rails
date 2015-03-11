@@ -20,18 +20,19 @@ Robin.setUrl = function(route, options){
 };
 
 Robin.finishSignIn = function(data){
-  Robin.currentUser = new Robin.Models.User(data);
-  Robin.vent.trigger("authentication:logged_in");
-  Robin.loadPleaseWait();
-  $('body').removeClass('login');
-  window.history.pushState('', '', '/');
+  // Robin.currentUser = new Robin.Models.User(data);
+  // Robin.vent.trigger("authentication:logged_in");
+  // Robin.loadPleaseWait();
+  // $('body').removeClass('login');
+  // window.history.pushState('', '', '/');
+  location.href='/'
 };
 
 Robin.loadPleaseWait = function(){
   if (Robin.showLoading) {
     window.loading_screen = window.pleaseWait({
       logo: AppAssets.path('logo.png'),
-      backgroundColor: 'rgb(81, 119, 155)',
+      backgroundColor: '#3c9eb6',
       loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
     });
     setTimeout(function(){

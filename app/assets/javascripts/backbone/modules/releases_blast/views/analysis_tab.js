@@ -14,7 +14,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.getTextApiResult();
       this.textapiResult = {};
     },
-    templateHelpers: function(){
+    serializeData: function(){
       return {
         textapiResult: this.textapiResult
       }
@@ -52,14 +52,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     openTargetsTab: function(){
-      ReleasesBlast.controller.targets({release_id: this.model.id});
+      ReleasesBlast.controller.targets();
     },
     getTextApiResult: function(){
       var that = this;
       var endpoints = [
         'textapi/classify', 
         'textapi/concepts', 
-        'textapi/summarize'
+        'textapi/summarize',
+        'textapi/hashtags'
       ];
       
       var resultReady = _.after(endpoints.length + 1, function(){
@@ -88,13 +89,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           dataType: 'json',
           method: 'POST',
           data: {
-            title: that.model.attributes.title, 
-            text: that.model.attributes.text
+            title: that.model.get('title'), 
+            text: that.model.get('plain_text'),
+            sentences_number: 10
           },
           success: function(response){
             switch(endpoint) {
               case 'textapi/concepts':
-                var prBody = that.model.attributes.text;
+                var prBody = that.model.get('plain_text');
                 var countedTopics = _.chain(response).foldl(function(memo, t, z) {
                   _(t.surfaceForms).each(function(sf) {
                     var pattern = new RegExp('\\b' + sf.string + '\\b', 'ig');
@@ -147,8 +149,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 resultReady();
                 break;
               case 'textapi/summarize':
-                that.textapiResult["summarize"] = response;
+                that.textapiResult["summarize"] = _(response).first(5);
+                that.model.set({summaries: JSON.stringify(response)});
                 boldTopicsInSummary();
+                resultReady();
+                break;
+              case 'textapi/hashtags':
+                that.textapiResult["hashtags"] = response;
+                that.model.set({hashtags: JSON.stringify(response)});
                 resultReady();
                 break;
             }

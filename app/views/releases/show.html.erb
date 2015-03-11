@@ -1,0 +1,32 @@
+<div id='wrapper'>
+  <div id="sidebar-wrapper">
+    <%= render 'news_rooms/sidebar', news_room: @news_room %>
+  </div>
+  <div id="page-content-wrapper">
+    <h4 style='margin-top: 0px'>Press Releases</h4>
+    <div class="row">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="jumbotron release">
+              <div class='jumbotron-photo'>
+                <% if @release.logo_url %>
+                  <img class="img-rounded" src="<%= release.logo_url %>">
+                <% end %>
+              </div>
+              <div class='jumbotron-contents'>
+                <h1><%= @release.title %></h1>
+                <div>
+                  <%= @release.text %>
+                </div>
+              </div>
+              
+            </div>
+            <hr style="margin-bottom: 4px;">
+            <%= render 'news_rooms/footer' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -18,45 +18,12 @@
   </script>
 </head>
 <body id="main">
-<script type="text/javascript">
   
-  $(document).ready(function() {
-    Robin.start();
-  });
-  <% if flash[:success_confirmation] -%>    
-    Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
-  <% end -%>
-  <% if signed_in? -%>    
-    Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
-    <% unless request.subdomain.blank? %>
-      Robin.publicPages = true
-    <% end %>
-  <% else -%>
-    Robin.currentUser = null;
-    Robin.publicPages = true;
-  <% end -%>
-
-  <% if Rails.env == 'development' -%>
-    Robin.showLoading = false;
-  <% else -%>
-    Robin.showLoading = true;
-  <% end -%>
-
-</script>
-
 <!-- load bitly javascript sdk -->
 <script type="text/javascript" src="http://bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">
 </script>
 <!-- end load bitly javascript sdk -->
-
 <%= yield %>
-
-<!-- START Parse.ly Include: Standard -->
-<div id="parsely-root" style="display: none">
-  <div id="parsely-cfg" data-parsely-site="robin8.com"></div>
-</div>
-<!-- END Parse.ly Include -->
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
 </body>
 </html>

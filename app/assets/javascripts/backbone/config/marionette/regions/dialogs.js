@@ -25,7 +25,7 @@ var ModalRegion = Marionette.Region.extend({
     this.$el.modal('show');
   },
 
-  onClose: function() {
+  onEmpty: function() {
     this.$el.modal('hide');
   }
 });

@@ -13,7 +13,6 @@
  *= require bootstrap-sass
  *= require bootstrap-sweetalert
  *= require sass-bootstrap-glyphicons
- *= require bootstrap-sweetalert
  *= require blueimp-gallery
  * require bootstrap3-wysihtml5-bower
  *= require eonasdan-bootstrap-datetimepicker
@@ -36,5 +35,6 @@
  *= require bootstrap-switch
  * require dataTables.bootstrap
  *= require select2-bootstrap-css
+ *= require toastr
  */
 @import "bootstrap";

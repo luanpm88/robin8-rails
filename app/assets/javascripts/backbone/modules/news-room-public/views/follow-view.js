@@ -13,6 +13,7 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
       var data = {
         list: $('#list').val(),
         email: $('#follower_email').val(),
+        newsroom_id: $('#newsroom_id').val()
       };
 
       $.ajax({
@@ -22,7 +23,7 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
         datatype: 'json',
         success: function(){
           $('#list').val('');
-          $('#follower_email').val('');
+          // $('#follower_email').val('');
         }
       })
     }

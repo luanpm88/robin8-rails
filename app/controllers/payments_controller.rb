@@ -4,6 +4,7 @@ class PaymentsController < ApplicationController
 
   def index
     @payments = current_user.payments
+    render json: @payments
   end
 
 end

@@ -1,4 +1,6 @@
 json.array!(@media_lists) do |media_list|
-  json.extract! media_list, :id, :name, :user_id
-  json.url media_list_url(media_list, format: :json)
+  json.extract! media_list, :id, :name
+  json.set! :contacts do
+    json.array! media_list.contacts, partial: 'contacts/contact', as: :contact
+  end
 end

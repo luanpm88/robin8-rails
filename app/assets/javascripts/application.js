@@ -29,11 +29,12 @@
 //= require chance
 //= require please-wait
 //= require backbone
+//= require backbone-relational
 //= require backbone.babysitter
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-//= require highcharts
+// require highcharts
 //= require select2
 //= require_directory ./lib
 //= require bootstrap-tagsinput
@@ -47,6 +48,7 @@
 //= require DataTables
 //= require bootstrap-switch
 // require dataTables.bootstrap
+//= require toastr
 
 //= require_tree ./backbone/config
 //= require backbone/init
@@ -72,7 +74,7 @@ ready = function() {
   $('html').click(function(e) {
     if ($(e.target).closest('form').length == 0) {
       $('.navbar-search-lg').hide();
-      $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
+      $('.navbar-search-sm').show();//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
       $('.progressjs-progress').hide();
     };
   });
@@ -141,6 +143,15 @@ ready = function() {
     return window.Behaviors;
   }
 };
+
+$(window).on('scroll', function() {
+  scrollPosition = $(this).scrollTop();
+  if (scrollPosition >= 1) { 
+      $('.nav').addClass('fixedscroll'); 
+  }else{
+      $('.nav').removeClass('fixedscroll'); 
+  }
+});
 
 $(document).ready(ready);
 $(document).on('page:load', ready);

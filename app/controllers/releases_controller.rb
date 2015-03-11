@@ -1,4 +1,5 @@
 class ReleasesController < ApplicationController
+  layout 'public_pages', only: [:show]
   has_scope :by_news_room
 
   def index
@@ -18,7 +19,13 @@ class ReleasesController < ApplicationController
   end
 
   def show
-    render json: Release.where(id: params[:id], is_private: false).first
+    respond_to do |format|
+      format.html {
+        @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
+        @release = @news_room.releases.find(params[:id])
+      }
+      format.json { render json: Release.where(id: params[:id], is_private: false).first }
+    end
   end
 
   def update
@@ -40,7 +47,7 @@ class ReleasesController < ApplicationController
 
   def release_params
     params.require(:release).permit(:title, :text, :news_room_id, :is_private, 
-      :logo_url, :concepts, :iptc_categories,
+      :logo_url, :concepts, :iptc_categories, :summaries, :hashtags,
       attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy])
   end
 end
