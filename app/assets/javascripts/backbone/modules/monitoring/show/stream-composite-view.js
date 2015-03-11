@@ -106,7 +106,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     loadInfo: function(val) {
-      var view = this; 
       var currentModel = this.model;
       var currentValue = '';
 
