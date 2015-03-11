@@ -2,6 +2,7 @@ class Stream < ActiveRecord::Base
   belongs_to :user
   serialize :topics, Array
   serialize :blogs, Array
+  serialize :keywords, Array
   validates :sort_column, inclusion: { in: %w(published_at shares_count) }
   validates :position, numericality: { greater_than_or_equal_to: 0 },
                        uniqueness: { scope: :user_id },
@@ -19,6 +20,7 @@ class Stream < ActiveRecord::Base
     {
       'blog_ids[]' => blogs.map{|blog| blog[:id]},
       'topics[]' => topics.map{|topic| topic[:id]},
+      'keywords[]' => keywords.map{|keyword| keyword[:id]},
       sort_column: sort_column,
       sort_direction: 'desc',
       published_at: sort_column == 'shares_count' ? published_at : nil
