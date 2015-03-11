@@ -19,3 +19,4 @@ config/database.yml
 public/system
 
 perf - robin.sublime-project
+perf - robin.sublime-workspace
