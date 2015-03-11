@@ -501,7 +501,9 @@ a {
 .newsrooms .newsroom {
   float: left;
   width: 360px;
+  height: 615px;
   padding-left: 15px;
+  margin-bottom: 30px;
 }
 .newsroom .thumbnail { 
     box-shadow: 0 0 0 rgba(0, 0, 0, 0.2); 
@@ -1237,4 +1239,21 @@ input.form-control[type="file"] {
     margin: 0px;
     color: #3BAFDA;
   }
+}
+
+.truncate-title {
+  width: 325px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.newsroom .tooltip-inner {
+  max-width: 340px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+ }
+
+.newsroom .tooltip {
+  padding-right: 1px;
 }

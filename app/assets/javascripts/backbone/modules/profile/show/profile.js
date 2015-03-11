@@ -168,7 +168,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
                 element: '#growler-alert',
                 type: 'success',
                 offset: 65,
-                delay: 7000,
+                delay: 30000,
                 placement: {
                   from: "top",
                   align: "right"
