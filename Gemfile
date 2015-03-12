@@ -15,6 +15,8 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -50,7 +52,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-backbone.babysitter'
   gem 'rails-assets-please-wait'
   gem 'rails-assets-x-editable'
-  gem 'rails-assets-jqueryui'
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
