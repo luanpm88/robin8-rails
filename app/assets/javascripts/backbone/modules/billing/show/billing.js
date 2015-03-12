@@ -51,7 +51,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
 
     cancelSubscription: function(event) {
       Robin.currentUser.cancelSubscription().done(function(data){
-        window.location.href = '/users/sign_out'
+        // window.location.href = '/users/sign_out'
       });
     },
 
