@@ -77,7 +77,7 @@ Rails.application.routes.draw do
   post 'followers/add/', to: 'followers#add'
 
   constraints(Subdomain) do
-    get '/' => 'news_rooms#preview'
+    get '/' => 'news_rooms#preview', as: :subdomain_root
   end
 
   root 'pages#home'
