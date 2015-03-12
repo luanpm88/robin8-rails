@@ -168,6 +168,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       var influencersCollection = new Robin.Collections.Influencers();
       
+      // Loading view
+      this.module.searchLayout.searchResultRegion.show(
+        new Robin.Components.Loading.LoadingView()
+      );
+      // END Loading view
+      
       influencersCollection.findInfluencers(params, {
         success: function(collection, data, response){
           var influencersCompositeView = new ReleasesBlast.SocialTargetsCompositeView({
@@ -184,6 +190,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     searchAuthors: function(params){
       var self = this;
       var authorsCollection = new Robin.Collections.Authors();
+      
+      // Loading view
+      this.module.searchLayout.searchResultRegion.show(
+        new Robin.Components.Loading.LoadingView()
+      );
+      // END Loading view
       
       authorsCollection.fetchAuthors(params, {
         success: function(collection, data, response){
