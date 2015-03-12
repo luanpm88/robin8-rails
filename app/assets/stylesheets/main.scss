@@ -398,6 +398,13 @@ a {
   padding: 8px 8px;
   background-color: #f5f5f5;
 }
+.rss-dialog {
+  &.closed  {
+    max-height: 0 !important;
+  }
+  max-height: 100px !important;
+}
+
 
 .stories .media-left, .media > .pull-left {
     padding-right: 8px;
