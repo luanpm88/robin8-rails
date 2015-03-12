@@ -83,8 +83,8 @@
     </div>
   </li>
   <li class="navlinks">
-    <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets" class="collapsed"><i class="fa fa-twitter"></i> Latest Tweets</a>
-    <div class="collapse collapsible <%= news_room.twitter_link.blank? ? 'blank' : '' %>" id="collapseTweets" style="padding: 6px !important;">
+    <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets" class="collapsed "><i class="fa fa-twitter"></i> Latest Tweets</a>
+    <div class="collapse collapsible <%= news_room.twitter_link.blank? ? 'blank' : 'correct' %>" id="collapseTweets" style="padding: 6px !important;">
       <!-- <a class="twitter-timeline <%= news_room.blank? ? 'hidden' : '' %>" href="<%= news_room.twitter_link %>"  data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link %>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a> -->
       <div class="twitter-wrap  <%= news_room.twitter_link.blank? ? 'hidden' : '' %>">
         <a class="twitter-timeline" href="<%= news_room.twitter_link%>" data-widget-id="398762441560952832" data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link.split('/').last%>" data-chrome="nofooter noheader transparent"></a>

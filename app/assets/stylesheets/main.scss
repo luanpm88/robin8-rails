@@ -713,7 +713,8 @@ nav{text-align: center;}
   display: inline;
 }
 .releases-toolbar .btn {
-  margin-bottom: 5px;
+  // margin-bottom: 5px;
+  vertical-align: top;
 }
 .release-item h3 a {
   color: #333;
