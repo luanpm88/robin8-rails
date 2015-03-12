@@ -494,6 +494,11 @@ a {
 .sidebar-nav > li #collapseTweets.collapsible {
     background: none repeat scroll 0 0 #ffffff; 
 }
+
+.sidebar-nav > li #collapseTweets.blank {
+    background: #006481;
+}
+
 .twitter-wrap {
     margin-left: 30px;
     margin-top: -6px;
