@@ -5,7 +5,8 @@ class ReleaseSerializer < ActiveModel::Serializer
     :characters_count, :words_count, :sentences_count,
     :paragraphs_count, :adverbs_count, :adjectives_count,
     :nouns_count, :organizations_count, :places_count, :people_count,
-    :concepts, :iptc_categories, :summaries, :hashtags, :plain_text
+    :concepts, :iptc_categories, :summaries, :hashtags, :plain_text,
+    :subdomain_name, :news_room_public
 
   has_many :attachments
   has_one :news_room
@@ -40,5 +41,13 @@ class ReleaseSerializer < ActiveModel::Serializer
     else
       []
     end
+  end
+
+  def subdomain_name
+    news_room.subdomain_name
+  end
+
+  def news_room_public
+    news_room.publish_on_website
   end
 end
