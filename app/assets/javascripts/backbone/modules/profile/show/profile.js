@@ -3,8 +3,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     template: 'modules/profile/show/templates/profile',
 
     events: {
-      'click #saveChanges': 'updateProfile',
-      'reset form': 'cancel'
+      'click #saveChanges': 'updateProfile'
     },
 
     initialize: function() {
@@ -203,11 +202,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         }
         this.form.data('formValidation').updateMessage(key, 'serverError', val)
       }, this);
-    },
+    }
 
-    cancel: function() {
-      Robin.stopOtherModules();
-      Robin.module('Dashboard').start();
-    },
   });
 });

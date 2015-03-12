@@ -61,7 +61,7 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
     collection: new Robin.Collections.ManageableUsers(),
 
     events: {
-      'click .invite': 'sendInvite',
+      'click .invite': 'sendInvite'
     },
 
     initialize: function() {
