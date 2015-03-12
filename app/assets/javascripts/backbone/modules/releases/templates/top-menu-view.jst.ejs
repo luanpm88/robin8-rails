@@ -91,10 +91,6 @@
           <% if(release.id) { %>
             <button type="button" class="btn btn-danger pull-left" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
           <% } %>
-          <% window.release = release %>
-          <% if(release.id) { %>
-            <button type="button" class="btn btn-danger pull-left" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
-          <% } %>
           <% if (release.id && release.news_room_public && !release.is_private) {%>
             <a href="http://<%- release.subdomain_name %>.<%- location.host %>#releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
