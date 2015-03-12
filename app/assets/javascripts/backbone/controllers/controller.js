@@ -15,6 +15,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     Robin.module('ReleasesBlast').start();
   },
 
+  showManageUsers: function() {
+    this.stopAll();
+    Robin.module('ManageUsers').start();
+  },
+
   showMonitoring: function() {
     this.stopAll();
     Robin.module('Monitoring').start();

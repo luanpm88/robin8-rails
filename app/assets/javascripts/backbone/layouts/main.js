@@ -8,9 +8,7 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
   },
 
   events: {
-    'click nav, div#main-wrapper': 'hideSaySomething',
-    'click #nav-profile': 'showProfile',
-    'click #sign-out': 'signOut',
+    'click #sign-out': 'signOut'
   },
 
   onShow: function(options) {
@@ -26,10 +24,6 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
     }
   },
 
-  hideSaySomething: function(e) {
-    console.log('clicked');
-  },
-
   signOut: function(e) {
     e.preventDefault();
     Robin.stopOtherModules();
@@ -39,11 +33,6 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
         type: 'success'
       });
     });
-   
-  },
+  }
 
-  showProfile: function() {
-    Robin.stopOtherModules();
-    Robin.module('Profile').start();
-  },
 });

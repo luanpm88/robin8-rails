@@ -415,10 +415,16 @@ a {
     content:'d';
 }
 .soc-linkedin {
-    background-color: #ffffff;    margin-left: 27px;
+    background-color: #ffffff;;
 }
 .soc-linkedin:before {
     content:'j';
+}
+.soc-instagram {
+    background-color: #ffffff;;
+}
+.soc-instagram:before {
+    content:'x';
 }
 .soc-rss {
     background-color: #ffffff;
@@ -439,6 +445,9 @@ a {
     background-color: #3c9eb6;
 }
 .soc-google:hover {
+    background-color: #3c9eb6;
+}
+.soc-instagram:hover {
     background-color: #3c9eb6;
 }
 .soc-pinterest:hover {
@@ -494,6 +503,11 @@ a {
 .sidebar-nav > li #collapseTweets.collapsible {
     background: none repeat scroll 0 0 #ffffff; 
 }
+
+.sidebar-nav > li #collapseTweets.blank {
+    background: #006481;
+}
+
 .twitter-wrap {
     margin-left: 30px;
     margin-top: -6px;
