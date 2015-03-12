@@ -21,6 +21,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       Robin.vent.on("search:influencers:clicked", function(params) {
         self.searchInfluencers(params);
       });
+      
+      Robin.vent.on("targets:tab:clicked", function(params){
+        if (self.module.releasesBlastHeader.get('level') === 4)
+          self.targets();
+      });
     },
     start: function(params){
       this.module.releasesBlastHeader.set({ level: 1 });
@@ -43,7 +48,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       this.module.layout.tabContentRegion.show(analysisTabView);
     },
-    targets: function(params){
+    targets: function(){
       this.module.releasesBlastHeader.set({ level: 3 });
       var self = this;
 
