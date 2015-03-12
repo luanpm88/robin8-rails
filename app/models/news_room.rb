@@ -17,8 +17,15 @@ class NewsRoom < ActiveRecord::Base
   # validates :campaign_name, uniqueness: true
   validates_inclusion_of :room_type, in: VALID_TYPES, allow_blank: true
   validates_inclusion_of :size, in: VALID_SIZES, allow_blank: true
-
   
+  def city_state
+    [city, state].join(', ')
+  end
+
+  def location
+    [address_1, postal_code, city, state, country].join(', ')
+  end
+
   private
   
     def set_campaign_name

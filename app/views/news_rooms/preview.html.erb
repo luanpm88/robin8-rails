@@ -8,7 +8,7 @@
         <div class="col-lg-12">
           <h1><%= @news_room.company_name %></h1>
           <p><%= @news_room.description %></p>
-          <p>You can follow us on Twitter via <code>@acme</code> or using the <code>#acmecorp</code> hashtag.</p>
+          <!-- <p>You can follow us on Twitter via <code>@acme</code> or using the <code>#acmecorp</code> hashtag.</p> -->
           <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
             <i class="fa fa-image"></i> Press kit
           <% end %>
@@ -25,19 +25,17 @@
           <nav id='pagination' align="center"></nav>
           <hr>
           <div id='content-footer'>
-            <h4>About ACME Corp</h4>
+            <h4>About <%= @news_room.company_name %></h4>
             <p>
-              <strong>Location:</strong> Headquarters in Melbourne, Australia. Remote team located around the world.
+              <strong>Location:</strong> 
+              <%= @news_room.location %>
             </p>
             <p>
-              <strong>What Is ACME Corp?</strong>
+              <strong>What Is <%= @news_room.company_name %>?</strong>
             </p>
-            <p>
-              ACME is a network of sites used by millions of people for their creative projects. The network comprises&nbsp;<a href="#">ACME Market</a>,&nbsp;<a href="http://studio.ACME.com">ACME Studio</a>, and&nbsp;<a href="http://tutsplus.com">ACME Suite</a>.&nbsp;
-            </p>
-            <p>
-              ACME Market offers users millions of creative assets, project files and kits to use for web, print and video projects. ACME Studio connects users with a community of freelance talent.&nbsp;ACME Suite helps people learn creative skills online with video courses and free tutorials.
-            </p>
+            <div>
+              <%= @news_room.description %>
+            </div>
           </div>
           <%= render 'footer' %>
         </div>

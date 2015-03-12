@@ -1,6 +1,6 @@
 <ul class="sidebar-nav">
   <li class="sidebar-brand">
-    <a href="company.html">
+    <a href="<%= subdomain_root_path %>">
       <% if news_room.logo_url %>
         <%= image_tag news_room.logo_url, class: 'logo' %>
       <% else %>
@@ -19,17 +19,34 @@
           <strong class="subhead"><%- news_room.company_name %></strong>
         <% end %>
         <p><strong>Email:</strong><br /> <a href="mailto:<%= news_room.email %>"><%= news_room.email %></a></p>
-        <p><strong>Address:</strong><br /><%= news_room.address_1 %></p>
+        <p>
+          <strong>Address:</strong><br />
+          <% unless news_room.postal_code.blank? %>
+            PO Box <%= news_room.postal_code %><br />
+          <% end %>
+          <% unless news_room.address_1.blank? %>
+            <%= news_room.address_1 %><br />
+          <% end %>
+          <% unless news_room.city_state.blank? %>
+            <%= news_room.city_state %><br />
+          <% end %>
+          <% unless news_room.country.blank? %>
+            <%= news_room.country %><br />
+          <% end %>
+        </p>
         <ul class="contact-links">
-          <li>
-            <a href="#"><i class="fa fa-globe"></i> Main website</a>
-          </li>
-          <li>
-            <a href="#"><i class="fa fa-newspaper-o"></i> Company blog</a>
-          </li>
-          <li>
-            <a href="#"><i class="fa fa-envelope"></i> Contact</a>
-          </li>
+          <% if news_room.web_address %>
+            <li>
+              <a href="news_room.web_address"><i class="fa fa-globe"></i> <%= news_room.web_address %></a>
+            </li>
+          <% end %>
+          <% if news_room.email %>
+            <li>
+              <%= mail_to news_room.email do %>
+                <i class="fa fa-envelope"></i> Contact
+              <% end %>
+            </li>
+          <% end %>
         </ul>
       </div>
     </div>
