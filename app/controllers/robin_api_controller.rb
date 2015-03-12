@@ -21,6 +21,12 @@ class RobinApiController < ApplicationController
     render json: response
   end
   
+  def stories
+    response = @client.stories! params
+
+    render json: response
+  end
+  
   def influencers
     response = @client.influencers params
 

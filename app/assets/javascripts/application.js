@@ -34,7 +34,7 @@
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-//= require highcharts
+// require highcharts
 //= require select2
 //= require_directory ./lib
 //= require bootstrap-tagsinput
@@ -48,7 +48,6 @@
 //= require DataTables
 //= require bootstrap-switch
 // require dataTables.bootstrap
-//= require toastr
 
 //= require_tree ./backbone/config
 //= require backbone/init
@@ -124,21 +123,6 @@ ready = function() {
       return this.indexOf(string) == 0;
   }
   
-  /**
-   * Get fullname
-   *
-  **/
-  getFullname = function(firstName, lastName){
-    if (firstName && lastName)
-      return (firstName + ' ' + lastName);
-    else if (firstName)
-      return firstName;
-    else if (lastName)
-      return lastName;
-    else
-      return "N/A"
-  }
-
   Marionette.Behaviors.behaviorsLookup = function() {
     return window.Behaviors;
   }

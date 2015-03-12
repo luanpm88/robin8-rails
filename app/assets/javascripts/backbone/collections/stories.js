@@ -66,8 +66,9 @@ Robin.Collections.Stories = Backbone.Collection.extend({
     var collection = this;
     this.previousPageBeingFetched = true;
 
-    this.fetch({data: {cursor: this.nextPageCursor}, remove: false, success: function() {
-      collection.previousPageBeingFetched = false;
-    }});
+    this.fetch({data: {cursor: this.nextPageCursor}, remove: false,
+      success: function() { collection.previousPageBeingFetched = false; },
+      error: function() { collection.previousPageBeingFetched = false; }
+    });
   }
 });

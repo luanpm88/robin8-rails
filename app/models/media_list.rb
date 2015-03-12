@@ -9,7 +9,8 @@ class MediaList < ActiveRecord::Base
   validates_attachment_size :attachment, :in => 0..500.kilobytes
   validates_presence_of :name
   validates_uniqueness_of :name
-  
+  validates :contacts, association_count: { minimum: 1 }
+    
   before_save :import_contacts, if: :attachment?
     
   private

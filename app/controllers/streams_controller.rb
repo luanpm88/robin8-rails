@@ -32,7 +32,7 @@ class StreamsController < ApplicationController
   def stories
     stream = Stream.find(params[:id]) # ToDo: authorize reading stream
     req_params = stream.query_params
-    req_params.merge!(cursor: params[:cursor]) if params[:cursor]
+    req_params.merge!(cursor: URI.decode(params[:cursor])) if params[:cursor]
 
     uri = URI(Rails.application.secrets.robin_api_url + '/stories')
     uri.query = URI.encode_www_form req_params
@@ -41,12 +41,13 @@ class StreamsController < ApplicationController
     req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
 
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
+    parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
     respond_to do |format|
-      format.json { render json: JSON.parse(res.body)}
+      format.json { render json: parsed_res}
       format.rss {
         render layout: false,
         locals: {
-          stories: JSON.parse(res.body),
+          stories: parsed_res,
           stream_id: params[:id],
           topicsForRss: params[:topicsForRss],
           blogsForRss: params[:blogsForRss]
@@ -64,7 +65,7 @@ class StreamsController < ApplicationController
   end
 
   def stream_params
-    params.require(:stream).permit(:user_id, :name, :sort_column, :published_at, topics: [:id, :text], blogs: [:id, :text])
+    params.require(:stream).permit(:user_id, :name, :sort_column, :published_at, topics: [:id, :text], blogs: [:id, :text], keywords: [:id, :text, :type])
   end
 
 end

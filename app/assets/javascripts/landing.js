@@ -17,7 +17,6 @@
 //= require ./lib/foundation.min
 //= require ./lib/modernizr
 
-console.log('landing');
 function setSizes(){
   $('.sizeheader').css('height',$(window).height()); 
 

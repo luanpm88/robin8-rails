@@ -11,6 +11,10 @@ class Subscription < ActiveRecord::Base
     UserMailer.successfull_subscription(self).deliver
   end
 
+  def as_json(options={})
+    super(methods: [:package])
+  end
+
   def is_cancelled?
     expiry.blank? ? false : true
   end

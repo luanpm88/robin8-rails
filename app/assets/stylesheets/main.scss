@@ -1,24 +1,22 @@
-
-
 @font-face {
     font-family: ProximaNova;
-    src: asset-url('../fonts/ProximaNova-Regular.otf');
+    src: asset-url("ProximaNova-Regular.otf");
 }
 @font-face {
     font-family: ProximaNovaLight;
-    src: asset-url('../fonts/ProximaNova-Light.otf');
+    src: asset-url("ProximaNova-Light.otf");
 }
 @font-face {
     font-family: ProximaNovaSemibold;
-    src: asset-url('../fonts/ProximaNova-Semibold.otf');
+    src: asset-url("ProximaNova-Semibold.otf");
 }
 @font-face {
     font-family: ProximaNovaBold;
-    src: asset-url('../fonts/ProximaNova-Bold.otf');
+    src: asset-url("ProximaNova-Bold.otf");
 }
 @font-face {
     font-family: ProximaNovaBlack;
-    src: asset-url('../fonts/ProximaNova-Black.otf');
+    src: asset-url("ProximaNova-Black.otf");
 }
 
 .growl-animated {
@@ -100,7 +98,7 @@ a {
 }
 .navbar-custom {
     background-color: #f5f5f5;
-    /*background-image: url(../img/top-bg.png);
+    /*background-image: image-url("img/top-bg.png");
     background-position: right bottom;
     background-size: cover;*/
     border: medium none;
@@ -163,7 +161,7 @@ a {
   /*content:"";*/
 }
 .navbar-right .dropdown-toggle .fa.fa-user{
-  /*background: url(../img/icon-user.png) no-repeat scroll center center rgba(0, 0, 0, 0);*/
+  /*background: image-url("img/icon-user.png") no-repeat scroll center center rgba(0, 0, 0, 0);*/
     display: inline-block;
     float: left;
     height: 56px;
@@ -172,7 +170,7 @@ a {
   margin-top: 19px;
 }
 .navbar-right .dropdown-toggle .fa-shopping-cart{
-  /*background: url(../img/icon-cart.png) no-repeat scroll center center rgba(0, 0, 0, 0);*/
+  /*background: image-url("img/icon-cart.png") no-repeat scroll center center rgba(0, 0, 0, 0);*/
     display: inline-block;
     float: left;
     height: 56px;
@@ -295,12 +293,13 @@ a {
 .stream-container {
   list-style: none;
   white-space: nowrap;
-  overflow-x: scroll;
+  overflow-x: auto;
   top: 58px;
   bottom: 8px;
   left: 180px; 
   right: 0;
   position: absolute;
+  padding-top: 15px;
 }
 .stream {
   width: 360px;
@@ -333,7 +332,7 @@ a {
 .stream-body {
   border-bottom: 1px solid #ccc;
   // height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: absolute;
   top: 35px;
   bottom: 0;
@@ -374,8 +373,10 @@ a {
   padding: 5px;
   border-radius: 4px;
 }
+.stream-header .editable {
+  cursor: pointer;
+}
 .stream-header .editable-submit {
-  background-color: #D76363;
   i {
     padding-top: 1px;
   }
@@ -397,6 +398,13 @@ a {
   padding: 8px 8px;
   background-color: #f5f5f5;
 }
+.rss-dialog {
+  &.closed  {
+    max-height: 0 !important;
+  }
+  max-height: 100px !important;
+}
+
 
 .stories .media-left, .media > .pull-left {
     padding-right: 8px;
@@ -1075,31 +1083,31 @@ nav{text-align: center;}
 }
 /*
 .sub_icon.glyphicon.glyphicon-home{
-  background:url(../img/icon-dashboard.png) no-repeat center right / contain;
+  background: image-url("img/icon-dashboard.png") no-repeat center right / contain;
   background-size: contain;
 }
 .sub_icon.fa.fa-rocket{
-  background:url(../img/icon-opportunities.png) no-repeat center right / contain;
+  background: image-url("img/icon-opportunities.png") no-repeat center right / contain;
   background-size: contain;
 }
 .sub_icon.glyphicon.glyphicon-eye-open{
-  background:url(../img/icon-monitoring.png) no-repeat center right / contain;
+  background: image-url("img/icon-monitoring.png") no-repeat center right / contain;
   background-size: contain;
 }
 .sub_icon.fa.fa-building {
-  background:url(../img/icon-newsroom.png) no-repeat center right / contain;
+  background: image-url("img/icon-newsroom.png") no-repeat center right / contain;
   background-size: contain;
 }
 .sub_icon.glyphicon.glyphicon-list-alt{
-  background:url(../img/icon-releases.png) no-repeat center right / contain;
+  background: image-url("img/icon-releases.png") no-repeat center right / contain;
   background-size: contain;
 }
 .sub_icon.fa.fa-users{
-  background:url(../img/icon-social.png) no-repeat center right / contain;
+  background: image-url("img/icon-social.png") no-repeat center right / contain;
   background-size: contain;
 }
 .sub_icon.fa.fa-line-chart{
-  background:url(../img/icon-analytics.png) no-repeat center right / contain;
+  background: image-url("img/icon-analytics.png") no-repeat center right / contain;
   background-size: contain;
 }*/
 
@@ -1280,4 +1288,8 @@ input.form-control[type="file"] {
 
 .newsroom .tooltip {
   padding-right: 1px;
+}
+
+#author-related-stories {
+  margin-bottom: 14px;
 }

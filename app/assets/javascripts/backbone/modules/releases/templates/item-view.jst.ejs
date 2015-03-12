@@ -24,7 +24,7 @@
       <h3 class="truncate"><a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" target="_blank"><%= release.title %></a></h3>
       <small class="truncate"><i class="fa fa-clock-o"></i> <%= moment(release.created_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
       <p class="release-title">
-        <%= release.text.normalizeRSpace(115) %>
+        <%= release.text_html.normalizeRSpace(115) %>
       </p>
       <p class="tag-wrapper">
         <% _.each(release.concepts, function(concept){ %>
@@ -34,7 +34,11 @@
       <hr>
       <p align="center">
         <a href="#" class="btn btn-sm btn-success" role="button" data-toggle="modal" data-target=".blast-release"><i class="fa fa-rocket"></i> Robin8</a>
-        <a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+        <% if (release.id && release.news_room_public && !release.is_private) {%>
+            <a href="http://<%- release.subdomain_name %>.<%- location.host %>#releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+          <% } else {%>
+            <a href="http://<%- release.subdomain_name %>.<%- location.host %>#releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+          <% } %>
         <button href="#" class="btn btn-sm btn-default" id="open_edit"><i class="fa fa-pencil"></i> Edit</button>
       </p>
     </div>

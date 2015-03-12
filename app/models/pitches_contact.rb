@@ -14,17 +14,18 @@ class PitchesContact < ActiveRecord::Base
 
   # Email pitch tags are:
   # ["@[First Name]", "@[Last Name]", "@[Summary]",
-  # "@[Related Articles]", "@[Outlet]", "@[Link]", "@[Title]"]
+  # "@[Outlet]", "@[Link]", "@[Title]"]
   #
   # Twitter pitch tags are:
   # [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ]  
   def render_pitch
+    link = "http://placeholder-link.com/" # self.pitch.release.link
+    
     if [0, 2].include? self.contact.origin # pressr or media_list
       first_name = self.contact.first_name
       last_name = self.contact.last_name
       outlet = self.contact.outlet
       
-      link = "http://placeholder-link.com/" # self.pitch.release.link
       title = self.pitch.release.title
       summary_arr = JSON.parse(self.pitch.release.summaries).take(self.pitch.summary_length) 
       summary_str = summary_arr.map{|s| "- #{s}"}.join("\n")
@@ -41,7 +42,6 @@ class PitchesContact < ActiveRecord::Base
       handle = "@#{self.contact.twitter_screen_name}"
       name = self.contact.full_name
       random_greeting = GREETINGS.sample
-      link = "http://placeholder-link.com/" # self.pitch.release.link
       
       pitch_text = self.pitch.twitter_pitch
       pitch_text.gsub!('@[Handle]', handle)

@@ -47,7 +47,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.module.releasesBlastHeader.set({ level: 3 });
       var self = this;
 
-      var targetsTabLayout = new ReleasesBlast.TargetsTabLayout();
+      var targetsTabLayout = new ReleasesBlast.TargetsTabLayout({
+        collection: this.module.pitchModel.get('contacts')
+      });
       this.module.layout.tabContentRegion.show(targetsTabLayout);
       
       var suggestedAuthorsCollection = new Robin.Collections.SuggestedAuthors({
@@ -71,7 +73,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         success: function(collection, data, response){
           var socialTargetsView = new ReleasesBlast.SocialTargetsCompositeView({
             collection: collection,
-            pitchContactsCollection: self.module.pitchModel.get('contacts')
+            pitchContactsCollection: self.module.pitchModel.get('contacts'),
+            releaseModel: self.module.releaseModel
           });
           
           targetsTabLayout.socialRegion.show(socialTargetsView);
@@ -159,7 +162,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         success: function(collection, data, response){
           var influencersCompositeView = new ReleasesBlast.SocialTargetsCompositeView({
             collection: collection,
-            pitchContactsCollection: self.module.pitchModel.get('contacts')
+            pitchContactsCollection: self.module.pitchModel.get('contacts'),
+            releaseModel: self.module.releaseModel
           });
           
           self.module.searchLayout.searchResultRegion.show(influencersCompositeView);

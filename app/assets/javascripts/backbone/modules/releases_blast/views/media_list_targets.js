@@ -68,6 +68,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           self.selectedMediaListsCollection.add(model, {
             pitchContactsCollection: self.pitchContactsCollection
           });
+          
+          $.growl({message: "Your list has been successfully uploaded."
+          },{
+            type: 'success'
+          });
         },
         error: function(res){
           if (res && res.responseJSON) {
@@ -75,7 +80,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             var errorMessage = res.responseJSON[errorField][0];
             errorField = s.capitalize(errorField.replace(/_/g,' '));
             
-            toastr.error(errorField + ' ' + errorMessage);
+            $.growl({message: errorField + ' ' + errorMessage
+            },{
+              type: 'danger'
+            });
           }
         }
       });

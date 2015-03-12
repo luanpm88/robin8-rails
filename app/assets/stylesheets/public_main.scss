@@ -2,23 +2,23 @@
 
 @font-face {
     font-family: ProximaNova;
-    src: asset-url('../../fonts/ProximaNova-Regular.otf');
+    src: asset-url('ProximaNova-Regular.otf');
 }
 @font-face {
     font-family: ProximaNovaLight;
-    src: asset-url('../../fonts/ProximaNova-Light.otf');
+    src: asset-url('ProximaNova-Light.otf');
 }
 @font-face {
     font-family: ProximaNovaSemibold;
-    src: asset-url('../../fonts/ProximaNova-Semibold.otf');
+    src: asset-url('ProximaNova-Semibold.otf');
 }
 @font-face {
     font-family: ProximaNovaBold;
-    src: asset-url('../../fonts/ProximaNova-Bold.otf');
+    src: asset-url('ProximaNova-Bold.otf');
 }
 @font-face {
     font-family: ProximaNovaBlack;
-    src: asset-url('../../fonts/ProximaNova-Black.otf');
+    src: asset-url('ProximaNova-Black.otf');
 }
 
 a {
@@ -316,18 +316,18 @@ a {
 /* Social icons */
 @font-face {
     font-family: 'si';
-    src: asset-url('../fonts/socicon.eot');
-    src: asset-url('../fonts/socicon.eot?#iefix') format('embedded-opentype'),
-         asset-url('../fonts/socicon.woff') format('woff'),
-         asset-url('../fonts/socicon.ttf') format('truetype'),
-         asset-url('../fonts/socicon.svg#icomoonregular') format('svg');
+    src: asset-url('socicon.eot');
+    src: asset-url('socicon.eot?#iefix') format('embedded-opentype'),
+         asset-url('socicon.woff') format('woff'),
+         asset-url('socicon.ttf') format('truetype'),
+         asset-url('socicon.svg#icomoonregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     @font-face {
         font-family:si;
-        src: asset-url('../fonts/socicon.svg') format(svg);
+        src: asset-url('socicon.svg') format(svg);
     }
 }
 .soc {
