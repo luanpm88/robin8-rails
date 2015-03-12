@@ -57,7 +57,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
         type: "error",
         showCancelButton: true,
         confirmButtonClass: 'btn-danger',
-        confirmButtonText: 'Cancel'
+        confirmButtonText: 'Yes'
       },
       function(isConfirm) {
         if (isConfirm) {
