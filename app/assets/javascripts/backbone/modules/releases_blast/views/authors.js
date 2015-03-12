@@ -180,10 +180,24 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       e.preventDefault();
       var self = this;
       
+      var layout = new ReleasesBlast.AuthorInspectLayout({
+        model: this.model
+      });
+      
+      Robin.modal.show(layout);
+      
       var relatedStoriesCollection = new Robin.Collections.RelatedStories({
         author_id: this.model.get('id'),
         releaseModel: this.releaseModel
       });
+      
+      // Loading view
+      layout.relatedStoriesRegion.show(
+        new Robin.Components.Loading.LoadingView({
+          className: 'stories-loading-container'
+        })
+      );
+      
       relatedStoriesCollection.fetchStories({
         success: function(collection, data, response){
           var relatedStoriesView = new ReleasesBlast.StoriesList({
@@ -197,6 +211,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         author_id: this.model.get('id'),
         releaseModel: this.releaseModel
       });
+      
+      // Loading view
+      layout.recentStoriesRegion.show(
+        new Robin.Components.Loading.LoadingView({
+          className: 'stories-loading-container'
+        })
+      );
+      
       recentStoriesCollection.fetchStories({
         success: function(collection, data, response){
           var recentStoriesView = new ReleasesBlast.StoriesList({
@@ -205,11 +227,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           layout.recentStoriesRegion.show(recentStoriesView);
         }
       });
-      
-      var layout = new ReleasesBlast.AuthorInspectLayout({
-        model: this.model
-      });
-      Robin.modal.show(layout);
       
       var authorStatItemView = new ReleasesBlast.AuthorStatsView({
         model: this.model,

@@ -1,5 +1,5 @@
-// Highcharts.setOptions({
-//   credits: {
-//     enabled: false
-//   }
-// });
+Highcharts.setOptions({
+ credits: {
+   enabled: false
+ }
+});

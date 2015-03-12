@@ -28,6 +28,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     contactRemoved: function(){
       if (this.collection.length == 0)
         this.ui.nextButton.prop('disabled', true);
+    },
+    onShow: function(){
+      if (this.collection.length > 0)
+        this.ui.nextButton.prop('disabled', false);
     }
   });
 });
