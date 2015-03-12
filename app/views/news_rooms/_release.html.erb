@@ -16,7 +16,11 @@
         <%= link_to release.title, release_path(release) %>
       </h3>
       <small>15 Jan 2015</small>
-      <p class='release-item-text'><%= release.text.truncate(115).html_safe %></p>
+      <p class='release-item-text'>
+        <script type="text/javascript">
+        </script>
+        <%= truncate_html(release.text.html_safe, length: 115) if release.text %>
+      </p>
       <p>
         <label class="label label-success">Startups</label>
         <label class="label label-success">Success</label>

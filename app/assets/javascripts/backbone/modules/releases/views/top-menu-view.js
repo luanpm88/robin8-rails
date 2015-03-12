@@ -212,7 +212,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     saveRelease: function(e){
       var viewObj = this;
       var iframe = document.getElementsByClassName("wysihtml5-sandbox");
-      this.model.set('text', $(iframe).contents().find('body').html());
+      if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
+        this.model.set('text', $(iframe).contents().find('body').html());
+      };
       this.form.data('formValidation').validate();
       if (this.form.data('formValidation').isValid()) {
         if (this.model.attributes.id) {

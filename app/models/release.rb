@@ -10,6 +10,7 @@ class Release < ActiveRecord::Base
   accepts_nested_attributes_for :attachments, allow_destroy: true
 
   scope :by_news_room, ->(id) {where(news_room_id: id)}
+  scope :published, -> { where(is_private: false) }
   
   before_save :pos_tagger, :entities_counter
   

@@ -25,6 +25,7 @@ gem 'quiet_assets', group: [:development, :staging]
 gem 'aws-sdk-v1'
 
 gem 'htmlentities'
+gem 'truncate_html'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'

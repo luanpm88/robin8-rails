@@ -52,6 +52,6 @@ class ReleaseSerializer < ActiveModel::Serializer
   end
 
   def text_html
-    text.html_safe
+    text.try(:html_safe)
   end
 end
