@@ -57,6 +57,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       this.module.layout.tabContentRegion.show(targetsTabLayout);
       
+      // Loading view
+      targetsTabLayout.blogsRegion.show(new Robin.Components.Loading.LoadingView());
+      targetsTabLayout.socialRegion.show(new Robin.Components.Loading.LoadingView());
+      // END Loading view
+      
       var suggestedAuthorsCollection = new Robin.Collections.SuggestedAuthors({
         releaseModel: this.module.releaseModel
       });
