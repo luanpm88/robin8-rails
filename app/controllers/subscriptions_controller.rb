@@ -72,6 +72,7 @@ class SubscriptionsController < ApplicationController
         render json: ["We are sorry, something is not right. Please contact support for more details."], status: :bad_request
       end
     else
+      p errors
       render json: errors.responseJSON, status: :bad_request
     end
   end

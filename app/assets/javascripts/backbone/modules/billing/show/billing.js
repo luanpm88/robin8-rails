@@ -50,8 +50,22 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     cancelSubscription: function(event) {
-      Robin.currentUser.cancelSubscription().done(function(data){
-        // window.location.href = '/users/sign_out'
+      var r = this.model;
+      swal({
+        title: "Cancel current subscription?",
+        // text: "You will not be able to recover this post.",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: 'Cancel'
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          Robin.currentUser.cancelSubscription().done(function(data){
+            console.log('plan is canceled')
+            // window.location.href = '/users/sign_out'
+          });
+        }
       });
     },
 
