@@ -332,7 +332,7 @@ a {
 .stream-body {
   border-bottom: 1px solid #ccc;
   // height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: absolute;
   top: 35px;
   bottom: 0;
