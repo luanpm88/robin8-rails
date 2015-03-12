@@ -15,6 +15,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click span.editable': 'editTitle',
       'click .editable-submit': 'updateTitle',
       'click .js-show-new-stories': 'showNewStories',
+      'click .rss-input': 'selectLink',
     },
 
     collectionEvents: {
@@ -24,6 +25,10 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     modelEvents: {
       change: 'setShowUpdatesButtonVisibility',
       'change:sort_column': 'refreshTimeRangeVisibility'
+    },
+
+    selectLink: function (e) {
+      $(e.target).select();
     },
 
     templateHelpers: function () {
