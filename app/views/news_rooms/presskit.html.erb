@@ -15,7 +15,6 @@
 
           </div>
         </div>
-
         <div id="blueimp-gallery" class="blueimp-gallery" data-use-bootstrap-modal="false">
           <!-- The container for the modal slides -->
           <div class="slides"></div>
@@ -54,8 +53,6 @@
   </div>
 </div>
 
-
-
 <script type="text/javascript">
   var $container = $('#presskit');
   $container.imagesLoaded( function() {
@@ -66,13 +63,13 @@
     });
   });
 
-  $container.on('click', function(event){
+  document.getElementById('presskit').onclick = function (event) {
     event = event || window.event;
     var target = event.target || event.srcElement,
-      link = target.src ? target.parentNode : target,
-      options = {index: link, event: event},
-      links = this.$el.find('a');
+        link = target.src ? target.parentNode : target,
+        options = {index: link, event: event},
+        links = this.getElementsByTagName('a');
     blueimp.Gallery(links, options);
-  });
+  };
 
 </script>
