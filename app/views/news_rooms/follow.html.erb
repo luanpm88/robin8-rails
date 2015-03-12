@@ -7,8 +7,8 @@
       <div class="row">
         <div class="col-lg-12">
         <div style="min-height: 600px;">
-            <h2>Follow ACME Corp</h2>
-            <p style="font-size: 15px; margin-bottom: 40px;">Stay up to date on all news published in the ACME pressroom. You can either choose for immediate updates or receive daily/weekly or monthly digests.</p>
+            <h2>Follow <%= @news_room.company_name %></h2>
+            <p style="font-size: 15px; margin-bottom: 40px;">Stay up to date on all news published in the <%= @news_room.company_name %> pressroom. You can either choose for immediate updates or receive daily/weekly or monthly digests.</p>
             <%= form_tag followers_add_path do %>
               <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
@@ -30,9 +30,7 @@
             <% end %>
           </div>
           <hr style="margin-bottom: 4px;">
-          <div align="center" style="line-height: 22px; font-size: 12px; color: #777;">
-            powered by <a href="http://robin.com"><img src="/assets/logo-color.png" style="height: 14px; margin-top: -6px; margin-left: 2px;"></a>
-          </div>
+          <%= render 'footer' %>
         </div>
       </div>
     </div>

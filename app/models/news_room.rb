@@ -22,6 +22,10 @@ class NewsRoom < ActiveRecord::Base
     [city, state].join(', ')
   end
 
+  def location
+    [address_1, postal_code, city, state, country].join(', ')
+  end
+
   private
   
     def set_campaign_name
