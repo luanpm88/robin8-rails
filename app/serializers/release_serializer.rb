@@ -6,7 +6,7 @@ class ReleaseSerializer < ActiveModel::Serializer
     :paragraphs_count, :adverbs_count, :adjectives_count,
     :nouns_count, :organizations_count, :places_count, :people_count,
     :concepts, :iptc_categories, :summaries, :hashtags, :plain_text,
-    :subdomain_name, :news_room_public
+    :subdomain_name, :news_room_public, :text_html
 
   has_many :attachments
   has_one :news_room
@@ -49,5 +49,9 @@ class ReleaseSerializer < ActiveModel::Serializer
 
   def news_room_public
     news_room.publish_on_website
+  end
+
+  def text_html
+    text.html_safe
   end
 end

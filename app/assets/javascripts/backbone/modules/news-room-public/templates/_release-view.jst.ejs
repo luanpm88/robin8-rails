@@ -13,7 +13,7 @@
   <div class="caption text-center">
     <h3><a href="/#release/<%- release.id %>"><%- release.title %></a></h3>
     <small>15 Jan 2015</small>
-    <p><%- release.description %></p>
+    <p><%- release.text_html.normalizeRSpace(115) %></p>
     <p>
       <label class="label label-success">Startups</label>
       <label class="label label-success">Success</label>

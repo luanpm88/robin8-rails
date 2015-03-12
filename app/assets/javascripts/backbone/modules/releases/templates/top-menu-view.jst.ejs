@@ -42,7 +42,7 @@
             </ul>
 
             <!-- Tab panes -->
-            <form role="form" id="releaseForm">
+            <form role="form" id="releaseForm" onsubmit="return false;">
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="release-company">
                   <div class="form-group">
@@ -88,10 +88,6 @@
           </div>
         </div>
         <div class="modal-footer">
-          <% if(release.id) { %>
-            <button type="button" class="btn btn-danger pull-left" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
-          <% } %>
-          <% window.release = release %>
           <% if(release.id) { %>
             <button type="button" class="btn btn-danger pull-left" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
           <% } %>

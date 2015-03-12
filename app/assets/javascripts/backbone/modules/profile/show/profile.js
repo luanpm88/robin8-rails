@@ -8,8 +8,9 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initialize: function() {
-      this.model = new Robin.Models.UserProfile(Robin.currentUser.attributes)
+      this.model = new Robin.Models.UserProfile(Robin.currentUser.attributes);
       this.modelBinder = new Backbone.ModelBinder();
+      this.tempUser = new Robin.Models.UserProfile(Robin.currentUser.attributes);
     },
 
     onRender: function() {
@@ -41,6 +42,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initFormValidation: function(){
+      var view = this;
       this.form = $('#profileForm').formValidation({
         framework: 'bootstrap',
         excluded: [':disabled'],
@@ -51,6 +53,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         },
         fields: {
           email: {
+            enabled: false,
             validators: {
               notEmpty: {
                 message: 'The email address is required'
@@ -117,6 +120,9 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
                           .formValidation('validateField', 'password_confirmation');
         }
       })
+      .on('keydown', '[name="email"]', function() {
+        $('#profileForm').formValidation('enableFieldValidators', 'email', true)
+      })
       .on('err.field.fv', function(e, data) {
         // data.element --> The field element
         var $tabPane = data.element.parents('.tab-pane'),
@@ -139,16 +145,17 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
     updateProfile: function() {
       var viewObj = this;
-      var r = this.model.attributes;
-      this.form.data('formValidation').validate();
-      console.log(this.model.changed.email);
-      var changed = this.model.changed;
-      var changesLength = Object.keys(changed).length;
-      if (this.form.data('formValidation').isValid()&&changesLength>0){
+
+      initialAttributes = this.tempUser.attributes;
+      currentAttributes = this.model.attributes;
+      emailChanged = (initialAttributes.email != currentAttributes.email);
+      formChanged = (JSON.stringify(initialAttributes) != JSON.stringify(currentAttributes));
+      if (formChanged) this.form.data('formValidation').validate(); 
+      if (formChanged&&this.form.data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
         this.model.save(this.model.attributes, {
           success: function(userSession, response) {
-            Robin.currentUser.attributes = r;
+            Robin.currentUser.attributes = currentAttributes;
             Robin.currentUser.attributes.current_password = "";
             Robin.layouts.main.onShow();
             $.growl({message: 'Your account data has been successfully changed'
@@ -162,7 +169,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
                 align: "right"
               },
             });
-            if (changed.email) {
+            if (emailChanged) {
               $.growl({message: 'You should receive a confirmation mail shortly'
               },{
                 element: '#growler-alert',
