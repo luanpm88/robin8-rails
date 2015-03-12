@@ -5,3 +5,28 @@
 .rss-input {
   cursor: text !important;
 }
+
+.select2-drop {
+  z-index: 21000;
+}
+
+.select2-drop-mask {
+  z-index: 19999;
+}
+
+#newsroomForm .select2-choices {
+  border-color: #aaa;
+
+}
+
+#newsroomForm .bootstrap-tagsinput {
+  border-color: #aaa;
+}
+
+#newsroomForm .select2-container-multi .select2-choices {
+  position: static;
+}
+
+.stories .media-body .likes {
+  position: absolute !important;
+}
