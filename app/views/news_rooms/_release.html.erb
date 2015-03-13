@@ -5,7 +5,9 @@
         <img class="img" src="<%= release.logo_url %>">
       <% else %>
         <% if release.attachments.length > 0 %>
-          <img class="img" src="<%= release.attachments[0].url %>">
+          <% img = release.attachments.find_by_attachment_type("image").url%>
+          <% url = img ? img : "http://placehold.it/542x542" %>
+          <img class="img" src="<%= url %>">
         <% else %>
           <img class="img" src="http://placehold.it/542x542">
         <% end %>
@@ -24,7 +26,7 @@
       <p class='concepts'>
         <% unless release.concepts.blank? %>
           <% JSON.parse(release.concepts).each do |concept| %>
-            <label class="label label-success"><%= concept%></label>
+            <label class="label label-success"><%= concept.gsub("_", " ").gsub("+", " ")%></label>
           <% end %>
         <% end %>
       </p>

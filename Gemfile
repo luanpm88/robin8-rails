@@ -32,7 +32,7 @@ gem 'truncate_html'
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
   gem 'rails-assets-bootstrap.growl', '2.0.1'
-  gem 'rails-assets-uploadcare'
+  gem 'rails-assets-uploadcare', '2.0.4'
   gem 'rails-assets-progressjs'
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
@@ -77,6 +77,7 @@ gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
 gem 'will_paginate', '~> 3.0.6'
+gem 'will_paginate-bootstrap'
 gem 'has_scope'
 
 gem 'twitter'

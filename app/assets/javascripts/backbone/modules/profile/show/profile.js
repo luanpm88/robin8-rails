@@ -26,6 +26,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         $("#avatar-image").attr('src', info.cdnUrl);
         viewObj.model.set({avatar_url: info.cdnUrl});
       });
+      this.widget.validators.push(this.maxFileSize(1024 * 1024));
       if (Robin.afterConfirmationMessage != undefined) {
         $.growl(Robin.afterConfirmationMessage,{
           offset: 65,
@@ -38,6 +39,14 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         });
         Robin.afterConfirmationMessage = undefined
       }
+    },
+
+    maxFileSize: function(size) {
+      return function(fileInfo) {
+        if (fileInfo.size !== null && fileInfo.size > size) {
+          throw new Error("fileMaximumSize");
+        };
+      };
     },
 
     initFormValidation: function(){
