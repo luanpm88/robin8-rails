@@ -21,10 +21,10 @@
           <div id='releases' class='row'>
             <h4>Press Releases</h4>
             <div class="row">
-              <%= render partial: "news_rooms/release", collection: @news_room.releases.published %>
+              <%= render partial: "news_rooms/release", collection: @releases %>
             </div>
           </div>
-          <nav id='pagination' align="center"></nav>
+          <nav id='pagination' align="center"><%= will_paginate @releases, renderer: BootstrapPagination::Rails %></nav>
           <hr>
           <div id='content-footer'>
             <% unless @news_room.location.blank? %>

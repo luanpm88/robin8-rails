@@ -22,7 +22,7 @@
       </p>
       <p class="tag-wrapper">
         <% _.each(release.concepts, function(concept){ %>
-          <label class="label label-info"><%= concept %></label>
+          <label class="label label-info"><%= concept.replace(/_/g, " ").replace(/\+/g, " ") %></label>
         <% }); %>
       </p>
       <hr>

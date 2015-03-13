@@ -77,6 +77,7 @@ gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
 gem 'will_paginate', '~> 3.0.6'
+gem 'will_paginate-bootstrap'
 gem 'has_scope'
 
 gem 'twitter'
