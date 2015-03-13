@@ -180,8 +180,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 resultReady();
                 break;
               case 'textapi/hashtags':
-                that.textapiResult["hashtags"] = response;
-                that.model.set('hashtags', response);
+                that.textapiResult["hashtags"] = _.uniq(response);
+                that.model.set('hashtags', that.textapiResult["hashtags"]);
                 resultReady();
                 break;
             }
