@@ -9,8 +9,10 @@
           <h1><%= @news_room.company_name %></h1>
           <p><%= @news_room.description %></p>
           <!-- <p>You can follow us on Twitter via <code>@acme</code> or using the <code>#acmecorp</code> hashtag.</p> -->
-          <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
-            <i class="fa fa-image"></i> Press kit
+          <% if @news_room.attachments.length > 0 %>
+            <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
+              <i class="fa fa-image"></i> Press kit
+            <% end %>
           <% end %>
           <%= link_to follow_news_rooms_path, class: 'btn btn-default' do %>
             <i class="fa fa-user-plus"></i> Follow
@@ -19,23 +21,27 @@
           <div id='releases' class='row'>
             <h4>Press Releases</h4>
             <div class="row">
-              <%= render partial: "news_rooms/release", collection: @news_room.releases.published %>
+              <%= render partial: "news_rooms/release", collection: @releases %>
             </div>
           </div>
-          <nav id='pagination' align="center"></nav>
+          <nav id='pagination' align="center"><%= will_paginate @releases, renderer: BootstrapPagination::Rails %></nav>
           <hr>
           <div id='content-footer'>
-            <h4>About <%= @news_room.company_name %></h4>
-            <p>
-              <strong>Location:</strong> 
-              <%= @news_room.location %>
-            </p>
-            <p>
-              <strong>What Is <%= @news_room.company_name %>?</strong>
-            </p>
-            <div>
-              <%= @news_room.description %>
-            </div>
+            <% unless @news_room.location.blank? %>
+              <h4>About <%= @news_room.company_name %></h4>
+              <p>
+                <strong>Location:</strong> 
+                <%= @news_room.location %>
+              </p>
+            <% end %>
+            <% unless @news_room.description.blank? %>
+              <p>
+                <strong>What Is <%= @news_room.company_name %>?</strong>
+              </p>
+              <div>
+                <%= @news_room.description %>
+              </div>
+            <% end %>
           </div>
           <%= render 'footer' %>
         </div>

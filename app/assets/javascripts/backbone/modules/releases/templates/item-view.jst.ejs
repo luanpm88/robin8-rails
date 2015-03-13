@@ -1,15 +1,7 @@
 <div class="col-sm-6 col-md-4">
   <div class="thumbnail release-item">
     <a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" target="_blank" class="release-image">
-      <% if(release.logo_url) {%>
-        <img class="img" src="<%= release.logo_url %>">
-      <%} else {%>
-        <% if(release.attachments.length > 0) {%>
-          <img class="img" src="<%= release.attachments[0].url %>">
-        <%} else {%>
-          <img class="img" src="http://placehold.it/542x542">
-        <%}%>
-      <%}%>
+      <img class="img" src="<%= release.first_src %>">
       <div class="overlay">
         Summary
         <br><br>
@@ -30,7 +22,7 @@
       </p>
       <p class="tag-wrapper">
         <% _.each(release.concepts, function(concept){ %>
-          <label class="label label-info"><%= concept %></label>
+          <label class="label label-info"><%= concept.replace(/_/g, " ").replace(/\+/g, " ") %></label>
         <% }); %>
       </p>
       <hr>
