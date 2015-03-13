@@ -303,7 +303,7 @@ GEM
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.string (3.0.3)
-    rails-assets-uploadcare (2.0.3)
+    rails-assets-uploadcare (2.0.4)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-x-editable (1.5.1)
       rails-assets-jquery (>= 1.6)
@@ -423,6 +423,8 @@ GEM
     whenever (0.9.4)
       chronic (>= 0.6.3)
     will_paginate (3.0.7)
+    will_paginate-bootstrap (1.0.1)
+      will_paginate (>= 3.0.3)
 
 PLATFORMS
   ruby
@@ -507,3 +509,4 @@ DEPENDENCIES
   web-console (~> 2.0)
   whenever
   will_paginate (~> 3.0.6)
+  will_paginate-bootstrap
