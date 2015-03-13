@@ -13,7 +13,7 @@
       </div>
     </a>
     <div class="caption text-center">
-      <h3 class="truncate"><a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" target="_blank"><%= release.title %></a></h3>
+      <a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" target="_blank"><h3 class="truncate" data-toggle="tooltip" data-original-title="<%= release.title %>"><%= release.title%></h3></a>
       <small class="truncate"><i class="fa fa-clock-o"></i> <%= moment(release.created_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
       <p class="release-title">
         <% if (release.text_html) { %>

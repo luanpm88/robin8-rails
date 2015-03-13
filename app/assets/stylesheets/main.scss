@@ -716,9 +716,14 @@ nav{text-align: center;}
   // margin-bottom: 5px;
   vertical-align: top;
 }
-.release-item h3 a {
+.release-item a h3{
   color: #333;
 }
+.release-item .tooltip-inner {
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+ }
 .release-item .caption h3 {
   margin-bottom: 0;
 }
@@ -731,6 +736,18 @@ nav{text-align: center;}
 .release-item .release-image {
   position: relative;
   display: block;
+  width: 530px;
+  height: 530px;
+  overflow: hidden;
+}
+.release-item .release-image img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
 }
 .release-item .overlay {
   position: absolute;
@@ -754,6 +771,12 @@ nav{text-align: center;}
 }
 .release-item .overlay ul {
   list-style: none;
+}
+.release-item .truncate {
+  width: 520px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .toolbar {
   padding: 8px 0;

@@ -303,7 +303,7 @@ GEM
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.string (3.0.3)
-    rails-assets-uploadcare (2.0.3)
+    rails-assets-uploadcare (2.0.4)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-x-editable (1.5.1)
       rails-assets-jquery (>= 1.6)
@@ -491,7 +491,7 @@ DEPENDENCIES
   rails-assets-spinkit
   rails-assets-timeago
   rails-assets-underscore.string
-  rails-assets-uploadcare!
+  rails-assets-uploadcare (= 2.0.4)!
   rails-assets-x-editable
   rspec-rails
   sass-rails (~> 5.0)
