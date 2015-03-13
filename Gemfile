@@ -15,6 +15,8 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -25,6 +27,7 @@ gem 'quiet_assets', group: [:development, :staging]
 gem 'aws-sdk-v1'
 
 gem 'htmlentities'
+gem 'truncate_html'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
@@ -42,14 +45,13 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
-  gem 'rails-assets-highcharts'
+  gem 'rails-assets-highcharts', '4.1.1'
   gem 'rails-assets-select2'
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
   gem 'rails-assets-please-wait'
   gem 'rails-assets-x-editable'
-  gem 'rails-assets-jqueryui'
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
@@ -58,6 +60,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-switch'
   gem 'rails-assets-select2-bootstrap-css'
   gem 'rails-assets-backbone-relational'
+  gem 'rails-assets-spinjs'
 end
 
 gem 'devise'

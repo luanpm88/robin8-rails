@@ -14,7 +14,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require jqueryui
+//= require jquery-ui
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
 //= require uploadcare

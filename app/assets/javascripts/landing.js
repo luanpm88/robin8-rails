@@ -13,7 +13,7 @@
 //= require assets
 //= require jquery
 //= require jquery_ujs
-//= require jqueryui
+//= require jquery-ui
 //= require ./lib/foundation.min
 //= require ./lib/modernizr
 

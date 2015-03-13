@@ -18,7 +18,26 @@ class NewsRoom < ActiveRecord::Base
   validates_inclusion_of :room_type, in: VALID_TYPES, allow_blank: true
   validates_inclusion_of :size, in: VALID_SIZES, allow_blank: true
 
-  
+  def city_state
+    str = [city, state]
+    str.reject! { |c| c.blank? }
+    str.join(', ')
+  end
+
+  def location
+    str = [address_1, postal_code, city, state, country]
+    str.reject! { |c| c.blank? }
+    str.join(', ')
+  end
+
+  def has_contact_info?
+    [address_1, postal_code, city, state, country, web_address, email].reject(&:blank?).length > 0
+  end
+
+  def has_social_links?
+    [facebook_link, twitter_link, linkedin_link, instagram_link].reject(&:blank?).length > 0
+  end
+
   private
   
     def set_campaign_name

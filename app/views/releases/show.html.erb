@@ -11,13 +11,13 @@
             <div class="jumbotron release">
               <div class='jumbotron-photo'>
                 <% if @release.logo_url %>
-                  <img class="img-rounded" src="<%= release.logo_url %>">
+                  <img class="img-rounded" src="<%= @release.logo_url %>">
                 <% end %>
               </div>
               <div class='jumbotron-contents'>
                 <h1><%= @release.title %></h1>
                 <div>
-                  <%= @release.text %>
+                  <%= @release.text.html_safe %>
                 </div>
               </div>
               

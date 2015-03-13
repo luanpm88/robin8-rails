@@ -1,4 +1,8 @@
 Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette, $, _){
+  var NoChildrenView = Marionette.ItemView.extend({
+    template: 'modules/releases_blast/templates/stories/empty_view'
+  });
+  
   ReleasesBlast.StoryItemView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/stories/_story',
     tagName: 'li'
@@ -6,6 +10,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.StoriesList = Marionette.CollectionView.extend({
     childView: ReleasesBlast.StoryItemView,
-    tagName: "ul",
+    emptyView: NoChildrenView,
+    tagName: "ul"
   });
 });

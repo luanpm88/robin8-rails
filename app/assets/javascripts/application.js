@@ -14,7 +14,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require uploadcare
-//= require jqueryui
+//= require jquery-ui
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
 //= require progressjs
@@ -34,7 +34,7 @@
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-// require highcharts
+//= require highcharts
 //= require select2
 //= require_directory ./lib
 //= require bootstrap-tagsinput
@@ -48,6 +48,8 @@
 //= require DataTables
 //= require bootstrap-switch
 // require dataTables.bootstrap
+//= require spinjs
+//= require spinjs/jquery.spin.js
 
 //= require_tree ./backbone/config
 //= require backbone/init
@@ -56,6 +58,7 @@
 //= require_tree ./backbone/models
 //= require_tree ./backbone/collections
 //= require_tree ./backbone/layouts
+//= require_tree ./backbone/components
 //= require_tree ./backbone/modules
 
 var ready;
