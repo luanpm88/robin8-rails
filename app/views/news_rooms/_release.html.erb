@@ -26,7 +26,7 @@
       <p class='concepts'>
         <% unless release.concepts.blank? %>
           <% JSON.parse(release.concepts).each do |concept| %>
-            <label class="label label-success"><%= concept%></label>
+            <label class="label label-success"><%= concept.gsub("_", " ").gsub("+", " ")%></label>
           <% end %>
         <% end %>
       </p>
