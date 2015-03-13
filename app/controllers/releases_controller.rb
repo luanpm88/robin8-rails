@@ -11,7 +11,11 @@ class ReleasesController < ApplicationController
 
   def create
     release = current_user.releases.build release_params
+    @new_logo = params[:release][:logo_url]
     if release.save
+      if @new_logo
+        AmazonStorageWorker.perform_async("release", release.id, @new_logo, nil, :logo_url)
+      end
       render json: release, serializer: ReleaseSerializer
     else
       render json: { errors: release.errors }, status: 422
@@ -30,7 +34,12 @@ class ReleasesController < ApplicationController
 
   def update
     release = current_user.releases.find(params[:id])
+    @old_logo = release.logo_url
+    @new_logo = params[:release][:logo_url]
     if release.update_attributes(release_params)
+      if @new_logo!=@old_logo
+        AmazonStorageWorker.perform_async("release", release.id, @new_logo, @old_logo, :logo_url)
+      end
       render json: release, serializer: ReleaseSerializer
     else
       render json: { errors: release.errors }, status: 422
@@ -39,6 +48,9 @@ class ReleasesController < ApplicationController
 
   def destroy
     release = current_user.releases.find(params[:id])
+    if release.logo_url
+      AmazonDeleteWorker.perform_in(20.seconds, release.logo_url)
+    end
     release.destroy
     render json: release
   end
