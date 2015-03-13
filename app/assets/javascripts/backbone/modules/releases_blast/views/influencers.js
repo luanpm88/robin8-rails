@@ -87,7 +87,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "info": false,
         "searching": false,
         "lengthChange": false,
-        "order": [[ 4, 'desc' ]],
+        "order": [[ 1, 'desc' ]],
         "pageLength": 5,
         "columns": [
           { "width": "30% !important" },
