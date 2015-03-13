@@ -1,18 +1,18 @@
 <div id="blast-analysis" class="tab-pane active" role="tabpanel">
   <h5><i class="fa fa-bar-chart"></i> Analysis</h5>
-  <p>Here's the analysis report for <strong>"First Press Release"</strong>. Please make any necessary changes, and click on <strong>Next</strong> when you're finished.</p>
+  <p>Here's the analysis report for <strong>"<%= release.title %>"</strong>. Please make any necessary changes, and click on <strong>Next</strong> when you're finished.</p>
 
   <p>
-    <i style="color: #A0D468;" class="fa fa-check"></i> <strong>"First Press Release"</strong> is about <strong>
-    "<a data-value="<%= textapiResult['classify'] %>" data-title="Select a category" data-pk="1" data-type="select2" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong><a data-title="Select topics" data-pk="1" data-type="select2" id="release-topics" href="#" class="editable editable-click"><%= _.map(textapiResult["concepts"], function(item){ return item.topic }).join(", ") %></a></strong>.</p>
+    <i style="color: #A0D468;" class="fa fa-check"></i> <strong>"<%= release.title %>"</strong> is about <strong>
+    "<a data-type="select2" data-value="<%= textapiResult['classify'] %>" data-title="Select a category" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong><a data-type="select2" id="release-topics" data-title="Select topics" href="#" class="editable editable-click"><%= _.map(textapiResult["concepts"], function(item){ return item.topic }).join(", ") %></a></strong>.</p>
 
-  <p><i style="color: #A0D468;" class="fa fa-check"></i> Here's a summary of what <strong>"First Press Release"</strong> is all about:</p>
+  <p><i style="color: #A0D468;" class="fa fa-check"></i> Here's a summary of what <strong>"<%= release.title %>"</strong> is all about:</p>
 
   <ul style="margin-left: 38px; margin-bottom: 10px;">
     <% _.each(textapiResult["summarize"], function(item){ %>
       <li><%= item %></li>
     <% }); %>
   </ul>
-  <br>
+  <br />
   <button disabled class="btn btn-primary pull-right" id="btn-next"><i class="fa fa-chevron-right"></i> Next</button>
 </div>

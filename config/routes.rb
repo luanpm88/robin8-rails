@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     collection do
       get 'locations'
       get 'skills'
+      get 'iptc_categories'
     end
   end
   

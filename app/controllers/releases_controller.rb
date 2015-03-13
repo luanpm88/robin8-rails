@@ -33,6 +33,10 @@ class ReleasesController < ApplicationController
   end
 
   def update
+    ["iptc_categories", "concepts", "hashtags", "summaries"].each do |item|
+      params["release"][item] = params["release"][item].to_json
+    end
+    
     release = current_user.releases.find(params[:id])
     @old_logo = release.logo_url
     @new_logo = params[:release][:logo_url]

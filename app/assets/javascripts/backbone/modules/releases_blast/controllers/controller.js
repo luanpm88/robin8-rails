@@ -41,10 +41,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.module.releasesBlastHeader.set({ level: 2 });
 
       this.module.releaseModel = params.releaseModel;
-      var iptcCategories = new Robin.Collections.IptcCategories();
       var analysisTabView = new this.module.AnalysisTabView({
-        model: this.module.releaseModel,
-        iptcCategories: iptcCategories
+        model: this.module.releaseModel
       });
       this.module.layout.tabContentRegion.show(analysisTabView);
     },

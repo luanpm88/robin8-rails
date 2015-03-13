@@ -4,57 +4,79 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     template: 'modules/releases_blast/templates/analysis-tab/analysis-tab',
     model: Robin.Models.Release,
     ui: {
-      nextButton: '#btn-next'
+      nextButton: '#btn-next',
+      iptcCategoryLink: '#release-category',
+      topicsLink: '#release-topics'
     },
     events: {
       'click @ui.nextButton': 'openTargetsTab'
     },
     initialize: function(options){
-      this.iptc = options.iptcCategories;
-      this.iptc.on('reset', this.render);
       this.on("textapi_result:ready", this.render);
-      this.iptc.fetch({reset: true});
       this.getTextApiResult();
       this.textapiResult = {};
     },
-    serializeData: function(){
+    templateHelpers: function(){
       return {
         textapiResult: this.textapiResult
       }
     },
     makeIptcCategoriesEditable: function(){
-      var tags = _(this.iptc.models).map(function(item){
-        return {id: item.get('label'), text: item.get('label')};
-      });
-
-      this.$el.find('#release-category').editable({
+      var self = this;
+      
+      this.ui.iptcCategoryLink.editable({
+        name: 'iptc_categories',
         select2: {
-          name: 'category',
-          tags: tags,
-          multiple: true,
-          tokenSeparators: [",", " "]
+          placeholder: 'Select a category',
+          allowClear: true,
+          ajax: {
+            url: '/autocompletes/iptc_categories',
+            dataType: 'json',
+            data: function (term, page) {
+              return { term: term };
+            },
+            results: function (data, page) {
+              return { results: data };
+            }
+          }
         },
-        success: function(r, newValue) {}
+        success: function(response, newValue) {
+          self.model.set('iptc_categories', [newValue]);
+        }
+      });
+    },
+    makeTopicsEditable: function(){
+      var self = this;
+      
+      var concepts = _.map(this.model.get("concepts"), function(item){
+        return {
+          id: item.replace(/_/g, ' '),
+          text: item.replace(/_/g, ' ')
+        }
+      });
+      
+      this.ui.topicsLink.editable({
+        inputclass: 'input-large',
+        select2: {
+          tags: concepts,
+          multiple: true,
+          placeholder: 'Select a topic',
+          createSearchChoice: function () { return null }
+        },
+        success: function(response, newValue) {
+          self.model.set('concepts', _(newValue).map(function(item){ 
+            return item.replace(/ /g, '_')
+          }));
+        }
       });
     },
     onRender: function () {
       this.makeIptcCategoriesEditable();
-      this.$el.find('#release-topics').editable({
-        inputclass: 'input-large',
-        select2: {
-          tags: _.map(this.textapiResult["concepts"], function(item){
-            return {
-              id: item.topic.replace(/ /g, '_'),
-              text: item.topic
-            }
-          }),
-          multiple: true,
-          tokenSeparators: [",", " "]
-        },
-        success: function(r, newValue) {}
-      });
+      this.makeTopicsEditable();
     },
     openTargetsTab: function(){
+      this.model.save();
+      
       ReleasesBlast.controller.targets();
     },
     getTextApiResult: function(){
@@ -67,7 +89,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       ];
       
       var resultReady = _.after(endpoints.length + 1, function(){
-        that.model.save(that.model.attributes);
         that.trigger("textapi_result:ready");
         that.ui.nextButton.prop('disabled', false);
       });
@@ -77,7 +98,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           .map(function(item){return '\\b' + item.sfs + '\\b'; })
           .uniq()
           .value();
-
+          
         var pattern = new RegExp('(' + sfs.join('|') + ')', 'ig');
 
         that.textapiResult["summarize"] = _(that.textapiResult["summarize"]).inject(function(memo, item) {
@@ -137,7 +158,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 concepts = _.map(concepts, function(item){
                   return item.replace("http://dbpedia.org/resource/", '');
                 });
-                that.model.set({concepts: JSON.stringify(concepts)});
+                that.model.set('concepts', concepts);
                 
                 boldTopicsInSummary();
                 resultReady();
@@ -148,19 +169,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   }).join(' - ');
                 
                 var iptc_categories = _.chain(response).pluck('code').uniq().value();
-                that.model.set({iptc_categories: JSON.stringify(iptc_categories)});
+                that.model.set('iptc_categories', iptc_categories);
                 
                 resultReady();
                 break;
               case 'textapi/summarize':
                 that.textapiResult["summarize"] = _(response).first(5);
-                that.model.set({summaries: JSON.stringify(response)});
+                that.model.set('summaries', response);
                 boldTopicsInSummary();
                 resultReady();
                 break;
               case 'textapi/hashtags':
                 that.textapiResult["hashtags"] = response;
-                that.model.set({hashtags: JSON.stringify(response)});
+                that.model.set('hashtags', response);
                 resultReady();
                 break;
             }
