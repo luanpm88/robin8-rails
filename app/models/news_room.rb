@@ -19,11 +19,15 @@ class NewsRoom < ActiveRecord::Base
   validates_inclusion_of :size, in: VALID_SIZES, allow_blank: true
 
   def city_state
-    [city, state].join(', ')
+    str = [city, state]
+    str.reject! { |c| c.blank? }
+    str.join(', ')
   end
 
   def location
-    [address_1, postal_code, city, state, country].join(', ')
+    str = [address_1, postal_code, city, state, country]
+    str.reject! { |c| c.blank? }
+    str.join(', ')
   end
 
   def has_contact_info?
