@@ -9,8 +9,10 @@
           <h1><%= @news_room.company_name %></h1>
           <p><%= @news_room.description %></p>
           <!-- <p>You can follow us on Twitter via <code>@acme</code> or using the <code>#acmecorp</code> hashtag.</p> -->
-          <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
-            <i class="fa fa-image"></i> Press kit
+          <% if @news_room.attachments.length > 0 %>
+            <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
+              <i class="fa fa-image"></i> Press kit
+            <% end %>
           <% end %>
           <%= link_to follow_news_rooms_path, class: 'btn btn-default' do %>
             <i class="fa fa-user-plus"></i> Follow
