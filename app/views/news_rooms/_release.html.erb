@@ -22,8 +22,10 @@
         <%= truncate_html(release.text.html_safe, length: 115) if release.text %>
       </p>
       <p class='concepts'>
-        <% JSON.parse(release.concepts).each do |concept| %>
-          <label class="label label-success"><%= concept%></label>
+        <% unless release.concepts.blank? %>
+          <% JSON.parse(release.concepts).each do |concept| %>
+            <label class="label label-success"><%= concept%></label>
+          <% end %>
         <% end %>
       </p>
       <hr>
