@@ -12,5 +12,15 @@ Robin.Views.LogoView = Backbone.Marionette.ItemView.extend({
     if (this.model.get(this.options.field)){
       $("#logo-image").attr('src', this.model.get(this.options.field));
     }
+    this.widget.validators.push(this.maxFileSize(3145728));
   },
+  
+  maxFileSize: function(size) {
+    return function(fileInfo) {
+      if (fileInfo.size !== null && fileInfo.size > size) {
+        throw new Error("fileMaximumSize");
+      };
+    };
+  }
+
 });

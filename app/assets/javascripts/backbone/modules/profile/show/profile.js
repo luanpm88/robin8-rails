@@ -26,7 +26,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         $("#avatar-image").attr('src', info.cdnUrl);
         viewObj.model.set({avatar_url: info.cdnUrl});
       });
-      this.widget.validators.push(this.maxFileSize(1024 * 1024));
+      this.widget.validators.push(this.maxFileSize(3145728));
       if (Robin.afterConfirmationMessage != undefined) {
         $.growl(Robin.afterConfirmationMessage,{
           offset: 65,
