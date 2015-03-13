@@ -17,12 +17,10 @@
       </h3>
       <small>15 Jan 2015</small>
       <p class='release-item-text'><%= release.text.truncate(115).html_safe %></p>
-      <p>
-        <label class="label label-success">Startups</label>
-        <label class="label label-success">Success</label>
-        <label class="label label-success">Technology</label>
-        <label class="label label-success">Computers</label>
-        <label class="label label-success">Artificial Intelligence</label>
+      <p class='concepts'>
+        <% JSON.parse(release.concepts).each do |concept| %>
+          <label class="label label-success"><%= concept%></label>
+        <% end %>
       </p>
       <hr>
       <p align="center">

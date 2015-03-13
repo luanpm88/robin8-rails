@@ -1,3 +1,7 @@
 .release-item-text {
-  height: 90px;
+  max-height: 90px;
+}
+
+.release-item .concepts {
+  min-height: 25px;
 }
