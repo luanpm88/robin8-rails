@@ -15,7 +15,7 @@ Robin.Models.Pitch = Backbone.RelationalModel.extend({
   urlRoot: '/pitches',
   defaults: {
     email_pitch: "Hi @[First Name],\n\nHere's a press release you might find interesting:\n\n\"@[Title]\"\n\n@[Summary]\n\nPlease let me know your thoughts.\n\nRegards@[UserFirstName]",
-    twitter_pitch: "Hey @[Name] here's a press release you might find interesting: @[Link]",
+    twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
     email_subject: null
