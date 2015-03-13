@@ -722,22 +722,6 @@ nav{text-align: center;}
   margin: 4px 0 10px 0;
   display: block;
 }
-.release-item .release-image {
-  position: relative;
-  display: block;
-  width: 530px;
-  height: 530px;
-  overflow: hidden;
-}
-.release-item .release-image img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: auto;
-  -webkit-transform: translate(-50%,-50%);
-      -ms-transform: translate(-50%,-50%);
-          transform: translate(-50%,-50%);
-}
 .release-item .overlay {
   position: absolute;
   height: 100%;
