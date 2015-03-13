@@ -17,7 +17,7 @@
               <div class='jumbotron-contents'>
                 <h1><%= @release.title %></h1>
                 <div>
-                  <%= @release.text.html_safe %>
+                  <%= @release.text.try(:html_safe) %>
                 </div>
               </div>
               

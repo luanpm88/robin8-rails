@@ -124,6 +124,8 @@ GEM
     execjs (2.4.0)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
     globalid (0.3.3)
       activesupport (>= 4.1.0)
     has_scope (0.6.0)
@@ -303,7 +305,7 @@ GEM
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.string (3.0.3)
-    rails-assets-uploadcare (2.0.3)
+    rails-assets-uploadcare (2.0.4)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-x-editable (1.5.1)
       rails-assets-jquery (>= 1.6)
@@ -445,6 +447,7 @@ DEPENDENCIES
   devise
   devise_invitable
   ejs
+  friendly_id
   has_scope
   htmlentities
   httparty

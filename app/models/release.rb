@@ -1,4 +1,7 @@
 class Release < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   belongs_to :user
   belongs_to :news_room, counter_cache: true
   has_many :pitches
