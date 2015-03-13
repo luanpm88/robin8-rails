@@ -22,7 +22,7 @@ class ReleasesController < ApplicationController
     respond_to do |format|
       format.html {
         @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
-        @release = @news_room.releases.find(params[:id])
+        @release = @news_room.releases.friendly.find(params[:id])
       }
       format.json { render json: Release.where(id: params[:id], is_private: false).first }
     end
