@@ -1,4 +1,5 @@
 class PitchesContactsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_pitches_contact, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -17,10 +18,8 @@ class PitchesContactsController < ApplicationController
 
     respond_to do |format|
       if @pitches_contact.save
-#        format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
         format.json { render :show, status: :created, location: @pitches_contact }
       else
-#        format.html { render :new }
         format.json { render json: @pitches_contact.errors, status: :unprocessable_entity }
       end
     end
@@ -29,7 +28,6 @@ class PitchesContactsController < ApplicationController
   def destroy
     @pitches_contact.destroy
     respond_to do |format|
-#      format.html { redirect_to contacts_url, notice: 'Contact was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

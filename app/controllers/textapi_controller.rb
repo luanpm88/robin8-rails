@@ -1,5 +1,5 @@
 class TextapiController < ApplicationController
-  before_action :set_client
+  before_action :authenticate_user!, :set_client
   
   def classify
     response = @client.classify text: text_param
