@@ -21,12 +21,10 @@
         </script>
         <%= truncate_html(release.text.html_safe, length: 115) if release.text %>
       </p>
-      <p>
-        <label class="label label-success">Startups</label>
-        <label class="label label-success">Success</label>
-        <label class="label label-success">Technology</label>
-        <label class="label label-success">Computers</label>
-        <label class="label label-success">Artificial Intelligence</label>
+      <p class='concepts'>
+        <% JSON.parse(release.concepts).each do |concept| %>
+          <label class="label label-success"><%= concept%></label>
+        <% end %>
       </p>
       <hr>
       <p align="center">

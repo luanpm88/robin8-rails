@@ -11,89 +11,103 @@
       <br />Pressroom
     </a>
   </li>
-  <li class="navlinks">
-    <a data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseContact" class="collapsed"><i class="fa fa-info-circle"></i> Contact</a>
-    <div class="collapse collapsible" id="collapseContact">
-      <div>
-        <% if (news_room.company_name) %>
-          <strong class="subhead"><%- news_room.company_name %></strong>
-        <% end %>
-        <p><strong>Email:</strong><br /> <a href="mailto:<%= news_room.email %>"><%= news_room.email %></a></p>
-        <p>
-          <strong>Address:</strong><br />
-          <% unless news_room.postal_code.blank? %>
-            PO Box <%= news_room.postal_code %><br />
+  <% if news_room.has_contact_info? %>
+    <li class="navlinks">
+      <a data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseContact" class="collapsed"><i class="fa fa-info-circle"></i> Contact</a>
+      <div class="collapse collapsible" id="collapseContact">
+        <div>
+          <% if (news_room.company_name) %>
+            <strong class="subhead"><%- news_room.company_name %></strong>
           <% end %>
-          <% unless news_room.address_1.blank? %>
-            <%= news_room.address_1 %><br />
+          <p><strong>Email:</strong><br /> <a href="mailto:<%= news_room.email %>"><%= news_room.email %></a></p>
+          <p>
+            <strong>Address:</strong><br />
+            <% unless news_room.postal_code.blank? %>
+              PO Box <%= news_room.postal_code %><br />
+            <% end %>
+            <% unless news_room.address_1.blank? %>
+              <%= news_room.address_1 %><br />
+            <% end %>
+            <% unless news_room.city_state.blank? %>
+              <%= news_room.city_state %><br />
+            <% end %>
+            <% unless news_room.country.blank? %>
+              <%= news_room.country %><br />
+            <% end %>
+          </p>
+          <ul class="contact-links">
+            <% if news_room.web_address %>
+              <li>
+                <a href="news_room.web_address"><i class="fa fa-globe"></i> <%= news_room.web_address %></a>
+              </li>
+            <% end %>
+            <% if news_room.email %>
+              <li>
+                <%= mail_to news_room.email do %>
+                  <i class="fa fa-envelope"></i> Contact
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <% end %>
+  <% if news_room.has_social_links? %>
+    <li class="navlinks">
+      <a data-toggle="collapse" href="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial" class="collapsed"><i class="fa fa-users"></i> Social Media</a>
+      <div class="collapse collapsible" id="collapseSocial">
+        <ul class="soc">
+          <% unless news_room.twitter_link.blank? %>
+            <li><a class="soc-twitter" target='_blank' href="<%= news_room.twitter_link%>"></a></li>
           <% end %>
-          <% unless news_room.city_state.blank? %>
-            <%= news_room.city_state %><br />
+          <% unless news_room.facebook_link.blank? %>
+            <li><a class="soc-facebook" target='_blank' href="<%= news_room.facebook_link%>"></a></li>
           <% end %>
-          <% unless news_room.country.blank? %>
-            <%= news_room.country %><br />
+          <% unless news_room.instagram_link.blank? %>
+            <li><a class="soc-instagram" target='_blank' href="<%= news_room.instagram_link%>"></a></li>
           <% end %>
-        </p>
-        <ul class="contact-links">
-          <% if news_room.web_address %>
-            <li>
-              <a href="news_room.web_address"><i class="fa fa-globe"></i> <%= news_room.web_address %></a>
-            </li>
-          <% end %>
-          <% if news_room.email %>
-            <li>
-              <%= mail_to news_room.email do %>
-                <i class="fa fa-envelope"></i> Contact
-              <% end %>
-            </li>
+          <% unless news_room.linkedin_link.blank? %>
+            <li><a class="soc-linkedin" target='_blank' href="<%= news_room.linkedin_link%>"></a></li>
           <% end %>
         </ul>
       </div>
-    </div>
-  </li>
-  <li class="navlinks">
-    <a data-toggle="collapse" href="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial" class="collapsed"><i class="fa fa-users"></i> Social Media</a>
-    <div class="collapse collapsible" id="collapseSocial">
-      <ul class="soc">
-        <li><a class="soc-twitter" target='_blank' href="<%= news_room.twitter_link.blank? ? 'javascript:void(0)' : news_room.twitter_link%>"></a></li>
-        <li><a class="soc-facebook" target='_blank' href="<%= news_room.facebook_link.blank? ? 'javascript:void(0)' : news_room.facebook_link%>"></a></li>
-        <li><a class="soc-instagram" target='_blank' href="<%= news_room.instagram_link.blank? ? 'javascript:void(0)' : news_room.instagram_link%>"></a></li>
-        <li><a class="soc-linkedin" target='_blank' href="<%= news_room.linkedin_link.blank? ? 'javascript:void(0)' : news_room.linkedin_link%>"></a></li>
-      </ul>
-    </div>
-  </li>
-  <li class="navlinks">
-    <a data-toggle="collapse" href="#collapseSpokeperson" aria-expanded="false" aria-controls="collapseSpokeperson" class="collapsed"><i class="fa fa-user"></i> Spokeperson</a>
-    <div class="collapse collapsible" id="collapseSpokeperson">
-      <div class="media">
-        <a class="media-left" href="#">
-          <% if news_room.user.avatar_url %>
-            <%= image_tag news_room.user.avatar_url, class: 'img-circle avatar', style: 'width: 50px; height: 50px' %>
-          <% else %>
-            <img src="http://lorempixel.com/50/50" class="img-circle avatar">
-          <% end %>
-        </a>
-        <div class="media-body">
-          <h4 class="media-heading"><%= news_room.owner_name.blank? ? 'Not set' : news_room.owner_name %></h4>
-          <p>
-            <%= news_room.job_title.blank? ? 'Not set' : news_room.job_title %>, <a href="#"><%= news_room.email.blank? ? 'Not set' : news_room.email %></a><br>
-          </p>
+    </li>
+  <% end %>
+  <% unless news_room.owner_name.blank? %>
+    <li class="navlinks">
+      <a data-toggle="collapse" href="#collapseSpokeperson" aria-expanded="false" aria-controls="collapseSpokeperson" class="collapsed"><i class="fa fa-user"></i> Spokeperson</a>
+      <div class="collapse collapsible" id="collapseSpokeperson">
+        <div class="media">
+          <a class="media-left" href="#">
+            <% if news_room.user.avatar_url %>
+              <%= image_tag news_room.user.avatar_url, class: 'img-circle avatar', style: 'width: 50px; height: 50px' %>
+            <% else %>
+              <img src="http://lorempixel.com/50/50" class="img-circle avatar">
+            <% end %>
+          </a>
+          <div class="media-body">
+            <h4 class="media-heading"><%= news_room.owner_name.blank? ? '' : news_room.owner_name %></h4>
+            <p>
+              <%= news_room.job_title.blank? ? '' : news_room.job_title %>, <a href="#"><%= news_room.email.blank? ? '' : news_room.email %></a><br>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  </li>
-  <li class="navlinks">
-    <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets" class="collapsed "><i class="fa fa-twitter"></i> Latest Tweets</a>
-    <div class="collapse collapsible <%= news_room.twitter_link.blank? ? 'blank' : 'correct' %>" id="collapseTweets" style="padding: 6px !important;">
-      <!-- <a class="twitter-timeline <%= news_room.blank? ? 'hidden' : '' %>" href="<%= news_room.twitter_link %>"  data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link %>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a> -->
-      <div class="twitter-wrap  <%= news_room.twitter_link.blank? ? 'hidden' : '' %>">
-        <a class="twitter-timeline" href="<%= news_room.twitter_link%>" data-widget-id="398762441560952832" data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link.split('/').last%>" data-chrome="nofooter noheader transparent"></a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </li>
+  <% end %>
+  <% unless news_room.twitter_link.blank? %>
+    <li class="navlinks">
+      <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets" class="collapsed "><i class="fa fa-twitter"></i> Latest Tweets</a>
+      <div class="collapse collapsible <%= news_room.twitter_link.blank? ? 'blank' : 'correct' %>" id="collapseTweets" style="padding: 6px !important;">
+        <!-- <a class="twitter-timeline <%= news_room.blank? ? 'hidden' : '' %>" href="<%= news_room.twitter_link %>"  data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link %>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a> -->
+        <div class="twitter-wrap  <%= news_room.twitter_link.blank? ? 'hidden' : '' %>">
+          <a class="twitter-timeline" href="<%= news_room.twitter_link%>" data-widget-id="398762441560952832" data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link.split('/').last%>" data-chrome="nofooter noheader transparent"></a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
       </div>
-      
-      <span class="not-set <%= news_room.twitter_link.blank? ? '' : 'hidden' %>"> Twitter user's page is not set</span>
-    </div>
-  </li>
+    <li>
+  <% end %>
   <li class="btn-li">
     <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
       <i class="fa fa-image"></i> Press kit

@@ -26,6 +26,14 @@ class NewsRoom < ActiveRecord::Base
     [address_1, postal_code, city, state, country].join(', ')
   end
 
+  def has_contact_info?
+    [address_1, postal_code, city, state, country, web_address, email].reject(&:blank?).length > 0
+  end
+
+  def has_social_links?
+    [facebook_link, twitter_link, linkedin_link, instagram_link].reject(&:blank?).length > 0
+  end
+
   private
   
     def set_campaign_name
