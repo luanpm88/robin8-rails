@@ -422,7 +422,6 @@ a {
   font-size: 12px;
   line-height: 15px;
   position: relative;
-  overflow: visible;
 }
 
 .stories .media-body .label {
@@ -430,18 +429,24 @@ a {
   font-size: 10px;
 }
 
-// .stories .media-body .likes {
-//   position: relative !important;
-//   margin-top: -8px;
-// }
+.stories .media-body .likes {
+  position: relative !important;
+  margin-top: -8px;
+}
 
-.stories .media-body .label{
-  border: none;
-  padding: 0;
+.stories .media-body .pull-left.label,
+.stories .media-body .pull-right.label{
+  position: absolute;
+  bottom: 0px;
+}
+
+.stories .media-body .pull-right.label{
+  right:0px;
 }
  
 
-.stories .media-body .label a {
+.stories .media-body .pull-left.label,
+.stories .media-body .pull-right.label a {
     background: none repeat scroll 0 0 #006481;
     border: 0 none;
     border-radius: 7px;
@@ -449,8 +454,14 @@ a {
     font-size: 10px;
     height: 22px;
     line-height: 22px;
-    padding: 0 15px 0 10px;
-    display: inline-block;
+    padding: 0 15px 0 10px; 
+}
+
+.stories .media-body .pull-right.label a.read-more{
+  margin-right: 44px;
+}
+.stories .media-body .pull-right.label a.read-more.share{
+  margin-right: 0px;
 }
 
 .stories .media-body .pull-left.label .fa-thumbs-up:before,
@@ -705,7 +716,7 @@ nav{text-align: center;}
   // margin-bottom: 5px;
   vertical-align: top;
 }
-.release-item a h3{
+.release-item h3 a{
   color: #333;
 }
 .release-item .tooltip-inner {
@@ -720,6 +731,10 @@ nav{text-align: center;}
   font-weight: bold;
   color: #555;
   margin: 4px 0 10px 0;
+  display: block;
+}
+.release-item .release-image {
+  position: relative;
   display: block;
 }
 .release-item .overlay {
@@ -744,12 +759,6 @@ nav{text-align: center;}
 }
 .release-item .overlay ul {
   list-style: none;
-}
-.release-item .truncate {
-  width: 520px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .toolbar {
   padding: 8px 0;
@@ -1281,7 +1290,6 @@ input.form-control[type="file"] {
   max-width: 340px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
  }
 
 .newsroom .tooltip {

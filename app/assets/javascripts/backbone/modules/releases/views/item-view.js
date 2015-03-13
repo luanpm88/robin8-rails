@@ -28,12 +28,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
 
     onShow: function(){
-      var title = this.$el.find('.truncate');
-      if (title.innerWidth() < title.prop('scrollWidth')) {
-        title.tooltip({
-          placement : 'top'
-        });
-      }
+      $(".release-title").dotdotdot();
     },
 
     openEditModal: function(){
