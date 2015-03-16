@@ -103,6 +103,8 @@ gem 'friendly_id'
 gem 'mailgun'
 
 gem 'paperclip', '~> 4.2.1'
+gem 'premailer-rails'
+gem 'hpricot'
 
 group :development, :test do
   # Deploy with Capistrano

@@ -1,0 +1,6 @@
+BASIC_SLUGS = ["basic-monthly", "basic-annual"]
+BUSINESS_SLUGS = ["business-monthly", "business-annual"]
+ENTERPRISE_SLUGS = [ "enterprise-monthly", "enterprise-annual"]
+PRO_SLUGS = ["pro-monthly", "pro-annual"]
+PREMIUM_SLUGS = ["premium-monthly", "premium-annual"]
+ULTRA_SLUGS = ["ultra-monthly", "ultra-annual"]
