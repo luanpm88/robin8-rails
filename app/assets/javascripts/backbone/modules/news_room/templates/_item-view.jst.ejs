@@ -18,9 +18,9 @@
       <div class="row">
         <div class="col-xs-12 text-center">
           <% if(news_room.id && news_room.publish_on_website) {%>
-            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
-            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
           <% } %>
           <% if (news_room.releases_count > 0) {%>
             <a class="btn btn-info" href="http://<%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>
