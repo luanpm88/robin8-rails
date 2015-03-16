@@ -604,6 +604,14 @@ footer a{
   font-size: 17px;
 }
 
+.subscription-type .selector-wrap .button.button-planselector-disabled{
+  background: none repeat scroll 0 0 #bfbfbf;
+  height: 40px;
+  line-height: 40px;
+  max-width: 230px;
+  width: 100%;
+  font-size: 17px;
+}
 .subscription-type .selector-wrap .button.button-planselector:hover{
   background: #006481;
 }

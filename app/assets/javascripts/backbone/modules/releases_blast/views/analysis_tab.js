@@ -15,6 +15,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.on("textapi_result:ready", this.render);
       this.getTextApiResult();
       this.textapiResult = {};
+      
+      var self = this;
+      Robin.commands.setHandler("goToTargetsTab", function(){
+        if (self.ui.nextButton.prop('disabled') === false){
+          self.openTargetsTab();
+        }
+      });
     },
     templateHelpers: function(){
       return {

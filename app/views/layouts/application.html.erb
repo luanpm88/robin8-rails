@@ -26,7 +26,7 @@
   <% end -%>
   <% if signed_in? -%>
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
-    <% unless request.subdomain.blank? %>
+    <% if (request.subdomain != 'staging' && !request.subdomain.blank?) %>
       Robin.publicPages = true
     <% end %>
   <% else -%>

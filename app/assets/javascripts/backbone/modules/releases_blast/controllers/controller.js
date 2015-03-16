@@ -22,9 +22,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         self.searchInfluencers(params);
       });
       
+      
+      Robin.vent.on("analysis:tab:clicked", function(params){
+        if (self.module.releasesBlastHeader.get('level') === 1)
+          Robin.commands.execute("goToAnalysisTab");
+      });
+      
       Robin.vent.on("targets:tab:clicked", function(params){
         if (self.module.releasesBlastHeader.get('level') === 4)
           self.targets();
+        else if (self.module.releasesBlastHeader.get('level') === 2)
+          Robin.commands.execute("goToTargetsTab");
+      });
+      
+      Robin.vent.on("pitch:tab:clicked", function(params){
+        if (self.module.releasesBlastHeader.get('level') === 3)
+          Robin.commands.execute("goToPitchTab");
       });
     },
     start: function(params){

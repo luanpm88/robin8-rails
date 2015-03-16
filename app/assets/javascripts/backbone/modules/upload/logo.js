@@ -5,8 +5,13 @@ Robin.Views.LogoView = Backbone.Marionette.ItemView.extend({
   },
   onShow: function() {
     var viewObj = this;
+    $('#image-uploader-logo').nailthumb({width:200,height:200});
+    if (this.model.urlRoot == "/news_rooms") {
+      $("input").attr("data-crop", "340x340 upscale");
+    }
     this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
         $("#logo-image").attr('src', info.cdnUrl);
+        $('#image-uploader-logo').nailthumb({width:200,height:200});
         viewObj.model.set(viewObj.options.field,  info.cdnUrl);
       });
     if (this.model.get(this.options.field)){

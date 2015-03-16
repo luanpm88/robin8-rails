@@ -41,6 +41,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     analyzeRelease: function(releaseId){
       var the_release = this.collection.findWhere({id: releaseId});
       ReleasesBlast.controller.analysis({releaseModel: the_release});
+    },
+    initialize: function(options){
+      var self = this;
+      Robin.commands.setHandler("goToAnalysisTab", function(){
+        if (self.ui.analyzeButton.prop('disabled') === false){
+          var selectValue = self.ui.releasesSelect.val();
+          if ((selectValue != -1) || (selectValue != -2)){
+            self.analyzeRelease(parseInt(selectValue));
+          }
+        }
+      });
     }
   });
 });
