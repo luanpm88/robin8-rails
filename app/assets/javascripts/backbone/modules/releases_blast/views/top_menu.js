@@ -6,13 +6,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     tagName: 'ul',
     model: Robin.Models.ReleasesBlastHeader,
     ui: {
-      targetsHeaderTab: "#blast-targets-link"
+      startHeaderTab: "#blast-home-link",
+      analysisHeaderTab: "#blast-analysis-link",
+      targetsHeaderTab: "#blast-targets-link",
+      pitchHeaderTab: "#blast-pitch-link"
     },
     modelEvents: {
       "change": "render"
     },
     events: {
-      'click @ui.targetsHeaderTab': "targetsHeaderTabClicked"
+      'click @ui.startHeaderTab': "startHeaderTabClicked",
+      'click @ui.analysisHeaderTab': "analysisHeaderTabClicked",
+      'click @ui.targetsHeaderTab': "targetsHeaderTabClicked",
+      'click @ui.pitchHeaderTab': "pitchHeaderTabClicked"
     },
     attributes: {
       "role": "tablist"
@@ -26,8 +32,25 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.pitchContactsCollection = options.pitchContactsCollection;
       this.pitchContactsCollection.bind('add remove', this.render, this);
     },
+    startHeaderTabClicked: function(e){
+      e.preventDefault();
+      
+      Robin.vent.trigger('start:tab:clicked');
+    },
+    analysisHeaderTabClicked: function(e){
+      e.preventDefault();
+      
+      Robin.vent.trigger('analysis:tab:clicked');
+    },
     targetsHeaderTabClicked: function(e){
+      e.preventDefault();
+      
       Robin.vent.trigger('targets:tab:clicked');
+    },
+    pitchHeaderTabClicked: function(e){
+      e.preventDefault();
+      
+      Robin.vent.trigger('pitch:tab:clicked');
     }
   });
 });
