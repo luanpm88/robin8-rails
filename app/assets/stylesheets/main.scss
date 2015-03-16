@@ -430,16 +430,17 @@ a {
   font-size: 10px;
 }
 
-// .stories .media-body .likes {
-//   position: relative !important;
-//   margin-top: -8px;
-// }
-
 .stories .media-body .label{
   border: none;
   padding: 0;
 }
- 
+
+@-moz-document url-prefix(http), url-prefix(https), url-prefix(file) {
+  img:-moz-broken {
+    -moz-force-broken-image-icon: 1;
+    display: none;   
+  }
+}
 
 .stories .media-body .label a {
     background: none repeat scroll 0 0 #006481;
