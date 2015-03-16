@@ -18,7 +18,7 @@
       <div class="row">
         <div class="col-xs-12 text-center">
           <% var itemWindowUrl = location.host.split('.') %>
-          <% var itemWindowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
+          <% var itemWindowLocation = itemWindowUrl.length == 3 ? _.last(itemWindowUrl, 2).join('.') : location.host %>
           <% if(news_room.id && news_room.publish_on_website) {%>
             <a href="http://<%- news_room.subdomain_name %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
