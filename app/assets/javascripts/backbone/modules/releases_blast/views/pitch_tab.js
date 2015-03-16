@@ -33,6 +33,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     childView: ReleasesBlast.EmailTargetItemView,
     model: Robin.Models.MediaList,
     childViewContainer: "tbody",
+    className: 'well',
     childViewOptions: function(){
       return {
         parentCollection: this.collection
@@ -123,6 +124,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     collection: Robin.Collections.TwitterTargetsCollection,
     childView: ReleasesBlast.TwitterTargetItemView,
     childViewContainer: "tbody",
+    className: 'well',
     childViewOptions: function(){
       return {
         parentCollection: this.collection
