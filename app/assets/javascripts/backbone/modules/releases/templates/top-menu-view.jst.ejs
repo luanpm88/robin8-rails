@@ -85,13 +85,15 @@
           </div>
         </div>
         <div class="modal-footer">
+          <% var windowUrl = location.host.split('.') %>
+          <% var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
           <% if(release.id) { %>
             <button type="button" class="btn btn-danger pull-left" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
           <% } %>
           <% if (release.id && release.news_room_public && !release.is_private) {%>
-            <a href="http://<%- release.subdomain_name %>.<%- location.host %>/releases/<%- release.slug %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
-            <a href="http://<%- release.subdomain_name %>.<%- location.host %>/releases/<%- release.slug %>" class="btn btn-sm btn-primary" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-sm btn-primary" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
           <% } %>
           <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> Save draft</button>
           <button type="button" class="btn btn-primary"><i class="fa fa-rocket"></i> SmartRelease</button>
