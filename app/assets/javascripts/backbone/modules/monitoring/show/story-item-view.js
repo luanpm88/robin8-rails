@@ -30,7 +30,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         this.$el.find('.likes').tooltip({
           title: JST['backbone/modules/monitoring/show/templates/shares_tooltip'](shares),
           trigger: 'hover',
-          placement: 'right',
+          placement: 'auto',
           html: true
         });
       }

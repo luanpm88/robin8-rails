@@ -99,7 +99,10 @@ class User < ActiveRecord::Base
 
    def email_to_slug
     ret = email.split('@')[0].strip
-    ret.gsub!(' ', '-').gsub!('.', '-').gsub!('_', '-').gsub!('+', '-')
+    ret.gsub!(' ', '-')
+    ret.gsub!('.', '-')
+    ret.gsub!('_', '-')
+    ret.gsub!('+', '-')
 
     ret
   end
