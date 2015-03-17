@@ -4,6 +4,7 @@
   <div class="thumbnail release-item">
     <a href="http://<%- release.news_room.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" target="_blank" class="release-image">
       <img class="img" src="<%= release.first_src %>">
+      <% /* 
       <div class="overlay">
         Summary
         <br><br>
@@ -13,6 +14,7 @@
           <li><i class="fa fa-reply"></i> <strong><%= release.coverages %></strong> Coverages</li>
         </ul>
       </div>
+      */ %>
     </a>
     <div class="caption text-center">
       <h3 class="truncate"><a href="http://<%- release.news_room.subdomain_name %>.<%- windowLocation %>/releases/<%- release.id %>" target="_blank"><%= release.title %></a></h3>
