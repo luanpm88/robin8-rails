@@ -4,13 +4,7 @@
       <% if release.logo_url %>
         <img class="img" src="<%= release.logo_url %>">
       <% else %>
-        <% if release.attachments.length > 0 %>
-          <% img = release.attachments.find_by_attachment_type("image").url%>
-          <% url = img ? img : "http://placehold.it/542x542" %>
-          <img class="img" src="<%= url %>">
-        <% else %>
-          <img class="img" src="http://placehold.it/542x542">
-        <% end %>
+        <img class="img" src="http://placehold.it/542x542">
       <% end %>
     <% end %>
     <div class="caption text-center">

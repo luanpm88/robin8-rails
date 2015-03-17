@@ -3,11 +3,7 @@
     <% if(release.logo_url) {%>
       <img class="img" src="<%= release.logo_url %>">
     <%} else {%>
-      <% if(release.attachments.length > 0) {%>
-        <img class="img" src="<%= release.attachments[0].url %>">
-      <%} else {%>
-        <img class="img" src="http://placehold.it/542x542">
-      <%}%>
+      <img class="img" src="http://placehold.it/542x542">
     <%}%>
   </a>
   <div class="caption text-center">
