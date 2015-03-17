@@ -7,28 +7,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
 
     initialize: function(){
-      var attachments = this.model.attributes.attachments;
-      if (this.model.attributes.logo_url) {
-        first_src = this.model.attributes.logo_url;
+      if (this.model.attributes.thumbnail) {
+        first_src = this.model.attributes.thumbnail;
       } else {
-        if(attachments.length > 0) {
-          var t = true 
-          _.every(attachments, function(attachment){
-            if(attachment.attachment_type == 'image') {
-              first_src = attachment.url;
-              t = false;
-            }
-            return t;
-          }); 
-        } else {
-          first_src="http://placehold.it/542x542";
-        }
+        first_src="http://placehold.it/542x542";
       }
       this.model.attributes.first_src = first_src; 
-    },
-
-    onShow: function(){
-      $(".release-title").dotdotdot();
     },
 
     openEditModal: function(){

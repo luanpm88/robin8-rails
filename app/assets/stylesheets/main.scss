@@ -1319,3 +1319,36 @@ input.form-control[type="file"] {
   margin-left: auto;
   margin-right: auto;
 }
+
+.release-thumbnail-container {
+    position: relative;
+    width:    100%;
+}
+.release-thumbnail-container:before {
+    content:     "";
+    display:     block;
+    padding-top: 100%;
+}
+.release-thumbnail-inner {
+    position: absolute;
+    top:      0;
+    left:     0;
+    bottom:   0;
+    right:    0;
+}
+.release-thumbnail {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ellipsis-truncate {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+}
