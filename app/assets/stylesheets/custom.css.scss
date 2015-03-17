@@ -58,3 +58,14 @@
 .stream-header i.fa-reorder {
   margin-right: 0px !important;
 }
+
+#releaseForm #website .checkbox {
+  label {
+    padding-left: 15px !important;
+    span {
+      display: block;
+      margin-left: 5px;
+      margin-top: 5px;
+    }
+  }
+}
