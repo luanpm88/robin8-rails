@@ -100,7 +100,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             url: url
           },
           success: function(response) {
-            self.ui.releaseTitle.val(response.title);
+            self.model.set('title', response.title);
             var editor = self.ui.wysihtml5.data('wysihtml5').editor;
             editor.setValue(
               '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
