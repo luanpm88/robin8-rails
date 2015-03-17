@@ -32,6 +32,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     onShow: function(){
       if (this.collection.length > 0)
         this.ui.nextButton.prop('disabled', false);
+    },
+    initialize: function(options){
+      var self = this;
+      Robin.commands.setHandler("goToPitchTab", function(){
+        if (self.ui.nextButton.prop('disabled') === false)
+          self.openPitchTab();
+      });
     }
   });
 });

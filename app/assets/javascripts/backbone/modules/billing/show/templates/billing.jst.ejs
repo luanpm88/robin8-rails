@@ -1,4 +1,5 @@
-<%= Robin.currentUser.attributes.active_subscription == null ? "You don't have subscription" : Robin.currentUser.attributes.active_subscription.package.name %>
+<% var planName = Robin.currentUser.attributes.active_subscription.package == undefined ? 'Plan without name' : Robin.currentUser.attributes.active_subscription.package.name %>
+<%= Robin.currentUser.attributes.active_subscription == null ? "You don't have subscription" : planName %>
 <% var url = Robin.currentUser.attributes.active_subscription == null ? "create_subscription" : "update_subscription" %>
 
 <br/>

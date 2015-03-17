@@ -17,15 +17,17 @@
     <div class="modal-footer">
       <div class="row">
         <div class="col-xs-12 text-center">
+          <% var itemWindowUrl = location.host.split('.') %>
+          <% var itemWindowLocation = itemWindowUrl.length == 3 ? _.last(itemWindowUrl, 2).join('.') : location.host %>
           <% if(news_room.id && news_room.publish_on_website) {%>
-            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- news_room.subdomain_name %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
-            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- news_room.subdomain_name %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
           <% } %>
           <% if (news_room.releases_count > 0) {%>
-            <a class="btn btn-info" href="http://<%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>
+            <a class="btn btn-info" href="http://<%- itemWindowLocation %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>
           <%} else {%>
-            <a class="btn btn-info" href="http://<%- location.host %>#releases/newsroom/<%- news_room.id %>" disabled='disabled'><i class="fa fa-list-alt"></i> Releases</a>
+            <a class="btn btn-info" href="http://<%- itemWindowLocation %>#releases/newsroom/<%- news_room.id %>" disabled='disabled'><i class="fa fa-list-alt"></i> Releases</a>
           <% } %>
           <button class="btn btn-default" id="open_edit"><i class="fa fa-pencil"></i> Edit</button>
         </div>
