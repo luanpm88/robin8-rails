@@ -123,17 +123,23 @@ Robin.vent.on('SaySomething:close', function(){
 
 //Uploadcare params:
 UPLOADCARE_PUBLIC_KEY = "eaef90e4420402169d1f"
-UPLOADCARE_AUTOSTORE = true;
+UPLOADCARE_AUTOSTORE = false;
 UPLOADCARE_LOCALE_TRANSLATIONS = {
   // messages for widget
   errors: {
-    'fileType': 'This type of files is not allowed.'
+    'fileType': 'This type of files is not allowed.',
+    'fileMaximumSize': 'File is too large'
   },
   // messages for dialog's error page
   dialog: { tabs: { preview: { error: {
     'fileType': {  
       title: 'Title.',
       text: 'Text.',
+      back: 'Back'
+    },
+    'fileMaximumSize': {
+      title: 'Selected file is too large!',
+      text: 'Maximum image size is 3 MB, please choose another one',
       back: 'Back'
     }
   } } } }

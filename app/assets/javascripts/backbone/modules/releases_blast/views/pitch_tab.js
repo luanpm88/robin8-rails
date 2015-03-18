@@ -33,6 +33,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     childView: ReleasesBlast.EmailTargetItemView,
     model: Robin.Models.MediaList,
     childViewContainer: "tbody",
+    className: 'well',
     childViewOptions: function(){
       return {
         parentCollection: this.collection
@@ -123,6 +124,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     collection: Robin.Collections.TwitterTargetsCollection,
     childView: ReleasesBlast.TwitterTargetItemView,
     childViewContainer: "tbody",
+    className: 'well',
     childViewOptions: function(){
       return {
         parentCollection: this.collection
@@ -150,24 +152,30 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     ui: {
       mergeTag: 'label.label a',
       textarea: '#email-pitch-textarea',
+      emailPitchPreviewTextarea: '#email-pitch-preview',
       summarySlider: '#summary-slider',
       summarySliderAmount: '#summary-slider-amount',
       subjectLineInput: '[name=email_subject]',
-      emailAddressInput: '[name=email_address]'
+      emailAddressInput: '[name=email_address]',
+      previewButton: '#pitch-text-preview'
     },
 
     events: {
       'click @ui.mergeTag': 'addMergeTag',
       'change @ui.subjectLineInput': 'subjectLineInputChanged',
       'change @ui.emailAddressInput': 'emailAddressInputChanged',
-      'change @ui.textarea': 'emailPitchTextChanged'
+      'change @ui.textarea': 'emailPitchTextChanged',
+      'keyup @ui.textarea': 'emailPitchTextChanged'
     },
 
     addMergeTag: function(e) {
       e.preventDefault();
       this.ui.textarea.caret('@[' + e.target.textContent + '] ');
+      this.ui.textarea.trigger('change');
     },
-
+    initialize: function(options){
+      this.releaseModel = options.releaseModel;
+    },
     serializeData: function() {
       return {
         mergeTags: [
@@ -201,9 +209,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         slide: function(event, ui) {
           self.ui.summarySliderAmount.text(ui.value + ' sentences');
           self.model.set('summary_length', parseInt(ui.value));
+          self.previewPitchText();
         }
       });
       this.ui.summarySliderAmount.text(this.ui.summarySlider.slider("value") + " sentences");
+      this.previewPitchText();
     },
     subjectLineInputChanged: function(e){
       this.model.set('email_subject', this.ui.subjectLineInput.val());
@@ -213,6 +223,31 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     emailPitchTextChanged: function(e){
       this.model.set('email_pitch', this.ui.textarea.val());
+      this.previewPitchText();
+    },
+    previewPitchText: function(){
+      var text = this.renderPitchText(this.ui.textarea.val());
+      this.ui.emailPitchPreviewTextarea.val(text);
+    },
+    renderPitchText: function(text){
+      // Email pitch tags are:
+      // ["@[First Name]", "@[Last Name]", "@[Summary]",
+      // "@[Outlet]", "@[Link]", "@[Title]"]
+      var renderedText = text;
+      
+      var title = this.releaseModel.get('title');
+      var link = this.releaseModel.get('permalink');
+      var summariesArr = this.releaseModel.get('summaries')
+        .slice(0, this.model.get('summary_length'));
+      var summaries = _(summariesArr).map(function(item){
+        return '- ' + item
+      }).join('\n');
+      
+      renderedText = renderedText.replace(/\@\[Title\]/g, title);
+      renderedText = renderedText.replace(/\@\[Link\]/g, link);
+      renderedText = renderedText.replace(/\@\[Summary\]/g, summaries);
+      
+      return renderedText;
     }
   });
 
@@ -222,32 +257,58 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     ui: {
       mergeTag: 'label.mergetag a',
       hashTag: 'label.hashtag',
-      textarea: '#twitter-pitch-textarea'
+      textarea: '#twitter-pitch-textarea',
+      twitterPitchPreviewTextarea: '#twitter-pitch-preview',
     },
     events: {
       'click @ui.mergeTag': 'addMergeTag',
       'click @ui.hashTag': 'addHashTag',
-      'change @ui.textarea': 'twitterPitchTextChanged'
+      'change @ui.textarea': 'twitterPitchTextChanged',
+      'keyup @ui.textarea': 'twitterPitchTextChanged'
     },
     addMergeTag: function(e) {
       e.preventDefault();
       
       this.ui.textarea.caret('@[' + e.target.textContent + '] ');
+      this.previewPitchText();
     },
     addHashTag: function(e) {
       e.preventDefault();
       
       this.ui.textarea.caret(e.target.textContent + ' ');
+      this.previewPitchText();
+    },
+    initialize: function(options){
+      this.releaseModel = options.releaseModel;
+    },
+    onRender: function(){
+      this.previewPitchText();
     },
     serializeData: function() {
       return {
-        hashTags: this.options.releaseModel.get('hashtags'),
+        hashTags: this.releaseModel.get('hashtags'),
         mergeTags: ['Handle', 'Name', 'Random Greeting', 'Link'],
         pitch: this.model
       }
     },
     twitterPitchTextChanged: function(e){
       this.model.set("twitter_pitch", this.ui.textarea.val());
+      this.previewPitchText();
+    },
+    previewPitchText: function(){
+      var text = this.renderPitchText(this.ui.textarea.val());
+      this.ui.twitterPitchPreviewTextarea.val(text);
+    },
+    renderPitchText: function(text){
+      // Twitter pitch tags are:
+      // [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ] 
+      var renderedText = text;
+      
+      var link = this.releaseModel.get('permalink');
+      
+      renderedText = renderedText.replace(/\@\[Link\]/g, link);
+      
+      return renderedText;
     }
   });
 

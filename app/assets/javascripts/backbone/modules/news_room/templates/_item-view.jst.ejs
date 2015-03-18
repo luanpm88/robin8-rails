@@ -11,16 +11,19 @@
     <div class="caption">
       <h2 class="truncate-title" data-toggle="tooltip" data-original-title="<%= news_room.company_name %>"><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
       <div class="description_area">
-        <p style="height:60px;" data-toggle="tooltip" data-original-title="<%= news_room.description %>"><%= news_room.description %></p>
+        <p style="height:60px;color: grey; font-style: italic;" class="<%= (news_room.description == null || news_room.description == "") ? '' : 'hidden' %>">No description added.</p>
+        <p style="height:60px;" class="<%= (news_room.description == null || news_room.description == "") ? 'hidden' : '' %>" data-toggle="tooltip" data-original-title="<%= news_room.description %>"><%= news_room.description %></p>
       </div>
     </div>
     <div class="modal-footer">
       <div class="row">
         <div class="col-xs-12 text-center">
+          <% var itemWindowUrl = location.host.split('.') %>
+          <% var itemWindowLocation = itemWindowUrl.length == 3 ? _.last(itemWindowUrl, 2).join('.') : location.host %>
           <% if(news_room.id && news_room.publish_on_website) {%>
-            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- news_room.subdomain_name %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
-            <a href="http://<%- news_room.subdomain_name %>.<%- location.host %>#news-room" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- news_room.subdomain_name %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
           <% } %>
           <% if (news_room.releases_count > 0) {%>
             <a class="btn btn-info" href="http://<%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>

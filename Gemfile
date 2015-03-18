@@ -32,7 +32,7 @@ gem 'truncate_html'
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
   gem 'rails-assets-bootstrap.growl', '2.0.1'
-  gem 'rails-assets-uploadcare'
+  gem 'rails-assets-uploadcare', '2.0.4'
   gem 'rails-assets-progressjs'
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
@@ -90,6 +90,7 @@ gem 'aylien_text_api'
 gem 'ejs'
 gem 'countries'
 gem 'whenever'
+gem 'friendly_id'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -102,6 +103,8 @@ gem 'whenever'
 gem 'mailgun'
 
 gem 'paperclip', '~> 4.2.1'
+gem 'premailer-rails'
+gem 'hpricot'
 
 group :development, :test do
   # Deploy with Capistrano

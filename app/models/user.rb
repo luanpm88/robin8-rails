@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   end
 
   def active_subscription
-    @active_s ||= subscriptions.where("user_id ='#{self.id}' AND (expiry is NULL OR expiry >'#{Time.now.utc}') AND status ='A'").last
+    @active_s ||= subscriptions.where("(expiry is NULL OR expiry >'#{Time.now.utc}' AND status ='A') OR (expiry > '#{Time.now.utc}' AND status = 'C')").last
   end
 
   def twitter_identity
@@ -97,11 +97,21 @@ class User < ActiveRecord::Base
     super(methods: [:active_subscription, :sign_in_count])
   end
 
+   def email_to_slug
+    ret = email.split('@')[0].strip
+    ret.gsub!(' ', '-')
+    ret.gsub!('.', '-')
+    ret.gsub!('_', '-')
+    ret.gsub!('+', '-')
+
+    ret
+  end
+
   private
   def create_default_news_room
     self.news_rooms.create(
         company_name: "#{self.email}'s Default Newsroom",
-        subdomain_name: "#{self.email}'s Default Subdomain",
+        subdomain_name: self.email_to_slug,
         default_news_room: true
     )
   end

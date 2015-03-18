@@ -1,4 +1,7 @@
 class Release < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   belongs_to :user
   belongs_to :news_room, counter_cache: true
   has_many :pitches
@@ -17,6 +20,17 @@ class Release < ActiveRecord::Base
   def plain_text
     coder = HTMLEntities.new
     coder.decode ActionController::Base.helpers.strip_tags(text)
+  end
+
+  def should_generate_new_friendly_id?
+    slug.blank? || title_changed?
+  end
+  
+  def permalink
+    host = Rails.application.secrets[:host]
+    subdomain_name = self.news_room.subdomain_name
+    
+    "http://#{subdomain_name}.#{host}/releases/#{slug}"
   end
   
   private

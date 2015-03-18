@@ -141,7 +141,7 @@ class SubscriptionsController < ApplicationController
 
   def validate_subsription
     @package = Package.where(slug: params[:slug]).last
-    return redirect_to "/upgrade/#{@package.slug}" if current_user.active_subscription.present?
+    return redirect_to "/#billing?slug=#{@package.slug}" if current_user.active_subscription.present?
   end
 
 end

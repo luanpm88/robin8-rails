@@ -13,7 +13,7 @@
             <% }); %>
           </select>
         </div>
-        <!-- <button class="btn btn-default"><i class="fa fa-rocket"></i> <strong>5 Robin8s</strong> Remaining</button> -->
+        <!-- <button class="btn btn-default"><i class="fa fa-rocket"></i> <strong>5 SmartReleases</strong> Remaining</button> -->
         <button class="btn btn-success" id='new_release'><i class="fa fa-plus"></i> New Release</button>
       </div>
     </div>
@@ -70,7 +70,10 @@
                   <div class="logo"></div>
                   <div class="form-group">
                     <div class="checkbox">
-                      <label><input type="checkbox" value="" name="is_private">Private</label>
+                      <label>
+                        <input type="checkbox" class="icheckbox_flat" value="" name="is_private">
+                        <span>Private</span>
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -85,16 +88,18 @@
           </div>
         </div>
         <div class="modal-footer">
+          <% var windowUrl = location.host.split('.') %>
+          <% var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
           <% if(release.id) { %>
             <button type="button" class="btn btn-danger pull-left" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
           <% } %>
           <% if (release.id && release.news_room_public && !release.is_private) {%>
-            <a href="http://<%- release.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
-            <a href="http://<%- release.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
           <% } %>
           <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> Save draft</button>
-          <button type="button" class="btn btn-primary"><i class="fa fa-rocket"></i> Robin8</button>
+          <button type="button" class="btn btn-primary"><i class="fa fa-rocket"></i> SmartRelease</button>
         </div>
     </div>
   </div>

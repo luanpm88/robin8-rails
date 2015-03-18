@@ -103,6 +103,8 @@ GEM
     countries (0.11.0)
       currencies (~> 0.4.2)
       i18n_data (~> 0.6.0)
+    css_parser (1.3.6)
+      addressable
     currencies (0.4.2)
     debug_inspector (0.0.2)
     devise (3.4.1)
@@ -122,6 +124,8 @@ GEM
     execjs (2.4.0)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
     globalid (0.3.3)
       activesupport (>= 4.1.0)
     has_scope (0.6.0)
@@ -130,6 +134,7 @@ GEM
     hashie (3.4.0)
     hike (1.2.3)
     hitimes (1.2.2)
+    hpricot (0.8.6)
     htmlentities (4.3.3)
     http (0.6.3)
       http_parser.rb (~> 0.6.0)
@@ -215,6 +220,12 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    premailer (1.8.4)
+      css_parser (>= 1.3.6)
+      htmlentities (>= 4.0.0)
+    premailer-rails (1.8.0)
+      actionmailer (>= 3, < 5)
+      premailer (~> 1.7, >= 1.7.9)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -447,7 +458,9 @@ DEPENDENCIES
   devise
   devise_invitable
   ejs
+  friendly_id
   has_scope
+  hpricot
   htmlentities
   httparty
   jbuilder (~> 2.0)
@@ -463,6 +476,7 @@ DEPENDENCIES
   omniauth-linkedin-oauth2
   omniauth-twitter
   paperclip (~> 4.2.1)
+  premailer-rails
   pry-rails
   quiet_assets
   rails (= 4.2.0)
@@ -493,7 +507,7 @@ DEPENDENCIES
   rails-assets-spinkit
   rails-assets-timeago
   rails-assets-underscore.string
-  rails-assets-uploadcare!
+  rails-assets-uploadcare (= 2.0.4)!
   rails-assets-x-editable
   rspec-rails
   sass-rails (~> 5.0)

@@ -1,7 +1,15 @@
+<% var windowUrl = location.host.split('.') %>
+<% var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
 <div class="col-sm-6 col-md-4">
   <div class="thumbnail release-item">
-    <a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" target="_blank" class="release-image">
-      <img class="img" src="<%= release.first_src %>">
+    <a href="http://<%- release.news_room.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" target="_blank" class="release-image">
+    <div class="release-thumbnail-container">
+      <div class="release-dummy"></div>
+      <div class="release-thumbnail-inner">
+        <img src="<%= release.first_src %>">
+      </div>
+    </div>
+      <% /* 
       <div class="overlay">
         Summary
         <br><br>
@@ -11,15 +19,18 @@
           <li><i class="fa fa-reply"></i> <strong><%= release.coverages %></strong> Coverages</li>
         </ul>
       </div>
+      */ %>
     </a>
     <div class="caption text-center">
-      <h3 class="truncate"><a href="http://<%- release.news_room.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" target="_blank"><%= release.title %></a></h3>
+      <h3 class="ellipsis-truncate"><a href="http://<%- release.news_room.subdomain_name %>.<%- windowLocation %>/releases/<%- release.id %>" target="_blank"><%= release.title %></a></h3>
       <small class="truncate"><i class="fa fa-clock-o"></i> <%= moment(release.created_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
-      <p class="release-title">
+      <div class="release-title">
         <% if (release.text_html) { %>
-          <%= release.text_html.normalizeRSpace(115) %>
+          <%= release.text_html %>
+        <% } else {%>
+          <span style="height:40px;color: grey; font-style: italic;">No description added.</span>
         <% } %>
-      </p>
+      </div>
       <p class="tag-wrapper">
         <% _.each(release.concepts, function(concept){ %>
           <label class="label label-info"><%= concept.replace(/_/g, " ").replace(/\+/g, " ") %></label>
@@ -27,11 +38,11 @@
       </p>
       <hr>
       <p align="center">
-        <a href="#" class="btn btn-sm btn-success" role="button" data-toggle="modal" data-target=".blast-release"><i class="fa fa-rocket"></i> Robin8</a>
+        <a href="#" class="btn btn-sm btn-success" role="button" data-toggle="modal" data-target=".blast-release"><i class="fa fa-rocket"></i> SmartRelease</a>
         <% if (release.id && release.news_room_public && !release.is_private) {%>
-            <a href="http://<%- release.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
-            <a href="http://<%- release.subdomain_name %>.<%- location.host %>/releases/<%- release.id %>" class="btn btn-sm btn-primary" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-sm btn-primary" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
           <% } %>
         <button href="#" class="btn btn-sm btn-default" id="open_edit"><i class="fa fa-pencil"></i> Edit</button>
       </p>

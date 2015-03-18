@@ -22,9 +22,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         self.searchInfluencers(params);
       });
       
+      
+      Robin.vent.on("analysis:tab:clicked", function(params){
+        if (self.module.releasesBlastHeader.get('level') === 1)
+          Robin.commands.execute("goToAnalysisTab");
+      });
+      
       Robin.vent.on("targets:tab:clicked", function(params){
         if (self.module.releasesBlastHeader.get('level') === 4)
           self.targets();
+        else if (self.module.releasesBlastHeader.get('level') === 2)
+          Robin.commands.execute("goToTargetsTab");
+      });
+      
+      Robin.vent.on("pitch:tab:clicked", function(params){
+        if (self.module.releasesBlastHeader.get('level') === 3)
+          Robin.commands.execute("goToPitchTab");
       });
     },
     start: function(params){
@@ -41,10 +54,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.module.releasesBlastHeader.set({ level: 2 });
 
       this.module.releaseModel = params.releaseModel;
-      var iptcCategories = new Robin.Collections.IptcCategories();
       var analysisTabView = new this.module.AnalysisTabView({
-        model: this.module.releaseModel,
-        iptcCategories: iptcCategories
+        model: this.module.releaseModel
       });
       this.module.layout.tabContentRegion.show(analysisTabView);
     },
@@ -141,6 +152,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         collection: emailTargetsCollection,
         model: mediaList
       });
+      var emailPitchView = new ReleasesBlast.EmailPitchView({
+        releaseModel: this.module.releaseModel,
+        model: this.module.pitchModel
+      });
 
       var twitterTargetsCollection = new Robin.Collections.TwitterTargetsCollection(
         twtrlandContacts
@@ -148,20 +163,20 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var twitterTargetsView = new ReleasesBlast.TwitterTargetsView({
         collection: twitterTargetsCollection
       });
-
-      pitchTabView.emailTargets.show(emailTargetsView);
-      pitchTabView.twitterTargets.show(twitterTargetsView);
-      
-      var emailPitchView = new ReleasesBlast.EmailPitchView({
-        model: this.module.pitchModel
-      }); 
-      pitchTabView.emailPitch.show(emailPitchView);
-      
       var twitterPitchView = new ReleasesBlast.TwitterPitchView({
         releaseModel: this.module.releaseModel,
         model: this.module.pitchModel
       });
-      pitchTabView.twitterPitch.show(twitterPitchView);
+
+      if (emailTargetsCollection.models.length > 0){
+        pitchTabView.emailTargets.show(emailTargetsView);
+        pitchTabView.emailPitch.show(emailPitchView);
+      }
+      
+      if (twitterTargetsCollection.models.length > 0){
+        pitchTabView.twitterTargets.show(twitterTargetsView);
+        pitchTabView.twitterPitch.show(twitterPitchView);
+      }
     },
 
     searchInfluencers: function(params){

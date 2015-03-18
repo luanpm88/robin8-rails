@@ -100,7 +100,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             url: url
           },
           success: function(response) {
-            self.ui.releaseTitle.val(response.title);
+            self.model.set('title', response.title);
             var editor = self.ui.wysihtml5.data('wysihtml5').editor;
             editor.setValue(
               '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
@@ -211,6 +211,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     saveRelease: function(e){
       var viewObj = this;
+      this.modelBinder.copyViewValuesToModel();
       var iframe = document.getElementsByClassName("wysihtml5-sandbox");
       if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
         this.model.set('text', $(iframe).contents().find('body').html());
@@ -244,6 +245,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                   total_pages: parseInt(response.xhr.getResponseHeader('Totalpages'),10)
                 });
               }
+              viewObj.render();
             },
             error: function(data, response){
               viewObj.processErrors(response);

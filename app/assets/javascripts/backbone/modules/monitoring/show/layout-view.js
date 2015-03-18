@@ -49,6 +49,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       var model = new Robin.Models.Stream();
       var stream = new Robin.Models.Stream({model: model});
       this.streamsCollectionView.collection.push(stream);
+      this.$el.find(".stream-container").scrollLeft(this.$el.find(".stream-container")[0].scrollWidth);
     },
   });
 });

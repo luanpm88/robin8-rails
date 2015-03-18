@@ -1,4 +1,5 @@
 class MediaListsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_media_list, only: [:show, :edit, :update, :destroy]
   
   # GET /media_lists

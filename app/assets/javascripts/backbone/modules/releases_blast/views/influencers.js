@@ -81,13 +81,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     onRender: function () {
       this.initDataTable();
+      this.scrollToView();
     },
     initDataTable: function(){
       this.$el.find('table').DataTable({
         "info": false,
         "searching": false,
         "lengthChange": false,
-        "order": [[ 4, 'desc' ]],
+        "order": [[ 1, 'desc' ]],
         "pageLength": 5,
         "columns": [
           { "width": "30% !important" },
@@ -99,6 +100,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           null
         ]
       });
+    },
+    scrollToView: function(){
+      var self = this;
+      _.defer(function(caller){
+        var offset = self.$el.offset();
+        offset.left -= 20;
+        offset.top -= 20;
+        
+        $('html, body').animate({
+          scrollTop: offset.top,
+          scrollLeft: offset.left
+        });
+      }, this);
     }
   });
 });

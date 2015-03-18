@@ -20,13 +20,17 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         this.$el.addClass('hidden');
       } else {
         this.$el.removeClass('hidden');
+      };
+
+      if (this.$el.find('img.image').css('display') == 'none') {
+        this.$el.find('img.image').attr('src', '/assets/news.png');
       }
 
       if(shares) {
         this.$el.find('.likes').tooltip({
           title: JST['backbone/modules/monitoring/show/templates/shares_tooltip'](shares),
           trigger: 'hover',
-          placement: 'right',
+          placement: 'auto',
           html: true
         });
       }

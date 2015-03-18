@@ -11,7 +11,13 @@ class ReleasesController < ApplicationController
 
   def create
     release = current_user.releases.build release_params
+    @new_logo = params[:release][:logo_url]
+    @new_thumbnail = params[:release][:thumbnail]
     if release.save
+      if @new_logo
+        AmazonStorageWorker.perform_async("release", release.id, @new_logo, nil, :logo_url)
+        AmazonStorageWorker.perform_async("release", release.id, @new_thumbnail, nil, :thumbnail)
+      end
       render json: release, serializer: ReleaseSerializer
     else
       render json: { errors: release.errors }, status: 422
@@ -22,15 +28,26 @@ class ReleasesController < ApplicationController
     respond_to do |format|
       format.html {
         @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
-        @release = @news_room.releases.find(params[:id])
+        @release = @news_room.releases.friendly.find(params[:id])
       }
       format.json { render json: Release.where(id: params[:id], is_private: false).first }
     end
   end
 
   def update
+    ["iptc_categories", "concepts", "hashtags", "summaries"].each do |item|
+      params["release"][item] = params["release"][item].to_json
+    end
     release = current_user.releases.find(params[:id])
+    @old_logo = release.logo_url
+    @new_logo = params[:release][:logo_url]
+    @old_thumbnail = release.thumbnail
+    @new_thumbnail = params[:release][:thumbnail]
     if release.update_attributes(release_params)
+      if @new_logo!=@old_logo
+        AmazonStorageWorker.perform_async("release", release.id, @new_logo, @old_logo, :logo_url)
+        AmazonStorageWorker.perform_async("release", release.id, @new_thumbnail, @old_thumbnail, :thumbnail)
+      end
       render json: release, serializer: ReleaseSerializer
     else
       render json: { errors: release.errors }, status: 422
@@ -39,6 +56,12 @@ class ReleasesController < ApplicationController
 
   def destroy
     release = current_user.releases.find(params[:id])
+    if release.logo_url
+      AmazonDeleteWorker.perform_in(20.seconds, release.logo_url)
+      #AmazonDeleteWorker.perform_in(20.seconds, release.thumbnail)
+      puts "-"*50
+      puts release.thumbnail
+    end
     release.destroy
     render json: release
   end
@@ -47,7 +70,7 @@ class ReleasesController < ApplicationController
 
   def release_params
     params.require(:release).permit(:title, :text, :news_room_id, :is_private, 
-      :logo_url, :concepts, :iptc_categories, :summaries, :hashtags,
+      :logo_url, :thumbnail, :concepts, :iptc_categories, :summaries, :hashtags,
       :characters_count, :words_count, :sentences_count,
       :paragraphs_count, :adverbs_count, :adjectives_count,
       :nouns_count, :organizations_count, :places_count, :people_count,
