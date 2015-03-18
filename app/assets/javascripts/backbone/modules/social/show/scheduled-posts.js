@@ -101,6 +101,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     enableSocialNetwork: function(e) {
+      var initialSelected = 0;
+      $.each(this.model.attributes.social_networks, function( index, value ) {
+        if (value == 'true') initialSelected+=1;
+      });
+
       var el = $(e.target);
       var btn = el.closest('.btn');
 
@@ -111,24 +116,25 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
       if (providerValue == 'false' || providerValue == '') {
         tempNetworks[provider] = 'true';
-      } else {
-        tempNetworks[provider] = 'false';
-      }
-
-      var view = this;
-      var newLimit = this.countLimit(tempNetworks);
-      if (newLimit == 0){
+      } else if (providerValue == 'true' && initialSelected == 1) {
+        tempNetworks[provider] = 'true';
         swal({
-          title: "Your post won't be published",
-          text: "Please choose at least one social network!",
+          title: "You can not disable this social network",
+          text: "At least one should be selected in order to publish the post!",
           type: "error",
           showCancelButton: false,
           confirmButtonClass: 'btn',
           confirmButtonText: 'ok'
         });
-      }
+      } else {
+        tempNetworks[provider] = 'false';
+      } 
 
+      var view = this;
+      var newLimit = this.countLimit(tempNetworks);
+      
       var textLength = this.model.attributes.text.length;
+
       if (textLength > newLimit && newLimit > 0) {
         var trimmedText = this.model.attributes.text.substring(0, newLimit)
         swal({

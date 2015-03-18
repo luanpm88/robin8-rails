@@ -4,10 +4,11 @@
   <div class="thumbnail release-item">
     <a href="http://<%- release.news_room.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" target="_blank" class="release-image">
     <div class="release-thumbnail-container">
+      <div class="release-dummy"></div>
       <div class="release-thumbnail-inner">
-        <img class="release-thumbnail" src="<%= release.first_src %>">
+        <img src="<%= release.first_src %>">
       </div>
-    </div> 
+    </div>
       <% /* 
       <div class="overlay">
         Summary
