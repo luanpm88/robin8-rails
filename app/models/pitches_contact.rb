@@ -19,7 +19,7 @@ class PitchesContact < ActiveRecord::Base
   # Twitter pitch tags are:
   # [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ]  
   def render_pitch
-    link = "http://placeholder-link.com/" # self.pitch.release.link
+    link = self.pitch.release.permalink
     
     if [0, 2].include? self.contact.origin # pressr or media_list
       first_name = self.contact.first_name

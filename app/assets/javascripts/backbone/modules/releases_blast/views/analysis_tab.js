@@ -102,7 +102,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       var boldTopicsInSummary = _.after(2, function() {
         var sfs = _.chain(that.textapiResult["concepts"])
-          .map(function(item){return '\\b' + item.sfs + '\\b'; })
+          .map(function(item){return '\\b' + RegExp.escape(item.sfs) + '\\b'; })
           .uniq()
           .value();
           
@@ -131,7 +131,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 var prBody = that.model.get('plain_text');
                 var countedTopics = _.chain(response).foldl(function(memo, t, z) {
                   _(t.surfaceForms).each(function(sf) {
-                    var pattern = new RegExp('\\b' + sf.string + '\\b', 'ig');
+                    var pattern = new RegExp('\\b' + RegExp.escape(sf.string) + '\\b', 'ig');
                     var count = (prBody.match(pattern) || []).length;
                     if (z in memo) { memo[z] += count; } else { memo[z] = count; }
                   });

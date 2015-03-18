@@ -1,9 +1,20 @@
 <div class="panel-heading"><i class="fa fa-twitter"></i> Twitter pitch</div>
 <div class="panel-body">
   <form role="form">
-    <div class="form-group">
-      <label>Pitch text</label>
-      <textarea id="twitter-pitch-textarea" style="width: 100%; height: 140px;" class="form-control"><%= pitch.get('twitter_pitch') %></textarea>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Pitch text</label>
+          <textarea id="twitter-pitch-textarea" style="width: 100%; height: 140px;" class="form-control"><%= pitch.get('twitter_pitch') %></textarea>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Preview</label>
+          <textarea readonly id="twitter-pitch-preview" style="width: 100%; height: 140px;" 
+            class="form-control"></textarea>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-6">
