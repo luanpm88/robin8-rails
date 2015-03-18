@@ -28,7 +28,7 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   startPolling: function () {
     if(this.isPollingOn) return;
     this.isPollingOn = true;
-    this.pollingInterval = 1;
+    this.pollingInterval = 2;
     this.executePolling();
   },
 
