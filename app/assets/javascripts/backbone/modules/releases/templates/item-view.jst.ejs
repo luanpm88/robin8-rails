@@ -23,13 +23,13 @@
     <div class="caption text-center">
       <h3 class="ellipsis-truncate"><a href="http://<%- release.news_room.subdomain_name %>.<%- windowLocation %>/releases/<%- release.id %>" target="_blank"><%= release.title %></a></h3>
       <small class="truncate"><i class="fa fa-clock-o"></i> <%= moment(release.created_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
-      <p class="release-title">
+      <div class="release-title">
         <% if (release.text_html) { %>
           <%= release.text_html.normalizeRSpace(115) %>
         <% } else {%>
           <span style="height:40px;color: grey; font-style: italic;">No description added.</span>
         <% } %>
-      </p>
+      </div>
       <p class="tag-wrapper">
         <% _.each(release.concepts, function(concept){ %>
           <label class="label label-info"><%= concept.replace(/_/g, " ").replace(/\+/g, " ") %></label>

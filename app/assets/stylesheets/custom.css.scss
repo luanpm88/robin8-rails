@@ -69,3 +69,15 @@
     }
   }
 }
+
+#release-company {
+  select[name="news_room_id"] {
+    padding-right: 20px;
+  }
+  .ui-select {
+    i.form-control-feedback {
+      top: 25px;
+      right: 10px;
+    }
+  }
+}
