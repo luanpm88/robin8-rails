@@ -26,6 +26,8 @@
       <p class="release-title">
         <% if (release.text_html) { %>
           <%= release.text_html.normalizeRSpace(115) %>
+        <% } else {%>
+          <p style="height:60px;color: grey; font-style: italic;">No description added.</p>
         <% } %>
       </p>
       <p class="tag-wrapper">
