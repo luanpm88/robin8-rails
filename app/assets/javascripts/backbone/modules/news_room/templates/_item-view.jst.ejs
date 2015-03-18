@@ -11,7 +11,8 @@
     <div class="caption">
       <h2 class="truncate-title" data-toggle="tooltip" data-original-title="<%= news_room.company_name %>"><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
       <div class="description_area">
-        <p style="height:60px;" data-toggle="tooltip" data-original-title="<%= news_room.description %>"><%= news_room.description %></p>
+        <p style="height:60px;color: grey; font-style: italic;" class="<%= (news_room.description == null || news_room.description == "") ? '' : 'hidden' %>">No description added.</p>
+        <p style="height:60px;" class="<%= (news_room.description == null || news_room.description == "") ? 'hidden' : '' %>" data-toggle="tooltip" data-original-title="<%= news_room.description %>"><%= news_room.description %></p>
       </div>
     </div>
     <div class="modal-footer">
