@@ -26,7 +26,7 @@
       <small class="truncate"><i class="fa fa-clock-o"></i> <%= moment(release.created_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name : '' %></strong></small>
       <div class="release-title">
         <% if (release.text_html) { %>
-          <%= release.text_html.normalizeRSpace(115) %>
+          <%= release.text_html %>
         <% } else {%>
           <span style="height:40px;color: grey; font-style: italic;">No description added.</span>
         <% } %>
