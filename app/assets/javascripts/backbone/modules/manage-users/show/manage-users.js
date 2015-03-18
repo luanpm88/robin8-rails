@@ -2,8 +2,8 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
 
   Show.ManageableUser = Backbone.Marionette.ItemView.extend({
     template: 'modules/manage-users/show/templates/_single',
-    tagName: "li",
-    className: "list-group-item",
+    tagName: "tr",
+    className: "user-list--item",
     model: Robin.Models.ManageableUser,
 
     initialize: function() {
@@ -57,7 +57,7 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
 
     template: "modules/manage-users/show/templates/list",
     childView: Show.ManageableUser,
-    childViewContainer: "ul",
+    childViewContainer: "table",
     collection: new Robin.Collections.ManageableUsers(),
 
     events: {

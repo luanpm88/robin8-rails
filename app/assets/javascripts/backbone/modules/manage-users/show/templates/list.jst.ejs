@@ -1,18 +1,32 @@
 <div class="panel panel-default panel-custom">
   <div class="panel-body">
     <div class="tab-content">
-      <div class="pull-right toolbar">
-        <a class="btn btn-success" id='back-to-newsrooms' href="/#news_rooms"> Back to Newsrooms</a>
+      <div class="toolbar">
+        <a class="btn btn-default" id='back-to-newsrooms' href="/#news_rooms"><i class="fa fa-mail-reply"></i> Back to Newsrooms</a>
       </div>
-      <h4>User management</h4>
-      <form id="invite-form" class="form-inline" role="form" autocomplete="off">
-        <div class="form-group">
-          <input id="email" class="form-control" name="email" type="text" value="" size="35">
-        </div>
-        <input type='button' value='Invite User' class="btn btn-default invite"/>
-      </form>
+      <div>
+        <h4 class="pull-left">
+          <span style="color: #8cc152;">
+            <i class="fa fa-users"></i> User management 
+          </span>
+          <input id="email" class="form-control" style="display: inline; width: auto;" name="email" type="text" value="" size="35" placeholder="Search User by Name or Email">
+        </h4>
+        <form id="invite-form" class="form-inline pull-right" role="form" autocomplete="off">
+          <div class="form-group">
+            <input id="email" class="form-control" name="email" type="text" value="" size="35" placeholder="Type User Email">
+          </div>
+          <button class="btn btn-success invite"><i class="fa fa-plus"></i> Invite User</button>
+        </form>
+        <div class="clearfix"></div>
+      </div>
       <br>
-      <ul class="list-group"></ul>
+      <table class="user-list">
+        <tr class="user-list--heading">
+          <th class="text-center">Name</th>
+          <th class="text-center">Email</th>
+          <th class="text-center"></th>
+        </tr>
+      </table>
     </div>
   </div>
 </div>
