@@ -222,6 +222,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
+              $('body').removeClass('modal-open');
               Robin.module("Releases").collection.add(data, {merge: true});
               Robin.module("Releases").collection.trigger('reset');
             },
@@ -233,6 +234,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
+              $('body').removeClass('modal-open');
               if (Robin.module("Releases").controller.filterCriteria.page == 1) {
                 if (Robin.module("Releases").collection.length == Robin.module("Releases").controller.filterCriteria.per_page) {
                   Robin.module("Releases").collection.pop();
