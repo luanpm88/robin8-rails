@@ -152,6 +152,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         collection: emailTargetsCollection,
         model: mediaList
       });
+      var emailPitchView = new ReleasesBlast.EmailPitchView({
+        releaseModel: this.module.releaseModel,
+        model: this.module.pitchModel
+      });
 
       var twitterTargetsCollection = new Robin.Collections.TwitterTargetsCollection(
         twtrlandContacts
@@ -159,20 +163,20 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var twitterTargetsView = new ReleasesBlast.TwitterTargetsView({
         collection: twitterTargetsCollection
       });
-
-      pitchTabView.emailTargets.show(emailTargetsView);
-      pitchTabView.twitterTargets.show(twitterTargetsView);
-      
-      var emailPitchView = new ReleasesBlast.EmailPitchView({
-        model: this.module.pitchModel
-      }); 
-      pitchTabView.emailPitch.show(emailPitchView);
-      
       var twitterPitchView = new ReleasesBlast.TwitterPitchView({
         releaseModel: this.module.releaseModel,
         model: this.module.pitchModel
       });
-      pitchTabView.twitterPitch.show(twitterPitchView);
+
+      if (emailTargetsCollection.models.length > 0){
+        pitchTabView.emailTargets.show(emailTargetsView);
+        pitchTabView.emailPitch.show(emailPitchView);
+      }
+      
+      if (twitterTargetsCollection.models.length > 0){
+        pitchTabView.twitterTargets.show(twitterTargetsView);
+        pitchTabView.twitterPitch.show(twitterPitchView);
+      }
     },
 
     searchInfluencers: function(params){

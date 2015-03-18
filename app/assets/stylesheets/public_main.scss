@@ -49,6 +49,11 @@ a {
 }
 .release.jumbotron .jumbotron-photo img {
     border-radius: 0;
+    width: auto;
+    max-width: 100%;
+}
+.release.jumbotron .jumbotron-photo {
+    text-align:center;
 }
 .release .post-controls {
     display: inline-block;
@@ -214,6 +219,11 @@ a {
 .sidebar-nav > .sidebar-brand a:hover {
     color: #eeeeee;
     background: none;
+}
+.sidebar-nav > .sidebar-brand a strong{
+    width: 95%;
+    display: inline-block;
+    word-wrap: break-word;
 }
 .sidebar-nav > .sidebar-brand .logo {
     margin: 22px auto 30px auto;
@@ -584,6 +594,10 @@ a {
     padding: 0;
     border-radius: 0px;
     box-shadow: 0 0 0;
+}
+.thumbnail.release-item img {
+    width: auto;
+    max-width: 100%;
 }
 #page-content-wrapper .thumbnail.release-item h3 {
     font-family: "ProximaNovaBold";
