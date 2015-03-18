@@ -26,6 +26,13 @@ class Release < ActiveRecord::Base
     slug.blank? || title_changed?
   end
   
+  def permalink
+    host = Rails.application.secrets[:host]
+    subdomain_name = self.news_room.subdomain_name
+    
+    "http://#{subdomain_name}.#{host}/releases/#{slug}"
+  end
+  
   private
   
   def pos_tagger
