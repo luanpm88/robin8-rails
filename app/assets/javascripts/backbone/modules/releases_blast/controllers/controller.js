@@ -153,6 +153,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         model: mediaList
       });
       var emailPitchView = new ReleasesBlast.EmailPitchView({
+        releaseModel: this.module.releaseModel,
         model: this.module.pitchModel
       });
 

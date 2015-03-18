@@ -13,10 +13,22 @@
         class="form-control" value="<%= pitch.get('email_address') %>" 
         name="email_address">
     </div>
-    <div class="form-group">
-      <label>Pitch text</label>
-      <textarea id="email-pitch-textarea" style="width: 100%; height: 200px;" 
-        class="form-control"><%= pitch.get('email_pitch') %></textarea>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Pitch text</label>
+          <textarea id="email-pitch-textarea" style="width: 100%; height: 200px;" 
+            class="form-control"><%= pitch.get('email_pitch') %></textarea>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Preview</label>
+          <textarea readonly id="email-pitch-preview" style="width: 100%; height: 200px;" 
+            class="form-control"></textarea>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-6">
