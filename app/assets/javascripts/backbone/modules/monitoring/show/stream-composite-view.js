@@ -128,12 +128,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
             if (data.length > 3) {
               data.splice(0, 1);
             } 
-            newValue = {
-              id: currentValue,
-              text: 'Add ' + currentValue + ' as keyword',
-              type: 'keyword'
-            };
-            data.unshift(newValue);
+            if (val == 'topics') {
+              newValue = {
+                id: currentValue,
+                text: 'Add ' + currentValue + ' as keyword',
+                type: 'keyword'
+              };
+              data.unshift(newValue);
+            }
             return { results: data }; 
           }
         },

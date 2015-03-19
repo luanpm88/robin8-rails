@@ -133,6 +133,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
       this.initLogoView();
       this.initMediaTab();
+      if (Robin.newReleaseFromDashboard) {
+        this.$el.find('#release_form').modal({keyboard: false });
+        Robin.newReleaseFromDashboard = false;
+      }
     },
     initLogoView: function(){
       this.logoRegion.show(new Robin.Views.LogoView({
@@ -210,6 +214,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
     },
     saveRelease: function(e){
+      if (this.form.data('formValidation') == undefined) {
+        this.initFormValidation();
+      }
+
       var viewObj = this;
       this.modelBinder.copyViewValuesToModel();
       var iframe = document.getElementsByClassName("wysihtml5-sandbox");
