@@ -9,9 +9,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
      onShow: function(){
        this.arrangeReleases();
      },
-    // onRender: function(){
-      // this.arrangeReleases();
-    // },
     arrangeReleases: function(){
       // needs to be refactored
       var listWidth = $('.thumbnails').width();

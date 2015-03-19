@@ -89,10 +89,27 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       var el = $(e.target);
       var btn = el.closest('.btn');
       var input = btn.next('input');
-      btn.toggleClass('btn-primary');
+
+      var initialSelected = 0;
+      $.each(this.model.attributes.social_networks.attributes, function( index, value ) {
+        if (value == 'true') initialSelected+=1;
+      });
+
       if (input.val() == 'false' || input.val() == '') {
+        btn.toggleClass('btn-primary');
         input.val('true')
+      } else if (input.val() == 'true' && initialSelected == 1) {
+        input.val('true');
+        swal({
+          title: "You can not disable this social network",
+          text: "At least one should be selected in order to publish the post!",
+          type: "error",
+          showCancelButton: false,
+          confirmButtonClass: 'btn',
+          confirmButtonText: 'ok'
+        });
       } else {
+        btn.toggleClass('btn-primary');
         input.val('false')
       }
       this.socialNetworksBinder.copyViewValuesToModel();
@@ -138,7 +155,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         var trimmedText = this.model.attributes.text.substring(0, newLimit)
         swal({
           title: "Trim the message?",
-          text: "Your message is longer than a limit of one of selected social networks (" + textLength + "/" + newLimit + "). Proceed and trim the message? NOTE: This can not be undone!",
+          text: "Your message exceeds the limit of one of the selected social networks (" + textLength + "/" + newLimit + "). Proceed and trim the message? NOTE: This can not be undone!",
           type: "error",
           showCancelButton: true,
           confirmButtonClass: 'btn-danger',
