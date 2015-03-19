@@ -81,6 +81,12 @@ module AylienPressrApi
         Configuration::ENDPOINTS[:stories])
       Connection.new(endpoint, params, config).request!
     end
+    
+    def interesting_terms!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:interesting_terms])
+      Connection.new(endpoint, params, config).request!
+    end
     # END Destructives methods
     
     
@@ -147,6 +153,14 @@ module AylienPressrApi
         nil
       end
     end
+    
+    def interesting_terms(value=nil, params={})
+      begin
+        interesting_terms!(value, params)
+      rescue => e
+        nil
+      end
+    end
 
     private
 
@@ -163,6 +177,8 @@ module AylienPressrApi
       
       case endpoint
         when Configuration::ENDPOINTS[:suggested_authors]
+          config[:method] = :post
+        when Configuration::ENDPOINTS[:interesting_terms]
           config[:method] = :post
         when Configuration::ENDPOINTS[:influencers]
           params["skills[]"] = params.delete("skills") if params.key?("skills")
