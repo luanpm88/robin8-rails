@@ -67,11 +67,11 @@ class TextapiController < ApplicationController
     normalized_interesting_terms = normalize_interesting_terms(response[:interesting_terms])
     
     title_terms = normalized_interesting_terms[:title].select do |term|
-      term[:score] > 30
+      term[:score] > 10
     end
     
     body_terms = normalized_interesting_terms[:body].select do |term|
-      term[:score] > 30
+      term[:score] > 10
     end
     
     terms = (title_terms + body_terms).uniq {|a| a[:term]}
