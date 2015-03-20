@@ -1569,6 +1569,32 @@ input.form-control[type="file"] {
   margin-bottom: 30px;
 }
 
+.dashboard-btns {
+  padding: 50px 30px 0;
+}
+
+.dashboard-btn {
+  display: block;
+  padding: 20px;
+  background-color: #006381;
+  border-radius: 3px;
+  margin-bottom: 30px;
+  .d-table {
+    display: table;
+    height: 100px;
+    width: 100%;
+  }
+  .d-cell {
+    display: table-cell;
+    width: 50%;
+    color: #FFF;
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 24px;
+    vertical-align: middle;
+  }
+}
+
 
 
 
