@@ -47,6 +47,10 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       });
       this.initLogoView();
       this.initMediaTab();
+      if (Robin.newNewsroomFromDashboard) {
+        this.$el.find('#newsroom_form').modal({keyboard: false });
+        Robin.newNewsroomFromDashboard = false;
+      }
     },
     onShow: function(){
       if (Robin.currentUser.attributes.is_primary == false){
@@ -190,6 +194,10 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       // 
     },
     saveNewsRoom: function(e){
+      if (this.form.data('formValidation') == undefined) {
+        this.initFormValidation();
+      }
+
       var viewObj = this;
       this.form.data('formValidation').validate();
       if (this.form.data('formValidation').isValid()) {

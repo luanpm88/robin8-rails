@@ -33,7 +33,8 @@ module AylienPressrApi
       authors: 'authors',
       locations_autocompletes: 'autocompletes/locations',
       skills_autocompletes: 'autocompletes/skills',
-      stories: 'stories'
+      stories: 'stories',
+      interesting_terms: 'interesting_terms'
     }
 
     # Build accessor methods for every config options so we can do this, for example:
