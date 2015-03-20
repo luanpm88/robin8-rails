@@ -39,6 +39,7 @@ class UsersController < ApplicationController
   end
 
   def identities
+    p '!!!'
     render json: current_user.identities
   end
 

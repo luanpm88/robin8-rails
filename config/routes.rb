@@ -32,8 +32,11 @@ Rails.application.routes.draw do
   end
   resources :industries, only: :index
   resources :releases
-  resources :users
-  get 'users/identities' => 'users#identities'
+  resources :users do 
+    collection do
+      get 'identities'
+    end
+  end
 
   resources :streams, only: [:index, :create, :update, :destroy, :order] do
     post 'order', on: :collection
