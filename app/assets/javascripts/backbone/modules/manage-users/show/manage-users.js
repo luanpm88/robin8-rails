@@ -6,12 +6,22 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
     className: "user-list--item",
     model: Robin.Models.ManageableUser,
 
+    events: {
+      'click #remove-user': 'removeUser',
+    },
+
     initialize: function() {
       sweetAlertInitialize();
     },
 
-    events: {
-      'click #remove-user': 'removeUser',
+    onShow: function() {
+      var letters = $("#user-search").val();
+      if (letters.length > 0) {
+        var pattern = new RegExp(letters,"gi");
+        if (!pattern.test(this.model.attributes.email)) {
+          this.$el.hide();
+        }
+      }
     },
 
     serializeData : function() {
@@ -61,11 +71,25 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
     collection: new Robin.Collections.ManageableUsers(),
 
     events: {
-      'click .invite': 'sendInvite'
+      'click .invite': 'sendInvite',
+      'keyup #user-search' : 'filterUsers'
     },
 
     initialize: function() {
       this.collection.fetch();
+    },
+
+    filterUsers: function() {
+      var letters = $("#user-search").val();
+      var pattern = new RegExp(letters,"gi");
+      var viewObj = this;
+      this.children.each(function(view){
+        if (pattern.test(view.model.attributes.email)) {
+          view.$el.show();
+        } else {
+          view.$el.hide();
+        }
+      });
     },
 
     sendInvite: function(e){
