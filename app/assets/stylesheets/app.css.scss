@@ -1141,6 +1141,12 @@ body.login {
     height: 60px;
     line-height: 60px;
   }
+  a.btn-google-plus,
+  a.btn-facebook  {  
+    color: white;
+    display: block;
+  }
+  
   .btn-facebook {
       background-color: #3a579a; 
     }
