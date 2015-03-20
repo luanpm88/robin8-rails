@@ -12,9 +12,8 @@
               <p><%=e%></p>
           <%end if flash[:errors].present?%>
         </div>
-        <p style="text-align:center;"><%=%></p>
-        <!--<form action="signup-step2.html" data-abide>-->
-        <%= form_for @user do |f|  %>
+
+        <%= form_for @user,:url=>"/users/new" do |f|  %>
             <label>
               <%=f.email_field :email,:placeholder=>"Email","data-validation"=>"required",
                                "data-validation-error-msg"=> "Email can't be blank","data-validation"=>"email"%>
