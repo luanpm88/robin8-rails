@@ -20,9 +20,51 @@
     ga('send', 'pageview');
 
   </script>
+
+
+ <script src="https://apis.google.com/js/client.js"></script>
+    <script>
+      // Enter the API key from the Google Develoepr Console - to handle any unauthenticated
+      // requests in the code.
+      // The provided key works for this sample only when run from
+      // https://google-api-javascript-client.googlecode.com/hg/samples/requestSample.html
+      // To use in your own application, replace this API key with your own.
+      var apiKey = 'AIzaSyA0sbatS1W5JWGICc3uNz7bioFU-nB2KZs';
+      function makeRequest() {
+        gapi.client.setApiKey(apiKey);
+        function writeResponse(resp) {
+          var responseText;
+          if (resp.error && resp.error.errors[0].debugInfo == 'QuotaState: BLOCKED') {
+            responseText = 'Invalid API key provided. Please replace the "apiKey" value with your own.';
+          } else {
+            responseText = 'Short URL ' + shortUrl + ' expands to ' + resp.longUrl;
+          }
+          var infoDiv = document.getElementById('info');
+          infoDiv.innerHTML = '';
+          infoDiv.appendChild(document.createTextNode(responseText));
+        }
+        var shortUrl = document.getElementById('shortUrl').value;
+        var restRequest = gapi.client.request({
+           'path': '/urlshortener/v1/url',
+           'params' : {'shortUrl' : shortUrl}
+        });
+        restRequest.execute(writeResponse);
+      }
+    </script>
+
+
 </head>
 <body id="main">
-  
+<p>Enter a short URL and click "Expand URL" to get the full URL.</p>
+<label for="shortUrl">Short URL </label>
+<input id="shortUrl" type="text" value="http://goo.gl/fbsS" />
+<button onclick="makeRequest();">
+  Expand URL
+</button>
+<div style="margin-top:0.5em;"><span id="info">Results</span></div>
+
+
+
 <!-- load bitly javascript sdk -->
 <script type="text/javascript" src="http://bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">
 </script>

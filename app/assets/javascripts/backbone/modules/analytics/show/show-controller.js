@@ -4,6 +4,7 @@ Robin.module('Analytics.Show', function(Show, App, Backbone, Marionette, $, _){
 
     showAnalyticsPage: function(){
       var analyticsPageView = this.getAnalyticsPageView();
+      this.newsRooms = new Robin.Collections.NewsRooms();
       Robin.layouts.main.content.show(analyticsPageView);
     },
 

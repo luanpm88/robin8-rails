@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get 'preview', on: :collection
     get 'presskit', on: :collection
     get 'follow', on: :collection
+    get 'analytics'
   end
   resources :industries, only: :index
   resources :releases

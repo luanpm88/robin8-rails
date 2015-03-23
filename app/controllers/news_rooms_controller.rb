@@ -62,6 +62,18 @@ class NewsRoomsController < ApplicationController
     @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
   end
 
+  def analytics
+    @news_room = NewsRoom.find params[:news_room_id]
+    sa = ServiceAccount.new
+    sa.service_account_user
+    results = GoogleAnalytics.results(sa.first_profile, {
+      hostname: ('test' + '.robin8.com'),
+      start_date: (DateTime.now - 7.days),
+      end_date: DateTime.now
+    })
+    render json: results.collection
+  end
+
 private
   def news_room_params
     params.require(:news_room).permit(:user_id, :company_name, :room_type, :size, :email, :phone_number, :fax, :web_address,
