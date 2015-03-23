@@ -1,0 +1,55 @@
+plans:
+  basic:
+    price: 15
+    annually_price: 19
+    seat: 1
+    newsroom: 1
+    press_release: 5
+    smart_release: 3
+    media_list: '-'
+    streams: 3
+  business:
+    price: 150
+    annually_price: 179
+    seat: 1
+    newsroom: 1
+    press_release: 10
+    smart_release: 5
+    media_list: 1
+    streams: 5
+  enterprise:
+    price: 350
+    annually_price: 399
+    seat: 1
+    newsroom: 1
+    press_release: 30
+    smart_release: 15
+    media_list: 20
+    streams: 25
+  pro:
+    price: 250
+    annually_price: 299
+    seat: 1
+    newsroom: 5
+    press_release: 30
+    smart_release: 15
+    media_list: 3
+    streams: 5
+  premium:
+    price: 415
+    annually_price: 499
+    seat: 1
+    newsroom: 20
+    press_release: 75
+    smart_release: 45
+    media_list: 5
+    streams: 10
+  ultra:
+    price: 1000
+    annually_price: 1200
+    seat: 1
+    newsroom: 100
+    press_release: 400
+    smart_release: 200
+    media_list: 10
+    streams: 25
