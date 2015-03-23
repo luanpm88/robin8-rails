@@ -67,7 +67,7 @@ class NewsRoomsController < ApplicationController
     sa = ServiceAccount.new
     sa.service_account_user
     results = GoogleAnalytics.results(sa.first_profile, {
-      hostname: ('test' + '.robin8.com'),
+      hostname: (@news_room.subdomain_name + '.robin8.com'),
       start_date: (DateTime.now - 7.days),
       end_date: DateTime.now
     })
