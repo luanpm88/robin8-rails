@@ -28,6 +28,7 @@ gem 'aws-sdk-v1'
 
 gem 'htmlentities'
 gem 'truncate_html'
+gem 'email_validator'
 gem 'oauth2'
 gem 'legato'
 gem 'google-api-client'
