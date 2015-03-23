@@ -6,9 +6,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     initialize: function(){
       $(window).on("resize",this.arrangeReleases);
     },
-     onShow: function(){
-       this.arrangeReleases();
-     },
+    onRenderCollection: function(){
+      this.arrangeReleases();
+    },
+    onShow: function(){
+      this.arrangeReleases();
+    },
     arrangeReleases: function(){
       // needs to be refactored
       var listWidth = $('.thumbnails').width();

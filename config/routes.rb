@@ -2,9 +2,10 @@ require 'sidekiq/web'
 require 'sidetiq/web'
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
-  devise_for :users, controllers: { sessions: "users/sessions", passwords: "users/passwords",
-      invitations: "users/invitations",  omniauth_callbacks: "users/omniauth_callbacks",
-      confirmations: "users/confirmations" }, :skip => [:registrations]
+  devise_for :users, controllers: { sessions: "users/sessions",
+                                    registrations: "users/registrations", passwords: "users/passwords",
+                                    invitations: "users/invitations",  omniauth_callbacks: "users/omniauth_callbacks",
+                                    confirmations: "users/confirmations" }
 
   get 'pricing' => 'pages#pricing'
   get 'subscribe/:slug' => 'subscriptions#new'
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
     delete 'destroy_subscription', on: :collection
   end
   post '/users/follow' => 'users#follow'
+  post '/users/new' => 'users#create'
 
   resources :posts do
     put 'update_social', on: :member
@@ -29,6 +31,7 @@ Rails.application.routes.draw do
     get 'preview', on: :collection
     get 'presskit', on: :collection
     get 'follow', on: :collection
+    get 'analytics'
   end
   resources :industries, only: :index
   resources :releases

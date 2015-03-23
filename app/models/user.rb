@@ -61,36 +61,42 @@ class User < ActiveRecord::Base
   end
 
   def twitter_post message
-    client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = Rails.application.secrets.twitter[:api_key]
-      config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
-      config.access_token        = twitter_identity.token
-      config.access_token_secret = twitter_identity.token_secret
+    unless twitter_identity.blank?
+      client = Twitter::REST::Client.new do |config|
+        config.consumer_key        = Rails.application.secrets.twitter[:api_key]
+        config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
+        config.access_token        = twitter_identity.token
+        config.access_token_secret = twitter_identity.token_secret
+      end
+      client.update(message)
     end
-    client.update(message)
   end
 
-  def linkedin_post message #need check
-    data = { comment: message, visibility: {code: 'anyone'} }
-    response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
-                             headers: { 'Content-Type' => 'application/json'},
-                             query: {oauth2_access_token: linkedin_identity.token},
-                             body: data.to_json)
-    puts response.body, response.code, response.message, response.headers.inspect
+  def linkedin_post message
+    unless linkedin_identity.blank?
+      data = { comment: message, visibility: {code: 'anyone'} }
+      response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
+                               headers: { 'Content-Type' => 'application/json'},
+                               query: {oauth2_access_token: linkedin_identity.token},
+                               body: data.to_json)
+      puts response.body, response.code, response.message, response.headers.inspect
+    end
+  end
+
+  def facebook_post message
+    unless facebook_identity.blank?
+      graph = Koala::Facebook::API.new(facebook_identity.token)
+      Rails.logger.info graph.inspect
+      graph.put_wall_post("I've posted a new Post!", {
+                                                       "name" => '',
+                                                       "link" => '',
+                                                       "description" => message
+                                                   })
+    end
   end
 
   def name
     super.present? ? super : "#{first_name} #{last_name}"
-  end
-
-  def facebook_post message
-    graph = Koala::Facebook::API.new(facebook_identity.token)
-    Rails.logger.info graph.inspect
-    graph.put_wall_post("I've posted a new Post!", {
-                                                     "name" => '',
-                                                     "link" => '',
-                                                     "description" => message
-                                                 })
   end
 
   def as_json(options={})
