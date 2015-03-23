@@ -1,0 +1,87 @@
+<div class="signup">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || "Signup")}%>
+  </header>
+
+  <div class="form-step step-one">
+    <div class="row">
+      <div class="small-12 columns">
+        <div class="errorwarning">
+          <%flash[:errors].each do |e|%>
+              <p><%=e%></p>
+          <%end if flash[:errors].present?%>
+        </div>
+
+        <%= form_for @user,:url=>"/users/new" do |f|  %>
+            <label>
+              <%=f.email_field :email,:placeholder=>"Email","data-validation"=>"required",
+                               "data-validation-error-msg"=> "Email can't be blank","data-validation"=>"email"%>
+              <!--<input type="email"  name="email" placeholder="Email" required />-->
+            </label>
+            <label>
+              <%=f.text_field :first_name,:placeholder=>"First Name","data-validation"=>"required",
+                              "data-validation-error-msg"=> "First name can't be blank"%>
+              <!--<input type="text"  name="first_name" placeholder="First Name" required />-->
+            </label>
+            <label>
+              <!--<input type="text"  name="last_name" placeholder="Last Name" required />-->
+              <%=f.text_field :last_name,:placeholder=>"Last Name","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Last name can't be blank"%>
+            </label>
+            <label>
+              <!--<input type="password"  name="password" placeholder="Password" required />-->
+              <%=f.password_field :password,:placeholder=>"Password","data-validation"=>"length", "data-validation-length"=>"min8",
+                                  "data-validation-error-msg"=> "Password must be greater then 7 characters"%>
+            </label>
+            <p class="agree">By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service</a>.
+
+            <div class="errorwarning">
+              <p>Please fill out all required fields</p>
+            </div>
+            <div class="submit-wrap">
+              <%= f.submit "Sign Up", :class=>"button button-signup" %>
+              <!--<input type="submit" value="Sign Up" class="button button-signup">-->
+            </div>
+        <%end%>
+        <!--</form>-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-12 columns">
+        <div class="or-line">
+          <span>OR</span>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="color:#fff!important;">
+      <div class="small-12 columns social-login">
+        <a href="/users/auth/google_oauth2?provider=google_oauth2" class="btn btn-google-plus"><i class="fa fa-google-plus"></i> <span>Sign up using Google Plus</span></a>
+      </div>
+    </div>
+    <div class="row" style="color:#fff!important;">
+      <div class="small-12 columns social-login">
+        <a href="/users/auth/facebook?provider=facebook" class="btn btn-facebook"><i class="fa fa-facebook"></i> <span>Sign up using Facebook</span></a><br /><br /><br />
+      </div>
+    </div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
+
+
+  <script> $.validate(); </script>
+
+
+  <style>
+      .form-error{
+          font-size: 15px;
+          color: #FF0000;
+      }
+
+      .custom-padding {
+          margin-bottom: 10px;
+      }
+
+
+  </style>

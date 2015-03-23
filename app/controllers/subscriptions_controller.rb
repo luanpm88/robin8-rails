@@ -141,7 +141,17 @@ class SubscriptionsController < ApplicationController
 
   def validate_subsription
     @package = Package.where(slug: params[:slug]).last
-    return redirect_to "/#billing?slug=#{@package.slug}" if current_user.active_subscription.present?
+    return redirect_to "/upgrade/#{@package.slug}" if current_user.active_subscription.present?
+  end
+
+  def authenticate_user!
+    if user_signed_in?
+      super
+    else
+      session[:redirect_checkout_url] = "/subscribe/#{params[:slug]}"
+      flash[:info] = "Please signup below and continue"
+      return redirect_to new_user_path
+    end
   end
 
 end

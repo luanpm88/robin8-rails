@@ -133,6 +133,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
       this.initLogoView();
       this.initMediaTab();
+      if (Robin.newReleaseFromDashboard) {
+        this.$el.find('#release_form').modal({keyboard: false });
+        Robin.newReleaseFromDashboard = false;
+      }
     },
     initLogoView: function(){
       this.logoRegion.show(new Robin.Views.LogoView({
@@ -210,6 +214,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
     },
     saveRelease: function(e){
+      if (this.form.data('formValidation') == undefined) {
+        this.initFormValidation();
+      }
+
       var viewObj = this;
       this.modelBinder.copyViewValuesToModel();
       var iframe = document.getElementsByClassName("wysihtml5-sandbox");
@@ -222,6 +230,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
+              $('body').removeClass('modal-open');
               Robin.module("Releases").collection.add(data, {merge: true});
               Robin.module("Releases").collection.trigger('reset');
             },
@@ -233,6 +242,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
+              $('body').removeClass('modal-open');
               if (Robin.module("Releases").controller.filterCriteria.page == 1) {
                 if (Robin.module("Releases").collection.length == Robin.module("Releases").controller.filterCriteria.per_page) {
                   Robin.module("Releases").collection.pop();

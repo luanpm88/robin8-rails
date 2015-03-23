@@ -82,14 +82,12 @@
           <a class="media-left" href="#">
             <% if news_room.user.avatar_url %>
               <%= image_tag news_room.user.avatar_url, class: 'img-circle avatar', style: 'width: 50px; height: 50px' %>
-            <% else %>
-              <img src="http://lorempixel.com/50/50" class="img-circle avatar">
             <% end %>
           </a>
           <div class="media-body">
             <h4 class="media-heading"><%= news_room.owner_name.blank? ? '' : news_room.owner_name %></h4>
             <p>
-              <%= news_room.job_title.blank? ? '' : news_room.job_title %>, <a href="#"><%= news_room.email.blank? ? '' : news_room.email %></a><br>
+              <%= news_room.job_title.blank? ? '' : news_room.job_title+", " %><a href="#"><%= news_room.email.blank? ? '' : news_room.email %></a><br>
             </p>
           </div>
         </div>

@@ -1,5 +1,15 @@
-<small><%- email %></small>
-<span class="editable" data-type="textarea" data-pk="1" data-url="/post" data-title="Enter username"></span>
-<div class="pull-right" style="display: inline-block;">
-  <a id="remove-user" class="btn btn-xs btn-danger" data-toggle="tooltip" title="Delete post"><i class="fa fa-close"></i></a>
-</div>
+<td>
+	<img style="width:50px; height:50px;" src="<%- avatar_url %>">
+</td>
+<td>
+  <span class="user-list--name"><b><%- name %></b></span>
+</td>
+<td>
+	<%- email %>
+	<span class="editable" data-type="textarea" data-pk="1" data-url="/post" data-title="Enter username"></span>
+</td>
+<td class="text-right">
+	<div>
+		<a id="remove-user" class="btn btn-sm btn-danger user-list--delete" data-toggle="tooltip" title="Delete post"><i class="fa fa-trash"></i> Delete</a>
+	</div>
+</td>

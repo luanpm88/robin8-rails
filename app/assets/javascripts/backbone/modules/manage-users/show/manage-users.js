@@ -2,22 +2,47 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
 
   Show.ManageableUser = Backbone.Marionette.ItemView.extend({
     template: 'modules/manage-users/show/templates/_single',
-    tagName: "li",
-    className: "list-group-item",
+    tagName: "tr",
+    className: "user-list--item",
     model: Robin.Models.ManageableUser,
-
-    initialize: function() {
-      sweetAlertInitialize();
-    },
 
     events: {
       'click #remove-user': 'removeUser',
     },
 
+    initialize: function() {
+      sweetAlertInitialize();
+    },
+
+    onShow: function() {
+      var letters = $("#user-search").val();
+      if (letters.length > 0) {
+        var pattern = new RegExp(letters,"gi");
+        var name = this.model.attributes.first_name + ' ' + this.model.attributes.last_name;
+        var mail = this.model.attributes.email;
+        if (!pattern.test(name) && !pattern.test(mail)) {
+          this.$el.hide();
+        }
+      }
+    },
+
     serializeData : function() {
+      if (this.model.get('avatar_url')) {
+        avatar = this.model.get('avatar_url');
+      } else {
+        avatar = "http://placehold.it/50x50";
+      }
+
+      if (this.model.get('first_name')&&this.model.get('last_name')) {
+        name = this.model.get('first_name') + " " + this.model.get('last_name');
+      } else {
+        name = "";
+      }
       window.$thisModel = this.model;
       return {
-        email: this.model.get('email')
+        email: this.model.get('email'),
+        avatar_url: avatar,
+        name: name
       };
     },
 
@@ -57,15 +82,31 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
 
     template: "modules/manage-users/show/templates/list",
     childView: Show.ManageableUser,
-    childViewContainer: "ul",
+    childViewContainer: "table",
     collection: new Robin.Collections.ManageableUsers(),
 
     events: {
-      'click .invite': 'sendInvite'
+      'click .invite': 'sendInvite',
+      'keyup #user-search' : 'filterUsers'
     },
 
     initialize: function() {
       this.collection.fetch();
+    },
+
+    filterUsers: function() {
+      var letters = $("#user-search").val();
+      var pattern = new RegExp(letters,"gi");
+      var viewObj = this;
+      this.children.each(function(view){
+        var name = view.model.attributes.first_name + ' ' + view.model.attributes.last_name;
+        var mail = view.model.attributes.email;
+        if (pattern.test(name) || pattern.test(mail)) {
+          view.$el.show();
+        } else {
+          view.$el.hide();
+        }
+      });
     },
 
     sendInvite: function(e){

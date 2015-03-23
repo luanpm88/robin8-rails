@@ -12,7 +12,19 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       } else {
         first_src="http://placehold.it/542x542";
       }
-      this.model.attributes.first_src = first_src; 
+      this.model.attributes.first_src = first_src;
+    },
+
+    onShow: function(){
+      var descriptionArea = this.$el.find('.release-title');
+      descriptionArea.dotdotdot({
+        ellipsis : '... ',
+        wrap: 'word',
+        fallbackToLetter: true,
+        after: null,
+        watch: false,
+        tolerance: 0
+      });
     },
 
     openEditModal: function(){

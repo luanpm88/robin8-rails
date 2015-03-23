@@ -36,7 +36,11 @@ module Users
               @identity.save
             end
           end
-          render 'twitter_popup_close', :layout => false          
+          if request.env['omniauth.params']['provider'].nil?
+            render 'twitter_popup_close', :layout => false     
+          else
+            redirect_to root_path
+          end     
         end
       }
     end

@@ -678,6 +678,7 @@ nav{text-align: center;}
 }
 .release-title {
   height: 40px !important;
+  overflow: hidden;
 }
 
 #social-scheduled .list-group-item .btn {
@@ -1275,6 +1276,10 @@ input.form-control[type="file"] {
   }
 }
 
+.uploadcare-widget-button-cancel{
+  background: #DA4453;
+}
+
 .truncate-title {
   width: 325px;
   white-space: nowrap;
@@ -1354,4 +1359,43 @@ input.form-control[type="file"] {
   text-overflow: ellipsis;
   display: block;
   overflow: hidden;
+}
+
+.user-list {
+  width: 100%;
+  td, th {
+    width: 230px;
+    &:last-child {
+      width: 100%
+    }
+  }
+}
+
+.user-list--heading {
+  th {
+    height: 50px;
+    border-top: 2px solid #cecece;
+    border-bottom: 2px solid #cecece;
+    font-weight: 700;
+    color: #8cc152;
+  }
+}
+
+.user-list--item {
+  td {
+    height: 70px;
+    border-bottom: 1px solid #cecece;
+    white-space: nowrap;
+  }
+}
+
+.user-list--name {
+  color: #3c9eb6;
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.user-list--delete {
+  background: none;
+  color: #ED5565;
 }
