@@ -28,6 +28,9 @@ gem 'aws-sdk-v1'
 
 gem 'htmlentities'
 gem 'truncate_html'
+gem 'oauth2'
+gem 'legato'
+gem 'google-api-client'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass'
