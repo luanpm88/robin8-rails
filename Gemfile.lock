@@ -125,6 +125,8 @@ GEM
       devise (>= 3.2.0)
     diff-lcs (1.2.5)
     ejs (1.1.1)
+    email_validator (1.5.0)
+      activemodel
     equalizer (0.0.9)
     erubis (2.7.0)
     execjs (2.4.0)
@@ -484,6 +486,7 @@ DEPENDENCIES
   devise
   devise_invitable
   ejs
+  email_validator
   friendly_id
   google-api-client
   has_scope
