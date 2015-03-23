@@ -80,9 +80,12 @@
       <div class="collapse collapsible" id="collapseSpokeperson">
         <div class="media">
           <a class="media-left" href="#">
-            <% if news_room.user.avatar_url %>
-              <%= image_tag news_room.user.avatar_url, class: 'img-circle avatar', style: 'width: 50px; height: 50px' %>
+          <% unless news_room.email.blank? %>
+            <% spokeperson = User.where(email: news_room.email).first%>
+            <% if spokeperson.avatar_url %>
+              <%= image_tag spokeperson.avatar_url, class: 'img-circle avatar', style: 'width: 50px; height: 50px' %>
             <% end %>
+          <% end %>
           </a>
           <div class="media-body">
             <h4 class="media-heading"><%= news_room.owner_name.blank? ? '' : news_room.owner_name %></h4>
