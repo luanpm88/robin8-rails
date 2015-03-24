@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   get 'pricing' => 'pages#pricing'
   get 'subscribe/:slug' => 'subscriptions#new'
+  post 'subscribe/:slug' => 'subscriptions#new'
   get 'upgrade/:slug' => 'subscriptions#edit'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
@@ -28,10 +29,11 @@ Rails.application.routes.draw do
     put 'update_social', on: :member
   end
   resources :news_rooms do
-    get 'preview', on: :collection
-    get 'presskit', on: :collection
-    get 'follow', on: :collection
     get 'analytics'
+  end
+  resource :public_news_room do
+    resources :followers, only: [:new, :create]
+    get 'presskit'
   end
   resources :industries, only: :index
   resources :releases
@@ -81,10 +83,8 @@ Rails.application.routes.draw do
   post 'textapi/extract'
   post 'textapi/hashtags'
 
-  post 'followers/add/', to: 'followers#add'
-
   constraints(Subdomain) do
-    get '/' => 'news_rooms#preview', as: :subdomain_root
+    get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
 
   root 'pages#home'
@@ -96,5 +96,6 @@ Rails.application.routes.draw do
   get '/terms', to: 'pages#terms'
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
+  get '/add-ons', to: 'pages#add_ons'
 
 end

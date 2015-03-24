@@ -16,6 +16,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         var viewProfiles = new Show.SocialProfiles({collection: new Robin.Collections.Identities(data)});
         currentView.getRegion('profiles').show(viewProfiles);
         currentView.getRegion('scheduled').show(Robin.module("Social").postsView);
+        if (_.last(window.location.href.split('/')) == 'posts') {
+          currentView.$el.find('li.posts a').tab('show');
+        } else if (_.last(window.location.href.split('/')) == 'profiles') {
+          currentView.$el.find('li.profiles a').tab('show');
+        }
       });
     },
   });

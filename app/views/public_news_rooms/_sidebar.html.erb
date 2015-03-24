@@ -111,13 +111,13 @@
   <% end %>
   <% if news_room.attachments.length > 0 %>
     <li class="btn-li">
-      <%= link_to presskit_news_rooms_path, class: 'btn btn-default' do %>
+      <%= link_to presskit_public_news_room_path, class: 'btn btn-default' do %>
         <i class="fa fa-image"></i> Press kit
       <% end %>
     </li>
   <% end %>
   <li class="btn-li">
-    <%= link_to follow_news_rooms_path, class: 'btn btn-default' do %>
+    <%= link_to new_public_news_room_follower_path, class: 'btn btn-default' do %>
       <i class="fa fa-user-plus"></i> Follow
     <% end %>
   </li>
