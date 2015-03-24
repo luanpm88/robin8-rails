@@ -1,9 +1,9 @@
 <div class='col-sm-6 col-md-4'>
   <div class="thumbnail release-item">
     <%= link_to release_path(release) do %>
-      <% if release.logo_url %>
-        <img class="img" src="<%= release.logo_url %>">
-      <% else %>
+      <% if release.thumbnail %>
+        <img class="img" src="<%= release.thumbnail %>">
+      <% elsif release.logo_url %>
         <img class="img" src="http://placehold.it/542x542">
       <% end %>
     <% end %>
@@ -13,8 +13,6 @@
       </h3>
       <small>15 Jan 2015</small>
       <p class='release-item-text'>
-        <script type="text/javascript">
-        </script>
         <%= truncate_html(release.text.html_safe, length: 115) if release.text %>
       </p>
       <p class='concepts'>
