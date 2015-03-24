@@ -1,58 +1,60 @@
 <% var currentPlan = Robin.currentUser.attributes.active_subscription.package %>
-<div class="col-xs-12">
-  <div class="row">
-    <div class="col-xs-6">
-      <h4 class="billing-title">Payment</h4>
-      <table class="billing-data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Created at</th>
-            <th>Card last four</th>
-            <th>Card type</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-        <% _.each(items, function(item, index) { %>
-          <tr class='payment'>
-            <td><%= index + 1 %></td>
-            <td><%= item.payment.formatted_created_at %></td>
-            <td><%= item.payment.card_last_four_digits %></td>
-            <td><%= item.payment.card_type %></td>
-            <td><%= item.payment.amount %></td>
-          </tr>
-        <% }); %>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-xs-3">
-      <div class="billing-current-plan">
-        <h4 class="billing-title">Current Pricing Plan</h4>
-          <% if (currentPlan != undefined) {%>
-          <div class="subscription-type active" id="plantype-ultra" data-plan="ultra" data-equalizer-watch="">
-            <h2><%= currentPlan.name %></h2>
-            <div class="price-bubble">
-              <div class="price-amount">
-                $<%= currentPlan.properties.price %><span class="permonth">/mo</span>
-                <em>billed annually or<br>$<%= currentPlan.properties.annually_price %> month-to-month </em>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="row">
+      <div class="col-xs-6">
+        <h4 class="billing-title">Payment</h4>
+        <table class="billing-data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Created at</th>
+              <th>Card last four</th>
+              <th>Card type</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% _.each(items, function(item, index) { %>
+            <tr class='payment'>
+              <td><%= index + 1 %></td>
+              <td><%= item.payment.formatted_created_at %></td>
+              <td><%= item.payment.card_last_four_digits %></td>
+              <td><%= item.payment.card_type %></td>
+              <td><%= item.payment.amount %></td>
+            </tr>
+          <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-xs-3">
+        <div class="billing-current-plan">
+          <h4 class="billing-title">Current Pricing Plan</h4>
+            <% if (currentPlan != undefined) {%>
+            <div class="subscription-type active" id="plantype-ultra" data-plan="ultra" data-equalizer-watch="">
+              <h2><%= currentPlan.name %></h2>
+              <div class="price-bubble">
+                <div class="price-amount">
+                  $<%= currentPlan.properties.price %><span class="permonth">/mo</span>
+                  <em>billed annually or<br>$<%= currentPlan.properties.annually_price %> month-to-month </em>
+                </div>
+              </div>
+              <div class="plan-inclusions">
+                <ul>
+                  <li><strong><%= currentPlan.properties.seat %></strong> <span>Seat</span></li>
+                  <li><strong><%= currentPlan.properties.newsroom %></strong> <span>Newsroom</span></li>
+                  <li><strong><%= currentPlan.properties.press_release %></strong> <span>Press Release Postings on Robin8/month</span></li>
+                  <li><strong><%= currentPlan.properties.smart_release %></strong> <span>SmartReleases</span></li>
+                  <li><strong><%= currentPlan.properties.media_list %></strong> <span>Personal Media Lists</span></li>
+                  <li><strong><%= currentPlan.properties.streams %></strong> <span>Streams for Media Monitoring</span></li>
+                </ul>
               </div>
             </div>
-            <div class="plan-inclusions">
-              <ul>
-                <li><strong><%= currentPlan.properties.seat %></strong> <span>Seat</span></li>
-                <li><strong><%= currentPlan.properties.newsroom %></strong> <span>Newsroom</span></li>
-                <li><strong><%= currentPlan.properties.press_release %></strong> <span>Press Release Postings on Robin8/month</span></li>
-                <li><strong><%= currentPlan.properties.smart_release %></strong> <span>SmartReleases</span></li>
-                <li><strong><%= currentPlan.properties.media_list %></strong> <span>Personal Media Lists</span></li>
-                <li><strong><%= currentPlan.properties.streams %></strong> <span>Streams for Media Monitoring</span></li>
-              </ul>
-            </div>
-          </div>
-          <% } %>
-        <a href="/pricing" class="btn btn-success">Checkout</a>
-        <!-- <input type="button" value="Checkout" class="btn btn-success"> -->
-        <input type="button" id="cancel-subscription" value="Cancel Subscription" class="btn btn-danger user-list--delete">
+            <% } %>
+          <a href="/pricing" class="btn btn-success">Checkout</a>
+          <!-- <input type="button" value="Checkout" class="btn btn-success"> -->
+          <input type="button" id="cancel-subscription" value="Cancel Subscription" class="btn btn-danger user-list--delete">
+        </div>
       </div>
     </div>
   </div>

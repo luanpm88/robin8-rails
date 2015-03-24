@@ -536,6 +536,9 @@ a {
     border-radius: 0;
     box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
     padding: 0;
+    .caption {
+        padding: 9px 0;
+    }
 }
 nav{text-align: center;}
 
@@ -989,7 +992,7 @@ nav{text-align: center;}
 }
 
 #sidebar_menu li a, .sidebar-nav li a {
-   background: none repeat scroll 0 0 #006481;
+    background: none repeat scroll 0 0 #006481;
     border-bottom: 1px solid #006481;
     border-top: 1px solid #006481;
     color: #999;
@@ -1380,6 +1383,17 @@ input.form-control[type="file"] {
     font-weight: 700;
     color: #8cc152;
   }
+  th.name {
+    min-width: 230px;
+  }
+}
+
+.user-list--empty {
+  padding: 15px;
+  position: absolute;
+  display: block;  
+  font-weight: 700;
+  color: rgb(0, 100, 129);
 }
 
 .user-list--item {

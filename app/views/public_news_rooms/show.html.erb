@@ -19,9 +19,11 @@
           <% end %>
           <hr>
           <div id='releases' class='row'>
-            <h4>Press Releases</h4>
-            <div class="row">
-              <%= render partial: "public_news_rooms/release", collection: @releases %>
+            <div class="col-xs-12">
+              <h4>Press Releases</h4>
+              <div class="row">
+                <%= render partial: "news_rooms/release", collection: @releases %>
+              </div>
             </div>
           </div>
           <nav id='pagination' align="center"><%= will_paginate @releases, renderer: BootstrapPagination::Rails %></nav>

@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   has_many :media_lists, dependent: :destroy
   has_many :pitches
   has_many :pitches_contacts, through: :pitches
+  has_many :user_add_ons, dependent: :destroy
+  has_many :add_ons, through: :user_add_ons
 
   after_create :create_default_news_room
 
@@ -44,8 +46,13 @@ class User < ActiveRecord::Base
     user
   end
 
+  def is_primary?
+    is_primary != false
+  end
+
   def active_subscription
-    @active_s ||= subscriptions.where("(expiry is NULL OR expiry >'#{Time.now.utc}' AND status ='A') OR (expiry > '#{Time.now.utc}' AND status = 'C')").last
+    @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions
+    @active_s ||= @subscriptions.where("(expiry is NULL OR expiry >'#{Time.now.utc}' AND status ='A') OR (expiry > '#{Time.now.utc}' AND status = 'C')").last
   end
 
   def twitter_identity
