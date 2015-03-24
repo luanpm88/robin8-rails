@@ -4,6 +4,8 @@
       <% if release.thumbnail %>
         <img class="img" src="<%= release.thumbnail %>">
       <% elsif release.logo_url %>
+        <img class="img" src="<%= release.logo_url %>">
+      <% else %>
         <img class="img" src="http://placehold.it/542x542">
       <% end %>
     <% end %>
