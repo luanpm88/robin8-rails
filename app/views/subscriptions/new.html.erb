@@ -38,7 +38,7 @@
             </div>
           </div>
           <div class="form-step step3">
-
+            <%total = 0.0%>
             <div class="row">
               <div class="small-12 columns">
                 <table cellpadding="0" cellspacing="0">
@@ -58,6 +58,8 @@
                         <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
                       </select>
                     </td>
+                    <%total = @package.price%>
+
                     <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
                     <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
 
@@ -71,6 +73,24 @@
                       $<%=(@package.price) %>
                     </td>
                   </tr>
+
+                  <%@add_ons.each do |a|%>
+                      <tr id="checkout-item-<%=a.id%>">
+                        <td class="">
+                          <%=a.name%> (<%=@add_on_hash["#{a.id}"]%>)
+                        </td>
+                        <td>
+                        </td>
+                        <td class="remove">
+                          <a data-remove="checkout-item-<%=a.id%>"  class="remove">remove</a>
+                        </td>
+                        <td class="price">
+                          $<%=price = a.price * @add_on_hash["#{a.id}"].to_f%>
+                        </td>
+                      </tr>
+                      <%total += price %>
+                  <%end%>
+
                   <tr class="totals">
                     <td class="">
                       TOTAL
@@ -80,7 +100,7 @@
                     <td>
                     </td>
                     <td class="price" id="price-total">
-                      $<%=(@package.price) %>
+                      $<%=total %>
                     </td>
                   </tr>
                 </table>
@@ -214,7 +234,7 @@
               <div class="row formdisclaimers">
                 <div class="small-12 columns">
                   <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days). <br />All prices in US Dollars.</p>
-                  <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=(@package.price).to_i %></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @package.interval.to_i.days %></span></p>
+                  <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @package.interval.to_i.days %></span></p>
                 </div>
               </div>
               <div class="row">
@@ -228,28 +248,10 @@
           </div>
       <%end%>
       <div class="clearfix"></div>
-      <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
-      <script>BlueSnap.publicKey = '<%=Rails.application.secrets[:bluesnap][:public_key]%>';
-      BlueSnap.setTargetFormId("checkout-form");
-      </script>
-
-      <script>
-          function updatePackage(){
-              $('#slug').val($('#payment-option').val());
-              $('#price-total').html('$'+$('#'+$('#slug').val()).val());
-              $('#t-price').html('$'+$('#'+$('#slug').val()).val() );
-              $('#price-sub').html('$'+$('#'+$('#slug').val()).val() );
-              $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
-          }
 
 
-          $(document).ready(function(){
-              if( !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                  $( ".select-checkout" ).selectmenu();
-              }
-          });
 
-      </script>
+
 
   <%end%>
   <style>
@@ -284,8 +286,40 @@
 
   </style>
 
-
+  <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
 
+  <script>
+      $.validate();
+      total = 0.0
+      function addAmount(amount){
+          total = total + amount;
+      }
 
-  <script> $.validate(); </script>
+      function subAmount(amount){
+          total = total - amount;
+      }
+
+      function getTotal(){
+          return total;
+      }
+
+      function updatePackage(){
+          $('#slug').val($('#payment-option').val());
+          $('#price-total').html('$'+$('#'+$('#slug').val()).val());
+          $('#t-price').html('$'+$('#'+$('#slug').val()).val() );
+          $('#price-sub').html('$'+$('#'+$('#slug').val()).val() );
+          $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
+      }
+
+
+      $(document).ready(function(){
+          if( !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+              $( ".select-checkout" ).selectmenu();
+          }
+      });
+
+      BlueSnap.publicKey = '<%=Rails.application.secrets[:bluesnap][:public_key]%>';
+      BlueSnap.setTargetFormId("checkout-form");
+
+  </script>

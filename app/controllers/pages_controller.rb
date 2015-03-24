@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
-  # before_action :authenticate_user!, only: [:pricing]
-  
+  before_action :authenticate_user!, only: [:add_ons]
+
   def home
     if signed_in? && current_user.subscriptions.length > 0
       render "home", :layout => 'application'
@@ -22,6 +22,11 @@ class PagesController < ApplicationController
 
   def pricing
     @packages = Package.where(is_active: true)
+    render :layout => "website"
+  end
+
+  def add_ons
+    @add_ons = AddOn.where(is_active: true)
     render :layout => "website"
   end
 
