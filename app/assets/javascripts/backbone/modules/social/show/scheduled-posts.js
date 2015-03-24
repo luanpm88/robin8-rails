@@ -54,9 +54,13 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         view.$el.find('.edit-post').removeClass('disabled');
         view.$el.find('.social-networks a').removeClass('disabled');
         if(reason === 'cancel') {
-          view.model.fetch();
-          view.modelBinder.bind(view.model, view.el);
-        } 
+          view.model.fetch({
+            success: function(){
+              view.modelBinder.bind(view.model, view.el);
+              view.render();
+            }
+          });
+        }
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
         view.$el.find('.social-networks a').addClass('disabled');
