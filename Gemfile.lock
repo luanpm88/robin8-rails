@@ -187,8 +187,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mailgun (0.8)
-      rest-client
+    mailgun-ruby (1.0.3)
+      json (~> 1.8)
+      rest-client (~> 1.6)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.8.2)
@@ -498,7 +499,7 @@ DEPENDENCIES
   jquery-ui-rails
   koala (~> 1.11.0rc)
   legato
-  mailgun
+  mailgun-ruby
   mysql2
   oauth2
   omniauth
