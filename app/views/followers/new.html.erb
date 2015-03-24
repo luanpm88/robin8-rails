@@ -1,6 +1,6 @@
 <div id='wrapper'>
   <div id="sidebar-wrapper">
-    <%= render 'news_rooms/sidebar', news_room: @news_room %>
+    <%= render 'public_news_rooms/sidebar', news_room: @news_room %>
   </div>
   <div id="page-content-wrapper">
     <div class='container-fluid'>
@@ -9,7 +9,7 @@
         <div style="min-height: 600px;">
             <h2>Follow <%= @news_room.company_name %></h2>
             <p style="font-size: 15px; margin-bottom: 40px;">Stay up to date on all news published in the <%= @news_room.company_name %> pressroom. You can either choose for immediate updates or receive daily/weekly or monthly digests.</p>
-            <%= form_for [@news_room, @follower] do |f| %>
+            <%= form_for [:news_room, @follower], url: public_news_room_followers_path do |f| %>
               <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
                 <%= f.text_field :email, class: 'form-control', placeholder: 'Enter email' %>
@@ -24,7 +24,7 @@
             <% end %>
           </div>
           <hr style="margin-bottom: 4px;">
-          <%= render 'news_rooms/footer' %>
+          <%= render 'public_news_rooms/footer' %>
         </div>
       </div>
     </div>

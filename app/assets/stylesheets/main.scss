@@ -1380,6 +1380,17 @@ input.form-control[type="file"] {
     font-weight: 700;
     color: #8cc152;
   }
+  th.name {
+    min-width: 230px;
+  }
+}
+
+.user-list--empty {
+  padding: 15px;
+  position: absolute;
+  display: block;  
+  font-weight: 700;
+  color: rgb(0, 100, 129);
 }
 
 .user-list--item {

@@ -45,23 +45,6 @@ class NewsRoomsController < ApplicationController
     render json: @news_room
   end
 
-  def preview
-    @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
-    @releases = @news_room.releases.published.paginate(:page => params[:page], :per_page => 6)
-    respond_to do |format|
-      format.html
-      format.json { render json: @news_room }
-    end
-  end
-
-  def presskit
-    @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
-  end
-
-  def follow
-    @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
-  end
-
   def analytics
     @news_room = NewsRoom.find params[:news_room_id]
     sa = ServiceAccount.new
