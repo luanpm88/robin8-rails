@@ -65,6 +65,9 @@ a {
 .release .post-controls > a:hover {
     color: #888;
 }
+.release-item.thumbnail .caption {
+    padding: 9px 0;
+}
 .release-item small {
         color: #000000;
     display: inline-block;
@@ -158,7 +161,11 @@ a {
 }
 
 .sidebar-nav > li.navlinks > a {
-      background: none repeat scroll 0 0 #3c9eb6 ;
+    background: none repeat scroll 0 0 #3c9eb6 ;
+    font-size: 14px;
+    line-height: 40px;
+    margin-right: 0;
+    padding: 0 0 0 20px;
 }
 
 .sidebar-nav > li > a.collapsed {
@@ -683,6 +690,9 @@ form .btn-primary {
 .jumbotron .jumbotron-contents blockquote {
     font-family: "ProximaNova";
     font-size: 18px;
+}
+.jumbotron .jumbotron-contents img {
+    max-width: 50%;
 }
 blockquote footer, blockquote small, blockquote .small {
     color: #444444; 
