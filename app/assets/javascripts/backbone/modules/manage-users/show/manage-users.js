@@ -112,24 +112,32 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
     sendInvite: function(e){
       var that = this;
       e.preventDefault();
-      var email = $("#email").val()
+      var email = $("#email").val();
       $.post("/users/invitation.json", {user:{email: email, is_primary: false}})
         .always(function(){$(".invite").blur();})
         .done(function() {
           that.collection.fetch();
         })
         .fail(function(response) {
-          var result = $.parseJSON(response.responseText);
-          _(result.errors).each(function(errors,field) {
-            $('input[name=' + field + ']').addClass('error');
-            _(errors).each(function(error, i) {
-              formatted_field = s(field).capitalize().value().replace('_', ' ');
-              $.growl(formatted_field + ' ' + error, {
-                type: "danger",
+          if (response.responseText == "active"){
+            $.growl('This user is already active', {type: "danger"});
+          } else if (response.responseText == "sent" || response.responseText == "resent") {
+            $.growl('The invitation has been ' + response.responseText, {type: "success"});
+            that.collection.fetch();
+          } else {
+            var result = $.parseJSON(response.responseText);
+            _(result.errors).each(function(errors,field) {
+              $('input[name=' + field + ']').addClass('error');
+              _(errors).each(function(error, i) {
+                formatted_field = s(field).capitalize().value().replace('_', ' ');
+                $.growl(formatted_field + ' ' + error, {
+                  type: "danger",
+                });
               });
             });
-        });
+          }
       });
+      $("#email").val('');
     },
 
   });
