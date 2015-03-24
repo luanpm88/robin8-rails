@@ -9,6 +9,9 @@
         <div style="min-height: 600px;">
             <h2>Follow <%= @news_room.company_name %></h2>
             <p style="font-size: 15px; margin-bottom: 40px;">Stay up to date on all news published in the <%= @news_room.company_name %> pressroom. You can either choose for immediate updates or receive daily/weekly or monthly digests.</p>
+            <% if @follower.errors.any? %>
+              <div class="alert alert-danger" role="alert" style="text-align: center;"><%= @follower.errors.full_messages.join('. ') %></div>
+            <% end %>
             <%= form_for [:news_room, @follower], url: public_news_room_followers_path do |f| %>
               <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>

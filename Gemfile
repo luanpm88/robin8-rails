@@ -104,7 +104,8 @@ gem 'friendly_id'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'mailgun'
+# gem 'mailgun'
+gem 'mailgun-ruby'
 
 gem 'paperclip', '~> 4.2.1'
 gem 'premailer-rails'
