@@ -78,10 +78,16 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
 
   });
 
+  Show.EmptyListView = Backbone.Marionette.ItemView.extend({
+    template: 'modules/manage-users/show/templates/_empty',
+    className: "user-list--empty",
+  });
+
   Show.ManageUsersPage = Backbone.Marionette.CompositeView.extend({
 
     template: "modules/manage-users/show/templates/list",
     childView: Show.ManageableUser,
+    emptyView: Show.EmptyListView,
     childViewContainer: "table",
     collection: new Robin.Collections.ManageableUsers(),
 
