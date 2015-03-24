@@ -1,6 +1,7 @@
 class SubscriptionsController < ApplicationController
 
   before_action :authenticate_user!
+  before_filter :set_add_ons
   skip_before_filter :validate_subscription
 
   #before_filter :force_ssl
@@ -151,6 +152,15 @@ class SubscriptionsController < ApplicationController
       session[:redirect_checkout_url] = "/subscribe/#{params[:slug]}"
       flash[:info] = "Please signup below and continue"
       return redirect_to new_user_path
+    end
+  end
+
+  def set_add_ons
+    if params[:add_ons] || @add_on_hash #move to sessions and use ajax calls to update cart
+      @add_on_hash = params[:add_ons] || @add_on_hash
+      ids = []
+      @add_on_hash.each{|k,v| ids << k if v.to_i > 0}
+      @add_ons = AddOn.where(is_active: true, id: ids)
     end
   end
 

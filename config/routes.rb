@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   get 'pricing' => 'pages#pricing'
   get 'subscribe/:slug' => 'subscriptions#new'
+  post 'subscribe/:slug' => 'subscriptions#new'
   get 'upgrade/:slug' => 'subscriptions#edit'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
@@ -95,5 +96,6 @@ Rails.application.routes.draw do
   get '/terms', to: 'pages#terms'
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
+  get '/add-ons', to: 'pages#add_ons'
 
 end

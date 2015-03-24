@@ -299,6 +299,7 @@
       }
       function checkout(){
           if($('#package').val() != '') {
+//              location.href='/add-ons?plan='+ $('#package').val(); //use this for add-ons
               location.href='/subscribe/'+ $('#package').val();
           }
           return false;
@@ -307,20 +308,20 @@
 
       $( document ).ready(function() {
           $( ".button-planselector" ).click(function() {
-                  var disableclass='n';
-                  if($(this).parent().parent().hasClass('active')){
-                      disableclass='y';
-                  }
-                  $('.subscription-type').removeClass('active');
-                  $('.button-planselector').text('Select');
+              var disableclass='n';
+              if($(this).parent().parent().hasClass('active')){
+                  disableclass='y';
+              }
+              $('.subscription-type').removeClass('active');
+              $('.button-planselector').text('Select');
 
-                  if(disableclass == 'y'){
-                      $('.active .button-planselector').text('Select');
-                      $('input#plan-selection').val('');
-                  }else{
-                      $(this).parent().parent().addClass('active');
-                      $('.active .button-planselector').text('Selected');
-                  }
+              if(disableclass == 'y'){
+                  $('.active .button-planselector').text('Select');
+                  $('input#plan-selection').val('');
+              }else{
+                  $(this).parent().parent().addClass('active');
+                  $('.active .button-planselector').text('Selected');
+              }
 
           });
 
