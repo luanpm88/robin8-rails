@@ -46,8 +46,13 @@ class User < ActiveRecord::Base
     user
   end
 
+  def is_primary?
+    is_primary != false
+  end
+
   def active_subscription
-    @active_s ||= subscriptions.where("(expiry is NULL OR expiry >'#{Time.now.utc}' AND status ='A') OR (expiry > '#{Time.now.utc}' AND status = 'C')").last
+    @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions
+    @active_s ||= @subscriptions.where("(expiry is NULL OR expiry >'#{Time.now.utc}' AND status ='A') OR (expiry > '#{Time.now.utc}' AND status = 'C')").last
   end
 
   def twitter_identity
