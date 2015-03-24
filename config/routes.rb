@@ -28,10 +28,11 @@ Rails.application.routes.draw do
     put 'update_social', on: :member
   end
   resources :news_rooms do
-    get 'preview', on: :collection
-    get 'presskit', on: :collection
-    get 'follow', on: :collection
     get 'analytics'
+  end
+  resource :public_news_room do
+    resources :followers, only: [:new, :create]
+    get 'presskit'
   end
   resources :industries, only: :index
   resources :releases
@@ -81,10 +82,8 @@ Rails.application.routes.draw do
   post 'textapi/extract'
   post 'textapi/hashtags'
 
-  post 'followers/add/', to: 'followers#add'
-
   constraints(Subdomain) do
-    get '/' => 'news_rooms#preview', as: :subdomain_root
+    get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
 
   root 'pages#home'
