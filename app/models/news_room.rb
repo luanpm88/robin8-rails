@@ -8,6 +8,7 @@ class NewsRoom < ActiveRecord::Base
   has_and_belongs_to_many :industries
   has_many :releases, dependent: :destroy
   has_many :attachments, as: :imageable, dependent: :destroy
+  has_many :followers, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
   before_create :set_campaign_name
 
