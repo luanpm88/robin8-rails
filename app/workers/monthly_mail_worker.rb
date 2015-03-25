@@ -1,13 +1,16 @@
+require 'mailgun'
 class MonthlyMailWorker
   include Sidekiq::Worker
 
   def perform(post_id) 
-    url = "https://api:#{Rails.application.secrets.mailgun[:api_key]}@api.mailgun.net/v2/rs0a72f7346d4e4278ab41c37b411d93ce.mailgun.org/"
-    campaigns = JSON.parse(RestClient.get(url + 'campaigns'))['items']
+    mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+    domain = Rails.application.secrets.mailgun[:domain]
+    campains_response = mg_client.get("#{domain}/campaigns")
+    campaigns = JSON.parse(campains_response.body)['items']
 
     news_rooms = NewsRoom.joins(:releases)
       .select('news_rooms.*, releases.id as release_id, releases.title as release_title')
-      .where(releases: { created_at: DateTime.now.beginning_of_day..DateTime.now.end_of_day })
+      .where(releases: { created_at: DateTime.now.beginning_of_month..DateTime.now.end_of_month })
 
     releases = {}
 
@@ -16,14 +19,15 @@ class MonthlyMailWorker
       releases[nr.id].push(nr)
     end
 
-    mailgun = Mailgun()
-    list = mailgun.list_members("monthly@mg.robin8.com").list
-    result = {}
+    view = ActionView::Base.new(Rails.root.join('app/views'))
+    view.class.include ApplicationHelper
+    html = view.render(partial: 'user_mailer/subscription', locals: { releases: Release.all} )
 
-    list.each do |l|
-      result[l['vars']['newsroom_id']] = [] unless result.has_key? l['vars']['newsroom_id']
-      result[l['vars']['newsroom_id']].push(l['address'])
-      result[l['vars']['newsroom_id']].push(releases[l['vars']['newsroom_id']])
+    releases.each do |key, rs|
+      html = view.render(partial: 'user_mailer/subscription', locals: { releases: Release.all} )
+      nr = NewsRoom.find key
+      message_params = { from: 'bob@sending_domain.com', to: 'pavlo.shabat@perfectial.com', subject: 'Some subject', html: html, 'o:campaign' => nr.campaign_name }
     end
+    
   end
 end
