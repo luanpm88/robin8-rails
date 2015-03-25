@@ -132,6 +132,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var self = this;
       this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
       this.editor.on('load', function() {
+        self.updateStats();
         $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', function(e) {
           self.updateStats()
         });

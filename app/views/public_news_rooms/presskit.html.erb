@@ -10,7 +10,7 @@
           <hr />
           <div id='presskit'>
             <% @news_room.attachments.each do |attachment| %>
-              <a href="<%= attachment.url  %>" title="Buachaille Etive Mor (Explored #1 on 06/01/15)" data-gallery=""><img src="<%= attachment.url  %>"></a>
+              <a href="<%= attachment.url  %>" title="Buachaille Etive Mor (Explored #1 on 06/01/15)" data-gallery=""><img src="<%= attachment.get_correct_url  %>"></a>
             <% end %>
 
           </div>
