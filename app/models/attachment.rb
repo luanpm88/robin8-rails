@@ -12,4 +12,15 @@ class Attachment < ActiveRecord::Base
     AmazonDeleteWorker.perform_in(20.seconds, attachment.url)
     AmazonDeleteWorker.perform_in(20.seconds, attachment.thumbnail)
   end
+
+  def get_correct_url
+    case attachment_type
+    when 'image'
+      url
+    when 'video'
+      'video.png'
+    when 'file'
+      'file.png'
+    end
+  end
 end
