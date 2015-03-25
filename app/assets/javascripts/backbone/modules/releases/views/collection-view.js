@@ -7,18 +7,19 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       $(window).on("resize",this.arrangeReleases);
     },
     onRenderCollection: function(){
-      this.arrangeReleases();
+      if ($('.releases-view').width() != null) {
+        this.arrangeReleases();
+      }
     },
     onShow: function(){
       this.arrangeReleases();
     },
-
     arrangeReleases: function(){
       // needs to be refactored
       var listWidth = $('.releases-view').width();
       var releasesPerRow = Math.floor( listWidth / 360 );
       if (releasesPerRow != 1) {
-        var allReleases = $('.release-item .thumbnail').toArray();
+        var allReleases = $('.release-item').toArray();
         var arrays = [], size = releasesPerRow;
         while (allReleases.length > 0)
           arrays.push(allReleases.splice(0, size));
