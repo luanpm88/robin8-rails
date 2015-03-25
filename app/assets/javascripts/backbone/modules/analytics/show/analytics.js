@@ -20,8 +20,8 @@ Robin.module('Analytics.Show', function(Show, App, Backbone, Marionette, $, _){
             arr = _.map(data.web, function(n){ return [n.table.date, parseInt(n.table.pageViews), parseInt(n.table.sessions)] })
             arr = _.union([['Date', 'Sessions', 'Page Views']], arr);
             google.load("visualization", "1", {packages:["corechart"]});
-            google.setOnLoadCallback(drawAreaChart);
-            google.setOnLoadCallback(drawColumnChart);
+            // google.setOnLoadCallback(drawAreaChart);
+            // google.setOnLoadCallback(drawColumnChart);
             function drawAreaChart() {
               var data = google.visualization.arrayToDataTable(arr);
 
@@ -57,7 +57,8 @@ Robin.module('Analytics.Show', function(Show, App, Backbone, Marionette, $, _){
               var chart = new google.visualization.ColumnChart(document.getElementById('second-chart'));
               chart.draw(data, options);
             }
-
+            drawAreaChart();
+            drawColumnChart();
             
 
 
