@@ -2,10 +2,10 @@ require 'mailgun'
 class Follower < ActiveRecord::Base
   
   LIST_TYPES = [
-    [ "Immediate updates", "immediate@mg.robin8.com" ],
-    [ "Daily digest", "daily@mg.robin8.com" ],
-    [ "Weekly digest", "weekly@mg.robin8.com" ],
-    [ "Monthly digest", "monthly@mg.robin8.com" ]
+    [ "Immediate updates", "immediate@mg.myprgenie.com" ],
+    [ "Daily digest", "daily@mg.myprgenie.com" ],
+    [ "Weekly digest", "weekly@mg.myprgenie.com" ],
+    [ "Monthly digest", "monthly@mg.myprgenie.com" ]
   ]
 
   belongs_to :news_room
@@ -18,10 +18,19 @@ class Follower < ActiveRecord::Base
   private
 
     def add_follower_to_list
-      # UpdateListWorker.perform_async
       mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
-      p '~'*90
-      p mg_client
+      begin
+        list = mg_client.get("/lists/#{list_type}")
+      rescue Mailgun::CommunicationError
+        list = mg_client.post('/lists', { address: list_type })
+      end
+      if list.code == 200
+        begin
+          mg_client.post("/lists/#{list_type}/members", { address: email })
+        rescue Mailgun::CommunicationError
+          mg_client.put("/lists/#{list_type}/members/#{email}", { address: email })
+        end
+      end
     end
 
 end
