@@ -16,13 +16,13 @@ Robin.module('Analytics.Show', function(Show, App, Backbone, Marionette, $, _){
       this.newsRooms.fetch({
         success: function(){
           $.get('/news_rooms/' + newsRooms.models[0].get('id') +'/analytics', function(data){
-            console.log(data);
-            window.data = data;
-            arr = _.map(data, function(n){ return [n.table.date, parseInt(n.table.pageViews), parseInt(n.table.sessions)] })
+            mail = data.mail
+            arr = _.map(data.web, function(n){ return [n.table.date, parseInt(n.table.pageViews), parseInt(n.table.sessions)] })
             arr = _.union([['Date', 'Sessions', 'Page Views']], arr);
             google.load("visualization", "1", {packages:["corechart"]});
-            google.setOnLoadCallback(drawChart);
-            function drawChart() {
+            google.setOnLoadCallback(drawAreaChart);
+            google.setOnLoadCallback(drawColumnChart);
+            function drawAreaChart() {
               var data = google.visualization.arrayToDataTable(arr);
 
               var options = {
@@ -34,6 +34,33 @@ Robin.module('Analytics.Show', function(Show, App, Backbone, Marionette, $, _){
               var chart = new google.visualization.AreaChart(document.getElementById('first-chart'));
               chart.draw(data, options);
             }
+
+            function drawColumnChart() {
+              var data = google.visualization.arrayToDataTable([
+                ['Element', 'Emails', { role: 'style' }],
+                ['Sent', parseInt(mail.total.sent), 'blue'],
+                ['Delivered', parseInt(mail.total.delivered), 'green'],  
+                ['Opened', parseInt(mail.total.opened), 'silver'],   
+                ['Dropped', parseInt(mail.total.dropped), 'red']
+              ]);
+              var options = {
+                title: 'Email Statistics',
+                hAxis: {title: '',  titleTextStyle: {color: '#333'}},
+                vAxis: {
+                  minValue: 0,
+                  viewWindowMode:'explicit',
+                  viewWindow: {
+                    min:0
+                  }
+                }
+              };
+              var chart = new google.visualization.ColumnChart(document.getElementById('second-chart'));
+              chart.draw(data, options);
+            }
+
+            
+
+
           })
         }
       })

@@ -1,3 +1,4 @@
+require 'mailgun'
 class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
   def index
@@ -54,7 +55,17 @@ class NewsRoomsController < ApplicationController
       start_date: (DateTime.now - 7.days),
       end_date: DateTime.now
     })
-    render json: results.collection
+
+    mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+    domain = Rails.application.secrets.mailgun[:domain]
+    begin
+      result = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats")
+      r = JSON.parse(result.body)
+    rescue
+      r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
+    end
+
+    render json: { web: results.collection, mail: r }
   end
 
 private
