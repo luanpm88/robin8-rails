@@ -18,6 +18,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "items": this.collection.models
       }
     },
+    onRender: function(){
+      var view = this;
+      if (Robin.releaseForBlast != undefined && this.collection.length > 0){
+        view.analyzeRelease(parseInt(Robin.releaseForBlast));
+        Robin.releaseForBlast = undefined;
+      }
+    },
     releasesSelectChanged: function(e){
       if(this.ui.releasesSelect.val() == -2){
         this.openNewRelease();
@@ -28,6 +35,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     },
     openNewRelease: function(){
+      Robin.newReleaseFromDashboard = true;
       Backbone.history.navigate('releases', {trigger: true});
     },
     analyzeButtonClicked: function(e){

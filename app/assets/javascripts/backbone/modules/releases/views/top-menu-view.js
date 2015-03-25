@@ -20,7 +20,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #save_release': 'saveRelease',
       'click #delete_release': 'deleteRelease',
       'click #extract_url': 'extractURL',
-      'click #highlight_textarea': 'highlightReleaseText'
+      'click #highlight_textarea': 'highlightReleaseText',
+      'click #smart-release': 'startSmartRelease'
     },
     highlightReleaseText: function(e) {
       e.preventDefault();
@@ -76,6 +77,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       return {
         newsrooms: this.newsrooms
       };
+    },
+    startSmartRelease: function(options){
+      Robin.releaseForBlast = this.model.get('id');
+      Backbone.history.navigate('robin8', {trigger: true});
     },
     openModalDialog: function(){
       this.model.clear();

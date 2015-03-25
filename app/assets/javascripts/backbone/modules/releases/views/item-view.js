@@ -3,7 +3,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
   Releases.ItemView = Marionette.ItemView.extend({
     template: 'modules/releases/templates/item-view',
     events: {
-      'click #open_edit': 'openEditModal'
+      'click #open_edit': 'openEditModal',
+      'click #start-blast': 'startSmartRelease'
     },
 
     initialize: function(){
@@ -25,6 +26,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         watch: false,
         tolerance: 0
       });
+    },
+
+    startSmartRelease: function(options){
+      Robin.releaseForBlast = this.model.get('id');
+      Backbone.history.navigate('robin8', {trigger: true});
     },
 
     openEditModal: function(){
