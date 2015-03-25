@@ -531,15 +531,6 @@ a {
     box-shadow: 0 0 0 rgba(0, 0, 0, 0.2); 
 }
 
-.thumbnail.release-item {
-    border: medium none;
-    border-radius: 0;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
-    padding: 0;
-    .caption {
-        padding: 9px 0;
-    }
-}
 nav{text-align: center;}
 
 .edit-newsroom .bootstrap-tagsinput {
@@ -706,18 +697,30 @@ nav{text-align: center;}
 #social-scheduled .list-group-item .social-icons li {
   display: inline;
 }
+.nailthumb-container {
+  margin-left: auto;
+  margin-right: auto;
+}
 .releases-toolbar .btn {
   // margin-bottom: 5px;
   vertical-align: top;
 }
+.releases-view .release-item{
+  float: left;
+  width: 360px;
+  padding-left: 15px;
+  margin-bottom: 30px;
+}
+.release-item .thumbnail {
+    border: medium none;
+    box-shadow: none;
+}
+.release-item .caption{
+  padding: 9px 0;
+}
 .release-item h3 a{
   color: #333;
 }
-.release-item .tooltip-inner {
-  max-width: 500px;
-  overflow: hidden;
-  text-overflow: ellipsis;
- }
 .release-item .caption h3 {
   margin-bottom: 0;
 }
@@ -725,10 +728,6 @@ nav{text-align: center;}
   font-weight: bold;
   color: #555;
   margin: 4px 0 10px 0;
-  display: block;
-}
-.release-item .release-image {
-  position: relative;
   display: block;
 }
 .release-item .overlay {
@@ -746,10 +745,6 @@ nav{text-align: center;}
   opacity: 0;
   visibility: hidden;
   transition: visibility 0.5s ease 0s,opacity 0.5s ease;
-}
-.release-item .release-image:hover .overlay {
-  opacity: 1;
-  visibility: visible;
 }
 .release-item .overlay ul {
   list-style: none;
@@ -1326,35 +1321,6 @@ input.form-control[type="file"] {
   display: block;
   margin-left: auto;
   margin-right: auto;
-}
-
-.release-thumbnail-container {
-    position: relative;
-    width: 100%;
-}
-.release-dummy {
-    padding-top: 100%; /* forces 1:1 aspect ratio */
-}
-.release-thumbnail-inner {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align:center;
-    font: 0/0 a;
-}
-.release-thumbnail-inner:before {
-    content: ' ';
-    display: inline-block;
-    vertical-align: middle;
-    height: 100%;
-}
-.release-thumbnail-inner img {
-    vertical-align: middle;
-    display: inline-block;
-    max-width: 100%;
-    max-height: 100%;
 }
 
 .ellipsis-truncate {

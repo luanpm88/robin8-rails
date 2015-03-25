@@ -13,7 +13,7 @@ Robin.Views.LogoView = Backbone.Marionette.ItemView.extend({
     this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
       //create release thumbnail
       if (viewObj.model.urlRoot == "/releases") {
-        var thumbSrc = info.cdnUrl + '-/preview/542x542/-/stretch/off/-/resize/542x542/';
+        var thumbSrc = info.cdnUrl + '-/preview/340x340/-/stretch/off/-/resize/340x340/';
         $("#logo-image").attr('src', thumbSrc);
         viewObj.model.set('thumbnail', thumbSrc);
       } else {

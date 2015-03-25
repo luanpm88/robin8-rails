@@ -2,7 +2,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
   Releases.CollectionView = Marionette.CollectionView.extend({
     tagName: 'ul',
-    className: 'thumbnails',
+    className: 'releases-view',
     initialize: function(){
       $(window).on("resize",this.arrangeReleases);
     },
@@ -12,18 +12,13 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     onShow: function(){
       this.arrangeReleases();
     },
+
     arrangeReleases: function(){
       // needs to be refactored
-      var listWidth = $('.thumbnails').width();
-      if (listWidth >= 799) {
-        releasesPerRow = 3;
-      } else if (listWidth >= 575) {
-        releasesPerRow = 2;
-      } else {
-        releasesPerRow = 1;
-      }
+      var listWidth = $('.releases-view').width();
+      var releasesPerRow = Math.floor( listWidth / 360 );
       if (releasesPerRow != 1) {
-        var allReleases = $('.thumbnail.release-item').toArray();
+        var allReleases = $('.release-item .thumbnail').toArray();
         var arrays = [], size = releasesPerRow;
         while (allReleases.length > 0)
           arrays.push(allReleases.splice(0, size));

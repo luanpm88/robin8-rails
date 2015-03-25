@@ -10,12 +10,13 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.model.attributes.thumbnail) {
         first_src = this.model.attributes.thumbnail;
       } else {
-        first_src="http://placehold.it/542x542";
+        first_src="http://placehold.it/340x340";
       }
       this.model.attributes.first_src = first_src;
     },
 
     onShow: function(){
+      $('.nailthumb-square-340').nailthumb({width:340,height:340,method:'resize',fitDirection:'center'});
       var descriptionArea = this.$el.find('.release-title');
       descriptionArea.dotdotdot({
         ellipsis : '... ',
