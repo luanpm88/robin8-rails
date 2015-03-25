@@ -106,8 +106,8 @@ class TextapiController < ApplicationController
   def normalize_interesting_terms(interesting_terms)
     interesting_terms.inject({}) do |memo, item|
       a = 0; b = 100;
-      min_score = item[1].last[:score]
-      max_score = item[1].first[:score]
+      min_score = item[1].last ? item[1].last[:score] : 0
+      max_score = item[1].first ? item[1].first[:score] : 0
       x_min_max = max_score - min_score
       delta_b_a = b - a
       
