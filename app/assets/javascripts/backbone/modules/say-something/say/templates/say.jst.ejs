@@ -28,7 +28,7 @@
     </div>
     <div class="col-xs-4" style="width: 52%;">
       <!-- <a id='submitPost' class="btn btn-success pull-right btn-sm" style="margin-left: 6px;">Post</a> -->
-      <input type='submit' value='Post' class="btn btn-success pull-right btn-sm <%=_.filter(Robin.identities, function(num){ return num != undefined; }).length == 0 ? 'disabled' : ''%>" style="margin-left: 6px;" />
+      <input type='submit' value='Post' id="submit-post" class="btn btn-success pull-right btn-sm <%=_.filter(Robin.identities, function(num){ return num != undefined; }).length == 0 ? 'disabled' : ''%>" style="margin-left: 6px;" />
       <a class="btn btn-default pull-right btn-sm schedule"><i class="fa fa-calendar"></i> Schedule</a>
       <div class="form-group pull-right schedule-datetimepicker" style="display: none;">
         <div class='input-group date' id='schedule-datetimepicker'>

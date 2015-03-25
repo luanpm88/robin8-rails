@@ -174,6 +174,9 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     createPost: function(e) {
       e.preventDefault();
+      var view = this;
+
+      this.$el.find("#submit-post").addClass('disabled');
       var selectedDate = moment($('#scheduled_date').val());
       this.socialNetworksBinder.copyViewValuesToModel();
       this.modelBinder.copyViewValuesToModel();
@@ -186,6 +189,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
+          view.$el.find("#submit-post").removeClass('disabled');
           $('.navbar-search-lg').hide();
           $('.navbar-search-sm').show()//.find('input').val(window.clipText($('.navbar-search-lg textarea').val(), 52));
           $('.progressjs-progress').hide();
