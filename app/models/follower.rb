@@ -13,6 +13,11 @@ class Follower < ActiveRecord::Base
   validates :email, :email => true
   validates :list_type, inclusion: { in: LIST_TYPES.map{ |l| l[1] } }
 
+  scope :monthly, -> { where(list_type: 'monthly@mg.myprgenie.com') }
+  scope :immediate, -> { where(list_type: 'monthly@mg.myprgenie.com') }
+  scope :weekly, -> { where(list_type: 'weekly@mg.myprgenie.com') }
+  scope :daily, -> { where(list_type: 'daily@mg.myprgenie.com') }
+
   after_update :add_follower_to_list
 
   private
