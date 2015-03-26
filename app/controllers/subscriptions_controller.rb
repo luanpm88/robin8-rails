@@ -16,7 +16,8 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    errors,resp = BlueSnap::Shopper.new(request, current_user, params, @package)
+    errors,resp = BlueSnap::Shopper.new(request, current_user, params, @package,@add_ons,@add_on_hash)
+    @subscription = current_user.subscriptions.new
     if errors.blank?
       begin
         @subscription = current_user.subscriptions.create!(
@@ -25,14 +26,21 @@ class SubscriptionsController < ApplicationController
             recurring_amount: @package.price,
             next_charge_date: nil # to be set by invoice generation
         )
+        @add_ons.each do |add_on|
+          @add_on_hash["#{add_on.id}"].to_i.times{
+            current_user.user_add_ons.create!(add_on_id: add_on.id)
+          }
+        end if @add_ons.present?
+
         flash[:success]  = "Subscribed Sucessfully" #take to any page as required
       rescue Exception=> ex
         flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
       end
-      redirect_to root_path
+      @subscription.process_invoice()
+      return redirect_to "/payment-confirmation"
     else
-      flash[:errors] = errors
-      redirect_to :back
+      flash.now[:errors] = errors
+      render :new, :layout => "website"
     end
   end
 
@@ -156,8 +164,8 @@ class SubscriptionsController < ApplicationController
   end
 
   def set_add_ons
-    if params[:add_ons] || @add_on_hash #move to sessions and use ajax calls to update cart
-      @add_on_hash = params[:add_ons] || @add_on_hash
+    if params[:add_ons]
+      @add_on_hash = params[:add_ons]
       ids = []
       @add_on_hash.each{|k,v| ids << k if v.to_i > 0}
       @add_ons = AddOn.where(is_active: true, id: ids)

@@ -56,6 +56,28 @@ class Subscription < ActiveRecord::Base
     end
   end
 
+  def process_invoice
+      begin
+        resp = BlueSnap::Subscription.find_last_by_shopper_id(bluesnap_shopper_id)
+        if resp.present?
+          bss = Blue::Subscription.find(resp[:subscription_id])
+          update_attributes(bluesnap_subscription_id: bss.subscription_id,
+                              status: bss.status,
+                              next_charge_date: Date.parse(bss.next_charge_date))
+
+          Payment.create!(
+              subscription_id: id,
+              package_id: package_id,
+              amount:  bss.catalog_recurring_charge.amount,
+              card_last_four_digits:  bss.credit_card.card_last_four_digits,
+              card_type: bss.credit_card.card_type
+          )
+        end
+      rescue Exception => e
+        return nil
+      end
+  end
+
 
   def self.process_recurring_invoice
     where("next_charge_date < '#{Date.today}' AND status = 'A'").each do |s|

@@ -34,6 +34,10 @@ class PagesController < ApplicationController
     render :layout => "website"
   end
 
+  def payment_confirmation
+    render :layout => "website"
+  end
+
   def contact
     if request.post?
       UserMailer.contact_support(params[:user]).deliver if params[:user].present?
