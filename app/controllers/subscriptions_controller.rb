@@ -19,23 +19,23 @@ class SubscriptionsController < ApplicationController
     errors,resp = BlueSnap::Shopper.new(request, current_user, params, @package,@add_ons,@add_on_hash)
     @subscription = current_user.subscriptions.new
     if errors.blank?
-      # begin
-      @subscription = current_user.subscriptions.create!(
-          package_id: @package.id,
-          bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
-          recurring_amount: @package.price,
-          next_charge_date: nil # to be set by invoice generation
-      )
-      @add_ons.each do |add_on|
-        @add_on_hash["#{add_on.id}"].to_i.times{
-          current_user.user_add_ons.create!(add_on_id: add_on.id)
-        }
-      end if @add_ons.present?
+      begin
+        @subscription = current_user.subscriptions.create!(
+            package_id: @package.id,
+            bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
+            recurring_amount: @package.price,
+            next_charge_date: nil # to be set by invoice generation
+        )
+        @add_ons.each do |add_on|
+          @add_on_hash["#{add_on.id}"].to_i.times{
+            current_user.user_add_ons.create!(add_on_id: add_on.id)
+          }
+        end if @add_ons.present?
 
-      flash[:success]  = "Subscribed Sucessfully" #take to any page as required
-      # rescue Exception=> ex
-      #   flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
-      # end
+        flash[:success]  = "Subscribed Sucessfully" #take to any page as required
+      rescue Exception=> ex
+        flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
+      end
       @subscription.process_invoice()
       return redirect_to "/payment-confirmation"
     else

@@ -22,7 +22,7 @@ module BlueSnap
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
     def self.new(request, user, params, package, add_ons=nil,add_ons_hash=nil)
-      # begin
+      begin
         errors = BlueSnap::Shopper.validate_params(params, user)
         if errors.blank?
           shopper = {
@@ -35,10 +35,10 @@ module BlueSnap
         else
           return errors, nil
         end
-      # rescue Exception => ex
-      #   Rails.logger.error ex
-      #   return ["Something is not right with your payment. Please try again"], nil
-      # end
+      rescue Exception => ex
+        Rails.logger.error ex
+        return ["Something is not right with your payment. Please try again"], nil
+      end
     end
 
     def self.validate_params(params, user)
@@ -83,20 +83,20 @@ module BlueSnap
       items <<  {"sku" => {
           "sku_id" => package.sku_id,
           "amount" => package.price},
-                                "quantity" => "1"}
+                 "quantity" => "1"}
 
       (add_ons||[]).each do |a|
         items << {
-                "sku" => {
-                    "sku_id" => a.sku_id,
-                    "amount" => a.price
-                },
-                "quantity" => add_ons_hash["#{a.id}"] || 1
+            "sku" => {
+                "sku_id" => a.sku_id,
+                "amount" => a.price
+            },
+            "quantity" => add_ons_hash["#{a.id}"] || 1
         }
       end
       items.to_xml(root: false,:children=> "cart-item",:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","") #force remove root node as per Bluesnap API ## Use builder to build each node as xml rather then using hash and building xml at end
       # items.to_xml(root: "cart",:children=> "cart-item",:skip_types => true, :skip_instruct => true)
-       # {"cart-item" => items.map(&:values).flatten}
+      # {"cart-item" => items.map(&:values).flatten}
     end
 
     def self.web_info(request)
