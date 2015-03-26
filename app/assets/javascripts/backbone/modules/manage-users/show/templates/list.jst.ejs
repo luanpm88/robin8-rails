@@ -11,9 +11,11 @@
           </span>
           <input id="user-search" class="form-control" style="display: inline; width: auto;" name="user-search" type="text" value="" size="35" placeholder="Search User by Name or Email">
         </h4>
-        <form id="invite-form" class="form-inline pull-right" role="form" autocomplete="off">
+        <form id="invite-form" class="form-inline pull-right" role="form" autocomplete="off" onsubmit="return false;">
           <div class="form-group">
-            <input id="email" class="form-control" name="email" type="text" value="" size="35" placeholder="Type User Email">
+            <div>
+              <input id="email" class="form-control" name="email" type="text" value="" size="35" placeholder="Type User Email">
+            </div>
           </div>
           <button class="btn btn-success invite"><i class="fa fa-plus"></i> Invite User</button>
         </form>

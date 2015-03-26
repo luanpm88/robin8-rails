@@ -120,8 +120,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
           .formValidation('enableFieldValidators', 'current_password', !isEmpty)
           .formValidation('enableFieldValidators', 'password', !isEmpty)
           .formValidation('enableFieldValidators', 'password_confirmation', !isEmpty);
-
-        // Revalidate the field when user start typing in the password field
+        // Revalidate the field when user starts typing in the password field
         if ($(this).val().length == 1) {
           $('#profileForm').formValidation('validateField', 'current_password')
                           .formValidation('validateField', 'password')

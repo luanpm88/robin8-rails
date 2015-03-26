@@ -599,11 +599,24 @@ nav{text-align: center;}
   width: 100px;
   border: 1px solid #ccc;
 }
-#media ul > li:hover img {
+#media ul > li img:hover {
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
   filter: grayscale(100%);
   opacity: 0.8;
+}
+#media .tooltip {
+  top: -43px !important;
+  display: inherit !important;
+}
+#media .tooltip-inner {
+  max-width: 340px;
+}
+#media .tooltip-arrow {
+  left: 30px !important;
+}
+#media .uploadcare-widget-button-cancel {
+  color: #FFFFFF;
 }
 .alert-info {
     background-color: #3c9eb6;
@@ -1550,7 +1563,10 @@ input.form-control[type="file"] {
 }
 
 .dashboard-btns {
-  padding: 50px 30px 0;
+  padding: 0px 30px 0;
+  p, h5{
+    padding-left: 15px;
+  }
 }
 
 .dashboard-btn {

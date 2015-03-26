@@ -1,17 +1,10 @@
-<!--<header class="formheader">-->
-<!--<div class="row">-->
-<!--<div class="large-12 columns">-->
-<!--<h1 class="logo">Robin8</h1>-->
-<!--<h2 class="signup-tag">Payment</h2>-->
-<!--</div>-->
-<!--</div>-->
 <div class="signup">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
     <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Payment"}%>
   </header>
+  <%total = 0.0%>
   <% if flash[:success].present? %>
-
       <div class="row">
         <div class="small-12 columns">
           <h2><%=flash[:success]%></h2>
@@ -29,16 +22,15 @@
   <%else%>
       <%= form_for @subscription, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
 
-          <!--<form action="signup-confirmation.html" id="checkoutform" class="payment" data-abide>-->
           <div class="row">
             <div class="small-12 columns">
               <div class="goback">
-                <a href="/pricing">Go back</a>
+                <a href="/add-ons?plan=<%=@package.slug%>">Go back</a>
               </div>
             </div>
           </div>
           <div class="form-step step3">
-            <%total = 0.0%>
+
             <div class="row">
               <div class="small-12 columns">
                 <table cellpadding="0" cellspacing="0">
@@ -54,12 +46,11 @@
                     </td>
                     <td>
                       <select name="payment_option" id="payment-option" onchange="updatePackage()">
-                        <option value="<%=@package.slug%>">Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
+                        <option value="<%=@package.slug%>" selected>Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
                         <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
                       </select>
                     </td>
                     <%total = @package.price%>
-
                     <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
                     <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
 
@@ -76,13 +67,14 @@
 
                   <%@add_ons.each do |a|%>
                       <tr id="checkout-item-<%=a.id%>">
+                        <input type="hidden" name="add_ons[<%=a.id%>]" value="<%=@add_on_hash["#{a.id}"]%>"/>
                         <td class="">
                           <%=a.name%> (<%=@add_on_hash["#{a.id}"]%>)
                         </td>
                         <td>
                         </td>
                         <td class="remove">
-                          <a data-remove="checkout-item-<%=a.id%>"  class="remove">remove</a>
+                          <a data-remove="checkout-item-<%=a.id%>" class="remove" onclick="subAmount(<%=a.price * @add_on_hash["#{a.id}"].to_f%>)">remove</a>
                         </td>
                         <td class="price">
                           $<%=price = a.price * @add_on_hash["#{a.id}"].to_f%>
@@ -250,7 +242,7 @@
       <div class="clearfix"></div>
 
 
-
+      <input type="hidden" id="total" value="<%=total%>"/>
 
 
   <%end%>
@@ -291,24 +283,54 @@
 
   <script>
       $.validate();
-      total = 0.0
+
       function addAmount(amount){
+          total = parseInt(getTotal());
           total = total + amount;
+          updateTotal(total);
+          return true
       }
 
       function subAmount(amount){
+          total = parseInt(getTotal());
           total = total - amount;
+          updateTotal(total);
+          return true
       }
 
-      function getTotal(){
-          return total;
+      function updateTotal(amount) {
+          $('#total').val(total);
+          $('#price-total').html('$'+ amount);
+          $('#t-price').html('$'+amount );
+          $('#price-sub').html('$'+amount);
+          return true
+      }
+
+
+      function getTotal() {
+          return parseInt($('#total').val());
+
       }
 
       function updatePackage(){
-          $('#slug').val($('#payment-option').val());
-          $('#price-total').html('$'+$('#'+$('#slug').val()).val());
-          $('#t-price').html('$'+$('#'+$('#slug').val()).val() );
-          $('#price-sub').html('$'+$('#'+$('#slug').val()).val() );
+
+          $("#payment-option > option").each(function() {
+              if($(this).is(':selected')){
+                  amount = $("#"+this.value).val();
+                  addAmount(parseInt(amount));
+              }
+              else{
+                  amount = $("#"+this.value).val();
+                  subAmount(parseInt(amount));
+              }
+          });
+          total = parseInt(getTotal());
+          updateTotal(total);
+
+//          $('#slug').val($('#payment-option').val());
+//          $('#price-total').html('$'+$('#'+$('#slug').val()).val());
+//          $('#t-price').html('$'+$('#'+$('#slug').val()).val() );
+//          $('#price-sub').html('$'+$('#'+$('#slug').val()).val() );
           $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
       }
 
@@ -323,3 +345,4 @@
       BlueSnap.setTargetFormId("checkout-form");
 
   </script>
+    </div>
