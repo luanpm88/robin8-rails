@@ -100,6 +100,39 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       this.collection.fetch();
     },
 
+    onShow: function() {
+      this.initFormValidation();
+    },
+
+    initFormValidation: function(){
+      $('#invite-form').formValidation({
+        framework: 'bootstrap',
+        icon: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          email: {
+            enabled: false,
+            validators: {
+              regexp: {
+                regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: 'The data you have entered is not a valid email'
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          }
+        }
+      })
+      .on('keyup', '[name="email"]', function() {
+        var notEmpty = $(this).val() != "";
+        $('#invite-form').formValidation('enableFieldValidators', 'email', notEmpty)
+      })
+    },
+
     filterUsers: function() {
       var letters = $("#user-search").val();
       var pattern = new RegExp(letters,"gi");
@@ -116,34 +149,37 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
     },
 
     sendInvite: function(e){
-      var that = this;
+      var viewObj = this;
       e.preventDefault();
       var email = $("#email").val();
-      $.post("/users/invitation.json", {user:{email: email, is_primary: false}})
-        .always(function(){$(".invite").blur();})
-        .done(function() {
-          that.collection.fetch();
-        })
-        .fail(function(response) {
-          if (response.responseText == "active"){
-            $.growl('This user is already active', {type: "danger"});
-          } else if (response.responseText == "sent" || response.responseText == "resent") {
-            $.growl('The invitation has been ' + response.responseText, {type: "success"});
-            that.collection.fetch();
-          } else {
-            var result = $.parseJSON(response.responseText);
-            _(result.errors).each(function(errors,field) {
-              $('input[name=' + field + ']').addClass('error');
-              _(errors).each(function(error, i) {
-                formatted_field = s(field).capitalize().value().replace('_', ' ');
-                $.growl(formatted_field + ' ' + error, {
-                  type: "danger",
+      $('#invite-form').data('formValidation').validate();
+      if ($('#invite-form').data('formValidation').isValid()) {
+        $.post("/users/invitation.json", {user:{email: email, is_primary: false}})
+          .always(function(){$(".invite").blur();})
+          .done(function() {
+            viewObj.collection.fetch();
+          })
+          .fail(function(response) {
+            if (response.responseText == "active"){
+              $.growl('This user is already active', {type: "danger"});
+            } else if (response.responseText == "sent" || response.responseText == "resent") {
+              $.growl('The invitation has been ' + response.responseText, {type: "success"});
+              viewObj.collection.fetch();
+            } else {
+              var result = $.parseJSON(response.responseText);
+              _(result.errors).each(function(errors,field) {
+                $('input[name=' + field + ']').addClass('error');
+                _(errors).each(function(error, i) {
+                  formatted_field = s(field).capitalize().value().replace('_', ' ');
+                  $.growl(formatted_field + ' ' + error, {
+                    type: "danger",
+                  });
                 });
               });
-            });
-          }
-      });
-      $("#email").val('');
+            }
+        });
+        $("#email").val('');
+      }
     },
 
   });
