@@ -4,13 +4,15 @@
   <li>
     <ul id="files" class="files_list clearfix"> </ul>
   </li>
-  <li style="line-height: 100px;" >
-    <div class="image-preview-multiple-plus">
-      <input type="hidden" role="uploadcare-uploader"
-             data-file-types="doc docx key numbers pages pdf ppt pptx rtf xls xlsx"
-             data-multiple="true"
-             data-file=""
-      >
+  <li style="line-height: 100px; height: 100px;" >
+    <div id="upload-tooltip" data-toggle="tooltip" title="The following file types are accepted: <br> .doc .docx .key .numbers .pages .pdf .ppt .pptx .rtf .xls .xlsx">
+      <div class="image-preview-multiple-plus">
+        <input type="hidden" role="uploadcare-uploader"
+               data-file-types="doc docx key numbers pages pdf ppt pptx rtf xls xlsx"
+               data-multiple="true"
+               data-file=""
+        >
+      </div>
    </div>
   </li>
 </ul>

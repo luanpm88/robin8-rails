@@ -9,6 +9,7 @@ Robin.Views.FilesCollectionView = Robin.Views.BaseMediaView.extend({
     this.loadExistingPhotos('file');
   },
   onShow: function() {
+    $('[data-toggle="tooltip"]').tooltip({placement:'top', html: true});
     var viewObj = this;
     setTimeout(function(){
       viewObj.fileWidget = uploadcare.MultipleWidget('[role=uploadcare-uploader][data-multiple][data-file]').onChange(function(fileGroup){
