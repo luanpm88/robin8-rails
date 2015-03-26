@@ -605,6 +605,16 @@ nav{text-align: center;}
   filter: grayscale(100%);
   opacity: 0.8;
 }
+#media .tooltip {
+  top: -43px !important;
+  display: inherit !important;
+}
+#media .tooltip-inner {
+  max-width: 340px;
+}
+#media .tooltip-arrow {
+  left: 30px !important;
+}
 .alert-info {
     background-color: #3c9eb6;
     border: medium none #3c9eb6;
@@ -1276,19 +1286,6 @@ input.form-control[type="file"] {
 
 .uploadcare-widget-button-cancel{
   background: #DA4453;
-}
-
-#media {
-  .tooltip {
-    top: -43px !important;
-    display: inherit !important;
-  }
-  .tooltip-inner {
-    max-width: 340px;
-  }
-  .tooltip-arrow {
-    left: 30px !important;
-  }
 }
 
 .truncate-title {
