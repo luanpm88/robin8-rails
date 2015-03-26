@@ -19,12 +19,22 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     collectionEvents: {
-      add: 'onAdded'
+      add: 'onAdded',
+      'reset': 'afterFetch',
+      'sync': 'afterFetch'
     },
 
     modelEvents: {
       change: 'setShowUpdatesButtonVisibility',
       'change:sort_column': 'refreshTimeRangeVisibility'
+    },
+
+    afterFetch: function (e) {
+      this.$el.find('.stream-loading').addClass('hidden');
+      this.$el.find('.stream-body').removeClass('opacity-02');
+      if (this.collection.length == 0) {
+        this.$el.find('.empty-stream').removeClass('hidden');
+      };
     },
 
     selectLink: function (e) {
@@ -78,11 +88,28 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.loadInfo('blogs');
       this.modelBinder.bind(this.model, this.el);
 
-      if (!this.model.get('id')) {
-        this.$el.find('.settings-dialog').removeClass('closed');
+      if (Robin.cachedStories[this.model.get('id')] != undefined) {
+        if (Robin.cachedStories[this.model.get('id')].length > 0){
+          this.$el.find('.stream-loading').addClass('hidden');
+        } else if (Robin.cachedStories[this.model.get('id')].length == 0 && Robin.cachedStories[this.model.get('id')].rendered) {
+          this.$el.find('.stream-loading').addClass('hidden');
+          this.$el.find('.empty-stream').removeClass('hidden');
+        };
       }
-      this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
 
+      if (this.needOpacity) {
+        this.$el.find('.stream-loading').removeClass('hidden');
+        this.$el.find('.stream-body').addClass('opacity-02');
+      }
+
+      if (!this.model.get('id')) {
+        this.$el.find('.stream-loading').addClass('hidden');
+        this.$el.find('.settings-dialog').removeClass('closed');
+      } else {
+        Robin.cachedStories[this.model.get('id')].rendered = true;
+      }
+
+      this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
 
       this.refreshTimeRangeVisibility();
@@ -245,6 +272,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
 
+      curView.$el.find('.stream-loading').removeClass('hidden');
+      curView.$el.find('.stream-body').addClass('opacity-02');
+      curView.needOpacity = true;
       $(this.el).find('.settings-dialog').addClass('closed');
     },
 

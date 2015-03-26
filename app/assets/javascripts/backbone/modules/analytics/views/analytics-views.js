@@ -20,7 +20,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               var data = google.visualization.arrayToDataTable(arr);
 
               var options = {
-                title: 'Sessions and Page Views',
+                title: 'Newsroom and Releases Visits',
                 hAxis: {title: 'Dates',  titleTextStyle: {color: '#333'}},
                 vAxis: {
                   minValue: 0,
@@ -43,7 +43,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 ['Dropped', parseInt(mail.total.dropped), 'red']
               ]);
               var options = {
-                title: 'Email Statistics',
+                title: 'SmartRelease Email Statistics',
                 hAxis: {title: '',  titleTextStyle: {color: '#333'}},
                 vAxis: {
                   minValue: 0,
