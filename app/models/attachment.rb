@@ -18,9 +18,9 @@ class Attachment < ActiveRecord::Base
     when 'image'
       url
     when 'video'
-      'video.png'
+      '/assets/video.png'
     when 'file'
-      'file.png'
+      '/assets/file.png'
     end
   end
 end

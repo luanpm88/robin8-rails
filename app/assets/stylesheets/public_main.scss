@@ -90,6 +90,22 @@ a {
 #presskit > a > img {
     width: 100%;
 }
+
+#presskit > a.not-image {
+    width: 33%;
+    border: 5px solid rgb(199, 199, 199);
+    // border-radius: 5px;
+}
+
+#presskit > a.not-image > img {
+    width: initial;
+    height: initial;
+}
+
+#presskit > a.not-image > span.name {
+    color: #9D9D9D;
+    font-weight: bold;
+}
 /* Sidebar */
 #wrapper {
     padding-left: 0;
