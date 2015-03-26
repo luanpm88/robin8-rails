@@ -599,7 +599,7 @@ nav{text-align: center;}
   width: 100px;
   border: 1px solid #ccc;
 }
-#media ul > li:hover img {
+#media ul > li img:hover {
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
   filter: grayscale(100%);
@@ -614,6 +614,9 @@ nav{text-align: center;}
 }
 #media .tooltip-arrow {
   left: 30px !important;
+}
+#media .uploadcare-widget-button-cancel {
+  color: #FFFFFF;
 }
 .alert-info {
     background-color: #3c9eb6;

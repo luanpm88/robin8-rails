@@ -128,11 +128,8 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
         }
       })
       .on('keyup', '[name="email"]', function() {
-        if ($(this).val() != "") {
-          $('#invite-form').formValidation('enableFieldValidators', 'email', true)
-        } else {
-          $('#invite-form').formValidation('enableFieldValidators', 'email', false)
-        }
+        var notEmpty = $(this).val() != "";
+        $('#invite-form').formValidation('enableFieldValidators', 'email', notEmpty)
       })
     },
 
