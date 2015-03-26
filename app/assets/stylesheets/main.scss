@@ -1278,6 +1278,19 @@ input.form-control[type="file"] {
   background: #DA4453;
 }
 
+#media {
+  .tooltip {
+    top: -43px !important;
+    display: inherit !important;
+  }
+  .tooltip-inner {
+    max-width: 340px;
+  }
+  .tooltip-arrow {
+    left: 30px !important;
+  }
+}
+
 .truncate-title {
   width: 325px;
   white-space: nowrap;
