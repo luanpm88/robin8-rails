@@ -97,5 +97,6 @@ Rails.application.routes.draw do
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
   get '/add-ons', to: 'pages#add_ons'
+  get '/payment-confirmation', to: 'pages#payment_confirmation'
 
 end

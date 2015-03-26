@@ -11,7 +11,7 @@ module BlueSnap
     def self.get_subscription_id(shopper_id)
       url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
       begin
-        error,hash = Request.get(url)
+        error, hash = Request.get(url)
         hash[:shopper_subscriptions][:ordering_shopper][:shopper_id] if error.blank?
         resuce Exception => ex
         return nil
@@ -21,26 +21,27 @@ module BlueSnap
 
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
-    def self.new request,user_profile,params,package
-       begin
-        errors = BlueSnap::Shopper.validate_params(params,user_profile)
+    def self.new(request, user, params, package, add_ons=nil,add_ons_hash=nil)
+      # begin
+        errors = BlueSnap::Shopper.validate_params(params, user)
         if errors.blank?
           shopper = {
-              "shopper"=> {"web-info" => BlueSnap::Shopper.web_info(request),
-                           "shopper-info" => BlueSnap::Shopper.shopper_info(params,user_profile)},
-              "order" => BlueSnap::Shopper.order_info(request,package)
+              "shopper" => {"web-info" => BlueSnap::Shopper.web_info(request),
+                            "shopper-info" => BlueSnap::Shopper.shopper_info(params, user)},
+              "order" => BlueSnap::Shopper.order_info(request, package, add_ons,add_ons_hash)
           }
-          Request.post(URL,shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new))
+          placeholder = cart_items(package, add_ons,add_ons_hash)
+          Request.post(URL, shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new,:skip_types => true, :skip_instruct => true),placeholder)
         else
-          return errors,nil
+          return errors, nil
         end
-       rescue Exception => ex
-         Rails.logger.error ex
-         return ["Something is not right with your payment. Please try again"],nil
-       end
+      # rescue Exception => ex
+      #   Rails.logger.error ex
+      #   return ["Something is not right with your payment. Please try again"], nil
+      # end
     end
 
-    def self.validate_params(params,user)
+    def self.validate_params(params, user)
       errors = []
       errors << "Title Name cannot be blank." if !params[:contact][:title].present?
       errors << "First name cannot be blank." if !params[:contact][:first_name].present?
@@ -55,48 +56,67 @@ module BlueSnap
       errors << "CVC cannot be blank." if !params[:encryptedCvv].present?
       errors << "Credit Card Type cannot be blank." if !params[:card][:credit_card_type].present?
       errors << "Expiration Month cannot be blank." if params[:card][:expiration_month].blank? #!params[:card][:"expiration_date(2i)"].present?
-      errors << "Expiration Year cannot be blank." if  params[:card][:expiration_year].blank? # !params[:card][:"expiration_date(1i)"].present?
+      errors << "Expiration Year cannot be blank." if params[:card][:expiration_year].blank? # !params[:card][:"expiration_date(1i)"].present?
       return errors
     end
 
 
     def self.ordering_shopper request
-      {"web-info" =>{"ip" =>"127.0.0.1","remote-host"=> "www.robin8.com","user-agent" => request.user_agent} } #change to 127.0.0.1 to local
+      {"web-info" => {"ip" => "127.0.0.1", "remote-host" => "www.robin8.com", "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
     end
 
-    def self.order_info(request,package)
-      {"ordering-shopper" =>ordering_shopper(request) ,
-       "cart" => cart_items(package),
-       "expected-total-price"=>
-           {"amount"=> package.price,
-            "currency"=>"USD"}}
+    def self.order_info(request, package, add_ons,add_ons_hash)
+      {"ordering-shopper" => ordering_shopper(request),
+       "cart" => "PLACEHOLDER",
+       "expected-total-price" =>
+           {"amount" => get_expected_total(package,add_ons,add_ons_hash),
+            "currency" => "USD"}}
     end
 
-    def self.cart_items(package)
-      {"cart-item" => {"sku"=>{
-          "sku_id"=> package.sku_id, #"2153556",
-          "amount"=> package.price},
-                       "quantity"=>"1"}}
+    def self.get_expected_total(package,add_ons,add_ons_hash)
+      return package.price + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum
+      #use discount here when required
+    end
+
+    def self.cart_items(package, add_ons,add_ons_hash)
+      items = []
+      items <<  {"sku" => {
+          "sku_id" => package.sku_id,
+          "amount" => package.price},
+                                "quantity" => "1"}
+
+      (add_ons||[]).each do |a|
+        items << {
+                "sku" => {
+                    "sku_id" => a.sku_id,
+                    "amount" => a.price
+                },
+                "quantity" => add_ons_hash["#{a.id}"] || 1
+        }
+      end
+      items.to_xml(root: false,:children=> "cart-item",:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","") #force remove root node as per Bluesnap API ## Use builder to build each node as xml rather then using hash and building xml at end
+      # items.to_xml(root: "cart",:children=> "cart-item",:skip_types => true, :skip_instruct => true)
+       # {"cart-item" => items.map(&:values).flatten}
     end
 
     def self.web_info(request)
-      {"ip"=>request.ip} #"use 127.0.0.1 for local testing"
+      {"ip" => request.ip} #"use 127.0.0.1 for local testing"
     end
 
-    def self.shopper_info(params,user)
+    def self.shopper_info(params, user)
       {
-          "shopper-contact-info" => shopper_contact_info(user,params),
+          "shopper-contact-info" => shopper_contact_info(user, params),
           "store-id" => Rails.application.secrets[:bluesnap][:store_id],
-          "shopper-currency"=>"USD",
-          "locale"=>'en',
-          "payment-info" => credit_cards(user,params)
+          "shopper-currency" => "USD",
+          "locale" => 'en',
+          "payment-info" => credit_cards(user, params)
       }
     end
 
-    def self.credit_cards(user,params)
-      {"credit-cards-info"=>
+    def self.credit_cards(user, params)
+      {"credit-cards-info" =>
            {"credit-card-info" =>
-                {"credit-card"=> credit_card(params),
+                {"credit-card" => credit_card(params),
                  "billing-contact-info" => billing_info(params)
                 }
            }
@@ -107,7 +127,7 @@ module BlueSnap
       {
           "encrypted-card-number" => params[:encryptedCreditCard],
           "encrypted-security-code" => params[:encryptedCvv],
-          "card-type"=>params[:card][:credit_card_type].upcase,
+          "card-type" => params[:card][:credit_card_type].upcase,
           "expiration-month" => params[:card][:expiration_month], #params[:card][:"expiration_date(2i)"],
           "expiration-year" => params[:card][:expiration_year] #params[:card][:"expiration_date(1i)"]
       }
@@ -119,10 +139,10 @@ module BlueSnap
           "last-name" => params[:contact][:last_name],
           "address1" => params[:contact][:address1],
           # "address2" => "abc",
-          "city"=> params[:contact][:city],
+          "city" => params[:contact][:city],
           # "state" => "pu",
           "zip" => params[:contact][:zip],
-          "country"=> params[:contact][:country]
+          "country" => params[:contact][:country]
       }
     end
 
@@ -133,10 +153,10 @@ module BlueSnap
           "last-name" => params[:contact][:last_name],
           "email" => user.email,
           "address1" => params[:contact][:address1],
-          "city"=> params[:contact][:city],
+          "city" => params[:contact][:city],
           # "state" => "pu",
           "zip" => params[:contact][:zip],
-          "country"=> params[:contact][:country],
+          "country" => params[:contact][:country],
           "phone" => params[:contact][:phone]
 
       }
@@ -144,11 +164,11 @@ module BlueSnap
   end
 
   class Subscription
-    def self.destroy(subscription_id,shopper_id,sku_id)
+    def self.destroy(subscription_id, shopper_id, sku_id)
       begin
         url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
-        shopper = {"subscription-id" => subscription_id, "underlying-sku-id"=>sku_id, "status"=> "C","shopper-id"=>shopper_id.to_s} # status C is for cancel :s
-        Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+        shopper = {"subscription-id" => subscription_id, "underlying-sku-id" => sku_id, "status" => "C", "shopper-id" => shopper_id.to_s} # status C is for cancel :s
+        Request.put(url, shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
         Rails.logger.error ex
         return "Sorry we could not cancel your subscription at this time."
@@ -156,11 +176,11 @@ module BlueSnap
 
     end
 
-    def self.update(subscription_id,shopper_id ,new_sku_id)
+    def self.update(subscription_id, shopper_id, new_sku_id)
       begin
         url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
-        shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id"=>new_sku_id.to_s, "status"=> "A","shopper-id"=>shopper_id.to_s}
-        Request.put(url,shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
+        shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id" => new_sku_id.to_s, "status" => "A", "shopper-id" => shopper_id.to_s}
+        Request.put(url, shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
         Rails.logger.error ex
         return "Sorry we could not update your subscription at this time."
@@ -169,13 +189,13 @@ module BlueSnap
 
     def self.find_all_by_shopper_id(shopper_id)
       url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
-      errors,resp = Request.get(url)
+      errors, resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions] if errors.blank?
     end
 
     def self.find_last_by_shopper_id(shopper_id)
       url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/shopper-subscriptions-retriever?shopperid=#{shopper_id}&fulldescription=true"
-      errors,resp = Request.get(url)
+      errors, resp = Request.get(url)
       resp[:shopper_subscriptions][:subscriptions][:subscription].class == Array ? resp[:shopper_subscriptions][:subscriptions][:subscription].last : resp[:shopper_subscriptions][:subscriptions][:subscription] if errors.blank?
     end
 
@@ -183,22 +203,24 @@ module BlueSnap
 
   class Request
     require 'net/http'
-    def self.post(url,data)
+
+    def self.post(url, data,placeholder)
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Post.new(uri.request_uri)
       request.basic_auth(Rails.application.secrets[:bluesnap][:user_name], Rails.application.secrets[:bluesnap][:password])
-      request.body = data
+      request.body = data.gsub("PLACEHOLDER",placeholder)
+      puts"data is #{data.gsub("PLACEHOLDER",placeholder).inspect} ***********"
       request["Content-Type"] ='application/xml'
       response = http.request(request)
-      Rails.logger.info"************************************************************************"
+      Rails.logger.info "************************************************************************"
       Rails.logger.info "response is #{response} AND #{response.body}***************************"
       Response.parse(response)
     end
 
-    def self.put(url,data)
+    def self.put(url, data)
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
@@ -227,8 +249,8 @@ module BlueSnap
   class Response
     def self.parse(response)
       resp = Hash.from_xml(response.body).deep_symbolize_keys
-      return get_errors(resp),nil  if response.code.to_i == 400 || response.code.to_i == 401
-      return nil,resp
+      return get_errors(resp), nil if response.code.to_i == 400 || response.code.to_i == 401
+      return nil, resp
     end
 
     def self.get_errors(resp)
@@ -239,7 +261,6 @@ module BlueSnap
       ["Your card was declined. Please confirm your card details below and try again."]
     end
   end
-
 
 
   require 'builder/xmlmarkup'
@@ -253,7 +274,6 @@ module BlueSnap
   end
 
 end
-
 
 
 # class BlueSnap
