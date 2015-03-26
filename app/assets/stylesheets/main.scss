@@ -489,7 +489,6 @@ a {
 }
 .stream-settings {
   width: 94%;
-  height: 262px;
   background-color: rgba(40,40,40,0.8);
   position: absolute;
   top: 35px;
@@ -497,9 +496,6 @@ a {
   padding: 10px;
   border-radius: 0 0 4px 4px;
   z-index: 2;
-}
-.stream-settings.expand {
-  height: 337px;
 }
 .stream-settings form {
   color: #fff;
@@ -510,7 +506,6 @@ a {
 }
 .slider {
   overflow-y: hidden;
-  max-height: 500px; /* approximate max height */
 
   transition-property: all;
   transition-duration: .5s;
