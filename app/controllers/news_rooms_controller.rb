@@ -51,10 +51,8 @@ class NewsRoomsController < ApplicationController
     sa = ServiceAccount.new
     sa.service_account_user
     results = GoogleAnalytics.results(sa.first_profile, {
-      hostname: (@news_room.subdomain_name + '.robin8.com'),
       start_date: (DateTime.now - 7.days),
-      end_date: DateTime.now
-    })
+      end_date: DateTime.now }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.robin8.com')
 
     mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
     domain = Rails.application.secrets.mailgun[:domain]

@@ -22,7 +22,12 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               var options = {
                 title: 'Sessions and Page Views',
                 hAxis: {title: 'Dates',  titleTextStyle: {color: '#333'}},
-                vAxis: {minValue: 0}
+                vAxis: {
+                  minValue: 0,
+                  viewWindow: {
+                    min:0
+                  }
+                }
               };
 
               var chart = new google.visualization.AreaChart(document.getElementById('first-chart'));
