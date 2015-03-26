@@ -96,3 +96,18 @@ input.select2-input {
 a.dashboard-btn {
   cursor: pointer;
 }
+
+.stream-loading, .empty-stream {
+  position: absolute;
+  width: 100%;
+  top: 55px;
+  opacity: 1;
+  z-index: 10000;
+  .placeholder{
+    font-style: italic;
+  }
+}
+
+.opacity-02 {
+  opacity: 0.2;
+}

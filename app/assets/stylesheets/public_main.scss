@@ -90,6 +90,22 @@ a {
 #presskit > a > img {
     width: 100%;
 }
+
+#presskit > a.not-image {
+    width: 33%;
+    border: 5px solid rgb(199, 199, 199);
+    // border-radius: 5px;
+}
+
+#presskit > a.not-image > img {
+    width: initial;
+    height: initial;
+}
+
+#presskit > a.not-image > span.name {
+    color: #9D9D9D;
+    font-weight: bold;
+}
 /* Sidebar */
 #wrapper {
     padding-left: 0;
@@ -237,7 +253,7 @@ a {
     width: 165px;
 }
 .sidebar-nav > li .collapsible {
-    padding: 0 0 10px 70px !important;
+    padding: 0 0 10px 43px !important;
     font-size: 13px !important;
     border: 0px solid #eee;
 }
@@ -597,14 +613,41 @@ a {
     padding-top: 9px;
     width: 80%;
 }
-.thumbnail.release-item{ 
+.thumbnail.release-item { 
+    width: 360px;
+    float: left;
     padding: 0;
     border-radius: 0px;
     box-shadow: 0 0 0;
 }
-.thumbnail.release-item img {
-    width: auto;
-    max-width: 100%;
+.release-thumbnail-container {
+  position: relative;
+  width: 340px;
+}
+.release-dummy {
+   padding-top: 100%; /* forces 1:1 aspect ratio */
+}
+.release-thumbnail-inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align:center;
+  font: 0/0 a;
+}
+.release-thumbnail-inner:before {
+  content: ' ';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+.release-thumbnail-inner img {
+  border-radius: 4px;
+  vertical-align: middle;
+  display: inline-block;
+  max-width: 100%;
+  max-height: 100%;
 }
 #page-content-wrapper .thumbnail.release-item h3 {
     font-family: "ProximaNovaBold";
@@ -619,7 +662,7 @@ a {
 #page-content-wrapper .thumbnail.release-item  p {
      color: #000000;
     font-family: "ProximanovaLight";
-    font-size: 18px;
+    font-size: 15px;
     line-height: 25px;
 }
 .thumbnail.release-item .label-success, .badge-success {
