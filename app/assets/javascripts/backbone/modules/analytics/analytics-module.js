@@ -2,19 +2,17 @@ Robin.module("Analytics", function(Analytics, Robin, Backbone, Marionette, $, _)
 
   this.startWithParent = false;
 
-  var API = {
-    showAnalyticsPage: function() {
-      Analytics.Show.Controller.showAnalyticsPage();
-    }
-  }
-
-  Analytics.on('start', function(){
-    API.showAnalyticsPage();
+  Analytics.on("start", function(){
+    this.layout = new this.Layout();
+    this.controller = new this.Controller();
+    this.router = new this.Router({controller: this.controller});
+    this.collection = new Robin.Collections.NewsRooms();
     $('#nav-analytics').parent().addClass('active');
-  })
+    Backbone.history.loadUrl(Backbone.history.fragment);
+  });
 
-  // Analytics.on("stop", function(){
-  //   this.Show.Controller.layout.destroy();
-  // });
+  Analytics.on("stop", function(){
+    this.controller.destroy();
+  });
   
 });
