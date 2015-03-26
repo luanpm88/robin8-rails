@@ -97,14 +97,25 @@ a {
     // border-radius: 5px;
 }
 
-#presskit > a.not-image > img {
-    width: initial;
-    height: initial;
+#presskit > a.not-image  img {
+    margin-bottom: 15px;
 }
 
-#presskit > a.not-image > span.name {
+#presskit > a.not-image span.name {
     color: #9D9D9D;
     font-weight: bold;
+}
+.presskit-file {
+    padding-top: 100%;
+    position: relative;
+}
+.presskit-file--content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
 }
 /* Sidebar */
 #wrapper {
