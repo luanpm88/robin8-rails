@@ -24,6 +24,7 @@ class UserAddOn < ActiveRecord::Base
 
   def create_payment
     payment = payments.create(
+        user_id: user_id,
         amount:  add_on.price,
         orderable_id: add_on.id,
         orderable_type: "AddOn" #need to add credit card details for book keeping only as subscription payments

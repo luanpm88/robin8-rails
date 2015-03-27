@@ -43,6 +43,7 @@ class Subscription < ActiveRecord::Base
                               next_charge_date: Date.parse(bss.next_charge_date))
           puts s.errors.full_messages
           s.payments.create!(
+              user_id: s.user_id,
               orderable_id: s.package_id, #need in for bookeeping if user changes package
               orderable_type: "Package",
               amount:  bss.catalog_recurring_charge.amount,
@@ -66,6 +67,7 @@ class Subscription < ActiveRecord::Base
                               next_charge_date: Date.parse(bss.next_charge_date))
 
           payment = payments.create(
+              user_id: user_id,
               orderable_id: package_id, #need in for bookeeping if user changes package
               orderable_type: "Package",
               amount:  bss.catalog_recurring_charge.amount,
@@ -89,6 +91,7 @@ class Subscription < ActiveRecord::Base
 
         if bss.status == "A"
           s.payments.create!(
+              user_id: s.user_id,
               orderable_id: s.package_id,
               orderable_type: "Package",  #need in for bookeeping if user changes package
               amount:  bss.catalog_recurring_charge.amount,
