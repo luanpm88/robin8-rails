@@ -43,7 +43,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     start: function(params){
       this.module.releasesBlastHeader.set({ level: 1 });
       
-      this.module.collection.fetch({reset: true});
+      this.module.collection.fetch({reset: true, data: { "for_blast": true}});
       var startTabView = new this.module.StartTabView({
         collection: this.module.collection,
       });
