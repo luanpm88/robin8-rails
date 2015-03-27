@@ -4,6 +4,9 @@ class ReleasesController < ApplicationController
 
   def index
     releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
+    unless params[:for_blast].blank?
+      releases = releases.published
+    end
     set_paginate_headers Release, releases.count
 
     render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
