@@ -206,19 +206,18 @@ a {
 .sidebar-nav > li > a:active,
 .sidebar-nav > li > a:focus { 
 }
-.sidebar-nav > li > a.btn {
+.sidebar-nav .public-button-centered a.btn {
     background: none repeat scroll 0 0 #91bc4d;
     border: 0 none;
     border-radius: 10px;
     color: #ffffff;
     font-family: "ProximaNovaSemibold";
-    font-size: 16px;
+    font-size: 15px;
     font-weight: normal;
     height: 44px;
     margin: 0 auto;
     max-width: 200px;
-    padding-left: 12px;
-    padding-top: 9px;
+    padding-top: 11px;
     width: 80%;
 }
 .sidebar-nav > li > a .fa {
