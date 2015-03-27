@@ -74,16 +74,18 @@ module BlueSnap
     end
 
     def self.get_expected_total(package,add_ons,add_ons_hash)
-      return package.price + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum
+      return package.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum
       #use discount here when required
     end
 
     def self.cart_items(package, add_ons,add_ons_hash)
       items = []
-      items <<  {"sku" => {
-          "sku_id" => package.sku_id,
-          "amount" => package.price},
-                 "quantity" => "1"}
+      if package.present?
+        items <<  {"sku" => {
+            "sku_id" => package.sku_id,
+            "amount" => package.price},
+                   "quantity" => "1"}
+      end
 
       (add_ons||[]).each do |a|
         items << {
