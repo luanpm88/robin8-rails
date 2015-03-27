@@ -5,7 +5,7 @@
   </header>
 
   <div class="form-step step3">
-    <form action="/subscribe/<%=params[:plan]%>" method="POST" data-abide>
+    <form action="/subscribe/<%=params[:plan] || 'add-on'%>" method="POST" data-abide>
       <input type="hidden" name="slug" value="<%=params[:plan]%>"/>
       <div class="row">
         <div class="small-12 columns">
