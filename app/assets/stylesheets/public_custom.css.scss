@@ -3,6 +3,10 @@
   overflow: hidden;
 }
 
+.release-item-text ol{
+  list-style-position: inside !important;
+}
+
 .pagination .prev, .pagination .next {
   display: none;
 }
