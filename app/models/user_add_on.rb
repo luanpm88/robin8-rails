@@ -6,14 +6,17 @@ class UserAddOn < ActiveRecord::Base
   after_create :set_usage
 
   def set_usage
-    update_attributes({expiry: add_on.use_by, charged_amount: add_on.price})
+    update_attributes({expiry: add_on.use_by, charged_amount: add_on.price,count: add_on.count})
   end
 
   def is_available?
     return false if expiry.present? && expiry < Time.now.utc
-    return false if used_count >= available_count
+    return false if used_count >= count
     true
   end
 
+  def available_count
+    count - used_count #count defaults to 1 no matter of count
+  end
 
 end
