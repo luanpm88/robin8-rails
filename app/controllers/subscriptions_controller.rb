@@ -19,18 +19,18 @@ class SubscriptionsController < ApplicationController #rename resource to paymen
     @subscription = current_user.subscriptions.new
     if errors.blank?
       begin
-          @subscription = current_user.subscriptions.create!(
-              package_id: @package.id,
-              bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
-              recurring_amount: @package.price
-          ) if @package.present?
+        @subscription = current_user.subscriptions.create!(
+            package_id: @package.id,
+            bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
+            recurring_amount: @package.price
+        ) if @package.present?
 
-          @add_ons.each do |add_on|
+        @add_ons.each do |add_on|
           @add_on_hash["#{add_on.id}"].to_i.times{
             current_user.user_add_ons.create!(add_on_id: add_on.id)
           }
         end if @add_ons.present?
-        #send email if @add_ons.present? && @package.blank?
+        UserMailer.add_ons_payment_confirmation(@add_ons,current_user,@add_on_hash).deliver if @add_ons.present?
       rescue Exception=> ex
         flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
       end
