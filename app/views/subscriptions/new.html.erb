@@ -4,252 +4,233 @@
     <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Payment"}%>
   </header>
   <%total = 0.0%>
-  <% if flash[:success].present? %>
-      <div class="row">
-        <div class="small-12 columns">
-          <h2><%=flash[:success]%></h2>
-        </div>
-      </div>
+  <%= form_for @subscription, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
 
       <div class="row">
         <div class="small-12 columns">
           <div class="goback">
-            <a href="/">Continue</a>
+            <a href="/add-ons<%="?plan="+ @package.slug if @package%>">Go back</a>
           </div>
         </div>
       </div>
+      <div class="form-step step3">
 
-  <%else%>
-      <%= form_for @subscription, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
+        <div class="row">
+          <div class="small-12 columns">
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <th class="">Plan</th>
+                <th></th>
+                <th class="removecolumn"></th>
+                <th class="price">Price</th>
+              </tr>
+              <%if @package%>
+                  <tr id="checkout-item-1">
+                    <td class="">
+                      <%=@package.name.split(' ')[0]%> Plan
+                    </td>
+                    <td>
+                      <select name="payment_option" id="payment-option" onchange="updatePackage()">
+                        <option value="<%=@package.slug%>" selected>Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
+                        <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
+                      </select>
+                    </td>
+                    <%total = @package.price%>
+                    <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
+                    <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
 
+                    <input type="hidden" id="nbd-<%=@package.slug%>" value="<%=Date.today + @package.interval.days%>"/>
+                    <input type="hidden" id="nbd-<%=@package.monthly_package.slug%>" value="<%=Date.today+ @package.monthly_package.interval.days%>"/>
+
+                    <td class="remove">
+                      <!--<a class="remove" data-remove="checkout-item-1">remove</a>-->
+                    </td>
+                    <td class="price" id="price-sub">
+                      $<%=(@package.price) %>
+                    </td>
+                  </tr>
+              <%end%>
+              <%@add_ons.each do |a|%>
+                  <tr id="checkout-item-<%=a.id%>">
+                    <input type="hidden" name="add_ons[<%=a.id%>]" value="<%=@add_on_hash["#{a.id}"]%>"/>
+                    <td class="">
+                      <%=a.name%> (<%=@add_on_hash["#{a.id}"]%>)
+                    </td>
+                    <td>
+                    </td>
+                    <td class="remove">
+                      <a data-remove="checkout-item-<%=a.id%>" class="remove" onclick="subAmount(<%=a.price * @add_on_hash["#{a.id}"].to_f%>)">remove</a>
+                    </td>
+                    <td class="price">
+                      $<%=price = a.price * @add_on_hash["#{a.id}"].to_f%>
+                    </td>
+                  </tr>
+                  <%total += price %>
+              <%end if @add_ons.present?%>
+
+              <tr class="totals">
+                <td class="">
+                  TOTAL
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td class="price" id="price-total">
+                  $<%=total %>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="alert alert-danger">
+          <ul style="list-style:none;text-align:center;">
+            <%flash[:errors].each do |e|%>
+                <li><%=e%></li>
+            <%end if flash[:errors].present?%>
+          </ul>
+        </div>
+        <div class="signup-footer ftform" id="checkoutdata">
           <div class="row">
             <div class="small-12 columns">
-              <div class="goback">
-                <a href="/add-ons<%="?plan="+ @package.slug if @package%>">Go back</a>
+              <h3>Payment Information</h3>
+            </div>
+          </div>
+          <input type="hidden" value="<%=@package.try(:slug) || "add-on"%>" name="slug" id="slug"/>
+          <div class="row">
+            <div class="small-2 medium-2 large-2 columns custom-padding">
+              <label>Title
+                <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "select-checkout"} %>
+              </label>
+            </div>
+
+            <div class="small-10 medium-5 large-5 columns custom-padding">
+              <label>First Name
+                <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "First name can't be blank"%>
+              </label>
+            </div>
+
+            <div class="small-12 medium-5 large-5 columns custom-padding">
+              <label>Last Name
+                <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Last name can't be blank" %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 columns custom-padding">
+              <label>Phone
+                <%=text_field "contact", "phone" , :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Phone can't be blank","data-validation"=>"number" %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 medium-6 large-8 columns custom-padding">
+              <label>Address
+                <%=text_field "contact", "address1" , :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Address can't be blank" %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-6 large-4 columns custom-padding">
+              <label>City
+                <%=text_field "contact", "city" , :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "City can't be blank"
+                %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 medium-4 large-4 columns custom-padding">
+              <label>State
+                <%=text_field "contact", "state" , :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "State can't be blank" %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-4 large-3 columns custom-padding">
+              <label>Postal Code
+                <%=text_field "contact", "zip" , :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Postal Code/Zip can't be blank" %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-4 large-5 columns custom-padding">
+              <label>Country
+                <%=select_tag "contact[country]",options_for_select(Country.all.sort),{:class=>"select-checkout"}%>
+              </label>
+            </div>
+          </div>
+
+
+
+          <div class="row">
+            <div class="small-12 medium-12 large-4 columns custom-padding">
+              <label>Credit Card Type
+                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'master'],["American Express", 'american_express'],["Discover", 'discover']], {}, {:class => "select-checkout"} %>
+              </label>
+            </div>
+
+            <div class="small-8 medium-8 large-5 columns custom-padding">
+              <label>Credit Card Number
+                <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Card number can't be blank","data-validation"=>"number" %>
+              </label>
+            </div>
+
+            <div class="small-4 medium-4 large-3 columns custom-padding">
+              <label>CVV
+                <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
+                              "data-validation"=>"length", "data-validation-length"=>"min2",
+                              "data-validation-error-msg"=> "CVV must be greater then 2 characters","data-validation"=>"number"%>
+              </label>
+            </div>
+
+
+          </div>
+          <div class="row">
+            <div class="small-6 medium-6 large-3 columns custom-padding">
+              <label>Exp. Month
+                <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Expiry Month can't be blank","data-validation"=>"number"  %>
+              </label>
+            </div>
+            <div class="small-6 medium-6 large-3 columns left custom-padding">
+              <label>Exp. Year
+                <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Expiry Year can't be blank and must be in YYYY format", "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
+              </label>
+            </div>
+          </div>
+
+          <div class="row formdisclaimers">
+            <div class="small-12 columns">
+              <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days). <br />All prices in US Dollars.</p>
+
+              <%if @package.present?%>
+                  <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @package.try(:interval).to_i.days %></span></p>
+              <%end%>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 columns">
+              <div class="submit-wrap">
+                <%= submit_tag "SUBMIT", :class=>"button button-signup nextstep" %>
               </div>
             </div>
           </div>
-          <div class="form-step step3">
-
-            <div class="row">
-              <div class="small-12 columns">
-                <table cellpadding="0" cellspacing="0">
-                  <tr>
-                    <th class="">Plan</th>
-                    <th></th>
-                    <th class="removecolumn"></th>
-                    <th class="price">Price</th>
-                  </tr>
-                  <%if @package%>
-                      <tr id="checkout-item-1">
-                        <td class="">
-                          <%=@package.name.split(' ')[0]%> Plan
-                        </td>
-                        <td>
-                          <select name="payment_option" id="payment-option" onchange="updatePackage()">
-                            <option value="<%=@package.slug%>" selected>Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
-                            <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
-                          </select>
-                        </td>
-                        <%total = @package.price%>
-                        <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
-                        <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
-
-                        <input type="hidden" id="nbd-<%=@package.slug%>" value="<%=Date.today + @package.interval.days%>"/>
-                        <input type="hidden" id="nbd-<%=@package.monthly_package.slug%>" value="<%=Date.today+ @package.monthly_package.interval.days%>"/>
-
-                        <td class="remove">
-                          <!--<a class="remove" data-remove="checkout-item-1">remove</a>-->
-                        </td>
-                        <td class="price" id="price-sub">
-                          $<%=(@package.price) %>
-                        </td>
-                      </tr>
-                  <%end%>
-                  <%@add_ons.each do |a|%>
-                      <tr id="checkout-item-<%=a.id%>">
-                        <input type="hidden" name="add_ons[<%=a.id%>]" value="<%=@add_on_hash["#{a.id}"]%>"/>
-                        <td class="">
-                          <%=a.name%> (<%=@add_on_hash["#{a.id}"]%>)
-                        </td>
-                        <td>
-                        </td>
-                        <td class="remove">
-                          <a data-remove="checkout-item-<%=a.id%>" class="remove" onclick="subAmount(<%=a.price * @add_on_hash["#{a.id}"].to_f%>)">remove</a>
-                        </td>
-                        <td class="price">
-                          $<%=price = a.price * @add_on_hash["#{a.id}"].to_f%>
-                        </td>
-                      </tr>
-                      <%total += price %>
-                  <%end if @add_ons.present?%>
-
-                  <tr class="totals">
-                    <td class="">
-                      TOTAL
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td class="price" id="price-total">
-                      $<%=total %>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            <div class="alert alert-danger">
-              <ul style="list-style:none;text-align:center;">
-                <%flash[:errors].each do |e|%>
-                    <li><%=e%></li>
-                <%end if flash[:errors].present?%>
-              </ul>
-            </div>
-            <div class="signup-footer ftform" id="checkoutdata">
-              <div class="row">
-                <div class="small-12 columns">
-                  <h3>Payment Information</h3>
-                </div>
-              </div>
-              <input type="hidden" value="<%=@package.try(:slug) || "add-on"%>" name="slug" id="slug"/>
-              <div class="row">
-                <div class="small-2 medium-2 large-2 columns custom-padding">
-                  <label>Title
-                    <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "select-checkout"} %>
-                  </label>
-                </div>
-
-                <div class="small-10 medium-5 large-5 columns custom-padding">
-                  <label>First Name
-                    <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "First name can't be blank"%>
-                  </label>
-                </div>
-
-                <div class="small-12 medium-5 large-5 columns custom-padding">
-                  <label>Last Name
-                    <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Last name can't be blank" %>
-                  </label>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="small-12 columns custom-padding">
-                  <label>Phone
-                    <%=text_field "contact", "phone" , :class=>"form-control","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Phone can't be blank","data-validation"=>"number" %>
-                  </label>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="small-12 medium-6 large-8 columns custom-padding">
-                  <label>Address
-                    <%=text_field "contact", "address1" , :class=>"form-control","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Address can't be blank" %>
-                  </label>
-                </div>
-
-                <div class="small-12 medium-6 large-4 columns custom-padding">
-                  <label>City
-                    <%=text_field "contact", "city" , :class=>"form-control","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "City can't be blank"
-                    %>
-                  </label>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="small-12 medium-4 large-4 columns custom-padding">
-                  <label>State
-                    <%=text_field "contact", "state" , :class=>"form-control","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "State can't be blank" %>
-                  </label>
-                </div>
-
-                <div class="small-12 medium-4 large-3 columns custom-padding">
-                  <label>Postal Code
-                    <%=text_field "contact", "zip" , :class=>"form-control","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Postal Code/Zip can't be blank" %>
-                  </label>
-                </div>
-
-                <div class="small-12 medium-4 large-5 columns custom-padding">
-                  <label>Country
-                    <%=select_tag "contact[country]",options_for_select(Country.all.sort),{:class=>"select-checkout"}%>
-                  </label>
-                </div>
-              </div>
-
-
-
-              <div class="row">
-                <div class="small-12 medium-12 large-4 columns custom-padding">
-                  <label>Credit Card Type
-                    <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'master'],["American Express", 'american_express'],["Discover", 'discover']], {}, {:class => "select-checkout"} %>
-                  </label>
-                </div>
-
-                <div class="small-8 medium-8 large-5 columns custom-padding">
-                  <label>Credit Card Number
-                    <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Card number can't be blank","data-validation"=>"number" %>
-                  </label>
-                </div>
-
-                <div class="small-4 medium-4 large-3 columns custom-padding">
-                  <label>CVV
-                    <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
-                                  "data-validation"=>"length", "data-validation-length"=>"min2",
-                                  "data-validation-error-msg"=> "CVV must be greater then 2 characters","data-validation"=>"number"%>
-                  </label>
-                </div>
-
-
-              </div>
-              <div class="row">
-                <div class="small-6 medium-6 large-3 columns custom-padding">
-                  <label>Exp. Month
-                    <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Expiry Month can't be blank","data-validation"=>"number"  %>
-                  </label>
-                </div>
-                <div class="small-6 medium-6 large-3 columns left custom-padding">
-                  <label>Exp. Year
-                    <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Expiry Year can't be blank and must be in YYYY format", "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
-                  </label>
-                </div>
-              </div>
-
-              <div class="row formdisclaimers">
-                <div class="small-12 columns">
-                  <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days). <br />All prices in US Dollars.</p>
-
-                  <%if @package.present?%>
-                      <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @package.try(:interval).to_i.days %></span></p>
-                  <%end%>
-                </div>
-              </div>
-              <div class="row">
-                <div class="small-12 columns">
-                  <div class="submit-wrap">
-                    <%= submit_tag "SUBMIT", :class=>"button button-signup nextstep" %>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-      <%end%>
-      <div class="clearfix"></div>
-
-
-      <input type="hidden" id="total" value="<%=total%>"/>
-
-
+        </div>
+      </div>
   <%end%>
+  <div class="clearfix"></div>
+
+  <input type="hidden" id="total" value="<%=total%>"/>
+
   <style>
       .ui-selectmenu-button {
           margin-top:10px;
@@ -320,11 +301,11 @@
       }
 
       function updatePackage(){
-
+          addAmount(parseInt($("#"+$('#payment-option').val()).val()));
           $("#payment-option > option").each(function() {
               if($(this).is(':selected')){
-                  amount = $("#"+this.value).val();
-                  addAmount(parseInt(amount));
+//                  amount = $("#"+this.value).val();
+//                  addAmount(parseInt(amount));
               }
               else{
                   amount = $("#"+this.value).val();
@@ -333,11 +314,6 @@
           });
           total = parseInt(getTotal());
           updateTotal(total);
-
-//          $('#slug').val($('#payment-option').val());
-//          $('#price-total').html('$'+$('#'+$('#slug').val()).val());
-//          $('#t-price').html('$'+$('#'+$('#slug').val()).val() );
-//          $('#price-sub').html('$'+$('#'+$('#slug').val()).val() );
           $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
       }
 
