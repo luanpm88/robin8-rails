@@ -11,7 +11,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.model.attributes.thumbnail) {
         first_src = this.model.attributes.thumbnail;
       } else {
-        first_src="/assets/release-btn.png";
+        first_src = AppAssets.path('release-btn.png');
       }
       this.model.attributes.first_src = first_src;
     },
