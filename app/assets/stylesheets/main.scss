@@ -682,6 +682,9 @@ nav{text-align: center;}
   height: 40px !important;
   overflow: hidden;
 }
+.release-title ol{
+  list-style-position: inside !important;
+}
 
 #social-scheduled .list-group-item .btn {
   margin-left: 2px;
