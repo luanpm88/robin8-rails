@@ -25,7 +25,7 @@
           <div class="row">
             <div class="small-12 columns">
               <div class="goback">
-                <a href="/add-ons?plan=<%=@package.slug%>">Go back</a>
+                <a href="/add-ons<%="?plan="+ @package.slug if @package%>">Go back</a>
               </div>
             </div>
           </div>
@@ -40,31 +40,32 @@
                     <th class="removecolumn"></th>
                     <th class="price">Price</th>
                   </tr>
-                  <tr id="checkout-item-1">
-                    <td class="">
-                      <%=@package.name.split(' ')[0]%> Plan
-                    </td>
-                    <td>
-                      <select name="payment_option" id="payment-option" onchange="updatePackage()">
-                        <option value="<%=@package.slug%>" selected>Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
-                        <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
-                      </select>
-                    </td>
-                    <%total = @package.price%>
-                    <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
-                    <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
+                  <%if @package%>
+                      <tr id="checkout-item-1">
+                        <td class="">
+                          <%=@package.name.split(' ')[0]%> Plan
+                        </td>
+                        <td>
+                          <select name="payment_option" id="payment-option" onchange="updatePackage()">
+                            <option value="<%=@package.slug%>" selected>Pay Annually ($<%=(@package.price/12).to_i %> x 12/mo) - save 20%</option>
+                            <option value="<%=@package.monthly_package.slug%>">Pay Monthly</option>
+                          </select>
+                        </td>
+                        <%total = @package.price%>
+                        <input type="hidden" id="<%=@package.slug%>" value="<%=@package.price%>"/>
+                        <input type="hidden" id="<%=@package.monthly_package.slug%>" value="<%=@package.monthly_package.price%>"/>
 
-                    <input type="hidden" id="nbd-<%=@package.slug%>" value="<%=Date.today + @package.interval.days%>"/>
-                    <input type="hidden" id="nbd-<%=@package.monthly_package.slug%>" value="<%=Date.today+ @package.monthly_package.interval.days%>"/>
+                        <input type="hidden" id="nbd-<%=@package.slug%>" value="<%=Date.today + @package.interval.days%>"/>
+                        <input type="hidden" id="nbd-<%=@package.monthly_package.slug%>" value="<%=Date.today+ @package.monthly_package.interval.days%>"/>
 
-                    <td class="remove">
-                      <!--<a class="remove" data-remove="checkout-item-1">remove</a>-->
-                    </td>
-                    <td class="price" id="price-sub">
-                      $<%=(@package.price) %>
-                    </td>
-                  </tr>
-
+                        <td class="remove">
+                          <!--<a class="remove" data-remove="checkout-item-1">remove</a>-->
+                        </td>
+                        <td class="price" id="price-sub">
+                          $<%=(@package.price) %>
+                        </td>
+                      </tr>
+                  <%end%>
                   <%@add_ons.each do |a|%>
                       <tr id="checkout-item-<%=a.id%>">
                         <input type="hidden" name="add_ons[<%=a.id%>]" value="<%=@add_on_hash["#{a.id}"]%>"/>
@@ -111,7 +112,7 @@
                   <h3>Payment Information</h3>
                 </div>
               </div>
-              <input type="hidden" value="<%=@package.slug%>" name="slug" id="slug"/>
+              <input type="hidden" value="<%=@package.try(:slug) || "add-on"%>" name="slug" id="slug"/>
               <div class="row">
                 <div class="small-2 medium-2 large-2 columns custom-padding">
                   <label>Title
@@ -226,7 +227,10 @@
               <div class="row formdisclaimers">
                 <div class="small-12 columns">
                   <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days). <br />All prices in US Dollars.</p>
-                  <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @package.interval.to_i.days %></span></p>
+
+                  <%if @package.present?%>
+                      <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @package.try(:interval).to_i.days %></span></p>
+                  <%end%>
                 </div>
               </div>
               <div class="row">
@@ -299,7 +303,10 @@
       }
 
       function updateTotal(amount) {
-          $('#total').val(total);
+          if (parseInt(amount) == 0){
+              location.href="/add-ons" ;
+          }
+          $('#total').val(amount);
           $('#price-total').html('$'+ amount);
           $('#t-price').html('$'+amount );
           $('#price-sub').html('$'+amount);
@@ -345,4 +352,4 @@
       BlueSnap.setTargetFormId("checkout-form");
 
   </script>
-    </div>
+</div>

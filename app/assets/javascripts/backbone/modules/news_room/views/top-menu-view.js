@@ -48,8 +48,16 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.initLogoView();
       this.initMediaTab();
       if (Robin.newNewsroomFromDashboard) {
-        this.$el.find('#newsroom_form').modal({keyboard: false });
-        Robin.newNewsroomFromDashboard = false;
+        var view = this;
+        var selectIndustries = view.$el.find('#industries');
+        view.collection.on('sync', function() {
+          selectIndustries.find('option').remove();
+          $.each(view.collection.models ,function(index,value){
+            selectIndustries.append('<option value="' + value.get('id') + '">'+ value.get('name') +'</option>');
+          });
+          view.$el.find('#newsroom_form').modal({keyboard: false });
+          Robin.newNewsroomFromDashboard = false;
+        });
       }
     },
     onShow: function(){

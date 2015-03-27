@@ -1538,15 +1538,17 @@ input.form-control[type="file"] {
 }
 .billing-current-plan {
   position: relative;
-  &:before {
-    display: block;
-    content: '';
-    width: 1px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: -15px;
-    background: #c3c3c3;
+  @media (min-width: 992px) {
+    &:before {
+      display: block;
+      content: '';
+      width: 1px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: -15px;
+      background: #c3c3c3;
+    }
   }
   .btn {
     width: 100%;

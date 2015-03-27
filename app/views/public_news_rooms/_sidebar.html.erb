@@ -38,7 +38,7 @@
           <ul class="contact-links">
             <% if news_room.web_address %>
               <li>
-                <a href="news_room.web_address"><i class="fa fa-globe"></i> <%= news_room.web_address %></a>
+                <a href="<%= news_room.web_address %>"><i class="fa fa-globe"></i> <%= news_room.web_address %></a>
               </li>
             <% end %>
             <% if news_room.email %>

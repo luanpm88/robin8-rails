@@ -8,7 +8,7 @@
         <% elsif release.logo_url %>
           <img class="img" src="<%= release.logo_url %>">
         <% else %>
-          <img class="img" src="/assets/release-btn.png">
+          <%= image_tag asset_path('release-btn.png'), class: 'img' %>
         <% end %>
       </div>
     </div>
