@@ -3,7 +3,7 @@ class PublicNewsRoomsController < ApplicationController
 
   def show
     @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
-    @releases = @news_room.releases.published.paginate(:page => params[:page], :per_page => 6)
+    @releases = @news_room.releases.published.paginate(:page => params[:page], :per_page => 12)
     respond_to do |format|
       format.html
       format.json { render json: @news_room }

@@ -18,9 +18,11 @@
       <%= link_to release.title, release_path(release) %>
     </h3>
     <small>15 Jan 2015</small>
-    <p class='release-item-text'>
-      <%= truncate_html(release.text.html_safe, length: 115) if release.text %>
-    </p>
+    <div class='release-item-text'>
+      <p>
+        <%= truncate_html(release.text.html_safe, length: 115) if release.text %>
+      </p>
+    </div>
     <p class='concepts'>
       <% unless release.concepts.blank? %>
         <% JSON.parse(release.concepts).each do |concept| %>
