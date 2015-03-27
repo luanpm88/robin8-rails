@@ -48,8 +48,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
           contrObj.renderCollectionView(collection, response);
           module.layout.topMenuRegion.show(module.top_menu_view);
-          if(collection.length)
-            module.layout.paginationRegion.show(module.pagination_view);
+          module.layout.paginationRegion.show(module.pagination_view);
         }
       })
     },
