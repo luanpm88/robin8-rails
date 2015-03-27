@@ -7,9 +7,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       scheduled: "#social-scheduled",
     },
 
-    initialize: function() {
-    },
-
     onRender: function() {
       var currentView = this;
       $.get( "/users/identities", function( data ) {
@@ -23,5 +20,19 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
     },
+
+    onShow: function() {
+      var currentView = this;
+      $('.profiles a[data-toggle="tab"]').on('shown.bs.tab', function() {
+        Robin.vent.trigger("social:networksClicked");
+      })
+      Robin.vent.on("social:showPosts", function() {
+        currentView.$el.find('li.posts a').tab('show');
+      });
+      Robin.vent.on("social:showProfiles", function() {
+        currentView.$el.find('li.profiles a').tab('show');
+      });
+    },
+
   });
 });

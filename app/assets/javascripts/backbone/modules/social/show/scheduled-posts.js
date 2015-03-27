@@ -42,6 +42,28 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         // google: '.edit-settings-row [name=google]'
       };
       this.progressBar = null;
+      viewObj = this;
+
+      Robin.vent.on("social:networksClicked", function() {
+        if ($('.editable-container').length>0) {
+          Robin.vent.trigger("social:showPosts");
+          swal({
+            title: "Discard all unsaved changes?",
+            text: "You have not finished editing some of your posts. Leaving this view will discard all unsaved changes",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: 'Discard changes',
+            cancelButtonText: 'Continue editing'
+          },
+          function(isConfirm) {
+            if (isConfirm) {
+              $('.editable-cancel').click();
+              Robin.vent.trigger("social:showProfiles");
+            }
+          });
+        }
+      });
     },
 
     onRender: function(){
