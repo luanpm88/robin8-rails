@@ -1,7 +1,6 @@
-class SubscriptionsController < ApplicationController
+class SubscriptionsController < ApplicationController #rename resource to payments
 
   before_action :authenticate_user!
-  before_filter :set_add_ons
   skip_before_filter :validate_subscription
 
   #before_filter :force_ssl
@@ -20,12 +19,15 @@ class SubscriptionsController < ApplicationController
     @subscription = current_user.subscriptions.new
     if errors.blank?
       begin
-        @subscription = current_user.subscriptions.create!(
-            package_id: @package.id,
-            bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
-            recurring_amount: @package.price,
-            next_charge_date: nil # to be set by invoice generation
-        )
+        if @package.present?
+          @subscription = current_user.subscriptions.create!(
+              package_id: @package.id,
+              bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
+              recurring_amount: @package.price,
+              next_charge_date: nil # to be set by invoice generation
+          )
+          @subscription.process_invoice()
+        end
         @add_ons.each do |add_on|
           @add_on_hash["#{add_on.id}"].to_i.times{
             current_user.user_add_ons.create!(add_on_id: add_on.id)
@@ -36,7 +38,7 @@ class SubscriptionsController < ApplicationController
       rescue Exception=> ex
         flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
       end
-      @subscription.process_invoice()
+
       return redirect_to "/payment-confirmation"
     else
       flash.now[:errors] = errors
@@ -137,7 +139,13 @@ class SubscriptionsController < ApplicationController
 
   def require_package
     @package = Package.where(slug: params[:slug]).last
-    redirect_to :pricing if @package.blank?
+    if params[:add_ons]
+      @add_on_hash = params[:add_ons]
+      ids = []
+      @add_on_hash.each{|k,v| ids << k if v.to_i > 0}
+      @add_ons = AddOn.where(is_active: true, id: ids)
+    end
+    redirect_to :pricing if @package.blank? && @add_ons.blank?
   end
 
   def validate_upgrade
@@ -150,7 +158,7 @@ class SubscriptionsController < ApplicationController
 
   def validate_subsription
     @package = Package.where(slug: params[:slug]).last
-    return redirect_to "/upgrade/#{@package.slug}" if current_user.active_subscription.present?
+    return redirect_to "/upgrade/#{@package.slug}" if @package && current_user.active_subscription.present?
   end
 
   def authenticate_user!
@@ -163,13 +171,5 @@ class SubscriptionsController < ApplicationController
     end
   end
 
-  def set_add_ons
-    if params[:add_ons]
-      @add_on_hash = params[:add_ons]
-      ids = []
-      @add_on_hash.each{|k,v| ids << k if v.to_i > 0}
-      @add_ons = AddOn.where(is_active: true, id: ids)
-    end
-  end
 
 end

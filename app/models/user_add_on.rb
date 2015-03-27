@@ -16,7 +16,7 @@ class UserAddOn < ActiveRecord::Base
   end
 
   def available_count
-    count - used_count #count defaults to 1 no matter of count
+    count - used_count #count defaults to 1
   end
 
 end
