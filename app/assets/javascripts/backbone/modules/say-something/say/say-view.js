@@ -196,6 +196,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
           if (Robin.Social._isInitialized){
             Robin.module("Social").postsCollection.fetch();
+            Robin.module("Social").tomorrowsPostsCollection.fetch();
+            Robin.module("Social").othersPostsCollection.fetch();
           }
 
           Robin.SaySomething.Say.Controller.showSayView();

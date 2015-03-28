@@ -5,6 +5,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     regions: {
       profiles: "#social-profiles",
       scheduled: "#social-scheduled",
+      tomorrowScheduled: "#social-scheduled",
     },
 
     onRender: function() {
@@ -12,7 +13,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       $.get( "/users/identities", function( data ) {
         var viewProfiles = new Show.SocialProfiles({collection: new Robin.Collections.Identities(data)});
         currentView.getRegion('profiles').show(viewProfiles);
-        currentView.getRegion('scheduled').show(Robin.module("Social").postsView);
+        currentView.getRegion('scheduled').show(Robin.module("Social").generalView);
         if (_.last(window.location.href.split('/')) == 'posts') {
           currentView.$el.find('li.posts a').tab('show');
         } else if (_.last(window.location.href.split('/')) == 'profiles') {

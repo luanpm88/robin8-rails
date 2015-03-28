@@ -181,7 +181,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           $.growl("You have already select this item!", {
             type: "success",
           });
-          // console.log("You have already select this item!");
         } else {
           console.log('111')
           if (e.object.type == 'keyword' && val == 'topics') {

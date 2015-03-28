@@ -18,11 +18,27 @@ Robin.ShrinkedLink = {
 
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   
-  Show.ScheduledEmptyView = Backbone.Marionette.ItemView.extend({
+  Show.ScheduledEmptyToday = Backbone.Marionette.ItemView.extend({
     template: 'modules/social/show/templates/_scheduled-empty',
     tagName: "li",
     onShow: function(){
-      $('#today').hide();
+      this.$el.parent().parent().find('#today').hide();
+    }
+  });
+
+  Show.ScheduledEmptyTomorrow = Backbone.Marionette.ItemView.extend({
+    template: 'modules/social/show/templates/_scheduled-empty',
+    tagName: "li",
+    onShow: function(){
+      this.$el.parent().parent().find('#tomorrow').hide();
+    }
+  });
+
+  Show.ScheduledEmptyOther = Backbone.Marionette.ItemView.extend({
+    template: 'modules/social/show/templates/_scheduled-empty',
+    tagName: "li",
+    onShow: function(){
+      this.$el.parent().parent().find('#others').hide();
     }
   });
 
@@ -407,13 +423,36 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     }
 
   });
-  
-  Show.ScheduledPostsComposite = Backbone.Marionette.CompositeView.extend({
+
+  Show.GeneralPostsView = Backbone.Marionette.LayoutView.extend({
+    template: 'modules/social/show/templates/scheduled-posts',
+
+    regions: {
+      today: "#today-posts",
+      tomorrow: "#tomorrow-posts",
+      other: "#other-posts",
+    },
+
+    onRender: function() {
+      var currentView = this;
+      currentView.getRegion('today').show(Robin.module("Social").postsView);
+      currentView.getRegion('tomorrow').show(Robin.module("Social").tomorrowPostsView);
+      currentView.getRegion('other').show(Robin.module("Social").othersPostsView);
+    },
+
+  });
+   
+  Show.TodayPostsComposite = Backbone.Marionette.CompositeView.extend({
     collection: Robin.Collections.Posts,
-    template: "modules/social/show/templates/scheduled-posts",
+    template: "modules/social/show/templates/todays",
     childView: Show.ScheduledPost,
     childViewContainer: "ul",
-    emptyView: Show.ScheduledEmptyView,
+    emptyView: Show.ScheduledEmptyToday,
+    
+    collectionEvents: {
+      "sync": "sync"
+    },
+
     initialize: function() {
       this.collection.fetch({
         success: function(model, response){
@@ -424,6 +463,68 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
+    sync: function() {
+      if (this.collection.length > 0) {
+        this.$el.parent().find("#today").show();
+      }
+    },
+
+  });
+
+  Show.TomorrowPostsComposite = Backbone.Marionette.CompositeView.extend({
+    collection: Robin.Collections.Posts,
+    template: "modules/social/show/templates/tomorrows",
+    childView: Show.ScheduledPost,
+    childViewContainer: "ul",
+    emptyView: Show.ScheduledEmptyTomorrow,
+
+    collectionEvents: {
+      "sync": "sync"
+    },
+
+    initialize: function() {
+      this.collection.fetch({
+        success: function(model, response){
+          if (model.length===0) {
+            this.parent.$("#tomorrow").hide().prev().show();
+          }
+        }
+      });
+    },
+
+    sync: function() {
+      if (this.collection.length > 0) {
+        this.$el.parent().find("#tomorrow").show();
+      }
+    },
+  });
+
+  Show.OthersPostsComposite = Backbone.Marionette.CompositeView.extend({
+    collection: Robin.Collections.Posts,
+    template: "modules/social/show/templates/others",
+    childView: Show.ScheduledPost,
+    childViewContainer: "ul",
+    emptyView: Show.ScheduledEmptyOther,
+
+      collectionEvents: {
+      "sync": "sync"
+    },
+
+    initialize: function() {
+      this.collection.fetch({
+        success: function(model, response){
+          if (model.length===0) {
+            this.parent.$("#others").hide().prev().show();
+          }
+        }
+      });
+    },
+
+    sync: function() {
+      if (this.collection.length > 0) {
+        this.$el.parent().find("#others").show();
+      }
+    },
   });
 
 });

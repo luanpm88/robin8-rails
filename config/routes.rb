@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
   resources :posts do
     put 'update_social', on: :member
+    get 'tomorrows', on: :collection
+    get 'others', on: :collection
   end
   resources :news_rooms do
     get 'analytics'
