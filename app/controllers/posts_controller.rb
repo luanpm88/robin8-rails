@@ -9,7 +9,7 @@ class PostsController < ApplicationController
   end
 
   def others
-    render json: current_user.posts.others.order('scheduled_date desc'), each_serializer: PostSerializer
+    render json: current_user.posts.others.order('scheduled_date asc'), each_serializer: PostSerializer
   end
 
   def new
