@@ -18,6 +18,9 @@
             <i class="fa fa-user-plus"></i> Follow
           <% end %>
           <hr>
+          <% if @releases.length == 0 %>
+            <i class="no-releases">No Releases published yet</i>
+          <% end %>
           <div id='releases' class='row'>
             <div class="col-xs-12">
               <div class="row">

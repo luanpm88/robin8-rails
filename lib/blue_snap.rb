@@ -142,7 +142,7 @@ module BlueSnap
           "address1" => params[:contact][:address1],
           # "address2" => "abc",
           "city" => params[:contact][:city],
-          # "state" => "pu",
+          "state" => params[:contact][:state],
           "zip" => params[:contact][:zip],
           "country" => params[:contact][:country]
       }
@@ -156,7 +156,7 @@ module BlueSnap
           "email" => user.email,
           "address1" => params[:contact][:address1],
           "city" => params[:contact][:city],
-          # "state" => "pu",
+          "state" => params[:contact][:state],
           "zip" => params[:contact][:zip],
           "country" => params[:contact][:country],
           "phone" => params[:contact][:phone]

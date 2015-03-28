@@ -4,9 +4,12 @@
   <div class="thumbnail" style="padding: 0">
 
     <a href="http://<%- release.news_room.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" target="_blank" class="release-image">
-    <div class="nailthumb-square-340">
-      <img class="img-rounded" src="<%= release.first_src %>" style="width: 340px; height: 340px;">
-    </div>
+      <div class="release-thumbnail-container" style="width: 340px; height: 340px;">
+        <div class="release-dummy"></div>
+        <div class="release-thumbnail-inner">
+          <img class="img-rounded" src="<%= release.first_src %>">
+        </div>
+      </div>
       <% /* 
       <div class="overlay">
         Summary
