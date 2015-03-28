@@ -73,3 +73,27 @@ if Rails.env.development?
   AddOn.create(name: "MyPRGenie Web Distribution (per release)", is_active: true, price: 40.00,
                validity: 30, description: "MyPRGenie Web Distribution (per release)", sku_id: 2258429)
 end
+
+if Rails.env.production?
+  AddOn.create(price:10 ,name: "1 Media Montering Stream", is_active: true, sku_id: 3264288,count: 1,validity: 30,is_recurring: true, recurring_interval: 30)
+
+  AddOn.create(price:20 ,name: "1 Newsroom", is_active: true, sku_id: 3264286,count: 1,validity: 30,is_recurring: true, recurring_interval: 30)
+
+  AddOn.create(price: 2,name: "1 Regular Press Release Distribution", is_active: true, sku_id: 3264268,count: 1)
+
+  AddOn.create(price: 99,name: "1 Seat", is_active: true, sku_id: 3264284,count: 1,validity: 30,is_recurring: true, recurring_interval: 30)
+
+  AddOn.create(price: 75,name: "1 Smart Release Distribution", is_active: true, sku_id: 3264270,count: 1)
+
+  AddOn.create(price: 350,name: "5 Smart Release Distribution", is_active: true, sku_id: 3264272,count: 5)
+
+  AddOn.create(price: 650,name: "10 Smart Release Distribution", is_active: true, sku_id: 3264274,count: 10)
+
+  AddOn.create(price: 1200,name: "20 Smart Release Distribution", is_active: true, sku_id: 3264276,count: 20)
+
+  AddOn.create(price:40,name: "Newswire: Accesswire Distribution", is_active: true, sku_id: 3264280,count: 1)
+
+  AddOn.create(price: 175,name: "Newswire: MyPRGenie Web Distribution", is_active: true, sku_id: 3264278,count: 1)
+
+  AddOn.create(price: 450,name: "Newswire: PR Newswire Distribution", is_active: true, sku_id: 3264282,count: 1)
+end
