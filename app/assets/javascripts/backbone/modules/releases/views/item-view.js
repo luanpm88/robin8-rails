@@ -16,19 +16,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.model.attributes.first_src = first_src;
     },
 
-    onShow: function(){
-      $('.nailthumb-square-340').nailthumb({width:340,height:340,method:'resize',fitDirection:'center'});
-      var descriptionArea = this.$el.find('.release-title');
-      descriptionArea.dotdotdot({
-        ellipsis : '... ',
-        wrap: 'word',
-        fallbackToLetter: true,
-        after: null,
-        watch: false,
-        tolerance: 0
-      });
-    },
-
     startSmartRelease: function(options){
       Robin.releaseForBlast = this.model.get('id');
       Backbone.history.navigate('robin8', {trigger: true});
