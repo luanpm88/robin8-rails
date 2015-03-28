@@ -1,5 +1,5 @@
 class RemovePaymentIdFromUserAddOns < ActiveRecord::Migration
   def change
-    remove_column :user_add_ons,:payment_id
+    remove_column :user_add_ons,:payment_id,:integer
   end
 end
