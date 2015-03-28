@@ -140,6 +140,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     loadInfo: function(val) {
       var currentModel = this.model;
       var currentValue = '';
+      var currentView = this;
 
       $(this.el).find('#' + val + '-select').select2({
         multiple: true,
@@ -175,24 +176,33 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         },
         minimumInputLength: 1,
       }).on("select2-selecting", function(e) {
-        if (e.object.type == 'keyword' && val == 'topics') {
-          var getKeyword = currentModel.get('keywords') == undefined ? [] : currentModel.get('keywords');;
-          var newValue = {
-            id: e.val,
-            text: e.val,
-            type: 'keyword'
-          };
-          getKeyword.push(newValue);
-          currentModel.set('keywords', getKeyword);
-          e.object.text = e.object.id
+        if ( _.where(currentModel.attributes.topics, e.object).length > 0){
+          e.preventDefault()
+          $.growl("You have already select this item!", {
+            type: "success",
+          });
+          // console.log("You have already select this item!");
         } else {
-          var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
-          var newValue = {
-            id: e.val,
-            text: e.object.text
-          };
-          getTopics.push(newValue);
-          currentModel.set(val, getTopics);
+          console.log('111')
+          if (e.object.type == 'keyword' && val == 'topics') {
+            var getKeyword = currentModel.get('keywords') == undefined ? [] : currentModel.get('keywords');;
+            var newValue = {
+              id: e.val,
+              text: e.val,
+              type: 'keyword'
+            };
+            getKeyword.push(newValue);
+            currentModel.set('keywords', getKeyword);
+            e.object.text = e.object.id
+          } else {
+            var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
+            var newValue = {
+              id: e.val,
+              text: e.object.text
+            };
+            getTopics.push(newValue);
+            currentModel.set(val, getTopics);
+          }
         }
       }).on("select2-removed", function(e) {
         if (e.choice.type == 'keyword' && val == 'topics') {
