@@ -633,6 +633,9 @@ a {
     border-radius: 0px;
     box-shadow: 0 0 0;
 }
+.thumbnail.release-item p{ 
+    margin: 0px !important;
+}
 .release-thumbnail-container {
   position: relative;
   width: 340px;
