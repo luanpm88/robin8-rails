@@ -3,8 +3,9 @@
   overflow: hidden;
 }
 
-.release-item-text ol{
+.release-item-text ol, ul{
   list-style-position: inside !important;
+  text-align: left;
 }
 
 .pagination .prev, .pagination .next {
