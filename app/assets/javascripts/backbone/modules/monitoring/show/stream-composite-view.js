@@ -113,6 +113,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
 
       this.refreshTimeRangeVisibility();
+      this.$el.find("input.select2-input").css('width', '150%')
     },
 
     onAdded: function(story, collection) {
@@ -182,7 +183,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
             type: "success",
           });
         } else {
-          console.log('111')
           if (e.object.type == 'keyword' && val == 'topics') {
             var getKeyword = currentModel.get('keywords') == undefined ? [] : currentModel.get('keywords');;
             var newValue = {
