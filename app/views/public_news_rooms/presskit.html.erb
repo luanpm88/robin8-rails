@@ -14,7 +14,7 @@
                 <a href="<%= attachment.url  %>" class="<%= attachment.attachment_type == 'image' ? '' : 'not-image'%>" title="<%= attachment.name  %>" data-gallery="">
                   <div class="presskit-file">
                     <div class="presskit-file--content">
-                      <%= image_tag asset_path(attachment.get_correct_url) %>
+                      <img src="<%= asset_path(attachment.get_correct_url) %>">
                       <br>
                       <% if attachment.attachment_type != 'image' %>
                         <span class='name'> <%= attachment.name %> </span>
@@ -24,7 +24,7 @@
                 </a>
               <% else %>
                 <a href="<%= attachment.url  %>" class="<%= attachment.attachment_type == 'image' ? '' : 'not-image'%>" title="<%= attachment.name  %>" data-gallery="">
-                  <%= image_tag asset_path(attachment.get_correct_url) %>
+                  <img src="<%= asset_path(attachment.get_correct_url) %>">
                 </a>
               <%end%>
             <% end %>
