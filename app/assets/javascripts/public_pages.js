@@ -71,10 +71,14 @@ ready = function() {
 
   document.getElementById('presskit').onclick = function (event) {
     event = event || window.event;
-    var target = event.target || event.srcElement,
-        link = target.src ? target.parentNode : target,
-        options = {index: link, event: event},
-        links = this.getElementsByTagName('a');
+    var target = event.target || event.srcElement;
+    var link = target.src ? target.parentNode : target;
+    if ($(link).hasClass('presskit-file') || $(link).hasClass('presskit-file')) {
+      link = $(link).find('img');
+    };
+    
+    var options = {index: link, event: event};
+    var links = this.getElementsByTagName('a');
     blueimp.Gallery(links, options);
   };
 
