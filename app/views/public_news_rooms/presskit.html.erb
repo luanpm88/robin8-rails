@@ -24,7 +24,7 @@
                 </a>
               <% else %>
                 <a href="<%= attachment.url  %>" class="<%= attachment.attachment_type == 'image' ? '' : 'not-image'%>" title="<%= attachment.name  %>" data-gallery="">
-                  <img src="<%= asset_path(attachment.get_correct_url) %>">
+                  <%= image_tag asset_path(attachment.get_correct_url) %>
                 </a>
               <%end%>
             <% end %>
@@ -85,6 +85,10 @@
         link = target.src ? target.parentNode : target,
         options = {index: link, event: event},
         links = this.getElementsByTagName('a');
+    console.log(event);
+    console.log(link);
+    console.log(options);
+    console.log(links);
     blueimp.Gallery(links, options);
   };
 
