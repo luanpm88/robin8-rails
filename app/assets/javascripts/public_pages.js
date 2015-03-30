@@ -60,6 +60,24 @@ ready = function() {
     };
   });
 
+  var $container = $('#presskit');
+  $container.imagesLoaded( function() {
+    $container.masonry({
+      columnWidth: $container.width()/3,
+      gutter: 0,
+      itemSelector: 'a'
+    });
+  });
+
+  document.getElementById('presskit').onclick = function (event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement,
+        link = target.src ? target.parentNode : target,
+        options = {index: link, event: event},
+        links = this.getElementsByTagName('a');
+    blueimp.Gallery(links, options);
+  };
+
   //trimming space from both side of the string
   String.prototype.normalizeRSpace = function(len) {
     if (this.length == 0) {

@@ -68,27 +68,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-  var $container = $('#presskit');
-  $container.imagesLoaded( function() {
-    $container.masonry({
-      columnWidth: $container.width()/3,
-      gutter: 0,
-      itemSelector: 'a'
-    });
-  });
-
-  document.getElementById('presskit').onclick = function (event) {
-    event = event || window.event;
-    var target = event.target || event.srcElement,
-        link = target.src ? target.parentNode : target,
-        options = {index: link, event: event},
-        links = this.getElementsByTagName('a');
-    console.log(target);
-    console.log(link);
-    console.log(options);
-    blueimp.Gallery(links, options);
-  };
-
-</script>
