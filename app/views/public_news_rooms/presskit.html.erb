@@ -12,15 +12,15 @@
             <% @news_room.attachments.each do |attachment| %>
               <% if attachment.attachment_type != 'image'%>
                 <a href="<%= attachment.url  %>" class="<%= attachment.attachment_type == 'image' ? '' : 'not-image'%>" title="<%= attachment.name  %>" data-gallery="">
-                  <div class="presskit-file">
+                  <%= image_tag asset_path(attachment.get_correct_url) %>
+                  <br>
+                  <% if attachment.attachment_type != 'image' %>
+                    <span class='name'> <%= attachment.name %> </span>
+                  <% end %>
+<!--                   <div class="presskit-file">
                     <div class="presskit-file--content">
-                      <%= image_tag asset_path(attachment.get_correct_url) %>
-                      <br>
-                      <% if attachment.attachment_type != 'image' %>
-                        <span class='name'> <%= attachment.name %> </span>
-                      <% end %>
                     </div>
-                  </div>
+                  </div> -->
                 </a>
               <% else %>
                 <a href="<%= attachment.url  %>" class="<%= attachment.attachment_type == 'image' ? '' : 'not-image'%>" title="<%= attachment.name  %>" data-gallery="">
