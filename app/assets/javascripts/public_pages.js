@@ -60,28 +60,6 @@ ready = function() {
     };
   });
 
-  var $container = $('#presskit');
-  $container.imagesLoaded( function() {
-    $container.masonry({
-      columnWidth: $container.width()/3,
-      gutter: 0,
-      itemSelector: 'a'
-    });
-  });
-
-  document.getElementById('presskit').onclick = function (event) {
-    event = event || window.event;
-    var target = event.target || event.srcElement;
-    var link = target.src ? target.parentNode : target;
-    if ($(link).hasClass('presskit-file') || $(link).hasClass('presskit-file')) {
-      link = $(link).find('img');
-    };
-    
-    var options = {index: link, event: event};
-    var links = this.getElementsByTagName('a');
-    blueimp.Gallery(links, options);
-  };
-
   //trimming space from both side of the string
   String.prototype.normalizeRSpace = function(len) {
     if (this.length == 0) {
