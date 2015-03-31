@@ -10,13 +10,19 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
-  has_many :payments #,through: :subscriptions
-  has_many :subscriptions , dependent: :destroy
+
+  has_many :user_products , dependent: :destroy
+  has_many :payments ,through: :user_products
+  has_many :products,:through => :user_products
+
+  has_many :user_features , dependent: :destroy
+  has_many :features,:through => :user_features
+
   has_many :media_lists, dependent: :destroy
   has_many :pitches
   has_many :pitches_contacts, through: :pitches
-  has_many :user_add_ons, dependent: :destroy
-  has_many :add_ons, through: :user_add_ons
+  # has_many :user_add_ons, dependent: :destroy
+  # has_many :add_ons, through: :user_add_ons
 
   after_create :create_default_news_room
 
@@ -46,13 +52,26 @@ class User < ActiveRecord::Base
     user
   end
 
+  def is_feature_available?(slug)
+    Feature.joins(:user_features).where("user_features.user_id = '#{id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
+  end
+
+  def available_features
+    user_features.where("user_features.available_count > '0'")
+  end
+
   def is_primary?
     is_primary != false
   end
 
   def active_subscription
     @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions
-    @active_s ||= @subscriptions.where("(expiry is NULL OR expiry >'#{Time.now.utc}' AND status ='A') OR (expiry > '#{Time.now.utc}' AND status = 'C')").last
+    @active_s ||= @subscriptions.where("(user_products.expiry is NULL OR user_products.expiry >'#{Time.now.utc}' AND user_products.status ='A') OR (user_products.expiry > '#{Time.now.utc}' AND user_products.status = 'C')").last
+  end
+
+  def subscriptions
+    user_products.joins(:product).where("products.is_package ='1'")
+    # user_products.where(is_subscription: true)
   end
 
   def twitter_identity

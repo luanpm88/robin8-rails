@@ -32,6 +32,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     afterFetch: function (e) {
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
+      Robin.cachedStories[this.model.get('id')].rendered = true;
       if (this.collection.length == 0) {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
@@ -105,9 +106,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (!this.model.get('id')) {
         this.$el.find('.stream-loading').addClass('hidden');
         this.$el.find('.settings-dialog').removeClass('closed');
-      } else {
-        Robin.cachedStories[this.model.get('id')].rendered = true;
-      }
+      } 
 
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));

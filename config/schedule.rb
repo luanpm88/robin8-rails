@@ -7,9 +7,9 @@
 #
 # set :output, "/path/to/my/cron_log.log"
 #
-every '*/1 * * * *' do
-  runner "Subscription.process_initial_invoice"
-end
+# every '*/1 * * * *' do
+#   runner "Subscription.process_initial_invoice"
+# end
 
 every 12.hours do
   runner "Subscription.process_recurring_invoice"
