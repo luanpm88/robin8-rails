@@ -106,7 +106,7 @@ class PaymentsController < ApplicationController
     if flash[:errors].blank?
       @subscription = current_user.active_subscription.update_attributes(
           product_id: @product.id,
-          recurring_amount: @package.price
+          recurring_amount: @product.price
       )
       return redirect_to "/payment-confirmation"
     else
