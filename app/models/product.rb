@@ -5,7 +5,7 @@ class Product < ActiveRecord::Base
 
   has_many :product_features,:dependent => :destroy
   has_many :features,:through => :product_features
-  validates :slug, :price, :interval, :sku_id, presence: true
+  validates :slug, :price, :sku_id, presence: true
 
   scope :active, lambda{where(is_active: true)}
   scope :package, lambda{where(is_package: true)}
