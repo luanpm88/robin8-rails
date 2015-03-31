@@ -1,0 +1,108 @@
+<div class="signup">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Upgrade"}%>
+  </header>
+
+  <%= form_for @payment, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
+      <div class="row">
+        <div class="small-12 columns">
+          <div class="goback">
+            <a href="/pricing">Go back</a>
+          </div>
+        </div>
+      </div>
+      <div class="form-step step3">
+
+        <div class="row">
+          <div class="small-12 columns">
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <th class="">Plan</th>
+                <th></th>
+                <th class="removecolumn"></th>
+                <th class="price">Price</th>
+              </tr>
+              <tr id="checkout-item-1">
+                <td class="">
+                  <%=@product.name.split(' ')[0]%> Plan
+                </td>
+                <td>
+                  <select name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
+                    <option value="<%=@product.slug%>">Pay Annually ($<%=(@product.price/12).to_i %> x 12/mo) - save 20%</option>
+                    <option value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
+                  </select>
+                </td>
+                <input type="hidden" id="<%=@product.slug%>" value="<%=@product.price%>"/>
+                <input type="hidden" id="<%=@product.monthly_package.slug%>" value="<%=@product.monthly_package.price%>"/>
+
+                <input type="hidden" id="nbd-<%=@product.slug%>" value="<%=Date.today + @product.interval.days%>"/>
+                <input type="hidden" id="nbd-<%=@product.monthly_package.slug%>" value="<%=Date.today+ @product.monthly_package.interval.days%>"/>
+
+                <td class="remove">
+                  <!--<a class="remove" data-remove="checkout-item-1">remove</a>-->
+                </td>
+                <td class="price" id="price-sub">
+                  $<%=(@product.price).to_i %>
+                </td>
+              </tr>
+              <tr class="totals">
+                <td class="">
+                  TOTAL
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td class="price" id="price-total">
+                  $<%=(@product.price).to_i %>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <%=flash[:errors] if flash[:errors].present?%>
+        </div>
+        <div class="signup-footer ftform" id="checkoutdata">
+          <div class="row">
+            <div class="small-12 columns">
+              <h3>Upgrade Information</h3>
+              <h4 style="text-align:center;color:#fff;">
+                Current: <%=current_user.active_subscription.product.name%> at $<%=current_user.active_subscription.product.price%>
+                <br/> TO <br/>
+                Upgrade: <%=@product.name%> at $<%=@product.price%>
+              </h4>
+
+
+              <div class="submit-wrap">
+                <%= submit_tag "CONFIRM UPGRADE", :class=>"button button-signup nextstep" %>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" value="<%=@product.slug%>" name="slug" id="slug"/>
+          <div class="row">
+            <div class="small-12 columns">
+              <div class="row formdisclaimers">
+                <div class="small-12 columns">
+                  <p class="chargesummary">You will not be charged right away. But instead your payment will be adjsuted automatically in your next billing cycle. Charge will be <span class="chargetotal" id = "t-price">$<%=(@product.price).to_i %></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=current_user.active_subscription.next_charge_date || (Date.today + @product.interval.to_i.days) %></span></p>
+                </div>
+              </div>
+              <br/>
+            </div>
+          </div>
+        </div>
+      </div>
+  <%end%>
+</div>
+
+
+<script>
+    function updatePackage(){
+        $('#slug').val($('#payment-option').val());
+        $('#price-total').html("$"+$('#'+$('#slug').val()).val());
+        $('#t-price').html("$"+$('#'+$('#slug').val()).val() );
+        $('#price-sub').html("$"+$('#'+$('#slug').val()).val() );
+        $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
+    }
+</script>

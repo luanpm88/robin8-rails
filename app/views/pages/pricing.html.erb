@@ -23,11 +23,11 @@
       <div class="row business-plans" id="business-plans" data-equalizer>
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-basic" data-plan="basic" data-equalizer-watch>
-            <h2><%= @packages[0].name.split(' ')[0] %></h2>
+            <h2><%= @products[0].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@packages[1].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@packages[0].price).to_i%> month-to-month </em>
+                $<%=(@products[1].price/12).to_i %><span class="permonth">/mo</span>
+                <em>billed annually or<br />$<%=(@products[0].price).to_i%> month-to-month </em>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -44,17 +44,17 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.package.slug)%> disabled class="button button-planselector-disabled" <%else%> class="button button-planselector" onclick="setPackage('<%=@packages[1].slug%>');" <%end%> ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.package.slug) )? "Current" : "Select"%></a>
+              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> disabled class="button button-planselector-disabled" <%else%> class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch>
-            <h2><%= @packages[2].name.split(' ')[0] %></h2>
+            <h2><%= @products[2].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@packages[3].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@packages[2].price).to_i%> month-to-month </em>
+                $<%=(@products[3].price/12).to_i %><span class="permonth">/mo</span>
+                <em>billed annually or<br />$<%=(@products[2].price).to_i%> month-to-month </em>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -68,17 +68,17 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.package.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@packages[3].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.package.slug) )? "Current" : "Select"%></a>
+              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch >
-            <h2><%= @packages[4].name.split(' ')[0] %></h2>
+            <h2><%= @products[4].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@packages[5].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@packages[4].price).to_i%> month-to-month </em>
+                $<%=(@products[5].price/12).to_i %><span class="permonth">/mo</span>
+                <em>billed annually or<br />$<%=(@products[4].price).to_i%> month-to-month </em>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -92,7 +92,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.package.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@packages[5].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.package.slug) )? "Current" : "Select"%></a>
+              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -102,11 +102,11 @@
       <div class="row agency-plans" id="agency-plans" data-equalizer>
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-pro" data-plan="pro" data-equalizer-watch>
-            <h2><%= @packages[6].name.split(' ')[0] %></h2>
+            <h2><%= @products[6].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@packages[7].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@packages[6].price).to_i%> month-to-month </em>
+                $<%=(@products[7].price/12).to_i %><span class="permonth">/mo</span>
+                <em>billed annually or<br />$<%=(@products[6].price).to_i%> month-to-month </em>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -120,17 +120,17 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="pro" <%if user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.package.slug)%> class="button button-planselector-disabled" disabled <%else%>class="button button-planselector"  onclick="setPackage('<%=@packages[7].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.package.slug) )? "Current" : "Select"%></a>
+              <a data-selected="pro" <%if user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector-disabled" disabled <%else%>class="button button-planselector"  onclick="setPackage('<%=@products[7].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-premium" data-plan="premium" data-equalizer-watch>
-            <h2><%= @packages[8].name.split(' ')[0] %></h2>
+            <h2><%= @products[8].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@packages[9].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@packages[8].price).to_i%> month-to-month </em>
+                $<%=(@products[9].price/12).to_i %><span class="permonth">/mo</span>
+                <em>billed annually or<br />$<%=(@products[8].price).to_i%> month-to-month </em>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -144,17 +144,17 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="premium" <%if user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.package.slug)%> class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@packages[9].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.package.slug) )? "Current" : "Select"%></a>
+              <a data-selected="premium" <%if user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-ultra" data-plan="ultra" data-equalizer-watch>
-            <h2><%= @packages[10].name.split(' ')[0] %></h2>
+            <h2><%= @products[10].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@packages[11].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@packages[10].price).to_i%> month-to-month </em>
+                $<%=(@products[11].price/12).to_i %><span class="permonth">/mo</span>
+                <em>billed annually or<br />$<%=(@products[10].price).to_i%> month-to-month </em>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -168,7 +168,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-plan="ultra" <%if user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.package.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@packages[11].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.package.slug) )? "Current" : "Select"%></a>
+              <a data-plan="ultra" <%if user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->

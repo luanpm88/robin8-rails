@@ -21,16 +21,16 @@ module BlueSnap
 
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
-    def self.new(request, user, params, package, add_ons=nil,add_ons_hash=nil)
+    def self.new(request, user, params, product, add_ons=nil,add_ons_hash=nil)
       begin
         errors = BlueSnap::Shopper.validate_params(params, user)
         if errors.blank?
           shopper = {
               "shopper" => {"web-info" => BlueSnap::Shopper.web_info(request),
                             "shopper-info" => BlueSnap::Shopper.shopper_info(params, user)},
-              "order" => BlueSnap::Shopper.order_info(request, package, add_ons,add_ons_hash)
+              "order" => BlueSnap::Shopper.order_info(request, product, add_ons,add_ons_hash)
           }
-          placeholder = cart_items(package, add_ons,add_ons_hash)
+          placeholder = cart_items(product, add_ons,add_ons_hash)
           Request.post(URL, shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new,:skip_types => true, :skip_instruct => true),placeholder)
         else
           return errors, nil
@@ -48,6 +48,7 @@ module BlueSnap
       errors << "Last name cannot be blank." if !params[:contact][:last_name].present?
       errors << "Address1 cannot be blank." if !params[:contact][:address1].present?
       errors << "City cannot be blank." if !params[:contact][:city].present?
+      errors << "State cannot be blank." if params[:contact][:state].blank? && (params[:contact][:country].present? && params[:contact][:country] == "US")
       errors << "Zip cannot be blank." if !params[:contact][:zip].present?
       errors << "Country cannot be blank." if !params[:contact][:country].present?
       errors << "Phone cannot be blank." if !params[:contact][:phone].present?
@@ -65,25 +66,25 @@ module BlueSnap
       {"web-info" => {"ip" => "127.0.0.1", "remote-host" => "www.robin8.com", "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
     end
 
-    def self.order_info(request, package, add_ons,add_ons_hash)
+    def self.order_info(request, product, add_ons,add_ons_hash)
       {"ordering-shopper" => ordering_shopper(request),
        "cart" => "PLACEHOLDER",
        "expected-total-price" =>
-           {"amount" => get_expected_total(package,add_ons,add_ons_hash),
+           {"amount" => get_expected_total(product,add_ons,add_ons_hash),
             "currency" => "USD"}}
     end
 
-    def self.get_expected_total(package,add_ons,add_ons_hash)
-      return package.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum
+    def self.get_expected_total(product,add_ons,add_ons_hash)
+      return product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum
       #use discount here when required
     end
 
-    def self.cart_items(package, add_ons,add_ons_hash)
+    def self.cart_items(product, add_ons,add_ons_hash)
       items = []
-      if package.present?
+      if product.present?
         items <<  {"sku" => {
-            "sku_id" => package.sku_id,
-            "amount" => package.price},
+            "sku_id" => product.sku_id,
+            "amount" => product.price},
                    "quantity" => "1"}
       end
 
@@ -136,34 +137,36 @@ module BlueSnap
     end
 
     def self.billing_info(params)
-      {
+      info = {
           "first-name" => params[:contact][:first_name],
           "last-name" => params[:contact][:last_name],
           "address1" => params[:contact][:address1],
-          # "address2" => "abc",
           "city" => params[:contact][:city],
-          "state" => params[:contact][:state],
           "zip" => params[:contact][:zip],
           "country" => params[:contact][:country]
       }
+      info.merge!({"state" => params[:contact][:state]}) if (params[:contact][:country] == "US")
+      info
     end
 
     def self.shopper_contact_info(user, params)
-      {
+      info = {
           "title" => params[:contact][:title],
           "first-name" => params[:contact][:first_name],
           "last-name" => params[:contact][:last_name],
           "email" => user.email,
           "address1" => params[:contact][:address1],
           "city" => params[:contact][:city],
-          "state" => params[:contact][:state],
           "zip" => params[:contact][:zip],
           "country" => params[:contact][:country],
           "phone" => params[:contact][:phone]
 
       }
+      info.merge!({"state" => params[:contact][:state]}) if params[:contact][:country] == "US"
+      info
     end
   end
+
 
   class Subscription
     def self.destroy(subscription_id, shopper_id, sku_id)
@@ -251,7 +254,7 @@ module BlueSnap
   class Response
     def self.parse(response)
       resp = Hash.from_xml(response.body).deep_symbolize_keys
-      return get_errors(resp), nil if response.code.to_i == 400 || response.code.to_i == 401
+      return get_errors(resp), nil if [400,401,402,403,404,500,501].include?(response.code.to_i)
       return nil, resp
     end
 
