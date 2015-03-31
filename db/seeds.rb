@@ -71,7 +71,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 30 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 15 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("streams_media_monitoring").id,validity: 0,count: 25 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 20 )
 
   p = Product.create(slug: "enterprise-annual", is_active: true, price: 4200.00,
@@ -149,7 +149,7 @@ if Rails.env == 'development'
 
 end
 
-if Rails.env.production?
+if Rails.env.production? || Rails.env == 'staging'
   p = Product.create(slug: "basic-monthly", is_active: true, price: 19.00,
                  interval: 30, name: "Basic Monthly", description: "basic monthly subscription", sku_id:3262130,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
@@ -193,7 +193,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 30 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 15 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("streams_media_monitoring").id,validity: 0,count: 25 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 20 )
 
 
@@ -205,7 +205,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 30 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 15 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("streams_media_monitoring").id,validity: 0,count: 25 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 20 )
 
 
@@ -257,7 +257,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 10 )
 
- p = Product.create(slug: "ultra-annual", is_active: true, price: 12000.00,
+  p = Product.create(slug: "ultra-annual", is_active: true, price: 12000.00,
                  interval: 365, name: "Ultra Annual", description: "ultra annual subscription", sku_id: 3262174,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 100 )
@@ -270,39 +270,38 @@ if Rails.env.production?
 end
 
 
-if Rails.env.production?
-  p = Product.create(price:10 ,name: "Media Monitoring Stream (per month)", is_active: true, sku_id: 3264288,interval: 30)
+if Rails.env.production? || Rails.env == 'staging'
+  p = Product.create!(price:10 ,name: "Media Monitoring Stream (per month)", is_active: true, sku_id: 3264288,interval: 30)
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 30,count: 1 )
 
-  p= Product.create(price:20 ,name: "Newsroom (per month)", is_active: true, sku_id: 3264286,interval: 30)
+  p = Product.create!(price:20 ,name: "Newsroom (per month)", is_active: true, sku_id: 3264286,interval: 30)
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 30,count: 1 )
 
-  Product.create(price: 2,name: "Press Release Distribution (per release)", is_active: true, sku_id: 3264268)
+  p = Product.create!(price: 2,name: "Press Release Distribution (per release)", is_active: true, sku_id: 3264268)
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 360,count: 1 )
 
-  Product.create(price: 99,name: "Seat (per month)", is_active: true, sku_id: 3264284,interval: 30)
+  p = Product.create!(price: 99,name: "Seat (per month)", is_active: true, sku_id: 3264284,interval: 30)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 30,count: 1 )
 
-  Product.create(price: 75,name: "Smart Release Distribution (per release)", is_active: true, sku_id: 3264270)
+  p = Product.create!(price: 75,name: "Smart Release Distribution (per release)", is_active: true, sku_id: 3264270)
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 360,count: 1 )
 
-  Product.create(price: 350,name: "5 Smart Release Distribution (per 5 releases)", is_active: true, sku_id: 3264272)
+  p = Product.create!(price: 350,name: "5 Smart Release Distribution (per 5 releases)", is_active: true, sku_id: 3264272)
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 360,count: 5 )
 
-  Product.create(price: 650,name: "10 Smart Release Distribution (per 10 releases)", is_active: true, sku_id: 3264274)
+  p = Product.create!(price: 650,name: "10 Smart Release Distribution (per 10 releases)", is_active: true, sku_id: 3264274)
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 360,count: 10 )
 
-  Product.create(price: 1200,name: "20 Smart Release Distribution (per 20 releases)", is_active: true, sku_id: 3264276)
+  p = Product.create!(price: 1200,name: "20 Smart Release Distribution (per 20 releases)", is_active: true, sku_id: 3264276)
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 360,count: 20 )
 
-  Product.create(price:40,name: "Accesswire Distribution (per release)", is_active: true, sku_id: 3264280)
+  p = Product.create!(price:40,name: "Accesswire Distribution (per release)", is_active: true, sku_id: 3264280)
   p.product_features.create!(feature_id:Feature.find_by_slug("accesswire_distribution").id,validity: 360,count: 1 )
 
-  Product.create(price: 175,name: "MyPRGenie Web Distribution (per release)", is_active: true, sku_id: 3264278)
+  p = Product.create!(price: 175,name: "MyPRGenie Web Distribution (per release)", is_active: true, sku_id: 3264278)
   p.product_features.create!(feature_id:Feature.find_by_slug("myprgenie_web_distribution").id,validity: 360,count: 1 )
 
-  Product.create(price: 450,name: "PR Newswire Distribution (per release)", is_active: true, sku_id: 3264282)
+  p = Product.create!(price: 450,name: "PR Newswire Distribution (per release)", is_active: true, sku_id: 3264282)
   p.product_features.create!(feature_id:Feature.find_by_slug("pr_newswire_distribution").id,validity: 360,count: 1 )
 end
-
 

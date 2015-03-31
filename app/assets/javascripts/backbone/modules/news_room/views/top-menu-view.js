@@ -138,6 +138,10 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
               notEmpty: {
                 message: 'The Subdomain name is required'
               },
+              regexp: {
+                regexp: /^[a-zA-Z0-9_-]*$/,
+                message: 'The Subdomain name can only consist of alphanumeric characters, dashes and underscores <br>( a-z 0-9 - _ )'
+              },
               serverError: {
                 message: 'something went wrong'
               }
