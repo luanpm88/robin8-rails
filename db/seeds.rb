@@ -71,7 +71,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 30 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 15 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("streams_media_monitoring").id,validity: 0,count: 25 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 20 )
 
   p = Product.create(slug: "enterprise-annual", is_active: true, price: 4200.00,
@@ -193,7 +193,7 @@ if Rails.env.production? || Rails.env == 'staging'
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 30 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 15 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("streams_media_monitoring").id,validity: 0,count: 25 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 20 )
 
 
@@ -205,7 +205,7 @@ if Rails.env.production? || Rails.env == 'staging'
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 30 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 15 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("streams_media_monitoring").id,validity: 0,count: 25 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 20 )
 
 
@@ -257,7 +257,7 @@ if Rails.env.production? || Rails.env == 'staging'
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 10 )
 
- p = Product.create(slug: "ultra-annual", is_active: true, price: 12000.00,
+  p = Product.create(slug: "ultra-annual", is_active: true, price: 12000.00,
                  interval: 365, name: "Ultra Annual", description: "ultra annual subscription", sku_id: 3262174,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 100 )
