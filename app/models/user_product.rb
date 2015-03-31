@@ -6,22 +6,22 @@ class UserProduct < ActiveRecord::Base
   validates :user,:product, :bluesnap_shopper_id, presence: true
 
   after_create :notify_user,:create_payment
-  # after_update :normalize_features
-  #
-  # def normalize_features #has already paid for previous month so just add more features, he will be charged next month for it accordingly.
-  #   puts "HELLOO:#{product_id_was} AND #{product_id} *********************************"
-  #   if product_id_was.to_i != product_id.to_i
-  #     product.features.each do |f|
-  #       user.user_features.create!(
-  #           feature_id: f.id,
-  #           product_id: product.id, #for book keeping
-  #           max_count: product.product_features.where(feature_id: f.id).first.quota,
-  #           available_count: product.product_features.where(feature_id: f.id).first.quota,
-  #           reset_at: product.product_features.where(feature_id: f.id).first.reset_at
-  #       )
-  #     end
-  #   end
-  # end
+  before_update :normalize_features
+
+  def normalize_features #has already paid for previous month so just add more features, he will be charged next month for it accordingly.
+    puts "HELLOO:#{product_id_was} AND #{product_id} *********************************"
+    if !product_id_was.blank? && product_id_was.to_i != product_id.to_i
+      product.features.each do |f|
+        user.user_features.create!(
+            feature_id: f.id,
+            product_id: product.id, #for book keeping
+            max_count: product.product_features.where(feature_id: f.id).first.quota,
+            available_count: product.product_features.where(feature_id: f.id).first.quota,
+            reset_at: product.product_features.where(feature_id: f.id).first.reset_at
+        )
+      end
+    end
+  end
 
   def notify_user
     # UserMailer.successfull_subscription(self).deliver if product.is_package?
