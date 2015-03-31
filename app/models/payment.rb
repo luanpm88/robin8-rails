@@ -1,17 +1,20 @@
 class Payment < ActiveRecord::Base
+  belongs_to :user_product
+  belongs_to :product
+  validates :user_product_id, :amount, presence: true
 
-  belongs_to :package
-  belongs_to :subscription
-  validates :payable_id, :amount, presence: true
+  after_create :set_features
 
-  belongs_to :payable, :polymorphic => true
-  belongs_to :orderable, :polymorphic => true
-
-  after_create :notify_user
-
-  def notify_user
-    #send email if required to user about recurring payment
+  def set_features
+    product.features.each do |f|
+      user_product.user.user_features.create!(
+        feature_id: f.id,
+        product_id: product.id, #for book keeping
+        max_count: product.product_features.where(feature_id: f.id).first.quota,
+        available_count: product.product_features.where(feature_id: f.id).first.quota,
+        reset_at: product.product_features.where(feature_id: f.id).first.reset_at #use -ve .. i.e total -=1 And add priority i.e which is used before the other
+      )
+    end
   end
-
 
 end

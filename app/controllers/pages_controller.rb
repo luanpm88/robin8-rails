@@ -21,12 +21,12 @@ class PagesController < ApplicationController
   end
 
   def pricing
-    @packages = Package.where(is_active: true)
+    @products = Product.package.active
     render :layout => "website"
   end
 
   def add_ons
-    @add_ons = AddOn.where(is_active: true)
+    @add_ons = Product.active.add_on
     render :layout => "website"
   end
 
@@ -53,6 +53,16 @@ class PagesController < ApplicationController
 
   def about
     render :layout => "website"
+  end
+
+  def authenticate_user!
+    if user_signed_in?
+      super
+    else
+      session[:redirect_checkout_url] = "/add-ons?plan=#{params[:plan]}"
+      flash[:info] = "Please signup below and continue"
+      return redirect_to new_user_path
+    end
   end
 
 end
