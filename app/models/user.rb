@@ -52,6 +52,14 @@ class User < ActiveRecord::Base
     user
   end
 
+  def is_feature_available?(slug)
+    Feature.joins(:user_features).where("user_features.user_id = '#{id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
+  end
+
+  def available_features
+    user_features.where("user_features.available_count > '0'")
+  end
+
   def is_primary?
     is_primary != false
   end
