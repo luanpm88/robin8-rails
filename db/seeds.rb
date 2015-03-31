@@ -149,7 +149,7 @@ if Rails.env == 'development'
 
 end
 
-if Rails.env.production? || Rails.env == 'staging'
+if Rails.env.production?
   p = Product.create(slug: "basic-monthly", is_active: true, price: 19.00,
                  interval: 30, name: "Basic Monthly", description: "basic monthly subscription", sku_id:3262130,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
@@ -270,7 +270,7 @@ if Rails.env.production? || Rails.env == 'staging'
 end
 
 
-if Rails.env.production? || Rails.env == 'staging'
+if Rails.env.production?
   p = Product.create!(price:10 ,name: "Media Monitoring Stream (per month)", is_active: true, sku_id: 3264288,interval: 30,slug: "media_moitoring")
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 30,count: 1 )
 
