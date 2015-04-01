@@ -47,6 +47,10 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       });
       this.initLogoView();
       this.initMediaTab();
+      this.$el.find("input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
       if (Robin.newNewsroomFromDashboard) {
         var view = this;
         var selectIndustries = view.$el.find('#industries');

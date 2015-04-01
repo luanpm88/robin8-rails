@@ -846,7 +846,7 @@ blockquote {
   padding: 0 !important;
   width: 20px;
   height: 20px;
-  background: url(../img/check_flat/default.png) no-repeat;
+  background: url('default.png') no-repeat;
   border: none;
   cursor: pointer; }
 
