@@ -3,9 +3,9 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
 
   def home
-    if signed_in? && !current_user.active_subscription.blank?
+    if user_signed_in? && !current_user.active_subscription.blank?
       render "home", :layout => 'application'
-    elsif signed_in?
+    elsif user_signed_in?
       redirect_to pricing_path
     else
       render "landing_page", :layout => 'landing'
