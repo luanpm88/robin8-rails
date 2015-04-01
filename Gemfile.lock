@@ -331,8 +331,6 @@ GEM
       rails-assets-moment (>= 2.8.0)
     rails-assets-font-awsome (4.3.0)
     rails-assets-highcharts (4.1.1)
-    rails-assets-iCheck (1.0.2)
-      rails-assets-jquery (>= 1.7)
     rails-assets-jquery (2.1.3)
     rails-assets-jquery.caret (1.5.2)
     rails-assets-jquery.dotdotdot (1.7.2)
@@ -549,7 +547,6 @@ DEPENDENCIES
   rails-assets-eonasdan-bootstrap-datetimepicker (= 4.0.0)
   rails-assets-font-awsome
   rails-assets-highcharts (= 4.1.1)
-  rails-assets-iCheck
   rails-assets-jquery.caret
   rails-assets-jquery.dotdotdot
   rails-assets-momentjs
