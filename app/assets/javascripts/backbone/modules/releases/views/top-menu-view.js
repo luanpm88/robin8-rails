@@ -79,8 +79,27 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       };
     },
     startSmartRelease: function(options){
-      Robin.releaseForBlast = this.model.get('id');
-      Backbone.history.navigate('robin8', {trigger: true});
+      if (this.form.data('formValidation') == undefined) {
+        this.initFormValidation();
+      }
+      var viewObj = this;
+      this.modelBinder.copyViewValuesToModel();
+      var iframe = document.getElementsByClassName("wysihtml5-sandbox");
+      if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
+        this.model.set('text', $(iframe).contents().find('body').html());
+      };
+      this.form.data('formValidation').validate();
+      if (this.form.data('formValidation').isValid()) {
+        this.model.save(this.model.attributes, {
+          success: function(model, data, response){
+            Robin.releaseForBlast = viewObj.model.get('id');
+            Backbone.history.navigate('robin8', {trigger: true});
+          },
+          error: function(data, response){
+            viewObj.processErrors(response);
+          }
+        });
+      }
     },
     openModalDialog: function(){
       this.model.clear();
