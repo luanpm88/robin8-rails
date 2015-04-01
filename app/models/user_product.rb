@@ -28,7 +28,7 @@ class UserProduct < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(methods: [:package])
+    super(methods: [:product])
   end
 
   def is_cancelled?

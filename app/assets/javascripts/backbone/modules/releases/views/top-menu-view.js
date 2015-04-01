@@ -143,6 +143,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.$el.find('#release_form').modal({keyboard: false });
         Robin.newReleaseFromDashboard = false;
       }
+      this.$el.find("input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
     },
     initLogoView: function(){
       this.logoRegion.show(new Robin.Views.LogoView({

@@ -5,6 +5,10 @@ class Payment < ActiveRecord::Base
 
   after_create :set_features
 
+  def user
+    self.user_product.user
+  end
+
   def set_features
     product.features.each do |f|
       user_product.user.user_features.create!(
