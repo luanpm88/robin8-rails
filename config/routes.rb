@@ -1,6 +1,8 @@
 require 'sidekiq/web'
 require 'sidetiq/web'
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions",
                                     registrations: "users/registrations", passwords: "users/passwords",

@@ -97,11 +97,10 @@
           <% } %>
           <% if (release.id && release.news_room_public && !release.is_private) {%>
             <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" target="_blank"><i class="fa fa-eye"></i> Preview</a>
-            <button type="button" class="btn btn-primary" id="smart-release" ><i class="fa fa-rocket"></i> SmartRelease</button>
           <% } else {%>
             <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
-            <button type="button" class="btn btn-primary" id="smart-release" disabled='disabled'><i class="fa fa-rocket"></i> SmartRelease</button>
           <% } %>
+          <button type="button" class="btn btn-primary" id="smart-release" ><i class="fa fa-rocket"></i> SmartRelease</button>
           <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> Save draft</button>
         </div>
     </div>

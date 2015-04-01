@@ -28,7 +28,7 @@
   <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
-  <% if signed_in? -%>
+  <% if user_signed_in? -%>
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
     <% if (request.subdomain != 'staging' && !request.subdomain.blank?) %>
       Robin.publicPages = true

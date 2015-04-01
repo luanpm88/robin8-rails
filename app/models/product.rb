@@ -1,7 +1,7 @@
 class Product < ActiveRecord::Base
 
   has_many :payments
-  has_many :subscriptions
+  # has_many :subscriptions
 
   has_many :product_features,:dependent => :destroy
   has_many :features,:through => :product_features
