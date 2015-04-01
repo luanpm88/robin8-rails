@@ -95,6 +95,8 @@ gem 'ejs'
 gem 'countries'
 gem 'whenever'
 gem 'friendly_id'
+
+gem 'docx-html'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -1,6 +1,10 @@
 <script id="wyihtml5-extract-button" type="text/template">
   <li><a class="btn btn-default" id="extract_url"><i class="fa fa-cloud-download"></i></a></li>
 </script>
+<script id="wyihtml5-word-button" type="text/template">
+  <li><a class="btn btn-default" onclick="document.getElementById('upload').click(); return false" id="extract_word"><i class="fa fa-file-word-o"></i></a></li>
+</script>
+<input type="file" id="upload" name="upload" style="visibility: hidden; width: 1px; height: 1px" />
 <div class="col-lg-12">
   <div class="panel panel-default panel-toolbar">
     <div class="panel-body">

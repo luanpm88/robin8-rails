@@ -36,7 +36,9 @@ Rails.application.routes.draw do
     get 'presskit'
   end
   resources :industries, only: :index
-  resources :releases
+  resources :releases do
+    post 'extract_from_word', on: :collection
+  end
   resources :users do
     collection do
       get 'identities'

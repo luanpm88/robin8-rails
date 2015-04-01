@@ -121,6 +121,12 @@ GEM
       actionmailer (>= 3.2.6, < 5)
       devise (>= 3.2.0)
     diff-lcs (1.2.5)
+    docx (0.1.0)
+      nokogiri (~> 1.5)
+      rubyzip (~> 0.9)
+    docx-html (0.1.0)
+      docx (~> 0.1.0)
+      html_writer (~> 0.1.0)
     domain_name (0.5.23)
       unf (>= 0.0.5, < 1.0.0)
     ejs (1.1.1)
@@ -161,6 +167,7 @@ GEM
     hike (1.2.3)
     hitimes (1.2.2)
     hpricot (0.8.6)
+    html_writer (0.1.0)
     htmlentities (4.3.3)
     http (0.6.3)
       http_parser.rb (~> 0.6.0)
@@ -399,6 +406,7 @@ GEM
       rspec-mocks (~> 3.2.0)
       rspec-support (~> 3.2.0)
     rspec-support (3.2.2)
+    rubyzip (0.9.9)
     sass (3.4.13)
     sass-rails (5.0.1)
       railties (>= 4.0.0, < 5.0)
@@ -505,6 +513,7 @@ DEPENDENCIES
   countries
   devise
   devise_invitable
+  docx-html
   ejs
   email_validator
   friendly_id

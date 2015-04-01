@@ -21,7 +21,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #delete_release': 'deleteRelease',
       'click #extract_url': 'extractURL',
       'click #highlight_textarea': 'highlightReleaseText',
-      'click #smart-release': 'startSmartRelease'
+      'click #smart-release': 'startSmartRelease',
+      'change #upload': 'uploadWord'
     },
     highlightReleaseText: function(e) {
       e.preventDefault();
@@ -93,6 +94,47 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.render();
       this.$el.find('#release_form').modal({ keyboard: false });
     },
+    uploadWord: function(changeEvent) {
+      var self = this;
+
+      var formData = new FormData();
+      $input = $('#upload');
+      formData.append('file', $input[0].files[0]);
+       
+      $.ajax({
+        url: "/releases/extract_from_word",
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+        type: 'POST',
+        complete: function(response) {
+          $.ajax({
+            url: 'textapi/extract',
+            dataType: 'json',
+            method: 'POST',
+            data: {
+              html: response.responseText
+            },
+            success: function(text) {
+              self.parseResponseFromApi(text);
+            }
+          });
+        }
+      });
+    },
+    parseResponseFromApi: function(text) {
+      if (text != null) {
+        self.model.set('title', text.title);
+        var editor = self.ui.wysihtml5.data('wysihtml5').editor;
+        editor.setValue(
+          '<p>' + text.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
+        );
+      } else {
+        alert("Something wrong with API");
+      }
+    },
     extractURL: function(e) {
       var url = prompt("Enter a link to grab the press release from:", "");
       var self = this;
@@ -118,14 +160,19 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
+      var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
       var customTemplates = {
         extract: function(context) {
           return extractButtonTemplate
+        },
+        word: function(context) {
+          return extractWordTemplate
         }
       };
       this.ui.wysihtml5.wysihtml5({
         toolbar: {
-          extract: true
+          extract: true,
+          word: true
         },
         customTemplates: customTemplates,
       });
