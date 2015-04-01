@@ -134,18 +134,20 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
     },
 
     filterUsers: function() {
-      var letters = $("#user-search").val();
-      var pattern = new RegExp(letters,"gi");
-      var viewObj = this;
-      this.children.each(function(view){
-        var name = view.model.attributes.first_name + ' ' + view.model.attributes.last_name;
-        var mail = view.model.attributes.email;
-        if (pattern.test(name) || pattern.test(mail)) {
-          view.$el.show();
-        } else {
-          view.$el.hide();
-        }
-      });
+      if (this.collection.length > 0) {
+        var letters = $("#user-search").val();
+        var pattern = new RegExp(letters,"gi");
+        var viewObj = this;
+        this.children.each(function(view){
+          var name = view.model.attributes.first_name + ' ' + view.model.attributes.last_name;
+          var mail = view.model.attributes.email;
+          if (pattern.test(name) || pattern.test(mail)) {
+            view.$el.show();
+          } else {
+            view.$el.hide();
+          }
+        });
+      }
     },
 
     sendInvite: function(e){
