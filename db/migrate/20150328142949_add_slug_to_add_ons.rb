@@ -2,8 +2,10 @@ class AddSlugToAddOns < ActiveRecord::Migration
   def migrate(direction)
     super
     if direction == :up
-      AddOn.all.each do |a|
-        a.create_slug
+      if defined?(AddOn)
+        AddOn.all.each do |a|
+          a.create_slug
+        end
       end
     end
   end
