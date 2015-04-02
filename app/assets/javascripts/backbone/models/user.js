@@ -1,4 +1,5 @@
 Robin.Models.User = Backbone.Model.extend({
+  url: '/users/info',
   signOut: function(data, options) {    
     var model = this;
     options = {

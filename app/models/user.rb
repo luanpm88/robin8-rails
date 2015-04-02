@@ -64,6 +64,18 @@ class User < ActiveRecord::Base
     is_primary != false
   end
 
+  def newsroom_available_count
+    user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def newsroom_count
+    news_rooms.count
+  end
+
+  def can_create_newsroom
+    newsroom_count < newsroom_available_count
+  end
+
   def active_subscription
     @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions
     @active_s ||= @subscriptions.where("(user_products.expiry is NULL OR user_products.expiry >'#{Time.now.utc}' AND user_products.status ='A') OR (user_products.expiry > '#{Time.now.utc}' AND user_products.status = 'C')").last

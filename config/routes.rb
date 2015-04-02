@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       get 'identities'
+      get 'info'
     end
   end
 
