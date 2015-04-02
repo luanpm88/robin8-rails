@@ -120,7 +120,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       $input = $('#upload');
       
       if (_.last($input[0].files[0].name.split('.')) != 'docx'){
-        alert("Not supported file!");
+        alert("Not supported file! Supported is *.docx");
         $input.replaceWith($input.val('').clone(true));
         return false;
       };
