@@ -85,7 +85,6 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     setCounter: function() {
-      console.log('11111');
       var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).start();
       var sayText = $("#say-something-field");
       var counter = $("#say-counter");
@@ -154,7 +153,6 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
         if (urls != null) {
           $.each(urls, function( index, value ) {
-            console.log('Robin.ShrinkedLink');
             Robin.ShrinkedLink.shrink($.trim(value));
           });
         }

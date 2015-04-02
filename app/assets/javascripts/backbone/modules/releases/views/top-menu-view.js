@@ -125,6 +125,13 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
       var formData = new FormData();
       $input = $('#upload');
+      
+      if (_.last($input[0].files[0].name.split('.')) != 'docx'){
+        alert("Not supported file! Supported is *.docx");
+        $input.replaceWith($input.val('').clone(true));
+        return false;
+      };
+
       formData.append('file', $input[0].files[0]);
        
       $.ajax({
