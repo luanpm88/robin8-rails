@@ -88,6 +88,14 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         view.interval = window.setInterval((function() {
           renderedCheckbox = view.$el.find(".editableform #edit-shrink-links")
           if (renderedCheckbox.length != 0) {
+            
+            // set date to utc format
+            var utcDate = moment.utc(view.model.attributes.scheduled_date).toDate();
+            var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+
+            $('.editableform .edit-datetimepicker').find('input').val(datedate).change();
+            $('.editableform .edit-datetimepicker').datetimepicker();
+
             renderedCheckbox.iCheck({
               checkboxClass: 'icheckbox_square-blue',
               increaseArea: '20%'
@@ -323,13 +331,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, this.socialNetworksBindings);
 
-      // set date to utc format
-      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
-      var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
-
-      $('.edit-datetimepicker').find('input').val(datedate).change();
-      $('.edit-datetimepicker').datetimepicker();
-
       //Counter here
       var selectedNetworks = this.socialNetworks.attributes;
       var limit = this.countLimit(selectedNetworks);
@@ -356,7 +357,15 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date));
       view.model.save(view.model.attributes, {
         success: function(data){
-          view.render();
+          Robin.module("Social").postsCollection.fetch().then(function() {
+            Robin.module("Social").postsView.render();
+          });
+          Robin.module("Social").tomorrowsPostsCollection.fetch().then(function() {
+            Robin.module("Social").tomorrowPostsView.render();
+          });
+          Robin.module("Social").othersPostsCollection.fetch().then(function() {
+            Robin.module("Social").othersPostsView.render();
+          });
         },
         error: function(data){
           console.warn('error', data);
