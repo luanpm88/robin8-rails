@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
   end
 
   def newsroom_available_count
-    user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
+    user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
   end
 
   def newsroom_count
@@ -74,6 +74,18 @@ class User < ActiveRecord::Base
 
   def can_create_newsroom
     newsroom_count < newsroom_available_count
+  end
+
+  def release_available_count
+    user_features.press_release.map(&:max_count).inject{|sum,x| sum + x }
+  end
+
+  def release_count
+    releases.count
+  end
+
+  def can_create_release
+    release_count < release_available_count
   end
 
   def active_subscription
