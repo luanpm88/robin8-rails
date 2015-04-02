@@ -30,7 +30,8 @@ class TextapiController < ApplicationController
   end
 
   def extract
-    response = @client.extract url: params[:url]
+    response = @client.extract html: params[:html] unless params[:html].blank?
+    response = @client.extract url: params[:url] unless params[:url].blank?
 
     respond_to do |format|
       format.json { render json: response }

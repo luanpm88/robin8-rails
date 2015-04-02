@@ -16,6 +16,8 @@ class Release < ActiveRecord::Base
   scope :published, -> { where(is_private: false) }
   
   before_save :pos_tagger, :entities_counter
+  after_create :decrease_feature_number
+  after_destroy :increase_feature_numner
   
   def plain_text
     coder = HTMLEntities.new
@@ -59,4 +61,17 @@ class Release < ActiveRecord::Base
     self.places_count = (response[:entities][:location] || []).size
     self.people_count = (response[:entities][:person] || []).size
   end
+
+  def decrease_feature_number
+    uf = user.user_features.press_release.available.first
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def increase_feature_numner
+    uf = user.user_features.press_release.not_available.first
+    uf.available_count += 1
+    uf.save
+  end
+
 end
