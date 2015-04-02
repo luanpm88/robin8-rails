@@ -17,7 +17,17 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     onRender: function() {
+      Robin.user = new Robin.Models.User();
       var currView = this;
+      Robin.user.fetch({
+        success: function() {
+          if (Robin.user.get('can_create_stream') != true) {
+            currView.$el.find("#add-stream").attr('disabled', 'disabled');
+          } else {
+            currView.$el.find("#add-stream").removeAttr('disabled');
+          }
+        }
+      });
       currView.$el.find("#add-stream").tooltip({title: 'Add Stream', trigger: 'hover', placement: 'left'});
       currView.streamsCollectionView = new Show.StreamsCollectionView({childView: Show.StreamCompositeView});
       currView.streamsRegion.show(currView.streamsCollectionView);
