@@ -30,15 +30,17 @@ class Stream < ActiveRecord::Base
   end
 
   private
-  
+
     def decrease_feature_number
       uf = user.user_features.media_monitoring.available.first
+      return false if uf.blank?
       uf.available_count -= 1
       uf.save
     end
 
     def increase_feature_numner
       uf = user.user_features.media_monitoring.not_available.first
+      return false if uf.blank?
       uf.available_count += 1
       uf.save
     end
