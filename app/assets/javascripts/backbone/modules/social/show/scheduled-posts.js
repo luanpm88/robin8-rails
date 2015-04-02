@@ -1,21 +1,3 @@
-Robin.ShrinkedLink = {
-  shrink : function(url) {
-    BitlyClient.shorten(url, function(data) {
-      var saySomethingContent = $('#say-something-field').val();
-      var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
-      $('#say-something-field').val(result);
-    });
-  },
-
-  unshrink : function(url) {
-    BitlyClient.expand(url, function(data) {
-      var saySomethingContent = $('#say-something-field').val();
-      var result = saySomethingContent.replace(url, _.values(data.results)[0].longUrl);
-      $('#say-something-field').val(result);
-    });
-  },
-}
-
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   
   Show.ScheduledEmptyToday = Backbone.Marionette.ItemView.extend({
@@ -102,6 +84,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
         view.$el.find('.social-networks a').addClass('disabled');
+        view.$el.find("input[type='checkbox']").iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          increaseArea: '20%'
+        });
       });
 
       view.modelBinder.bind(view.model, view.el);
@@ -115,7 +101,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .social-networks .btn': 'enableSocialNetwork',
       'click .edit-social-networks .btn': 'editSocialNetwork',
       'click .edit-post': 'enableEditableMode',
-      'change #edit-shrink-links': 'shrinkLinkProcess',
+      'ifChanged #edit-shrink-links': 'shrinkLinkProcess',
       'keyup #edit-post-textarea' : 'setCounter',
       'focus #edit-post-textarea': 'setCounter',
       'focusout #edit-post-textarea': 'hideCounter'

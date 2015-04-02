@@ -134,7 +134,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             dataType: 'json',
             method: 'POST',
             data: {
-              html: response.responseText
+              html: response.responseText,
             },
             success: function(text) {
               self.parseResponseFromApi(text);
@@ -144,6 +144,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
     },
     parseResponseFromApi: function(text) {
+      var self = this;
       if (text != null) {
         self.model.set('title', text.title);
         var editor = self.ui.wysihtml5.data('wysihtml5').editor;

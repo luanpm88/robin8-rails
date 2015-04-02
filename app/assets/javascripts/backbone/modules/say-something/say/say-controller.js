@@ -7,12 +7,12 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         $.get( "/users/identities", function( data ) {
           Robin.setIdentities(data);        
           
-          var sayView = new Say.SayView();
-          Robin.layouts.main.saySomething.show(sayView);
+          Robin.sayView = new Say.SayView();
+          Robin.layouts.main.saySomething.show(Robin.sayView);
         });
       } else {
-        var sayView = new Say.SayView();
-        Robin.layouts.main.saySomething.show(sayView);
+        Robin.sayView = new Say.SayView();
+        Robin.layouts.main.saySomething.show(Robin.sayView);
       } 
     },
 
