@@ -257,6 +257,15 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
+          Robin.user.fetch({
+            success: function() {
+              if (Robin.user.get('can_create_stream') != true) {
+                curView.$el.find("#add-stream").attr('disabled', 'disabled');
+              } else {
+                curView.$el.find("#add-stream").removeAttr('disabled');
+              }
+            }
+          });
           curView.collection.streamId = response.id;
           curView.collection.fetch({reset: true});
 

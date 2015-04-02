@@ -64,12 +64,14 @@ class Release < ActiveRecord::Base
 
   def decrease_feature_number
     uf = user.user_features.press_release.available.first
+    return false if uf.blank?
     uf.available_count -= 1
     uf.save
   end
 
   def increase_feature_numner
     uf = user.user_features.press_release.not_available.first
+    return false if uf.blank?
     uf.available_count += 1
     uf.save
   end
