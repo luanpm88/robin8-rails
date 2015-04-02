@@ -22,23 +22,23 @@ module BlueSnap
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
     def self.new(request, user, params, product, add_ons=nil,add_ons_hash=nil)
-      begin
+      # begin
         errors = BlueSnap::Shopper.validate_params(params, user)
         if errors.blank?
           shopper = {
               "shopper" => {"web-info" => BlueSnap::Shopper.web_info(request),
                             "shopper-info" => BlueSnap::Shopper.shopper_info(params, user)},
-              "order" => BlueSnap::Shopper.order_info(request, product, add_ons,add_ons_hash)
+              "order" => BlueSnap::Shopper.order_info(request, product, add_ons,add_ons_hash,params[:code],user)
           }
-          placeholder = cart_items(product, add_ons,add_ons_hash)
+          placeholder = cart_items(product, add_ons,add_ons_hash,params[:code],user)
           Request.post(URL, shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new,:skip_types => true, :skip_instruct => true),placeholder)
         else
           return errors, nil
         end
-      rescue Exception => ex
-        Rails.logger.error ex
-        return ["Something is not right with your payment. Please try again"], nil
-      end
+      # rescue Exception => ex
+      #   Rails.logger.error ex
+      #   return ["Something is not right with your payment. Please try again"], nil
+      # end
     end
 
     def self.validate_params(params, user)
@@ -66,26 +66,41 @@ module BlueSnap
       {"web-info" => {"ip" => "127.0.0.1", "remote-host" => "www.robin8.com", "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
     end
 
-    def self.order_info(request, product, add_ons,add_ons_hash)
+    def self.order_info(request, product, add_ons,add_ons_hash,code,user)
       {"ordering-shopper" => ordering_shopper(request),
        "cart" => "PLACEHOLDER",
        "expected-total-price" =>
-           {"amount" => get_expected_total(product,add_ons,add_ons_hash),
+           {"amount" => get_expected_total(product,add_ons,add_ons_hash,code,user),
             "currency" => "USD"}}
     end
 
-    def self.get_expected_total(product,add_ons,add_ons_hash)
-      return product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum
-      #use discount here when required
+    def self.get_expected_total(product,add_ons,add_ons_hash,code,user)
+      discount = Discount.active.where(code: code).last if code.present?
+      discount_amount = 0.0
+      if discount.present? && product.present?
+        discount_amount =  discount.calculate(user,product) if discount.is_global?
+        discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.id)
+        discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.id)
+      end
+      return (product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
     end
 
-    def self.cart_items(product, add_ons,add_ons_hash)
+    def self.cart_items(product, add_ons,add_ons_hash,code,user)
       items = []
       if product.present?
         items <<  {"sku" => {
             "sku_id" => product.sku_id,
             "amount" => product.price},
                    "quantity" => "1"}
+      end
+
+
+      discount = Discount.active.where(code: code).last if code.present?
+      disc_code = ""
+      if discount.present? && product.present?
+       if discount.is_global? || discount.on_user_and_product?(user.id,product.id) || discount.only_on_product?(product.id)
+        disc_code = {"coupons"=>{"coupon"=> discount.code}}.to_xml(root: false,:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","").gsub("<hash>\n","").gsub("\n</hash>\n","")
+       end
       end
 
       (add_ons||[]).each do |a|
@@ -97,9 +112,7 @@ module BlueSnap
             "quantity" => add_ons_hash["#{a.id}"] || 1
         }
       end
-      items.to_xml(root: false,:children=> "cart-item",:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","") #force remove root node as per Bluesnap API ## Use builder to build each node as xml rather then using hash and building xml at end
-      # items.to_xml(root: "cart",:children=> "cart-item",:skip_types => true, :skip_instruct => true)
-      # {"cart-item" => items.map(&:values).flatten}
+      items.to_xml(root: false,:children=> "cart-item",:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","") + disc_code #force remove root node as per Bluesnap API ## Use builder to build each node as xml rather then using hash and building xml at end
     end
 
     def self.web_info(request)
