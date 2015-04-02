@@ -7,7 +7,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       logoRegion: '.logo',
       imagesRegion: '.images_region',
       videosRegion: '.videos_region',
-      filesRegion: '.files_region'
+      filesRegion: '.files_region',
+      addNewsRoom: '#new_newsroom'
     },
     events: {
       'click #new_newsroom': 'openModalDialog',
@@ -15,16 +16,18 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       'click #delete_news_room': 'deleteNewsRoom',
       'click .manage': 'manageUsers'
     },
+
+    templateHelpers: function () {
+      return {
+        items: this.collection,
+      };
+    },
+
     initialize: function(options){
       this.collection.fetch();
       sweetAlertInitialize();
       this.modelBinder = new Backbone.ModelBinder();
       Robin.vent.on("news_room:open_edit_modal", this.openModalDialogEdit, this);
-    },
-    templateHelpers: function () {
-      return {
-        items: this.collection
-      };
     },
     openModalDialog: function(){
       this.model.clear();
@@ -39,6 +42,14 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.$el.find('#newsroom_form').modal({keyboard: false });
     },
     onRender: function(){
+      var $this = this;
+      Robin.user = new Robin.Models.User();
+      Robin.user.fetch({
+        success: function() {
+          var addButtonView = new Newsroom.AddButtonView();
+          $this.addNewsRoom.show(addButtonView);
+        }
+      });
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       this.$el.find("#tagsinput").tagsinput();
@@ -224,6 +235,12 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
               $('body').removeClass('modal-open');
               Robin.module("Newsroom").collection.add(data, {merge: true});
               Robin.module("Newsroom").collection.trigger('reset');
+              Robin.user.fetch({
+                success: function(data) {
+                  var addButtonView = new Newsroom.AddButtonView();
+                  viewObj.addNewsRoom.show(addButtonView);
+                }
+              });
             },
             error: function(data, response){
               viewObj.processErrors(response);
@@ -245,7 +262,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
                   total_count: parseInt(response.xhr.getResponseHeader('Totalcount'),10),
                   total_pages: parseInt(response.xhr.getResponseHeader('Totalpages'),10)
                 });
-              }
+              };
+              Robin.user.fetch({
+                success: function(data) {
+                  var addButtonView = new Newsroom.AddButtonView();
+                  viewObj.addNewsRoom.show(addButtonView);
+                }
+              });
             },
             error: function(data, response){
               viewObj.processErrors(response);
@@ -291,7 +314,13 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
                   Robin.module("Newsroom").controller.paginate(1);
                 }else {
                   Robin.module("Newsroom").controller.paginate(page);
-                }
+                };
+                Robin.user.fetch({
+                  success: function(data) {
+                    var addButtonView = new Newsroom.AddButtonView();
+                    viewObj.addNewsRoom.show(addButtonView);
+                  }
+                });
               },
               error: function(data){
                 console.warn('error', data);
