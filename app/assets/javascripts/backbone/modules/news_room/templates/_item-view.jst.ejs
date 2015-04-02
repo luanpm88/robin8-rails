@@ -4,7 +4,7 @@
       <% if(news_room.logo_url) {%>
         <img class="img-rounded" alt="300x200" src="<%= news_room.logo_url %>">
       <%} else {%>
-        <img class="img-rounded" src="http://placehold.it/340x340">
+        <img class="img-rounded" src="<%= AppAssets.path('newsroom-btn.png') %>">
         <!-- <img alt="300x200" style="width: 100%" src="http://lorempixel.com/400/300/?<%- chance.natural({min: 1, max: 5000}) %>"> -->
       <%}%>
     </div>
@@ -35,7 +35,7 @@
       </div>
       <hr>
       <div class="row" align="center">
-        <div class="col-xs-4"><b>9999</b><br/><small>VIEWS</small></div>
+        <div class="col-xs-4"><b></b><br/><small></small></div>
         <!-- <div class="col-xs-4"><b>9999</b><br/><small>LIKES</small></div> -->
         <div class="col-xs-4"><b><%= news_room.releases_count %></b><br/><small>RELEASES</small></div>
       </div>

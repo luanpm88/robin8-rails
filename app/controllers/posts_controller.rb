@@ -4,6 +4,14 @@ class PostsController < ApplicationController
     render json: current_user.posts.todays.order('scheduled_date desc'), each_serializer: PostSerializer
   end
 
+  def tomorrows
+    render json: current_user.posts.tomorrows.order('scheduled_date desc'), each_serializer: PostSerializer
+  end
+
+  def others
+    render json: current_user.posts.others.order('scheduled_date asc'), each_serializer: PostSerializer
+  end
+
   def new
   end
 

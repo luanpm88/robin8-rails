@@ -1,6 +1,11 @@
 .release-item-text {
-  max-height: 51px;
+  max-height: 44px;
   overflow: hidden;
+}
+
+.release-item-text ol, ul{
+  list-style-position: inside !important;
+  text-align: left;
 }
 
 .pagination .prev, .pagination .next {

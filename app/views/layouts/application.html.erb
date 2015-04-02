@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Robin8</title>
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -28,7 +28,7 @@
   <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
-  <% if signed_in? -%>
+  <% if user_signed_in? -%>
     Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
     <% if (request.subdomain != 'staging' && !request.subdomain.blank?) %>
       Robin.publicPages = true
@@ -48,7 +48,7 @@
 </script>
 
 <!-- load bitly javascript sdk -->
-<script type="text/javascript" src="http://bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">
+<script type="text/javascript" src="//bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">
 </script>
 <!-- end load bitly javascript sdk -->
 <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>

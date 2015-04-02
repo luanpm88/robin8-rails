@@ -4,6 +4,9 @@ class ReleasesController < ApplicationController
 
   def index
     releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
+    unless params[:for_blast].blank?
+      releases = releases.published
+    end
     set_paginate_headers Release, releases.count
 
     render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
@@ -32,6 +35,11 @@ class ReleasesController < ApplicationController
       }
       format.json { render json: Release.where(id: params[:id], is_private: false).first }
     end
+  end
+
+  def extract_from_word
+    d = Docx::Document.open(params[:file].tempfile.path)
+    render json: d.to_html
   end
 
   def update

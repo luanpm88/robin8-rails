@@ -10,12 +10,21 @@
           <hr />
           <div id='presskit'>
             <% @news_room.attachments.each do |attachment| %>
-              <a href="<%= attachment.url  %>" class="<%= attachment.attachment_type == 'image' ? '' : 'not-image'%>" title="<%= attachment.name  %>" data-gallery="">
-                <img src="<%= attachment.get_correct_url  %>">
-                <% if attachment.attachment_type != 'image' %>
-                  <span class='name'> <%= attachment.name %> </span>
-                <% end %>
-              </a>
+              <% if attachment.attachment_type != 'image' || ['tif', 'tiff'].include?(attachment.name.split('.').last) %>
+                <a href="<%= attachment.url  %>" class="not-image" title="<%= attachment.name  %>" data-gallery="">
+                  <div class="presskit-file">
+                    <div class="presskit-file--content">
+                      <%= image_tag asset_path(attachment.get_correct_url) %>
+                      <br>
+                      <span class='name'> <%= attachment.name %> </span>
+                    </div>
+                  </div>
+                </a>
+              <% else %>
+                <a href="<%= attachment.url  %>" title="<%= attachment.name  %>" data-gallery="">
+                  <%= image_tag asset_path(attachment.get_correct_url) %>
+                </a>
+              <%end%>
             <% end %>
 
           </div>
@@ -58,7 +67,7 @@
   </div>
 </div>
 
-<script type="text/javascript">
+ <script type="text/javascript">
   var $container = $('#presskit');
   $container.imagesLoaded( function() {
     $container.masonry({
@@ -70,10 +79,14 @@
 
   document.getElementById('presskit').onclick = function (event) {
     event = event || window.event;
-    var target = event.target || event.srcElement,
-        link = target.src ? target.parentNode : target,
-        options = {index: link, event: event},
-        links = this.getElementsByTagName('a');
+    var target = event.target || event.srcElement;
+    var link = target.src ? target.parentNode : target;
+    if ($(link).hasClass('presskit-file') || $(link).hasClass('presskit-file--content')) {
+      link = $(link).find('img').parents(".not-image")[0];
+    };
+    
+    var options = {index: link, event: event};
+    var links = this.getElementsByTagName('a');
     blueimp.Gallery(links, options);
   };
 

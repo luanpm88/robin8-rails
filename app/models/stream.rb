@@ -8,7 +8,9 @@ class Stream < ActiveRecord::Base
                        uniqueness: { scope: :user_id },
                        allow_nil: true
 
-  after_create :set_position
+  after_create :set_position, :decrease_feature_number
+  after_destroy :increase_feature_numner
+
 
   def set_position
     last_stream = Stream.order('position DESC').first
@@ -26,4 +28,21 @@ class Stream < ActiveRecord::Base
       published_at: sort_column == 'shares_count' ? published_at : nil
     }
   end
+
+  private
+
+    def decrease_feature_number
+      uf = user.user_features.media_monitoring.available.first
+      return false if uf.blank?
+      uf.available_count -= 1
+      uf.save
+    end
+
+    def increase_feature_numner
+      uf = user.user_features.media_monitoring.not_available.first
+      return false if uf.blank?
+      uf.available_count += 1
+      uf.save
+    end
+
 end

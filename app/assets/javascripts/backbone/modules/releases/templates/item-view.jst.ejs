@@ -4,9 +4,12 @@
   <div class="thumbnail" style="padding: 0">
 
     <a href="http://<%- release.news_room.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" target="_blank" class="release-image">
-    <div class="nailthumb-square-340">
-      <img class="img-rounded" src="<%= release.first_src %>" style="width: 340px; height: 340px;">
-    </div>
+      <div class="release-thumbnail-container" style="width: 340px; height: 340px;">
+        <div class="release-dummy"></div>
+        <div class="release-thumbnail-inner">
+          <img class="img-rounded" src="<%= release.first_src %>">
+        </div>
+      </div>
       <% /* 
       <div class="overlay">
         Summary
@@ -36,10 +39,11 @@
       </p>
       <hr>
       <p align="center">
-        <a href="#" class="btn btn-success" role="button" data-toggle="modal" style="margin-left: 5px;" id="start-blast"><i class="fa fa-rocket"></i> SmartRelease</a>
         <% if (release.id && release.news_room_public && !release.is_private) {%>
+            <a href="#" class="btn btn-success" role="button" data-toggle="modal" style="margin-left: 5px;" id="start-blast"><i class="fa fa-rocket"></i> SmartRelease</a>
             <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
+            <a href="#" class="btn btn-success" role="button" data-toggle="modal" style="margin-left: 5px;" disabled='disabled' id="start-blast"><i class="fa fa-rocket"></i> SmartRelease</a>
             <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
           <% } %>
         <button href="#" class="btn btn-default" id="open_edit" style="margin-left: 5px;"><i class="fa fa-pencil"></i> Edit</button>

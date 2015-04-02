@@ -11,21 +11,28 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.model.attributes.thumbnail) {
         first_src = this.model.attributes.thumbnail;
       } else {
-        first_src="http://placehold.it/340x340";
+        first_src = AppAssets.path('release-btn.png');
       }
       this.model.attributes.first_src = first_src;
     },
 
     onShow: function(){
-      $('.nailthumb-square-340').nailthumb({width:340,height:340,method:'resize',fitDirection:'center'});
       var descriptionArea = this.$el.find('.release-title');
       descriptionArea.dotdotdot({
-        ellipsis : '... ',
-        wrap: 'word',
+        ellipsis  : '... ',
+        wrap    : 'word',
         fallbackToLetter: true,
-        after: null,
-        watch: false,
-        tolerance: 0
+        after   : null,
+        watch   : false,
+        height    : null,
+        tolerance : 0,
+        callback  : function( isTruncated, orgContent ) {
+          if (isTruncated) {
+            descriptionArea.tooltip({
+              placement : 'top'
+            });
+          }
+        },
       });
     },
 

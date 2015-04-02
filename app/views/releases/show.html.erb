@@ -3,7 +3,6 @@
     <%= render 'public_news_rooms/sidebar', news_room: @news_room %>
   </div>
   <div id="page-content-wrapper">
-    <h4 style='margin-top: 0px'>Press Releases</h4>
     <div class="row">
       <div class="container-fluid">
         <div class="row">
@@ -20,7 +19,63 @@
                   <%= @release.text.try(:html_safe) %>
                 </div>
               </div>
+              <div>
+                <h1>Attachments</h1>
+                <div id='presskit'>
+                  <% @release.attachments.each do |attachment| %>
+                    <% if attachment.attachment_type != 'image' || ['tif', 'tiff'].include?(attachment.name.split('.').last) %>
+                      <a href="<%= attachment.url  %>" class="not-image" title="<%= attachment.name  %>" data-gallery="">
+                        <div class="presskit-file">
+                          <div class="presskit-file--content">
+                            <%= image_tag asset_path(attachment.get_correct_url) %>
+                            <br>
+                            <span class='name'> <%= attachment.name %> </span>
+                          </div>
+                        </div>
+                      </a>
+                    <% else %>
+                      <a href="<%= attachment.url  %>" title="<%= attachment.name  %>" data-gallery="">
+                        <%= image_tag asset_path(attachment.get_correct_url) %>
+                      </a>
+                    <%end%>
+                  <% end %>
+
+                </div>
+              </div>
               
+            </div>
+            <div id="blueimp-gallery" class="blueimp-gallery" data-use-bootstrap-modal="false">
+              <!-- The container for the modal slides -->
+              <div class="slides"></div>
+              <!-- Controls for the borderless lightbox -->
+              <h3 class="title"></h3>
+              <a class="prev">‹</a>
+              <a class="next">›</a>
+              <a class="close">×</a>
+              <a class="play-pause"></a>
+              <ol class="indicator"></ol>
+              <!-- The modal dialog, which will be used to wrap the lightbox content -->
+              <div class="modal fade">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body next"></div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                      </button>
+                      <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <hr style="margin-bottom: 4px;">
             <%= render 'public_news_rooms/footer' %>
@@ -30,3 +85,27 @@
     </div>
   </div>
 </div>
+ <script type="text/javascript">
+  var $container = $('#presskit');
+  $container.imagesLoaded( function() {
+    $container.masonry({
+      columnWidth: $container.width()/3,
+      gutter: 0,
+      itemSelector: 'a'
+    });
+  });
+
+  document.getElementById('presskit').onclick = function (event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement;
+    var link = target.src ? target.parentNode : target;
+    if ($(link).hasClass('presskit-file') || $(link).hasClass('presskit-file--content')) {
+      link = $(link).find('img').parents(".not-image")[0];
+    };
+    
+    var options = {index: link, event: event};
+    var links = this.getElementsByTagName('a');
+    blueimp.Gallery(links, options);
+  };
+
+</script>

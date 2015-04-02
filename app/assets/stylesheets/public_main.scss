@@ -25,7 +25,10 @@ a {
     color: #006481; 
 }
 
-
+.no-releases {
+    color: grey;
+    font-size: 16px;
+}
 .releases tr {
     border: 0;
 }
@@ -97,14 +100,25 @@ a {
     // border-radius: 5px;
 }
 
-#presskit > a.not-image > img {
-    width: initial;
-    height: initial;
+#presskit > a.not-image  img {
+    margin-bottom: 15px;
 }
 
-#presskit > a.not-image > span.name {
+#presskit > a.not-image span.name {
     color: #9D9D9D;
     font-weight: bold;
+}
+.presskit-file {
+    padding-top: 100%;
+    position: relative;
+}
+.presskit-file--content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
 }
 /* Sidebar */
 #wrapper {
@@ -195,19 +209,18 @@ a {
 .sidebar-nav > li > a:active,
 .sidebar-nav > li > a:focus { 
 }
-.sidebar-nav > li > a.btn {
+.sidebar-nav .public-button-centered a.btn {
     background: none repeat scroll 0 0 #91bc4d;
     border: 0 none;
     border-radius: 10px;
     color: #ffffff;
     font-family: "ProximaNovaSemibold";
-    font-size: 16px;
+    font-size: 15px;
     font-weight: normal;
     height: 44px;
     margin: 0 auto;
     max-width: 200px;
-    padding-left: 12px;
-    padding-top: 9px;
+    padding-top: 11px;
     width: 80%;
 }
 .sidebar-nav > li > a .fa {
@@ -619,6 +632,9 @@ a {
     padding: 0;
     border-radius: 0px;
     box-shadow: 0 0 0;
+}
+.thumbnail.release-item p{ 
+    margin: 0px !important;
 }
 .release-thumbnail-container {
   position: relative;

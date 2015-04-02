@@ -1,6 +1,8 @@
 require 'sidekiq/web'
 require 'sidetiq/web'
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: "users/sessions",
                                     registrations: "users/registrations", passwords: "users/passwords",
@@ -8,25 +10,26 @@ Rails.application.routes.draw do
                                     confirmations: "users/confirmations" }
 
   get 'pricing' => 'pages#pricing'
-  get 'subscribe/:slug' => 'subscriptions#new'
-  post 'subscribe/:slug' => 'subscriptions#new'
-  get 'upgrade/:slug' => 'subscriptions#edit'
+  get 'subscribe/:slug' => 'payments#new'
+  post 'subscribe/:slug' => 'payments#new'
+  get 'upgrade/:slug' => 'payments#edit'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
   get 'users/get_current_user' => 'users#get_current_user'
   get 'users/get_active_subscription' => 'users#get_active_subscription'
+  get 'payments/apply_discount' => 'payments#apply_discount'
   delete '/users/disconnect_social' => 'users#disconnect_social'
   # resources :blue_snap
-  resources :subscriptions do
-    post 'create_subscription', on: :collection
-    post 'update_subscription', on: :collection
-    delete 'destroy_subscription', on: :collection
-  end
+  # resources :payments do
+  #
+  # end
   post '/users/follow' => 'users#follow'
   post '/users/new' => 'users#create'
 
   resources :posts do
     put 'update_social', on: :member
+    get 'tomorrows', on: :collection
+    get 'others', on: :collection
   end
   resources :news_rooms do
     get 'analytics'
@@ -36,10 +39,13 @@ Rails.application.routes.draw do
     get 'presskit'
   end
   resources :industries, only: :index
-  resources :releases
-  resources :users do 
+  resources :releases do
+    post 'extract_from_word', on: :collection
+  end
+  resources :users do
     collection do
       get 'identities'
+      get 'info'
     end
   end
 
@@ -48,10 +54,15 @@ Rails.application.routes.draw do
     get 'stories', on: :member
   end
 
-  resources :packages, only: [:index] do
+  resources :products, only: [:index] do
   end
-  resources :payments, only: :index
-  
+
+  resources :payments do
+    post 'create_subscription', on: :collection
+    post 'update_subscription', on: :collection
+    delete 'destroy_subscription', on: :collection
+  end
+
   resources :media_lists, only: [:index, :create, :show, :destroy]
   resources :contacts, only: [:index, :create, :show]
   resources :pitches, only: [:index, :create, :show]
@@ -64,10 +75,10 @@ Rails.application.routes.draw do
       get 'iptc_categories'
     end
   end
-  
+
   get 'share_by_email/show'
   post 'share_by_email' => 'share_by_email#create'
-  
+
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
   post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'
@@ -76,7 +87,7 @@ Rails.application.routes.draw do
   get 'robin8_api/author_stats', to: 'robin_api#author_stats'
   get 'robin8_api/authors', to: 'robin_api#authors'
   get 'robin8_api/stories', to: 'robin_api#stories'
-  
+
   post 'textapi/classify'
   post 'textapi/concepts'
   post 'textapi/summarize'
@@ -88,7 +99,7 @@ Rails.application.routes.draw do
   end
 
   root 'pages#home'
-  
+
   get '/signup', to: 'pages#signup'
   get '/signin', to: 'pages#signin'
   get '/about', to: 'pages#about'

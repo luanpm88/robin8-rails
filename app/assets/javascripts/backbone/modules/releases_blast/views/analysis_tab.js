@@ -55,18 +55,38 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     makeTopicsEditable: function(){
       var self = this;
       
-      var concepts = _.map(this.model.get("concepts"), function(item){
-        return {
-          id: item.replace(/_/g, ' '),
-          text: item.replace(/_/g, ' ')
-        }
-      });
-      
       this.ui.topicsLink.editable({
         inputclass: 'input-large',
         select2: {
-          tags: concepts,
+          tags: true,
+          ajax: {
+            url: '/autocompletes/topics',
+            dataType: 'json',
+            data: function (term, page) {
+              return { term: term };
+            },
+            results: function (data, page) {
+              var concepts = _.map(data, function(item){
+                return {
+                  id: item.text,
+                  text: item.text
+                }
+              });
+              return { results: concepts };
+            }
+          },
+          initSelection: function(element, callback) {
+            var concepts = _.map(self.model.get("concepts"), function(item){
+              return {
+                id: item.replace(/_/g, ' '),
+                text: item.replace(/_/g, ' ')
+              }
+            });
+      
+            callback(concepts);
+          },
           multiple: true,
+          minimumInputLength: 1,
           placeholder: 'Select a topic',
           createSearchChoice: function () { return null }
         },

@@ -11,6 +11,8 @@ class NewsRoom < ActiveRecord::Base
   has_many :followers, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
   before_create :set_campaign_name
+  after_create :decrease_feature_number
+  after_destroy :increase_feature_numner
 
   validates :company_name, presence: true
   validates :user_id, presence: true
@@ -43,6 +45,20 @@ class NewsRoom < ActiveRecord::Base
   
     def set_campaign_name
       self.campaign_name = self.company_name
+    end
+
+    def decrease_feature_number
+      uf = user.user_features.newsroom.available.first
+      return false if uf.blank?
+      uf.available_count -= 1
+      uf.save
+    end
+
+    def increase_feature_numner
+      uf = user.user_features.newsroom.not_available.first
+      return false if uf.blank?
+      uf.available_count += 1
+      uf.save
     end
     
 end

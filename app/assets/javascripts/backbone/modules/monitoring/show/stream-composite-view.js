@@ -32,6 +32,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     afterFetch: function (e) {
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
+      Robin.cachedStories[this.model.get('id')].rendered = true;
       if (this.collection.length == 0) {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
@@ -105,14 +106,13 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (!this.model.get('id')) {
         this.$el.find('.stream-loading').addClass('hidden');
         this.$el.find('.settings-dialog').removeClass('closed');
-      } else {
-        Robin.cachedStories[this.model.get('id')].rendered = true;
-      }
+      } 
 
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
 
       this.refreshTimeRangeVisibility();
+      this.$el.find("input.select2-input").css('width', '150%')
     },
 
     onAdded: function(story, collection) {
@@ -140,6 +140,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     loadInfo: function(val) {
       var currentModel = this.model;
       var currentValue = '';
+      var currentView = this;
 
       $(this.el).find('#' + val + '-select').select2({
         multiple: true,
@@ -175,24 +176,31 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         },
         minimumInputLength: 1,
       }).on("select2-selecting", function(e) {
-        if (e.object.type == 'keyword' && val == 'topics') {
-          var getKeyword = currentModel.get('keywords') == undefined ? [] : currentModel.get('keywords');;
-          var newValue = {
-            id: e.val,
-            text: e.val,
-            type: 'keyword'
-          };
-          getKeyword.push(newValue);
-          currentModel.set('keywords', getKeyword);
-          e.object.text = e.object.id
+        if ( _.where(currentModel.attributes.topics, e.object).length > 0){
+          e.preventDefault()
+          $.growl("You have already select this item!", {
+            type: "success",
+          });
         } else {
-          var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
-          var newValue = {
-            id: e.val,
-            text: e.object.text
-          };
-          getTopics.push(newValue);
-          currentModel.set(val, getTopics);
+          if (e.object.type == 'keyword' && val == 'topics') {
+            var getKeyword = currentModel.get('keywords') == undefined ? [] : currentModel.get('keywords');;
+            var newValue = {
+              id: e.val,
+              text: e.val,
+              type: 'keyword'
+            };
+            getKeyword.push(newValue);
+            currentModel.set('keywords', getKeyword);
+            e.object.text = e.object.id
+          } else {
+            var getTopics = currentModel.get(val) == undefined ? [] : currentModel.get(val);;
+            var newValue = {
+              id: e.val,
+              text: e.object.text
+            };
+            getTopics.push(newValue);
+            currentModel.set(val, getTopics);
+          }
         }
       }).on("select2-removed", function(e) {
         if (e.choice.type == 'keyword' && val == 'topics') {
@@ -249,6 +257,15 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
+          Robin.user.fetch({
+            success: function() {
+              if (Robin.user.get('can_create_stream') != true) {
+                curView.$el.find("#add-stream").attr('disabled', 'disabled');
+              } else {
+                curView.$el.find("#add-stream").removeAttr('disabled');
+              }
+            }
+          });
           curView.collection.streamId = response.id;
           curView.collection.fetch({reset: true});
 

@@ -13,14 +13,19 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
           id = ( id == undefined ? collection.models[0].get('id') : id );
           $.get('/news_rooms/' + id +'/analytics', function(data){
             mail = data.mail
-            arr = _.map(data.web, function(n){ return [n.table.date, parseInt(n.table.pageViews), parseInt(n.table.sessions)] })
+            arr = _.map(data.web, function(n){
+              var split = n.table.date.match(/.{1,4}/g);
+              var monthDate = split[1].match(/.{1,2}/g);
+              var date = split[0] + '-' + monthDate[0] + '-' + monthDate[1];
+              return [date, parseInt(n.table.pageViews), parseInt(n.table.sessions)]
+            });
             arr = _.union([['Date', 'Sessions', 'Page Views']], arr);
             google.load("visualization", "1", {packages:["corechart"]});
             function drawAreaChart() {
               var data = google.visualization.arrayToDataTable(arr);
 
               var options = {
-                title: 'Sessions and Page Views',
+                title: 'Newsroom and Releases Visits',
                 hAxis: {title: 'Dates',  titleTextStyle: {color: '#333'}},
                 vAxis: {
                   minValue: 0,
@@ -43,7 +48,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 ['Dropped', parseInt(mail.total.dropped), 'red']
               ]);
               var options = {
-                title: 'Email Statistics',
+                title: 'SmartRelease Email Statistics',
                 hAxis: {title: '',  titleTextStyle: {color: '#333'}},
                 vAxis: {
                   minValue: 0,

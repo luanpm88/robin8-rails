@@ -95,6 +95,8 @@ gem 'ejs'
 gem 'countries'
 gem 'whenever'
 gem 'friendly_id'
+
+gem 'docx-html'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -110,6 +112,7 @@ gem 'mailgun-ruby'
 gem 'paperclip', '~> 4.2.1'
 gem 'premailer-rails'
 gem 'hpricot'
+gem 'activeadmin', '~> 1.0.0.pre1'
 
 group :development, :test do
   # Deploy with Capistrano

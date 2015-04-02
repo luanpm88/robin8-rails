@@ -1,28 +1,26 @@
-Robin.ShrinkedLink = {
-  shrink : function(url) {
-    BitlyClient.shorten(url, function(data) {
-      var saySomethingContent = $('#say-something-field').val();
-      var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
-      $('#say-something-field').val(result);
-    });
-  },
-
-  unshrink : function(url) {
-    BitlyClient.expand(url, function(data) {
-      var saySomethingContent = $('#say-something-field').val();
-      var result = saySomethingContent.replace(url, _.values(data.results)[0].longUrl);
-      $('#say-something-field').val(result);
-    });
-  },
-}
-
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   
-  Show.ScheduledEmptyView = Backbone.Marionette.ItemView.extend({
+  Show.ScheduledEmptyToday = Backbone.Marionette.ItemView.extend({
     template: 'modules/social/show/templates/_scheduled-empty',
     tagName: "li",
     onShow: function(){
-      $('#today').hide();
+      this.$el.parent().parent().find('#today').hide();
+    }
+  });
+
+  Show.ScheduledEmptyTomorrow = Backbone.Marionette.ItemView.extend({
+    template: 'modules/social/show/templates/_scheduled-empty',
+    tagName: "li",
+    onShow: function(){
+      this.$el.parent().parent().find('#tomorrow').hide();
+    }
+  });
+
+  Show.ScheduledEmptyOther = Backbone.Marionette.ItemView.extend({
+    template: 'modules/social/show/templates/_scheduled-empty',
+    tagName: "li",
+    onShow: function(){
+      this.$el.parent().parent().find('#others').hide();
     }
   });
 
@@ -42,6 +40,28 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         // google: '.edit-settings-row [name=google]'
       };
       this.progressBar = null;
+      viewObj = this;
+
+      Robin.vent.on("social:networksClicked", function() {
+        if ($('.editable-container').length>0) {
+          Robin.vent.trigger("social:showPosts");
+          swal({
+            title: "Discard all unsaved changes?",
+            text: "You have not finished editing some of your posts. Leaving this view will discard all unsaved changes",
+            type: "error",
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: 'Discard changes',
+            cancelButtonText: 'Continue editing'
+          },
+          function(isConfirm) {
+            if (isConfirm) {
+              $('.editable-cancel').click();
+              Robin.vent.trigger("social:showProfiles");
+            }
+          });
+        }
+      });
     },
 
     onRender: function(){
@@ -64,6 +84,25 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
         view.$el.find('.social-networks a').addClass('disabled');
+        
+        view.interval = window.setInterval((function() {
+          renderedCheckbox = view.$el.find(".editableform #edit-shrink-links")
+          if (renderedCheckbox.length != 0) {
+            
+            // set date to utc format
+            var utcDate = moment.utc(view.model.attributes.scheduled_date).toDate();
+            var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
+
+            $('.editableform .edit-datetimepicker').find('input').val(datedate).change();
+            $('.editableform .edit-datetimepicker').datetimepicker();
+
+            renderedCheckbox.iCheck({
+              checkboxClass: 'icheckbox_square-blue',
+              increaseArea: '20%'
+            });
+            window.clearInterval(view.interval);
+          }
+        }), 50);
       });
 
       view.modelBinder.bind(view.model, view.el);
@@ -77,7 +116,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .social-networks .btn': 'enableSocialNetwork',
       'click .edit-social-networks .btn': 'editSocialNetwork',
       'click .edit-post': 'enableEditableMode',
-      'change #edit-shrink-links': 'shrinkLinkProcess',
+      'ifChanged #edit-shrink-links': 'shrinkLinkProcess',
       'keyup #edit-post-textarea' : 'setCounter',
       'focus #edit-post-textarea': 'setCounter',
       'focusout #edit-post-textarea': 'hideCounter'
@@ -276,8 +315,8 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     editPost: function() {
       var row = this.$el.find('.edit-settings-row').clone();
-      this.$el.find('textarea').parent().append(row);
       row.removeClass('hidden');
+      this.$el.find('textarea').parent().append(row);
       this.$el.find('textarea').attr('name', 'text');
       this.$el.find('textarea').attr('id', 'edit-post-textarea');
       this.$el.find('textarea').width("600px");
@@ -291,13 +330,6 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, this.socialNetworksBindings);
-
-      // set date to utc format
-      var utcDate = moment.utc(this.model.attributes.scheduled_date).toDate();
-      var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
-
-      $('.edit-datetimepicker').find('input').val(datedate).change();
-      $('.edit-datetimepicker').datetimepicker();
 
       //Counter here
       var selectedNetworks = this.socialNetworks.attributes;
@@ -325,7 +357,15 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date));
       view.model.save(view.model.attributes, {
         success: function(data){
-          view.render();
+          Robin.module("Social").postsCollection.fetch().then(function() {
+            Robin.module("Social").postsView.render();
+          });
+          Robin.module("Social").tomorrowsPostsCollection.fetch().then(function() {
+            Robin.module("Social").tomorrowPostsView.render();
+          });
+          Robin.module("Social").othersPostsCollection.fetch().then(function() {
+            Robin.module("Social").othersPostsView.render();
+          });
         },
         error: function(data){
           console.warn('error', data);
@@ -385,13 +425,36 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     }
 
   });
-  
-  Show.ScheduledPostsComposite = Backbone.Marionette.CompositeView.extend({
+
+  Show.GeneralPostsView = Backbone.Marionette.LayoutView.extend({
+    template: 'modules/social/show/templates/scheduled-posts',
+
+    regions: {
+      today: "#today-posts",
+      tomorrow: "#tomorrow-posts",
+      other: "#other-posts",
+    },
+
+    onRender: function() {
+      var currentView = this;
+      currentView.getRegion('today').show(Robin.module("Social").postsView);
+      currentView.getRegion('tomorrow').show(Robin.module("Social").tomorrowPostsView);
+      currentView.getRegion('other').show(Robin.module("Social").othersPostsView);
+    },
+
+  });
+   
+  Show.TodayPostsComposite = Backbone.Marionette.CompositeView.extend({
     collection: Robin.Collections.Posts,
-    template: "modules/social/show/templates/scheduled-posts",
+    template: "modules/social/show/templates/todays",
     childView: Show.ScheduledPost,
     childViewContainer: "ul",
-    emptyView: Show.ScheduledEmptyView,
+    emptyView: Show.ScheduledEmptyToday,
+    
+    collectionEvents: {
+      "sync": "sync"
+    },
+
     initialize: function() {
       this.collection.fetch({
         success: function(model, response){
@@ -402,6 +465,68 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
+    sync: function() {
+      if (this.collection.length > 0) {
+        this.$el.parent().find("#today").show();
+      }
+    },
+
+  });
+
+  Show.TomorrowPostsComposite = Backbone.Marionette.CompositeView.extend({
+    collection: Robin.Collections.Posts,
+    template: "modules/social/show/templates/tomorrows",
+    childView: Show.ScheduledPost,
+    childViewContainer: "ul",
+    emptyView: Show.ScheduledEmptyTomorrow,
+
+    collectionEvents: {
+      "sync": "sync"
+    },
+
+    initialize: function() {
+      this.collection.fetch({
+        success: function(model, response){
+          if (model.length===0) {
+            this.parent.$("#tomorrow").hide().prev().show();
+          }
+        }
+      });
+    },
+
+    sync: function() {
+      if (this.collection.length > 0) {
+        this.$el.parent().find("#tomorrow").show();
+      }
+    },
+  });
+
+  Show.OthersPostsComposite = Backbone.Marionette.CompositeView.extend({
+    collection: Robin.Collections.Posts,
+    template: "modules/social/show/templates/others",
+    childView: Show.ScheduledPost,
+    childViewContainer: "ul",
+    emptyView: Show.ScheduledEmptyOther,
+
+      collectionEvents: {
+      "sync": "sync"
+    },
+
+    initialize: function() {
+      this.collection.fetch({
+        success: function(model, response){
+          if (model.length===0) {
+            this.parent.$("#others").hide().prev().show();
+          }
+        }
+      });
+    },
+
+    sync: function() {
+      if (this.collection.length > 0) {
+        this.$el.parent().find("#others").show();
+      }
+    },
   });
 
 });

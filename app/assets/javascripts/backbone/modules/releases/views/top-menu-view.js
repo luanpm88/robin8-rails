@@ -8,7 +8,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       imagesRegion: '.images_region',
       videosRegion: '.videos_region',
       filesRegion: '.files_region',
-      characteristicsRegion: '#release-characteristics'
+      characteristicsRegion: '#release-characteristics',
+      addRelease: '#new_release'
     },
     ui: {
       wysihtml5:        'textarea.wysihtml5',
@@ -21,7 +22,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #delete_release': 'deleteRelease',
       'click #extract_url': 'extractURL',
       'click #highlight_textarea': 'highlightReleaseText',
-      'click #smart-release': 'startSmartRelease'
+      'click #smart-release': 'startSmartRelease',
+      'change #upload': 'uploadWord'
     },
     highlightReleaseText: function(e) {
       e.preventDefault();
@@ -79,8 +81,33 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       };
     },
     startSmartRelease: function(options){
-      Robin.releaseForBlast = this.model.get('id');
-      Backbone.history.navigate('robin8', {trigger: true});
+      if (this.form.data('formValidation') == undefined) {
+        this.initFormValidation();
+      }
+      var viewObj = this;
+      this.modelBinder.copyViewValuesToModel();
+      var iframe = document.getElementsByClassName("wysihtml5-sandbox");
+      if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
+        this.model.set('text', $(iframe).contents().find('body').html());
+      };
+      this.form.data('formValidation').validate();
+      if (this.form.data('formValidation').isValid()) {
+        this.model.save(this.model.attributes, {
+          success: function(model, data, response){
+            Robin.user.fetch({
+              success: function() {
+                var addButtonView = new Releases.AddButtonView();
+                viewObj.addRelease.show(addButtonView);
+              }
+            });
+            Robin.releaseForBlast = viewObj.model.get('id');
+            Backbone.history.navigate('robin8', {trigger: true});
+          },
+          error: function(data, response){
+            viewObj.processErrors(response);
+          }
+        });
+      }
     },
     openModalDialog: function(){
       this.model.clear();
@@ -92,6 +119,55 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.model.set(data.toJSON().release);
       this.render();
       this.$el.find('#release_form').modal({ keyboard: false });
+    },
+    uploadWord: function(changeEvent) {
+      var self = this;
+
+      var formData = new FormData();
+      $input = $('#upload');
+      
+      if (_.last($input[0].files[0].name.split('.')) != 'docx'){
+        alert("Not supported file! Supported is *.docx");
+        $input.replaceWith($input.val('').clone(true));
+        return false;
+      };
+
+      formData.append('file', $input[0].files[0]);
+       
+      $.ajax({
+        url: "/releases/extract_from_word",
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+        type: 'POST',
+        complete: function(response) {
+          $.ajax({
+            url: 'textapi/extract',
+            dataType: 'json',
+            method: 'POST',
+            data: {
+              html: response.responseText,
+            },
+            success: function(text) {
+              self.parseResponseFromApi(text);
+            }
+          });
+        }
+      });
+    },
+    parseResponseFromApi: function(text) {
+      var self = this;
+      if (text != null) {
+        self.model.set('title', text.title);
+        var editor = self.ui.wysihtml5.data('wysihtml5').editor;
+        editor.setValue(
+          '<p>' + text.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
+        );
+      } else {
+        alert("Something wrong with API");
+      }
     },
     extractURL: function(e) {
       var url = prompt("Enter a link to grab the press release from:", "");
@@ -115,21 +191,33 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       }
     },
     onRender: function(){
+      var self = this;
+      Robin.user = new Robin.Models.User();
+      Robin.user.fetch({
+        success: function() {
+          var addButtonView = new Releases.AddButtonView();
+          self.addRelease.show(addButtonView);
+        }
+      });
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
+      var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
       var customTemplates = {
         extract: function(context) {
           return extractButtonTemplate
+        },
+        word: function(context) {
+          return extractWordTemplate
         }
       };
       this.ui.wysihtml5.wysihtml5({
         toolbar: {
-          extract: true
+          extract: true,
+          word: true
         },
         customTemplates: customTemplates,
       });
-      var self = this;
       this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
       this.editor.on('load', function() {
         self.updateStats();
@@ -143,6 +231,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.$el.find('#release_form').modal({keyboard: false });
         Robin.newReleaseFromDashboard = false;
       }
+      this.$el.find("input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
     },
     initLogoView: function(){
       this.logoRegion.show(new Robin.Views.LogoView({
@@ -235,6 +327,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
+              Robin.user.fetch({
+                success: function() {
+                  var addButtonView = new Releases.AddButtonView();
+                  viewObj.addRelease.show(addButtonView);
+                }
+              });
               viewObj.$el.find('#release_form').modal('hide');
               $('body').removeClass('modal-open');
               Robin.module("Releases").collection.add(data, {merge: true});
@@ -247,6 +345,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         }else{
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
+              Robin.user.fetch({
+                success: function() {
+                  var addButtonView = new Releases.AddButtonView();
+                  viewObj.addRelease.show(addButtonView);
+                }
+              });
               viewObj.$el.find('#release_form').modal('hide');
               $('body').removeClass('modal-open');
               if (Robin.module("Releases").controller.filterCriteria.page == 1) {
@@ -291,6 +395,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         if (isConfirm) {
           viewObj.model.destroy({
             success: function(model, response){
+              Robin.user.fetch({
+                success: function() {
+                  var addButtonView = new Releases.AddButtonView();
+                  viewObj.addRelease.show(addButtonView);
+                }
+              });
               viewObj.$el.find('#release_form').modal('hide');
               var page = Robin.module("Releases").controller.filterCriteria.page;
               if(Robin.module("Releases").collection.length == 1 && page > 1 || page == 1) {

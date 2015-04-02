@@ -86,6 +86,17 @@ a {
 
 
 
+.btn-default.btn-orange{
+    background-color: #e76e15;
+    color: #ffffff;
+        border-color: #e76e15 !important;
+}
+.btn-default.btn-blue{
+    background-color: #006481;
+    color: #ffffff;
+        border-color: #006481 !important;
+}
+
 .nopadding {
   padding: 0 !important;
   margin: 0 !important;
@@ -489,7 +500,6 @@ a {
 }
 .stream-settings {
   width: 94%;
-  height: 262px;
   background-color: rgba(40,40,40,0.8);
   position: absolute;
   top: 35px;
@@ -497,9 +507,6 @@ a {
   padding: 10px;
   border-radius: 0 0 4px 4px;
   z-index: 2;
-}
-.stream-settings.expand {
-  height: 337px;
 }
 .stream-settings form {
   color: #fff;
@@ -510,7 +517,6 @@ a {
 }
 .slider {
   overflow-y: hidden;
-  max-height: 500px; /* approximate max height */
 
   transition-property: all;
   transition-duration: .5s;
@@ -687,6 +693,13 @@ nav{text-align: center;}
   height: 40px !important;
   overflow: hidden;
 }
+.release-title ol, ul{
+  list-style-position: inside !important;
+  text-align: left;
+}
+.release-title p{
+  margin: 0px !important;
+}
 
 #social-scheduled .list-group-item .btn {
   margin-left: 2px;
@@ -727,6 +740,35 @@ nav{text-align: center;}
 .release-item .thumbnail {
     border: medium none;
     box-shadow: none;
+}
+.release-thumbnail-container {
+  position: relative;
+  width: 340px;
+}
+.release-dummy {
+   padding-top: 100%; /* forces 1:1 aspect ratio */
+}
+.release-thumbnail-inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align:center;
+  font: 0/0 a;
+}
+.release-thumbnail-inner:before {
+  content: ' ';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+.release-thumbnail-inner img {
+  border-radius: 4px;
+  vertical-align: middle;
+  display: inline-block;
+  max-width: 100%;
+  max-height: 100%;
 }
 .release-item .caption{
   padding: 9px 0;
@@ -1543,15 +1585,17 @@ input.form-control[type="file"] {
 }
 .billing-current-plan {
   position: relative;
-  &:before {
-    display: block;
-    content: '';
-    width: 1px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: -15px;
-    background: #c3c3c3;
+  @media (min-width: 992px) {
+    &:before {
+      display: block;
+      content: '';
+      width: 1px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: -15px;
+      background: #c3c3c3;
+    }
   }
   .btn {
     width: 100%;

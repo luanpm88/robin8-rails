@@ -20,13 +20,12 @@
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    Hello <%=@subscription.user.name.humanize%>,
-                    <!--<h1>$33.98 Paid</h1>-->
+                    Hello <%=@user.name.humanize%>,
                   </td>
                 </tr>
                 <tr>
                   <td class="content-block">
-                    You have been successfully subscribed to our <b><%=@subscription.package.name%></b> package. Details are as follows.
+                    Your have successfully purchased the following add-ons. Details are as follows.
                     <h2></h2>
                   </td>
                 </tr>
@@ -34,26 +33,26 @@
                   <td class="content-block">
                     <table class="invoice">
                       <tr>
-                        <td>Invoice #<%=@subscription.id%><br><%=@subscription.created_at.strftime("%d-%m-%Y %I:%M%p")%></td>
+                        <td>Payment Detail  - <%=Time.now.utc.strftime("%d-%m-%Y %I:%M%p")%></td>
                       </tr>
                       <tr>
                         <td>
                           <table class="invoice-items" cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td><%=@subscription.package.name%></td>
-                              <td class="alignright">$ <%=@subscription.package.price%></td>
-                            </tr>
-                            <!--<tr>-->
-                            <!--<td>Item 1</td>-->
-                            <!--<td class="alignright">$ 9.99</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                            <!--<td>Item 2</td>-->
-                            <!--<td class="alignright">$ 4.00</td>-->
-                            <!--</tr>-->
+                            <%total = 0.0%>
+                            <%@add_ons.each do |a|%>
+                                <tr>
+                                  <td width="40%"><%=a.name%></td>
+                                  <td width="5%"><%=@add_on_hash["#{a.id}"]%> </td>
+                                  <td width="20%">$<%=a.price%>  </td>
+                                  <td width="35%">$ <%= price = a.price *  (@add_on_hash["#{a.id}"]).to_i%></td>
+                                  <%total += price%>
+                                </tr>
+                            <%end%>
                             <tr class="total">
-                              <td class="alignright" width="80%">Total</td>
-                              <td class="alignright">$ <%=@subscription.package.price%></td>
+                              <td></td>
+                              <td></td>
+                              <td class="alignright" width="40%">Total</td>
+                              <td class="alignright" width="40%">$ <%=total%></td>
                             </tr>
                           </table>
                         </td>
@@ -61,11 +60,6 @@
                     </table>
                   </td>
                 </tr>
-                <!--<tr>-->
-                  <!--<td class="content-block">-->
-                    <!---->
-                  <!--</td>-->
-                <!--</tr>-->
               </table>
             </td>
           </tr>

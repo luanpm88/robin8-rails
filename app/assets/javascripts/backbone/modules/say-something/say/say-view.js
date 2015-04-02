@@ -1,9 +1,10 @@
 Robin.ShrinkedLink = {
   shrink : function(url) {
-    BitlyClient.shorten(url, function(data) {
+    BitlyClient.shorten(url, function(data) {      
       var saySomethingContent = $('#say-something-field').val();
       var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
       $('#say-something-field').val(result);
+      Robin.sayView.setCounter();
     });
   },
 
@@ -12,6 +13,7 @@ Robin.ShrinkedLink = {
       var saySomethingContent = $('#say-something-field').val();
       var result = saySomethingContent.replace(url, _.values(data.results)[0].longUrl);
       $('#say-something-field').val(result);
+      Robin.sayView.setCounter();
     });
   },
 }
@@ -23,7 +25,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     events: {
       'focus form input#text-field': 'showContainer',
-      'change #shrink-links': 'shrinkLinkProcess',
+      'ifChanged #shrink-links': 'shrinkLinkProcess',
       'submit form': 'createPost',
       'click a.btn-default': 'showPicker',
       'click a.btn-danger': 'hidePicker',
@@ -54,6 +56,12 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         // google: '[name=google]'
       }
+
+      this.$el.find("input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
+
       this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A', minDate: moment()});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
@@ -145,7 +153,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
         if (urls != null) {
           $.each(urls, function( index, value ) {
-            Robin.ShrinkedLink.shrink($.trim(value))
+            Robin.ShrinkedLink.shrink($.trim(value));
           });
         }
       } else {
@@ -155,7 +163,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         var urls = saySomethingContent.match(pattern)
         if (urls != null) {
           $.each(urls, function( index, value ) {
-            Robin.ShrinkedLink.unshrink($.trim(value))
+            Robin.ShrinkedLink.unshrink($.trim(value));
           });
         }
       }
@@ -163,7 +171,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     checkAbilityPosting: function(){
       var condition1 = $("#say-something-field").val().length == 0;
-      var condition2 = $('.social-networks').find('.btn-primary').length == 0;
+      var condition2 = this.$el.find('.social-networks').find('.btn-primary').length == 0;
 
       if (condition1 || condition2) {
         $('.post-settings').find('input[type=submit]').addClass('disabled');
@@ -196,6 +204,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
           if (Robin.Social._isInitialized){
             Robin.module("Social").postsCollection.fetch();
+            Robin.module("Social").tomorrowsPostsCollection.fetch();
+            Robin.module("Social").othersPostsCollection.fetch();
           }
 
           Robin.SaySomething.Say.Controller.showSayView();

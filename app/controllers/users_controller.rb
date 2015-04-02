@@ -8,6 +8,10 @@ class UsersController < ApplicationController
     render json: current_user.active_subscription
   end
 
+  def info
+    render json: current_user, each_serializer: UserSerializer
+  end
+
   def new
     @user = User.new
     render :layout => "website"

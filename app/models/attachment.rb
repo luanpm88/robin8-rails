@@ -16,11 +16,15 @@ class Attachment < ActiveRecord::Base
   def get_correct_url
     case attachment_type
     when 'image'
-      url
+      if ['tif', 'tiff'].include? name.split('.').last 
+        'file.png'
+      else
+        url
+      end
     when 'video'
-      '/assets/video.png'
+      'video.png'
     when 'file'
-      '/assets/file.png'
+      'file.png'
     end
   end
 end

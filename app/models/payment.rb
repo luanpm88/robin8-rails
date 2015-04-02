@@ -1,34 +1,29 @@
 class Payment < ActiveRecord::Base
+  belongs_to :user_product
+  belongs_to :product
+  validates :user_product_id, :amount, presence: true
+  belongs_to :discount
 
-  belongs_to :package
-  belongs_to :subscription
-  validates :subscription_id, :package, :card_last_four_digits, :card_type, :amount, presence: true
-
-  after_create :notify_user
+  after_create :set_features,:notify_user
 
   def notify_user
-    #send email if required to user about recurring payment
+    UserMailer.payment_confirmation(self).deliver if product.is_package?
   end
 
+  def user
+    self.user_product.user
+  end
 
-  # def self.create_recurring_payments
-  #   Subscription.where("next_charge_date < '#{Date.today}'").each do |s|
-  #     begin
-  #         bss = Blue::Subscription.find(s.bluesnap_subscription_id)
-  #         s.update_attributes(status: bss.status,
-  #                             next_charge_date: Date.parse(bss.next_charge_date))
-  #         Payment.create!(
-  #             subscription_id: s.id,
-  #             package_id: s.package_id,
-  #             amount:  bss.catalog_recurring_charge.amount,
-  #             card_last_four_digits:  bss.credit_card.card_last_four_digits,
-  #             card_type: bss.credit_card.card_type
-  #         )
-  #     rescue Exception => e
-  #       next
-  #     end
-  #   end
-  # end
-
+  def set_features
+    product.features.each do |f|
+      user_product.user.user_features.create!(
+        feature_id: f.id,
+        product_id: product.id, #for book keeping
+        max_count: product.product_features.where(feature_id: f.id).first.quota,
+        available_count: product.product_features.where(feature_id: f.id).first.quota,
+        reset_at: product.product_features.where(feature_id: f.id).first.reset_at #use -ve .. i.e total -=1 And add priority i.e which is used before the other
+      )
+    end
+  end
 
 end
