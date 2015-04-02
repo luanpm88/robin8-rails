@@ -5,11 +5,10 @@ class UserProduct < ActiveRecord::Base
 
   validates :user,:product, :bluesnap_shopper_id, presence: true
 
-  after_create :notify_user,:create_payment
+  after_create :create_payment
   before_update :normalize_features
 
   def normalize_features #has already paid for previous month so just add more features, he will be charged next month for it accordingly.
-    puts "HELLOO:#{product_id_was} AND #{product_id} *********************************"
     if !product_id_was.blank? && product_id_was.to_i != product_id.to_i
       product.features.each do |f|
         user.user_features.create!(
@@ -21,10 +20,6 @@ class UserProduct < ActiveRecord::Base
         )
       end
     end
-  end
-
-  def notify_user
-    # UserMailer.successfull_subscription(self).deliver if product.is_package?
   end
 
   def as_json(options={})
@@ -50,6 +45,8 @@ class UserProduct < ActiveRecord::Base
 
   def create_payment
     bluesnap_order = Blue::Order.find(bluesnap_order_id)
+    discount = Discount.where(code: bluesnap_order.cart.coupons.coupon).first if bluesnap_order && bluesnap_order.cart && bluesnap_order.cart.try(:coupons).present?
+    recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.price
     if product.is_package? || product.is_recurring?
       bluesnap_subscription = ''
       begin
@@ -63,13 +60,16 @@ class UserProduct < ActiveRecord::Base
         if bluesnap_subscription.present?
           update_attributes({bluesnap_subscription_id: bluesnap_subscription.subscription_id ,
                              status: bluesnap_subscription.status,
-                             next_charge_date: Date.parse(bluesnap_subscription.next_charge_date)})
+                             next_charge_date: Date.parse(bluesnap_subscription.next_charge_date),
+                             recurring_amount: recurring_amount
+                             })
 
           payment = payments.create(
               product_id: product_id, #need in for bookeeping if user changes package
-              amount:  bluesnap_subscription.catalog_recurring_charge.amount,
-              card_last_four_digits:  bluesnap_subscription.credit_card.card_last_four_digits,
-              card_type: bluesnap_subscription.credit_card.card_type
+              amount:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
+              card_last_four_digits:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits,
+              card_type: bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type,
+              discount_id: discount.present? ?  discount.id : nil
           )
           return payment
         end
@@ -78,10 +78,11 @@ class UserProduct < ActiveRecord::Base
       end
     else
       payments.create(
-          amount:  product.price,
+          amount: product.price, #bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
           product_id: product_id,
           card_last_four_digits:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits,
-          card_type: bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type
+          card_type:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits #,
+          # discount_id: discount.present? ?  discount.id : nil
       )
     end
   end

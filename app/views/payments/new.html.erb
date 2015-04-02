@@ -84,26 +84,27 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="hide-for-small medium-7 columns"> &nbsp;
-          </div>
-          <div class="small-12 medium-3 columns">
-            <label>
-              <input type="text" placeholder="Promo Code" name="promo_code" id="promo_code" aria-invalid="false">
-            </label>
-          </div>
+        <%if @product.present?%>
+            <div class="row">
+              <div class="hide-for-small medium-7 columns"> &nbsp;
+              </div>
+              <div class="small-12 medium-3 columns">
+                <label>
+                  <input type="text" placeholder="Promo Code" name="code" id="promo_code" aria-invalid="false" value="<%=@discount.code if @discount.present?%>">
+                </label>
+              </div>
 
-          <div class="small-12 medium-2 columns">
-            <label>
-              <input type="button" value="Apply Code" onclick="applyDiscount();" name="update">
-            </label>
-          </div>
+              <div class="small-12 medium-2 columns">
+                <label>
+                  <input type="button" value="Apply Code" onclick="applyDiscount();" name="update">
+                </label>
+              </div>
 
-          <div class="small-5 columns right">
-            <p id="discount_response" style="color:#00556C;margin-top:0px;"></p>
-          </div>
-
-        </div>
+              <div class="small-5 columns right">
+                <p id="discount_response" style="margin-top:0px;"></p>
+              </div>
+            </div>
+        <%end%>
 
         <div class="alert alert-danger">
           <ul style="list-style:none;text-align:center;">
@@ -290,10 +291,28 @@
 
   <script>
       $.validate();
-
+      originalAmount =  getTotal();
+      <%if @discount.present?%>
+      applyDiscount();
+      <%end%>
       function applyDiscount(){
           if($("#promo_code").val()!=''){
-              $('#discount_response').html("Discount code is not valid or expired")
+              updateTotal(originalAmount);
+              $('#discount_response').html("");
+              $.ajax({
+                  url: "/payments/apply_discount?code="+$("#promo_code").val()+"&product_id="+'<%=@product.try(:id) %>'
+              })
+                      .done(function( amount ) {
+                          if ( amount != '' ) {
+                              subAmount(parseInt(amount));
+                              $('#discount_response').html("Discount successfully applied to your account");
+                              $('#discount_response').css("color","#02BA64");
+                          }
+                          else{
+                              $('#discount_response').html("Discount code is not valid or expired");
+                              $('#discount_response').css("color","#FF6301");
+                          }
+                      });
           }
       }
 

@@ -2,8 +2,13 @@ class Payment < ActiveRecord::Base
   belongs_to :user_product
   belongs_to :product
   validates :user_product_id, :amount, presence: true
+  belongs_to :discount
 
-  after_create :set_features
+  after_create :set_features,:notify_user
+
+  def notify_user
+    UserMailer.payment_confirmation(self).deliver if product.is_package?
+  end
 
   def user
     self.user_product.user
