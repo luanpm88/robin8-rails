@@ -7,14 +7,13 @@ class PaymentsController < ApplicationController
   before_filter :validate_subscription,:only=>[:new]
 
   def apply_discount
-    # discount = Discount.active.where(code: params[:code])
-    # if discount.present?
-      #apply if discount.is_global?
-      #apply if discount.on_user?(current_user.id)
-      #apply if discount.on_product?(params[:product_id])
-    # else
-    #   render :text => "Code invalid or has already expired"
-    # end
+    discount = Discount.active.where(code: params[:code]).last
+    if discount.present?
+      return render :text => discount.calculate(current_user,Product.where(id: params[:product_id]).first) if discount.is_global?
+      return render :text => discount.calculate(current_user,Product.where(id: params[:product_id]).first) if discount.on_user_and_product?(current_user.id,params[:product_id])
+      return render :text => discount.calculate(current_user,Product.where(id: params[:product_id]).first) if discount.only_on_product?(params[:product_id])
+    end
+    render :text => ""
   end
 
   def new
@@ -26,25 +25,24 @@ class PaymentsController < ApplicationController
     errors,resp = BlueSnap::Shopper.new(request, current_user, params, @product,@add_ons,@add_on_hash)
     @payment = Payment.new
     if errors.blank?
-      # begin
-      current_user.user_products.create!(
-          product_id: @product.id,
-          bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
-          recurring_amount: @product.price,
-          bluesnap_order_id: resp[:batch_order][:order][:order_id]
-      ) if @product.present?
+      begin
+        current_user.user_products.create!(
+            product_id: @product.id,
+            bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
+            bluesnap_order_id: resp[:batch_order][:order][:order_id]
+        ) if @product.present?
 
-      @add_ons.each do |add_on|
-        @add_on_hash["#{add_on.id}"].to_i.times{
-          current_user.user_products.create!(product_id: add_on.id,
-                                             bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
-                                             bluesnap_order_id: resp[:batch_order][:order][:order_id])
-        }
-      end if @add_ons.present?
-      # UserMailer.add_ons_payment_confirmation(@add_ons,current_user,@add_on_hash).deliver if @add_ons.present?
-      # rescue Exception=> ex
-      #   flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
-      # end
+        @add_ons.each do |add_on|
+          @add_on_hash["#{add_on.id}"].to_i.times{
+            current_user.user_products.create!(product_id: add_on.id,
+                                               bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
+                                               bluesnap_order_id: resp[:batch_order][:order][:order_id])
+          }
+        end if @add_ons.present?
+        UserMailer.add_ons_payment_confirmation(@add_ons,current_user,@add_on_hash).deliver if @add_ons.present?
+      rescue Exception=> ex
+        flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
+      end
       return redirect_to "/payment-confirmation"
 
     else
@@ -152,6 +150,7 @@ class PaymentsController < ApplicationController
 
   def require_package
     @product = Product.where(slug: params[:slug]).last
+    @discount = Discount.active.where(code: params[:code]).first if params[:code].present?
     if params[:add_ons]
       @add_on_hash = params[:add_ons]
       ids = []

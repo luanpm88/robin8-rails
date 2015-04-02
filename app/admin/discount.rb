@@ -1,5 +1,5 @@
 ActiveAdmin.register Discount do
-  permit_params :code , :description,:percentage,:expiry,user_discounts_attributes: [:user_id,:discount_id,:_destroy],product_discounts_attributes: [:discount_id,:product_id,:_destroy]
+  permit_params :code , :description,:percentage,:max_count,:is_recurring ,:expiry,user_discounts_attributes: [:user_id,:discount_id,:_destroy],product_discounts_attributes: [:discount_id,:product_id,:_destroy]
 
   member_action :activate, method: :put do
     d = Discount.find(params[:id])
@@ -26,7 +26,9 @@ ActiveAdmin.register Discount do
       f.input :code,:hint => "Match this code to Bluesnap Code exactly"
       f.input :description
       f.input :percentage, :hint => "How much % should be off"
+      f.input :max_count,:hint => "How many times can it be redeemed?"
       f.input :expiry,:hint => "When to expire the the discount code?"
+      f.input :is_recurring,:hint => "Will it be applied to recurring charges ?"
     end
 
     f.inputs "On Products * If left empty, will be available to all products" do
