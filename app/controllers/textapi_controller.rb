@@ -30,7 +30,7 @@ class TextapiController < ApplicationController
   end
 
   def extract
-    response = @client.extract url: params[:url]
+    response = @client.extract url: params[:url], html: params[:html]
 
     respond_to do |format|
       format.json { render json: response }

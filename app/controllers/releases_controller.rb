@@ -37,6 +37,11 @@ class ReleasesController < ApplicationController
     end
   end
 
+  def extract_from_word
+    d = Docx::Document.open(params[:file].tempfile.path)
+    render json: d.to_html
+  end
+
   def update
     ["iptc_categories", "concepts", "hashtags", "summaries"].each do |item|
       params["release"][item] = params["release"][item].to_json

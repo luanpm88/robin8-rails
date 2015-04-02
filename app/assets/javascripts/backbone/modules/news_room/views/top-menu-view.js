@@ -58,10 +58,6 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       });
       this.initLogoView();
       this.initMediaTab();
-      this.$el.find("input[type='checkbox']").iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        increaseArea: '20%'
-      });
       if (Robin.newNewsroomFromDashboard) {
         var view = this;
         var selectIndustries = view.$el.find('#industries');
@@ -74,6 +70,10 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
           Robin.newNewsroomFromDashboard = false;
         });
       }
+      this.$el.find("input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
     },
     onShow: function(){
       if (Robin.currentUser.attributes.is_primary == false){
@@ -223,7 +223,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     saveNewsRoom: function(e){
       if (this.form.data('formValidation') == undefined) {
         this.initFormValidation();
-      }
+      };
+
+      this.modelBinder.copyViewValuesToModel();
 
       var viewObj = this;
       this.form.data('formValidation').validate();

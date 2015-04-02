@@ -1,9 +1,10 @@
 Robin.ShrinkedLink = {
   shrink : function(url) {
-    BitlyClient.shorten(url, function(data) {
+    BitlyClient.shorten(url, function(data) {      
       var saySomethingContent = $('#say-something-field').val();
       var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
       $('#say-something-field').val(result);
+      Robin.sayView.setCounter();
     });
   },
 
@@ -12,6 +13,7 @@ Robin.ShrinkedLink = {
       var saySomethingContent = $('#say-something-field').val();
       var result = saySomethingContent.replace(url, _.values(data.results)[0].longUrl);
       $('#say-something-field').val(result);
+      Robin.sayView.setCounter();
     });
   },
 }
@@ -23,7 +25,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     events: {
       'focus form input#text-field': 'showContainer',
-      'change #shrink-links': 'shrinkLinkProcess',
+      'ifChanged #shrink-links': 'shrinkLinkProcess',
       'submit form': 'createPost',
       'click a.btn-default': 'showPicker',
       'click a.btn-danger': 'hidePicker',
@@ -54,6 +56,12 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         linkedin: '[name=linkedin]',
         // google: '[name=google]'
       }
+
+      this.$el.find("input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
+
       this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A', minDate: moment()});
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
@@ -77,6 +85,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     setCounter: function() {
+      console.log('11111');
       var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).start();
       var sayText = $("#say-something-field");
       var counter = $("#say-counter");
@@ -145,7 +154,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
         if (urls != null) {
           $.each(urls, function( index, value ) {
-            Robin.ShrinkedLink.shrink($.trim(value))
+            console.log('Robin.ShrinkedLink');
+            Robin.ShrinkedLink.shrink($.trim(value));
           });
         }
       } else {
@@ -155,7 +165,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         var urls = saySomethingContent.match(pattern)
         if (urls != null) {
           $.each(urls, function( index, value ) {
-            Robin.ShrinkedLink.unshrink($.trim(value))
+            Robin.ShrinkedLink.unshrink($.trim(value));
           });
         }
       }

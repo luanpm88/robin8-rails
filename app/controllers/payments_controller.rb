@@ -6,6 +6,17 @@ class PaymentsController < ApplicationController
   before_filter :validate_upgrade,:only => [:edit,:update]
   before_filter :validate_subscription,:only=>[:new]
 
+  def apply_discount
+    # discount = Discount.active.where(code: params[:code])
+    # if discount.present?
+      #apply if discount.is_global?
+      #apply if discount.on_user?(current_user.id)
+      #apply if discount.on_product?(params[:product_id])
+    # else
+    #   render :text => "Code invalid or has already expired"
+    # end
+  end
+
   def new
     @payment = Payment.new
     render :layout => "website"
