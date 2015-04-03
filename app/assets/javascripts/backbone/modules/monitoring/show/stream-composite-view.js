@@ -29,10 +29,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
-    afterFetch: function (e) {
+    afterFetch: function (e) {      
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
-      Robin.cachedStories[this.model.get('id')].rendered = true;
       if (this.collection.length == 0) {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
@@ -102,9 +101,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (Robin.cachedStories[this.model.get('id')] != undefined) {
         if (Robin.cachedStories[this.model.get('id')].length > 0){
           this.$el.find('.stream-loading').addClass('hidden');
-        } else if (Robin.cachedStories[this.model.get('id')].length == 0 && Robin.cachedStories[this.model.get('id')].rendered) {
-          this.$el.find('.stream-loading').addClass('hidden');
-          this.$el.find('.empty-stream').removeClass('hidden');
         };
       }
 
@@ -328,6 +324,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       curView.$el.find('.stream-loading').removeClass('hidden');
       curView.$el.find('.stream-body').addClass('opacity-02');
+      curView.$el.find('.empty-stream').addClass('hidden');
       curView.needOpacity = true;
       $(this.el).find('.settings-dialog').addClass('closed');
     },
