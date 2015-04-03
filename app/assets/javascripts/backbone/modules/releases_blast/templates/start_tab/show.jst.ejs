@@ -2,9 +2,7 @@
   <h5><i class="fa fa-rocket"></i> Welcome to SmartRelease</h5>
   <p>SmartRelease helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign. </p>
   <br>
-  <% if (!Robin.user.get('can_create_smart_release')) {%>
-    <div class="alert alert-danger" role="alert">You can't use smart release feature. Update your add ons</div>
-  <% } %>
+  <div class="alert alert-danger" role="alert" style='display: none;'>You can't use smart release feature. Update your add ons.</div>
   
   <form>
     <div class="form-group">

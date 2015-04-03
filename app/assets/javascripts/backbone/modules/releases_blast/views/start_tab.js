@@ -19,7 +19,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     },
     onRender: function(){
-      
+      if (!Robin.user.get('can_create_smart_release')) {
+        $('.alert-danger').show();
+      }
       var view = this;
       if (Robin.releaseForBlast != undefined && this.collection.length > 0){
         view.analyzeRelease(parseInt(Robin.releaseForBlast));
