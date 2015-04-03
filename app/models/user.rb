@@ -88,6 +88,10 @@ class User < ActiveRecord::Base
     release_count < release_available_count
   end
 
+  def can_create_stream
+    stream_count < stream_available_count
+  end
+
   def stream_available_count
     user_features.media_monitoring.map(&:max_count).inject{|sum,x| sum + x }
   end
@@ -96,8 +100,16 @@ class User < ActiveRecord::Base
     streams.count
   end
 
-  def can_create_stream
-    stream_count < stream_available_count
+  def can_create_smart_release
+    smart_release_count < smart_release_available_count
+  end
+
+  def smart_release_available_count
+    user_features.smart_release.map(&:max_count).inject{|sum,x| sum + x }
+  end
+
+  def smart_release_count
+    pitches.count
   end
 
   def active_subscription

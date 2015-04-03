@@ -19,6 +19,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     },
     onRender: function(){
+      
       var view = this;
       if (Robin.releaseForBlast != undefined && this.collection.length > 0){
         view.analyzeRelease(parseInt(Robin.releaseForBlast));

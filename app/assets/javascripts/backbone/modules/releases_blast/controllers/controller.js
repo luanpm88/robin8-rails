@@ -4,7 +4,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     initialize: function () {
       this.module = Robin.module("ReleasesBlast");
       var self = this;
-      
+      Robin.user = new Robin.Models.User();
+      Robin.user.fetch({
+        success: function() {
+          
+        }
+      })
       Robin.layouts.main.getRegion('content').show(this.module.layout);
       this.module.releasesBlastHeader = new Robin.Models.ReleasesBlastHeader();
       this.module.releasesBlastHeader.set({ level: 1 });
