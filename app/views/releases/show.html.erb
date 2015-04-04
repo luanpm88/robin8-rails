@@ -19,30 +19,31 @@
                   <%= @release.text.try(:html_safe) %>
                 </div>
               </div>
-              <div>
-                <h1>Attachments</h1>
-                <div id='presskit'>
-                  <% @release.attachments.each do |attachment| %>
-                    <% if attachment.attachment_type != 'image' || ['tif', 'tiff'].include?(attachment.name.split('.').last) %>
-                      <a href="<%= attachment.url  %>" class="not-image" title="<%= attachment.name  %>" data-gallery="">
-                        <div class="presskit-file">
-                          <div class="presskit-file--content">
-                            <%= image_tag asset_path(attachment.get_correct_url) %>
-                            <br>
-                            <span class='name'> <%= attachment.name %> </span>
+              <% unless @release.attachments.blank? %>
+                <div>
+                  <h1>Attachments</h1>
+                  <div id='presskit'>
+                    <% @release.attachments.each do |attachment| %>
+                      <% if attachment.attachment_type != 'image' || ['tif', 'tiff'].include?(attachment.name.split('.').last) %>
+                        <a href="<%= attachment.url  %>" class="not-image" title="<%= attachment.name  %>" data-gallery="">
+                          <div class="presskit-file">
+                            <div class="presskit-file--content">
+                              <%= image_tag asset_path(attachment.get_correct_url) %>
+                              <br>
+                              <span class='name'> <%= attachment.name %> </span>
+                            </div>
                           </div>
-                        </div>
-                      </a>
-                    <% else %>
-                      <a href="<%= attachment.url  %>" title="<%= attachment.name  %>" data-gallery="">
-                        <%= image_tag asset_path(attachment.get_correct_url) %>
-                      </a>
-                    <%end%>
-                  <% end %>
+                        </a>
+                      <% else %>
+                        <a href="<%= attachment.url  %>" title="<%= attachment.name  %>" data-gallery="">
+                          <%= image_tag asset_path(attachment.get_correct_url) %>
+                        </a>
+                      <%end%>
+                    <% end %>
 
+                  </div>
                 </div>
-              </div>
-              
+              <% end %>
             </div>
             <div id="blueimp-gallery" class="blueimp-gallery" data-use-bootstrap-modal="false">
               <!-- The container for the modal slides -->
@@ -85,27 +86,29 @@
     </div>
   </div>
 </div>
- <script type="text/javascript">
-  var $container = $('#presskit');
-  $container.imagesLoaded( function() {
-    $container.masonry({
-      columnWidth: $container.width()/3,
-      gutter: 0,
-      itemSelector: 'a'
+<% unless @release.attachments.blank? %>
+  <script type="text/javascript">
+    var $container = $('#presskit');
+    $container.imagesLoaded( function() {
+      $container.masonry({
+        columnWidth: $container.width()/3,
+        gutter: 0,
+        itemSelector: 'a'
+      });
     });
-  });
 
-  document.getElementById('presskit').onclick = function (event) {
-    event = event || window.event;
-    var target = event.target || event.srcElement;
-    var link = target.src ? target.parentNode : target;
-    if ($(link).hasClass('presskit-file') || $(link).hasClass('presskit-file--content')) {
-      link = $(link).find('img').parents(".not-image")[0];
+    document.getElementById('presskit').onclick = function (event) {
+      event = event || window.event;
+      var target = event.target || event.srcElement;
+      var link = target.src ? target.parentNode : target;
+      if ($(link).hasClass('presskit-file') || $(link).hasClass('presskit-file--content')) {
+        link = $(link).find('img').parents(".not-image")[0];
+      };
+      
+      var options = {index: link, event: event};
+      var links = this.getElementsByTagName('a');
+      blueimp.Gallery(links, options);
     };
-    
-    var options = {index: link, event: event};
-    var links = this.getElementsByTagName('a');
-    blueimp.Gallery(links, options);
-  };
 
-</script>
+  </script>
+<% end %>

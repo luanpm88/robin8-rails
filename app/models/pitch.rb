@@ -17,6 +17,9 @@ class Pitch < ActiveRecord::Base
   validates_presence_of :twitter_pitch, if: :twitter_targets?
   validates_presence_of :email_pitch, :email_subject, 
     :email_address, if: :email_targets?
+
+  after_create :decrease_feature_number
+  after_destroy :increase_feature_numner
   
   private
   
@@ -26,5 +29,19 @@ class Pitch < ActiveRecord::Base
   
   def twitter_targets?
     twitter_targets
+  end
+
+  def decrease_feature_number
+    uf = user.user_features.smart_release.available.first
+    return false if uf.blank?
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def increase_feature_numner
+    uf = user.user_features.smart_release.not_available.first
+    return false if uf.blank?
+    uf.available_count += 1
+    uf.save
   end
 end

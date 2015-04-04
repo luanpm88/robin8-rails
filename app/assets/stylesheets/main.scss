@@ -87,14 +87,34 @@ a {
 
 
 .btn-default.btn-orange{
+    margin-bottom: 10px;
+    min-width: 190px;
     background-color: #e76e15;
     color: #ffffff;
         border-color: #e76e15 !important;
 }
 .btn-default.btn-blue{
+    margin-bottom: 10px;
+    min-width: 190px;
     background-color: #006481;
     color: #ffffff;
         border-color: #006481 !important;
+}
+
+.btn-default.btn-green{
+    margin-bottom: 10px;
+    min-width: 190px;
+    background-color: #ade15a;
+    color: #ffffff;
+        border-color: #ade15a !important;
+}
+
+.btn-default.btn-blue2{
+    margin-bottom: 10px;
+    min-width: 190px;
+    background-color: #3c9eb6 ;
+    color: #ffffff;
+        border-color: #3c9eb6  !important;
 }
 
 .nopadding {
@@ -733,7 +753,7 @@ nav{text-align: center;}
 }
 .releases-view .release-item{
   float: left;
-  width: 360px;
+  width: 355px;
   padding-left: 15px;
   margin-bottom: 30px;
 }

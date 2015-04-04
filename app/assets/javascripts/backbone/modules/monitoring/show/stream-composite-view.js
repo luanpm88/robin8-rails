@@ -29,10 +29,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
-    afterFetch: function (e) {
+    afterFetch: function (e) {      
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
-      Robin.cachedStories[this.model.get('id')].rendered = true;
       if (this.collection.length == 0) {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
@@ -82,6 +81,16 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     onRender: function() {
+      var curView = this;
+      Robin.user.fetch({
+        success: function() {
+          if (Robin.user.get('can_create_stream') != true) {
+            curView.$el.find("#add-stream").attr('disabled', 'disabled');
+          } else {
+            curView.$el.find("#add-stream").removeAttr('disabled');
+          }
+        }
+      });
       this.$el.attr("data-pos",this.model.id)
       $.fn.editable.defaults.mode = 'inline';
       this.$el.find('span.editable').editable({inputclass: 'edit-title'});
@@ -92,9 +101,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (Robin.cachedStories[this.model.get('id')] != undefined) {
         if (Robin.cachedStories[this.model.get('id')].length > 0){
           this.$el.find('.stream-loading').addClass('hidden');
-        } else if (Robin.cachedStories[this.model.get('id')].length == 0 && Robin.cachedStories[this.model.get('id')].rendered) {
-          this.$el.find('.stream-loading').addClass('hidden');
-          this.$el.find('.empty-stream').removeClass('hidden');
         };
       }
 
@@ -219,8 +225,22 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     closeStream: function() {
+      var curView = this;
       var r = this.model;
-      if(!r.get('id')) return r.destroy({ dataType: "text"});
+      if(!r.get('id')) return r.destroy({
+        dataType: "text",
+        success: function() {
+          Robin.user.fetch({
+            success: function() {
+              if (Robin.user.get('can_create_stream') != true) {
+                $("#add-stream").attr('disabled', 'disabled');
+              } else {
+                $("#add-stream").removeAttr('disabled');
+              }
+            }
+          });
+        }
+      });
       swal({
         title: "Delete Stream?",
         text: "You will not be able to recover this stream.",
@@ -231,7 +251,20 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       },
       function(isConfirm) {
         if (isConfirm) {
-          r.destroy({ dataType: "text"});
+          r.destroy({ 
+            dataType: "text",
+            success: function() {
+              Robin.user.fetch({
+                success: function() {
+                  if (Robin.user.get('can_create_stream') != true) {
+                    $("#add-stream").attr('disabled', 'disabled');
+                  } else {
+                    $("#add-stream").removeAttr('disabled');
+                  }
+                }
+              });
+            }
+          });
         }
       });
     },
@@ -260,9 +293,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           Robin.user.fetch({
             success: function() {
               if (Robin.user.get('can_create_stream') != true) {
-                curView.$el.find("#add-stream").attr('disabled', 'disabled');
+                $("#add-stream").attr('disabled', 'disabled');
               } else {
-                curView.$el.find("#add-stream").removeAttr('disabled');
+                $("#add-stream").removeAttr('disabled');
               }
             }
           });
@@ -291,6 +324,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       curView.$el.find('.stream-loading').removeClass('hidden');
       curView.$el.find('.stream-body').addClass('opacity-02');
+      curView.$el.find('.empty-stream').addClass('hidden');
       curView.needOpacity = true;
       $(this.el).find('.settings-dialog').addClass('closed');
     },
