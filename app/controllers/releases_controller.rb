@@ -30,8 +30,9 @@ class ReleasesController < ApplicationController
   def show
     respond_to do |format|
       format.html {
-        @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
-        @release = @news_room.releases.friendly.find(params[:id])
+        @news_room = NewsRoom.find_by(subdomain_name: request.subdomain) || PreviewNewsRoom.find_by(subdomain_name: request.subdomain)
+        @this_room = @news_room.parent_id.nil? ? @news_room : NewsRoom.find(@news_room.parent_id)
+        @release = @this_room.releases.friendly.find(params[:id])
       }
       format.json { render json: Release.where(id: params[:id], is_private: false).first }
     end
