@@ -1513,3 +1513,13 @@ body.login {
       }
   }
 }
+
+.buttons-row {
+  .btn {
+    width: 100%;
+    min-width: 0;
+    // + .btn {
+    //   margin-right: 15px;
+    // }
+  }
+}

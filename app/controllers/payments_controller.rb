@@ -22,6 +22,8 @@ class PaymentsController < ApplicationController
   end
 
   def create
+    p '*'*50
+    p request
     errors,resp = BlueSnap::Shopper.new(request, current_user, params, @product,@add_ons,@add_on_hash)
     @payment = Payment.new
     if errors.blank?

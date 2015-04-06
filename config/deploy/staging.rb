@@ -19,6 +19,8 @@ server '45.56.104.81', user: 'deployer', roles: %w{web app db}
 set :branch, 'master'
 set :rails_env, "staging"
 
+set :rbenv_ruby, '2.2.0'
+
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a
