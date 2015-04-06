@@ -4,11 +4,14 @@ class NewsRoom < ActiveRecord::Base
                   '201-500 employees', '501-1000 employees', '1001-5000 employees', '5001-10,000 employees', '10,001 or more employees'
                 ]
 
+  default_scope { where(parent_id: nil) }
+
   belongs_to :user
   has_and_belongs_to_many :industries
   has_many :releases, dependent: :destroy
   has_many :attachments, as: :imageable, dependent: :destroy
   has_many :followers, dependent: :destroy
+  has_one :preview_news_room, foreign_key: :parent_id, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
   before_create :set_campaign_name
 

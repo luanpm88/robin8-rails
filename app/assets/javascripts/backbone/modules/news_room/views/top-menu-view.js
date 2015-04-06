@@ -13,7 +13,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       'click #new_newsroom': 'openModalDialog',
       'click #save_news_room': 'saveNewsRoom',
       'click #delete_news_room': 'deleteNewsRoom',
-      'click .manage': 'manageUsers'
+      'click .manage': 'manageUsers',
+      'click #preview_news_room': 'startPreview'
     },
     initialize: function(options){
       this.collection.fetch();
@@ -41,6 +42,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     onRender: function(){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
+      this.initSubdomain = this.model.attributes.subdomain_name;
       this.$el.find("#tagsinput").tagsinput();
       this.$el.find("#industries").select2({
         placeholder: 'Select...'
@@ -260,6 +262,32 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         this.form.data('formValidation').updateStatus(key, 'INVALID', 'serverError')
         this.form.data('formValidation').updateMessage(key, 'serverError', value.join(','))
       }, this);
+    },
+    startPreview: function(e){
+      e.preventDefault();
+      this.form.data('formValidation').validate();
+      if (this.form.data('formValidation').isValid()) {
+        var subdomain = this.initSubdomain + "-preview"
+        var parentId = this.model.attributes.id;
+        tempModel = new Robin.Models.NewsRoom(this.model.attributes);
+        previewData = tempModel.attributes;
+        previewData.id = '';
+        previewData.subdomain_name = subdomain;
+        previewData.parent_id = parentId;
+        $.post("/preview_news_rooms.json", { _method:'POST', utf8: "&#x2713;", preview_news_room:previewData})
+            .done(function(userSession, response) {
+              console.log("done");
+            })
+            .fail(function(response) {
+              console.log("error");
+        });
+        console.log(subdomain);
+        var windowUrl = location.host.split('.');
+        var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host;
+        if (windowLocation == "localhost:3000") { windowLocation = "lvh.me:3000"} //for development only
+        var url = "http://" + subdomain +"." + windowLocation
+        window.open(url);
+      }
     },
     deleteNewsRoom: function(){
       var viewObj = this;
