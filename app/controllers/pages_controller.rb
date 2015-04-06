@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
+  before_action :set_video,:only => :home
 
   def home
     if user_signed_in? && !current_user.active_subscription.blank?
@@ -62,6 +63,15 @@ class PagesController < ApplicationController
       session[:redirect_checkout_url] = "/add-ons?plan=#{params[:plan]}"
       flash[:info] = "Please signup below and continue"
       return redirect_to new_user_path
+    end
+  end
+
+  private
+  def set_video
+    if request.location && request.location.country.to_s == "China"
+      @video = "<iframe src='http://player.youku.com/embed/XOTI2NzA2MTY0' frameborder='0' allowfullscreen></iframe>"
+    else
+      @video =  "<iframe src='//www.youtube.com/embed/Si6XnxuqhYI' frameborder='0' allowfullscreen></iframe>"
     end
   end
 
