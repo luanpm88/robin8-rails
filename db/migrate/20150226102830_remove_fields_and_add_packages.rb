@@ -1,32 +1,34 @@
 class RemoveFieldsAndAddPackages < ActiveRecord::Migration
   def migrate(direction)
     super
-    Product.create(slug: "basic-monthly", is_active: true, price: 19.00,
-                   interval: 30, name: "Basic Monthly", description: "basic monthly subscription", sku_id:3262130) if direction == :up
-    Product.create(slug: "basic-annual", is_active: true, price: 180.00,
-                   interval: 365, name: "Basic Annual", description: "basic annual subscription", sku_id: 3262134) if direction == :up
-    Product.create(slug: "business-monthly", is_active: true, price: 179.00,
-                   interval: 30, name: "Business Monthly", description: "business monthly subscription", sku_id: 3262138) if direction == :up
-    Product.create(slug: "business-annual", is_active: true, price: 1800.00,
-                   interval: 365, name: "Business Annual", description: "business annual subscription", sku_id:3262152) if direction == :up
-    Product.create(slug: "enterprise-monthly", is_active: true, price: 399.00,
-                   interval: 30, name: "Enterprise Monthly", description: "enterprise monthly subscription", sku_id: 3262154) if direction == :up
-    Product.create(slug: "enterprise-annual", is_active: true, price: 4200.00,
-                   interval: 365, name: "Enterprise Annual", description: "enterprise annual subscription", sku_id: 3262156) if direction == :up
-    Product.create(slug: "pro-monthly", is_active: true, price: 299.00,
-                   interval: 30, name: "Pro Monthly", description: "pro monthly subscription", sku_id:3262158) if direction == :up
-    Product.create(slug: "pro-annual", is_active: true, price: 3000.00,
-                   interval: 365, name: "Pro Annual", description: "pro annual subscription", sku_id:3262160) if direction == :up
-    Product.create(slug: "premium-monthly", is_active: true, price: 499.00,
-                   interval: 30, name: "Premium Monthly", description: "premium monthly subscription", sku_id: 3262162) if direction == :up
-    Product.create(slug: "premium-annual", is_active: true, price: 4980.00,
-                   interval: 365, name: "Premium Annual", description: "premium annual subscription", sku_id: 3262170) if direction == :up
-    Product.create(slug: "ultra-monthly", is_active: true, price: 1200.00,
-                   interval: 30, name: "Ultra Monthly", description: "ultra monthly subscription", sku_id: 3262172) if direction == :up
-    Product.create(slug: "ultra-annual", is_active: true, price: 12000.00,
-                   interval: 365, name: "Ultra Annual", description: "ultra annual subscription", sku_id: 3262174) if direction == :up
+    if defined?(Product)
+      Product.create(slug: "basic-monthly", is_active: true, price: 19.00,
+                     interval: 30, name: "Basic Monthly", description: "basic monthly subscription", sku_id:3262130) if direction == :up
+      Product.create(slug: "basic-annual", is_active: true, price: 180.00,
+                     interval: 365, name: "Basic Annual", description: "basic annual subscription", sku_id: 3262134) if direction == :up
+      Product.create(slug: "business-monthly", is_active: true, price: 179.00,
+                     interval: 30, name: "Business Monthly", description: "business monthly subscription", sku_id: 3262138) if direction == :up
+      Product.create(slug: "business-annual", is_active: true, price: 1800.00,
+                     interval: 365, name: "Business Annual", description: "business annual subscription", sku_id:3262152) if direction == :up
+      Product.create(slug: "enterprise-monthly", is_active: true, price: 399.00,
+                     interval: 30, name: "Enterprise Monthly", description: "enterprise monthly subscription", sku_id: 3262154) if direction == :up
+      Product.create(slug: "enterprise-annual", is_active: true, price: 4200.00,
+                     interval: 365, name: "Enterprise Annual", description: "enterprise annual subscription", sku_id: 3262156) if direction == :up
+      Product.create(slug: "pro-monthly", is_active: true, price: 299.00,
+                     interval: 30, name: "Pro Monthly", description: "pro monthly subscription", sku_id:3262158) if direction == :up
+      Product.create(slug: "pro-annual", is_active: true, price: 3000.00,
+                     interval: 365, name: "Pro Annual", description: "pro annual subscription", sku_id:3262160) if direction == :up
+      Product.create(slug: "premium-monthly", is_active: true, price: 499.00,
+                     interval: 30, name: "Premium Monthly", description: "premium monthly subscription", sku_id: 3262162) if direction == :up
+      Product.create(slug: "premium-annual", is_active: true, price: 4980.00,
+                     interval: 365, name: "Premium Annual", description: "premium annual subscription", sku_id: 3262170) if direction == :up
+      Product.create(slug: "ultra-monthly", is_active: true, price: 1200.00,
+                     interval: 30, name: "Ultra Monthly", description: "ultra monthly subscription", sku_id: 3262172) if direction == :up
+      Product.create(slug: "ultra-annual", is_active: true, price: 12000.00,
+                     interval: 365, name: "Ultra Annual", description: "ultra annual subscription", sku_id: 3262174) if direction == :up
 
-    Product.delete_all if direction == :down
+      Product.delete_all if direction == :down
+    end
   end
 
   def up
