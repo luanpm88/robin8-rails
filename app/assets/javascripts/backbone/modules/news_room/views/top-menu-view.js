@@ -173,6 +173,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
             validators: {
               uri: {
                 message: 'The website address is not valid'
+              },
+              serverError: {
+                message: 'something went wrong'
               }
             }
           },

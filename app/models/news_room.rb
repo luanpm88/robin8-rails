@@ -20,6 +20,7 @@ class NewsRoom < ActiveRecord::Base
   # validates :campaign_name, uniqueness: true
   validates_inclusion_of :room_type, in: VALID_TYPES, allow_blank: true
   validates_inclusion_of :size, in: VALID_SIZES, allow_blank: true
+  validate :twitter_account_exists
 
   def city_state
     str = [city, state]
@@ -42,7 +43,24 @@ class NewsRoom < ActiveRecord::Base
   end
 
   private
-  
+
+    def twitter_account_exists
+      unless twitter_link.blank?
+        twitter_name = twitter_link.split('/').last
+        client = Twitter::REST::Client.new do |config|
+          config.consumer_key        = Rails.application.secrets.twitter[:api_key]
+          config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
+        end
+        begin
+          response = client.user(twitter_name)
+        rescue Twitter::Error => e
+          errors.add(:twitter_link, e.message)
+        rescue Exception
+          errors.add(:twitter_link, "sorry, something has went wrong")
+        end
+      end
+    end
+
     def set_campaign_name
       self.campaign_name = self.company_name
     end
