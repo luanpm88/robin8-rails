@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
   end
 
   def can_create_newsroom
-    newsroom_count < newsroom_available_count
+    newsroom_available_count.nil? ? false : newsroom_count < newsroom_available_count
   end
 
   def release_available_count
@@ -85,11 +85,11 @@ class User < ActiveRecord::Base
   end
 
   def can_create_release
-    release_count < release_available_count
+    release_available_count.nil? ? false : release_count < release_available_count
   end
 
   def can_create_stream
-    stream_count < stream_available_count
+    stream_available_count.nil? ? false : stream_count < stream_available_count
   end
 
   def stream_available_count
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
   end
 
   def can_create_smart_release
-    smart_release_count < smart_release_available_count
+    smart_release_available_count.nil? ? false : smart_release_count < smart_release_available_count
   end
 
   def smart_release_available_count
