@@ -304,10 +304,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         previewData.parent_id = parentId;
         $.post("/preview_news_rooms.json", { _method:'POST', utf8: "&#x2713;", preview_news_room:previewData})
             .done(function(userSession, response) {
-              console.log("done");
             })
             .fail(function(response) {
-              console.log("error");
+              console.log("error: " + response);
         });
         console.log(subdomain);
         var windowUrl = location.host.split('.');

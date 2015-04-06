@@ -3,27 +3,12 @@ class PreviewNewsRoomsController < ApplicationController
 
   def create
     @news_room = PreviewNewsRoom.where(parent_id: params[:preview_news_room][:parent_id]).first_or_create
-    parent_news_room = NewsRoom.find(params[:preview_news_room][:parent_id])
-    old_logo = @news_room.logo_url
-
     @news_room.assign_attributes preview_news_room_params
     if @news_room.save
-      if old_logo && old_logo != parent_news_room.logo_url
-        AmazonDeleteWorker.perform_in(20.seconds, old_logo)
-      end
       render json: @news_room
     else
       render json: { errors: @news_room.errors }, status: 422
     end
-  end
-
-  def destroy
-    @news_room = PreviewNewsRoom.find(params[:id])
-    if @news_room.logo_url
-      AmazonDeleteWorker.perform_in(20.seconds, @news_room.logo_url)
-    end
-    @news_room.destroy
-    render json: @news_room
   end
 
 private
