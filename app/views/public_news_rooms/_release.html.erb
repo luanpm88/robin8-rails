@@ -1,18 +1,34 @@
 <div class="thumbnail release-item">
-  <%= link_to_unless @preview_mode, release_path(release) do %>
+  <% if @preview_mode%>
     <div class="release-thumbnail-container">
-      <div class="release-dummy"></div>
-      <div class="release-thumbnail-inner">
-        <% if release.thumbnail %>
-          <img class="img" src="<%= release.thumbnail %>">
-        <% elsif release.logo_url %>
-          <img class="img" src="<%= release.logo_url %>">
-        <% else %>
-          <%= image_tag asset_path('release-btn.png'), class: 'img' %>
-        <% end %>
+        <div class="release-dummy"></div>
+        <div class="release-thumbnail-inner">
+          <% if release.thumbnail %>
+            <img class="img" src="<%= release.thumbnail %>">
+          <% elsif release.logo_url %>
+            <img class="img" src="<%= release.logo_url %>">
+          <% else %>
+            <%= image_tag asset_path('release-btn.png'), class: 'img' %>
+          <% end %>
+        </div>
       </div>
-    </div>
+  <% else %>
+      <%= link_to release_path(release) do %>
+      <div class="release-thumbnail-container">
+        <div class="release-dummy"></div>
+        <div class="release-thumbnail-inner">
+          <% if release.thumbnail %>
+            <img class="img" src="<%= release.thumbnail %>">
+          <% elsif release.logo_url %>
+            <img class="img" src="<%= release.logo_url %>">
+          <% else %>
+            <%= image_tag asset_path('release-btn.png'), class: 'img' %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
+  
   <div class="caption text-center">
     <h3>
       <%= link_to_unless @preview_mode, release.title, release_path(release) %>

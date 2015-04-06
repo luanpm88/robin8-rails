@@ -308,7 +308,6 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
             .fail(function(response) {
               console.log("error: " + response);
         });
-        console.log(subdomain);
         var windowUrl = location.host.split('.');
         var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host;
         if (windowLocation == "localhost:3000") { windowLocation = "lvh.me:3000"} //for development only
