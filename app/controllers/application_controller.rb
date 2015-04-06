@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
 
   protect_from_forgery with: :exception
-  # rescue_from Exception, with: :handle_exception
+  rescue_from Exception, with: :handle_exception
 
   after_filter :set_csrf_headers
   # before_filter :validate_subscription, unless: :devise_controller?
