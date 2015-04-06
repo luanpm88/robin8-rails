@@ -1,6 +1,8 @@
 ActiveAdmin.register AdminUser do
   permit_params :email, :password, :password_confirmation
 
+  menu :priority => 4, :label => "Admins" ,:if => proc { current_admin_user.is_super_admin? }
+
   index do
     selectable_column
     id_column

@@ -1,5 +1,7 @@
 ActiveAdmin.register User do
 
+  menu :priority => 4, :label => "Users" ,:if => proc { current_admin_user.is_super_admin? }
+
   permit_params :email , :password, :encrypted_password
 
   filter :id

@@ -218,6 +218,22 @@ a {
   color: #006481;
 }
 
+@media (max-width:767px) {
+  #userDropdown {
+    display: inline-block;
+    width: 100%;
+    .caret {
+      float: right;
+      margin-top: 25px;
+      display: block;
+    }
+  }
+
+  .navbar-collapse {
+    background: #f5f5f5;
+  }
+}
+
 .dropdown-menu li a:hover,
 .dropdown-menu li a:focus {
   background:#006481;
@@ -1028,7 +1044,7 @@ nav{text-align: center;}
     background: #006481;
     position: fixed;
     height: 100%;
-    z-index: 10000;
+    z-index: 2;
     transition: all .4s ease 0s;
     padding-top: 20px;
     top: 60px;
