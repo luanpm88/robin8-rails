@@ -63,7 +63,14 @@ class NewsRoomsController < ApplicationController
       r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
     end
 
-    render json: { web: results.collection, mail: r }
+    collection = results.collection
+    web = {
+      dates: collection.map{|col| col.date},
+      sessions: collection.map{|col| col.sessions},
+      views: collection.map{|col| col.pageViews},
+    }
+
+    render json: { web: web, mail: r }
   end
 
 private
