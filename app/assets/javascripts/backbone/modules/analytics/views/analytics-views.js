@@ -2,72 +2,143 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
   Analytics.AnalyticsPage = Backbone.Marionette.ItemView.extend({
     template: 'modules/analytics/templates/analytics',
 
-    onShow: function() {
-      // this.renderAnalytics();
-    },
-
     renderAnalytics: function(id) {
+
       var collection = this.collection;
       this.collection.fetch({
         success: function(){
           id = ( id == undefined ? collection.models[0].get('id') : id );
           $.get('/news_rooms/' + id +'/analytics', function(data){
-            mail = data.mail
-            arr = _.map(data.web, function(n){
-              var split = n.table.date.match(/.{1,4}/g);
+
+
+            var dates = _.map(data.web.dates, function(date){
+              var split = date.match(/.{1,4}/g);
               var monthDate = split[1].match(/.{1,2}/g);
               var date = split[0] + '-' + monthDate[0] + '-' + monthDate[1];
-              return [date, parseInt(n.table.pageViews), parseInt(n.table.sessions)]
+              return date
             });
-            arr = _.union([['Date', 'Sessions', 'Page Views']], arr);
-            google.load("visualization", "1", {packages:["corechart"]});
-            function drawAreaChart() {
-              var data = google.visualization.arrayToDataTable(arr);
+            var mail = data.mail.total;
+            var mailStatistics = [mail.sent, mail.delivered, mail.opened, mail.dropped]
 
-              var options = {
-                title: 'Newsroom and Releases Visits',
-                hAxis: {title: 'Dates',  titleTextStyle: {color: '#333'}},
-                vAxis: {
-                  minValue: 0,
-                  viewWindow: {
-                    min:0
+            $('#news-rooms').highcharts({
+              chart: {
+                zoomType: 'xy',
+              },
+              title: {
+                text: 'Newsroom and Releases Visits'
+              },
+              xAxis: [{
+                categories: dates
+              }],
+              yAxis: [{ // Primary yAxis
+                labels: {
+                format: '{value}',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              },
+              title: {
+                text: 'Page Views',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }, { // Secondary yAxis
+              title: {
+                text: 'Sessions',
+                  style: {
+                    color: Highcharts.getOptions().colors[0]
+                  }
+                },
+                labels: {
+                  format: '{value}',
+                  style: {
+                    color: Highcharts.getOptions().colors[0]
+                  }
+                },
+                opposite: true
+              }],
+              tooltip: {
+                shared: true
+              },
+              legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 120,
+                verticalAlign: 'top',
+                y: 100,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+              },
+              series: [{
+                name: 'Sessions',
+                type: 'column',
+                yAxis: 1,
+                data: data.web.sessions
+              }, {
+                name: 'Page Views',
+                type: 'column',
+                data: data.web.pageViews,
+              }]
+            });
+
+
+            $('#emails-analytics').highcharts({
+              chart: {
+                zoomType: 'xy',
+              },
+              title: {
+                text: 'SmartRelease Email Statistics'
+              },
+              xAxis: [{
+                categories: ['Sent', 'Delivered', 'Opened', 'Dropped']
+              }],
+              yAxis: [{ // Primary yAxis
+                labels: {
+                  format: '',
+                  style: {
+                    color: Highcharts.getOptions().colors[1]
                   }
                 }
-              };
-
-              var chart = new google.visualization.AreaChart(document.getElementById('first-chart'));
-              chart.draw(data, options);
-            }
-
-            function drawColumnChart() {
-              var data = google.visualization.arrayToDataTable([
-                ['Element', 'Emails', { role: 'style' }],
-                ['Sent', parseInt(mail.total.sent), 'blue'],
-                ['Delivered', parseInt(mail.total.delivered), 'green'],  
-                ['Opened', parseInt(mail.total.opened), 'silver'],   
-                ['Dropped', parseInt(mail.total.dropped), 'red']
-              ]);
-              var options = {
-                title: 'SmartRelease Email Statistics',
-                hAxis: {title: '',  titleTextStyle: {color: '#333'}},
-                vAxis: {
-                  minValue: 0,
-                  viewWindowMode:'explicit',
-                  viewWindow: {
-                    min:0
+              }, { // Secondary yAxis
+                title: {
+                  text: 'Emails',
+                    style: {
+                      color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                  format: '{value}',
+                  style: {
+                    color: Highcharts.getOptions().colors[0]
                   }
-                }
-              };
-              var chart = new google.visualization.ColumnChart(document.getElementById('second-chart'));
-              chart.draw(data, options);
-            }
-            drawAreaChart();
-            drawColumnChart();
-          })
+                },
+                opposite: true
+              }],
+              tooltip: {
+                shared: true
+              },
+              legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 120,
+                verticalAlign: 'top',
+                y: 100,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+              },
+              series: [{
+                name: 'Emails',
+                type: 'column',
+                yAxis: 1,
+                data: mailStatistics
+              }]
+            });
+
+          });
         }
       })
     }
-
   });
 
   Analytics.AnalyticsFilterCollectionView = Backbone.Marionette.CollectionView.extend({
