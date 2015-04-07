@@ -22,7 +22,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #delete_release': 'deleteRelease',
       'click #extract_url': 'extractURL',
       'click #highlight_textarea': 'highlightReleaseText',
-      'click #smart-release': 'startSmartRelease',
+      'click #smart_release': 'startSmartRelease',
       'change #upload': 'uploadWord'
     },
     highlightReleaseText: function(e) {
@@ -94,12 +94,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.form.data('formValidation').isValid()) {
         this.model.save(this.model.attributes, {
           success: function(model, data, response){
-            Robin.user.fetch({
-              success: function() {
-                var addButtonView = new Releases.AddButtonView();
-                viewObj.addRelease.show(addButtonView);
-              }
-            });
             Robin.releaseForBlast = viewObj.model.get('id');
             Backbone.history.navigate('robin8', {trigger: true});
           },
