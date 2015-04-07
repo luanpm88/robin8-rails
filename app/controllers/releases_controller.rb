@@ -16,7 +16,7 @@ class ReleasesController < ApplicationController
     release = current_user.releases.build release_params
     @new_logo = params[:release][:logo_url]
     @new_thumbnail = params[:release][:thumbnail]
-    if release.save
+    if release.save!
       if @new_logo
         AmazonStorageWorker.perform_async("release", release.id, @new_logo, nil, :logo_url)
         AmazonStorageWorker.perform_async("release", release.id, @new_thumbnail, nil, :thumbnail)
