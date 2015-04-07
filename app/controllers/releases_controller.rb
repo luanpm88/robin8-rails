@@ -13,15 +13,15 @@ class ReleasesController < ApplicationController
   end
 
   def create
-    p '!'*50
-    p current_user.releases.build release_params
-    p '!'*50
+    Rails.logger.debug("!!!!!!!!!!!!!!!")
+    Rails.logger.debug("debug1::" + current_user.releases.build(release_params))
+    Rails.logger.debug("!!!!!!!!!!!!!!!")
     release = current_user.releases.build release_params
     @new_logo = params[:release][:logo_url]
     @new_thumbnail = params[:release][:thumbnail]
-    p '*'*50
-    p release
-    p '*'*50
+    Rails.logger.debug("4444444444444444!!")
+    Rails.logger.debug("debug1::" + release)
+    Rails.logger.debug("444444444444444!!!")
     if release.save!
       if @new_logo
         AmazonStorageWorker.perform_async("release", release.id, @new_logo, nil, :logo_url)
