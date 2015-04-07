@@ -303,16 +303,16 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         previewData.subdomain_name = subdomain;
         previewData.parent_id = parentId;
         $.post("/preview_news_rooms.json", { _method:'POST', utf8: "&#x2713;", preview_news_room:previewData})
-            .done(function(userSession, response) {
-            })
-            .fail(function(response) {
-              console.log("error: " + response);
+          .done(function(userSession, response) {
+            var windowUrl = location.host.split('.');
+            var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host;
+            if (windowLocation == "localhost:3000") { windowLocation = "lvh.me:3000"} //for development only
+            var url = "http://" + subdomain +"." + windowLocation
+            window.open(url);
+          })
+          .fail(function(response) {
+            console.log("error: " + response);
         });
-        var windowUrl = location.host.split('.');
-        var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host;
-        if (windowLocation == "localhost:3000") { windowLocation = "lvh.me:3000"} //for development only
-        var url = "http://" + subdomain +"." + windowLocation
-        window.open(url);
       }
     },
     deleteNewsRoom: function(){
