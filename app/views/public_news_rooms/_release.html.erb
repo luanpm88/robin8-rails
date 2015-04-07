@@ -1,21 +1,37 @@
 <div class="thumbnail release-item">
-  <%= link_to release_path(release) do %>
+  <% if @preview_mode%>
     <div class="release-thumbnail-container">
-      <div class="release-dummy"></div>
-      <div class="release-thumbnail-inner">
-        <% if release.thumbnail %>
-          <img class="img" src="<%= release.thumbnail %>">
-        <% elsif release.logo_url %>
-          <img class="img" src="<%= release.logo_url %>">
-        <% else %>
-          <%= image_tag asset_path('release-btn.png'), class: 'img' %>
-        <% end %>
+        <div class="release-dummy"></div>
+        <div class="release-thumbnail-inner">
+          <% if release.thumbnail %>
+            <img class="img" src="<%= release.thumbnail %>">
+          <% elsif release.logo_url %>
+            <img class="img" src="<%= release.logo_url %>">
+          <% else %>
+            <%= image_tag asset_path('release-btn.png'), class: 'img' %>
+          <% end %>
+        </div>
       </div>
-    </div>
+  <% else %>
+      <%= link_to release_path(release) do %>
+      <div class="release-thumbnail-container">
+        <div class="release-dummy"></div>
+        <div class="release-thumbnail-inner">
+          <% if release.thumbnail %>
+            <img class="img" src="<%= release.thumbnail %>">
+          <% elsif release.logo_url %>
+            <img class="img" src="<%= release.logo_url %>">
+          <% else %>
+            <%= image_tag asset_path('release-btn.png'), class: 'img' %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
+  
   <div class="caption text-center">
     <h3>
-      <%= link_to release.title, release_path(release) %>
+      <%= link_to_unless @preview_mode, release.title, release_path(release) %>
     </h3>
     <small>15 Jan 2015</small>
     <div class='release-item-text'>
@@ -32,7 +48,7 @@
     </p>
     <hr>
     <p align="center">
-      <%= link_to release_path(release), class: 'btn btn-info' do %>
+      <%= link_to release_path(release), class: 'btn btn-info', disabled: @preview_mode do %>
         <i class="fa fa-leanpub"></i> Read more</a>
       <% end %>
     </p>

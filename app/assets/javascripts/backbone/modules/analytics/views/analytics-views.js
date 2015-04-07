@@ -62,6 +62,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 shared: true
               },
               legend: {
+                enabled: false,
                 layout: 'vertical',
                 align: 'left',
                 x: 120,
@@ -119,6 +120,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 shared: true
               },
               legend: {
+                enabled: false,
                 layout: 'vertical',
                 align: 'left',
                 x: 120,
