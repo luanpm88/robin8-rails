@@ -9,6 +9,8 @@ Robin.cachedStories = {};
 
 Robin.layouts = {};
 
+Robin.loadingStreams = [];
+
 Robin.addRegions({
   main: '#main',
   modal: ModalRegion
