@@ -35,7 +35,7 @@ class UserProduct < ActiveRecord::Base
   end
 
   def cancel!
-    errors = BlueSnap::Subscription.destroy(self.bluesnap_subscription_id,self.bluesnap_shopper_id,self.package.sku_id) if self.user.payments.present? && self.status != 'C'
+    errors = BlueSnap::Subscription.destroy(bluesnap_subscription_id,bluesnap_shopper_id,product.sku_id) if user.payments.present? && status != 'C'
     if errors.blank?
       self.update_attributes(expiry: self.next_charge_date, status: "C")
       return true

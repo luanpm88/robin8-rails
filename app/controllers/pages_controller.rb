@@ -22,12 +22,12 @@ class PagesController < ApplicationController
   end
 
   def pricing
-    @products = Product.package.active
+    @products = Package.active
     render :layout => "website"
   end
 
   def add_ons
-    @add_ons = Product.active.add_on
+    @add_ons = AddOn.active
     render :layout => "website"
   end
 
