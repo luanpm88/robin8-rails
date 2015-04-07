@@ -122,7 +122,8 @@ Robin.vent.on('SaySomething:close', function(){
 })
 
 //Uploadcare params:
-UPLOADCARE_PUBLIC_KEY = "eaef90e4420402169d1f"
+//UPLOADCARE_PUBLIC_KEY = "eaef90e4420402169d1f"
+UPLOADCARE_PUBLIC_KEY = "fe688dbff8d2a632a256"
 UPLOADCARE_AUTOSTORE = false;
 UPLOADCARE_LOCALE_TRANSLATIONS = {
   // messages for widget
