@@ -139,6 +139,10 @@ class User < ActiveRecord::Base
     AddOn.where(id: add_ons_products.map(&:product_id)) if add_ons_products.present?
   end
 
+  def recurring_add_ons
+    user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
+  end
+
   def twitter_identity
     identities.where(provider: 'twitter').first
   end

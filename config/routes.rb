@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     post 'create_subscription', on: :collection
     post 'update_subscription', on: :collection
     delete 'destroy_subscription', on: :collection
+    delete 'destroy_add_on',on: :member
   end
 
   resources :media_lists, only: [:index, :create, :show, :destroy]
