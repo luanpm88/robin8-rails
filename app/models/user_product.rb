@@ -52,7 +52,7 @@ class UserProduct < ActiveRecord::Base
       begin
         if bluesnap_order.cart.cart_item.class == Array
           bluesnap_order.cart.cart_item.each do |i|
-            bluesnap_subscription = Blue::Subscription.find(bluesnap_order.cart.cart_item.first.url.split("/").last) if i.sku.sku_id.to_i == product.sku_id
+            bluesnap_subscription = Blue::Subscription.find(i.url.split("/").last) if i.sku.sku_id.to_i == product.sku_id
           end
         else
           bluesnap_subscription = Blue::Subscription.find(bluesnap_order.cart.cart_item.url.split("/").last)
@@ -81,7 +81,7 @@ class UserProduct < ActiveRecord::Base
           amount: product.price, #bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
           product_id: product_id,
           card_last_four_digits:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits,
-          card_type:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits #,
+          card_type:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type #,
           # discount_id: discount.present? ?  discount.id : nil
       )
     end

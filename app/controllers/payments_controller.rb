@@ -139,7 +139,7 @@ class PaymentsController < ApplicationController
 
   def destroy_add_on
     if current_user.current_add_ons.present?
-      if current_user.user_products(id: params[:id]).first.cancel!
+      if current_user.user_products.where(id: params[:id]).first.cancel!
         add_on = current_user.user_products.where(id: params[:id]).first.product
         feature =   current_user.user_features.where(product_id: add_on.id).first
         feature.update_attribute(:available_count,feature.available_count - 1)
@@ -194,7 +194,7 @@ class PaymentsController < ApplicationController
 
   def validate_add_on_cancel
     if current_user.current_add_ons.present?
-      if current_user.user_products(id: params[:id]).first.exists?
+      if current_user.user_products(id: params[:id]).exists?
         if current_user.can_cancel_add_on?(params[:id])
           return true
         else
