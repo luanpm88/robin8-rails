@@ -5,7 +5,8 @@ class AmazonStorageWorker
     object = object_type.classify.constantize.find(object_id)
     uuid = new_url
     auth = "Uploadcare.Simple " + Rails.application.secrets.uploadcare
-    q = HTTParty.post("https://api.uploadcare.com/files/", body: {source: uuid, target: "robin8-main"}, headers: {"Authorization" => auth})
+    env_bucket = Rails.application.secrets.amazon[:bucket]
+    q = HTTParty.post("https://api.uploadcare.com/files/", body: {source: uuid, target: env_bucket}, headers: {"Authorization" => auth})
     amazon_url = q.parsed_response
     if amazon_url.is_a? String
       amazon_url.sub! '{"type": "url", "result": "s3:/', 'http://s3.amazonaws.com'

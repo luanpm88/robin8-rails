@@ -66,6 +66,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       var streamId = this.model.get('id');
 
       if (streamId && !Robin.cachedStories[streamId]) {
+        Robin.loadingStreams.push(streamId);
+
         Robin.cachedStories[streamId] = new Robin.Collections.Stories();
         Robin.cachedStories[streamId].streamId = streamId;
         Robin.cachedStories[streamId].sortByPopularity = this.model.get('sort_column') == 'shares_count';
@@ -73,7 +75,11 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       }
 
       this.collection = Robin.cachedStories[streamId] || new Robin.Collections.Stories();
-      this.collection.startPolling();
+      
+      if (Robin.loadingStreams.length == 1) {
+        Robin.currentStreamIndex = 0;
+        this.collection.executePolling();
+      }
 
       this.refreshNewStoriesCount();
 
@@ -227,6 +233,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     closeStream: function() {
       var curView = this;
       var r = this.model;
+      var modelId = r.id;
       if(!r.get('id')) return r.destroy({
         dataType: "text",
         success: function() {
@@ -254,6 +261,11 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           r.destroy({ 
             dataType: "text",
             success: function() {
+              var index = Robin.loadingStreams.indexOf(modelId);
+              if (index > -1) {
+                Robin.loadingStreams.splice(index, 1);
+              } 
+
               Robin.user.fetch({
                 success: function() {
                   if (Robin.user.get('can_create_stream') != true) {
@@ -301,6 +313,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           });
           curView.collection.streamId = response.id;
           curView.collection.fetch({reset: true});
+          Robin.loadingStreams.push(curView.collection.streamId);
 
           Robin.cachedStories[response.id] = curView.collection;
           Robin.cachedStories[response.id].sortByPopularity = curView.model.get('sort_column') == 'shares_count';

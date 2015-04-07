@@ -25,17 +25,6 @@ Robin.Collections.Stories = Backbone.Collection.extend({
     this.on('add', this.onAdded);
   },
 
-  startPolling: function () {
-    if(this.isPollingOn) return;
-    this.isPollingOn = true;
-    this.pollingInterval = 2;
-    this.executePolling();
-  },
-
-  stopPolling: function () {
-    this.isPollingOn = false;
-  },
-
   executePolling: function () {
     if(this.url()) {
       this.fetch({success: this.onFetch, remove: false});
@@ -49,9 +38,17 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   },
 
   onFetch: function () {
-    if (!this.isPollingOn) return;
     this.initialFetchAt = this.initialFetchAt || new Date();
-    setTimeout(this.executePolling, moment.duration(this.pollingInterval, 'minutes').asMilliseconds());
+    
+    if ( Robin.currentStreamIndex + 1 < Robin.loadingStreams.length) {
+      Robin.currentStreamIndex = Robin.currentStreamIndex + 1;
+      var id = Robin.loadingStreams[Robin.currentStreamIndex]
+      Robin.cachedStories[id].executePolling();
+    } else {
+      Robin.currentStreamIndex = 0;
+      var id = Robin.loadingStreams[Robin.currentStreamIndex]
+      setTimeout(Robin.cachedStories[id].executePolling, 120000); //in miliseconds
+    }
   },
 
   onAdded: function(story, collection) {
