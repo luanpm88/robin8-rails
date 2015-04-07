@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :followers, only: [:new, :create]
     get 'presskit'
   end
+  resources :preview_news_rooms, only: [:index, :create, :show, :update, :destroy]
   resources :industries, only: :index
   resources :releases do
     post 'extract_from_word', on: :collection
