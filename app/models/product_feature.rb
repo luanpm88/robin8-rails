@@ -3,7 +3,7 @@ class ProductFeature < ActiveRecord::Base
   belongs_to :product
 
   def reset_at
-    (validity.present? && product.interval >=30) ? Date.today + validity.to_i.days : nil
+    (validity.present? && product.interval.to_i >=30) ? Date.today + validity.to_i.days : nil
   end
 
   def quota

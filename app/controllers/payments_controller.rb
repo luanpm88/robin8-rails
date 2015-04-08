@@ -5,13 +5,14 @@ class PaymentsController < ApplicationController
   before_filter :require_package ,:only => [:new,:create,:edit,:update]
   before_filter :validate_upgrade,:only => [:edit,:update]
   before_filter :validate_subscription,:only=>[:new]
+  before_filter :validate_add_on_cancel,:only=>[:destroy_add_on]
 
   def apply_discount
     discount = Discount.active.where(code: params[:code]).last
     if discount.present?
-      return render :text => discount.calculate(current_user,Product.where(id: params[:product_id]).first) if discount.is_global?
-      return render :text => discount.calculate(current_user,Product.where(id: params[:product_id]).first) if discount.on_user_and_product?(current_user.id,params[:product_id])
-      return render :text => discount.calculate(current_user,Product.where(id: params[:product_id]).first) if discount.only_on_product?(params[:product_id])
+      return render :text => discount.calculate(current_user,Package.where(id: params[:product_id]).first) if discount.is_global?
+      return render :text => discount.calculate(current_user,Package.where(id: params[:product_id]).first) if discount.on_user_and_product?(current_user.id,params[:product_id])
+      return render :text => discount.calculate(current_user,Package.where(id: params[:product_id]).first) if discount.only_on_product?(params[:product_id])
     end
     render :text => ""
   end
@@ -22,8 +23,6 @@ class PaymentsController < ApplicationController
   end
 
   def create
-    p '*'*50
-    p request
     errors,resp = BlueSnap::Shopper.new(request, current_user, params, @product,@add_ons,@add_on_hash)
     @payment = Payment.new
     if errors.blank?
@@ -54,7 +53,7 @@ class PaymentsController < ApplicationController
   end
 
   def create_subscription
-    @package = Product.find(params[:package_id])
+    @package = Package.find(params[:package_id])
     errors,resp = BlueSnap::Shopper.new(request, current_user, params, @package)
     if errors.blank?
       begin
@@ -75,7 +74,7 @@ class PaymentsController < ApplicationController
   end
 
   def update_subscription
-    @package = Product.find(params[:package_id])
+    @package = Package.find(params[:package_id])
     errors,resp = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id, current_user.active_subscription.bluesnap_shopper_id, @package.sku_id)
     p '!!'
     p resp
@@ -138,10 +137,18 @@ class PaymentsController < ApplicationController
     redirect_to :back
   end
 
-
-  # def index
-  #   @subscription = current_user.active_subscription
-  # end
+  def destroy_add_on
+    if current_user.current_add_ons.present?
+      if current_user.user_products.where(id: params[:id]).first.cancel!
+        add_on = current_user.user_products.where(id: params[:id]).first.product
+        feature =   current_user.user_features.where(product_id: add_on.id).first
+        feature.update_attribute(:available_count,feature.available_count - 1)
+        flash[:success] = "Your Addon has been cancelled"
+      else
+        flash[:error] = "We could not cancel your add on at this time."
+      end
+    end
+  end
 
   def index
     @payments = current_user.payments
@@ -151,19 +158,19 @@ class PaymentsController < ApplicationController
   private
 
   def require_package
-    @product = Product.where(slug: params[:slug]).last
+    @product = Package.where(slug: params[:slug]).last
     @discount = Discount.active.where(code: params[:code]).first if params[:code].present?
     if params[:add_ons]
       @add_on_hash = params[:add_ons]
       ids = []
       @add_on_hash.each{|k,v| ids << k if v.to_i > 0}
-      @add_ons = Product.active.add_on.where(id: ids)
+      @add_ons = AddOn.active.add_on.where(id: ids)
     end
     redirect_to :pricing if @product.blank? && @add_ons.blank?
   end
 
   def validate_upgrade
-    @product = Product.where(slug: params[:slug]).last
+    @product = Package.where(slug: params[:slug]).last
     if current_user.active_subscription.present? && @product.id == current_user.active_subscription.product_id
       flash[:error] = "You are already subscribed to this package"
       return redirect_to :root
@@ -171,7 +178,7 @@ class PaymentsController < ApplicationController
   end
 
   def validate_subscription
-    @product = Product.where(slug: params[:slug]).last
+    @product = Package.where(slug: params[:slug]).last
     return redirect_to "/upgrade/#{@product.slug}" if @product && current_user.active_subscription.present?
   end
 
@@ -185,7 +192,20 @@ class PaymentsController < ApplicationController
     end
   end
 
-
+  def validate_add_on_cancel
+    if current_user.current_add_ons.present?
+      if current_user.user_products(id: params[:id]).exists?
+        if current_user.can_cancel_add_on?(params[:id])
+          return true
+        else
+          flash[:error] = "You can't cancel this add-on. Contact support for more details."
+          return redirect_to :back
+        end
+      else
+        flash[:error] = "No such add-on found"
+      end
+    end
+  end
 
 
 end
