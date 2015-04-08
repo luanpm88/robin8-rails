@@ -39,7 +39,7 @@
       </p>
       <hr>
       <p align="center">
-        <a href="#" class="btn btn-success" role="button" data-toggle="modal" style="margin-left: 5px;" id="start-blast"><i class="fa fa-rocket"></i> SmartRelease</a>
+        <a href="#" class="btn btn-success smart-release-button" role="button" data-toggle="modal" style="margin-left: 5px;" id="start-blast"><i class="fa fa-rocket"></i> SmartRelease</a>
         <% if (release.id && release.news_room_public && !release.is_private) {%>
             <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>

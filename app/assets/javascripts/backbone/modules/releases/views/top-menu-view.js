@@ -193,6 +193,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         success: function() {
           var addButtonView = new Releases.AddButtonView();
           self.addRelease.show(addButtonView);
+          if (Robin.user.get('can_create_smart_release') != true) {
+            $('.smart-release-button').attr('disabled', 'disabled')
+          } else {
+            $('.smart-release-button').removeAttr('disabled')
+          }
         }
       });
       this.modelBinder.bind(this.model, this.el);

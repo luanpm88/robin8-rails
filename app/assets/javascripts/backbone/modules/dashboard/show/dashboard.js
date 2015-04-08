@@ -13,7 +13,7 @@ Robin.module('Dashboard.Show', function(Show, App, Backbone, Marionette, $, _){
       var curView = this;
       Robin.user.fetch({
         success: function() {
-          if (Robin.user.get('can_create_stream') != true) {
+          if (Robin.user.get('can_create_newsroom') != true) {
             curView.$el.find("#newsroom").attr('disabled', 'disabled');
           } else {
             curView.$el.find("#newsroom").removeAttr('disabled');
