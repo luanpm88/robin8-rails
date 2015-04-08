@@ -8,6 +8,7 @@ class Release < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :title, presence: true
+  validate :can_be_created, on: :create
 
   has_many :attachments, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
@@ -36,6 +37,10 @@ class Release < ActiveRecord::Base
   end
   
   private
+
+  def can_be_created
+    errors.add(:user, "you've reached the max numbers of releases.") if user && !user.can_create_release
+  end
   
   def pos_tagger
     if Rails.application.secrets[:pos_tagger_api]

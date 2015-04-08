@@ -7,6 +7,7 @@ class Stream < ActiveRecord::Base
   validates :position, numericality: { greater_than_or_equal_to: 0 },
                        uniqueness: { scope: :user_id },
                        allow_nil: true
+  validate :can_be_created, on: :create
 
   after_create :set_position, :decrease_feature_number
   after_destroy :increase_feature_numner
@@ -30,6 +31,10 @@ class Stream < ActiveRecord::Base
   end
 
   private
+
+    def can_be_created
+      errors.add(:user, "you've reached the max numbers of streams.") if user && !user.can_create_stream
+    end
 
     def decrease_feature_number
       uf = user.user_features.media_monitoring.available.first

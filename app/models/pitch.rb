@@ -17,11 +17,16 @@ class Pitch < ActiveRecord::Base
   validates_presence_of :twitter_pitch, if: :twitter_targets?
   validates_presence_of :email_pitch, :email_subject, 
     :email_address, if: :email_targets?
+  validate :can_be_created, on: :create
 
   after_create :decrease_feature_number
   after_destroy :increase_feature_numner
   
   private
+
+  def can_be_created
+    errors.add(:user, "you've reached the max numbers of smart releases.") if user && !user.can_create_smart_release
+  end
   
   def email_targets?
     email_targets

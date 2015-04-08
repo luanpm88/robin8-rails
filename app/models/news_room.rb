@@ -24,6 +24,7 @@ class NewsRoom < ActiveRecord::Base
   validates_inclusion_of :room_type, in: VALID_TYPES, allow_blank: true
   validates_inclusion_of :size, in: VALID_SIZES, allow_blank: true
   validate :twitter_account_exists
+  validate :can_be_created, on: :create
 
   def city_state
     str = [city, state]
@@ -46,6 +47,10 @@ class NewsRoom < ActiveRecord::Base
   end
 
   private
+
+    def can_be_created
+      errors.add(:company_name, "you've reached the max numbers of newsrooms.") if user && !user.can_create_newsroom
+    end
 
     def twitter_account_exists
       unless twitter_link.blank?
