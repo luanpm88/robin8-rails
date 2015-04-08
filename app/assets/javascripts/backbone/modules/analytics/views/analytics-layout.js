@@ -12,7 +12,6 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     },
 
     changeNewsRoom: function(event) {
-      console.log('here!!!');
       var analyticsPageView = new Analytics.AnalyticsPage({
         collection: new Robin.Collections.NewsRooms()
       });

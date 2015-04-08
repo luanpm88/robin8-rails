@@ -119,9 +119,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       if (sayText.val().length <= limit) {
         prgjs.set(Math.floor(sayText.val().length * 100/limit));
       } else {
-        var t = sayText.val().substring(0, limit);
-        sayText.val(t);
-        counter.text(0);
+        prgjs.set(100);
       }
     },
 
@@ -172,8 +170,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     checkAbilityPosting: function(){
       var condition1 = $("#say-something-field").val().length == 0;
       var condition2 = this.$el.find('.social-networks').find('.btn-primary').length == 0;
-
-      if (condition1 || condition2) {
+      var condition3 = $("#say-counter").text() < 0;
+      if (condition1 || condition2 || condition3) {
         $('.post-settings').find('input[type=submit]').addClass('disabled');
       } else {
         $('.post-settings').find('input[type=submit]').removeClass('disabled');
