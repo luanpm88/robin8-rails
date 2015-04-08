@@ -10,12 +10,19 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
           id = ( id == undefined ? collection.models[0].get('id') : id );
           $.get('/news_rooms/' + id +'/analytics', function(data){
 
-
             var dates = _.map(data.web.dates, function(date){
               var split = date.match(/.{1,4}/g);
               var monthDate = split[1].match(/.{1,2}/g);
               var date = split[0] + '-' + monthDate[0] + '-' + monthDate[1];
               return date
+            });
+            var sessions = _.map(data.web.sessions, function(session){
+              var session = parseInt(session);
+              return session;
+            });
+            var pageViews = _.map(data.web.views, function(pageView){
+              var pageView = parseInt(pageView);
+              return pageView;
             });
             var mail = data.mail.total;
             var mailStatistics = [mail.sent, mail.delivered, mail.opened, mail.dropped]
@@ -75,11 +82,11 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 name: 'Sessions',
                 type: 'column',
                 yAxis: 1,
-                data: data.web.sessions
+                data: sessions
               }, {
                 name: 'Page Views',
                 type: 'column',
-                data: data.web.pageViews,
+                data: pageViews,
               }]
             });
 
