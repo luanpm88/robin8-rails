@@ -50,6 +50,7 @@
 // require dataTables.bootstrap
 //= require spinjs
 //= require spinjs/jquery.spin.js
+//= require jquery-highlighttextarea
 //= require ./lib/icheck
 
 //= require_tree ./backbone/config

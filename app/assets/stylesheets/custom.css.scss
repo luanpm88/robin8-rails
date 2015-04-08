@@ -134,3 +134,10 @@ form#createPost {
 .cancel-addon {
   cursor: pointer;
 }
+
+.highlightTextarea{
+  div.container {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
