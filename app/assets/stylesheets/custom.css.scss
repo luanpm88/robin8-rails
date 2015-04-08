@@ -126,3 +126,7 @@ a.dashboard-btn {
 li.posts > a, li.profiles > a{
   cursor: pointer;
 }
+
+#createPost {
+  z-index: 10000000;
+}
