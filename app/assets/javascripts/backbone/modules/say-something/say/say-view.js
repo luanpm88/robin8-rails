@@ -79,12 +79,19 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     showContainer: function(e) {
       $(e.target).parent().parent().hide();
       $('.navbar-search-lg').show().find('textarea').focus();
+      
+      this.$el.find('#say-something-field').highlightTextarea({
+        ranges: [140, 15000],
+        color: '#FFC0C0'
+      });
+
       $('.progressjs-progress').show();
       e.stopPropagation();
       this.checkAbilityPosting();
     },
 
     setCounter: function() {
+      var view = this;
       var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).start();
       var sayText = $("#say-something-field");
       var counter = $("#say-counter");
@@ -94,10 +101,16 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       //set character limit
       if (selectedNetworks.twitter == "true") {
         limit = 140;
+        view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
       } else if (selectedNetworks.linkedin == "true") {
         limit = 689;
+        view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
       } else if (selectedNetworks.facebook == "true") {
         limit = 2000;
+        view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
+      } else if ( selectedNetworks.twitter != "true" && selectedNetworks.facebook != "true" && selectedNetworks.linkedin != "true" ){
+        limit = 140;
+        view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
       }
 
       var charsLeft = limit - sayText.val().length;
