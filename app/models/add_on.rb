@@ -1,0 +1,3 @@
+class AddOn < Product
+
+end

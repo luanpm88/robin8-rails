@@ -6,15 +6,18 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
+          <% if @preview_mode %>
+            <i class="preview-notification">You are in a preview mode.</i>
+          <% end %>
           <h1><%= @news_room.company_name %></h1>
           <p><%= @news_room.description %></p>
           <!-- <p>You can follow us on Twitter via <code>@acme</code> or using the <code>#acmecorp</code> hashtag.</p> -->
           <% if @news_room.attachments.length > 0 %>
-            <%= link_to presskit_public_news_room_path, class: 'btn btn-default' do %>
+            <%= link_to presskit_public_news_room_path, class: 'btn btn-default', disabled: @preview_mode do %>
               <i class="fa fa-image"></i> Press kit
             <% end %>
           <% end %>
-          <%= link_to new_public_news_room_follower_path, class: 'btn btn-default' do %>
+          <%= link_to new_public_news_room_follower_path, class: 'btn btn-default', disabled: @preview_mode do %>
             <i class="fa fa-user-plus"></i> Follow
           <% end %>
           <hr>

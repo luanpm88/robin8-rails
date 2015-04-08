@@ -69,6 +69,7 @@ $(function(){
       this.value = this.value.substring(0, limit);
     }
   });
+
   // End Social post dialog
 
   // inits['analytics'] = function(){

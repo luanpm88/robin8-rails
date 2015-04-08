@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :followers, only: [:new, :create]
     get 'presskit'
   end
+  resources :preview_news_rooms, only: [:index, :create, :show, :update, :destroy]
   resources :industries, only: :index
   resources :releases do
     post 'extract_from_word', on: :collection
@@ -61,6 +62,7 @@ Rails.application.routes.draw do
     post 'create_subscription', on: :collection
     post 'update_subscription', on: :collection
     delete 'destroy_subscription', on: :collection
+    delete 'destroy_add_on',on: :member
   end
 
   resources :media_lists, only: [:index, :create, :show, :destroy]

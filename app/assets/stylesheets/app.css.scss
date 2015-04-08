@@ -837,7 +837,8 @@ body.login {
     position: fixed;
     top: 0px;
     z-index: 9999999;
-      transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+    overflow: visible;
   }
   body.f-topbar-fixed {
       padding-top: 0px !important;
@@ -909,7 +910,8 @@ body.login {
       margin-top: 0 !important; 
   }
   .top-bar {
-      background: none repeat scroll 0 0 transparent; 
+      background: none repeat scroll 0 0 transparent;
+      overflow: visible;
   }
   .top-bar-section ul li,
   .top-bar-section li:not(.has-form) a:not(.button),
@@ -1061,11 +1063,25 @@ body.login {
     display: inline-block;
   }
 
-  @media(max-width: 640px){
+  @media(min-width: 640px){
+    .top-bar-section {
+      display: block !important;
+    }
+  }
 
-      .demopage .demo{
-        margin-top: -100px;
+  @media(max-width: 640px){
+    .top-bar-section {
+      overflow: hidden;
+      background: #fff;
+      display: none;
+      & > .right {
+        float: none !important;
+        border-top: 2px solid #006481;
       }
+    }
+    .demopage .demo{
+      margin-top: -100px;
+    }
 
   }
 

@@ -27,7 +27,7 @@ Feature.create(name: "PR Newswire Distribution",is_active: true,slug: "pr_newswi
 
 
 if Rails.env == 'development'
-  p = Product.create(slug: "basic-monthly", is_active: true, price: 19.00,
+  p = Package.create(slug: "basic-monthly", is_active: true, price: 19.00,
                      interval: 30, name: "Basic Monthly", description: "basic monthly subscription", sku_id:2257477,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -36,7 +36,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 3 )
 
 
-  p = Product.create(slug: "basic-annual", is_active: true, price: 180.00,
+  p = Package.create(slug: "basic-annual", is_active: true, price: 180.00,
                  interval: 365, name: "Basic Annual", description: "basic annual subscription", sku_id: 2257479,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -45,7 +45,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 3 )
 
 
-  p = Product.create(slug: "business-monthly", is_active: true, price: 179.00,
+  p = Package.create(slug: "business-monthly", is_active: true, price: 179.00,
                  interval: 30, name: "Business Monthly", description: "business monthly subscription", sku_id: 2257703,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -55,7 +55,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
 
 
-  p = Product.create(slug: "business-annual", is_active: true, price: 1800.00,
+  p = Package.create(slug: "business-annual", is_active: true, price: 1800.00,
                  interval: 365, name: "Business Annual", description: "business annual subscription", sku_id:2257705,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -65,7 +65,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
 
 
-  p = Product.create(slug: "enterprise-monthly", is_active: true, price: 399.00,
+  p = Package.create(slug: "enterprise-monthly", is_active: true, price: 399.00,
                  interval: 30, name: "Enterprise Monthly", description: "enterprise monthly subscription", sku_id: 2257707,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -74,7 +74,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 20 )
 
-  p = Product.create(slug: "enterprise-annual", is_active: true, price: 4200.00,
+  p = Package.create(slug: "enterprise-annual", is_active: true, price: 4200.00,
                  interval: 365, name: "Enterprise Annual", description: "enterprise annual subscription", sku_id: 2257709,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -84,7 +84,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 20 )
 
 
-  p = Product.create(slug: "pro-monthly", is_active: true, price: 299.00,
+  p = Package.create(slug: "pro-monthly", is_active: true, price: 299.00,
                  interval: 30, name: "Pro Monthly", description: "pro monthly subscription", sku_id:2257481,is_package: true)
 
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
@@ -94,7 +94,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 5 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 3 )
 
-  p = Product.create(slug: "pro-annual", is_active: true, price: 3000.00,
+  p = Package.create(slug: "pro-annual", is_active: true, price: 3000.00,
                  interval: 365, name: "Pro Annual", description: "pro annual subscription", sku_id:2257483,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 5 )
@@ -104,7 +104,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 3 )
 
 
-  p = Product.create(slug: "premium-monthly", is_active: true, price: 499.00,
+  p = Package.create(slug: "premium-monthly", is_active: true, price: 499.00,
                  interval: 30, name: "Premium Monthly", description: "premium monthly subscription", sku_id: 2257485,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 20 )
@@ -114,7 +114,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
 
 
-  p = Product.create(slug: "premium-annual", is_active: true, price: 4980.00,
+  p = Package.create(slug: "premium-annual", is_active: true, price: 4980.00,
                  interval: 365, name: "Premium Annual", description: "premium annual subscription", sku_id: 2257487,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 20 )
@@ -123,7 +123,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 10 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
 
-  p = Product.create(slug: "ultra-monthly", is_active: true, price: 1200.00,
+  p = Package.create(slug: "ultra-monthly", is_active: true, price: 1200.00,
                  interval: 30, name: "Ultra Monthly", description: "ultra monthly subscription", sku_id: 2257711,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 100 )
@@ -132,7 +132,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 10 )
 
-  p = Product.create(slug: "ultra-annual", is_active: true, price: 12000.00,
+  p = Package.create(slug: "ultra-annual", is_active: true, price: 12000.00,
                  interval: 365, name: "Ultra Annual", description: "ultra annual subscription", sku_id: 2257713,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 100 )
@@ -143,14 +143,14 @@ if Rails.env == 'development'
 
 
   ##AddONs
-  p = Product.create(name: "MyPRGenie Web Distribution (per release)", is_active: true, price: 40.00,
-                     description: "MyPRGenie Web Distribution (per release)", sku_id: 2258429,interval: 0,slug: 'myprgenie_web_distribution')
-  p.product_features.create!(feature_id:Feature.find_by_slug("myprgenie_web_distribution").id,validity: 360,count: 1 )
+  # p = AddOn.create(name: "MyPRGenie Web Distribution (per release)", is_active: true, price: 40.00,
+  #                    description: "MyPRGenie Web Distribution (per release)", sku_id: 2258429,interval: 0,slug: 'myprgenie_web_distribution')
+  # p.product_features.create!(feature_id:Feature.find_by_slug("myprgenie_web_distribution").id,validity: 360,count: 1 )
 
 end
 
 if Rails.env.production?
-  p = Product.create(slug: "basic-monthly", is_active: true, price: 19.00,
+  p = Package.create(slug: "basic-monthly", is_active: true, price: 19.00,
                  interval: 30, name: "Basic Monthly", description: "basic monthly subscription", sku_id:3262130,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -159,7 +159,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 3 )
 
 
-  p = Product.create(slug: "basic-annual", is_active: true, price: 180.00,
+  p = Package.create(slug: "basic-annual", is_active: true, price: 180.00,
                  interval: 365, name: "Basic Annual", description: "basic annual subscription", sku_id: 3262134,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -168,7 +168,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 3 )
 
 
-  p = Product.create(slug: "business-monthly", is_active: true, price: 179.00,
+  p = Package.create(slug: "business-monthly", is_active: true, price: 179.00,
                  interval: 30, name: "Business Monthly", description: "business monthly subscription", sku_id: 3262138,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -177,7 +177,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 5 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
 
-  p = Product.create(slug: "business-annual", is_active: true, price: 1800.00,
+  p = Package.create(slug: "business-annual", is_active: true, price: 1800.00,
                  interval: 365, name: "Business Annual", description: "business annual subscription", sku_id:3262152,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -187,7 +187,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
 
 
-  p = Product.create(slug: "enterprise-monthly", is_active: true, price: 399.00,
+  p = Package.create(slug: "enterprise-monthly", is_active: true, price: 399.00,
                  interval: 30, name: "Enterprise Monthly", description: "enterprise monthly subscription", sku_id: 3262154,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 1 )
@@ -198,7 +198,7 @@ if Rails.env.production?
 
 
 
-  p = Product.create(slug: "enterprise-annual", is_active: true, price: 4200.00,
+  p = Package.create(slug: "enterprise-annual", is_active: true, price: 4200.00,
                  interval: 365, name: "Enterprise Annual", description: "enterprise annual subscription", sku_id: 3262156,is_package: true)
 
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
@@ -210,7 +210,7 @@ if Rails.env.production?
 
 
 
-  p = Product.create(slug: "pro-monthly", is_active: true, price: 299.00,
+  p = Package.create(slug: "pro-monthly", is_active: true, price: 299.00,
                  interval: 30, name: "Pro Monthly", description: "pro monthly subscription", sku_id:3262158,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 5 )
@@ -219,7 +219,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 5 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 3 )
 
-  p = Product.create(slug: "pro-annual", is_active: true, price: 3000.00,
+  p = Package.create(slug: "pro-annual", is_active: true, price: 3000.00,
                  interval: 365, name: "Pro Annual", description: "pro annual subscription", sku_id:3262160,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 5 )
@@ -229,7 +229,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 3 )
 
 
-  p = Product.create(slug: "premium-monthly", is_active: true, price: 499.00,
+  p = Package.create(slug: "premium-monthly", is_active: true, price: 499.00,
                  interval: 30, name: "Premium Monthly", description: "premium monthly subscription", sku_id: 3262162,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 20 )
@@ -238,7 +238,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 10 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
 
-  p = Product.create(slug: "premium-annual", is_active: true, price: 4980.00,
+  p = Package.create(slug: "premium-annual", is_active: true, price: 4980.00,
                  interval: 365, name: "Premium Annual", description: "premium annual subscription", sku_id: 3262170,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 20 )
@@ -248,7 +248,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
 
 
-  p = Product.create(slug: "ultra-monthly", is_active: true, price: 1200.00,
+  p = Package.create(slug: "ultra-monthly", is_active: true, price: 1200.00,
                  interval: 30, name: "Ultra Monthly", description: "ultra monthly subscription", sku_id: 3262172,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 100 )
@@ -257,7 +257,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 25 )
   p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 10 )
 
-  p = Product.create(slug: "ultra-annual", is_active: true, price: 12000.00,
+  p = Package.create(slug: "ultra-annual", is_active: true, price: 12000.00,
                  interval: 365, name: "Ultra Annual", description: "ultra annual subscription", sku_id: 3262174,is_package: true)
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 0,count: 1 )
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 0,count: 100 )
@@ -271,37 +271,37 @@ end
 
 
 if Rails.env.production?
-  p = Product.create!(price:10 ,name: "Media Monitoring Stream (per month)", is_active: true, sku_id: 3264288,interval: 30,slug: "media_moitoring")
+  p = AddOn.create!(price:10 ,name: "Media Monitoring Stream (per month)", is_active: true, sku_id: 3264288,interval: 30,slug: "media_moitoring")
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 30,count: 1 )
 
-  p = Product.create!(price:20 ,name: "Newsroom (per month)", is_active: true, sku_id: 3264286,interval: 30,slug: "newsroom")
+  p = AddOn.create!(price:20 ,name: "Newsroom (per month)", is_active: true, sku_id: 3264286,interval: 30,slug: "newsroom")
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 30,count: 1 )
 
-  p = Product.create!(price: 2,name: "Press Release Distribution (per release)", is_active: true, sku_id: 3264268,slug: "press_release")
+  p = AddOn.create!(price: 2,name: "Press Release Distribution (per release)", is_active: true, sku_id: 3264268,slug: "press_release")
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 360,count: 1 )
 
-  p = Product.create!(price: 99,name: "Seat (per month)", is_active: true, sku_id: 3264284,interval: 30,slug: "seat")
+  p = AddOn.create!(price: 99,name: "Seat (per month)", is_active: true, sku_id: 3264284,interval: 30,slug: "seat")
   p.product_features.create!(feature_id:Feature.find_by_slug("seat").id,validity: 30,count: 1 )
 
-  p = Product.create!(price: 75,name: "Smart Release Distribution (per release)", is_active: true, sku_id: 3264270,slug: "smart_release")
+  p = AddOn.create!(price: 75,name: "Smart Release Distribution (per release)", is_active: true, sku_id: 3264270,slug: "smart_release")
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 360,count: 1 )
 
-  p = Product.create!(price: 350,name: "5 Smart Release Distribution (per 5 releases)", is_active: true, sku_id: 3264272,slug: "5_smart_releases")
+  p = AddOn.create!(price: 350,name: "5 Smart Release Distribution (per 5 releases)", is_active: true, sku_id: 3264272,slug: "5_smart_releases")
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 360,count: 5 )
 
-  p = Product.create!(price: 650,name: "10 Smart Release Distribution (per 10 releases)", is_active: true, sku_id: 3264274,slug: "10_smart_releases")
+  p = AddOn.create!(price: 650,name: "10 Smart Release Distribution (per 10 releases)", is_active: true, sku_id: 3264274,slug: "10_smart_releases")
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 360,count: 10 )
 
-  p = Product.create!(price: 1200,name: "20 Smart Release Distribution (per 20 releases)", is_active: true, sku_id: 3264276,slug: "20_smart_releases")
+  p = AddOn.create!(price: 1200,name: "20 Smart Release Distribution (per 20 releases)", is_active: true, sku_id: 3264276,slug: "20_smart_releases")
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 360,count: 20 )
 
-  p = Product.create!(price:40,name: "Accesswire Distribution (per release)", is_active: true, sku_id: 3264280,slug: "accesswire_distribution")
+  p = AddOn.create!(price:40,name: "Accesswire Distribution (per release)", is_active: true, sku_id: 3264280,slug: "accesswire_distribution")
   p.product_features.create!(feature_id:Feature.find_by_slug("accesswire_distribution").id,validity: 360,count: 1 )
 
-  p = Product.create!(price: 175,name: "MyPRGenie Web Distribution (per release)", is_active: true, sku_id: 3264278,slug: "myprgenie_web_distribution")
+  p = AddOn.create!(price: 175,name: "MyPRGenie Web Distribution (per release)", is_active: true, sku_id: 3264278,slug: "myprgenie_web_distribution")
   p.product_features.create!(feature_id:Feature.find_by_slug("myprgenie_web_distribution").id,validity: 360,count: 1 )
 
-  p = Product.create!(price: 450,name: "PR Newswire Distribution (per release)", is_active: true, sku_id: 3264282,slug: "pr_newswire_distribution")
+  p = AddOn.create!(price: 450,name: "PR Newswire Distribution (per release)", is_active: true, sku_id: 3264282,slug: "pr_newswire_distribution")
   p.product_features.create!(feature_id:Feature.find_by_slug("pr_newswire_distribution").id,validity: 360,count: 1 )
 end
 

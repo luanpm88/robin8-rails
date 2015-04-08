@@ -54,7 +54,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         text = title + ' | ' + _.values(data.results)[0].shortUrl;
         $('form.navbar-search-sm').hide();
         $('#shrink-links').prop('checked', true);
-        $('#shrink-links').prop('disabled', true);
+        $('.icheckbox_square-blue').addClass('checked')
         $('#createPost').find('textarea').val(text);
         $('#createPost').show();
         $('.progressjs-progress').show();

@@ -1,7 +1,7 @@
 <ul class="sidebar-nav">
   <li class="sidebar-brand">
     <a href="<%= subdomain_root_path %>">
-      <% if news_room.logo_url %>
+      <% if news_room.logo_url && news_room.logo_url.length > 0 %>
         <%= image_tag news_room.logo_url, class: 'logo' %>
       <% else %>
         <img class="img-rounded" src="http://placehold.it/250x100">
@@ -112,7 +112,7 @@
   <% if news_room.attachments.length > 0 %>
     <li class="btn-li">
      <div class="public-button-centered">
-        <%= link_to presskit_public_news_room_path, class: 'btn btn-default' do %>
+        <%= link_to presskit_public_news_room_path, class: 'btn btn-default', disabled: @preview_mode do %>
           <i class="fa fa-image"></i> Press kit
         <% end %>
       </div>
@@ -120,7 +120,7 @@
   <% end %>
   <li class="btn-li">
     <div class="public-button-centered">
-      <%= link_to new_public_news_room_follower_path, class: 'btn btn-default' do %>
+      <%= link_to new_public_news_room_follower_path, class: 'btn btn-default', disabled: @preview_mode do %>
         <i class="fa fa-user-plus"></i> Follow
       <% end %>
     </div>

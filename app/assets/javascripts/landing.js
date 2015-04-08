@@ -54,6 +54,11 @@ ready = function() {
   $('.agency-plans').hide();
 
 
+  $(".title-area .menu-icon").on("click", function(e){
+    e.preventDefault();
+    $(this).parents(".top-bar").find(".top-bar-section").slideToggle();
+  });
+
   $( "#selected-businesses" ).click(function() {
     if(!$(this).is('active')){
       $('.agency-plans').fadeOut();

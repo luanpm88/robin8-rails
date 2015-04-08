@@ -100,6 +100,15 @@ class User < ActiveRecord::Base
     streams.count
   end
 
+  def can_cancel_add_on?(user_add_on_id)
+    add_on = user_products.where(id: user_add_on_id).first.product
+    if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat"
+      return user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
+    else
+      return false
+    end
+  end
+
   def can_create_smart_release
     smart_release_available_count.nil? ? false : smart_release_count < smart_release_available_count
   end
@@ -114,12 +123,24 @@ class User < ActiveRecord::Base
 
   def active_subscription
     @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions
-    @active_s ||= @subscriptions.where("(user_products.expiry is NULL OR user_products.expiry >'#{Time.now.utc}' AND user_products.status ='A') OR (user_products.expiry > '#{Time.now.utc}' AND user_products.status = 'C')").last
+    @active_s ||= @subscriptions.where("((user_products.expiry is NULL OR user_products.expiry >'#{Time.now.utc}') AND user_products.status ='A') OR (user_products.expiry > '#{Time.now.utc}' AND user_products.status = 'C')").last
   end
 
   def subscriptions
-    user_products.joins(:product).where("products.is_package ='1'")
-    # user_products.where(is_subscription: true)
+    user_products.joins(:product).where("products.type ='Package'")
+  end
+
+  def current_package
+    Package.find(subscriptions.last.product_id)
+  end
+
+  def current_add_ons
+    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
+    AddOn.where(id: add_ons_products.map(&:product_id)) if add_ons_products.present?
+  end
+
+  def recurring_add_ons
+    user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
 
   def twitter_identity
@@ -177,7 +198,7 @@ class User < ActiveRecord::Base
     super(methods: [:active_subscription, :sign_in_count])
   end
 
-   def email_to_slug
+  def email_to_slug
     ret = email.split('@')[0].strip
     ret.gsub!(' ', '-')
     ret.gsub!('.', '-')
