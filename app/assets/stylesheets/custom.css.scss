@@ -98,7 +98,7 @@ a.dashboard-btn {
   width: 100%;
   top: 55px;
   opacity: 1;
-  z-index: 10000;
+  z-index: 1000;
   .placeholder{
     font-style: italic;
   }
@@ -127,8 +127,8 @@ li.posts > a, li.profiles > a{
   cursor: pointer;
 }
 
-#createPost {
-  z-index: 10000000;
+form#createPost {
+  z-index: 10000000 !important;
 }
 
 .cancel-addon {
