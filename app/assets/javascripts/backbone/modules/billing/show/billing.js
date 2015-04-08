@@ -3,7 +3,8 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
     template: 'modules/billing/show/templates/billing',
 
     events: {
-      'click #cancel-subscription' : 'cancelSubscription'
+      'click #cancel-subscription' : 'cancelSubscription',
+      'click .cancel-addon' : 'cancelAddon'
     },
 
     initialize: function() {
@@ -34,6 +35,35 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
               type: "danger",
             });
           });
+        }
+      });
+    },
+
+    cancelAddon: function(event) {
+      var view = this;
+      var id = $(event.target).parents('tr').attr('id');
+      console.log(id);
+      swal({
+        title: "Cancel this add-on?",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: 'Yes',
+        cancelButtonText: "No",
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          Robin.currentUser.cancelAddon({id: id}).done(function(data){
+            Robin.currentUser = new Robin.Models.User(data)
+            $.growl("Your current plan is canceled!", {
+              type: "success",
+            });
+            view.render();
+          }).error(function(data){
+            $.growl(data.responseJSON.error, {
+              type: "danger",
+            });
+          });;
         }
       });
     },

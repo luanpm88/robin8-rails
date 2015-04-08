@@ -32,5 +32,22 @@ Robin.Models.User = Backbone.Model.extend({
     return this.sync('read', this, options);
   },
 
+  cancelAddon: function(data, options) {    
+    var model = this;
+    options = {
+      url: '/payments/' + data.id + '/destroy_add_on',
+      type: 'DELETE'
+    };
+    console.log(options);
+    var success = options.success;
+    options.success = function(resp) {
+      if (!model.set(model.parse(resp, options), options)) return false;
+      if (success) success(model, resp, options);
+      model.trigger('sync', model, resp, options);
+    };
+
+    return this.sync('read', this, options);
+  },
+
 
 });
