@@ -8,6 +8,35 @@ Robin.module('Dashboard.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #smart-release': 'addSmartRelease'
     },
 
+    onRender: function(){
+      Robin.user = new Robin.Models.User();
+      var curView = this;
+      Robin.user.fetch({
+        success: function() {
+          if (Robin.user.get('can_create_stream') != true) {
+            curView.$el.find("#newsroom").attr('disabled', 'disabled');
+          } else {
+            curView.$el.find("#newsroom").removeAttr('disabled');
+          }
+          if (Robin.user.get('can_create_release') != true) {
+            curView.$el.find("#release").attr('disabled', 'disabled');
+          } else {
+            curView.$el.find("#release").removeAttr('disabled');
+          }
+          if (Robin.user.get('can_create_smart_release') != true) {
+            curView.$el.find("#smart-release").attr('disabled', 'disabled');
+          } else {
+            curView.$el.find("#smart-release").removeAttr('disabled');
+          }
+          if (Robin.user.get('can_create_stream') != true) {
+            curView.$el.find("#stream").attr('disabled', 'disabled');
+          } else {
+            curView.$el.find("#stream").removeAttr('disabled');
+          }
+        }
+      });
+    },
+
     addStream: function(){
       Robin.newStreamFromDashboard = true;
       Backbone.history.navigate('monitoring', {trigger:true});
