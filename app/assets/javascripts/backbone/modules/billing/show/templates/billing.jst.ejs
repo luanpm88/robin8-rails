@@ -26,6 +26,28 @@
           <% }); %>
           </tbody>
         </table>
+        <br>
+        <h4 class="billing-title">Add-ons</h4>
+        <table class="billing-data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% _.each(Robin.currentUser.get('recurring_add_ons'), function(item, index) { %>
+            <tr class='payment' id="<%= item.id %>">
+              <td><%= item.product.name %></td>
+              <td><%= item.product.price %></td>
+              <td><%= item.status %></td>
+              <td ><a class="<%= item.status == 'C' ? 'hidden' : ''%> cancel-addon">Cancel</a></td>
+            </tr>
+          <% }); %>
+          </tbody>
+        </table>
       </div>
       <div class="col-md-5 col-lg-4">
         <div class="billing-current-plan">

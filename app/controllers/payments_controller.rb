@@ -143,9 +143,9 @@ class PaymentsController < ApplicationController
         add_on = current_user.user_products.where(id: params[:id]).first.product
         feature =   current_user.user_features.where(product_id: add_on.id).first
         feature.update_attribute(:available_count,feature.available_count - 1)
-        flash[:success] = "Your Addon has been cancelled"
+        render json: current_user.to_json.html_safe, status: :ok
       else
-        flash[:error] = "We could not cancel your add on at this time."
+        render :json => {error: "Something went wrong!"}, status: 422
       end
     end
   end
@@ -198,11 +198,10 @@ class PaymentsController < ApplicationController
         if current_user.can_cancel_add_on?(params[:id])
           return true
         else
-          flash[:error] = "You can't cancel this add-on. Contact support for more details."
-          return redirect_to :back
+          render :json => {error: "You can't cancel this add-on. Contact support for more details."}, status: 422
         end
       else
-        flash[:error] = "No such add-on found"
+        render :json => {error: "No such add-on found"}, status: 422
       end
     end
   end

@@ -94,6 +94,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.form.data('formValidation').isValid()) {
         this.model.save(this.model.attributes, {
           success: function(model, data, response){
+            viewObj.$el.find('#release_form').modal('hide');
+            $('body').removeClass('modal-open');
             Robin.releaseForBlast = viewObj.model.get('id');
             Backbone.history.navigate('robin8', {trigger: true});
           },

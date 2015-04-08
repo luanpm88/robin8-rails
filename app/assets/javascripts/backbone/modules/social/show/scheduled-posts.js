@@ -398,10 +398,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
       if (sayText.val().length <= limit) {
         prgjs.set(Math.floor(sayText.val().length * 100/limit));
+        this.$el.find('.editable-submit').removeClass('disabled');
       } else {
-        var t = sayText.val().substring(0, limit);
-        sayText.val(t);
-        counter.text(0);
+        prgjs.set(100);
+        this.$el.find('.editable-submit').addClass('disabled');
       }
     },
 
