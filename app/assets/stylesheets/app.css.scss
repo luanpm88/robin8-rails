@@ -1063,12 +1063,6 @@ body.login {
     display: inline-block;
   }
 
-  @media(min-width: 640px){
-    .top-bar-section {
-      display: block !important;
-    }
-  }
-
   @media(max-width: 640px){
     .top-bar-section {
       overflow: hidden;
@@ -1079,10 +1073,6 @@ body.login {
         border-top: 2px solid #006481;
       }
     }
-    .demopage .demo{
-      margin-top: -100px;
-    }
-
   }
 
   /* TEAM PAGE */
@@ -1527,6 +1517,24 @@ body.login {
         padding-top: 20px;
         margin-bottom: 40px;
       }
+  }
+}
+
+@media(min-width: 640px){
+  .top-bar-section {
+    display: block !important;
+  }
+}
+
+@media(max-width: 640px){
+  .top-bar-section {
+    overflow: hidden;
+    background: #fff;
+    display: none;
+    & > .right {
+      float: none !important;
+      border-top: 2px solid #006481;
+    }
   }
 }
 
