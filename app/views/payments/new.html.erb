@@ -331,9 +331,9 @@
       }
 
       function updateTotal(amount) {
-          if (parseInt(amount) == 0){
-              location.href="/add-ons" ;
-          }
+//          if (parseInt(amount) == 0 && $("#promo_code").val()!=''){
+//              location.href="/add-ons" ;
+//          }
           $('#total').val(amount);
           $('#price-total').html('$'+ amount);
           $('#t-price').html('$'+amount );
