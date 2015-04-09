@@ -40,13 +40,6 @@ class PaymentsController < ApplicationController
                                                bluesnap_order_id: resp[:batch_order][:order][:order_id])
           }
         end if @add_ons.present?
-
-        current_user.news_rooms.create(
-          company_name: "#{current_user.email}'s Default Newsroom",
-          subdomain_name: current_user.email_to_slug,
-          default_news_room: true
-        )
-
         UserMailer.add_ons_payment_confirmation(@add_ons,current_user,@add_on_hash).deliver if @add_ons.present?
       rescue Exception=> ex
         flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]

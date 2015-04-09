@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   # has_many :user_add_ons, dependent: :destroy
   # has_many :add_ons, through: :user_add_ons
 
-  # after_create :create_default_news_room
+  after_create :create_default_news_room
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
     identity = Identity.find_for_oauth(auth)
