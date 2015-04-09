@@ -348,6 +348,7 @@
       }
 
       function updatePackage(){
+          $('#slug').val($('#payment-option').val());
           addAmount(parseInt($("#"+$('#payment-option').val()).val()));
           $("#payment-option > option").each(function() {
               if($(this).is(':selected')){
