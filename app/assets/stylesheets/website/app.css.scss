@@ -1540,3 +1540,25 @@ p.loginintro strong{
 
 
 }
+
+.top-bar {
+  overflow: visible;
+}
+
+@media(min-width: 640px){
+  .top-bar-section {
+    display: block !important;
+  }
+}
+
+@media(max-width: 640px){
+  .top-bar-section {
+    overflow: hidden;
+    background: #fff;
+    display: none;
+    & > .right {
+      float: none !important;
+      border-top: 2px solid #006481;
+    }
+  }
+}
