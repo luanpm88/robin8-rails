@@ -2,7 +2,7 @@ class TextapiController < ApplicationController
   before_action :authenticate_user!, :set_client
   
   def classify
-    response = @client.classify text: text_param
+    response = @client.classify text: text
     
     respond_to do |format|
       format.json { render json: response[:categories]}
@@ -10,7 +10,7 @@ class TextapiController < ApplicationController
   end
 
   def concepts
-    response = @client.concepts text: text_param
+    response = @client.concepts text: text
     
     concepts = response[:concepts]
     
@@ -39,7 +39,7 @@ class TextapiController < ApplicationController
   end
   
   def hashtags
-    response = @client.hashtags text: text_param
+    response = @client.hashtags text: text
 
     respond_to do |format|
       format.json { render json: response[:hashtags] }
@@ -57,6 +57,10 @@ class TextapiController < ApplicationController
   
   def text_param
     ActionController::Base.helpers.strip_tags(params[:text])
+  end
+  
+  def text
+    "#{title_param}\n#{text_param}"
   end
   
   def filter_concepts(concepts)
