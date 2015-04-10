@@ -9,7 +9,8 @@ class UsersController < ApplicationController
   end
 
   def info
-    render json: current_user, each_serializer: UserSerializer
+    user = current_user.is_primary? ? current_user : current_user.invited_by
+    render json: user, each_serializer: UserSerializer
   end
 
   def new
