@@ -24,7 +24,7 @@ class Discount < ActiveRecord::Base
   end
 
   def calculate(user,product)
-    product.price - (product.price * (percentage/100))
+    product.price - (product.price * ((100-percentage)/100))
   end
 
   # def is_user_only_discount?

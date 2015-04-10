@@ -195,7 +195,7 @@
           <div class="row">
             <div class="small-12 medium-12 large-4 columns custom-padding">
               <label>Credit Card Type
-                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'americanexpress'],["Discover", 'discover']], {}, {:class => "select-checkout"} %>
+                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'amex'],["Discover", 'discover'],["Carte Bleue","carte_bleue"],["Diners Club","diners"],["JCB","jcb"],["Maestro UK","maestr_uk"],["Solo","solo"] ], {}, {:class => "select-checkout"} %>
               </label>
             </div>
 
@@ -331,9 +331,9 @@
       }
 
       function updateTotal(amount) {
-          if (parseInt(amount) == 0){
-              location.href="/add-ons" ;
-          }
+//          if (parseInt(amount) == 0 && $("#promo_code").val()!=''){
+//              location.href="/add-ons" ;
+//          }
           $('#total').val(amount);
           $('#price-total').html('$'+ amount);
           $('#t-price').html('$'+amount );
@@ -348,6 +348,7 @@
       }
 
       function updatePackage(){
+          $('#slug').val($('#payment-option').val());
           addAmount(parseInt($("#"+$('#payment-option').val()).val()));
           $("#payment-option > option").each(function() {
               if($(this).is(':selected')){

@@ -26,6 +26,9 @@ class User < ActiveRecord::Base
 
   after_create :create_default_news_room
 
+  extend FriendlyId
+  friendly_id :email, use: :slugged
+
   def self.find_for_oauth(auth, signed_in_resource = nil)
     identity = Identity.find_for_oauth(auth)
 
@@ -199,22 +202,12 @@ class User < ActiveRecord::Base
     super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
   end
 
-  def email_to_slug
-    ret = email.split('@')[0].strip
-    ret.gsub!(' ', '-')
-    ret.gsub!('.', '-')
-    ret.gsub!('_', '-')
-    ret.gsub!('+', '-')
-
-    ret
-  end
-
   private
   def create_default_news_room
-    if user.is_primary
+    if is_primary?
       news_room = self.news_rooms.new(
           company_name: "#{self.email}'s Default Newsroom",
-          subdomain_name: self.email_to_slug,
+          subdomain_name: self.slug,
           default_news_room: true
       )
       news_room.save(validate: false)
