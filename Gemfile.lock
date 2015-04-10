@@ -557,7 +557,7 @@ DEPENDENCIES
   docx-html
   ejs
   email_validator
-  friendly_id
+  friendly_id (~> 5.1.0)
   geocoder
   google-api-client
   has_scope
