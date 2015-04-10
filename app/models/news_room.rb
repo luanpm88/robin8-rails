@@ -1,3 +1,4 @@
+require 'mailgun'
 class NewsRoom < ActiveRecord::Base
   VALID_TYPES = ['Government Agency', 'Non-Profit', 'Privately Held', 'Public Company', 'LLC', 'Educational Institution']
   VALID_SIZES = ['Myself Only', '1-5 employees', '6-10 employees', '11-50 employees', '51-200 employees',
@@ -14,8 +15,8 @@ class NewsRoom < ActiveRecord::Base
   has_one :preview_news_room, foreign_key: :parent_id, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
   before_create :set_campaign_name
-  after_create :decrease_feature_number
-  after_destroy :increase_feature_numner
+  after_create :decrease_feature_number, :create_campaign
+  after_destroy :increase_feature_numner, :delete_campaign
 
   validates :company_name, presence: true
   validates :user_id, presence: true
@@ -70,7 +71,14 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def set_campaign_name
-      self.campaign_name = self.company_name
+      self.campaign_name = self.id
+      
+    end
+
+    def create_campaign
+      mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+      domain = Rails.application.secrets.mailgun[:domain]
+      mg_client.post("#{domain}/campaigns", { id: self.id, name: self.id })
     end
 
     def decrease_feature_number
@@ -85,6 +93,12 @@ class NewsRoom < ActiveRecord::Base
       return false if uf.blank?
       uf.available_count += 1
       uf.save
+    end
+
+    def delete_campaign
+      mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+      domain = Rails.application.secrets.mailgun[:domain]
+      mg_client.delete("#{domain}/campaigns/#{campaign_name}")
     end
     
 end
