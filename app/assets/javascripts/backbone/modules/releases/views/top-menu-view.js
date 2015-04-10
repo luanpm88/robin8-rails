@@ -22,7 +22,15 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #extract_url': 'extractURL',
       'click #highlight_textarea': 'highlightReleaseText',
       'click #smart_release': 'startSmartRelease',
-      'change #upload': 'uploadWord'
+      'change #upload': 'uploadWord',
+      'ifChanged .private-checkbox': 'changePrivate'
+    },
+    changePrivate: function(e) {
+      if ($(e.target).is(":checked")) {
+        this.$el.find('.smart-release-button').addClass('disabled');
+      } else {
+        this.$el.find('.smart-release-button').removeClass('disabled');
+      }
     },
     highlightReleaseText: function(e) {
       e.preventDefault();
