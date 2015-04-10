@@ -8,8 +8,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       imagesRegion: '.images_region',
       videosRegion: '.videos_region',
       filesRegion: '.files_region',
-      characteristicsRegion: '#release-characteristics',
-      addRelease: '#new_release'
+      characteristicsRegion: '#release-characteristics'
     },
     ui: {
       wysihtml5:        'textarea.wysihtml5',
@@ -191,8 +190,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       Robin.user = new Robin.Models.User();
       Robin.user.fetch({
         success: function() {
-          var addButtonView = new Releases.AddButtonView();
-          self.addRelease.show(addButtonView);
+          self.verifyReleaseButton();
           if (Robin.user.get('can_create_smart_release') != true) {
             $('.smart-release-button').attr('disabled', 'disabled')
           } else {
@@ -330,8 +328,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             success: function(model, data, response){
               Robin.user.fetch({
                 success: function() {
-                  var addButtonView = new Releases.AddButtonView();
-                  viewObj.addRelease.show(addButtonView);
+                  viewObj.verifyReleaseButton();
                 }
               });
               viewObj.$el.find('#release_form').modal('hide');
@@ -348,8 +345,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             success: function(model, data, response){
               Robin.user.fetch({
                 success: function() {
-                  var addButtonView = new Releases.AddButtonView();
-                  viewObj.addRelease.show(addButtonView);
+                  viewObj.verifyReleaseButton();
                 }
               });
               viewObj.$el.find('#release_form').modal('hide');
@@ -382,6 +378,13 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.form.data('formValidation').updateMessage(key, 'serverError', value.join(','))
       }, this);
     },
+    verifyReleaseButton: function() {
+      if(Robin.user.get('can_create_release') != true) {
+        $('button#new_release').attr('disabled', 'disabled');
+      } else {
+        $('button#new_release').removeAttr('disabled');
+      }
+    },
     deleteRelease: function(){
       var viewObj = this;
       swal({
@@ -398,8 +401,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             success: function(model, response){
               Robin.user.fetch({
                 success: function() {
-                  var addButtonView = new Releases.AddButtonView();
-                  viewObj.addRelease.show(addButtonView);
+                  viewObj.verifyReleaseButton();
                 }
               });
               viewObj.$el.find('#release_form').modal('hide');
