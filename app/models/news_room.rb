@@ -82,14 +82,18 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def decrease_feature_number
-      uf = user.user_features.newsroom.available.first
+      needed_user = user.is_primary? ? user : user.invited_by
+
+      uf = needed_user.user_features.newsroom.available.first
       return false if uf.blank?
       uf.available_count -= 1
       uf.save
     end
 
     def increase_feature_numner
-      uf = user.user_features.newsroom.not_available.first
+      needed_user = user.is_primary? ? user : user.invited_by
+
+      uf = needed_user.user_features.newsroom.not_available.first
       return false if uf.blank?
       uf.available_count += 1
       uf.save

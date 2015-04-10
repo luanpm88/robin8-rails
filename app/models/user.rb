@@ -106,7 +106,6 @@ class User < ActiveRecord::Base
   def can_cancel_add_on?(user_add_on_id)
     add_on = user_products.where(id: user_add_on_id).first.product
     if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution"
-      p '!!!!!!!!!!!!!!!!!!!!!!!!!!!'
       return user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
     else
       return false
