@@ -79,8 +79,8 @@ module BlueSnap
       discount_amount = 0.0
       if discount.present? && product.present?
         discount_amount =  discount.calculate(user,product) if discount.is_global?
-        discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.id)
-        discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.id)
+        discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.slug)
+        discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.slug)
       end
       return (product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
     end
@@ -98,7 +98,7 @@ module BlueSnap
       discount = Discount.active.where(code: code).last if code.present?
       disc_code = ""
       if discount.present? && product.present?
-       if discount.is_global? || discount.on_user_and_product?(user.id,product.id) || discount.only_on_product?(product.id)
+       if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
         disc_code = {"coupons"=>{"coupon"=> discount.code}}.to_xml(root: false,:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","").gsub("<hash>\n","").gsub("\n</hash>\n","")
        end
       end
