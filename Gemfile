@@ -95,7 +95,7 @@ gem 'aylien_text_api'
 gem 'ejs'
 gem 'countries'
 gem 'whenever'
-gem 'friendly_id'
+gem 'friendly_id', '~> 5.1.0'
 
 gem 'docx-html'
 # Use ActiveModel has_secure_password
