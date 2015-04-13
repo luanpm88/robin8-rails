@@ -11,6 +11,7 @@ Robin.Collections.SuggestedAuthors = Backbone.Collection.extend({
       data: {
         title: this.releaseModel.get("title"), 
         body: this.releaseModel.get("text"),
+        "iptc_categories[]": this.releaseModel.get("iptc_categories"),
         per_page: 100,
         included_email: true
       },
