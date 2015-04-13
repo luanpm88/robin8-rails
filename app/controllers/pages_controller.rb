@@ -58,6 +58,7 @@ class PagesController < ApplicationController
 
   def authenticate_user!
     if user_signed_in?
+      redirect_to "/upgrade/#{params[:plan]}" if current_user.active_subscription.present?
       super
     else
       session[:redirect_checkout_url] = "/add-ons?plan=#{params[:plan]}"
