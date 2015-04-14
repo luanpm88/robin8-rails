@@ -110,7 +110,7 @@
                 <div class="small-12 columns">
                   <p class="chargesummary">You will not be charged right away. Your payment will be adjusted automatically in your next billing cycle, starting <span class="chargedate" id = "next-date">
                   <% date = current_user.active_subscription.next_charge_date || (Date.today + @product.interval.to_i.days) %>
-                  <%=date.strftime("%b #{date.day.ordinalize} %Y")%></span>. You will be charged <span class="chargetotal" id="t-price">$<%=(@product.price).to_i %></span>.</p>
+                  <%=date.strftime("%b #{date.day.ordinalize}, %Y")%></span>. You will be charged <span class="chargetotal" id="t-price">$<%=(@product.price).to_i %></span>.</p>
                 </div>
               </div>
               <br/>
