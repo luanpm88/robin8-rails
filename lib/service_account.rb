@@ -11,8 +11,10 @@ class ServiceAccount
     # key = Google::APIClient::PKCS12.load_key("robin8-key.p12", "notasecret")
     # service_account = Google::APIClient::JWTAsserter.new("800182934383-g1ubtr8flrfda4virvk07sh73v1t5c9u@developer.gserviceaccount.com", scope, key)
     # production
-    key = Google::APIClient::PKCS12.load_key("robin8-production.p12", "notasecret")
-    service_account = Google::APIClient::JWTAsserter.new("661225236187-do4mhsdpkk2fc68msd94f16l9g704cs2@developer.gserviceaccount.com", scope, key)
+    ga_cert = Rails.application.secrets.google_analytics[:key]
+    ga_user = Rails.application.secrets.google_analytics[:user]
+    key = Google::APIClient::PKCS12.load_key(ga_cert, "notasecret")
+    service_account = Google::APIClient::JWTAsserter.new(ga_user, scope, key)
     client.authorization = service_account.authorize
     oauth_client = OAuth2::Client.new("", "", {
       :authorize_url => 'https://accounts.google.com/o/oauth2/auth',
