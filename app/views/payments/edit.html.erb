@@ -1,7 +1,7 @@
 <div class="signup">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Upgrade"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "New Package"}%>
   </header>
 
   <%= form_for @payment, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
@@ -90,16 +90,16 @@
         <div class="signup-footer ftform" id="checkoutdata">
           <div class="row">
             <div class="small-12 columns">
-              <h3>Upgrade Information</h3>
+              <h3>New Package Information</h3>
               <h4 style="text-align:center;color:#fff;">
                 Current: <%=current_user.active_subscription.product.name%> at $<%=current_user.active_subscription.product.price%>
                 <br/> TO <br/>
-                Upgrade: <%=@product.name%> at $<%=@product.price%>
+                New Package: <%=@product.name%> at $<%=@product.price%>
               </h4>
 
 
               <div class="submit-wrap">
-                <%= submit_tag "CONFIRM UPGRADE", :class=>"button button-signup nextstep" %>
+                <%= submit_tag "CONFIRM PACKAGE CHANGE", :class=>"button button-signup nextstep" %>
               </div>
             </div>
           </div>
