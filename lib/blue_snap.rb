@@ -186,6 +186,9 @@ module BlueSnap
       begin
         url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id, "underlying-sku-id" => sku_id, "status" => "C", "shopper-id" => shopper_id.to_s} # status C is for cancel :s
+
+
+
         Request.put(url, shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
         Rails.logger.error ex
@@ -194,10 +197,18 @@ module BlueSnap
 
     end
 
-    def self.update(subscription_id, shopper_id, new_sku_id)
+    def self.update(subscription_id, shopper_id, new_sku_id,code=nil,user=nil)
       begin
         url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id" => new_sku_id.to_s, "status" => "A", "shopper-id" => shopper_id.to_s}
+
+        discount,product = Discount.active.where(code: code).last,Package.where(sku_id: new_sku_id).first if code.present?
+        if discount.present? && product.present?
+          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+            shopper.merge({"coupon"=>discount.code})
+          end
+        end
+
         Request.put(url, shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
         Rails.logger.error ex
@@ -249,6 +260,7 @@ module BlueSnap
       request["Content-Type"] ='application/xml'
       response = http.request(request)
       Rails.logger.info "response is #{response} AND #{response.body}***************************"
+      return "Something is not right with your upgrade, Please try again." if [400,401,402,403,404,500,501].include?(response.code.to_i)
       response.body
     end
 
