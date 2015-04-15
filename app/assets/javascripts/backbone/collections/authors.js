@@ -6,7 +6,7 @@ Robin.Collections.Authors = Backbone.Collection.extend({
     this.fetch({
       url: this.url,
       data: _.defaults(this.parseParams(data),{
-        per_page: 25,
+        per_page: 100,
         included_email: true
       }),
       success: options.success

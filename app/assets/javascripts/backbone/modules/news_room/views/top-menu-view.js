@@ -57,6 +57,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         checkboxClass: 'icheckbox_square-blue',
         increaseArea: '20%'
       });
+      this.$el.find("#subdomain_name").tooltip({title: 'Changes to the subdomain will take place only after save', trigger: 'hover', placement: 'bottom'});
+      this.$el.find("#preview-disabled").tooltip({title: 'You need to save the newsroom for the first time in order to activate the preview option', trigger: 'hover', placement: 'left'});
     },
 
     onShow: function(){
@@ -72,6 +74,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
     openModalDialog: function(){
       this.model.clear();
+      this.model.attributes.publish_on_website = true,
       // this.$el.find("#tagsinput").tagsinput('removeAll')
       this.render()
       this.$el.find('#newsroom_form').modal({keyboard: false });

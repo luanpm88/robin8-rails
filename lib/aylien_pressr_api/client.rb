@@ -177,6 +177,9 @@ module AylienPressrApi
       
       case endpoint
         when Configuration::ENDPOINTS[:suggested_authors]
+          if params.key?("iptc_categories")
+            params["iptc_categories[]"] = params.delete("iptc_categories")
+          end
           config[:method] = :post
         when Configuration::ENDPOINTS[:interesting_terms]
           config[:method] = :post
@@ -189,6 +192,9 @@ module AylienPressrApi
           end
         when Configuration::ENDPOINTS[:related_stories]
           config[:method] = :post
+          if params.key?("iptc_categories")
+            params["iptc_categories[]"] = params.delete("iptc_categories")
+          end
           endpoint = endpoint.scan(/:(\w+)/).inject("") do |memo, item|
             memo = endpoint.gsub(":#{item[0]}", params[item[0].to_sym].to_s)
             memo

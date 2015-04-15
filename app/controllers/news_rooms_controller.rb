@@ -10,6 +10,7 @@ class NewsRoomsController < ApplicationController
     @news_room = current_user.news_rooms.build news_room_params
     @new_logo = params[:news_room][:logo_url]
     if @news_room.save
+      destroy_preview(params[:id])
       if @new_logo
         AmazonStorageWorker.perform_async("news_room", @news_room.id, @new_logo, nil, :logo_url)
       end
@@ -28,6 +29,7 @@ class NewsRoomsController < ApplicationController
     @old_logo = @news_room.logo_url
     @new_logo = params[:news_room][:logo_url]
     if @news_room.update_attributes(news_room_params)
+      destroy_preview(params[:id])
       if @new_logo!=@old_logo
         AmazonStorageWorker.perform_async("news_room", @news_room.id, @new_logo, @old_logo, :logo_url)
       end
@@ -74,6 +76,12 @@ class NewsRoomsController < ApplicationController
   end
 
 private
+
+  def destroy_preview(id)
+    @preview_room = PreviewNewsRoom.find_by(parent_id: id)
+    @preview_room.destroy if @preview_room
+  end
+
   def news_room_params
     params.require(:news_room).permit(:user_id, :company_name, :room_type, :size, :email, :phone_number, :fax, :web_address,
       :description, :address_1, :address_2, :city, :state, :postal_code, :country, :owner_name,

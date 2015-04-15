@@ -1,6 +1,6 @@
 <ul class="sidebar-nav">
   <li class="sidebar-brand">
-    <a href="<%= subdomain_root_path %>">
+    <a href="<%= @preview_mode ? "" : subdomain_root_path %>">
       <% if news_room.logo_url && news_room.logo_url.length > 0 %>
         <%= image_tag news_room.logo_url, class: 'logo' %>
       <% else %>

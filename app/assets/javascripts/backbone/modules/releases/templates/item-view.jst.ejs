@@ -43,7 +43,7 @@
         <% if (release.id && release.news_room_public && !release.is_private) {%>
             <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
-            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>-preview.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank"><i class="fa fa-eye"></i> Preview</a>
           <% } %>
         <button href="#" class="btn btn-default" id="open_edit" style="margin-left: 5px;"><i class="fa fa-pencil"></i> Edit</button>
       </p>

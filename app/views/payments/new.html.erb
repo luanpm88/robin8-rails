@@ -297,14 +297,19 @@
       <%end%>
       function applyDiscount(){
           if($("#promo_code").val()!=''){
+              originalAmount =  getTotal();
               updateTotal(originalAmount);
+              previous_amount  = parseInt($("#"+$('#slug').val()).val());
+              $('#price-sub').html('$'+(previous_amount));
               $('#discount_response').html("");
               $.ajax({
-                  url: "/payments/apply_discount?code="+$("#promo_code").val()+"&product_id="+'<%=@product.try(:id) %>'
+                  url: "/payments/apply_discount?code="+$("#promo_code").val()+"&product_slug="+$('#slug').val()
               })
                       .done(function( amount ) {
                           if ( amount != '' ) {
                               subAmount(parseInt(amount));
+                              previous_amount  = parseInt($("#"+$('#slug').val()).val());
+                              $('#price-sub').html('$'+(previous_amount - amount));
                               $('#discount_response').html("Discount successfully applied to your account");
                               $('#discount_response').css("color","#02BA64");
                           }
@@ -331,13 +336,9 @@
       }
 
       function updateTotal(amount) {
-//          if (parseInt(amount) == 0 && $("#promo_code").val()!=''){
-//              location.href="/add-ons" ;
-//          }
           $('#total').val(amount);
           $('#price-total').html('$'+ amount);
           $('#t-price').html('$'+amount );
-          $('#price-sub').html('$'+amount);
           return true
       }
 
@@ -349,19 +350,20 @@
 
       function updatePackage(){
           $('#slug').val($('#payment-option').val());
-          addAmount(parseInt($("#"+$('#payment-option').val()).val()));
+          addAmount(parseInt($("#"+$('#slug').val()).val()));
           $("#payment-option > option").each(function() {
               if($(this).is(':selected')){
-//                  amount = $("#"+this.value).val();
-//                  addAmount(parseInt(amount));
+                //#do nothing, already added to total;
               }
               else{
                   amount = $("#"+this.value).val();
-                  subAmount(parseInt(amount));
+                  subAmount(parseInt(($('#price-sub').html().replace("$",""))));
               }
           });
           total = parseInt(getTotal());
           updateTotal(total);
+          previous_amount  = parseInt($("#"+$('#slug').val()).val());
+          $('#price-sub').html('$'+(previous_amount));
           $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
       }
 

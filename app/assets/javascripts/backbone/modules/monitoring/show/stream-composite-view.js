@@ -29,7 +29,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
-    afterFetch: function (e) {      
+    afterFetch: function (e) {
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
       if (this.collection.length == 0) {
