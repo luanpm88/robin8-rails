@@ -22,6 +22,10 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       sweetAlertInitialize();
       this.modelBinder = new Backbone.ModelBinder();
       Robin.vent.on("news_room:open_edit_modal", this.openModalDialogEdit, this);
+      if (Robin.newNewsroomFromDashboard) {
+        this.model.clear();
+        this.model.attributes.publish_on_website = true;
+      }
     },
 
     onRender: function(){
