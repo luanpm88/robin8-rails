@@ -99,9 +99,12 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def delete_campaign
-      mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
-      domain = Rails.application.secrets.mailgun[:domain]
-      mg_client.delete("#{domain}/campaigns/#{campaign_name}")
+      begin
+        mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+        domain = Rails.application.secrets.mailgun[:domain]
+        mg_client.delete("#{domain}/campaigns/#{campaign_name}")
+      rescue Exception => e
+      end
     end
     
 end
