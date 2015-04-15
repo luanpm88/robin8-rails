@@ -70,6 +70,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
         Robin.cachedStories[streamId] = new Robin.Collections.Stories();
         Robin.cachedStories[streamId].streamId = streamId;
+        Robin.cachedStories[streamId].alreadyRendered = false;
         Robin.cachedStories[streamId].sortByPopularity = this.model.get('sort_column') == 'shares_count';
 
       }
@@ -108,12 +109,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         if (Robin.cachedStories[this.model.get('id')].length > 0){
           this.$el.find('.stream-loading').addClass('hidden');
         } 
+        
+        if (Robin.cachedStories[this.model.get('id')].alreadyRendered && Robin.cachedStories[this.model.get('id')].length == 0) {
+          this.$el.find('.stream-loading').addClass('hidden');
+          this.$el.find('.empty-stream').removeClass('hidden');
+        }
+        Robin.cachedStories[this.model.get('id')].alreadyRendered = true;
       }
 
-      if (Robin.cachedStories[this.model.get('id')].alreadyRendered && Robin.cachedStories[this.model.get('id')].length == 0) {
-        this.$el.find('.stream-loading').addClass('hidden');
-        this.$el.find('.empty-stream').removeClass('hidden');
-      }
 
       if (this.needOpacity) {
         this.$el.find('.stream-loading').removeClass('hidden');
@@ -130,7 +133,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.refreshTimeRangeVisibility();
       this.$el.find("input.select2-input").css('width', '150%')
-      Robin.cachedStories[this.model.get('id')].alreadyRendered = true;
     },
 
     onAdded: function(story, collection) {
