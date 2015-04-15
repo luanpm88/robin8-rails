@@ -107,7 +107,12 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (Robin.cachedStories[this.model.get('id')] != undefined) {
         if (Robin.cachedStories[this.model.get('id')].length > 0){
           this.$el.find('.stream-loading').addClass('hidden');
-        };
+        } 
+      }
+
+      if (Robin.cachedStories[this.model.get('id')].alreadyRendered && Robin.cachedStories[this.model.get('id')].length == 0) {
+        this.$el.find('.stream-loading').addClass('hidden');
+        this.$el.find('.empty-stream').removeClass('hidden');
       }
 
       if (this.needOpacity) {
@@ -125,6 +130,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.refreshTimeRangeVisibility();
       this.$el.find("input.select2-input").css('width', '150%')
+      Robin.cachedStories[this.model.get('id')].alreadyRendered = true;
     },
 
     onAdded: function(story, collection) {
@@ -324,6 +330,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           },{
             type: 'success'
           });
+          Robin.cachedStories[curView.model.get('id')].alreadyRendered = false;
           curView.render();
         },
         error: function(userSession, response) {
