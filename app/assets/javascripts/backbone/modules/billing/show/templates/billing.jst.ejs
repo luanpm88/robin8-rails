@@ -18,7 +18,8 @@
           <% _.each(items, function(item, index) { %>
             <tr class='payment'>
               <td><%= index + 1 %></td>
-              <td><%= item.payment.formatted_created_at %></td>
+              <% var date = moment.utc(item.payment.another_format_created_at).toDate() %>
+              <td><%= moment(date).format('MM/DD/YYYY hh:mm A') %></td>
               <td><%= item.payment.card_last_four_digits %></td>
               <td><%= item.payment.card_type %></td>
               <td><%= item.payment.amount %></td>
