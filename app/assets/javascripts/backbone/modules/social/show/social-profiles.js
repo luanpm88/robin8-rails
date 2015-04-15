@@ -9,7 +9,7 @@ var disconnectSocial = function(provider, currentView){
       currentView.render();
       Robin.module("Social").postsView.render();
       Robin.module("Social").tomorrowPostsView.render();
-      Robin.module("Social").othersPostsCollection.render();
+      Robin.module("Social").othersPostsView.render();
       Robin.SaySomething.Say.Controller.showSayView();
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -58,7 +58,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
             currentView.render();
             Robin.module("Social").postsView.render();
             Robin.module("Social").tomorrowPostsView.render();
-            Robin.module("Social").othersPostsCollection.render();
+            Robin.module("Social").othersPostsView.render();
             Robin.SaySomething.Say.Controller.showSayView();
             window.clearInterval(currentView.interval);
           });
