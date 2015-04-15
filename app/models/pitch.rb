@@ -25,7 +25,7 @@ class Pitch < ActiveRecord::Base
   private
 
   def can_be_created
-    errors.add(:user, "you've reached the max numbers of smart releases.") if user && !user.can_create_smart_release
+    errors.add(:user, "you've reached the max numbers of smart releases.") if needed_user && !needed_user.can_create_smart_release
   end
   
   def email_targets?
@@ -36,9 +36,11 @@ class Pitch < ActiveRecord::Base
     twitter_targets
   end
 
-  def decrease_feature_number
-    needed_user = user.is_primary? ? user : user.invited_by
+  def needed_user
+    user.is_primary? ? user : user.invited_by
+  end
 
+  def decrease_feature_number
     uf = needed_user.user_features.smart_release.available.first
     return false if uf.blank?
     uf.available_count -= 1
@@ -46,8 +48,6 @@ class Pitch < ActiveRecord::Base
   end
 
   def increase_feature_numner
-    needed_user = user.is_primary? ? user : user.invited_by
-
     uf = needed_user.user_features.smart_release.not_available.first
     return false if uf.blank?
     uf.available_count += 1

@@ -67,9 +67,11 @@ class Release < ActiveRecord::Base
     self.people_count = (response[:entities][:person] || []).size
   end
 
-  def decrease_feature_number
-    needed_user = user.is_primary? ? user : user.invited_by
+  def needed_user
+    user.is_primary? ? user : user.invited_by
+  end
 
+  def decrease_feature_number
     uf = needed_user.user_features.press_release.available.first
     return false if uf.blank?
     uf.available_count -= 1
@@ -77,8 +79,6 @@ class Release < ActiveRecord::Base
   end
 
   def increase_feature_numner
-    needed_user = user.is_primary? ? user : user.invited_by
-
     uf = needed_user.user_features.press_release.not_available.first
     return false if uf.blank?
     uf.available_count += 1
