@@ -112,13 +112,13 @@
                   <div class="form-group">
                     <label class="col-lg-3 control-label">Subdomain name:</label>
                     <div class="col-lg-8">
-                      <input class="form-control" name="subdomain_name" type="text" value="" />
+                      <input class="form-control" id="subdomain_name" name="subdomain_name" type="text" value="" />
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="publish_checkbox" class="col-lg-3 control-label">Publish on public website:</label>
                     <div class="col-lg-8">
-                      <input type="checkbox" id="publish_checkbox" name="publish_on_website" >
+                      <input type="checkbox" id="publish_checkbox" name="publish_on_website">
                     </div>
                   </div>
                 </div>
@@ -508,10 +508,12 @@
           <% if(news_room.id) {%>
             <a href="javascript:void(0)" id="delete_news_room" class="btn btn-danger pull-left"><i class="fa fa-trash"></i> Delete Newsroom</a>
           <% } %>
-          <% if(news_room.id && news_room.publish_on_website) {%>
+          <% if(news_room.id) {%>
             <a id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
           <% } else {%>
-            <a href="http://<%- news_room.subdomain_name %>.<%- windowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled'><i class="fa fa-eye"></i> Preview</a>
+          <span id='preview-disabled'>
+            <a href="http://<%- news_room.subdomain_name %>.<%- windowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled' data-toggle="tooltip" data-placement="left" title="Delete Stream"><i class="fa fa-eye"></i> Preview</a>
+          </span>
           <% } %>
           <a href="javascript:void(0)" id="save_news_room" class="btn btn-success"><i class="fa fa-save"></i> Save changes</a>
         </div>

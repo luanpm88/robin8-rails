@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
     response.headers['X-CSRF-Token'] = form_authenticity_token if protect_against_forgery?
   end
 
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
   protected
 
   def configure_permitted_parameters
