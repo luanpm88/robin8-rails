@@ -65,12 +65,6 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.$el.find("#preview-disabled").tooltip({title: 'You need to save the newsroom for the first time in order to activate the preview option', trigger: 'hover', placement: 'left'});
     },
 
-    onShow: function(){
-      if (Robin.currentUser.attributes.is_primary == false){
-        this.$el.find(".manage").hide();
-      }
-    },
-
     onDestroy: function(){
       Robin.vent.off("news_room:open_edit_modal", this.openModalDialogEdit);
       this.modelBinder.unbind();
