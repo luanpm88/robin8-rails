@@ -17,7 +17,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showManageUsers: function() {
     this.stopAll();
-    Robin.module('ManageUsers').start();
+    if (Robin.currentUser.attributes.is_primary != false) {
+      Robin.module('ManageUsers').start();
+    } else {
+      Backbone.history.navigate('dashboard', {trigger:true});
+    }
   },
 
   showMonitoring: function() {
