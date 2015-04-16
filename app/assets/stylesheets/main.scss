@@ -916,6 +916,25 @@ nav{text-align: center;}
   z-index: 1;
   border-radius: 0;
 }
+#release_form .modal-footer {
+  height: 90px;
+}
+#release_form #delete-container {
+  width: 110px;
+  float: left;
+  margin-right: 70px;
+}
+#release_form #alert-container {
+  width: 460px;
+  float: left;
+}
+#release_form #release-buttons {
+  width: 185px;
+  float: right;
+}
+#release_form #public-alert {
+  text-align: left;
+}
 .blast-release .blast-content {
   min-height: 200px;
 }

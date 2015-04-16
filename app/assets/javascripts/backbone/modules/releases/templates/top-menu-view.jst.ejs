@@ -52,7 +52,7 @@
                   <div class="form-group">
                       <label>Newsroom</label>
                       <div class="ui-select">
-                        <select class="form-control" name="news_room_id">
+                        <select id="news_room_id" class="form-control" name="news_room_id">
                           <option value="">Select...</option>
                           <% _.each(newsrooms.models, function(newsroom){ %>
                             <option value="<%= newsroom.get('id') %>"> <%= newsroom.get('company_name') %> </option>
@@ -92,11 +92,21 @@
         <div class="modal-footer">
           <% var windowUrl = location.host.split('.') %>
           <% var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
-          <% if(release.id) { %>
-            <button type="button" class="btn btn-danger pull-left" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
-          <% } %>
-          <button type="button" class="btn btn-primary smart-release-button" id='smart_release' ><i class="fa fa-rocket"></i> Next</button>
-          <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> Save draft</button>
+          <div id="delete-container">
+            <% if(release.id) { %>
+              <button type="button" class="btn btn-danger" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
+            <% } %>
+          </div>
+          <div id="alert-container">
+              <div id="public-alert" class="alert alert-warning" role="alert" style="display:none;">
+                This release won't be publicly displayed while the parent Newsroom remains unpublished. 
+                <b><button id="make-public">Publish the newsroom!</button></b>
+              </div>
+          </div>
+          <div id="release-buttons">
+            <button type="button" class="btn btn-primary smart-release-button" id='smart_release' ><i class="fa fa-rocket"></i> Next</button>
+            <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> Save draft</button>
+          </div>
         </div>
     </div>
   </div>
