@@ -18,7 +18,7 @@ en:
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
-        subject: "Robin8 Confirmation Instructions"
+        subject: "Robin8 confirmation instructions"
       reset_password_instructions:
         subject: "Robin8 password reset instructions"
       unlock_instructions:

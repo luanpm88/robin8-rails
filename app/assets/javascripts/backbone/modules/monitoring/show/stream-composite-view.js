@@ -30,11 +30,33 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     afterFetch: function (e) {
+      this.filterCollection();
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
       if (this.collection.length == 0) {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
+    },
+
+   filterCollection: function () {
+      var initArray = this.collection.models;
+      var deleteList = [];
+      var ViewObj = this;
+
+      initArray.forEach(function(model) {
+        var title = model.attributes.title;
+        deleteResult = $.grep(initArray, function(e){
+          return ((e.attributes.title == model.attributes.title) && (e.attributes.id != model.attributes.id))
+        });
+        initArray = $.grep(initArray, function(e){
+          return !((e.attributes.title == model.attributes.title) && (e.attributes.id != model.attributes.id))
+        });
+        if (deleteResult.length > 0) {
+          var id = deleteResult[0].attributes.id ;
+          var itemToDelete = ViewObj.collection.get(id);
+          ViewObj.collection.remove(itemToDelete);
+        }
+      });
     },
 
     selectLink: function (e) {
@@ -136,6 +158,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     onAdded: function(story, collection) {
+      this.filterCollection();
       this.refreshNewStoriesCount();
       this.setShowUpdatesButtonVisibility();
     },
