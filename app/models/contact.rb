@@ -11,12 +11,12 @@ class Contact < ActiveRecord::Base
   has_many :pitches, through: :pitches_contacts
   
   validates :email, email_format: true, allow_blank: true
-  validates_uniqueness_of :author_id, allow_nil: true, 
-    conditions: -> { where(origin: 0) }
-  validates_uniqueness_of :twitter_screen_name, allow_nil: true,
-    conditions: -> { where(origin: 1) }
-  validates_uniqueness_of :email, allow_nil: true, 
-    conditions: -> { where(origin: 2) }
+  validates_uniqueness_of :author_id, scope: :origin, 
+    conditions: -> { where(origin: 0) }, allow_nil: true
+  validates_uniqueness_of :twitter_screen_name, scope: :origin, 
+    conditions: -> { where(origin: 1) }, allow_nil: true
+  validates_uniqueness_of :email, scope: :origin, 
+    conditions: -> { where(origin: 2) }, allow_nil: true
   
   def self.bulk_find_or_create(contacts_param)
     contacts_param.map do |contact|
