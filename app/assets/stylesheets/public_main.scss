@@ -113,6 +113,7 @@ a {
     font-weight: bold;
 }
 .presskit-file {
+    border: 5px solid rgb(199, 199, 199);
     padding-top: 100%;
     position: relative;
 }
@@ -123,7 +124,20 @@ a {
     text-align: center;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
+    span.name {
+        color: #9D9D9D;
+        font-weight: bold;
+    }
 }
+
+.release-preview > a {
+    display: inline-block;
+    margin-bottom: 3px;
+}
+.release-preview > a > img {
+    width: 100%;
+}
+
 /* Sidebar */
 #wrapper {
     padding-left: 0;

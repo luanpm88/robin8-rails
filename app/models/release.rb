@@ -35,6 +35,18 @@ class Release < ActiveRecord::Base
     
     "http://#{subdomain_name}.#{host}/releases/#{slug}"
   end
+
+  def images
+    attachments.where(attachment_type: 'image')
+  end
+
+  def videos
+    attachments.where(attachment_type: 'video')
+  end
+
+  def files
+    attachments.where(attachment_type: 'file')
+  end
   
   private
 
