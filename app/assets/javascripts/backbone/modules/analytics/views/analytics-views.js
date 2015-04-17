@@ -52,7 +52,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               }
             }, { // Secondary yAxis
               title: {
-                text: 'Sessions',
+                text: 'Newsroom Views',
                   style: {
                     color: Highcharts.getOptions().colors[0]
                   }
@@ -79,7 +79,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Sessions',
+                name: 'Newsroom Views',
                 type: 'column',
                 yAxis: 1,
                 data: sessions
