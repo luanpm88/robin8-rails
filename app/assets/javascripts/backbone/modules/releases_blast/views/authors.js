@@ -167,11 +167,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       this.pitchContactsCollection.remove(model);
     },
-    templateHelpers: function(){
-      return {
-        wordMapper: this.wordMapper
-      }
-    },
     initialize: function(options){
       this.pitchContactsCollection = options.pitchContactsCollection;
       this.releaseModel = options.releaseModel;
@@ -186,6 +181,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       Robin.modal.show(layout);
       
+      // Related stories
       var relatedStoriesCollection = new Robin.Collections.RelatedStories({
         author_id: this.model.get('id'),
         releaseModel: this.releaseModel
@@ -206,7 +202,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           layout.relatedStoriesRegion.show(relatedStoriesView);
         }
       });
+      // END Related stories
       
+      
+      // Recent stories
       var recentStoriesCollection = new Robin.Collections.RecentStories({
         author_id: this.model.get('id'),
         releaseModel: this.releaseModel
@@ -227,12 +226,27 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           layout.recentStoriesRegion.show(recentStoriesView);
         }
       });
+      // END Recent stories
       
-      var authorStatItemView = new ReleasesBlast.AuthorStatsView({
-        model: this.model,
-        releaseModel: this.releaseModel
+      // Author stats
+      var authorStatsModel = new Robin.Models.AuthorStats({ id: this.model.id });
+      
+      // Loading view
+      layout.statsRegion.show(
+        new Robin.Components.Loading.LoadingView()
+      );
+      
+      authorStatsModel.fetch({
+        success: function(model, response, options){
+          var authorStatItemView = new ReleasesBlast.AuthorStatsView({
+            model: model,
+            authorModel: self.model,
+            releaseModel: self.releaseModel
+          });
+          layout.statsRegion.show(authorStatItemView);
+        }
       });
-      layout.statsRegion.show(authorStatItemView);
+      // END Author stats
     },
     openContactAuthorModal: function(e){
       e.preventDefault();
@@ -313,7 +327,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           { "width": "30%" },
           null,
           null,
-          null,
           null
         ]
       });
@@ -355,7 +368,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "bAutoWidth" :false,
         "columns": [
           { "width": "30%" },
-          null,
           null,
           null,
           null,
