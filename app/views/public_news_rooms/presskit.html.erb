@@ -28,39 +28,42 @@
             <% end %>
 
           </div>
-          <h3>Videos</h3>
-          <div class='newsroom-presskit row'>
-            <% @news_room.videos.each do |attachment| %>
-              <div class='col-md-2 col-lg-2'>
-                <a href="<%= attachment.url  %>" class="not-image " title="<%= attachment.name  %>" data-gallery="" type="video/<%=attachment.name.split('.').last%>">
-                  <div class="presskit-file">
-                    <div class="presskit-file--content">
-                      <%= image_tag asset_path(attachment.get_correct_url) %>
-                      <br>
-                      <span class='name'> <%= attachment.name %> </span>
+          <% if @news_room.videos.any? %>
+            <h3>Videos</h3>
+            <div class='videos newsroom-presskit row'>
+              <% @news_room.videos.each do |attachment| %>
+                <div class='col-md-2 col-lg-2'>
+                  <a href="<%= attachment.url  %>" class="not-image " title="<%= attachment.name  %>" data-gallery="" type="video/<%=attachment.name.split('.').last%>">
+                    <div class="presskit-file">
+                      <div class="presskit-file--content">
+                        <%= image_tag asset_path(attachment.get_correct_url) %>
+                        <br>
+                        <span class='name'> <%= attachment.name %> </span>
+                      </div>
                     </div>
-                  </div>
-                </a>
-              </div>                    
-            <% end %>
-          </div>
-
-          <h3>Files</h3>
-          <div class='files row'>
-            <% @news_room.files.each do |attachment| %>
-              <div class="col-md-2">
-                <a href="<%= attachment.url  %>" class="not-image" title="<%= attachment.name  %>" data-gallery="">
-                  <div class="presskit-file">
-                    <div class="presskit-file--content">
-                      <%= image_tag asset_path(attachment.get_correct_url) %>
-                      <br>
-                      <span class='name'> <%= attachment.name %> </span>
+                  </a>
+                </div>                    
+              <% end %>
+            </div>
+          <% end %>
+          <% if @news_room.files.any? %>
+            <h3>Files</h3>
+            <div class='files row'>
+              <% @news_room.files.each do |attachment| %>
+                <div class="col-md-2">
+                  <a href="<%= attachment.url  %>" class="not-image" title="<%= attachment.name  %>" data-gallery="">
+                    <div class="presskit-file">
+                      <div class="presskit-file--content">
+                        <%= image_tag asset_path(attachment.get_correct_url) %>
+                        <br>
+                        <span class='name'> <%= attachment.name %> </span>
+                      </div>
                     </div>
-                  </div>
-                </a>
-              </div>                    
-            <% end %>
-          </div>
+                  </a>
+                </div>                    
+              <% end %>
+            </div>
+          <% end %>
         </div>
         <div id="blueimp-gallery" class="blueimp-gallery" data-use-bootstrap-modal="false">
           <!-- The container for the modal slides -->
