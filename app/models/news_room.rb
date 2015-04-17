@@ -26,6 +26,18 @@ class NewsRoom < ActiveRecord::Base
   validate :twitter_account_exists
   validate :can_be_created, on: :create
 
+  def images
+    attachments.where(attachment_type: 'image')
+  end
+
+  def videos
+    attachments.where(attachment_type: 'video')
+  end
+
+  def files
+    attachments.where(attachment_type: 'file')
+  end
+
   def city_state
     str = [city, state]
     str.reject! { |c| c.blank? }
