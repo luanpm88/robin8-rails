@@ -3,6 +3,7 @@ class RobinApiController < ApplicationController
 
   def suggested_authors
     response = @client.suggested_authors params
+    
     ids = response[:authors].map{|a| a[:id]}
     @max_score = response[:authors].first[:score]
     @min_score = response[:authors].last[:score]
@@ -10,9 +11,11 @@ class RobinApiController < ApplicationController
       level_of_interest = calculate_level_of_interest(author[:score], 
         full_name(author[:first_name], author[:last_name]))
       author[:level_of_interest] = level_of_interest
+      author[:full_name] = full_name(author[:first_name], author[:last_name])
       author
     end
-    render json: merge_stats_with_authors(authors, author_stats(ids))
+    
+    render json: authors
   end
   
   def related_stories
@@ -36,10 +39,18 @@ class RobinApiController < ApplicationController
   def authors
     response = @client.authors params
     
-    ids = response[:authors].map{|a| a[:id]}
-    authors = response[:authors]
+    authors = response[:authors].map do |author| 
+      author[:full_name] = full_name(author[:first_name], author[:last_name])
+      author
+    end
     
-    render json: merge_stats_with_authors(authors, author_stats(ids))
+    render json: authors
+  end
+  
+  def author_stats
+    response = @client.author_stats id: params[:id]
+    
+    render json: response
   end
   
   def proxy
@@ -65,29 +76,6 @@ class RobinApiController < ApplicationController
   
   def set_client
     @client = AylienPressrApi::Client.new
-  end
-  
-  def author_stats(ids)
-    threads = {}
-    ids.each do |id|
-      threads[id] = Thread.new do
-        @client.author_stats id: id
-      end
-    end
-    threads.each(&:join)
-    threads.inject({}) do |memo, val|
-      memo[val[0]] = val[1].value
-      memo
-    end
-  end
-  
-  def merge_stats_with_authors(authors, author_stats)
-    authors.collect do |author|
-      author_stats[author[:id]].delete(:id)
-      author[:stats] = author_stats[author[:id]]
-      author[:full_name] = full_name(author[:first_name], author[:last_name])      
-      author
-    end
   end
   
   def calculate_level_of_interest(score, author_name) 

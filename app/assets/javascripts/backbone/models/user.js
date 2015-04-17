@@ -19,7 +19,7 @@ Robin.Models.User = Backbone.Model.extend({
   cancelSubscription: function(data, options) {    
     var model = this;
     options = {
-      url: '/subscriptions/destroy_subscription',
+      url: '/payments/destroy_subscription',
       type: 'DELETE'
     };
     var success = options.success;

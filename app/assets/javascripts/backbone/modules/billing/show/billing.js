@@ -32,7 +32,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
         if (isConfirm) {
           Robin.currentUser.cancelSubscription().done(function(data){
             $.growl("Your current plan is canceled!", {
-              type: "danger",
+              type: "info",
             });
           });
         }

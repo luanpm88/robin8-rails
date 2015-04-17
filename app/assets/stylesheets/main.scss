@@ -734,7 +734,9 @@ nav{text-align: center;}
 .release-title p{
   margin: 0px !important;
 }
-
+.release-title img {
+  display:none;
+}
 #social-scheduled .list-group-item .btn {
   margin-left: 2px;
   float: left;
