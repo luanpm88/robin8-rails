@@ -7,6 +7,9 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var collection = this.collection;
       this.collection.fetch({
         success: function(){
+          if (collection.length == 0) {
+            $('.releases-toolbar').hide();
+          }
           id = ( id == undefined ? collection.models[0].get('id') : id );
           $.get('/news_rooms/' + id +'/analytics', function(data){
 
