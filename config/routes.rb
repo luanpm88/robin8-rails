@@ -10,6 +10,7 @@ Rails.application.routes.draw do
                                     confirmations: "users/confirmations" }
 
   get 'pricing' => 'pages#pricing'
+  get 'set_locale' => 'pages#set_locale'
   get 'subscribe/:slug' => 'payments#new'
   post 'subscribe/:slug' => 'payments#new'
   get 'upgrade/:slug' => 'payments#edit'

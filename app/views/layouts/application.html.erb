@@ -35,6 +35,7 @@
   $(document).ready(function() {
     Robin.start();
   });
+  polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
   <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>

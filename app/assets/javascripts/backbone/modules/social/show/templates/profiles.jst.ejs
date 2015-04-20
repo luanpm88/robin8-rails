@@ -1,7 +1,5 @@
-<h5>Manage Connected Social Profiles</h5>
-<p>
-  Use Robin8 to manage your social profiles.  Start by linking your Robin8 account to your social profiles so you can easily post or schedule your post (s) directly to your profiles with one click.
-</p>
+<h5><%= polyglot.t("social.profiles.title") %></h5>
+<p><%= polyglot.t("social.profiles.description") %></p>
 <br>
 <ul class="list-group">
   <li class="list-group-item">
@@ -9,51 +7,51 @@
       <% if (typeof(Robin.identities) === 'undefined' || typeof(Robin.identities.twitter) === 'undefined') {%>
         <a class="btn btn-xs btn-social btn-twitter" name='twitter'>
           <i class="fa fa-twitter"></i>
-          Connect Twitter
+          <%= polyglot.t("social.profiles.connect") %> <%= polyglot.t("social.profiles.twitter") %>
         </a>
       <%} else {%>
-        <i class="fa fa-check"></i> Connected to <a href="<%= Robin.identities.twitter.url%>" target="_blank">@<%= Robin.identities.twitter.name%></a> &bull; <a href="" class='disconnect' name='twitter'>Disconnect</a></span>
+        <i class="fa fa-check"></i> <%= polyglot.t("social.profiles.connected_to") %> <a href="<%= Robin.identities.twitter.url%>" target="_blank">@<%= Robin.identities.twitter.name%></a> &bull; <a href="" class='disconnect' name='twitter'><%= polyglot.t("social.profiles.disconnect") %></a></span>
       <%} %>
     </span>
-    <span>Twitter</span>
+    <span><%= polyglot.t("social.profiles.twitter") %></span>
   </li>
   <li class="list-group-item">
     <span class="pull-right">
       <% if (Robin.identities.facebook == undefined) {%>
         <a class="btn btn-xs btn-social btn-facebook" name='facebook'>
           <i class="fa fa-facebook"></i>
-          Connect Facebook
+          <%= polyglot.t("social.profiles.connect") %> <%= polyglot.t("social.profiles.facebook") %>
         </a>
       <%} else {%>
-        <i class="fa fa-check"></i> Connected to <a href="<%= Robin.identities.facebook.url%>" target="_blank"><%= Robin.identities.facebook.name%></a> &bull; <a href="" class='disconnect' name='facebook'>Disconnect</a></span>
+        <i class="fa fa-check"></i> <%= polyglot.t("social.profiles.connected_to") %> <a href="<%= Robin.identities.facebook.url%>" target="_blank"><%= Robin.identities.facebook.name%></a> &bull; <a href="" class='disconnect' name='facebook'><%= polyglot.t("social.profiles.disconnect") %></a></span>
       <%} %>
     </span>
-    <span>Facebook</span>
+    <span><%= polyglot.t("social.profiles.facebook") %></span>
   </li>
   <li class="list-group-item">
     <span class="pull-right">
       <% if (Robin.identities.google == undefined) {%>
         <a class="btn btn-xs btn-social btn-google-plus" name='google_oauth2'>
           <i class="fa fa-google-plus"></i>
-          Connect Google+
+          <%= polyglot.t("social.profiles.connect") %> <%= polyglot.t("social.profiles.google") %>
         </a>
       <%} else {%>
-        <i class="fa fa-check"></i> Connected to <a href="<%= Robin.identities.google.url%>" target="_blank"><%= Robin.identities.google.name%></a> &bull; <a href="" class='disconnect' name='google_oauth2'>Disconnect</a></span>
+        <i class="fa fa-check"></i> <%= polyglot.t("social.profiles.connected_to") %> <a href="<%= Robin.identities.google.url%>" target="_blank"><%= Robin.identities.google.name%></a> &bull; <a href="" class='disconnect' name='google_oauth2'><%= polyglot.t("social.profiles.disconnect") %></a></span>
       <%} %>
     </span>
-    <span>Google+</span>
+    <span><%= polyglot.t("social.profiles.google") %></span>
   </li>
   <li class="list-group-item">
     <span class="pull-right">
       <% if (Robin.identities.linkedin == undefined) {%>
         <a class="btn btn-xs btn-social btn-linkedin" name='linkedin'>
         <i class="fa fa-linkedin"></i>
-          Connect linkedin
+          <%= polyglot.t("social.profiles.connect") %> <%= polyglot.t("social.profiles.linkedin") %>
         </a>
       <%} else {%>
-        <i class="fa fa-check"></i> Connected to <a href="<%= Robin.identities.linkedin.url%>" target="_blank"><%= Robin.identities.linkedin.name%></a> &bull; <a href="" class='disconnect' name='linkedin'>Disconnect</a></span>
+        <i class="fa fa-check"></i> <%= polyglot.t("social.profiles.connected_to") %> <a href="<%= Robin.identities.linkedin.url%>" target="_blank"><%= Robin.identities.linkedin.name%></a> &bull; <a href="" class='disconnect' name='linkedin'><%= polyglot.t("social.profiles.disconnect") %></a></span>
       <%} %>
     </span>
-    <span>LinkedIn</span>
+    <span><%= polyglot.t("social.profiles.linkedin") %></span>
   </li>
 </ul>
