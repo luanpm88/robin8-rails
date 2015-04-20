@@ -353,7 +353,7 @@ GEM
     rails-assets-blueimp-gallery (2.15.2)
     rails-assets-bootstrap (3.3.4)
       rails-assets-jquery (>= 1.9.1)
-    rails-assets-bootstrap-sass (3.3.2)
+    rails-assets-bootstrap-sass (3.3.4)
       rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-sweetalert (0.4.3)
     rails-assets-bootstrap-switch (3.3.2)
@@ -589,7 +589,7 @@ DEPENDENCIES
   rails-assets-backbone.marionette (= 2.4.1)
   rails-assets-backbone.modelbinder
   rails-assets-blueimp-gallery!
-  rails-assets-bootstrap-sass (= 3.3.2)!
+  rails-assets-bootstrap-sass (= 3.3.4)!
   rails-assets-bootstrap-sweetalert
   rails-assets-bootstrap-switch
   rails-assets-bootstrap-tagsinput

@@ -34,7 +34,7 @@ gem 'legato'
 gem 'google-api-client'
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-bootstrap-sass', '3.3.2'
+  gem 'rails-assets-bootstrap-sass', '3.3.4'
   gem 'rails-assets-bootstrap.growl', '2.0.1'
   gem 'rails-assets-uploadcare', '2.0.4'
   gem 'rails-assets-progressjs'
