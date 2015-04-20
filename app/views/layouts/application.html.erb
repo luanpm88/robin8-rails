@@ -2,7 +2,11 @@
 <html>
 <head>
   <title>Robin8</title>
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+  <% if request.location && request.location.country.to_s == "China" %>
+    <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css"> 
+  <% else %>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+  <% end %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -57,13 +61,5 @@
 </script>
 <!-- end load bitly javascript sdk -->
 <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
-<script>
-  (function(w,d,s,g,js,fs){
-    g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
-    js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
-    js.src='https://apis.google.com/js/platform.js';
-    fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
-  }(window,document,'script'));
-</script>
 </body>
 </html>

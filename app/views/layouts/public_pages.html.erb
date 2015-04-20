@@ -2,7 +2,11 @@
 <html>
 <head>
   <title>Robin8</title>
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+  <% if request.location && request.location.country.to_s == "China" %>
+    <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css"> 
+  <% else %>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+  <% end %>
   <%= stylesheet_link_tag    'public_pages', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'public_pages', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
