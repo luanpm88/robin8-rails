@@ -39,13 +39,13 @@
       </p>
       <hr>
       <p align="center">
-        <a href="#" class="btn btn-success smart-release-button" role="button" data-toggle="modal" style="margin-left: 5px;" id="start-blast"><i class="fa fa-rocket"></i> SmartRelease</a>
+        <a href="#" class="btn btn-success smart-release-button" role="button" data-toggle="modal" style="margin-left: 5px;" id="start-blast"><i class="fa fa-rocket"></i> <%= polyglot.t("releases.item.buttons.smart") %></a>
         <% if (release.id && release.news_room_public && !release.is_private) {%>
-            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank"><i class="fa fa-eye"></i> <%= polyglot.t("releases.item.buttons.preview") %></a>
           <% } else {%>
-            <a href="http://<%- release.subdomain_name %>-preview.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- release.subdomain_name %>-preview.<%- windowLocation %>/releases/<%- release.slug %>" class="btn btn-primary" style="margin-left: 5px;" target="_blank"><i class="fa fa-eye"></i> <%= polyglot.t("releases.item.buttons.preview") %></a>
           <% } %>
-        <button href="#" class="btn btn-default" id="open_edit" style="margin-left: 5px;"><i class="fa fa-pencil"></i> Edit</button>
+        <button href="#" class="btn btn-default" id="open_edit" style="margin-left: 5px;"><i class="fa fa-pencil"></i> <%= polyglot.t("releases.item.buttons.edit") %></button>
       </p>
     </div>
   </div>

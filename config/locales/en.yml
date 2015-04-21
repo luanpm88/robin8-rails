@@ -91,8 +91,95 @@ en:
         connected_to: Connected to
         connect: Connect
         disconnect: Disconnect
-    newsrooms:
-    releases:
     analytics:
-    profile: 
+      visits: Newsroom and Releases Visits
+      statisitcs: SmartRelease Email Statistics
+      filter_by: Filter by
+    releases:
+      all_newsrooms: All Newsrooms
+      new_release: New release
+      modal:
+        title: Create Release
+        basic_tab: 
+          title: Basic
+          newsroom: Newsroom
+          release_title: Release title
+          release_text: Release text
+        website_tab:
+          title: Website
+          make_private: Make this release private
+        media_tab:
+          title: Media
+          select_logo: Please, select a logo for your release
+          upload_files: Here you can upload additional media files
+        buttons: 
+          next: Next
+          save: Save draft
+          delete: Delete Release
+        warning: This release won't be publicly displayed while the parent Newsroom remains unpublished. 
+        publish: Publish the newsroom!
+      item:
+        buttons:
+          preview: Preview
+          smart: SmartRelease
+          edit: Edit
+    profile:
+      title: Edit Profile
+      personal_info: Personal info
+      first_name: First name
+      last_name: Last name
+      company: Company
+      email: Email
+      time_zone: Time Zone
+      username: Username
+      curr_password: Current password
+      new_password: New password
+      confirm_new_password: Confirm new password
+      buttons: 
+        save: Save changes
+        cancel: Cancel 
+    newsrooms:
+      modal:
+        title: Create NewsRoom
+        details_tab:
+          title: Company Details
+          name: Company name
+          type: Type
+          size: Size
+          industry: Industry
+          tags: Tags
+        public_tab:
+          title: Public Page
+          subdomain: Subdomain name
+          publish: Publish on public website
+        general_tab:
+          title: General
+          email: Email
+          phone: Phone
+          fax: Fax
+          number: Toll-Free Number
+          web_address: Web Address
+          description: Description
+        address_tab:
+          title: Address
+          address1: Address 1
+          address2: Address 2
+          city: City
+          state: State
+          code: Zip/Postal Code
+          country: Country
+        contact_tab:
+          title: Contact
+          name: Company Contact Name
+          job_title: Job Title
+          facebook: Facebook
+          twitter: Twitter
+          linkedin: Linkedin
+          instagram: Instagram
+        media_tab:
+          title: Media
+        buttons: 
+          save: Save changes
+          preview: Preview
+          delete: Delete Newsroom 
 
