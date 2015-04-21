@@ -52,7 +52,6 @@ en:
       new_newsroom_button: Create a Newsroom
       new_release_button: Publish a New Release
       new_smartrelease_button: SmartRelease
-    smart_release:
     monitoring:
       topics: Topics
       sources: Sources
@@ -182,4 +181,96 @@ en:
           save: Save changes
           preview: Preview
           delete: Delete Newsroom 
-
+    smart_release:
+      start_step:
+        title: Welcome to SmartRelease
+        description: SmartRelease helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
+        select: Select a release to start
+        buttons: 
+          analyze: Analyze
+      analysis_step:
+        title: Analysis
+        description1: Here's the analysis report for <strong> "%{name}" </strong>. Please make any necessary changes, and click on <strong> %{button} </strong> when you're finished
+        description2: when you're finished
+        is_about: <strong> "%{name}" </strong> is about
+        topics: and the following topics are mentioned in it
+        summary: Here's a summary of what <strong> "%{name}" </strong> is all about
+        buttons: 
+          next: Next
+      targets_step:
+        title: Targets
+        description: What if you knew EXACTLY who to contact for every campaign, based on a data-driven prediction on how successful each pitch will be? Robin8 helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
+        influencers_tab: 
+          title: Influencers
+          author: Author
+          outlet: Outlet
+          relevance: Relevance
+          length: Average length
+          pitch: Pitch?
+          contact: Contact
+        social_tab:
+          title: Social
+          influencer: Influencer
+          followers: Followers
+          reach: Reach 
+          amplif: Amplif.
+          relevance: Relevance
+          pitch: Pitch?
+          contact: Contact
+        search_tab: 
+          title: Search
+          search_authors:
+            title: Search Authors
+            authors: Authors
+            keywords: Keywords
+            name: Contact name
+            outlet: Outlet
+            location: Location
+          search_influencers:
+            influencers: Influencers
+            show: Show me influencers for
+            from: From
+            who: Who are
+            celebrities: Celebrities
+            users: Power users
+            all: All
+          search: Search
+        media_tab: 
+          title: Media List
+          add_list: Add a previously saved list
+          upload_button: Upload a new list
+          formats: Supported formats
+          select_placeholder: Select a Media List or upload a new one...
+          delete: Delete
+          table:
+            name: List Name
+            contacts: Contacts
+            actions: Actions
+            empty: You haven't selected any media list yet!
+        buttons: 
+          next: Next
+      pitch_step:
+        title: Pitch
+        description: Now that you know exactly which journalists and influencers to contact for your compaign, you need to prepare the note to these contacts. You can use the Robin8 default note or prepare your own personal note. If you are preparing your own personal note, we recommend you keep it short and no more than 3 paragraphs.
+        targets: Targets will be contacted via Email
+        see: See list
+        targets_table:
+          name: Name
+          outlet: Outlet
+          actions: Actions
+          delete: Delete
+          save: Save as a list
+          button: Save
+        email_panel:
+          title: Email pitch
+          subject: Subject line
+          subject_placeholder: Enter a catchy subject line...
+          email: Your email address
+          email_placeholder: Enter an email address...
+          pitch_text: Pitch text
+          preview: Preview
+          length: Summary length
+          sentences: sentences
+          tags: Available merge tags
+        delete_button: Delete
+        button: Pitch! 
