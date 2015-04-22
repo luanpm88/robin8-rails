@@ -3,10 +3,10 @@
     <div class="panel-body">
       <div class="pull-right toolbar">
         <% if (Robin.currentUser.attributes.is_primary != false) {%>
-          <a class="btn btn-default manage " href="/#manage_users"><i class="fa fa-users"></i> Manage Users</a>
+          <a class="btn btn-default manage " href="/#manage_users"><i class="fa fa-users"></i> <%= polyglot.t("manage_users.buttons.manage") %></a>
         <% } %>
         <!-- <button class="btn btn-default"><i class="fa fa-building"></i> <strong>5</strong> Newsrooms Remaining</button> -->
-        <button class="btn btn-success" id='new_newsroom'> <i class="fa fa-plus"></i> New Newsroom </button>
+        <button class="btn btn-success" id='new_newsroom'> <i class="fa fa-plus"></i> <%= polyglot.t("newsrooms.buttons.new") %> </button>
       </div>
     </div>
   </div>

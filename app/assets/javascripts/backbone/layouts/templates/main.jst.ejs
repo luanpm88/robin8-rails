@@ -39,10 +39,10 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class='locales'>
-          <a href="/set_locale?locale=en"> 
+          <a href="/set_locale?locale=en&current_page=<%= window.location.hash %>"> 
             <img src="<%= AppAssets.path('us-flag-icon.png') %>" height="13" title='Switch to US local'>
           </a>
-          <a href="/set_locale?locale=zh">
+          <a href="/set_locale?locale=zh&current_page=<%= window.location.hash %>">
             <img src="<%= AppAssets.path('china-flag-icon.png') %>" height="13" title='Switch to Chinese local'>
           </a>
         </li>

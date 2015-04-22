@@ -70,6 +70,7 @@ en:
       new_updates: new updates
       loading: Loading
       no_news: There is no news
+      untitled: Untitled Stream
     social:
       scheduled_posts: Scheduled Posts
       social_profiles: Social Profiles
@@ -138,6 +139,14 @@ en:
         save: Save changes
         cancel: Cancel 
     newsrooms:
+      buttons:
+        new: New Newsroom
+      item:
+        description_placeholder: No description added.
+        buttons:
+          preview: Preview
+          releases: Releases
+          edit: Edit        
       modal:
         title: Create NewsRoom
         details_tab:
@@ -181,10 +190,29 @@ en:
           save: Save changes
           preview: Preview
           delete: Delete Newsroom 
+    manage_users:
+      buttons:
+        manage: Manage Users
+        back: Back to Newsrooms
+        invite: Invite User
+        delete: Delete
+        delete_toggle: Delete user
+      table:
+        name: Name
+        email: Email
+      title: User management
+      search_placeholder: Search User by Name or Email 
+      input_placeholder: Type User Email
     smart_release:
+      top_menu:
+        start: Start
+        analysis: Analysis
+        targets: Targets
+        pitch: Pitch
       start_step:
         title: Welcome to SmartRelease
         description: SmartRelease helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
+        notification: You can't use smart release feature. Update your add ons.
         select: Select a release to start
         buttons: 
           analyze: Analyze
