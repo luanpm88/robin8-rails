@@ -61,6 +61,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     Robin.module('Profile').start();
   },
 
+  showRecommendations: function() {
+    this.stopAll();
+    Robin.module('Recommendations').start();
+  },
+
   stopAll: function(){
     var routesCount = Robin.routesCount;
     if (Backbone.history.handlers.length > routesCount){
