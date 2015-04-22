@@ -76,6 +76,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.newsrooms = new Robin.Collections.NewsRooms();
       this.newsrooms.fetch();
       this.releaseCharacteristicsModel = new Robin.Models.ReleaseCharacteristics;
+      sweetAlertInitialize();
     },
     filterBy: function(options){
       Robin.module("Releases").controller.index({
@@ -99,22 +100,20 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
         this.model.set('text', $(iframe).contents().find('body').html());
       };
-      $.when(this.form.data('formValidation').validate())
-        .then(function(){
-          if (viewObj.form.data('formValidation').isValid()) {
-            viewObj.model.save(viewObj.model.attributes, {
-              success: function(model, data, response){
-                viewObj.$el.find('#release_form').modal('hide');
-                $('body').removeClass('modal-open');
-                Robin.releaseForBlast = viewObj.model.get('id');
-                Backbone.history.navigate('robin8', {trigger: true});
-              },
-              error: function(data, response){
-                viewObj.processErrors(response);
-              }
-            });
+      this.form.data('formValidation').validate();
+      if (this.form.data('formValidation').isValid()) {
+        this.model.save(viewObj.model.attributes, {
+          success: function(model, data, response){
+            viewObj.$el.find('#release_form').modal('hide');
+            $('body').removeClass('modal-open');
+            Robin.releaseForBlast = viewObj.model.get('id');
+            Backbone.history.navigate('robin8', {trigger: true});
+          },
+          error: function(data, response){
+            viewObj.processErrors(response);
           }
-      });
+        });
+      }
     },
     openModalDialog: function(){
       this.model.clear();
@@ -221,11 +220,23 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             url: url
           },
           success: function(response) {
-            self.model.set('title', response.title);
-            var editor = self.ui.wysihtml5.data('wysihtml5').editor;
-            editor.setValue(
-              '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
-            );
+            if (response.title.length > 0 || response.article.length > 0) {
+              var title = response.title.length==0 ? "undefined" : response.title;
+              self.model.set('title', title);
+              var editor = self.ui.wysihtml5.data('wysihtml5').editor;
+              editor.setValue(
+                '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
+              );
+            } else {
+              swal({
+                title: "Invalid link!",
+                text: "The link you've provided is invalid or the site it leads to contains no useable information",
+                type: "error",
+                showCancelButton: false,
+                confirmButtonClass: 'btn',
+                confirmButtonText: 'ok'
+              });
+            }
           }
         });
       }
