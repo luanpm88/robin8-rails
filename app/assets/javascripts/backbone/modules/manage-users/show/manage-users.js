@@ -100,6 +100,20 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       this.collection.fetch();
     },
 
+    onRender: function(){
+      var curView = this;
+      Robin.user = new Robin.Models.User()
+      Robin.user.fetch({
+        success: function(){
+          if (Robin.user.get('can_create_seat') != true) {
+            curView.$el.find("button.invite").attr('disabled', 'disabled');
+          } else {
+            curView.$el.find("button.invite").removeAttr('disabled');
+          }
+        }
+      })
+    },
+
     onShow: function() {
       this.initFormValidation();
     },
