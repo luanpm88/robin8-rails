@@ -62,7 +62,6 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         increaseArea: '20%'
       });
       this.$el.find("#subdomain_name").tooltip({title: 'Changes to the subdomain will take place only after save', trigger: 'hover', placement: 'bottom'});
-      this.$el.find("#preview-disabled").tooltip({title: 'You need to save the newsroom for the first time in order to activate the preview option', trigger: 'hover', placement: 'left'});
     },
 
     onDestroy: function(){
