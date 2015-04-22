@@ -1,0 +1,17 @@
+<div class="signup">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || "Signup")}%>
+  </header>
+  <div class="form-step step3">  
+    <div class="confirmation">
+      <div class="row">
+        <div class="small-12 columns">   
+          <p class="selection-intro-heading">Thank you!</p>
+          <p class="selection-guarantee">Please check your email to confirm your address and log in below.</p>
+          <a class="button button-signup" href="/signin">Sign in</a>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
