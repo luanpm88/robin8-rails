@@ -17,7 +17,7 @@ class PagesController < ApplicationController
     unless params[:locale].blank?
       current_user.update_attributes(locale: params[:locale])
     end
-    redirect_to root_path
+    redirect_to root_path + "##{params[:current_page]}"
   end
 
   def home
