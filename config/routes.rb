@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
   get 'users/get_current_user' => 'users#get_current_user'
-  get 'users/confirm_notifications' => 'users#confirm_notifications'
   get 'users/get_active_subscription' => 'users#get_active_subscription'
   get 'payments/apply_discount' => 'payments#apply_discount'
   delete '/users/disconnect_social' => 'users#disconnect_social'
