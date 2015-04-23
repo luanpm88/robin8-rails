@@ -7,7 +7,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     ui: {
       releasesSelect: 'select',
-      analyzeButton: '#analyze'
+      analyzeButton: '#analyze',
+      alertInfo: '#writing-pr-info'
     },
     events: {
       'change @ui.releasesSelect': 'releasesSelectChanged',
@@ -74,6 +75,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         },{
           type: 'danger'
         });
+        this.ui.alertInfo.show();
       }
     },
     initialize: function(options){
