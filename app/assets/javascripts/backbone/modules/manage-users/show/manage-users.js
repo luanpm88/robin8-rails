@@ -171,11 +171,22 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       $('#invite-form').data('formValidation').validate();
       if ($('#invite-form').data('formValidation').isValid()) {
         $.post("/users/invitation.json", {user:{email: email, is_primary: false}})
-          .always(function(){$(".invite").blur();})
+          .always(function(){
+            $(".invite").blur();
+          })
           .done(function() {
             viewObj.collection.fetch();
           })
           .fail(function(response) {
+            Robin.user.fetch({
+              success: function(){
+                if (Robin.user.get('can_create_seat') != true) {
+                  viewObj.$el.find("button.invite").attr('disabled', 'disabled');
+                } else {
+                  viewObj.$el.find("button.invite").removeAttr('disabled');
+                }
+              }
+            })
             if (response.responseText == "active"){
               $.growl('This user is already active', {type: "danger"});
             } else if (response.responseText == "sent" || response.responseText == "resent") {
