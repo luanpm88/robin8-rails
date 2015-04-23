@@ -6,16 +6,20 @@ class PagesController < ApplicationController
   before_action :set_translations,:only => [:home, :pricing]
 
   def set_translations
-    locale = current_user.locale.nil? ? 'en' : current_user.locale
-    # I18n.locale = locale
+    unless current_user.blank?
+      locale = current_user.locale.nil? ? 'en' : current_user.locale
+      # I18n.locale = locale
 
-    translations = I18n.backend.send(:translations)
-    @phrases = translations[locale.to_sym][:application]
+      translations = I18n.backend.send(:translations)
+      @phrases = translations[locale.to_sym][:application]
+    else
+
+    end
   end
 
   def set_locale
     unless params[:locale].blank?
-      current_user.update_attributes(locale: params[:locale])
+      current_user.update_attributes(locale: params[:locale]) unless current_user.blank?
     end
     redirect_to root_path + "##{params[:current_page]}"
   end
