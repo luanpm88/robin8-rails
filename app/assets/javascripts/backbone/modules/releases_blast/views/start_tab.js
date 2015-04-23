@@ -28,6 +28,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         Robin.releaseForBlast = undefined;
       }
     },
+    standardPressRelease: {
+      min_characters_count: 1000,
+      min_words_count: 200,
+      min_sentences_count: 7,
+      min_average_characters_count_per_word: 4,
+      min_average_words_count_per_sentence: 12
+    },
     releasesSelectChanged: function(e){
       if(this.ui.releasesSelect.val() == -2){
         this.openNewRelease();
@@ -51,7 +58,23 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     analyzeRelease: function(releaseId){
       var the_release = this.collection.findWhere({id: releaseId});
-      ReleasesBlast.controller.analysis({releaseModel: the_release});
+      
+      if (the_release.get('characters_count') > this.standardPressRelease.min_characters_count &&
+        the_release.get('words_count') > this.standardPressRelease.min_words_count &&
+        the_release.get('sentences_count') > this.standardPressRelease.min_sentences_count &&
+        the_release.get('average_characters_count_per_word') >
+          this.standardPressRelease.min_average_characters_count_per_word &&
+        the_release.get('average_words_count_per_sentence') >
+          this.standardPressRelease.min_average_words_count_per_sentence){
+          
+        ReleasesBlast.controller.analysis({releaseModel: the_release});
+      } else {
+        $.growl({
+          message: "Your Press Release is not standard, we can't analyze it!"
+        },{
+          type: 'danger'
+        });
+      }
     },
     initialize: function(options){
       var self = this;
