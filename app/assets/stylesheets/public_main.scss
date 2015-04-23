@@ -764,6 +764,18 @@ form .btn-primary {
 .jumbotron .jumbotron-contents img {
     max-width: 50%;
 }
+#share-block {
+  float: right;
+  width: 130px;
+  clear: both;
+}
+#share-block li {
+  list-style:none;
+}
+.facebook-button {
+  margin-bottom: 7px;
+}
+
 blockquote footer, blockquote small, blockquote .small {
     color: #444444; 
     font-family: "ProximaNova";
