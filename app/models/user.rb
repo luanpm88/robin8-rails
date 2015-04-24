@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
   end
 
   def newsroom_available_count
-    current_user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def newsroom_count
@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def release_available_count
-    current_user_features.press_release.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.press_release.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def manageable_users
@@ -105,7 +105,7 @@ class User < ActiveRecord::Base
   end
 
   def stream_available_count
-    current_user_features.media_monitoring.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.media_monitoring.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def stream_count
