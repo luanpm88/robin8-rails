@@ -87,7 +87,4 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
   ActionMailer::Base.delivery_method = :smtp
-  # config.action_mailer.default_charset = "utf-8"  
-  config.action_mailer.perform_deliveries = true  
-  config.action_mailer.raise_delivery_errors = true 
 end
