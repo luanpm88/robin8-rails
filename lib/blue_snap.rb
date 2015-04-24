@@ -63,7 +63,7 @@ module BlueSnap
 
 
     def self.ordering_shopper request
-      {"web-info" => {"ip" => "127.0.0.1", "remote-host" => "www.robin8.com", "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
+      {"web-info" => {"ip" => request.ip, "remote-host" => Resolv.getname(request.ip), "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
     end
 
     def self.order_info(request, product, add_ons,add_ons_hash,code,user)
