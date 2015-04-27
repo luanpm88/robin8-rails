@@ -25,7 +25,7 @@ class TextapiController < ApplicationController
     response = @client.summarize title: title_param, text: text_param
     
     respond_to do |format|
-      format.json { render json: response[:sentences]}
+      format.json { render json: response[:sentences].map{|s| s.gsub("\n", '')}}
     end
   end
 

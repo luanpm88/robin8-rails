@@ -25,7 +25,7 @@ ActiveAdmin.register_page "Dashboard" do
          panel "Recent Releases" do
            ul do
              Release.order("created_at DESC").limit(5).map do |release|
-               li link_to(release.title, admin_release_path(release))
+               li link_to(release.title, admin_release_path(release.id))
              end
            end
          end
@@ -35,7 +35,7 @@ ActiveAdmin.register_page "Dashboard" do
          panel "Recent Users" do
            ul do
              User.order("created_at DESC").limit(5).map do |user|
-               li link_to(user.name, admin_user_path(user))
+               li link_to(user.name, admin_user_path(user.id))
              end
            end
          end
