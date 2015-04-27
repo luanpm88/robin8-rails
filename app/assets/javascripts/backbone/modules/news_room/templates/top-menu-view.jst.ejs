@@ -512,10 +512,6 @@
           <% } %>
           <% if(news_room.id) {%>
             <a id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
-          <% } else {%>
-          <span id='preview-disabled'>
-            <a href="http://<%- news_room.subdomain_name %>.<%- windowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary" disabled='disabled' data-toggle="tooltip" data-placement="left" title="Delete Stream"><i class="fa fa-eye"></i> Preview</a>
-          </span>
           <% } %>
           <a href="javascript:void(0)" id="save_news_room" class="btn btn-success"><i class="fa fa-save"></i> Save changes</a>
         </div>
