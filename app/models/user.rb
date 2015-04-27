@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
   end
 
   def can_create_newsroom
-    newsroom_available_count.nil? ? false : newsroom_count < newsroom_available_count
+    newsroom_available_count.nil? ? false : newsroom_available_count > 0
   end
 
   def release_available_count
@@ -97,11 +97,11 @@ class User < ActiveRecord::Base
   end
 
   def can_create_release
-    release_available_count.nil? ? false : release_count < release_available_count
+    release_available_count.nil? ? false : release_available_count > 0
   end
 
   def can_create_stream
-    stream_available_count.nil? ? false : stream_count < stream_available_count
+    stream_available_count.nil? ? false : stream_available_count > 0
   end
 
   def stream_available_count
@@ -122,11 +122,11 @@ class User < ActiveRecord::Base
   end
 
   def can_create_smart_release
-    smart_release_available_count.nil? ? false : smart_release_count < smart_release_available_count
+    smart_release_available_count.nil? ? false : smart_release_available_count > 0
   end
 
   def smart_release_available_count
-    current_user_features.smart_release.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.smart_release.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def smart_release_count
@@ -134,11 +134,11 @@ class User < ActiveRecord::Base
   end
 
   def can_create_seat
-    seat_available_count.nil? ? false : seat_count < seat_available_count
+    seat_available_count.nil? ? false : seat_available_count > 0
   end
 
   def seat_available_count
-    current_user_features.seat.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.seat.map(&:avaliable_count).inject{|sum,x| sum + x }
   end
 
   def seat_count
