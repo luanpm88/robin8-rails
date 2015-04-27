@@ -25,9 +25,16 @@ class RobinApiController < ApplicationController
   end
   
   def stories
-    response = @client.stories! params
+    response = @client.stories! params.merge({
+      "group_fields[]": "signature",
+      group_limit: 1,
+    })
+    
+    uniq_stories = response[:grouped][:signature][:groups].map do |group|
+      group[:stories].first
+    end
 
-    render json: response
+    render json: {stories: uniq_stories}
   end
   
   def influencers
