@@ -176,19 +176,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
                 align: "right"
               },
             });
-            if (emailChanged) {
-              $.growl({message: 'You should receive a confirmation mail shortly'
-              },{
-                element: '#growler-alert',
-                type: 'success',
-                offset: 65,
-                delay: 30000,
-                placement: {
-                  from: "top",
-                  align: "right"
-                },
-              });
-            }
           },
           error: function(userSession, response) {
             viewObj.processErrors(response);
