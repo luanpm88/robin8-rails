@@ -18,7 +18,8 @@ Robin.Models.Pitch = Backbone.RelationalModel.extend({
     twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
-    email_subject: null
+    email_subject: null,
+    sent: false
   },
   relations: [{
     type: Backbone.HasMany,
