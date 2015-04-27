@@ -248,7 +248,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             if (response.title.length + response.article.length == 0) {
               swal({
                 title: "Invalid link!",
-                text: "The link you've provided is invalid or the site it leads to contains no useable information",
+                text: "The link you've provided is invalid or the site it leads to contains no usable information",
                 type: "error",
                 showCancelButton: false,
                 confirmButtonClass: 'btn',
@@ -256,7 +256,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
               });
             } else if (response.article.length > 60000) {
               swal({
-                title: "Provided pelease is too long",
+                title: "Provided release is too long",
                 text:"Target page contains a text that exceeds the release length limit. The maximum is 60.000 characters (including spaces)",
                 type: "error",
                 showCancelButton: false,
@@ -281,7 +281,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             } else {
               swal({
                 title: "Invalid link!",
-                text: "The link you've provided is invalid or the site it leads to contains no useable information",
+                text: "The link you've provided is invalid or the site it leads to contains no usable information",
                 type: "error",
                 showCancelButton: false,
                 confirmButtonClass: 'btn',
