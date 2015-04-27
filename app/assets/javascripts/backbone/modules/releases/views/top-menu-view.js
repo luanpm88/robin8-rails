@@ -78,6 +78,56 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.releaseCharacteristicsModel = new Robin.Models.ReleaseCharacteristics;
       sweetAlertInitialize();
     },
+    onRender: function(){
+      var self = this;
+      Robin.user = new Robin.Models.User();
+      Robin.user.fetch({
+        success: function() {
+          self.verifyReleaseButton();
+          if (Robin.user.get('can_create_smart_release') != true) {
+            $('.smart-release-button').attr('disabled', 'disabled')
+          } else {
+            $('.smart-release-button').removeAttr('disabled')
+          }
+        }
+      });
+      this.modelBinder.bind(this.model, this.el);
+      this.initFormValidation();
+      var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
+      var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
+      var customTemplates = {
+        extract: function(context) {
+          return extractButtonTemplate
+        },
+        word: function(context) {
+          return extractWordTemplate
+        }
+      };
+      this.ui.wysihtml5.wysihtml5({
+        toolbar: {
+          extract: true,
+          word: true
+        },
+        customTemplates: customTemplates,
+      });
+      this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
+      this.editor.on('load', function() {
+        self.updateStats();
+        $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', function(e) {
+          self.updateStats()
+        });
+      });
+      this.initLogoView();
+      this.initMediaTab();
+      if (Robin.newReleaseFromDashboard) {
+        this.$el.find('#release_form').modal({keyboard: false });
+        Robin.newReleaseFromDashboard = false;
+      }
+      this.$el.find("input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
+    },
     filterBy: function(options){
       Robin.module("Releases").controller.index({
         by_news_room: options.target.value,
@@ -89,31 +139,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       return {
         newsrooms: this.newsrooms
       };
-    },
-    startSmartRelease: function(options){
-      if (this.form.data('formValidation') == undefined) {
-        this.initFormValidation();
-      }
-      var viewObj = this;
-      this.modelBinder.copyViewValuesToModel();
-      var iframe = document.getElementsByClassName("wysihtml5-sandbox");
-      if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
-        this.model.set('text', $(iframe).contents().find('body').html());
-      };
-      this.form.data('formValidation').validate();
-      if (this.form.data('formValidation').isValid()) {
-        this.model.save(viewObj.model.attributes, {
-          success: function(model, data, response){
-            viewObj.$el.find('#release_form').modal('hide');
-            $('body').removeClass('modal-open');
-            Robin.releaseForBlast = viewObj.model.get('id');
-            Backbone.history.navigate('robin8', {trigger: true});
-          },
-          error: function(data, response){
-            viewObj.processErrors(response);
-          }
-        });
-      }
     },
     openModalDialog: function(){
       this.model.clear();
@@ -220,6 +245,32 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             url: url
           },
           success: function(response) {
+            if (response.title.length + response.article.length == 0) {
+              swal({
+                title: "Invalid link!",
+                text: "The link you've provided is invalid or the site it leads to contains no usable information",
+                type: "error",
+                showCancelButton: false,
+                confirmButtonClass: 'btn',
+                confirmButtonText: 'ok'
+              });
+            } else if (response.article.length > 60000) {
+              swal({
+                title: "Provided release is too long",
+                text:"Target page contains a text that exceeds the release length limit. The maximum is 60.000 characters (including spaces)",
+                type: "error",
+                showCancelButton: false,
+                confirmButtonClass: 'btn',
+                confirmButtonText: 'ok'
+              });
+            } else {
+              var title = response.title.length==0 ? "undefined" : response.title;
+              self.model.set('title', title);
+              var editor = self.ui.wysihtml5.data('wysihtml5').editor;
+              editor.setValue(
+                '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
+              );
+            }
             if (response.title.length > 0 || response.article.length > 0) {
               var title = response.title.length==0 ? "undefined" : response.title;
               self.model.set('title', title);
@@ -230,7 +281,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             } else {
               swal({
                 title: "Invalid link!",
-                text: "The link you've provided is invalid or the site it leads to contains no useable information",
+                text: "The link you've provided is invalid or the site it leads to contains no usable information",
                 type: "error",
                 showCancelButton: false,
                 confirmButtonClass: 'btn',
@@ -240,56 +291,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           }
         });
       }
-    },
-    onRender: function(){
-      var self = this;
-      Robin.user = new Robin.Models.User();
-      Robin.user.fetch({
-        success: function() {
-          self.verifyReleaseButton();
-          if (Robin.user.get('can_create_smart_release') != true) {
-            $('.smart-release-button').attr('disabled', 'disabled')
-          } else {
-            $('.smart-release-button').removeAttr('disabled')
-          }
-        }
-      });
-      this.modelBinder.bind(this.model, this.el);
-      this.initFormValidation();
-      var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
-      var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
-      var customTemplates = {
-        extract: function(context) {
-          return extractButtonTemplate
-        },
-        word: function(context) {
-          return extractWordTemplate
-        }
-      };
-      this.ui.wysihtml5.wysihtml5({
-        toolbar: {
-          extract: true,
-          word: true
-        },
-        customTemplates: customTemplates,
-      });
-      this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
-      this.editor.on('load', function() {
-        self.updateStats();
-        $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', function(e) {
-          self.updateStats()
-        });
-      });
-      this.initLogoView();
-      this.initMediaTab();
-      if (Robin.newReleaseFromDashboard) {
-        this.$el.find('#release_form').modal({keyboard: false });
-        Robin.newReleaseFromDashboard = false;
-      }
-      this.$el.find("input[type='checkbox']").iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        increaseArea: '20%'
-      });
     },
     initLogoView: function(){
       this.logoRegion.show(new Robin.Views.LogoView({
@@ -366,11 +367,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           .removeClass('error-tab');
       });
     },
-    saveRelease: function(e){
+    startSmartRelease: function(options){
       if (this.form.data('formValidation') == undefined) {
         this.initFormValidation();
       }
-
       var viewObj = this;
       this.modelBinder.copyViewValuesToModel();
       var iframe = document.getElementsByClassName("wysihtml5-sandbox");
@@ -378,7 +378,54 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.model.set('text', $(iframe).contents().find('body').html());
       };
       this.form.data('formValidation').validate();
-      if (this.form.data('formValidation').isValid()) {
+      var textLength = $('iframe').contents().find('.wysihtml5-editor').html().length;
+      if (textLength > 60000) {
+        swal({
+          title: "Release text is too long!",
+          text: "Relase text should not exceed 60.000 characters (including spaces and hidden HTML)",
+          type: "error",
+          showCancelButton: false,
+          confirmButtonClass: 'btn',
+          confirmButtonText: 'ok'
+        });
+      }
+      if (this.form.data('formValidation').isValid() && textLength <= 60000) {
+        this.model.save(viewObj.model.attributes, {
+          success: function(model, data, response){
+            viewObj.$el.find('#release_form').modal('hide');
+            $('body').removeClass('modal-open');
+            Robin.releaseForBlast = viewObj.model.get('id');
+            Backbone.history.navigate('robin8', {trigger: true});
+          },
+          error: function(data, response){
+            viewObj.processErrors(response);
+          }
+        });
+      }
+    },
+    saveRelease: function(e){
+      if (this.form.data('formValidation') == undefined) {
+        this.initFormValidation();
+      }
+      var viewObj = this;
+      this.modelBinder.copyViewValuesToModel();
+      var iframe = document.getElementsByClassName("wysihtml5-sandbox");
+      if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
+        this.model.set('text', $(iframe).contents().find('body').html());
+      };
+      this.form.data('formValidation').validate();
+      var textLength = $('iframe').contents().find('.wysihtml5-editor').html().length;
+      if (textLength > 60000) {
+        swal({
+          title: "Release text is too long!",
+          text: "Relase text should not exceed 60.000 characters (including spaces and hidden HTML)",
+          type: "error",
+          showCancelButton: false,
+          confirmButtonClass: 'btn',
+          confirmButtonText: 'ok'
+        });
+      }
+      if (this.form.data('formValidation').isValid() && textLength <= 60000) {
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
