@@ -1532,6 +1532,12 @@ a.list-group-item {
   padding: 0 15px; }
 .modal-footer {
   border-top: none; }
+.modal-footer > div {
+  display:inline-block;
+}
+.modal-footer > div > button {
+  margin-top: 15px;
+}
 
 /**
  * well

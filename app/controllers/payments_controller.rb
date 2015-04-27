@@ -112,7 +112,7 @@ class PaymentsController < ApplicationController
   end
 
   def update
-    flash[:errors],resp = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id,current_user.active_subscription.bluesnap_shopper_id, @product.sku_id)
+    flash[:errors] = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id,current_user.active_subscription.bluesnap_shopper_id, @product.sku_id,params[:code],current_user)
     if flash[:errors].blank?
       @subscription = current_user.active_subscription.update_attributes(
           product_id: @product.id,

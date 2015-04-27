@@ -32,13 +32,15 @@ class Stream < ActiveRecord::Base
 
   private
 
+    def needed_user
+      user.is_primary? ? user : user.invited_by
+    end
+
     def can_be_created
-      errors.add(:user, "you've reached the max numbers of streams.") if user && !user.can_create_stream
+      errors.add(:user, "you've reached the max numbers of streams.") if needed_user && !needed_user.can_create_stream
     end
 
     def decrease_feature_number
-      needed_user = user.is_primary? ? user : user.invited_by
-
       uf = needed_user.user_features.media_monitoring.available.first
       return false if uf.blank?
       uf.available_count -= 1
@@ -46,8 +48,6 @@ class Stream < ActiveRecord::Base
     end
 
     def increase_feature_numner
-      needed_user = user.is_primary? ? user : user.invited_by
-
       uf = needed_user.user_features.media_monitoring.not_available.first
       return false if uf.blank?
       uf.available_count += 1

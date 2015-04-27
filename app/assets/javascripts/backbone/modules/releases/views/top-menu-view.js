@@ -23,7 +23,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #highlight_textarea': 'highlightReleaseText',
       'click #smart_release': 'startSmartRelease',
       'change #upload': 'uploadWord',
-      'ifChanged .private-checkbox': 'changePrivate'
+      'ifChanged .private-checkbox': 'changePrivate',
+      'change #news_room_id': 'newsRoomSelected',
+      'click #make-public': 'makeNewsRoomPublic'
     },
     changePrivate: function(e) {
       if ($(e.target).is(":checked")) {
@@ -97,20 +99,22 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
         this.model.set('text', $(iframe).contents().find('body').html());
       };
-      this.form.data('formValidation').validate();
-      if (this.form.data('formValidation').isValid()) {
-        this.model.save(this.model.attributes, {
-          success: function(model, data, response){
-            viewObj.$el.find('#release_form').modal('hide');
-            $('body').removeClass('modal-open');
-            Robin.releaseForBlast = viewObj.model.get('id');
-            Backbone.history.navigate('robin8', {trigger: true});
-          },
-          error: function(data, response){
-            viewObj.processErrors(response);
+      $.when(this.form.data('formValidation').validate())
+        .then(function(){
+          if (viewObj.form.data('formValidation').isValid()) {
+            viewObj.model.save(viewObj.model.attributes, {
+              success: function(model, data, response){
+                viewObj.$el.find('#release_form').modal('hide');
+                $('body').removeClass('modal-open');
+                Robin.releaseForBlast = viewObj.model.get('id');
+                Backbone.history.navigate('robin8', {trigger: true});
+              },
+              error: function(data, response){
+                viewObj.processErrors(response);
+              }
+            });
           }
-        });
-      }
+      });
     },
     openModalDialog: function(){
       this.model.clear();
@@ -122,6 +126,39 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.model.set(data.toJSON().release);
       this.render();
       this.$el.find('#release_form').modal({ keyboard: false });
+      this.verifyPublic(this.model.attributes.news_room.publish_on_website);
+    },
+    newsRoomSelected: function() {
+      var newsRoomId = $('#news_room_id').val();
+      if (newsRoomId != ""){
+        selectedNewsroom = this.newsrooms.get(newsRoomId);
+        this.verifyPublic(selectedNewsroom.attributes.publish_on_website);
+      } else {
+        this.verifyPublic(true);
+      }
+    },
+    verifyPublic: function(publish) {
+      if (publish) {
+        this.$el.find('#public-alert').hide();
+      } else {
+        this.$el.find('#public-alert').show();
+      }
+    },
+    makeNewsRoomPublic: function() {
+      var newsRoomId = $('#news_room_id').val();
+      var viewObj = this;
+      if (newsRoomId != ""){
+        selectedNewsroom = this.newsrooms.get(newsRoomId);
+        selectedNewsroom.attributes.publish_on_website = true;
+        selectedNewsroom.save(selectedNewsroom.attributes, {
+            success: function(model, data, response){
+              viewObj.$el.find('#public-alert').hide()
+            },
+            error: function(data, response){
+              console.log(response);
+            }
+        });
+      }
     },
     uploadWord: function(changeEvent) {
       var self = this;

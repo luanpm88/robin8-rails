@@ -44,7 +44,6 @@ class UsersController < ApplicationController
   end
 
   def identities
-    p '!!!'
     render json: current_user.identities
   end
 
@@ -56,8 +55,7 @@ class UsersController < ApplicationController
   end
 
   def manageable_users
-    manageable_users = User.where(invited_by_id: current_user.id)
-    render json: manageable_users
+    render json: current_user.manageable_users
   end
 
   private

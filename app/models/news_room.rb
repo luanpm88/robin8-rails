@@ -26,6 +26,18 @@ class NewsRoom < ActiveRecord::Base
   validate :twitter_account_exists
   validate :can_be_created, on: :create
 
+  def images
+    attachments.where(attachment_type: 'image')
+  end
+
+  def videos
+    attachments.where(attachment_type: 'video')
+  end
+
+  def files
+    attachments.where(attachment_type: 'file')
+  end
+
   def city_state
     str = [city, state]
     str.reject! { |c| c.blank? }
@@ -48,8 +60,12 @@ class NewsRoom < ActiveRecord::Base
 
   private
 
+    def needed_user
+      user.is_primary? ? user : user.invited_by
+    end
+
     def can_be_created
-      errors.add(:company_name, "you've reached the max numbers of newsrooms.") if user && !user.can_create_newsroom
+      errors.add(:company_name, "you've reached the max numbers of newsrooms.") if needed_user && !needed_user.can_create_newsroom
     end
 
     def twitter_account_exists
@@ -81,8 +97,6 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def decrease_feature_number
-      needed_user = user.is_primary? ? user : user.invited_by
-
       uf = needed_user.user_features.newsroom.available.first
       return false if uf.blank?
       uf.available_count -= 1
@@ -90,8 +104,6 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def increase_feature_numner
-      needed_user = user.is_primary? ? user : user.invited_by
-
       uf = needed_user.user_features.newsroom.not_available.first
       return false if uf.blank?
       uf.available_count += 1
@@ -99,9 +111,12 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def delete_campaign
-      mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
-      domain = Rails.application.secrets.mailgun[:domain]
-      mg_client.delete("#{domain}/campaigns/#{campaign_name}")
+      begin
+        mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+        domain = Rails.application.secrets.mailgun[:domain]
+        mg_client.delete("#{domain}/campaigns/#{campaign_name}")
+      rescue Exception => e
+      end
     end
     
 end
