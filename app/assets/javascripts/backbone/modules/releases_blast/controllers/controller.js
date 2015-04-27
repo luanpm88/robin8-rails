@@ -30,8 +30,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       Robin.vent.on("start:tab:clicked", function(params){
         if ([2, 3, 4].indexOf(self.module.releasesBlastHeader.get('level')) !== -1){
-          self.module.trigger("stop");
-          self.module.trigger("start");
+          self.module.trigger("stop", {restart: true});
         }
       });
       
@@ -58,6 +57,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           if (self.module.releasesBlastHeader.get('level') === 3)
             Robin.commands.execute("goToPitchTab");
         }
+      });
+      
+      this.on('destroy', function(){
+        Robin.vent.off("start:tab:clicked");
+        Robin.vent.off("analysis:tab:clicked");
+        Robin.vent.off("targets:tab:clicked");
+        Robin.vent.off("pitch:tab:clicked");
       });
     },
     start: function(params){

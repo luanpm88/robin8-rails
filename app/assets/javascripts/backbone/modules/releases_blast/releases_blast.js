@@ -14,9 +14,12 @@ Robin.module("ReleasesBlast", function(ReleasesBlast, Robin, Backbone, Marionett
     Backbone.history.loadUrl(Backbone.history.fragment);
   });
 
-  ReleasesBlast.on("stop", function(){
+  ReleasesBlast.on("stop", function(params){
     this.layout.destroy();
     this.controller.destroy();
+    
+    if (params && params.restart)
+      this.trigger('start');
   });
 
 });
