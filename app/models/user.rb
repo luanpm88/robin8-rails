@@ -138,7 +138,7 @@ class User < ActiveRecord::Base
   end
 
   def seat_available_count
-    current_user_features.seat.map(&:avaliable_count).inject{|sum,x| sum + x }
+    current_user_features.seat.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def seat_count
