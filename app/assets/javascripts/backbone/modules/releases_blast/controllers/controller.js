@@ -28,21 +28,42 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       
       
+      Robin.vent.on("start:tab:clicked", function(params){
+        if ([2, 3, 4].indexOf(self.module.releasesBlastHeader.get('level')) !== -1){
+          self.module.trigger("stop", {restart: true});
+        }
+      });
+      
       Robin.vent.on("analysis:tab:clicked", function(params){
-        if (self.module.releasesBlastHeader.get('level') === 1)
-          Robin.commands.execute("goToAnalysisTab");
+        if (self.module.pitchModel.get('sent') === false){
+          if (self.module.releasesBlastHeader.get('level') === 1)
+            Robin.commands.execute("goToAnalysisTab");
+          else if ([3, 4].indexOf(self.module.releasesBlastHeader.get('level')) !== -1)
+            self.analysis({releaseModel: self.module.releaseModel});
+        }
       });
       
       Robin.vent.on("targets:tab:clicked", function(params){
-        if (self.module.releasesBlastHeader.get('level') === 4)
-          self.targets();
-        else if (self.module.releasesBlastHeader.get('level') === 2)
-          Robin.commands.execute("goToTargetsTab");
+        if (self.module.pitchModel.get('sent') === false){
+          if (self.module.releasesBlastHeader.get('level') === 4)
+            self.targets();
+          else if (self.module.releasesBlastHeader.get('level') === 2)
+            Robin.commands.execute("goToTargetsTab");
+        }
       });
       
       Robin.vent.on("pitch:tab:clicked", function(params){
-        if (self.module.releasesBlastHeader.get('level') === 3)
-          Robin.commands.execute("goToPitchTab");
+        if (self.module.pitchModel.get('sent') === false){
+          if (self.module.releasesBlastHeader.get('level') === 3)
+            Robin.commands.execute("goToPitchTab");
+        }
+      });
+      
+      this.on('destroy', function(){
+        Robin.vent.off("start:tab:clicked");
+        Robin.vent.off("analysis:tab:clicked");
+        Robin.vent.off("targets:tab:clicked");
+        Robin.vent.off("pitch:tab:clicked");
       });
     },
     start: function(params){

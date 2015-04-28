@@ -22,6 +22,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           self.openTargetsTab();
         }
       });
+      
+      this.on("close", function(){ 
+        Robin.commands.removeHandler("goToTargetsTab");
+      });
     },
     templateHelpers: function(){
       return {

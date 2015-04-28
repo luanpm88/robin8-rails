@@ -371,6 +371,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.model.save({}, {
         success: function(model, response, options){
           self.ui.pitchButton.prop('disabled', true);
+          self.model.set('sent', true);
+          
           $.growl({message: "Your pitch has been successfully sent."
           },{
             type: 'success'

@@ -88,6 +88,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           }
         }
       });
+      
+      this.on("close", function(){ 
+        Robin.commands.removeHandler("goToAnalysisTab");
+      });
     }
   });
 });
