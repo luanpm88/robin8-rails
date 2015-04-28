@@ -127,6 +127,9 @@ a {
 .modal {
   z-index: 10000;
 }
+.modal-backdrop {
+  height: 100% !important;
+}
 .navbar-custom {
     background-color: #f5f5f5;
     /*background-image: image-url("img/top-bg.png");
