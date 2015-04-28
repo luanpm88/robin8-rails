@@ -97,7 +97,7 @@ class PaymentsController < ApplicationController
   def destroy_subscription
     if current_user.active_subscription.present?
       if current_user.active_subscription.cancel!
-        render json: { message: "Your package has been cancelled" }, status: :ok
+        render json: current_user.to_json.html_safe, status: :ok
       else
         render json: ["We could not cancel your package at this time."], status: :bad_request
       end

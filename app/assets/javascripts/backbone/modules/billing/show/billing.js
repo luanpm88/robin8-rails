@@ -18,6 +18,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     cancelSubscription: function(event) {
+      var view = this;
       var r = this.model;
       swal({
         title: "Cancel current subscription?",
@@ -31,8 +32,14 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
       function(isConfirm) {
         if (isConfirm) {
           Robin.currentUser.cancelSubscription().done(function(data){
+            Robin.currentUser = new Robin.Models.User(data);
             $.growl("Your current plan is canceled!", {
               type: "info",
+            });
+            view.render();
+          }).error(function(data){
+            $.growl(data.responseJSON.error, {
+              type: "danger",
             });
           });
         }
@@ -63,7 +70,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
             $.growl(data.responseJSON.error, {
               type: "danger",
             });
-          });;
+          });
         }
       });
     },
