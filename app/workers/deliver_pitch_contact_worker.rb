@@ -9,7 +9,7 @@ class DeliverPitchContact
       # ContactMailer.deliver_pitch(pitch_contact.id).deliver
       message_params = {
         to: pitch_contact.contact.email,
-        from: pitch_contact.pitch.email_address,
+        from: "Robin8 <no-reply@robin8.com>",
         subject: pitch_contact.pitch.email_subject,
         text: pitch_contact.rendered_pitch,
         'o:campaign' => pitch_contact.pitch.release.news_room.campaign_name
