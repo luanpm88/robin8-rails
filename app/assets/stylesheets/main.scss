@@ -836,9 +836,16 @@ nav{text-align: center;}
   opacity: 0;
   visibility: hidden;
   transition: visibility 0.5s ease 0s,opacity 0.5s ease;
+  padding-top: 60px;
+}
+.release-item .release-thumbnail-inner:hover .overlay {
+  opacity: 1;
+  visibility: visible;
 }
 .release-item .overlay ul {
   list-style: none;
+  margin-top: 100px;
+  text-align: center;
 }
 .toolbar {
   padding: 8px 0;
