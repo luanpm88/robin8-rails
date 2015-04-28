@@ -4,6 +4,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     initialize: function () {
       this.module = Robin.module("ReleasesBlast");
       var self = this;
+      this.module.selectedMediaListsCollection = new Robin.Collections.SelectedMediaLists();
       Robin.user = new Robin.Models.User();
       Robin.user.fetch({
         success: function() {
@@ -137,7 +138,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       // Load Media List tab
       var mediaListCollection = new Robin.Collections.MediaLists();
-      var selectedMediaListsCollection = new Robin.Collections.SelectedMediaLists();
       
       mediaListCollection.fetch({reset: true});
       var mediaListLayout = new ReleasesBlast.MediaListLayout();
@@ -146,10 +146,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var uploadMediaListView = new ReleasesBlast.UploadMediaListView({
         collection: mediaListCollection,
         pitchContactsCollection: self.module.pitchModel.get('contacts'),
-        selectedMediaListsCollection: selectedMediaListsCollection
+        selectedMediaListsCollection: this.module.selectedMediaListsCollection
       });
       var selectedMediaListsView = new ReleasesBlast.SelectedMediaListsCompositeView({
-        collection: selectedMediaListsCollection,
+        collection: this.module.selectedMediaListsCollection,
         pitchContactsCollection: self.module.pitchModel.get('contacts')
       });
       
