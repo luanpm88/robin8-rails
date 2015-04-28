@@ -70,11 +70,18 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
 
     openModalDialog: function(){
-      this.model.clear();
-      this.model.attributes.publish_on_website = true,
-      // this.$el.find("#tagsinput").tagsinput('removeAll')
-      this.render()
-      this.$el.find('#newsroom_form').modal({keyboard: false });
+      if(Robin.user.get('can_create_newsroom') != true) {
+        $.growl({message: "You don't have available newsrooms!"},
+          {
+            type: 'info'
+          });
+      } else {
+        this.model.clear();
+        this.model.attributes.publish_on_website = true,
+        // this.$el.find("#tagsinput").tagsinput('removeAll')
+        this.render()
+        this.$el.find('#newsroom_form').modal({keyboard: false });
+      }
     },
 
     openModalDialogEdit: function(data){
@@ -334,9 +341,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
     verifyNewsRoomButton: function() {
       if(Robin.user.get('can_create_newsroom') != true) {
-        $('button#new_newsroom').attr('disabled', 'disabled');
+        $('button#new_newsroom').addClass('disabled-unavailable');
       } else {
-        $('button#new_newsroom').removeAttr('disabled');
+        $('button#new_newsroom').removeClass('disabled-unavailable');
       }
     },
 

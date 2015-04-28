@@ -104,7 +104,7 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def increase_feature_numner
-      uf = needed_user.user_features.newsroom.not_available.first
+      uf = needed_user.user_features.newsroom.first
       return false if uf.blank?
       uf.available_count += 1
       uf.save
