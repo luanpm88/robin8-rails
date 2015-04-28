@@ -7,9 +7,12 @@ class DeliverPitchContact
     
     if [0, 2].include? pitch_contact.contact.origin # pressr or media_list
       # ContactMailer.deliver_pitch(pitch_contact.id).deliver
+      sender = pitch_contact.pitch.user
+      name = (sender.first_name.nil? && sender.last_name.nil?) ? 'Robin8' : sender.try(:first_name) + sender.try(:last_name)
+
       message_params = {
         to: pitch_contact.contact.email,
-        from: "Robin8 <no-reply@robin8.com>",
+        from: "#{name} <#{pitch_contact.pitch.email_address}>",
         subject: pitch_contact.pitch.email_subject,
         text: pitch_contact.rendered_pitch,
         'o:campaign' => pitch_contact.pitch.release.news_room.campaign_name
