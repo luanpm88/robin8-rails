@@ -171,6 +171,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.pitchContactsCollection = options.pitchContactsCollection;
       this.releaseModel = options.releaseModel;
     },
+    templateHelpers: function(){
+      return {
+        pitchContactsCollection: this.pitchContactsCollection
+      }
+    },
     openInspectModal: function(e){
       e.preventDefault();
       var self = this;
