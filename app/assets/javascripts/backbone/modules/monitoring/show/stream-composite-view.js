@@ -29,12 +29,34 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
-    afterFetch: function (e) {      
+    afterFetch: function (e) {
+      this.filterCollection();
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
       if (this.collection.length == 0) {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
+    },
+
+   filterCollection: function () {
+      var initArray = this.collection.models;
+      var deleteList = [];
+      var ViewObj = this;
+
+      initArray.forEach(function(model) {
+        var title = model.attributes.title;
+        deleteResult = $.grep(initArray, function(e){
+          return ((e.attributes.title == model.attributes.title) && (e.attributes.id != model.attributes.id))
+        });
+        initArray = $.grep(initArray, function(e){
+          return !((e.attributes.title == model.attributes.title) && (e.attributes.id != model.attributes.id))
+        });
+        if (deleteResult.length > 0) {
+          var id = deleteResult[0].attributes.id ;
+          var itemToDelete = ViewObj.collection.get(id);
+          ViewObj.collection.remove(itemToDelete);
+        }
+      });
     },
 
     selectLink: function (e) {
@@ -70,6 +92,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
         Robin.cachedStories[streamId] = new Robin.Collections.Stories();
         Robin.cachedStories[streamId].streamId = streamId;
+        Robin.cachedStories[streamId].alreadyRendered = false;
         Robin.cachedStories[streamId].sortByPopularity = this.model.get('sort_column') == 'shares_count';
 
       }
@@ -107,8 +130,15 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (Robin.cachedStories[this.model.get('id')] != undefined) {
         if (Robin.cachedStories[this.model.get('id')].length > 0){
           this.$el.find('.stream-loading').addClass('hidden');
-        };
+        } 
+        
+        if (Robin.cachedStories[this.model.get('id')].alreadyRendered && Robin.cachedStories[this.model.get('id')].length == 0) {
+          this.$el.find('.stream-loading').addClass('hidden');
+          this.$el.find('.empty-stream').removeClass('hidden');
+        }
+        Robin.cachedStories[this.model.get('id')].alreadyRendered = true;
       }
+
 
       if (this.needOpacity) {
         this.$el.find('.stream-loading').removeClass('hidden');
@@ -128,6 +158,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     onAdded: function(story, collection) {
+      this.filterCollection();
       this.refreshNewStoriesCount();
       this.setShowUpdatesButtonVisibility();
     },
@@ -324,6 +355,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           },{
             type: 'success'
           });
+          Robin.cachedStories[curView.model.get('id')].alreadyRendered = false;
           curView.render();
         },
         error: function(userSession, response) {

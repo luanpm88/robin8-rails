@@ -15,11 +15,13 @@ class Discount < ActiveRecord::Base
     (product_discounts.blank? && user_discounts.blank?) ?  true : false
   end
 
-  def only_on_product?(product_id)
+  def only_on_product?(product_slug)
+    product_id = Product.where(slug: product_slug).first.id
     (product_discounts.where(product_id: product_id).exists? && user_discounts.blank?) ? true : false
   end
 
-  def on_user_and_product?(user_id,product_id)
+  def on_user_and_product?(user_id,product_slug)
+    product_id = Product.where(slug: product_slug).first.id
     (user_discounts.where(user_id: user_id).exists?  && (product_discounts.blank? || product_discounts.where(product_id: product_id).exists? ) )  ? true : false
   end
 

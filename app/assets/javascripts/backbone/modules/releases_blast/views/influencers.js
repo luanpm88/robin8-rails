@@ -76,12 +76,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     template: 'modules/releases_blast/templates/influencers/influencers',
     childView: ReleasesBlast.InfluencerView,
     childViewContainer: "tbody",
+    ui: {
+      tooltips: "[data-toggle=tooltip]"
+    },
     childViewOptions: function() {
       return this.options;
     },
     onRender: function () {
       this.initDataTable();
       this.scrollToView();
+      this.initTooltip();
+    },
+    initTooltip: function(){
+      this.ui.tooltips.tooltip({
+        html: true
+      });
     },
     initDataTable: function(){
       this.$el.find('table').DataTable({
@@ -89,7 +98,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "searching": false,
         "lengthChange": false,
         "order": [[ 1, 'desc' ]],
-        "pageLength": 20,
+        "pageLength": 25,
         "columns": [
           { "width": "30% !important" },
           null,

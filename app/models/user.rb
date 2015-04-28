@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable, #:confirmable,
          :omniauthable, :invitable
 
   has_many :identities, dependent: :destroy
@@ -55,12 +55,17 @@ class User < ActiveRecord::Base
     user
   end
 
+  def current_user_features
+    is_primary? ? user_features : invited_by.user_features 
+  end
+
   def is_feature_available?(slug)
-    Feature.joins(:user_features).where("user_features.user_id = '#{id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
+    @user = is_primary? ? self : invited_by 
+    Feature.joins(:user_features).where("user_features.user_id = '#{@user.id}' AND user_features.available_count > '0' AND features.slug = '#{@user.slug}'").exists?
   end
 
   def available_features
-    user_features.where("user_features.available_count > '0'")
+    current_user_features.where("user_features.available_count > '0'")
   end
 
   def is_primary?
@@ -68,60 +73,76 @@ class User < ActiveRecord::Base
   end
 
   def newsroom_available_count
-    user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def newsroom_count
-    news_rooms.count
+    manageable_users.each.sum{|u| u.news_rooms.count} + news_rooms.count
   end
 
   def can_create_newsroom
-    newsroom_available_count.nil? ? false : newsroom_count < newsroom_available_count
+    newsroom_available_count.nil? ? false : newsroom_available_count > 1
   end
 
   def release_available_count
-    user_features.press_release.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.press_release.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def manageable_users
+    User.where(invited_by_id: self.id)
   end
 
   def release_count
-    releases.count
+    manageable_users.each.sum{|u| u.releases.count} + releases.count
   end
 
   def can_create_release
-    release_available_count.nil? ? false : release_count < release_available_count
+    release_available_count.nil? ? false : release_available_count > 0
   end
 
   def can_create_stream
-    stream_available_count.nil? ? false : stream_count < stream_available_count
+    stream_available_count.nil? ? false : stream_available_count > 0
   end
 
   def stream_available_count
-    user_features.media_monitoring.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.media_monitoring.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def stream_count
-    streams.count
+    manageable_users.each.sum{|u| u.streams.count} + streams.count
   end
 
   def can_cancel_add_on?(user_add_on_id)
     add_on = user_products.where(id: user_add_on_id).first.product
     if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution"
-      return user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
+      return current_user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
     else
       return false
     end
   end
 
   def can_create_smart_release
-    smart_release_available_count.nil? ? false : smart_release_count < smart_release_available_count
+    smart_release_available_count.nil? ? false : smart_release_available_count > 0
   end
 
   def smart_release_available_count
-    user_features.smart_release.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.smart_release.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def smart_release_count
-    pitches.count
+    manageable_users.each.sum{|u| u.pitches.count} + pitches.count
+  end
+
+  def can_create_seat
+    seat_available_count.nil? ? false : seat_available_count > 0
+  end
+
+  def seat_available_count
+    current_user_features.seat.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def seat_count
+    manageable_users.count + 1 # +1 - himself
   end
 
   def active_subscription

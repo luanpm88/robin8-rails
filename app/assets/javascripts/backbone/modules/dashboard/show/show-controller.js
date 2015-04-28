@@ -4,7 +4,6 @@ Robin.module('Dashboard.Show', function(Show, App, Backbone, Marionette, $, _){
 
     showDashboardPage: function(){
       var socialPageView = this.getDashboardPageView();
-      console.log('small test for dashboard');
       Robin.layouts.main.content.show(socialPageView);
     },
 

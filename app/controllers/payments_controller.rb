@@ -10,9 +10,9 @@ class PaymentsController < ApplicationController
   def apply_discount
     discount = Discount.active.where(code: params[:code]).last
     if discount.present?
-      return render :text => discount.calculate(current_user,Package.where(id: params[:product_id]).first) if discount.is_global?
-      return render :text => discount.calculate(current_user,Package.where(id: params[:product_id]).first) if discount.on_user_and_product?(current_user.id,params[:product_id])
-      return render :text => discount.calculate(current_user,Package.where(id: params[:product_id]).first) if discount.only_on_product?(params[:product_id])
+      return render :text => discount.calculate(current_user,Package.where(slug: params[:product_slug]).first) if discount.is_global?
+      return render :text => discount.calculate(current_user,Package.where(slug: params[:product_slug]).first) if discount.on_user_and_product?(current_user.id,params[:product_slug])
+      return render :text => discount.calculate(current_user,Package.where(slug: params[:product_slug]).first) if discount.only_on_product?(params[:product_slug])
     end
     render :text => ""
   end
@@ -112,7 +112,7 @@ class PaymentsController < ApplicationController
   end
 
   def update
-    flash[:errors],resp = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id,current_user.active_subscription.bluesnap_shopper_id, @product.sku_id)
+    flash[:errors] = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id,current_user.active_subscription.bluesnap_shopper_id, @product.sku_id,params[:code],current_user)
     if flash[:errors].blank?
       @subscription = current_user.active_subscription.update_attributes(
           product_id: @product.id,

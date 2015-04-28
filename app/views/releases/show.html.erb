@@ -7,6 +7,9 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
+            <% if @preview_mode %>
+              <i class="preview-notification">You are in a preview mode. You need to make this release and newsroom public in order to show it on your page</i>
+            <% end %>
             <div class="jumbotron release">
               <div class='jumbotron-photo'>
                 <% if @release.logo_url %>
@@ -16,32 +19,66 @@
               <div class='jumbotron-contents'>
                 <h1><%= @release.title %></h1>
                 <div>
+                  <div id="share-block">
+                    <ul>
+                      <li class="facebook-button">
+                        <div id="fb-root"></div>
+                        <div class="fb-share-button" data-href="" data-layout="button"></div>
+                      </li>
+                      <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="<%= @release.title %>" data-count="none">Tweet</a>
+                      </li>
+                      <li>
+                        <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+                        <script id="linkedIn" type="IN/Share" data-url="ololo"></script>
+                      </li>
+                    </ul>
+                  </div>
                   <%= @release.text.try(:html_safe) %>
                 </div>
               </div>
               <% unless @release.attachments.blank? %>
-                <div>
-                  <h1>Attachments</h1>
-                  <div id='presskit'>
-                    <% @release.attachments.each do |attachment| %>
-                      <% if attachment.attachment_type != 'image' || ['tif', 'tiff'].include?(attachment.name.split('.').last) %>
-                        <a href="<%= attachment.url  %>" class="not-image" title="<%= attachment.name  %>" data-gallery="">
-                          <div class="presskit-file">
-                            <div class="presskit-file--content">
-                              <%= image_tag asset_path(attachment.get_correct_url) %>
-                              <br>
-                              <span class='name'> <%= attachment.name %> </span>
-                            </div>
-                          </div>
-                        </a>
-                      <% else %>
-                        <a href="<%= attachment.url  %>" title="<%= attachment.name  %>" data-gallery="">
-                          <%= image_tag asset_path(attachment.get_correct_url) %>
-                        </a>
-                      <%end%>
-                    <% end %>
+                <h2>Images</h2>
+                <div class='release-preview'>
+                  <% @release.images.each do |attachment| %>
+                    <a href="<%= attachment.url  %>" title="<%= attachment.name  %>" data-gallery="" >
+                      <%= image_tag asset_path(attachment.thumbnail) %>
+                    </a>
+                  <% end %>
+                </div>
 
-                  </div>
+                <h2>Videos</h2>
+                <div class='release-preview row'>
+                  <% @release.videos.each do |attachment| %>
+                    <div class='col-md-2 col-lg-2'>
+                      <a href="<%= attachment.url  %>" class="not-image " title="<%= attachment.name  %>" data-gallery="" type="video/<%=attachment.name.split('.').last%>">
+                        <div class="presskit-file">
+                          <div class="presskit-file--content">
+                            <%= image_tag asset_path(attachment.get_correct_url) %>
+                            <br>
+                            <span class='name'> <%= attachment.name %> </span>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  <% end %>
+                </div>
+
+                <h2>Files</h2>
+                <div class='files row'>
+                  <% @release.files.each do |attachment| %>
+                    <div class="col-md-2">
+                      <a href="<%= attachment.url  %>" class="not-image" title="<%= attachment.name  %>" data-gallery="">
+                        <div class="presskit-file">
+                          <div class="presskit-file--content">
+                            <%= image_tag asset_path(attachment.get_correct_url) %>
+                            <br>
+                            <span class='name'> <%= attachment.name %> </span>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  <% end %>
                 </div>
               <% end %>
             </div>
@@ -78,7 +115,7 @@
                 </div>
               </div>
             </div>
-            <hr style="margin-bottom: 4px;">
+            <!-- <hr style="margin-bottom: 4px;"> -->
             <%= render 'public_news_rooms/footer' %>
           </div>
         </div>
@@ -86,18 +123,36 @@
     </div>
   </div>
 </div>
+
+
+
+<script type="text/javascript">
+  //Facebook button
+  $(".fb-share-button").attr('data-href', window.location.href);
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+      fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  //Twitter button
+  !function(d,s,id){
+    var js,fjs = d.getElementsByTagName(s)[0], p=/^http:/.test(d.location) ? 'http':'https';
+    if(!d.getElementById(id)){
+      js=d.createElement(s);
+      js.id=id;
+      js.src=p+'://platform.twitter.com/widgets.js';
+      fjs.parentNode.insertBefore(js,fjs);
+    }
+  }(document, 'script', 'twitter-wjs');
+    //LinkedIn button
+  $("#linkedIn").attr('data-url', window.location.href);
+</script>
+
 <% unless @release.attachments.blank? %>
   <script type="text/javascript">
-    var $container = $('#presskit');
-    $container.imagesLoaded( function() {
-      $container.masonry({
-        columnWidth: $container.width()/3,
-        gutter: 0,
-        itemSelector: 'a'
-      });
-    });
-
-    document.getElementById('presskit').onclick = function (event) {
+    $( ".release-preview" ).click(function(event) {
       event = event || window.event;
       var target = event.target || event.srcElement;
       var link = target.src ? target.parentNode : target;
@@ -108,7 +163,6 @@
       var options = {index: link, event: event};
       var links = this.getElementsByTagName('a');
       blueimp.Gallery(links, options);
-    };
-
+    });
   </script>
 <% end %>

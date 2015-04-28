@@ -63,7 +63,7 @@ module BlueSnap
 
 
     def self.ordering_shopper request
-      {"web-info" => {"ip" => "127.0.0.1", "remote-host" => "www.robin8.com", "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
+      {"web-info" => {"ip" => request.ip, "remote-host" => Resolv.getname(request.ip), "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
     end
 
     def self.order_info(request, product, add_ons,add_ons_hash,code,user)
@@ -79,8 +79,8 @@ module BlueSnap
       discount_amount = 0.0
       if discount.present? && product.present?
         discount_amount =  discount.calculate(user,product) if discount.is_global?
-        discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.id)
-        discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.id)
+        discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.slug)
+        discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.slug)
       end
       return (product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
     end
@@ -98,7 +98,7 @@ module BlueSnap
       discount = Discount.active.where(code: code).last if code.present?
       disc_code = ""
       if discount.present? && product.present?
-       if discount.is_global? || discount.on_user_and_product?(user.id,product.id) || discount.only_on_product?(product.id)
+       if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
         disc_code = {"coupons"=>{"coupon"=> discount.code}}.to_xml(root: false,:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","").gsub("<hash>\n","").gsub("\n</hash>\n","")
        end
       end
@@ -186,6 +186,9 @@ module BlueSnap
       begin
         url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id, "underlying-sku-id" => sku_id, "status" => "C", "shopper-id" => shopper_id.to_s} # status C is for cancel :s
+
+
+
         Request.put(url, shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
         Rails.logger.error ex
@@ -194,10 +197,18 @@ module BlueSnap
 
     end
 
-    def self.update(subscription_id, shopper_id, new_sku_id)
+    def self.update(subscription_id, shopper_id, new_sku_id,code=nil,user=nil)
       begin
         url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id" => new_sku_id.to_s, "status" => "A", "shopper-id" => shopper_id.to_s}
+
+        discount,product = Discount.active.where(code: code).last,Package.where(sku_id: new_sku_id).first if code.present?
+        if discount.present? && product.present?
+          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+            shopper.merge({"coupon"=>discount.code})
+          end
+        end
+
         Request.put(url, shopper.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new))
       rescue Exception => ex
         Rails.logger.error ex
@@ -249,6 +260,7 @@ module BlueSnap
       request["Content-Type"] ='application/xml'
       response = http.request(request)
       Rails.logger.info "response is #{response} AND #{response.body}***************************"
+      return "Something is not right with your upgrade, Please try again." if [400,401,402,403,404,500,501].include?(response.code.to_i)
       response.body
     end
 

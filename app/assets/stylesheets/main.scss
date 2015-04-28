@@ -139,7 +139,7 @@ a {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 2000;
+    z-index: 1040;
     border-bottom: 4px solid #91bc4d; 
 }
 .navbar-custom .navbar-brand {
@@ -734,7 +734,9 @@ nav{text-align: center;}
 .release-title p{
   margin: 0px !important;
 }
-
+.release-title img {
+  display:none;
+}
 #social-scheduled .list-group-item .btn {
   margin-left: 2px;
   float: left;
@@ -915,6 +917,25 @@ nav{text-align: center;}
   color: #fff; 
   z-index: 1;
   border-radius: 0;
+}
+#release_form .modal-footer {
+  height: 90px;
+}
+#release_form #delete-container {
+  width: 110px;
+  float: left;
+  margin-right: 70px;
+}
+#release_form #alert-container {
+  width: 460px;
+  float: left;
+}
+#release_form #release-buttons {
+  width: 185px;
+  float: right;
+}
+#release_form #public-alert {
+  text-align: left;
 }
 .blast-release .blast-content {
   min-height: 200px;

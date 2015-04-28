@@ -7,6 +7,9 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var collection = this.collection;
       this.collection.fetch({
         success: function(){
+          if (collection.length == 0) {
+            $('.releases-toolbar').hide();
+          }
           id = ( id == undefined ? collection.models[0].get('id') : id );
           $.get('/news_rooms/' + id +'/analytics', function(data){
 
@@ -52,7 +55,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               }
             }, { // Secondary yAxis
               title: {
-                text: 'Sessions',
+                text: 'Newsroom Views',
                   style: {
                     color: Highcharts.getOptions().colors[0]
                   }
@@ -79,7 +82,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Sessions',
+                name: 'Newsroom Views',
                 type: 'column',
                 yAxis: 1,
                 data: sessions
