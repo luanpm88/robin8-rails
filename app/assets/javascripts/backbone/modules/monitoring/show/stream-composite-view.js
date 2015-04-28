@@ -359,10 +359,16 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           curView.render();
         },
         error: function(userSession, response) {
-          $.growl({title: '<strong>Error:</strong> ',
-            message: 'Something went wrong.'
-          },{
-            type: 'danger'
+          var result = $.parseJSON(response.responseText);
+          _(response.responseJSON).each(function(errors,field) {
+            _(errors).each(function(error, i) {
+              formatted_field = s(field).capitalize().value().replace('_', ' ');
+              $.growl({title: '<strong>' + formatted_field + ':</strong> ',
+                message: error
+              }, {
+                type: "danger",
+              });
+            });
           });
         }
       });

@@ -10,7 +10,7 @@ class StreamsController < ApplicationController
     if stream.errors.none?
       render json: stream.to_json
     else
-      render nothing: true
+      render json: stream.errors , status: :bad_request
     end
   end
 
