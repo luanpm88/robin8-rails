@@ -24,7 +24,8 @@ class User < ActiveRecord::Base
   # has_many :user_add_ons, dependent: :destroy
   # has_many :add_ons, through: :user_add_ons
 
-  after_create :create_default_news_room
+  after_create :create_default_news_room, :decrease_feature_number
+  after_destroy :increase_feature_number
 
   extend FriendlyId
   friendly_id :email, use: :slugged
@@ -223,14 +224,36 @@ class User < ActiveRecord::Base
   end
 
   private
-  def create_default_news_room
-    if is_primary?
-      news_room = self.news_rooms.new(
-          company_name: "#{self.email}'s Default Newsroom",
-          subdomain_name: self.slug,
-          default_news_room: true
-      )
-      news_room.save(validate: false)
+    def create_default_news_room
+      if is_primary?
+        news_room = self.news_rooms.new(
+            company_name: "#{self.email}'s Default Newsroom",
+            subdomain_name: self.slug,
+            default_news_room: true
+        )
+        news_room.save(validate: false)
+      end
     end
-  end
+
+    # def needed_user
+    #   user.is_primary? ? user : user.invited_by
+    # end
+
+    def decrease_feature_number
+      if !is_primary
+        uf = invited_by.user_features.seat.available.first
+        return false if uf.blank?
+        uf.available_count -= 1
+        uf.save
+      end
+    end
+
+    def increase_feature_number
+      if !is_primary
+        uf = invited_by.user_features.seat.first
+        return false if uf.blank?
+        uf.available_count += 1
+        uf.save
+      end
+    end
 end
