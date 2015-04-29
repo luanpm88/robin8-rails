@@ -402,6 +402,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           success: function(model, data, response){
             viewObj.$el.find('#release_form').modal('hide');
             $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
             Robin.releaseForBlast = viewObj.model.get('id');
             Backbone.history.navigate('robin8', {trigger: true});
           },
