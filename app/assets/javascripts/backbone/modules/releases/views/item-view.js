@@ -8,17 +8,20 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
 
     initialize: function(){
-      if (Robin.user.get('can_create_smart_release') != true) {
-        this.$el.find("#start-blast").addClass('disabled-unavailable');
-      } else {
-        this.$el.find("#start-blast").removeClass('disabled-unavailable');
-      }
       if (this.model.attributes.thumbnail) {
         first_src = this.model.attributes.thumbnail;
       } else {
         first_src = AppAssets.path('release-btn.png');
       }
       this.model.attributes.first_src = first_src;
+    },
+
+    onRender: function(){
+      if (Robin.user.get('can_create_smart_release') != true) {
+        this.$el.find("#start-blast").addClass('disabled-unavailable');
+      } else {
+        this.$el.find("#start-blast").removeClass('disabled-unavailable');
+      }
     },
 
     onShow: function(){
