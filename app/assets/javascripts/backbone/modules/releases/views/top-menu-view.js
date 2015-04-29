@@ -155,10 +155,17 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
     },
     openModalDialogEdit: function(data){
-      this.model.set(data.toJSON().release);
-      this.render();
-      this.$el.find('#release_form').modal({ keyboard: false });
-      this.verifyPublic(this.model.attributes.news_room.publish_on_website);
+      if (Robin.user.get('can_create_smart_release') != true) {
+        $.growl({message: "You don't have available smart-releases!"},
+          {
+            type: 'info'
+          });
+      } else {
+        this.model.set(data.toJSON().release);
+        this.render();
+        this.$el.find('#release_form').modal({ keyboard: false });
+        this.verifyPublic(this.model.attributes.news_room.publish_on_website);
+      }
     },
     newsRoomSelected: function() {
       var newsRoomId = $('#news_room_id').val();
@@ -376,39 +383,47 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
     },
     startSmartRelease: function(options){
-      if (this.form.data('formValidation') == undefined) {
-        this.initFormValidation();
-      }
-      var viewObj = this;
-      this.modelBinder.copyViewValuesToModel();
-      var iframe = document.getElementsByClassName("wysihtml5-sandbox");
-      if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
-        this.model.set('text', $(iframe).contents().find('body').html());
-      };
-      this.form.data('formValidation').validate();
-      var textLength = $('iframe').contents().find('.wysihtml5-editor').html().length;
-      if (textLength > 60000) {
-        swal({
-          title: "Release text is too long!",
-          text: "Relase text should not exceed 60.000 characters (including spaces and hidden HTML)",
-          type: "error",
-          showCancelButton: false,
-          confirmButtonClass: 'btn',
-          confirmButtonText: 'ok'
-        });
-      }
-      if (this.form.data('formValidation').isValid() && textLength <= 60000) {
-        this.model.save(viewObj.model.attributes, {
-          success: function(model, data, response){
-            viewObj.$el.find('#release_form').modal('hide');
-            $('body').removeClass('modal-open');
-            Robin.releaseForBlast = viewObj.model.get('id');
-            Backbone.history.navigate('robin8', {trigger: true});
-          },
-          error: function(data, response){
-            viewObj.processErrors(response);
-          }
-        });
+      if (Robin.user.get('can_create_smart_release') != true) {
+        $.growl({message: "You don't have available smart-releases!"},
+          {
+            type: 'info'
+          });
+      } else {
+        if (this.form.data('formValidation') == undefined) {
+          this.initFormValidation();
+        }
+        var viewObj = this;
+        this.modelBinder.copyViewValuesToModel();
+        var iframe = document.getElementsByClassName("wysihtml5-sandbox");
+        if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
+          this.model.set('text', $(iframe).contents().find('body').html());
+        };
+        this.form.data('formValidation').validate();
+        var textLength = $('iframe').contents().find('.wysihtml5-editor').html().length;
+        if (textLength > 60000) {
+          swal({
+            title: "Release text is too long!",
+            text: "Relase text should not exceed 60.000 characters (including spaces and hidden HTML)",
+            type: "error",
+            showCancelButton: false,
+            confirmButtonClass: 'btn',
+            confirmButtonText: 'ok'
+          });
+        }
+        if (this.form.data('formValidation').isValid() && textLength <= 60000) {
+          this.model.save(viewObj.model.attributes, {
+            success: function(model, data, response){
+              viewObj.$el.find('#release_form').modal('hide');
+              $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
+              Robin.releaseForBlast = viewObj.model.get('id');
+              Backbone.history.navigate('robin8', {trigger: true});
+            },
+            error: function(data, response){
+              viewObj.processErrors(response);
+            }
+          });
+        }
       }
     },
     saveRelease: function(e){
