@@ -52,6 +52,7 @@
 //= require spinjs/jquery.spin.js
 //= require jquery-highlighttextarea
 //= require ./lib/icheck
+//= require jquery-geocomplete
 
 //= require_tree ./backbone/config
 //= require backbone/init
