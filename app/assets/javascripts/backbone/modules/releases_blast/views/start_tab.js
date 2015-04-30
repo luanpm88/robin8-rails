@@ -34,7 +34,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       min_average_words_count_per_sentence: 12
     },
     releasesSelectChanged: function(e){
-      if (Robin.user.get('can_create_smart_release') == true) {
+      if (Robin.user.get('can_create_smart_release') != true) {
         this.ui.analyzeButton.addClass('disabled-unavailable');
       } else {
         this.ui.analyzeButton.removeClass('disabled-unavailable');
@@ -53,7 +53,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     analyzeButtonClicked: function(e){
       e.preventDefault();
-      if (Robin.user.get('can_create_smart_release') == true) {
+      if (Robin.user.get('can_create_smart_release') != true) {
         $.growl({message: "You don't have available smart-releases!"},
           {
             type: 'info'
