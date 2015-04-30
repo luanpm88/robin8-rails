@@ -230,6 +230,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
 
     saveNewsRoom: function(e){
+      this.$el.find('#save_news_room').prop("disabled",true);
       if (this.form.data('formValidation') == undefined) {
         this.initFormValidation();
       };
