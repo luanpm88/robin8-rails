@@ -20,9 +20,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     },
     onRender: function(){
-      // if (!Robin.user.get('can_create_smart_release')) {
-      //   $('.alert-danger').show();
-      // }
       var view = this;
       if (Robin.releaseForBlast != undefined && this.collection.length > 0){
         view.analyzeRelease(parseInt(Robin.releaseForBlast));
@@ -37,6 +34,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       min_average_words_count_per_sentence: 12
     },
     releasesSelectChanged: function(e){
+      if (Robin.user.get('can_create_smart_release') == true) {
+        this.ui.analyzeButton.addClass('disabled-unavailable');
+      } else {
+        this.ui.analyzeButton.removeClass('disabled-unavailable');
+      }
       if(this.ui.releasesSelect.val() == -2){
         this.openNewRelease();
       } else if (this.ui.releasesSelect.val() == -1){
@@ -51,10 +53,16 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     analyzeButtonClicked: function(e){
       e.preventDefault();
-      
-      var selectValue = this.ui.releasesSelect.val();
-      if ((selectValue != -1) || (selectValue != -2)){
-        this.analyzeRelease(parseInt(selectValue));
+      if (Robin.user.get('can_create_smart_release') == true) {
+        $.growl({message: "You don't have available smart-releases!"},
+          {
+            type: 'info'
+          });
+      } else {        
+        var selectValue = this.ui.releasesSelect.val();
+        if ((selectValue != -1) || (selectValue != -2)){
+          this.analyzeRelease(parseInt(selectValue));
+        }
       }
     },
     analyzeRelease: function(releaseId){
