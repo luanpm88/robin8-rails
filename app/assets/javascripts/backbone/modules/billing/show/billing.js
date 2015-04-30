@@ -62,7 +62,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
         if (isConfirm) {
           Robin.currentUser.cancelAddon({id: id}).done(function(data){
             Robin.currentUser = new Robin.Models.User(data)
-            $.growl("Your current plan is canceled!", {
+            $.growl("This addon was canceled!", {
               type: "success",
             });
             view.render();
