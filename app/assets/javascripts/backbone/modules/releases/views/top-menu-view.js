@@ -382,6 +382,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             type: 'info'
           });
       } else {
+        this.$el.find('#save_release').prop("disabled",true);
+        this.$el.find('#smart_release').prop("disabled",true);
         if (this.form.data('formValidation') == undefined) {
           this.initFormValidation();
         }
@@ -420,6 +422,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       }
     },
     saveRelease: function(e){
+      this.$el.find('#save_release').prop("disabled",true);
+      this.$el.find('#smart_release').prop("disabled",true);
       if (this.form.data('formValidation') == undefined) {
         this.initFormValidation();
       }
