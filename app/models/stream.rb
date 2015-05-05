@@ -37,7 +37,7 @@ class Stream < ActiveRecord::Base
     end
 
     def can_be_created
-      errors.add(:user, "you've reached the max numbers of streams.") if needed_user && !needed_user.can_create_stream
+      errors.add(:user, "You've reached the max numbers of streams.") if needed_user && !needed_user.can_create_stream
     end
 
     def decrease_feature_number
@@ -48,7 +48,7 @@ class Stream < ActiveRecord::Base
     end
 
     def increase_feature_numner
-      uf = needed_user.user_features.media_monitoring.not_available.first
+      uf = needed_user.user_features.media_monitoring.first
       return false if uf.blank?
       uf.available_count += 1
       uf.save

@@ -18,14 +18,15 @@ class MediaList < ActiveRecord::Base
     path = attachment.queued_for_write[:original].path
     contacts = CSV.read(path)
     self.contacts << contacts.inject([]) do |memo, contact|
-      if (contact.size == 3) && !contact[0].blank? && 
-        !contact[1].blank? && !contact[2].blank? && validate_email(contact[2])
+      if (contact.size >= 3) && !contact[0].strip.blank? && 
+        !contact[1].strip.blank? && !contact[2].strip.blank? && 
+        validate_email(contact[2].strip)
         
         begin
-          memo << Contact.find_or_create_by(email: contact[2]) do |c|
-            c.first_name = contact[0]
-            c.last_name  = contact[1]
-            c.outlet = 'Media List'
+          memo << Contact.find_or_create_by(email: contact[2].strip) do |c|
+            c.first_name = contact[0].strip
+            c.last_name  = contact[1].strip
+            c.outlet = (contact[3] || 'Media List').strip 
             c.origin     = 2
           end
         rescue ActiveRecord::RecordNotUnique
@@ -37,7 +38,7 @@ class MediaList < ActiveRecord::Base
     end
     
     if self.contacts.size == 0
-      self.errors.add(:contacts, "should be greater than or equal to 1")
+      self.errors.add(:uploaded_file, "must have exactly <strong>four</strong> columns, formatted as <strong>first name, last name, email address, outlet</strong>")
       return false
     end
   end

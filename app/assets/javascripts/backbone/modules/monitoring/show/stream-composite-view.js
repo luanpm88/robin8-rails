@@ -114,9 +114,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       Robin.user.fetch({
         success: function() {
           if (Robin.user.get('can_create_stream') != true) {
-            curView.$el.find("#add-stream").attr('disabled', 'disabled');
+            curView.$el.find("#add-stream").addClass('disabled-unavailable');
           } else {
-            curView.$el.find("#add-stream").removeAttr('disabled');
+            curView.$el.find("#add-stream").removeClass('disabled-unavailable');
           }
         }
       });
@@ -271,9 +271,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           Robin.user.fetch({
             success: function() {
               if (Robin.user.get('can_create_stream') != true) {
-                $("#add-stream").attr('disabled', 'disabled');
+                $("#add-stream").addClass('disabled-unavailable');
               } else {
-                $("#add-stream").removeAttr('disabled');
+                $("#add-stream").removeClass('disabled-unavailable');
               }
             }
           });
@@ -300,9 +300,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
               Robin.user.fetch({
                 success: function() {
                   if (Robin.user.get('can_create_stream') != true) {
-                    $("#add-stream").attr('disabled', 'disabled');
+                    $("#add-stream").addClass('disabled-unavailable');
                   } else {
-                    $("#add-stream").removeAttr('disabled');
+                    $("#add-stream").removeClass('disabled-unavailable');
                   }
                 }
               });
@@ -336,9 +336,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           Robin.user.fetch({
             success: function() {
               if (Robin.user.get('can_create_stream') != true) {
-                $("#add-stream").attr('disabled', 'disabled');
+                $("#add-stream").addClass('disabled-unavailable');
               } else {
-                $("#add-stream").removeAttr('disabled');
+                $("#add-stream").removeClass('disabled-unavailable');
               }
             }
           });
@@ -359,10 +359,16 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           curView.render();
         },
         error: function(userSession, response) {
-          $.growl({title: '<strong>Error:</strong> ',
-            message: 'Something went wrong.'
-          },{
-            type: 'danger'
+          var result = $.parseJSON(response.responseText);
+          _(response.responseJSON).each(function(errors,field) {
+            _(errors).each(function(error, i) {
+              formatted_field = s(field).capitalize().value().replace('_', ' ');
+              $.growl({title: '<strong>' + formatted_field + ':</strong> ',
+                message: error
+              }, {
+                type: "danger",
+              });
+            });
           });
         }
       });

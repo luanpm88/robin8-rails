@@ -91,7 +91,7 @@ class Release < ActiveRecord::Base
   end
 
   def increase_feature_numner
-    uf = needed_user.user_features.press_release.not_available.first
+    uf = needed_user.user_features.press_release.first
     return false if uf.blank?
     uf.available_count += 1
     uf.save

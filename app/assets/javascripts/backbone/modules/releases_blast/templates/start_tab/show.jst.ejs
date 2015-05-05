@@ -14,7 +14,9 @@
       <div class="ui-select">
         <select class="form-control">
           <option value="-1">Select...</option>
-          <option value="-2">+ New Release</option>
+          <% if(Robin.user.get('can_create_release') == true) { %>
+            <option value="-2">+ New Release</option>
+          <% } %>
           <% _.each(items, function(item){ %>
             <option value="<%= item.id %>"><%= item.attributes.title %></option>
           <% }); %>

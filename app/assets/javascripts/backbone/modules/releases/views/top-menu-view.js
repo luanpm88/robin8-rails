@@ -141,10 +141,18 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       };
     },
     openModalDialog: function(){
-      this.model.clear();
-      this.model.set(Robin.module("Releases").controller.filterCriteria);
-      this.render();
-      this.$el.find('#release_form').modal({ keyboard: false });
+      if(Robin.user.get('can_create_release') != true) {
+        $.growl({message: "You don't have available releases!"},
+          {
+            type: 'info'
+          });
+      } else {
+        this.model.clear();
+        this.model.set(Robin.module("Releases").controller.filterCriteria);
+        this.render();
+        this.$el.find('#release_form').modal({ keyboard: false });
+      }
+
     },
     openModalDialogEdit: function(data){
       this.model.set(data.toJSON().release);
@@ -485,9 +493,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     verifyReleaseButton: function() {
       if(Robin.user.get('can_create_release') != true) {
-        $('button#new_release').attr('disabled', 'disabled');
+        $('button#new_release').addClass('disabled-unavailable');
       } else {
-        $('button#new_release').removeAttr('disabled');
+        $('button#new_release').removeClass('disabled-unavailable');
       }
     },
     deleteRelease: function(){

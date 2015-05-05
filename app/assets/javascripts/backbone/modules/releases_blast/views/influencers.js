@@ -68,6 +68,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     initialize: function(options) {
       this.pitchContactsCollection = options.pitchContactsCollection;
       this.releaseModel = options.releaseModel.toJSON().release;
+    },
+    templateHelpers: function(){
+      return {
+        pitchContactsCollection: this.pitchContactsCollection
+      }
     }
   });
 

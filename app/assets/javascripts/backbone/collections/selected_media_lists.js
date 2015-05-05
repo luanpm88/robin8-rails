@@ -21,7 +21,7 @@ Robin.Collections.SelectedMediaLists = Backbone.Collection.extend({
       });
       
       if (current_model == null){
-        var model = new Robin.Models.Contact({
+        var contactModel = new Robin.Models.Contact({
           contact_id: contact.id,
           origin: contact.origin,
           first_name: contact.first_name,
@@ -29,7 +29,7 @@ Robin.Collections.SelectedMediaLists = Backbone.Collection.extend({
           email: contact.email,
           outlet: contact.outlet
         });
-        options.pitchContactsCollection.add(model);
+        options.pitchContactsCollection.add(contactModel);
       }
     });
   }
