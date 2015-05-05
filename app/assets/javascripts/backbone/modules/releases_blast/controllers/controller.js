@@ -8,7 +8,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       Robin.user = new Robin.Models.User();
       Robin.user.fetch({
         success: function() {
-          
+          self.module.topMenuView.render();
+          self.module.topMenuView.$el.find(".badge-tooltip").tooltip({title: 'Available smart-releases count', trigger: 'hover', placement: 'right'});
         }
       })
       Robin.layouts.main.getRegion('content').show(this.module.layout);
