@@ -1,5 +1,5 @@
 ActiveAdmin.register Discount do
-  permit_params :code , :description,:percentage,:max_count,:is_recurring ,:expiry,user_discounts_attributes: [:user_id,:discount_id,:_destroy],product_discounts_attributes: [:discount_id,:product_id,:_destroy]
+  permit_params :code , :description,:percentage,:max_count,:is_recurring ,:expiry,user_discounts_attributes: [:id, :user_id, :discount_id, :_destroy],product_discounts_attributes: [:id, :discount_id, :product_id, :_destroy]
 
   member_action :activate, method: :put do
     d = Discount.find(params[:id])

@@ -7,7 +7,7 @@ class Discount < ActiveRecord::Base
   validates :code,:expiry,:percentage, :presence => true
   validates :code,:uniqueness => true
 
-  accepts_nested_attributes_for :user_discounts,:product_discounts
+  accepts_nested_attributes_for :user_discounts,:product_discounts, allow_destroy: true
 
   scope :active, lambda{where(is_active: true).where("expiry > '#{Time.now.utc}'")}
 
