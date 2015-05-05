@@ -394,6 +394,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           success: function(model, data, response){
             viewObj.$el.find('#release_form').modal('hide');
             $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
             Robin.releaseForBlast = viewObj.model.get('id');
             Backbone.history.navigate('robin8', {trigger: true});
           },
@@ -453,6 +454,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
               });
               viewObj.$el.find('#release_form').modal('hide');
               $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
               if (Robin.module("Releases").controller.filterCriteria.page == 1) {
                 if (Robin.module("Releases").collection.length == Robin.module("Releases").controller.filterCriteria.per_page) {
                   Robin.module("Releases").collection.pop();
