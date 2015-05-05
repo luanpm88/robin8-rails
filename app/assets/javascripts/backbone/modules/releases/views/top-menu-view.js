@@ -382,8 +382,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             type: 'info'
           });
       } else {
-        this.$el.find('#save_release').prop("disabled",true);
-        this.$el.find('#smart_release').prop("disabled",true);
         if (this.form.data('formValidation') == undefined) {
           this.initFormValidation();
         }
@@ -406,6 +404,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           });
         }
         if (this.form.data('formValidation').isValid() && textLength <= 60000) {
+          this.$el.find('#save_release').prop("disabled",true);
+          this.$el.find('#smart_release').prop("disabled",true);
           this.model.save(viewObj.model.attributes, {
             success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
@@ -444,6 +444,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         });
       }
       if (this.form.data('formValidation').isValid() && textLength <= 60000) {
+        this.$el.find('#save_release').prop("disabled",true);
+        this.$el.find('#smart_release').prop("disabled",true);
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
