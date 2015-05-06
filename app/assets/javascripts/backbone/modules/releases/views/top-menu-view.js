@@ -98,6 +98,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           });
           self.$el.find('#newsroom_filter').prop("disabled",false);
           self.$el.find('#news_room_id').prop("disabled",false);
+          self.modelBinder.bind(self.model, self.el);
         }
       });
 
