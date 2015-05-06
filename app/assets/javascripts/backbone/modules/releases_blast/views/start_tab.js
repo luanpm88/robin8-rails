@@ -30,7 +30,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           Robin.releaseForBlast = undefined;
         }
       } else {
-        view.$el.find(".releases").prop('disabled', true);
+        view.$el.find(".releases").prop('disabled', false);
+        view.$el.find(".releases").removeClass('loadinggif');
       }
     },
     standardPressRelease: {
