@@ -74,11 +74,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder = new Backbone.ModelBinder();
       Robin.vent.on("release:open_edit_modal", this.openModalDialogEdit, this);
       this.newsrooms = new Robin.Collections.NewsRooms();
-      this.newsrooms.fetch({
-        success: function() {
-          viewObj.render();
-        }
-      });
       this.releaseCharacteristicsModel = new Robin.Models.ReleaseCharacteristics;
       sweetAlertInitialize();
     },
@@ -95,6 +90,17 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           }
         }
       });
+      this.newsrooms.fetch({
+        success: function(data) {
+          $.each(data.models ,function(index, newsroom){
+            self.$el.find('#newsroom_filter').append('<option value="' + newsroom.get('id') + '">'+ newsroom.get('company_name') +'</option>');
+            self.$el.find('#news_room_id').append('<option value="' + newsroom.get('id') + '">'+ newsroom.get('company_name') +'</option>');
+          });
+          self.$el.find('#newsroom_filter').prop("disabled",false);
+          self.$el.find('#news_room_id').prop("disabled",false);
+        }
+      });
+
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
