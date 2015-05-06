@@ -2,9 +2,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.Controller = Marionette.Controller.extend({
     initialize: function () {
-      this.module = Robin.module("ReleasesBlast");
       var self = this;
-      this.module.selectedMediaListsCollection = new Robin.Collections.SelectedMediaLists();
+      this.module = Robin.module("ReleasesBlast");
       Robin.user = new Robin.Models.User();
       Robin.user.fetch({
         success: function() {
@@ -12,6 +11,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           self.module.topMenuView.$el.find(".badge-tooltip").tooltip({title: 'Available smart-releases count', trigger: 'hover', placement: 'right'});
         }
       })
+      this.module.selectedMediaListsCollection = new Robin.Collections.SelectedMediaLists();
       Robin.layouts.main.getRegion('content').show(this.module.layout);
       this.module.releasesBlastHeader = new Robin.Models.ReleasesBlastHeader();
       this.module.releasesBlastHeader.set({ level: 1 });
