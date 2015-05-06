@@ -10,11 +10,8 @@
     <div class="panel-body">
       <div class="pull-right toolbar releases-toolbar">
         <div class="ui-select">
-          <select class="form-control" id="newsroom_filter" name="by_news_room">
+          <select disabled='true' class="form-control" id="newsroom_filter" name="by_news_room">
             <option value="">All Newsrooms</option>
-            <% _.each(newsrooms.models, function(newsroom){ %>
-              <option value="<%= newsroom.get('id') %>"> <%= newsroom.get('company_name') %> </option>
-            <% }); %>
           </select>
         </div>
         <!-- <button class="btn btn-default"><i class="fa fa-rocket"></i> <strong>5 SmartReleases</strong> Remaining</button> -->
@@ -52,11 +49,8 @@
                   <div class="form-group">
                       <label>Newsroom</label>
                       <div class="ui-select">
-                        <select id="news_room_id" class="form-control" name="news_room_id">
+                        <select disabled='true' id="news_room_id" class="form-control" name="news_room_id">
                           <option value="">Select...</option>
-                          <% _.each(newsrooms.models, function(newsroom){ %>
-                            <option value="<%= newsroom.get('id') %>"> <%= newsroom.get('company_name') %> </option>
-                          <% }); %>
                         </select>
                       </div>
                   </div>
