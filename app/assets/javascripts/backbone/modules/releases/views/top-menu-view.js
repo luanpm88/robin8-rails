@@ -74,7 +74,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder = new Backbone.ModelBinder();
       Robin.vent.on("release:open_edit_modal", this.openModalDialogEdit, this);
       this.newsrooms = new Robin.Collections.NewsRooms();
-      this.newsrooms.fetch();
+      this.newsrooms.fetch({
+        success: function() {
+          viewObj.render();
+        }
+      });
       this.releaseCharacteristicsModel = new Robin.Models.ReleaseCharacteristics;
       sweetAlertInitialize();
     },
