@@ -3,18 +3,25 @@ require 'rails_helper'
 
 describe Stream do
   
-  let(:user) { instance_double(User) }
+  let(:user) { stub_model(User, :email => 'test@test.com', id: 1) }
 
   before(:each) do
-    # user = mock(User)
-    # user = mock_model(User)
-    user.stub(:can_create_stream).and_return true 
+    allow(user).to receive(:can_create_stream).and_return(true)
   end
 
   it "requires a correct sort_column" do
     [nil, "", " "].each do |sort_column|
       stream = FactoryGirl.build(:stream, sort_column: sort_column)
+      stream.user = user
       stream.should_not be_valid
+    end
+  end
+
+  it "requires a correct sort_column" do
+    ["published_at", "shares_count"].each do |sort_column|
+      stream = FactoryGirl.build(:stream, sort_column: sort_column)
+      stream.user = user
+      stream.should be_valid
     end
   end
 end
