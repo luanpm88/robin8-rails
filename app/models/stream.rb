@@ -37,7 +37,6 @@ class Stream < ActiveRecord::Base
     end
 
     def can_be_created
-      p needed_user.can_create_stream
       errors.add(:user, "You've reached the max numbers of streams.") if needed_user && !needed_user.can_create_stream
     end
 
