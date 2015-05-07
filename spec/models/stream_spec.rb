@@ -67,7 +67,6 @@ describe Stream do
   describe "before and after callbacks for user features - " do
     let!(:feature) { FactoryGirl.build(:feature, slug: 'media_monitoring', id: 1, name: 'Streams - Media Monitoring') }
     let!(:user_feature) { FactoryGirl.build(:user_feature, feature_id: 1, user_id: user.id, available_count: 3) }
-    # let!(:stream) { FactoryGirl.build(:stream, sort_column: 'published_at', user_id: user.id) }
     
     before(:each) do
       allow(user).to receive(:can_create_stream).and_return(true)
