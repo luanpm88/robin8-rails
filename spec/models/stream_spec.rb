@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rails_helper'
 
-describe Stream do
+describe User do
   
   let(:user) { stub_model(User, :email => 'test@test.com', id: 1) }
 
