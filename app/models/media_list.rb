@@ -18,6 +18,9 @@ class MediaList < ActiveRecord::Base
     path = attachment.queued_for_write[:original].path
     contacts = CSV.read(path)
     self.contacts << contacts.inject([]) do |memo, contact|
+      
+      contact.reject! {|c| c.nil?}
+      
       if (contact.size == 4) && !contact[0].strip.blank? && 
         !contact[1].strip.blank? && !contact[2].strip.blank? && 
         !contact[3].strip.blank? && validate_email(contact[2].strip)
