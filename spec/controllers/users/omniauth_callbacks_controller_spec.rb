@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Users::OmniauthCallbacksController do
   describe 'Social accounts sign up' do
-     before do
+    before do
       request.env["devise.mapping"] = Devise.mappings[:user] 
       allow(controller).to receive(:current_user).and_return nil
 

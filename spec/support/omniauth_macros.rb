@@ -94,7 +94,7 @@ module OmniauthMacros
       "uid"=>"AbC123",
       "info"=> {
         "name"=>"John Doe",
-        "email"=>"john@doe.com",
+        "email"=>"test@test.com",
         "nickname"=>"John Doe",
         "first_name"=>"John",
         "last_name"=>"Doe",
