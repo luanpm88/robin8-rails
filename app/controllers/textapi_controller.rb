@@ -10,7 +10,7 @@ class TextapiController < ApplicationController
   end
 
   def concepts
-    response = @client.concepts text: text
+    response = @client.concepts text: text, support: 6, confidence: 0.5
     
     concepts = response[:concepts]
     
