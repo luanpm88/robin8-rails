@@ -167,3 +167,18 @@ span.canceled {
     width: 350px;
   }
 }
+
+#email-pitch-preview, #twitter-pitch-preview {
+  cursor: text;
+}
+
+
+.editable-click, a.editable-click, a.editable-click:hover {
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.editable-parent {
+  background-color: #E8F7FF;
+  padding: 4px;
+}
