@@ -1,11 +1,36 @@
 require 'rails_helper'
 
 describe Release do
-  it 'has a valid factory' do
-    expect(build(:release)).to be_valid
-  end
+  let!(:user) { stub_model(User, email: 'test@test.com', id: 1) }
 
-  it 'is invalid without a title' do
-    expect(build(:release, title: nil)).to_not be_valid
+  describe "validations of new release" do
+    before(:each) do
+      allow(user).to receive(:can_create_release).and_return(true)
+    end
+
+    it "create release with valid title" do
+      release = FactoryGirl.build(:release, title: 'Test title')
+      release.user = user
+      expect(release).to be_valid
+    end
+
+    it "can't create release with invalid title" do
+      release = FactoryGirl.build(:release, title: nil)
+      release.user = user
+      expect(release).not_to be_valid
+    end
+
+    it "can't create release with invalid user id" do
+      release = FactoryGirl.build(:release, title: nil)
+      release.user = nil
+      expect(release).not_to be_valid
+    end
+
+    it "can't create release when user cannot create release" do
+      allow(user).to receive(:can_create_release).and_return(false)
+      release = FactoryGirl.build(:release, title: 'Test title')
+      release.user = user
+      expect(release).not_to be_valid
+    end
   end
 end
