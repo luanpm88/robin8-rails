@@ -14,7 +14,7 @@ class PitchesContact < ActiveRecord::Base
 
   # Email pitch tags are:
   # ["@[First Name]", "@[Last Name]", "@[Summary]",
-  # "@[Outlet]", "@[Link]", "@[Title]"]
+  # "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"]
   #
   # Twitter pitch tags are:
   # [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ]  
@@ -27,6 +27,8 @@ class PitchesContact < ActiveRecord::Base
       outlet = self.contact.outlet
       
       title = self.pitch.release.title
+      text = self.pitch.release.plain_text
+      
       summary_arr = JSON.parse(self.pitch.release.summaries).take(self.pitch.summary_length) 
       summary_str = summary_arr.map{|s| "- #{s}"}.join("\n")
       
@@ -37,6 +39,7 @@ class PitchesContact < ActiveRecord::Base
       pitch_text.gsub!('@[Outlet]', outlet)
       pitch_text.gsub!('@[Link]', link)
       pitch_text.gsub!('@[Title]', title)
+      pitch_text.gsub!('@[Text]', text)
       pitch_text
     elsif self.contact.origin == 1 # twtrland
       handle = "@#{self.contact.twitter_screen_name}"

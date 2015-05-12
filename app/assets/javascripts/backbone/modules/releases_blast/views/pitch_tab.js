@@ -180,7 +180,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return {
         mergeTags: [
           'First Name', 'Last Name', 'Summary',
-          'Outlet', 'Link', 'Title'
+          'Outlet', 'Link', 'Title', 'Text'
         ],
         pitch: this.getPitchModel()
       }
@@ -232,10 +232,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     renderPitchText: function(text){
       // Email pitch tags are:
       // ["@[First Name]", "@[Last Name]", "@[Summary]",
-      // "@[Outlet]", "@[Link]", "@[Title]"]
+      // "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"]
       var renderedText = text;
       
       var title = this.releaseModel.get('title');
+      var plain_text = this.releaseModel.get('plain_text');
       var link = this.releaseModel.get('permalink');
       var summariesArr = this.releaseModel.get('summaries')
         .slice(0, this.model.get('summary_length'));
@@ -244,6 +245,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }).join('\n');
       
       renderedText = renderedText.replace(/\@\[Title\]/g, title);
+      renderedText = renderedText.replace(/\@\[Text\]/g, plain_text);
       renderedText = renderedText.replace(/\@\[Link\]/g, link);
       renderedText = renderedText.replace(/\@\[Summary\]/g, summaries);
       
