@@ -3,13 +3,13 @@ class ReleasesController < ApplicationController
   has_scope :by_news_room
 
   def index
-    releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
+    @releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
     unless params[:for_blast].blank?
-      releases = releases.published
+      @releases = @releases.published
     end
-    set_paginate_headers Release, releases.count
+    set_paginate_headers Release, @releases.count
 
-    render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
+    render json: @releases.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
   end
 
   def create
