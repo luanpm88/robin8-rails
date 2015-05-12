@@ -25,7 +25,29 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'change #upload': 'uploadWord',
       'ifChanged .private-checkbox': 'changePrivate',
       'change #news_room_id': 'newsRoomSelected',
-      'click #make-public': 'makeNewsRoomPublic'
+      'click #make-public': 'makeNewsRoomPublic',
+      'click #direct-image-upload': 'uploadDirectImage',
+      'click #url-image-upload': 'urlImageUpload',
+    },
+    uploadDirectImage: function(e) {
+      var view = this;
+      uploadcare.openDialog(null, {
+        imagesOnly: true
+        }).done(function(file) {
+            file.done(function(fileInfo) {
+              view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl});
+            });
+        }).fail(function(error, fileInfo) {
+            alert(error);
+        });
+      return false;
+    },
+    urlImageUpload: function(e) {
+      var url = prompt("Enter a link to grab the press release from:", "");
+      var view = this;
+      if (url) {
+        view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", { src: url, class: "img-responsive" });
+      }
     },
     changePrivate: function(e) {
       if ($(e.target).is(":checked")) {
@@ -106,20 +128,34 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.initFormValidation();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
       var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
-      var customTemplates = {
-        extract: function(context) {
-          return extractButtonTemplate
+      var extractImageTemplate = this.$el.find('#wyihtml5-image-button').html();
+      var extractVideoTemplate = this.$el.find('#wyihtml5-video-button').html();
+      var myCustomTemplates = {
+        extract: function(locale) {
+          return extractButtonTemplate;
         },
-        word: function(context) {
-          return extractWordTemplate
+        word: function(locale) {
+          return extractWordTemplate;
+        },
+        image: function(locale) {
+          return extractImageTemplate;
+        },
+        video: function(locale) {
+          return extractVideoTemplate;
         }
       };
+      console.log(myCustomTemplates);
       this.ui.wysihtml5.wysihtml5({
+        "table": false,
+        // "html": true,
+        "video": true,
+        "image": true,
         toolbar: {
-          extract: true,
-          word: true
+          word: myCustomTemplates.word,
+          extract: myCustomTemplates.extract,
+          image: myCustomTemplates.image,
+          video: myCustomTemplates.video,
         },
-        customTemplates: customTemplates,
       });
       this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
       this.editor.on('load', function() {

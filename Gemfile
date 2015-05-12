@@ -40,7 +40,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-progressjs'
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
-  gem 'bootstrap-wysihtml5-rails', github: 'Nerian/bootstrap-wysihtml5-rails'
+  # gem 'bootstrap-wysihtml5-rails', github: 'Nerian/bootstrap-wysihtml5-rails'
 
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
