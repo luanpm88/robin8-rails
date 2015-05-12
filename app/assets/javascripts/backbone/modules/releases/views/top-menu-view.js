@@ -245,9 +245,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (text != null) {
         self.model.set('title', text.title);
         var editor = self.ui.wysihtml5.data('wysihtml5').editor;
-        editor.setValue(
-          '<p>' + text.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
-        );
+        editor.setValue( text.article.replace(/(\r\n|\n\r|\r|\n)/g, '</br>') );
       } else {
         alert("Something wrong with API");
       }
