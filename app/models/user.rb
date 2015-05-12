@@ -180,6 +180,10 @@ class User < ActiveRecord::Base
     identities.where(provider: 'facebook').first
   end
 
+  def google_identity
+    identities.where(provider: 'google_oauth2').first
+  end
+
   def twitter_post message
     unless twitter_identity.blank?
       client = Twitter::REST::Client.new do |config|

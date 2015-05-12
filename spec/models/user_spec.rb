@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'rails_helper'
 
 describe User do
-
   before(:each) do
     @attr = {
       :name => "Example User",
@@ -56,7 +55,6 @@ describe User do
   end
 
   describe "passwords" do
-
     before(:each) do
       @user = User.new(@attr)
     end
@@ -71,7 +69,6 @@ describe User do
   end
 
   describe "password validations" do
-
     it "should require a password" do
       User.new(@attr.merge(:password => "", :password_confirmation => "")).
         should_not be_valid
@@ -87,11 +84,9 @@ describe User do
       hash = @attr.merge(:password => short, :password_confirmation => short)
       User.new(hash).should_not be_valid
     end
-
   end
 
   describe "password encryption" do
-
     before(:each) do
       @user = User.create!(@attr)
     end
@@ -102,6 +97,40 @@ describe User do
 
     it "should set the encrypted password attribute" do
       @user.encrypted_password.should_not be_blank
+    end
+  end
+
+  describe "user's identities actions" do
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+
+    it "facebook" do
+      @identity = FactoryGirl.build(:identity, user: @user, provider: 'facebook')
+      @identity.save
+
+      expect(@user.facebook_identity).to eq @identity
+    end
+
+    it "twitter" do
+      @identity = FactoryGirl.build(:identity, user: @user, provider: 'twitter')
+      @identity.save
+
+      expect(@user.twitter_identity).to eq @identity
+    end
+
+    it "google" do
+      @identity = FactoryGirl.build(:identity, user: @user, provider: 'google_oauth2')
+      @identity.save
+
+      expect(@user.google_identity).to eq @identity
+    end
+
+    it "linkedin" do
+      @identity = FactoryGirl.build(:identity, user: @user, provider: 'linkedin')
+      @identity.save
+
+      expect(@user.linkedin_identity).to eq @identity
     end
 
   end
