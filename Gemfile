@@ -134,6 +134,8 @@ group :development, :test do
   gem 'ffaker'
   gem 'rspec-mocks'
   gem "capybara"
+  gem 'guard-rspec'
+  gem 'spring-commands-rspec'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

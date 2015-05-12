@@ -91,10 +91,9 @@ describe StreamsController do
       end
     end
 
-    context "when stream belongs to current user" do
+    context "when stream not belongs to current user" do
       it "shouldn't destroy stream" do
         stream = FactoryGirl.build(:stream, sort_column: 'shares_count', id: 2)
-        stream.user = user
         expect { subject }.not_to change(Stream, :count)
       end
     end
