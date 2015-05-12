@@ -30,7 +30,7 @@ class PitchesContact < ActiveRecord::Base
       text = self.pitch.release.plain_text
       
       summary_arr = JSON.parse(self.pitch.release.summaries).take(self.pitch.summary_length) 
-      summary_str = summary_arr.map{|s| "- #{s}"}.join("\n")
+      summary_str = summary_arr.reject{|s| s.blank?}.map{|s| "- #{s}"}.join("\n")
       
       pitch_text = self.pitch.email_pitch
       pitch_text.gsub!('@[First Name]', first_name)

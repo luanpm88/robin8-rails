@@ -241,7 +241,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var summariesArr = this.releaseModel.get('summaries')
         .slice(0, this.model.get('summary_length'));
       var summaries = _(summariesArr).map(function(item){
-        return '- ' + item
+        if (!s.isBlank(item))
+          return '- ' + item
       }).join('\n');
       
       renderedText = renderedText.replace(/\@\[Title\]/g, title);

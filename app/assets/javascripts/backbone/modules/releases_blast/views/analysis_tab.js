@@ -6,7 +6,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     ui: {
       nextButton: '#btn-next',
       iptcCategoryLink: '#release-category',
-      topicsLink: '#release-topics'
+      topicsLink: '#release-topics',
+      summariesLines: '#summaries li'
     },
     events: {
       'click @ui.nextButton': 'openTargetsTab'
@@ -31,6 +32,36 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return {
         textapiResult: this.textapiResult
       }
+    },
+    initSummariesEditable: function(){
+      var self = this;
+      
+      this.ui.summariesLines.editable({
+        mode: 'popup',
+        type: 'textarea',
+        unsavedclass: null,
+        display: function(value, response) {
+          var html = $.fn.editableutils.escape(self.boldTopicsInSummaryLine(value));
+          var pattern = new RegExp("&lt;strong&gt;(.*?)&lt;\/strong&gt;", 'ig');
+          
+          html = html.replace(pattern, "<strong>$1</strong>");
+          
+          if(html.length > 0) {
+            $(this).html(html);
+          } else {
+            $(this).empty(); 
+          }
+        },
+        success: function(response, newValue) {
+          var sentence_number = parseInt($(this).attr('pk'));
+          var summaries = self.model.get('summaries');
+          summaries[sentence_number] = newValue;
+          
+          self.model.set('summaries', summaries);
+          
+          return {newValue: newValue};
+        }
+      });
     },
     makeIptcCategoriesEditable: function(){
       var self = this;
@@ -104,11 +135,26 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     onRender: function () {
       this.makeIptcCategoriesEditable();
       this.makeTopicsEditable();
+      this.initSummariesEditable();
     },
     openTargetsTab: function(){
       this.model.save();
       
       ReleasesBlast.controller.targets();
+    },
+    boldTopicsInSummaryLine: function(summary){
+      var sfs = _.chain(this.textapiResult["concepts"])
+        .map(function(item){return '\\b' + RegExp.escape(item.sfs) + '\\b'; })
+        .uniq()
+        .value();
+
+      var pattern = new RegExp('(' + sfs.join('|') + ')', 'ig');
+
+      summary = summary.replace(pattern, function($1, match) { 
+        return '<strong>' + $1 + '</strong>'; 
+      });
+      
+      return summary;
     },
     getTextApiResult: function(){
       var that = this;
@@ -119,24 +165,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         'textapi/hashtags'
       ];
       
-      var resultReady = _.after(endpoints.length + 1, function(){
+      var resultReady = _.after(endpoints.length, function(){
         that.trigger("textapi_result:ready");
         that.ui.nextButton.prop('disabled', false);
-      });
-      
-      var boldTopicsInSummary = _.after(2, function() {
-        var sfs = _.chain(that.textapiResult["concepts"])
-          .map(function(item){return '\\b' + RegExp.escape(item.sfs) + '\\b'; })
-          .uniq()
-          .value();
-          
-        var pattern = new RegExp('(' + sfs.join('|') + ')', 'ig');
-
-        that.textapiResult["summarize"] = _(that.textapiResult["summarize"]).inject(function(memo, item) {
-          memo.push(item.replace(pattern, function($1, match) { return '<strong>' + $1 + '</strong>'; }));
-          return memo;
-        }, []);
-        resultReady();
       });
       
       _.each(endpoints, function(endpoint){
@@ -191,7 +222,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 });
                 that.model.set('concepts', concepts);
                 
-                boldTopicsInSummary();
                 resultReady();
                 break;
               case 'textapi/classify':
@@ -207,7 +237,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
               case 'textapi/summarize':
                 that.textapiResult["summarize"] = _(response).first(5);
                 that.model.set('summaries', response);
-                boldTopicsInSummary();
+                
                 resultReady();
                 break;
               case 'textapi/hashtags':
