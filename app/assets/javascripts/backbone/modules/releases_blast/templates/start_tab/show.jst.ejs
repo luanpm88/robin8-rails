@@ -12,7 +12,7 @@
     <div class="form-group">
       <label for="exampleInputFile">Select a release to start:</label>
       <div class="ui-select">
-        <select class="form-control">
+        <select class="releases form-control loadinggif">
           <% if (Robin.user.get('can_create_release') != false) { %>
             <option value="-1">Select...</option>
             <option value="-2">+ New Release</option>

@@ -158,6 +158,11 @@ span.canceled {
   text-align: center;
 }
 
+.loadinggif {
+  background: image-url('loading2.gif') no-repeat right 20px center;
+  background-size: 25px 25px;
+}
+
 .disabled-unavailable {
   opacity: 0.65;
 }
