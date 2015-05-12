@@ -17,6 +17,8 @@ require 'devise'
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+Dir[File.join(File.join(File.dirname(__FILE__), '../'), "spec/support/**/*.rb")].each {|f| require f }
+
 RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
   # rspec-expectations config goes here. You can use an alternate
@@ -31,6 +33,8 @@ RSpec.configure do |config|
     # ...rather than:
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+
+    config.include OmniauthMacros
   end
 
   # rspec-mocks config goes here. You can use an alternate test double
