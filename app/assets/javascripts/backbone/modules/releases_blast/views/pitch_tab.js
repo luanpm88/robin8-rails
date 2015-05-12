@@ -240,9 +240,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var link = this.releaseModel.get('permalink');
       var summariesArr = this.releaseModel.get('summaries')
         .slice(0, this.model.get('summary_length'));
-      var summaries = _(summariesArr).map(function(item){
-        if (!s.isBlank(item))
-          return '- ' + item
+      var summaries = _(summariesArr).reject(function(item){
+        return s.isBlank(item);
+      }).map(function(item){
+        return '- ' + item
       }).join('\n');
       
       renderedText = renderedText.replace(/\@\[Title\]/g, title);

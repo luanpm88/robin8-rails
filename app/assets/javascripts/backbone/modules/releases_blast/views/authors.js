@@ -24,7 +24,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     summary: function(){
       var sentences = _(this.model.get('summaries')).first(this.sentencesNumber);
-      return _(sentences).map(function(sentence){ 
+      
+      return _(sentences).reject(function(sentence){
+        return s.isBlank(sentence);
+      }).map(function(sentence){ 
         return "- " + sentence
       }).join('\n');
     }
