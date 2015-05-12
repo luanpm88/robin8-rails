@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+
 describe ReleasesController do
   let!(:user) { stub_model(User, email: 'test@test.com', id: 1, is_primary: 1) }
   let!(:params) { {} }
