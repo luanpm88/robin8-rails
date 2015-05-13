@@ -18,11 +18,6 @@ describe Release do
       expect(release).not_to be_valid
     end
 
-    it "require valid user id" do
-      release = FactoryGirl.build(:release, title: nil, user: nil)
-      expect(release).not_to be_valid
-    end
-
     it "require user can create release" do
       allow(user).to receive(:can_create_release).and_return(false)
       release = FactoryGirl.build(:release, title: 'Test title', user: user)
