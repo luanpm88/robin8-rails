@@ -11,7 +11,7 @@ describe ReleasesController do
       allow(user).to receive(:can_create_release).and_return(true)
       allow(user).to receive(:can_create_newsroom).and_return(true)
       allow(controller).to receive(:current_user).and_return user
-      NewsRoom.any_instance.stub(:create_campaign)
+      allow_any_instance_of(NewsRoom).to receive(:create_campaign)
     end
 
     let!(:news_room) { create :news_room, user: user, id: 1 }
@@ -19,10 +19,10 @@ describe ReleasesController do
 
     it 'index should be success' do
       subject
-      assigns(:releases).should include(release)
+      expect(assigns(:releases)).to include(release)
     end
 
-    it { should be_success }
+    it { is_expected.to be_success }
   end
 
   describe "POST" do
@@ -60,7 +60,7 @@ describe ReleasesController do
       allow(user).to receive(:can_create_release).and_return(true)
       allow(user).to receive(:can_create_newsroom).and_return(true)
       allow(controller).to receive(:current_user).and_return user
-      NewsRoom.any_instance.stub(:create_campaign)
+      allow_any_instance_of(NewsRoom).to receive(:create_campaign)
     end
 
     let!(:news_room) { create :news_room, user: user, id: 1 }
@@ -84,15 +84,14 @@ describe ReleasesController do
       allow(user).to receive(:can_create_release).and_return(true)
       allow(user).to receive(:can_create_newsroom).and_return(true)
       allow(controller).to receive(:current_user).and_return user
-      NewsRoom.any_instance.stub(:create_campaign)
+      allow_any_instance_of(NewsRoom).to receive(:create_campaign)
     end
 
     let!(:news_room) { create :news_room, user: user, id: 1 }
 
     context "when release belongs to current user" do
       it "should destroy release" do
-        release = FactoryGirl.build(:release, title: 'Test title')
-        release.user = user
+        release = FactoryGirl.build(:release, title: 'Test title', user: user)
         subject
         expect(Release.exists? release.id).to eq false
       end
