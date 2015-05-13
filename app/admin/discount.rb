@@ -39,8 +39,19 @@ ActiveAdmin.register Discount do
     end
 
     f.inputs "To Users * If left empty, will be available to all users" do
+
+      users = User.all.map do |u| 
+        if u.name? 
+          name = u.name
+        elsif u.first_name? && u.last_name?
+          name = "#{u.first_name} #{u.last_name}"
+        end
+        email = u.email? ? u.email : nil
+        [name && email ? "#{name}, #{email}" : "#{name}#{email}", u.id]
+      end
+
       f.has_many :user_discounts, :heading => 'Attach to a specific User Only' do |cf|
-        cf.input :user
+        cf.input :user, :label => 'User', :as => :select, :collection => users
         cf.input :_destroy, as: :boolean, label: "Delete?"
       end
     end
