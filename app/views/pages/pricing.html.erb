@@ -44,7 +44,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> disabled class="button button-planselector-disabled" <%else%> class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" data-select-text='Current' onclick="setPackage('<%=@products[1].slug%>');" onclick="setPackage('<%=@products[1].slug%>');" <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -68,7 +68,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -92,7 +92,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -120,7 +120,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="pro" <%if user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector-disabled" disabled <%else%>class="button button-planselector"  onclick="setPackage('<%=@products[7].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="pro" <%if user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" onclick="setPackage('<%=@products[7].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector"  onclick="setPackage('<%=@products[7].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -144,7 +144,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="premium" <%if user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="premium" <%if user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -168,7 +168,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-plan="ultra" <%if user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector-disabled" disabled <%else%> class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" <%end%>><%=(user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-plan="ultra" <%if user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -313,14 +313,17 @@
                   disableclass='y';
               }
               $('.subscription-type').removeClass('active');
-              $('.button-planselector').text('Select');
+
+              $.each($('.button-planselector'), function(index, item){
+                $(item).text($(item).data('select-text'));
+              });
 
               if(disableclass == 'y'){
-                  $('.active .button-planselector').text('Select');
+                  $('.active .button-planselector').text($(this).data('select-text'));
                   $('input#plan-selection').val('');
               }else{
                   $(this).parent().parent().addClass('active');
-                  $('.active .button-planselector').text('Selected');
+                  $('.active .button-planselector').text($(this).data('selected-text'));
               }
 
           });
