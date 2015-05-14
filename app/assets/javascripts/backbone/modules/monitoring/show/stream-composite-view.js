@@ -16,6 +16,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .editable-submit': 'updateTitle',
       'click .js-show-new-stories': 'showNewStories',
       'click .rss-input': 'selectLink',
+      'click .make-keyword': 'makeKeyword',
     },
 
     collectionEvents: {
@@ -38,7 +39,52 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       };
     },
 
-   filterCollection: function () {
+    makeKeyword: function (e) {
+      var view = this;
+      var topics = this.model.get('topics');
+      var getKeywords = this.model.get('keywords') == undefined ? [] : this.model.get('keywords');;
+      view.model.set('topics', [])
+
+      $.each(topics, function( index, topic ) {
+        var new_keyword = topic.text.replace(/\W/gi, ' ').split(' ');
+        $.each(new_keyword, function( index, key ) {
+          if (key.length > 0) {
+            var newValue = {
+              id: key,
+              text: key,
+              type: 'keyword'
+            };
+            getKeywords.push(newValue);
+          }
+        });
+
+      });
+      view.model.set('keywords', getKeywords);
+      view.model.save( view.model.attributes, {
+        success: function(userSession, response){
+          view.collection.streamId = response.id;
+          view.collection.fetch({reset: true});
+          Robin.loadingStreams.push(view.collection.streamId);
+
+          Robin.cachedStories[response.id] = view.collection;
+          Robin.cachedStories[response.id].sortByPopularity = view.model.get('sort_column') == 'shares_count';
+
+          $.growl({message: "Your topics was saved as keywords!"
+          },{
+            type: 'success'
+          });
+          Robin.cachedStories[view.model.get('id')].alreadyRendered = false;
+          view.render();
+        },
+        error: function(data){
+          console.warn('error', data);
+        }
+      });
+      view.$el.find('.stream-loading').removeClass('hidden');
+      view.$el.find('.empty-stream').addClass('hidden');
+    },
+
+    filterCollection: function () {
       var initArray = this.collection.models;
       var deleteList = [];
       var ViewObj = this;
