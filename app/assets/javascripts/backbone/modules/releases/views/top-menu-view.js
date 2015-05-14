@@ -284,17 +284,13 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
               var title = response.title.length==0 ? "undefined" : response.title;
               self.model.set('title', title);
               var editor = self.ui.wysihtml5.data('wysihtml5').editor;
-              editor.setValue(
-                '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
-              );
+              editor.setValue(response.article.replace(/(\r\n|\n\r|\r|\n)/g, '<br>'));
             }
             if (response.title.length > 0 || response.article.length > 0) {
               var title = response.title.length==0 ? "undefined" : response.title;
               self.model.set('title', title);
               var editor = self.ui.wysihtml5.data('wysihtml5').editor;
-              editor.setValue(
-                '<p>' + response.article.replace(/(\r\n|\n\r|\r|\n)/g, '</p><p>') + '</p>'
-              );
+              editor.setValue(response.article.replace(/(\r\n|\n\r|\r|\n)/g, '<br>'));
             } else {
               swal({
                 title: "Invalid link!",

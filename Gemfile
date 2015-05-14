@@ -32,6 +32,7 @@ gem 'email_validator'
 gem 'oauth2'
 gem 'legato'
 gem 'google-api-client'
+gem 'sitemap_generator'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'

@@ -58,6 +58,13 @@ class NewsRoom < ActiveRecord::Base
     [facebook_link, twitter_link, linkedin_link, instagram_link].reject(&:blank?).length > 0
   end
 
+  def permalink
+    host = Rails.application.secrets[:host]
+    subdomain_name = self.subdomain_name
+    
+    "http://#{subdomain_name}.#{host}"
+  end
+
   private
 
     def needed_user
