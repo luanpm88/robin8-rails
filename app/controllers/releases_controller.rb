@@ -79,6 +79,7 @@ class ReleasesController < ApplicationController
       puts release.thumbnail
     end
     release.destroy
+    p '!!!!!!!!'
     render json: release
   end
 

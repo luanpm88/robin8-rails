@@ -3,7 +3,8 @@ class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
   def index
     set_paginate_headers NewsRoom, current_user.news_rooms.count
-    render json: current_user.news_rooms.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: NewsRoomSerializer
+    @news_rooms = current_user.news_rooms.order('created_at DESC')
+    render json: @news_rooms.paginate(page: params[:page], per_page: params[:per_page]), each_serializer: NewsRoomSerializer
   end
 
   def create
@@ -21,7 +22,8 @@ class NewsRoomsController < ApplicationController
   end
 
   def show
-    render json: NewsRoom.find(params[:id])
+    @news_room = NewsRoom.find(params[:id])
+    render json: @news_room
   end
 
   def update

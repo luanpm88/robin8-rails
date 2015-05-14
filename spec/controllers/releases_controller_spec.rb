@@ -4,15 +4,16 @@ describe ReleasesController do
   let!(:user) { stub_model(User, email: 'test@test.com', id: 1) }
   let!(:params) { {} }
 
+  before do
+    allow(user).to receive(:can_create_release).and_return(true)
+    allow(user).to receive(:can_create_newsroom).and_return(true)
+    allow(controller).to receive(:current_user).and_return user
+    allow_any_instance_of(NewsRoom).to receive(:create_campaign)
+    @request.host = "test.example.com"
+  end
+
   describe "#index" do
     subject { get :index }
-    
-    before do
-      allow(user).to receive(:can_create_release).and_return(true)
-      allow(user).to receive(:can_create_newsroom).and_return(true)
-      allow(controller).to receive(:current_user).and_return user
-      allow_any_instance_of(NewsRoom).to receive(:create_campaign)
-    end
 
     let!(:news_room) { create :news_room, user: user, id: 1 }
     let!(:release) { create :release, user: user, title: 'Test release', news_room_id: 1 }
@@ -28,11 +29,6 @@ describe ReleasesController do
   describe "#create" do
     subject { post :create, params }
 
-    before do
-      allow(user).to receive(:can_create_release).and_return(true)
-      allow(controller).to receive(:current_user).and_return user
-    end
-
     it "should create the release" do
       params.merge!({release: {title: 'Test title'}})
       subject
@@ -45,7 +41,7 @@ describe ReleasesController do
       expect(Release.all.first).to be_nil
     end
 
-    it "shouldn't create the release (user cant create release)" do
+    it "shouldn't create the release (user can't create release)" do
       allow(user).to receive(:can_create_release).and_return(false)
       params.merge!({release: {title: 'Test title'}})
       subject
@@ -55,14 +51,6 @@ describe ReleasesController do
 
   describe "#show" do
     subject { get :show, ({id: 1}).merge(params) }
-
-    before do
-      allow(user).to receive(:can_create_release).and_return(true)
-      allow(user).to receive(:can_create_newsroom).and_return(true)
-      allow(controller).to receive(:current_user).and_return user
-      allow_any_instance_of(NewsRoom).to receive(:create_campaign)
-      @request.host = "test.example.com"
-    end
 
     let!(:news_room) { create :news_room, user: user, id: 1, subdomain_name: 'test' }
     let!(:release) { create :release, user: user, title: 'Test release!!!', news_room_id: 1, id: 1 }
@@ -92,13 +80,6 @@ describe ReleasesController do
   describe "#update" do
     subject { put :update, ({id: 1}).merge(params) }
 
-    before do
-      allow(user).to receive(:can_create_release).and_return(true)
-      allow(user).to receive(:can_create_newsroom).and_return(true)
-      allow(controller).to receive(:current_user).and_return user
-      allow_any_instance_of(NewsRoom).to receive(:create_campaign)
-    end
-
     let!(:news_room) { create :news_room, user: user, id: 1 }
     let!(:release) { create :release, user: user, id: 1, title: 'Test release', news_room_id: 1 }
 
@@ -113,31 +94,13 @@ describe ReleasesController do
     end
   end
 
-  describe "#delete" do
+  describe "#destroy" do
     subject { delete :destroy, id: 1 }
 
-    before do
-      allow(user).to receive(:can_create_release).and_return(true)
-      allow(user).to receive(:can_create_newsroom).and_return(true)
-      allow(controller).to receive(:current_user).and_return user
-      allow_any_instance_of(NewsRoom).to receive(:create_campaign)
-    end
-
-    let!(:news_room) { create :news_room, user: user, id: 1 }
-
-    context "when release belongs to current user" do
-      it "should destroy release" do
-        release = FactoryGirl.build(:release, title: 'Test title', user: user)
-        subject
-        expect(Release.exists? release.id).to eq false
-      end
-    end
-
-    context "when release not belongs to current user" do
-      it "shouldn't destroy release" do
-        release = FactoryGirl.build(:release, title: 'Test title', id: 2)
-        expect { subject }.not_to change(Release, :count)
-      end
+    it "should destroy release" do
+      release = create :release, title: 'Test title', user: user, news_room_id: 1, id: 1
+      subject
+      expect(Release.exists? release.id).to eq false
     end
   end
 end
