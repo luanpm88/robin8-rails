@@ -117,8 +117,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.ui.wysihtml5.wysihtml5({
         toolbar: {
           extract: true,
-          word: true,
-          parserRules: { tags: { br: {}, span: {}, div: {}}, classes: {} }
+          word: true
         },
         customTemplates: customTemplates,
       });
