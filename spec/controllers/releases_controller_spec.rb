@@ -82,18 +82,10 @@ describe ReleasesController do
   end
 
   describe "#extract_from_word" do
-    subject { post :extract_from_word, params }
-    
-    before do
-      allow(user).to receive(:can_create_release).and_return(true)
-      allow(user).to receive(:can_create_newsroom).and_return(true)
-      allow(controller).to receive(:current_user).and_return user
-      allow_any_instance_of(NewsRoom).to receive(:create_campaign)
-    end
-
-    it "should render empty html from doc file" do
-      #TODO
-      # expect(subject.extract_from_word).to be_nil
+    subject { post :extract_from_word, ({file: fixture_file_upload('files/test.docx', 'application/msword')}).merge(params) }
+    it "should render html from doc file" do
+      subject
+      is_expected.to be_success
     end
   end
 
