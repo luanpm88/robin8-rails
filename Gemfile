@@ -26,6 +26,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'quiet_assets', group: [:development, :staging]
 gem 'aws-sdk-v1'
 
+# To send HTML mails
+gem 'roadie', '~> 3.0.5'
+
 gem 'htmlentities'
 gem 'truncate_html'
 gem 'email_validator'
@@ -41,7 +44,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
   gem 'bootstrap-wysihtml5-rails', github: 'Nerian/bootstrap-wysihtml5-rails'
-
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'

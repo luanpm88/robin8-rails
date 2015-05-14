@@ -222,6 +222,18 @@ class User < ActiveRecord::Base
   def as_json(options={})
     super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
   end
+  
+  def full_name
+    if !first_name.blank? && !last_name.blank?
+      "#{first_name} #{last_name}"
+    elsif !first_name.blank?
+      first_name
+    elsif !last_name.blank?
+      last_name
+    else
+      "Robin8"
+    end
+  end
 
   private
     def create_default_news_room
