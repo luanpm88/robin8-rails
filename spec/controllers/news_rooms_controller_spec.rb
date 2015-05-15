@@ -8,6 +8,8 @@ describe NewsRoomsController do
     allow(user).to receive(:can_create_newsroom).and_return(true)
     allow(controller).to receive(:current_user).and_return user
     allow_any_instance_of(NewsRoom).to receive(:create_campaign)
+    allow_any_instance_of(NewsRoom).to receive(:delete_campaign)
+    allow_any_instance_of(NewsRoom).to receive(:increase_feature_numner)
   end
 
   describe "#index" do
@@ -80,14 +82,23 @@ describe NewsRoomsController do
   end
 
   describe "#destroy" do
-    subject { delete :destroy, id: 2 }
-    let!(:news_room) { create :news_room, user: user, id: 1, default_news_room: true }
-    let!(:news_room) { create :news_room, user: user, id: 3 }
+    subject { delete :destroy, id: 1 }
 
     it "should destroy news_room" do
-      news_room = create :news_room, id: 2, user: user
+      news_room = create :news_room, company_name: 'Test title', user: user, id: 1
       subject
-      expect(NewsRoom.find(2)).to eq nil
+      expect(NewsRoom.exists? news_room.id).to eq false
+    end
+  end
+
+  describe "#analytics" do
+    subject { get :analytics, news_room_id: 1 }
+
+    let!(:news_room) { create :news_room, user: user, id: 1, company_name: 'Test company' }
+
+    it "should be success" do
+      subject
+      is_expected.to be_success
     end
   end
 end
