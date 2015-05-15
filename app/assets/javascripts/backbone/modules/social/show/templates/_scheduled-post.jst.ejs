@@ -7,11 +7,11 @@
     </div>
   </div>
   <div class="col-xs-4 edit-social-networks" style="width: 150px;">
-    <a class="btn <%= Robin.identities.twitter == undefined ? 'disabled' : '' %> <%= (post.social_networks.twitter == 'true' &&  Robin.identities.twitter != undefined) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to @<%= Robin.identities.twitter != undefined ? Robin.identities.twitter.name : '' %>"><i class="fa fa-twitter"></i></a>
+    <a class="btn <%= Robin.identities.twitter.length == 0 ? 'disabled' : '' %> <%= (post.social_networks.twitter == 'true' &&  Robin.identities.twitter.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to @<%= Robin.identities.twitter.length != 0 ? Robin.identities.twitter.name : '' %>"><i class="fa fa-twitter"></i></a>
     <input type='hidden' name="twitter" />
-    <a class="btn <%= Robin.identities.facebook == undefined ? 'disabled' : '' %> <%= (post.social_networks.facebook == 'true' && Robin.identities.facebook != undefined) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.facebook != undefined ? Robin.identities.facebook.name : '' %> page"><i class="fa fa-facebook"></i></a>
+    <a class="btn <%= Robin.identities.facebook.length == 0 ? 'disabled' : '' %> <%= (post.social_networks.facebook == 'true' && Robin.identities.facebook.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.facebook.length != 0 ? Robin.identities.facebook.name : '' %> page"><i class="fa fa-facebook"></i></a>
     <input type='hidden' name="facebook" />
-    <a class="btn <%= Robin.identities.linkedin == undefined ? 'disabled' : '' %> <%= (post.social_networks.linkedin == 'true' && Robin.identities.linkedin != undefined) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.linkedin != undefined ? Robin.identities.linkedin.name : '' %> page"><i class="fa fa-linkedin"></i></a>
+    <a class="btn <%= Robin.identities.linkedin.length == 0 ? 'disabled' : '' %> <%= (post.social_networks.linkedin == 'true' && Robin.identities.linkedin.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.linkedin.length != 0 ? Robin.identities.linkedin.name : '' %> page"><i class="fa fa-linkedin"></i></a>
     <input type='hidden' name="linkedin" />
   </div>
   <div class="col-xs-4 schedule" style="width: 42%;">
@@ -42,9 +42,9 @@
 <span class="editable" data-type="textarea" data-name="text"><%- post.text %></span>
 <div class="pull-right" style="display: inline-block;">
   <span class="social-networks">
-    <a data-provider='twitter' class="btn btn-xs <%= Robin.identities.twitter == undefined ? 'disabled' : '' %> <%= (post.social_networks.twitter == 'true' &&  Robin.identities.twitter != undefined) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to @<%= Robin.identities.twitter == undefined ? '' : Robin.identities.twitter.name %>"><i class="fa fa-twitter"></i></a>
-    <a data-provider='facebook' class="btn btn-xs <%= Robin.identities.facebook == undefined ? 'disabled' : '' %> <%= (post.social_networks.facebook == 'true' && Robin.identities.facebook != undefined) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.facebook == undefined ? '' : Robin.identities.facebook.name %>"><i class="fa fa-facebook"></i></a>
-    <a data-provider='linkedin' class="btn btn-xs <%= Robin.identities.linkedin == undefined ? 'disabled' : '' %> <%= (post.social_networks.linkedin == 'true' && Robin.identities.linkedin != undefined) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.linkedin == undefined ? '' : Robin.identities.linkedin.name %>"><i class="fa fa-linkedin"></i></a>
+    <a data-provider='twitter' class="btn btn-xs <%= Robin.identities.twitter.length == 0 ? 'disabled' : '' %> <%= (post.social_networks.twitter == 'true' &&  Robin.identities.twitter.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to @<%= Robin.identities.twitter.length == 0 ? '' : Robin.identities.twitter.name %>"><i class="fa fa-twitter"></i></a>
+    <a data-provider='facebook' class="btn btn-xs <%= Robin.identities.facebook.length == 0 ? 'disabled' : '' %> <%= (post.social_networks.facebook == 'true' && Robin.identities.facebook.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.facebook.length == 0 ? '' : Robin.identities.facebook.name %>"><i class="fa fa-facebook"></i></a>
+    <a data-provider='linkedin' class="btn btn-xs <%= Robin.identities.linkedin.length == 0 ? 'disabled' : '' %> <%= (post.social_networks.linkedin == 'true' && Robin.identities.linkedin.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to <%= Robin.identities.linkedin.length == 0 ? '' : Robin.identities.linkedin.name %>"><i class="fa fa-linkedin"></i></a>
   </span>
   <a class="btn btn-xs btn-default edit-post" style="margin-left: 4px;" data-toggle="tooltip" title="Edit post"><i class="fa fa-pencil"></i></a>
   <a id="delete-post"  class="btn btn-xs btn-danger" data-toggle="tooltip" title="Delete post"><i class="fa fa-close"></i></a>

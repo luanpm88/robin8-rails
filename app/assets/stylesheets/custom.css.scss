@@ -187,3 +187,45 @@ span.canceled {
   background-color: #E8F7FF;
   padding: 4px;
 }
+
+#social-profiles {
+  .list-group .item {
+    list-style: none;
+    border-bottom: 1px solid #E6E9ED;
+    border-radius: 0px;
+    padding-bottom: 10px;
+    span.name {
+      font-weight: bold;
+    }
+
+    li.identity:nth-of-type(1) {
+      border-top: 1px solid #E6E9ED;
+      margin-top: 10px;
+      padding-top: 10px;
+    }
+    li.identity {
+      padding-top: 10px;
+      padding-left: 25px;
+      a.disconnect {
+        color: #D23030;
+        float: right;
+      }
+    }
+    li.identity:hover {
+      a.link {
+        color: #0077FD;
+      }
+    }
+  }
+}
+
+.btn-social {
+  padding-right: 15px;
+}
+
+.no-padding-bottom {
+  padding-bottom: 0px !important;
+  span {
+    font-style: italic;
+  }
+}
