@@ -219,6 +219,15 @@ class User < ActiveRecord::Base
     super.present? ? super : "#{first_name} #{last_name}"
   end
 
+  def display_name
+    if name.present?
+      user_name = name
+    elsif first_name.present? && last_name.present?
+      user_name = "#{first_name} #{last_name}"
+    end
+    user_name && email.present? ? "#{user_name}, #{email}" : "#{user_name}#{email}"
+  end
+
   def as_json(options={})
     super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
   end
