@@ -34,7 +34,7 @@ describe Release do
     end
 
     it "should increase and decrease available monitoring user features count" do
-      release = create(:release, title: 'Tets title', user: user)
+      release = create(:release, title: 'Test title', user: user)
       expect(user.user_features.first.available_count).to eq 2
       release.destroy
       expect(user.user_features.first.available_count).to eq 3
