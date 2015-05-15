@@ -259,7 +259,7 @@ Devise.setup do |config|
   config.omniauth :twitter, Rails.application.secrets.twitter[:api_key], 
     Rails.application.secrets.twitter[:api_secret]
   config.omniauth :linkedin, Rails.application.secrets.linkedin[:api_key],
-    Rails.application.secrets.linkedin[:api_secret], :scope => 'r_fullprofile r_emailaddress r_network w_messages rw_nus r_contactinfo' 
+    Rails.application.secrets.linkedin[:api_secret], :scope => 'r_basicprofile r_emailaddress rw_company_admin w_share'
   config.omniauth :facebook, Rails.application.secrets.facebook[:app_id],
     Rails.application.secrets.facebook[:app_secret]
   config.omniauth :google_oauth2, Rails.application.secrets.google[:client_id],
