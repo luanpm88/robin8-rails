@@ -14,5 +14,21 @@ ActiveAdmin.register NewsRoom do
   #   permitted
   # end
 
+  index do
+    selectable_column
+    id_column
+    column :company_name
+    column :room_type
+    column :size
+    column :email
+    column :phone_number
+    column :owner_name
+    column :job_title
+    column :created_at
+    column :updated_at
+    column :default_news_room
+    column :publish_on_website
+    actions
+  end
 
 end
