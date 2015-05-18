@@ -10,9 +10,6 @@ class Post < ActiveRecord::Base
   scope :tomorrows, -> { where("scheduled_date > ? AND scheduled_date < ?", DateTime.now.utc.beginning_of_day + 1, DateTime.now.utc.end_of_day + 1) }
   scope :others, -> { where("scheduled_date > ?", DateTime.now.utc.beginning_of_day + 2) }
 
-  just_define_datetime_picker :scheduled_date
-  just_define_datetime_picker :performed_at
-
   def social_networks_raw
     self.social_networks
   end
