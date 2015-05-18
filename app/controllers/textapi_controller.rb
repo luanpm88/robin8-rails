@@ -39,7 +39,7 @@ class TextapiController < ApplicationController
   end
   
   def hashtags
-    response = @client.hashtags text: text
+    response = @client.hashtags text: text, support: 6, confidence: 0.5
 
     respond_to do |format|
       format.json { render json: response[:hashtags] }
