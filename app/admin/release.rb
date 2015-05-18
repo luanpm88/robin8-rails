@@ -19,24 +19,22 @@ ActiveAdmin.register Release do
     id_column
     column :title
     column :text do |my_resource|
-      truncate(my_resource.text, omision: "...", length: 40)
+      truncate(my_resource.text, omision: "...", length: 30)
     end
     column :created_at
     column :updated_at
     column :is_private
-    column :logo_url
     column :iptc_categories
     column :concepts do |my_resource|
-      truncate(my_resource.concepts, omision: "...", length: 40)
+      truncate(my_resource.concepts, omision: "...", length: 30)
     end
     column :summaries do |my_resource|
-      truncate(my_resource.summaries, omision: "...", length: 40)
+      truncate(my_resource.summaries, omision: "...", length: 30)
     end
     column :hashtags do |my_resource|
-      truncate(my_resource.hashtags, omision: "...", length: 40)
+      truncate(my_resource.hashtags, omision: "...", length: 30)
     end
     column :slug
-    column :thumbnail
     actions
   end
 
