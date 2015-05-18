@@ -365,6 +365,11 @@ GEM
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-chance (0.7.4)
+    rails-assets-datatables (1.10.7)
+      rails-assets-jquery (>= 1.7.0)
+    rails-assets-datatables-tabletools (2.2.4)
+      rails-assets-datatables (>= 1.9.0)
+      rails-assets-jquery (>= 1.7.0)
     rails-assets-eonasdan-bootstrap-datetimepicker (4.0.0)
       rails-assets-jquery (>= 1.8.3)
       rails-assets-moment (>= 2.8.0)
@@ -430,6 +435,9 @@ GEM
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     retriable (1.4.1)
+    roadie (3.0.5)
+      css_parser (~> 1.3.4)
+      nokogiri (~> 1.6.0)
     rspec-core (3.2.3)
       rspec-support (~> 3.2.0)
     rspec-expectations (3.2.1)
@@ -598,6 +606,7 @@ DEPENDENCIES
   rails-assets-bootstrap-tagsinput
   rails-assets-bootstrap.growl (= 2.0.1)!
   rails-assets-chance
+  rails-assets-datatables-tabletools
   rails-assets-eonasdan-bootstrap-datetimepicker (= 4.0.0)
   rails-assets-font-awsome
   rails-assets-highcharts (= 4.1.1)
@@ -617,6 +626,7 @@ DEPENDENCIES
   rails-assets-underscore.string
   rails-assets-uploadcare (= 2.0.4)!
   rails-assets-x-editable
+  roadie (~> 3.0.5)
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   resources :pitches, only: [:index, :create, :show]
   resources :pitches_contacts, only: [:index, :create, :show, :destroy]
   resources :iptc_categories, only: [:index]
+  resources :export_influencers, only: [:create]
   resources :autocompletes, only: [] do
     collection do
       get 'locations'

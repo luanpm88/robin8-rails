@@ -324,7 +324,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.scrollToView();
     },
     initDataTable: function(){
-      this.$el.find('table').DataTable({
+      var self = this;
+      var table = this.$el.find('table').DataTable({
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -336,8 +337,36 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           null,
           null,
           null
-        ]
+        ],
+        dom: 'T<"clear">lfrtip',
+        "oTableTools": {
+          "aButtons": [
+            {
+              "sExtends": "text",
+              "sButtonText": "Export as CSV",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                var order = table.order();
+                var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                openWindow('POST', '/export_influencers.csv', 
+                  {items: csvContent});
+              }
+            }
+          ]
+        }
       });
+    },
+    makeCsvData: function(order_column, order_direction){
+      var csvObject = [];
+      csvObject.push(["Author", "Outlet", "Contact"]); // CSV Headers
+      
+      _.each(this.collection.models, function(item){
+        csvObject.push([item.get('full_name'), 
+          item.get('blog_name'), item.get('email')]);
+      });
+      
+      return JSON.stringify(csvObject);
     },
     scrollToView: function(){
       var self = this;
@@ -367,7 +396,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.initDataTable();
     },
     initDataTable: function(){
-      this.$el.find('table').DataTable({
+      var self = this;
+      var table = this.$el.find('table').DataTable({
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -380,8 +410,37 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           null,
           null,
           null
-        ]
+        ],
+        dom: 'T<"clear">lfrtip',
+        "oTableTools": {
+          "aButtons": [
+            {
+              "sExtends": "text",
+              "sButtonText": "Export as CSV",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                var order = table.order();
+                var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                openWindow('POST', '/export_influencers.csv', 
+                  {items: csvContent});
+              }
+            }
+          ]
+        }
       });
+    },
+    makeCsvData: function(order_column, order_direction){
+      var csvObject = [];
+      csvObject.push(["Author", "Outlet", "Relevance", "Contact"]); // CSV Headers
+      
+      _.each(this.collection.models, function(item){
+        csvObject.push([item.get('full_name'), 
+          item.get('blog_name'), item.get('level_of_interest'), 
+          item.get('email')]);
+      });
+      
+      return JSON.stringify(csvObject);
     }
   });
 });

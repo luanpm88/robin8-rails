@@ -98,7 +98,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     initDataTable: function(){
-      this.$el.find('table').DataTable({
+      var self = this;
+      var table = this.$el.find('table').DataTable({
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -112,8 +113,70 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           null,
           null,
           null
-        ]
+        ],
+        dom: 'T<"clear">lfrtip',
+        "oTableTools": {
+          "aButtons": [
+            {
+              "sExtends": "text",
+              "sButtonText": "Export as CSV",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                var order = table.order();
+                var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                openWindow('POST', '/export_influencers.csv', 
+                  {items: csvContent});
+              }
+            }
+          ]
+        }
       });
+    },
+    makeCsvData: function(order_column, order_direction){
+      var sorted_collection = _.sortBy(this.collection.models, function(item){
+        var sort_value = parseInt(item.get('followers_count'));
+        
+        switch(order_column){
+          case 0:
+            sort_value = item.get('name');
+            break;
+          case 1:
+            sort_value = parseInt(item.get('followers_count'));
+            break;
+          case 2:
+            sort_value = item.get('reachScore');
+            break;
+          case 3:
+            sort_value = item.get('ampScore');
+            break;
+          case 4:
+            sort_value = item.get('relScore');
+            break;
+          case 5:
+            sort_value = item.get('screen_name');
+            break;
+          default:
+            sort_value = parseInt(item.get('followers_count'));
+        }
+        
+        return sort_value;
+      });
+      
+      if (order_direction == 'desc')
+        sorted_collection = sorted_collection.reverse();
+      
+      var csvObject = [];
+      csvObject.push(["Influencer", "Followers", "Reach", 
+        "Amplification", "Relevance", "Contact"]); // CSV Headers
+      
+      _.each(sorted_collection, function(item){
+        csvObject.push([item.get('name'), item.get('followers_count'), 
+          item.get('reachScore'), item.get('ampScore'), item.get('relScore'),
+          '@' + item.get('screen_name')]);
+      });
+      
+      return JSON.stringify(csvObject);
     },
     scrollToView: function(){
       var self = this;

@@ -27,19 +27,20 @@ class PitchesContact < ActiveRecord::Base
       outlet = self.contact.outlet
       
       title = self.pitch.release.title
-      text = self.pitch.release.plain_text
+      text = self.pitch.release.text
       
       summary_arr = JSON.parse(self.pitch.release.summaries).take(self.pitch.summary_length) 
-      summary_str = summary_arr.reject{|s| s.blank?}.map{|s| "- #{s}"}.join("\n")
+      summary_str = summary_arr.reject{|s| s.blank?}.map{|s| "<li>#{s}</li>"}.join(" ")
       
       pitch_text = self.pitch.email_pitch
       pitch_text.gsub!('@[First Name]', first_name)
       pitch_text.gsub!('@[Last Name]', last_name)
-      pitch_text.gsub!('@[Summary]', summary_str)
+      pitch_text.gsub!('@[Summary]', "<ul>#{summary_str}</ul>")
       pitch_text.gsub!('@[Outlet]', outlet)
-      pitch_text.gsub!('@[Link]', link)
+      pitch_text.gsub!('@[Link]', "<a href='#{link}'>#{link}</a>")
       pitch_text.gsub!('@[Title]', title)
       pitch_text.gsub!('@[Text]', text)
+      pitch_text.gsub!("\n", "<br />")
       pitch_text
     elsif self.contact.origin == 1 # twtrland
       handle = "@#{self.contact.twitter_screen_name}"

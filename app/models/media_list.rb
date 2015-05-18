@@ -6,7 +6,7 @@ class MediaList < ActiveRecord::Base
   has_attached_file :attachment
   
   validates_attachment_content_type :attachment, :content_type => 'text/csv'
-  validates_attachment_size :attachment, :in => 0..500.kilobytes
+  validates_attachment_size :attachment, :in => 0..30.megabytes
   validates_presence_of :name
   validates_uniqueness_of :name
     
