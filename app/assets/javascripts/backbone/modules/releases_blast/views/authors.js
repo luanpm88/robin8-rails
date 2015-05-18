@@ -409,12 +409,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     makeCsvData: function(order_column, order_direction){
+      var self = this;
       var csvObject = [];
+      var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){ 
+        return item.get('origin') === 'pressr'
+      }).map(function(item){
+        return self.collection.findWhere({id: item.get('author_id')});
+      }).reject(function(item){
+        return item == undefined;
+      }).value();
+      
       csvObject.push(["Author", "Outlet", "Contact"]); // CSV Headers
       
-      _.each(this.collection.models, function(item){
-        csvObject.push([item.get('full_name'), 
-          item.get('blog_name'), item.get('email')]);
+      _(pitchContactsArray).each(function(model){
+        csvObject.push([model.get('full_name'), 
+          model.get('blog_name'), model.get('email')]);
       });
       
       return JSON.stringify(csvObject);
@@ -535,10 +544,20 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     makeCsvData: function(order_column, order_direction){
+      var self = this;
+      
+      var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){ 
+        return (item.get('origin') === 'pressr');
+      }).map(function(item){
+        return self.collection.findWhere({id: item.get('author_id')});
+      }).reject(function(item){
+        return item == undefined;
+      }).value();
+      
       var csvObject = [];
       csvObject.push(["Author", "Outlet", "Relevance", "Contact"]); // CSV Headers
       
-      _.each(this.collection.models, function(item){
+      _(pitchContacts).each(function(item){
         csvObject.push([item.get('full_name'), 
           item.get('blog_name'), item.get('level_of_interest'), 
           item.get('email')]);

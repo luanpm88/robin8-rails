@@ -188,7 +188,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     makeCsvData: function(order_column, order_direction){
-      var sorted_collection = _.sortBy(this.collection.models, function(item){
+      var self = this;
+      
+      var pitchContactsCollection = this.pitchContactsCollection.chain().filter(function(item){ 
+        return item.get('origin') === 'twtrland'
+      }).map(function(item){
+        return self.collection.findWhere({screen_name: item.get('twitter_screen_name')});
+      }).reject(function(item){
+        return item == undefined;
+      }).value();
+      
+      var sorted_collection = _.sortBy(pitchContactsCollection, function(item){
         var sort_value = parseInt(item.get('followers_count'));
         
         switch(order_column){
