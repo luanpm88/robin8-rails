@@ -229,3 +229,22 @@ span.canceled {
     font-style: italic;
   }
 }
+
+.post-identities {
+  height: 70px;
+  background-color: white;
+  border-radius: 0 0 4px 4px;
+  border-left: 1px solid rgb(204, 204, 204);
+  border-right: 1px solid rgb(204, 204, 204);
+  label {
+    margin-top: 10px;
+  }
+}
+
+.bottom-border-radius {
+  border-radius: 0 0 4px 4px;
+}
+
+#twitter-identities, #facebook-identities, #linkedin-identities {
+  margin-top: 20px;
+}

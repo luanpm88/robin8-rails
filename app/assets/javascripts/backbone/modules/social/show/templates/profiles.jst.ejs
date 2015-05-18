@@ -40,7 +40,7 @@
     <%} else {%>
       <% $.each(Robin.identities.facebook, function( index, value ) { %>
         <li class="identity">
-          <a class='link' href="<%= value.url%>" target="_blank">@<%= value.name%></a> 
+          <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a> 
           <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
         </li>
       <% }) %>
@@ -61,7 +61,7 @@
     <%} else {%>
       <% $.each(Robin.identities.google, function( index, value ) { %>
         <li class="identity">
-          <a class='link' href="<%= value.url%>" target="_blank">@<%= value.name%></a> 
+          <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a> 
           <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
         </li>
       <% }) %>
@@ -82,7 +82,7 @@
     <%} else {%>
       <% $.each(Robin.identities.linkedin, function( index, value ) { %>
         <li class="identity">
-          <a class='link' href="<%= value.url%>" target="_blank">@<%= value.name%></a> 
+          <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a> 
           <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
         </li>
       <% }) %>

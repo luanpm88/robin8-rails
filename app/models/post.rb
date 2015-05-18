@@ -1,5 +1,9 @@
 class Post < ActiveRecord::Base
-  serialize :social_networks, Hash
+  # serialize :social_networks, Hash
+  serialize :twitter_ids, Array
+  serialize :facebook_ids, Array
+  serialize :linkedin_ids, Array
+
   belongs_to :user
   validates :text, presence: true
   validates :scheduled_date, presence: true
