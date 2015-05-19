@@ -198,3 +198,15 @@ span.canceled {
   margin-top: 15px;
   cursor: pointer;
 }
+
+// datatables buttons
+.DTTT_container a {
+  background: #006481;
+  color: #ffffff !important;
+  border: 1px solid #006481;
+}
+
+.DTTT_container a:hover {
+  background: #3c9eb6 !important;
+  border: 1px solid #3c9eb6 !important;
+}
