@@ -335,8 +335,6 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.2.0)
       sprockets-rails
-    rails-assets-DataTables (1.10.6)
-      rails-assets-jquery (>= 1.7.0)
     rails-assets-backbone (1.1.2)
       rails-assets-underscore (>= 1.5.0)
     rails-assets-backbone-relational (0.9.0)
@@ -606,7 +604,6 @@ DEPENDENCIES
   pry-rails
   quiet_assets
   rails (= 4.2.0)
-  rails-assets-DataTables
   rails-assets-backbone-relational
   rails-assets-backbone.babysitter
   rails-assets-backbone.marionette (= 2.4.1)
@@ -618,6 +615,7 @@ DEPENDENCIES
   rails-assets-bootstrap-tagsinput
   rails-assets-bootstrap.growl (= 2.0.1)!
   rails-assets-chance
+  rails-assets-datatables
   rails-assets-datatables-tabletools
   rails-assets-eonasdan-bootstrap-datetimepicker (= 4.0.0)
   rails-assets-font-awsome

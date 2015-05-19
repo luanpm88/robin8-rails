@@ -45,7 +45,7 @@
 //= require jquery.caret/dist/jquery.caret-1.5.2
 //= require timeago
 //= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
-//= require DataTables
+//= require datatables
 //= require datatables-tabletools
 //= require bootstrap-switch
 // require dataTables.bootstrap
