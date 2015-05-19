@@ -320,8 +320,16 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return this.options;
     },
     onRender: function() {
-      this.initDataTable();
+      // this.initDataTable();
       this.scrollToView();
+      var $this = this;
+      // this.initDataTable();
+      Robin.user = new Robin.Models.User();
+      Robin.user.fetch({
+        success: function(){
+          $this.initDataTable();
+        }
+      })
     },
     initDataTable: function(){
       var self = this;
@@ -346,11 +354,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
               "sButtonText": "Export as CSV",
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
-                var order = table.order();
-                var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+                // var order = table.order();
+                // var csvContent = self.makeCsvData(order[0][0], order[0][1]);
 
-                openWindow('POST', '/export_influencers.csv', 
-                  {items: csvContent});
+                // openWindow('POST', '/export_influencers.csv', 
+                //   {items: csvContent});
+                if (Robin.user.get('can_export') == true) {
+                  var order = table.order();
+                  var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                  openWindow('POST', '/export_influencers.csv', 
+                    {items: csvContent});
+                } else {
+                  $.growl('Only Enterprise and Ultra users can have this feature.', {
+                    type: "danger",
+                  });
+                }
               }
             }
           ]
@@ -393,7 +412,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return this.options;
     },
     onRender: function() {
-      this.initDataTable();
+      var $this = this;
+      // this.initDataTable();
+      Robin.user = new Robin.Models.User();
+      Robin.user.fetch({
+        success: function(){
+          $this.initDataTable();
+        }
+      })
     },
     initDataTable: function(){
       var self = this;
@@ -419,11 +445,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
               "sButtonText": "Export as CSV",
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
-                var order = table.order();
-                var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+                // var order = table.order();
+                // var csvContent = self.makeCsvData(order[0][0], order[0][1]);
 
-                openWindow('POST', '/export_influencers.csv', 
-                  {items: csvContent});
+                // openWindow('POST', '/export_influencers.csv', 
+                //   {items: csvContent});
+                if (Robin.user.get('can_export') == true) {
+                  var order = table.order();
+                  var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                  openWindow('POST', '/export_influencers.csv', 
+                    {items: csvContent});
+                } else {
+                  $.growl('Only Enterprise and Ultra users can have this feature.', {
+                    type: "danger",
+                  });
+                }
               }
             }
           ]

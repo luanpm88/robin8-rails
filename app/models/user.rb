@@ -235,6 +235,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def can_export
+    user_product = user_products.first
+    return false if user_product.blank?
+    ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual"].include? user_product.product.slug
+  end
+
   private
     def create_default_news_room
       if is_primary?
