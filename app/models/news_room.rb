@@ -14,7 +14,7 @@ class NewsRoom < ActiveRecord::Base
   has_many :followers, dependent: :destroy
   has_one :preview_news_room, foreign_key: :parent_id, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
-  after_create :decrease_feature_number, :set_campaign_name, :create_campaign
+  # after_create :decrease_feature_number, :set_campaign_name, :create_campaign
   after_destroy :increase_feature_numner, :delete_campaign
 
   validates :company_name, presence: true
@@ -56,6 +56,13 @@ class NewsRoom < ActiveRecord::Base
 
   def has_social_links?
     [facebook_link, twitter_link, linkedin_link, instagram_link].reject(&:blank?).length > 0
+  end
+
+  def permalink
+    host = Rails.application.secrets[:host]
+    subdomain_name = self.subdomain_name
+    
+    "http://#{subdomain_name}.#{host}"
   end
 
   private

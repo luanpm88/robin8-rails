@@ -8,9 +8,9 @@
 
   <p><i style="color: #A0D468;" class="fa fa-check"></i> Here's a summary of what <strong>"<%= release.title %>"</strong> is all about:</p>
 
-  <ul style="margin-left: 38px; margin-bottom: 10px;">
-    <% _.each(textapiResult["summarize"], function(item){ %>
-      <li style="margin-bottom: 7px;"><%= item %></li>
+  <ul id="summaries" style="margin-left: 38px; margin-bottom: 10px;">
+    <% _.each(textapiResult["summarize"], function(item, index){ %>
+      <li id="summary-<%= index%>" pk="<%= index%>" style="margin-bottom: 7px;"><%= item %></li>
     <% }); %>
   </ul>
   <br />
