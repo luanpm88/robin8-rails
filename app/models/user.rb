@@ -209,7 +209,8 @@ class User < ActiveRecord::Base
     identities_by_providers 
   end
 
-  def twitter_post message
+  def twitter_post message, identity_id
+    twitter_identity = Identity.find(identity_id)
     unless twitter_identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]
@@ -221,7 +222,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def linkedin_post message
+  def linkedin_post message, identity_id
+    linkedin_identity = Identity.find(identity_id)
     unless linkedin_identity.blank?
       data = { comment: message, visibility: {code: 'anyone'} }
       response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
@@ -232,7 +234,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def facebook_post message
+  def facebook_post message, identity_id
+    facebook_identity = Identity.find(identity_id)
     unless facebook_identity.blank?
       graph = Koala::Facebook::API.new(facebook_identity.token)
       Rails.logger.info graph.inspect

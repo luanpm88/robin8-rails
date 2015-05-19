@@ -35,7 +35,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       'click .social-networks .btn.linkedin': 'enableLinkedinNetwork',
       'click .input-group-addon': 'changeTime',
       'select2-close .select-identities': 'afterSelectingIdentity',
-      'select2-removed .select-identities': 'afterSelectingIdentity'
+      'select2-removed .select-identities': 'afterRemoveIdentity'
     },
 
     initialize: function() {
@@ -71,8 +71,39 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     },
 
     afterSelectingIdentity: function() {      
-      this.setCounter();
-      this.checkAbilityPosting();
+      var view = this;
+      view.setCounter();
+      view.checkAbilityPosting();
+
+      if (view.$el.find("select[name='twitter_ids']").val() != null) {
+        view.$el.find('.btn.twitter').addClass('btn-primary');
+      }
+
+      if (view.$el.find("select[name='facebook_ids']").val() != null) {
+        view.$el.find('.btn.facebook').addClass('btn-primary');
+      }
+
+      if (view.$el.find("select[name='linkedin_ids']").val() != null) {
+        view.$el.find('.btn.linkedin').addClass('btn-primary');
+      }
+    },
+
+    afterRemoveIdentity: function() {      
+      var view = this;
+      view.setCounter();
+      view.checkAbilityPosting();
+
+      if (view.$el.find("select[name='twitter_ids']").val() == null) {
+        view.$el.find('.btn.twitter').removeClass('btn-primary');
+      }
+
+      if (view.$el.find("select[name='facebook_ids']").val() == null) {
+        view.$el.find('.btn.facebook').removeClass('btn-primary');
+      }
+
+      if (view.$el.find("select[name='linkedin_ids']").val() == null) {
+        view.$el.find('.btn.linkedin').removeClass('btn-primary');
+      }
     },
 
     changeTime: function() {

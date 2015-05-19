@@ -35,6 +35,10 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find params[:id]
+    params[:post][:twitter_ids] = [] if params[:post][:twitter_ids].blank?
+    params[:post][:facebook_ids] = [] if params[:post][:facebook_ids].blank?
+    params[:post][:linkedin_ids] = [] if params[:post][:linkedin_ids].blank?
+
     if @post.update_attributes(post_params)
       render json: @post
     else

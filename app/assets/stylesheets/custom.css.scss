@@ -241,10 +241,37 @@ span.canceled {
   }
 }
 
+.edit-post-identities {
+  background-color: white;
+  border-radius: 0 0 4px 4px;
+  border-left: 1px solid #aab2bd;
+  border-right: 1px solid #aab2bd;
+  label {
+    margin-top: 10px;
+  }
+
+  #twitter-identities, #facebook-identities, #linkedin-identities {
+    border-bottom: 1px solid #aab2bd;
+    border-radius: 0 0 4px 4px;
+  }
+}
+
 .bottom-border-radius {
   border-radius: 0 0 4px 4px;
 }
 
 #twitter-identities, #facebook-identities, #linkedin-identities {
   margin-top: 20px;
+}
+
+span.social-networks {
+  span {
+    cursor: auto;
+  }
+  span:hover {
+    background-color: #AAB2BD;
+  }
+  span.btn-primary:hover {
+    background-color: #006481;;
+  }
 }
