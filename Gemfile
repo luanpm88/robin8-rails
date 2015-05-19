@@ -119,6 +119,7 @@ gem 'paperclip', '~> 4.2.1'
 gem 'premailer-rails'
 gem 'hpricot'
 gem 'activeadmin', '~> 1.0.0.pre1'
+gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 group :development, :test do
   # Deploy with Capistrano
