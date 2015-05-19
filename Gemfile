@@ -62,7 +62,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
-  gem 'rails-assets-DataTables'
+  gem 'rails-assets-datatables'
   gem 'rails-assets-datatables-tabletools'
   gem 'rails-assets-jquery.caret'
   gem 'rails-assets-bootstrap-switch'
