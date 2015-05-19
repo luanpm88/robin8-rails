@@ -26,13 +26,13 @@ ActiveAdmin.register Release do
     column :is_private
     column :iptc_categories
     column :concepts do |my_resource|
-      truncate(my_resource.concepts, omision: "...", length: 30)
+      truncate(my_resource.concepts, omision: "...", length: 25)
     end
     column :summaries do |my_resource|
-      truncate(my_resource.summaries, omision: "...", length: 30)
+      truncate(my_resource.summaries, omision: "...", length: 25)
     end
     column :hashtags do |my_resource|
-      truncate(my_resource.hashtags, omision: "...", length: 30)
+      truncate(my_resource.hashtags, omision: "...", length: 25)
     end
     column :slug
     actions
