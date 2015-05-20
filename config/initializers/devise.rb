@@ -257,11 +257,11 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.omniauth :twitter, Rails.application.secrets.twitter[:api_key], 
-    Rails.application.secrets.twitter[:api_secret], :authorize_params => {:force_login => 'true', :use_authorize => 'true'}
+    Rails.application.secrets.twitter[:api_secret]
   config.omniauth :linkedin, Rails.application.secrets.linkedin[:api_key],
     Rails.application.secrets.linkedin[:api_secret], :scope => 'r_basicprofile r_emailaddress rw_company_admin w_share'
   config.omniauth :facebook, Rails.application.secrets.facebook[:app_id],
-    Rails.application.secrets.facebook[:app_secret], auth_type: 'reauthenticate'
+    Rails.application.secrets.facebook[:app_secret]
   config.omniauth :google_oauth2, Rails.application.secrets.google[:client_id],
-    Rails.application.secrets.google[:client_secret], { prompt: 'consent' }
+    Rails.application.secrets.google[:client_secret]
 end
