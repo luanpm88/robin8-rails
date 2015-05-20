@@ -105,33 +105,65 @@ describe User do
       @user = User.create!(@attr)
     end
 
-    it "facebook" do
+    it "facebook_identity" do
       @identity = FactoryGirl.build(:identity, user: @user, provider: 'facebook')
       @identity.save
 
       expect(@user.facebook_identity).to eq @identity
     end
 
-    it "twitter" do
+    it "twitter_identity" do
       @identity = FactoryGirl.build(:identity, user: @user, provider: 'twitter')
       @identity.save
 
       expect(@user.twitter_identity).to eq @identity
     end
 
-    it "google" do
+    it "google_identity" do
       @identity = FactoryGirl.build(:identity, user: @user, provider: 'google_oauth2')
       @identity.save
 
       expect(@user.google_identity).to eq @identity
     end
 
-    it "linkedin" do
+    it "linkedin_identity" do
       @identity = FactoryGirl.build(:identity, user: @user, provider: 'linkedin')
       @identity.save
 
       expect(@user.linkedin_identity).to eq @identity
     end
+
+    # it "facebook_identities" do
+    #   @identity = FactoryGirl.build(:identity, user: @user, provider: 'facebook')
+    #   @identity = FactoryGirl.build(:identity, user: @user, provider: 'facebook')
+    #   @identity.save
+
+    #   expect(@user.facebook_identities.count).to eq 2
+    # end
+
+    # it "twitter_identities" do
+    #   @identity = FactoryGirl.build(:identity, user: @user, provider: 'twitter')
+    #   @identity = FactoryGirl.build(:identity, user: @user, provider: 'twitter')
+    #   @identity.save
+
+    #   expect(@user.twitter_identities.count).to eq 2
+    # end
+
+    # it "google_identities" do
+    #   @identity = FactoryGirl.build(:identity, user: @user, provider: 'google_oauth2')
+    #   @identity = FactoryGirl.build(:identity, user: @user, provider: 'google_oauth2')
+    #   @identity.save
+
+    #   expect(@user.google_identities.count).to eq 2
+    # end
+
+    # it "linkedin_identities" do
+    #   @identity = FactoryGirl.build(:identity, user: @user, provider: 'linkedin')
+    #   @identity = FactoryGirl.build(:identity, user: @user, provider: 'linkedin')
+    #   @identity.save
+
+    #   expect(@user.linkedin_identities.count).to eq 2
+    # end
 
   end
 
