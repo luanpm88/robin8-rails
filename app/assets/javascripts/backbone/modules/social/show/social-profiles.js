@@ -1,11 +1,11 @@
-var disconnectSocial = function(provider, currentView){
+var disconnectSocial = function(id, currentView){
   $.ajax({
     type: 'DELETE',
     url: '/users/disconnect_social',
     dataType: 'json',
-    data: {provider: provider},
+    data: {id: id},
     success: function(data, textStatus, jqXHR) {
-      Robin.setIdentities(data);
+      Robin.identities = data;
       currentView.render();
       Robin.module("Social").postsView.render();
       Robin.module("Social").tomorrowPostsView.render();
@@ -53,8 +53,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
       currentView.interval = window.setInterval((function() {
         if (currentView.connect_window.closed) {
-          $.get( "/users/identities", function( data ) {
-            Robin.setIdentities(data);
+          $.get( "/users/get_identities", function( data ) {
+            Robin.identities = data; 
+            // Robin.setIdentities(data);
             currentView.render();
             Robin.module("Social").postsView.render();
             Robin.module("Social").tomorrowPostsView.render();
@@ -68,7 +69,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     disconnect: function(e) {
       e.preventDefault();
-      disconnectSocial($(e.target).attr('name'), this);
+      disconnectSocial($(e.target).attr('identityid'), this);
     }
   });
 });

@@ -1,5 +1,10 @@
 Robin.Models.Post = Backbone.Model.extend({
   urlRoot: '/posts/',
+  defaults: {
+    "twitter_ids":  [],
+    "facebook_ids":  [],
+    "linkedin_ids":  []
+  },
 
   toJSON: function() {
     var post = _.clone( this.attributes );
