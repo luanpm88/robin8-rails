@@ -1,15 +1,21 @@
 <ul class="sidebar-nav">
   <li class="sidebar-brand">
-    <a href="<%= @preview_mode ? "" : subdomain_root_path %>">
-      <% if news_room.logo_url && news_room.logo_url.length > 0 %>
-        <%= image_tag news_room.logo_url, class: 'logo' %>
-      <% else %>
-        <img class="img-rounded" src="http://placehold.it/250x100">
-      <% end %>
-      <br>
-      <strong><%= news_room.company_name %></strong>
-      <br />Pressroom
-    </a>
+    <% unless @preview_mode%>
+      <a href="<%= subdomain_root_path %>">
+    <% end %>
+      <div class="brand-text">
+        <% if news_room.logo_url && news_room.logo_url.length > 0 %>
+          <%= image_tag news_room.logo_url, class: 'logo' %>
+        <% else %>
+          <img class="img-rounded" src="http://placehold.it/250x100">
+        <% end %>
+        <br>
+        <strong><%= news_room.company_name %></strong>
+        <br />Pressroom
+      </div>
+    <% unless @preview_mode%>
+      </a>
+    <% end %>
   </li>
   <% if news_room.has_contact_info? %>
     <li class="navlinks">

@@ -24,3 +24,8 @@ end
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+# updating sitemap
+every 1.day, :at => '5:00 am' do
+  rake "-s sitemap:refresh"
+end

@@ -26,12 +26,16 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'quiet_assets', group: [:development, :staging]
 gem 'aws-sdk-v1'
 
+# To send HTML mails
+gem 'roadie', '~> 3.0.5'
+
 gem 'htmlentities'
 gem 'truncate_html'
 gem 'email_validator'
 gem 'oauth2'
 gem 'legato'
 gem 'google-api-client'
+gem 'sitemap_generator'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
@@ -41,7 +45,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
   gem 'bootstrap-wysihtml5-rails', github: 'Nerian/bootstrap-wysihtml5-rails'
-
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'
@@ -59,13 +62,15 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
-  gem 'rails-assets-DataTables'
+  gem 'rails-assets-datatables'
+  gem 'rails-assets-datatables-tabletools'
   gem 'rails-assets-jquery.caret'
   gem 'rails-assets-bootstrap-switch'
   gem 'rails-assets-select2-bootstrap-css'
   gem 'rails-assets-backbone-relational'
   gem 'rails-assets-spinjs'
   gem 'rails-assets-jquery-highlighttextarea'
+  gem 'rails-assets-jquery-geocomplete'
 end
 
 gem 'devise'

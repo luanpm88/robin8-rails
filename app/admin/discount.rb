@@ -1,5 +1,5 @@
 ActiveAdmin.register Discount do
-  permit_params :code , :description,:percentage,:max_count,:is_recurring ,:expiry,user_discounts_attributes: [:user_id,:discount_id,:_destroy],product_discounts_attributes: [:discount_id,:product_id,:_destroy]
+  permit_params :code , :description,:percentage,:max_count,:is_recurring ,:expiry,user_discounts_attributes: [:id, :user_id, :discount_id, :_destroy],product_discounts_attributes: [:id, :discount_id, :product_id, :_destroy]
 
   member_action :activate, method: :put do
     d = Discount.find(params[:id])
@@ -39,8 +39,19 @@ ActiveAdmin.register Discount do
     end
 
     f.inputs "To Users * If left empty, will be available to all users" do
+
+      users = User.all.map do |u| 
+        if u.name? 
+          name = u.name
+        elsif u.first_name? && u.last_name?
+          name = "#{u.first_name} #{u.last_name}"
+        end
+        email = u.email? ? u.email : nil
+        [name && email ? "#{name}, #{email}" : "#{name}#{email}", u.id]
+      end
+
       f.has_many :user_discounts, :heading => 'Attach to a specific User Only' do |cf|
-        cf.input :user
+        cf.input :user, :label => 'User', :as => :select, :collection => users
         cf.input :_destroy, as: :boolean, label: "Delete?"
       end
     end

@@ -3,7 +3,7 @@ class PaymentsController < ApplicationController
   skip_before_filter :validate_subscription
   #before_filter :force_ssl
   before_filter :require_package ,:only => [:new,:create,:edit,:update]
-  before_filter :validate_upgrade,:only => [:edit,:update]
+  # before_filter :validate_upgrade,:only => [:edit,:update]
   before_filter :validate_subscription,:only=>[:new]
   before_filter :validate_add_on_cancel,:only=>[:destroy_add_on]
 
@@ -76,8 +76,6 @@ class PaymentsController < ApplicationController
   def update_subscription
     @package = Package.find(params[:package_id])
     errors,resp = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id, current_user.active_subscription.bluesnap_shopper_id, @package.sku_id)
-    p '!!'
-    p resp
     if errors.blank?
       begin
         current_user.active_subscription.update_attributes(

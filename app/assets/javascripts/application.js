@@ -45,13 +45,15 @@
 //= require jquery.caret/dist/jquery.caret-1.5.2
 //= require timeago
 //= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
-//= require DataTables
+//= require datatables
+//= require datatables-tabletools
 //= require bootstrap-switch
 // require dataTables.bootstrap
 //= require spinjs
 //= require spinjs/jquery.spin.js
 //= require jquery-highlighttextarea
 //= require ./lib/icheck
+//= require jquery-geocomplete
 
 //= require_tree ./backbone/config
 //= require backbone/init

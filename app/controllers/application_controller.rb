@@ -9,6 +9,12 @@ class ApplicationController < ActionController::Base
   # before_filter :validate_subscription, unless: :devise_controller?
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  ActiveAdmin::ResourceController.class_eval do
+    def find_resource
+      resource_class.is_a?(FriendlyId) ? scoped_collection.where(slug: params[:id]).first! : scoped_collection.where(id: params[:id]).first!
+    end
+  end
+
   def validate_subscription
     if user_signed_in?
       flash[:alert] = "You need an active subscription to continue"; return redirect_to :pricing if current_user.active_subscription.blank?

@@ -21,9 +21,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     onRender: function(){
       var view = this;
-      if (Robin.releaseForBlast != undefined && this.collection.length > 0){
-        view.analyzeRelease(parseInt(Robin.releaseForBlast));
-        Robin.releaseForBlast = undefined;
+      view.$el.find(".releases").prop('disabled', true);
+      if (view.collection.length > 0) {
+        view.$el.find(".releases").removeClass('loadinggif');
+        view.$el.find(".releases").prop('disabled', false);
+        if (Robin.releaseForBlast != undefined) {
+          view.analyzeRelease(parseInt(Robin.releaseForBlast));
+          Robin.releaseForBlast = undefined;
+        }
+      } else {
+        view.$el.find(".releases").prop('disabled', false);
+        view.$el.find(".releases").removeClass('loadinggif');
       }
     },
     standardPressRelease: {

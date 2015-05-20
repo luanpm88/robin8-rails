@@ -152,7 +152,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     ui: {
       mergeTag: 'label.label a',
       textarea: '#email-pitch-textarea',
-      emailPitchPreviewTextarea: '#email-pitch-preview',
       summarySlider: '#summary-slider',
       summarySliderAmount: '#summary-slider-amount',
       subjectLineInput: '[name=email_subject]',
@@ -163,15 +162,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     events: {
       'click @ui.mergeTag': 'addMergeTag',
       'change @ui.subjectLineInput': 'subjectLineInputChanged',
-      'change @ui.emailAddressInput': 'emailAddressInputChanged',
-      'change @ui.textarea': 'emailPitchTextChanged',
-      'keyup @ui.textarea': 'emailPitchTextChanged'
+      'change @ui.emailAddressInput': 'emailAddressInputChanged'
     },
 
     addMergeTag: function(e) {
       e.preventDefault();
-      this.ui.textarea.caret('@[' + e.target.textContent + '] ');
-      this.ui.textarea.trigger('change');
+      
+      this.editor.composer.commands.exec("insertHTML", '@[' + e.target.textContent + '] ')
+      this.insertRenderedText();
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
@@ -180,7 +178,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return {
         mergeTags: [
           'First Name', 'Last Name', 'Summary',
-          'Outlet', 'Link', 'Title'
+          'Outlet', 'Link', 'Title', 'Text'
         ],
         pitch: this.getPitchModel()
       }
@@ -190,7 +188,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var emailPitch = this.model.get('email_pitch');
       
       if (!s.isBlank(firstName))
-        emailPitch = emailPitch.replace('@[UserFirstName]', (",\n" + firstName));
+        emailPitch = emailPitch.replace('@[UserFirstName]', (",<br />" + firstName));
       else
         emailPitch = emailPitch.replace('@[UserFirstName]', '');
       
@@ -201,6 +199,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     onRender: function() {
       var self = this;
+      this.initWysihtml5();
       this.ui.summarySlider.slider({
         value: self.model.get('summary_length'), 
         min: 1,
@@ -209,11 +208,40 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         slide: function(event, ui) {
           self.ui.summarySliderAmount.text(ui.value + ' sentences');
           self.model.set('summary_length', parseInt(ui.value));
-          self.previewPitchText();
         }
       });
       this.ui.summarySliderAmount.text(this.ui.summarySlider.slider("value") + " sentences");
-      this.previewPitchText();
+    },
+    initWysihtml5: function(){
+      var self = this;
+      
+      this.ui.textarea.wysihtml5({
+        toolbar: {
+          "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+          "emphasis": true, //Italics, bold, etc. Default true
+          "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+          "html": false, //Button which allows you to edit the generated HTML. Default false
+          "link": true, //Button to insert a link. Default true
+          "image": false, //Button to insert an image. Default true,
+          "color": false, //Button to change color of font  
+          "blockquote": true, //Blockquote  
+          "size": "sm" //default: none, other options are xs, sm, lg
+        }
+      });
+      
+      var wysihtml5Editor = this.ui.textarea.data("wysihtml5").editor;
+      wysihtml5Editor.on("load", function() {
+        self.editor = self.ui.textarea.data('wysihtml5').editor;
+        var emailPitchTextChanged = function(){
+          self.model.set('email_pitch', self.editor.getValue());
+          self.insertRenderedText();
+        };
+        
+        self.editor.on('change', emailPitchTextChanged);
+        self.editor.on('blur', emailPitchTextChanged);
+        
+        self.insertRenderedText();
+      });
     },
     subjectLineInputChanged: function(e){
       this.model.set('email_subject', this.ui.subjectLineInput.val());
@@ -221,29 +249,32 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     emailAddressInputChanged: function(e){
       this.model.set('email_address', this.ui.emailAddressInput.val());
     },
-    emailPitchTextChanged: function(e){
-      this.model.set('email_pitch', this.ui.textarea.val());
-      this.previewPitchText();
-    },
-    previewPitchText: function(){
-      var text = this.renderPitchText(this.ui.textarea.val());
-      this.ui.emailPitchPreviewTextarea.val(text);
+    insertRenderedText: function(){
+      var text = this.editor.getValue();
+      text = this.renderPitchText(text);
+      this.editor.setValue(text);
     },
     renderPitchText: function(text){
       // Email pitch tags are:
       // ["@[First Name]", "@[Last Name]", "@[Summary]",
-      // "@[Outlet]", "@[Link]", "@[Title]"]
+      // "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"]
       var renderedText = text;
       
       var title = this.releaseModel.get('title');
+      var html_text = this.releaseModel.get('text');
       var link = this.releaseModel.get('permalink');
+      link = '<a href="' + link + '">' + link + '</a>';
       var summariesArr = this.releaseModel.get('summaries')
         .slice(0, this.model.get('summary_length'));
-      var summaries = _(summariesArr).map(function(item){
-        return '- ' + item
-      }).join('\n');
+      var summaries = _(summariesArr).reject(function(item){
+        return s.isBlank(item);
+      }).map(function(item){
+        return '<li>' + item + '</li>'
+      }).join(' ');
+      summaries = '<ul>' + summaries + '</ul>';
       
       renderedText = renderedText.replace(/\@\[Title\]/g, title);
+      renderedText = renderedText.replace(/\@\[Text\]/g, html_text);
       renderedText = renderedText.replace(/\@\[Link\]/g, link);
       renderedText = renderedText.replace(/\@\[Summary\]/g, summaries);
       

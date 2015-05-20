@@ -6,7 +6,7 @@ class MediaList < ActiveRecord::Base
   has_attached_file :attachment
   
   validates_attachment_content_type :attachment, :content_type => 'text/csv'
-  validates_attachment_size :attachment, :in => 0..500.kilobytes
+  validates_attachment_size :attachment, :in => 0..30.megabytes
   validates_presence_of :name
   validates_uniqueness_of :name
     
@@ -18,19 +18,27 @@ class MediaList < ActiveRecord::Base
     path = attachment.queued_for_write[:original].path
     contacts = CSV.read(path)
     self.contacts << contacts.inject([]) do |memo, contact|
-      if (contact.size >= 3) && !contact[0].strip.blank? && 
+      
+      contact.reject! {|c| c.nil?}
+      
+      if (contact.size == 4) && !contact[0].strip.blank? && 
         !contact[1].strip.blank? && !contact[2].strip.blank? && 
-        validate_email(contact[2].strip)
+        !contact[3].strip.blank? && validate_email(contact[2].strip)
         
-        begin
-          memo << Contact.find_or_create_by(email: contact[2].strip) do |c|
-            c.first_name = contact[0].strip
-            c.last_name  = contact[1].strip
-            c.outlet = (contact[3] || 'Media List').strip 
-            c.origin     = 2
-          end
-        rescue ActiveRecord::RecordNotUnique
-          retry
+        new_contact = Contact.where(email: contact[2].strip).first
+        
+        memo << if new_contact.nil?
+          Contact.create(email: contact[2].strip,
+            first_name: contact[0].strip,
+            last_name: contact[1].strip,
+            outlet: contact[3].strip,
+            origin: 2)
+        else
+          new_contact.update(first_name: contact[0].strip,
+            last_name: contact[1].strip,
+            outlet: contact[3].strip)
+          
+          new_contact
         end
       end
       

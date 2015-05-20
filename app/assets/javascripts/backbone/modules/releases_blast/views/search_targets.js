@@ -34,6 +34,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     onShow: function(){
       this.initSwitch();
       this.initSelect2();
+      this.initGeoAutocomplete();
       this.on("authors:select", this.authorsSelect);
       this.on("influencers:select", this.influencersSelect);
     },
@@ -45,6 +46,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         onText: "Authors",
         offText: "Influencers"
       });
+    },
+    initGeoAutocomplete: function(){
+      this.ui.authorsLocationInput.geocomplete();
     },
     initSelect2: function(){
       this.ui.authorsKeywordsInput.select2({

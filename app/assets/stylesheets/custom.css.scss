@@ -158,6 +158,11 @@ span.canceled {
   text-align: center;
 }
 
+.loadinggif {
+  background: image-url('loading2.gif') no-repeat right 20px center;
+  background-size: 25px 25px;
+}
+
 .disabled-unavailable {
   opacity: 0.65;
 }
@@ -166,4 +171,42 @@ span.canceled {
   .tooltip{
     width: 350px;
   }
+}
+
+#email-pitch-preview, #twitter-pitch-preview {
+  cursor: text;
+}
+
+
+.editable-click, a.editable-click, a.editable-click:hover {
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.editable-parent {
+  background-color: #E8F7FF;
+  padding: 4px;
+}
+
+#summaries li {
+  background-color: #E8F7FF;
+  cursor: pointer;
+}
+
+.make-keyword {
+  display: block;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+// datatables buttons
+.DTTT_container a {
+  background: #006481;
+  color: #ffffff !important;
+  border: 1px solid #006481;
+}
+
+.DTTT_container a:hover {
+  background: #3c9eb6 !important;
+  border: 1px solid #3c9eb6 !important;
 }
