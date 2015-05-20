@@ -1,0 +1,7 @@
+json.id draft_pitch.id
+json.twitter_pitch draft_pitch.twitter_pitch
+json.email_pitch draft_pitch.email_pitch
+json.summary_length draft_pitch.summary_length
+json.email_address draft_pitch.email_address
+json.release_id draft_pitch.release_id
+json.email_subject draft_pitch.email_subject
