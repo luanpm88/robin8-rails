@@ -181,8 +181,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           'First Name', 'Last Name', 'Summary',
           'Outlet', 'Link', 'Title', 'Text'
         ],
-        pitch: this.draftPitchModel
+        pitch: this.getPitchModel()
       }
+    },
+    getPitchModel: function(){
+      var firstName = Robin.currentUser.get('first_name');
+      var emailPitch = this.model.get('email_pitch');
+      
+      if (!s.isBlank(firstName))
+        emailPitch = emailPitch.replace('@[UserFirstName]', (",<br />" + firstName));
+      else
+        emailPitch = emailPitch.replace('@[UserFirstName]', '');
+      
+      this.model.set('email_pitch', emailPitch);
+      this.model.set('email_address', Robin.currentUser.get('email'));
+      
+      return this.model;
     },
     onRender: function() {
       var self = this;
