@@ -19,4 +19,25 @@ ActiveAdmin.register User do
     actions
   end
 
+  form do |f|
+    f.inputs "User Details" do
+      f.input :email
+      f.input :password
+      f.input :password_confirmation
+      f.input :remember_created_at
+      f.input :confirmed_at
+      f.input :name
+      f.input :first_name
+      f.input :last_name
+      f.input :company
+      f.input :time_zone
+      f.input :invitation_limit
+      f.input :invited_by_type
+      f.input :is_primary
+      f.input :avatar_url
+    end
+    f.actions
+  end
+
+
 end

@@ -1,18 +1,6 @@
 ActiveAdmin.register Post do
 
-
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # permit_params :list, :of, :attributes, :on, :model
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:permitted, :attributes]
-  #   permitted << :other if resource.something?
-  #   permitted
-  # end
+  permit_params :user_id, :text, :scheduled_date, :social_networks, :performed_at, :shrinked_links
 
   index do
     selectable_column
@@ -27,6 +15,18 @@ ActiveAdmin.register Post do
     column :performed_at
     column :shrinked_links
     actions
+  end
+
+  form do |f|
+    f.inputs "Post" do
+      f.input :user
+      f.input :text
+      f.input :scheduled_date
+      f.input :social_networks_raw, :as => :text
+      f.input :performed_at
+      f.input :shrinked_links
+    end
+    f.actions
   end
 
 end
