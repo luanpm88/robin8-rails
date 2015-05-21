@@ -14,5 +14,24 @@ ActiveAdmin.register Stream do
   #   permitted
   # end
 
+  index do
+    selectable_column
+    id_column
+    column :name
+    column :topics do |my_resource|
+      truncate(my_resource.topics.to_s, omision: "...", length: 40)
+    end
+    column :blogs do |my_resource|
+      truncate(my_resource.blogs.to_s, omision: "...", length: 40)
+    end
+    column :sort_column
+    column :position
+    column :created_at
+    column :updated_at
+    column :published_at
+    column :keywords do |my_resource|
+      truncate(my_resource.keywords.to_s, omision: "...", length: 40)
+    end
+  end
 
 end

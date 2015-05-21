@@ -14,5 +14,19 @@ ActiveAdmin.register Post do
   #   permitted
   # end
 
+  index do
+    selectable_column
+    id_column
+    column :text do |my_resource|
+      truncate(my_resource.text, omision: "...", length: 40)
+    end
+    column :scheduled_date
+    column :created_at
+    column :updated_at
+    column :social_networks
+    column :performed_at
+    column :shrinked_links
+    actions
+  end
 
 end
