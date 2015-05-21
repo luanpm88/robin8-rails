@@ -78,6 +78,10 @@ class PaymentsController < ApplicationController
     errors,resp = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id, current_user.active_subscription.bluesnap_shopper_id, @package.sku_id)
     if errors.blank?
       begin
+        current_user.user_features.joins(:product).where(products: {is_package: true}).each do |user_feature|
+          user_feature.update_attributes(available_count: 0, max_count: 0)
+        end
+
         current_user.active_subscription.update_attributes(
             package_id: @package.id,
             recurring_amount: @package.price
@@ -112,6 +116,10 @@ class PaymentsController < ApplicationController
   def update
     flash[:errors] = BlueSnap::Subscription.update(current_user.active_subscription.bluesnap_subscription_id,current_user.active_subscription.bluesnap_shopper_id, @product.sku_id,params[:code],current_user)
     if flash[:errors].blank?
+      current_user.user_features.joins(:product).where(products: {is_package: true}).each do |user_feature|
+        user_feature.update_attributes(available_count: 0, max_count: 0)
+      end
+
       @subscription = current_user.active_subscription.update_attributes(
           product_id: @product.id,
           recurring_amount: @product.price

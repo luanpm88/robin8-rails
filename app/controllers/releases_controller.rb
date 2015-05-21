@@ -3,7 +3,8 @@ class ReleasesController < ApplicationController
   has_scope :by_news_room
 
   def index
-    releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
+    limit = current_user.user_features.press_release.map(&:max_count).inject{|sum,x| sum + x }
+    releases = params[:public] ? Release.where(news_room_id: params[:id]).limit(limit) : apply_scopes(current_user.releases).limit(limit)
     unless params[:for_blast].blank?
       releases = releases.published
     end

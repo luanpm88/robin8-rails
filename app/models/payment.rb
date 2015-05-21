@@ -20,7 +20,7 @@ class Payment < ActiveRecord::Base
         feature_id: f.id,
         product_id: product.id, #for book keeping
         max_count: product.product_features.where(feature_id: f.id).first.quota,
-        available_count: product.product_features.where(feature_id: f.id).first.quota,
+        available_count: product.product_features.where(feature_id: f.id).first.quota - user.used_count_by_slug(f.slug),
         reset_at: product.product_features.where(feature_id: f.id).first.reset_at #use -ve .. i.e total -=1 And add priority i.e which is used before the other
       )
     end
