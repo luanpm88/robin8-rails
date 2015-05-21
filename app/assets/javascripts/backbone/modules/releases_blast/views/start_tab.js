@@ -35,9 +35,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     },
     standardPressRelease: {
-      min_characters_count: 700,
-      min_words_count: 100,
-      min_sentences_count: 3,
+      min_characters_count: 600,
+      min_words_count: 90,
+      min_sentences_count: 2,
       min_average_characters_count_per_word: 4,
       min_average_words_count_per_sentence: 12
     },
