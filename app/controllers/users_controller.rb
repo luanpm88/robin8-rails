@@ -46,11 +46,17 @@ class UsersController < ApplicationController
     render json: current_user.identities
   end
 
-  def disconnect_social
-    @identity = current_user.identities.where(provider: params[:provider]).first
-    @identity.destroy
+  def get_identities
+    render json: current_user.all_identities
+  end
 
-    render json: current_user.identities
+  def disconnect_social
+    @identity = current_user.identities.find(params[:id])
+    unless @identity.blank?
+      @identity.destroy
+    end
+
+    render json: current_user.all_identities
   end
 
   def manageable_users

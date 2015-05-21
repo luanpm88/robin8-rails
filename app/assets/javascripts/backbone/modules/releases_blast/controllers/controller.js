@@ -74,6 +74,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.module.collection.fetch({reset: true, data: { "for_blast": true}});
       var startTabView = new this.module.StartTabView({
         collection: this.module.collection,
+        pitchModel: this.module.pitchModel,
+        draftPitchModel: this.module.draftPitchModel
       });
       
       this.module.layout.tabContentRegion.show(startTabView);
@@ -82,6 +84,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.module.releasesBlastHeader.set({ level: 2 });
 
       this.module.releaseModel = params.releaseModel;
+      
       var analysisTabView = new this.module.AnalysisTabView({
         model: this.module.releaseModel
       });
@@ -162,6 +165,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       var pitchTabView = new this.module.PitchTabView({
         model: this.module.pitchModel,
+        draftPitchModel: this.module.draftPitchModel,
         releaseModel: this.module.releaseModel
       });
       this.module.layout.tabContentRegion.show(pitchTabView);
@@ -181,6 +185,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       var emailPitchView = new ReleasesBlast.EmailPitchView({
         releaseModel: this.module.releaseModel,
+        draftPitchModel: this.module.draftPitchModel,
         model: this.module.pitchModel
       });
 
@@ -192,6 +197,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       var twitterPitchView = new ReleasesBlast.TwitterPitchView({
         releaseModel: this.module.releaseModel,
+        draftPitchModel: this.module.draftPitchModel,
         model: this.module.pitchModel
       });
 

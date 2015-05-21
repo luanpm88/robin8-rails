@@ -4,6 +4,7 @@ Robin.module("ReleasesBlast", function(ReleasesBlast, Robin, Backbone, Marionett
 
   ReleasesBlast.on("start", function(){
     this.pitchModel = new Robin.Models.Pitch();
+    this.draftPitchModel = new Robin.Models.DraftPitch();
     this.layout = new this.Layout();
     this.controller = new this.Controller();
     this.collection = new Robin.Collections.Releases();

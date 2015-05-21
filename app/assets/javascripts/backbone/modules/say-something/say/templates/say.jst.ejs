@@ -1,16 +1,16 @@
 <form class="navbar-form navbar-left navbar-search navbar-search-sm" role="search">
   <div class="inner-addon right-addon">
-    <i class="fa fa-twitter <%= Robin.identities.twitter == undefined ? 'gray' : '' %>"></i>
-    <i class="fa fa-facebook <%= Robin.identities.facebook == undefined ? 'gray' : '' %>"></i>
-    <i class="fa fa-linkedin <%= Robin.identities.linkedin == undefined ? 'gray' : '' %>"></i>
+    <i class="fa fa-twitter <%= Robin.identities.twitter.length == 0 ? 'gray' : '' %>"></i>
+    <i class="fa fa-facebook <%= Robin.identities.facebook.length == 0 ? 'gray' : '' %>"></i>
+    <i class="fa fa-linkedin <%= Robin.identities.linkedin.length == 0 ? 'gray' : '' %>"></i>
     <input id='text-field' type="text" class="form-control" placeholder="Say something..."/>
   </div>
 </form>
 <form id='createPost' class="navbar-form navbar-left navbar-search navbar-search-lg" role="form" style='z-index: 100'>
   <textarea type="text" class="form-control" id='say-something-field' name='text' placeholder="Say something..."></textarea>
   <span class="label label-success label-sm post-counter" id="say-counter"
-        style="position: absolute; bottom: 50px; right: 13px;">140</span>
-  <div class="post-settings row">
+        style="position: absolute; top: 100px; right: 13px;">140</span>
+  <div class="post-settings row bottom-border-radius">
     <div class="col-xs-4" style="width: 24%; padding-left: 8px;">
       <div class="checkbox">
         <label>
@@ -19,11 +19,11 @@
       </div>
     </div>
     <div class="col-xs-4 social-networks" style="width: 23%; padding-left: 14px;">
-      <a class="btn <%= Robin.identities.twitter == undefined ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="Post to @<%= Robin.identities.twitter != undefined ? Robin.identities.twitter.name : '' %>"><i class="fa fa-twitter"></i></a>
+      <a class="btn twitter <%= Robin.identities.twitter.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="Post to twitter"><i class="fa fa-twitter"></i></a>
       <input type='hidden' value='false' name="twitter" />
-      <a class="btn <%= Robin.identities.facebook == undefined ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="Post to <%= Robin.identities.facebook != undefined ? Robin.identities.facebook.name : '' %> page"><i class="fa fa-facebook"></i></a>
+      <a class="btn facebook <%= Robin.identities.facebook.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="Post to facebook"><i class="fa fa-facebook"></i></a>
       <input type='hidden' value='false' name="facebook" />
-      <a class="btn <%= Robin.identities.linkedin == undefined ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="Post to <%= Robin.identities.linkedin != undefined ? Robin.identities.linkedin.name : '' %> page"><i class="fa fa-linkedin"></i></a>
+      <a class="btn linkedin <%= Robin.identities.linkedin.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="Post to linkedin"><i class="fa fa-linkedin"></i></a>
       <input type='hidden' value='false' name="linkedin" />
     </div>
     <div class="col-xs-4" style="width: 53%;">
@@ -38,6 +38,38 @@
           </span>
         </div>
         <a class="btn btn-danger pull-right btn-sm cancel-schedule" style="margin-left: 6px;"><i class="fa fa-close"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="post-identities row hidden">
+    <div id="twitter-identities" class="hidden" style="min-height: 69px;">
+      <label class="col-lg-4 control-label">Twitter's account(s):</label>
+      <div class="col-lg-8" >
+        <select class="form-control select-identities" name="twitter_ids" multiple="multiple" size="2" >
+          <% _.each(Robin.identities.twitter, function(item){ %>
+            <option value="<%= item.id %>"> <%= item.name %> </option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+    <div id="facebook-identities" class="hidden" style="min-height: 69px;">
+      <label class="col-lg-4 control-label">Facebook's account(s):</label>
+      <div class="col-lg-8" >
+        <select class="form-control select-identities" name="facebook_ids" multiple="multiple" size="2" >
+          <% _.each(Robin.identities.facebook, function(item){ %>
+            <option value="<%= item.id %>"> <%= item.name %> </option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+    <div id="linkedin-identities" class="hidden" style="min-height: 69px;">
+      <label class="col-lg-4 control-label">Linkedin's account(s):</label>
+      <div class="col-lg-8" >
+        <select class="form-control select-identities" name="linkedin_ids" multiple="multiple" size="2" >
+          <% _.each(Robin.identities.linkedin, function(item){ %>
+            <option value="<%= item.id %>"> <%= item.name %> </option>
+          <% }); %>
+        </select>
       </div>
     </div>
   </div>

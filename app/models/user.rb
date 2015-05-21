@@ -180,7 +180,37 @@ class User < ActiveRecord::Base
     identities.where(provider: 'facebook').first
   end
 
-  def twitter_post message
+  def google_identity
+    identities.where(provider: 'google_oauth2').first
+  end
+
+  def twitter_identities
+    identities.where(provider: 'twitter')
+  end
+
+  def linkedin_identities
+    identities.where(provider: 'linkedin')
+  end
+
+  def facebook_identities
+    identities.where(provider: 'facebook')
+  end
+
+  def google_identities
+    identities.where(provider: 'google_oauth2')
+  end
+
+  def all_identities
+    identities_by_providers = {}
+    identities_by_providers[:twitter] = twitter_identities
+    identities_by_providers[:facebook] = facebook_identities
+    identities_by_providers[:google] = google_identities
+    identities_by_providers[:linkedin] = linkedin_identities
+    identities_by_providers 
+  end
+
+  def twitter_post message, identity_id
+    twitter_identity = Identity.find(identity_id)
     unless twitter_identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]
@@ -192,7 +222,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def linkedin_post message
+  def linkedin_post message, identity_id
+    linkedin_identity = Identity.find(identity_id)
     unless linkedin_identity.blank?
       data = { comment: message, visibility: {code: 'anyone'} }
       response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
@@ -203,7 +234,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def facebook_post message
+  def facebook_post message, identity_id
+    facebook_identity = Identity.find(identity_id)
     unless facebook_identity.blank?
       graph = Koala::Facebook::API.new(facebook_identity.token)
       Rails.logger.info graph.inspect

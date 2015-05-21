@@ -5,6 +5,7 @@ class Release < ActiveRecord::Base
   belongs_to :user
   belongs_to :news_room, counter_cache: true
   has_many :pitches
+  has_many :draft_pitches
 
   validates :user_id, presence: true
   validates :title, presence: true

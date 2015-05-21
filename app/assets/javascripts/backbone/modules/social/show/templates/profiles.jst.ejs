@@ -2,58 +2,91 @@
 <p>
   Use Robin8 to manage your social profiles.  Start by linking your Robin8 account to your social profiles so you can easily post or schedule your post (s) directly to your profiles with one click.
 </p>
+<p class='note'>* for adding multiple accounts for one social network you should be signed out from this network in your browser</p>
 <br>
 <ul class="list-group">
-  <li class="list-group-item">
+  <ul class="list-group item <%= Robin.identities.twitter.length == 0 ? "no-padding-bottom" : ""%>">
     <span class="pull-right">
-      <% if (typeof(Robin.identities) === 'undefined' || typeof(Robin.identities.twitter) === 'undefined') {%>
-        <a class="btn btn-xs btn-social btn-twitter" name='twitter'>
-          <i class="fa fa-twitter"></i>
-          Connect Twitter
-        </a>
-      <%} else {%>
-        <i class="fa fa-check"></i> Connected to <a href="<%= Robin.identities.twitter.url%>" target="_blank">@<%= Robin.identities.twitter.name%></a> &bull; <a href="" class='disconnect' name='twitter'>Disconnect</a></span>
-      <%} %>
+      <a class="btn btn-xs btn-social btn-twitter" name='twitter'>
+        <i class="fa fa-twitter"></i>
+        Add
+      </a>
     </span>
-    <span>Twitter</span>
-  </li>
-  <li class="list-group-item">
+    <span class='name'>Twitter</span>
+    <% if (Robin.identities.twitter.length == 0) {%>
+      <li class="identity">
+        <span> There is no accounts </span>
+      </li>
+    <%} else {%>
+      <% $.each(Robin.identities.twitter, function( index, value ) { %>
+        <li class="identity">
+          <a class='link' href="<%= value.url%>" target="_blank">@<%= value.name%></a> 
+          <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
+        </li>
+      <% }) %>
+    <%} %>
+  </ul>
+  <ul class="list-group item <%= Robin.identities.facebook.length == 0 ? "no-padding-bottom" : ""%>">
     <span class="pull-right">
-      <% if (Robin.identities.facebook == undefined) {%>
-        <a class="btn btn-xs btn-social btn-facebook" name='facebook'>
-          <i class="fa fa-facebook"></i>
-          Connect Facebook
-        </a>
-      <%} else {%>
-        <i class="fa fa-check"></i> Connected to <a href="<%= Robin.identities.facebook.url%>" target="_blank"><%= Robin.identities.facebook.name%></a> &bull; <a href="" class='disconnect' name='facebook'>Disconnect</a></span>
-      <%} %>
+      <a class="btn btn-xs btn-social btn-facebook" name='facebook'>
+        <i class="fa fa-facebook"></i>
+        Add
+      </a>
     </span>
-    <span>Facebook</span>
-  </li>
-  <li class="list-group-item">
+    <span class='name'>Facebook</span>
+    <% if (Robin.identities.facebook.length == 0) {%>
+      <li class="identity">
+        <span> There is no accounts </span>
+      </li>
+    <%} else {%>
+      <% $.each(Robin.identities.facebook, function( index, value ) { %>
+        <li class="identity">
+          <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a> 
+          <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
+        </li>
+      <% }) %>
+    <%} %>
+  </ul>
+  <ul class="list-group item <%= Robin.identities.google.length == 0 ? "no-padding-bottom" : ""%>">
     <span class="pull-right">
-      <% if (Robin.identities.google == undefined) {%>
-        <a class="btn btn-xs btn-social btn-google-plus" name='google_oauth2'>
-          <i class="fa fa-google-plus"></i>
-          Connect Google+
-        </a>
-      <%} else {%>
-        <i class="fa fa-check"></i> Connected to <a href="<%= Robin.identities.google.url%>" target="_blank"><%= Robin.identities.google.name%></a> &bull; <a href="" class='disconnect' name='google_oauth2'>Disconnect</a></span>
-      <%} %>
+      <a class="btn btn-xs btn-social btn-google-plus" name='google_oauth2'>
+        <i class="fa fa-google-plus"></i>
+        Add
+      </a>
     </span>
-    <span>Google+</span>
-  </li>
-  <li class="list-group-item">
+    <span class='name'>Google+</span>
+    <% if (Robin.identities.google.length == 0) {%>
+      <li class="identity">
+        <span> There is no accounts </span>
+      </li>
+    <%} else {%>
+      <% $.each(Robin.identities.google, function( index, value ) { %>
+        <li class="identity">
+          <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a> 
+          <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
+        </li>
+      <% }) %>
+    <%} %>
+  </ul>
+  <ul class="list-group item <%= Robin.identities.linkedin.length == 0 ? "no-padding-bottom" : ""%>">
     <span class="pull-right">
-      <% if (Robin.identities.linkedin == undefined) {%>
-        <a class="btn btn-xs btn-social btn-linkedin" name='linkedin'>
-        <i class="fa fa-linkedin"></i>
-          Connect linkedin
-        </a>
-      <%} else {%>
-        <i class="fa fa-check"></i> Connected to <a href="<%= Robin.identities.linkedin.url%>" target="_blank"><%= Robin.identities.linkedin.name%></a> &bull; <a href="" class='disconnect' name='linkedin'>Disconnect</a></span>
-      <%} %>
+      <a class="btn btn-xs btn-social btn-linkedin" name='linkedin'>
+      <i class="fa fa-linkedin"></i>
+        Add
+      </a>
     </span>
-    <span>LinkedIn</span>
-  </li>
+    <span class='name'>LinkedIn</span>
+    <% if (Robin.identities.linkedin.length == 0) {%>
+      <li class="identity">
+        <span> There is no accounts </span>
+      </li>
+    <%} else {%>
+      <% $.each(Robin.identities.linkedin, function( index, value ) { %>
+        <li class="identity">
+          <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a> 
+          <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
+        </li>
+      <% }) %>
+    <%} %>
+  </ul>
 </ul>

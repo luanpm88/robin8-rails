@@ -30,32 +30,32 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       'click a.btn-default': 'showPicker',
       'click a.btn-danger': 'hidePicker',
       'keyup #say-something-field': 'setCounter',
-      'click .social-networks .btn': 'enableSocialNetwork',
-      'click .input-group-addon': 'changeTime'
+      'click .social-networks .btn.twitter': 'enableTwitterNetwork',
+      'click .social-networks .btn.facebook': 'enableFacebookNetwork',
+      'click .social-networks .btn.linkedin': 'enableLinkedinNetwork',
+      'click .input-group-addon': 'changeTime',
+      'select2-close .select-identities': 'afterSelectingIdentity',
+      'select2-removed .select-identities': 'afterRemoveIdentity'
     },
 
     initialize: function() {
       this.model = new Robin.Models.Post();
-      this.socialNetworks = new Robin.Models.SocialNetworks();
-      this.model.set('social_networks', this.socialNetworks);
       this.modelBinder = new Backbone.ModelBinder();
-      this.socialNetworksBinder = new Backbone.ModelBinder();
     },
 
     onRender: function() {
       this.$el.find('.social-networks .btn').tooltip();
 
+      this.$el.find('.select-identities').select2();
+
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
-        shrinked_links: '[name=shrinked_links]'
+        shrinked_links: '[name=shrinked_links]',
+        twitter_ids: '[name=twitter_ids]',
+        facebook_ids: '[name=facebook_ids]',
+        linkedin_ids: '[name=linkedin_ids]'
       };
-      var socialNetworksBindings = {
-        twitter: '[name=twitter]',
-        facebook: '[name=facebook]',
-        linkedin: '[name=linkedin]',
-        // google: '[name=google]'
-      }
 
       this.$el.find("input[type='checkbox']").iCheck({
         checkboxClass: 'icheckbox_square-blue',
@@ -64,11 +64,46 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
       this.ui.minDatePicker.datetimepicker({format: 'MM/DD/YYYY hh:mm A', minDate: moment()});
       this.modelBinder.bind(this.model, this.el, postBindings);
-      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, socialNetworksBindings);
     },
 
     ui:{
       minDatePicker: "#schedule-datetimepicker"
+    },
+
+    afterSelectingIdentity: function() {      
+      var view = this;
+      view.setCounter();
+      view.checkAbilityPosting();
+
+      if (view.$el.find("select[name='twitter_ids']").val() != null) {
+        view.$el.find('.btn.twitter').addClass('btn-primary');
+      }
+
+      if (view.$el.find("select[name='facebook_ids']").val() != null) {
+        view.$el.find('.btn.facebook').addClass('btn-primary');
+      }
+
+      if (view.$el.find("select[name='linkedin_ids']").val() != null) {
+        view.$el.find('.btn.linkedin').addClass('btn-primary');
+      }
+    },
+
+    afterRemoveIdentity: function() {      
+      var view = this;
+      view.setCounter();
+      view.checkAbilityPosting();
+
+      if (view.$el.find("select[name='twitter_ids']").val() == null) {
+        view.$el.find('.btn.twitter').removeClass('btn-primary');
+      }
+
+      if (view.$el.find("select[name='facebook_ids']").val() == null) {
+        view.$el.find('.btn.facebook').removeClass('btn-primary');
+      }
+
+      if (view.$el.find("select[name='linkedin_ids']").val() == null) {
+        view.$el.find('.btn.linkedin').removeClass('btn-primary');
+      }
     },
 
     changeTime: function() {
@@ -95,20 +130,20 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).start();
       var sayText = $("#say-something-field");
       var counter = $("#say-counter");
-      var selectedNetworks = this.model.attributes.social_networks.attributes;
+      // var selectedNetworks = this.model.attributes.social_networks.attributes;
       var limit = 140;
 
       //set character limit
-      if (selectedNetworks.twitter == "true") {
+      if ( $("select[name='twitter_ids']").val() != null ) {
         limit = 140;
         view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
-      } else if (selectedNetworks.linkedin == "true") {
+      } else if ( $("select[name='linkedin_ids']").val() != null ) {
         limit = 689;
         view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
-      } else if (selectedNetworks.facebook == "true") {
+      } else if ( $("select[name='facebook_ids']").val() != null ) {
         limit = 2000;
         view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
-      } else if ( selectedNetworks.twitter != "true" && selectedNetworks.facebook != "true" && selectedNetworks.linkedin != "true" ){
+      } else if ( $("select[name='facebook_ids']").val() == null && $("select[name='twitter_ids']").val() == null && $("select[name='linkedin_ids']").val() == null ){
         limit = 140;
         view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
       }
@@ -182,8 +217,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
     checkAbilityPosting: function(){
       var condition1 = $("#say-something-field").val().length == 0;
-      var condition2 = this.$el.find('.social-networks').find('.btn-primary').length == 0;
-      var condition3 = $("#say-counter").text() < 0;
+      var condition2 = this.$el.find("select.select-identities :selected").length == 0;
+      var condition3 = parseInt($("#say-counter").text()) < 0;
       if (condition1 || condition2 || condition3) {
         $('.post-settings').find('input[type=submit]').addClass('disabled');
       } else {
@@ -197,7 +232,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
       this.$el.find("#submit-post").addClass('disabled');
       var selectedDate = moment($('#scheduled_date').val());
-      this.socialNetworksBinder.copyViewValuesToModel();
+      // this.socialNetworksBinder.copyViewValuesToModel();
       this.modelBinder.copyViewValuesToModel();
       var prgjs = progressJs($("#say-something-field")).setOptions({ theme: 'blackRadiusInputs' }).end();
       if (this.model.attributes.scheduled_date === "" || selectedDate < moment()){
@@ -206,6 +241,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         this.model.attributes.scheduled_date = moment.utc(new Date(this.model.attributes.scheduled_date));
       }
 
+      console.log(this.model.attributes);
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           view.$el.find("#submit-post").removeClass('disabled');
@@ -236,20 +272,53 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       });
     },
 
-    enableSocialNetwork: function(e) {
+    renderSocialButtons: function(btn) {
+      btn.siblings('.btn').removeClass('active');
+
+      if (btn.hasClass('active')) {
+        btn.removeClass('active');
+        $('.post-identities').addClass('hidden');
+      } else {
+        btn.addClass('active');
+        $('.post-identities').removeClass('hidden');
+      }
+
+      if ( $('.post-settings > .social-networks > .btn.active').length > 0 ) {
+        $('.post-settings ').removeClass('bottom-border-radius');
+      } else {
+        $('.post-settings ').addClass('bottom-border-radius');
+      }
+    },
+
+    enableTwitterNetwork: function(e) {
+      $('#facebook-identities').addClass('hidden');
+      $('#linkedin-identities').addClass('hidden');
+      $('#twitter-identities').removeClass('hidden');
+      
       var el = $(e.target);
       var btn = el.closest('.btn');
-      var input = btn.nextAll('input').first();
-      btn.toggleClass('btn-primary');
-      if (input.val() == 'false' || input.val() == '') {
-        input.val('true')
-      } else {
-        input.val('false')
-      }
-      this.socialNetworksBinder.copyViewValuesToModel();
-      this.setCounter();
-      this.checkAbilityPosting();
-    }
+      
+      this.renderSocialButtons(btn);
+    },
 
+    enableFacebookNetwork: function(e) {
+      $('#facebook-identities').removeClass('hidden');
+      $('#linkedin-identities').addClass('hidden');
+      $('#twitter-identities').addClass('hidden');
+      
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      this.renderSocialButtons(btn);
+    },
+
+    enableLinkedinNetwork: function(e) {
+      $('#facebook-identities').addClass('hidden');
+      $('#linkedin-identities').removeClass('hidden');
+      $('#twitter-identities').addClass('hidden');
+      
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      this.renderSocialButtons(btn);
+    }
   });
 });

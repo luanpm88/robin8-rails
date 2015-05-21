@@ -32,18 +32,12 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       this.modelBinder = new Backbone.ModelBinder();
-      this.socialNetworksBinder = new Backbone.ModelBinder();
-      this.socialNetworksBindings = {
-        twitter: '.edit-settings-row [name=twitter]',
-        facebook: '.edit-settings-row [name=facebook]',
-        linkedin: '.edit-settings-row [name=linkedin]',
-        // google: '.edit-settings-row [name=google]'
-      };
+
       this.progressBar = null;
       viewObj = this;
 
       Robin.vent.on("social:networksClicked", function() {
-        if ($('.editable-container').length>0) {
+        if ($('.editable-container').length > 0) {
           Robin.vent.trigger("social:showPosts");
           swal({
             title: "Discard all unsaved changes?",
@@ -84,7 +78,8 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       }).on('shown', function(e, reason) {
         view.$el.find('.edit-post').addClass('disabled');
         view.$el.find('.social-networks a').addClass('disabled');
-        
+        // view.$el.find('#edit-post-textarea').highlightTextarea({color: '#FFC0C0'});
+                
         view.interval = window.setInterval((function() {
           renderedCheckbox = view.$el.find(".editableform #edit-shrink-links")
           if (renderedCheckbox.length != 0) {
@@ -113,13 +108,18 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click #delete-post': 'deletePost',
       'click span.editable': 'editPost',
       'click button[type="submit"]': 'updatePost',
-      'click .social-networks .btn': 'enableSocialNetwork',
-      'click .edit-social-networks .btn': 'editSocialNetwork',
+      // 'click .social-networks .btn': 'enableSocialNetwork',
+      // 'click .edit-social-networks .btn': 'editSocialNetwork',
       'click .edit-post': 'enableEditableMode',
       'ifChanged #edit-shrink-links': 'shrinkLinkProcess',
       'keyup #edit-post-textarea' : 'setCounter',
       'focus #edit-post-textarea': 'setCounter',
-      'focusout #edit-post-textarea': 'hideCounter'
+      'focusout #edit-post-textarea': 'hideCounter',
+      'click .edit-social-networks .btn.twitter': 'enableTwitterNetwork',
+      'click .edit-social-networks .btn.facebook': 'enableFacebookNetwork',
+      'click .edit-social-networks .btn.linkedin': 'enableLinkedinNetwork',
+      'select2-close .select-identities': 'afterSelectingIdentity',
+      'select2-removed .select-identities': 'afterRemoveIdentity'
     },
 
     enableEditableMode: function(e) {
@@ -128,125 +128,54 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.editPost();
     },
 
-    editSocialNetwork: function(e) {
-      var el = $(e.target);
-      var btn = el.closest('.btn');
-      var input = btn.next('input');
-      var oldLimit = this.countLimit(this.model.attributes.social_networks.attributes);
-      var initialSelected = 0;
-      $.each(this.model.attributes.social_networks.attributes, function( index, value ) {
-        if (value == 'true') initialSelected+=1;
-      });
+    renderSocialButtons: function(btn) {
+      btn.siblings('.btn').removeClass('active');
 
-      if (input.val() == 'false' || input.val() == '') {
-        input.val('true')
-      } else if (input.val() == 'true' && initialSelected == 1) {
-        btn.toggleClass('btn-primary');
-        input.val('true');
-        swal({
-          title: "You can not disable this social network",
-          text: "At least one should be selected in order to publish the post!",
-          type: "error",
-          showCancelButton: false,
-          confirmButtonClass: 'btn',
-          confirmButtonText: 'ok'
-        });
+      if (btn.hasClass('active')) {
+        btn.removeClass('active');
+        this.$el.find('.edit-post-identities').addClass('hidden');
       } else {
-        input.val('false')
+        btn.addClass('active');
+        this.$el.find('.edit-post-identities').removeClass('hidden');
       }
 
-      var networksTemporary = new Object;
-      var inputs = this.$el.find('.editable-input .edit-social-networks input');
-      $.each(inputs, function(index, value) {
-        networksTemporary[value.name] = value.value;
-      });
-      var newLimit = this.countLimit(networksTemporary);
-      var textLength  = this.$el.find('#edit-post-textarea').val().length;
-      var viewObj = this;
-
-      if (textLength > newLimit) {
-        swal({
-          title: "Trim the message?",
-          text: "Your message exceeds the limit of one of the selected social networks (" + textLength + "/" + newLimit + "). Proceed and trim the message? NOTE: This can not be undone!",
-          type: "error",
-          showCancelButton: true,
-          confirmButtonClass: 'btn-danger',
-          confirmButtonText: 'Trim the message'
-        },
-        function(isConfirm) {
-          if (isConfirm) {
-            btn.toggleClass('btn-primary');
-            viewObj.socialNetworksBinder.copyViewValuesToModel();
-            viewObj.setCounter();
-          }
-        });
+      if ( this.$el.find('.edit-settings-row > .edit-social-networks > .btn.active').length > 0 ) {
+        this.$el.find('.edit-settings-row ').removeClass('bottom-border-radius');
       } else {
-        btn.toggleClass('btn-primary');
-        this.socialNetworksBinder.copyViewValuesToModel();
-        this.setCounter();
+        this.$el.find('.edit-settings-row ').addClass('bottom-border-radius');
       }
     },
 
-    enableSocialNetwork: function(e) {
-      var initialSelected = 0;
-      $.each(this.model.attributes.social_networks, function( index, value ) {
-        if (value == 'true') initialSelected+=1;
-      });
-
+    enableTwitterNetwork: function(e) {
+      this.$el.find('#facebook-identities').addClass('hidden');
+      this.$el.find('#linkedin-identities').addClass('hidden');
+      // this.$el.find('#twitter-identities')
+      this.$el.find('#twitter-identities').removeClass('hidden');
+      
       var el = $(e.target);
       var btn = el.closest('.btn');
-
-      var provider = $(btn).data('provider');
-      var tempNetworks = (new Robin.Models.SocialNetworks(this.model.get('social_networks'))).attributes;
-      var providerValue = tempNetworks[provider];
-      var oldLimit = this.countLimit(tempNetworks);
-
-      if (providerValue == 'false' || providerValue == '') {
-        tempNetworks[provider] = 'true';
-      } else if (providerValue == 'true' && initialSelected == 1) {
-        tempNetworks[provider] = 'true';
-        swal({
-          title: "You can not disable this social network",
-          text: "At least one should be selected in order to publish the post!",
-          type: "error",
-          showCancelButton: false,
-          confirmButtonClass: 'btn',
-          confirmButtonText: 'ok'
-        });
-      } else {
-        tempNetworks[provider] = 'false';
-      } 
-
-      var view = this;
-      var newLimit = this.countLimit(tempNetworks);
       
-      var textLength = this.model.attributes.text.length;
+      this.renderSocialButtons(btn);
+    },
 
-      if (textLength > newLimit && newLimit > 0) {
-        var trimmedText = this.model.attributes.text.substring(0, newLimit)
-        swal({
-          title: "Trim the message?",
-          text: "Your message exceeds the limit of one of the selected social networks (" + textLength + "/" + newLimit + "). Proceed and trim the message? NOTE: This can not be undone!",
-          type: "error",
-          showCancelButton: true,
-          confirmButtonClass: 'btn-danger',
-          confirmButtonText: 'Trim the message'
-        },
-        function(isConfirm) {
-          if (isConfirm) {
-            view.model.attributes.text = trimmedText;
-            view.model.attributes.social_networks[provider] = tempNetworks[provider];
-            view.model.updateSocial(view.model.attributes.social_networks);
-            view.updatePost();
-          }
-        });
-      } else {
-        var view = this;
-        view.model.attributes.social_networks[provider] = tempNetworks[provider];
-        view.model.updateSocial(view.model.attributes.social_networks).done(function(data){
-          view.render();
-        });
-      }
+    enableFacebookNetwork: function(e) {
+      this.$el.find('#facebook-identities').removeClass('hidden');
+      this.$el.find('#linkedin-identities').addClass('hidden');
+      this.$el.find('#twitter-identities').addClass('hidden');
+      
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      this.renderSocialButtons(btn);
+    },
+
+    enableLinkedinNetwork: function(e) {
+      this.$el.find('#facebook-identities').addClass('hidden');
+      this.$el.find('#linkedin-identities').removeClass('hidden');
+      this.$el.find('#twitter-identities').addClass('hidden');
+      
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      this.renderSocialButtons(btn);
     },
 
     shrinkLinkProcess: function(e) {
@@ -314,26 +243,33 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     editPost: function() {
-      var row = this.$el.find('.edit-settings-row').clone();
-      row.removeClass('hidden');
-      this.$el.find('textarea').parent().append(row);
+      this.row = this.$el.find('.edit-settings-row').clone();
+      this.rowIdentities = this.$el.find('.template-post-identities').clone();
+      this.row.removeClass('hidden');
+      this.rowIdentities.removeClass('hidden');
+      this.rowIdentities.removeClass('template-post-identities');
+      this.rowIdentities.addClass('edit-post-identities');
+      
+      this.$el.find('textarea').parent().append(this.row);
+      this.$el.find('textarea').parent().append(this.rowIdentities);
       this.$el.find('textarea').attr('name', 'text');
       this.$el.find('textarea').attr('id', 'edit-post-textarea');
       this.$el.find('textarea').width("600px");
-      this.socialNetworks = new Robin.Models.SocialNetworks(this.model.get('social_networks'));
-      this.model.set('social_networks', this.socialNetworks);
-
+      
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
-        shrinked_links: '[name=shrinked_links]'
+        shrinked_links: '[name=shrinked_links]',
+        twitter_ids: '[name=twitter_ids]',
+        facebook_ids: '[name=facebook_ids]',
+        linkedin_ids: '[name=linkedin_ids]'
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
-      this.socialNetworksBinder.bind(this.model.get('social_networks'), this.el, this.socialNetworksBindings);
+      this.rowIdentities.find('.select-identities').select2();
 
       //Counter here
-      var selectedNetworks = this.socialNetworks.attributes;
-      var limit = this.countLimit(selectedNetworks);
+      // var selectedNetworks = this.socialNetworks.attributes;
+      var limit = this.countLimit();
       var counter = this.$el.find('.post-counter');
       var charsLeft = limit - this.$el.find('textarea').val().length
       counter.text(charsLeft);
@@ -351,7 +287,19 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     updatePost: function() {
       var view = this;
-      view.socialNetworksBinder.copyViewValuesToModel();
+      if (view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='facebook_ids']").val() == null 
+          && view.rowIdentities.find("select[name='linkedin_ids']").val() == null) {
+        swal({
+          title: "You can not update post without enabled social networks",
+          text: "At least one should be selected in order to publish the post!",
+          type: "error",
+          showCancelButton: false,
+          confirmButtonClass: 'btn',
+          confirmButtonText: 'ok'
+        });
+        return false;
+      };
+
       view.modelBinder.copyViewValuesToModel();
 
       view.model.attributes.scheduled_date = moment(new Date(view.model.attributes.scheduled_date));
@@ -373,15 +321,48 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
+    afterSelectingIdentity: function() {      
+      var view = this;
+      view.setCounter();
+
+      if (view.rowIdentities.find("select[name='twitter_ids']").val() != null) {
+        view.row.find('.btn.twitter').addClass('btn-primary');
+      }
+
+      if (view.rowIdentities.find("select[name='facebook_ids']").val() != null) {
+        view.row.find('.btn.facebook').addClass('btn-primary');
+      }
+
+      if (view.rowIdentities.find("select[name='linkedin_ids']").val() != null) {
+        view.row.find('.btn.linkedin').addClass('btn-primary');
+      }
+    },
+
+    afterRemoveIdentity: function() {      
+      var view = this;
+      view.setCounter();
+
+      if (view.rowIdentities.find("select[name='twitter_ids']").val() == null) {
+        view.row.find('.btn.twitter').removeClass('btn-primary');
+      }
+
+      if (view.rowIdentities.find("select[name='facebook_ids']").val() == null) {
+        view.row.find('.btn.facebook').removeClass('btn-primary');
+      }
+
+      if (view.rowIdentities.find("select[name='linkedin_ids']").val() == null) {
+        view.row.find('.btn.linkedin').removeClass('btn-primary');
+      }
+    },
+
     setCounter: function() {
       var sayText = this.$el.find("#edit-post-textarea");
       var counter = this.$el.find('div.edit-settings-row:nth-child(2)').find('#edit-counter');
       var prgjs = progressJs(sayText).setOptions({ theme: 'blackRadiusInputs' }).start();
       var limit = 140;
-      var selectedNetworks = this.model.attributes.social_networks.attributes;
 
       //set character limit
-      limit = this.countLimit(selectedNetworks);
+      limit = this.countLimit();
       var charsLeft = limit - sayText.val().length;
       counter.text(charsLeft);
 
@@ -410,17 +391,25 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       var prgjs = progressJs(this.$el.find("#edit-post-textarea")).setOptions({ theme: 'blackRadiusInputs' }).end();
     },
 
-    countLimit: function(networks) {
+    countLimit: function() {
+      var view = this;
+      view.$el.find('#edit-post-textarea').highlightTextarea({color: '#FFC0C0'});
       var limit;
-      if (networks.twitter == "true") {
+      
+      if ( view.rowIdentities.find("select[name='twitter_ids']").val() != null ) {
         limit = 140;
-      } else if (networks.linkedin == "true") {
+        view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
+      } else if ( view.rowIdentities.find("select[name='linkedin_ids']").val() != null ) {
         limit = 689;
-      } else if (networks.facebook == "true") {
+        view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
+      } else if ( view.rowIdentities.find("select[name='facebook_ids']").val() != null ) {
         limit = 2000;
-      } else {
-        limit = 0;
+        view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
+      } else if ( view.rowIdentities.find("select[name='facebook_ids']").val() == null && view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='linkedin_ids']").val() == null ){
+        limit = 140;
+        view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
       }
+
       return limit
     }
 

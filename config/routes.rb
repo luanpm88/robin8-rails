@@ -4,10 +4,14 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   mount Sidekiq::Web => '/sidekiq'
-  devise_for :users, controllers: { sessions: "users/sessions",
-                                    registrations: "users/registrations", passwords: "users/passwords",
-                                    invitations: "users/invitations",  omniauth_callbacks: "users/omniauth_callbacks",
-                                    confirmations: "users/confirmations" }
+  devise_for :users, controllers: {
+    sessions: "users/sessions",
+    registrations: "users/registrations",
+    passwords: "users/passwords",
+    invitations: "users/invitations",
+    omniauth_callbacks: "users/omniauth_callbacks",
+    confirmations: "users/confirmations"
+  }
 
   get 'pricing' => 'pages#pricing'
   get 'subscribe/:slug' => 'payments#new'
@@ -46,6 +50,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       get 'identities'
+      get 'get_identities'
       get 'info'
     end
   end
@@ -68,6 +73,7 @@ Rails.application.routes.draw do
   resources :media_lists, only: [:index, :create, :show, :destroy]
   resources :contacts, only: [:index, :create, :show]
   resources :pitches, only: [:index, :create, :show]
+  resources :draft_pitches
   resources :pitches_contacts, only: [:index, :create, :show, :destroy]
   resources :iptc_categories, only: [:index]
   resources :export_influencers, only: [:create]
