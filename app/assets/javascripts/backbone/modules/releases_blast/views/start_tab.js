@@ -35,9 +35,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     },
     standardPressRelease: {
-      min_characters_count: 1000,
-      min_words_count: 200,
-      min_sentences_count: 7,
+      min_characters_count: 700,
+      min_words_count: 100,
+      min_sentences_count: 3,
       min_average_characters_count_per_word: 4,
       min_average_words_count_per_sentence: 12
     },
@@ -84,12 +84,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       var the_release = this.collection.findWhere({id: releaseId});
       
-      if (the_release.get('characters_count') > this.standardPressRelease.min_characters_count &&
-        the_release.get('words_count') > this.standardPressRelease.min_words_count &&
-        the_release.get('sentences_count') > this.standardPressRelease.min_sentences_count &&
-        the_release.get('average_characters_count_per_word') >
+      if (the_release.get('characters_count') >= this.standardPressRelease.min_characters_count &&
+        the_release.get('words_count') >= this.standardPressRelease.min_words_count &&
+        the_release.get('sentences_count') >= this.standardPressRelease.min_sentences_count &&
+        the_release.get('average_characters_count_per_word') >=
           this.standardPressRelease.min_average_characters_count_per_word &&
-        the_release.get('average_words_count_per_sentence') >
+        the_release.get('average_words_count_per_sentence') >=
           this.standardPressRelease.min_average_words_count_per_sentence){
         
         // Find or create DraftPitch
