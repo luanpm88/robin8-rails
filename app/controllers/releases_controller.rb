@@ -92,4 +92,8 @@ class ReleasesController < ApplicationController
       :nouns_count, :organizations_count, :places_count, :people_count,
       attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy])
   end
+  
+  def ssl_configured?
+    !Rails.env.development? && action_name != 'show'
+  end
 end
