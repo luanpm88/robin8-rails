@@ -173,6 +173,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
+      this.draftPitchModel = options.draftPitchModel;
     },
     serializeData: function() {
       return {
@@ -201,7 +202,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       this.initWysihtml5();
       this.ui.summarySlider.slider({
-        value: self.model.get('summary_length'), 
+        value: self.draftPitchModel.get('summary_length'), 
         min: 1,
         max: 10,
         step: 1,
@@ -301,16 +302,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       e.preventDefault();
       
       this.ui.textarea.caret('@[' + e.target.textContent + '] ');
+      this.ui.textarea.trigger('change');
       this.previewPitchText();
     },
     addHashTag: function(e) {
       e.preventDefault();
       
       this.ui.textarea.caret(e.target.textContent + ' ');
+      this.ui.textarea.trigger('change');
       this.previewPitchText();
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
+      this.draftPitchModel = options.draftPitchModel;
     },
     onRender: function(){
       this.previewPitchText();
@@ -319,11 +323,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return {
         hashTags: this.releaseModel.get('hashtags'),
         mergeTags: ['Handle', 'Name', 'Random Greeting', 'Link'],
-        pitch: this.model
+        pitch: this.draftPitchModel
       }
     },
     twitterPitchTextChanged: function(e){
       this.model.set("twitter_pitch", this.ui.textarea.val());
+      
       this.previewPitchText();
     },
     previewPitchText: function(){
@@ -375,6 +380,23 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
+      this.draftPitchModel = options.draftPitchModel;
+      this.model.on('change', this.updatePitchModel, this);
+    },
+    updatePitchModel: function(){
+      var self = this;
+      this.draftPitchModel.set({
+        twitter_pitch: self.model.get('twitter_pitch'),
+        email_pitch: self.model.get('email_pitch'),
+        summary_length: self.model.get('summary_length'),
+        email_address: self.model.get('email_address'),
+        email_subject: self.model.get('email_subject')
+      });
+      
+      clearInterval(this.timer);
+      this.timer = setTimeout(function(){
+        self.draftPitchModel.save();
+      }, 1000);
     },
     contactRemovedFromPitch: function(){
       if (this.model.get('contacts').length === 0 )
@@ -394,15 +416,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     savePitch: function(){
       var self = this;
+      self.model.off("change", self.updatePitchModel);
+      self.ui.pitchButton.prop('disabled', true);
       
-      this.model.set('release_id', this.releaseModel.id);
-      this.model.set('twitter_targets', this.getTwitterTargets());
-      this.model.set('email_targets', this.getEmailTargets());
+      self.model.set('twitter_targets', self.getTwitterTargets());
+      self.model.set('email_targets', self.getEmailTargets());
       
-      this.model.save({}, {
+      self.model.save({}, {
         success: function(model, response, options){
-          self.ui.pitchButton.prop('disabled', true);
           self.model.set('sent', true);
+          self.draftPitchModel.destroy({
+            data: { release_id: self.draftPitchModel.get('release_id') },
+            processData: true
+          });
           
           $.growl({message: "Your pitch has been successfully sent."
           },{
@@ -410,6 +436,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           });
         },
         error: function(model, response, options){
+          self.model.on("change", self.updatePitchModel);
+          self.ui.pitchButton.prop('disabled', false);
+          
           _(response.responseJSON).each(function(val, key){
             $.growl({message: self.errorFields[key] + ' ' + val[0]
             },{

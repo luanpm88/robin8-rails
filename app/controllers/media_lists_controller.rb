@@ -20,11 +20,11 @@ class MediaListsController < ApplicationController
   # POST /media_lists
   # POST /media_lists.json
   def create
+    @media_list = current_user.media_lists.new(media_list_params)
+    
     unless media_list_params['attachment'].blank?
-      @media_list = current_user.media_lists.new(media_list_params)
       @media_list.name = media_list_params['attachment'].original_filename
     else
-      @media_list = current_user.media_lists.new(media_list_params)
       @media_list.contacts = Contact.bulk_find_or_create(params['media_contacts'])
     end
     
