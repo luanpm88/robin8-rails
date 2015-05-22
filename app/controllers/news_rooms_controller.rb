@@ -1,6 +1,7 @@
 require 'mailgun'
 class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
+  
   def index
     set_paginate_headers NewsRoom, current_user.news_rooms.count
     render json: current_user.news_rooms.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: NewsRoomSerializer
@@ -88,5 +89,9 @@ private
       :job_title, :facebook_link, :twitter_link, :linkedin_link, :instagram_link, :tags, :subdomain_name, :logo_url,
       :toll_free_number, :publish_on_website, attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy],
       industry_ids: [])
+  end
+  
+  def ssl_configured?
+    !Rails.env.development? && !['preview', 'presskit', 'follow'].include?(action_name)
   end
 end
