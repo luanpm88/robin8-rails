@@ -82,6 +82,20 @@ class ReleasesController < ApplicationController
     render json: release
   end
 
+  def img_url_exist
+    result = false
+    begin
+      uri = URI(params[:url])
+      request = Net::HTTP.new uri.host
+      response = request.request_head uri.path
+      if response.code.to_i  < 400 && response['content-type'].start_with?('image')
+        result = true
+      end
+    rescue
+    end
+    render json: result
+  end
+
   private
 
   def release_params
