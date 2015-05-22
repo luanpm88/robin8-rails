@@ -45,7 +45,7 @@ class ReleaseSerializer < ActiveModel::Serializer
   end
   
   def average_characters_count_per_word
-    if object.words_count != 0
+    if !object.words_count.nil? && object.words_count != 0 
       object.characters_count / object.words_count
     else
       0
@@ -53,7 +53,7 @@ class ReleaseSerializer < ActiveModel::Serializer
   end
   
   def average_words_count_per_sentence
-    if object.sentences_count != 0
+    if !object.sentences_count.nil? && object.sentences_count != 0
       object.words_count / object.sentences_count
     else
       0

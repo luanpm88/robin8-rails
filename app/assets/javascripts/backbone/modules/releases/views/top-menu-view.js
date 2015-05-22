@@ -45,6 +45,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     uploadDirectImage: function(e) {
       var view = this;
       uploadcare.openDialog(null, {
+        tabs: 'file',
         multiple: false,
         imagesOnly: true
         }).done(function(file) {
@@ -70,15 +71,16 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     uploadDirectVideo: function(e) {
       var view = this;
       uploadcare.openDialog(null, {
+        tabs: 'file',
+        inputAcceptTypes: 'video/*',
         multiple: false,
-        fileTypes: "mp3"
         }).done(function(file) {
-            file.done(function(fileInfo) {
-              view.ui.wysihtml5.data('wysihtml5').editor.focus();
-              view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertVideo", fileInfo.originalUrl);
-            });
+          file.done(function(fileInfo) {
+            view.ui.wysihtml5.data('wysihtml5').editor.focus();
+            view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertHTML", "<video width="+550+" class='video-js vjs-default-skin' controls='auto' preload='auto' data-setup='{}'> <source src='" + fileInfo.originalUrl + "'></video>");
+          });
         }).fail(function(error, fileInfo) {
-            console.log(error);
+          console.log(error);
         });
       return false;
     },
@@ -199,6 +201,75 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           word: customTemplates.word,
           directImage: customTemplates.directImage,
           directVideo: customTemplates.directVideo,
+        },
+        parserRules: {
+          tags: {
+                "b":  {},
+                "i":  {},
+                "br": {},
+                "ol": {},
+                "ul": {},
+                "li": {},
+                "h1": {},
+                "h2": {},
+                "h3": {},
+                "h4": {},
+                "h5": {},
+                "h6": {},
+                "video": {
+                    "check_attributes": {
+                        "controls": "any", 
+                        "preload": "any",
+                        "class": "any",
+                        "width": "any",
+                    }},
+                "source": {
+                    "check_attributes": {
+                        "src": "any", /* Needed for data:image/jpeg;base64 type */
+                    }},
+                "blockquote": {},
+                "u": 1,
+                "img": {
+                    "check_attributes": {
+                        "width": "numbers",
+                        "alt": "alt",
+                        "src": "any", /* Needed for data:image/jpeg;base64 type */
+                        "height": "numbers",
+                        "title": "alt"
+                    }
+                },
+                "a":  {
+                    check_attributes: {
+                        'href': "src", // use 'url' to avoid XSS
+                        'target': 'alt',
+                        'rel': 'alt'
+                    }
+                },
+                "iframe": {
+                    "check_attributes": {
+                        "src":"any",
+                        "width":"numbers",
+                        "height":"numbers"
+                    },
+                    "set_attributes": {
+                        "frameborder":"0"
+                    }
+                },
+                "p": 1,
+                "span": 1,
+                "div": 1,
+                "table": 1,
+                "tbody": 1,
+                "thead": 1,
+                "tfoot": 1,
+                "tr": 1,
+                "th": 1,
+                "td": 1,
+                // to allow save and edit files with code tag hacks
+                "code": 1,
+                "pre": 1,
+                "style": 1
+            }
         },
         'image': false,
         'video': false,
