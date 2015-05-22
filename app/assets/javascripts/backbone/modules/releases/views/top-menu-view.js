@@ -61,11 +61,20 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     uploadUrlImage: function(e) {
       var view = this;
       var url = prompt("Please paste you image's url");
-      if (url) {
-        window.setTimeout(function() {
-          view.ui.wysihtml5.data('wysihtml5').editor.focus();
-          view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: url});
-        }, 200);
+      if(url){
+        $.get( "/releases/img_url_exist?url=" + url, function( data ) {
+          if (data) {
+            window.setTimeout(function() {
+              view.ui.wysihtml5.data('wysihtml5').editor.focus();
+              view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: url});
+            }, 200);
+          }
+          else{
+            $.growl("Invalid url!", {
+                type: "info",
+            });
+          }
+        });
       }
     },
     uploadDirectVideo: function(e) {

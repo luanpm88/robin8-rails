@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   resources :industries, only: :index
   resources :releases do
     post 'extract_from_word', on: :collection
+    get 'img_url_exist', on: :collection
   end
   resources :users do
     collection do
