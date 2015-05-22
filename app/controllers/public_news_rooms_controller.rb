@@ -26,4 +26,9 @@ class PublicNewsRoomsController < ApplicationController
     @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
   end
 
+  private
+  
+  def ssl_configured?
+    false
+  end
 end
