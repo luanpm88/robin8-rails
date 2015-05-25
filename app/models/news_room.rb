@@ -14,7 +14,7 @@ class NewsRoom < ActiveRecord::Base
   has_many :followers, dependent: :destroy
   has_one :preview_news_room, foreign_key: :parent_id, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
-  # after_create :decrease_feature_number, :set_campaign_name, :create_campaign
+  after_create :decrease_feature_number, :set_campaign_name, :create_campaign
   after_destroy :increase_feature_numner, :delete_campaign
 
   validates :company_name, presence: true
@@ -93,14 +93,14 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def set_campaign_name
-      self.campaign_name = self.id
+      self.campaign_name = "#{self.id}-#{Rails.env}"
       self.save
     end
 
     def create_campaign
       mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
       domain = Rails.application.secrets.mailgun[:domain]
-      mg_client.post("#{domain}/campaigns", { id: self.id, name: self.id })
+      mg_client.post("#{domain}/campaigns", { id: self.campaign_name, name: self.campaign_name })
     end
 
     def decrease_feature_number
