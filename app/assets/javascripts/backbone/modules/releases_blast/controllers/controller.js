@@ -69,16 +69,20 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     start: function(params){
-      this.module.releasesBlastHeader.set({ level: 1 });
-      
       this.module.collection.fetch({reset: true, data: { "for_blast": true}});
       var startTabView = new this.module.StartTabView({
         collection: this.module.collection,
         pitchModel: this.module.pitchModel,
         draftPitchModel: this.module.draftPitchModel
       });
+
+      if (Robin.releaseForBlast != undefined) {
+        this.module.releasesBlastHeader.set({ level: 2 });
+      } else {
+        this.module.releasesBlastHeader.set({ level: 1 });
+        this.module.layout.tabContentRegion.show(startTabView);
+      };
       
-      this.module.layout.tabContentRegion.show(startTabView);
     },
     analysis: function(params){
       this.module.releasesBlastHeader.set({ level: 2 });
