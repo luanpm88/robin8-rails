@@ -15,7 +15,7 @@ Robin.Collections.RelatedStories = Backbone.Collection.extend({
       data: {
         id: this.author_id,
         title: this.releaseModel.get("title"), 
-        body: this.releaseModel.get("text"),
+        body: this.releaseModel.get("plain_text"),
         "iptc_categories[]": this.releaseModel.get("iptc_categories"),
         per_page: 3
       },
