@@ -4,7 +4,9 @@ class NewsRoomsController < ApplicationController
   def index
     limit = current_user.user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
     set_paginate_headers NewsRoom, current_user.news_rooms.count
-    render json: current_user.news_rooms.order('created_at DESC').limit(limit).paginate(page: params[:page], per_page: params[:per_page]), each_serializer: NewsRoomSerializer
+    per_page = limit < params[:per_page].to_i ? limit : params[:per_page].to_i
+    
+    render json: current_user.news_rooms.order('created_at DESC').limit(limit).paginate(page: params[:page], per_page: per_page), each_serializer: NewsRoomSerializer
   end
 
   def create
