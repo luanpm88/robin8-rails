@@ -12,11 +12,11 @@
 # end
 
 every 12.hours do
-  runner "Subscription.process_recurring_invoice"
+  runner "UserProduct.process_recurring_invoice"
 end
 
 every 1.days do
-  runner "Subscription.batch_suspend"
+  runner "UserProduct.batch_suspend"
 end
 
 # every 4.days do
