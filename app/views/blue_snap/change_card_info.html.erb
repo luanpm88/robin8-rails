@@ -1,0 +1,193 @@
+<div class="signup">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Update payment information"}%>
+  </header>
+  
+  <%= form_tag({controller: "blue_snap", action: "update_card_info"}, method: "post", class: "payment ", :id=>"edit-card-form") do |f|  %>
+    <div class="form-step step3">
+
+        <div id="errors">
+          <%=flash[:errors] if flash[:errors].present?%>
+        </div>
+
+        <div class="signup-footer ftform edit" id="checkoutdata">
+
+
+          <div class="row">
+            <div class="small-12 columns">
+              <h3>Enter new Credit Card Information below </h3>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-2 medium-2 large-2 columns custom-padding">
+              <label>Title
+                <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "select-checkout"} %>
+              </label>
+            </div>
+
+            <div class="small-10 medium-5 large-5 columns custom-padding">
+              <label>First Name
+                <%=text_field "contact", "first_name", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "First name can't be blank"%>
+              </label>
+            </div>
+
+            <div class="small-12 medium-5 large-5 columns custom-padding">
+              <label>Last Name
+                <%=text_field "contact", "last_name", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Last name can't be blank" %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 columns custom-padding">
+              <label>Phone
+                <%=text_field "contact", "phone", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Phone can't be blank","data-validation"=>"number" %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 medium-6 large-8 columns custom-padding">
+              <label>Address
+                <%=text_field "contact", "address1", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Address can't be blank" %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-6 large-4 columns custom-padding">
+              <label>City
+                <%=text_field "contact", "city", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "City can't be blank"
+                %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 medium-4 large-4 columns custom-padding">
+              <label>State
+                <%=text_field "contact", "state", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "State can't be blank",:placeholder => "NY" %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-4 large-3 columns custom-padding">
+              <label>Postal Code
+                <%=text_field "contact", "zip", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Postal Code/Zip can't be blank" %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-4 large-5 columns custom-padding">
+              <label>Country
+                <%=select_tag "contact[country]",options_for_select(Country.all.sort),{:class=>"select-checkout"}%>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 medium-12 large-4 columns custom-padding">
+              <label>Credit Card Type
+                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'amex'],["Discover", 'discover'],["JCB","jcb"] ], {}, {:class => "select-checkout"} %>
+              </label>
+            </div>
+
+            <div class="small-8 medium-8 large-5 columns custom-padding">
+              <label>Credit Card Number
+                <%=text_field "card", "credit_card_number", :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Card number can't be blank","data-validation"=>"number" %>
+              </label>
+            </div>
+
+            <div class="small-4 medium-4 large-3 columns custom-padding">
+              <label>CVV
+                <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
+                              "data-validation"=>"length", "data-validation-length"=>"min2",
+                              "data-validation-error-msg"=> "CVV must be greater then 2 characters","data-validation"=>"number"%>
+              </label>
+            </div>
+
+
+          </div>
+          <div class="row">
+            <div class="small-6 medium-6 large-3 columns custom-padding">
+              <label>Exp. Month
+                <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Expiry Month can't be blank","data-validation"=>"number"  %>
+              </label>
+            </div>
+            <div class="small-6 medium-6 large-3 columns left custom-padding">
+              <label>Exp. Year
+                <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Expiry Year can't be blank and must be in YYYY format", "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
+              </label>
+            </div>
+          </div>
+
+          <div class="row formdisclaimers">
+            <div class="small-12 columns">
+              <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days). <br />All prices in US Dollars.</p>
+
+              <%if @product.present?%>
+                  <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @product.try(:interval).to_i.days %></span></p>
+              <%end%>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 columns">
+              <div class="submit-wrap edit-card">
+                <a href="/#billing" class="button button-signup nextstep" id="go-back"><<< BACK</a>
+                <%= submit_tag "SUBMIT", :class=>"button button-signup nextstep" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <%end%>
+
+  <style>
+    .ui-selectmenu-button {
+        margin-top:10px;
+    }
+    .ui-selectmenu-menu .ui-menu{
+        max-height: 200px;
+    }
+    .signup-footer.ftform .ui-selectmenu-button {
+        background: none repeat scroll 0 0 transparent;
+        border: 1px solid #ffffff;
+        color: #ffffff;
+        height: 40px!important;
+        margin-top: 10px;
+    }
+    .form-error{
+        font-size: 15px;
+        color: #FF0000;
+        vertical-align:top;
+    }
+    .signup form .signup-footer.ftform label input {
+        margin-bottom: 5px;
+    }
+    .custom-padding {
+        margin-bottom: 25px;
+    }
+  </style>
+
+  <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
+  <script>
+    $.validate();
+    $(document).ready(function(){
+        if( !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $( ".select-checkout" ).selectmenu();
+        }
+    });
+    BlueSnap.publicKey = '<%=Rails.application.secrets[:bluesnap][:public_key]%>';
+    BlueSnap.setTargetFormId("edit-card-form");
+  </script>
+
+</div>
