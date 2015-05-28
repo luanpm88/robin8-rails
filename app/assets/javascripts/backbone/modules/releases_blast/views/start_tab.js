@@ -21,6 +21,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     onRender: function(){
       var view = this;
+      view.$el.find(".releases").select2({
+        minimumResultsForSearch: Infinity
+      });
       view.$el.find(".releases").prop('disabled', true);
       if (view.collection.length > 0) {
         view.$el.find(".releases").removeClass('loadinggif');
