@@ -1,4 +1,4 @@
-describe('Robin.Routers.AppRouter routes', function() {
+describe('Robin.Routers.AppRouter appRoutes', function() {
 
   beforeEach(function() {
     try {
