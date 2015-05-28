@@ -7,12 +7,7 @@
   <%= form_tag({controller: "blue_snap", action: "update_card_info"}, method: "post", class: "payment ", :id=>"edit-card-form") do |f|  %>
     <div class="form-step step3">
 
-        <div id="errors">
-          <%=flash[:errors] if flash[:errors].present?%>
-        </div>
-
         <div class="signup-footer ftform edit" id="checkoutdata">
-
 
           <div class="row">
             <div class="small-12 columns">
@@ -131,8 +126,6 @@
 
           <div class="row formdisclaimers">
             <div class="small-12 columns">
-              <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days). <br />All prices in US Dollars.</p>
-
               <%if @product.present?%>
                   <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @product.try(:interval).to_i.days %></span></p>
               <%end%>
