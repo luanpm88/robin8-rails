@@ -9,7 +9,7 @@ class ReleasesController < ApplicationController
       releases = releases.published
     end
     set_paginate_headers Release, releases.count
-    per_page = limit < params[:per_page].to_i ? limit : params[:per_page].to_i
+    per_page = (limit < params[:per_page].to_i || params[:per_page].nil?) ? limit : params[:per_page].to_i
 
     render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: per_page), each_serializer: ReleaseSerializer
   end
