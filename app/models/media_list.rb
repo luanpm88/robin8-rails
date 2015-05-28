@@ -27,14 +27,16 @@ class MediaList < ActiveRecord::Base
   end
 
   def decrease_feature_number
-    uf = needed_user.user_features.media_monitoring.available.first
+    af = needed_user.user_features.personal_media_list.available.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.personal_media_list.available.first : af
     return false if uf.blank?
     uf.available_count -= 1
     uf.save
   end
 
   def increase_feature_numner
-    uf = needed_user.user_features.media_monitoring.first
+    af = needed_user.user_features.personal_media_list.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.personal_media_list.first : af
     return false if uf.blank?
     uf.available_count += 1
     uf.save
