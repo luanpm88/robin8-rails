@@ -1565,15 +1565,6 @@ p.loginintro strong{
 
 /* UPDATE CREDIT CARD */
 
-.signup #errors {
-  text-align:center;
-  color: red;
-}
-
-.signup #errors:empty {
-   display: none;
-}
-
 #edit-card-form {
   margin-top: 0px;
 }
@@ -1591,4 +1582,8 @@ p.loginintro strong{
 
 .submit-wrap.edit-card #go-back {
   background: #278298 none repeat scroll 0% 0%;
+}
+
+.selection-guarantee.error {
+  color: red !important;
 }

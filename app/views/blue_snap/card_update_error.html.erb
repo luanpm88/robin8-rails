@@ -1,0 +1,18 @@
+<div class="signup">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Transaction error"}%>
+  </header>
+
+  <div class="form-step step3">
+    <div class="confirmation">
+      <div class="row">
+        <div class="small-12 columns">
+          <p class="selection-guarantee error">The provided Credit Card information is not valid</p>
+
+          <a class="button button-signup" href="javascript:history.back()">Go back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

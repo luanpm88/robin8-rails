@@ -13,17 +13,12 @@ class BlueSnapController < ApplicationController
     render :layout => "website"
   end
 
-  def card_update_confirmation
-    render :layout => "website"
-  end
-
   def update_card_info
     errors,resp = BlueSnap::Shopper.update_credit_card(request, current_user, params, current_user.active_subscription.bluesnap_shopper_id)
     if errors.blank?
-      return redirect_to "/card-update-confirmation"
+      return render :card_update_confirmation, :layout => "website"
     else
-      flash.now[:errors] = errors
-      render :change_card_info, :layout => "website"
+      render :card_update_error, :layout => "website"
     end
   end
 
