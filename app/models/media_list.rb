@@ -16,7 +16,7 @@ class MediaList < ActiveRecord::Base
   
   def import_contacts
     path = attachment.queued_for_write[:original].path
-    contacts = CSV.read(path)
+    contacts = CSV.open(path, "r:ISO-8859-15:UTF-8")
     self.contacts << contacts.inject([]) do |memo, contact|
       
       contact.reject! {|c| c.nil?}
