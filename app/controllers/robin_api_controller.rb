@@ -4,15 +4,19 @@ class RobinApiController < ApplicationController
   def suggested_authors
     response = @client.suggested_authors params
     
-    ids = response[:authors].map{|a| a[:id]}
-    @max_score = response[:authors].first[:score]
-    @min_score = response[:authors].last[:score]
-    authors = response[:authors].map do |author|
-      level_of_interest = calculate_level_of_interest(author[:score], 
-        full_name(author[:first_name], author[:last_name]))
-      author[:level_of_interest] = level_of_interest
-      author[:full_name] = full_name(author[:first_name], author[:last_name])
-      author
+    authors = unless response[:authors].blank?
+      ids = response[:authors].map{|a| a[:id]}
+      @max_score = response[:authors].first[:score]
+      @min_score = response[:authors].last[:score]
+      response[:authors].map do |author|
+        level_of_interest = calculate_level_of_interest(author[:score], 
+          full_name(author[:first_name], author[:last_name]))
+        author[:level_of_interest] = level_of_interest
+        author[:full_name] = full_name(author[:first_name], author[:last_name])
+        author
+      end
+    else
+      []
     end
     
     render json: authors
@@ -94,6 +98,8 @@ class RobinApiController < ApplicationController
     delta_b_a = b - a
     normalized_score = a + ((score - @min_score) * delta_b_a / x_min_max)
     normalized_score.round(2)
+    
+    normalized_score.nil? ? 0 : normalized_score.round(2)
   end
   
   def calculate_max_min(author_name)

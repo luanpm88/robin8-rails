@@ -45,6 +45,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         }
       });
       
+      Robin.commands.setHandler("reloadTargetsTab", function(){
+        self.targets();
+      });
+      
       Robin.vent.on("targets:tab:clicked", function(params){
         if (self.module.pitchModel.get('sent') === false){
           if (self.module.releasesBlastHeader.get('level') === 4)

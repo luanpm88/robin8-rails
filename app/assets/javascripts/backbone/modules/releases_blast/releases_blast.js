@@ -16,6 +16,7 @@ Robin.module("ReleasesBlast", function(ReleasesBlast, Robin, Backbone, Marionett
   });
 
   ReleasesBlast.on("stop", function(params){
+    Robin.commands.removeHandler("reloadTargetsTab");
     this.layout.destroy();
     this.controller.destroy();
     

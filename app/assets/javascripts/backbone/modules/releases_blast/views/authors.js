@@ -470,9 +470,38 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     collection: Robin.Collections.SuggestedAuthors,
     initialize: function(options){
       this.pitchContactsCollection = options.pitchContactsCollection;
+      this.releaseModel = options.releaseModel;
+    },
+    ui: {
+      refinement: "#refinement",
+      locationInput: "#refinement input[type=text]",
+      refineButton: "#refinement button"
+    },
+    events: {
+      "click @ui.refineButton": "refineButtonClicked"
+    },
+    refineButtonClicked: function(e){
+      e.preventDefault();
+      
+      var location = this.ui.locationInput.val();
+      if (s.isBlank(location)){
+        $.growl({message: "Location can't be blank!"
+        },{
+          type: 'danger'
+        });
+      } else {
+        this.releaseModel.set('location', location);
+        Robin.commands.execute("reloadTargetsTab");
+      }
     },
     childViewOptions: function() {
       return this.options;
+    },
+    onShow: function(){
+      this.initGeoAutocomplete();
+    },
+    initGeoAutocomplete: function(){
+      this.ui.locationInput.geocomplete();
     },
     onRender: function() {
       var $this = this;
@@ -537,6 +566,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         dom: 'T<"clear">lfrtip',
         "oTableTools": {
           "aButtons": [
+            {
+              "sExtends": "text",
+              "sButtonText": "Refinement",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                self.ui.refinement.toggle();
+              }
+            },
             {
               "sExtends": "text",
               "sButtonText": "Export as CSV",
