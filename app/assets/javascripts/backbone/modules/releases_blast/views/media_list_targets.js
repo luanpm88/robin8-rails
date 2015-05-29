@@ -33,7 +33,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.selectedMediaListsCollection = options.selectedMediaListsCollection;
     },
     onRender: function(){
-      this.initTooltip();
+      var curView = this;
+      curView.initTooltip();
+      if (Robin.user.get('can_create_media_list') != true) {
+        curView.$el.find("#upload_button").addClass('disabled-unavailable');
+      } else {
+        curView.$el.find("#upload_button").removeClass('disabled-unavailable');
+      }
     },
     initTooltip: function(){
       this.ui.tooltipFormatInfo.tooltip();
@@ -95,8 +101,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     fileUploadButtonClicked: function(e){
       e.preventDefault();
-      
-      this.ui.fileInput.trigger("click");
+        
+      if (Robin.user.get('can_create_media_list') != true) {
+        $.growl({message: "You don't have available media list in your subscription!"},
+          {
+            type: 'info'
+          });
+      } else {
+        this.ui.fileInput.trigger("click");
+      }
     }
   });
   
