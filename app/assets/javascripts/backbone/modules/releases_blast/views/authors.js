@@ -568,7 +568,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           "aButtons": [
             {
               "sExtends": "text",
-              "sButtonText": "Refinement",
+              "sButtonText": "Advanced",
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.ui.refinement.toggle();
