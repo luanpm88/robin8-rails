@@ -36,11 +36,12 @@
 //= require backbone.marionette
 //= require highcharts
 //= require select2
+//= require ./lib/wysihtml5x-toolbar.min
 //= require_directory ./lib
 //= require bootstrap-tagsinput
 //= require ./lib/formValidation/formValidation.min
 //= require ./lib/formValidation/js/bootstrap.min
-//= require bootstrap-wysihtml5
+// require bootstrap-wysihtml5
 //= require jquery.dotdotdot
 //= require jquery.caret/dist/jquery.caret-1.5.2
 //= require timeago
