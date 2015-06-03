@@ -1,4 +1,4 @@
-describe('Robin.module Releases.Router', function() {
+describe('Releases.Router', function() {
   
   beforeEach(function() {
     try {
@@ -14,7 +14,6 @@ describe('Robin.module Releases.Router', function() {
     });
 
     Releases = Robin.module("Releases");
-    Releases.start();
 
     this.routeSpy = sinon.spy();
     this.router = new Releases.Router({
@@ -25,7 +24,6 @@ describe('Robin.module Releases.Router', function() {
   afterEach(function() {
     'use strict';
     Backbone.history.stop();
-    Releases.stop();
   });
 
   it('can navigate to #releases', function() {
