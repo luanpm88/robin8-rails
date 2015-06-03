@@ -45,7 +45,7 @@ class UserProduct < ActiveRecord::Base
 
   def create_payment
     bluesnap_order = Blue::Order.find(bluesnap_order_id)
-    discount = Discount.where(code: bluesnap_order.cart.coupons.coupon).first if bluesnap_order && bluesnap_order.cart && bluesnap_order.cart.try(:coupons).present?
+    discount = Discount.where(group_name: bluesnap_order.cart.coupons.coupon).first if bluesnap_order && bluesnap_order.cart && bluesnap_order.cart.try(:coupons).present?
     recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.price
     charged_amt =  discount.present? ? product.price - discount.calculate(user,product) : product.price
     if product.is_package? || product.is_recurring?

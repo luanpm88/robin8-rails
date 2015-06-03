@@ -26,6 +26,7 @@ ActiveAdmin.register Discount do
       f.input :code,:hint => "Match this code to Bluesnap Code exactly"
       f.input :description
       f.input :percentage, :hint => "How much % should be off"
+      f.input :group_name, :hint => "Please specify group's name of discount"
       f.input :max_count,:hint => "How many times can it be redeemed?"
       f.input :expiry,:hint => "When to expire the the discount code?"
       f.input :is_recurring,:hint => "Will it be applied to recurring charges ?"
@@ -65,6 +66,7 @@ ActiveAdmin.register Discount do
     column :percentage
     column :expiry
     column :created_at
+    column :group_name
     actions
   end
 
