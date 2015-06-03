@@ -1,0 +1,1 @@
+Robin.Collections.EmailAnalytics = Backbone.Collection.extend({});
