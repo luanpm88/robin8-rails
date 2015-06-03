@@ -3,25 +3,45 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     template: 'modules/analytics/templates/layout',
 
     regions: {
-      selectRegion: '#select-region',
-      analyticsRegion: '#analytics-region'
+      selectWebRegion: '#select-web-region',
+      selectEmailRegion: '#select-email-region',
+      webAnalyticsRegion: '#analytics-region',
+      emailsAnalyticsRegion: '#emails-analytics-region'
     },
 
     events: {
-      'change .change-news-room': 'changeNewsRoom'
+      'change .change-web-news-room': 'changeWebNewsRoom',
+      'change .change-emails-news-room': 'changeEmailsNewsRoom',
+      'click .emails-label': 'navigateToEmails',
+      'click .web-label': 'navigateToWeb'
     },
 
-    changeNewsRoom: function(event) {
-      var analyticsPageView = new Analytics.AnalyticsPage({
+    changeWebNewsRoom: function(event) {
+      var webAnalyticsPageView = new Analytics.WebAnalyticsPage({
         collection: new Robin.Collections.NewsRooms()
       });
       
-      this.analyticsRegion.show(analyticsPageView);
-      analyticsPageView.renderAnalytics($(event.target).val());
-      // this.renderAnalytics($(event.target).val());
+      this.webAnalyticsRegion.show(webAnalyticsPageView);
+      webAnalyticsPageView.renderAnalytics($(event.target).val());
     },
 
+    changeEmailsNewsRoom: function(event) {
+      var emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
+        collection: new Robin.Collections.NewsRooms()
+      });
+      
+      this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
+      emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val());
+    },
+
+    navigateToEmails: function(){
+      Backbone.history.navigate('analytics-email', {trigger:true});
+    },
+
+    navigateToWeb: function(){
+      Backbone.history.navigate('analytics', {trigger:true});
+    }
+
   });
-  
 
 });
