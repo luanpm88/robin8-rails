@@ -135,9 +135,18 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       "click a.btn-success":    "addAuthor",
       "click a.contact-author": "openContactAuthorModal"
     },
+    ui: {
+      blogNameTooltip: "[data-toggle=tooltip]"
+    },
     toggleAddRemove: function(model, collection, options) {
       if (model.get('author_id') === this.model.get('id'))
         this.render();
+    },
+    initTooltip: function(){
+      this.ui.blogNameTooltip.tooltip();
+    },
+    onRender: function(){
+      this.initTooltip();
     },
     addAuthor: function(e) {
       e.preventDefault();
@@ -153,7 +162,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           first_name: this.model.get('first_name'),
           last_name: this.model.get('last_name'),
           email: this.model.get('email'),
-          outlet: this.model.get('blog_name')
+          outlet: this.model.get('blog_names')[0]
         });
         this.pitchContactsCollection.add(model);
       }
@@ -323,6 +332,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     onRender: function() {
       // this.initDataTable();
       this.scrollToView();
+      
       var $this = this;
       // this.initDataTable();
       Robin.user = new Robin.Models.User();
