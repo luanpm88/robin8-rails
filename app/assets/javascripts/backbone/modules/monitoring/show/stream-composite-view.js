@@ -153,6 +153,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.refreshNewStoriesCount();
 
       this.childView = Show.StoryItemView;
+      console.log(this.collection);
     },
 
     onRender: function() {
