@@ -5,15 +5,7 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
   beforeEach(function () {
     model = new Robin.Models.Stream();
     model.set('position', 1);
-   //  var topics = [];
-   //  var newTopic =  {
-   //            id: 'Facebook',
-   //            text: 'Facebook'
-   //          };
-   //  topics.push(newTopic);
-   //  model.set("topics", topics);
-
-   // // spyOn(model, 'save').andCallThrough();
+    model.set('user_id', 1);
 
     view = new Robin.Monitoring.Show.StreamCompositeView({model: model});
   });
@@ -29,7 +21,30 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
   describe('when view is rendered', function () {
 
     beforeEach(function () {
+      spyOn( view, 'toggleRssDialog');
+      spyOn( view, 'settings');
+      spyOn( view, 'loadInfo');
+      spyOn( view.model, 'save');
+      spyOn( view, 'refreshTimeRangeVisibility');
+      spyOn( view.modelBinder, 'bind');
+      view.delegateEvents();
       view.render();
+    });
+
+    it("should call loadInfo for topics", function() {
+      expect(view.loadInfo).toHaveBeenCalledWith('topics');
+    });
+
+    it("should call loadInfo for blogs", function() {
+      expect(view.loadInfo).toHaveBeenCalledWith('blogs');
+    });
+
+    it("should call refreshTimeRangeVisibility", function() {
+      expect(view.refreshTimeRangeVisibility).toHaveBeenCalled();
+    });
+
+    it("should bind view.el", function() {
+      expect(view.modelBinder.bind).toHaveBeenCalledWith(model, view.el);
     });
 
     it ('should have initial title', function () {
@@ -37,25 +52,40 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
     });
 
     it ('should not be available editable title', function () {
-        expect(view.$el.find('.stream-header .editableform').length).toEqual(0);
-      });
+      expect(view.$el.find('.stream-header .editableform').length).toEqual(0);
+    });
+
+    it ("should call settings action", function () {
+      view.$el.find('.stream-header .settings-button').click();
+      expect(view.settings).toHaveBeenCalled();
+    });
+
+    it ("should call rss dialog action", function () {
+      view.$el.find('.stream-header .rss-button').click();
+      expect(view.toggleRssDialog).toHaveBeenCalled();
+    });
 
     describe ('when user click title', function () {
-      // beforeEach(function () {
-      // });
 
       it ('should appear editable title', function () {
-        view.$el.find('#titeele').click();
-        expect(view.$el.find('.stream-header .editableform').length).toEqual(0);
+        view.$el.find('#title').click();
+        expect(view.$el.find('.stream-header .editableform').length).toEqual(1);
       });
 
       it ('should edit title', function () {
         view.$el.find('#title').click();
         view.$el.find('.stream-header .editableform .edit-title').val('Title1');
-        console.log(view.$el.find('.stream-header .editableform .edit-title').val());
         view.$el.find('.editable-submit').click();
-        expect(view.$el.find('.stream-header .editableform').length).toEqual(0);
+        expect(view.model.save).toHaveBeenCalled();
       });
+
+      it ("shouldn't edit title", function () {
+        view.$el.find('#title').click();
+        view.$el.find('.stream-header .editableform .edit-title').val('Title1');
+        view.$el.find('.editable-cancel').click();
+        expect(view.model.save).not.toHaveBeenCalled();
+      });
+      
     });
 
 
