@@ -153,7 +153,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.refreshNewStoriesCount();
 
       this.childView = Show.StoryItemView;
-      console.log(this.collection);
     },
 
     onRender: function() {
@@ -216,7 +215,10 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     updateTitle: function() {
+      console.log('CLICK!!!!!!!!!!!!!!!');
       this.modelBinder.copyViewValuesToModel();
+        console.log('CLICK!!!!!!!!!!!!!!!222222');
+      console.log(this.model);
       this.model.save(this.model.attributes, {
         success: function(data){
           console.log(data);
