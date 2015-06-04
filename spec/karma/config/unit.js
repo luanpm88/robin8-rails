@@ -9,12 +9,13 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'sinon'],
+    frameworks: ['jasmine', 'sinon', 'rosie'],
 
     // list of files / patterns to load in the browser
     files: [
       'http://localhost:3000/assets/application.js',
       'spec/javascripts/*/*_spec.js',
+      'spec/javascripts/*/*_factory.js',
       'spec/javascripts/*/*/*_spec.js',
       'spec/javascripts/*/*/*/*_spec.js',
       'app/assets/javascripts/*.js',

@@ -3,9 +3,7 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
   Robin.user = new Robin.Models.User();
 
   beforeEach(function () {
-    model = new Robin.Models.Stream();
-    model.set('position', 1);
-    model.set('user_id', 1);
+    model = Factory.build("stream");
 
     view = new Robin.Monitoring.Show.StreamCompositeView({model: model});
   });
@@ -48,7 +46,7 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
     });
 
     it ('should have initial title', function () {
-      expect(view.$el.find('#title').text()).toEqual('Untitled Stream');
+      expect(view.$el.find('#title').text()).toEqual('Facebook');
     });
 
     it ('should not be available editable title', function () {
