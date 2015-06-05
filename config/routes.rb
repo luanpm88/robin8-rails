@@ -58,7 +58,7 @@ Rails.application.routes.draw do
 
   resources :streams, only: [:index, :create, :update, :destroy, :order] do
     post 'order', on: :collection
-    get 'stories', on: :member
+    get 'stories', on: :member, format: [:json, :rss, :pdf, :html, :png]
   end
 
   resources :products, only: [:index] do
@@ -104,6 +104,8 @@ Rails.application.routes.draw do
   post 'textapi/extract'
   post 'textapi/hashtags'
 
+  get 'image_proxy/:url' => 'image_proxy#get'
+  
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
