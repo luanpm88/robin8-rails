@@ -551,7 +551,6 @@ GEM
     will_paginate (3.0.7)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
-    wkhtmltoimage-binary (0.12.1)
 
 PLATFORMS
   ruby
@@ -654,7 +653,6 @@ DEPENDENCIES
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
-  wkhtmltoimage-binary (~> 0.12.1)
 
 BUNDLED WITH
    1.10.2
