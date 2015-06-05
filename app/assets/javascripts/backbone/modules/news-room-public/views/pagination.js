@@ -16,7 +16,7 @@ Robin.module('NewsRoomPublic', function(NewsRoomPublic, App, Backbone, Marionett
       'click .next_page': 'nextPage'
     },
     templateHelpers: function () {
-    return {
+      return {
         leftEdge: this.leftEdge,
         rightEdge: this.rightEdge
       };
