@@ -31,29 +31,61 @@ class StreamsController < ApplicationController
   end
 
   def stories
-    stream = Stream.find(params[:id]) # ToDo: authorize reading stream
-    req_params = stream.query_params
-    req_params.merge!(cursor: URI.decode(params[:cursor])) if params[:cursor]
-
-    uri = URI(Rails.application.secrets.robin_api_url + '/stories')
-    uri.query = URI.encode_www_form req_params
-
-    req = Net::HTTP::Get.new(uri)
-    req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
-
-    res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
-    parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
     respond_to do |format|
-      format.json { render json: parsed_res}
-      format.rss {
+      format.json do 
+        @stories = fetch_stories
+        render json: @stories
+      end
+      
+      format.rss do
+        @stories = fetch_stories
+        
         render layout: false,
         locals: {
-          stories: parsed_res,
+          stories: @stories,
           stream_id: params[:id],
           topicsForRss: params[:topicsForRss],
           blogsForRss: params[:blogsForRss]
         }
-      }
+      end
+      
+      format.pdf do
+        @stories = fetch_stories
+        
+        pdf = StreamPdf.new(@stories["stories"])
+        send_data pdf.render, filename: "Stream Export",
+          type: "application/pdf", disposition: "inline"
+      end
+      
+      format.png do
+        if Rails.env.development? 
+          scheme = "http"
+          host = "localhost:3001"
+        else
+          scheme = "https"
+          host = Rails.application.secrets.host
+        end
+          
+        request_url = URI.parse("#{scheme}://#{host}/streams/#{params[:id]}/stories")
+        request_url.query = ""
+        request_url.query += "per_page=#{params[:per_page]}" if params[:per_page]
+        request_url.query += "export_report=true"
+        
+        snap = WebSnap::Snapper.new request_url.to_s,
+          format: 'png', 'scale-h': nil, 'scale-w': nil, 'crop-h': nil, 
+          'crop-w': nil, quality: 80, 'crop-x': nil, 'crop-y': nil,
+          width: "1366"
+        
+        send_data snap.to_bytes, :filename => "Robin8 Export.png", :type => "image/png"
+      end
+      
+      format.html do 
+        @stories = fetch_stories
+        @stream = Stream.find(params[:id])
+        
+        @stories = summarize_stories(@stories["stories"])
+        render layout: false
+      end
     end
   end
 
@@ -69,4 +101,43 @@ class StreamsController < ApplicationController
     params.require(:stream).permit(:user_id, :name, :sort_column, :published_at, topics: [:id, :text], blogs: [:id, :text], keywords: [:id, :text, :type])
   end
 
+  private
+  
+  def fetch_stories
+    stream = Stream.find(params[:id]) # ToDo: authorize reading stream
+    req_params = stream.query_params
+    req_params.merge!(cursor: URI.decode(params[:cursor])) if params[:cursor]
+    req_params.merge!(per_page: params[:per_page]) if params[:per_page]
+
+    endpoint = params[:export_report] ? "/uniq_stories" : "/stories"
+    
+    uri = URI(Rails.application.secrets.robin_api_url + endpoint)
+    uri.query = URI.encode_www_form req_params
+
+    req = Net::HTTP::Get.new(uri)
+    req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
+
+    res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
+    res.code == '200' ? JSON.parse(res.body) : {}
+  end
+  
+  def summarize_stories(stories)
+    stories_summary = {}
+    text_api_client = AylienTextApi::Client.new
+    threads = []
+    
+    stories.each do |story|
+      threads << Thread.new do
+        stories_summary[story["id"]] = text_api_client.summarize title: story["title"], 
+          text: story["description"]
+      end
+    end
+    
+    threads.each(&:join)
+    
+    stories.map do |s|
+      s['summary'] = stories_summary[s["id"]][:sentences]
+      s
+    end
+  end
 end

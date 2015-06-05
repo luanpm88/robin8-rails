@@ -296,8 +296,12 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    pdf-core (0.5.1)
     polyamorous (1.2.0)
       activerecord (>= 3.0)
+    prawn (2.0.1)
+      pdf-core (~> 0.5.1)
+      ttfunk (~> 1.4.0)
     premailer (1.8.4)
       css_parser (>= 1.3.6)
       htmlentities (>= 4.0.0)
@@ -511,6 +515,7 @@ GEM
     timers (4.0.1)
       hitimes
     truncate_html (0.9.3)
+    ttfunk (1.4.0)
     turbolinks (2.5.3)
       coffee-rails
     twitter (5.14.0)
@@ -540,11 +545,13 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    websnap (0.1.5)
     whenever (0.9.4)
       chronic (>= 0.6.3)
     will_paginate (3.0.7)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
+    wkhtmltoimage-binary (0.12.1)
 
 PLATFORMS
   ruby
@@ -592,6 +599,7 @@ DEPENDENCIES
   omniauth-linkedin-oauth2
   omniauth-twitter
   paperclip (~> 4.2.1)
+  prawn
   premailer-rails
   pry-rails
   quiet_assets
@@ -642,6 +650,11 @@ DEPENDENCIES
   twitter
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+  websnap (~> 0.1.5)
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
+  wkhtmltoimage-binary (~> 0.12.1)
+
+BUNDLED WITH
+   1.10.2

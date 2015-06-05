@@ -5,11 +5,22 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     tagName: "li",
     className: "stream",
     childViewContainer: ".stories",
-
+    ui: {
+      exportButton: ".export-button",
+      exportDialog: ".export-dialog",
+      storiesNumberSlider: "input.stories-number",
+      storiesNumberOutput: "#stories-number",
+      colorizeBackground: ".export-dialog [name=colorize-background]",
+      formatFileInput: ".export-dialog [name=format]",
+      downloadReportButton: "#download-report"
+    },
     events: {
       'click .delete-stream': 'closeStream',
       'click .settings-button': 'settings',
       'click .rss-button': 'toggleRssDialog',
+      'click @ui.exportButton': 'exportButtonClicked',
+      'change @ui.storiesNumberSlider': 'storiesNumberSliderChanged',
+      'click @ui.downloadReportButton': "downloadReportButtonClicked",
       'click #close-settings': 'closeSettings',
       'click #done': 'done',
       'click span.editable': 'editTitle',
@@ -365,7 +376,28 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
     },
-
+    
+    exportButtonClicked: function(e){
+      this.ui.exportDialog.toggleClass('closed');
+    },
+    storiesNumberSliderChanged: function(e){
+      currentValue = this.ui.storiesNumberSlider.val();
+      this.ui.storiesNumberOutput.val(currentValue);
+    },
+    downloadReportButtonClicked: function(e){
+      e.preventDefault();
+      
+      this.downloadReport();
+    },
+    downloadReport: function(){
+      var numberOfStories = this.ui.storiesNumberSlider.val();
+      var streamId = this.model.id;
+      var format = this.ui.formatFileInput.val();
+      var colorizeBackground = this.ui.colorizeBackground.val();
+      
+      openWindow('GET', '/streams/' + streamId + '/stories.' + format,
+        {colorize_background: true, per_page: numberOfStories});
+    },
     toggleRssDialog: function(){
       $(this.el).find('.rss-dialog').toggleClass('closed');
     },

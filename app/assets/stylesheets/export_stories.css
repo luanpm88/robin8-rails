@@ -1,0 +1,29 @@
+/* 
+ *= require bootstrap-sass
+ *= require font-awsome
+ *= require_self
+*/
+
+body {
+  background-color: #fafafa;
+}
+h1.header {
+  color: #555;
+  text-align: center;
+}
+.story {
+  padding: 30px;
+  background: #eee;
+}
+.story .meta {
+  /*color: #999;*/
+}
+.story .meta span {
+  /*color: #555;*/
+}
+.story hr {
+  border-top-color: #888;
+}
+.glyphicon {
+  font-size: 13px;
+}

@@ -56,6 +56,14 @@ class Stream < ActiveRecord::Base
       published_at: sort_column == 'shares_count' ? published_at : nil
     }
   end
+  
+  def stream_title
+    first = sort_column == "shares_count" ? "Top " : "Latest "
+      "Top"
+    else
+    
+    "#{first} articles"
+  end
 
   private
 
