@@ -1,5 +1,5 @@
 Factory.define('stream', Robin.Models.Stream)
-  .sequence('id')
+  .attr('id', 1)
   .attr('created_at', function() { return new Date(); })
   .attr('name', 'Facebook')
   .attr('sort_column', 'shares_count')

@@ -140,7 +140,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         Robin.cachedStories[streamId].streamId = streamId;
         Robin.cachedStories[streamId].alreadyRendered = false;
         Robin.cachedStories[streamId].sortByPopularity = this.model.get('sort_column') == 'shares_count';
-
       }
 
       this.collection = Robin.cachedStories[streamId] || new Robin.Collections.Stories();
@@ -200,7 +199,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
 
       this.refreshTimeRangeVisibility();
-      this.$el.find("input.select2-input").css('width', '150%')
+      this.$el.find("input.select2-input").css('width', '150%');
     },
 
     onAdded: function(story, collection) {

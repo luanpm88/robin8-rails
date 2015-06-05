@@ -4,6 +4,7 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
 
   beforeEach(function () {
     model = Factory.build("stream");
+    Robin.cachedStories[1] = undefined;
 
     view = new Robin.Monitoring.Show.StreamCompositeView({model: model});
   });
