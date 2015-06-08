@@ -143,7 +143,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       }
 
       this.collection = Robin.cachedStories[streamId] || new Robin.Collections.Stories();
-      
       if (Robin.loadingStreams.length == 1) {
         Robin.currentStreamIndex = 0;
         this.collection.executePolling();
