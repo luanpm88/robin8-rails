@@ -219,7 +219,10 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
 
       this.refreshTimeRangeVisibility();
-      this.$el.find("input.select2-input").css('width', '150%')
+      this.$el.find("input.select2-input").css('width', '150%');
+      
+      this.ui.colorizeBackground.prop('checked', true);
+      this.ui.formatFileInput.select('png');
     },
 
     onAdded: function(story, collection) {
@@ -393,10 +396,15 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       var numberOfStories = this.ui.storiesNumberSlider.val();
       var streamId = this.model.id;
       var format = this.ui.formatFileInput.val();
-      var colorizeBackground = this.ui.colorizeBackground.val();
+      var colorizeBackground = null;
+      
+      if (this.ui.colorizeBackground.is(":checked"))
+        colorizeBackground = true
+      else
+        colorizeBackground = false
       
       openWindow('GET', '/streams/' + streamId + '/stories.' + format,
-        {colorize_background: true, per_page: numberOfStories});
+        {colorize_background: colorizeBackground, per_page: numberOfStories});
     },
     toggleRssDialog: function(){
       $(this.el).find('.rss-dialog').toggleClass('closed');

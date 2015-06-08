@@ -105,7 +105,7 @@ gem 'docx-html'
 
 # pure Ruby PDF generation library
 gem 'prawn'
-gem 'websnap', '~> 0.1.5'
+gem 'imgkit'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

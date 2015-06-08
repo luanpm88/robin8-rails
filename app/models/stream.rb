@@ -58,11 +58,31 @@ class Stream < ActiveRecord::Base
   end
   
   def stream_title
-    first = sort_column == "shares_count" ? "Top " : "Latest "
-      "Top"
-    else
+    title_arr = []
+    title_arr << (sort_column == "shares_count" ? "Top" : "Latest")
+    title_arr << "articles"
     
-    "#{first} articles"
+    topic_titles = (topics + keywords).map do |topic|
+      topic[:text]
+    end.uniq {|t| t.strip.downcase}
+    
+    topic_titles.insert(3, "more") if topic_titles.size > 3
+    
+    if topic_titles.size > 0
+      title_arr << "about"
+      title_arr << topic_titles.take(4).to_sentence
+    end
+    
+    blog_names = blogs.map do |b|
+      b[:text]
+    end
+    
+    if blog_names.size > 0
+      title_arr << "from"
+      title_arr << blog_names.to_sentence
+    end
+    
+    title_arr.join(' ')
   end
 
   private

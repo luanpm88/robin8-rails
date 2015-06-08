@@ -58,30 +58,19 @@ class StreamsController < ApplicationController
       end
       
       format.png do
-        if Rails.env.development? 
-          scheme = "http"
-          host = "localhost:3001"
-        else
-          scheme = "https"
-          host = Rails.application.secrets.host
-        end
-          
-        request_url = URI.parse("#{scheme}://#{host}/streams/#{params[:id]}/stories")
-        request_url.query = ""
-        request_url.query += "per_page=#{params[:per_page]}" if params[:per_page]
-        request_url.query += "export_report=true"
-        
-        snap = WebSnap::Snapper.new request_url.to_s,
+        kit = IMGKit.new export_url,
           format: 'png', 'scale-h': nil, 'scale-w': nil, 'crop-h': nil, 
           'crop-w': nil, quality: 80, 'crop-x': nil, 'crop-y': nil,
           width: "1366"
         
-        send_data snap.to_bytes, :filename => "Robin8 Export.png", :type => "image/png"
+        send_data kit.to_png, filename: "Robin8 Export.png", 
+          type: "image/png", disposition: 'attachment'
       end
       
       format.html do 
         @stories = fetch_stories
         @stream = Stream.find(params[:id])
+        @colorize_background = params[:colorize_background]
         
         @stories = summarize_stories(@stories["stories"])
         render layout: false
@@ -102,6 +91,25 @@ class StreamsController < ApplicationController
   end
 
   private
+  
+  def export_url
+    if Rails.env.development? 
+      scheme = "http"
+      host = "localhost:3001"
+    else
+      scheme = "https"
+      host = Rails.application.secrets.host
+    end
+      
+    request_url = URI.parse("#{scheme}://#{host}/streams/#{params[:id]}/stories/")
+    query_params = {}
+    query_params[:per_page] = params[:per_page] || 10
+    query_params[:colorize_background] = params[:colorize_background]
+    query_params[:export_report] = true
+    
+    request_url.query = URI.encode_www_form(query_params)
+    request_url.to_s
+  end
   
   def fetch_stories
     stream = Stream.find(params[:id]) # ToDo: authorize reading stream
