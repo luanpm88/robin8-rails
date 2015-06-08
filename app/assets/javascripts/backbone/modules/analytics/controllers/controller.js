@@ -34,20 +34,27 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var module = this.module;
       Robin.layouts.main.content.show(module.layout);
       module.collection.fetch({
-        success: function() {
+        success: function(collection, data, response) {
           selectView = new Analytics.EmailsFilterCollectionView({
             collection: module.collection,
             childView: Analytics.EmailsFilterItemView
           });
+          var collectionNewsRooms = collection;
           module.layout.selectEmailRegion.show(selectView);
+          var collectionEmails = new Robin.Collections.EmailAnalytics()
+          collectionEmails.fetch({
+            url: '/news_rooms/' + collectionNewsRooms.models[0].id +'/email_analytics',
+            success: function(collection, data, response){
+              var collection = new Robin.Collections.EmailAnalytics(data.authors);
+              var emailListView = new Analytics.EmailsListCompositeView({
+                collection: collection
+              });
+              module.layout.emailsListRegion.show(emailListView);
+            }
+          })
         }
       });
-
-      // var emailsListView = new Analytics.EmailsListCompositeView({
-      //   // collection: collection,
-      //   // pitchContactsCollection: self.module.pitchModel.get('contacts'),
-      //   // releaseModel: self.module.releaseModel
-      // });
+      
 
       module.layout.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
       emailsAnalyticsPageView.renderEmailAnalytics();

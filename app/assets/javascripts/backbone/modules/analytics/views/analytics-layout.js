@@ -6,7 +6,8 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       selectWebRegion: '#select-web-region',
       selectEmailRegion: '#select-email-region',
       webAnalyticsRegion: '#analytics-region',
-      emailsAnalyticsRegion: '#emails-analytics-region'
+      emailsAnalyticsRegion: '#emails-analytics-region',
+      emailsListRegion: '#emails-list-region'
     },
 
     events: {

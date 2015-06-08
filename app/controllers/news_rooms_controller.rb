@@ -90,7 +90,7 @@ class NewsRoomsController < ApplicationController
 
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
     parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
-
+    parsed_res['authors']
     render json: { mail: r, authors: parsed_res['authors'] }
   end
 
