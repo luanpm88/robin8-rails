@@ -184,7 +184,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         Robin.cachedStories[this.model.get('id')].alreadyRendered = true;
       }
 
-
       if (this.needOpacity) {
         this.$el.find('.stream-loading').removeClass('hidden');
         this.$el.find('.stream-body').addClass('opacity-02');
