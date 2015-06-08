@@ -52,22 +52,13 @@ class NewsRoomsController < ApplicationController
     render json: @news_room
   end
 
-  def analytics
+  def web_analytics
     @news_room = NewsRoom.find params[:news_room_id]
     sa = ServiceAccount.new
     sa.service_account_user
     results = GoogleAnalytics.results(sa.first_profile, {
       start_date: (DateTime.now - 7.days),
       end_date: DateTime.now }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
-
-    mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
-    domain = Rails.application.secrets.mailgun[:domain]
-    begin
-      result = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats")
-      r = JSON.parse(result.body)
-    rescue
-      r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
-    end
 
     collection = results.collection
     web = {
@@ -76,7 +67,34 @@ class NewsRoomsController < ApplicationController
       views: collection.map{|col| col.pageViews},
     }
 
-    render json: { web: web, mail: r }
+    render json: { web: web }
+  end
+
+  def email_analytics
+    @news_room = NewsRoom.find params[:news_room_id]
+    mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+    domain = Rails.application.secrets.mailgun[:domain]
+    begin
+      result = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats")
+      result_on_opens = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=opened")
+      r = JSON.parse(result.body)
+      opens = JSON.parse(result_on_opens.body)
+      emails = opens.map{ |o| o['recipient'] }
+      query = '?emails[]=' + emails.joins('&emails[]=')
+    rescue
+      r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
+    end
+
+    uri = URI(Rails.application.secrets.robin_api_url + 'authors')
+    uri.query = query
+
+    req = Net::HTTP::Get.new(uri)
+    req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
+
+    res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
+    parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
+    parsed_res['authors']
+    render json: { mail: r, authors: parsed_res['authors'] }
   end
 
 private
