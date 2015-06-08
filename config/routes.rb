@@ -104,7 +104,7 @@ Rails.application.routes.draw do
   post 'textapi/extract'
   post 'textapi/hashtags'
 
-  get 'image_proxy/:url' => 'image_proxy#get'
+  get 'image_proxy/:images' => 'image_proxy#get', as: 'image_proxy'
   
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root

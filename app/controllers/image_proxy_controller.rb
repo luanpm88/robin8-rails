@@ -1,15 +1,21 @@
-require 'base64'
-require 'net/http'
-
 class ImageProxyController < ApplicationController
   def get
-    url = URI.parse(Base64.decode64(params[:url]))
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = (url.scheme == "https") ? true : false
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    request = Net::HTTP::Get.new(url.request_uri)
-    image = http.request(request)
+    urls = JSON.parse Base64.decode64(params[:images])
     
-    send_data image.body, type: image.content_type, disposition: 'inline'
+    response = get_image(urls, nil)
+    send_data response.body, type: response.content_type, disposition: 'inline'
+  end
+  
+  private
+  
+  def get_image(urls, response)
+    if (response && response.code == 200) || urls.blank?
+      response
+    else
+      url = URI.parse(urls.shift)
+      response = HTTParty.get url.to_s
+      
+      get_image(urls, response)
+    end
   end
 end

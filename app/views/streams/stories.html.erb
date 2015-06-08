@@ -5,6 +5,17 @@
 
     <%= stylesheet_link_tag    'export_stories', media: 'all' %>
     <%= javascript_include_tag 'export_stories' %>
+    
+    <script type="text/javascript">
+      <% if @colorize_background && @colorize_background == "true" %>
+        $(document).ready(function(){
+          $.adaptiveBackground.run({
+            parent:'.story', 
+            normalizeTextColor: true
+          });
+        });
+      <% end %>
+    </script>
   </head>
   
   <body>
@@ -21,14 +32,10 @@
           <div class="col-lg-12">
             <div class="media">
               <div class="media-left">
-                <% unless story['images'].blank? %>
-                  <%= proxy_image_tag story['images'][0], width: '550px',
-                    data: {"adaptive-background": 1}, "cross-origin": "anonymous" %>
-                <% else %>
-                  <%= proxy_image_tag "http://lorempixel.com/550/413/abstract/", 
-                    width: '550px', data: {"adaptive-background": 1}, 
-                    "cross-origin": "anonymous" %>
-                <% end %>
+                <% images = story['images'].push("http://lorempixel.com/550/413/abstract/") %>
+                
+                <%= proxy_image_tag images.to_json, width: '550px', 
+                  data: {"adaptive-background": 1}, "cross-origin": "anonymous" %>
               </div>
               <div class="media-body">
                 <h2 class="media-heading"><%= story["title"] %></h2>
