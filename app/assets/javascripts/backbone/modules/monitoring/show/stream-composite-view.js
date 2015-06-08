@@ -143,7 +143,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       }
 
       this.collection = Robin.cachedStories[streamId] || new Robin.Collections.Stories();
-      
       if (Robin.loadingStreams.length == 1) {
         Robin.currentStreamIndex = 0;
         this.collection.executePolling();
@@ -183,7 +182,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
         Robin.cachedStories[this.model.get('id')].alreadyRendered = true;
       }
-
 
       if (this.needOpacity) {
         this.$el.find('.stream-loading').removeClass('hidden');

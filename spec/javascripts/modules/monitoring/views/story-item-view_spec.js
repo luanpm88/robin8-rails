@@ -1,5 +1,5 @@
 describe('Robin.Monitoring.Show.StoryItemView spec', function () {
-  var view, model, modelStream, collection, viewview;
+  var view, model, modelStream, collection, viewChild;
   Robin.user = new Robin.Models.User();
 
   beforeEach(function () {
@@ -8,17 +8,9 @@ describe('Robin.Monitoring.Show.StoryItemView spec', function () {
     collection = new Robin.Collections.Stories();
     collection.push(model);
 
-    Robin.cachedStories[1] = collection;
-
+    Robin.cachedStories[modelStream.get('id')] = collection;
 
     view = new Robin.Monitoring.Show.StreamCompositeView({model: modelStream});
-  });
-
-  afterEach(function () {
-    // model.clear();
-    Robin.cachedStories[1] = undefined; 
-    Robin.loadingStreams = [];
-    collection.reset();
   });
 
   describe('when view is initializing', function () {
@@ -27,31 +19,45 @@ describe('Robin.Monitoring.Show.StoryItemView spec', function () {
     });
   });
 
-  describe('when view is rendered', function () {
+  describe('when composite view is rendered', function () {
 
     beforeEach(function () {
       view.render();
     });
 
-    describe ("describe", function () {
+    describe ("when child view is rendered", function () {
       beforeEach(function () {
-        viewview = _.values(view.children._views)[0];
-        spyOn( viewview, 'openStory');
-        spyOn( viewview, 'shareStory');
-        viewview.delegateEvents();
-        // viewview.render();
+        viewChild = _.values(view.children._views)[0];
+        spyOn( viewChild, 'openStory');
+        spyOn( viewChild, 'shareStory');
+        viewChild.delegateEvents();
+        viewChild.render();
       });
 
-      // it ("bla", function () {
-        // viewview.$el.find('.read-more').click();
-        // expect(viewview.openStory).toHaveBeenCalled();
-      // });
+      it ("should call open story action", function () {
+        viewChild.$el.find('.js-open-story').click();
+        expect(viewChild.openStory).toHaveBeenCalled();
+      });
+      
+      it ("should call sharing story action", function () {
+        viewChild.$el.find('.share').click();
+        expect(viewChild.shareStory).toHaveBeenCalled();
+      });
+
+      it ("should have correct number of shares", function () {
+        expect(viewChild.$el.find('.media-body .likes a').text()).toEqual(' 4000');
+      });
+
+      it ("should have correct title", function () {
+        expect(viewChild.$el.find('p.js-open-story').text()).toEqual('The Food Babe Blogger Is Full of Shit');
+      });
+
+      it ("should have correct image url", function () {
+        expect(viewChild.$el.find('img.image').attr('src')).toEqual('http://i.kinja-img.com/gawker-media/image/upload/s--687mSmfs--/ydgfebsxebqooafqomyn.jpg');
+      });
+
     });
 
-    // it ("should call sharing story action", function () {
-    //   view.$el.find('.share').click();
-    //   expect(view.openStory).toHaveBeenCalled();
-    // });
   });
 
 });
