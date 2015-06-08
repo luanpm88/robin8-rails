@@ -44,7 +44,12 @@ class MediaList < ActiveRecord::Base
   
   def import_contacts
     path = attachment.queued_for_write[:original].path
-    contacts = CSV.open(path, "r:ISO-8859-15:UTF-8")
+    
+    # detect file encoding
+    contents = File.read(path)
+    detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+    contacts = CSV.read path, encoding: detection[:ruby_encoding]
     self.contacts << contacts.inject([]) do |memo, contact|
       
       contact.reject! {|c| c.nil?}

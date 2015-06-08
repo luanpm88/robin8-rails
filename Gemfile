@@ -37,6 +37,9 @@ gem 'legato'
 gem 'google-api-client'
 gem 'sitemap_generator'
 
+# Character encoding detecting library
+gem 'charlock_holmes'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
   gem 'rails-assets-bootstrap.growl', '2.0.1'
