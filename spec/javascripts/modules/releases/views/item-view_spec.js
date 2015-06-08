@@ -27,13 +27,34 @@ describe('Releases.ItemView', function() {
   });
 
   describe('onRender', function() {
+    
+    beforeEach(function() {
+       this.view.render();
+    });
 
-    it('should remove class disabled-unavailable for #start-blast', function() {
-      $('<a href="#" class="disabled-unavailable" role="button" data-toggle="modal" style="margin-left: 5px;" id="start-blast"><i class="fa fa-rocket"></i> SmartRelease</a>').appendTo('body');
-      console.info($("#start-blast").attr('class').split(' '));
-      this.view.onRender();
-      console.info($("#start-blast").attr('class').split(' '));
+    it('should add class disabled-unavailable for #start-blast', function() {
+      expect(this.view.$el.find("#start-blast").attr('class')).toContain('disabled-unavailable');
     });
   });
 
+  describe('onShow', function() {
+
+    it('should be defined', function() {
+      expect(this.view.onShow).toBeDefined();
+    });
+  });
+
+  describe('startSmartRelease', function() {
+    
+    it('should be defined', function() {
+      expect(this.view.startSmartRelease).toBeDefined();
+    });
+  });
+
+  describe('openEditModal', function() {
+
+    it('should be defined', function() {
+      expect(this.view.startSmartRelease).toBeDefined();
+    });
+  });
 });
