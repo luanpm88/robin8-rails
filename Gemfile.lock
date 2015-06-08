@@ -106,6 +106,7 @@ GEM
       capistrano (>= 3.1)
     celluloid (0.16.0)
       timers (~> 4.0.0)
+    charlock_holmes (0.7.3)
     chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -562,6 +563,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.0.3)
   capistrano-sidekiq (~> 0.4.0)
   capistrano-ssh-doctor (~> 1.0.0)
+  charlock_holmes
   coffee-rails (~> 4.1.0)
   countries
   country_select!
@@ -645,3 +647,6 @@ DEPENDENCIES
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
+
+BUNDLED WITH
+   1.10.2
