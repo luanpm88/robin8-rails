@@ -15,7 +15,7 @@ describe('Robin.Monitoring.Show.StoryItemView spec', function () {
   });
 
   afterEach(function () {
-    model.clear();
+    // model.clear();
     Robin.cachedStories[1] = undefined; 
     Robin.loadingStreams = [];
     collection.reset();
@@ -39,13 +39,13 @@ describe('Robin.Monitoring.Show.StoryItemView spec', function () {
         spyOn( viewview, 'openStory');
         spyOn( viewview, 'shareStory');
         viewview.delegateEvents();
-        viewview.render();
+        // viewview.render();
       });
 
-      it ("bla", function () {
-        viewview.$el.find('.read-more').click();
-        expect(viewview.openStory).toHaveBeenCalled();
-      });
+      // it ("bla", function () {
+        // viewview.$el.find('.read-more').click();
+        // expect(viewview.openStory).toHaveBeenCalled();
+      // });
     });
 
     // it ("should call sharing story action", function () {
