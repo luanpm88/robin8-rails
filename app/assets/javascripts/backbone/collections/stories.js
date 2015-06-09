@@ -7,8 +7,6 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   },
 
   parse: function(response) {
-    this.nextPageCursor = response.next_page_cursor;
-    this.isLastPage = response.is_last_page;
     return response.stories;
   },
 
@@ -21,6 +19,8 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   },
 
   initialize: function(models, options) {
+    this.nextPage = 2;
+    this.isLastPage = false;
     _.bindAll(this, 'executePolling', 'onFetch');
     this.on('add', this.onAdded);
   },
@@ -58,14 +58,24 @@ Robin.Collections.Stories = Backbone.Collection.extend({
   },
 
   fetchPreviousPage: function() {
-    if(!this.nextPageCursor || this.isLastPage || this.previousPageBeingFetched) return;
+    if(this.isLastPage || this.previousPageBeingFetched) return;
 
-    var collection = this;
+    var self = this;
     this.previousPageBeingFetched = true;
 
-    this.fetch({data: {cursor: this.nextPageCursor}, remove: false,
-      success: function() { collection.previousPageBeingFetched = false; },
-      error: function() { collection.previousPageBeingFetched = false; }
+    this.fetch({data: {page: this.nextPage}, remove: false,
+      success: function(collection, response, options) {
+        if (response.stories.length > 0){
+          self.nextPage += 1;
+        } else {
+          self.isLastPage = true;
+        }
+        
+        self.previousPageBeingFetched = false;
+      },
+      error: function(collection, response, options) {
+        collection.previousPageBeingFetched = false;
+      }
     });
   }
 });

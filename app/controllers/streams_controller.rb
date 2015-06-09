@@ -105,7 +105,6 @@ class StreamsController < ApplicationController
     query_params = {}
     query_params[:per_page] = params[:per_page] || 10
     query_params[:colorize_background] = params[:colorize_background]
-    query_params[:export_report] = true
     
     request_url.query = URI.encode_www_form(query_params)
     request_url.to_s
@@ -114,10 +113,10 @@ class StreamsController < ApplicationController
   def fetch_stories
     stream = Stream.find(params[:id]) # ToDo: authorize reading stream
     req_params = stream.query_params
-    req_params.merge!(cursor: URI.decode(params[:cursor])) if params[:cursor]
+    req_params.merge!(page: URI.decode(params[:page])) if params[:page]
     req_params.merge!(per_page: params[:per_page]) if params[:per_page]
 
-    endpoint = params[:export_report] ? "/uniq_stories" : "/stories"
+    endpoint = "/uniq_stories"
     
     uri = URI(Rails.application.secrets.robin_api_url + endpoint)
     uri.query = URI.encode_www_form req_params
