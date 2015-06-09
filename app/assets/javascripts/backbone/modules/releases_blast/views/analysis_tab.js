@@ -13,6 +13,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       'click @ui.nextButton': 'openTargetsTab'
     },
     initialize: function(options){
+      this.model.set('location', null);
       this.on("textapi_result:ready", this.render);
       this.getTextApiResult();
       this.textapiResult = {};

@@ -5,6 +5,7 @@ class Release < ActiveRecord::Base
   belongs_to :user
   belongs_to :news_room, counter_cache: true
   has_many :pitches
+  has_many :draft_pitches
 
   validates :user_id, presence: true
   validates :title, presence: true
@@ -19,6 +20,7 @@ class Release < ActiveRecord::Base
   before_save :pos_tagger, :entities_counter
   after_create :decrease_feature_number
   after_destroy :increase_feature_numner
+  after_save :update_images_links
   
   def plain_text
     coder = HTMLEntities.new
@@ -49,6 +51,13 @@ class Release < ActiveRecord::Base
   end
   
   private
+
+  def update_images_links
+    urls = self.text.scan(/(?:https?:\/\/)?(?:www\.)?ucarecdn.com\/.*?\//)
+    if urls.count > 0
+      AmazonStorageRelease.perform_async(self.id)
+    end
+  end
 
   def can_be_created
     errors.add(:user, "you've reached the max numbers of releases.") if user && !user.can_create_release

@@ -18,8 +18,11 @@ class FollowersController < ApplicationController
 
   private
 
-    def follower_params
-      params.require(:follower).permit(:email, :list_type, :news_room_id)
-    end
-
+  def follower_params
+    params.require(:follower).permit(:email, :list_type, :news_room_id)
+  end
+  
+  def ssl_configured?
+    false
+  end
 end

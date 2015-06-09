@@ -37,6 +37,9 @@ gem 'legato'
 gem 'google-api-client'
 gem 'sitemap_generator'
 
+# Character encoding detecting library
+gem 'charlock_holmes'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
   gem 'rails-assets-bootstrap.growl', '2.0.1'
@@ -44,7 +47,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-progressjs'
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
-  gem 'bootstrap-wysihtml5-rails', github: 'Nerian/bootstrap-wysihtml5-rails'
   gem 'rails-assets-font-awsome'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'
@@ -119,6 +121,7 @@ gem 'paperclip', '~> 4.2.1'
 gem 'premailer-rails'
 gem 'hpricot'
 gem 'activeadmin', '~> 1.0.0.pre1'
+gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 group :development, :test do
   # Deploy with Capistrano

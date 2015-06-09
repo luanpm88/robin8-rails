@@ -82,6 +82,20 @@ class ReleasesController < ApplicationController
     render json: release
   end
 
+  def img_url_exist
+    result = false
+    begin
+      uri = URI(params[:url])
+      request = Net::HTTP.new uri.host
+      response = request.request_head uri.path
+      if response.code.to_i  < 400 && response['content-type'].start_with?('image')
+        result = true
+      end
+    rescue
+    end
+    render json: result
+  end
+
   private
 
   def release_params
@@ -91,5 +105,9 @@ class ReleasesController < ApplicationController
       :paragraphs_count, :adverbs_count, :adjectives_count,
       :nouns_count, :organizations_count, :places_count, :people_count,
       attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy])
+  end
+  
+  def ssl_configured?
+    !Rails.env.development? && action_name != 'show'
   end
 end

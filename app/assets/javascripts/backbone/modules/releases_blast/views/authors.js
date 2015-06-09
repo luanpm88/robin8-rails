@@ -135,9 +135,18 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       "click a.btn-success":    "addAuthor",
       "click a.contact-author": "openContactAuthorModal"
     },
+    ui: {
+      blogNameTooltip: "[data-toggle=tooltip]"
+    },
     toggleAddRemove: function(model, collection, options) {
       if (model.get('author_id') === this.model.get('id'))
         this.render();
+    },
+    initTooltip: function(){
+      this.ui.blogNameTooltip.tooltip();
+    },
+    onRender: function(){
+      this.initTooltip();
     },
     addAuthor: function(e) {
       e.preventDefault();
@@ -153,7 +162,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           first_name: this.model.get('first_name'),
           last_name: this.model.get('last_name'),
           email: this.model.get('email'),
-          outlet: this.model.get('blog_name')
+          outlet: this.model.get('blog_names')[0]
         });
         this.pitchContactsCollection.add(model);
       }
@@ -323,6 +332,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     onRender: function() {
       // this.initDataTable();
       this.scrollToView();
+      
       var $this = this;
       // this.initDataTable();
       Robin.user = new Robin.Models.User();
@@ -360,7 +370,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             first_name: model.get('first_name'),
             last_name: model.get('last_name'),
             email: model.get('email'),
-            outlet: model.get('blog_name')
+            outlet: model.get('blog_names')[0]
           });
           self.pitchContactsCollection.add(model);
         }
@@ -442,7 +452,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       _(pitchContactsArray).each(function(model){
         csvObject.push([model.get('full_name'), 
-          model.get('blog_name'), model.get('email')]);
+          model.get('blog_names').join(', '), model.get('email')]);
       });
       
       return JSON.stringify(csvObject);
@@ -470,9 +480,38 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     collection: Robin.Collections.SuggestedAuthors,
     initialize: function(options){
       this.pitchContactsCollection = options.pitchContactsCollection;
+      this.releaseModel = options.releaseModel;
+    },
+    ui: {
+      refinement: "#refinement",
+      locationInput: "#refinement input[type=text]",
+      refineButton: "#refinement button"
+    },
+    events: {
+      "click @ui.refineButton": "refineButtonClicked"
+    },
+    refineButtonClicked: function(e){
+      e.preventDefault();
+      
+      var location = this.ui.locationInput.val();
+      if (s.isBlank(location)){
+        $.growl({message: "Location can't be blank!"
+        },{
+          type: 'danger'
+        });
+      } else {
+        this.releaseModel.set('location', location);
+        Robin.commands.execute("reloadTargetsTab");
+      }
     },
     childViewOptions: function() {
       return this.options;
+    },
+    onShow: function(){
+      this.initGeoAutocomplete();
+    },
+    initGeoAutocomplete: function(){
+      this.ui.locationInput.geocomplete();
     },
     onRender: function() {
       var $this = this;
@@ -512,7 +551,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             first_name: model.get('first_name'),
             last_name: model.get('last_name'),
             email: model.get('email'),
-            outlet: model.get('blog_name')
+            outlet: model.get('blog_names')[0]
           });
           self.pitchContactsCollection.add(model);
         }
@@ -537,6 +576,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         dom: 'T<"clear">lfrtip',
         "oTableTools": {
           "aButtons": [
+            {
+              "sExtends": "text",
+              "sButtonText": "Advanced",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                self.ui.refinement.toggle();
+              }
+            },
             {
               "sExtends": "text",
               "sButtonText": "Export as CSV",
@@ -596,7 +643,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       _(pitchContacts).each(function(item){
         csvObject.push([item.get('full_name'), 
-          item.get('blog_name'), item.get('level_of_interest'), 
+          item.get('blog_names').join(', '), item.get('level_of_interest'), 
           item.get('email')]);
       });
       

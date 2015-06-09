@@ -13,6 +13,33 @@ class Stream < ActiveRecord::Base
   after_destroy :increase_feature_numner
 
 
+  def topics_raw
+    self.topics#.join(",") unless self.topics.nil?
+  end
+
+  def topics_raw=(values)
+    self.topics = []
+    self.topics=values.split(",")
+  end
+
+  def blogs_raw
+    self.blogs
+  end
+
+  def blogs_raw=(values)
+    self.blogs = []
+    self.blogs=values.split(",")
+  end
+
+  def keywords_raw
+    self.keywords
+  end
+
+  def keywords_raw=(values)
+    self.keywords = []
+    self.keywords=values.split(",")
+  end
+
   def set_position
     last_stream = Stream.order('position DESC').first
     self.position = (last_stream.nil? || last_stream.position.nil?) ? 1 : last_stream.position + 1

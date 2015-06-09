@@ -6,7 +6,7 @@ class MediaList < ActiveRecord::Base
   has_attached_file :attachment
   
   validates_attachment_content_type :attachment, :content_type => 'text/csv'
-  validates_attachment_size :attachment, :in => 0..30.megabytes
+  validates_attachment_size :attachment, :in => 0..2.megabytes
   validates_presence_of :name
   validates_uniqueness_of :name
     
@@ -16,7 +16,12 @@ class MediaList < ActiveRecord::Base
   
   def import_contacts
     path = attachment.queued_for_write[:original].path
-    contacts = CSV.read(path)
+    
+    # detect file encoding
+    contents = File.read(path)
+    detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+    contacts = CSV.read path, encoding: detection[:ruby_encoding]
     self.contacts << contacts.inject([]) do |memo, contact|
       
       contact.reject! {|c| c.nil?}

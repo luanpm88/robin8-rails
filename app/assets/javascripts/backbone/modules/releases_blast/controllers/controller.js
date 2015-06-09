@@ -45,6 +45,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         }
       });
       
+      Robin.commands.setHandler("reloadTargetsTab", function(){
+        self.targets();
+      });
+      
       Robin.vent.on("targets:tab:clicked", function(params){
         if (self.module.pitchModel.get('sent') === false){
           if (self.module.releasesBlastHeader.get('level') === 4)
@@ -69,19 +73,26 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     start: function(params){
-      this.module.releasesBlastHeader.set({ level: 1 });
-      
       this.module.collection.fetch({reset: true, data: { "for_blast": true}});
       var startTabView = new this.module.StartTabView({
         collection: this.module.collection,
+        pitchModel: this.module.pitchModel,
+        draftPitchModel: this.module.draftPitchModel
       });
+
+      if (Robin.releaseForBlast != undefined) {
+        this.module.releasesBlastHeader.set({ level: 2 });
+      } else {
+        this.module.releasesBlastHeader.set({ level: 1 });
+        this.module.layout.tabContentRegion.show(startTabView);
+      };
       
-      this.module.layout.tabContentRegion.show(startTabView);
     },
     analysis: function(params){
       this.module.releasesBlastHeader.set({ level: 2 });
 
       this.module.releaseModel = params.releaseModel;
+      
       var analysisTabView = new this.module.AnalysisTabView({
         model: this.module.releaseModel
       });
@@ -162,6 +173,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       var pitchTabView = new this.module.PitchTabView({
         model: this.module.pitchModel,
+        draftPitchModel: this.module.draftPitchModel,
         releaseModel: this.module.releaseModel
       });
       this.module.layout.tabContentRegion.show(pitchTabView);
@@ -181,6 +193,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       var emailPitchView = new ReleasesBlast.EmailPitchView({
         releaseModel: this.module.releaseModel,
+        draftPitchModel: this.module.draftPitchModel,
         model: this.module.pitchModel
       });
 
@@ -192,6 +205,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       var twitterPitchView = new ReleasesBlast.TwitterPitchView({
         releaseModel: this.module.releaseModel,
+        draftPitchModel: this.module.draftPitchModel,
         model: this.module.pitchModel
       });
 

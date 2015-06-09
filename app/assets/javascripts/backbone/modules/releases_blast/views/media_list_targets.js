@@ -73,6 +73,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           },{
             type: 'success'
           });
+          
+          $.growl({message: "All contacts in incorrect format will be ignored."
+          },{
+            type: 'info'
+          });
         },
         error: function(res){
           if (res && res.responseJSON) {

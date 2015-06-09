@@ -35,9 +35,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     },
     standardPressRelease: {
-      min_characters_count: 1000,
-      min_words_count: 200,
-      min_sentences_count: 7,
+      min_characters_count: 600,
+      min_words_count: 90,
+      min_sentences_count: 2,
       min_average_characters_count_per_word: 4,
       min_average_words_count_per_sentence: 12
     },
@@ -73,18 +73,82 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         }
       }
     },
+    errorFields: {
+      "email_address": "Email address",
+      "email_subject": "Subject line",
+      "twitter_pitch": "Twitter pitch text",
+      "email_pitch": "Email pitch text",
+      "user": "Your account"
+    },
     analyzeRelease: function(releaseId){
+      var self = this;
       var the_release = this.collection.findWhere({id: releaseId});
       
-      if (the_release.get('characters_count') > this.standardPressRelease.min_characters_count &&
-        the_release.get('words_count') > this.standardPressRelease.min_words_count &&
-        the_release.get('sentences_count') > this.standardPressRelease.min_sentences_count &&
-        the_release.get('average_characters_count_per_word') >
+      if (the_release.get('characters_count') >= this.standardPressRelease.min_characters_count &&
+        the_release.get('words_count') >= this.standardPressRelease.min_words_count &&
+        the_release.get('sentences_count') >= this.standardPressRelease.min_sentences_count &&
+        the_release.get('average_characters_count_per_word') >=
           this.standardPressRelease.min_average_characters_count_per_word &&
-        the_release.get('average_words_count_per_sentence') >
+        the_release.get('average_words_count_per_sentence') >=
           this.standardPressRelease.min_average_words_count_per_sentence){
-          
-        ReleasesBlast.controller.analysis({releaseModel: the_release});
+        
+        // Find or create DraftPitch
+        var draftPitchesCollection = new Robin.Collections.DraftPitches({
+          releaseId: the_release.id
+        });
+        
+        draftPitchesCollection.fetchDraftPitch({success: function(collection){
+          if (collection.length > 0){
+            var model = collection.models[0];
+            self.draftPitchModel.set(model.attributes);
+            
+            self.pitchModel.set({
+              twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
+              email_pitch: self.draftPitchModel.get('email_pitch'),
+              summary_length: self.draftPitchModel.get('summary_length'),
+              email_address: self.draftPitchModel.get('email_address'),
+              release_id: self.draftPitchModel.get('release_id'),
+              email_subject: self.draftPitchModel.get('email_subject')
+            });
+            
+            ReleasesBlast.controller.analysis({releaseModel: the_release});
+          } else {
+            self.draftPitchModel.set('release_id', the_release.id);
+            var firstName = Robin.currentUser.get('first_name');
+            var emailPitch = self.draftPitchModel.get('email_pitch');
+            
+            if (!s.isBlank(firstName))
+              emailPitch = emailPitch.replace('@[UserFirstName]', (",<br />" + firstName));
+            else
+              emailPitch = emailPitch.replace('@[UserFirstName]', '');
+        
+            self.draftPitchModel.set('email_pitch', emailPitch);
+            self.draftPitchModel.set('email_address', Robin.currentUser.get('email'));
+            
+            self.pitchModel.set({
+              twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
+              email_pitch: self.draftPitchModel.get('email_pitch'),
+              summary_length: self.draftPitchModel.get('summary_length'),
+              email_address: self.draftPitchModel.get('email_address'),
+              release_id: self.draftPitchModel.get('release_id'),
+              email_subject: self.draftPitchModel.get('email_subject')
+            });
+            
+            self.draftPitchModel.save({}, {
+              success: function(model, response, options){
+                ReleasesBlast.controller.analysis({releaseModel: the_release});
+              },
+              error: function(model, response, options){
+                _(response.responseJSON).each(function(val, key){
+                  $.growl({message: self.errorFields[key] + ' ' + val[0]
+                  },{
+                    type: 'danger'
+                  });
+                });
+              }
+            });
+          }
+        }});
       } else {
         $.growl({
           message: "Your Press Release is not standard, we can't analyze it!"
@@ -96,6 +160,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initialize: function(options){
       var self = this;
+      this.pitchModel = options.pitchModel;
+      this.draftPitchModel = options.draftPitchModel;
+      
       Robin.commands.setHandler("goToAnalysisTab", function(){
         if (self.ui.analyzeButton.prop('disabled') === false){
           var selectValue = self.ui.releasesSelect.val();

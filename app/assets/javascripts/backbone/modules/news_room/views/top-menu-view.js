@@ -292,6 +292,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
             }
           });
         }
+      } else {
+        viewObj.$el.find('#save_news_room').prop("disabled",false);
       }
     },
 
