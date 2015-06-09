@@ -16,11 +16,14 @@ class Payment < ActiveRecord::Base
 
   def set_features
     product.features.each do |f|
+      product_quota = product.product_features.where(feature_id: f.id).first.quota
+      available_count = product.is_package ? product_quota - user.used_count_by_slug(f.slug) : product_quota
+
       user_product.user.user_features.create!(
         feature_id: f.id,
         product_id: product.id, #for book keeping
         max_count: product.product_features.where(feature_id: f.id).first.quota,
-        available_count: product.product_features.where(feature_id: f.id).first.quota - user.used_count_by_slug(f.slug),
+        available_count: available_count,
         reset_at: product.product_features.where(feature_id: f.id).first.reset_at #use -ve .. i.e total -=1 And add priority i.e which is used before the other
       )
     end
