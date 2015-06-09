@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
   end
 
   def can_create_newsroom
-    newsroom_available_count.nil? ? false : newsroom_available_count > 1
+    newsroom_available_count.nil? ? false : newsroom_available_count > 0
   end
 
   def release_available_count
