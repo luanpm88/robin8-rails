@@ -55,12 +55,18 @@ describe('Releases.TopMenuView', function() {
       spyOn( view, 'deleteRelease');
       spyOn( view, 'extractURL');
       spyOn( view, 'makeNewsRoomPublic');
+      spyOn( view, 'newsRoomSelected');
       spyOn( view, 'startSmartRelease');
       spyOn( view.modelBinder, 'bind');
       spyOn( view, 'initFormValidation');
       spyOn( view, 'initLogoView');
       spyOn( view, 'initMediaTab');
       spyOn( view, 'changePrivate');
+      spyOn( view, 'uploadDirectImage');
+      spyOn( view, 'uploadUrlImage');
+      spyOn( view, 'uploadDirectVideo');
+      spyOn( view, 'uploadUrlVideo');
+      spyOn( view, 'insertLink');
       view.delegateEvents();
       view.render();
     });
@@ -136,7 +142,34 @@ describe('Releases.TopMenuView', function() {
       expect(view.makeNewsRoomPublic).toHaveBeenCalled();
     });
 
+    it('change newsroom', function() {
+      view.$el.find('#news_room_id').val('1').trigger('change');
+      expect(view.newsRoomSelected).toHaveBeenCalled();
+    });
+
+    it('when click #direct-image-upload call uploadDirectImage', function() {
+      view.$el.find('#direct-image-upload').click();
+      expect(view.uploadDirectImage).toHaveBeenCalled();
+    });
+    
+    it('when click #url-image-upload call uploadUrlImage', function() {
+      view.$el.find('#url-image-upload').click();
+      expect(view.uploadUrlImage).toHaveBeenCalled();
+    });
+    
+    it('when click #direct-video-upload call uploadDirectVideo', function() {
+      view.$el.find('#direct-video-upload').click();
+      expect(view.uploadDirectVideo).toHaveBeenCalled();
+    });
+    
+    it('when click #url-video-upload call uploadUrlVideo', function() {
+      view.$el.find('#url-video-upload').click();
+      expect(view.uploadUrlVideo).toHaveBeenCalled();
+    });
+    
+    it('when click #insert_link call insertLink', function() {
+      view.$el.find('#insert_link').click();
+      expect(view.insertLink).toHaveBeenCalled();
+    });
   });
-
-
 });
