@@ -185,7 +185,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var date = moment(this.model.get('published_at')).toDate();
       var datedate = moment(date).format('MM/DD/YYYY');
       this.$el.find('#release-date-input').val(datedate).change();
-      this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY', minDate: moment()});
+      this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY'});
 
       var insertLinkButton = this.$el.find('#wyihtml5-insert-link').html();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
