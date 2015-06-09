@@ -41,14 +41,16 @@ class Pitch < ActiveRecord::Base
   end
 
   def decrease_feature_number
-    uf = needed_user.user_features.smart_release.available.first
+    af = needed_user.user_features.smart_release.available.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.smart_release.available.first : af
     return false if uf.blank?
     uf.available_count -= 1
     uf.save
   end
 
   def increase_feature_numner
-    uf = needed_user.user_features.smart_release.first
+    af = needed_user.user_features.smart_release.available.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.smart_release.available.first : af
     return false if uf.blank?
     uf.available_count += 1
     uf.save
