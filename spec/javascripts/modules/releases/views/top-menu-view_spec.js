@@ -1,5 +1,6 @@
 describe('Releases.TopMenuView', function() {
-  var newsroom;
+  var newsroom, view, model;
+  Robin.user = new Robin.Models.User();
 
   beforeEach(function() {
     newsroom = Factory.build("newsroom");
@@ -12,7 +13,6 @@ describe('Releases.TopMenuView', function() {
 
     model = Factory.build("release");
     view = new Releases.TopMenuView({ model: model });
-    Robin.user = new Robin.Models.User();
   });
 
   afterEach(function() {
@@ -52,13 +52,15 @@ describe('Releases.TopMenuView', function() {
       spyOn( view, 'openModalDialog');
       spyOn( view, 'filterBy');
       spyOn( view, 'saveRelease');
+      spyOn( view, 'deleteRelease');
       spyOn( view, 'extractURL');
-      spyOn( view, 'highlightReleaseText');
+      spyOn( view, 'makeNewsRoomPublic');
       spyOn( view, 'startSmartRelease');
       spyOn( view.modelBinder, 'bind');
       spyOn( view, 'initFormValidation');
       spyOn( view, 'initLogoView');
       spyOn( view, 'initMediaTab');
+      spyOn( view, 'changePrivate');
       view.delegateEvents();
       view.render();
     });
@@ -94,7 +96,45 @@ describe('Releases.TopMenuView', function() {
       expect(view.initMediaTab).toHaveBeenCalled();
     });
 
+    it('when click .private-checkbox should call changePrivate', function() {
+      view.$el.find('.private-checkbox').iCheck('check');
+      expect(view.changePrivate).toHaveBeenCalled();
+    });
 
+    it('when click #new_release should call openModalDialog', function() {
+      view.$el.find('#new_release').click();
+      expect(view.openModalDialog).toHaveBeenCalled();
+    });
+
+    it('when click #newsroom_filter should call filterBy', function() {
+      view.$el.find('#newsroom_filter').click();
+      expect(view.filterBy).toHaveBeenCalled();
+    });
+
+    it('when click #save_release should call saveRelease', function() {
+      view.$el.find('#save_release').click();
+      expect(view.saveRelease).toHaveBeenCalled();
+    });
+
+    it('when click #delete_release should call deleteRelease', function() {
+      view.$el.find('#delete_release').click();
+      expect(view.deleteRelease).toHaveBeenCalled();
+    });
+
+    it('when click #extract_url should call extractURL', function() {
+      view.$el.find('#extract_url').click();
+      expect(view.extractURL).toHaveBeenCalled();
+    });
+
+    it('when click #smart_release call startSmartReleasehighlightReleaseText', function() {
+      view.$el.find('#smart_release').click();
+      expect(view.startSmartRelease).toHaveBeenCalled();
+    });
+
+    it('when click #make-public call makeNewsRoomPublic', function() {
+      view.$el.find('#make-public').click();
+      expect(view.makeNewsRoomPublic).toHaveBeenCalled();
+    });
 
   });
 

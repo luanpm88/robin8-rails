@@ -35,6 +35,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       }
     },
     highlightReleaseText: function(e) {
+      console.log('!!!');
       e.preventDefault();
     },
     updateStats: _.debounce(function(e) {
