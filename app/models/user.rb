@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   def used_count_by_slug(slug)
     case slug
     when 'seat'
-      seat_count
+      seat_count - 1  
     when 'newsroom'
       newsroom_count
     when 'press_release'

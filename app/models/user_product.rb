@@ -11,6 +11,10 @@ class UserProduct < ActiveRecord::Base
   def normalize_features #has already paid for previous month so just add more features, he will be charged next month for it accordingly.
     if !product_id_was.blank? && product_id_was.to_i != product_id.to_i
       product.features.each do |f|
+        product_quota = product.product_features.where(feature_id: f.id).first.quota
+        addons_quota = product.is_package == false ? user.user_features.joins(:product).where(products: {is_package: false}) : 0
+        
+        available_count = product_quota - user.used_count_by_slug(f.slug)
         user.user_features.create!(
             feature_id: f.id,
             product_id: product.id, #for book keeping
