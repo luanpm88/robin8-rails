@@ -154,7 +154,7 @@ class User < ActiveRecord::Base
   end
 
   def can_create_seat
-    seat_available_count.nil? ? false : seat_available_count > 1
+    seat_available_count.nil? ? false : seat_available_count > 0
   end
 
   def seat_available_count
