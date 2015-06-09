@@ -104,14 +104,16 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def decrease_feature_number
-      uf = needed_user.user_features.newsroom.available.first
+      af = needed_user.user_features.newsroom.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? needed_user.user_features.newsroom.available.first : af
       return false if uf.blank?
       uf.available_count -= 1
       uf.save
     end
 
     def increase_feature_numner
-      uf = needed_user.user_features.newsroom.first
+      af = needed_user.user_features.newsroom.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? needed_user.user_features.newsroom.available.first : af
       return false if uf.blank?
       uf.available_count += 1
       uf.save

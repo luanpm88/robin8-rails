@@ -12,14 +12,13 @@ class UserProduct < ActiveRecord::Base
     if !product_id_was.blank? && product_id_was.to_i != product_id.to_i
       product.features.each do |f|
         product_quota = product.product_features.where(feature_id: f.id).first.quota
-        addons_quota = product.is_package == false ? user.user_features.joins(:product).where(products: {is_package: false}) : 0
-        
-        available_count = product_quota - user.used_count_by_slug(f.slug)
+        available_count = product.is_package ? product_quota - user.used_count_by_slug(f.slug) : product_quota
+
         user.user_features.create!(
             feature_id: f.id,
             product_id: product.id, #for book keeping
             max_count: product.product_features.where(feature_id: f.id).first.quota,
-            available_count: product.product_features.where(feature_id: f.id).first.quota - user.used_count_by_slug(f.slug),
+            available_count: available_count,
             reset_at: product.product_features.where(feature_id: f.id).first.reset_at
         )
       end

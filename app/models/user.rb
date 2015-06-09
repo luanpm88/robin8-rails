@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   def used_count_by_slug(slug)
     case slug
     when 'seat'
-      seat_count - 1  
+      seat_count
     when 'newsroom'
       newsroom_count
     when 'press_release'
@@ -324,7 +324,8 @@ class User < ActiveRecord::Base
 
     def decrease_feature_number
       if !is_primary
-        uf = invited_by.user_features.seat.available.first
+        af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
+        uf = af.nil? ? needed_user.user_features.seat.available.first : af
         return false if uf.blank?
         uf.available_count -= 1
         uf.save
@@ -333,7 +334,8 @@ class User < ActiveRecord::Base
 
     def increase_feature_number
       if !is_primary
-        uf = invited_by.user_features.seat.first
+        af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
+        uf = af.nil? ? needed_user.user_features.seat.available.first : af
         return false if uf.blank?
         uf.available_count += 1
         uf.save
