@@ -100,7 +100,7 @@ class ReleasesController < ApplicationController
 
   def release_params
     params.require(:release).permit(:title, :text, :news_room_id, :is_private, 
-      :logo_url, :thumbnail, :concepts, :iptc_categories, :summaries, :hashtags,
+      :logo_url, :thumbnail, :concepts, :published_at, :iptc_categories, :summaries, :hashtags,
       :characters_count, :words_count, :sentences_count,
       :paragraphs_count, :adverbs_count, :adjectives_count,
       :nouns_count, :organizations_count, :places_count, :people_count,

@@ -1,6 +1,6 @@
 class ReleaseSerializer < ActiveModel::Serializer
   attributes :id, :user_id, :news_room_id, 
-    :news_room, :title, :text, 
+    :news_room, :title, :text, :published_at, :formamtted_published_at,
     :is_private, :logo_url, :thumbnail, :created_at,
     :characters_count, :words_count, :sentences_count,
     :paragraphs_count, :adverbs_count, :adjectives_count,
@@ -18,6 +18,10 @@ class ReleaseSerializer < ActiveModel::Serializer
     else
       []
     end
+  end
+
+  def formamtted_published_at
+    object.published_at.strftime('%m\%d\%Y') unless object.published_at.nil? 
   end
   
   def iptc_categories

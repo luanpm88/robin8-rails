@@ -65,6 +65,20 @@
       margin-top: 5px;
     }
   }
+
+}
+
+#releaseForm {
+  #release-title-block {
+    float: left;
+    width: 68%;
+    margin-bottom: 15px;
+  }
+  #release-date-block {
+    float: right;
+    width: 30%;
+    margin-bottom: 15px;
+  }
 }
 
 #release-company {
