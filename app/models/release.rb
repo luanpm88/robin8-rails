@@ -17,7 +17,7 @@ class Release < ActiveRecord::Base
   scope :by_news_room, ->(id) {where(news_room_id: id)}
   scope :published, -> { where(is_private: false) }
   
-  before_save :pos_tagger, :entities_counter
+  before_save :pos_tagger, :entities_counter, :set_published_at
   after_create :decrease_feature_number
   after_destroy :increase_feature_numner
   after_save :update_images_links
@@ -61,6 +61,10 @@ class Release < ActiveRecord::Base
 
   def can_be_created
     errors.add(:user, "you've reached the max numbers of releases.") if user && !user.can_create_release
+  end
+
+  def set_published_at
+    self.published_at = self.created_at.to_date if self.published_at.nil?
   end
   
   def pos_tagger

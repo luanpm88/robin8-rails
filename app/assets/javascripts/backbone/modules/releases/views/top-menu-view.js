@@ -181,6 +181,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
+
+      var date = moment(this.model.get('published_at')).toDate();
+      var datedate = moment(date).format('MM/DD/YYYY');
+      this.$el.find('#release-date-input').val(datedate).change();
+      this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY', minDate: moment()});
+
       var insertLinkButton = this.$el.find('#wyihtml5-insert-link').html();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
       var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
@@ -619,6 +625,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.form.data('formValidation').isValid() && textLength <= 60000) {
         this.$el.find('#save_release').prop("disabled",true);
         this.$el.find('#smart_release').prop("disabled",true);
+        
+        this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
