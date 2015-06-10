@@ -80,7 +80,7 @@ class NewsRoomsController < ApplicationController
       r = JSON.parse(result.body)
       opens = JSON.parse(result_on_opens.body)
       emails = opens.map{ |o| o['recipient'] }
-      query = (emails.blank? ? nil : 'emails[]=' + emails.joins('&emails[]='))
+      query = (emails.blank? ? nil : 'emails[]=' + emails.join('&emails[]='))
     rescue
       r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
     end
