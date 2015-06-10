@@ -117,19 +117,23 @@ a {
 }
 .presskit-file {
     border: 5px solid rgb(199, 199, 199);
-    padding-top: 100%;
+    padding-top: 100px;
     position: relative;
+    height: 230px;
 }
 .presskit-file--content {
-    position: absolute;
-    top: 50%;
+    position: inherit;
+    top: 10px;
     left: 50%;
     text-align: center;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    span.name {
+    div.name {
         color: #9D9D9D;
         font-weight: bold;
+        word-wrap: break-word;
+        text-align: center;
+        margin: 0px 10px 0px 10px;
     }
 }
 
