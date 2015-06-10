@@ -41,14 +41,26 @@ module BlueSnap
       end
     end
 
-    def self.update_credit_card(request, user, params, shopper_id)
-      update_url = "#{Rails.application.secrets[:bluesnap][:base_url]}/shoppers/#{shopper_id}"
+    def self.update_credit_card(request, user, params, shopper_id, subscription_id)
+      sku_id = UserProduct.find_by(bluesnap_subscription_id: subscription_id).product.sku_id
+      card_last_four = params[:card][:last_four]
+      update_card_url = "#{Rails.application.secrets[:bluesnap][:base_url]}/shoppers/#{shopper_id}"
+      update_subscription_url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
       begin
         errors = BlueSnap::Shopper.validate_params(params, user) 
         if errors.blank?
           shopper = {"web-info" => BlueSnap::Shopper.web_info(request),
                      "shopper-info" => BlueSnap::Shopper.edit_card_info(params, user)}
-          Request.put(update_url, shopper.to_xml(root: "shopper", builder: BlueSnapXmlMarkup.new,
+          subscription = {"status" => "A",
+                          "underlying-sku-id" => sku_id,
+                          "shopper-id" => shopper_id,
+                          "credit-card" =>
+                            {"card-last-four-digits" => params[:card][:last_four],
+                             "card-type" => params[:card][:credit_card_type].upcase}
+                         }
+          Request.put(update_card_url, shopper.to_xml(root: "shopper", builder: BlueSnapXmlMarkup.new,
+                                                  :skip_types => true, :skip_instruct => true))
+          Request.put(update_subscription_url, subscription.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new,
                                                   :skip_types => true, :skip_instruct => true))
         else
           return errors, nil
