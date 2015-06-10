@@ -36,7 +36,7 @@ docx.p
   fake_url = "http://example.com" + image_proxy_path(Base64.encode64(images.to_json))
   
   docx.img fake_url do
-    data HTTParty.get(url_of_image).body
+    data HTTParty.get(url_of_image, verify: false).body
     width   450       # sets the image width. units specified in pixels.
     height  300       # sets the image height. units specified in pixels.
     align   :center   # controls the justification of the image. default is :left.
