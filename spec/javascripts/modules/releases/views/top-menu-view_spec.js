@@ -172,6 +172,13 @@ describe('Releases.TopMenuView', function() {
       expect(view.insertLink).toHaveBeenCalled();
     });
 
-    // TODO !!!
+    it('wysihtml5 params must be defined', function() {
+      expect(view.ui.wysihtml5.wysihtml5).toBeDefined();
+    });
+
+    it('html editor must be set', function() {
+      expect(view.editor).toBeDefined();
+    });
+
   });
 });
