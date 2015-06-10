@@ -219,7 +219,8 @@ a {
 }
 
 .sidebar-nav > li > a.collapsed {
-    background: transparent;
+    // background: transparent;
+    color: #fff;
 }
 .sidebar-nav > li > a:hover {
     text-decoration: none;
