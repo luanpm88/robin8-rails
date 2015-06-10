@@ -777,14 +777,14 @@ nav{text-align: center;}
     border: medium none;
     box-shadow: none;
 }
-.release-thumbnail-container {
+.thumbnail-container {
   position: relative;
   width: 340px;
 }
-.release-dummy {
+.thumbnail-dummy {
    padding-top: 100%; /* forces 1:1 aspect ratio */
 }
-.release-thumbnail-inner {
+.thumbnail-inner {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -793,13 +793,13 @@ nav{text-align: center;}
   text-align:center;
   font: 0/0 a;
 }
-.release-thumbnail-inner:before {
+.thumbnail-inner:before {
   content: ' ';
   display: inline-block;
   vertical-align: middle;
   height: 100%;
 }
-.release-thumbnail-inner img {
+.thumbnail-inner img {
   border-radius: 4px;
   vertical-align: middle;
   display: inline-block;
