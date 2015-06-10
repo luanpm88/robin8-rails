@@ -67,6 +67,12 @@ class StreamsController < ApplicationController
           type: "image/png", disposition: 'attachment'
       end
       
+      format.docx do
+        @stories = fetch_stories
+        @stories = summarize_stories(@stories["stories"])
+        @stream = Stream.find(params[:id])
+      end
+      
       format.html do 
         @stories = fetch_stories
         @stream = Stream.find(params[:id])

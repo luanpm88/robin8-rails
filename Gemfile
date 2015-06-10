@@ -104,11 +104,14 @@ gem 'countries'
 gem 'whenever'
 gem 'friendly_id', '~> 5.1.0'
 
-gem 'docx-html'
+gem 'docx'
 
 # pure Ruby PDF generation library
 gem 'prawn'
 gem 'imgkit'
+
+# to create Docx
+gem 'caracal-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
