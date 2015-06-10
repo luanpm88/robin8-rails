@@ -77,7 +77,7 @@
                           <div class="presskit-file--content">
                             <%= image_tag asset_path(attachment.get_correct_url) %>
                             <br>
-                            <span class='name'> <%= attachment.name %> </span>
+                            <div class='name'> <%= attachment.name.split(".").first[0..33] << "(..)." << attachment.name.split(".").last %> </div>
                           </div>
                         </div>
                       </a>
