@@ -283,7 +283,8 @@ a {
 }
 .sidebar-nav > .sidebar-brand .logo {
     margin: 22px auto 30px auto;
-    width: 165px;
+    max-width: 165px;
+    max-height: 165px;
 }
 .sidebar-nav > li .collapsible {
     padding: 0 0 10px 43px !important;
