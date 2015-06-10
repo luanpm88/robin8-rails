@@ -46,8 +46,8 @@ class ReleasesController < ApplicationController
   end
 
   def extract_from_word
-    d = Docx::Document.open(params[:file].tempfile.path)
-    render json: d.to_html
+    doc = Docx::Document.open(params[:file].tempfile.path)
+    render json: doc.paragraphs.map(&:to_html).join
   end
 
   def update

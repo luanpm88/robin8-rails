@@ -58,7 +58,7 @@ Rails.application.routes.draw do
 
   resources :streams, only: [:index, :create, :update, :destroy, :order] do
     post 'order', on: :collection
-    get 'stories', on: :member, format: [:json, :rss, :pdf, :html, :png]
+    get 'stories', on: :member
   end
 
   resources :products, only: [:index] do
