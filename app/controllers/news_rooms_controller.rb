@@ -84,17 +84,20 @@ class NewsRoomsController < ApplicationController
     rescue
       r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
     end
+    authors = if emails.blank?
+      []
+    else
+      uri = URI(Rails.application.secrets.robin_api_url + 'authors')
+      uri.query = query
 
-    uri = URI(Rails.application.secrets.robin_api_url + 'authors')
-    uri.query = query
+      req = Net::HTTP::Get.new(uri)
+      req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
 
-    req = Net::HTTP::Get.new(uri)
-    req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
-
-    res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
-    parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
-    parsed_res['authors']
-    render json: { mail: r, authors: parsed_res['authors'] }
+      res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
+      parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
+      parsed_res['authors']
+    end
+    render json: { mail: r, authors: authors }
   end
 
 private
