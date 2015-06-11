@@ -26,11 +26,11 @@
       <div class="pull-right toolbar releases-toolbar">
         <div class="ui-select">
           <select disabled='true' class="form-control" id="newsroom_filter" name="by_news_room">
-            <option value="">All Newsrooms</option>
+            <option value=""><%= polyglot.t("releases.all_newsrooms") %></option>
           </select>
         </div>
         <!-- <button class="btn btn-default"><i class="fa fa-rocket"></i> <strong>5 SmartReleases</strong> Remaining</button> -->
-        <button class="btn btn-success" id='new_release'> <i class="fa fa-plus"></i> New Release </button>
+        <button class="btn btn-success" id='new_release'> <i class="fa fa-plus"></i> <%= polyglot.t("releases.new_release") %> </button>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
           <% if(release.news_room_id) {%>
             <h4 class="modal-title truncate"> Edit <%= release.title%> </h4>
           <% } else {%>
-            <h4 class="modal-title"> Create Release </h4>
+            <h4 class="modal-title"> <%= polyglot.t("releases.modal.title") %> </h4>
           <% } %>
         </div>
         <div class="modal-body">
@@ -52,9 +52,9 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#release-company" aria-controls="home" role="tab" data-toggle="tab">Basic</a></li>
-              <li role="presentation"><a href="#website" aria-controls="home" role="tab" data-toggle="tab">Website</a></li>
-              <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab">Media</a></li>
+              <li role="presentation" class="active"><a href="#release-company" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.basic_tab.title") %></a></li>
+              <li role="presentation"><a href="#website" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.website_tab.title") %></a></li>
+              <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.media_tab.title") %></a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -62,7 +62,7 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="release-company">
                   <div class="form-group">
-                      <label>Newsroom</label>
+                      <label><%= polyglot.t("releases.modal.basic_tab.newsroom") %></label>
                       <div class="ui-select">
                         <select disabled='true' id="news_room_id" class="form-control" name="news_room_id">
                           <option value="">Select...</option>
@@ -71,7 +71,7 @@
                   </div>
                   <div class="form-group title-date">
                     <div id='release-title-block'>
-                      <label>Release title</label>
+                      <label><%= polyglot.t("releases.modal.basic_tab.release_title") %></label>
                       <input class="form-control" id="release-title-input" name="title" type="text" value="" placeholder="Enter title...">
                     </div>
                     <div id='release-date-block'>
@@ -80,8 +80,8 @@
                     </div>
                   </div>
                   <div class="form-group" style="margin-bottom: 5px;">
-                      <label>Release text</label>
-                      <textarea class="form-control widearea wysihtml5" rows="10" placeholder="Paste your press release here..." name="text" data-widearea="enable" data-widearea-id="1"></textarea>
+                    <label><%= polyglot.t("releases.modal.basic_tab.release_text") %></label>
+                    <textarea class="form-control widearea wysihtml5" rows="10" placeholder="Paste your press release here..." name="text" data-widearea="enable" data-widearea-id="1"></textarea>
                   </div>
                   <div class="linebreak-notification" style="margin-bottom: 10px;">
                     <center>*The editor uses paragraphs by default for copied text. To place a normal line break press Shift+Enter (Shift+Return)</center>
@@ -91,15 +91,15 @@
                 <div role="tabpanel" class="tab-pane" id="website">
                   <br>
                   <div class="form-group">
-                    <label for="icheckbox_flat" class="control-label" style="margin-right: 5px;" >Make this release private: </label>
+                    <label for="icheckbox_flat" class="control-label" style="margin-right: 5px;" ><%= polyglot.t("releases.modal.website_tab.make_private") %> </label>
                     <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_private" ></span>
                   </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="media">
-                  <b>Please, select a logo for your release:</b>
+                  <b><%= polyglot.t("releases.modal.media_tab.select_logo") %> :</b>
                   <div class="logo"></div>
                   <br><hr><br>
-                  <b>Here you can upload additional media files:</b>
+                  <b><%= polyglot.t("releases.modal.media_tab.upload_files") %></b>
                   <div class='images_region'></div>
                   <div class='videos_region'></div>
                   <div class='files_region'></div>
@@ -114,18 +114,18 @@
           <% var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
           <div id="delete-container">
             <% if(release.id) { %>
-              <button type="button" class="btn btn-danger" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
+              <button type="button" class="btn btn-danger" id="delete_release"><i class="fa fa-trash"></i> <%= polyglot.t("releases.modal.buttons.delete") %></button>
             <% } %>
           </div>
           <div id="alert-container">
               <div id="public-alert" class="alert alert-warning" role="alert" style="display:none;">
-                This release won't be publicly displayed while the parent Newsroom remains unpublished. 
-                <b><button id="make-public">Publish the newsroom!</button></b>
+                <%= polyglot.t("releases.modal.warning") %>
+                <b><button id="make-public"><%= polyglot.t("releases.modal.publish") %></button></b>
               </div>
           </div>
           <div id="release-buttons">
-            <button type="button" class="btn btn-primary smart-release-button" id='smart_release' ><i class="fa fa-rocket"></i> Next</button>
-            <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> Save draft</button>
+            <button type="button" class="btn btn-primary smart-release-button" id='smart_release' ><i class="fa fa-rocket"></i> <%= polyglot.t("releases.modal.buttons.next") %></button>
+            <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> <%= polyglot.t("releases.modal.buttons.save") %></button>
           </div>
         </div>
     </div>

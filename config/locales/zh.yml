@@ -1,0 +1,12 @@
+zh:
+  application:
+    navigation:
+      dashboard: 仪表盘
+      smart_release: 智能发布
+      monitoring: 监控
+      newsrooms: 新闻室
+      releases: 发布
+      social: 社会
+      analytics: 分析
+      profile: 轮廓
+    

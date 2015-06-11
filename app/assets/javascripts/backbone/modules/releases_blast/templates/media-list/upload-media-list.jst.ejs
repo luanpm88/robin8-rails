@@ -1,10 +1,10 @@
 <form class="form" accept-charset="UTF-8" enctype="multipart/form-data" 
   method="post" action="/media_lists" data-remote="true">
   <div class="form-group">
-    <label>Add a previously saved list</label>
+    <label><%= polyglot.t("smart_release.targets_step.media_tab.add_list") %></label>
     <div style="display: inline;" class="ui-select">
       <select class="form-control">
-        <option value="-1">Select a Media List or upload a new one...</option>
+        <option value="-1"><%= polyglot.t("smart_release.targets_step.media_tab.select_placeholder") %></option>
         <% _(items).each(function(item){ %>
           <option value="<%= item.id %>"><%= item.name %></option>
         <% }); %>
@@ -12,8 +12,8 @@
     </div>
   </div>
   <div class="form-group">
-    <button id="upload_button" class="btn btn-default btn-green"><i class="fa fa-upload"></i>  Upload a new list</button>
-    <br><small>Supported formats: CSV <i title="" data-html="true" data-placement="right" data-toggle="tooltip" class="fa fa-question-circle" data-original-title="Uploaded file must have exactly <strong>four</strong> columns, formatted as <strong>first name, last name, email address, outlet</strong>"></i></small>
+    <button id="upload_button" class="btn btn-default btn-green"><i class="fa fa-upload"></i>  <%= polyglot.t("smart_release.targets_step.media_tab.upload_button") %></button>
+    <br><small><%= polyglot.t("smart_release.targets_step.media_tab.formats") %>: CSV <i title="" data-html="true" data-placement="right" data-toggle="tooltip" class="fa fa-question-circle" data-original-title="Uploaded file must have exactly <strong>four</strong> columns, formatted as <strong>first name, last name, email address, outlet</strong>"></i></small>
     
     <input class="hide" type="file" name="media_list_file" accept="text/csv" />
   </div>

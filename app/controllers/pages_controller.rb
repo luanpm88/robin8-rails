@@ -3,6 +3,27 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   before_action :set_video,:only => :home
 
+  before_action :set_translations,:only => [:home, :pricing]
+
+  def set_translations
+    unless current_user.blank?
+      locale = current_user.locale.nil? ? 'en' : current_user.locale
+      # I18n.locale = locale
+
+      translations = I18n.backend.send(:translations)
+      @phrases = translations[locale.to_sym][:application]
+    else
+
+    end
+  end
+
+  def set_locale
+    unless params[:locale].blank?
+      current_user.update_attributes(locale: params[:locale]) unless current_user.blank?
+    end
+    redirect_to root_path + "##{params[:current_page]}"
+  end
+
   def home
     if user_signed_in? && !current_user.active_subscription.blank?
       render "home", :layout => 'application'
