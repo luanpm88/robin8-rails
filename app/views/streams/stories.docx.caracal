@@ -28,9 +28,9 @@ docx.p
     
     images = story['images'].push("http://lorempixel.com/550/413/abstract/")
     url_of_image = if Rails.env.development? 
-      "http://localhost:3001" + image_proxy_path(Base64.encode64(images.take(3).to_json))
+      "http://localhost:3001" + image_proxy_path(images: Base64.encode64(images.take(3).to_json))
     else
-      image_proxy_url(Base64.encode64(images.take(3).to_json))
+      image_proxy_url(images: Base64.encode64(images.take(3).to_json))
     end
     
     docx.img index do
