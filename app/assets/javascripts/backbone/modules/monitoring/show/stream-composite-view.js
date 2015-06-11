@@ -21,6 +21,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click @ui.exportButton': 'exportButtonClicked',
       'change @ui.storiesNumberSlider': 'storiesNumberSliderChanged',
       'click @ui.downloadReportButton': "downloadReportButtonClicked",
+      'change @ui.formatFileInput': "formatFileInputChanged",
       'click #close-settings': 'closeSettings',
       'click #done': 'done',
       'click span.editable': 'editTitle',
@@ -222,7 +223,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find("input.select2-input").css('width', '150%');
       
       this.ui.colorizeBackground.prop('checked', true);
-      this.ui.formatFileInput.select('png');
+      this.ui.formatFileInput.select('docx');
     },
 
     onAdded: function(story, collection) {
@@ -391,6 +392,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       e.preventDefault();
       
       this.downloadReport();
+    },
+    formatFileInputChanged: function(e){
+      var fileFormat = this.ui.formatFileInput.val();
+      
+      if (fileFormat === "docx")
+        this.ui.colorizeBackground.parent().hide();
+      else
+        this.ui.colorizeBackground.parent().show();
     },
     downloadReport: function(){
       var numberOfStories = this.ui.storiesNumberSlider.val();

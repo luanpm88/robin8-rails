@@ -1,0 +1,50 @@
+docx.page_numbers true do
+  align :right     # sets the alignment. accepts :left, :center, and :right.
+end
+
+docx.h1 @stream.stream_title do
+  align :center
+end
+docx.h5 "Exported on #{Time.now.strftime('%e %B %Y')}" do
+  align :center
+end
+
+docx.p
+
+@stories.each do |story|
+  docx.h4 story["title"]
+  docx.h6 story["blog_name"] + " • " + Time.parse(story["published_at"])
+    .strftime("%a, %d %B %Y %T%:z")
+  docx.hr
+  
+  unless story["summary"].blank?
+    docx.ul do
+      story["summary"].each do |s|
+        li do
+          text s.gsub("\n", " ").truncate(190, separator: ' ')
+        end
+      end
+    end
+  end
+  
+  images = story['images'].push("http://lorempixel.com/550/413/abstract/")
+  url_of_image = if Rails.env.development? 
+    "http://localhost:3001" + image_proxy_path(Base64.encode64(images.to_json))
+  else
+    image_proxy_url(Base64.encode64(images.to_json))
+  end
+  fake_url = "http://example.com" + image_proxy_path(Base64.encode64(images.to_json))
+  
+  docx.img fake_url do
+    data HTTParty.get(url_of_image, verify: false).body
+    width   450       # sets the image width. units specified in pixels.
+    height  300       # sets the image height. units specified in pixels.
+    align   :center   # controls the justification of the image. default is :left.
+    top     10        # sets the top margin. units specified in pixels.
+    bottom  10        # sets the bottom margin. units specified in pixels.
+    left    10        # sets the left margin. units specified in pixels.
+    right   10        # sets the right margin. units specified in pixels.
+  end
+  
+  docx.page
+end
