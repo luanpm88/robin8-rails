@@ -55,6 +55,7 @@
               <li role="presentation" class="active"><a href="#release-company" aria-controls="home" role="tab" data-toggle="tab">Basic</a></li>
               <li role="presentation"><a href="#website" aria-controls="home" role="tab" data-toggle="tab">Website</a></li>
               <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab">Media</a></li>
+              <li role="presentation"><a href="#newswire" aria-controls="settings" role="tab" data-toggle="tab">Newswire</a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -104,6 +105,22 @@
                   <div class='videos_region'></div>
                   <div class='files_region'></div>
                 </div>
+                <div role="tabpanel" class="tab-pane" id="newswire">
+                  <b>Please, select options for distributing release:</b>
+                  <br><br>
+                  <div class="form-group">
+                    <label for="icheckbox_myprgenie" class="col-sm-4 control-label text-right" style="margin-right: 5px;" >MyPRGenie Web Distribution: </label>
+                    <span><input type="checkbox" class='myprgenie-checkbox' id="icheckbox_myprgenie" name="myprgenie" ></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="icheckbox_accesswire" class="col-sm-4 control-label text-right" style="margin-right: 5px;" >Accesswire: </label>
+                    <span><input type="checkbox" class='accesswire-checkbox' id="icheckbox_accesswire" name="accesswire" ></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="icheckbox_prnewswire" class="col-sm-4 control-label text-right" style="margin-right: 5px;" >PR Newswire: </label>
+                    <span><input type="checkbox" class='prnewswire-checkbox' id="icheckbox_prnewswire" name="prnewswire" ></span>
+                  </div>
+                </div>
             </div>
             </form>
 
@@ -119,7 +136,7 @@
           </div>
           <div id="alert-container">
               <div id="public-alert" class="alert alert-warning" role="alert" style="display:none;">
-                This release won't be publicly displayed while the parent Newsroom remains unpublished. 
+                This release won't be publicly displayed while the parent Newsroom remains unpublished.
                 <b><button id="make-public">Publish the newsroom!</button></b>
               </div>
           </div>
