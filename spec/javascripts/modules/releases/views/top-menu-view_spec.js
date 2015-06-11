@@ -67,6 +67,9 @@ describe('Releases.TopMenuView', function() {
       spyOn( view, 'uploadDirectVideo');
       spyOn( view, 'uploadUrlVideo');
       spyOn( view, 'insertLink');
+      spyOn( view, 'switchMyprgenie').and.callThrough();
+      spyOn( view, 'switchAccesswire');
+      spyOn( view, 'switchPrnewswire');
       view.delegateEvents();
       view.render();
     });
@@ -180,5 +183,19 @@ describe('Releases.TopMenuView', function() {
       expect(view.editor).toBeDefined();
     });
 
+    it('when click .myprgenie-checkbox should call switchMyprgenie', function() {
+      view.$el.find('.myprgenie-checkbox').iCheck('check');
+      expect(view.switchMyprgenie).toHaveBeenCalled();
+    });
+
+    it('when click .accesswire-checkbox should call switchAccesswire', function() {
+      view.$el.find('.accesswire-checkbox').iCheck('check');
+      expect(view.switchAccesswire).toHaveBeenCalled();
+    });
+
+    it('when click .prnewswire-checkbox should call switchPrnewswire', function() {
+      view.$el.find('.prnewswire-checkbox').iCheck('check');
+      expect(view.switchPrnewswire).toHaveBeenCalled();
+    });
   });
 });

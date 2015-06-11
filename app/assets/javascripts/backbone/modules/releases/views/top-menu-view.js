@@ -24,6 +24,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #smart_release': 'startSmartRelease',
       'change #upload': 'uploadWord',
       'ifChanged .private-checkbox': 'changePrivate',
+      'ifChanged .myprgenie-checkbox': 'switchMyprgenie',
+      'ifChanged .accesswire-checkbox': 'switchAccesswire',
+      'ifChanged .prnewswire-checkbox': 'switchPrnewswire',
       'change #news_room_id': 'newsRoomSelected',
       'click #make-public': 'makeNewsRoomPublic',
       'click #direct-image-upload': 'uploadDirectImage',
@@ -727,6 +730,17 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     onDestroy: function(){
       Robin.vent.off("release:open_edit_modal", this.openModalDialogEdit);
       this.modelBinder.unbind();
+    },
+    switchMyprgenie: function(e){
+      if ($(e.target).is(":checked")) {
+        // this.$el.find('#save_release').innerHTML('OK');
+      } else {
+        // this.$el.find('#save_release').innerHTML(ret);
+      }    
+    },
+    switchAccesswire: function(e){
+    },
+    switchPrnewswire: function(e){
     }
   });
 });

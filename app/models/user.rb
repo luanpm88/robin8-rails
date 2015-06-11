@@ -146,6 +146,20 @@ class User < ActiveRecord::Base
     manageable_users.count + 1 # +1 - himself
   end
 
+
+  # def can_create_seat
+  #   seat_available_count.nil? ? false : seat_available_count > 1
+  # end
+
+  # def seat_available_count
+  #   current_user_features.seat.map(&:available_count).inject{|sum,x| sum + x }
+  # end
+
+  # def seat_count
+  #   manageable_users.count + 1 # +1 - himself
+  # end
+
+
   def active_subscription
     @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions
     @active_s ||= @subscriptions.where("((user_products.expiry is NULL OR user_products.expiry >'#{Time.now.utc}') AND user_products.status ='A') OR (user_products.expiry > '#{Time.now.utc}' AND user_products.status = 'C')").last
