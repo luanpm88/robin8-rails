@@ -6,4 +6,3 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     }
   });
 });
-

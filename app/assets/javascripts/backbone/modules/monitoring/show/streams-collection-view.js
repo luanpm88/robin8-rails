@@ -11,7 +11,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       var view = this;
       var collection = this.collection;
       collection.fetch({
-        success: function(model, response){
+        success: function(response){
           if (Robin.newStreamFromDashboard) {
             var model = new Robin.Models.Stream();
             var stream = new Robin.Models.Stream({model: model});
