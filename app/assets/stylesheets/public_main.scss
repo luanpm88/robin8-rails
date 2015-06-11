@@ -209,7 +209,6 @@ a {
     font-family: "ProximaNovaSemibold";
     font-size: 20px;
     line-height: 25px;
-    padding-top: 25px;
     text-decoration: none;
     width: 100%;
 }
@@ -223,8 +222,18 @@ a {
 }
 
 .sidebar-nav > li > a.collapsed {
-    // background: transparent;
-    color: #fff;
+    background: transparent none repeat scroll 0% 0%;
+}
+.sidebar-nav > li > a {
+    color: #FFF;
+    display: inline-block;
+    font-family: "ProximaNovaSemibold";
+    font-size: 20px;
+    line-height: 25px;
+    margin-right: 0px;
+    padding: 25px 0px 25px 40px;
+    text-decoration: none;
+    width: 100%;
 }
 .sidebar-nav > li > a:hover {
     text-decoration: none;
