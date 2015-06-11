@@ -73,6 +73,7 @@ class User < ActiveRecord::Base
     is_primary != false
   end
 
+
   def newsroom_available_count
     current_user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
   end
@@ -84,6 +85,34 @@ class User < ActiveRecord::Base
   def can_create_newsroom
     newsroom_available_count.nil? ? false : newsroom_available_count > 1
   end
+
+########################################################################################################
+  def myprgenie_available_count
+    current_user_features.myprgenie_web_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_myprgenie
+    myprgenie_available_count.nil? ? false : myprgenie_available_count > 1
+  end
+
+
+  def accesswire_available_count
+    current_user_features.accesswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_accesswire
+    accesswire_available_count.nil? ? false : accesswire_available_count > 1
+  end
+
+
+  def prnewswire_available_count
+    current_user_features.pr_newswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_prnewswire
+    prnewswire_available_count.nil? ? false : prnewswire_available_count > 1
+  end
+##########################################################################################################
 
   def release_available_count
     current_user_features.press_release.map(&:available_count).inject{|sum,x| sum + x }

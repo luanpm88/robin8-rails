@@ -24,7 +24,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #smart_release': 'startSmartRelease',
       'change #upload': 'uploadWord',
       'ifChanged .private-checkbox': 'changePrivate',
-      'ifChanged .myprgenie-checkbox': 'switchMyprgenie',
+      'ifChecked .myprgenie-checkbox': 'switchMyprgenie',
       'ifChanged .accesswire-checkbox': 'switchAccesswire',
       'ifChanged .prnewswire-checkbox': 'switchPrnewswire',
       'change #news_room_id': 'newsRoomSelected',
@@ -733,14 +733,42 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     switchMyprgenie: function(e){
       if ($(e.target).is(":checked")) {
-        // this.$el.find('#save_release').innerHTML('OK');
-      } else {
-        // this.$el.find('#save_release').innerHTML(ret);
-      }    
+        if(!Robin.user.get('can_create_myprgenie')){
+          $.growl("Please, buy corresponding addon in Billing settings!", {
+            type: "info",
+          });
+          setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
+        }
+        else{
+          alert('ok');
+        }
+      } 
     },
     switchAccesswire: function(e){
+      if ($(e.target).is(":checked")) {
+        if(!Robin.user.get('can_create_accesswire')){
+          $.growl("Please, buy corresponding addon in Billing settings!", {
+            type: "info",
+          });
+          setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
+        }
+        else{
+          alert('ok');
+        }
+      }
     },
     switchPrnewswire: function(e){
+      if ($(e.target).is(":checked")) {
+        if(!Robin.user.get('can_create_prnewswire')){
+          $.growl("Please, buy corresponding addon in Billing settings!", {
+            type: "info",
+          });
+          setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
+        }
+        else{
+          alert('ok');
+        }
+      } 
     }
   });
 });
