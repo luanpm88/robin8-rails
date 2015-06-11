@@ -3,7 +3,7 @@ class ImageProxyController < ApplicationController
     urls = JSON.parse Base64.decode64(params[:images])
     
     response = get_image(urls, nil)
-    send_data response.body, type: response.content_type, disposition: 'inline'
+    send_data response.body, disposition: 'inline'
   end
   
   private
