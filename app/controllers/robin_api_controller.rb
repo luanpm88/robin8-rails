@@ -2,17 +2,26 @@ class RobinApiController < ApplicationController
   before_action :authenticate_user!, :set_client
 
   def suggested_authors
+    params["per_page"] = 200
     response = @client.suggested_authors params
-    ids = response[:authors].map{|a| a[:id]}
-    @max_score = response[:authors].first[:score]
-    @min_score = response[:authors].last[:score]
-    authors = response[:authors].map do |author|
-      level_of_interest = calculate_level_of_interest(author[:score], 
-        full_name(author[:first_name], author[:last_name]))
-      author[:level_of_interest] = level_of_interest
-      author
+    
+    authors = unless response[:authors].blank?
+      authors_response = uniq_authors(response[:authors])
+      ids = authors_response.map{|a| a[:id]}
+      @max_score = authors_response.first[:score]
+      @min_score = authors_response.last[:score]
+      authors_response.map do |author|
+        level_of_interest = calculate_level_of_interest(author[:score], 
+          full_name(author[:first_name], author[:last_name]))
+        author[:level_of_interest] = level_of_interest
+        author[:full_name] = full_name(author[:first_name], author[:last_name])
+        author
+      end
+    else
+      []
     end
-    render json: merge_stats_with_authors(authors, author_stats(ids))
+    
+    render json: authors
   end
   
   def related_stories
@@ -22,9 +31,16 @@ class RobinApiController < ApplicationController
   end
   
   def stories
-    response = @client.stories! params
+    response = @client.stories! params.merge({
+      "group_fields[]": "signature",
+      group_limit: 1,
+    })
+    
+    uniq_stories = response[:grouped][:signature][:groups].map do |group|
+      group[:stories].first
+    end
 
-    render json: response
+    render json: {stories: uniq_stories}
   end
   
   def influencers
@@ -34,12 +50,23 @@ class RobinApiController < ApplicationController
   end
   
   def authors
+    params["per_page"] = 200
     response = @client.authors params
     
-    ids = response[:authors].map{|a| a[:id]}
-    authors = response[:authors]
+    authors_response = uniq_authors(response[:authors])
     
-    render json: merge_stats_with_authors(authors, author_stats(ids))
+    authors = authors_response.map do |author| 
+      author[:full_name] = full_name(author[:first_name], author[:last_name])
+      author
+    end
+    
+    render json: authors
+  end
+  
+  def author_stats
+    response = @client.author_stats id: params[:id]
+    
+    render json: response
   end
   
   def proxy
@@ -67,29 +94,6 @@ class RobinApiController < ApplicationController
     @client = AylienPressrApi::Client.new
   end
   
-  def author_stats(ids)
-    threads = {}
-    ids.each do |id|
-      threads[id] = Thread.new do
-        @client.author_stats id: id
-      end
-    end
-    threads.each(&:join)
-    threads.inject({}) do |memo, val|
-      memo[val[0]] = val[1].value
-      memo
-    end
-  end
-  
-  def merge_stats_with_authors(authors, author_stats)
-    authors.collect do |author|
-      author_stats[author[:id]].delete(:id)
-      author[:stats] = author_stats[author[:id]]
-      author[:full_name] = full_name(author[:first_name], author[:last_name])      
-      author
-    end
-  end
-  
   def calculate_level_of_interest(score, author_name) 
     unless defined?(@max_min)
       @max_min = calculate_max_min(author_name)
@@ -99,6 +103,39 @@ class RobinApiController < ApplicationController
     delta_b_a = b - a
     normalized_score = a + ((score - @min_score) * delta_b_a / x_min_max)
     normalized_score.round(2)
+    
+    normalized_score.nil? ? 0 : normalized_score.round(2)
+  end
+  
+  def uniq_authors(authors)
+    uniq_authors = authors.each_with_index.inject({}) do |memo, item|
+      value, index = item
+      
+      if memo[value[:email]]
+        previous_author = memo[value[:email]]
+        
+        memo[value[:email]][:blog_names] << value[:blog_name]
+        memo[value[:email]][:blog_names].uniq!
+      else
+        new_author = {
+          id: value[:id],
+          first_name: value[:first_name],
+          last_name: value[:last_name],
+          full_name: value[:full_name],
+          email: value[:email],
+          blog_names: [value[:blog_name]],
+          avatar_url: value[:avatar_url],
+          score: value[:score],
+          index: index
+        }
+        
+        memo[value[:email]] = new_author
+      end
+      
+      memo
+    end
+    
+    uniq_authors.values.sort{ |x, y| x[:index] <=> y[:index] }[0...100]
   end
   
   def calculate_max_min(author_name)

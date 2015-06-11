@@ -10,7 +10,7 @@ class TextapiController < ApplicationController
   end
 
   def concepts
-    response = @client.concepts text: text
+    response = @client.concepts text: text, support: 6, confidence: 0.6
     
     concepts = response[:concepts]
     
@@ -25,7 +25,7 @@ class TextapiController < ApplicationController
     response = @client.summarize title: title_param, text: text_param
     
     respond_to do |format|
-      format.json { render json: response[:sentences]}
+      format.json { render json: response[:sentences].map{|s| s.gsub("\n", '')}}
     end
   end
 
@@ -39,7 +39,7 @@ class TextapiController < ApplicationController
   end
   
   def hashtags
-    response = @client.hashtags text: text
+    response = @client.hashtags text: text, support: 6, confidence: 0.6
 
     respond_to do |format|
       format.json { render json: response[:hashtags] }

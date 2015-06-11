@@ -4,10 +4,17 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
+  force_ssl if: :ssl_configured?
 
   after_filter :set_csrf_headers
   # before_filter :validate_subscription, unless: :devise_controller?
   before_filter :configure_permitted_parameters, if: :devise_controller?
+
+  ActiveAdmin::ResourceController.class_eval do
+    def find_resource
+      resource_class.is_a?(FriendlyId) ? scoped_collection.where(slug: params[:id]).first! : scoped_collection.where(id: params[:id]).first!
+    end
+  end
 
   def validate_subscription
     if user_signed_in?
@@ -52,5 +59,11 @@ class ApplicationController < ActionController::Base
       else
         render :json => {error: "500 Internal Server Error", message: e.message}, status: 500
     end
+  end
+  
+  private
+  
+  def ssl_configured?
+    !Rails.env.development?
   end
 end

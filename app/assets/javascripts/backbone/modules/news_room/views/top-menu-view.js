@@ -62,7 +62,6 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         increaseArea: '20%'
       });
       this.$el.find("#subdomain_name").tooltip({title: 'Changes to the subdomain will take place only after save', trigger: 'hover', placement: 'bottom'});
-      this.$el.find("#preview-disabled").tooltip({title: 'You need to save the newsroom for the first time in order to activate the preview option', trigger: 'hover', placement: 'left'});
     },
 
     onDestroy: function(){
@@ -71,11 +70,18 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
 
     openModalDialog: function(){
-      this.model.clear();
-      this.model.attributes.publish_on_website = true,
-      // this.$el.find("#tagsinput").tagsinput('removeAll')
-      this.render()
-      this.$el.find('#newsroom_form').modal({keyboard: false });
+      if(Robin.user.get('can_create_newsroom') != true) {
+        $.growl({message: "You don't have available newsrooms!"},
+          {
+            type: 'info'
+          });
+      } else {
+        this.model.clear();
+        this.model.attributes.publish_on_website = true,
+        // this.$el.find("#tagsinput").tagsinput('removeAll')
+        this.render()
+        this.$el.find('#newsroom_form').modal({keyboard: false });
+      }
     },
 
     openModalDialogEdit: function(data){
@@ -231,6 +237,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
     },
 
     saveNewsRoom: function(e){
+      this.$el.find('#save_news_room').prop("disabled",true);
       if (this.form.data('formValidation') == undefined) {
         this.initFormValidation();
       };
@@ -285,6 +292,8 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
             }
           });
         }
+      } else {
+        viewObj.$el.find('#save_news_room').prop("disabled",false);
       }
     },
 
@@ -335,9 +344,9 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
     verifyNewsRoomButton: function() {
       if(Robin.user.get('can_create_newsroom') != true) {
-        $('button#new_newsroom').attr('disabled', 'disabled');
+        $('button#new_newsroom').addClass('disabled-unavailable');
       } else {
-        $('button#new_newsroom').removeAttr('disabled');
+        $('button#new_newsroom').removeClass('disabled-unavailable');
       }
     },
 

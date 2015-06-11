@@ -4,10 +4,14 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   mount Sidekiq::Web => '/sidekiq'
-  devise_for :users, controllers: { sessions: "users/sessions",
-                                    registrations: "users/registrations", passwords: "users/passwords",
-                                    invitations: "users/invitations",  omniauth_callbacks: "users/omniauth_callbacks",
-                                    confirmations: "users/confirmations" }
+  devise_for :users, controllers: {
+    sessions: "users/sessions",
+    registrations: "users/registrations",
+    passwords: "users/passwords",
+    invitations: "users/invitations",
+    omniauth_callbacks: "users/omniauth_callbacks",
+    confirmations: "users/confirmations"
+  }
 
   get 'pricing' => 'pages#pricing'
   get 'set_locale' => 'pages#set_locale'
@@ -43,10 +47,12 @@ Rails.application.routes.draw do
   resources :industries, only: :index
   resources :releases do
     post 'extract_from_word', on: :collection
+    get 'img_url_exist', on: :collection
   end
   resources :users do
     collection do
       get 'identities'
+      get 'get_identities'
       get 'info'
     end
   end
@@ -69,8 +75,10 @@ Rails.application.routes.draw do
   resources :media_lists, only: [:index, :create, :show, :destroy]
   resources :contacts, only: [:index, :create, :show]
   resources :pitches, only: [:index, :create, :show]
+  resources :draft_pitches
   resources :pitches_contacts, only: [:index, :create, :show, :destroy]
   resources :iptc_categories, only: [:index]
+  resources :export_influencers, only: [:create]
   resources :autocompletes, only: [] do
     collection do
       get 'locations'
@@ -87,8 +95,8 @@ Rails.application.routes.draw do
   post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'
   post 'robin8_api/related_stories', to: 'robin_api#related_stories'
   get 'robin8_api/influencers', to: 'robin_api#influencers'
-  get 'robin8_api/author_stats', to: 'robin_api#author_stats'
   get 'robin8_api/authors', to: 'robin_api#authors'
+  get 'robin8_api/authors/:id/stats', to: 'robin_api#author_stats'
   get 'robin8_api/stories', to: 'robin_api#stories'
 
   post 'textapi/classify'

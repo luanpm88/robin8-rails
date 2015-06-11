@@ -19,6 +19,25 @@
               <div class='jumbotron-contents'>
                 <h1><%= @release.title %></h1>
                 <div>
+                  <div id="share-block" style="<%= @preview_mode ? "pointer-events: none;" : "" %>">
+                    <ul>
+                      <li class="facebook-button">
+                        <div id="fb-root"></div>
+                        <div class="fb-share-button" data-href="" data-layout="button"></div>
+                      </li>
+                      <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="<%= @release.title %>" data-count="none">Tweet</a>
+                      </li>
+                      <li>
+                        <script src="https://apis.google.com/js/platform.js" async defer> {lang: 'en-GB'} </script>
+                        <div class="g-plus" data-action="share" data-annotation="none"></div>
+                      </li>
+                      <li>
+                        <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+                        <script id="linkedIn" type="IN/Share" data-url="dummy"></script>
+                      </li>
+                    </ul>
+                  </div>
                   <%= @release.text.try(:html_safe) %>
                 </div>
               </div>
@@ -28,7 +47,7 @@
                   <% @release.images.each do |attachment| %>
                     <a href="<%= attachment.url  %>" title="<%= attachment.name  %>" data-gallery="" >
                       <%= image_tag asset_path(attachment.thumbnail) %>
-                    </a>                    
+                    </a>
                   <% end %>
                 </div>
 
@@ -45,7 +64,7 @@
                           </div>
                         </div>
                       </a>
-                    </div>                    
+                    </div>
                   <% end %>
                 </div>
 
@@ -62,7 +81,7 @@
                           </div>
                         </div>
                       </a>
-                    </div>                    
+                    </div>
                   <% end %>
                 </div>
               <% end %>
@@ -108,6 +127,33 @@
     </div>
   </div>
 </div>
+
+
+
+<script type="text/javascript">
+  //Facebook button
+  $(".fb-share-button").attr('data-href', window.location.href);
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+      fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  //Twitter button
+  !function(d,s,id){
+    var js,fjs = d.getElementsByTagName(s)[0], p=/^http:/.test(d.location) ? 'http':'https';
+    if(!d.getElementById(id)){
+      js=d.createElement(s);
+      js.id=id;
+      js.src=p+'://platform.twitter.com/widgets.js';
+      fjs.parentNode.insertBefore(js,fjs);
+    }
+  }(document, 'script', 'twitter-wjs');
+    //LinkedIn button
+  $("#linkedIn").attr('data-url', window.location.href);
+</script>
+
 <% unless @release.attachments.blank? %>
   <script type="text/javascript">
     $( ".release-preview" ).click(function(event) {
@@ -122,6 +168,5 @@
       var links = this.getElementsByTagName('a');
       blueimp.Gallery(links, options);
     });
-
   </script>
 <% end %>

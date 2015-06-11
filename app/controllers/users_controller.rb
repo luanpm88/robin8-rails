@@ -22,10 +22,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.valid?
       @user.save
-      @user.skip_confirmation!
       sign_in @user
-      return redirect_to session[:redirect_checkout_url] if session[:redirect_checkout_url].present?
       return redirect_to :pricing if current_user.active_subscription.blank?
+      return redirect_to session[:redirect_checkout_url] if session[:redirect_checkout_url].present?
       return redirect_to :root
     else
       flash.now[:errors] = @user.errors.full_messages
@@ -47,11 +46,17 @@ class UsersController < ApplicationController
     render json: current_user.identities
   end
 
-  def disconnect_social
-    @identity = current_user.identities.where(provider: params[:provider]).first
-    @identity.destroy
+  def get_identities
+    render json: current_user.all_identities
+  end
 
-    render json: current_user.identities
+  def disconnect_social
+    @identity = current_user.identities.find(params[:id])
+    unless @identity.blank?
+      @identity.destroy
+    end
+
+    render json: current_user.all_identities
   end
 
   def manageable_users

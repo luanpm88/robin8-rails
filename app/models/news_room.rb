@@ -58,6 +58,13 @@ class NewsRoom < ActiveRecord::Base
     [facebook_link, twitter_link, linkedin_link, instagram_link].reject(&:blank?).length > 0
   end
 
+  def permalink
+    host = Rails.application.secrets[:host]
+    subdomain_name = self.subdomain_name
+    
+    "http://#{subdomain_name}.#{host}"
+  end
+
   private
 
     def needed_user
@@ -86,14 +93,14 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def set_campaign_name
-      self.campaign_name = self.id
+      self.campaign_name = "#{self.id}-#{Rails.env}"
       self.save
     end
 
     def create_campaign
       mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
       domain = Rails.application.secrets.mailgun[:domain]
-      mg_client.post("#{domain}/campaigns", { id: self.id, name: self.id })
+      mg_client.post("#{domain}/campaigns", { id: self.campaign_name, name: self.campaign_name })
     end
 
     def decrease_feature_number
@@ -104,7 +111,7 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def increase_feature_numner
-      uf = needed_user.user_features.newsroom.not_available.first
+      uf = needed_user.user_features.newsroom.first
       return false if uf.blank?
       uf.available_count += 1
       uf.save

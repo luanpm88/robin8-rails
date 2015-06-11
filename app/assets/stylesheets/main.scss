@@ -139,7 +139,7 @@ a {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 2000;
+    z-index: 1040;
     border-bottom: 4px solid #91bc4d; 
 }
 .navbar-custom .navbar-brand {
@@ -292,7 +292,7 @@ a {
   padding: 0;
   background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: 0 0 4px 4px;
+  // border-radius: 0 0 4px 4px;
   line-height: 30px;
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -540,7 +540,7 @@ a {
   left: 11px;
   padding: 10px;
   border-radius: 0 0 4px 4px;
-  z-index: 2;
+  z-index: 9999;
 }
 .stream-settings form {
   color: #fff;
@@ -721,7 +721,7 @@ nav{text-align: center;}
   border-left: 1px solid rgb(170, 178, 189);
   border-right: 1px solid rgb(170, 178, 189);
   border-bottom: 1px solid rgb(170, 178, 189);
-  border-radius: 0px 0px 4px 4px;
+  // border-radius: 0px 0px 4px 4px;
 }
 .release-title {
   height: 40px !important;
@@ -777,14 +777,14 @@ nav{text-align: center;}
     border: medium none;
     box-shadow: none;
 }
-.release-thumbnail-container {
+.thumbnail-container {
   position: relative;
   width: 340px;
 }
-.release-dummy {
+.thumbnail-dummy {
    padding-top: 100%; /* forces 1:1 aspect ratio */
 }
-.release-thumbnail-inner {
+.thumbnail-inner {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -793,18 +793,22 @@ nav{text-align: center;}
   text-align:center;
   font: 0/0 a;
 }
-.release-thumbnail-inner:before {
+.thumbnail-inner:before {
   content: ' ';
   display: inline-block;
   vertical-align: middle;
   height: 100%;
 }
-.release-thumbnail-inner img {
+.thumbnail-inner img {
   border-radius: 4px;
   vertical-align: middle;
   display: inline-block;
   max-width: 100%;
   max-height: 100%;
+}
+#image-uploader-logo {
+  max-width: 200px;
+  max-height: 200px;
 }
 .release-item .caption{
   padding: 9px 0;
@@ -836,9 +840,16 @@ nav{text-align: center;}
   opacity: 0;
   visibility: hidden;
   transition: visibility 0.5s ease 0s,opacity 0.5s ease;
+  padding-top: 60px;
+}
+.release-item .release-thumbnail-inner:hover .overlay {
+  opacity: 1;
+  visibility: visible;
 }
 .release-item .overlay ul {
   list-style: none;
+  margin-top: 100px;
+  text-align: center;
 }
 .toolbar {
   padding: 8px 0;
@@ -917,6 +928,9 @@ nav{text-align: center;}
   color: #fff; 
   z-index: 1;
   border-radius: 0;
+}
+.edit-release .icheckbox_square-blue {
+  position: relative !important;
 }
 #release_form .modal-footer {
   height: 90px;
@@ -1033,6 +1047,12 @@ nav{text-align: center;}
 }
 .blast-release #blast-targets table {
   margin-bottom: 0;
+}
+
+#blast-analysis .popover-content .editable-buttons {
+  text-align: right;
+  margin-top: 7px;
+  display: block;
 }
 
 .personal-info h3{

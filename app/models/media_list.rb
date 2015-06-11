@@ -6,7 +6,7 @@ class MediaList < ActiveRecord::Base
   has_attached_file :attachment
   
   validates_attachment_content_type :attachment, :content_type => 'text/csv'
-  validates_attachment_size :attachment, :in => 0..500.kilobytes
+  validates_attachment_size :attachment, :in => 0..2.megabytes
   validates_presence_of :name
   validates_uniqueness_of :name
     
@@ -16,20 +16,34 @@ class MediaList < ActiveRecord::Base
   
   def import_contacts
     path = attachment.queued_for_write[:original].path
-    contacts = CSV.read(path)
+    
+    # detect file encoding
+    contents = File.read(path)
+    detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+    contacts = CSV.read path, encoding: detection[:ruby_encoding]
     self.contacts << contacts.inject([]) do |memo, contact|
-      if (contact.size == 3) && !contact[0].blank? && 
-        !contact[1].blank? && !contact[2].blank? && validate_email(contact[2])
+      
+      contact.reject! {|c| c.nil?}
+      
+      if (contact.size == 4) && !contact[0].strip.blank? && 
+        !contact[1].strip.blank? && !contact[2].strip.blank? && 
+        !contact[3].strip.blank? && validate_email(contact[2].strip)
         
-        begin
-          memo << Contact.find_or_create_by(email: contact[2]) do |c|
-            c.first_name = contact[0]
-            c.last_name  = contact[1]
-            c.outlet = 'Media List'
-            c.origin     = 2
-          end
-        rescue ActiveRecord::RecordNotUnique
-          retry
+        new_contact = Contact.where(email: contact[2].strip).first
+        
+        memo << if new_contact.nil?
+          Contact.create(email: contact[2].strip,
+            first_name: contact[0].strip,
+            last_name: contact[1].strip,
+            outlet: contact[3].strip,
+            origin: 2)
+        else
+          new_contact.update(first_name: contact[0].strip,
+            last_name: contact[1].strip,
+            outlet: contact[3].strip)
+          
+          new_contact
         end
       end
       
@@ -37,7 +51,7 @@ class MediaList < ActiveRecord::Base
     end
     
     if self.contacts.size == 0
-      self.errors.add(:contacts, "should be greater than or equal to 1")
+      self.errors.add(:uploaded_file, "must have exactly <strong>four</strong> columns, formatted as <strong>first name, last name, email address, outlet</strong>")
       return false
     end
   end

@@ -14,11 +14,12 @@ Robin.Collections.PitchContacts = Backbone.Collection.extend({
 Robin.Models.Pitch = Backbone.RelationalModel.extend({
   urlRoot: '/pitches',
   defaults: {
-    email_pitch: "Hi @[First Name],\n\nHere's a press release you might find interesting:\n\n\"@[Title]\"\n\n@[Summary]\n\nRead more here: @[Link]\n\nPlease let me know your thoughts.\n\nRegards@[UserFirstName]",
+    email_pitch: "Hi @[First Name],<br /><br />Here's a press release you might find interesting:<br /><br /> \"@[Title]\"<br /><br />@[Summary]<br /><br />Read more here: @[Link]<br /><br />Please let me know your thoughts.<br /><br />Regards@[UserFirstName]",
     twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
-    email_subject: null
+    email_subject: null,
+    sent: false,
   },
   relations: [{
     type: Backbone.HasMany,
@@ -26,4 +27,34 @@ Robin.Models.Pitch = Backbone.RelationalModel.extend({
     relatedModel: Robin.Models.Contact,
     collectionType: Robin.Collections.PitchContacts
   }]
+});
+
+Robin.Models.DraftPitch = Backbone.Model.extend({
+  urlRoot: '/draft_pitches',
+  defaults: {
+    email_pitch: "Hi @[First Name],<br /><br />Here's a press release you might find interesting:<br /><br /> \"@[Title]\"<br /><br />@[Summary]<br /><br />Read more here: @[Link]<br /><br />Please let me know your thoughts.<br /><br />Regards@[UserFirstName]",
+    twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
+    summary_length: 5,
+    email_address: null,
+    email_subject: null,
+  }
+});
+
+Robin.Collections.DraftPitches = Backbone.Collection.extend({
+  url: '/draft_pitches',
+  model: Robin.Models.DraftPitch,
+  initialize: function(options) {
+    if (options && options.releaseId)
+      this.releaseId = options.releaseId;
+  },
+  fetchDraftPitch: function(options){
+    var self = this;
+    
+    this.fetch({
+      data: {
+        release_id: self.releaseId
+      },
+      success: options.success
+    });
+  }
 });

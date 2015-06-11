@@ -24,7 +24,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     summary: function(){
       var sentences = _(this.model.get('summaries')).first(this.sentencesNumber);
-      return _(sentences).map(function(sentence){ 
+      
+      return _(sentences).reject(function(sentence){
+        return s.isBlank(sentence);
+      }).map(function(sentence){ 
         return "- " + sentence
       }).join('\n');
     }
@@ -132,16 +135,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       "click a.btn-success":    "addAuthor",
       "click a.contact-author": "openContactAuthorModal"
     },
-    toggleAddRemove: function(e) {
-      e.preventDefault();
-      var $e = $(e.target);
-      if (e.target.nodeName === 'I') $e = $e.parent();
-      var $other = $e.siblings();
-      $e.attr('disabled', 'disabled');
-      $other.removeAttr('disabled');
+    ui: {
+      blogNameTooltip: "[data-toggle=tooltip]"
+    },
+    toggleAddRemove: function(model, collection, options) {
+      if (model.get('author_id') === this.model.get('id'))
+        this.render();
+    },
+    initTooltip: function(){
+      this.ui.blogNameTooltip.tooltip();
+    },
+    onRender: function(){
+      this.initTooltip();
     },
     addAuthor: function(e) {
-      this.toggleAddRemove(e);
+      e.preventDefault();
       var current_model = this.pitchContactsCollection.findWhere({
         author_id: this.model.get('id'),
         origin: 'pressr'
@@ -154,27 +162,29 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           first_name: this.model.get('first_name'),
           last_name: this.model.get('last_name'),
           email: this.model.get('email'),
-          outlet: this.model.get('blog_name')
+          outlet: this.model.get('blog_names')[0]
         });
         this.pitchContactsCollection.add(model);
       }
     },
     removeAuthor: function(e) {
-      this.toggleAddRemove(e);
+      e.preventDefault();
       var model = this.pitchContactsCollection.findWhere({
         author_id: this.model.get('id'),
         origin: 'pressr'
       });
       this.pitchContactsCollection.remove(model);
     },
-    templateHelpers: function(){
-      return {
-        wordMapper: this.wordMapper
-      }
-    },
     initialize: function(options){
       this.pitchContactsCollection = options.pitchContactsCollection;
       this.releaseModel = options.releaseModel;
+      
+      this.listenTo(this.pitchContactsCollection, 'add remove', this.toggleAddRemove);
+    },
+    templateHelpers: function(){
+      return {
+        pitchContactsCollection: this.pitchContactsCollection
+      }
     },
     openInspectModal: function(e){
       e.preventDefault();
@@ -186,6 +196,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       Robin.modal.show(layout);
       
+      // Related stories
       var relatedStoriesCollection = new Robin.Collections.RelatedStories({
         author_id: this.model.get('id'),
         releaseModel: this.releaseModel
@@ -206,7 +217,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           layout.relatedStoriesRegion.show(relatedStoriesView);
         }
       });
+      // END Related stories
       
+      
+      // Recent stories
       var recentStoriesCollection = new Robin.Collections.RecentStories({
         author_id: this.model.get('id'),
         releaseModel: this.releaseModel
@@ -227,12 +241,27 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           layout.recentStoriesRegion.show(recentStoriesView);
         }
       });
+      // END Recent stories
       
-      var authorStatItemView = new ReleasesBlast.AuthorStatsView({
-        model: this.model,
-        releaseModel: this.releaseModel
+      // Author stats
+      var authorStatsModel = new Robin.Models.AuthorStats({ id: this.model.id });
+      
+      // Loading view
+      layout.statsRegion.show(
+        new Robin.Components.Loading.LoadingView()
+      );
+      
+      authorStatsModel.fetch({
+        success: function(model, response, options){
+          var authorStatItemView = new ReleasesBlast.AuthorStatsView({
+            model: model,
+            authorModel: self.model,
+            releaseModel: self.releaseModel
+          });
+          layout.statsRegion.show(authorStatItemView);
+        }
       });
-      layout.statsRegion.show(authorStatItemView);
+      // END Author stats
     },
     openContactAuthorModal: function(e){
       e.preventDefault();
@@ -294,15 +323,62 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     childView: ReleasesBlast.AuthorView,
     childViewContainer: "tbody",
     collection: Robin.Collections.Authors,
+    initialize: function(options){
+      this.pitchContactsCollection = options.pitchContactsCollection;
+    },
     childViewOptions: function() {
       return this.options;
     },
     onRender: function() {
-      this.initDataTable();
+      // this.initDataTable();
       this.scrollToView();
+      
+      var $this = this;
+      // this.initDataTable();
+      Robin.user = new Robin.Models.User();
+      Robin.user.fetch({
+        success: function(){
+          $this.initDataTable();
+        }
+      })
+    },
+    removeAllContactsFromPitch: function(){
+      var self = this;
+      _.each(self.collection.models, function(model){
+        var models = self.pitchContactsCollection.where({
+          author_id: model.get('id'),
+          origin: 'pressr'
+        });
+        
+        _.each(models, function(item){
+          self.pitchContactsCollection.remove(item);
+        });
+      });
+    },
+    addAllContactsToPitch: function(){
+      var self = this;
+      _.each(self.collection.models, function(model){
+          var current_model = self.pitchContactsCollection.findWhere({
+          author_id: model.get('id'),
+          origin: 'pressr'
+        });
+        
+        if (current_model == null) {
+          var model = new Robin.Models.Contact({
+            author_id: model.get('id'),
+            origin: 'pressr',
+            first_name: model.get('first_name'),
+            last_name: model.get('last_name'),
+            email: model.get('email'),
+            outlet: model.get('blog_names')[0]
+          });
+          self.pitchContactsCollection.add(model);
+        }
+      });
     },
     initDataTable: function(){
-      this.$el.find('table').DataTable({
+      var self = this;
+      var table = this.$el.find('table').DataTable({
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -313,10 +389,73 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           { "width": "30%" },
           null,
           null,
-          null,
           null
-        ]
+        ],
+        dom: 'T<"clear">lfrtip',
+        "oTableTools": {
+          "aButtons": [
+            {
+              "sExtends": "text",
+              "sButtonText": "Export as CSV",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                // var order = table.order();
+                // var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                // openWindow('POST', '/export_influencers.csv', 
+                //   {items: csvContent});
+                if (Robin.user.get('can_export') == true) {
+                  var order = table.order();
+                  var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                  openWindow('POST', '/export_influencers.csv', 
+                    {items: csvContent});
+                } else {
+                  $.growl('Only Enterprise and Ultra users can have this feature.', {
+                    type: "danger",
+                  });
+                }
+              }
+            },
+            {
+              "sExtends": "text",
+              "sButtonText": "Add all",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                self.addAllContactsToPitch();
+              }
+            },
+            {
+              "sExtends": "text",
+              "sButtonText": "Remove all",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                self.removeAllContactsFromPitch();
+              }
+            }
+          ]
+        }
       });
+    },
+    makeCsvData: function(order_column, order_direction){
+      var self = this;
+      var csvObject = [];
+      var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){ 
+        return item.get('origin') === 'pressr'
+      }).map(function(item){
+        return self.collection.findWhere({id: item.get('author_id')});
+      }).reject(function(item){
+        return item == undefined;
+      }).value();
+      
+      csvObject.push(["Author", "Outlet", "Contact"]); // CSV Headers
+      
+      _(pitchContactsArray).each(function(model){
+        csvObject.push([model.get('full_name'), 
+          model.get('blog_names').join(', '), model.get('email')]);
+      });
+      
+      return JSON.stringify(csvObject);
     },
     scrollToView: function(){
       var self = this;
@@ -339,14 +478,88 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     childView: ReleasesBlast.AuthorView,
     childViewContainer: "tbody",
     collection: Robin.Collections.SuggestedAuthors,
+    initialize: function(options){
+      this.pitchContactsCollection = options.pitchContactsCollection;
+      this.releaseModel = options.releaseModel;
+    },
+    ui: {
+      refinement: "#refinement",
+      locationInput: "#refinement input[type=text]",
+      refineButton: "#refinement button"
+    },
+    events: {
+      "click @ui.refineButton": "refineButtonClicked"
+    },
+    refineButtonClicked: function(e){
+      e.preventDefault();
+      
+      var location = this.ui.locationInput.val();
+      if (s.isBlank(location)){
+        $.growl({message: "Location can't be blank!"
+        },{
+          type: 'danger'
+        });
+      } else {
+        this.releaseModel.set('location', location);
+        Robin.commands.execute("reloadTargetsTab");
+      }
+    },
     childViewOptions: function() {
       return this.options;
     },
+    onShow: function(){
+      this.initGeoAutocomplete();
+    },
+    initGeoAutocomplete: function(){
+      this.ui.locationInput.geocomplete();
+    },
     onRender: function() {
-      this.initDataTable();
+      var $this = this;
+      // this.initDataTable();
+      Robin.user = new Robin.Models.User();
+      Robin.user.fetch({
+        success: function(){
+          $this.initDataTable();
+        }
+      })
+    },
+    removeAllContactsFromPitch: function(){
+      var self = this;
+      _.each(self.collection.models, function(model){
+        var models = self.pitchContactsCollection.where({
+          author_id: model.get('id'),
+          origin: 'pressr'
+        });
+        
+        _.each(models, function(item){
+          self.pitchContactsCollection.remove(item);
+        });
+      });
+    },
+    addAllContactsToPitch: function(){
+      var self = this;
+      _.each(self.collection.models, function(model){
+        var current_model = self.pitchContactsCollection.findWhere({
+          author_id: model.get('id'),
+          origin: 'pressr'
+        });
+        
+        if (current_model == null) {
+          var model = new Robin.Models.Contact({
+            author_id: model.get('id'),
+            origin: 'pressr',
+            first_name: model.get('first_name'),
+            last_name: model.get('last_name'),
+            email: model.get('email'),
+            outlet: model.get('blog_names')[0]
+          });
+          self.pitchContactsCollection.add(model);
+        }
+      });
     },
     initDataTable: function(){
-      this.$el.find('table').DataTable({
+      var self = this;
+      var table = this.$el.find('table').DataTable({
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -358,10 +571,83 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           null,
           null,
           null,
-          null,
           null
-        ]
+        ],
+        dom: 'T<"clear">lfrtip',
+        "oTableTools": {
+          "aButtons": [
+            {
+              "sExtends": "text",
+              "sButtonText": "Advanced",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                self.ui.refinement.toggle();
+              }
+            },
+            {
+              "sExtends": "text",
+              "sButtonText": "Export as CSV",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                // var order = table.order();
+                // var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                // openWindow('POST', '/export_influencers.csv', 
+                //   {items: csvContent});
+                if (Robin.user.get('can_export') == true) {
+                  var order = table.order();
+                  var csvContent = self.makeCsvData(order[0][0], order[0][1]);
+
+                  openWindow('POST', '/export_influencers.csv', 
+                    {items: csvContent});
+                } else {
+                  $.growl('Only Enterprise and Ultra users can have this feature.', {
+                    type: "danger",
+                  });
+                }
+              }
+            },
+            {
+              "sExtends": "text",
+              "sButtonText": "Add all",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                self.addAllContactsToPitch();
+              }
+            },
+            {
+              "sExtends": "text",
+              "sButtonText": "Remove all",
+              "bFooter": false,
+              "fnClick": function ( nButton, oConfig, oFlash ) {
+                self.removeAllContactsFromPitch();
+              }
+            }
+          ]
+        }
       });
+    },
+    makeCsvData: function(order_column, order_direction){
+      var self = this;
+      
+      var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){ 
+        return (item.get('origin') === 'pressr');
+      }).map(function(item){
+        return self.collection.findWhere({id: item.get('author_id')});
+      }).reject(function(item){
+        return item == undefined;
+      }).value();
+      
+      var csvObject = [];
+      csvObject.push(["Author", "Outlet", "Relevance", "Contact"]); // CSV Headers
+      
+      _(pitchContacts).each(function(item){
+        csvObject.push([item.get('full_name'), 
+          item.get('blog_names').join(', '), item.get('level_of_interest'), 
+          item.get('email')]);
+      });
+      
+      return JSON.stringify(csvObject);
     }
   });
 });

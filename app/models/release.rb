@@ -5,6 +5,7 @@ class Release < ActiveRecord::Base
   belongs_to :user
   belongs_to :news_room, counter_cache: true
   has_many :pitches
+  has_many :draft_pitches
 
   validates :user_id, presence: true
   validates :title, presence: true
@@ -16,9 +17,10 @@ class Release < ActiveRecord::Base
   scope :by_news_room, ->(id) {where(news_room_id: id)}
   scope :published, -> { where(is_private: false) }
   
-  before_save :pos_tagger, :entities_counter
+  before_save :pos_tagger, :entities_counter, :set_published_at
   after_create :decrease_feature_number
   after_destroy :increase_feature_numner
+  after_save :update_images_links
   
   def plain_text
     coder = HTMLEntities.new
@@ -50,8 +52,19 @@ class Release < ActiveRecord::Base
   
   private
 
+  def update_images_links
+    urls = self.text.scan(/(?:https?:\/\/)?(?:www\.)?ucarecdn.com\/.*?\//)
+    if urls.count > 0
+      AmazonStorageRelease.perform_async(self.id)
+    end
+  end
+
   def can_be_created
     errors.add(:user, "you've reached the max numbers of releases.") if user && !user.can_create_release
+  end
+
+  def set_published_at
+    self.published_at = self.created_at.to_date if self.published_at.nil?
   end
   
   def pos_tagger
@@ -91,7 +104,7 @@ class Release < ActiveRecord::Base
   end
 
   def increase_feature_numner
-    uf = needed_user.user_features.press_release.not_available.first
+    uf = needed_user.user_features.press_release.first
     return false if uf.blank?
     uf.available_count += 1
     uf.save

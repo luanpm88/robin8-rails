@@ -12,7 +12,6 @@ Robin.Views.VideosCollectionView = Robin.Views.BaseMediaView.extend({
     var viewObj = this;
     setTimeout(function(){
       viewObj.videoWidget = uploadcare.MultipleWidget('[role=uploadcare-uploader][data-multiple][data-video]').onChange(function(fileGroup){
-        $(".modal-backdrop").height($('.modal').prop("scrollHeight"));
         if (fileGroup) {
           $.when.apply(null, fileGroup.files()).done(function() {
             viewObj.setModelParams(arguments, 'video');

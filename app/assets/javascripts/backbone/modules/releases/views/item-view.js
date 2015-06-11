@@ -16,6 +16,14 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.model.attributes.first_src = first_src;
     },
 
+    onRender: function(){
+      if (Robin.user.get('can_create_smart_release') != true) {
+        this.$el.find("#start-blast").addClass('disabled-unavailable');
+      } else {
+        this.$el.find("#start-blast").removeClass('disabled-unavailable');
+      }
+    },
+
     onShow: function(){
       var descriptionArea = this.$el.find('.release-title');
       descriptionArea.dotdotdot({
@@ -37,8 +45,15 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
 
     startSmartRelease: function(options){
-      Robin.releaseForBlast = this.model.get('id');
-      Backbone.history.navigate('robin8', {trigger: true});
+      if (Robin.user.get('can_create_smart_release') != true) {
+        $.growl({message: "You don't have available smart-releases!"},
+          {
+            type: 'info'
+          });
+      } else {
+        Robin.releaseForBlast = this.model.get('id');
+        Backbone.history.navigate('robin8', {trigger: true});
+      }
     },
 
     openEditModal: function(){

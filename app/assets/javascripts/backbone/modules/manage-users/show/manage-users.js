@@ -48,6 +48,8 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
 
     removeUser: function(e){
       var r = this.model;
+      var viewObj = this;
+      
       swal({
         title: "Remove this user?",
         text: "You will not be able to recover this user.",
@@ -64,7 +66,16 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
             dataType: 'json',
             data: r.attributes,
             success: function(data, textStatus, jqXHR) {
-              r.collection.fetch()
+              Robin.user.fetch({
+                success: function(){
+                  if (Robin.user.get('can_create_seat') != true) {
+                    $("button.invite").addClass('disabled-unavailable');
+                  } else {
+                    $("button.invite").removeClass('disabled-unavailable');
+                  }
+                }
+              });
+              r.collection.fetch();
             },
             error: function(jqXHR, textStatus, errorThrown) {
               $.growl(textStatus, {
@@ -98,6 +109,20 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
 
     initialize: function() {
       this.collection.fetch();
+    },
+
+    onRender: function(){
+      var curView = this;
+      Robin.user = new Robin.Models.User()
+      Robin.user.fetch({
+        success: function(){
+          if (Robin.user.get('can_create_seat') != true) {
+            curView.$el.find("button.invite").addClass('disabled-unavailable');
+          } else {
+            curView.$el.find("button.invite").removeClass('disabled-unavailable');
+          }
+        }
+      })
     },
 
     onShow: function() {
@@ -151,36 +176,54 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
     },
 
     sendInvite: function(e){
-      var viewObj = this;
-      e.preventDefault();
-      var email = $("#email").val();
-      $('#invite-form').data('formValidation').validate();
-      if ($('#invite-form').data('formValidation').isValid()) {
-        $.post("/users/invitation.json", {user:{email: email, is_primary: false}})
-          .always(function(){$(".invite").blur();})
-          .done(function() {
-            viewObj.collection.fetch();
-          })
-          .fail(function(response) {
-            if (response.responseText == "active"){
-              $.growl('This user is already active', {type: "danger"});
-            } else if (response.responseText == "sent" || response.responseText == "resent") {
-              $.growl('The invitation has been ' + response.responseText, {type: "success"});
+      if (Robin.user.get('can_create_seat') != true) {
+        $.growl({message: "You don't have available seats!"},
+          {
+            type: 'info'
+          });
+      } else {
+        var viewObj = this;
+        e.preventDefault();
+        var email = $("#email").val();
+        $('#invite-form').data('formValidation').validate();
+        if ($('#invite-form').data('formValidation').isValid()) {
+          $.post("/users/invitation.json", {user:{email: email, is_primary: false}})
+            .always(function(){
+              $(".invite").blur();
+            })
+            .done(function() {
               viewObj.collection.fetch();
-            } else {
-              var result = $.parseJSON(response.responseText);
-              _(result.errors).each(function(errors,field) {
-                $('input[name=' + field + ']').addClass('error');
-                _(errors).each(function(error, i) {
-                  formatted_field = s(field).capitalize().value().replace('_', ' ');
-                  $.growl(formatted_field + ' ' + error, {
-                    type: "danger",
+            })
+            .fail(function(response) {
+              Robin.user.fetch({
+                success: function(){
+                  if (Robin.user.get('can_create_seat') != true) {
+                    viewObj.$el.find("button.invite").addClass('disabled-unavailable');
+                  } else {
+                    viewObj.$el.find("button.invite").removeClass('disabled-unavailable');
+                  }
+                }
+              })
+              if (response.responseText == "active"){
+                $.growl('This user is already active', {type: "danger"});
+              } else if (response.responseText == "sent" || response.responseText == "resent") {
+                $.growl('The invitation has been ' + response.responseText, {type: "success"});
+                viewObj.collection.fetch();
+              } else {
+                var result = $.parseJSON(response.responseText);
+                _(result.errors).each(function(errors,field) {
+                  $('input[name=' + field + ']').addClass('error');
+                  _(errors).each(function(error, i) {
+                    formatted_field = s(field).capitalize().value().replace('_', ' ');
+                    $.growl(formatted_field + ' ' + error, {
+                      type: "danger",
+                    });
                   });
                 });
-              });
-            }
-        });
-        $("#email").val('');
+              }
+          });
+          $("#email").val('');
+        }
       }
     },
 

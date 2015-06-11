@@ -2,14 +2,16 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.Controller = Marionette.Controller.extend({
     initialize: function () {
-      this.module = Robin.module("ReleasesBlast");
       var self = this;
+      this.module = Robin.module("ReleasesBlast");
       Robin.user = new Robin.Models.User();
       Robin.user.fetch({
         success: function() {
-          
+          self.module.topMenuView.render();
+          self.module.topMenuView.$el.find(".badge-tooltip").tooltip({title: 'Available smart-releases count', trigger: 'hover', placement: 'right'});
         }
       })
+      this.module.selectedMediaListsCollection = new Robin.Collections.SelectedMediaLists();
       Robin.layouts.main.getRegion('content').show(this.module.layout);
       this.module.releasesBlastHeader = new Robin.Models.ReleasesBlastHeader();
       this.module.releasesBlastHeader.set({ level: 1 });
@@ -28,37 +30,69 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       
       
+      Robin.vent.on("start:tab:clicked", function(params){
+        if ([2, 3, 4].indexOf(self.module.releasesBlastHeader.get('level')) !== -1){
+          self.module.trigger("stop", {restart: true});
+        }
+      });
+      
       Robin.vent.on("analysis:tab:clicked", function(params){
-        if (self.module.releasesBlastHeader.get('level') === 1)
-          Robin.commands.execute("goToAnalysisTab");
+        if (self.module.pitchModel.get('sent') === false){
+          if (self.module.releasesBlastHeader.get('level') === 1)
+            Robin.commands.execute("goToAnalysisTab");
+          else if ([3, 4].indexOf(self.module.releasesBlastHeader.get('level')) !== -1)
+            self.analysis({releaseModel: self.module.releaseModel});
+        }
+      });
+      
+      Robin.commands.setHandler("reloadTargetsTab", function(){
+        self.targets();
       });
       
       Robin.vent.on("targets:tab:clicked", function(params){
-        if (self.module.releasesBlastHeader.get('level') === 4)
-          self.targets();
-        else if (self.module.releasesBlastHeader.get('level') === 2)
-          Robin.commands.execute("goToTargetsTab");
+        if (self.module.pitchModel.get('sent') === false){
+          if (self.module.releasesBlastHeader.get('level') === 4)
+            self.targets();
+          else if (self.module.releasesBlastHeader.get('level') === 2)
+            Robin.commands.execute("goToTargetsTab");
+        }
       });
       
       Robin.vent.on("pitch:tab:clicked", function(params){
-        if (self.module.releasesBlastHeader.get('level') === 3)
-          Robin.commands.execute("goToPitchTab");
+        if (self.module.pitchModel.get('sent') === false){
+          if (self.module.releasesBlastHeader.get('level') === 3)
+            Robin.commands.execute("goToPitchTab");
+        }
+      });
+      
+      this.on('destroy', function(){
+        Robin.vent.off("start:tab:clicked");
+        Robin.vent.off("analysis:tab:clicked");
+        Robin.vent.off("targets:tab:clicked");
+        Robin.vent.off("pitch:tab:clicked");
       });
     },
     start: function(params){
-      this.module.releasesBlastHeader.set({ level: 1 });
-      
       this.module.collection.fetch({reset: true, data: { "for_blast": true}});
       var startTabView = new this.module.StartTabView({
         collection: this.module.collection,
+        pitchModel: this.module.pitchModel,
+        draftPitchModel: this.module.draftPitchModel
       });
+
+      if (Robin.releaseForBlast != undefined) {
+        this.module.releasesBlastHeader.set({ level: 2 });
+      } else {
+        this.module.releasesBlastHeader.set({ level: 1 });
+        this.module.layout.tabContentRegion.show(startTabView);
+      };
       
-      this.module.layout.tabContentRegion.show(startTabView);
     },
     analysis: function(params){
       this.module.releasesBlastHeader.set({ level: 2 });
 
       this.module.releaseModel = params.releaseModel;
+      
       var analysisTabView = new this.module.AnalysisTabView({
         model: this.module.releaseModel
       });
@@ -116,7 +150,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       // Load Media List tab
       var mediaListCollection = new Robin.Collections.MediaLists();
-      var selectedMediaListsCollection = new Robin.Collections.SelectedMediaLists();
       
       mediaListCollection.fetch({reset: true});
       var mediaListLayout = new ReleasesBlast.MediaListLayout();
@@ -125,10 +158,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var uploadMediaListView = new ReleasesBlast.UploadMediaListView({
         collection: mediaListCollection,
         pitchContactsCollection: self.module.pitchModel.get('contacts'),
-        selectedMediaListsCollection: selectedMediaListsCollection
+        selectedMediaListsCollection: this.module.selectedMediaListsCollection
       });
       var selectedMediaListsView = new ReleasesBlast.SelectedMediaListsCompositeView({
-        collection: selectedMediaListsCollection,
+        collection: this.module.selectedMediaListsCollection,
         pitchContactsCollection: self.module.pitchModel.get('contacts')
       });
       
@@ -140,6 +173,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       var pitchTabView = new this.module.PitchTabView({
         model: this.module.pitchModel,
+        draftPitchModel: this.module.draftPitchModel,
         releaseModel: this.module.releaseModel
       });
       this.module.layout.tabContentRegion.show(pitchTabView);
@@ -159,6 +193,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       var emailPitchView = new ReleasesBlast.EmailPitchView({
         releaseModel: this.module.releaseModel,
+        draftPitchModel: this.module.draftPitchModel,
         model: this.module.pitchModel
       });
 
@@ -170,6 +205,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       var twitterPitchView = new ReleasesBlast.TwitterPitchView({
         releaseModel: this.module.releaseModel,
+        draftPitchModel: this.module.draftPitchModel,
         model: this.module.pitchModel
       });
 

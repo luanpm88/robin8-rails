@@ -1,6 +1,5 @@
 Robin.Models.AuthorStats = Backbone.Model.extend({
-  toJSON: function() {
-    var authorStats = _.clone( this.attributes );
-    return { authorStats: authorStats };
+  initialize: function(){
+    this.url = '/robin8_api/authors/' + this.id  + '/stats';
   }
 });

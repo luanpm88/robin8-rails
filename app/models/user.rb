@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable, #:confirmable,
          :omniauthable, :invitable
 
   has_many :identities, dependent: :destroy
@@ -24,7 +24,8 @@ class User < ActiveRecord::Base
   # has_many :user_add_ons, dependent: :destroy
   # has_many :add_ons, through: :user_add_ons
 
-  after_create :create_default_news_room
+  after_create :create_default_news_room, :decrease_feature_number
+  after_destroy :increase_feature_number
 
   extend FriendlyId
   friendly_id :email, use: :slugged
@@ -73,7 +74,7 @@ class User < ActiveRecord::Base
   end
 
   def newsroom_available_count
-    current_user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def newsroom_count
@@ -81,11 +82,11 @@ class User < ActiveRecord::Base
   end
 
   def can_create_newsroom
-    newsroom_available_count.nil? ? false : newsroom_count < newsroom_available_count
+    newsroom_available_count.nil? ? false : newsroom_available_count > 1
   end
 
   def release_available_count
-    current_user_features.press_release.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.press_release.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def manageable_users
@@ -97,15 +98,15 @@ class User < ActiveRecord::Base
   end
 
   def can_create_release
-    release_available_count.nil? ? false : release_count < release_available_count
+    release_available_count.nil? ? false : release_available_count > 0
   end
 
   def can_create_stream
-    stream_available_count.nil? ? false : stream_count < stream_available_count
+    stream_available_count.nil? ? false : stream_available_count > 0
   end
 
   def stream_available_count
-    current_user_features.media_monitoring.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.media_monitoring.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def stream_count
@@ -122,15 +123,27 @@ class User < ActiveRecord::Base
   end
 
   def can_create_smart_release
-    smart_release_available_count.nil? ? false : smart_release_count < smart_release_available_count
+    smart_release_available_count.nil? ? false : smart_release_available_count > 0
   end
 
   def smart_release_available_count
-    current_user_features.smart_release.map(&:max_count).inject{|sum,x| sum + x }
+    current_user_features.smart_release.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def smart_release_count
     manageable_users.each.sum{|u| u.pitches.count} + pitches.count
+  end
+
+  def can_create_seat
+    seat_available_count.nil? ? false : seat_available_count > 1
+  end
+
+  def seat_available_count
+    current_user_features.seat.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def seat_count
+    manageable_users.count + 1 # +1 - himself
   end
 
   def active_subscription
@@ -167,7 +180,37 @@ class User < ActiveRecord::Base
     identities.where(provider: 'facebook').first
   end
 
-  def twitter_post message
+  def google_identity
+    identities.where(provider: 'google_oauth2').first
+  end
+
+  def twitter_identities
+    identities.where(provider: 'twitter')
+  end
+
+  def linkedin_identities
+    identities.where(provider: 'linkedin')
+  end
+
+  def facebook_identities
+    identities.where(provider: 'facebook')
+  end
+
+  def google_identities
+    identities.where(provider: 'google_oauth2')
+  end
+
+  def all_identities
+    identities_by_providers = {}
+    identities_by_providers[:twitter] = twitter_identities
+    identities_by_providers[:facebook] = facebook_identities
+    identities_by_providers[:google] = google_identities
+    identities_by_providers[:linkedin] = linkedin_identities
+    identities_by_providers 
+  end
+
+  def twitter_post message, identity_id
+    twitter_identity = Identity.find(identity_id)
     unless twitter_identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]
@@ -179,7 +222,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def linkedin_post message
+  def linkedin_post message, identity_id
+    linkedin_identity = Identity.find(identity_id)
     unless linkedin_identity.blank?
       data = { comment: message, visibility: {code: 'anyone'} }
       response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
@@ -190,7 +234,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def facebook_post message
+  def facebook_post message, identity_id
+    facebook_identity = Identity.find(identity_id)
     unless facebook_identity.blank?
       graph = Koala::Facebook::API.new(facebook_identity.token)
       Rails.logger.info graph.inspect
@@ -206,19 +251,68 @@ class User < ActiveRecord::Base
     super.present? ? super : "#{first_name} #{last_name}"
   end
 
+  def display_name
+    if name.present?
+      user_name = name
+    elsif first_name.present? && last_name.present?
+      user_name = "#{first_name} #{last_name}"
+    end
+    user_name && email.present? ? "#{user_name}, #{email}" : "#{user_name}#{email}"
+  end
+
   def as_json(options={})
     super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
   end
-
-  private
-  def create_default_news_room
-    if is_primary?
-      news_room = self.news_rooms.new(
-          company_name: "#{self.email}'s Default Newsroom",
-          subdomain_name: self.slug,
-          default_news_room: true
-      )
-      news_room.save(validate: false)
+  
+  def full_name
+    if !first_name.blank? && !last_name.blank?
+      "#{first_name} #{last_name}"
+    elsif !first_name.blank?
+      first_name
+    elsif !last_name.blank?
+      last_name
+    else
+      "Robin8"
     end
   end
+
+  def can_export
+    user_product = user_products.first
+    return false if user_product.blank?
+    ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual"].include? user_product.product.slug
+  end
+
+  private
+    def create_default_news_room
+      if is_primary?
+        news_room = self.news_rooms.new(
+            company_name: "#{self.email}'s Default Newsroom",
+            subdomain_name: self.slug,
+            default_news_room: true
+        )
+        news_room.save(validate: false)
+      end
+    end
+
+    # def needed_user
+    #   user.is_primary? ? user : user.invited_by
+    # end
+
+    def decrease_feature_number
+      if !is_primary
+        uf = invited_by.user_features.seat.available.first
+        return false if uf.blank?
+        uf.available_count -= 1
+        uf.save
+      end
+    end
+
+    def increase_feature_number
+      if !is_primary
+        uf = invited_by.user_features.seat.first
+        return false if uf.blank?
+        uf.available_count += 1
+        uf.save
+      end
+    end
 end

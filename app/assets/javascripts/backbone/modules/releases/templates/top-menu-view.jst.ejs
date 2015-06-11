@@ -1,8 +1,23 @@
 <script id="wyihtml5-extract-button" type="text/template">
-  <li><a class="btn btn-default" id="extract_url"><i class="fa fa-cloud-download"></i></a></li>
+  <li><a class="btn btn-default btn-sm" id="extract_url" title='Grab release from URL'><i class="fa fa-cloud-download font-12"></i></a></li>
+</script>
+<script id="wyihtml5-insert-link" type="text/template">
+  <li><a class="btn btn-default btn-sm" id="insert_link" title="Insert link"><i class="fa fa-external-link font-12"></i></a></li>
 </script>
 <script id="wyihtml5-word-button" type="text/template">
-  <li><a class="btn btn-default" onclick="document.getElementById('upload').click(); return false" id="extract_word"><i class="fa fa-file-word-o"></i></a></li>
+  <li><a class="btn btn-default btn-sm" title="Grab release from DOCX document " onclick="document.getElementById('upload').click(); return false" id="extract_word"><i class="fa fa-file-word-o font-12"></i></a></li>
+</script>
+<script id="wyihtml5-direct-image-button" type="text/template">
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm" id="direct-image-upload" title="Insert image by uploading"><i class="fa fa-file-image-o font-12"></i></a>
+    <a class="btn btn-default btn-sm" id="url-image-upload" title="Insert image by url"><i class="fa fa-upload font-12"></i></a>
+  </div>
+</script>
+<script id="wyihtml5-direct-video-button" type="text/template">
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm" id="direct-video-upload" title="Insert video by uploading"><i class="fa fa-file-video-o font-12"></i></a>
+    <a class="btn btn-default btn-sm" id="url-video-upload" title="Insert video by url"><i class="fa fa-upload font-12"></i></a>
+  </div>
 </script>
 <input type="file" id="upload" name="upload" accept=".docx" style="visibility: hidden; width: 1px; height: 1px" />
 <div class="col-lg-12">
@@ -10,11 +25,8 @@
     <div class="panel-body">
       <div class="pull-right toolbar releases-toolbar">
         <div class="ui-select">
-          <select class="form-control" id="newsroom_filter" name="by_news_room">
-            <option value=""> <%= polyglot.t("releases.all_newsrooms") %></option>
-            <% _.each(newsrooms.models, function(newsroom){ %>
-              <option value="<%= newsroom.get('id') %>"> <%= newsroom.get('company_name') %> </option>
-            <% }); %>
+          <select disabled='true' class="form-control" id="newsroom_filter" name="by_news_room">
+            <option value=""><%= polyglot.t("releases.all_newsrooms") %></option>
           </select>
         </div>
         <!-- <button class="btn btn-default"><i class="fa fa-rocket"></i> <strong>5 SmartReleases</strong> Remaining</button> -->
@@ -52,21 +64,27 @@
                   <div class="form-group">
                       <label><%= polyglot.t("releases.modal.basic_tab.newsroom") %></label>
                       <div class="ui-select">
-                        <select id="news_room_id" class="form-control" name="news_room_id">
+                        <select disabled='true' id="news_room_id" class="form-control" name="news_room_id">
                           <option value="">Select...</option>
-                          <% _.each(newsrooms.models, function(newsroom){ %>
-                            <option value="<%= newsroom.get('id') %>"> <%= newsroom.get('company_name') %> </option>
-                          <% }); %>
                         </select>
                       </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group title-date">
+                    <div id='release-title-block'>
                       <label><%= polyglot.t("releases.modal.basic_tab.release_title") %></label>
                       <input class="form-control" id="release-title-input" name="title" type="text" value="" placeholder="Enter title...">
+                    </div>
+                    <div id='release-date-block'>
+                      <label>Published date</label>
+                      <input class="form-control" id="release-date-input" name="published_at" type="text">
+                    </div>
                   </div>
-                  <div class="form-group">
-                      <label><%= polyglot.t("releases.modal.basic_tab.release_text") %></label>
-                      <textarea class="form-control widearea wysihtml5" rows="10" placeholder="Paste your press release here..." name="text" data-widearea="enable" data-widearea-id="1"></textarea>
+                  <div class="form-group" style="margin-bottom: 5px;">
+                    <label><%= polyglot.t("releases.modal.basic_tab.release_text") %></label>
+                    <textarea class="form-control widearea wysihtml5" rows="10" placeholder="Paste your press release here..." name="text" data-widearea="enable" data-widearea-id="1"></textarea>
+                  </div>
+                  <div class="linebreak-notification" style="margin-bottom: 10px;">
+                    <center>*The editor uses paragraphs by default for copied text. To place a normal line break press Shift+Enter (Shift+Return)</center>
                   </div>
                   <div id="release-characteristics"></div>
                 </div>

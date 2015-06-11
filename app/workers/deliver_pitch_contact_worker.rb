@@ -1,4 +1,3 @@
-require 'mailgun'
 class DeliverPitchContact
   include Sidekiq::Worker
 
@@ -6,17 +5,7 @@ class DeliverPitchContact
     pitch_contact = PitchesContact.includes([:contact]).find(pitch_contact_id)
     
     if [0, 2].include? pitch_contact.contact.origin # pressr or media_list
-      # ContactMailer.deliver_pitch(pitch_contact.id).deliver
-      message_params = {
-        to: pitch_contact.contact.email,
-        from: pitch_contact.pitch.email_address,
-        subject: pitch_contact.pitch.email_subject,
-        text: pitch_contact.rendered_pitch,
-        'o:campaign' => pitch_contact.pitch.release.news_room.campaign_name
-      }
-      mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
-      domain = Rails.application.secrets.mailgun[:domain]
-      mg_client.send_message domain, message_params
+       ContactMailer.deliver_pitch(pitch_contact.id).deliver
     elsif pitch_contact.contact.origin == 1 # twtrland
       pitch_contact.pitch.user.twitter_post(pitch_contact.rendered_pitch)
     else

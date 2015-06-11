@@ -29,8 +29,8 @@
                 </td>
                 <td>
                   <select name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
-                    <option value="<%=@product.slug%>">Pay Annually ($<%=(@product.price/12).to_i %> x 12/mo) - save 20%</option>
-                    <option value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
+                    <option id="<%=@product.name%>" value="<%=@product.slug%>">Pay Annually ($<%=(@product.price/12).to_i %> x 12/mo) - save 20%</option>
+                    <option id="<%=@product.monthly_package.name%>" value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
                   </select>
                 </td>
                 <input type="hidden" id="<%=@product.slug%>" value="<%=@product.price%>"/>
@@ -68,7 +68,7 @@
           </div>
           <div class="small-12 medium-3 columns">
             <label>
-              <input type="text" placeholder="Promo Code" name="code" id="promo_code" aria-invalid="false" value="<%=@discount.code if @discount.present?%>">
+              <input type="text" placeholder="Promo Code" name="code" id="promo_code" aria-invalid="false" autocomplete="off" value="<%=@discount.code if @discount.present?%>">
             </label>
           </div>
 
@@ -94,7 +94,7 @@
               <h4 style="text-align:center;color:#fff;">
                 Current: <%=current_user.active_subscription.product.name%> at $<%=current_user.active_subscription.product.price%>
                 <br/> TO <br/>
-                New Package: <%=@product.name%> at $<%=@product.price%>
+                New Package: <span id='new-name'><%=@product.name%></span> at $<span id='new-value'><%=@product.price%></span>
               </h4>
 
 
@@ -127,6 +127,8 @@
         $('#slug').val($('#payment-option').val());
         $('#price-total').html("$"+$('#'+$('#slug').val()).val());
         $('#t-price').html("$"+$('#'+$('#slug').val()).val() );
+        $('#new-name').html($("#payment-option option:selected").attr('id'));
+        $('#new-value').html($('#'+$('#slug').val()).val() );
         $('#price-sub').html("$"+$('#'+$('#slug').val()).val() );
         $('#next-date').html($('#nbd-'+$('#slug').val()).val() );
     }
@@ -145,6 +147,7 @@
                             $('#price-sub').html('$'+(previous_amount - amount));
                             $('#price-total').html('$'+(previous_amount - amount));
                             $('#t-price').html('$'+(previous_amount - amount) );
+                            $('#new-value').html((previous_amount - amount));
 
                             $('#discount_response').html("Discount successfully applied to your account");
                             $('#discount_response').css("color","#02BA64");

@@ -22,7 +22,7 @@ module BlueSnap
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
     def self.new(request, user, params, product, add_ons=nil,add_ons_hash=nil)
-      # begin
+      begin
         errors = BlueSnap::Shopper.validate_params(params, user)
         if errors.blank?
           shopper = {
@@ -35,10 +35,10 @@ module BlueSnap
         else
           return errors, nil
         end
-      # rescue Exception => ex
-      #   Rails.logger.error ex
-      #   return ["Something is not right with your payment. Please try again"], nil
-      # end
+      rescue Exception => ex
+        Rails.logger.error ex
+        return ["Something is not right with your payment. Please try again"], nil
+      end
     end
 
     def self.validate_params(params, user)
@@ -63,7 +63,12 @@ module BlueSnap
 
 
     def self.ordering_shopper request
-      {"web-info" => {"ip" => "127.0.0.1", "remote-host" => "www.robin8.com", "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
+      begin
+        remote_host = Resolv.getname(ip)
+      rescue Exception
+        remote_host = 'robin8.com' # if remote host not found just use robin8 as remote host
+      end
+      {"web-info" => {"ip" => request.ip, "remote-host" => remote_host, "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
     end
 
     def self.order_info(request, product, add_ons,add_ons_hash,code,user)
@@ -98,9 +103,9 @@ module BlueSnap
       discount = Discount.active.where(code: code).last if code.present?
       disc_code = ""
       if discount.present? && product.present?
-       if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
-        disc_code = {"coupons"=>{"coupon"=> discount.code}}.to_xml(root: false,:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","").gsub("<hash>\n","").gsub("\n</hash>\n","")
-       end
+        if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+          disc_code = {"coupons"=>{"coupon"=> discount.code}}.to_xml(root: false,:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","").gsub("<hash>\n","").gsub("\n</hash>\n","")
+        end
       end
 
       (add_ons||[]).each do |a|

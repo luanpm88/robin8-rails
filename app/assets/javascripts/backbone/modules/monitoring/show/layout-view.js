@@ -22,9 +22,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       Robin.user.fetch({
         success: function() {
           if (Robin.user.get('can_create_stream') != true) {
-            currView.$el.find("#add-stream").attr('disabled', 'disabled');
+            currView.$el.find("#add-stream").addClass('disabled-unavailable');
           } else {
-            currView.$el.find("#add-stream").removeAttr('disabled');
+            currView.$el.find("#add-stream").removeClass('disabled-unavailable');
           }
         }
       });
@@ -56,10 +56,17 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     addStream: function() {
-      var model = new Robin.Models.Stream();
-      var stream = new Robin.Models.Stream({model: model});
-      this.streamsCollectionView.collection.push(stream);
-      this.$el.find(".stream-container").scrollLeft(this.$el.find(".stream-container")[0].scrollWidth);
+      if (Robin.user.get('can_create_stream') != true) {
+        $.growl({message: "You don't have available streams!"},
+          {
+            type: 'info'
+          });
+      } else {
+        var model = new Robin.Models.Stream();
+        var stream = new Robin.Models.Stream({model: model});
+        this.streamsCollectionView.collection.push(stream);
+        this.$el.find(".stream-container").scrollLeft(this.$el.find(".stream-container")[0].scrollWidth);
+      }
     },
   });
 });
