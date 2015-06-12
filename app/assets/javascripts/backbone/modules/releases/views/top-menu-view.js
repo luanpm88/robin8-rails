@@ -23,8 +23,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #highlight_textarea': 'highlightReleaseText',
       'click #smart_release': 'startSmartRelease',
       'change #upload': 'uploadWord',
-      'ifChanged .private-checkbox': 'changePrivate',
-      'change #news_room_id': 'newsRoomSelected',
+      'change #news_room_id': 'verifyPublic',
       'click #make-public': 'makeNewsRoomPublic',
       'click #direct-image-upload': 'uploadDirectImage',
       'click #url-image-upload': 'uploadUrlImage',
@@ -102,13 +101,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           console.log(url);
           view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertVideo", url);
         }, 200);
-      }
-    },
-    changePrivate: function(e) {
-      if ($(e.target).is(":checked")) {
-        this.$el.find('.smart-release-button').addClass('disabled');
-      } else {
-        this.$el.find('.smart-release-button').removeClass('disabled');
       }
     },
     highlightReleaseText: function(e) {
@@ -337,7 +329,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.render();
         this.$el.find('#release_form').modal({ keyboard: false });
       }
-
     },
     openModalDialogEdit: function(data){
       this.model.set(data.toJSON().release);
@@ -345,15 +336,15 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.$el.find('#release_form').modal({ keyboard: false });
       this.verifyPublic();
     },
-    newsRoomSelected: function() {
-      var newsRoomId = $('#news_room_id').val();
-      if (newsRoomId != ""){
-        selectedNewsroom = this.newsrooms.get(newsRoomId);
-      }
-      this.verifyPublic();
-    },
     verifyPublic: function() {
-      if (this.model.attributes.news_room_public == true) {
+      var newsRoomId = $('#news_room_id').val();
+      if (!!newsRoomId){
+        selectedNewsroom = this.newsrooms.get(newsRoomId);
+        publicNewsRoom = selectedNewsroom.attributes.publish_on_website;
+      } else {
+        publicNewsRoom = this.model.attributes.news_room_public;
+      }
+      if (publicNewsRoom) {
         this.$el.find('#public-alert').hide();
       } else {
         this.$el.find('#public-alert').show();
