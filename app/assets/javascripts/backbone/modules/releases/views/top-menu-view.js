@@ -24,7 +24,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #smart_release': 'startSmartRelease',
       'change #upload': 'uploadWord',
       'ifChanged .private-checkbox': 'changePrivate',
-      'ifChecked .myprgenie-checkbox': 'switchMyprgenie',
+      'ifChanged .myprgenie-checkbox': 'switchMyprgenie',
       'ifChanged .accesswire-checkbox': 'switchAccesswire',
       'ifChanged .prnewswire-checkbox': 'switchPrnewswire',
       'change #news_room_id': 'newsRoomSelected',
@@ -189,6 +189,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var datedate = moment(date).format('MM/DD/YYYY');
       this.$el.find('#release-date-input').val(datedate).change();
       this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY'});
+
+      this.$el.find('#newswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#newswire_date_input').on('dp.change', function(e) {
+        $('#releaseForm').formValidation('revalidateField', 'newswire_published_at');
+      });
 
       var insertLinkButton = this.$el.find('#wyihtml5-insert-link').html();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
@@ -537,6 +542,25 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                 message: 'something went wrong'
               }
             }
+          },
+          newswire_published_at: {
+            validators: {
+              callback: {
+                message: 'You should select date',
+                callback: function(value, validator, $field) {
+                  if(($('.myprgenie-checkbox').is(':checked') || $('.accesswire-checkbox').is(':checked') || $('.prnewswire-checkbox').is(':checked')) && $('#newswire_date_input').val() == ''){
+                    // alert($('#newswire_date_input').val());
+                    return false;
+                  }
+                  else{
+                    return true;
+                  }
+                }
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
           }
         }
       })
@@ -732,43 +756,61 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder.unbind();
     },
     switchMyprgenie: function(e){
+      $('#releaseForm').formValidation('revalidateField', 'newswire_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_myprgenie')){
           $.growl("Please, buy corresponding addon in Billing settings!", {
             type: "info",
           });
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
-        }
-        else{
-          alert('ok');
+          return;
         }
       } 
+      if(!$('.myprgenie-checkbox').is(':checked') && !$('.accesswire-checkbox').is(':checked') && !$('.prnewswire-checkbox').is(':checked')){
+        this.$el.find("#newswire_date_input").val('');
+        this.$el.find("#start_date_div").hide();
+      }
+      else{
+        this.$el.find("#start_date_div").show();
+      }
     },
     switchAccesswire: function(e){
+      $('#releaseForm').formValidation('revalidateField', 'newswire_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_accesswire')){
           $.growl("Please, buy corresponding addon in Billing settings!", {
             type: "info",
           });
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
+          return;
         }
-        else{
-          alert('ok');
-        }
+      }
+      if(!$('.myprgenie-checkbox').is(':checked') && !$('.accesswire-checkbox').is(':checked') && !$('.prnewswire-checkbox').is(':checked')){
+        this.$el.find("#newswire_date_input").val('');
+        this.$el.find("#start_date_div").hide();
+      }
+      else{
+        this.$el.find("#start_date_div").show();
       }
     },
     switchPrnewswire: function(e){
+      $('#releaseForm').formValidation('revalidateField', 'newswire_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_prnewswire')){
           $.growl("Please, buy corresponding addon in Billing settings!", {
             type: "info",
           });
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
-        }
-        else{
-          alert('ok');
+          return;
         }
       } 
+      if(!$('.myprgenie-checkbox').is(':checked') && !$('.accesswire-checkbox').is(':checked') && !$('.prnewswire-checkbox').is(':checked')){
+        this.$el.find("#newswire_date_input").val('');
+        this.$el.find("#start_date_div").hide();
+      }
+      else{
+        this.$el.find("#start_date_div").show();
+      }
     }
   });
 });

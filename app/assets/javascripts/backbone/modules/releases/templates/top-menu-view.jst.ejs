@@ -106,24 +106,27 @@
                   <div class='files_region'></div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="newswire">
+                  <b>Please, select options for distributing release:</b>
+                  <br><br>
                   <div class="form-group">
-                    <b>Please, select options for distributing release:</b>
-                    <br><br>
-
-                        <label for="icheckbox_myprgenie" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >MyPRGenie Web Distribution: </label>
-                        <input type="checkbox" class='myprgenie-checkbox' id="icheckbox_myprgenie" name="myprgenie" >
-                        <input class="form-control" id="myprgenie-date-input" name="myprgenie_published_at" type="text">
-                        <br>
-                        <label for="icheckbox_accesswire" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >Accesswire: </label>
-                        <input type="checkbox" class='accesswire-checkbox' id="icheckbox_accesswire" name="accesswire" >
-                        <input class="form-control" id="accesswire-date-input" name="accesswire_published_at" type="text">
-                        <br>
-                        <label for="icheckbox_prnewswire" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >PR Newswire: </label>
-                        <input type="checkbox" class='prnewswire-checkbox' id="icheckbox_prnewswire" name="prnewswire" >
-                        <input class="form-control" id="prnewswire-date-input" name="prnewswire_published_at" type="text">
-
+                    <label for="icheckbox_myprgenie" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >MyPRGenie Web Distribution: </label>
+                    <input type="checkbox" class='myprgenie-checkbox' id="icheckbox_myprgenie" name="myprgenie" >
                   </div>
-
+                  <div class="form-group">
+                    <label for="icheckbox_accesswire" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >Accesswire: </label>
+                    <input type="checkbox" class='accesswire-checkbox' id="icheckbox_accesswire" name="accesswire" >
+                  </div>
+                  <div class="form-group">
+                    <label for="icheckbox_prnewswire" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >PR Newswire: </label>
+                    <input type="checkbox" class='prnewswire-checkbox' id="icheckbox_prnewswire" name="prnewswire" >
+                  </div>
+                  <div class="form-group" id="start_date_div" style="display: none">
+                    <label for="newswire_date_input" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >Start date: </label>
+                    <div class="date col-sm-2" style="padding: 0px; margin: 0px">
+                      <input type="text" class="form-control date col-sm-2" id="newswire_date_input" name="newswire_published_at" />
+                    </div>
+                  </div>
+                  <div><br><br></div>
                 </div>
             </div>
             </form>
