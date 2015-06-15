@@ -64,7 +64,7 @@ class Release < ActiveRecord::Base
   end
 
   def set_published_at
-    self.published_at = self.created_at.to_date if self.published_at.nil?
+    self.published_at = Time.now.utc if self.published_at.blank?
   end
   
   def pos_tagger

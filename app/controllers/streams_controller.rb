@@ -111,6 +111,7 @@ class StreamsController < ApplicationController
     query_params = {}
     query_params[:per_page] = params[:per_page] || 10
     query_params[:colorize_background] = params[:colorize_background]
+    query_params[:published_at] = params[:published_at] if params[:published_at]
     
     request_url.query = URI.encode_www_form(query_params)
     request_url.to_s
@@ -121,6 +122,7 @@ class StreamsController < ApplicationController
     req_params = stream.query_params
     req_params.merge!(page: URI.decode(params[:page])) if params[:page]
     req_params.merge!(per_page: params[:per_page]) if params[:per_page]
+    req_params.merge!(published_at: params[:published_at]) if params[:published_at]
 
     endpoint = "/uniq_stories"
     

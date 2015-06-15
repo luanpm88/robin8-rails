@@ -12,7 +12,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       storiesNumberOutput: "#stories-number",
       colorizeBackground: ".export-dialog [name=colorize-background]",
       formatFileInput: ".export-dialog [name=format]",
-      downloadReportButton: "#download-report"
+      downloadReportButton: "#download-report",
+      dateRangeField: "input[name=daterange]"
     },
     events: {
       'click .delete-stream': 'closeStream',
@@ -223,9 +224,23 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find("input.select2-input").css('width', '150%');
       
       this.ui.colorizeBackground.prop('checked', true);
-      this.ui.formatFileInput.select('docx');
+      this.ui.colorizeBackground.parent().hide();
+      this.ui.formatFileInput.val('docx').trigger('change');
+      this.initDateRangeField();
     },
-
+    initDateRangeField: function(){
+      this.ui.dateRangeField.daterangepicker({
+        ranges: {
+          'Last 24 Hours': [moment().subtract(1, 'days'), new Date()],
+          'Last 7 Days': [moment().subtract(6, 'days'), new Date()],
+          'Last 30 Days': [moment().subtract(29, 'days'), new Date()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), 
+            moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: 'right'
+      });
+    },
     onAdded: function(story, collection) {
       this.filterCollection();
       this.refreshNewStoriesCount();
@@ -406,14 +421,29 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       var streamId = this.model.id;
       var format = this.ui.formatFileInput.val();
       var colorizeBackground = null;
+      var dateRange = this.ui.dateRangeField.val();
+      var published_at = null;
+      
+      if (!s.isBlank(dateRange)){
+        published_at = "[" + _(dateRange.split('-')).map(function(i){ 
+          return new Date(i.trim()).toISOString() 
+        }).join(' TO ') + "]";
+      }
       
       if (this.ui.colorizeBackground.is(":checked"))
         colorizeBackground = true
       else
         colorizeBackground = false
       
-      openWindow('GET', '/streams/' + streamId + '/stories.' + format,
-        {colorize_background: colorizeBackground, per_page: numberOfStories});
+      var params = {
+        colorize_background: colorizeBackground, 
+        per_page: numberOfStories
+      };
+      
+      if (published_at)
+        params['published_at'] = published_at
+        
+      openWindow('GET', '/streams/' + streamId + '/stories.' + format, params);
     },
     toggleRssDialog: function(){
       $(this.el).find('.rss-dialog').toggleClass('closed');

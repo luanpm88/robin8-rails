@@ -50,6 +50,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           {
             type: 'info'
           });
+      } else if (this.model.get('is_private') || this.model.get('news_room_public') != true) {
+        $.growl({message: "You can not proceed as long as the release or its parent newsroom is not public"},
+          {
+            type: 'info'
+          });
       } else {
         Robin.releaseForBlast = this.model.get('id');
         Backbone.history.navigate('robin8', {trigger: true});
