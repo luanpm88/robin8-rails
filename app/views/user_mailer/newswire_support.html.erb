@@ -20,52 +20,48 @@
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    Hello <%=@payment.user_product.user.name.humanize%>,
-                    <!--<h1>$33.98 Paid</h1>-->
+                    Hello Rowin8 support,
                   </td>
                 </tr>
                 <tr>
                   <td class="content-block">
-                    You have been successfully subscribed to our <b><%=@payment.product.name%></b> package. Details are as follows.
-                    <h2></h2>
+                    <b>You recieve newswire release with distributing options:</b>
+                    <ul>
+                      <% if @myprgenie %>
+                        <li>MyPRGenie Web Distribution</li>
+                      <% end %>
+                      <% if @accesswire %>
+                        <li>Accesswire</li>
+                      <% end %>
+                      <% if @prnewswire %> 
+                        <li>PR Newswire</li>
+                      <% end %>
+                    </ul>
+                    <b>Start date:</b>
+                    <ul>
+                      <li><%= @newswire_published_at %></li>
+                    </ul>
+                    </ul>
                   </td>
                 </tr>
                 <tr>
                   <td class="content-block">
                     <table class="invoice">
                       <tr>
-                        <td>Invoice #<%=@payment.id%><br><%=@payment.created_at.strftime("%d-%m-%Y %I:%M%p")%></td>
+                        <td>
+                          <b>Title:</b> <br>
+                          <%= @title %>
+                        </td>
                       </tr>
                       <tr>
                         <td>
-                          <table class="invoice-items" cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td><%=@payment.product.name%></td>
-                              <td class="alignright">$ <%=@payment.amount%></td>
-                            </tr>
-                            <!--<tr>-->
-                            <!--<td>Item 1</td>-->
-                            <!--<td class="alignright">$ 9.99</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                            <!--<td>Item 2</td>-->
-                            <!--<td class="alignright">$ 4.00</td>-->
-                            <!--</tr>-->
-                            <tr class="total">
-                              <td class="alignright" width="80%">Total</td>
-                              <td class="alignright">$ <%=@payment.amount%></td>
-                            </tr>
-                          </table>
+                          <b>Text:</b> <br>
+                          <%= @text.html_safe %>
                         </td>
                       </tr>
                     </table>
                   </td>
                 </tr>
-                <!--<tr>-->
-                  <!--<td class="content-block">-->
-                    <!---->
-                  <!--</td>-->
-                <!--</tr>-->
               </table>
             </td>
           </tr>

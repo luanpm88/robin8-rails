@@ -20,7 +20,7 @@ class Release < ActiveRecord::Base
   before_save :pos_tagger, :entities_counter, :set_published_at
   after_create :decrease_feature_number
   after_destroy :increase_feature_numner
-  after_save :update_images_links
+  after_save :update_images_links, :decrease_newswire_features
   
   def plain_text
     coder = HTMLEntities.new
@@ -108,6 +108,37 @@ class Release < ActiveRecord::Base
     return false if uf.blank?
     uf.available_count += 1
     uf.save
+  end
+
+  def decrease_newswire_myprgenie
+    uf = needed_user.user_features.myprgenie_web_distribution.available.first
+    return false if uf.blank?
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def decrease_newswire_accesswire
+    uf = needed_user.user_features.accesswire_distribution.available.first
+    return false if uf.blank?
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def decrease_newswire_prnewswire
+    uf = needed_user.user_features.pr_newswire_distribution.available.first
+    return false if uf.blank?
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def decrease_newswire_features
+    decrease_newswire_myprgenie if myprgenie_changed?
+    decrease_newswire_accesswire if accesswire_changed?
+    decrease_newswire_prnewswire if prnewswire_changed?
+
+    if myprgenie_changed? || accesswire_changed? || prnewswire_changed?
+      UserMailer.newswire_support(myprgenie_changed?, accesswire_changed?, prnewswire_changed?, title, text, newswire_published_at).deliver 
+    end
   end
 
 end

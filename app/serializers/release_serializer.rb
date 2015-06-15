@@ -7,7 +7,8 @@ class ReleaseSerializer < ActiveModel::Serializer
     :nouns_count, :organizations_count, :places_count, :people_count,
     :concepts, :iptc_categories, :summaries, :hashtags, :plain_text,
     :subdomain_name, :news_room_public, :text_html, :slug, :permalink,
-    :average_characters_count_per_word, :average_words_count_per_sentence
+    :average_characters_count_per_word, :average_words_count_per_sentence,
+    :myprgenie, :accesswire, :prnewswire, :newswire_published_at
 
   has_many :attachments
   has_one :news_room

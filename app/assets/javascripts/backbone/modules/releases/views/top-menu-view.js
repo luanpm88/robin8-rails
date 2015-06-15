@@ -548,9 +548,13 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
               callback: {
                 message: 'You should select date',
                 callback: function(value, validator, $field) {
-                  if(($('.myprgenie-checkbox').is(':checked') || $('.accesswire-checkbox').is(':checked') || $('.prnewswire-checkbox').is(':checked')) && $('#newswire_date_input').val() == ''){
-                    // alert($('#newswire_date_input').val());
-                    return false;
+                  if((
+                    ( $('.myprgenie-checkbox').is(':checked') && $('.myprgenie-checkbox').attr('disabled')!='disabled' ) || 
+                    ( $('.accesswire-checkbox').is(':checked') && $('.accesswire-checkbox').attr('disabled')!='disabled' ) || 
+                    ( $('.prnewswire-checkbox').is(':checked') && $('.prnewswire-checkbox').attr('disabled')!='disabled' )
+                    ) && 
+                    $('#newswire_date_input').val() == ''){
+                      return false;
                   }
                   else{
                     return true;
@@ -654,6 +658,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.$el.find('#smart_release').prop("disabled",true);
         
         this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.newswire_published_at = moment(this.model.attributes.newswire_published_at, 'MM/DD/YYYY').format('LL');
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
@@ -766,7 +771,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           return;
         }
       } 
-      if(!$('.myprgenie-checkbox').is(':checked') && !$('.accesswire-checkbox').is(':checked') && !$('.prnewswire-checkbox').is(':checked')){
+      if(
+        ( !$('.myprgenie-checkbox').is(':checked') || $('.myprgenie-checkbox').attr('disabled')=='disabled' ) && 
+        ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
+        ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
+        ){
         this.$el.find("#newswire_date_input").val('');
         this.$el.find("#start_date_div").hide();
       }
@@ -785,7 +794,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           return;
         }
       }
-      if(!$('.myprgenie-checkbox').is(':checked') && !$('.accesswire-checkbox').is(':checked') && !$('.prnewswire-checkbox').is(':checked')){
+      if(
+        ( !$('.myprgenie-checkbox').is(':checked') || $('.myprgenie-checkbox').attr('disabled')=='disabled' ) && 
+        ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
+        ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
+        ){
         this.$el.find("#newswire_date_input").val('');
         this.$el.find("#start_date_div").hide();
       }
@@ -804,7 +817,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           return;
         }
       } 
-      if(!$('.myprgenie-checkbox').is(':checked') && !$('.accesswire-checkbox').is(':checked') && !$('.prnewswire-checkbox').is(':checked')){
+      if(
+        ( !$('.myprgenie-checkbox').is(':checked') || $('.myprgenie-checkbox').attr('disabled')=='disabled' ) && 
+        ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
+        ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
+        ){
         this.$el.find("#newswire_date_input").val('');
         this.$el.find("#start_date_div").hide();
       }

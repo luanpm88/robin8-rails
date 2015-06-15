@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
   end
 
   def can_create_myprgenie
-    myprgenie_available_count.nil? ? false : myprgenie_available_count > 1
+    myprgenie_available_count.nil? ? false : myprgenie_available_count >= 1
   end
 
 
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
   end
 
   def can_create_accesswire
-    accesswire_available_count.nil? ? false : accesswire_available_count > 1
+    accesswire_available_count.nil? ? false : accesswire_available_count >= 1
   end
 
 
@@ -110,7 +110,8 @@ class User < ActiveRecord::Base
   end
 
   def can_create_prnewswire
-    prnewswire_available_count.nil? ? false : prnewswire_available_count > 1
+    p prnewswire_available_count
+    prnewswire_available_count.nil? ? false : prnewswire_available_count >= 1
   end
 ##########################################################################################################
 
