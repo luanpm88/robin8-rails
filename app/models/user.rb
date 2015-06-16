@@ -92,6 +92,7 @@ class User < ActiveRecord::Base
     is_primary != false
   end
 
+
   def newsroom_available_count
     current_user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
   end
@@ -103,6 +104,35 @@ class User < ActiveRecord::Base
   def can_create_newsroom
     newsroom_available_count.nil? ? false : newsroom_available_count > 0
   end
+
+########################################################################################################
+  def myprgenie_available_count
+    current_user_features.myprgenie_web_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_myprgenie
+    myprgenie_available_count.nil? ? false : myprgenie_available_count >= 1
+  end
+
+
+  def accesswire_available_count
+    current_user_features.accesswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_accesswire
+    accesswire_available_count.nil? ? false : accesswire_available_count >= 1
+  end
+
+
+  def prnewswire_available_count
+    current_user_features.pr_newswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_prnewswire
+    p prnewswire_available_count
+    prnewswire_available_count.nil? ? false : prnewswire_available_count >= 1
+  end
+##########################################################################################################
 
   def release_available_count
     current_user_features.press_release.map(&:available_count).inject{|sum,x| sum + x }
@@ -177,6 +207,18 @@ class User < ActiveRecord::Base
     lists = current_user_features.personal_media_list
     lists.count == 0 ? 0 : lists.map(&:available_count).inject{|sum,x| sum + x }
   end
+
+  # def can_create_seat
+  #   seat_available_count.nil? ? false : seat_available_count > 1
+  # end
+
+  # def seat_available_count
+  #   current_user_features.seat.map(&:available_count).inject{|sum,x| sum + x }
+  # end
+
+  # def seat_count
+  #   manageable_users.count + 1 # +1 - himself
+  # end
 
   def active_subscription
     @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions

@@ -1,15 +1,18 @@
 class PostsController < ApplicationController
 
   def index
-    render json: current_user.posts.todays.order('scheduled_date desc'), each_serializer: PostSerializer
+    @posts = current_user.posts
+    render json: @posts.todays.order('scheduled_date desc'), each_serializer: PostSerializer
   end
 
   def tomorrows
-    render json: current_user.posts.tomorrows.order('scheduled_date desc'), each_serializer: PostSerializer
+    @posts = current_user.posts
+    render json: @posts.tomorrows.order('scheduled_date desc'), each_serializer: PostSerializer
   end
 
   def others
-    render json: current_user.posts.others.order('scheduled_date asc'), each_serializer: PostSerializer
+    @posts = current_user.posts
+    render json: @posts.others.order('scheduled_date asc'), each_serializer: PostSerializer
   end
 
   def new

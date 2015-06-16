@@ -106,6 +106,7 @@ class ReleasesController < ApplicationController
       :characters_count, :words_count, :sentences_count,
       :paragraphs_count, :adverbs_count, :adjectives_count,
       :nouns_count, :organizations_count, :places_count, :people_count,
+      :myprgenie, :accesswire, :prnewswire, :newswire_published_at,
       attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy])
   end
   

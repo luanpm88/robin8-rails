@@ -42,7 +42,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <% if(release.news_room_id) {%>
-            <h4 class="modal-title truncate"> Edit <%= release.title%> </h4>
+            <h4 class="modal-title truncate"> Edit <%= release.title %> </h4>
           <% } else {%>
             <h4 class="modal-title"> <%= polyglot.t("releases.modal.title") %> </h4>
           <% } %>
@@ -55,6 +55,7 @@
               <li role="presentation" class="active"><a href="#release-company" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.basic_tab.title") %></a></li>
               <li role="presentation"><a href="#website" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.website_tab.title") %></a></li>
               <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.media_tab.title") %></a></li>
+              <li role="presentation"><a href="#newswire" aria-controls="settings" role="tab" data-toggle="tab">Newswire</a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -104,6 +105,41 @@
                   <div class='videos_region'></div>
                   <div class='files_region'></div>
                 </div>
+                <div role="tabpanel" class="tab-pane" id="newswire">
+                  <b>Please, select options for distributing release:</b>
+                  <br><br>
+                  <div class="form-group">
+                    <label for="icheckbox_myprgenie" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >MyPRGenie Web Distribution: </label>
+                    <input type="checkbox" class='myprgenie-checkbox' id="icheckbox_myprgenie" name="myprgenie"
+                    <% if(release.myprgenie) { %>
+                    <%= 'disabled' %>
+                    <% } %>
+                    >
+                  </div>
+                  <div class="form-group">
+                    <label for="icheckbox_accesswire" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >Accesswire: </label>
+                    <input type="checkbox" class='accesswire-checkbox' id="icheckbox_accesswire" name="accesswire" 
+                    <% if(release.accesswire) { %>
+                    <%= 'disabled' %>
+                    <% } %>
+                    >
+                  </div>
+                  <div class="form-group">
+                    <label for="icheckbox_prnewswire" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >PR Newswire: </label>
+                    <input type="checkbox" class='prnewswire-checkbox' id="icheckbox_prnewswire" name="prnewswire" 
+                    <% if(release.prnewswire) { %>
+                    <%= 'disabled' %>
+                    <% } %>
+                    >
+                  </div>
+                  <div class="form-group" id="start_date_div" style="display: none">
+                    <label for="newswire_date_input" class="col-sm-6 control-label text-right" style="margin-right: 5px;" >Start date: </label>
+                    <div class="date col-sm-2" style="padding: 0px; margin: 0px">
+                      <input type="text" class="form-control date col-sm-2" id="newswire_date_input" name="newswire_published_at" />
+                    </div>
+                  </div>
+                  <div><br><br></div>
+                </div>
             </div>
             </form>
 
@@ -125,7 +161,7 @@
           </div>
           <div id="release-buttons">
             <button type="button" class="btn btn-primary smart-release-button" id='smart_release' ><i class="fa fa-rocket"></i> <%= polyglot.t("releases.modal.buttons.next") %></button>
-            <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> <%= polyglot.t("releases.modal.buttons.save") %></button>
+            <button type="button" class="btn btn-success" id="save_release"><i class="fa fa-save"></i> OK</button>
           </div>
         </div>
     </div>

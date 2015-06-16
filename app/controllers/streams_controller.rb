@@ -26,7 +26,7 @@ class StreamsController < ApplicationController
     if @stream.update_attributes(stream_params)
       render json: @stream.to_json
     else
-      render nothing: true
+      render json: stream.errors , status: :bad_request
     end
   end
 
