@@ -47,14 +47,19 @@ class Stream < ActiveRecord::Base
   end
 
   def query_params
-    {
+    q_params = {
       'blog_ids[]' => blogs.map{|blog| blog[:id]},
       'topics[]' => topics.map{|topic| topic[:id]},
       'keywords[]' => keywords.map{|keyword| keyword[:id]},
       sort_column: sort_column,
-      sort_direction: 'desc',
-      published_at: sort_column == 'shares_count' ? published_at : nil
+      sort_direction: 'desc'
     }
+    
+    if (sort_column == 'shares_count' && !published_at.blank?)
+      q_params[:published_at] = published_at
+    end
+    
+    q_params
   end
 
   private
