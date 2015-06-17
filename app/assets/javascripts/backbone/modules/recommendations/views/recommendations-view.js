@@ -26,6 +26,8 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
              var overlayId = "#" + $(this).attr('id') + "-overlay";
              $(overlayId).hide();
         });
+
+       $(this.el).find('.recommendation-image').nailthumb({width: 300, height: 200});
     },
 
     likeContent: function(e) {
@@ -142,25 +144,18 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
               return { term: term } 
             },
             results: function(data, page) { 
-              Robin.currentUser.attributes["topics"] = $("#topics-select").val();
               return { results: data }; 
             }
           }
-        }).on("select2-selecting", function(e) {
-          Robin.currentUser.attributes["topics"] = $("#topics-select").val();
-        }).on("select2-removed", function(e) {
-          Robin.currentUser.attributes["topics"] = $("#topics-select").val();
-        });
-
-        $(this.el).find('#category-select').change(function() {
-          Robin.currentUser.attributes["category"] = $('#category-select').val();
         });
 
       },
 
       InsertUserTastes: function(e) {
         e.preventDefault();
-        Robin.vent.trigger("InsertUserTastes");
+        var topics = $("#topics-select").val();
+        var category = $('#category-select').val();
+        Robin.vent.trigger("InsertUserTastes", topics, category);
       }
 
   });
