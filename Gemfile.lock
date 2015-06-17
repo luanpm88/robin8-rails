@@ -221,7 +221,6 @@ GEM
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
     hashie (3.4.1)
-    hike (1.2.3)
     hitimes (1.2.2)
     hpricot (0.8.6)
     htmlentities (4.3.3)
