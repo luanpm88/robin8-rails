@@ -41,7 +41,7 @@ var wripl = {
     },
 
     postRequest: function(actionEvent){
-        
+
         var xhr = this.createRequestObject("POST", "http://staging.wripl.com/events.json", true);
         xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
         xhr.send(actionEvent);

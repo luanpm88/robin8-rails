@@ -5,9 +5,11 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
 
     // Checks if there are no recommendations and then adds to the nav
     onRender :function(){
-        var lastLogOn = Robin.currentUser.attributes.updated_at;
+
+        var lastSignInAt = Robin.currentUser.attributes.updated_at;
         var id = Robin.currentUser.attributes.id;
-        var statusUrl = "http://151.80.130.114/recommendations/status/" + id + ".json?last_sign_in_at=" + lastLogOn;
+        var statusUrl = "/recommendations/status/" + id + ".json?last_sign_in_at=" + lastSignInAt;
+
         $.get( statusUrl, function( data ) {
             if(data.new_recommendations > 0) {
                 $("#no-new-recommendations").hide();
