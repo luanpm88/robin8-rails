@@ -134,7 +134,7 @@ gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 group :development, :test do
   # Deploy with Capistrano
-  gem 'capistrano-rails', '~> 1.1.2'
+  gem 'capistrano-rails', '~> 1.1.3'
   gem 'capistrano-rbenv', '~> 2.0.3'
   gem 'capistrano-bundler', '~> 1.1.4'
   gem 'capistrano-sidekiq', '~> 0.4.0'
