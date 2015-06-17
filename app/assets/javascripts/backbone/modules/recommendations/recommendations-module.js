@@ -3,13 +3,14 @@ Robin.module("Recommendations", function(Recommendations, Robin, Backbone, Mario
   this.startWithParent = false;
 
   Recommendations.on("start", function(){
-    this.controller = new this.Controller();
-    this.router = new this.Router({controller: this.controller});
     $('#nav-recommendations').parent().addClass('active');
-    Backbone.history.loadUrl(Backbone.history.fragment);
+     this.layout = new this.Layout();
+     this.controller = new this.Controller();
+     this.controller.index("content");
   });
 
   Recommendations.on("stop", function(){
+    this.layout.destroy();
     this.controller.destroy();
   });
 });

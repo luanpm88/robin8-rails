@@ -13,6 +13,9 @@ Rails.application.routes.draw do
     confirmations: "users/confirmations"
   }
 
+
+  get 'recommendations/index' => 'recommendations#index'
+
   get 'pricing' => 'pages#pricing'
   get 'subscribe/:slug' => 'payments#new'
   post 'subscribe/:slug' => 'payments#new'
