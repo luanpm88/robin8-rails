@@ -776,7 +776,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
         ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
         ){
-        this.$el.find("#newswire_date_input").val('');
+        // this.$el.find("#newswire_date_input").val('');
         this.$el.find("#start_date_div").hide();
       }
       else{
@@ -799,7 +799,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
         ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
         ){
-        this.$el.find("#newswire_date_input").val('');
+        // this.$el.find("#newswire_date_input").val('');
         this.$el.find("#start_date_div").hide();
       }
       else{
@@ -822,7 +822,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
         ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
         ){
-        this.$el.find("#newswire_date_input").val('');
+        // this.$el.find("#newswire_date_input").val('');
         this.$el.find("#start_date_div").hide();
       }
       else{

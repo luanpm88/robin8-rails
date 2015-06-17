@@ -132,12 +132,19 @@ class Release < ActiveRecord::Base
   end
 
   def decrease_newswire_features
-    decrease_newswire_myprgenie if myprgenie_changed?
-    decrease_newswire_accesswire if accesswire_changed?
-    decrease_newswire_prnewswire if prnewswire_changed?
+    myprgenie_ = myprgenie_changed? && myprgenie
+    accesswire_ = accesswire_changed? && accesswire
+    prnewswire_ = prnewswire_changed? && prnewswire
 
-    if myprgenie_changed? || accesswire_changed? || prnewswire_changed?
-      UserMailer.newswire_support(myprgenie_changed?, accesswire_changed?, prnewswire_changed?, title, text, newswire_published_at).deliver 
+    decrease_newswire_myprgenie if myprgenie_
+    decrease_newswire_accesswire if accesswire_
+    decrease_newswire_prnewswire if prnewswire_
+
+    publicSuffix = (news_room.id && news_room.publish_on_website && !is_private) ? "" : "-preview"
+    publicLink = "http://" + news_room.subdomain_name + publicSuffix + "." + Rails.application.secrets.host + "/releases/" + slug
+
+    if (myprgenie_) || (accesswire) || (prnewswire_)
+      UserMailer.newswire_support(myprgenie_, accesswire_, prnewswire_, title, text, newswire_published_at, publicLink).deliver 
     end
   end
 

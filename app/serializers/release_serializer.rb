@@ -24,6 +24,10 @@ class ReleaseSerializer < ActiveModel::Serializer
   def formamtted_published_at
     object.published_at.strftime('%m\%d\%Y') unless object.published_at.nil? 
   end
+
+  def newswire_published_at
+    object.newswire_published_at.strftime('%m\%d\%Y') unless object.newswire_published_at.nil? 
+  end
   
   def iptc_categories
     unless object.iptc_categories.blank?
