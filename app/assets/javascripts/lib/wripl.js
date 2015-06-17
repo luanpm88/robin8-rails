@@ -41,11 +41,9 @@ var wripl = {
     },
 
     postRequest: function(actionEvent){
-        
         var xhr = this.createRequestObject("POST", "/recommendations/event.json", true);
         xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
         xhr.send(actionEvent);
-
     },
 
     createRequestObject: function(action, url, async){

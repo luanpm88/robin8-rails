@@ -49,7 +49,6 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
 
         this.collection.fetch({
             success: function (recommendations) {
-                console.log(recommendations);
                 if(recommendations.length > 0){
                     var recommendationsView = new Recommendations.CollectionView({ collection : recommendations });
                     var navRecommendationsView = new Recommendations.RecommendationsNavView();

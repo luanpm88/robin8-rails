@@ -5,15 +5,34 @@ class RecommendationsController < ApplicationController
     before_action :authenticate_user!
     skip_before_action :verify_authenticity_token
 
-    def event
-        puts "--"
-        puts params
-        puts "--"
+    def event 
+        if validate_event(params)
+            event = Hash.new
+            event['wripl_object_id'] = params['event']['wripl_object_id']
+            event['user_id'] = params['event']['user_id']
+            event['event_type'] = params['event']['event_type']
+            event['keywords'] = params['event']['keywords']
+            event['topics'] = params['event']['topics']
+            event['categories'] = params['event']['categories']
+
+            response = HTTParty.post("http://staging.wripl.com/events.json", 
+                    :body => { :event => event }.to_json,
+                    :headers => { 'Content-Type' => 'application/json' } )
+            
+            render json: event, status: :created
+        else
+          render json: "{'Errors' : 'Invlaid Event Attributes'}".to_json, status: :bad_request
+        end
     end
 
     def status
-
-
+        if validate_params(params)
+            response = HTTParty.get("http://staging.wripl.com/recommendations/status/" + params['id'] + ".json?last_sign_in_at=" + params['last_sign_in_at'], 
+                            :options => { :headers => { 'Content-Type' => 'application/json' }})
+            render json: response.to_json
+        else
+          render json: "{'Errors' : 'Incorrect Parameters'}".to_json, status: :bad_request
+        end
     end
 
 	def index
@@ -37,7 +56,9 @@ class RecommendationsController < ApplicationController
         end
 
         begin
-            response = HTTParty.get("http://staging.wripl.com/recommendations/#{user_id}.json", :options => { :headers => { 'Content-Type' => 'application/json' }}, :timeout => 2)
+            response = HTTParty.get("http://staging.wripl.com/recommendations/#{user_id}.json", 
+                            :options => { :headers => { 'Content-Type' => 'application/json' }}, 
+                            :timeout => 2)
             json_recommendation_ids = JSON.parse(response.body)
         rescue Net::ReadTimeout
             logger.info "Operation Timedout"
@@ -71,6 +92,47 @@ class RecommendationsController < ApplicationController
 	end
 
     private
+
+    def validate_event(params)
+        valid_event = true
+        eventTypes = ['VIEW', 'LIKE', 'DISLIKE', 'SHARE', 'INSERT', 'INFLUENCE']
+        if !params.has_key? 'event'
+            valid_event = false
+        end
+        if !params['event'].has_key? 'wripl_object_id'
+            valid_event = false
+        end
+        if !params['event']['wripl_object_id'].is_a? Numeric
+            valid_event = false
+        end
+        if !params['event'].has_key? 'user_id'
+            valid_event = false
+        end
+        if !params['event']['user_id'].is_a? Numeric
+            valid_event = false
+        end
+        if !params['event'].has_key? 'event_type'
+            valid_event = false
+        end
+        if !eventTypes.include? params['event']['event_type']
+            valid_event = false
+        end
+        valid_event
+    end
+
+    def validate_params(params)
+        valid_params = true
+        if !params.has_key? 'id'
+            valid_event = false
+        end
+        if !params['id'].is_a? Numeric
+            valid_event = false
+        end
+        if !params.has_key? 'last_sign_in_at'
+            valid_event = false
+        end
+        valid_params
+    end
 
     def stories(page, pages)
         recommended_stories = []
