@@ -17,14 +17,15 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "Add Ons Confirmation",:from => "Robin8 <no-reply@robin8.com>")
   end
 
-  def newswire_support(myprgenie, accesswire, prnewswire, title, text, newswire_published_at)
+  def newswire_support(myprgenie, accesswire, prnewswire, title, text, newswire_published_at, publicLink)
     @myprgenie = myprgenie
     @accesswire = accesswire
     @prnewswire = prnewswire
     @newswire_published_at = newswire_published_at
     @title = title
     @text = text
-    mail(:to => 'marta.dziuma@perfectial.com', :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
+    @publicLink = publicLink
+    mail(:to => 'daniel.niiaziiev@perfectial.com; marta.dziuma@perfectial.com', :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
   end
 
 end
