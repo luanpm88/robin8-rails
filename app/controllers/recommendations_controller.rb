@@ -3,6 +3,18 @@ require 'json'
 
 class RecommendationsController < ApplicationController
     before_action :authenticate_user!
+    skip_before_action :verify_authenticity_token
+
+    def event
+        puts "--"
+        puts params
+        puts "--"
+    end
+
+    def status
+
+
+    end
 
 	def index
         recommended_stories = Array.new

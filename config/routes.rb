@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
 
   get 'recommendations/index' => 'recommendations#index'
+  get 'recommendations/status' => 'recommendations#status'
+  post 'recommendations/event' => 'recommendations#event'
 
   get 'pricing' => 'pages#pricing'
   get 'subscribe/:slug' => 'payments#new'
