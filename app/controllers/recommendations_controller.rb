@@ -2,6 +2,7 @@ require 'httparty'
 require 'json'
 
 class RecommendationsController < ApplicationController
+    before_action :authenticate_user!
 
 	def index
         recommended_stories = Array.new
@@ -45,7 +46,6 @@ class RecommendationsController < ApplicationController
         
         if json_recommendation_ids.size != 0
             if type == "CONTENT"
-                
                 recommended_ids = eval(json_recommendation_ids['content_story_ids'])
             elsif type == "INFLUENCE"
                 recommended_ids = eval(json_recommendation_ids['influence_story_ids'])

@@ -5,8 +5,8 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
     initialize: function () {
         var self = this;
         self.module = Robin.module("Recommendations");
-        Robin.vent.on("InsertUserTastes", function () {
-            self.InsertUserTastes();
+        Robin.vent.on("InsertUserTastes", function (topics, category) {
+            self.InsertUserTastes(topics, category);
         });
 
         Robin.vent.on("ViewContent", function (recommendation) {
@@ -49,6 +49,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
 
         this.collection.fetch({
             success: function (recommendations) {
+                console.log(recommendations);
                 if(recommendations.length > 0){
                     var recommendationsView = new Recommendations.CollectionView({ collection : recommendations });
                     var navRecommendationsView = new Recommendations.RecommendationsNavView();
@@ -82,15 +83,12 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         });
     },
 
-    InsertUserTastes: function () {
+    InsertUserTastes: function (topics, category) {
         var module = this.module;
         var loadingView = new Recommendations.LoadingView();
         module.layout.main.show(loadingView);
 
-        wripl._track(Robin.currentUser.attributes['id'], 0, "INSERT", "", Robin.currentUser.attributes["topics"], Robin.currentUser.attributes["category"]);
-
-        delete Robin.currentUser.attributes["category"];
-        delete Robin.currentUser.attributes["topics"];
+        wripl._track(Robin.currentUser.attributes['id'], 0, "INSERT", "", topics, category);
 
         this.module.controller.showRecommendations();
 

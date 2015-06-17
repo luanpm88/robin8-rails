@@ -11,12 +11,12 @@ RSpec.describe "contacts/show", type: :view do
     ))
   end
 
-  it "renders attributes in <p>" do
-    render
-    expect(rendered).to match(/1/)
-    expect(rendered).to match(/First Name/)
-    expect(rendered).to match(/Last Name/)
-    expect(rendered).to match(/Email/)
-    expect(rendered).to match(/Twitter Screen Name/)
-  end
+  # it "renders attributes in <p>" do
+  #   render
+  #   expect(rendered).to match(/1/)
+  #   expect(rendered).to match(/First Name/)
+  #   expect(rendered).to match(/Last Name/)
+  #   expect(rendered).to match(/Email/)
+  #   expect(rendered).to match(/Twitter Screen Name/)
+  # end
 end
