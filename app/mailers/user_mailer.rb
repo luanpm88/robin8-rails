@@ -24,7 +24,7 @@ class UserMailer < ActionMailer::Base
     @newswire_published_at = newswire_published_at
     @title = title
     @text = text
-    mail(:to => 'marta.dziuma@perfectial.com', :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => 'daniel.niiaziiev@perfectial.com', :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
   end
 
 end
