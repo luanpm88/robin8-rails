@@ -13,7 +13,9 @@ docx.p
 
 @stories.each_with_index do |story, index|
   unless story["summary"].blank?
-    docx.h4 story["title"]
+    docx.h4 do
+      link story["title"], story["link"]
+    end
     docx.h6 story["blog_name"] + " • " + Time.parse(story["published_at"])
       .strftime("%a, %d %B %Y %T%:z")
     docx.hr
