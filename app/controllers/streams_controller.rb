@@ -32,9 +32,9 @@ class StreamsController < ApplicationController
   def stories
     stream = Stream.find(params[:id]) # ToDo: authorize reading stream
     req_params = stream.query_params
-    req_params.merge!(cursor: URI.decode(params[:cursor])) if params[:cursor]
+    req_params.merge!(page: URI.decode(params[:page])) if params[:page]
 
-    uri = URI(Rails.application.secrets.robin_api_url + '/stories')
+    uri = URI(Rails.application.secrets.robin_api_url + '/uniq_stories')
     uri.query = URI.encode_www_form req_params
 
     req = Net::HTTP::Get.new(uri)
