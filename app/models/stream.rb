@@ -10,7 +10,7 @@ class Stream < ActiveRecord::Base
   validate :can_be_created, on: :create
 
   after_create :set_position, :decrease_feature_number
-  after_destroy :increase_feature_numner
+  after_destroy :increase_feature_number
 
 
   def topics_raw
@@ -79,7 +79,7 @@ class Stream < ActiveRecord::Base
       uf.save
     end
 
-    def increase_feature_numner
+    def increase_feature_number
       uf = needed_user.user_features.media_monitoring.first
       return false if uf.blank?
       uf.available_count += 1

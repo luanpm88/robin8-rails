@@ -15,7 +15,7 @@ class NewsRoom < ActiveRecord::Base
   has_one :preview_news_room, foreign_key: :parent_id, dependent: :destroy
   accepts_nested_attributes_for :attachments, allow_destroy: true
   after_create :decrease_feature_number, :set_campaign_name, :create_campaign
-  after_destroy :increase_feature_numner, :delete_campaign
+  after_destroy :increase_feature_number, :delete_campaign
 
   validates :company_name, presence: true
   validates :user_id, presence: true
@@ -104,14 +104,19 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def decrease_feature_number
-      uf = needed_user.user_features.newsroom.available.first
-      return false if uf.blank?
+      features = needed_user.user_features.newsroom.available
+      return false if features.first.blank?
+      if features.count > 1 && features.first.available_count == 1
+        uf = features.second
+      else 
+        uf = features.first
+      end
       uf.available_count -= 1
       uf.save
     end
 
-    def increase_feature_numner
-      uf = needed_user.user_features.newsroom.first
+    def increase_feature_number
+      uf = needed_user.user_features.newsroom.where("available_count < max_count").last
       return false if uf.blank?
       uf.available_count += 1
       uf.save

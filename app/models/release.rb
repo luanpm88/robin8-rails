@@ -19,7 +19,7 @@ class Release < ActiveRecord::Base
   
   before_save :pos_tagger, :entities_counter, :set_published_at
   after_create :decrease_feature_number
-  after_destroy :increase_feature_numner
+  after_destroy :increase_feature_number
   after_save :update_images_links
   
   def plain_text
@@ -103,7 +103,7 @@ class Release < ActiveRecord::Base
     uf.save
   end
 
-  def increase_feature_numner
+  def increase_feature_number
     uf = needed_user.user_features.press_release.first
     return false if uf.blank?
     uf.available_count += 1
