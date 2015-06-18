@@ -8,3 +8,10 @@ Robin.Models.UserSession = Backbone.Model.extend({
   }
 
 });
+
+
+Robin.Models.KOLSession = Robin.Models.UserSession.extend({
+  url: '/kols/sign_in.json',
+  paramRoot: 'kol',
+});
+
