@@ -546,7 +546,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           newswire_published_at: {
             validators: {
               callback: {
-                message: 'You should select date',
+                message: 'You should select the correct date',
                 callback: function(value, validator, $field) {
                   if((
                     ( $('.myprgenie-checkbox').is(':checked') && $('.myprgenie-checkbox').attr('disabled')!='disabled' ) || 
@@ -556,9 +556,13 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                     $('#newswire_date_input').val() == ''){
                       return false;
                   }
-                  else{
-                    return true;
+                  var now = new Date();
+                  var myDate = new Date($('#newswire_date_input').val());
+                  if(myDate < now){
+                    return false;
                   }
+
+                  return true;
                 }
               },
               serverError: {
@@ -777,10 +781,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
         ){
         // this.$el.find("#newswire_date_input").val('');
-        this.$el.find("#start_date_div").hide();
+        // this.$el.find("#start_date_div").hide();
       }
       else{
-        this.$el.find("#start_date_div").show();
+        // this.$el.find("#start_date_div").show();
       }
     },
     switchAccesswire: function(e){
@@ -800,10 +804,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
         ){
         // this.$el.find("#newswire_date_input").val('');
-        this.$el.find("#start_date_div").hide();
+        // this.$el.find("#start_date_div").hide();
       }
       else{
-        this.$el.find("#start_date_div").show();
+        // this.$el.find("#start_date_div").show();
       }
     },
     switchPrnewswire: function(e){
@@ -823,10 +827,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
         ){
         // this.$el.find("#newswire_date_input").val('');
-        this.$el.find("#start_date_div").hide();
+        // this.$el.find("#start_date_div").hide();
       }
       else{
-        this.$el.find("#start_date_div").show();
+        // this.$el.find("#start_date_div").show();
       }
     }
   });
