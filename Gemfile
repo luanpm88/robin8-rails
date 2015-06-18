@@ -51,6 +51,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'
   gem 'rails-assets-backbone.marionette', '2.4.1'
+  gem 'rails-assets-bootstrap-daterangepicker'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
@@ -104,7 +105,15 @@ gem 'countries'
 gem 'whenever'
 gem 'friendly_id', '~> 5.1.0'
 
-gem 'docx-html'
+gem 'docx'
+
+# pure Ruby PDF generation library
+gem 'prawn'
+gem 'imgkit'
+
+# to create Docx
+gem 'caracal-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
