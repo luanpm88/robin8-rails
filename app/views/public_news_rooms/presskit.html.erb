@@ -22,7 +22,7 @@
                 </a>
               <% else %>
                 <a href="<%= attachment.url  %>" title="<%= attachment.name  %>" data-gallery="">
-                  <%= image_tag asset_path(attachment.get_correct_url) %>
+                  <%= image_tag asset_path(attachment.thumbnail) %>
                 </a>
               <%end%>
             <% end %>
@@ -104,14 +104,6 @@
 </div>
 
  <script type="text/javascript">
-  var $container = $('#presskit');
-  $container.imagesLoaded( function() {
-    $container.masonry({
-      columnWidth: $container.width()/3,
-      gutter: 0,
-      itemSelector: 'a'
-    });
-  });
 
   $( ".newsroom-presskit" ).click(function(event) {
     event = event || window.event;
