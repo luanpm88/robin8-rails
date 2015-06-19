@@ -8,7 +8,8 @@ class ReleaseSerializer < ActiveModel::Serializer
     :concepts, :iptc_categories, :summaries, :hashtags, :plain_text,
     :subdomain_name, :news_room_public, :text_html, :slug, :permalink,
     :average_characters_count_per_word, :average_words_count_per_sentence,
-    :myprgenie, :accesswire, :prnewswire, :newswire_published_at
+    :myprgenie, :accesswire, :prnewswire,
+    :myprgenie_published_at, :accesswire_published_at, :prnewswire_published_at
 
   has_many :attachments
   has_one :news_room
@@ -25,8 +26,16 @@ class ReleaseSerializer < ActiveModel::Serializer
     object.published_at.strftime('%m\%d\%Y') unless object.published_at.nil? 
   end
 
-  def newswire_published_at
-    object.newswire_published_at.strftime('%m\%d\%Y') unless object.newswire_published_at.nil? 
+  def myprgenie_published_at
+    object.myprgenie_published_at.strftime('%m/%d/%Y') unless object.myprgenie_published_at.nil? 
+  end
+  
+  def accesswire_published_at
+    object.accesswire_published_at.strftime('%m/%d/%Y') unless object.accesswire_published_at.nil? 
+  end
+  
+  def prnewswire_published_at
+    object.prnewswire_published_at.strftime('%m/%d/%Y') unless object.prnewswire_published_at.nil? 
   end
   
   def iptc_categories
