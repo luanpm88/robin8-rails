@@ -5,7 +5,7 @@ class ReleasesController < ApplicationController
   def index
     releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
     unless params[:for_blast].blank?
-      releases = releases.published
+      releases = releases#.published
     end
     set_paginate_headers Release, releases.count
 

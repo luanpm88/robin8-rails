@@ -334,9 +334,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.model.set(data.toJSON().release);
       this.render();
       this.$el.find('#release_form').modal({ keyboard: false });
-      this.verifyPublic();
+      this.verifyPublic(this.model.attributes.news_room.publish_on_website);
     },
-    verifyPublic: function() {
+    verifyPublic: function(publish) {
       var newsRoomId = $('#news_room_id').val();
       if (!!newsRoomId){
         selectedNewsroom = this.newsrooms.get(newsRoomId);
@@ -546,11 +546,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     startSmartRelease: function(options){
       if (Robin.user.get('can_create_smart_release') != true) {
         $.growl({message: "You don't have available smart-releases!"},
-          {
-            type: 'info'
-          });
-      } else if (this.model.attributes.is_private || this.model.attributes.news_room_public != true) {
-        $.growl({message: "You can not proceed as long as the release or its parent newsroom is not public"},
           {
             type: 'info'
           });
