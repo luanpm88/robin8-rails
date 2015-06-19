@@ -17,11 +17,11 @@ class Release < ActiveRecord::Base
   scope :by_news_room, ->(id) {where(news_room_id: id)}
   scope :published, -> { where(is_private: false) }
   
-  before_save :pos_tagger, :entities_counter, :set_published_at
+  before_save :pos_tagger, :entities_counter
   after_create :decrease_feature_number
   after_destroy :increase_feature_number
-  after_save :update_images_links, :decrease_newswire_features
-
+  after_save :update_images_links, :decrease_newswire_features, :set_published_at
+  
   def plain_text
     coder = HTMLEntities.new
     coder.decode ActionController::Base.helpers.strip_tags(text)
