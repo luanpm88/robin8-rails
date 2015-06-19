@@ -105,11 +105,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       }
     },
     changePrivate: function(e) {
-      if ($(e.target).is(":checked")) {
-        this.$el.find('.smart-release-button').addClass('disabled');
-      } else {
-        this.$el.find('.smart-release-button').removeClass('disabled');
-      }
+      // if ($(e.target).is(":checked")) {
+      //   this.$el.find('.smart-release-button').addClass('disabled');
+      // } else {
+      //   this.$el.find('.smart-release-button').removeClass('disabled');
+      // }
     },
     highlightReleaseText: function(e) {
       e.preventDefault();
