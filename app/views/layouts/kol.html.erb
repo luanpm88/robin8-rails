@@ -9,8 +9,8 @@
   <% end %>
   <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'kol', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'kol', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
   <script type="text/javascript">
@@ -36,18 +36,14 @@
   $(document).ready(function() {
     Robin.start();
   });
-  polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
   <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
-  <% if user_signed_in? -%>
-    Robin.currentUser = new Robin.Models.User(<%= current_user.to_json.html_safe %>);
-    <% if (request.subdomain != 'staging' && !request.subdomain.blank?) %>
-      Robin.publicPages = true
-    <% end %>
+  <% if kol_signed_in? -%>
+    Robin.currentKOL = new Robin.Models.User(<%= current_kol.to_json.html_safe %>);
   <% else -%>
     if (Robin) {
-      Robin.currentUser = null;
+      Robin.currentKOL = null;
     }
   <% end -%>
 

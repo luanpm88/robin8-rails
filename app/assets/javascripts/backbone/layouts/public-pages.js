@@ -4,5 +4,5 @@ Robin.Views.Layouts.PublicPages = Backbone.Marionette.LayoutView.extend({
   regions: {
     content: '#wrapper'
   }
-  
+
 });

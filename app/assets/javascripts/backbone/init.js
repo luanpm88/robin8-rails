@@ -68,7 +68,7 @@ Robin.on('start', function(){
   if (Backbone.history && !Backbone.History.started){
     Robin.addInitializer();
     Backbone.history.start();
-    if (Robin.currentUser) {
+    if (Robin.currentUser || Robin.currentKOL) {
       Robin.loadPleaseWait();
     } else {
       if (Robin.afterConfirmationMessage != undefined) {
@@ -111,7 +111,8 @@ Robin.vent.on("authentication:logged_out", function() {
 });
 
 Robin.bind("before:start", function() {
-  if(Robin.currentUser) {
+  Robin.KOL = Robin.currentKOL != null;
+  if(Robin.currentUser || Robin.currentKOL) {
     Robin.vent.trigger("authentication:logged_in");
   }
   else {
