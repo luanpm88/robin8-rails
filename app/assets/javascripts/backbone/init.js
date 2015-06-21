@@ -21,6 +21,16 @@ Robin.setUrl = function(route, options){
   Backbone.history.navigate(route, {trigger: true, replace: true});
 };
 
+Robin.template = function(t) {
+  return function() {
+    if (!Robin.KOL) {
+      return t;
+    } else {
+      return t + "_kol";
+    }
+  }
+};
+
 Robin.finishSignIn = function(data){
   // Robin.currentUser = new Robin.Models.User(data);
   // Robin.vent.trigger("authentication:logged_in");
