@@ -652,11 +652,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     startSmartRelease: function(options){
       if (Robin.user.get('can_create_smart_release') != true) {
-        $.growl({message: "You don't have available smart-releases!"},
-          {
-            type: 'info'
-          });
-      } else {
+
         if (this.form.data('formValidation') == undefined) {
           this.initFormValidation();
         }
@@ -681,6 +677,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         if (this.form.data('formValidation').isValid() && textLength <= 60000) {
           this.$el.find('#save_release').prop("disabled",true);
           this.$el.find('#smart_release').prop("disabled",true);
+
+          this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
+          this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
+          this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
+          this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY').format('LL');
+        
           this.model.save(viewObj.model.attributes, {
             success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
