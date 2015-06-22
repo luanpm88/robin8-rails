@@ -30,10 +30,13 @@ Rails.application.routes.draw do
   # end
   post '/users/follow' => 'users#follow'
   post '/users/new' => 'users#create'
+  post '/kols/new' => 'kols#create'
+  get '/kols/new' => 'kols#create'
 
   # kols
   devise_for :kols, controllers: {
-    sessions: "users/sessions"   # wow
+    registrations: "kols/registrations",
+    sessions: "users/sessions",
   }
   get '/kols/get_current_kol' => 'kols#get_current_kol'
 

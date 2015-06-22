@@ -13,7 +13,7 @@
           <%end if flash[:errors].present?%>
         </div>
 
-        <%= form_for @user,:url=>"/users/new" do |f|  %>
+        <%= form_for @kol,:url=>"/kols/new" do |f|  %>
             <label>
               <%=f.email_field :email,:placeholder=>"Email","data-validation"=>"required",
                                "data-validation-error-msg"=> "Email can't be blank","data-validation"=>"email"%>
@@ -34,8 +34,22 @@
               <%=f.password_field :password,:placeholder=>"Password","data-validation"=>"length", "data-validation-length"=>"min8",
                                   "data-validation-error-msg"=> "Password must be greater then 7 characters"%>
             </label>
+            <label>
+              <!--<input type="password"  name="password" placeholder="Location" required />-->
+              <%=f.text_field :location,:placeholder=>"Location","data-validation"=>"required",
+                                  "data-validation-error-msg"=> "Location can't be blank"%>
+            </label>
+            <label>
+              <!--<input type="password"  name="password" placeholder="Bank account" required />-->
+              <%=f.text_field :bank_account,:placeholder=>"Bank account","data-validation"=>"required", 
+                                  "data-validation-error-msg"=> "Bank account can't be blank"%>
+            </label>
+            <label>
+              <!--<input type="password"  name="password" placeholder="Interests" required />-->
+              <%=f.text_field :interests,:placeholder=>"Interests","data-validation"=>"required",
+                                  "data-validation-error-msg"=> "Interests can't be blank"%>
+            </label>
             <p class="agree">By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service</a>.
-            <p class="kols">Are you a KOL? Sign up <a href="/kols/new">here</a>.
 
             <div class="errorwarning">
               <p>Please fill out all required fields</p>
@@ -46,23 +60,6 @@
             </div>
         <%end%>
         <!--</form>-->
-      </div>
-    </div>
-    <div class="row">
-      <div class="small-12 columns">
-        <div class="or-line">
-          <span>OR</span>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="color:#fff!important;">
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/google_oauth2?provider=google_oauth2" class="btn btn-google-plus"><i class="fa fa-google-plus"></i> <span>Sign up using Google Plus</span></a>
-      </div>
-    </div>
-    <div class="row" style="color:#fff!important;">
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/facebook?provider=facebook" class="btn btn-facebook"><i class="fa fa-facebook"></i> <span>Sign up using Facebook</span></a><br /><br /><br />
       </div>
     </div>
   </div>

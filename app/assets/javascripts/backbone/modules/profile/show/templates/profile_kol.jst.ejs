@@ -1,0 +1,77 @@
+<div class="panel panel-default panel-custom">
+  <div id="growler-alert"></div>
+  <div class="panel-body">
+    <div class="row">
+      <h3>Edit Profile</h3>
+      <hr>
+      <!-- left column -->
+      <!-- edit form column -->
+      <div class="col-md-9 personal-info">
+        <h3>Personal info</h3>
+        <form class="form-horizontal" role="form" autocomplete="off" id="profileForm" onsubmit="return false;">
+          <div class="form-group col-md-6">
+            <label class="control-label">First name:</label>
+            <div>
+              <input class="form-control" name="first_name" type="text" value="">
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">Last name:</label>
+            <div>
+              <input class="form-control" name="last_name" type="text" value="">
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">Location:</label>
+            <div>
+              <input class="form-control" name="location" type="text" value="">
+            </div>
+          </div>
+          <div class="form-group col-md-6 pull-right">
+            <label class="control-label">Email:</label>
+            <div>
+              <input class="form-control" name="email" type="text" value="" readonly="readonly">
+            </div>
+          </div>
+          <div class="form-group col-md-12">
+            <label class="control-label">Bank account:</label>
+            <div>
+              <input class="form-control" name="bank_account" type="text" value="">
+            </div>
+          </div>
+           <div class="form-group col-md-12">
+            <label class="control-label">Interests:</label>
+            <div>
+              <input class="form-control" name="interests" type="text" value="">
+            </div>
+          </div>
+          <hr>
+           <div class="form-group col-md-12" id="currentPassword">
+            <label class="control-label">Current password:</label>
+            <div>
+              <input class="form-control" name="current_password" type="password" value="">
+            </div>
+          </div>
+          <div class="form-group col-md-12">
+            <label class="control-label">New password:</label>
+            <div>
+              <input class="form-control" name="password" type="password" value="" minlength="8"
+               data-fv-stringlength-message="A new password must be at least 8 characters long">
+            </div>
+          </div>
+          <div class="form-group col-md-12">
+            <label class="control-label">Confirm new password:</label>
+            <div>
+              <input class="form-control" name="password_confirmation" type="password" value="">
+            </div>
+          </div>
+          <div class="form-group col-md-12">
+            <input type="button" id="saveChanges" class="btn btn-primary" value="Save Changes">
+            <span></span>
+            <a class="btn btn-default" href="/#dashboard">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
