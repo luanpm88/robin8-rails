@@ -146,6 +146,14 @@ if Rails.env == 'development'
   # p = AddOn.create(name: "MyPRGenie Web Distribution (per release)", is_active: true, price: 40.00,
   #                    description: "MyPRGenie Web Distribution (per release)", sku_id: 2258429,interval: 0,slug: 'myprgenie_web_distribution')
   # p.product_features.create!(feature_id:Feature.find_by_slug("myprgenie_web_distribution").id,validity: 360,count: 1 )
+  p = AddOn.create!(price:40,name: "Accesswire Distribution (per release)", is_active: true, sku_id: 2258641,slug: "accesswire_distribution")
+  p.product_features.create!(feature_id:Feature.find_by_slug("accesswire_distribution").id,validity: 360,count: 1 )
+
+  p = AddOn.create!(price: 175,name: "MyPRGenie Web Distribution (per release)", is_active: true, sku_id: 2258429,slug: "myprgenie_web_distribution")
+  p.product_features.create!(feature_id:Feature.find_by_slug("myprgenie_web_distribution").id,validity: 360,count: 1 )
+
+  p = AddOn.create!(price: 450,name: "PR Newswire Distribution (per release)", is_active: true, sku_id: 2258643,slug: "pr_newswire_distribution")
+  p.product_features.create!(feature_id:Feature.find_by_slug("pr_newswire_distribution").id,validity: 360,count: 1 )
 
 end
 

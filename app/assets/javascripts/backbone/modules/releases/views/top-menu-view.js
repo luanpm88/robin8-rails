@@ -190,11 +190,21 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.$el.find('#release-date-input').val(datedate).change();
       this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY'});
 
-      this.$el.find('#newswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
-      this.$el.find('#newswire_date_input').on('dp.change', function(e) {
-        $('#releaseForm').formValidation('revalidateField', 'newswire_published_at');
+      this.$el.find('#myprgenie_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#myprgenie_date_input').on('dp.change', function(e) {
+        $('#releaseForm').formValidation('revalidateField', 'myprgenie_published_at');
       });
 
+      this.$el.find('#accesswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#accesswire_date_input').on('dp.change', function(e) {
+        $('#releaseForm').formValidation('revalidateField', 'accesswire_published_at');
+      });
+
+      this.$el.find('#prnewswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#prnewswire_date_input').on('dp.change', function(e) {
+        $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
+      });
+      
       var insertLinkButton = this.$el.find('#wyihtml5-insert-link').html();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
       var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
@@ -540,22 +550,77 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
               }
             }
           },
-          newswire_published_at: {
+          myprgenie_published_at: {
             validators: {
               callback: {
-                message: 'You should select date',
+                message: 'Select correct date please',
                 callback: function(value, validator, $field) {
-                  if((
-                    ( $('.myprgenie-checkbox').is(':checked') && $('.myprgenie-checkbox').attr('disabled')!='disabled' ) || 
-                    ( $('.accesswire-checkbox').is(':checked') && $('.accesswire-checkbox').attr('disabled')!='disabled' ) || 
-                    ( $('.prnewswire-checkbox').is(':checked') && $('.prnewswire-checkbox').attr('disabled')!='disabled' )
-                    ) && 
-                    $('#newswire_date_input').val() == ''){
+                  if( $('.myprgenie-checkbox').is(':checked') && $('#myprgenie_date_input').val() == '' ){
+                    return false;
+                  }
+
+                  if( $('.myprgenie-checkbox').is(':checked') ) {
+                    var now = moment().format("MM/DD/YYYY");
+                    var myDate = new Date($('#myprgenie_date_input').val());
+                    var myDate = moment($('#myprgenie_date_input').val(), 'MM/DD/YYYY')._i;
+                    if(myDate < now){
                       return false;
+                    }
                   }
-                  else{
-                    return true;
+
+                  return true;
+                }
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+          accesswire_published_at: {
+            validators: {
+              callback: {
+                message: 'Select correct date please',
+                callback: function(value, validator, $field) {
+                  if( $('.accesswire-checkbox').is(':checked') && $('#accesswire_date_input').val() == '' ){
+                    return false;
                   }
+
+                  if( $('.accesswire-checkbox').is(':checked') ) {
+                    var now = moment().format("MM/DD/YYYY");
+                    var myDate = new Date($('#accesswire_date_input').val());
+                    var myDate = moment($('#accesswire_date_input').val(), 'MM/DD/YYYY')._i;
+                    if(myDate < now){
+                      return false;
+                    }
+                  }
+
+                  return true;
+                }
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+          prnewswire_published_at: {
+            validators: {
+              callback: {
+                message: 'Select correct date please',
+                callback: function(value, validator, $field) {
+                  if( $('.prnewswire-checkbox').is(':checked') && $('#prnewswire_date_input').val() == '' ){
+                    return false;
+                  }
+
+                  if( $('.prnewswire-checkbox').is(':checked') ) {
+                    var now = moment().format("MM/DD/YYYY");
+                    var myDate = new Date($('#prnewswire_date_input').val());
+                    var myDate = moment($('#prnewswire_date_input').val(), 'MM/DD/YYYY')._i;
+                    if(myDate < now){
+                      return false;
+                    }
+                  }
+
+                  return true;
                 }
               },
               serverError: {
@@ -655,7 +720,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.$el.find('#smart_release').prop("disabled",true);
         
         this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
-        this.model.attributes.newswire_published_at = moment(this.model.attributes.newswire_published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY').format('LL');
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
@@ -758,7 +825,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder.unbind();
     },
     switchMyprgenie: function(e){
-      $('#releaseForm').formValidation('revalidateField', 'newswire_published_at');
+      $('#releaseForm').formValidation('revalidateField', 'myprgenie_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_myprgenie')){
           $.growl("Please, buy corresponding addon in Billing settings!", {
@@ -767,21 +834,15 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
           return;
         }
-      } 
-      if(
-        ( !$('.myprgenie-checkbox').is(':checked') || $('.myprgenie-checkbox').attr('disabled')=='disabled' ) && 
-        ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
-        ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
-        ){
-        // this.$el.find("#newswire_date_input").val('');
-        this.$el.find("#start_date_div").hide();
+        $('#myprgenie_start_div').show();
       }
-      else{
-        this.$el.find("#start_date_div").show();
+      else {
+        $('#myprgenie_date_input').val('');
+        $('#myprgenie_start_div').hide();
       }
     },
     switchAccesswire: function(e){
-      $('#releaseForm').formValidation('revalidateField', 'newswire_published_at');
+      $('#releaseForm').formValidation('revalidateField', 'accesswire_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_accesswire')){
           $.growl("Please, buy corresponding addon in Billing settings!", {
@@ -790,21 +851,15 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
           return;
         }
+        $('#accesswire_start_div').show();
       }
-      if(
-        ( !$('.myprgenie-checkbox').is(':checked') || $('.myprgenie-checkbox').attr('disabled')=='disabled' ) && 
-        ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
-        ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
-        ){
-        // this.$el.find("#newswire_date_input").val('');
-        this.$el.find("#start_date_div").hide();
-      }
-      else{
-        this.$el.find("#start_date_div").show();
+      else {
+        $('#accesswire_date_input').val('');
+        $('#accesswire_start_div').hide();
       }
     },
     switchPrnewswire: function(e){
-      $('#releaseForm').formValidation('revalidateField', 'newswire_published_at');
+      $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_prnewswire')){
           $.growl("Please, buy corresponding addon in Billing settings!", {
@@ -813,17 +868,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
           return;
         }
+        $('#prnewswire_start_div').show();
       } 
-      if(
-        ( !$('.myprgenie-checkbox').is(':checked') || $('.myprgenie-checkbox').attr('disabled')=='disabled' ) && 
-        ( !$('.accesswire-checkbox').is(':checked') || $('.accesswire-checkbox').attr('disabled')=='disabled' ) &&
-        ( !$('.prnewswire-checkbox').is(':checked') || $('.prnewswire-checkbox').attr('disabled')=='disabled' )
-        ){
-        // this.$el.find("#newswire_date_input").val('');
-        this.$el.find("#start_date_div").hide();
-      }
-      else{
-        this.$el.find("#start_date_div").show();
+      else {
+        $('#prnewswire_date_input').val('');
+        $('#prnewswire_start_div').hide();
       }
     }
   });
