@@ -556,7 +556,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           myprgenie_published_at: {
             validators: {
               callback: {
-                message: 'Select correct date please',
+                message: 'Select correct date in future',
                 callback: function(value, validator, $field) {
                   if( $('.myprgenie-checkbox').is(':checked') && $('#myprgenie_date_input').val() == '' ){
                     return false;
@@ -582,7 +582,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           accesswire_published_at: {
             validators: {
               callback: {
-                message: 'Select correct date please',
+                message: 'Select correct date in future',
                 callback: function(value, validator, $field) {
                   if( $('.accesswire-checkbox').is(':checked') && $('#accesswire_date_input').val() == '' ){
                     return false;
@@ -608,7 +608,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           prnewswire_published_at: {
             validators: {
               callback: {
-                message: 'Select correct date please',
+                message: 'Select correct date in future',
                 callback: function(value, validator, $field) {
                   if( $('.prnewswire-checkbox').is(':checked') && $('#prnewswire_date_input').val() == '' ){
                     return false;

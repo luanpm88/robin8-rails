@@ -157,6 +157,13 @@
 
           </div>
         </div>
+        <div id="alert-container">
+            <div id="public-alert" class="alert alert-warning" role="alert" style="display:none;">
+              This release won't be publicly displayed while the parent Newsroom remains unpublished.
+              <b><button id="make-public">Publish the newsroom!</button></b>
+            </div>
+        </div>
+
         <div class="modal-footer">
           <% var windowUrl = location.host.split('.') %>
           <% var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
@@ -164,12 +171,6 @@
             <% if(release.id) { %>
               <button type="button" class="btn btn-danger" id="delete_release"><i class="fa fa-trash"></i> Delete Release</button>
             <% } %>
-          </div>
-          <div id="alert-container">
-              <div id="public-alert" class="alert alert-warning" role="alert" style="display:none;">
-                This release won't be publicly displayed while the parent Newsroom remains unpublished.
-                <b><button id="make-public">Publish the newsroom!</button></b>
-              </div>
           </div>
           <div id="release-buttons">
             <button type="button" class="btn btn-primary smart-release-button" id='smart_release' ><i class="fa fa-rocket"></i> Next</button>
