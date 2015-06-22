@@ -78,9 +78,7 @@
                 </td>
                 <td>
                 </td>
-                <td class="price" id="price-total">
-                  $<%=total%>
-                </td>
+                <td class="price" id="price-total">$<%=total%></td>
               </tr>
             </table>
           </div>
@@ -328,8 +326,16 @@
       }
 
       function removeAddonCost(amount){
-        addonsCost = parseInt($('#addons-price').val());
-        $('#addons-price').html( addonsCost - amount);
+        if ($('#addons-price').length) {
+          addonsCost = parseInt($('#addons-price').val());
+          $('#addons-price').html( addonsCost - amount );
+        }
+
+        if ($('#price-total').length) {
+          addonsCost = parseInt($('#price-total').html().slice(1));
+          $('#price-total').html( '$' + (addonsCost - amount).toString());
+        }
+
         return true
       }
 
