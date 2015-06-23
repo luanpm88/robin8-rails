@@ -11,5 +11,5 @@ Robin.module("Navigation", function(Navigation, Robin, Backbone, Marionette, $, 
   Navigation.on('start', function(){
     API.showNavigation();
   })
-  
+
 });

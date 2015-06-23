@@ -47,7 +47,13 @@ class UsersController < ApplicationController
   end
 
   def get_identities
-    render json: current_user.all_identities
+    if user_signed_in?
+      render json: current_user.all_identities
+    elsif kol_signed_in?
+      render json: current_kol.all_identities
+    else
+      render json: []
+    end
   end
 
   def disconnect_social

@@ -4,6 +4,10 @@ class Kol < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :identities, dependent: :destroy
+
+  include Identities
+
   class EmailValidator < ActiveModel::Validator
     def validate(record)
       if record.new_record? and User.exists?(:email=>record.email)

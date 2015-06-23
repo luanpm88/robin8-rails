@@ -1,5 +1,5 @@
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
-  
+
   Show.ScheduledEmptyToday = Backbone.Marionette.ItemView.extend({
     template: 'modules/social/show/templates/_scheduled-empty',
     tagName: "li",
@@ -79,11 +79,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         view.$el.find('.edit-post').addClass('disabled');
         view.$el.find('.social-networks a').addClass('disabled');
         // view.$el.find('#edit-post-textarea').highlightTextarea({color: '#FFC0C0'});
-                
+
         view.interval = window.setInterval((function() {
           renderedCheckbox = view.$el.find(".editableform #edit-shrink-links")
           if (renderedCheckbox.length != 0) {
-            
+
             // set date to utc format
             var utcDate = moment.utc(view.model.attributes.scheduled_date).toDate();
             var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
@@ -151,10 +151,10 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('#linkedin-identities').addClass('hidden');
       // this.$el.find('#twitter-identities')
       this.$el.find('#twitter-identities').removeClass('hidden');
-      
+
       var el = $(e.target);
       var btn = el.closest('.btn');
-      
+
       this.renderSocialButtons(btn);
     },
 
@@ -162,7 +162,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('#facebook-identities').removeClass('hidden');
       this.$el.find('#linkedin-identities').addClass('hidden');
       this.$el.find('#twitter-identities').addClass('hidden');
-      
+
       var el = $(e.target);
       var btn = el.closest('.btn');
       this.renderSocialButtons(btn);
@@ -172,7 +172,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('#facebook-identities').addClass('hidden');
       this.$el.find('#linkedin-identities').removeClass('hidden');
       this.$el.find('#twitter-identities').addClass('hidden');
-      
+
       var el = $(e.target);
       var btn = el.closest('.btn');
       this.renderSocialButtons(btn);
@@ -184,7 +184,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         var editPostContent = view.$el.find('#edit-post-textarea').val();
         var www_pattern = /(^|[\s\n]|<br\/?>)((www).[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
         var www_urls = editPostContent.match(www_pattern);
-        
+
         if (www_urls != null) {
           $.each(www_urls, function( index, value ) {
             value = $.trim(value)
@@ -249,13 +249,13 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.rowIdentities.removeClass('hidden');
       this.rowIdentities.removeClass('template-post-identities');
       this.rowIdentities.addClass('edit-post-identities');
-      
+
       this.$el.find('textarea').parent().append(this.row);
       this.$el.find('textarea').parent().append(this.rowIdentities);
       this.$el.find('textarea').attr('name', 'text');
       this.$el.find('textarea').attr('id', 'edit-post-textarea');
       this.$el.find('textarea').width("600px");
-      
+
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
@@ -287,7 +287,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     updatePost: function() {
       var view = this;
-      if (view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='facebook_ids']").val() == null 
+      if (view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='facebook_ids']").val() == null
           && view.rowIdentities.find("select[name='linkedin_ids']").val() == null) {
         swal({
           title: "You can not update post without enabled social networks",
@@ -321,7 +321,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
-    afterSelectingIdentity: function() {      
+    afterSelectingIdentity: function() {
       var view = this;
       view.setCounter();
 
@@ -338,7 +338,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       }
     },
 
-    afterRemoveIdentity: function() {      
+    afterRemoveIdentity: function() {
       var view = this;
       view.setCounter();
 
@@ -395,7 +395,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       var view = this;
       view.$el.find('#edit-post-textarea').highlightTextarea({color: '#FFC0C0'});
       var limit;
-      
+
       if ( view.rowIdentities.find("select[name='twitter_ids']").val() != null ) {
         limit = 140;
         view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
@@ -432,14 +432,14 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
   });
-   
+
   Show.TodayPostsComposite = Backbone.Marionette.CompositeView.extend({
     collection: Robin.Collections.Posts,
     template: "modules/social/show/templates/todays",
     childView: Show.ScheduledPost,
     childViewContainer: "ul",
     emptyView: Show.ScheduledEmptyToday,
-    
+
     collectionEvents: {
       "sync": "sync"
     },
