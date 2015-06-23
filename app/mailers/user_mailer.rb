@@ -27,7 +27,7 @@ class UserMailer < ActionMailer::Base
     @title = title
     @text = text
     @publicLink = publicLink
-    mail(:to => 'support@robin8.com', :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => Rails.application.secrets.support_email, :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
   end
 
 end
