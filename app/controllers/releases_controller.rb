@@ -3,13 +3,13 @@ class ReleasesController < ApplicationController
   has_scope :by_news_room
 
   def index
-    releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
+    @releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
     unless params[:for_blast].blank?
-      releases = releases.published
+      @releases = @releases.published
     end
-    set_paginate_headers Release, releases.count
+    set_paginate_headers Release, @releases.count
 
-    render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
+    render json: @releases.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
   end
 
   def create
@@ -104,6 +104,8 @@ class ReleasesController < ApplicationController
       :characters_count, :words_count, :sentences_count,
       :paragraphs_count, :adverbs_count, :adjectives_count,
       :nouns_count, :organizations_count, :places_count, :people_count,
+      :myprgenie, :accesswire, :prnewswire, 
+      :myprgenie_published_at, :accesswire_published_at, :prnewswire_published_at,
       attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy])
   end
   
