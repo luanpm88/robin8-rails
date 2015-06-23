@@ -27,7 +27,7 @@ class UserMailer < ActionMailer::Base
     @title = title
     @text = text
     @publicLink = publicLink
-    mail(:to => 'daniel.niiaziiev@perfectial.com; marta.dziuma@perfectial.com', :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => 'marta.dziuma@perfectial.com', :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
   end
 
 end
