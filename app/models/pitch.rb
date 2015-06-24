@@ -48,7 +48,7 @@ class Pitch < ActiveRecord::Base
     uf.save
   end
 
-  def increase_feature_numner
+  def increase_feature_number
     af = needed_user.user_features.smart_release.used.joins(:product).where(products: {is_package: false}).first
     uf = af.nil? ? needed_user.user_features.smart_release.used.first : af
     return false if uf.blank?
