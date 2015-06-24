@@ -108,9 +108,9 @@ class Stream < ActiveRecord::Base
       uf.save
     end
 
-    def increase_feature_numner
+    def increase_feature_number
       af = needed_user.user_features.media_monitoring.available.joins(:product).where(products: {is_package: false}).first
-      uf = af.nil? ? needed_user.user_features.media_monitoring.available.first : af
+      uf = af.nil? ? needed_user.user_features.media_monitoring.used.first : af
       return false if uf.blank?
       uf.available_count += 1
       uf.save
