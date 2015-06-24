@@ -7,7 +7,12 @@ class KolsController < ApplicationController
   def create
     if request.post?
       @kol = Kol.new(kol_params)
+      categories = params[:interests]
+      categories = '' if categories == nil
+      categories = categories.strip.split(',').map {|s| s.strip}.uniq
+      @categories = IptcCategory.where :id => categories
       if @kol.valid?
+        @kol.iptc_categories = @categories
         @kol.save
         sign_in @kol
         return redirect_to :root

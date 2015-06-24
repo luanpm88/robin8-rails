@@ -23,36 +23,43 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onShow: function() {
       this.initFormValidation();
-      var autocomplete = new google.maps.places.Autocomplete($("#location")[0], {});
 
-      google.maps.event.addListener(autocomplete, 'place_changed', function() {
-        var place = autocomplete.getPlace();
-      });
-      $('#interests').select2({
-        placeholder: "Select your interests",
-        multiple: true,
-        minimumInputLength: 1,
-        maximumSelectionSize: 10,
-        ajax: {
-          url: "/kols/suggest_categories",
-          dataType: 'json',
-          quietMillis: 250,
-          data: function (term) {
-            return {
-              f: term // search term
-            };
-          },
-          results: function (data) {
-            return {
-              results: data
-            };
-          },
-          cache: true
-        },
-        escapeMarkup: function (m) { return m; }
-      });
+      if (Robin.KOL) {
+        var autocomplete = new google.maps.places.Autocomplete($("#location")[0], {});
 
-      if (!Robin.KOL) {
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          var place = autocomplete.getPlace();
+        });
+        $('#interests').select2({
+          placeholder: "Select your interests",
+          multiple: true,
+          minimumInputLength: 1,
+          maximumSelectionSize: 10,
+          ajax: {
+            url: "/kols/suggest_categories",
+            dataType: 'json',
+            quietMillis: 250,
+            data: function (term) {
+              return {
+                f: term // search term
+              };
+            },
+            results: function (data) {
+              return {
+                results: data
+              };
+            },
+            cache: true
+          },
+          escapeMarkup: function (m) { return m; },
+          initSelection: function(el, callback) {
+            $("#interests").val('');
+            $.get("/kols/current_categories", function(data) {
+              callback(data);
+            });
+          }
+        });
+      } else {
         if (this.model.attributes.avatar_url) {
           $("#avatar-image").attr('src', this.model.attributes.avatar_url);
         }
@@ -192,10 +199,12 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       currentAttributes = this.model.attributes;
       emailChanged = (initialAttributes.email != currentAttributes.email);
       formChanged = (JSON.stringify(initialAttributes) != JSON.stringify(currentAttributes));
-      if (formChanged) this.form.data('formValidation').validate(); 
-      if (formChanged && this.form.data('formValidation').isValid()) {
+      if ((formChanged || Robin.KOL) && this.form.data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
-        this.model.save(this.model.attributes, { 
+        if (Robin.KOL) {
+          this.model.set({"interests": $("#interests").val()});
+        }
+        this.model.save(this.model.attributes, {
           success: function(userSession, response) {
             if (!Robin.KOL) {
               Robin.currentUser.attributes = currentAttributes;
