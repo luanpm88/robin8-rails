@@ -13,6 +13,7 @@ class KolsController < ApplicationController
         return redirect_to :root
       else
         flash.now[:errors] = @kol.errors.full_messages
+        render :new, :layout => "website"
       end
     else
       @kol = Kol.new
