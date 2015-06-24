@@ -20,7 +20,7 @@ class Pitch < ActiveRecord::Base
   validate :can_be_created, on: :create
 
   after_create :decrease_feature_number
-  after_destroy :increase_feature_numner
+  after_destroy :increase_feature_number
   
   private
 
@@ -49,8 +49,8 @@ class Pitch < ActiveRecord::Base
   end
 
   def increase_feature_numner
-    af = needed_user.user_features.smart_release.available.joins(:product).where(products: {is_package: false}).first
-    uf = af.nil? ? needed_user.user_features.smart_release.available.first : af
+    af = needed_user.user_features.smart_release.used.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.smart_release.used.first : af
     return false if uf.blank?
     uf.available_count += 1
     uf.save

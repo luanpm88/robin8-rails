@@ -10,7 +10,7 @@ class Stream < ActiveRecord::Base
   validate :can_be_created, on: :create
 
   after_create :set_position, :decrease_feature_number
-  after_destroy :increase_feature_numner
+  after_destroy :increase_feature_number
 
 
   def topics_raw

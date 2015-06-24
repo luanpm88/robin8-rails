@@ -19,8 +19,9 @@ class Release < ActiveRecord::Base
   
   before_save :pos_tagger, :entities_counter, :set_published_at
   after_create :decrease_feature_number
-  after_destroy :increase_feature_numner
-  after_save :update_images_links, :decrease_newswire_features
+
+  after_destroy :increase_feature_number
+  after_save :update_images_links
   
   def plain_text
     coder = HTMLEntities.new
@@ -104,9 +105,10 @@ class Release < ActiveRecord::Base
     uf.save
   end
 
-  def increase_feature_numner
-    af = needed_user.user_features.press_release.available.joins(:product).where(products: {is_package: false}).first
-    uf = af.nil? ? needed_user.user_features.press_release.available.first : af
+
+  def increase_feature_number
+    af = needed_user.user_features.press_release.used.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.press_release.used.first : af
     return false if uf.blank?
     uf.available_count += 1
     uf.save
