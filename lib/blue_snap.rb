@@ -41,6 +41,36 @@ module BlueSnap
       end
     end
 
+    def self.update_credit_card(request, user, params, shopper_id, subscription_id)
+      sku_id = UserProduct.find_by(bluesnap_subscription_id: subscription_id).product.sku_id
+      card_last_four = params[:card][:last_four]
+      update_card_url = "#{Rails.application.secrets[:bluesnap][:base_url]}/shoppers/#{shopper_id}"
+      update_subscription_url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
+      begin
+        errors = BlueSnap::Shopper.validate_params(params, user) 
+        if errors.blank?
+          shopper = {"web-info" => BlueSnap::Shopper.web_info(request),
+                     "shopper-info" => BlueSnap::Shopper.edit_card_info(params, user)}
+          subscription = {"status" => "A",
+                          "underlying-sku-id" => sku_id,
+                          "shopper-id" => shopper_id,
+                          "credit-card" =>
+                            {"card-last-four-digits" => params[:card][:last_four],
+                             "card-type" => params[:card][:credit_card_type].upcase}
+                         }
+          Request.put(update_card_url, shopper.to_xml(root: "shopper", builder: BlueSnapXmlMarkup.new,
+                                                  :skip_types => true, :skip_instruct => true))
+          Request.put(update_subscription_url, subscription.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new,
+                                                  :skip_types => true, :skip_instruct => true))
+        else
+          return errors, nil
+        end
+      rescue Exception => ex
+        Rails.logger.error ex
+        return ["Something is not right with your credit card information. Please try again"], nil
+      end
+    end
+
     def self.validate_params(params, user)
       errors = []
       errors << "Title Name cannot be blank." if !params[:contact][:title].present?
@@ -122,6 +152,13 @@ module BlueSnap
 
     def self.web_info(request)
       {"ip" => request.ip} #"use 127.0.0.1 for local testing"
+    end
+
+    def self.edit_card_info(params, user)
+      {
+          "store-id" => Rails.application.secrets[:bluesnap][:store_id],
+          "payment-info" => credit_cards(user, params)
+      }
     end
 
     def self.shopper_info(params, user)
@@ -265,7 +302,7 @@ module BlueSnap
       request["Content-Type"] ='application/xml'
       response = http.request(request)
       Rails.logger.info "response is #{response} AND #{response.body}***************************"
-      return "Something is not right with your upgrade, Please try again." if [400,401,402,403,404,500,501].include?(response.code.to_i)
+      return "Something is not right with the transaction, Please try again." if [400,401,402,403,404,500,501].include?(response.code.to_i)
       response.body
     end
 
