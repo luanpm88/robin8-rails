@@ -142,6 +142,11 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
             enabled: false,
             validators: {
               regexp: {
+                transformer: function($field, validatorName, validator) {
+                  $field.val($field.val().replace(/\s/g, ''));
+                  var value = $field.val();
+                  return value;
+                },
                 regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 message: 'The data you have entered is not a valid email'
               },
