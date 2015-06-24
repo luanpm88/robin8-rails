@@ -139,6 +139,14 @@ class User < ActiveRecord::Base
     current_user_features.media_monitoring.map(&:available_count).inject{|sum,x| sum + x }
   end
 
+  def media_list_available_count
+    current_user_features.personal_media_list.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_media_list
+    media_list_available_count.nil? ? false : media_list_available_count > 0
+  end
+
   def stream_count
     manageable_users.each.sum{|u| u.streams.count} + streams.count
   end
