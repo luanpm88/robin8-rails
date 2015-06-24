@@ -42,8 +42,7 @@
             </label>
             <label>
               <!--<input type="password"  name="password" placeholder="Interests" required />-->
-              <%=f.text_field :interests,:placeholder=>"Interests","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Interests can't be blank"%>
+              <%=f.hidden_field :interests, :placeholder=>"Interests", :style=>"width:100%;" %>
             </label>
             <p class="agree">By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service</a>.
 
@@ -65,11 +64,34 @@
 
 
   <script> $.validate(); </script>
-  <script>
+  <script>    
     var autocomplete = new google.maps.places.Autocomplete($("#kol_location")[0], {});
 
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
       var place = autocomplete.getPlace();
+    });
+
+    $('#kol_interests').select2({
+      multiple: true,
+      minimumInputLength: 1,
+      maximumSelectionSize: 10,
+      ajax: {
+        url: "/kols/suggest_categories",
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term) {
+          return {
+            f: term // search term
+          };
+        },
+        results: function (data) {
+          return {
+            results: data
+          };
+        },
+        cache: true
+      },
+      escapeMarkup: function (m) { return m; }
     });
   </script>
 

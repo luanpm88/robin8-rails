@@ -28,6 +28,29 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
         var place = autocomplete.getPlace();
       });
+      $('#interests').select2({
+        placeholder: "Select your interests",
+        multiple: true,
+        minimumInputLength: 1,
+        maximumSelectionSize: 10,
+        ajax: {
+          url: "/kols/suggest_categories",
+          dataType: 'json',
+          quietMillis: 250,
+          data: function (term) {
+            return {
+              f: term // search term
+            };
+          },
+          results: function (data) {
+            return {
+              results: data
+            };
+          },
+          cache: true
+        },
+        escapeMarkup: function (m) { return m; }
+      });
 
       if (!Robin.KOL) {
         if (this.model.attributes.avatar_url) {

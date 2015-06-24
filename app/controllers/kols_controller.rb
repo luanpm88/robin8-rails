@@ -24,14 +24,14 @@ class KolsController < ApplicationController
   def suggest_categories
     filter = params[:f]
     filter = "" if filter == nil
-    categories = IptcCategory.starts_with(filter).limit(10).map { |c| {:id => c.id, :label => c.label} }
+    categories = IptcCategory.starts_with(filter).limit(10).map { |c| {:id => c.id, :text => c.label} }
     render :json => categories
   end
 
   def current_categories
     categories = []
     if kol_signed_in?
-      categories = current_kol.iptc_categories.map { |c| {:id => c.id, :label => c.label} }
+      categories = current_kol.iptc_categories.map { |c| {:id => c.id, :text => c.label} }
     end
     render :json => categories
   end
