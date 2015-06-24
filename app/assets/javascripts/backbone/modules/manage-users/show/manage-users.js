@@ -143,7 +143,7 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
             validators: {
               regexp: {
                 transformer: function($field, validatorName, validator) {
-                  $field.val($field.val().replace(/\s/g, ''));
+                  $field.val($field.val().trim());
                   var value = $field.val();
                   return value;
                 },
@@ -159,7 +159,9 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       })
       .on('keyup', '[name="email"]', function() {
         var notEmpty = $(this).val() != "";
+        console.log(notEmpty);
         $('#invite-form').formValidation('enableFieldValidators', 'email', notEmpty)
+        $('#invite-form').formValidation('validateField', 'email')
       })
     },
 
