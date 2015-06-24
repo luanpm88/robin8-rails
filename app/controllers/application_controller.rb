@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up).push(:first_name, :last_name)
     devise_parameter_sanitizer.for(:account_update).push(:first_name,
                                                          :last_name, :company, :time_zone, :name, :avatar_url,
-                                                         :location, :bank_account, :interests)
+                                                         :location, :interests)
     devise_parameter_sanitizer.for(:invite).push(:is_primary)
   end
 

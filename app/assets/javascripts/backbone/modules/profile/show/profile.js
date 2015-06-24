@@ -23,6 +23,12 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onShow: function() {
       this.initFormValidation();
+      var autocomplete = new google.maps.places.Autocomplete($("#location")[0], {});
+
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+      });
+
       if (!Robin.KOL) {
         if (this.model.attributes.avatar_url) {
           $("#avatar-image").attr('src', this.model.attributes.avatar_url);
