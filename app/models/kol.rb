@@ -4,7 +4,10 @@ class Kol < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, allow_unconfirmed_access_for: 1.days
 
-  has_many :identities, dependent: :destroy
+  has_many :identities, :dependent => :destroy
+
+  has_many :kol_categories, :dependent => :destroy
+  has_many :iptc_categories, :through => :kol_categories
 
   include Identities
 
