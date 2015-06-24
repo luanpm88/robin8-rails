@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Robin8</title>
+  <% if request.location && request.location.country.to_s == "China" %>
+    <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css"> 
+  <% else %>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+  <% end %>
+  <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+  
+  <%= stylesheet_link_tag    'kol', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'kol', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <%= favicon_link_tag 'favicon.ico' %>
+  <script type="text/javascript">
+    window.doorbellOptions = {
+        appKey: 'cnLho0pzQQjaENVjgmqrw9xI1H8Ljwn3BuFIg1t2MVRt530fIJbSbar2bcfyYb5u'
+    };
+    (function(d, t) {
+        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://embed.doorbell.io/button/1121?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
+    }(document, 'script'));
+  </script>
+</head>
+<body>
+  <div class="alert alert-success" role="alert"><p class="confirmation"><%= flash[:alert] %></p></div>
+  <div id="main">
+    <%= yield %>
+    
+  </div>
+  
+  <div class="modal fade" id="modal" tabindex="-1" 
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    Robin.start();
+  });
+  <% if flash[:success_confirmation] -%>
+    Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
+  <% end -%>
+  <% if kol_signed_in? -%>
+    Robin.currentKOL = new Robin.Models.User(<%= current_kol.to_json.html_safe %>);
+  <% else -%>
+    if (Robin) {
+      Robin.currentKOL = null;
+    }
+  <% end -%>
+
+  <% if Rails.env == 'development' -%>
+    Robin.showLoading = false;
+  <% else -%>
+    Robin.showLoading = true;
+  <% end -%>
+
+</script>
+
+</body>
+</html>

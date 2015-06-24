@@ -3,7 +3,9 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     this.stopAll();
     Robin.module('Navigation').start();
     Robin.module('Dashboard').start();
-    Robin.module('SaySomething').start();
+    if (!Robin.KOL) {
+      Robin.module('SaySomething').start();
+    }
   },
   showDashboard: function() {
     this.stopAll();

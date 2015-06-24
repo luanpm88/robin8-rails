@@ -1,3 +1,5 @@
+
+
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -26,6 +28,18 @@ class User < ActiveRecord::Base
 
   after_create :create_default_news_room, :decrease_feature_number
   after_destroy :increase_feature_number
+
+  include Identities
+
+  class EmailValidator < ActiveModel::Validator
+    def validate(record)
+      if record.new_record? and Kol.exists?(:email=>record.email)
+        record.errors[:email] << "Email has already been taken"
+      end
+    end
+  end
+
+  validates_with EmailValidator
 
   extend FriendlyId
   friendly_id :email, use: :slugged
@@ -57,11 +71,11 @@ class User < ActiveRecord::Base
   end
 
   def current_user_features
-    is_primary? ? user_features : invited_by.user_features 
+    is_primary? ? user_features : invited_by.user_features
   end
 
   def is_feature_available?(slug)
-    @user = is_primary? ? self : invited_by 
+    @user = is_primary? ? self : invited_by
     Feature.joins(:user_features).where("user_features.user_id = '#{@user.id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
   end
 
@@ -242,47 +256,6 @@ class User < ActiveRecord::Base
     user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
 
-  def twitter_identity
-    identities.where(provider: 'twitter').first
-  end
-
-  def linkedin_identity
-    identities.where(provider: 'linkedin').first
-  end
-
-  def facebook_identity
-    identities.where(provider: 'facebook').first
-  end
-
-  def google_identity
-    identities.where(provider: 'google_oauth2').first
-  end
-
-  def twitter_identities
-    identities.where(provider: 'twitter')
-  end
-
-  def linkedin_identities
-    identities.where(provider: 'linkedin')
-  end
-
-  def facebook_identities
-    identities.where(provider: 'facebook')
-  end
-
-  def google_identities
-    identities.where(provider: 'google_oauth2')
-  end
-
-  def all_identities
-    identities_by_providers = {}
-    identities_by_providers[:twitter] = twitter_identities
-    identities_by_providers[:facebook] = facebook_identities
-    identities_by_providers[:google] = google_identities
-    identities_by_providers[:linkedin] = linkedin_identities
-    identities_by_providers 
-  end
-
   def twitter_post message, identity_id
     twitter_identity = Identity.find(identity_id)
     unless twitter_identity.blank?
@@ -337,7 +310,7 @@ class User < ActiveRecord::Base
   def as_json(options={})
     super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
   end
-  
+
   def full_name
     if !first_name.blank? && !last_name.blank?
       "#{first_name} #{last_name}"
@@ -392,3 +365,4 @@ class User < ActiveRecord::Base
       end
     end
 end
+

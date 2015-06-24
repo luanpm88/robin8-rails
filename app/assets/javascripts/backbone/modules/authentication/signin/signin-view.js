@@ -11,11 +11,14 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
     initialize: function() {
       this.model = new Robin.Models.UserSession();
+      this.kolModel = new Robin.Models.KOLSession();
       this.modelBinder = new Backbone.ModelBinder();
+      this.kolBinder = new Backbone.ModelBinder();
     },
 
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
+      this.kolBinder.bind(this.kolModel, this.el);
       $('.signup-tag').text('login');
       $('.nav.fixed a').removeClass('active');
       $('#login-link').addClass('active');
@@ -25,24 +28,31 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       e.preventDefault();
 
       el = $(this.el);
+      var that = this;
 
       this.modelBinder.copyViewValuesToModel();
-      
+      this.kolBinder.copyViewValuesToModel();
+      var loggedIn = function(data, response, jqXHR){
+        var token = jqXHR.xhr.getResponseHeader('X-CSRF-Token');
+        if (token) {
+          $("meta[name='csrf-token']").attr('content', token);
+          Robin.finishSignIn(response);
+        }
+      }
       this.model.save(this.model.attributes, {
-        success: function(data, response, jqXHR){
-          var token = jqXHR.xhr.getResponseHeader('X-CSRF-Token');
-          if (token) {
-            $("meta[name='csrf-token']").attr('content', token);
-            Robin.finishSignIn(response);
-          }
-        },
+        success: loggedIn,
         error: function(userSession, response) {
-          var result = $.parseJSON(response.responseText);
-          this.$('#alert-danger').show();
-          this.$('#alert-danger').text(result.error);
+          that.kolModel.save(that.kolModel.attributes, {
+            success: loggedIn,
+            error: function(data, response) {
+              var result = $.parseJSON(response.responseText);
+              this.$('#alert-danger').show();
+              this.$('#alert-danger').text(result.error);
+            }
+          });
         }
       });
-    },  
+    },
 
     socialSignIn: function(e) {
       e.preventDefault();
@@ -64,11 +74,11 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
             window.clearInterval(currentView.interval);
             if (data != undefined) {
               Robin.finishSignIn(data);
-            } 
+            }
           });
         }
       }), 500);
-    } 
+    }
 
   });
 });

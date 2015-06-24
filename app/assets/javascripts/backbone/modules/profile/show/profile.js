@@ -1,15 +1,20 @@
 Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.ProfilePage = Backbone.Marionette.LayoutView.extend({
-    template: 'modules/profile/show/templates/profile',
+    getTemplate: Robin.template('modules/profile/show/templates/profile'),
 
     events: {
       'click #saveChanges': 'updateProfile'
     },
 
     initialize: function() {
-      this.model = new Robin.Models.UserProfile(Robin.currentUser.attributes);
+      if (!Robin.KOL) {
+        this.model = new Robin.Models.UserProfile(Robin.currentUser.attributes);
+        this.tempUser = new Robin.Models.UserProfile(Robin.currentUser.attributes);
+      } else {
+        this.model = new Robin.Models.KolProfile(Robin.currentKOL.attributes);
+        this.tempUser = new Robin.Models.KolProfile(Robin.currentKOL.attributes);
+      }
       this.modelBinder = new Backbone.ModelBinder();
-      this.tempUser = new Robin.Models.UserProfile(Robin.currentUser.attributes);
     },
 
     onRender: function() {
@@ -18,26 +23,61 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onShow: function() {
       this.initFormValidation();
-      if (this.model.attributes.avatar_url) {
-        $("#avatar-image").attr('src', this.model.attributes.avatar_url);
-      }
-      var viewObj = this;
-      this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
-        $("#avatar-image").attr('src', info.cdnUrl);
-        viewObj.model.set({avatar_url: info.cdnUrl});
-      });
-      this.widget.validators.push(this.maxFileSize(3145728));
-      if (Robin.afterConfirmationMessage != undefined) {
-        $.growl(Robin.afterConfirmationMessage,{
-          offset: 65,
-          delay: 5000,
-          placement: {
-            from: "top",
-            align: "right"
+
+      if (Robin.KOL) {
+        var autocomplete = new google.maps.places.Autocomplete($("#location")[0], {});
+
+        $('#interests').select2({
+          placeholder: "Select your interests",
+          multiple: true,
+          minimumInputLength: 1,
+          maximumSelectionSize: 10,
+          ajax: {
+            url: "/kols/suggest_categories",
+            dataType: 'json',
+            quietMillis: 250,
+            data: function (term) {
+              return {
+                f: term // search term
+              };
+            },
+            results: function (data) {
+              return {
+                results: data
+              };
+            },
+            cache: true
           },
-          type: 'success'
+          escapeMarkup: function (m) { return m; },
+          initSelection: function(el, callback) {
+            $("#interests").val('');
+            $.get("/kols/current_categories", function(data) {
+              callback(data);
+            });
+          }
         });
-        Robin.afterConfirmationMessage = undefined
+      } else {
+        if (this.model.attributes.avatar_url) {
+          $("#avatar-image").attr('src', this.model.attributes.avatar_url);
+        }
+        var viewObj = this;
+        this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete(function(info){
+          $("#avatar-image").attr('src', info.cdnUrl);
+          viewObj.model.set({avatar_url: info.cdnUrl});
+        });
+        this.widget.validators.push(this.maxFileSize(3145728));
+        if (Robin.afterConfirmationMessage != undefined) {
+          $.growl(Robin.afterConfirmationMessage,{
+            offset: 65,
+            delay: 5000,
+            placement: {
+              from: "top",
+              align: "right"
+            },
+            type: 'success'
+          });
+          Robin.afterConfirmationMessage = undefined
+        }
       }
     },
 
@@ -152,18 +192,25 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
     updateProfile: function() {
       var viewObj = this;
-
       initialAttributes = this.tempUser.attributes;
       currentAttributes = this.model.attributes;
       emailChanged = (initialAttributes.email != currentAttributes.email);
       formChanged = (JSON.stringify(initialAttributes) != JSON.stringify(currentAttributes));
-      if (formChanged) this.form.data('formValidation').validate(); 
-      if (formChanged&&this.form.data('formValidation').isValid()) {
+      if ((formChanged || Robin.KOL) && this.form.data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
+        if (Robin.KOL) {
+          this.model.set({"interests": $("#interests").val()});
+        }
         this.model.save(this.model.attributes, {
           success: function(userSession, response) {
-            Robin.currentUser.attributes = currentAttributes;
-            Robin.currentUser.attributes.current_password = "";
+            if (!Robin.KOL) {
+              Robin.currentUser.attributes = currentAttributes;
+              Robin.currentUser.attributes.current_password = "";
+            } else {
+              Robin.currentKOL.attributes = currentAttributes;
+              Robin.currentKOL.attributes.current_password = "";
+            }
+
             Robin.layouts.main.onShow();
             $.growl({message: 'Your account data has been successfully changed'
             },{

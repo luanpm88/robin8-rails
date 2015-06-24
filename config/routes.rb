@@ -1,5 +1,6 @@
 require 'sidekiq/web'
 require 'sidetiq/web'
+
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -40,6 +41,17 @@ Rails.application.routes.draw do
   # end
   post '/users/follow' => 'users#follow'
   post '/users/new' => 'users#create'
+  post '/kols/new' => 'kols#create'
+  get '/kols/new' => 'kols#create'
+
+  # kols
+  devise_for :kols, controllers: {
+    registrations: "kols/registrations",
+    sessions: "users/sessions",
+  }
+  get '/kols/get_current_kol' => 'kols#get_current_kol'
+  get '/kols/current_categories' => 'kols#current_categories'
+  get '/kols/suggest_categories' => 'kols#suggest_categories'
 
   resources :posts do
     put 'update_social', on: :member

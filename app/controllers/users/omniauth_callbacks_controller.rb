@@ -4,7 +4,7 @@ module Users
       class_eval %Q{
         def #{provider}
           auth = request.env['omniauth.auth']
-          
+
           params = {}
           params[:uid] = auth.uid
           params[:provider] = auth.provider
@@ -37,10 +37,10 @@ module Users
             end
           end
           if request.env['omniauth.params']['provider'].nil?
-            render 'twitter_popup_close', :layout => false     
+            render 'twitter_popup_close', :layout => false
           else
             redirect_to root_path
-          end     
+          end
         end
       }
     end

@@ -1,5 +1,6 @@
 class Identity < ActiveRecord::Base
   belongs_to :user
+  belongs_to :kol
 
   def self.find_for_oauth(auth)
     identity = find_by(provider: auth[:provider], uid: auth[:uid])

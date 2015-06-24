@@ -29,6 +29,11 @@ class PagesController < ApplicationController
       render "home", :layout => 'application'
     elsif user_signed_in?
       redirect_to pricing_path
+    elsif kol_signed_in?
+      if current_kol.confirmed_at == nil
+        flash[:alert] = "Please, check your email to activate your account!"
+      end
+      render "home", :layout => 'kol'
     else
       render "landing_page", :layout => 'landing'
     end

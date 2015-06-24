@@ -21,6 +21,16 @@ Robin.setUrl = function(route, options){
   Backbone.history.navigate(route, {trigger: true, replace: true});
 };
 
+Robin.template = function(t) {
+  return function() {
+    if (!Robin.KOL) {
+      return t;
+    } else {
+      return t + "_kol";
+    }
+  }
+};
+
 Robin.finishSignIn = function(data){
   // Robin.currentUser = new Robin.Models.User(data);
   // Robin.vent.trigger("authentication:logged_in");
@@ -68,7 +78,7 @@ Robin.on('start', function(){
   if (Backbone.history && !Backbone.History.started){
     Robin.addInitializer();
     Backbone.history.start();
-    if (Robin.currentUser) {
+    if (Robin.currentUser || Robin.currentKOL) {
       Robin.loadPleaseWait();
     } else {
       if (Robin.afterConfirmationMessage != undefined) {
@@ -111,7 +121,8 @@ Robin.vent.on("authentication:logged_out", function() {
 });
 
 Robin.bind("before:start", function() {
-  if(Robin.currentUser) {
+  Robin.KOL = Robin.currentKOL != null;
+  if(Robin.currentUser || Robin.currentKOL) {
     Robin.vent.trigger("authentication:logged_in");
   }
   else {
