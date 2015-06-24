@@ -185,7 +185,8 @@ class PaymentsController < ApplicationController
 
   def validate_subscription
     @product = Package.where(slug: params[:slug]).last
-    return redirect_to "/upgrade/#{@product.slug}" if @product && current_user.active_subscription.present?
+
+    return redirect_to "/upgrade/#{@product.slug}" if @product && current_user.active_subscription.present? && current_user.active_subscription.status == 'A'
   end
 
   def authenticate_user!
