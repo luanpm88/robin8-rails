@@ -27,9 +27,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       if (Robin.KOL) {
         var autocomplete = new google.maps.places.Autocomplete($("#location")[0], {});
 
-        google.maps.event.addListener(autocomplete, 'place_changed', function() {
-          var place = autocomplete.getPlace();
-        });
         $('#interests').select2({
           placeholder: "Select your interests",
           multiple: true,
