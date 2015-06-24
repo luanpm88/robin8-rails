@@ -35,7 +35,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     collectionEvents: {
       add: 'onAdded',
       'reset': 'afterFetch',
-      'sync': 'afterFetch'
+      'sync': 'afterFetch',
+      'request': 'showLoading',
     },
 
     modelEvents: {
@@ -43,11 +44,18 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
+    showLoading: function (e) {
+      this.$el.find('.stream-loading').removeClass('hidden');
+      this.$el.find('.empty-stream').addClass('hidden');
+    },
+
     afterFetch: function (e) {
       this.filterCollection();
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
-      if (this.collection.length == 0) {
+      if (this.collection.length != 0) {
+        this.$el.find('.empty-stream').addClass('hidden');
+      } else {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
     },
