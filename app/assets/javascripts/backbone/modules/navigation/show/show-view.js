@@ -6,6 +6,7 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
     // Checks if there are no recommendations and then adds to the nav
     onRender :function(){
 
+      if (!Robin.KOL) {
         var lastSignInAt = Robin.currentUser.attributes.updated_at;
         var id = Robin.currentUser.attributes.id;
         var statusUrl = "/recommendations/status/" + id + ".json?last_sign_in_at=" + lastSignInAt;
@@ -17,6 +18,8 @@ Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
                 $("#new-recommendations").show();
             }
         });
+      }
+
     }
 
   });
