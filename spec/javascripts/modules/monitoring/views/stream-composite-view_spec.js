@@ -1,6 +1,5 @@
 describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
   var view, model;
-  Robin.user = new Robin.Models.User();
 
   beforeEach(function () {
     model = Factory.build("stream");
@@ -15,17 +14,42 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
       expect(view).toBeDefined();
     });
 
+    it ('should have template', function () {
+      expect(view.template).toBeDefined();
+    });
+
+    it ('should have tagName', function () {
+      expect(view.tagName).toBeDefined();
+    });
+
+    it ('should have className', function () {
+      expect(view.className).toBeDefined();
+    });
+
+    it ('should have childViewContainer', function () {
+      expect(view.childViewContainer).toBeDefined();
+    });
+
   });
 
   describe('when view is rendered', function () {
 
     beforeEach(function () {
-      spyOn( view, 'toggleRssDialog');
-      spyOn( view, 'settings');
-      spyOn( view, 'loadInfo');
+      spyOn( view, 'closeStream');
+      spyOn( view, 'settings'); //
+      spyOn( view, 'toggleRssDialog'); //
+      spyOn( view, 'closeSettings');
+      spyOn( view, 'done');
+      spyOn( view, 'editTitle');
+      spyOn( view, 'updateTitle');
+      spyOn( view, 'showNewStories');
+      spyOn( view, 'loadInfo'); //
+      spyOn( view, 'selectLink');
+      spyOn( view, 'makeKeyword');
+      spyOn( view, 'refreshTimeRangeVisibility'); //
+      spyOn( view.modelBinder, 'bind'); //
       spyOn( view.model, 'save');
-      spyOn( view, 'refreshTimeRangeVisibility');
-      spyOn( view.modelBinder, 'bind');
+      spyOn( Robin.user, 'get').and.returnValue(true);
       view.delegateEvents();
       view.render();
     });
@@ -64,6 +88,26 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
       expect(view.toggleRssDialog).toHaveBeenCalled();
     });
 
+    it ("should close stream", function () {
+      view.$el.find('.stream-header .delete-stream').click();
+      expect(view.closeStream).toHaveBeenCalled();
+    });
+
+    it('should make keywords', function() {
+      view.$el.find('.make-keyword').click();
+      expect(view.makeKeyword).toHaveBeenCalled();
+    });
+
+    it('should behave select link', function() {
+      view.$el.find('.rss-input').click();
+      expect(view.selectLink).toHaveBeenCalled();
+    });
+
+    it('should show news stories', function() {
+      view.$el.find('.js-show-new-stories').click();
+      expect(view.showNewStories).toHaveBeenCalled();
+    });
+
     describe ('when user click title', function () {
 
       it ('should appear editable title', function () {
@@ -75,7 +119,7 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
         view.$el.find('#title').click();
         view.$el.find('.stream-header .editableform .edit-title').val('Title1');
         view.$el.find('.editable-submit').click();
-        expect(view.model.save).toHaveBeenCalled();
+        expect(view.editTitle).toHaveBeenCalled();
       });
 
       it ("shouldn't edit title", function () {
@@ -84,9 +128,11 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
         view.$el.find('.editable-cancel').click();
         expect(view.model.save).not.toHaveBeenCalled();
       });
-      
     });
 
+    it('Robin user get can create stream', function() {
+      expect(Robin.user.get).toBeDefined();
+    });
 
   });
 });
