@@ -222,7 +222,7 @@ class User < ActiveRecord::Base
 
   def active_subscription
     @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions
-    @active_s ||= @subscriptions.where("((user_products.expiry is NULL OR user_products.expiry >'#{Time.now.utc}') AND user_products.status ='A') OR (user_products.expiry > '#{Time.now.utc}' AND user_products.status = 'C')").last
+    @active_s ||= @subscriptions.where("((user_products.expiry is NULL OR user_products.expiry >'#{Time.now.utc}') AND user_products.status ='A')").last
   end
 
   def subscriptions
