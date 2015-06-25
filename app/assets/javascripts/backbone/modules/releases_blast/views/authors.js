@@ -358,7 +358,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     addAllContactsToPitch: function(){
       var self = this;
       _.each(self.collection.models, function(model){
-          var current_model = self.pitchContactsCollection.findWhere({
+        var current_model = self.pitchContactsCollection.findWhere({
           author_id: model.get('id'),
           origin: 'pressr'
         });

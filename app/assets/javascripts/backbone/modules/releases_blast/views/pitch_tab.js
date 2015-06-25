@@ -156,13 +156,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       summarySliderAmount: '#summary-slider-amount',
       subjectLineInput: '[name=email_subject]',
       emailAddressInput: '[name=email_address]',
-      previewButton: '#pitch-text-preview'
+      previewButton: '#pitch-text-preview',
+      sendTestEmailButton: '#send-test-email-btn'
     },
 
     events: {
       'click @ui.mergeTag': 'addMergeTag',
       'change @ui.subjectLineInput': 'subjectLineInputChanged',
-      'change @ui.emailAddressInput': 'emailAddressInputChanged'
+      'change @ui.emailAddressInput': 'emailAddressInputChanged',
+      'click @ui.sendTestEmailButton': 'sendTestEmailButtonClicked'
     },
 
     addMergeTag: function(e) {
@@ -242,6 +244,28 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         self.insertRenderedText();
       });
     },
+    sendTestEmailButtonClicked: function(e){
+      if (this.draftPitchModel.get('is_deleted')){
+        $.growl({message: "It's no longer possible to send test emails after pitch has been sent."
+        },{
+          type: 'danger'
+        });
+      } else {
+        this.showTestEmailModal();
+      }
+    },
+    showTestEmailModal: function(e){
+      var testEmailModel = new Robin.Models.TestEmail({
+        draft_pitch_id: this.draftPitchModel.id
+      });
+      
+      var testEmailView = new ReleasesBlast.TestEmailView({
+        model: testEmailModel,
+        draftPitchModel: this.draftPitchModel
+      });
+      
+      Robin.modal.show(testEmailView);
+    },
     subjectLineInputChanged: function(e){
       this.model.set('email_subject', this.ui.subjectLineInput.val());
     },
@@ -276,6 +300,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       renderedText = renderedText.replace(/\@\[Text\]/g, html_text);
       renderedText = renderedText.replace(/\@\[Link\]/g, link);
       renderedText = renderedText.replace(/\@\[Summary\]/g, summaries);
+      
+      this.model.set('email_pitch', renderedText);
       
       return renderedText;
     }
@@ -346,6 +372,52 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     }
   });
 
+  ReleasesBlast.TestEmailView = Marionette.ItemView.extend({
+    template: 'modules/releases_blast/templates/pitch-tab/test-email-view',
+    ui: {
+      emailsInput: '#test-pitch-emails-input',
+      sendButton: '#send-test-btn'
+    },
+    events: {
+      'click @ui.sendButton': 'sendButtonClicked'
+    },
+    initialize: function(options){
+      this.draftPitchModel = options.draftPitchModel;
+    },
+    sendButtonClicked: function(e){
+      e.preventDefault();
+      
+      this.ui.sendButton.prop('disabled', true);
+      this.sendTestEmail();
+    },
+    errorFields: {
+      "emails": "Email address",
+      "email_pitch": "Email pitch",
+      "email_address": "Pitch Email address",
+      "email_subject": "Email subject"
+    },
+    sendTestEmail: function(){
+      var self = this;
+      this.model.set('emails', this.ui.emailsInput.val());
+      
+      this.model.save({ release_id: this.draftPitchModel.get('release_id')}, {
+        success: function(model, response, options){
+          Robin.modal.empty();
+        },
+        error: function(model, response, options){
+          self.ui.sendButton.prop('disabled', false);
+          
+          _(response.responseJSON).each(function(val, key){
+            $.growl({message: self.errorFields[key] + ' ' + val[0]
+            },{
+              type: 'danger'
+            });
+          });
+        }
+      });
+    }
+  });
+  
   ReleasesBlast.PitchTabView = Marionette.LayoutView.extend({
     template: 'modules/releases_blast/templates/pitch-tab/pitch-tab-layout',
     id: "blast-pitch",
@@ -383,6 +455,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     updatePitchModel: function(){
       var self = this;
+
       this.draftPitchModel.set({
         twitter_pitch: self.model.get('twitter_pitch'),
         email_pitch: self.model.get('email_pitch'),
@@ -423,6 +496,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       self.model.save({}, {
         success: function(model, response, options){
           self.model.set('sent', true);
+          self.draftPitchModel.set('is_deleted', true);
           self.draftPitchModel.destroy({
             data: { release_id: self.draftPitchModel.get('release_id') },
             processData: true
