@@ -418,6 +418,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.model.save({ release_id: this.draftPitchModel.get('release_id')}, {
         success: function(model, response, options){
           Robin.modal.empty();
+          $.growl({message: "Bon voyage, test email! " + 
+            "Your test email is on its way to the test recipients."
+          },{
+            type: 'success'
+          });
         },
         error: function(model, response, options){
           self.ui.sendButton.prop('disabled', false);
