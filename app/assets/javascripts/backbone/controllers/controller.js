@@ -2,14 +2,17 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
   initialize: function (options) {
     this.stopAll();
     Robin.module('Navigation').start();
-    Robin.module('Dashboard').start();
     if (!Robin.KOL) {
       Robin.module('SaySomething').start();
     }
   },
   showDashboard: function() {
     this.stopAll();
-    Robin.module('Dashboard').start();
+    if (!Robin.KOL) {
+      Robin.module('Dashboard').start();
+    } else {
+        Robin.module('DashboardKol').start();
+    }
   },
 
   showRobin: function() {
@@ -66,6 +69,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
   showRecommendations: function() {
     this.stopAll();
     Robin.module('Recommendations').start();
+  },
+
+  showCampaigns: function(){
+      this.stopAll();
+      Robin.module('Campaigns').start();
   },
 
   stopAll: function(){
