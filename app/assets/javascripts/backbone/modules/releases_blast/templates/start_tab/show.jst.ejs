@@ -16,7 +16,7 @@
         <select class="releases form-control loadinggif">
           <% if (Robin.user.get('can_create_release') != false) { %>
             <option value="-1">Select...</option>
-            <option value="-2">+ New Release</option>
+            <option id='option-new-release' value="-2">+ New Release</option>
           <% } else {%>
             <option value="-1">Select...</option>
           <% } %>
