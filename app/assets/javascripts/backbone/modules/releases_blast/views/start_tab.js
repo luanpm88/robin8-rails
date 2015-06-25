@@ -21,7 +21,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     onRender: function(){
       var view = this;
+      Robin.user.fetch({
+        success: function() {
+          if (Robin.user.get('can_create_release') != true) {
+            view.$el.find("select.releases option#option-new-release").remove();
+          }
+        }
+      });
+      
+      view.$el.find(".releases").select2({
+        minimumResultsForSearch: Infinity
+      });
       view.$el.find(".releases").prop('disabled', true);
+
       if (view.collection.length > 0) {
         view.$el.find(".releases").removeClass('loadinggif');
         view.$el.find(".releases").prop('disabled', false);
