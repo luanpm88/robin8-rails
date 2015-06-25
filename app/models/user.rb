@@ -368,14 +368,14 @@ class User < ActiveRecord::Base
       end
     end
 
-    # def needed_user
-    #   user.is_primary? ? user : user.invited_by
-    # end
+    def needed_user
+      is_primary? ? self : self.invited_by
+    end
 
     def decrease_feature_number
       if !is_primary
         af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-        uf = af.nil? ? needed_user.user_features.seat.used.first : af
+        uf = af.nil? ? needed_user.user_features.seat.available.first : af
         return false if uf.blank?
         uf.available_count -= 1
         uf.save
@@ -385,7 +385,7 @@ class User < ActiveRecord::Base
     def increase_feature_number
       if !is_primary
         af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-        uf = af.nil? ? needed_user.user_features.seat.available.first : af
+        uf = af.nil? ? needed_user.user_features.seat.used.first : af
         return false if uf.blank?
         uf.available_count += 1
         uf.save
