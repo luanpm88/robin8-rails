@@ -78,6 +78,7 @@ Rails.application.routes.draw do
   resources :pitches, only: [:index, :create, :show]
   resources :draft_pitches
   resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+  resources :test_emails, only: [:create, :show]
   resources :iptc_categories, only: [:index]
   resources :export_influencers, only: [:create]
   resources :autocompletes, only: [] do
