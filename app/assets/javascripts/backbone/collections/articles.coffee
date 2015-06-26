@@ -1,3 +1,2 @@
-Robin.Collections.Articles = Backbone.Collection.extend(
+Robin.Collections.Articles = Backbone.Collection.extend
   model: Robin.Models.Article
-)

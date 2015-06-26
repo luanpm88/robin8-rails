@@ -1,3 +1,2 @@
-Robin.Collections.Campaigns = Backbone.Collection.extend(
+Robin.Collections.Campaigns = Backbone.Collection.extend
   model: Robin.Models.Campaign
-)

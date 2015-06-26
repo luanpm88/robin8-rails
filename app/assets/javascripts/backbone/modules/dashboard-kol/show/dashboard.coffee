@@ -1,6 +1,4 @@
-Robin.module('DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
+Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
-  Show.DashboardKOLPage = Backbone.Marionette.LayoutView.extend(
+  Show.DashboardKOLPage = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/dashboard'
-  )
-)

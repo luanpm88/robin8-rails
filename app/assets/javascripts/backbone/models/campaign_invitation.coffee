@@ -1,3 +1,2 @@
-Robin.Models.CampaignInvitation = Backbone.Model.extend(
+Robin.Models.CampaignInvitation = Backbone.Model.extend
   url: '/campaign-invitation'
-)

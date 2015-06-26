@@ -11,7 +11,7 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     if (!Robin.KOL) {
       Robin.module('Dashboard').start();
     } else {
-        Robin.module('DashboardKol').start();
+      Robin.module('DashboardKol').start();
     }
   },
 
@@ -72,16 +72,16 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
   },
 
   showCampaigns: function(){
-      this.stopAll();
-      Robin.module('Campaigns').start();
+    this.stopAll();
+    Robin.module('Campaigns').start();
   },
 
   stopAll: function(){
     var routesCount = Robin.routesCount;
     if (Backbone.history.handlers.length > routesCount){
-        var arr = Backbone.history.handlers.reverse();
-        arr.splice(routesCount, Backbone.history.handlers.length - routesCount);
-        Backbone.history.handlers = arr.reverse();
+      var arr = Backbone.history.handlers.reverse();
+      arr.splice(routesCount, Backbone.history.handlers.length - routesCount);
+      Backbone.history.handlers = arr.reverse();
     }
     Robin.stopOtherModules();
   }
