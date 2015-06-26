@@ -20,14 +20,9 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               var date = split[0] + '-' + monthDate[0] + '-' + monthDate[1];
               return date
             });
-            var sessions = _.map(data.web.sessions, function(session){
-              var session = parseInt(session);
-              return session;
-            });
-            var pageViews = _.map(data.web.views, function(pageView){
-              var pageView = parseInt(pageView);
-              return pageView;
-            });
+            var sessions = _.map(data.web.sessions, parseInt);
+            var pageViews = _.map(data.web.views, parseInt);
+            var mailViews = _.map(data.web.mailViews, parseInt);
 
             $('#news-rooms').highcharts({
               chart: {
@@ -81,10 +76,15 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Newsroom Views',
+                name: 'Newsroom Views All',
                 type: 'column',
                 yAxis: 1,
                 data: sessions
+              }, {
+                name: 'Newsroom Views From Email',
+                type: 'column',
+                yAxis: 1,
+                data: mailViews
               }, {
                 name: 'Page Views',
                 type: 'column',

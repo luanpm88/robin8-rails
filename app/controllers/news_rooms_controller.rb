@@ -65,6 +65,7 @@ class NewsRoomsController < ApplicationController
       dates: collection.map{|col| col.date},
       sessions: collection.map{|col| col.sessions},
       views: collection.map{|col| col.pageViews},
+      mailViews: collection.map{|col| col.organicSearches},
     }
 
     render json: { web: web }
