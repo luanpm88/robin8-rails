@@ -7,10 +7,12 @@ var disconnectSocial = function(id, currentView){
     success: function(data, textStatus, jqXHR) {
       Robin.identities = data;
       currentView.render();
-      Robin.module("Social").postsView.render();
-      Robin.module("Social").tomorrowPostsView.render();
-      Robin.module("Social").othersPostsView.render();
-      Robin.SaySomething.Say.Controller.showSayView();
+      if (!Robin.KOL) {
+        Robin.module("Social").postsView.render();
+        Robin.module("Social").tomorrowPostsView.render();
+        Robin.module("Social").othersPostsView.render();
+        Robin.SaySomething.Say.Controller.showSayView();
+      }
     },
     error: function(jqXHR, textStatus, errorThrown) {
       $.growl(textStatus, {
