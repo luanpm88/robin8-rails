@@ -3,6 +3,7 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
 
   beforeEach(function () {
     model = Factory.build("stream");
+    story = Factory.build("story");
     Robin.cachedStories[1] = undefined;
 
     view = new Robin.Monitoring.Show.StreamCompositeView({model: model});
@@ -46,6 +47,8 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
       spyOn( view, 'loadInfo'); //
       spyOn( view, 'selectLink');
       spyOn( view, 'makeKeyword');
+      spyOn( view, 'onAdded');
+      spyOn( view, 'afterFetch');
       spyOn( view, 'refreshTimeRangeVisibility'); //
       spyOn( view.modelBinder, 'bind'); //
       spyOn( view.model, 'save');
@@ -106,6 +109,46 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
     it('should show news stories', function() {
       view.$el.find('.js-show-new-stories').click();
       expect(view.showNewStories).toHaveBeenCalled();
+    });
+
+    it('should move on collection add', function() {
+      view.collection.add(model);
+      expect(view.onAdded).toHaveBeenCalled();
+    });
+
+    it('should move on collection reset', function() {
+      view.collection.reset();
+      expect(view.afterFetch).toHaveBeenCalled();
+    });
+
+    describe('when ', function() {
+      beforeEach(function() {
+         // spyOn( view.options, 'noCSRF').and.callFake();
+
+      });
+    
+      it('should move on collection sync', function() {
+        // function options.noCSRF(){ return true; }
+        // var options = { noCSRF: true; };
+        // var options = { noCSRF: true };
+        // spyOn(view, 'afterFetch').and.callFake();
+
+        // var CSRF_TOKEN = '';
+        // var options = { noCSRF: { function(){ return: true } } };
+        // var options.noCSRF = true;
+        
+        // var options = new Object();
+        // Backbone.sync
+        // var noCSRF = function() {
+        //   return true;
+        // };
+
+        // test = spyOn(view.options, noCSRF).and.callThrough();
+        // console.info(options.noCSRF);
+
+        // view.collection.sync();
+        // expect(view.afterFetch).toHaveBeenCalled();
+      });
     });
 
     describe ('when user click title', function () {
