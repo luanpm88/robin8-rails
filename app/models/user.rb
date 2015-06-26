@@ -256,14 +256,56 @@ class User < ActiveRecord::Base
     user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
 
-  def twitter_post message, identity_id
-    twitter_identity = Identity.find(identity_id)
-    unless twitter_identity.blank?
+  def twitter_identity
+    identities.where(provider: 'twitter').first
+  end
+
+  def linkedin_identity
+    identities.where(provider: 'linkedin').first
+  end
+
+  def facebook_identity
+    identities.where(provider: 'facebook').first
+  end
+
+  def google_identity
+    identities.where(provider: 'google_oauth2').first
+  end
+
+  def twitter_identities
+    identities.where(provider: 'twitter')
+  end
+
+  def linkedin_identities
+    identities.where(provider: 'linkedin')
+  end
+
+  def facebook_identities
+    identities.where(provider: 'facebook')
+  end
+
+  def google_identities
+    identities.where(provider: 'google_oauth2')
+  end
+
+  def all_identities
+    identities_by_providers = {}
+    identities_by_providers[:twitter] = twitter_identities
+    identities_by_providers[:facebook] = facebook_identities
+    identities_by_providers[:google] = google_identities
+    identities_by_providers[:linkedin] = linkedin_identities
+    identities_by_providers 
+  end
+
+  def twitter_post(message, identity_id=nil)
+    identity = identity_id.nil? ? twitter_identity : Identity.find(identity_id)
+    
+    unless identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]
         config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
-        config.access_token        = twitter_identity.token
-        config.access_token_secret = twitter_identity.token_secret
+        config.access_token        = identity.token
+        config.access_token_secret = identity.token_secret
       end
       client.update(message)
     end
@@ -348,7 +390,7 @@ class User < ActiveRecord::Base
     def decrease_feature_number
       if !is_primary
         af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-        uf = af.nil? ? needed_user.user_features.seat.used.first : af
+        uf = af.nil? ? needed_user.user_features.seat.available.first : af
         return false if uf.blank?
         uf.available_count -= 1
         uf.save

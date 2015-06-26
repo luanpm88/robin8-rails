@@ -40,7 +40,7 @@ class PitchesContact < ActiveRecord::Base
       pitch_text.gsub!('@[Link]', "<a href='#{link}'>#{link}</a>")
       pitch_text.gsub!('@[Title]', title)
       pitch_text.gsub!('@[Text]', text)
-      pitch_text.gsub!("\n", "<br />")
+#      pitch_text.gsub!("\n", "<br />")
       pitch_text
     elsif self.contact.origin == 1 # twtrland
       handle = "@#{self.contact.twitter_screen_name}"

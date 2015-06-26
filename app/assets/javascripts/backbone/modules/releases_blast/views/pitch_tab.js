@@ -183,22 +183,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           'First Name', 'Last Name', 'Summary',
           'Outlet', 'Link', 'Title', 'Text'
         ],
-        pitch: this.getPitchModel()
+        pitch: this.model.toJSON()
       }
-    },
-    getPitchModel: function(){
-      var firstName = Robin.currentUser.get('first_name');
-      var emailPitch = this.model.get('email_pitch');
-      
-      if (!s.isBlank(firstName))
-        emailPitch = emailPitch.replace('@[UserFirstName]', (",<br />" + firstName));
-      else
-        emailPitch = emailPitch.replace('@[UserFirstName]', '');
-      
-      this.model.set('email_pitch', emailPitch);
-      this.model.set('email_address', Robin.currentUser.get('email'));
-      
-      return this.model;
     },
     onRender: function() {
       var self = this;
@@ -287,6 +273,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var html_text = this.releaseModel.get('text');
       var link = this.releaseModel.get('permalink');
       link = '<a href="' + link + '">' + link + '</a>';
+      var linkable_title = '<a href="' + this.releaseModel.get('permalink') + 
+        '">' + title + '</a>';
       var summariesArr = this.releaseModel.get('summaries')
         .slice(0, this.model.get('summary_length'));
       var summaries = _(summariesArr).reject(function(item){
@@ -296,7 +284,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }).join(' ');
       summaries = '<ul>' + summaries + '</ul>';
       
-      renderedText = renderedText.replace(/\@\[Title\]/g, title);
+      renderedText = renderedText.replace(/\@\[Title\]/g, linkable_title);
       renderedText = renderedText.replace(/\@\[Text\]/g, html_text);
       renderedText = renderedText.replace(/\@\[Link\]/g, link);
       renderedText = renderedText.replace(/\@\[Summary\]/g, summaries);
@@ -403,6 +391,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.model.save({ release_id: this.draftPitchModel.get('release_id')}, {
         success: function(model, response, options){
           Robin.modal.empty();
+          $.growl({message: "Bon voyage, test email! " + 
+            "Your test email is on its way to the test recipients."
+          },{
+            type: 'success'
+          });
         },
         error: function(model, response, options){
           self.ui.sendButton.prop('disabled', false);
