@@ -183,35 +183,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           'First Name', 'Last Name', 'Summary',
           'Outlet', 'Link', 'Title', 'Text'
         ],
-        pitch: this.getPitchModel()
+        pitch: this.model.toJSON()
       }
-    },
-    getPitchModel: function(){
-      var signature = [];
-      signature.push('Best regards');
-      
-      // Full name
-      var name = Robin.currentUser.get('name');
-      if (!s.isBlank(name))
-        signature.push(name);
-      
-      // Company name
-      var company = Robin.currentUser.get('company');
-      if (!s.isBlank(company))
-        signature.push(company);
-      
-      // Email
-      var email = Robin.currentUser.get('email');
-      if (!s.isBlank(email))
-        signature.push(email);
-        
-      var emailPitch = this.model.get('email_pitch');
-      emailPitch = emailPitch.replace('@[Signature]', signature.join(",<br />"));
-      
-      this.model.set('email_pitch', emailPitch);
-      this.model.set('email_address', Robin.currentUser.get('email'));
-      
-      return this.model;
     },
     onRender: function() {
       var self = this;
