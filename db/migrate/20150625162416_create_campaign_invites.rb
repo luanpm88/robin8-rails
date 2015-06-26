@@ -4,7 +4,7 @@ class CreateCampaignInvites < ActiveRecord::Migration
       t.string :status
       t.datetime :sent_at
       t.belongs_to :campaign, index: true
-      t.belongs_to :kols, index: true
+      t.belongs_to :kol, index: true
 
       t.timestamps null: false
     end

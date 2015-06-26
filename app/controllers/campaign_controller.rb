@@ -1,8 +1,8 @@
 class CampaignController < ApplicationController
 
-  def list
-    campaigns = current_user.campaigns
-    render json: campaigns, each_serializer: UserSerializer
+  def index
+    campaigns = kol_signed_in? ? current_kol.campaign : current_user.campaign
+    render json: campaigns, each_serializer: CampaignsSerializer
   end
 
 end
