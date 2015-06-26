@@ -237,6 +237,18 @@ class User < ActiveRecord::Base
     AddOn.where(id: add_ons_products.map(&:product_id)) if add_ons_products.present?
   end
 
+  def current_active_add_ons
+    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
+
+    if add_ons_products.present?
+      user_addons_features = user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
+      user_addons_features.map(&:product)
+    else
+      []
+    end
+
+  end
+
   def recurring_add_ons
     user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
@@ -334,7 +346,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
+    super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons, :current_active_add_ons])
   end
   
   def full_name

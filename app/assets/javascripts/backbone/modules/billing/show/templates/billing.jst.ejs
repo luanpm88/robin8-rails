@@ -39,7 +39,7 @@
             </tr>
           </thead>
           <tbody>
-          <% _.each(Robin.currentUser.get('recurring_add_ons'), function(item, index) { %>
+          <% _.each(Robin.currentUser.get('current_active_add_ons'), function(item, index) { %>
             <tr class='payment' id="<%= item.id %>">
               <td><%= item.product.name %></td>
               <td><%= item.product.price %></td>
