@@ -102,7 +102,7 @@
     <span class="btn btn-xs <%= Robin.identities.facebook.length == 0 ? 'disabled' : '' %> <%= (post.facebook_ids.length > 0 && Robin.identities.facebook.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to facebook"><i class="fa fa-facebook"></i></span>
     <span class="btn btn-xs <%= Robin.identities.linkedin.length == 0 ? 'disabled' : '' %> <%= (post.linkedin_ids.length > 0 && Robin.identities.linkedin.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to linkedin %>"><i class="fa fa-linkedin"></i></span>
     <span class="btn btn-xs <%= Robin.identities.weibo.length == 0 ? 'disabled' : '' %> <%= (post.weibo_ids.length > 0 && Robin.identities.weibo.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to weibo %>"><i class="fa fa-weibo"></i></span>
-    <span class="btn btn-xs <%= Robin.identities.wechat.length == 0 ? 'disabled' : '' %> <%= (post.wechat.length > 0 && Robin.identities.wechat.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to wechat %>"><i class="fa fa-wechat"></i></span>
+    <span class="btn btn-xs <%= Robin.identities.wechat.length == 0 ? 'disabled' : '' %> <%= (post.wechat_ids.length > 0 && Robin.identities.wechat.length != 0) ? 'btn-primary' : '' %>" data-toggle="tooltip" title="Post to wechat %>"><i class="fa fa-wechat"></i></span>
   </span>
   <a class="btn btn-xs btn-default edit-post" style="margin-left: 4px;" data-toggle="tooltip" title="Edit post"><i class="fa fa-pencil"></i></a>
   <a id="delete-post"  class="btn btn-xs btn-danger" data-toggle="tooltip" title="Delete post"><i class="fa fa-close"></i></a>

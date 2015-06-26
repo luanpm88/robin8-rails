@@ -16,11 +16,11 @@ module Identities
   end
 
   def weibo_identity
-    identities.where(provider: 'weibo_oauth2').first
+    identities.where(provider: 'weibo').first
   end
 
   def wechat_identity
-    identities.where(provider: 'wechat_oauth2').first
+    identities.where(provider: 'wechat').first
   end
 
   def twitter_identities
@@ -40,11 +40,11 @@ module Identities
   end
 
   def weibo_identities
-    identities.where(provider: 'weibo_oauth2')
+    identities.where(provider: 'weibo')
   end
 
   def wechat_identities
-    identities.where(provider: 'wechat_oauth2')
+    identities.where(provider: 'wechat')
   end
 
   def all_identities

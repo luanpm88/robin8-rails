@@ -59,8 +59,8 @@ Robin.setIdentities = function(data){
   Robin.identities.facebook = _.where(data, {provider: "facebook"})[0];
   Robin.identities.google = _.where(data, {provider: "google_oauth2"})[0];
   Robin.identities.linkedin = _.where(data, {provider: "linkedin"})[0];
-  Robin.identities.weibo = _.where(data, {provider: "weibo_oauth2"})[0];
-  Robin.identities.wechat = _.where(data, {provider: "wechat_oauth2"})[0];
+  Robin.identities.weibo = _.where(data, {provider: "weibo"})[0];
+  Robin.identities.wechat = _.where(data, {provider: "wechat"})[0];
 };
 
 Robin.stopOtherModules = function(){
