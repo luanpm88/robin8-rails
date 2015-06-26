@@ -4,19 +4,19 @@
     <div class="form-group">
       <label>Subject line</label>
       <input type="text" placeholder="Enter a catchy subject line..." 
-        class="form-control" value="<%= pitch.get('email_subject') %>" 
+        class="form-control" value="<%= pitch.email_subject %>" 
         name="email_subject">
     </div>
     <div class="form-group">
       <label>Your email address</label>
       <input type="text" placeholder="Enter an email address..." 
-        class="form-control" value="<%= pitch.get('email_address') %>" 
+        class="form-control" value="<%= pitch.email_address %>" 
         name="email_address">
     </div>
     <div class="form-group">
       <label>Pitch text</label>
       <textarea id="email-pitch-textarea" style="width: 100%; height: 200px;" 
-        class="form-control"><%= pitch.get('email_pitch') %></textarea>
+        class="form-control"><%= pitch.email_pitch %></textarea>
     </div>
     <div class="row">
       <div class="col-lg-5">
