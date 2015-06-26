@@ -321,7 +321,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     updatePost: function() {
       var view = this;
-      if (view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='facebook_ids']").val() == null 
+      if (view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='facebook_ids']").val() == null
           && view.rowIdentities.find("select[name='linkedin_ids']").val() == null && view.rowIdentities.find("select[name='weibo_ids']").val() == null
           && view.rowIdentities.find("select[name='wechat_ids']").val() == null) {
         swal({
@@ -485,9 +485,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onRender: function() {
       var currentView = this;
-      currentView.getRegion('today').show(Robin.module("Social").postsView);
-      currentView.getRegion('tomorrow').show(Robin.module("Social").tomorrowPostsView);
-      currentView.getRegion('other').show(Robin.module("Social").othersPostsView);
+      if (!Robin.KOL) {
+        currentView.getRegion('today').show(Robin.module("Social").postsView);
+        currentView.getRegion('tomorrow').show(Robin.module("Social").tomorrowPostsView);
+        currentView.getRegion('other').show(Robin.module("Social").othersPostsView);
+      }
     },
 
   });
@@ -556,7 +558,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     childViewContainer: "ul",
     emptyView: Show.ScheduledEmptyOther,
 
-      collectionEvents: {
+    collectionEvents: {
       "sync": "sync"
     },
 

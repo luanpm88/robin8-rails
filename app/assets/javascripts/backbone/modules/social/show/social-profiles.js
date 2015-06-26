@@ -59,10 +59,12 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
             Robin.identities = data;
             // Robin.setIdentities(data);
             currentView.render();
-            Robin.module("Social").postsView.render();
-            Robin.module("Social").tomorrowPostsView.render();
-            Robin.module("Social").othersPostsView.render();
-            Robin.SaySomething.Say.Controller.showSayView();
+            if (!Robin.KOL) {
+              Robin.module("Social").postsView.render();
+              Robin.module("Social").tomorrowPostsView.render();
+              Robin.module("Social").othersPostsView.render();
+              Robin.SaySomething.Say.Controller.showSayView();
+            }
             window.clearInterval(currentView.interval);
           });
         }
