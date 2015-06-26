@@ -1,0 +1,48 @@
+<div id="<%= recommendation.id %>" class="recommendation-body <% if (recommendation.recommendationType == "INFLUENCE"){ %>influence<%}%>">
+	<div id="<%= recommendation.id %>-overlay" class="recommendation-body-overlay">
+		<div id="view-content" class="view recommendation-button">
+			<span class="glyphicon glyphicon-book recommendation-glyphicon-size"></span>
+			<br>
+			Read
+		</div>
+		<div id="share-content" class="share recommendation-button">
+			<span class="glyphicon glyphicon-share recommendation-glyphicon-size"></span>
+			<br>
+			Share
+		</div>
+		<div id="like-content" class="like recommendation-button">
+			<span class="glyphicon glyphicon-thumbs-up recommendation-glyphicon-size"></span>
+			<br>
+			Like
+		</div>
+		<div id="dislike-content" class="dislike recommendation-button">
+			<span class="glyphicon glyphicon-thumbs-down recommendation-glyphicon-size"></span>
+			<br>
+			Dislike
+		</div>
+	</div>
+	<div class="recommendation-heading-image">
+		<div class="recommendation-image">
+			<% if(recommendation.image) {%>
+				<img height=200 width=300  src="<%= recommendation.image %>" />
+			<%} else {%>
+				<img height=200 width=300  src="<%= AppAssets.path('newsroom-btn.png') %>">
+			<%}%>
+		</div>
+		<div class="recommendation-heading"><%= recommendation.title %></div>
+	</div>
+	<div class="recommendation-authored-shares">
+		<div class="recommendation-authored">
+			<%= recommendation.timeago %> by <%= recommendation.author_name %>
+		</div>
+		
+		<div class="recommendation-shares">
+			 <%= recommendation.shares_count %> shares
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+</div>
+
+
+	
+	

@@ -17,6 +17,7 @@ config/secrets.yml
 config/database.yml
 /.capistrano
 public/system
+.DS_Store
 
 perf - robin.sublime-project
 perf - robin.sublime-workspace

@@ -13,6 +13,10 @@ Rails.application.routes.draw do
     confirmations: "users/confirmations"
   }
 
+  get 'recommendations/index' => 'recommendations#index'
+  match "recommendations/status/:id" => "recommendations#status", :via => :get
+  post 'recommendations/event' => 'recommendations#event'
+
   get 'pricing' => 'pages#pricing'
   get 'subscribe/:slug' => 'payments#new'
   post 'subscribe/:slug' => 'payments#new'
