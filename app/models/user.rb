@@ -283,14 +283,15 @@ class User < ActiveRecord::Base
     identities_by_providers 
   end
 
-  def twitter_post message, identity_id
-    twitter_identity = Identity.find(identity_id)
-    unless twitter_identity.blank?
+  def twitter_post(message, identity_id=nil)
+    identity = identity_id.nil? ? twitter_identity : Identity.find(identity_id)
+    
+    unless identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]
         config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
-        config.access_token        = twitter_identity.token
-        config.access_token_secret = twitter_identity.token_secret
+        config.access_token        = identity.token
+        config.access_token_secret = identity.token_secret
       end
       client.update(message)
     end
