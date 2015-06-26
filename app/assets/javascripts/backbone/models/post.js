@@ -3,7 +3,9 @@ Robin.Models.Post = Backbone.Model.extend({
   defaults: {
     "twitter_ids":  [],
     "facebook_ids":  [],
-    "linkedin_ids":  []
+    "linkedin_ids":  [],
+    "weibo_ids":  [],
+    "wechat_ids":  []
   },
 
   toJSON: function() {

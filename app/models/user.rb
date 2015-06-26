@@ -1,5 +1,3 @@
-
-
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -202,6 +200,30 @@ class User < ActiveRecord::Base
       response = HTTParty.post("https://api.linkedin.com/v1/people/~/shares?format=json",
                                headers: { 'Content-Type' => 'application/json'},
                                query: {oauth2_access_token: linkedin_identity.token},
+                               body: data.to_json)
+      puts response.body, response.code, response.message, response.headers.inspect
+    end
+  end
+
+  def weibo_post message, identity_id
+    weibo_identity = Identity.find(identity_id)
+    unless weibo_identity.blank?
+      data = { comment: message, visibility: {code: 'anyone'} }
+      response = HTTParty.post("https://api.weibo.com/v1/people/~/shares?format=json",
+                               headers: { 'Content-Type' => 'application/json'},
+                               query: {oauth2_access_token: weibo_identity.token},
+                               body: data.to_json)
+      puts response.body, response.code, response.message, response.headers.inspect
+    end
+  end
+
+  def wechat_post message, identity_id
+    wechat_identity = Identity.find(identity_id)
+    unless wechat_identity.blank?
+      data = { comment: message, visibility: {code: 'anyone'} }
+      response = HTTParty.post("https://api.wechat.com/v1/people/~/shares?format=json",
+                               headers: { 'Content-Type' => 'application/json'},
+                               query: {oauth2_access_token: wechat_identity.token},
                                body: data.to_json)
       puts response.body, response.code, response.message, response.headers.inspect
     end

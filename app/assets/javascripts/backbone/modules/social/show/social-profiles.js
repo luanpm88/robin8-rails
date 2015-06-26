@@ -30,6 +30,8 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .btn-google-plus': 'connectProfile',
       'click .btn-twitter': 'connectProfile',
       'click .btn-linkedin': 'connectProfile',
+      'click .btn-weibo': 'connectProfile',
+      'click .btn-wechat': 'connectProfile',
       'click .disconnect': 'disconnect'
     },
 

@@ -506,6 +506,18 @@ a {
 .soc-youtube:before {
     content:'r';
 }
+.soc-weibo {
+    background-color: #ffffff;
+}
+.soc-weibo:before {
+    content:'e';
+}
+.soc-wechat {
+    background-color: #ffffff;
+}
+.soc-wechat:before {
+    content:'f';
+}
 .soc-twitter:hover {
     background-color: #3c9eb6;
 }
@@ -522,6 +534,12 @@ a {
     background-color: #3c9eb6;
 }
 .soc-linkedin:hover {
+    background-color: #3c9eb6;
+}
+.soc-weibo:hover {
+    background-color: #3c9eb6;
+}
+.soc-wechat:hover {
     background-color: #3c9eb6;
 }
 .soc-rss:hover {
