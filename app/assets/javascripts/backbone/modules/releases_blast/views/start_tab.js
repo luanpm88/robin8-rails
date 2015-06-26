@@ -126,13 +126,27 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             ReleasesBlast.controller.analysis({releaseModel: the_release});
           } else {
             self.draftPitchModel.set('release_id', the_release.id);
-            var firstName = Robin.currentUser.get('first_name');
-            var emailPitch = self.draftPitchModel.get('email_pitch');
             
-            if (!s.isBlank(firstName))
-              emailPitch = emailPitch.replace('@[UserFirstName]', (",<br />" + firstName));
-            else
-              emailPitch = emailPitch.replace('@[UserFirstName]', '');
+            var signature = [];
+            signature.push('Best regards');
+            
+            // Full name
+            var name = Robin.currentUser.get('name');
+            if (!s.isBlank(name))
+              signature.push(name);
+            
+            // Company name
+            var company = Robin.currentUser.get('company');
+            if (!s.isBlank(company))
+              signature.push(company);
+            
+            // Email
+            var email = Robin.currentUser.get('email');
+            if (!s.isBlank(email))
+              signature.push(email);
+              
+            var emailPitch = self.draftPitchModel.get('email_pitch');
+            emailPitch = emailPitch.replace('@[Signature]', signature.join(",<br />"));
         
             self.draftPitchModel.set('email_pitch', emailPitch);
             self.draftPitchModel.set('email_address', Robin.currentUser.get('email'));

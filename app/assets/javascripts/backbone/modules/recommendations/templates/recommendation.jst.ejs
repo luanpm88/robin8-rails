@@ -1,4 +1,5 @@
-<div id="<%= recommendation.id %>" class="recommendation-body">
+
+<div id="<%= recommendation.id %>" class="recommendation-body <% if (recommendation.recommendationType == "INFLUENCE"){ %>influence<%}%>">
 	<div id="<%= recommendation.id %>-overlay" class="recommendation-body-overlay">
 		<div id="view-content" class="view recommendation-button">
 			<span class="glyphicon glyphicon-book recommendation-glyphicon-size"></span>
@@ -28,7 +29,6 @@
 			<%} else {%>
 				<img height=200 width=300  src="<%= AppAssets.path('newsroom-btn.png') %>">
 			<%}%>
-			
 		</div>
 		<div class="recommendation-heading"><%= recommendation.title %></div>
 	</div>
@@ -40,7 +40,6 @@
 		<div class="recommendation-shares">
 			 <%= recommendation.shares_count %> shares
 		</div>
-
 		<div style="clear:both;"></div>
 	</div>
 </div>

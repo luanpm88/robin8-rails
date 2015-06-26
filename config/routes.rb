@@ -16,11 +16,8 @@ Rails.application.routes.draw do
 
 
   get 'recommendations/index' => 'recommendations#index'
-
   match "recommendations/status/:id" => "recommendations#status", :via => :get
-
   post 'recommendations/event' => 'recommendations#event'
-
 
   get 'pricing' => 'pages#pricing'
   get 'set_locale' => 'pages#set_locale'

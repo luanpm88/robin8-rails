@@ -348,7 +348,7 @@ class User < ActiveRecord::Base
     def decrease_feature_number
       if !is_primary
         af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-        uf = af.nil? ? needed_user.user_features.seat.used.first : af
+        uf = af.nil? ? needed_user.user_features.seat.available.first : af
         return false if uf.blank?
         uf.available_count -= 1
         uf.save

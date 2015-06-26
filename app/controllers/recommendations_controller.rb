@@ -56,11 +56,7 @@ class RecommendationsController < ApplicationController
         end
 
         begin
-
-            response = HTTParty.get("http://staging.wripl.com/recommendations/#{user_id}.json", 
-                            :options => { :headers => { 'Content-Type' => 'application/json' }}, 
-                            :timeout => 2)
-
+            response = HTTParty.get("http://staging.wripl.com/recommendations/#{user_id}.json", :options => { :headers => { 'Content-Type' => 'application/json' }})
             json_recommendation_ids = JSON.parse(response.body)
         rescue Net::ReadTimeout
             logger.info "Operation Timedout"
@@ -68,7 +64,6 @@ class RecommendationsController < ApplicationController
             render json: json_recommendation_ids
         end
 
-        
         case response.code
           when 200
             logger.info "Request proceesed" 
@@ -78,7 +73,7 @@ class RecommendationsController < ApplicationController
             logger.info "Server Rrror" 
         end
 
-        
+        #Pagination is conducted here
         if json_recommendation_ids.size != 0
             if type == "CONTENT"
                 recommended_ids = eval(json_recommendation_ids['content_story_ids'])
@@ -86,8 +81,9 @@ class RecommendationsController < ApplicationController
                 recommended_ids = eval(json_recommendation_ids['influence_story_ids'])
             else
                 recommended_ids = eval(json_recommendation_ids['content_story_ids']) + eval(json_recommendation_ids['influence_story_ids'])
+                recommended_ids = recommended_ids.shuffle
             end
-            recommended_stories = stories(page, recommended_ids.each_slice(25).to_a)
+            recommended_stories = stories(page, recommended_ids.each_slice(15).to_a)
         end
         
 		render json:  recommended_stories
@@ -138,25 +134,28 @@ class RecommendationsController < ApplicationController
 
     def stories(page, pages)
         recommended_stories = []
-        base_url = "http://api.robin8.com/api/v1/stories"
+        base_url = Rails.application.secrets.robin_api_url + "stories"
         if page < pages.size
             params = "?"
             references = Hash.new
             pages[page].each{|current_page|
-                references[current_page[:id].to_s] = current_page[:reference]
-                params = params + "ids[]=#{current_page[:id]}&"
+                id = current_page[:id].to_s
+                references[id] = { "reference" => current_page[:reference], "recommendation_type" => current_page[:recommendation_type] }
+                params = params + "ids[]=#{id}&"
             }
-            params = params = params + "per_page=25"
+            params = params = params + "per_page=100"
             url = base_url + params
 
-            auth = {:username => "hamed@aylien.com", :password => "1234"}
+            auth = {:username => Rails.application.secrets.robin_api_user, :password => Rails.application.secrets.robin_api_pass}
             stories = JSON.parse(HTTParty.get(url, :basic_auth => auth).body)
             recommended_stories = []
-           
+
             # Add in the reference - why this recommendation?
             stories["stories"].each{ |story|
                 share_count = 0
-                story['reference'] = references[story['id'].to_s]
+                id = story['id'].to_s
+                story['reference'] = references[id]['reference']
+                story['recommendationType'] = references[id]['recommendation_type']
                 story['shares_count'].each{ |key, value| 
                     share_count = share_count + value
                 }

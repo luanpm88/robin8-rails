@@ -6,7 +6,7 @@ Robin.module("Recommendations", function(Recommendations, Robin, Backbone, Mario
     $('#nav-recommendations').parent().addClass('active');
      this.layout = new this.Layout();
      this.controller = new this.Controller();
-     this.controller.index("content");
+     this.controller.index("CONTENT");
   });
 
   Recommendations.on("stop", function(){

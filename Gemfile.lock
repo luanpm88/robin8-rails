@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/stefanpenner/country_select.git
-  revision: fad7c1d4aa24af9c84b1718176392d56f201a1f3
+  revision: 20f83bda911abd7c1d5cb96fd37f9ea22d892f0e
   specs:
     country_select (2.2.0)
       countries (~> 0.11.0)
@@ -397,7 +397,7 @@ GEM
     rails-assets-bootstrap.growl (2.0.1)
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
-    rails-assets-chance (0.7.5)
+    rails-assets-chance (0.7.6)
     rails-assets-datatables (1.10.7)
       rails-assets-jquery (>= 1.7.0)
     rails-assets-datatables-tabletools (2.2.4)

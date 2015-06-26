@@ -36,11 +36,14 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         Robin.vent.on("GetBothRecommendations", function () {
             self.GetBothRecommendations();
         });
+        Robin.vent.on("GetNextPage", function (page, recommendationType) {
+            self.GetNextPage(page, recommendationType);
+        });
     },
 
     index: function(recommendationType){
         Robin.layouts.main.content.show(Recommendations.layout);
-        this.showRecommendations("content");
+        this.showRecommendations(recommendationType);
     },
 
     showRecommendations: function(recommendationType){
@@ -49,26 +52,34 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
 
         this.collection.fetch({
             success: function (recommendations) {
+                recommendations.page = 0;
+                recommendations.recommendationType = recommendationType;
                 if(recommendations.length > 0){
-                    var recommendationsView = new Recommendations.CollectionView({ collection : recommendations });
+
                     var navRecommendationsView = new Recommendations.RecommendationsNavView();
-                    module.layout.main.show(recommendationsView);
+                    var recommendationsView = new Recommendations.CollectionView({ collection : recommendations });
+                    
                     module.layout.nav.show(navRecommendationsView);
+                    module.layout.main.show(recommendationsView);
                 }else{
                     var recommendationView = new Recommendations.NewRecommendationsView();
                     module.layout.main.show(recommendationView);
                 }
             },
-            data: { type : recommendationType },
+            data: { type : recommendationType, page: 0 },
             processData: true
         });
     },
 
     showRecommendationsType: function(recommendationType){
-        var module = this.module;
+        var module = this.module;   
 
         this.collection.fetch({
             success: function (recommendations) {
+                    
+                recommendations.page = 0;
+                recommendations.recommendationType = recommendationType;
+
                 if(recommendations.length > 0){
                     var recommendationsView = new Recommendations.CollectionView({ collection : recommendations });
                     module.layout.main.show(recommendationsView);
@@ -77,7 +88,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
                     module.layout.main.show(noRecommendationsView);
                 }              
             },
-            data: { type : recommendationType },
+            data: { type : recommendationType, page: 0 },
             processData: true
         });
     },
@@ -86,11 +97,8 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         var module = this.module;
         var loadingView = new Recommendations.LoadingView();
         module.layout.main.show(loadingView);
-
         wripl._track(Robin.currentUser.attributes['id'], 0, "INSERT", "", topics, category);
-
         this.module.controller.showRecommendations();
-
     },
 
     ViewContent: function(recommendation){
@@ -101,28 +109,32 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
     },
 
     ShareContent: function(recommendation){
-   
-        // $('#share-modal').modal({ keyboard: false });
+        
         var id = recommendation.attributes.id; 
+        var author_id = recommendation.attributes.author_id; 
         var topics = recommendation.attributes.topics.slice(0, 6).join();
         var categories = recommendation.attributes.categories;
 
+        wripl._track(Robin.currentUser.attributes['id'], author_id, "INFLUENCE", "", topics, categories);
         wripl._track(Robin.currentUser.attributes['id'], id, "SHARE", "", topics, categories);
     },
 
     LikeContent: function(recommendation){
         var shortenedTitle = $.trim(recommendation.attributes.title).split(" ").slice(0, 6).join(" ") + " ... ";
         $.growl(shortenedTitle + " Increased in relevence", {type: 'success'});
+
         var id = recommendation.attributes.id; 
+        var author_id = recommendation.attributes.author_id; 
         var topics = recommendation.attributes.topics.slice(0, 6).join();
         var categories = recommendation.attributes.categories;
+
+        wripl._track(Robin.currentUser.attributes['id'], author_id, "INFLUENCE", "", topics, categories);
         wripl._track(Robin.currentUser.attributes['id'], id, "LIKE", "", topics, categories);
     },
 
     DislikeContent: function(recommendation){
         var shortenedTitle = $.trim(recommendation.attributes.title).split(" ").slice(0, 6).join(" ") + " ... ";
-        $.growl(shortenedTitle + " Removed", {type: 'success'});
-        this.collection.remove(recommendation);
+        $.growl(shortenedTitle + " Decreased in relevence", {type: 'success'});
         var id = recommendation.attributes.id; 
         var topics = recommendation.attributes.topics.slice(0, 6).join();
         var categories = recommendation.attributes.categories;
@@ -130,18 +142,33 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
     },
 
     GetContentRecommendations: function(){
-        this.module.controller.showRecommendationsType("content");
+        this.module.controller.showRecommendationsType("CONTENT");
     },
 
     GetInfluenceRecommendations: function(){
-        this.module.controller.showRecommendationsType("influence");
+        this.module.controller.showRecommendationsType("INFLUENCE");
     },
 
     GetBothRecommendations: function(){
-        this.module.controller.showRecommendationsType("both");
+        this.module.controller.showRecommendationsType("BOTH");
     },
 
-    
+    GetNextPage: function(page, recommendationType){
+        var module = this.module;
+        this.collection = new Robin.Collections.Recommendations();
+        this.collection.fetch({
+            success: function (recommendations) {
 
+                recommendations.page = page;
+                recommendations.recommendationType = recommendationType;
+
+                var recommendationsView = new Recommendations.CollectionView({ collection : recommendations });
+                module.layout.addRegion("more", "#more-recommendations-container-" + page);
+                module.layout.more.show(recommendationsView);  
+            },
+            data: { type : recommendationType, page: page },
+            processData: true
+        });
+    }
   });
 });

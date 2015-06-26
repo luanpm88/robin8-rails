@@ -9,6 +9,7 @@ describe ReleasesController do
     allow(user).to receive(:can_create_newsroom).and_return(true)
     allow(controller).to receive(:current_user).and_return user
     allow_any_instance_of(NewsRoom).to receive(:create_campaign)
+    allow_any_instance_of(Release).to receive(:update_images_links)
     @request.host = "test.example.com"
   end
 

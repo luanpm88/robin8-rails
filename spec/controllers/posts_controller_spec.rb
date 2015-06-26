@@ -104,11 +104,11 @@ describe PostsController do
   describe "#update_social" do
     subject { put :update, ({id: 1}).merge(params) }
 
-    let!(:post) { create :post, user: user, id: 1, text: "Test text", scheduled_date: DateTime.now, social_networks: {twitter: true, facebook: true} }
+    let!(:post) { create :post, user: user, id: 1, text: "Test text", scheduled_date: DateTime.now }
 
     it "should update social " do
-      params.merge!({ post: { social_networks: {twitter: false, facebook: false} }})
-      expect { subject }.to change { post.reload.social_networks }.from({twitter: true, facebook: true}).to ({twitter: false, facebook: false})
+      params.merge!({ post: { id: 1, text: "Test text changed" }})
+      expect { subject }.to change { post.reload.text }.from("Test text").to ("Test text changed")
     end
   end
 
