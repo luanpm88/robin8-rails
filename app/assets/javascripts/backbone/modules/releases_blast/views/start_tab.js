@@ -133,7 +133,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             // Full name
             var name = Robin.currentUser.get('name');
             if (!s.isBlank(name))
-              signature.push(name);
+              signature.push(name + ','); // This is just for tracking name
             
             // Company name
             var company = Robin.currentUser.get('company');
@@ -146,7 +146,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
               signature.push(email);
               
             var emailPitch = self.draftPitchModel.get('email_pitch');
-            emailPitch = emailPitch.replace('@[Signature]', signature.join(",<br />"));
+            var signature_text = signature.join(",<br />").replace(',,', '');
+            emailPitch = emailPitch.replace('@[Signature]', signature_text);
         
             self.draftPitchModel.set('email_pitch', emailPitch);
             self.draftPitchModel.set('email_address', Robin.currentUser.get('email'));

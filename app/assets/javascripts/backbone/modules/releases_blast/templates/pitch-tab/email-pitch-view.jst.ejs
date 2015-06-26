@@ -2,21 +2,21 @@
 <div class="panel-body">
   <form role="form">
     <div class="form-group">
-      <label><%= polyglot.t("smart_release.pitch_step.email_panel.subject") %></label>
-      <input type="text" placeholder="<%= polyglot.t("smart_release.pitch_step.email_panel.subject_placeholder") %>" 
-        class="form-control" value="<%= pitch.get('email_subject') %>" 
+      <label>Subject line</label>
+      <input type="text" placeholder="Enter a catchy subject line..." 
+        class="form-control" value="<%= pitch.email_subject %>" 
         name="email_subject">
     </div>
     <div class="form-group">
-      <label><%= polyglot.t("smart_release.pitch_step.email_panel.email") %></label>
-      <input type="text" placeholder="<%= polyglot.t("smart_release.pitch_step.email_panel.email_placeholder") %>" 
-        class="form-control" value="<%= pitch.get('email_address') %>" 
+      <label>Your email address</label>
+      <input type="text" placeholder="Enter an email address..." 
+        class="form-control" value="<%= pitch.email_address %>" 
         name="email_address">
     </div>
     <div class="form-group">
       <label><%= polyglot.t("smart_release.pitch_step.email_panel.pitch_text") %></label>
       <textarea id="email-pitch-textarea" style="width: 100%; height: 200px;" 
-        class="form-control"><%= pitch.get('email_pitch') %></textarea>
+        class="form-control"><%= pitch.email_pitch %></textarea>
     </div>
     <div class="row">
       <div class="col-lg-5">

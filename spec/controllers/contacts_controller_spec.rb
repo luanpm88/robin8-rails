@@ -20,7 +20,6 @@ require 'rails_helper'
 
 RSpec.describe ContactsController, type: :controller do
 
-
 #   # This should return the minimal set of attributes required to create a valid
 #   # Contact. As you add validations to Contact, be sure to
 #   # adjust the attributes here as well.
