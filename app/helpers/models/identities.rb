@@ -1,4 +1,4 @@
-module Identities
+module Models::Identities
   def twitter_identity
     identities.where(provider: 'twitter').first
   end

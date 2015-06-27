@@ -9,7 +9,8 @@ class Kol < ActiveRecord::Base
   has_many :kol_categories, :dependent => :destroy
   has_many :iptc_categories, :through => :kol_categories
 
-  include Identities
+  include Models::Identities
+  extend Models::Oauth
 
   class EmailValidator < ActiveModel::Validator
     def validate(record)

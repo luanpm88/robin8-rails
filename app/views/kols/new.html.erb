@@ -83,6 +83,14 @@
       },
       escapeMarkup: function (m) { return m; }
     });
+    $(function(){
+      $(".btn.social").click(function(){
+        var fiveMins = new Date();
+        fiveMins.setMinutes(fiveMins.getMinutes() + 5);
+        $.cookie("kol_social", "yeah", {expires: fiveMins});
+        return true;
+      });
+    });
   </script>
 
   <style>

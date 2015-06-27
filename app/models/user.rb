@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   after_create :create_default_news_room, :decrease_feature_number
   after_destroy :increase_feature_number
 
-  include Identities
+  include Models::Identities
 
   class EmailValidator < ActiveModel::Validator
     def validate(record)
@@ -42,31 +42,7 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :email, use: :slugged
 
-  def self.find_for_oauth(auth, signed_in_resource = nil)
-    identity = Identity.find_for_oauth(auth)
-
-    user = signed_in_resource ? signed_in_resource : identity.user
-
-    if user.nil?
-      email = auth[:email]
-      user = User.where(:email => email).first if email
-
-      if user.nil?
-        user = User.new(
-            name: auth[:name],
-            email: email,
-            password: Devise.friendly_token[0,20],
-            confirmed_at: DateTime.now
-        )
-        user.save!
-      end
-    end
-    if identity.user != user
-      identity.user = user
-      identity.save!
-    end
-    user
-  end
+  extend Models::Oauth
 
   def current_user_features
     is_primary? ? user_features : invited_by.user_features
