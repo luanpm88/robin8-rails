@@ -46,6 +46,10 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_exception(e)
+    if Rails.env.development?
+      logger.error e.message
+      logger.error e.backtrace.join("\n")
+    end
     case e
       when ActiveRecord::RecordNotFound
         render :json => {error: "404 Not Found", message: e.message}, status: 404
@@ -61,9 +65,9 @@ class ApplicationController < ActionController::Base
         render :json => {error: "500 Internal Server Error", message: e.message}, status: 500
     end
   end
-  
+
   private
-  
+
   def ssl_configured?
     !Rails.env.development?
   end
