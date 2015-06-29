@@ -7,6 +7,11 @@ module Users
         def #{provider}
           auth = request.env['omniauth.auth']
 
+          if Rails.env.development?
+            puts "Got following auth info:"
+            puts auth.to_yaml
+          end
+
           params = {}
           params[:uid] = auth.uid
           params[:provider] = auth.provider
@@ -30,7 +35,7 @@ module Users
             someone = User
             if cookies[:kol_social] == "yeah"
               someone = Kol
-              cookies[:kol_socail] = "no"
+              cookies[:kol_social] = "no"
             end
             @someone = someone.find_for_oauth(params)
             if @someone.persisted?
@@ -41,11 +46,13 @@ module Users
             if current_kol.nil?
               if @identity.user != current_user
                 @identity.user = current_user
+                @identity.kol_id = nil
                 @identity.save
               end
             else
               if @identity.kol != current_kol
                 @identity.kol = current_kol
+                @identity.user_id = nil
                 @identity.save
               end
             end
@@ -64,7 +71,7 @@ module Users
       render 'twitter_popup_close', :layout => false
     end
 
-    [:twitter, :linkedin, :facebook, :google_oauth2].each do |provider|
+    [:twitter, :linkedin, :facebook, :google_oauth2, :weibo].each do |provider|
       provides_callback_for provider
     end
   end
