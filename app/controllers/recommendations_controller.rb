@@ -7,28 +7,11 @@ class RecommendationsController < ApplicationController
     skip_before_action :verify_authenticity_token
 
     def tweets
-        identity_id = 4
-        identity = identity_id.nil? ? twitter_identity : Identity.find(identity_id)
-        puts identity.inspect
-        unless identity.blank?
-          client = Twitter::REST::Client.new do |config|
-            config.consumer_key        = Rails.application.secrets.twitter[:api_key]
-            config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
-            config.access_token        = identity.token
-            config.access_token_secret = identity.token_secret
-          end
-        end
-
-        @tweets = client.user_timeline("@johnmcauley").take(3) 
-
-        analytics_client = AylienTextApi::Client.new
-
-        @result = analytics_client.entities("Lindsay Lohan should have millions in the bank, she’s been working in movies from an early age. Unfortunately for her, she has had her accounts frozen by the IRS. Lindsay found out the hard way when she owed more than $200,000 to the IRS in unpaid taxes. She reportedly borrowed $100,000 from her good friend Charlie Sheen to pay off the bill.")
-
-        puts @result.inspect
+        user_id = current_user.id
+        
 
         respond_to do |format|
-             format.html { render :text => @tweets.to_json }
+             format.html { render :text => tweets.to_json }
         end
     end
 
