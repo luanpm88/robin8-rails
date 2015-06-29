@@ -91,7 +91,7 @@
       $(".btn.social").click(function(){
         var fiveMins = new Date();
         fiveMins.setMinutes(fiveMins.getMinutes() + 5);
-        $.cookie("kol_social", "yeah", {expires: fiveMins});
+        $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
         return true;
       });
     });

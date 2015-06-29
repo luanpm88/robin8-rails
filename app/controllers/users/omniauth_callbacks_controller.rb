@@ -30,7 +30,7 @@ module Users
             someone = User
             if cookies[:kol_social] == "yeah"
               someone = Kol
-              cookies[:kol_socail] = "no"
+              cookies[:kol_social] = "no"
             end
             @someone = someone.find_for_oauth(params)
             if @someone.persisted?
