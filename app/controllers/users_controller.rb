@@ -57,12 +57,14 @@ class UsersController < ApplicationController
   end
 
   def disconnect_social
-    @identity = current_user.identities.find(params[:id])
+    someone = current_user
+    someone = current_kol if someone.nil?
+    @identity = someone.identities.find(params[:id])
     unless @identity.blank?
       @identity.destroy
     end
 
-    render json: current_user.all_identities
+    render json: someone.all_identities
   end
 
   def manageable_users
