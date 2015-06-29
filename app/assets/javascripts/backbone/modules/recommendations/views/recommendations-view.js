@@ -194,6 +194,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
 
     connectProfile: function(e) {
       e.preventDefault();
+     
 
       if ($(e.target).children().length != 0) {
         var provider = $(e.target).attr('name');
@@ -201,30 +202,26 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         var provider = $(e.target).parent().attr('name');
       };
 
-      console.log("Social Connect");
-
       var currentView = this;
-
       var url = '/users/auth/' + provider,
       params = 'location=0,status=0,width=800,height=600';
       currentView.connect_window = window.open(url, "connect_window", params);
 
+      $("#analyse-tweets").empty().html("Processing...");
+
+      var numberOfRequests = 0; 
       currentView.interval = window.setInterval((function() {
         if (currentView.connect_window.closed) {
-          $.get( "/users/get_identities", function( data ) {
-            Robin.identities = data;
+         
+          $.get( "/recommendations/tweets", function( data ) {
 
-            console.log(Robin.identities);
-            
-            // Robin.setIdentities(data);
-            //currentView.render();
+            console.log(data);
 
-            // Robin.module("Social").postsView.render();
-            // Robin.module("Social").tomorrowPostsView.render();
-            // Robin.module("Social").othersPostsView.render();
-            // Robin.SaySomething.Say.Controller.showSayView();
+            $("#analyse-tweets").empty().html("Processed");
+
             window.clearInterval(currentView.interval);
           });
+
         }
       }), 500);
     },
