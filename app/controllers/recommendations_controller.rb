@@ -9,9 +9,10 @@ class RecommendationsController < ApplicationController
     def tweets
         user_id = current_user.id
         
+        WriplTweetAnalysisWorker.perform_async(user_id)
 
         respond_to do |format|
-             format.html { render :text => tweets.to_json }
+             format.html { render :text => "DONE" }
         end
     end
 
