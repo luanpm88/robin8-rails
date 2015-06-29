@@ -27,12 +27,12 @@ module Users
           end
 
           if current_user.nil? and current_kol.nil?
-            Someone = User
+            someone = User
             if cookies[:kol_social] == "yeah"
-              Someone = Kol
+              someone = Kol
               cookies[:kol_socail] = "no"
             end
-            @someone = Someone.find_for_oauth(params)
+            @someone = someone.find_for_oauth(params)
             if @someone.persisted?
               sign_in @someone
             end
