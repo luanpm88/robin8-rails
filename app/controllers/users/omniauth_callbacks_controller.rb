@@ -7,6 +7,11 @@ module Users
         def #{provider}
           auth = request.env['omniauth.auth']
 
+          if Rails.env.development?
+            puts "Got following auth info:"
+            puts auth.to_yaml
+          end
+
           params = {}
           params[:uid] = auth.uid
           params[:provider] = auth.provider
@@ -66,7 +71,7 @@ module Users
       render 'twitter_popup_close', :layout => false
     end
 
-    [:twitter, :linkedin, :facebook, :google_oauth2].each do |provider|
+    [:twitter, :linkedin, :facebook, :google_oauth2, :weibo].each do |provider|
       provides_callback_for provider
     end
   end
