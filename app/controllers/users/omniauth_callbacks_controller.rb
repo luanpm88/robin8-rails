@@ -41,11 +41,13 @@ module Users
             if current_kol.nil?
               if @identity.user != current_user
                 @identity.user = current_user
+                @identity.kol_id = nil
                 @identity.save
               end
             else
               if @identity.kol != current_kol
                 @identity.kol = current_kol
+                @identity.user_id = nil
                 @identity.save
               end
             end
