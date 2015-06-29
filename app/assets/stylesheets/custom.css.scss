@@ -256,6 +256,66 @@ span.canceled {
   }
 }
 
+.btn-weibo {
+  color:#fff;
+  background-color: #fb9114;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-weibo:hover, .btn-weibo:focus, .btn-weibo:active, .btn-weibo.active, .open>.dropdown-toggle.btn-weibo {
+  color: #fff;
+  background-color: #e28112;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-weibo:active, .btn-weibo.active, .open>.dropdown-toggle.btn-weibo {
+  background-image: none
+}
+
+.btn-weibo.disabled, .btn-weibo[disabled], fieldset[disabled] .btn-weibo, .btn-weibo.disabled:hover,
+.btn-weibo[disabled]:hover, fieldset[disabled] .btn-weibo:hover, .btn-weibo.disabled:focus, .btn-weibo[disabled]:focus,
+fieldset[disabled] .btn-weibo:focus, .btn-weibo.disabled:active, .btn-weibo[disabled]:active,
+fieldset[disabled] .btn-weibo:active, .btn-weibo.disabled.active, .btn-weibo[disabled].active,
+fieldset[disabled] .btn-weibo.active {
+  background-color: #007bb6;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-weibo .badge {
+  color: #007bb6;
+  background-color: #fff
+}
+
+.btn-wechat {
+  color:#fff;
+  background-color: #40b609;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-wechat:hover, .btn-wechat:focus, .btn-wechat:active, .btn-wechat.active, .open>.dropdown-toggle.btn-wechat {
+  color: #fff;
+  background-color: #39a006;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-wechat:active, .btn-wechat.active, .open>.dropdown-toggle.btn-wechat {
+  background-image: none
+}
+
+.btn-wechat.disabled, .btn-wechat[disabled], fieldset[disabled] .btn-wechat, .btn-wechat.disabled:hover,
+.btn-wechat[disabled]:hover, fieldset[disabled] .btn-wechat:hover, .btn-wechat.disabled:focus, .btn-wechat[disabled]:focus,
+fieldset[disabled] .btn-wechat:focus, .btn-wechat.disabled:active, .btn-wechat[disabled]:active,
+fieldset[disabled] .btn-wechat:active, .btn-wechat.disabled.active, .btn-wechat[disabled].active,
+fieldset[disabled] .btn-wechat.active {
+  background-color: #007bb6;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-wechat .badge {
+  color: #007bb6;
+  background-color: #fff
+}
+
 .btn-social {
   padding-right: 15px;
 }
@@ -287,7 +347,7 @@ span.canceled {
     margin-top: 10px;
   }
 
-  #twitter-identities, #facebook-identities, #linkedin-identities {
+  #twitter-identities, #facebook-identities, #linkedin-identities, #weibo-identities, #wechat-identities {
     border-bottom: 1px solid #aab2bd;
     border-radius: 0 0 4px 4px;
   }
@@ -297,7 +357,7 @@ span.canceled {
   border-radius: 0 0 4px 4px;
 }
 
-#twitter-identities, #facebook-identities, #linkedin-identities {
+#twitter-identities, #facebook-identities, #linkedin-identities, #weibo-identities, #wechat-identities {
   margin-top: 20px;
 }
 

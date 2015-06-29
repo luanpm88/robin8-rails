@@ -35,7 +35,11 @@
                                   "data-validation-error-msg"=> "Password must be greater then 7 characters"%>
             </label>
             <p class="agree">By signing up you agree to Robin8's <a href="/terms">Terms of Service</a>.
-            <p class="kols">Are you a KOL? Sign up <a href="/kols/new">here</a>.
+            <% if request.location && request.location.country.to_s == "China" %>
+              <p class="kols">Are you a KOL? Sign up <a href="/kols/new">here.</a>
+            <% else %>
+              <p class="kols">Are you an Influencer? Sign up <a href="/kols/new">here.</a>
+            <% end %>
 
             <div class="errorwarning">
               <p>Please fill out all required fields</p>
@@ -48,24 +52,8 @@
         <!--</form>-->
       </div>
     </div>
-    <div class="row">
-      <div class="small-12 columns">
-        <div class="or-line">
-          <span>OR</span>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="color:#fff!important;">
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/google_oauth2?provider=google_oauth2" class="btn btn-google-plus"><i class="fa fa-google-plus"></i> <span>Sign up using Google Plus</span></a>
-      </div>
-    </div>
-    <div class="row" style="color:#fff!important;">
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/facebook?provider=facebook" class="btn btn-facebook"><i class="fa fa-facebook"></i> <span>Sign up using Facebook</span></a><br /><br /><br />
-      </div>
-    </div>
-  </div>
+    <%= render :partial => "shared/social_sign_up" %>
+</div>
 
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>

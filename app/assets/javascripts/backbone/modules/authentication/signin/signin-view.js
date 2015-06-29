@@ -7,6 +7,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       'click #login' : 'login',
       'click .btn-facebook' : 'socialSignIn',
       'click .btn-google-plus' : 'socialSignIn',
+      'click .btn-weibo' : 'socialSignIn',
+      'click .btn-wechat' : 'socialSignIn',
     },
 
     initialize: function() {

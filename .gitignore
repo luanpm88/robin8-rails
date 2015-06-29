@@ -19,5 +19,9 @@ config/database.yml
 public/system
 .DS_Store
 
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
 perf - robin.sublime-project
 perf - robin.sublime-workspace

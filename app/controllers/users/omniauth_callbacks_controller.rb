@@ -1,5 +1,7 @@
 module Users
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+    # TODO: perhaps we should get rid of this code generation, it's useless
+    # here
     def self.provides_callback_for(provider)
       class_eval %Q{
         def #{provider}
@@ -24,16 +26,28 @@ module Users
             auth.info.urls.public_profile
           end
 
-          if current_user.nil?
-            @user = User.find_for_oauth(params)
-            if @user.persisted?
-              sign_in @user
+          if current_user.nil? and current_kol.nil?
+            Someone = User
+            if cookies[:kol_social] == "yeah"
+              Someone = Kol
+              cookies[:kol_socail] = "no"
+            end
+            @someone = Someone.find_for_oauth(params)
+            if @someone.persisted?
+              sign_in @someone
             end
           else
             @identity = Identity.find_for_oauth(params)
-            if @identity.user != current_user
-              @identity.user = current_user
-              @identity.save
+            if current_kol.nil?
+              if @identity.user != current_user
+                @identity.user = current_user
+                @identity.save
+              end
+            else
+              if @identity.kol != current_kol
+                @identity.kol = current_kol
+                @identity.save
+              end
             end
           end
           if request.env['omniauth.params']['provider'].nil?

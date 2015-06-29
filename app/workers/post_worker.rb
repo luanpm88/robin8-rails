@@ -19,5 +19,15 @@ class PostWorker
         user.facebook_post(post.text, id) 
       end
     end
+    if post.weibo_ids.count > 0
+      post.weibo_ids.each do |id|
+        user.weibo_post(post.text, id)
+      end
+    end
+    if post.wechat_ids.count > 0
+      post.wechat_ids.each do |id|
+        user.wechat_post(post.text, id)
+      end
+    end
   end
 end
