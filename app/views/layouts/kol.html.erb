@@ -38,6 +38,7 @@
 <script type="text/javascript">
 
   $(document).ready(function() {
+    Robin.china = <%= request.location && request.location.country.to_s == "China" %>;
     Robin.start();
   });
   <% if flash[:success_confirmation] -%>
@@ -56,6 +57,7 @@
   <% else -%>
     Robin.showLoading = true;
   <% end -%>
+
 
 </script>
 

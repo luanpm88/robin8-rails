@@ -1,5 +1,7 @@
 module Users
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+    # TODO: perhaps we should get rid of this code generation, it's useless
+    # here
     def self.provides_callback_for(provider)
       class_eval %Q{
         def #{provider}
