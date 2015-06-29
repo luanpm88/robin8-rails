@@ -37,8 +37,33 @@
               <div class="form-group">
                 <label for="topics-select">3. Connect your Twitter account</label>
                 <p class="redcommendation-explanatory-text">Robin8 Recommendations get better and smarter by looking at what you or your company share on Twitter.
+
+                <!-- class="<%= Robin.identities.twitter.length == 0 ? "no-padding-bottom" : ""%>" -->
+                <div >
+                  <span>
+                    <a id="btn-twitter" class="btn btn-xs btn-social btn-twitter" name='twitter'>
+                      <i class="fa fa-twitter"></i>
+                      Twitter
+                    </a>
+                  </span>
+                  
+                  <!--
+                  <% if (Robin.identities.twitter.length == 0) {%>
+                    <li class="identity">
+                      <span> There is no accounts </span>
+                    </li>
+                  <%} else {%>
+                    DISCONNECT
+                  <% } %>
+                  -->
+
+                </div>
+
               </div>
               <br />
+               <div class="form-group">
+                <label for="topics-select">All set? Proceed to you recommendations.</label>
+              </div>
               <div class="form-group">
               <button class="btn btn-lg btn-success" id="insert-user-tastes"  title="">Let's Go</button>
               </div>

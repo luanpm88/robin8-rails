@@ -120,6 +120,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         $('.more-recommendations').remove();
         $('#no-more-recommendations').hide();
     }
+
   });
 
 
@@ -186,38 +187,81 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
   Recommendations.NewRecommendationsView = Marionette.CompositeView.extend({
     template: 'modules/recommendations/templates/new-recommendations',
     
-      events: {
-        'click #insert-user-tastes': 'InsertUserTastes',
-      },
+    events: {
+      'click #insert-user-tastes': 'InsertUserTastes',
+      'click #btn-twitter': 'connectProfile'
+    },
 
-      onRender: function() {
+    connectProfile: function(e) {
+      e.preventDefault();
 
-        Robin.currentUser.attributes["topics"] = "";
+      if ($(e.target).children().length != 0) {
+        var provider = $(e.target).attr('name');
+      } else {
+        var provider = $(e.target).parent().attr('name');
+      };
 
-        $(this.el).find('#topics-select').select2({
-          multiple: true,
-          tags: true,
-          minimumInputLength: 1,
-          ajax: {
-            url: '/autocompletes/topics',
-            dataType: 'json',
-            data: function(term, page) { 
-              return { term: term } 
-            },
-            results: function(data, page) { 
-              return { results: data }; 
-            }
+      console.log("Social Connect");
+
+      var currentView = this;
+
+      var url = '/users/auth/' + provider,
+      params = 'location=0,status=0,width=800,height=600';
+      currentView.connect_window = window.open(url, "connect_window", params);
+
+      currentView.interval = window.setInterval((function() {
+        if (currentView.connect_window.closed) {
+          $.get( "/users/get_identities", function( data ) {
+            Robin.identities = data;
+
+            console.log(Robin.identities);
+            
+            // Robin.setIdentities(data);
+            //currentView.render();
+
+            // Robin.module("Social").postsView.render();
+            // Robin.module("Social").tomorrowPostsView.render();
+            // Robin.module("Social").othersPostsView.render();
+            // Robin.SaySomething.Say.Controller.showSayView();
+            window.clearInterval(currentView.interval);
+          });
+        }
+      }), 500);
+    },
+
+    disconnect: function(e) {
+      e.preventDefault();
+      disconnectSocial($(e.target).attr('identityid'), this);
+    },
+
+    onRender: function() {
+
+      Robin.currentUser.attributes["topics"] = "";
+
+      $(this.el).find('#topics-select').select2({
+        multiple: true,
+        tags: true,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/autocompletes/topics',
+          dataType: 'json',
+          data: function(term, page) { 
+            return { term: term } 
+          },
+          results: function(data, page) { 
+            return { results: data }; 
           }
-        });
+        }
+      });
 
-      },
+    },
 
-      InsertUserTastes: function(e) {
-        e.preventDefault();
-        var topics = $("#topics-select").val();
-        var category = $('#category-select').val();
-        Robin.vent.trigger("InsertUserTastes", topics, category);
-      }
+    InsertUserTastes: function(e) {
+      e.preventDefault();
+      var topics = $("#topics-select").val();
+      var category = $('#category-select').val();
+      Robin.vent.trigger("InsertUserTastes", topics, category);
+    }
 
   });
 

@@ -1,9 +1,30 @@
 require 'httparty'
 require 'json'
+require 'twitter'
 
 class RecommendationsController < ApplicationController
     before_action :authenticate_user!
     skip_before_action :verify_authenticity_token
+
+    def tweets
+        identity_id = 4
+        identity = identity_id.nil? ? twitter_identity : Identity.find(identity_id)
+        puts identity.inspect
+        unless identity.blank?
+          client = Twitter::REST::Client.new do |config|
+            config.consumer_key        = Rails.application.secrets.twitter[:api_key]
+            config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
+            config.access_token        = identity.token
+            config.access_token_secret = identity.token_secret
+          end
+        end
+
+        @tweets = client.user_timeline("@johnmcauley").take(3) 
+
+        respond_to do |format|
+             format.html { render :text => @tweets.to_json }
+        end
+    end
 
     def event 
         if validate_event(params)
