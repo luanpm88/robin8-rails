@@ -6,38 +6,38 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         var self = this;
         self.module = Robin.module("Recommendations");
         Robin.vent.on("InsertUserTastes", function (topics, category) {
-            self.InsertUserTastes(topics, category);
+            self.insertUserTastes(topics, category);
         });
 
         Robin.vent.on("ViewContent", function (recommendation) {
-            self.ViewContent(recommendation);
+            self.viewContent(recommendation);
         });
 
         Robin.vent.on("ShareContent", function (recommendation) {
-            self.ShareContent(recommendation);
+            self.shareContent(recommendation);
         });
 
         Robin.vent.on("LikeContent", function (recommendation) {
-            self.LikeContent(recommendation);
+            self.likeContent(recommendation);
         });
 
         Robin.vent.on("DislikeContent", function (recommendation) {
-            self.DislikeContent(recommendation);
+            self.dislikeContent(recommendation);
         });
 
         Robin.vent.on("GetContentRecommendations", function () {
-            self.GetContentRecommendations();
+            self.getContentRecommendations();
         });
 
         Robin.vent.on("GetInfluenceRecommendations", function () {
-            self.GetInfluenceRecommendations();
+            self.getInfluenceRecommendations();
         });
 
         Robin.vent.on("GetBothRecommendations", function () {
-            self.GetBothRecommendations();
+            self.getBothRecommendations();
         });
         Robin.vent.on("GetNextPage", function (page, recommendationType) {
-            self.GetNextPage(page, recommendationType);
+            self.getNextPage(page, recommendationType);
         });
     },
 
@@ -63,7 +63,14 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
                     module.layout.main.show(recommendationsView);
                 }else{
                     var recommendationView = new Recommendations.NewRecommendationsView();
-                    module.layout.main.show(recommendationView);
+                    if (Robin.identities == undefined) {
+                        $.get( "/users/get_identities", function( data ) {
+                          Robin.identities = data; 
+                          module.layout.main.show(recommendationView);
+                        });
+                    } else {
+                        module.layout.main.show(recommendationView);
+                    } 
                 }
             },
             data: { type : recommendationType, page: 0 },
@@ -93,7 +100,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         });
     },
 
-    InsertUserTastes: function (topics, category) {
+    insertUserTastes: function (topics, category) {
         var module = this.module;
         var loadingView = new Recommendations.LoadingView();
         module.layout.main.show(loadingView);
@@ -101,14 +108,14 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         this.module.controller.showRecommendations();
     },
 
-    ViewContent: function(recommendation){
+    viewContent: function(recommendation){
         var id = recommendation.attributes.id; 
         var topics = recommendation.attributes.topics.slice(0, 6).join();
         var categories = recommendation.attributes.categories;
         wripl._track(Robin.currentUser.attributes['id'], id, "VIEW", "", topics, categories);
     },
 
-    ShareContent: function(recommendation){
+    shareContent: function(recommendation){
         
         var id = recommendation.attributes.id; 
         var author_id = recommendation.attributes.author_id; 
@@ -119,7 +126,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         wripl._track(Robin.currentUser.attributes['id'], id, "SHARE", "", topics, categories);
     },
 
-    LikeContent: function(recommendation){
+    likeContent: function(recommendation){
         var shortenedTitle = $.trim(recommendation.attributes.title).split(" ").slice(0, 6).join(" ") + " ... ";
         $.growl(shortenedTitle + " Increased in relevence", {type: 'success'});
 
@@ -132,7 +139,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         wripl._track(Robin.currentUser.attributes['id'], id, "LIKE", "", topics, categories);
     },
 
-    DislikeContent: function(recommendation){
+    dislikeContent: function(recommendation){
         var shortenedTitle = $.trim(recommendation.attributes.title).split(" ").slice(0, 6).join(" ") + " ... ";
         $.growl(shortenedTitle + " Decreased in relevence", {type: 'success'});
         var id = recommendation.attributes.id; 
@@ -141,19 +148,19 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         wripl._track(Robin.currentUser.attributes['id'], id, "DISLIKE", "", topics, categories);
     },
 
-    GetContentRecommendations: function(){
+    getContentRecommendations: function(){
         this.module.controller.showRecommendationsType("CONTENT");
     },
 
-    GetInfluenceRecommendations: function(){
+    getInfluenceRecommendations: function(){
         this.module.controller.showRecommendationsType("INFLUENCE");
     },
 
-    GetBothRecommendations: function(){
+    getBothRecommendations: function(){
         this.module.controller.showRecommendationsType("BOTH");
     },
 
-    GetNextPage: function(page, recommendationType){
+    getNextPage: function(page, recommendationType){
         var module = this.module;
         this.collection = new Robin.Collections.Recommendations();
         this.collection.fetch({

@@ -35,33 +35,39 @@
               </div>
               <br />
               <div class="form-group">
-                <label for="topics-select">3. Connect your Twitter account</label>
-                <p class="redcommendation-explanatory-text">Robin8 Recommendations get better and smarter by looking at what you or your company share on Twitter.
+                <% if (Robin.identities.twitter.length == 0) {%>
 
-                <!-- class="<%= Robin.identities.twitter.length == 0 ? "no-padding-bottom" : ""%>" -->
-                <div id="analyse-tweets">
-                  <span>
-                    <a id="btn-twitter" class="btn btn-xs btn-social btn-twitter" name='twitter'>
-                      <i class="fa fa-twitter"></i>
-                      Twitter
-                    </a>
-                  </span>
-                  
-                  <!--
-                  <% if (Robin.identities.twitter.length == 0) {%>
-                    <li class="identity">
-                      <span> There is no accounts </span>
-                    </li>
-                  <%} else {%>
-                    DISCONNECT
-                  <% } %>
-                  -->
+                  <label for="topics-select">3. Connect your Twitter account</label>
+                  <p class="redcommendation-explanatory-text">Robin8 Recommendations get better and smarter by looking at what you or your company share on Twitter.</p>
+                  <div id="analyse-tweets">
+                        <a id="btn-twitter" class="btn btn-xs btn-social btn-twitter" name='twitter'>
+                          <i class="fa fa-twitter"></i>
+                          Twitter
+                        </a>
+                      </li>
+                  </div>
 
+                <%} else {%>
+
+                  <label for="topics-select">3. Analyse your Twitter stream</label>
+                  <p class="redcommendation-explanatory-text">Robin8 Recommendations get better and smarter by looking at what you or your company share on Twitter.</p>
+                  <div id="analyse-tweets">
+                        <a id="btn-analyse-tweets" class="btn btn-xs btn-social btn-twitter" name='twitter'>
+                          <i class="fa fa-twitter"></i>
+                          Analyse Tweets
+                        </a>
+                      </li>
+                  </div>
+
+                <% } %>
+
+                <div id="analysed-tweets" style="display:none;">
+                  <i class="glyphicon glyphicon-ok"></i> Tweets Analysed
                 </div>
 
               </div>
               <br />
-               <div class="form-group">
+              <div class="form-group">
                 <label for="topics-select">All set? Proceed to you recommendations.</label>
               </div>
               <div class="form-group">

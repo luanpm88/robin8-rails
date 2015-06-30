@@ -189,13 +189,24 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
     
     events: {
       'click #insert-user-tastes': 'InsertUserTastes',
-      'click #btn-twitter': 'connectProfile'
+      'click #btn-twitter': 'connectProfile',
+      'click #btn-analyse-tweets' : "analyseTweets"
+    },
+
+    analyseTweets: function(e) {
+      e.preventDefault();
+    
+      $("#analyse-tweets").empty().html("<i class='glyphicon glyphicon-retweet'></i> Analysing Tweets...");
+      $.get("/recommendations/analyse_tweets.json?request_count=0", function( data ) {
+        $("#analysed-tweets").show();
+        $("#analyse-tweets").hide();
+      });
+
     },
 
     connectProfile: function(e) {
       e.preventDefault();
      
-
       if ($(e.target).children().length != 0) {
         var provider = $(e.target).attr('name');
       } else {
@@ -207,20 +218,21 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
       params = 'location=0,status=0,width=800,height=600';
       currentView.connect_window = window.open(url, "connect_window", params);
 
-      $("#analyse-tweets").empty().html("Processing...");
+      $("#analyse-tweets").empty().html("<i class='glyphicon glyphicon-retweet'></i> Analysing Tweets...");
 
-      var numberOfRequests = 0; 
+      var requestCount = 0; 
       currentView.interval = window.setInterval((function() {
         if (currentView.connect_window.closed) {
-         
-          $.get( "/recommendations/tweets", function( data ) {
-
-            console.log(data);
-
-            $("#analyse-tweets").empty().html("Processed");
+        
+          $.get("/recommendations/analyse_tweets.json?request_count=" + requestCount, function( data ) {
+            
+            $("#analysed-tweets").show();
+            $("#analyse-tweets").hide();
 
             window.clearInterval(currentView.interval);
           });
+
+          requestCount++;
 
         }
       }), 500);
