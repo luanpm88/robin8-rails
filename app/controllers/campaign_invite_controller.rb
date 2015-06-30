@@ -6,4 +6,11 @@ class CampaignInviteController < ApplicationController
 
   def create
   end
+
+  def update
+    @invite = CampaignInvite.find(params[:id])
+    @invite.status = params[:status]
+    @invite.save
+    render json: @invite
+  end
 end

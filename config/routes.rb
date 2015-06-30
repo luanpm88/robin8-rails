@@ -143,6 +143,6 @@ Rails.application.routes.draw do
   get '/payment-confirmation', to: 'pages#payment_confirmation'
 
   resources :campaign, only: [:index, :create, :show]
-  resources :campaign_invite, only: [:index, :create, :show]
+  resources :campaign_invite, only: [:index, :create, :show, :update]
 
 end
