@@ -120,6 +120,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         $('.more-recommendations').remove();
         $('#no-more-recommendations').hide();
     }
+
   });
 
 
@@ -186,38 +187,90 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
   Recommendations.NewRecommendationsView = Marionette.CompositeView.extend({
     template: 'modules/recommendations/templates/new-recommendations',
     
-      events: {
-        'click #insert-user-tastes': 'InsertUserTastes',
-      },
+    events: {
+      'click #insert-user-tastes': 'InsertUserTastes',
+      'click #btn-twitter': 'connectProfile',
+      'click #btn-analyse-tweets' : "analyseTweets"
+    },
 
-      onRender: function() {
+    analyseTweets: function(e) {
+      e.preventDefault();
+    
+      $("#analyse-tweets").empty().html("<i class='glyphicon glyphicon-retweet'></i> Analysing Tweets...");
+      $.get("/recommendations/analyse_tweets.json?request_count=0", function( data ) {
+        $("#analysed-tweets").show();
+        $("#analyse-tweets").hide();
+      });
 
-        Robin.currentUser.attributes["topics"] = "";
+    },
 
-        $(this.el).find('#topics-select').select2({
-          multiple: true,
-          tags: true,
-          minimumInputLength: 1,
-          ajax: {
-            url: '/autocompletes/topics',
-            dataType: 'json',
-            data: function(term, page) { 
-              return { term: term } 
-            },
-            results: function(data, page) { 
-              return { results: data }; 
-            }
+    connectProfile: function(e) {
+      e.preventDefault();
+     
+      if ($(e.target).children().length != 0) {
+        var provider = $(e.target).attr('name');
+      } else {
+        var provider = $(e.target).parent().attr('name');
+      };
+
+      var currentView = this;
+      var url = '/users/auth/' + provider,
+      params = 'location=0,status=0,width=800,height=600';
+      currentView.connect_window = window.open(url, "connect_window", params);
+
+      $("#analyse-tweets").empty().html("<i class='glyphicon glyphicon-retweet'></i> Analysing Tweets...");
+
+      var requestCount = 0; 
+      currentView.interval = window.setInterval((function() {
+        if (currentView.connect_window.closed) {
+        
+          $.get("/recommendations/analyse_tweets.json?request_count=" + requestCount, function( data ) {
+            
+            $("#analysed-tweets").show();
+            $("#analyse-tweets").hide();
+
+            window.clearInterval(currentView.interval);
+          });
+
+          requestCount++;
+
+        }
+      }), 500);
+    },
+
+    disconnect: function(e) {
+      e.preventDefault();
+      disconnectSocial($(e.target).attr('identityid'), this);
+    },
+
+    onRender: function() {
+
+      Robin.currentUser.attributes["topics"] = "";
+
+      $(this.el).find('#topics-select').select2({
+        multiple: true,
+        tags: true,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/autocompletes/topics',
+          dataType: 'json',
+          data: function(term, page) { 
+            return { term: term } 
+          },
+          results: function(data, page) { 
+            return { results: data }; 
           }
-        });
+        }
+      });
 
-      },
+    },
 
-      InsertUserTastes: function(e) {
-        e.preventDefault();
-        var topics = $("#topics-select").val();
-        var category = $('#category-select').val();
-        Robin.vent.trigger("InsertUserTastes", topics, category);
-      }
+    InsertUserTastes: function(e) {
+      e.preventDefault();
+      var topics = $("#topics-select").val();
+      var category = $('#category-select').val();
+      Robin.vent.trigger("InsertUserTastes", topics, category);
+    }
 
   });
 
