@@ -17,7 +17,11 @@ class Payment < ActiveRecord::Base
   def set_features
     product.features.each do |f|
       product_quota = product.product_features.where(feature_id: f.id).first.quota
-      available_count = product.is_package ? product_quota - user.used_count_by_slug(f.slug) : product_quota
+      if product.slug == 'smart_release'
+        available_count = product_quota 
+      else
+        available_count = product.is_package ? product_quota - user.used_count_by_slug(f.slug) : product_quota
+      end
 
       user_product.user.user_features.create!(
         feature_id: f.id,
