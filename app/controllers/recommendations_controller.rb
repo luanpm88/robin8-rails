@@ -192,9 +192,10 @@ class RecommendationsController < ApplicationController
         if page < pages.size
             params = "?"
             references = Hash.new
+            emails = Hash.new
             pages[page].each{|current_page|
                 id = current_page[:id].to_s
-                references[id] = { "reference" => current_page[:reference], "recommendation_type" => current_page[:recommendation_type] }
+                references[id] = { "reference" => current_page[:reference], "recommendation_type" => current_page[:recommendation_type], "email" => current_page[:email] }
                 params = params + "ids[]=#{id}&"
             }
             params = params = params + "per_page=100"
@@ -208,6 +209,7 @@ class RecommendationsController < ApplicationController
             stories["stories"].each{ |story|
                 share_count = 0
                 id = story['id'].to_s
+                story['email'] = references[id]['email']
                 story['reference'] = references[id]['reference']
                 story['recommendationType'] = references[id]['recommendation_type']
                 story['shares_count'].each{ |key, value| 
