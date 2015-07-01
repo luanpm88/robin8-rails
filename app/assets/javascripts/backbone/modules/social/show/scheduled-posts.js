@@ -286,7 +286,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('textarea').parent().append(this.rowIdentities);
       this.$el.find('textarea').attr('name', 'text');
       this.$el.find('textarea').attr('id', 'edit-post-textarea');
-      this.$el.find('textarea').width("600px");
+      this.$el.find('textarea').width("650px");
 
       var postBindings = {
         text: '[name=text]',

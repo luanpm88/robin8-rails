@@ -259,12 +259,9 @@ class User < ActiveRecord::Base
   def weibo_post message, identity_id
     weibo_identity = Identity.find(identity_id)
     unless weibo_identity.blank?
-      data = { comment: message, visibility: {code: 'anyone'} }
-      response = HTTParty.post("https://api.weibo.com/v1/people/~/shares?format=json",
-                               headers: { 'Content-Type' => 'application/json'},
-                               query: {oauth2_access_token: weibo_identity.token},
-                               body: data.to_json)
-      puts response.body, response.code, response.message, response.headers.inspect
+      response = HTTParty.post("https://api.weibo.com/2/statuses/update.json",
+                               query: {access_token: weibo_identity.token},
+                               body: { status: message })
     end
   end
 
