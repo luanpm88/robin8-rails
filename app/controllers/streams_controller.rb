@@ -1,7 +1,8 @@
 class StreamsController < ApplicationController
 
   def index
-    @streams = current_user.streams.order(:position)
+    limit = current_user.current_user_features.media_monitoring.map(&:max_count).inject{|sum,x| sum + x }
+    @streams = current_user.streams.order(:position).limit(limit)
     render json: @streams.to_json
   end
 
@@ -25,7 +26,7 @@ class StreamsController < ApplicationController
     if @stream.update_attributes(stream_params)
       render json: @stream.to_json
     else
-      render nothing: true
+      render json: stream.errors , status: :bad_request
     end
   end
 

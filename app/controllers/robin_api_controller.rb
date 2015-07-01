@@ -99,10 +99,14 @@ class RobinApiController < ApplicationController
       @max_min = calculate_max_min(author_name)
     end
     a = @max_min[0]; b = @max_min[1];
-    x_min_max = @max_score - @min_score
-    delta_b_a = b - a
-    normalized_score = a + ((score - @min_score) * delta_b_a / x_min_max)
-    normalized_score.round(2)
+    
+    normalized_score = unless @max_score == @min_score
+      x_min_max = @max_score - @min_score
+      delta_b_a = b - a
+      a + ((score - @min_score) * delta_b_a / x_min_max)
+    else
+      a
+    end
     
     normalized_score.nil? ? 0 : normalized_score.round(2)
   end

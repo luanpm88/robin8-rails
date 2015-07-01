@@ -14,5 +14,6 @@ class UserFeature < ActiveRecord::Base
   scope :pr_newswire_distribution,   -> { joins(:feature).where(features: { slug: 'pr_newswire_distribution' }) }
   scope :available,                  -> { where('available_count > 0') }
   scope :not_available,              -> { where('available_count = 0') }
+  scope :used,                       -> { where('available_count < max_count') }
 
 end

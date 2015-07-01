@@ -35,7 +35,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     collectionEvents: {
       add: 'onAdded',
       'reset': 'afterFetch',
-      'sync': 'afterFetch'
+      'sync': 'afterFetch',
+      'request': 'showLoading',
     },
 
     modelEvents: {
@@ -43,11 +44,18 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
+    showLoading: function (e) {
+      this.$el.find('.stream-loading').removeClass('hidden');
+      this.$el.find('.empty-stream').addClass('hidden');
+    },
+
     afterFetch: function (e) {
       this.filterCollection();
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
-      if (this.collection.length == 0) {
+      if (this.collection.length != 0) {
+        this.$el.find('.empty-stream').addClass('hidden');
+      } else {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
     },
@@ -153,11 +161,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         Robin.cachedStories[streamId].streamId = streamId;
         Robin.cachedStories[streamId].alreadyRendered = false;
         Robin.cachedStories[streamId].sortByPopularity = this.model.get('sort_column') == 'shares_count';
-
       }
 
       this.collection = Robin.cachedStories[streamId] || new Robin.Collections.Stories();
-      
       if (Robin.loadingStreams.length == 1) {
         Robin.currentStreamIndex = 0;
         this.collection.executePolling();
@@ -198,7 +204,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         Robin.cachedStories[this.model.get('id')].alreadyRendered = true;
       }
 
-
       if (this.needOpacity) {
         this.$el.find('.stream-loading').removeClass('hidden');
         this.$el.find('.stream-body').addClass('opacity-02');
@@ -214,6 +219,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.refreshTimeRangeVisibility();
       this.$el.find("input.select2-input").css('width', '150%');
+
       
       this.ui.colorizeBackground.prop('checked', true);
       this.ui.colorizeBackground.parent().hide();
