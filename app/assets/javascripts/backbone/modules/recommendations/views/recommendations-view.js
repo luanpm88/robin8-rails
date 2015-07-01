@@ -14,7 +14,8 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         'click #like-content': 'likeContent',
         'click #dislike-content': 'dislikeContent',
         'click #share-content': 'shareContent',
-        'click #view-content': 'viewContent'
+        'click #view-content': 'viewContent',
+        'click #contact': 'contact'
     },
 
     onRender: function() {
@@ -69,6 +70,18 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         $(this.el).find(id).hide();
         window.open(this.model.attributes.link, '_blank');
         Robin.vent.trigger("ViewContent", this.model);
+    },
+
+    contact: function(e) {
+        e.preventDefault();
+        var model = this.model;
+        var email = model.attributes.email;
+        if(email){
+          window.location.href = "mailto:" + email;
+          $.growl("Opened Author's email in your mail client", {type: 'success'});
+        }else{
+          $.growl("Author's contact details are unavailable", {type: 'danger'});
+        }
     }
     
   });

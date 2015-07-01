@@ -132,15 +132,25 @@
 }
 
 .recommendation-button{
-	text-align: center;
-	float:left;
-	height: 149px;
-	width: 50%;
-	cursor: pointer;
-	color: #fff;
-	font-size: 20px;
-	padding:40px;
+    text-align: center;
+    height: 75px;
+    width: 100%;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    padding: 30px;
 }
+
+.influence .recommendation-button{
+    text-align: center;
+    height: 60px;
+    width: 100%;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    padding:18px;
+}
+
 
 .recommendation-button:hover{
 	background:rgba(18, 59, 68, .75); 
@@ -152,7 +162,7 @@
 }
 
 .recommendation-glyphicon-size{
-	font-size: 45px;
+	font-size: 20px;
 	color: #fff;
 }
 
