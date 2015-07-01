@@ -457,7 +457,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         limit = 2000;
         view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
       } else if ( view.rowIdentities.find("select[name='weibo_ids']").val() != null ) {
-        limit = 500;
+        limit = 140;
         view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
       } else if ( view.rowIdentities.find("select[name='wechat_ids']").val() != null ) {
         limit = 500;
