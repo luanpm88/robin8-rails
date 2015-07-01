@@ -1,13 +1,11 @@
 Robin.Models.CampaignInvitation = Backbone.Model.extend
 
   decline: ()->
-    this.set(
+    this.set
       status: "D"
-    )
     this.save()
 
   accept: ()->
-    this.set(
+    this.set
       status: "A"
-    )
     this.save()

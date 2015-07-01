@@ -6,12 +6,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       invites.fetch
         success: ()->
           dashboardPageView.render()
-        error: ()->
-          console.log "pizdanulis"
+        error: (e)->
+          console.log e
 
-      dashboardPageView = new Show.DashboardKOLPage(
+      dashboardPageView = new Show.DashboardKOLPage
         collection: invites
-      )
 
       Robin.layouts.main.content.show dashboardPageView
 

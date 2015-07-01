@@ -11,8 +11,8 @@
                     </div>
                     <% if (item.status == "") { %>
                     <div class="col-xs-3 col-md-2 pull-right">
-                        <button type="button" class="btn btn-primary invitation-actions" data-action="accept" data-invite-id="<%= item.id %>">Accept</button>
-                        <button type="button" class="btn btn-danger invitation-actions" data-action="decline" data-invite-id="<%= item.id %>">Decline</button>
+                        <button type="button" class="btn btn-primary invitation-accept" data-invite-id="<%= item.id %>">Accept</button>
+                        <button type="button" class="btn btn-danger invitation-decline" data-invite-id="<%= item.id %>">Decline</button>
                     </div>
                     <% } %>
                 </div>
