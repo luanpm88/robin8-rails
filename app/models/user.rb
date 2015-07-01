@@ -227,7 +227,6 @@ class User < ActiveRecord::Base
 
   def current_active_add_ons
     add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
-
     if add_ons_products.present?
       user_addons_features = user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
       add_ons_products.where(product_id: user_addons_features.map(&:product_id))
