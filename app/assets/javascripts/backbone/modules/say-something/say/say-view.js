@@ -164,7 +164,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         limit = 2000;
         view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
       } else if ( $("select[name='weibo_ids']").val() != null ) {
-        limit = 500;
+        limit = 140;
         view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
       } else if ( $("select[name='wechat_ids']").val() != null ) {
         limit = 500;

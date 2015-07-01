@@ -29,6 +29,8 @@ module Users
             auth.info.urls[:Twitter]
           when 'linkedin'
             auth.info.urls.public_profile
+          when 'weibo'
+            auth.info.urls[:Weibo]
           end
 
           if current_user.nil? and current_kol.nil?
