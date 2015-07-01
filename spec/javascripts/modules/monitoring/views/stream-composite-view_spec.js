@@ -122,6 +122,12 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
       expect(view.afterFetch).toHaveBeenCalled();
     });
 
+    it('should move on collection sync', function() {
+      // TODO!!!
+      // view.collection.sync();
+      // expect(view.afterFetch).toHaveBeenCalled();
+    });
+
     it('should run after model change', function() {
       view.model.set('sort_column', 1);
       expect(view.setShowUpdatesButtonVisibility).toHaveBeenCalled();
@@ -132,43 +138,16 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
       expect(view.refreshTimeRangeVisibility).toHaveBeenCalled();
     });
 
-    describe('when ', function() {
-      beforeEach(function() {
+    it('should #close-settings', function() {
+      // TODO!!!
+      // view.$el.find('#close-settings').click();
+      // expect(view.closeSettings).toHaveBeenCalled();
+    });
 
-        // Backbone.sync = function(method, model, options) {
-        //   return true;
-        // }
-
-        // var view2 = new Robin.Monitoring.Show.StreamCompositeView({model: model});
-        // spyOn( view2, 'afterFetch');
-
-        // var Backbone = this.Backbone;
-        // console.info(Backbone);
-        // console.info('!!!!!!!!!!');
-      });
-
-      it('should move on collection sync', function() {
-        // function options.noCSRF(){ return true; }
-        // var options = { noCSRF: true; };
-        // var options = { noCSRF: true };
-        // spyOn(view, 'afterFetch').and.callFake();
-
-        // var CSRF_TOKEN = '';
-        // var options = { noCSRF: { function(){ return: true } } };
-        // var options.noCSRF = true;
-        
-        // var options = new Object();
-        // Backbone.sync
-        // var noCSRF = function() {
-        //   return true;
-        // };
-
-        // test = spyOn(view.options, noCSRF).and.callThrough();
-        // console.info(options.noCSRF);
-        // options || (options = {});
-        // view.collection.sync();
-        // expect(view.afterFetch).toHaveBeenCalled();
-      });
+    it('should #done', function() {
+      // TODO!!!
+      // view.$el.find('#done').click();
+      // expect(view.done).toHaveBeenCalled();
     });
 
     describe ('when user click title', function () {
