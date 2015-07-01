@@ -1,7 +1,7 @@
 Robin.module('Navigation.Show', function(Show, App, Backbone, Marionette, $, _){
 
   Show.NavigationView = Backbone.Marionette.ItemView.extend({
-    template: 'modules/navigation/show/templates/navigation',
+    getTemplate: App.template('modules/navigation/show/templates/navigation'),
 
     // Checks if there are no recommendations and then adds to the nav
     onRender :function(){
