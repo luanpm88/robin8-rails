@@ -13,7 +13,7 @@
     <div class="caption">
       <h2 class="truncate-title" data-toggle="tooltip" data-original-title="<%= news_room.company_name %>"><i class='fa fa-building'></i> <%= news_room.company_name %></h2>
       <div class="description_area">
-        <p style="height:60px;color: grey; font-style: italic;" class="<%= (news_room.description == null || news_room.description == "") ? '' : 'hidden' %>">No description added.</p>
+        <p style="height:60px;color: grey; font-style: italic;" class="<%= (news_room.description == null || news_room.description == "") ? '' : 'hidden' %>"><%= polyglot.t("newsrooms.item.description_placeholder") %></p>
         <p style="height:60px;" class="<%= (news_room.description == null || news_room.description == "") ? 'hidden' : '' %>" data-toggle="tooltip" data-original-title="<%= news_room.description %>"><%= news_room.description %></p>
       </div>
     </div>
@@ -23,22 +23,21 @@
           <% var itemWindowUrl = location.host.split('.') %>
           <% var itemWindowLocation = itemWindowUrl.length == 3 ? _.last(itemWindowUrl, 2).join('.') : location.host %>
           <% if(news_room.id && news_room.publish_on_website) {%>
-            <a href="http://<%- news_room.subdomain_name %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- news_room.subdomain_name %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> <%= polyglot.t("newsrooms.item.buttons.preview") %></a>
           <% } else {%>
-            <a href="http://<%- news_room.subdomain_name + "-preview" %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+            <a href="http://<%- news_room.subdomain_name + "-preview" %>.<%- itemWindowLocation %>" target='_blank' id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> <%= polyglot.t("newsrooms.item.buttons.preview") %></a>
           <% } %>
           <% if (news_room.releases_count > 0) {%>
-            <a class="btn btn-info" href="//<%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> Releases</a>
+            <a class="btn btn-info" href="//<%- location.host %>#releases/newsroom/<%- news_room.id %>"><i class="fa fa-list-alt"></i> <%= polyglot.t("newsrooms.item.buttons.releases") %></a>
           <%} else {%>
-            <a class="btn btn-info" href="//<%- location.host %>#releases/newsroom/<%- news_room.id %>" disabled='disabled'><i class="fa fa-list-alt"></i> Releases</a>
+            <a class="btn btn-info" href="//<%- location.host %>#releases/newsroom/<%- news_room.id %>" disabled='disabled'><i class="fa fa-list-alt"></i> <%= polyglot.t("newsrooms.item.buttons.releases") %></a>
           <% } %>
-          <button class="btn btn-default" id="open_edit"><i class="fa fa-pencil"></i> Edit</button>
+          <button class="btn btn-default" id="open_edit"><i class="fa fa-pencil"></i> <%= polyglot.t("newsrooms.item.buttons.edit") %></button>
         </div>
       </div>
       <hr>
       <div class="row" id='stats' align="center">
         <div class="col-xs-4"><b></b><br/><small></small></div>
-        <!-- <div class="col-xs-4"><b>9999</b><br/><small>LIKES</small></div> -->
         <div class="col-xs-4"><b><%= news_room.releases_count %></b><br/><small>RELEASES</small></div>
       </div>
     </div>

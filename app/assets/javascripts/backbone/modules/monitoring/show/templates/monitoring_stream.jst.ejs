@@ -1,47 +1,47 @@
 <div class="stream-settings settings-dialog slider closed">
   <form role="form">
     <div class="form-group">
-      <label for="topics-select">Topics</label>
+      <label for="topics-select"><%= polyglot.t("monitoring.topics") %></label>
       <input type="text" class="form-control input-sm stream-input" id="topics-select" placeholder="Start typing to get suggestions...">
     </div>
     <div class="form-group">
-      <label for="blogs-select">Sources</label>
+      <label for="blogs-select"><%= polyglot.t("monitoring.sources") %></label>
       <input type="text" class="form-control input-sm stream-input" id="blogs-select" placeholder="Start typing to get suggestions...">
     </div>
     <div class="form-group sort-by">
-      <label>Sort by</label>
+      <label><%= polyglot.t("monitoring.sort_by") %></label>
       <div class="ui-select">
         <select class="form-control" name='sort_column'>
-          <option value="published_at">Recency</option>
-          <option value="shares_count">Popularity</option>
+          <option value="published_at"><%= polyglot.t("monitoring.recency") %></option>
+          <option value="shares_count"><%= polyglot.t("monitoring.popularity") %></option>
         </select>
       </div>
     </div>
     <div class="form-group time-range">
-      <label>Time range</label>
+      <label><%= polyglot.t("monitoring.time_range") %></label>
       <div class="ui-select">
         <select class="form-control" name='published_at'>
-          <option value="[NOW-24HOURS TO *]">Last 24 hours</option>
-          <option value="[NOW-7DAYS TO *]">Last week</option>
-          <option value="[NOW-1MONTH TO *]">Last month</option>
-          <option value="">All time</option>
+          <option value="[NOW-24HOURS TO *]"> <%= polyglot.t("monitoring.last_24_hours") %> </option>
+          <option value="[NOW-7DAYS TO *]"> <%= polyglot.t("monitoring.last_week") %> </option>
+          <option value="[NOW-1MONTH TO *]"> <%= polyglot.t("monitoring.last_month") %> </option>
+          <option value=""> <%= polyglot.t("monitoring.all_time") %></option>
         </select>
       </div>
     </div>
     <div class="pull-right">
-      <button class="btn btn-default btn-sm" id="close-settings">Cancel</button>
-      <button class="btn btn-success btn-sm" id="done" href="#"><i class="fa fa-check"></i> Done</button>
+      <button class="btn btn-default btn-sm" id="close-settings"> <%= polyglot.t("monitoring.cansel") %> </button>
+      <button class="btn btn-success btn-sm" id="done" href="#"><i class="fa fa-check"></i> <%= polyglot.t("monitoring.done") %> </button>
     </div>
   </form>
 </div>
 <div class="stream-settings rss-dialog slider closed">
   <form role="form">
     <div class="form-group">
-      <label for="topics-select">Rss Link</label>
+      <label for="topics-select"><%= polyglot.t("monitoring.rss_link") %></label>
       <% if(stream.id) {%>
         <input type="text" class="form-control input-sm rss-input" readonly value="<%= window.location.origin + '/streams/' + stream.id + '/stories.rss?topicsForRss='+topicsForRss()+'&blogsForRss='+blogsForRss()%>">
       <% } else {%>
-        <div>Please save stream first</div>
+        <div><%= polyglot.t("monitoring.please_save") %></div>
       <% } %>
     </div>
   </form>
@@ -106,16 +106,15 @@
 </div>
 <div class="stream-updates" align="center">
   <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Click to see updates" class="js-show-new-stories hidden">
-    <i class="fa fa-refresh fa-spin"></i> <span name="newStoriesCount"><%= stream.newStoriesCount %></span> new updates
+    <i class="fa fa-refresh fa-spin"></i> <span name="newStoriesCount"><%= stream.newStoriesCount %></span> <%= polyglot.t("monitoring.new_updates") %>
   </a>
 </div>
 
 <div class="stream-loading" align="center">
-  <i class="fa fa-refresh fa-spin"></i> <span>Loading</span>
+  <i class="fa fa-refresh fa-spin"></i> <span><%= polyglot.t("monitoring.loading") %></span>
 </div>
 
 <div class="empty-stream hidden" align="center">
-  <span class='placeholder'>There is no news </span>
-
+  <span class='placeholder'><%= polyglot.t("monitoring.no_news") %> </span>
   <a class='placeholder make-keyword'>Make a keyword search instead </a>
 </div>

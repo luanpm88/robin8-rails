@@ -1,12 +1,13 @@
 <div id="blast-analysis" class="tab-pane active" role="tabpanel">
-  <h5><i class="fa fa-bar-chart"></i> Analysis</h5>
-  <p>Here's the analysis report for <strong>"<%= release.title %>"</strong>. Please make any necessary changes, and click on <strong>Next</strong> when you're finished.</p>
+  <h5><i class="fa fa-bar-chart"></i> <%= polyglot.t("smart_release.analysis_step.title") %></h5>
+  <p> <%= polyglot.t("smart_release.analysis_step.description1", {name: release.title, button: polyglot.t("smart_release.analysis_step.buttons.next") }) %></p>
 
   <p>
-    <i style="color: #A0D468;" class="fa fa-check"></i> <strong>"<%= release.title %>"</strong> is about <strong class="editable-parent">
-    "<a data-type="select2" data-value="<%= textapiResult['classify'] %>" data-title="Select a category" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong class="editable-parent"><a data-type="select2" id="release-topics" data-title="Select topics" href="#" class="editable editable-click"><%= _.map(textapiResult["concepts"], function(item){ return item.topic }).join(", ") %></a></strong>.</p>
+    <i style="color: #A0D468;" class="fa fa-check"></i> <%= polyglot.t("smart_release.analysis_step.is_about", {name: release.title }) %> <strong class="editable-parent">
+    "<a data-type="select2" data-value="<%= textapiResult['classify'] %>" data-title="Select a category" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong class="editable-parent"><a data-type="select2" id="release-topics" data-title="Select topics" href="#" class="editable editable-click"><%= _.map(textapiResult["concepts"], function(item){ return item.topic }).join(", ") %></a></strong>.
+  </p>
 
-  <p><i style="color: #A0D468;" class="fa fa-check"></i> Here's a summary of what <strong>"<%= release.title %>"</strong> is all about:</p>
+  <p><i style="color: #A0D468;" class="fa fa-check"></i> <%= polyglot.t("smart_release.analysis_step.summary", {name: release.title }) %> :</p>
 
   <ul id="summaries" style="margin-left: 38px; margin-bottom: 10px;">
     <% _.each(textapiResult["summarize"], function(item, index){ %>
@@ -14,5 +15,5 @@
     <% }); %>
   </ul>
   <br />
-  <button disabled class="btn btn-primary pull-right" id="btn-next"><i class="fa fa-chevron-right"></i> Next</button>
+  <button disabled class="btn btn-primary pull-right" id="btn-next"><i class="fa fa-chevron-right"></i> <%= polyglot.t("smart_release.analysis_step.buttons.next") %></button>
 </div>
