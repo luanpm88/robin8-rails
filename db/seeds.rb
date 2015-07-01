@@ -21,7 +21,7 @@ Feature.create(name: "Press Release",is_active: true,slug: "press_release")
 Feature.create(name: "Smart Release",is_active: true,slug: "smart_release")
 Feature.create(name: "Streams - Media Monitoring",is_active: true,slug: "media_monitoring")
 Feature.create(name: "Personal Media List",is_active: true,slug: "personal_media_list")
-Feature.create(name: "MyPRGenie Web Distribution",is_active: true,slug: "myprgenie_web_distribution")
+Feature.create(name: "Robin8 Web Distribution",is_active: true,slug: "myprgenie_web_distribution")
 Feature.create(name: "Accesswire Distribution",is_active: true,slug: "accesswire_distribution")
 Feature.create(name: "PR Newswire Distribution",is_active: true,slug: "pr_newswire_distribution")
 
@@ -306,7 +306,7 @@ if Rails.env.production?
   p = AddOn.create!(price:40,name: "Accesswire Distribution (per release)", is_active: true, sku_id: 3264280,slug: "accesswire_distribution")
   p.product_features.create!(feature_id:Feature.find_by_slug("accesswire_distribution").id,validity: 360,count: 1 )
 
-  p = AddOn.create!(price: 175,name: "MyPRGenie Web Distribution (per release)", is_active: true, sku_id: 3264278,slug: "myprgenie_web_distribution")
+  p = AddOn.create!(price: 175,name: "Robin8 Web Distribution (per release)", is_active: true, sku_id: 3264278,slug: "myprgenie_web_distribution")
   p.product_features.create!(feature_id:Feature.find_by_slug("myprgenie_web_distribution").id,validity: 360,count: 1 )
 
   p = AddOn.create!(price: 450,name: "PR Newswire Distribution (per release)", is_active: true, sku_id: 3264282,slug: "pr_newswire_distribution")

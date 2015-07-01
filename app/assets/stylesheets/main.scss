@@ -307,6 +307,13 @@ a {
   line-height: 24px;
   height: 44px;
 }
+.navbar-search .post-settings .col-xs-3 {
+  margin: 5px 0px 5px 0px;
+}
+.navbar-search .post-settings .col-xs-6 {
+  margin: 5px 0px 5px 0px;
+  padding-right: 6px;
+}
 .navbar-search .post-settings .col-xs-4:last-of-type {
   border: 0;
 }
@@ -320,6 +327,12 @@ a {
   padding: 2px;
   margin-right: 1px;
   font-size: 18px;
+}
+.navbar-search .post-settings .social-networks {
+  padding-left: 4px;
+  padding-right: 2px;
+  border-right: 1px solid #CCC;
+  border-left: 1px solid rgb(204, 204, 204);
 }
 .bootstrap-datetimepicker-widget {
   background-color: #fff !important;
