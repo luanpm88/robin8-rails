@@ -462,6 +462,19 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       var curView = this;
 
+      //Submit event to Wripl for recommendations
+      var keywords ="", topics = "", category = ""; 
+      var topicLength = this.model.attributes['topics'].length;
+      for (var i = 0; i < topicLength; i++) {
+        if(i == 0){
+          topics = this.model.attributes['topics'][i].text;
+        }else{
+          topics = topics + "," + this.model.attributes['topics'][i].text;
+        }
+      }
+
+      wripl._track(Robin.currentUser.attributes['id'], 0, "VIEW", keywords, topics, category);
+
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           Robin.user.fetch({
@@ -476,7 +489,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           curView.collection.streamId = response.id;
           curView.collection.fetch({reset: true});
           Robin.loadingStreams.push(curView.collection.streamId);
-
+          
           Robin.cachedStories[response.id] = curView.collection;
           Robin.cachedStories[response.id].sortByPopularity = curView.model.get('sort_column') == 'shares_count';
 
