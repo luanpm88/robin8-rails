@@ -34,7 +34,14 @@
 	</div>
 	<div class="recommendation-authored-shares">
 		<div class="recommendation-authored">
-			<%= recommendation.timeago %> by <%= recommendation.author_name %>
+			<%= recommendation.timeago %> by 
+			<% if (recommendation.recommendationType == "INFLUENCE"){ %>
+				<% if (recommendation.email){ %>
+					<a href="mailto:<%= recommendation.email %>" target="_top"><%= recommendation.author_name %></a>
+				<%}else{%>
+					<%= recommendation.author_name %>
+				<%}%>
+			<%}%>
 		</div>
 		
 		<div class="recommendation-shares">
