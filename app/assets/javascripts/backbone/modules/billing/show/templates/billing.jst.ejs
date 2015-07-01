@@ -82,10 +82,12 @@
           <a href="/add-ons" class="btn btn-success">Add ons</a>
           <a href="/change_card_info" class="btn btn-success">Update payment details</a>
           <!-- <input type="button" value="Checkout" class="btn btn-success"> -->
-          <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
-            <input type="button" id="cancel-subscription" value="Cancel Subscription" class="btn btn-danger user-list--delete">
-          <% } else {%>
-            <div><span class='canceled'> Your current plan is canceled </span></div>
+          <% if (Robin.currentUser.attributes.is_primary) {%>
+              <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
+                <input type="button" id="cancel-subscription" value="Cancel Subscription" class="btn btn-danger user-list--delete">
+              <% } else {%>
+                <div><span class='canceled'> Your current plan is canceled </span></div>
+              <% } %>
           <% } %>
         </div>
       </div>
