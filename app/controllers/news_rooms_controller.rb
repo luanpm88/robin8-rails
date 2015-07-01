@@ -3,8 +3,10 @@ class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
   
   def index
+    limit = current_user.current_user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
     set_paginate_headers NewsRoom, current_user.news_rooms.count
-    render json: current_user.news_rooms.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: NewsRoomSerializer
+    per_page = (limit < params[:per_page].to_i || params[:per_page].nil?) ? limit : params[:per_page].to_i
+    render json: current_user.news_rooms.order('created_at DESC').limit(limit).paginate(page: params[:page], per_page: per_page), each_serializer: NewsRoomSerializer
   end
 
   def create
@@ -22,7 +24,8 @@ class NewsRoomsController < ApplicationController
   end
 
   def show
-    render json: NewsRoom.find(params[:id])
+    @news_room = NewsRoom.find(params[:id])
+    render json: @news_room
   end
 
   def update

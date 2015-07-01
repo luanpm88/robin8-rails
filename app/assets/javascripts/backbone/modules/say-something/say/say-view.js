@@ -241,7 +241,6 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         this.model.attributes.scheduled_date = moment.utc(new Date(this.model.attributes.scheduled_date));
       }
 
-      console.log(this.model.attributes);
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           view.$el.find("#submit-post").removeClass('disabled');

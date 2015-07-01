@@ -14,7 +14,16 @@
     </div>
   </div>
 </td>
-<td><%= author.blog_name %></td>
+<td>
+  <% if (author.blog_names.length > 1) { %>
+    <% var blog_names = author.blog_names.slice(1).join("<br />") %>
+    <span data-toggle="tooltip" title="<%= blog_names %>" data-html="true">
+      <%= author.blog_names[0] %>
+    </span>
+  <% } else { %>
+    <%= author.blog_names[0] %>
+  <% } %>
+</td>
 
 <% if(author.level_of_interest){ %>
 <td>

@@ -16,7 +16,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click .next_page': 'nextPage'
     },
     templateHelpers: function () {
-    return {
+      return {
         leftEdge: this.leftEdge,
         rightEdge: this.rightEdge
       };

@@ -1562,3 +1562,28 @@ p.loginintro strong{
     }
   }
 }
+
+/* UPDATE CREDIT CARD */
+
+#edit-card-form {
+  margin-top: 0px;
+}
+
+.signup-footer.ftform.edit {
+  margin-top: 0px;
+}
+
+.submit-wrap.edit-card .button {
+  width: 100%;
+  max-width: 300px;
+  margin: 20px 20px 0px;
+  display: inline-block;
+}
+
+.submit-wrap.edit-card #go-back {
+  background: #278298 none repeat scroll 0% 0%;
+}
+
+.selection-guarantee.error {
+  color: red !important;
+}

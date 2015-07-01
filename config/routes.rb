@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get 'subscribe/:slug' => 'payments#new'
   post 'subscribe/:slug' => 'payments#new'
   get 'upgrade/:slug' => 'payments#edit'
+  get 'change_card_info' => 'blue_snap#change_card_info'
+  post 'change_card_info' => 'blue_snap#update_card_info'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
   get 'users/get_current_user' => 'users#get_current_user'
@@ -47,6 +49,7 @@ Rails.application.routes.draw do
   resources :industries, only: :index
   resources :releases do
     post 'extract_from_word', on: :collection
+    get 'img_url_exist', on: :collection
   end
   resources :users do
     collection do
@@ -76,6 +79,7 @@ Rails.application.routes.draw do
   resources :pitches, only: [:index, :create, :show]
   resources :draft_pitches
   resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+  resources :test_emails, only: [:create, :show]
   resources :iptc_categories, only: [:index]
   resources :export_influencers, only: [:create]
   resources :autocompletes, only: [] do
@@ -104,6 +108,8 @@ Rails.application.routes.draw do
   post 'textapi/extract'
   post 'textapi/hashtags'
 
+  get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
+  
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end

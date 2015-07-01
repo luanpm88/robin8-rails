@@ -142,6 +142,14 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
             enabled: false,
             validators: {
               regexp: {
+                transformer: function($field, validatorName, validator) {
+                  var s = $field.val();
+                  if (s.indexOf(" ") > -1) {
+                    $field.val($field.val().trim());
+                  }
+                  var value = $field.val();
+                  return value;
+                },
                 regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 message: 'The data you have entered is not a valid email'
               },
@@ -155,6 +163,7 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       .on('keyup', '[name="email"]', function() {
         var notEmpty = $(this).val() != "";
         $('#invite-form').formValidation('enableFieldValidators', 'email', notEmpty)
+        $('#invite-form').formValidation('validateField', 'email')
       })
     },
 

@@ -3,13 +3,15 @@ class ReleasesController < ApplicationController
   has_scope :by_news_room
 
   def index
-    releases = params[:public] ? Release.where(news_room_id: params[:id]) : apply_scopes(current_user.releases)
+    limit = current_user.current_user_features.press_release.map(&:max_count).inject{|sum,x| sum + x }
+    releases = params[:public] ? Release.where(news_room_id: params[:id]).limit(limit) : apply_scopes(current_user.releases).limit(limit)
     unless params[:for_blast].blank?
-      releases = releases.published
+      releases = releases#.published
     end
     set_paginate_headers Release, releases.count
+    per_page = (limit < params[:per_page].to_i || params[:per_page].nil?) ? limit : params[:per_page].to_i
 
-    render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: params[:per_page]), each_serializer: ReleaseSerializer
+    render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: per_page), each_serializer: ReleaseSerializer
   end
 
   def create
@@ -46,8 +48,8 @@ class ReleasesController < ApplicationController
   end
 
   def extract_from_word
-    d = Docx::Document.open(params[:file].tempfile.path)
-    render json: d.to_html
+    doc = Docx::Document.open(params[:file].tempfile.path)
+    render json: doc.paragraphs.map(&:to_html).join
   end
 
   def update
@@ -82,14 +84,30 @@ class ReleasesController < ApplicationController
     render json: release
   end
 
+  def img_url_exist
+    result = false
+    begin
+      uri = URI(params[:url])
+      request = Net::HTTP.new uri.host
+      response = request.request_head uri.path
+      if response.code.to_i  < 400 && response['content-type'].start_with?('image')
+        result = true
+      end
+    rescue
+    end
+    render json: result
+  end
+
   private
 
   def release_params
     params.require(:release).permit(:title, :text, :news_room_id, :is_private, 
-      :logo_url, :thumbnail, :concepts, :iptc_categories, :summaries, :hashtags,
+      :logo_url, :thumbnail, :concepts, :published_at, :iptc_categories, :summaries, :hashtags,
       :characters_count, :words_count, :sentences_count,
       :paragraphs_count, :adverbs_count, :adjectives_count,
       :nouns_count, :organizations_count, :places_count, :people_count,
+      :myprgenie, :accesswire, :prnewswire, 
+      :myprgenie_published_at, :accesswire_published_at, :prnewswire_published_at,
       attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy])
   end
   

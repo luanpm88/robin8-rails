@@ -9,14 +9,47 @@ class MediaList < ActiveRecord::Base
   validates_attachment_size :attachment, :in => 0..2.megabytes
   validates_presence_of :name
   validates_uniqueness_of :name
+  validate :can_be_created, on: :create
+
+  after_create :decrease_feature_number
+  after_destroy :increase_feature_numner
     
   before_save :import_contacts, if: :attachment?
     
   private
+
+  def needed_user
+    user.is_primary? ? user : user.invited_by
+  end
+
+  def can_be_created
+    errors.add(:user, "You've reached the max numbers of media lists.") if needed_user && !needed_user.can_create_media_list
+  end
+
+  def decrease_feature_number
+    af = needed_user.user_features.personal_media_list.available.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.personal_media_list.available.first : af
+    return false if uf.blank?
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def increase_feature_numner
+    af = needed_user.user_features.personal_media_list.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.personal_media_list.first : af
+    return false if uf.blank?
+    uf.available_count += 1
+    uf.save
+  end
   
   def import_contacts
     path = attachment.queued_for_write[:original].path
-    contacts = CSV.read(path)
+    
+    # detect file encoding
+    contents = File.read(path)
+    detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+    contacts = CSV.read path, encoding: detection[:ruby_encoding]
     self.contacts << contacts.inject([]) do |memo, contact|
       
       contact.reject! {|c| c.nil?}

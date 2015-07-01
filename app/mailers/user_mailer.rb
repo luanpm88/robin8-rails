@@ -17,4 +17,17 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "Add Ons Confirmation",:from => "Robin8 <no-reply@robin8.com>")
   end
 
+  def newswire_support(myprgenie, accesswire, prnewswire, title, text, myprgenie_published_at, accesswire_published_at, prnewswire_published_at, publicLink)
+    @myprgenie = myprgenie
+    @accesswire = accesswire
+    @prnewswire = prnewswire
+    @myprgenie_published_at = myprgenie_published_at
+    @accesswire_published_at = accesswire_published_at
+    @prnewswire_published_at = prnewswire_published_at
+    @title = title
+    @text = text
+    @publicLink = publicLink
+    mail(:to => Rails.application.secrets.support_email, :subject => "New newswire release",:from => "Robin8 <no-reply@robin8.com>")
+  end
+
 end

@@ -24,8 +24,88 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #smart_release': 'startSmartRelease',
       'change #upload': 'uploadWord',
       'ifChanged .private-checkbox': 'changePrivate',
+      'ifChanged .myprgenie-checkbox': 'switchMyprgenie',
+      'ifChanged .accesswire-checkbox': 'switchAccesswire',
+      'ifChanged .prnewswire-checkbox': 'switchPrnewswire',
       'change #news_room_id': 'newsRoomSelected',
-      'click #make-public': 'makeNewsRoomPublic'
+      'click #make-public': 'makeNewsRoomPublic',
+      'click #direct-image-upload': 'uploadDirectImage',
+      'click #url-image-upload': 'uploadUrlImage',
+      'click #direct-video-upload': 'uploadDirectVideo',
+      'click #url-video-upload': 'uploadUrlVideo',
+      'click #insert_link': 'insertLink',
+    },
+    insertLink: function(e) {
+      var view = this;
+      var url = prompt("Please paste you image's url");
+      if (url) {
+        window.setTimeout(function() {
+          view.ui.wysihtml5.data('wysihtml5').editor.focus();
+          view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("createLink", {href: url, target: '_blank'});
+        }, 200);
+      }
+    },
+    uploadDirectImage: function(e) {
+      var view = this;
+      uploadcare.openDialog(null, {
+        tabs: 'file',
+        multiple: false,
+        imagesOnly: true
+        }).done(function(file) {
+            file.done(function(fileInfo) {
+              view.ui.wysihtml5.data('wysihtml5').editor.focus();
+              view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl});
+            });
+        }).fail(function(error, fileInfo) {
+            console.log(error);
+        });
+      return false;
+    },
+    uploadUrlImage: function(e) {
+      var view = this;
+      var url = prompt("Please paste you image's url");
+      if(url){
+        $.get( "/releases/img_url_exist?url=" + url, function( data ) {
+          if (data) {
+            window.setTimeout(function() {
+              view.ui.wysihtml5.data('wysihtml5').editor.focus();
+              view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: url});
+            }, 200);
+          }
+          else{
+            $.growl("Invalid url!", {
+                type: "info",
+            });
+          }
+        });
+      }
+    },
+    uploadDirectVideo: function(e) {
+      var view = this;
+      uploadcare.openDialog(null, {
+        tabs: 'file',
+        inputAcceptTypes: 'video/*',
+        multiple: false,
+        }).done(function(file) {
+          file.done(function(fileInfo) {
+            view.ui.wysihtml5.data('wysihtml5').editor.focus();
+            view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertHTML", "<video width="+550+" class='video-js vjs-default-skin' controls='auto' preload='auto' data-setup='{}'> <source src='" + fileInfo.originalUrl + "'></video>");
+          });
+        }).fail(function(error, fileInfo) {
+          console.log(error);
+        });
+      return false;
+    },
+    uploadUrlVideo: function(e) {
+      var view = this;
+      var url = prompt("Please paste you video's url");
+      if (url) {
+        window.setTimeout(function() {
+          view.ui.wysihtml5.data('wysihtml5').editor.focus();
+          console.log(url);
+          view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertVideo", url);
+        }, 200);
+      }
     },
     changePrivate: function(e) {
       if ($(e.target).is(":checked")) {
@@ -104,24 +184,136 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
+
+      var date = moment(this.model.get('published_at')).toDate();
+      var datedate = moment(date).format('MM/DD/YYYY');
+      this.$el.find('#release-date-input').val(datedate).change();
+      this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY'});
+
+      this.$el.find('#myprgenie_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#myprgenie_date_input').on('dp.change', function(e) {
+        $('#releaseForm').formValidation('revalidateField', 'myprgenie_published_at');
+      });
+
+      this.$el.find('#accesswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#accesswire_date_input').on('dp.change', function(e) {
+        $('#releaseForm').formValidation('revalidateField', 'accesswire_published_at');
+      });
+
+      this.$el.find('#prnewswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#prnewswire_date_input').on('dp.change', function(e) {
+        $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
+      });
+      
+      var insertLinkButton = this.$el.find('#wyihtml5-insert-link').html();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
       var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
+      var extractDirectImageTemplate = this.$el.find('#wyihtml5-direct-image-button').html();
+      var extractDirectVideoTemplate = this.$el.find('#wyihtml5-direct-video-button').html();
       var customTemplates = {
+        insert: function(context) {
+          return insertLinkButton
+        },
         extract: function(context) {
           return extractButtonTemplate
         },
         word: function(context) {
           return extractWordTemplate
-        }
+        },
+        directImage: function(context) {
+          return extractDirectImageTemplate
+        },
+        directVideo: function(context) {
+          return extractDirectVideoTemplate
+        },
       };
       this.ui.wysihtml5.wysihtml5({
         toolbar: {
-          extract: true,
-          word: true
+          insert: customTemplates.insert,
+          extract: customTemplates.extract,
+          word: customTemplates.word,
+          directImage: customTemplates.directImage,
+          directVideo: customTemplates.directVideo,
         },
-        customTemplates: customTemplates,
+        parserRules: {
+          tags: {
+                "b":  {},
+                "i":  {},
+                "br": {},
+                "ol": {},
+                "ul": {},
+                "li": {},
+                "h1": {},
+                "h2": {},
+                "h3": {},
+                "h4": {},
+                "h5": {},
+                "h6": {},
+                "video": {
+                    "check_attributes": {
+                        "controls": "any", 
+                        "preload": "any",
+                        "class": "any",
+                        "width": "any",
+                    }},
+                "source": {
+                    "check_attributes": {
+                        "src": "any", /* Needed for data:image/jpeg;base64 type */
+                    }},
+                "blockquote": {},
+                "u": 1,
+                "img": {
+                    "check_attributes": {
+                        "width": "numbers",
+                        "alt": "alt",
+                        "src": "any", /* Needed for data:image/jpeg;base64 type */
+                        "height": "numbers",
+                        "title": "alt"
+                    }
+                },
+                "a":  {
+                    check_attributes: {
+                        'href': "src", // use 'url' to avoid XSS
+                        'target': 'alt',
+                        'rel': 'alt'
+                    }
+                },
+                "iframe": {
+                    "check_attributes": {
+                        "src":"any",
+                        "width":"numbers",
+                        "height":"numbers"
+                    },
+                    "set_attributes": {
+                        "frameborder":"0"
+                    }
+                },
+                "p": 1,
+                "span": 1,
+                "div": 1,
+                "table": 1,
+                "tbody": 1,
+                "thead": 1,
+                "tfoot": 1,
+                "tr": 1,
+                "th": 1,
+                "td": 1,
+                // to allow save and edit files with code tag hacks
+                "code": 1,
+                "pre": 1,
+                "style": 1
+            }
+        },
+        'image': false,
+        'video': false,
+        'html': true,
+        "blockquote": true,
+        "table": false,
+        "link": false,
+        "textAlign": false        
       });
       this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
+      this.editor.focus();
       this.editor.on('load', function() {
         self.updateStats();
         $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', function(e) {
@@ -360,6 +552,84 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                 message: 'something went wrong'
               }
             }
+          },
+          myprgenie_published_at: {
+            validators: {
+              callback: {
+                message: 'Select correct date in future',
+                callback: function(value, validator, $field) {
+                  if( $('.myprgenie-checkbox').is(':checked') && $('#myprgenie_date_input').val() == '' ){
+                    return false;
+                  }
+
+                  if( $('.myprgenie-checkbox').is(':checked') ) {
+                    var now = moment().format("MM/DD/YYYY");
+                    var myDate = new Date($('#myprgenie_date_input').val());
+                    var myDate = moment($('#myprgenie_date_input').val(), 'MM/DD/YYYY')._i;
+                    if(myDate < now){
+                      return false;
+                    }
+                  }
+
+                  return true;
+                }
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+          accesswire_published_at: {
+            validators: {
+              callback: {
+                message: 'Select correct date in future',
+                callback: function(value, validator, $field) {
+                  if( $('.accesswire-checkbox').is(':checked') && $('#accesswire_date_input').val() == '' ){
+                    return false;
+                  }
+
+                  if( $('.accesswire-checkbox').is(':checked') ) {
+                    var now = moment().format("MM/DD/YYYY");
+                    var myDate = new Date($('#accesswire_date_input').val());
+                    var myDate = moment($('#accesswire_date_input').val(), 'MM/DD/YYYY')._i;
+                    if(myDate < now){
+                      return false;
+                    }
+                  }
+
+                  return true;
+                }
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
+          },
+          prnewswire_published_at: {
+            validators: {
+              callback: {
+                message: 'Select correct date in future',
+                callback: function(value, validator, $field) {
+                  if( $('.prnewswire-checkbox').is(':checked') && $('#prnewswire_date_input').val() == '' ){
+                    return false;
+                  }
+
+                  if( $('.prnewswire-checkbox').is(':checked') ) {
+                    var now = moment().format("MM/DD/YYYY");
+                    var myDate = new Date($('#prnewswire_date_input').val());
+                    var myDate = moment($('#prnewswire_date_input').val(), 'MM/DD/YYYY')._i;
+                    if(myDate < now){
+                      return false;
+                    }
+                  }
+
+                  return true;
+                }
+              },
+              serverError: {
+                message: 'something went wrong'
+              }
+            }
           }
         }
       })
@@ -397,7 +667,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           this.model.set('text', $(iframe).contents().find('body').html());
         };
         this.form.data('formValidation').validate();
-        var textLength = $('iframe').contents().find('.wysihtml5-editor').html().length;
+        var textLength = this.$el.find('iframe').contents().find('.wysihtml5-editor').html().length;
         if (textLength > 60000) {
           swal({
             title: "Release text is too long!",
@@ -411,6 +681,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         if (this.form.data('formValidation').isValid() && textLength <= 60000) {
           this.$el.find('#save_release').prop("disabled",true);
           this.$el.find('#smart_release').prop("disabled",true);
+
+          this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
+          this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
+          this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
+          this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY').format('LL');
+
           this.model.save(viewObj.model.attributes, {
             success: function(model, data, response){
               viewObj.$el.find('#release_form').modal('hide');
@@ -437,7 +713,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.model.set('text', $(iframe).contents().find('body').html());
       };
       this.form.data('formValidation').validate();
-      var textLength = $('iframe').contents().find('.wysihtml5-editor').html().length;
+      var textLength = this.$el.find('iframe').contents().find('.wysihtml5-editor').html().length;      
       if (textLength > 60000) {
         swal({
           title: "Release text is too long!",
@@ -451,6 +727,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.form.data('formValidation').isValid() && textLength <= 60000) {
         this.$el.find('#save_release').prop("disabled",true);
         this.$el.find('#smart_release').prop("disabled",true);
+        
+        this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY').format('LL');
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
@@ -551,6 +832,57 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     onDestroy: function(){
       Robin.vent.off("release:open_edit_modal", this.openModalDialogEdit);
       this.modelBinder.unbind();
+    },
+    switchMyprgenie: function(e){
+      $('#releaseForm').formValidation('revalidateField', 'myprgenie_published_at');
+      if ($(e.target).is(":checked")) {
+        if(!Robin.user.get('can_create_myprgenie')){
+          $.growl("Please, buy corresponding addon in Billing settings!", {
+            type: "info",
+          });
+          setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
+          return;
+        }
+        $('#myprgenie_start_div').show();
+      }
+      else {
+        $('#myprgenie_date_input').val('');
+        $('#myprgenie_start_div').hide();
+      }
+    },
+    switchAccesswire: function(e){
+      $('#releaseForm').formValidation('revalidateField', 'accesswire_published_at');
+      if ($(e.target).is(":checked")) {
+        if(!Robin.user.get('can_create_accesswire')){
+          $.growl("Please, buy corresponding addon in Billing settings!", {
+            type: "info",
+          });
+          setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
+          return;
+        }
+        $('#accesswire_start_div').show();
+      }
+      else {
+        $('#accesswire_date_input').val('');
+        $('#accesswire_start_div').hide();
+      }
+    },
+    switchPrnewswire: function(e){
+      $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
+      if ($(e.target).is(":checked")) {
+        if(!Robin.user.get('can_create_prnewswire')){
+          $.growl("Please, buy corresponding addon in Billing settings!", {
+            type: "info",
+          });
+          setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
+          return;
+        }
+        $('#prnewswire_start_div').show();
+      } 
+      else {
+        $('#prnewswire_date_input').val('');
+        $('#prnewswire_start_div').hide();
+      }
     }
   });
 });

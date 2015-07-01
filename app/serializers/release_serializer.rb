@@ -1,13 +1,15 @@
 class ReleaseSerializer < ActiveModel::Serializer
   attributes :id, :user_id, :news_room_id, 
-    :news_room, :title, :text, 
+    :news_room, :title, :text, :published_at, :formamtted_published_at,
     :is_private, :logo_url, :thumbnail, :created_at,
     :characters_count, :words_count, :sentences_count,
     :paragraphs_count, :adverbs_count, :adjectives_count,
     :nouns_count, :organizations_count, :places_count, :people_count,
     :concepts, :iptc_categories, :summaries, :hashtags, :plain_text,
     :subdomain_name, :news_room_public, :text_html, :slug, :permalink,
-    :average_characters_count_per_word, :average_words_count_per_sentence
+    :average_characters_count_per_word, :average_words_count_per_sentence,
+    :myprgenie, :accesswire, :prnewswire,
+    :myprgenie_published_at, :accesswire_published_at, :prnewswire_published_at
 
   has_many :attachments
   has_one :news_room
@@ -18,6 +20,22 @@ class ReleaseSerializer < ActiveModel::Serializer
     else
       []
     end
+  end
+
+  def formamtted_published_at
+    object.published_at.strftime('%m\%d\%Y') unless object.published_at.nil? 
+  end
+
+  def myprgenie_published_at
+    object.myprgenie_published_at.strftime('%m/%d/%Y') unless object.myprgenie_published_at.nil? 
+  end
+  
+  def accesswire_published_at
+    object.accesswire_published_at.strftime('%m/%d/%Y') unless object.accesswire_published_at.nil? 
+  end
+  
+  def prnewswire_published_at
+    object.prnewswire_published_at.strftime('%m/%d/%Y') unless object.prnewswire_published_at.nil? 
   end
   
   def iptc_categories

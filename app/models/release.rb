@@ -17,9 +17,11 @@ class Release < ActiveRecord::Base
   scope :by_news_room, ->(id) {where(news_room_id: id)}
   scope :published, -> { where(is_private: false) }
   
-  before_save :pos_tagger, :entities_counter
+  before_save :pos_tagger, :entities_counter, :set_published_at
   after_create :decrease_feature_number
-  after_destroy :increase_feature_numner
+
+  after_destroy :increase_feature_number
+  after_save :update_images_links
   
   def plain_text
     coder = HTMLEntities.new
@@ -51,8 +53,19 @@ class Release < ActiveRecord::Base
   
   private
 
+  def update_images_links
+    urls = self.text.scan(/(?:https?:\/\/)?(?:www\.)?ucarecdn.com\/.*?\//)
+    if urls.count > 0
+      AmazonStorageRelease.perform_async(self.id)
+    end
+  end
+
   def can_be_created
     errors.add(:user, "you've reached the max numbers of releases.") if user && !user.can_create_release
+  end
+
+  def set_published_at
+    self.published_at = Time.now.utc if self.published_at.blank?
   end
   
   def pos_tagger
@@ -85,17 +98,62 @@ class Release < ActiveRecord::Base
   end
 
   def decrease_feature_number
-    uf = needed_user.user_features.press_release.available.first
+    af = needed_user.user_features.press_release.available.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.press_release.available.first : af
     return false if uf.blank?
     uf.available_count -= 1
     uf.save
   end
 
-  def increase_feature_numner
-    uf = needed_user.user_features.press_release.first
+
+  def increase_feature_number
+    af = needed_user.user_features.press_release.used.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.press_release.used.first : af
     return false if uf.blank?
     uf.available_count += 1
     uf.save
+  end
+
+  def decrease_newswire_myprgenie
+    uf = needed_user.user_features.myprgenie_web_distribution.available.first
+    return false if uf.blank?
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def decrease_newswire_accesswire
+    uf = needed_user.user_features.accesswire_distribution.available.first
+    return false if uf.blank?
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def decrease_newswire_prnewswire
+    uf = needed_user.user_features.pr_newswire_distribution.available.first
+    return false if uf.blank?
+    uf.available_count -= 1
+    uf.save
+  end
+
+  def decrease_newswire_features
+    myprgenie_ = myprgenie_changed? && myprgenie
+    accesswire_ = accesswire_changed? && accesswire
+    prnewswire_ = prnewswire_changed? && prnewswire
+
+    decrease_newswire_myprgenie if myprgenie_
+    decrease_newswire_accesswire if accesswire_
+    decrease_newswire_prnewswire if prnewswire_
+
+    publicSuffix = (news_room.id && news_room.publish_on_website && !is_private) ? "" : "-preview"
+    publicLink = "http://" + news_room.subdomain_name + publicSuffix + "." + Rails.application.secrets.host + "/releases/" + slug
+
+    myprgenie_publish = myprgenie_published_at.strftime('%m/%d/%Y') if myprgenie_published_at
+    accesswire_publish = accesswire_published_at.strftime('%m/%d/%Y') if accesswire_published_at
+    prnewswire_publish = prnewswire_published_at.strftime('%m/%d/%Y') if prnewswire_published_at
+
+    if (myprgenie_) || (accesswire_) || (prnewswire_)
+      UserMailer.newswire_support(myprgenie_, accesswire_, prnewswire_, title, text, myprgenie_publish, accesswire_publish, prnewswire_publish, publicLink).deliver 
+    end
   end
 
 end
