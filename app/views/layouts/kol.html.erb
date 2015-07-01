@@ -41,6 +41,7 @@
     Robin.china = <%= !request.location.nil? and request.location.country.to_s == "China" %>;
     Robin.start();
   });
+  polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
   <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>

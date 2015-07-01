@@ -121,17 +121,17 @@ ready = function() {
     }
   }
   //end trimming space from both side of the string
-  
+
   /**
    * Indicates whether or not this string starts with the specified string.
    * @param {Object} string
    */
   String.prototype.startsWith = function(string){
-      if (!string) 
+      if (!string)
           return false;
       return this.indexOf(string) == 0;
   }
-  
+
   Marionette.Behaviors.behaviorsLookup = function() {
     return window.Behaviors;
   }
@@ -139,10 +139,10 @@ ready = function() {
 
 $(window).on('scroll', function() {
   scrollPosition = $(this).scrollTop();
-  if (scrollPosition >= 1) { 
-      $('.nav').addClass('fixedscroll'); 
+  if (scrollPosition >= 1) {
+      $('.nav').addClass('fixedscroll');
   }else{
-      $('.nav').removeClass('fixedscroll'); 
+      $('.nav').removeClass('fixedscroll');
   }
 });
 
