@@ -37,20 +37,21 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
 
     beforeEach(function () {
       spyOn( view, 'closeStream');
-      spyOn( view, 'settings'); //
-      spyOn( view, 'toggleRssDialog'); //
-      spyOn( view, 'closeSettings');
-      spyOn( view, 'done');
+      spyOn( view, 'settings');
+      spyOn( view, 'toggleRssDialog');
+      spyOn( view, 'closeSettings'); //
+      spyOn( view, 'done'); //
       spyOn( view, 'editTitle');
       spyOn( view, 'updateTitle');
       spyOn( view, 'showNewStories');
-      spyOn( view, 'loadInfo'); //
+      spyOn( view, 'loadInfo');
       spyOn( view, 'selectLink');
       spyOn( view, 'makeKeyword');
       spyOn( view, 'onAdded');
-      spyOn( view, 'afterFetch');
-      spyOn( view, 'refreshTimeRangeVisibility'); //
-      spyOn( view.modelBinder, 'bind'); //
+      spyOn( view, 'afterFetch'); //
+      spyOn( view, 'setShowUpdatesButtonVisibility');
+      spyOn( view, 'refreshTimeRangeVisibility');
+      spyOn( view.modelBinder, 'bind');
       spyOn( view.model, 'save');
       spyOn( Robin.user, 'get').and.returnValue(true);
       view.delegateEvents();
@@ -121,12 +122,31 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
       expect(view.afterFetch).toHaveBeenCalled();
     });
 
+    it('should run after model change', function() {
+      view.model.set('sort_column', 1);
+      expect(view.setShowUpdatesButtonVisibility).toHaveBeenCalled();
+    });
+
+    it('should run after model sort_column change', function() {
+      view.model.set('sort_column', 1);
+      expect(view.refreshTimeRangeVisibility).toHaveBeenCalled();
+    });
+
     describe('when ', function() {
       beforeEach(function() {
-         // spyOn( view.options, 'noCSRF').and.callFake();
 
+        // Backbone.sync = function(method, model, options) {
+        //   return true;
+        // }
+
+        // var view2 = new Robin.Monitoring.Show.StreamCompositeView({model: model});
+        // spyOn( view2, 'afterFetch');
+
+        // var Backbone = this.Backbone;
+        // console.info(Backbone);
+        // console.info('!!!!!!!!!!');
       });
-    
+
       it('should move on collection sync', function() {
         // function options.noCSRF(){ return true; }
         // var options = { noCSRF: true; };
@@ -145,7 +165,7 @@ describe('Robin.Monitoring.Show.StreamsCompositeView spec', function () {
 
         // test = spyOn(view.options, noCSRF).and.callThrough();
         // console.info(options.noCSRF);
-
+        // options || (options = {});
         // view.collection.sync();
         // expect(view.afterFetch).toHaveBeenCalled();
       });
