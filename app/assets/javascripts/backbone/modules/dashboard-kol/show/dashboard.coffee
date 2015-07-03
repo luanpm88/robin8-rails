@@ -5,16 +5,16 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     events:
       "click .invitation-accept": "accept"
       "click .invitation-decline": "decline"
+
     accept: (event) ->
       event.preventDefault()
       @perform_action($(event.currentTarget))
     decline: (event) ->
       event.preventDefault()
       @perform_action($(event.currentTarget), "decline")
+
     perform_action: (button, action="accept") ->
       button_container = button.parent().parent()
-#      loading_view = new Robin.Components.Loading.LoadingView()
-#      button_container.html(loading_view.render())
       id = button.data("inviteId")
       item = this.collection.get(id)
       action_method = if action == "accept" then item.accept() else item.decline()
