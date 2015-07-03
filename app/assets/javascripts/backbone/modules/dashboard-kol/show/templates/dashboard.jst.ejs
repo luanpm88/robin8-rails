@@ -6,7 +6,7 @@
                 <% _.each(items, function(item){ %>
                 <div class="col-sm-12">
                     <div class="col-xs-15 col-sm-6 col-md-10">
-                        <%= item.sent_at %> <%= item.campaign.description %>
+                        <%= item.created_at %> <%= item.campaign.description %>
                         <div><b>Deadline: <%= item.campaign.deadline %></b></div>
                     </div>
                     <% if (item.status == "") { %>

@@ -5,7 +5,6 @@ class CreateCampaigns < ActiveRecord::Migration
       t.text :description
       t.datetime :deadline
       t.decimal :budget
-      t.datetime :created_at
       t.belongs_to :user, index: true
 
       t.timestamps null: false

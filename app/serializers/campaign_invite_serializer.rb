@@ -1,3 +1,3 @@
 class CampaignInviteSerializer < ActiveModel::Serializer
-  attributes :id, :status, :sent_at, :campaign, :kol
+  attributes :id, :status, :created_at, :campaign, :kol
 end
