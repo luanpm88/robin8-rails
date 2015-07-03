@@ -73,7 +73,7 @@ module Users
       render 'twitter_popup_close', :layout => false
     end
 
-    [:twitter, :linkedin, :facebook, :google_oauth2, :weibo].each do |provider|
+    [:twitter, :linkedin, :facebook, :google_oauth2, :weibo, :wechat].each do |provider|
       provides_callback_for provider
     end
   end

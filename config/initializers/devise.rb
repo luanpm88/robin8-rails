@@ -266,4 +266,6 @@ Devise.setup do |config|
     Rails.application.secrets.google[:client_secret]
   config.omniauth :weibo, Rails.application.secrets.weibo[:app_key],
     Rails.application.secrets.weibo[:app_secret]
+  config.omniauth :wechat, Rails.application.secrets.wechat[:app_id],
+    Rails.application.secrets.wechat[:app_secret]
 end
