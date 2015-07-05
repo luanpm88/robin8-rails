@@ -41,6 +41,15 @@ class KolsController < ApplicationController
     render :json => categories
   end
 
+  def suggest_kols
+    kols = []
+    categories = params[:categories]
+    if not categories.blank?
+      kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories}
+    end
+    render :json => kols
+  end
+
   private
 
   def kol_params

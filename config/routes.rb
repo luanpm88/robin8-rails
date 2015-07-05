@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   get '/kols/get_current_kol' => 'kols#get_current_kol'
   get '/kols/current_categories' => 'kols#current_categories'
   get '/kols/suggest_categories' => 'kols#suggest_categories'
+  get '/kols/suggest' => 'kols#suggest_kols'
 
   resources :posts do
     put 'update_social', on: :member
