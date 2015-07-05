@@ -6,7 +6,7 @@ class Kol < ActiveRecord::Base
 
   has_many :identities, :dependent => :destroy
 
-  has_many :kol_categories, :dependent => :destroy
+  has_many :kol_categories
   has_many :iptc_categories, :through => :kol_categories
 
   has_many :campaign_invites
