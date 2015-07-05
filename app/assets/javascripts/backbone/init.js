@@ -64,7 +64,9 @@ Robin.setIdentities = function(data){
 };
 
 Robin.stopOtherModules = function(){
-  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'DashboardKol', 'Releases', 'ReleasesBlast', 'Analytics', 'Authentication', 'Billing', 'Recommendations', 'Campaigns'], function(module){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'DashboardKol', 'SmartCampaign',
+      'Releases', 'ReleasesBlast', 'Analytics', 'Authentication',
+      'Billing', 'Recommendations', 'Campaigns'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
@@ -113,7 +115,7 @@ Robin.vent.on("authentication:logged_out", function() {
     Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
     Robin.main.show(Robin.layouts.main);
     Robin.stopOtherModules();
-    Robin.module('NewsRoomPublic').start(); 
+    Robin.module('NewsRoomPublic').start();
   } else {
     Robin.layouts.unauthenticated = new Robin.Views.Layouts.Unauthenticated();
     Robin.main.show(Robin.layouts.unauthenticated);
@@ -148,7 +150,7 @@ UPLOADCARE_LOCALE_TRANSLATIONS = {
   },
   // messages for dialog's error page
   dialog: { tabs: { preview: { error: {
-    'fileType': {  
+    'fileType': {
       title: 'Title.',
       text: 'Text.',
       back: 'Back'

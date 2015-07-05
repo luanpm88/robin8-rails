@@ -41,6 +41,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     // Robin.module("Newsroom").controller.index();
   },
 
+  showSmartCampaign: function() {
+    this.stopAll();
+    Robin.module("SmartCampaign").start();
+  },
+
   showReleases: function() {
     this.stopAll();
     Robin.module("Releases").start();
