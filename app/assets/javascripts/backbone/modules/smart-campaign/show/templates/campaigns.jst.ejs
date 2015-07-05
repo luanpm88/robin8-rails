@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-md-2 col-md-offset-5 vcenter"><b>Campaigns<b/></div>
+  <div class="pull-right">
+    <button type="button" class="btn btn-success vcenter" id="new_campaign">New Campaign</button>
+  </div>
+</div>
+<% if (items.length == 0) { %>
+  <div class="row">You don't have any campaigns. It's time to create one!</div>
+<% } else { %>
+  <div class="row">
+    <table class="table table-striped">
+      <thead><tr>
+        <td>Name</td>
+        <td>Deadline</td>
+        <td>Budget</td>
+      </tr></thead>
+      <% _.each(items, function(c) { %>
+        <tr data-id="<%= c.id %>">
+          <td><%= c.name %></td>
+          <td><%= c.deadline %></td>
+          <td>$<%= c.budget %></td>
+        </tr>
+      <% }); %>
+    </table>
+  </div>
+<% } %>
