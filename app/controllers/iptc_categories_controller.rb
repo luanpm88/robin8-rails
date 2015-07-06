@@ -8,4 +8,12 @@ class IptcCategoriesController < ApplicationController
       format.json
     end
   end
+  
+  def show
+    @iptc_category = IptcCategory.find(params[:id])
+    
+    respond_to do |format|
+      format.json
+    end
+  end
 end
