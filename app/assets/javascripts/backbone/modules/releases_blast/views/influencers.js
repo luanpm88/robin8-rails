@@ -4,11 +4,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     template: 'modules/releases_blast/templates/influencers/_influencer',
     tagName: "tr",
     ui: {
-      tweetContactButton: '#tweet-contact-button'
+      tweetContactButton: '#tweet-contact-button',
+      pitchCheckbox: "input[type=checkbox]"
     },
     events: {
-      "click a.btn-danger":     "removeInfluencer",
-      "click a.btn-success":    "addInfluencer",
+      "change @ui.pitchCheckbox": "changedPitchCheckbox",
       "click @ui.tweetContactButton": "tweetContactButtonClicked"
     },
     toggleAddRemove: function(model, collection, options) {
@@ -35,9 +35,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       view.setCounter();
       e.stopPropagation();
     },
-    addInfluencer: function(e) {
+    changedPitchCheckbox: function(e){
       e.preventDefault();
       
+      if (this.ui.pitchCheckbox.val() == "YES")
+        this.removeInfluencer();
+      else
+        this.addInfluencer();
+    },
+    addInfluencer: function() {
       var current_model = this.pitchContactsCollection.findWhere({
         origin: 'twtrland',
         twitter_screen_name: this.model.get('screen_name')
@@ -54,9 +60,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         this.pitchContactsCollection.add(model);
       }
     },
-    removeInfluencer: function(e) {
-      e.preventDefault();
-      
+    removeInfluencer: function() {
       var model = this.pitchContactsCollection.findWhere({
         twitter_screen_name: this.model.get('screen_name'),
         origin: 'twtrland'
@@ -183,7 +187,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             },
             {
               "sExtends": "text",
-              "sButtonText": "Add all",
+              "sButtonText": "Select all",
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.addAllContactsToPitch();
