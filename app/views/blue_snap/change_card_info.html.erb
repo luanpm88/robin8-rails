@@ -3,7 +3,7 @@
     <%= render :partial => "pages/partials/menu"%>
     <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Update payment information"}%>
   </header>
-  
+
   <%= form_tag({controller: "blue_snap", action: "update_card_info"}, method: "post", class: "payment ", :id=>"edit-card-form") do |f|  %>
     <div class="form-step step3">
 
@@ -175,13 +175,14 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
   <script>
     $("#card_credit_card_number").keyup(function(){
-      $("#card_last_four").val($("#card_credit_card_number").val().slice(-4))
+      $("#card_last_four").val($.trim($("#card_credit_card_number").val()).slice(-4))
     });
     $.validate();
     $(document).ready(function(){
         if( !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            $( ".select-checkout" ).selectmenu();
+          $( ".select-checkout" ).selectmenu();
         }
+        trimPaymentInputs();
     });
     BlueSnap.publicKey = '<%=Rails.application.secrets[:bluesnap][:public_key]%>';
     BlueSnap.setTargetFormId("edit-card-form");
