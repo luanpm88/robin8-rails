@@ -8,19 +8,21 @@
   <div class="row">You don't have any campaigns. It's time to create one!</div>
 <% } else { %>
   <div class="row">
-    <table class="table table-striped">
-      <thead><tr>
-        <td>Name</td>
-        <td>Deadline</td>
-        <td>Budget</td>
+    <table class="table table-striped" id="campaigns-table">
+      <thead style="cursor:pointer;"><tr>
+        <th data-sort="string">Name</th>
+        <th data-sort="int">Deadline</th>
+        <th data-sort="int">Budget</th>
       </tr></thead>
-      <% _.each(items, function(c) { %>
-        <tr data-id="<%= c.id %>">
-          <td><%= c.name %></td>
-          <td><%= formatDate(c.deadline) %></td>
-          <td>$<%= c.budget %></td>
-        </tr>
-      <% }); %>
+      <tbody>
+        <% _.each(items, function(c) { %>
+          <tr data-id="<%= c.id %>">
+            <td><%= c.name %></td>
+            <td data-sort-value="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
+            <td data-sort-value="<%= c.budget %>">$<%= c.budget %></td>
+          </tr>
+        <% }); %>
+      </tbody>
     </table>
   </div>
 <% } %>
