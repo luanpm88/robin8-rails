@@ -17,7 +17,7 @@
       <% _.each(items, function(c) { %>
         <tr data-id="<%= c.id %>">
           <td><%= c.name %></td>
-          <td><%= c.deadline %></td>
+          <td><%= formatDate(c.deadline) %></td>
           <td>$<%= c.budget %></td>
         </tr>
       <% }); %>

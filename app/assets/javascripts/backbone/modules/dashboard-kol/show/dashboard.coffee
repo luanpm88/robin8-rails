@@ -9,7 +9,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     templateHelpers:
       formatDate: (d) ->
         date = new Date d
-        date.toString()
+        date.toLocaleFormat '%d-%b-%Y'
 
     accept: (event) ->
       event.preventDefault()

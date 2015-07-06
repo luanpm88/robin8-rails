@@ -74,6 +74,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-spinjs'
   gem 'rails-assets-jquery-highlighttextarea'
   gem 'rails-assets-jquery-geocomplete'
+  gem 'rails-assets-datejs'
 end
 
 gem 'devise'

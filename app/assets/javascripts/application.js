@@ -56,6 +56,7 @@
 //= require ./lib/icheck
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
+//= require datejs
 
 //= require_tree ./backbone/config
 //= require backbone/init

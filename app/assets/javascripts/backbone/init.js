@@ -162,3 +162,12 @@ UPLOADCARE_LOCALE_TRANSLATIONS = {
     }
   } } } }
 };
+
+if (!Date.prototype.toLocaleFormat) {
+  (function() {
+    Date.prototype.toLocaleFormat = function(formatString) {
+      return this.format(formatString);
+    };
+  }());
+}
+
