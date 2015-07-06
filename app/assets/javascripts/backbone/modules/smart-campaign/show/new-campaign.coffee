@@ -2,10 +2,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
   Show.TargetKols = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/target-kols'
+    ui:
+      table: "#kols-table"
     initialize: () ->
       @kols = []
     serializeData: () ->
       kols: @kols
+    onRender: () ->
+      @ui.table.stupidtable()
 
   Show.NewCampaign = Backbone.Marionette.LayoutView.extend
     template: 'modules/smart-campaign/show/templates/new-campaign'
@@ -13,17 +17,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     regions:
       targets: "#target-kols"
 
-    initialize: () ->
+    initialize: (opts) ->
       @targets_view = new Show.TargetKols()
+      @releases = _(opts.releases or []).pluck 'release'
 
     ui:
       categories: "#categories"
+      select: "select"
 
     events:
       "change @ui.categories": "categoriesChange"
 
     onRender: () ->
-      console.log "rendering again"
       @showChildView 'targets', @targets_view
       @ui.categories.select2
         placeholder: "Select campaign categories"
@@ -46,4 +51,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @targets_view.kols = data
         @targets_view.render()
 
-
+    serializeData: () ->
+      console.log @releases
+      releases: @releases

@@ -12,7 +12,7 @@
     <tbody>
       <% _.each(kols, function(k) { %>
         <tr data-id="<%= k.id %>">
-          <td><%= k.name %></td>
+          <td><%= k.first_name %> <%= k.last_name %></td>
           <td><%= k.email %></td>
           <td><%= k.categories %></td>
           <td><%= k.isPublic %></td>

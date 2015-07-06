@@ -18,9 +18,14 @@
               <div>
                 <input class="form-control" placeholder="$1000" name="budget" type="text" value="">
               </div>
-              <label class="control-label">Release:</label>
-              <div>
-                <input class="form-control" name="release" type="text" value="">
+              <label for="exampleInputFile">Release:</label>
+              <div class="ui-select">
+                <select class="releases form-control">
+                  <option value="-1">Select...</option>
+                  <% _.each(releases, function(item){ %>
+                    <option value="<%= item.id %>"><%= item.title %></option>
+                  <% }); %>
+                </select>
               </div>
               <label class="control-label">Categories</label>
               <div>
