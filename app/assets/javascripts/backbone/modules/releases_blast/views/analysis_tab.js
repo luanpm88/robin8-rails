@@ -226,7 +226,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 resultReady();
                 break;
               case 'textapi/classify':
-                that.textapiResult["classify"] = _(response[0].label.split(" - ")).map(function(p) {
+                /* Temporary code */
+                var label = response[0].label;
+                var re = /unrest, conflicts and war.*/;
+                if (re.exec(label))
+                  label = "society - issue";
+                
+                if (label === "religion and belief - cult and sect")
+                  label = "arts, culture and entertainment - culture";
+                /* END of Temporary code */
+                
+                that.textapiResult["classify"] = _(label.split(" - ")).map(function(p) {
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
                 
