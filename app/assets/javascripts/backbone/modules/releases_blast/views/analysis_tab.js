@@ -228,15 +228,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 }).value();
                 
                 if (s.isBlank(that.model.get('concepts'))){
-                  that.textapiResult["concepts"] = _.pluck(renderedTopics, 'topic')
-                    .join(', ');
-                
-                  var concepts = _.pluck(that.textapiResult["concepts"], 'uri');
+                  var concepts = _.pluck(renderedTopics, 'uri');
                   concepts = _.map(concepts, function(item){
                     return item.replace("http://dbpedia.org/resource/", '');
                   });
                   that.model.set('concepts', concepts);
                   
+                  that.textapiResult["concepts"] = _.pluck(renderedTopics, 'topic')
+                    .join(', ');
+                    
                   resultReady();
                 } else {
                   that.textapiResult["concepts"] = _.map(that.model.get('concepts'), function(item){
