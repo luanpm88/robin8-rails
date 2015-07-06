@@ -57,6 +57,8 @@
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
 //= require ./lib/wripl
+//= require datejs
+//= require jquery-stupid-table
 //= require_tree ./backbone/config
 //= require backbone/init
 //= require_tree ./backbone/routers

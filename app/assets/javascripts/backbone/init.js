@@ -54,7 +54,7 @@ Robin.loadPleaseWait = function(){
 };
 
 Robin.setIdentities = function(data){
-  Robin.identities = {}
+  Robin.identities = {};
   Robin.identities.twitter = _.where(data, {provider: "twitter"})[0];
   Robin.identities.facebook = _.where(data, {provider: "facebook"})[0];
   Robin.identities.google = _.where(data, {provider: "google_oauth2"})[0];
@@ -64,14 +64,16 @@ Robin.setIdentities = function(data){
 };
 
 Robin.stopOtherModules = function(){
-  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'Releases', 'ReleasesBlast', 'Analytics', 'Authentication', 'Billing', 'Recommendations'], function(module){
+  _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'DashboardKol', 'SmartCampaign',
+      'Releases', 'ReleasesBlast', 'Analytics', 'Authentication',
+      'Billing', 'Recommendations', 'Campaigns'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
 };
 
 Robin.stopMainModules = function(){
-  _.each(['Navigation', 'Dashboard', 'SaySomething'], function(module){
+  _.each(['Navigation', 'Dashboard', 'DashboardKol', 'SaySomething'], function(module){
     Robin.module(module).stop();
   });
 };
@@ -113,7 +115,7 @@ Robin.vent.on("authentication:logged_out", function() {
     Robin.layouts.main = new Robin.Views.Layouts.PublicPages();
     Robin.main.show(Robin.layouts.main);
     Robin.stopOtherModules();
-    Robin.module('NewsRoomPublic').start(); 
+    Robin.module('NewsRoomPublic').start();
   } else {
     Robin.layouts.unauthenticated = new Robin.Views.Layouts.Unauthenticated();
     Robin.main.show(Robin.layouts.unauthenticated);
@@ -148,7 +150,7 @@ UPLOADCARE_LOCALE_TRANSLATIONS = {
   },
   // messages for dialog's error page
   dialog: { tabs: { preview: { error: {
-    'fileType': {  
+    'fileType': {
       title: 'Title.',
       text: 'Text.',
       back: 'Back'
@@ -160,3 +162,12 @@ UPLOADCARE_LOCALE_TRANSLATIONS = {
     }
   } } } }
 };
+
+if (!Date.prototype.toLocaleFormat) {
+  (function() {
+    Date.prototype.toLocaleFormat = function(formatString) {
+      return this.format(formatString);
+    };
+  }());
+}
+

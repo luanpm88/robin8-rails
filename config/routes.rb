@@ -2,6 +2,7 @@ require 'sidekiq/web'
 require 'sidetiq/web'
 
 Rails.application.routes.draw do
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   mount Sidekiq::Web => '/sidekiq'
@@ -49,6 +50,7 @@ Rails.application.routes.draw do
   get '/kols/get_current_kol' => 'kols#get_current_kol'
   get '/kols/current_categories' => 'kols#current_categories'
   get '/kols/suggest_categories' => 'kols#suggest_categories'
+  get '/kols/suggest' => 'kols#suggest_kols'
 
   resources :posts do
     put 'update_social', on: :member
@@ -127,7 +129,7 @@ Rails.application.routes.draw do
   post 'textapi/hashtags'
 
   get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
-  
+
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
@@ -143,5 +145,8 @@ Rails.application.routes.draw do
   post '/contact', to: 'pages#contact'
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
+
+  resources :campaign, only: [:index, :create, :show]
+  resources :campaign_invite, only: [:index, :create, :show, :update]
 
 end

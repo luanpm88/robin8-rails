@@ -1,7 +1,7 @@
 Backbone.Marionette.Renderer.render = function(template, data) {
   if (template === false)
     return;
-    
+
   var path;
   path = JST["backbone/" + template];
   if (!path) {

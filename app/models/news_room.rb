@@ -61,7 +61,7 @@ class NewsRoom < ActiveRecord::Base
   def permalink
     host = Rails.application.secrets[:host]
     subdomain_name = self.subdomain_name
-    
+
     "http://#{subdomain_name}.#{host}"
   end
 
@@ -127,5 +127,5 @@ class NewsRoom < ActiveRecord::Base
       rescue Exception => e
       end
     end
-    
+
 end

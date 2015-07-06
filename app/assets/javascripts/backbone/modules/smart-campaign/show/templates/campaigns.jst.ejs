@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-2 col-md-offset-5 vcenter"><b>Campaigns<b/></div>
+  <div class="pull-right">
+    <a type="button" class="btn btn-success vcenter" id="new_campaign" href="/#smart_campaign/new">New Campaign</a>
+  </div>
+</div>
+<% if (items.length == 0) { %>
+  <div class="row">You don't have any campaigns. It's time to create one!</div>
+<% } else { %>
+  <div class="row">
+    <table class="table table-striped" id="campaigns-table">
+      <thead style="cursor:pointer;"><tr>
+        <th data-sort="string">Name</th>
+        <th data-sort="int">Deadline</th>
+        <th data-sort="int">Created</th>
+        <th data-sort="int">Budget</th>
+      </tr></thead>
+      <tbody>
+        <% _.each(items, function(c) { %>
+          <tr data-id="<%= c.id %>">
+            <td><%= c.name %></td>
+            <td data-sort-value="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
+            <td data-sort-value="<%= timestamp(c.created_at) %>"><%= formatDate(c.created_at) %></td>
+            <td data-sort-value="<%= c.budget %>">$<%= c.budget %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>

@@ -409,6 +409,7 @@ GEM
     rails-assets-datatables-tabletools (2.2.4)
       rails-assets-datatables (>= 1.9.0)
       rails-assets-jquery (>= 1.7.0)
+    rails-assets-datejs (1.0.0.rc3)
     rails-assets-eonasdan-bootstrap-datetimepicker (4.0.0)
       rails-assets-jquery (>= 1.8.3)
       rails-assets-moment (>= 2.8.0)
@@ -419,6 +420,8 @@ GEM
       rails-assets-jquery (>= 1.9.0)
     rails-assets-jquery-highlighttextarea (3.1.0)
       rails-assets-jquery (> 1.9)
+    rails-assets-jquery-stupid-table (1.0.1)
+      rails-assets-jquery (>= 1.7.0)
     rails-assets-jquery.caret (1.5.2)
     rails-assets-jquery.dotdotdot (1.7.3)
       rails-assets-jquery (>= 1.4.3)
@@ -675,11 +678,13 @@ DEPENDENCIES
   rails-assets-chance!
   rails-assets-datatables!
   rails-assets-datatables-tabletools!
+  rails-assets-datejs!
   rails-assets-eonasdan-bootstrap-datetimepicker (= 4.0.0)!
   rails-assets-font-awsome!
   rails-assets-highcharts (= 4.1.1)!
   rails-assets-jquery-geocomplete!
   rails-assets-jquery-highlighttextarea!
+  rails-assets-jquery-stupid-table!
   rails-assets-jquery.caret!
   rails-assets-jquery.dotdotdot!
   rails-assets-momentjs!
