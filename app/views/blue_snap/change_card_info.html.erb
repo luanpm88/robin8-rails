@@ -175,7 +175,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
   <script>
     $("#card_credit_card_number").keyup(function(){
-      $("#card_last_four").val($("#card_credit_card_number").val().slice(-4))
+      $("#card_last_four").val($.trim($("#card_credit_card_number").val()).slice(-4))
     });
     $.validate();
     $(document).ready(function(){
