@@ -7,8 +7,8 @@
           <% _.each(items, function(item){ %>
             <div class="col-sm-12">
               <div class="col-xs-14 col-md-9">
-                <%= item.invite_date %> <%= item.campaign.description %>
-                <div><b>Deadline: <%= item.deadline_date %></b></div>
+                <%= formatDate(item.created_at) %> <%= item.campaign.description %>
+                <div><b>Deadline: <%= formatDate(item.campaign.deadline) %></b></div>
               </div>
               <% if (item.status == "") { %>
                 <div class="col-xs-4 col-md-3 pull-right">

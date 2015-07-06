@@ -6,6 +6,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       "click .invitation-accept": "accept"
       "click .invitation-decline": "decline"
 
+    templateHelpers:
+      formatDate: (d) ->
+        date = new Date d
+        date.toString()
+
     accept: (event) ->
       event.preventDefault()
       @perform_action($(event.currentTarget))
