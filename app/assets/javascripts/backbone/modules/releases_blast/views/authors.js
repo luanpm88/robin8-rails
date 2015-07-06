@@ -454,10 +454,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         return item == undefined;
       }).value();
       
-      csvObject.push(["Author", "Outlet", "Contact"]); // CSV Headers
+      csvObject.push(["First name", "Last name", "Outlet", "Contact"]); // CSV Headers
       
       _(pitchContactsArray).each(function(model){
-        csvObject.push([model.get('full_name'), 
+        csvObject.push([model.get('first_name'), model.get('last_name'), 
           model.get('blog_names').join(', '), model.get('email')]);
       });
       
@@ -645,10 +645,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }).value();
       
       var csvObject = [];
-      csvObject.push(["Author", "Outlet", "Relevance", "Contact"]); // CSV Headers
+      csvObject.push(["First name", "Last name", "Outlet", 
+        "Relevance", "Contact"]); // CSV Headers
       
       _(pitchContacts).each(function(item){
-        csvObject.push([item.get('full_name'), 
+        csvObject.push([item.get('first_name'), item.get('last_name'), 
           item.get('blog_names').join(', '), item.get('level_of_interest'), 
           item.get('email')]);
       });
