@@ -1,8 +1,8 @@
 Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
-  Analytics.WeChatAnalyticsPage = Backbone.Marionette.ItemView.extend({
-    template: 'modules/analytics/templates/wechat-analytics',
+  Analytics.CampaignAnalyticsPage = Backbone.Marionette.ItemView.extend({
+    template: 'modules/analytics/templates/campaign-analytics',
 
-    renderWechatAnalytics: function() {
+    renderCampaignAnalytics: function() {
       $( document ).ready(function() {
         $('.tablesorter').tablesorter({
           headers : {
@@ -12,12 +12,11 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
             3: { sorter: "digit" },
             4: { sorter: "digit" },
             5: { sorter: "digit" },
-            6: { sorter: "digit" },
-            7: { sorter: "digit" }
+            6: { sorter: "date" }
           }
         });
       });
-      Analytics.layout.$el.find('.wechat-label').tab('show');
+      Analytics.layout.$el.find('.campaigns-label').tab('show');
     }
   });
 });

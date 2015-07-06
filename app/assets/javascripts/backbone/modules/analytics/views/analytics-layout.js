@@ -9,7 +9,8 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       emailsAnalyticsRegion: '#emails-analytics-region',
       emailsListRegion: '#emails-list-region',
       weChatAnalyticsRegion: '#wechat-analytics-region',
-      weiboAnalyticsRegion: '#weibo-analytics-region'
+      weiboAnalyticsRegion: '#weibo-analytics-region',
+      campaignAnalyticsRegion: '#campaign-analytics-region'
     },
 
     events: {
@@ -18,7 +19,8 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       'click .emails-label': 'navigateToEmails',
       'click .web-label': 'navigateToWeb',
       'click .wechat-label': 'navigateToWeChatReport',
-      'click .weibo-label': 'navigateToWeiboReport'
+      'click .weibo-label': 'navigateToWeiboReport',
+      'click .campaigns-label': 'navigateToCampaign'
     },
 
     changeWebNewsRoom: function(event) {
@@ -66,6 +68,10 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
     navigateToWeiboReport: function(){
       Backbone.history.navigate('analytics-weibo', {trigger:true});
+    },
+
+    navigateToCampaign: function(){
+      Backbone.history.navigate('analytics-campaign', {trigger:true});
     }
 
   });

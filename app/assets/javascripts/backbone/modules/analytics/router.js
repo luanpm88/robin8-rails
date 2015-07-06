@@ -4,7 +4,8 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       'analytics': 'index',
       'analytics-email': 'emails',
       'analytics-wechat': 'wechat',
-      'analytics-weibo': 'weibo'
+      'analytics-weibo': 'weibo',
+      'analytics-campaign': 'campaign'
     }
   });
 });
