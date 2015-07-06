@@ -1,1 +1,45 @@
-NEW CAMPAIGN
+<div class="col-sm-12" style="width: 99%">
+  <div class="dashboard-btns">
+    <div class="row">
+      <h5><i class="fa fa-home glyphicon glyphicon-bullhorn"></i> New SmartCampaign</h5>
+    </div>
+    <hr/>
+    <div class="row">
+      <div class="col-md-12">
+        <h5>Campaign details:</h5>
+        <form class="form-horizontal" role="form" autocomplete="off" id="profileForm" onsubmit="return false;">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="control-label">Name:</label>
+              <div>
+                <input class="form-control" placeholder="My new campaign" name="name" type="text" value="">
+              </div>
+              <label class="control-label">Budget:</label>
+              <div>
+                <input class="form-control" placeholder="$1000" name="budget" type="text" value="">
+              </div>
+              <label class="control-label">Release:</label>
+              <div>
+                <input class="form-control" name="release" type="text" value="">
+              </div>
+              <label class="control-label">Categories</label>
+              <div>
+                <input class="form-control" id="categories" name="categories" type="hidden">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="control-label">Description:</label>
+              <div>
+                <textarea class="form-control" rows="10" placeholder="Give influencers more details about your campaign here..." name="description" value=""></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <div class="row" id="target-kols">
+  </div>
+</div>
+

@@ -1,0 +1,23 @@
+<h5>Target influencers:</h5>
+<% if (kols.length == 0) { %>
+  <i>Couldn't match any influencers for you. Provivde more categories.</i>
+<% } else { %>
+  <table class="table table-striped" id="kols-table">
+    <thead style="cursor:pointer;"><tr>
+      <th data-sort="string">Name</th>
+      <th data-sort="string">Email</th>
+      <th data-sort="string">Categories</th>
+      <th data-sort="string">Public</th>
+    </tr></thead>
+    <tbody>
+      <% _.each(kols, function(k) { %>
+        <tr data-id="<%= k.id %>">
+          <td><%= k.name %></td>
+          <td><%= k.email %></td>
+          <td><%= k.categories %></td>
+          <td><%= k.isPublic %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<% } %>
