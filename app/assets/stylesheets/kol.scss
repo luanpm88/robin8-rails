@@ -46,6 +46,47 @@
 }
 
 .activation-alert {
-    padding-top: 20px !important;
-    padding-bottom: 1px !important
+  padding-top: 20px !important;
+  padding-bottom: 1px !important
+}
+
+
+.invites {
+  .table-head {
+    cursor: pointer;
+  }
+
+  .invite-cell {
+    text-align: center;
+    vertical-align: middle;
+    height: 51px;
+
+    &.invite-status {
+      width: 12%;
+      min-width: 180px;
+    }
+
+    &.invite-status.invite-declined {
+      color: #DA4453;
+    }
+
+    &.invite-status.invite-accepted {
+      color: #8CC152;
+    }
+
+    &.invite-deadline,
+    &.invite-date {
+      width: 14%;
+      min-width: 100px;
+    }
+
+    &.invite-description {
+      text-align: left;
+    }
+
+    &.invite-id {
+      width: 3%;
+      min-width: 30px;
+    }
+  }
 }
