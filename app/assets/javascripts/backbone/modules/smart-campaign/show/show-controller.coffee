@@ -1,7 +1,7 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
-  Show.Controller =
-    showPage: ()->
+  Show.Controller = Marionette.Controller.extend
+    showPage: () ->
       page = new Show.SmartCampaignPage()
       Robin.layouts.main.content.show page
 
@@ -13,4 +13,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           page.showChildView 'campaigns', campaigns_view
 
       page.showChildView 'kols', new Show.Kols()
+
+    showNewCampaign: () ->
+      page = new Show.NewCampaign()
+      Robin.layouts.main.content.show page
+
 
