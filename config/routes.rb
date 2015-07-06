@@ -53,7 +53,8 @@ Rails.application.routes.draw do
     get 'others', on: :collection
   end
   resources :news_rooms do
-    get 'analytics'
+    get 'web_analytics'
+    get 'email_analytics'
   end
   resource :public_news_room do
     resources :followers, only: [:new, :create]
