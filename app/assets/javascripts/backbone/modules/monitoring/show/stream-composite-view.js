@@ -5,11 +5,24 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     tagName: "li",
     className: "stream",
     childViewContainer: ".stories",
-
+    ui: {
+      exportButton: ".export-button",
+      exportDialog: ".export-dialog",
+      storiesNumberSlider: "input.stories-number",
+      storiesNumberOutput: "#stories-number",
+      colorizeBackground: ".export-dialog [name=colorize-background]",
+      formatFileInput: ".export-dialog [name=format]",
+      downloadReportButton: "#download-report",
+      dateRangeField: "input[name=daterange]"
+    },
     events: {
       'click .delete-stream': 'closeStream',
       'click .settings-button': 'settings',
       'click .rss-button': 'toggleRssDialog',
+      'click @ui.exportButton': 'exportButtonClicked',
+      'change @ui.storiesNumberSlider': 'storiesNumberSliderChanged',
+      'click @ui.downloadReportButton': "downloadReportButtonClicked",
+      'change @ui.formatFileInput': "formatFileInputChanged",
       'click #close-settings': 'closeSettings',
       'click #done': 'done',
       'click span.editable': 'editTitle',
@@ -22,7 +35,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     collectionEvents: {
       add: 'onAdded',
       'reset': 'afterFetch',
-      'sync': 'afterFetch'
+      'sync': 'afterFetch',
+      'request': 'showLoading',
     },
 
     modelEvents: {
@@ -30,11 +44,18 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'change:sort_column': 'refreshTimeRangeVisibility'
     },
 
+    showLoading: function (e) {
+      this.$el.find('.stream-loading').removeClass('hidden');
+      this.$el.find('.empty-stream').addClass('hidden');
+    },
+
     afterFetch: function (e) {
       this.filterCollection();
       this.$el.find('.stream-loading').addClass('hidden');
       this.$el.find('.stream-body').removeClass('opacity-02');
-      if (this.collection.length == 0) {
+      if (this.collection.length != 0) {
+        this.$el.find('.empty-stream').addClass('hidden');
+      } else {
         this.$el.find('.empty-stream').removeClass('hidden');
       };
     },
@@ -140,11 +161,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         Robin.cachedStories[streamId].streamId = streamId;
         Robin.cachedStories[streamId].alreadyRendered = false;
         Robin.cachedStories[streamId].sortByPopularity = this.model.get('sort_column') == 'shares_count';
-
       }
 
       this.collection = Robin.cachedStories[streamId] || new Robin.Collections.Stories();
-      
       if (Robin.loadingStreams.length == 1) {
         Robin.currentStreamIndex = 0;
         this.collection.executePolling();
@@ -185,7 +204,6 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         Robin.cachedStories[this.model.get('id')].alreadyRendered = true;
       }
 
-
       if (this.needOpacity) {
         this.$el.find('.stream-loading').removeClass('hidden');
         this.$el.find('.stream-body').addClass('opacity-02');
@@ -200,9 +218,27 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
 
       this.refreshTimeRangeVisibility();
-      this.$el.find("input.select2-input").css('width', '150%')
-    },
+      this.$el.find("input.select2-input").css('width', '150%');
 
+      
+      this.ui.colorizeBackground.prop('checked', true);
+      this.ui.colorizeBackground.parent().hide();
+      this.ui.formatFileInput.val('docx').trigger('change');
+      this.initDateRangeField();
+    },
+    initDateRangeField: function(){
+      this.ui.dateRangeField.daterangepicker({
+        ranges: {
+          'Last 24 Hours': [moment().subtract(1, 'days'), new Date()],
+          'Last 7 Days': [moment().subtract(6, 'days'), new Date()],
+          'Last 30 Days': [moment().subtract(29, 'days'), new Date()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), 
+            moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: 'right'
+      });
+    },
     onAdded: function(story, collection) {
       this.filterCollection();
       this.refreshNewStoriesCount();
@@ -357,7 +393,56 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
     },
-
+    
+    exportButtonClicked: function(e){
+      this.ui.exportDialog.toggleClass('closed');
+    },
+    storiesNumberSliderChanged: function(e){
+      currentValue = this.ui.storiesNumberSlider.val();
+      this.ui.storiesNumberOutput.val(currentValue);
+    },
+    downloadReportButtonClicked: function(e){
+      e.preventDefault();
+      
+      this.downloadReport();
+    },
+    formatFileInputChanged: function(e){
+      var fileFormat = this.ui.formatFileInput.val();
+      
+      if (fileFormat === "docx")
+        this.ui.colorizeBackground.parent().hide();
+      else
+        this.ui.colorizeBackground.parent().show();
+    },
+    downloadReport: function(){
+      var numberOfStories = this.ui.storiesNumberSlider.val();
+      var streamId = this.model.id;
+      var format = this.ui.formatFileInput.val();
+      var colorizeBackground = null;
+      var dateRange = this.ui.dateRangeField.val();
+      var published_at = null;
+      
+      if (!s.isBlank(dateRange)){
+        published_at = "[" + _(dateRange.split('-')).map(function(i){ 
+          return new Date(i.trim()).toISOString() 
+        }).join(' TO ') + "]";
+      }
+      
+      if (this.ui.colorizeBackground.is(":checked"))
+        colorizeBackground = true
+      else
+        colorizeBackground = false
+      
+      var params = {
+        colorize_background: colorizeBackground, 
+        per_page: numberOfStories
+      };
+      
+      if (published_at)
+        params['published_at'] = published_at
+        
+      openWindow('GET', '/streams/' + streamId + '/stories.' + format, params);
+    },
     toggleRssDialog: function(){
       $(this.el).find('.rss-dialog').toggleClass('closed');
     },

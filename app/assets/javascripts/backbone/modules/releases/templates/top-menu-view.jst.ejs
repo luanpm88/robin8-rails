@@ -42,7 +42,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <% if(release.news_room_id) {%>
-            <h4 class="modal-title truncate"> Edit <%= release.title%> </h4>
+            <h4 class="modal-title truncate"> Edit <%= release.title %> </h4>
           <% } else {%>
             <h4 class="modal-title"> <%= polyglot.t("releases.modal.title") %> </h4>
           <% } %>
@@ -52,9 +52,10 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#release-company" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.basic_tab.title") %></a></li>
+              <li role="presentation" class="active"><a href="#release-company" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.basic_tab.title") %></a></a></li>
               <li role="presentation"><a href="#website" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.website_tab.title") %></a></li>
               <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.media_tab.title") %></a></li>
+              <li role="presentation"><a href="#newswire" aria-controls="settings" role="tab" data-toggle="tab">Newswire</a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -104,11 +105,65 @@
                   <div class='videos_region'></div>
                   <div class='files_region'></div>
                 </div>
+                <div role="tabpanel" class="tab-pane" id="newswire">
+                  <b>Please, select options for distributing release:</b>
+                  <br><br>
+                  <div class="form-group">
+                    <div class="col-sm-6 text-right">
+                      <label for="icheckbox_myprgenie" class="control-label text-right" style="margin-right: 5px;" >Financial Content Distribution: </label>
+                      <input type="checkbox" class='myprgenie-checkbox col-sm-1' id="icheckbox_myprgenie" name="myprgenie" <% if(release.myprgenie) { %><%= 'disabled' %><% } %>>
+                    </div>
+                    <div class="col-sm-6" id="myprgenie_start_div" <% if(!release.myprgenie) { %><%= 'style="display: none"' %><% } %>>
+                      <div class="col-sm-6 text-right">
+                        <label for="myprgenie_date_input" class="control-label text-right" style="margin-right: 5px;" >Start date: </label>
+                      </div>
+                      <div class="col-sm-6" style="padding: 0px; margin: 0px">
+                        <input type="text" class="form-control date" id="myprgenie_date_input" name="myprgenie_published_at" <% if(release.myprgenie) { %><%= 'disabled' %><% } %> />
+                      </div>
+                    </div>
+                  </div><br><br>
+                  <div class="form-group">
+                    <div class="col-sm-6 text-right">
+                      <label for="icheckbox_accesswire" class="control-label text-right" style="margin-right: 5px;" >Accesswire: </label>
+                      <input type="checkbox" class='accesswire-checkbox' id="icheckbox_accesswire" name="accesswire" <% if(release.accesswire) { %><%= 'disabled' %><% } %>>
+                    </div>
+                    <div class="col-sm-6" id="accesswire_start_div" <% if(!release.accesswire) { %><%= 'style="display: none"' %><% } %>>
+                      <div class="col-sm-6 text-right">
+                        <label for="accesswire_date_input" class="control-label text-right" style="margin-right: 5px;" >Start date: </label>
+                      </div>
+                      <div class="col-sm-6" style="padding: 0px; margin: 0px">
+                        <input type="text" class="form-control date" id="accesswire_date_input" name="accesswire_published_at" <% if(release.accesswire) { %><%= 'disabled' %><% } %> />
+                      </div>
+                    </div>
+                  </div><br><br>
+                  <div class="form-group">
+                    <div class="col-sm-6 text-right">
+                      <label for="icheckbox_prnewswire" class="control-label text-right" style="margin-right: 5px;" >PR Newswire: </label>
+                      <input type="checkbox" class='prnewswire-checkbox' id="icheckbox_prnewswire" name="prnewswire" <% if(release.prnewswire) { %><%= 'disabled' %><% } %>>
+                    </div>
+                    <div class="col-sm-6" id="prnewswire_start_div" <% if(!release.prnewswire) { %><%= 'style="display: none"' %><% } %>>
+                      <div class="col-sm-6 text-right">
+                        <label for="prnewswire_date_input" class="control-label text-right" style="margin-right: 5px;" >Start date: </label>
+                      </div>
+                      <div class="col-sm-6" style="padding: 0px; margin: 0px">
+                        <input type="text" class="form-control date" id="prnewswire_date_input" name="prnewswire_published_at" <% if(release.prnewswire) { %><%= 'disabled' %><% } %> />
+                      </div>
+                    </div>
+                  </div>
+                  <div><br><br></div>
+                </div>
             </div>
             </form>
 
           </div>
         </div>
+        <div id="alert-container">
+          <div id="public-alert" class="alert alert-warning" role="alert" style="display:none;">
+            This release won't be publicly displayed while the parent Newsroom remains unpublished.
+            <b><button id="make-public">Publish the newsroom!</button></b>
+          </div>
+        </div>
+
         <div class="modal-footer">
           <% var windowUrl = location.host.split('.') %>
           <% var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
@@ -116,12 +171,6 @@
             <% if(release.id) { %>
               <button type="button" class="btn btn-danger" id="delete_release"><i class="fa fa-trash"></i> <%= polyglot.t("releases.modal.buttons.delete") %></button>
             <% } %>
-          </div>
-          <div id="alert-container">
-              <div id="public-alert" class="alert alert-warning" role="alert" style="display:none;">
-                <%= polyglot.t("releases.modal.warning") %>
-                <b><button id="make-public"><%= polyglot.t("releases.modal.publish") %></button></b>
-              </div>
           </div>
           <div id="release-buttons">
             <button type="button" class="btn btn-primary smart-release-button" id='smart_release' ><i class="fa fa-rocket"></i> <%= polyglot.t("releases.modal.buttons.next") %></button>

@@ -540,7 +540,7 @@ a {
   left: 11px;
   padding: 10px;
   border-radius: 0 0 4px 4px;
-  z-index: 9999;
+  z-index: 2000;
 }
 .stream-settings form {
   color: #fff;
@@ -938,11 +938,11 @@ nav{text-align: center;}
 #release_form #delete-container {
   width: 110px;
   float: left;
-  margin-right: 70px;
+  // margin-right: 70px;
 }
 #release_form #alert-container {
-  width: 460px;
-  float: left;
+  // width: 460px;
+  // float: left;
 }
 #release_form #release-buttons {
   width: 185px;

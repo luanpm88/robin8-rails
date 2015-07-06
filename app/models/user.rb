@@ -62,7 +62,26 @@ class User < ActiveRecord::Base
 
   def is_feature_available?(slug)
     @user = is_primary? ? self : invited_by 
-    Feature.joins(:user_features).where("user_features.user_id = '#{@user.id}' AND user_features.available_count > '0' AND features.slug = '#{@user.slug}'").exists?
+    Feature.joins(:user_features).where("user_features.user_id = '#{@user.id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
+  end
+
+  def used_count_by_slug(slug)
+    case slug
+    when 'seat'
+      seat_count
+    when 'newsroom'
+      newsroom_count
+    when 'press_release'
+      release_count
+    when 'smart_release'
+      smart_release_count
+    when 'media_monitoring'
+      stream_count
+    when 'personal_media_list'
+      media_lists_count
+    else
+      0
+    end
   end
 
   def available_features
@@ -73,6 +92,7 @@ class User < ActiveRecord::Base
     is_primary != false
   end
 
+
   def newsroom_available_count
     current_user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
   end
@@ -82,8 +102,37 @@ class User < ActiveRecord::Base
   end
 
   def can_create_newsroom
-    newsroom_available_count.nil? ? false : newsroom_available_count > 1
+    newsroom_available_count.nil? ? false : newsroom_available_count > 0
   end
+
+########################################################################################################
+  def myprgenie_available_count
+    current_user_features.myprgenie_web_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_myprgenie
+    myprgenie_available_count.nil? ? false : myprgenie_available_count >= 1
+  end
+
+
+  def accesswire_available_count
+    current_user_features.accesswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_accesswire
+    accesswire_available_count.nil? ? false : accesswire_available_count >= 1
+  end
+
+
+  def prnewswire_available_count
+    current_user_features.pr_newswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_prnewswire
+    p prnewswire_available_count
+    prnewswire_available_count.nil? ? false : prnewswire_available_count >= 1
+  end
+##########################################################################################################
 
   def release_available_count
     current_user_features.press_release.map(&:available_count).inject{|sum,x| sum + x }
@@ -107,6 +156,14 @@ class User < ActiveRecord::Base
 
   def stream_available_count
     current_user_features.media_monitoring.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def media_list_available_count
+    current_user_features.personal_media_list.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
+  def can_create_media_list
+    media_list_available_count.nil? ? false : media_list_available_count > 0
   end
 
   def stream_count
@@ -135,7 +192,7 @@ class User < ActiveRecord::Base
   end
 
   def can_create_seat
-    seat_available_count.nil? ? false : seat_available_count > 1
+    seat_available_count.nil? ? false : seat_available_count > 0
   end
 
   def seat_available_count
@@ -144,6 +201,23 @@ class User < ActiveRecord::Base
 
   def seat_count
     manageable_users.count + 1 # +1 - himself
+  end
+
+  # def can_create_seat
+  #   seat_available_count.nil? ? false : seat_available_count > 1
+  # end
+
+  # def seat_available_count
+  #   current_user_features.seat.map(&:available_count).inject{|sum,x| sum + x }
+  # end
+
+  # def seat_count
+  #   manageable_users.count + 1 # +1 - himself
+  # end
+
+  def media_lists_count
+    lists = current_user_features.personal_media_list
+    lists.count == 0 ? 0 : lists.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def active_subscription
@@ -209,14 +283,15 @@ class User < ActiveRecord::Base
     identities_by_providers 
   end
 
-  def twitter_post message, identity_id
-    twitter_identity = Identity.find(identity_id)
-    unless twitter_identity.blank?
+  def twitter_post(message, identity_id=nil)
+    identity = identity_id.nil? ? twitter_identity : Identity.find(identity_id)
+    
+    unless identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]
         config.consumer_secret     = Rails.application.secrets.twitter[:api_secret]
-        config.access_token        = twitter_identity.token
-        config.access_token_secret = twitter_identity.token_secret
+        config.access_token        = identity.token
+        config.access_token_secret = identity.token_secret
       end
       client.update(message)
     end
@@ -294,13 +369,14 @@ class User < ActiveRecord::Base
       end
     end
 
-    # def needed_user
-    #   user.is_primary? ? user : user.invited_by
-    # end
+    def needed_user
+      is_primary? ? self : self.invited_by
+    end
 
     def decrease_feature_number
       if !is_primary
-        uf = invited_by.user_features.seat.available.first
+        af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
+        uf = af.nil? ? needed_user.user_features.seat.available.first : af
         return false if uf.blank?
         uf.available_count -= 1
         uf.save
@@ -309,7 +385,8 @@ class User < ActiveRecord::Base
 
     def increase_feature_number
       if !is_primary
-        uf = invited_by.user_features.seat.first
+        af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
+        uf = af.nil? ? needed_user.user_features.seat.used.first : af
         return false if uf.blank?
         uf.available_count += 1
         uf.save

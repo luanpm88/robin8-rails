@@ -51,6 +51,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'
   gem 'rails-assets-backbone.marionette', '2.4.1'
+  gem 'rails-assets-bootstrap-daterangepicker', '1.3.21'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
@@ -104,7 +105,15 @@ gem 'countries'
 gem 'whenever'
 gem 'friendly_id', '~> 5.1.0'
 
-gem 'docx-html'
+gem 'docx'
+
+# pure Ruby PDF generation library
+gem 'prawn'
+gem 'imgkit'
+
+# to create Docx
+gem 'caracal-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -134,7 +143,16 @@ group :development, :test do
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+
   gem 'rspec-rails'
+  gem 'rspec-activemodel-mocks'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
+  gem 'ffaker'
+  gem 'rspec-mocks'
+  gem "capybara"
+  gem 'guard-rspec'
+  gem 'spring-commands-rspec'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

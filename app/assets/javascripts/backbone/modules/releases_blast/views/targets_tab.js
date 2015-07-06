@@ -45,6 +45,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         Robin.vent.off("search:authors:clicked");
         Robin.vent.off("search:influencers:clicked");
       });
-    }
+    },
+
+    onRender: function(){
+      var curView = this;
+      Robin.user.fetch({
+        success: function() {
+          if (Robin.user.get('can_create_media_list') != true) {
+            console.log('1');
+            console.log(curView.$el.find("#upload_button"));
+            curView.$el.find("#upload_button").addClass('disabled-unavailable');
+          } else {
+            console.log('2');
+            curView.$el.find("#upload_button").removeClass('disabled-unavailable');
+          }
+        }
+      });
+    },
   });
 });

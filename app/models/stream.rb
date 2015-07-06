@@ -10,7 +10,7 @@ class Stream < ActiveRecord::Base
   validate :can_be_created, on: :create
 
   after_create :set_position, :decrease_feature_number
-  after_destroy :increase_feature_numner
+  after_destroy :increase_feature_number
 
 
   def topics_raw
@@ -47,14 +47,47 @@ class Stream < ActiveRecord::Base
   end
 
   def query_params
-    {
+    q_params = {
       'blog_ids[]' => blogs.map{|blog| blog[:id]},
       'topics[]' => topics.map{|topic| topic[:id]},
       'keywords[]' => keywords.map{|keyword| keyword[:id]},
       sort_column: sort_column,
-      sort_direction: 'desc',
-      published_at: sort_column == 'shares_count' ? published_at : nil
+      sort_direction: 'desc'
     }
+    
+    if (sort_column == 'shares_count' && !published_at.blank?)
+      q_params[:published_at] = published_at
+    end
+    
+    q_params
+  end
+  
+  def stream_title
+    title_arr = []
+    title_arr << (sort_column == "shares_count" ? "Top" : "Latest")
+    title_arr << "articles"
+    
+    topic_titles = (topics + keywords).map do |topic|
+      topic[:text]
+    end.uniq {|t| t.strip.downcase}
+    
+    topic_titles.insert(3, "more") if topic_titles.size > 3
+    
+    if topic_titles.size > 0
+      title_arr << "about"
+      title_arr << topic_titles.take(4).to_sentence
+    end
+    
+    blog_names = blogs.map do |b|
+      b[:text]
+    end
+    
+    if blog_names.size > 0
+      title_arr << "from"
+      title_arr << blog_names.to_sentence
+    end
+    
+    title_arr.join(' ')
   end
 
   private
@@ -68,14 +101,16 @@ class Stream < ActiveRecord::Base
     end
 
     def decrease_feature_number
-      uf = needed_user.user_features.media_monitoring.available.first
+      af = needed_user.user_features.media_monitoring.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? needed_user.user_features.media_monitoring.available.first : af
       return false if uf.blank?
       uf.available_count -= 1
       uf.save
     end
 
-    def increase_feature_numner
-      uf = needed_user.user_features.media_monitoring.first
+    def increase_feature_number
+      af = needed_user.user_features.media_monitoring.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? needed_user.user_features.media_monitoring.used.first : af
       return false if uf.blank?
       uf.available_count += 1
       uf.save
