@@ -68,6 +68,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       
       this.ui.iptcCategoryLink.editable({
+        mode: 'popup',
         name: 'iptc_categories',
         select2: {
           placeholder: 'Select a category',
@@ -92,6 +93,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       
       this.ui.topicsLink.editable({
+        mode: 'popup',
         inputclass: 'input-large',
         select2: {
           tags: true,
@@ -144,11 +146,20 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       ReleasesBlast.controller.targets();
     },
     boldTopicsInSummaryLine: function(summary){
-      var sfs = _.chain(this.textapiResult["concepts"])
-        .map(function(item){return '\\b' + RegExp.escape(item.sfs) + '\\b'; })
-        .uniq()
-        .value();
-
+      var sfs = [];
+      
+      if (_.isString(this.textapiResult["concepts"])){
+        sfs = _.chain(this.textapiResult["concepts"].split(','))
+          .map(function(item){ return '\\b' + RegExp.escape(item.trim()) + '\\b'; })
+          .uniq()
+          .value();
+      } else {
+        var sfs = _.chain(this.textapiResult["concepts"])
+          .map(function(item){return '\\b' + RegExp.escape(item.sfs) + '\\b'; })
+          .uniq()
+          .value();
+      }
+      
       var pattern = new RegExp('(' + sfs.join('|') + ')', 'ig');
 
       summary = summary.replace(pattern, function($1, match) { 
@@ -215,15 +226,26 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                     freq: countedTopics[topic.label]
                   };
                 }).value();
-                that.textapiResult["concepts"] = renderedTopics;
                 
-                var concepts = _.pluck(that.textapiResult["concepts"], 'uri');
-                concepts = _.map(concepts, function(item){
-                  return item.replace("http://dbpedia.org/resource/", '');
-                });
-                that.model.set('concepts', concepts);
+                if (s.isBlank(that.model.get('concepts'))){
+                  that.textapiResult["concepts"] = _.pluck(renderedTopics, 'topic')
+                    .join(', ');
                 
-                resultReady();
+                  var concepts = _.pluck(that.textapiResult["concepts"], 'uri');
+                  concepts = _.map(concepts, function(item){
+                    return item.replace("http://dbpedia.org/resource/", '');
+                  });
+                  that.model.set('concepts', concepts);
+                  
+                  resultReady();
+                } else {
+                  that.textapiResult["concepts"] = _.map(that.model.get('concepts'), function(item){
+                    return item.replace(/_/g, ' ');
+                  }).join(', ');
+                  
+                  resultReady();
+                }
+                
                 break;
               case 'textapi/classify':
                 /* Temporary code */
@@ -236,20 +258,43 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   label = "arts, culture and entertainment - culture";
                 /* END of Temporary code */
                 
-                that.textapiResult["classify"] = _(label.split(" - ")).map(function(p) {
+                if (s.isBlank(that.model.get('iptc_categories'))){
+                  that.textapiResult["classify"] = _(label.split(" - ")).map(function(p) {
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
+                  
+                  var iptc_categories = _.chain(response).pluck('code')
+                    .uniq().value();
+                  that.model.set('iptc_categories', iptc_categories);
+                  
+                  resultReady();
+                } else {
+                  $.ajax({
+                    dataType: 'json',
+                    method: 'GET',
+                    url: '/iptc_categories/' + that.model.get('iptc_categories')[0],
+                    success: function(response){
+                      that.textapiResult["classify"] = response.label;
+                      
+                      resultReady();
+                    }
+                  });
+                }
                 
-                var iptc_categories = _.chain(response).pluck('code').uniq().value();
-                that.model.set('iptc_categories', iptc_categories);
-                
-                resultReady();
                 break;
               case 'textapi/summarize':
-                that.textapiResult["summarize"] = _(response).first(5);
-                that.model.set('summaries', response);
+                if (s.isBlank(that.model.get('summaries'))) {
+                  that.textapiResult["summarize"] = _(response).first(5);
+                  that.model.set('summaries', response);
+                  
+                  resultReady();
+                } else {
+                  that.textapiResult["summarize"] = _(that.model.get('summaries'))
+                    .first(5);
+                  
+                  resultReady();
+                }
                 
-                resultReady();
                 break;
               case 'textapi/hashtags':
                 that.textapiResult["hashtags"] = _.uniq(response);
