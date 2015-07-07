@@ -427,6 +427,8 @@ GEM
     rails-assets-jquery.caret (1.5.2)
     rails-assets-jquery.dotdotdot (1.7.3)
       rails-assets-jquery (>= 1.4.3)
+    rails-assets-jquery.tablesorter (2.22.3)
+      rails-assets-jquery (>= 1.2.6)
     rails-assets-moment (2.9.0)
     rails-assets-momentjs (2.10.3)
     rails-assets-please-wait (0.0.5)
@@ -693,6 +695,7 @@ DEPENDENCIES
   rails-assets-jquery-stupid-table!
   rails-assets-jquery.caret!
   rails-assets-jquery.dotdotdot!
+  rails-assets-jquery.tablesorter!
   rails-assets-momentjs!
   rails-assets-please-wait!
   rails-assets-progressjs!
@@ -726,3 +729,6 @@ DEPENDENCIES
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
+
+BUNDLED WITH
+   1.10.4

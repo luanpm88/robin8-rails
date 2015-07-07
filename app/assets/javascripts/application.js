@@ -13,6 +13,7 @@
 //= require assets
 //= require jquery
 //= require jquery_ujs
+//= require jquery.tablesorter
 //= require uploadcare
 //= require jquery-ui
 //= require bootstrap-sass

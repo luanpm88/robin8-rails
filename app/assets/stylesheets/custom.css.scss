@@ -385,3 +385,48 @@ span.social-networks {
   padding: 0;
   color: #000;
 }
+
+.wechat-tab, .weibo-tab {
+  margin: 1% 1%;
+  font-size: 16px;
+  font-family: "ProximaNova";
+  line-height: initial;
+}
+
+.wechat-info, .weibo-info {
+  margin-top: 1%;
+  float: right;
+}
+
+.wechat-search, .weibo-search {
+  margin-bottom: 1%;
+}
+
+.wechat-search input, .weibo-search input {
+    height:35px;
+}
+
+.wechat-tab table,  .weibo-tab table {
+  border: 1px solid rgb(123, 123, 123);
+  font-size: 14px;
+  clear: both;
+}
+
+.wechat-tab table td + td, th + th, .weibo-tab table td + td, th + th {
+  border-left: 1px solid rgb(123, 123, 123);
+}
+
+table.tablesorter thead tr th:not(.sorter-false) {
+  background-image: url("http://tablesorter.com/themes/blue/bg.gif");
+  background-repeat: no-repeat;
+  background-position: center right;
+  cursor: pointer;
+}
+
+table.tablesorter thead tr .tablesorter-headerAsc {
+  background-image: url("http://tablesorter.com/themes/blue/asc.gif") !important;
+}
+
+table.tablesorter thead tr .tablesorter-headerDesc {
+  background-image: url("http://tablesorter.com/themes/blue/desc.gif") !important;
+}

@@ -14,7 +14,9 @@ Robin.Routers.AppRouter = Backbone.Marionette.AppRouter.extend({
     'profile(/*path)': "showProfile",
     'billing(/*path)': "showBilling",
     'recommendations(/*path)': "showRecommendations",
-    'campaigns(/*path)': 'showCampaigns'
+    'campaigns(/*path)': 'showCampaigns',
+    'analytics-wechat(/*path)': 'showWeChatAnalytics',
+    'analytics-weibo(/*path)': 'showWeiboAnalytics'
   },
   initialize: function(options){
     Robin.routesCount = _.size(this.appRoutes);

@@ -1,0 +1,40 @@
+<div class="wechat-tab">
+<% if (items.length == 0) { %>
+  <div class="row">WeChat report is empty!</div>
+<% } else { %>
+  <div class="wechat-search">
+    <input type="text" name="authorname" placeholder="Author name">
+    <input type="text" name="categories" placeholder="Categories">
+    <input type="button" id="weChatReportSearch" class="btn btn-primary" value="Search">
+    <div class="wechat-info">Showing <%= items.length %> entries</div>
+  </div>
+  <div>
+    <table class="table table-striped tablesorter" id="wechat_table">
+       <thead><tr>
+        <th>Author first name</th>
+        <th>Author last name</th>
+        <th>Email</th>
+        <th>Followers</th>
+        <th>Landing page clicks</th>
+        <th>Page views</th>
+        <th>Shares</th>
+        <th>KPI</th>
+       </tr></thead>
+       <tbody>
+       <% _.each(items, function(c) { %>
+          <tr data-id="<%= c.id %>">
+            <td><%= c.author_first_name %></td>
+            <td><%= c.author_last_name %></td>
+            <td><%= c.email %></td>
+            <td><%= c.followers %></td>
+            <td><%= c.landing_page_clicks %></td>
+            <td><%= c.page_views %></td>
+            <td><%= c.shares %></td>
+            <td><%= c.kpi %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
+</div>

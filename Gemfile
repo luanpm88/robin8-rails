@@ -68,6 +68,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-datatables'
   gem 'rails-assets-datatables-tabletools'
   gem 'rails-assets-jquery.caret'
+  gem 'rails-assets-jquery.tablesorter'
   gem 'rails-assets-bootstrap-switch'
   gem 'rails-assets-select2-bootstrap-css'
   gem 'rails-assets-backbone-relational'
