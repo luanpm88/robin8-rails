@@ -7,16 +7,19 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       nextButton: '#btn-next',
       iptcCategoryLink: '#release-category',
       topicsLink: '#release-topics',
-      summariesLines: '#summaries li'
+      summariesLines: '#summaries li',
+      reanalyzeButton: 'sup i'
     },
     events: {
-      'click @ui.nextButton': 'openTargetsTab'
+      'click @ui.nextButton': 'openTargetsTab',
+      'click @ui.reanalyzeButton': 'reanalyzeButtonClicked'
     },
     initialize: function(options){
       this.model.set('location', null);
       this.on("textapi_result:ready", this.render);
       this.getTextApiResult();
       this.textapiResult = {};
+      this.reanalyze = this.options.reanalyze;
       
       var self = this;
       Robin.commands.setHandler("goToTargetsTab", function(){
@@ -33,6 +36,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return {
         textapiResult: this.textapiResult
       }
+    },
+    initTooltip: function(){
+      this.ui.reanalyzeButton.tooltip();
+    },
+    reanalyzeButtonClicked: function(){
+      ReleasesBlast.controller.analysis({
+        releaseModel: this.model,
+        reanalyze: true
+      });
     },
     initSummariesEditable: function(){
       var self = this;
@@ -139,6 +151,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.makeIptcCategoriesEditable();
       this.makeTopicsEditable();
       this.initSummariesEditable();
+      this.initTooltip();
     },
     openTargetsTab: function(){
       this.model.save();
@@ -227,7 +240,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   };
                 }).value();
                 
-                if (s.isBlank(that.model.get('concepts'))){
+                if (that.reanalyze || s.isBlank(that.model.get('concepts'))){
                   var concepts = _.pluck(renderedTopics, 'uri');
                   concepts = _.map(concepts, function(item){
                     return item.replace("http://dbpedia.org/resource/", '');
@@ -258,7 +271,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   label = "arts, culture and entertainment - culture";
                 /* END of Temporary code */
                 
-                if (s.isBlank(that.model.get('iptc_categories'))){
+                if (that.reanalyze || s.isBlank(that.model.get('iptc_categories'))){
                   that.textapiResult["classify"] = _(label.split(" - ")).map(function(p) {
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
@@ -283,7 +296,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 
                 break;
               case 'textapi/summarize':
-                if (s.isBlank(that.model.get('summaries'))) {
+                if (that.reanalyze || s.isBlank(that.model.get('summaries'))) {
                   that.textapiResult["summarize"] = _(response).first(5);
                   that.model.set('summaries', response);
                   
