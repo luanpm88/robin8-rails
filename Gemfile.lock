@@ -402,6 +402,7 @@ GEM
       rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-tagsinput (0.5.0)
       rails-assets-jquery (~> 2.1.1)
+    rails-assets-bootstrap-validator (0.8.1)
     rails-assets-bootstrap.growl (2.0.1)
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
@@ -682,6 +683,7 @@ DEPENDENCIES
   rails-assets-bootstrap-sweetalert!
   rails-assets-bootstrap-switch!
   rails-assets-bootstrap-tagsinput!
+  rails-assets-bootstrap-validator!
   rails-assets-bootstrap.growl (= 2.0.1)!
   rails-assets-chance!
   rails-assets-datatables!

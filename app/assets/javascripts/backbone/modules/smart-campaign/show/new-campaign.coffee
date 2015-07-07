@@ -41,6 +41,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       kol_status = target.is ':checked'
       kol = _(@kols).find (k) -> k.id == kol_id
       kol.invited = kol_status
+      @validate()
+
+    validate: () ->
+      is_valid = _(@kols).any (k) -> k.invited? and k.invited == true
+      if not is_valid
+        $(".kol-header").addClass "error"
+        $(".kol-errors").show()
+      else
+        $(".kol-header").removeClass "error"
+        $(".kol-errors").hide()
+      is_valid
 
     onRender: () ->
       @ui.table.stupidtable()
@@ -58,13 +69,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     ui:
       categories: "#categories"
       select: "select.releases"
+      save: "#save-btn"
+      form: "#campaign-form"
 
     events:
       "change @ui.categories": "categoriesChange"
       "change @ui.select": "releaseSelected"
+      "click @ui.save": "save"
 
     onRender: () ->
       @showChildView 'targets', @targets_view
+      @ui.form.validator()
       @ui.categories.select2
         placeholder: "Select campaign categories"
         multiple: true
@@ -100,6 +115,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               old.push data
               @ui.categories.select2 'data', old
               @categoriesChange()
+
+    save: () ->
+      kols_valid = @targets_view.validate()
+      @ui.form.validator('validate')
+      form_valid = $(".form-group.has-errors").length == 0
+      if form_valid and kols_valid
+        console.log "save"
+        model = new Robin.Models.Campaign()
+        model.save()
 
     serializeData: () ->
       releases: @releases

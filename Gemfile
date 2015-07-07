@@ -77,6 +77,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery-geocomplete'
   gem 'rails-assets-datejs'
   gem 'rails-assets-jquery-stupid-table'
+  gem 'rails-assets-bootstrap-validator'
 end
 
 gem 'devise'

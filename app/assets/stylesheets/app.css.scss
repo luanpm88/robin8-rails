@@ -1577,6 +1577,21 @@ body.login {
   .region-title {
     line-height: 34px;
   }
+  .save-campaign {
+    margin-right: 16px;
+    margin-top: 10px;
+  }
+  #campaign-form {
+    .campaign-errors {
+      margin-left: 10px;
+      display: inline-block;
+    }
+    .form-group {
+      margin-left: 0px !important;
+      margin-right: 0px !important;
+      padding-bottom: 0px !important;
+    }
+  }
   #kols-table {
     .invite-checkbox {
       margin-left: 10px;
@@ -1591,6 +1606,14 @@ body.login {
       background-color: #cccccc;
       border-radius: 3px;
     }
+  }
+  .kol-header.error {
+    color: red;
+  }
+  .kol-errors {
+    display: none;
+    color: red;
+    margin-left: 10px;
   }
 }
 

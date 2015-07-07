@@ -5,4 +5,9 @@ class CampaignController < ApplicationController
     render json: campaigns, each_serializer: CampaignsSerializer
   end
 
+  def create
+    puts params
+    render :json => {:status => "thanks"}
+  end
+
 end

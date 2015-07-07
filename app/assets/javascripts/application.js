@@ -59,6 +59,7 @@
 //= require bootstrap-daterangepicker
 //= require datejs
 //= require jquery-stupid-table
+//= require bootstrap-validator
 
 //= require_tree ./backbone/config
 //= require backbone/init
