@@ -105,9 +105,6 @@ class UsersController < ApplicationController
       end
     end
 
-    if kols.size == 0
-      render json: kols
-    end
     render json: kols
   end
 

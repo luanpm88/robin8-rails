@@ -84,6 +84,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onRender: () ->
       @showChildView 'targets', @targets_view
+      @$el.find("#deadline").datepicker
+        dateFormat: "D, d M y"
       @ui.form.validator()
       @ui.categories.select2
         placeholder: "Select campaign categories"

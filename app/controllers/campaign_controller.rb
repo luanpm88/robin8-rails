@@ -19,7 +19,7 @@ class CampaignController < ApplicationController
     c.description = params[:description]
     c.budget = params[:budget]
     c.release_id = params[:release]
-    c.deadline = Time.now + 7.days
+    c.deadline = Date.parse params[:deadline]
     c.iptc_categories = categories
     c.save!
     kols.each do |k|
