@@ -101,7 +101,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       //////////// End of Wripl event capture ///////////////// 
       
       var analysisTabView = new this.module.AnalysisTabView({
-        model: this.module.releaseModel
+        model: this.module.releaseModel,
+        reanalyze: params.reanalyze
       });
       this.module.layout.tabContentRegion.show(analysisTabView);
     },
