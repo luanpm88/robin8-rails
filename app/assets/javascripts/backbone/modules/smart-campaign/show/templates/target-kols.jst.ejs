@@ -15,7 +15,7 @@
         <tr data-id="<%= k.id %>">
           <td><%= k.first_name %> <%= k.last_name %></td>
           <td><%= k.email %></td>
-          <td><%= k.categories %></td>
+          <td><%= categories(k) %></td>
           <td><%= k.isPublic %></td>
           <td>
             <% var checked = ""; if (k.invited != null && k.invited == true) { checked = "checked"; } %>

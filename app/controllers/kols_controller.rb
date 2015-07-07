@@ -46,9 +46,9 @@ class KolsController < ApplicationController
     categories = params[:categories]
     categories = categories.split(',') if not categories.blank?
     if not categories.blank?
-      kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories}
+      kols = Kol.joins(:iptc_categories).where :kol_categories => { :iptc_category_id => categories}
     end
-    render :json => kols
+    render :json => kols.to_json(:include => :iptc_categories)
   end
 
   private

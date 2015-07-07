@@ -1,11 +1,20 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
+  Show.KolCategoriesTemplate = _.template '<span class="kol-category"><%= label %></span>'
+
   Show.TargetKols = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/target-kols'
     ui:
       table: "#kols-table"
     events:
       'change input': 'selectKol'
+
+    templateHelpers:
+      categories: (k) ->
+        res = _(k.iptc_categories).map (c) ->
+          context = { label: c.label }
+          Show.KolCategoriesTemplate context
+        res.join ''
 
     initialize: () ->
       @kols = []
