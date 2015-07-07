@@ -1,10 +1,12 @@
 Hi <%= author.get('full_name') %>,
-
+</br></br>
 Here's a press release you might find interesting:
-
+</br></br>
 "<%= release.get('title') %>"
-
+</br></br>
 <%= summary %>
-
+</br></br>
 Regards,
 <%= s.isBlank(currentUser.get('name')) ? '' : currentUser.get('name') %>
+</br></br>
+P.S. We kindly recommend you to <a href="<%= kolSignUpUrl %>">register</a> in our system as an Influencer.
