@@ -15,10 +15,10 @@
       <div class="ui-select">
         <select class="releases form-control loadinggif">
           <% if (Robin.user.get('can_create_release') != false) { %>
-            <option value="-1">Select...</option>
-            <option id='option-new-release' value="-2">+ New Release</option>
+            <option value="-1"><%= polyglot.t("smart_release.start_step.dropdown.select") %></option>
+            <option id='option-new-release' value="-2"><%= polyglot.t("smart_release.start_step.dropdown.plus_new_release") %></option>
           <% } else {%>
-            <option value="-1">Select...</option>
+            <option value="-1"><%= polyglot.t("smart_release.start_step.dropdown.select") %></option>
           <% } %>
           <% _.each(items, function(item){ %>
             <option value="<%= item.id %>"><%= item.attributes.title %></option>
@@ -27,6 +27,6 @@
       </div>
     </div>
     <button disabled id="analyze" class="btn btn-primary pull-right" type="submit"><i class="fa fa-cogs"></i> <%= polyglot.t("smart_release.start_step.buttons.analyze") %></button>
-    <button style="display: none;" id="new-release" class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"></i> New Release</button>
+    <button style="display: none;" id="new-release" class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"></i> <%= polyglot.t("smart_release.start_step.buttons.new_release") %></button>
   </form>
 </div>

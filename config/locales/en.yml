@@ -34,6 +34,15 @@ en:
               association_count_greater_than_or_equal_to: |
                 should be greater than or equal to %{count}
   application:
+    select2:
+      too_short: Please enter %{count} or more characters
+      searching: Searching...
+      not_found: No matches found
+    user_menu:
+      anonymous: Anonymous
+      billing_settings: Billing Settings
+      profile: Profile
+      log_out: Log Out
     navigation:
       dashboard: Dashboard
       smart_release: SmartRelease
@@ -216,6 +225,10 @@ en:
         select: Select a release to start
         buttons: 
           analyze: Analyze
+          new_release: New Release
+        dropdown:
+          select: Select...
+          plus_new_release: + New Release
       analysis_step:
         title: Analysis
         description1: Here's the analysis report for <strong> "%{name}" </strong>. Please make any necessary changes, and click on <strong> %{button} </strong> when you're finished
@@ -236,6 +249,14 @@ en:
           length: Average length
           pitch: Pitch?
           contact: Contact
+          buttons: 
+            inspect: Inspect
+            yes_but: !!str Yes
+            no_but: !!str No 
+            advanced: Advanced
+            export: Export as CSV
+            add_all: Add all
+            remove_all: Remove all
         social_tab:
           title: Social
           influencer: Influencer
@@ -254,7 +275,12 @@ en:
             name: Contact name
             outlet: Outlet
             location: Location
+            enter_keywords: Enter keywords
+            contact_names: Contact's first and last name
+            outlet_names: Outlet website or blog name
+            city_country: City or State/Province or Country
           search_influencers:
+            title: Search Influencers
             influencers: Influencers
             show: Show me influencers for
             from: From
@@ -262,6 +288,8 @@ en:
             celebrities: Celebrities
             users: Power users
             all: All
+            topic_placeholder: Topic
+            location_placeholder: Location
           search: Search
         media_tab: 
           title: Media List
