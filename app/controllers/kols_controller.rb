@@ -44,16 +44,17 @@ class KolsController < ApplicationController
   def suggest_kols
     kols = []
     categories = params[:categories]
+    categories = categories.split(',') if not categories.blank?
     if not categories.blank?
-      kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories}
+      kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories }
     end
-    render :json => kols
+    render :json => kols.to_json(:methods => [:categories])
   end
 
   private
 
   def kol_params
-    params.require(:kol).permit(:first_name,:last_name,:email,:password,:location,:bank_account,:interests)
+    params.require(:kol).permit(:first_name,:last_name,:email,:password,:location,:is_public,:bank_account,:interests)
   end
 
 end

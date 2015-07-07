@@ -1,0 +1,45 @@
+<div class="campaigns-tab">
+<% if (items.length == 0) { %>
+  <div class="row">You don't have stats for any campaigns.</div>
+<% } else { %>
+  <% _.each(items, function(c) { %>
+  <input class="hide" id="campaign-<%= c.id %>" type="checkbox">
+  <label for="campaign-<%= c.id %>" id ="campaign-name"><%= c.campaign_name %></label>
+  <label for="campaign-<%= c.id %>"><%= c.campaign_date_start %> - <%= c.campaign_date_end %></label>
+  <div>
+      <% _.each(c.subcampaign, function(subcamp) { %>
+      <ul>
+      <li><%= subcamp.subcampaign_name %><span class="campaign-date"><%= subcamp.subcampaign_date_start %> - <%= subcamp.subcampaign_date_end %></span></li>
+      </ul>
+      <table class="table table-striped tablesorter">
+         <thead><tr>
+          <th>Title</th>
+          <th>Blog name</th>
+          <th>Author name</th>
+          <th>Views</th>
+          <th>Shares</th>
+          <th>Likes</th>
+          <th>Published at</th>
+         </tr></thead>
+         <tbody>
+        <% _.each(subcamp.table, function(t) { %>
+          <tr >
+            <td><%= t.title %></td>
+            <td><%= t.blog_name %></td>
+            <td><%= t.author_name %></td>
+            <td><%= t.views %></td>
+            <td><i class="fa fa-<%= t.social_share_name %>"></i><%= t.shares %></td>
+            <td><%= t.likes %></td>
+            <td><%= t.published_at %></td>
+          </tr>
+        <% }); %>
+        </tbody>
+      </table>
+      <% }); %>
+  </div>
+  <br/>
+  <br/>
+  <% }); %>
+<% } %>
+</div>
+

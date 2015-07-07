@@ -2,28 +2,58 @@
   <div class="dashboard-btns dashboard-kol">
     <div class="row">
       <h5><i class="fa fa-home"></i> Dashboard</h5>
-      <div id="invites">
+      <div class="invites" id="invites">
+
         <% if (items.length != 0) { %>
+        <table class="table table-striped" id="kol-dashboard">
+          <thead class="table-head">
+            <tr>
+              <th class="invite-cell invite-id" data-sort="int">#</th>
+              <th class="invite-cell invite-description" data-sort="string">Description</th>
+              <th class="invite-cell invite-date" data-sort="int">Creation Date</th>
+              <th class="invite-cell invite-deadline" data-sort="int">Deadline</th>
+              <th class="invite-cell invite-status" data-sort="string">Status</th>
+            </tr>
+          </thead>
+          <tbody>
           <% _.each(items, function(item){ %>
-            <div class="col-sm-12">
-              <div class="col-xs-14 col-md-9">
-                <%= formatDate(item.created_at) %> <%= item.campaign.description %>
-                <div><b>Deadline: <%= formatDate(item.campaign.deadline) %></b></div>
-              </div>
-              <% if (item.status == "") { %>
-                <div class="col-xs-4 col-md-3 pull-right">
-                  <button type="button" class="btn btn-primary invitation-accept" data-invite-id="<%= item.id %>">Accept</button>
-                  <button type="button" class="btn btn-danger invitation-decline" data-invite-id="<%= item.id %>">Decline</button>
-                </div>
+            <tr>
+              <td data-sort-value="<%= item.id %>" class="invite-cell invite-id">
+                <%= item.id %>
+              </td>
+              <td class="invite-cell invite-description">
+                <%= item.campaign.description %>
+              </td>
+              <td data-sort-value="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
+                <%= formatDate(item.created_at) %>
+              </td>
+              <td data-sort-value="<%= timestamp(item.campaign.deadline) %>" class="invite-cell invite-deadline">
+                <b><%= formatDate(item.campaign.deadline) %></b>
+              </td>
+              <% if (item.status === '') { %>
+              <td class="invite-cell invite-action invite-nostatus">
+                <button type="button" class="btn btn-primary invitation-accept" data-invite-id="<%= item.id %>">Accept</button>
+                <button type="button" class="btn btn-danger invitation-decline" data-invite-id="<%= item.id %>">Decline</button>
+              </td>
+              <% } else if (item.status === 'A') { %>
+              <td class="invite-cell invite-status invite-accepted">
+                Accepted
+              </td>
+              <% } else if (item.status === 'D') { %>
+              <td class="invite-cell invite-status invite-declined">
+                Declined
+              </td>
               <% } %>
-            </div>
-            <hr/>
+            </tr>
           <% }); %>
-          <div class="clearfix"></div>
+          </tbody>
+
+        </table>
+
         <% } else { %>
-          <div class="col-sm-12">
-            You are not invited to any campaigns yet. Perhaps <a href="#profile">editing</a> profile might help.
-          </div>
+        <div class="col-sm-12">
+          You are not invited to any campaigns yet. Perhaps <a href="#profile">editing</a> profile might help.
+        </div>
         <% } %>
       </div>
     </div>

@@ -12,10 +12,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (c, r, o) ->
           page.showChildView 'campaigns', campaigns_view
 
-      page.showChildView 'kols', new Show.Kols()
+      kols = new Robin.Collections.PrivateKols()
+      kols_view = new Show.Kols
+        collection: kols
+      kols.fetch
+        success: (c, r, o) ->
+          page.showChildView 'kols', kols_view
 
     showNewCampaign: () ->
-      page = new Show.NewCampaign()
-      Robin.layouts.main.content.show page
-
+      releases = new Robin.Collections.Releases()
+      releases.fetch
+        success: (c, r, o) ->
+          page = new Show.NewCampaign
+            releases: c.toJSON()
+          Robin.layouts.main.content.show page
 

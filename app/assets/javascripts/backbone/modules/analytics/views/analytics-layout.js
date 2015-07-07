@@ -7,21 +7,27 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       selectEmailRegion: '#select-email-region',
       webAnalyticsRegion: '#analytics-region',
       emailsAnalyticsRegion: '#emails-analytics-region',
-      emailsListRegion: '#emails-list-region'
+      emailsListRegion: '#emails-list-region',
+      weChatAnalyticsRegion: '#wechat-analytics-region',
+      weiboAnalyticsRegion: '#weibo-analytics-region',
+      campaignAnalyticsRegion: '#campaign-analytics-region'
     },
 
     events: {
       'change .change-web-news-room': 'changeWebNewsRoom',
       'change .change-emails-news-room': 'changeEmailsNewsRoom',
       'click .emails-label': 'navigateToEmails',
-      'click .web-label': 'navigateToWeb'
+      'click .web-label': 'navigateToWeb',
+      'click .wechat-label': 'navigateToWeChatReport',
+      'click .weibo-label': 'navigateToWeiboReport',
+      'click .campaigns-label': 'navigateToCampaign'
     },
 
     changeWebNewsRoom: function(event) {
       var webAnalyticsPageView = new Analytics.WebAnalyticsPage({
         collection: new Robin.Collections.NewsRooms()
       });
-      
+
       this.webAnalyticsRegion.show(webAnalyticsPageView);
       webAnalyticsPageView.renderAnalytics($(event.target).val());
     },
@@ -31,7 +37,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
         collection: new Robin.Collections.NewsRooms()
       });
-      
+
       $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
       emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val());
 
@@ -54,6 +60,18 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
     navigateToWeb: function(){
       Backbone.history.navigate('analytics', {trigger:true});
+    },
+
+    navigateToWeChatReport: function(){
+      Backbone.history.navigate('analytics-wechat', {trigger:true});
+    },
+
+    navigateToWeiboReport: function(){
+      Backbone.history.navigate('analytics-weibo', {trigger:true});
+    },
+
+    navigateToCampaign: function(){
+      Backbone.history.navigate('analytics-campaign', {trigger:true});
     }
 
   });

@@ -27,4 +27,14 @@ class Kol < ActiveRecord::Base
 
   validates_with EmailValidator
 
+  def active
+    not confirmed_at.nil?
+  end
+
+  def categories
+    iptc_categories.reload.map do |c|
+      { :id => c.id, :label => c.label }
+    end
+  end
+
 end

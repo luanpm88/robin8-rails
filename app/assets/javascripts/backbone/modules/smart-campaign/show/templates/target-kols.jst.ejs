@@ -1,0 +1,29 @@
+<span class="kol-errors">You need to invite at least someone to this campaign!</span>
+<h5 class="kol-header">Target influencers:</h5>
+<% if (kols.length == 0) { %>
+  <i>Couldn't match any influencers for you. Provivde more categories.</i>
+<% } else { %>
+  <table class="table table-striped" id="kols-table">
+    <thead style="cursor:pointer;"><tr>
+      <th data-sort="string">Name</th>
+      <th data-sort="string">Email</th>
+      <th data-sort="string">Categories</th>
+      <th data-sort="string">Public</th>
+      <th>Invite</th>
+    </tr></thead>
+    <tbody>
+      <% _.each(kols, function(k) { %>
+        <tr data-id="<%= k.id %>">
+          <td><%= k.first_name %> <%= k.last_name %></td>
+          <td><%= k.email %></td>
+          <td><%= categories(k) %></td>
+          <td><%= public(k) %></td>
+          <td>
+            <% var checked = ""; if (k.invited != null && k.invited == true) { checked = "checked"; } %>
+            <input class="invite-checkbox" type="checkbox" name="invite_<%= k.id %>" data-kol-id="<%= k.id %>" <%= checked %> />
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<% } %>

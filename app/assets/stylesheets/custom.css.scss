@@ -426,3 +426,124 @@ label.css-label {
   user-select: none;
 }
 // END of CSS checkbox
+
+.hide, .hide + label + label ~ div {
+    display: none;
+}
+
+.hide + label + label,
+.hide:checked + label + label {
+    padding: 0;
+    cursor: pointer;
+}
+
+.hide:checked + label + label + div {
+  display: block;
+  margin-left: 20px;
+  padding: 10px;
+   -webkit-animation:fade ease-in 0.5s;
+   -moz-animation:fade ease-in 0.5s;
+   animation:fade ease-in 0.5s;
+}
+
+.hide + label:before {
+  content: "+";
+  display: block;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  height: 16px;
+  line-height: 16px;
+  margin: 2px 5px 0px;
+  text-align: center;
+  width: 16px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.hide:checked + #campaign-name:before {
+  content: "\2212";
+}
+
+.campaigns-tab {
+  margin: 2% 1%;
+  font-size: 16px;
+  font-family: "ProximaNova";
+  line-height: initial;
+}
+
+#campaign-name {
+  min-width: 35%;
+}
+
+.campaigns-tab + label {
+  font-weight: normal;
+  font-family: "ProximaNovaSemibold" !important;
+}
+
+.campaign-date {
+  float: right;
+}
+
+.campaigns-tab li {
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  max-width: 42.4%;
+}
+
+.campaigns-tab table {
+  border: 1px solid rgb(123, 123, 123);
+  font-size: 14px;
+}
+.campaigns-tab table i {
+  margin-right: 10px;
+}
+
+.wechat-tab, .weibo-tab {
+  margin: 1% 1%;
+  font-size: 16px;
+  font-family: "ProximaNova";
+  line-height: initial;
+}
+
+.wechat-info, .weibo-info {
+  margin-top: 1%;
+  float: right;
+}
+
+.wechat-search, .weibo-search {
+  margin-bottom: 1%;
+}
+
+.wechat-search input, .weibo-search input {
+    height:35px;
+}
+
+.wechat-tab table,  .weibo-tab table {
+  border: 1px solid rgb(123, 123, 123);
+  font-size: 14px;
+  clear: both;
+}
+
+.wechat-tab table td + td, .wechat-tab table th + th,
+.weibo-tab table td + td, .weibo-tab table th + th,
+.campaigns-tab table td + td, .campaigns-tab table th + th {
+  border-left: 1px solid rgb(123, 123, 123);
+}
+
+table.tablesorter thead tr th:not(.sorter-false) {
+  background-image: url("http://tablesorter.com/themes/blue/bg.gif");
+  background-repeat: no-repeat;
+  background-position: center right;
+  cursor: pointer;
+}
+
+table.tablesorter thead tr .tablesorter-headerAsc {
+  background-image: url("http://tablesorter.com/themes/blue/asc.gif") !important;
+}
+
+table.tablesorter thead tr .tablesorter-headerDesc {
+  background-image: url("http://tablesorter.com/themes/blue/desc.gif") !important;
+}

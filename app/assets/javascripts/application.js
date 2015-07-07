@@ -12,6 +12,7 @@
 //
 //= require assets
 //= require jquery
+//= require jquery.tablesorter
 //= require jquery_ujs
 //= require uploadcare
 //= require jquery-ui
@@ -59,6 +60,7 @@
 //= require ./lib/wripl
 //= require datejs
 //= require jquery-stupid-table
+//= require bootstrap-validator
 //= require_tree ./backbone/config
 //= require backbone/init
 //= require_tree ./backbone/routers

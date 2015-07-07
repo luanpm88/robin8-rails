@@ -64,6 +64,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-x-editable'
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
+  gem 'rails-assets-jquery.tablesorter'
   gem 'rails-assets-timeago'
   gem 'rails-assets-datatables'
   gem 'rails-assets-datatables-tabletools'
@@ -76,6 +77,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery-geocomplete'
   gem 'rails-assets-datejs'
   gem 'rails-assets-jquery-stupid-table'
+  gem 'rails-assets-bootstrap-validator'
 end
 
 gem 'devise'
@@ -163,4 +165,5 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'thin'
 end

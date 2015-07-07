@@ -71,9 +71,24 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     Robin.module('Analytics').start();
   },
 
+  showCampaignAnalytics: function() {
+    this.stopAll();
+    Robin.module('Analytics').start();
+  },
+
   showProfile: function() {
     this.stopAll();
     Robin.module('Profile').start();
+  },
+
+  showWeChatAnalytics: function() {
+    this.stopAll();
+    Robin.module('Analytics').start();
+  },
+
+  showWeiboAnalytics: function() {
+    this.stopAll();
+    Robin.module('Analytics').start();
   },
 
   showRecommendations: function() {

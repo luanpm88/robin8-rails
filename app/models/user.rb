@@ -26,6 +26,9 @@ class User < ActiveRecord::Base
   has_many :campaign_invites, through: :campaigns
 
   has_many :article_comments, as: :sender
+
+  has_many :private_kols
+  has_many :kols, through: :private_kols
   # has_many :user_add_ons, dependent: :destroy
   # has_many :add_ons, through: :user_add_ons
 
