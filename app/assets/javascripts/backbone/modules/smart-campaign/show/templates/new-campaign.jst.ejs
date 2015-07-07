@@ -29,7 +29,7 @@
             <label for="release">Release:</label>
             <div class="help-block with-errors campaign-errors"></div>
             <div class="ui-select">
-              <select id="release" class="releases form-control" required>
+              <select id="release" class="releases form-control" name="release" required>
                 <option value="">Select...</option>
                 <% _.each(releases, function(item){ %>
                   <option value="<%= item.id %>"><%= item.title %></option>

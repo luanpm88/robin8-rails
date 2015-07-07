@@ -24,12 +24,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: () ->
       kols: @kols
 
-    updateKols: (data) ->
-      invited_kols = _.chain(@kols)
+    invitedKols: () ->
+      _.chain(@kols)
         .filter (k) ->
           k.invited? and k.invited == true
         .pluck 'id'
         .value()
+
+    updateKols: (data) ->
+      invited_kols = @invitedKols()
       @kols = _(data).map (k) ->
         if _.contains(invited_kols, k.id)
           k.invited = true
@@ -123,9 +126,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @ui.form.validator('validate')
       form_valid = $(".form-group.has-errors").length == 0
       if form_valid and kols_valid
-        console.log "save"
+        data = _.reduce @ui.form.serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
+        data["kols"] = @targets_view.invitedKols()
         model = new Robin.Models.Campaign()
-        model.save()
+        model.save data,
+          success: (m) ->
+            location.href = "/#smart_campaign"
 
     serializeData: () ->
       releases: @releases
