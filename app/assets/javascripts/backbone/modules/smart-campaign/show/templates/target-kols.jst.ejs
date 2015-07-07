@@ -8,6 +8,7 @@
       <th data-sort="string">Email</th>
       <th data-sort="string">Categories</th>
       <th data-sort="string">Public</th>
+      <th>Invite</th>
     </tr></thead>
     <tbody>
       <% _.each(kols, function(k) { %>
@@ -16,6 +17,10 @@
           <td><%= k.email %></td>
           <td><%= k.categories %></td>
           <td><%= k.isPublic %></td>
+          <td>
+            <% var checked = ""; if (k.invited != null && k.invited == true) { checked = "checked"; } %>
+            <input class="invite-checkbox" type="checkbox" name="invite_<%= k.id %>" data-kol-id="<%= k.id %>" <%= checked %> />
+          </td>
         </tr>
       <% }); %>
     </tbody>

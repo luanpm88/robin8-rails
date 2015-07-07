@@ -32,6 +32,16 @@ class AutocompletesController < ApplicationController
     end
   end
 
+  def category
+    id = params[:id]
+    res = { :id => id, :text => '' }
+    c = IptcCategory.find_by :id => id
+    if not c.blank?
+      res[:text] = c.label
+    end
+    render :json => res
+  end
+
   private
 
   def set_client

@@ -4,10 +4,35 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     template: 'modules/smart-campaign/show/templates/target-kols'
     ui:
       table: "#kols-table"
+    events:
+      'change input': 'selectKol'
+
     initialize: () ->
       @kols = []
+
     serializeData: () ->
       kols: @kols
+
+    updateKols: (data) ->
+      invited_kols = _.chain(@kols)
+        .filter (k) ->
+          k.invited? and k.invited == true
+        .pluck 'id'
+        .value()
+      @kols = _(data).map (k) ->
+        if _.contains(invited_kols, k.id)
+          k.invited = true
+          k
+        else
+          k
+
+    selectKol: (e) ->
+      target = $ e.currentTarget
+      kol_id = target.data 'kol-id'
+      kol_status = target.is ':checked'
+      kol = _(@kols).find (k) -> k.id == kol_id
+      kol.invited = kol_status
+
     onRender: () ->
       @ui.table.stupidtable()
 
@@ -23,10 +48,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     ui:
       categories: "#categories"
-      select: "select"
+      select: "select.releases"
 
     events:
       "change @ui.categories": "categoriesChange"
+      "change @ui.select": "releaseSelected"
 
     onRender: () ->
       @showChildView 'targets', @targets_view
@@ -48,9 +74,23 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     categoriesChange: () ->
       $.get "/kols/suggest/", {categories: @ui.categories.val()}, (data) =>
-        @targets_view.kols = data
+        @targets_view.updateKols data
         @targets_view.render()
 
+    releaseSelected: () ->
+      id = parseInt @ui.select.val()
+      r = _(@releases).find (x) -> x.id == id
+      if r? and r.iptc_categories? and r.iptc_categories.length > 0
+        selected = @ui.categories.val().split(',')
+        _.chain(r.iptc_categories)
+          .filter (c) ->
+            not _.contains(selected, c)
+          .each (c) =>
+            $.get "/autocompletes/category/", { id: c }, (data) =>
+              old = @ui.categories.select2 'data'
+              old.push data
+              @ui.categories.select2 'data', old
+              @categoriesChange()
+
     serializeData: () ->
-      console.log @releases
       releases: @releases

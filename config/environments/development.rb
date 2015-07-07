@@ -40,10 +40,10 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
-  
+
   # Configure to use with mailcatcher - for more information (http://mailcatcher.me/)
   config.action_mailer.delivery_method = :smtp
-  
+
   ActionMailer::Base.smtp_settings = {
     :user_name => Rails.application.secrets[:smtp][:user_name],
     :password => Rails.application.secrets[:smtp][:password],
