@@ -73,7 +73,7 @@ class UsersController < ApplicationController
 
   def get_private_kols
     if current_user.kols
-      render json: current_user.kols
+      render json: current_user.kols.to_json(:methods => [:active, :categories])
     else
       render json: []
     end

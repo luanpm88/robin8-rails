@@ -11,7 +11,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     templateHelpers:
       categories: (k) ->
-        res = _(k.iptc_categories).map (c) ->
+        res = _(k.categories).map (c) ->
           context = { label: c.label }
           Show.KolCategoriesTemplate context
         res.join ''
