@@ -19,6 +19,10 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
+      this.$el.find("input[type='checkbox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
     },
 
     onShow: function() {

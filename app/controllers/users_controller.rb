@@ -71,6 +71,54 @@ class UsersController < ApplicationController
     render json: current_user.manageable_users
   end
 
+  def get_private_kols
+    if current_user.kols
+      render json: current_user.kols
+    else
+      render json: []
+    end
+  end
+
+  def import_kols
+    contents = File.read(params[:private_kols_file].tempfile)
+    detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+    kols = []
+    CSV.foreach(params[:private_kols_file].tempfile.path, encoding: detection[:ruby_encoding]) do |row|
+      row.reject! {|c| c.nil?}
+      if (row.size == 3) && (!row.any? { |col| col.strip.blank? })
+        new_kol = Kol.where(email: row[2].strip).first
+
+        if new_kol.nil?
+          new_kol = Kol.new(email: row[2].strip, first_name: row[0].strip, last_name: row[1].strip,
+                               encrypted_password: SecureRandom.hex, is_public: false)
+          new_kol.save(validate: false)
+          PrivateKol.create(kol_id: new_kol.id, user_id: current_user.id)
+        else
+          new_private_kol = PrivateKol.where(kol_id: new_kol.id, user_id: current_user.id).first
+          if new_private_kol.nil?
+            PrivateKol.create(kol_id: new_kol.id, user_id: current_user.id)
+          end
+        end
+
+        kols << row
+      end
+    end
+
+    if kols.size == 0
+      render json: kols
+    end
+    render json: kols
+  end
+
+  def validate_email(url)
+    unless url =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+      false
+    else
+      true
+    end
+  end
+
   private
 
   def user_params

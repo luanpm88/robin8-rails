@@ -1,1 +1,39 @@
-<i>Private kols are going to be displayed here...</i>
+<div class="row">
+  <div class="col-md-2 col-md-offset-5 vcenter"><b>Private Influencers</b></div>
+  <div class="pull-right">
+    <form id="invite_kols_form" action="users/import_kols" enctype="multipart/form-data">
+      <button type="button" class="btn btn-success vcenter" id="invite_kols"><i class="fa fa-upload"></i>  Invite Influencers</button>
+      <br><small>Supported formats: CSV <i title="" data-html="true" data-placement="right" data-toggle="tooltip" class="fa fa-question-circle" data-original-title="Uploaded file must have exactly <strong>three</strong> columns, formatted as <strong>first name, last name, email address</strong>"></i></small>
+      <input class="hide" type="file" id="private_kols_file" name="private_kols_file" accept="text/csv" />
+      <input class="hide" type="button" id="submit_csv"/>
+    </form>
+  </div>
+</div>
+<% if (items.length == 0) { %>
+  <div class="row">You haven't invited influencers yet. It's time to add some!</div>
+<% } else { %>
+  <div class="row">
+    <table class="table table-striped" id="private_kols-table">
+      <thead><tr>
+        <th data-sort="string">Name</th>
+        <th data-sort="string">Email</th>
+        <th data-sort="int">Active</th>
+      </tr></thead>
+      <tbody>
+        <% _.each(items, function(c) { %>
+          <tr data-id="<%= c.private_kol.id %>">
+            <td><%= c.private_kol.full_name %></td>
+            <td><%= c.private_kol.email %></td>
+            <td>
+              <% if (c.private_kol.confirmed_at == null) { %>
+                No
+              <% } else { %>
+                Yes
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>

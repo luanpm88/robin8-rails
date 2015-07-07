@@ -54,7 +54,7 @@ class KolsController < ApplicationController
   private
 
   def kol_params
-    params.require(:kol).permit(:first_name,:last_name,:email,:password,:location,:bank_account,:interests)
+    params.require(:kol).permit(:first_name,:last_name,:email,:password,:location,:is_public,:bank_account,:interests)
   end
 
 end
