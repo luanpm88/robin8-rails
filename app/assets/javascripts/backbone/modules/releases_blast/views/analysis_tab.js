@@ -158,6 +158,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       ReleasesBlast.controller.targets();
     },
+    transformLabel: function(label, code){
+      /* Temporary code */
+      if (code.substring(0, 2) == "16")
+        label = "Society - Issue";
+      
+      if (code === "12001000")
+        label = "Arts, Culture and Entertainment - Culture";
+      
+      return label;
+      /* END of Temporary code */
+    },
     boldTopicsInSummaryLine: function(summary){
       var sfs = [];
       
@@ -261,18 +272,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 
                 break;
               case 'textapi/classify':
-                /* Temporary code */
-                var label = response[0].label;
-                var re = /unrest, conflicts and war.*/;
-                if (re.exec(label))
-                  label = "society - issue";
-                
-                if (label === "religion and belief - cult and sect")
-                  label = "arts, culture and entertainment - culture";
-                /* END of Temporary code */
-                
                 if (that.reanalyze || s.isBlank(that.model.get('iptc_categories'))){
-                  that.textapiResult["classify"] = _(label.split(" - ")).map(function(p) {
+                  that.textapiResult["classify"] = _(that.transformLabel(response[0].label, 
+                    response[0].code)
+                    .split(" - ")).map(function(p) {
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
                   
@@ -287,7 +290,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                     method: 'GET',
                     url: '/iptc_categories/' + that.model.get('iptc_categories')[0],
                     success: function(response){
-                      that.textapiResult["classify"] = response.label;
+                      that.textapiResult["classify"] = that.transformLabel(response.label,
+                        response.id);
                       
                       resultReady();
                     }
