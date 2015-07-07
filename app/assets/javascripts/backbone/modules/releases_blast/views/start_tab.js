@@ -7,8 +7,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     ui: {
       releasesSelect: 'select',
-      analyzeButton: '#analyze',
-      alertInfo: '#writing-pr-info'
+      analyzeButton: '#analyze'
     },
     events: {
       'change @ui.releasesSelect': 'releasesSelectChanged',
@@ -45,13 +44,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         view.$el.find(".releases").prop('disabled', false);
         view.$el.find(".releases").removeClass('loadinggif');
       }
-    },
-    standardPressRelease: {
-      min_characters_count: 600,
-      min_words_count: 90,
-      min_sentences_count: 2,
-      min_average_characters_count_per_word: 4,
-      min_average_words_count_per_sentence: 12
     },
     releasesSelectChanged: function(e){
       if (Robin.user.get('can_create_smart_release') != true) {
@@ -96,94 +88,78 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       var the_release = this.collection.findWhere({id: releaseId});
       
-      if (the_release.get('characters_count') >= this.standardPressRelease.min_characters_count &&
-        the_release.get('words_count') >= this.standardPressRelease.min_words_count &&
-        the_release.get('sentences_count') >= this.standardPressRelease.min_sentences_count &&
-        the_release.get('average_characters_count_per_word') >=
-          this.standardPressRelease.min_average_characters_count_per_word &&
-        the_release.get('average_words_count_per_sentence') >=
-          this.standardPressRelease.min_average_words_count_per_sentence){
-        
-        // Find or create DraftPitch
-        var draftPitchesCollection = new Robin.Collections.DraftPitches({
-          releaseId: the_release.id
-        });
-        
-        draftPitchesCollection.fetchDraftPitch({success: function(collection){
-          if (collection.length > 0){
-            var model = collection.models[0];
-            self.draftPitchModel.set(model.attributes);
+      // Find or create DraftPitch
+      var draftPitchesCollection = new Robin.Collections.DraftPitches({
+        releaseId: the_release.id
+      });
+      
+      draftPitchesCollection.fetchDraftPitch({success: function(collection){
+        if (collection.length > 0){
+          var model = collection.models[0];
+          self.draftPitchModel.set(model.attributes);
+          
+          self.pitchModel.set({
+            twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
+            email_pitch: self.draftPitchModel.get('email_pitch'),
+            summary_length: self.draftPitchModel.get('summary_length'),
+            email_address: self.draftPitchModel.get('email_address'),
+            release_id: self.draftPitchModel.get('release_id'),
+            email_subject: self.draftPitchModel.get('email_subject')
+          });
+          
+          ReleasesBlast.controller.analysis({releaseModel: the_release});
+        } else {
+          self.draftPitchModel.set('release_id', the_release.id);
+          
+          var signature = [];
+          signature.push('Best regards');
+          
+          // Full name
+          var name = Robin.currentUser.get('name');
+          if (!s.isBlank(name))
+            signature.push(name + ','); // This is just for tracking name
+          
+          // Company name
+          var company = Robin.currentUser.get('company');
+          if (!s.isBlank(company))
+            signature.push(company);
+          
+          // Email
+          var email = Robin.currentUser.get('email');
+          if (!s.isBlank(email))
+            signature.push(email);
             
-            self.pitchModel.set({
-              twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
-              email_pitch: self.draftPitchModel.get('email_pitch'),
-              summary_length: self.draftPitchModel.get('summary_length'),
-              email_address: self.draftPitchModel.get('email_address'),
-              release_id: self.draftPitchModel.get('release_id'),
-              email_subject: self.draftPitchModel.get('email_subject')
-            });
-            
-            ReleasesBlast.controller.analysis({releaseModel: the_release});
-          } else {
-            self.draftPitchModel.set('release_id', the_release.id);
-            
-            var signature = [];
-            signature.push('Best regards');
-            
-            // Full name
-            var name = Robin.currentUser.get('name');
-            if (!s.isBlank(name))
-              signature.push(name + ','); // This is just for tracking name
-            
-            // Company name
-            var company = Robin.currentUser.get('company');
-            if (!s.isBlank(company))
-              signature.push(company);
-            
-            // Email
-            var email = Robin.currentUser.get('email');
-            if (!s.isBlank(email))
-              signature.push(email);
-              
-            var emailPitch = self.draftPitchModel.get('email_pitch');
-            var signature_text = signature.join(",<br />").replace(',,', '');
-            emailPitch = emailPitch.replace('@[Signature]', signature_text);
-        
-            self.draftPitchModel.set('email_pitch', emailPitch);
-            self.draftPitchModel.set('email_address', Robin.currentUser.get('email'));
-            
-            self.pitchModel.set({
-              twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
-              email_pitch: self.draftPitchModel.get('email_pitch'),
-              summary_length: self.draftPitchModel.get('summary_length'),
-              email_address: self.draftPitchModel.get('email_address'),
-              release_id: self.draftPitchModel.get('release_id'),
-              email_subject: self.draftPitchModel.get('email_subject')
-            });
-            
-            self.draftPitchModel.save({}, {
-              success: function(model, response, options){
-                ReleasesBlast.controller.analysis({releaseModel: the_release});
-              },
-              error: function(model, response, options){
-                _(response.responseJSON).each(function(val, key){
-                  $.growl({message: self.errorFields[key] + ' ' + val[0]
-                  },{
-                    type: 'danger'
-                  });
+          var emailPitch = self.draftPitchModel.get('email_pitch');
+          var signature_text = signature.join(",<br />").replace(',,', '');
+          emailPitch = emailPitch.replace('@[Signature]', signature_text);
+      
+          self.draftPitchModel.set('email_pitch', emailPitch);
+          self.draftPitchModel.set('email_address', Robin.currentUser.get('email'));
+          
+          self.pitchModel.set({
+            twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
+            email_pitch: self.draftPitchModel.get('email_pitch'),
+            summary_length: self.draftPitchModel.get('summary_length'),
+            email_address: self.draftPitchModel.get('email_address'),
+            release_id: self.draftPitchModel.get('release_id'),
+            email_subject: self.draftPitchModel.get('email_subject')
+          });
+          
+          self.draftPitchModel.save({}, {
+            success: function(model, response, options){
+              ReleasesBlast.controller.analysis({releaseModel: the_release});
+            },
+            error: function(model, response, options){
+              _(response.responseJSON).each(function(val, key){
+                $.growl({message: self.errorFields[key] + ' ' + val[0]
+                },{
+                  type: 'danger'
                 });
-              }
-            });
-          }
-        }});
-      } else {
-        $.growl({
-          message: "Your Press Release is not standard, we can't analyze it!"
-        },{
-          type: 'danger'
-        });
-        this.ui.alertInfo.show();
-      }
+              });
+            }
+          });
+        }
+      }});
     },
     initialize: function(options){
       var self = this;
