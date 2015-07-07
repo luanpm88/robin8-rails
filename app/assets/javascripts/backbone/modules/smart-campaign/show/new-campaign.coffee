@@ -15,6 +15,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           context = { label: c.label }
           Show.KolCategoriesTemplate context
         res.join ''
+      public: (k) ->
+        if k.is_public then "Yes" else "No"
 
     initialize: () ->
       @kols = []
