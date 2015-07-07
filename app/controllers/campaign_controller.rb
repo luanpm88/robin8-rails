@@ -1,8 +1,36 @@
 class CampaignController < ApplicationController
 
   def index
-    campaigns = kol_signed_in? ? current_kol.campaigns : current_user.campaigns
+    status = params[:status] == "declined" ? "D" : "A"
+    campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
     render json: campaigns, each_serializer: CampaignsSerializer
+  end
+
+  def article
+    campaign = Campaign.find(params[:id])
+    article = campaign.articles.where(kol_id: current_kol.id).first
+    render json: article, serializer: ArticleSerializer
+  end
+
+  def update_article
+    campaign = Campaign.find(params[:id])
+    article = campaign.articles.where(kol_id: current_kol.id).first
+    article.text = params[:text]
+    article.save
+    render json: article, serializer: ArticleSerializer
+  end
+
+  def article_comments
+    article = Article.find(params[:id])
+    render json: article.article_comments, each_serializer: ArticleCommentSerializer
+  end
+
+  def create_article_comment
+    article = Article.find(params[:id])
+    someone = current_user
+    someone = current_kol if someone.nil?
+    comment = ArticleComment.create(article_id: article.id, sender: someone, text: params[:text], comment_type: "comment")
+    render json: comment, serializer: ArticleCommentSerializer
   end
 
   def create

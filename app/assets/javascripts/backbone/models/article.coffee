@@ -1,2 +1,4 @@
 Robin.Models.Article = Backbone.Model.extend
-  url: '/article'
+  urlRoot: '/article'
+  url: ()->
+    this.get("campaign_model").url() + this.urlRoot
