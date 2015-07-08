@@ -1,6 +1,6 @@
 Robin.ShrinkedLink = {
   shrink : function(url) {
-    BitlyClient.shorten(url, function(data) {      
+    BitlyClient.shorten(url, function(data) {
       var saySomethingContent = $('#say-something-field').val();
       var result = saySomethingContent.replace(url, _.values(data.results)[0].shortUrl);
       $('#say-something-field').val(result);
@@ -57,8 +57,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
         twitter_ids: '[name=twitter_ids]',
         facebook_ids: '[name=facebook_ids]',
         linkedin_ids: '[name=linkedin_ids]',
-        weibo_ids: '[name=weibo_ids]',
-        wechat_ids: '[name=wechat_ids]'
+        weibo_ids: '[name=weibo_ids]'
       };
 
       this.$el.find("input[type='checkbox']").iCheck({
@@ -74,7 +73,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       minDatePicker: "#schedule-datetimepicker"
     },
 
-    afterSelectingIdentity: function() {      
+    afterSelectingIdentity: function() {
       var view = this;
       view.setCounter();
       view.checkAbilityPosting();
@@ -100,7 +99,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       }
     },
 
-    afterRemoveIdentity: function() {      
+    afterRemoveIdentity: function() {
       var view = this;
       view.setCounter();
       view.checkAbilityPosting();
@@ -134,7 +133,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
     showContainer: function(e) {
       $(e.target).parent().parent().hide();
       $('.navbar-search-lg').show().find('textarea').focus();
-      
+
       this.$el.find('#say-something-field').highlightTextarea({
         ranges: [140, 15000],
         color: '#FFC0C0'
@@ -166,12 +165,8 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
       } else if ( $("select[name='weibo_ids']").val() != null ) {
         limit = 140;
         view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
-      } else if ( $("select[name='wechat_ids']").val() != null ) {
-        limit = 500;
-        view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
       } else if ( $("select[name='facebook_ids']").val() == null && $("select[name='twitter_ids']").val() == null
-          && $("select[name='linkedin_ids']").val() == null && $("select[name='weibo_ids']").val() == null
-          && $("select[name='wechat_ids']").val() == null ){
+          && $("select[name='linkedin_ids']").val() == null && $("select[name='weibo_ids']").val() == null ){
         limit = 140;
         view.$el.find('#say-something-field').highlightTextarea('setRanges', [limit,15000]);
       }
@@ -326,7 +321,7 @@ Robin.module('SaySomething.Say', function(Say, App, Backbone, Marionette, $, _){
 
       var el = $(e.target);
       var btn = el.closest('.btn');
-      
+
       this.renderSocialButtons(btn);
     },
 

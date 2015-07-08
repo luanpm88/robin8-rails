@@ -295,8 +295,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         twitter_ids: '[name=twitter_ids]',
         facebook_ids: '[name=facebook_ids]',
         linkedin_ids: '[name=linkedin_ids]',
-        weibo_ids: '[name=weibo_ids]',
-        wechat_ids: '[name=wechat_ids]'
+        weibo_ids: '[name=weibo_ids]'
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.rowIdentities.find('.select-identities').select2();
@@ -322,8 +321,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     updatePost: function() {
       var view = this;
       if (view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='facebook_ids']").val() == null
-          && view.rowIdentities.find("select[name='linkedin_ids']").val() == null && view.rowIdentities.find("select[name='weibo_ids']").val() == null
-          && view.rowIdentities.find("select[name='wechat_ids']").val() == null) {
+          && view.rowIdentities.find("select[name='linkedin_ids']").val() == null && view.rowIdentities.find("select[name='weibo_ids']").val() == null) {
         swal({
           title: "You can not update post without enabled social networks",
           text: "At least one should be selected in order to publish the post!",
@@ -459,12 +457,8 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       } else if ( view.rowIdentities.find("select[name='weibo_ids']").val() != null ) {
         limit = 140;
         view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
-      } else if ( view.rowIdentities.find("select[name='wechat_ids']").val() != null ) {
-        limit = 500;
-        view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
       } else if ( view.rowIdentities.find("select[name='facebook_ids']").val() == null && view.rowIdentities.find("select[name='twitter_ids']").val() == null
-          && view.rowIdentities.find("select[name='linkedin_ids']").val() == null && view.rowIdentities.find("select[name='weibo_ids']").val() == null
-          && view.rowIdentities.find("select[name='wechat_ids']").val() == null ){
+          && view.rowIdentities.find("select[name='linkedin_ids']").val() == null && view.rowIdentities.find("select[name='weibo_ids']").val() == null ){
         limit = 140;
         view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
       }
