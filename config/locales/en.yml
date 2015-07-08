@@ -33,7 +33,16 @@ en:
             contacts:
               association_count_greater_than_or_equal_to: |
                 should be greater than or equal to %{count}
+            name:
+              uniqueness: Name has already been taken
+              presence: List name can't be blank
   application:
+    uploading:
+      different_photo: Upload a different photo...
+      choose_image: Choose an image
+      photos_label: Photos
+      videos_label: Videos
+      files_label: Filed 
     select2:
       too_short: Please enter %{count} or more characters
       searching: Searching...
@@ -152,6 +161,7 @@ en:
         new: New Newsroom
       item:
         description_placeholder: No description added.
+        releases: RELEASES
         buttons:
           preview: Preview
           releases: Releases
@@ -165,10 +175,24 @@ en:
           size: Size
           industry: Industry
           tags: Tags
+          dropdown:
+            select: Select...
+            government_agency: Government Agency
+            non_profit: Non-Profit
+            privately_held: Privately Held
+            public_company: Public Company
+            llc: LLC
+            educational_institution: Educational Institution
+            myself_only: Myself Only 
+            employees: employees
+            or_more_employees: or more employees
         public_tab:
           title: Public Page
           subdomain: Subdomain name
           publish: Publish on public website
+          description: Here you can create a publicly accessible homepage for your Newsroom, where readers and journalists can learn more about your company or organization, as well as accessing your Press Releases and Press Kit. Please pick a subdomain name for your Newsroom below
+          validations:
+            subdomain_required: The Subdomain name is required
         general_tab:
           title: General
           email: Email
@@ -177,6 +201,7 @@ en:
           number: Toll-Free Number
           web_address: Web Address
           description: Description
+          description_placeholder: No description added
         address_tab:
           title: Address
           address1: Address 1
@@ -297,6 +322,10 @@ en:
           upload_button: Upload a new list
           formats: Supported formats
           select_placeholder: Select a Media List or upload a new one...
+          successfully_uploaded: Your list has been successfully uploaded.
+          ignored_contacts: All contacts in incorrect format will be ignored.
+          not_available: You don't have available media list in your subscription!
+          uploaded_file_info: Uploaded file must have exactly <strong>four</strong> columns, formatted as <strong>first name, last name, email address, outlet</strong>
           delete: Delete
           table:
             name: List Name
@@ -316,7 +345,10 @@ en:
           actions: Actions
           delete: Delete
           save: Save as a list
+          save_placeholder: List name...
           button: Save
+          success_uploaded_list: Your list has been successfully saved.
+          success_pitch_sent: Your pitch has been successfully sent.
         email_panel:
           title: Email pitch
           subject: Subject line
@@ -328,5 +360,14 @@ en:
           length: Summary length
           sentences: sentences
           tags: Available merge tags
+          merge_tags:
+            first_name: First Name
+            last_name: Last Name
+            summary: Summary
+            outlet: Outlet
+            link: Link
+            title: Title
+            text: Text
         delete_button: Delete
         button: Pitch! 
+        test_button: Send a Test Email

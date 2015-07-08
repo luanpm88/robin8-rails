@@ -141,6 +141,20 @@ Robin.vent.on('SaySomething:close', function(){
 UPLOADCARE_PUBLIC_KEY = "fe688dbff8d2a632a256"
 UPLOADCARE_AUTOSTORE = false;
 UPLOADCARE_LOCALE_TRANSLATIONS = {
+  buttons: {
+    cancel: 'Cancel',
+    remove: 'Remove',
+    choose: {
+      files: {
+        one: 'Choose a file',
+        other: 'Choose files'
+      },
+      images: {
+        one: polyglot.t("uploading.choose_image"),
+        other: 'Choose images'
+      }
+    }
+  },
   // messages for widget
   errors: {
     'fileType': 'This type of files is not allowed.',
