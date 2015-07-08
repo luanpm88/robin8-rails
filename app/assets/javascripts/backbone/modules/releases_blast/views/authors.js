@@ -402,7 +402,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           "aButtons": [
             {
               "sExtends": "text",
-              "sButtonText": "Export as CSV",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.export"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 // var order = table.order();
@@ -425,7 +425,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             },
             {
               "sExtends": "text",
-              "sButtonText": "Select all",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.add_all"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.addAllContactsToPitch();
@@ -433,7 +433,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             },
             {
               "sExtends": "text",
-              "sButtonText": "Remove all",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.remove_all"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.removeAllContactsFromPitch();

@@ -164,7 +164,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
           subdomain_name: {
             validators: {
               notEmpty: {
-                message: 'The Subdomain name is required'
+                message: polyglot.t("newsrooms.modal.public_tab.validations.subdomain_required")
               },
               regexp: {
                 regexp: /^[a-zA-Z0-9_-]*$/,
