@@ -38,6 +38,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
+          if not article?
+            console.log "that is not ok, no article for invitation #{i.id}"
+            article = {}
           kol.article = article
           kol
         .value()
