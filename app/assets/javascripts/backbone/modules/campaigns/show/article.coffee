@@ -17,6 +17,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     ui:
       wysihtml5: 'textarea.wysihtml5'
       commentInput: 'input#comment'
+      errorBlock: 'p#comment-error'
 
     serializeData: () ->
       item: @model.toJSON()
@@ -35,9 +36,17 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       @model.save()
 
     save_comment: ()->
+      text = @ui.commentInput.val()
+      if !text
+        @ui.commentInput.parent().addClass("has-error")
+        @ui.errorBlock.removeClass("hidden")
+        return
+      else if @ui.commentInput.parent().hasClass("has-error")
+        @ui.commentInput.parent().removeClass("has-error")
+        @ui.errorBlock.addClass("hidden")
       comment = new Robin.Models.ArticleComment(
         {
-          text: @ui.commentInput.val()
+          text: text
         },{
           article_model: @model
         })
