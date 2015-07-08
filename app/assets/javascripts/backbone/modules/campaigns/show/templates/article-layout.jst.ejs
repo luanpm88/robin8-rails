@@ -21,20 +21,11 @@
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="comments">
-                    <div class="row">Documents</div>
-                    <div class="row">Comments</div>
-                    <div class="row comments-list">
-                        <% if (item.article_comments) { %>
-                            <div class="row">No comments yet</div>
-                        <% } else { %>
-                            <% _.each(item.article_comments, function(c) { %>
-                                <div class="row">
-                                    <p><%= formatDate(c.created_at) %></p>
-                                    <p><%= c.sender %></p>
-                                    <p><%= c.text %></p>
-                                </div>
-                            <% }); %>
-                        <% } %>
+                    <div class="row comments-title">Documents <button class="btn btn-primary glyphicon glyphicon-plus"></button></div>
+                    <hr />
+                    <div class="row comments-title">Comments</div>
+                    <div class="row comments-list" id="comments-list">
+
                     </div>
                     <div class="row">
                         <div class="col-md-9">

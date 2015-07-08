@@ -27,6 +27,11 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       article.fetch
         success: ()->
           articleDialog.render()
+          article.fetch_comments(()->
+            commentsList = new Show.ArticleComments
+              collection: article.get("article_comments")
+            articleDialog.showChildView 'comments', commentsList
+          )
         error: (e)->
           console.log e
       articleDialog = new Show.ArticleDialog
@@ -37,3 +42,14 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: ()->
       items: @collection.toJSON()
       declined: @options.declined
+
+
+  Show.ArticleComments = Backbone.Marionette.ItemView.extend
+    template: 'modules/campaigns/show/templates/article-comments'
+    templateHelpers:
+      formatDate: (d) ->
+        date = new Date d
+        date.toLocaleFormat '%d-%b-%Y'
+      timestamp: (d) ->
+        date = new Date d
+        date.getTime()

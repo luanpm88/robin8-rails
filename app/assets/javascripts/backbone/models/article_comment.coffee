@@ -1,4 +1,6 @@
 Robin.Models.ArticleComment = Backbone.Model.extend
-  urlRoot: '/comments'
-  url: ()->
-    this.get("article_model").url() + "/" + this.get("article_model").get("id") + this.urlRoot
+  urlRoot: ()->
+    @article_model.url() + "/" + @article_model.get("id") + '/comments'
+
+  initialize: (attributes, options) ->
+    @article_model = options.article_model

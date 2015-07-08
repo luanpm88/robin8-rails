@@ -9,6 +9,8 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       timestamp: (d) ->
         date = new Date d
         date.getTime()
+    regions:
+      "comments": "#comments-list"
     events:
       "click #article-save": "save_data"
       "click #comment-save": "save_comment"
@@ -24,14 +26,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       @ui.wysihtml5.wysihtml5()
       @editor = @ui.wysihtml5.data('wysihtml5').editor
       @editor.focus()
-#      comments = new Robin.Collections.ArticleComments
-#        article_model: @model
-#      comments.fetch
-#        success: ()=>
-#          @model.set
-#            article_comments: comments
-#        error: (e)->
-#          console.log e
 
     save_data: () ->
       @model.set
@@ -39,15 +33,28 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       @model.save()
 
     save_comment: ()->
-      model = new Robin.Models.ArticleComment
-        text: $(@ui.commentInput).val()
-        article_model: @model
-      model.save
+      comment = new Robin.Models.ArticleComment(
+        {
+          text: @ui.commentInput.val()
+        },{
+          article_model: @model
+        })
+
+      comment.save({},
+        {
         success: ()=>
-          $(@ui.commentInput).val('')
+          @ui.commentInput.val('')
           comments = @model.get("article_comments")
-          comments.push(model.toJSON())
+          comments.add(comment,
+            at: 0
+          )
           @model.set
             article_comments: comments
+          commentsList = new Show.ArticleComments
+            collection: comments
+          @showChildView 'comments', commentsList
+
         error: (e)->
           console.log e
+        }
+      )

@@ -31,7 +31,7 @@ class CampaignController < ApplicationController
 
   def article_comments
     article = Article.find(params[:id])
-    render json: article.article_comments, each_serializer: ArticleCommentSerializer
+    render json: article.article_comments.order(created_at: :desc), each_serializer: ArticleCommentSerializer
   end
 
   def create_article_comment

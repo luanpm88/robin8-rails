@@ -11,7 +11,20 @@ tr.campaign{
 }
 
 .comments-list {
-  max-height: 500px;
+  max-height: 300px;
   overflow: auto;
   margin-bottom: 20px;
+}
+
+.comments-title {
+  font-size: 22px;
+}
+
+.comment-text {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.comment-date {
+  margin-bottom: 5px;
 }
