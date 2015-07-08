@@ -9,6 +9,7 @@
           <thead class="table-head">
             <tr>
               <th class="invite-cell invite-id" data-sort="int">#</th>
+              <th class="invite-cell invite-description" data-sort="string">Name</th>
               <th class="invite-cell invite-description" data-sort="string">Description</th>
               <th class="invite-cell invite-date" data-sort="int">Creation Date</th>
               <th class="invite-cell invite-deadline" data-sort="int">Deadline</th>
@@ -20,6 +21,9 @@
             <tr>
               <td data-sort-value="<%= item.id %>" class="invite-cell invite-id">
                 <%= item.id %>
+              </td>
+              <td class="invite-cell invite-description">
+                <%= item.campaign.name %>
               </td>
               <td class="invite-cell invite-description">
                 <%= item.campaign.description %>

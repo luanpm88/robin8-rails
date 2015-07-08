@@ -6,6 +6,15 @@ class CampaignController < ApplicationController
     render json: campaigns, each_serializer: CampaignsSerializer
   end
 
+  def show
+    c = Campaign.find(params[:id])
+    user = current_user
+    if user.blank? or c.user_id != user.id
+      return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
+    end
+    render json: c.to_json(:include => [:kols, :campaign_invites, :articles])
+  end
+
   def article
     campaign = Campaign.find(params[:id])
     article = campaign.articles.where(kol_id: current_kol.id).first
