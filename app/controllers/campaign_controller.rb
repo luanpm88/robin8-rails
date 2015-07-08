@@ -34,12 +34,12 @@ class CampaignController < ApplicationController
   end
 
   def article_comments
-    article = Article.find(params[:id])
+    article = Article.find(params[:article_id])
     render json: article.article_comments.order(created_at: :desc), each_serializer: ArticleCommentSerializer
   end
 
   def create_article_comment
-    article = Article.find(params[:id])
+    article = Article.find(params[:article_id])
     someone = current_user
     someone = current_kol if someone.nil?
     comment = ArticleComment.create(article_id: article.id, sender: someone, text: params[:text], comment_type: "comment")
