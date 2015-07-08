@@ -65,6 +65,7 @@ class CampaignController < ApplicationController
       i.status = ''
       i.campaign = c
       i.save
+      KolMailer.campaign_invite(k, current_user, c).deliver
     end
     render :json => c
   end
