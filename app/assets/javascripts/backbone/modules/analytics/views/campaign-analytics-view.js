@@ -4,16 +4,11 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
     renderCampaignAnalytics: function() {
       $( document ).ready(function() {
-        $('.tablesorter').tablesorter({
-          headers : {
-            0: { sorter: false },
-            1: { sorter: false },
-            2: { sorter: false },
-            3: { sorter: "digit" },
-            4: { sorter: "digit" },
-            5: { sorter: "digit" },
-            6: { sorter: "date" }
-          }
+        $('.an-campaigns-table').DataTable({
+          "info": false,
+          "searching": false,
+          "lengthChange": false,
+          "pageLength": 10
         });
       });
       Analytics.layout.$el.find('.campaigns-label').tab('show');

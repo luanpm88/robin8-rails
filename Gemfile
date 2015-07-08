@@ -64,7 +64,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-x-editable'
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
-  gem 'rails-assets-jquery.tablesorter'
   gem 'rails-assets-timeago'
   gem 'rails-assets-datatables'
   gem 'rails-assets-datatables-tabletools'
@@ -76,7 +75,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery-highlighttextarea'
   gem 'rails-assets-jquery-geocomplete'
   gem 'rails-assets-datejs'
-  gem 'rails-assets-jquery-stupid-table'
   gem 'rails-assets-bootstrap-validator'
 end
 
