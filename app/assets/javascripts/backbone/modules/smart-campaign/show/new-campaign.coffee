@@ -130,7 +130,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     save: () ->
       kols_valid = @targets_view.validate()
       @ui.form.validator('validate')
-      form_valid = $(".form-group.has-errors").length == 0
+      form_valid = $(".form-group.has-error").length == 0
       if form_valid and kols_valid
         data = _.reduce @ui.form.serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
         data["kols"] = @targets_view.invitedKols()

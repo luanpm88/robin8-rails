@@ -8,10 +8,10 @@
         <table class="table table-striped" id="kol-dashboard">
           <thead class="table-head">
             <tr>
-              <th class="invite-cell invite-id" data-sort="int">#</th>
-              <th class="invite-cell invite-description" data-sort="string">Name</th>
-              <th class="invite-cell invite-description" data-sort="string">Description</th>
               <th class="invite-cell invite-date" data-sort="int">Creation Date</th>
+              <th class="invite-cell invite-name" data-sort="string">Name</th>
+              <th class="invite-cell invite-budget" data-sort="int">Budget</th>
+              <th class="invite-cell invite-description" data-sort="string">Description</th>
               <th class="invite-cell invite-deadline" data-sort="int">Deadline</th>
               <th class="invite-cell invite-status" data-sort="string">Status</th>
             </tr>
@@ -19,17 +19,17 @@
           <tbody>
           <% _.each(items, function(item){ %>
             <tr>
-              <td data-sort-value="<%= item.id %>" class="invite-cell invite-id">
-                <%= item.id %>
+              <td data-sort-value="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
+                <%= formatDate(item.created_at) %>
               </td>
-              <td class="invite-cell invite-description">
+              <td class="invite-cell invite-name">
                 <%= item.campaign.name %>
+              </td>
+              <td class="invite-cell invite-budget">
+                $ <%= item.campaign.budget %>
               </td>
               <td class="invite-cell invite-description">
                 <%= item.campaign.description %>
-              </td>
-              <td data-sort-value="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
-                <%= formatDate(item.created_at) %>
               </td>
               <td data-sort-value="<%= timestamp(item.campaign.deadline) %>" class="invite-cell invite-deadline">
                 <b><%= formatDate(item.campaign.deadline) %></b>
