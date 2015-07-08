@@ -59,7 +59,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       is_valid
 
     onRender: () ->
-      @ui.table.stupidtable()
+      @ui.table.DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
 
   Show.NewCampaign = Backbone.Marionette.LayoutView.extend
     template: 'modules/smart-campaign/show/templates/new-campaign'

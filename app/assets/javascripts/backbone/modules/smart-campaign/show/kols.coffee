@@ -39,4 +39,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       this.ui.fileInput.trigger "click"
 
     onRender: () ->
-      @ui.table.stupidtable()
+      @ui.table.DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+

@@ -33,6 +33,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         self.render()
 
     onRender: () ->
-      invitesTable = @$el.find('#kol-dashboard')
-      if invitesTable[0]
-        invitesTable.stupidtable()
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
