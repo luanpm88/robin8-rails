@@ -1,6 +1,5 @@
 <div class="row">
   <div class="col-md-2 col-md-offset-5 vcenter region-title"><b>Campaigns<b/></div>
-  </div>
 </div>
 <% if (items.length == 0) { %>
   <div class="row">You don't have any campaigns. It's time to create one!</div>
@@ -16,7 +15,11 @@
       <tbody>
         <% _.each(items, function(c) { %>
           <tr data-id="<%= c.id %>">
-            <td><%= c.name %></td>
+            <td>
+              <a href="#/smart_campaign/details/<%= c.id %>">
+                <%= c.name %>
+              </a>
+            </td>
             <td data-sort-value="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
             <td data-sort-value="<%= timestamp(c.created_at) %>"><%= formatDate(c.created_at) %></td>
             <td data-sort-value="<%= c.budget %>">$<%= c.budget %></td>

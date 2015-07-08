@@ -27,3 +27,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
             releases: c.toJSON()
           Robin.layouts.main.content.show page
 
+    showCampaign: (id) ->
+      campaign = new Robin.Models.Campaign { id: id }
+      campaign.fetch
+        success: (m, r, o) ->
+          page = new Show.CampaignDetails
+            model: m
+          Robin.layouts.main.content.show page
+

@@ -1,0 +1,16 @@
+<div class="row">
+    <% if (items.length == 0) { %>
+        <div class="row">No comments yet</div>
+    <% } else { %>
+        <% _.each(items, function(c) { %>
+        <div class="row">
+            <p class="comment-date">
+                <%= formatDate(c.created_at) %>
+                <br />
+                <%= c.sender.first_name %> <%= c.sender.last_name %>
+            </p>
+            <p class="comment-text"><%= c.text %></p>
+        </div>
+        <% }); %>
+    <% } %>
+</div>

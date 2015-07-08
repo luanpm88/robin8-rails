@@ -16,6 +16,10 @@ class CampaignInviteController < ApplicationController
     else
       invite.status = params[:status]
       invite.save
+      if params[:status] == "A"
+        a = Article.new(kol_id: current_kol.id, campaign_id: invite.campaign.id)
+        a.save
+      end
       render json: invite
     end
   end
