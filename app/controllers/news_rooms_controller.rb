@@ -1,9 +1,10 @@
 require 'mailgun'
 class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
-  
+
   def index
     limit = current_user.current_user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
+    limit = limit.nil? ? current_user.news_rooms.count : limit
     set_paginate_headers NewsRoom, current_user.news_rooms.count
     per_page = (limit < params[:per_page].to_i || params[:per_page].nil?) ? limit : params[:per_page].to_i
     render json: current_user.news_rooms.order('created_at DESC').limit(limit).paginate(page: params[:page], per_page: per_page), each_serializer: NewsRoomSerializer
@@ -93,7 +94,7 @@ private
       :toll_free_number, :publish_on_website, attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy],
       industry_ids: [])
   end
-  
+
   def ssl_configured?
     !Rails.env.development? && !['preview', 'presskit', 'follow'].include?(action_name)
   end
