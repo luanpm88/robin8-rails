@@ -146,7 +146,9 @@ Rails.application.routes.draw do
 
   resources :campaign, only: [:index, :create, :show]
   get 'campaign/:id/article', to: 'campaign#article'
+  get 'campaign/:id/article/:article_id', to: 'campaign#article'
   put 'campaign/:id/article', to: 'campaign#update_article'
+  put 'campaign/:id/article/:id', to: 'campaign#update_article'
   get 'campaign/:id/article/:id/comments', to: 'campaign#article_comments'
   post 'campaign/:id/article/:id/comments', to: 'campaign#create_article_comment'
   resources :campaign_invite, only: [:index, :create, :show, :update]

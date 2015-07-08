@@ -21,11 +21,13 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: () ->
       item: @model.toJSON()
       title: @options.title
+      disabled: @options.disabled
 
     onRender: () ->
       @ui.wysihtml5.wysihtml5()
       @editor = @ui.wysihtml5.data('wysihtml5').editor
       @editor.focus()
+      @editor.disable() if @options.disabled
 
     save_data: () ->
       @model.set

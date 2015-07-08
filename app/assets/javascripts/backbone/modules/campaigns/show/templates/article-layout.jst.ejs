@@ -14,7 +14,7 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="content">
-                    <textarea class="wysihtml5 article-content"><%= item.text %></textarea>
+                    <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.text %></textarea>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="article-save">Save changes</button>

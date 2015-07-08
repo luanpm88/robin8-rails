@@ -8,14 +8,13 @@
     </div>
   </div>
   <div class="row">
-    <b>Name: </b> <%= campaign.name %></br>
-    <b>Deadline: </b> <%= formatDate(campaign.deadline) %></br>
+    <b>Name: </b> <%= campaign.name %><br/>
+    <b>Deadline: </b> <%= formatDate(campaign.deadline) %><br/>
     <b>Total influencers invited: </b> <%= campaign.campaign_invites.length %>
   </div>
   <div class="row">
-    <div class="col-md-2 col-md-offset-5 vcenter region-title"><b>Accepted:<b/></div>
+    <div class="vcenter region-title"><b>Accepted:</b></div>
     <% if (accepted.length == 0) { %>
-      <br/><br/>
       <i>No one accepted your invitation yet.</i>
     <% } else { %>
       <table class="table table-striped" id="accepted-kols">
@@ -26,14 +25,10 @@
         </tr></thead>
         <tbody>
           <% _.each(accepted, function(k) { %>
-            <tr data-id="<%= k.id %>">
+            <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>" class="preview">
               <td><%= k.first_name %> <%= k.last_name %></td>
               <td><%= k.email %></td>
-              <td>
-                <span class="preview" data-article-id="<%= k.article.id %>">
-                  <%= formatDate(k.article.updated_at) %>
-                </span>
-              </td>
+              <td><%= formatDate(k.article.updated_at) %></td>
             </tr>
           <% }); %>
         </tbody>
@@ -43,7 +38,7 @@
   <% if (declined.length !=0 ) { %>
     <hr/>
     <div class="row">
-      <div class="col-md-2 col-md-offset-5 vcenter region-title"><b>Declined/Unknown:<b/></div>
+      <div class="vcenter region-title"><b>Declined/Unknown:</b></div>
       <table class="table table-striped" id="accepted-kols">
         <thead style="cursor:pointer;"><tr>
           <th data-sort="string">Name</th>
