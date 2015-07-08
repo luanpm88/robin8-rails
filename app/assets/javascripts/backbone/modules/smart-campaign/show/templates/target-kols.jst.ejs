@@ -3,10 +3,11 @@
 <% if (kols.length == 0) { %>
   <i>Couldn't match any influencers for you. Provivde more categories.</i>
 <% } else { %>
-  <table class="table table-striped" id="kols-table">
+  <table class="table table-hover targets dataTable no-footer" id="kols-table">
     <thead style="cursor:pointer;"><tr>
       <th data-sort="string">Name</th>
       <th data-sort="string">Email</th>
+      <th data-sort="string">Location</th>
       <th data-sort="string">Categories</th>
       <th data-sort="string">Public</th>
       <th>Invite</th>
@@ -14,8 +15,12 @@
     <tbody>
       <% _.each(kols, function(k) { %>
         <tr data-id="<%= k.id %>">
-          <td><%= k.first_name %> <%= k.last_name %></td>
+          <td>
+            <img width="20px" src="<%= AppAssets.images['user_avatar.png'] %>"></img>
+            <%= k.first_name %> <%= k.last_name %>
+          </td>
           <td><%= k.email %></td>
+          <td><%= k.location %></td>
           <td><%= categories(k) %></td>
           <td><%= public(k) %></td>
           <td>
