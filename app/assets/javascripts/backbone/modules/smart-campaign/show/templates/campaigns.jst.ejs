@@ -20,9 +20,9 @@
                 <%= c.name %>
               </a>
             </td>
-            <td><%= formatDate(c.deadline) %></td>
-            <td><%= formatDate(c.created_at) %></td>
-            <td>$<%= c.budget %></td>
+            <td data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
+            <td data-order="<%= timestamp(c.created_at)%>"><%= formatDate(c.created_at) %></td>
+            <td data-order="<%= c.budget %>">$<%= c.budget %></td>
           </tr>
         <% }); %>
       </tbody>
