@@ -452,11 +452,11 @@ span.social-networks {
 }
 
 .campaigns-tab table {
-  border: 1px solid rgb(123, 123, 123);
   font-size: 14px;
 }
 .campaigns-tab table i {
   margin-right: 10px;
+  color: #3c9eb6;
 }
 
 .wechat-tab, .weibo-tab {
@@ -480,28 +480,24 @@ span.social-networks {
 }
 
 .wechat-tab table,  .weibo-tab table {
-  border: 1px solid rgb(123, 123, 123);
   font-size: 14px;
   clear: both;
 }
-
-.wechat-tab table td + td, .wechat-tab table th + th,
-.weibo-tab table td + td, .weibo-tab table th + th,
-.campaigns-tab table td + td, .campaigns-tab table th + th {
-  border-left: 1px solid rgb(123, 123, 123);
+.wechat-tab .targets-author .media-left img, .weibo-tab  .targets-author .media-left img {
+  height: 50px;
+  width: 50px;
 }
-
-table.tablesorter thead tr th:not(.sorter-false) {
-  background-image: url("http://tablesorter.com/themes/blue/bg.gif");
-  background-repeat: no-repeat;
-  background-position: center right;
-  cursor: pointer;
+.wechat-tab .table.targets td, .wechat-tab .table.targets th,
+.weibo-tab .table.targets td, .weibo-tab .table.targets th,
+.campaigns-tab .table.targets td, .campaigns-tab .table.targets th {
+  text-align: center;
+  white-space: nowrap;
 }
-
-table.tablesorter thead tr .tablesorter-headerAsc {
-  background-image: url("http://tablesorter.com/themes/blue/asc.gif") !important;
+.wechat-tab .targets-author, .weibo-tab .targets-author, .campaigns-tab .targets-author {
+  text-align: left;
 }
-
-table.tablesorter thead tr .tablesorter-headerDesc {
-  background-image: url("http://tablesorter.com/themes/blue/desc.gif") !important;
+.wechat-tab .table.targets td:first-child, .wechat-tab .table.targets th:first-child,
+.weibo-tab .table.targets td:first-child, .weibo-tab .table.targets th:first-child,
+.campaigns-tab .table.targets td:first-child, .campaigns-tab .table.targets th:first-child {
+  width: 30%;
 }

@@ -12,7 +12,6 @@
 //
 //= require assets
 //= require jquery
-//= require jquery.tablesorter
 //= require jquery_ujs
 //= require uploadcare
 //= require jquery-ui

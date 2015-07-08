@@ -64,7 +64,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-x-editable'
   gem 'rails-assets-bootstrap-tagsinput'
   gem 'rails-assets-jquery.dotdotdot'
-  gem 'rails-assets-jquery.tablesorter'
   gem 'rails-assets-timeago'
   gem 'rails-assets-datatables'
   gem 'rails-assets-datatables-tabletools'
