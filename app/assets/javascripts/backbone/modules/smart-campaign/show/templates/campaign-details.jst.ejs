@@ -13,8 +13,9 @@
     <b>Total influencers invited: </b> <%= campaign.campaign_invites.length %>
   </div>
   <div class="row">
-    <div class="col-md-2 col-md-offset-5 vcenter region-title"><b>Accepted:<b/></div><br/>
+    <div class="col-md-2 col-md-offset-5 vcenter region-title"><b>Accepted:<b/></div>
     <% if (accepted.length == 0) { %>
+      <br/><br/>
       <i>No one accepted your invitation yet.</i>
     <% } else { %>
       <table class="table table-striped" id="accepted-kols">
