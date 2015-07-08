@@ -1,5 +1,7 @@
 <% if (items.length == 0) { %>
-<div class="row">You don't have any campaigns. It's time to create one!</div>
+<div class="row">
+    You don't have any <% if (!declined) { %>accepted<% } else { %>declined<% } %> campaigns.
+</div>
 <% } else { %>
 <div class="row">
     <table class="table table-striped" id="campaigns-table">
