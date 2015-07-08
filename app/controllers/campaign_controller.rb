@@ -17,7 +17,11 @@ class CampaignController < ApplicationController
 
   def article
     campaign = Campaign.find(params[:id])
-    article = campaign.articles.where(kol_id: current_kol.id).first
+    if params[:article_id]
+      article = campaign.articles.find(params[:article_id])
+    else
+      article = campaign.articles.where(kol_id: current_kol.id).first
+    end
     render json: article, serializer: ArticleSerializer
   end
 

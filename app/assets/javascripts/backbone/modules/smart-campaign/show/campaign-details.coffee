@@ -16,11 +16,28 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         if k.status == "" then "Unknown" else "Declined"
 
     events:
-      "click span.preview": "preview"
+      "click tr.preview": "preview"
 
     preview: (e) ->
       id = $(e.currentTarget).data "article-id"
-      alert "preview for article #{id}"
+      article = new Robin.Models.Article
+        campaign_model: @model
+        id: id
+      article.fetch
+        success: ()->
+          articleDialog.render()
+          article.fetch_comments(()->
+            commentsList = new App.Campaigns.Show.ArticleComments
+              collection: article.get("article_comments")
+            articleDialog.showChildView 'comments', commentsList
+          )
+        error: (e)->
+          console.log e
+      articleDialog = new App.Campaigns.Show.ArticleDialog
+          model: article
+          title: @model.get("name")
+          disabled: true
+      Robin.modal.show articleDialog
 
     serializeData: () ->
       data = @model.toJSON()
