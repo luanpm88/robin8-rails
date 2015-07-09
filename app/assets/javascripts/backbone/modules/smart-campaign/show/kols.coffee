@@ -24,7 +24,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       "click #invite_kols": "inviteKols"
       "change @ui.fileInput": "import_csv"
       'click #add_kol': 'openModalDialog'
-      "click @ui.add": "addKol"
+      "click @ui.add": "add"
 
     collectionEvents:
       "add and reset add remove": "render"
@@ -43,12 +43,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           $.growl({message: "Your list has been successfully uploaded."
           },{
             type: 'success'
-          });
+          })
 
           $.growl({message: "All contacts in incorrect format will be ignored."
           },{
             type: 'info'
-          });
+          })
         error: (res) ->
           if res && res.responseJSON
             errorField = _.keys(res.responseJSON)[0]
@@ -93,17 +93,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @$el.find('#kol_form').modal keyboard: false
 
     add: () ->
-      form_valid = $(".form-group.has-error").length == 0
-      if form_valid
-        @ui.form.submit () ->
-          success: =>
-            model = new Robin.Models.Kols()
-            model.save data
-            location.href = "/#smart_campaign"
-          error: (res) ->
-            if res && res.responseJSON
-              errorField = _.keys(res.responseJSON)[0]
-              errorMessage = res.responseJSON.message
-              errorField = s.capitalize errorField.replace(/_/g,' ')
+      data = _.reduce $("#add_kol-form").serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
+      $.post "/users/import_kol/", data, (data) =>
+        if data.status == "ok"
+          $("#kol_form input").val("")
+          @ui.categories.select2 "data", {}
+          $("#kol_form").modal("hide")
+          setTimeout () =>
+            @collection.fetch
+              success: () =>
+                @render()
+           ,
+            1500
+        else
+          $.growl {message: data.status}, {type: 'danger'}
 
-              $.growl {message: errorField + ': ' + errorMessage}, type: 'danger'

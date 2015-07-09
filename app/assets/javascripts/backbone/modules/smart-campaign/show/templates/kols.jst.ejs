@@ -42,7 +42,7 @@
         <h4 class="modal-title"> Add Influencer</h4>
       </div>
       <div class="modal-body">
-        <form role="form" id="add_kol-form" onsubmit="return false;">
+        <form role="form" id="add_kol-form" method="post" action="/users/import_kol/">
           <label>First Name</label>
           <div id='kol-first_name-block'>
             <input class="form-control" id="kol-first_name-input" name="first_name" type="text" value="" placeholder="Enter first name..." required>

@@ -79,6 +79,35 @@ class UsersController < ApplicationController
     end
   end
 
+  def import_kol
+    #FIXME: fix this hell
+    if current_user.nil?
+      return render json: {:status => "nope"}
+    end
+    kol = Kol.where(email: params[:email]).first
+    user = User.where(email: params[:email]).first
+    if not (kol.nil? and user.nil?)
+      return render json: {:status => "This email is already taken"}
+    end
+    kol = Kol.new
+    kol.first_name = params[:first_name]
+    kol.last_name = params[:last_name]
+    kol.email = params[:email]
+    pass = SecureRandom.hex
+    kol.password = pass
+    kol.password_confirmation = pass
+    kol.is_public = false
+    kol.save!
+    categories = params[:categories]
+    categories = '' if categories == nil
+    categories = categories.strip.split(',').map {|s| s.strip}.uniq
+    categories = IptcCategory.where :id => categories
+    kol.iptc_categories = categories
+    kol.save!
+    PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
+    render json: {:status => "ok"}
+  end
+
   def import_kols
     contents = File.read(params[:private_kols_file].tempfile)
     puts params[:private_kols_file].tempfile.path[-4..-1]
