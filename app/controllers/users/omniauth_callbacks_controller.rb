@@ -41,7 +41,11 @@ module Users
             end
             @someone = someone.find_for_oauth(params)
             if @someone.persisted?
+              cookies[:kol_signin] = "no"
               sign_in @someone
+              if @someone.class == Kol
+                cookies[:kol_signin] = "yeah"
+              end
             end
           else
             @identity = Identity.find_for_oauth(params)
