@@ -28,20 +28,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       article = new Robin.Models.Article
         campaign_model: @model
         id: id
+      articleDialog = new App.Campaigns.Show.ArticleDialog
+        model: article
+        title: @model.get("name")
+        disabled: true
+        onApprove: (code) ->
+          $("#code_#{id}").html code
       article.fetch
         success: ()->
           articleDialog.render()
-          article.fetch_comments(()->
+          article.fetch_comments ()->
             commentsList = new App.Campaigns.Show.ArticleComments
               collection: article.get("article_comments")
             articleDialog.showChildView 'comments', commentsList
-          )
         error: (e)->
           console.log e
-      articleDialog = new App.Campaigns.Show.ArticleDialog
-          model: article
-          title: @model.get("name")
-          disabled: true
       Robin.modal.show articleDialog
 
     serializeData: () ->

@@ -91,13 +91,15 @@
       min-width: 100px;
     }
 
-    &.invite-description {
-      text-align: left;
-    }
-
     &.invite-id {
       width: 3%;
       min-width: 30px;
     }
+
+    &.alignleft {
+      text-align: left;
+    }
+
+
   }
 }

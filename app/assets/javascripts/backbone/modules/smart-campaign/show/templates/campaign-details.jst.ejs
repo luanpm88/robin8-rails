@@ -30,7 +30,7 @@
               <td><%= k.first_name %> <%= k.last_name %></td>
               <td><%= k.email %></td>
               <td><%= formatDate(k.article.updated_at) %></td>
-              <td><%= code(k) %></td>
+              <td id="code_<%= k.article.id %>"><%= code(k) %></td>
             </tr>
           <% }); %>
         </tbody>

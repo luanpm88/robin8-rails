@@ -17,10 +17,11 @@
                     <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.text %></textarea>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <% var button_disabled = ""; if (item.tracking_code != null) { button_disabled = "disabled"; } %>
                         <% if (disabled) { %>
-                          <button type="button" class="btn btn-success" id="article-save">Approve</button>
+                          <button type="button" class="btn btn-success" id="article-save" <%= button_disabled %> >Approve</button>
                         <% } else { %>
-                          <button type="button" class="btn btn-primary" id="article-save">Save changes</button>
+                          <button type="button" class="btn btn-primary" id="article-save" <%= button_disabled %> >Save changes</button>
                         <% } %>
                     </div>
                 </div>
