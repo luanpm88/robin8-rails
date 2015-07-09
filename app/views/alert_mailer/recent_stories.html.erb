@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Robin8 streams alert</title>
+
+    <%= stylesheet_link_tag  'export_stories', media: 'all' %>
+  </head>
+  
+  <body>
+    <br>
+    <p>
+      Hi <%= @user.first_name %>,<br />
+      <br />
+      When you were away,
+      <% if @stories.count <= 10 %>
+        we recieved <%= @stories.count %> stories.
+      <% else %>
+        we recieved more than 10 stories.
+      <% end %>
+      Please log in to <%= link_to "Robin8", "https://robin8.com/" %>
+      to read more stories.
+    </p>
+    <br>
+    <h1 class="header"><%= @stream.stream_title %></h1>
+    <br>
+    <br>
+    <div class="container-fluid">
+      <% @stories.each do |story| %>
+        <% unless story[:summary].blank? %>
+          <div class="row story" 
+            style="background-color: <%= cycle('rgb(199, 195, 195)', '#fff') -%> !important">
+            <div class="col-lg-12">
+              <div>
+                <h2 class="media-heading">
+                  <%= link_to story[:title], story[:link] %>
+                </h2>
+                <h4 class="meta">
+                  <span><%= story[:blog_name] %></span> &bull; 
+                  <span style="font-weight: normal;">
+                    <i class="fa fa-clock-o"></i> 
+                    <span class="datetime">
+                      <%= Time.parse(story[:published_at]).strftime("%a, %d %B %Y %T%:z") %>
+                    </span>
+                  </span>
+                </h4>
+                <hr>
+                <h4>Summary:</h4>
+                <ul>
+                  <% story[:summary].each do |s| %>
+                    <li><%= s %></li>
+                  <% end %>
+                </ul>
+              </div>
+              <div class="text-center">
+                <% images = story[:images].push("http://lorempixel.com/550/413/abstract/") %>
+                
+                <%= proxy_image_tag_url images.to_json, width: '600px' %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </body>
+</html>
