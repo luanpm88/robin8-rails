@@ -7,11 +7,14 @@
     <table class="table table-striped" id="campaigns-table">
         <thead class="table-head">
         <tr>
-            <th class="invite-cell invite-name" data-sort="string">Name</th>
-            <th class="invite-cell invite-budget" data-sort="string">Brand</th>
-            <th class="invite-cell invite-budget" data-sort="int">Budget</th>
-            <th class="invite-cell invite-date" data-sort="int">Creation Date</th>
-            <th class="invite-cell invite-deadline" data-sort="int">Deadline</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Budget</th>
+            <th>Creation Date</th>
+            <th>Deadline</th>
+            <% if (!declined) {%>
+              <th>Tracking code</th>
+            <% }%>
         </tr>
         </thead>
         <tbody>
@@ -32,6 +35,9 @@
             <td data-order="<%= timestamp(item.deadline) %>" class="invite-cell invite-deadline">
                 <b><%= formatDate(item.deadline) %></b>
             </td>
+            <% if (!declined) {%>
+              <td><%= code(item) %></td>
+            <% }%>
         </tr>
         <% }); %>
         </tbody>

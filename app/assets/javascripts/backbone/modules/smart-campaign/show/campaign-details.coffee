@@ -14,6 +14,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         if k.is_public then "Yes" else "No"
       status: (k) ->
         if k.status == "" then "Unknown" else "Declined"
+      code: (k) ->
+        if k.article? and k.article.tracking_code?
+          k.article.tracking_code
+        else
+          "Not approved yet"
 
     events:
       "click tr.preview": "preview"

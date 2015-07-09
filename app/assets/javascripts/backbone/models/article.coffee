@@ -12,3 +12,6 @@ Robin.Models.Article = Backbone.Model.extend
         callback?()
       error: (e)->
         console.log e
+
+  approve: (callback) ->
+    $.post "#{@urlRoot()}/#{@id}/approve", (data) -> callback? data

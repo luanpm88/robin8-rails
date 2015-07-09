@@ -151,6 +151,7 @@ Rails.application.routes.draw do
   put 'campaign/:id/article/:article_id', to: 'campaign#update_article'
   get 'campaign/:id/article/:article_id/comments', to: 'campaign#article_comments'
   post 'campaign/:id/article/:article_id/comments', to: 'campaign#create_article_comment'
+  post 'campaign/:id/article/:article_id/approve', to: 'campaign#approve_article'
   resources :campaign_invite, only: [:index, :create, :show, :update]
 
 end
