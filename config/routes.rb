@@ -73,6 +73,7 @@ Rails.application.routes.draw do
     delete 'destroy_add_on',on: :member
   end
 
+  resources :alerts, only: [:create, :show, :update]
   resources :media_lists, only: [:index, :create, :show, :destroy]
   resources :contacts, only: [:index, :create, :show]
   resources :pitches, only: [:index, :create, :show]

@@ -34,6 +34,7 @@ module AylienPressrApi
       locations_autocompletes: 'autocompletes/locations',
       skills_autocompletes: 'autocompletes/skills',
       stories: 'stories',
+      uniq_stories: 'uniq_stories',
       interesting_terms: 'interesting_terms'
     }
 

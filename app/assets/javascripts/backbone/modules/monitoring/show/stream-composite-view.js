@@ -8,18 +8,25 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     ui: {
       exportButton: ".export-button",
       exportDialog: ".export-dialog",
+      setAlertButton: ".set-alert-button",
+      setAlertDialog: ".set-alert-dialog",
       storiesNumberSlider: "input.stories-number",
       storiesNumberOutput: "#stories-number",
       colorizeBackground: ".export-dialog [name=colorize-background]",
       formatFileInput: ".export-dialog [name=format]",
       downloadReportButton: "#download-report",
-      dateRangeField: "input[name=daterange]"
+      dateRangeField: "input[name=daterange]",
+      emailAlertField: ".set-alert-dialog input[name=email]",
+      phoneAlertField: ".set-alert-dialog input[name=phone]",
+      enableAlertCheckbox: ".set-alert-dialog input[name=enable]",
+      saveAlertButton: ".set-alert-dialog button[type=submit]"
     },
     events: {
       'click .delete-stream': 'closeStream',
       'click .settings-button': 'settings',
       'click .rss-button': 'toggleRssDialog',
       'click @ui.exportButton': 'exportButtonClicked',
+      'click @ui.setAlertButton': 'setAlertButtonClicked',
       'change @ui.storiesNumberSlider': 'storiesNumberSliderChanged',
       'click @ui.downloadReportButton': "downloadReportButtonClicked",
       'change @ui.formatFileInput': "formatFileInputChanged",
@@ -30,6 +37,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .js-show-new-stories': 'showNewStories',
       'click .rss-input': 'selectLink',
       'click .make-keyword': 'makeKeyword',
+      'click @ui.saveAlertButton': 'saveAlertButtonClicked'
     },
 
     collectionEvents: {
@@ -150,8 +158,24 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     initialize: function() {
+      var self = this;
+      
       this.modelBinder = new Backbone.ModelBinder();
-
+      this.alertModel = new Robin.Models.Alert();
+      
+      // id of the alerts resource is not important cause 
+      // each stream has just one alert 
+      this.alertModel.fetch({ 
+        url: '/alerts/12',
+        data: {
+          stream_id: self.model.get('id')
+        },
+        success: function(model, response, options){
+          self.alertModel = model;
+          self.render();
+        }
+      });
+      
       var streamId = this.model.get('id');
 
       if (streamId && !Robin.cachedStories[streamId]) {
@@ -173,9 +197,18 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
       this.childView = Show.StoryItemView;
     },
-
+    updateAlertDialog: function(){
+      this.ui.emailAlertField.val(this.alertModel.get('email'));
+      this.ui.phoneAlertField.val(this.alertModel.get('phone'));
+      
+      if (this.alertModel.get('enabled'))
+        this.ui.enableAlertCheckbox.prop('checked', true);
+      else
+        this.ui.enableAlertCheckbox.prop('checked', false);
+    },
     onRender: function() {
       var curView = this;
+      
       Robin.user.fetch({
         success: function() {
           if (Robin.user.get('can_create_stream') != true) {
@@ -225,6 +258,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.ui.colorizeBackground.parent().hide();
       this.ui.formatFileInput.val('docx').trigger('change');
       this.initDateRangeField();
+      this.updateAlertDialog();
     },
     initDateRangeField: function(){
       this.ui.dateRangeField.daterangepicker({
@@ -393,7 +427,59 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
     },
-    
+    setAlertButtonClicked: function(e){
+      this.ui.setAlertDialog.toggleClass('closed');
+    },
+    errorFields: {
+      "email": "Email",
+      "phone": "Phone number",
+      "enabled": "Enable",
+      "stream_id": "Stream",
+      "email_and_phone": "Email or Phone number"
+    },
+    saveAlertButtonClicked: function(e){
+      e.preventDefault();
+      
+      var self = this;
+      
+      var streamId = this.model.id;
+      var email = this.ui.emailAlertField.val();
+      var phone = this.ui.phoneAlertField.val();
+      var enabled = this.ui.enableAlertCheckbox.prop('checked');
+      
+      this.alertModel.set('email', email);
+      this.alertModel.set('phone', phone);
+      this.alertModel.set('enabled', enabled);
+      this.alertModel.set('stream_id', streamId);
+      
+      this.alertModel.save({}, { 
+        success: function(model, response, options){
+          var sort_column = self.model.get('sort_column');
+          
+          if (sort_column == "published_at"){
+            $.growl({message: "Your alert has been successfully saved."
+            },{
+              type: 'success'
+            });
+          } else {
+            $.growl({message: "Your alert has been successfully saved. " +
+            "But you will not be notified about " + 
+            "new stories because your stream is not sorted by Recency."
+            },{
+              type: 'warning'
+            });
+          }
+        },
+        error: function(model, response, options){
+          _(response.responseJSON).each(function(val, key){
+            $.growl({message: self.errorFields[key] + ' ' + val[0]
+            },{
+              type: 'danger'
+            });
+          });
+        }
+      });
+    },
     exportButtonClicked: function(e){
       this.ui.exportDialog.toggleClass('closed');
     },

@@ -93,6 +93,38 @@
     </div>
   </form>
 </div>
+<div class="stream-settings set-alert-dialog slider closed">
+  <form role="form">
+    <div class="form-group">
+      <% if(stream.id) { %>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" name="email" class="form-control input-sm"
+            placeholder="Ex: john.doe@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" name="phone" class="form-control input-sm"
+            placeholder="Ex: +44 161 123 4567" />
+        </div>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="enable"> Enable
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="pull-right form-group">
+          <button class="btn btn-success btn-sm" type="submit">Save</button>
+        </div>
+      <% } else { %>
+        <div>Please save stream first</div>
+      <% } %>
+    </div>
+  </form>
+</div>
 <div class="stream-header">
   <i class="fa fa-reorder grey"></i>  
   <span class='editable' id='title' data-emptytext="..."><%= stream.name %></span>
@@ -100,6 +132,7 @@
   <button class="close pull-right settings-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Stream Settings"><i class="fa fa-cog"></i></button>
   <button class="close pull-right export-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Export"><i class="fa fa-download"></i></button>
   <button class="close pull-right rss-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="RSS Feed"><i class="fa fa-rss"></i></button>
+  <button class="close pull-right set-alert-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Set alert"><i class="fa fa-bell"></i></button>
 </div>
 <div class="stream-body">
   <ul class="stories"></ul>
