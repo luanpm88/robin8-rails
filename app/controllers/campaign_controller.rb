@@ -35,7 +35,6 @@ class CampaignController < ApplicationController
       article = Article.find(params[:article_id])
     end
     params[:attachments_attributes].each do |element|
-      puts element
       Attachment.create(imageable: article, url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
     end
     render json: article, serializer: ArticleSerializer
