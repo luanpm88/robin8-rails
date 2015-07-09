@@ -35,3 +35,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
             model: m
           Robin.layouts.main.content.show page
 
+    showAddKol: () ->
+      kols = new Robin.Collections.Releases()
+      kols.fetch
+        success: (c, r, o) ->
+          page = new Show.NewCampaign
+            kols: c.toJSON()
+          Robin.layouts.main.content.show page
+
+

@@ -81,7 +81,12 @@ class UsersController < ApplicationController
 
   def import_kols
     contents = File.read(params[:private_kols_file].tempfile)
+    puts params[:private_kols_file].tempfile.path[-4..-1]
     detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+    if params[:private_kols_file].tempfile.path[-4..-1] != '.csv'
+      raise CSV::MalformedCSVError.new('Attachment content type is invalid')
+    end
 
     kols = []
     CSV.foreach(params[:private_kols_file].tempfile.path, encoding: detection[:ruby_encoding]) do |row|
@@ -106,7 +111,7 @@ class UsersController < ApplicationController
     end
 
     if kols.size == 0
-      raise CSV::MalformedCSVError.new('Invalid file format or broken content')
+      raise CSV::MalformedCSVError.new('Attachment content type is invalid')
     end
 
     render json: kols
