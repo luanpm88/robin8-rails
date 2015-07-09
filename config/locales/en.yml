@@ -36,6 +36,10 @@ en:
             name:
               uniqueness: Name has already been taken
               presence: List name can't be blank
+        user:
+          attributes:
+            email:
+              blank: "Email can't be blank"
   application:
     uploading:
       different_photo: Upload a different photo...
@@ -122,7 +126,26 @@ en:
           title: Basic
           newsroom: Newsroom
           release_title: Release title
+          title_placeholder: Enter title...
           release_text: Release text
+          published_date: Published date
+          text_placeholder: Paste your press release here...
+          paragraph_notification: *The editor uses paragraphs by default for copied text. To place a normal line break press Shift+Enter (Shift+Return)
+          characteristics_view:
+            characters: Characters
+            words: Words
+            sentences: Sentences
+            paragraphs: Paragraphs
+            nouns: Nouns
+            adjectives: Adjectives
+            adverbs: Adverbs
+            score: Readability score
+            highlight: Highlight
+            bad: Bad
+            ok: Ok
+            good: Good
+            excellent: Excellent
+            too_short: Too short
         website_tab:
           title: Website
           make_private: Make this release private
@@ -130,12 +153,24 @@ en:
           title: Media
           select_logo: Please, select a logo for your release
           upload_files: Here you can upload additional media files
+          newswire_tab:
+            release_option: Please, select options for distributing release
+            distribution: Financial Content Distribution
+            start_date: Start date
+            accesswire: Accesswire
+            newswire: PR Newswire
         buttons: 
           next: Next
           save: Save draft
           delete: Delete Release
         warning: This release won't be publicly displayed while the parent Newsroom remains unpublished. 
         publish: Publish the newsroom!
+        dropdown: 
+          select: Select...
+        messages:
+          select_newsroom: You should select a newsroom
+          title_required: The Title is required
+          buy_addon: Please, buy corresponding addon in Billing settings
       item:
         buttons:
           preview: Preview
@@ -210,6 +245,8 @@ en:
           state: State
           code: Zip/Postal Code
           country: Country
+          dropdown:
+            select: Select...
         contact_tab:
           title: Contact
           name: Company Contact Name
@@ -223,7 +260,9 @@ en:
         buttons: 
           save: Save changes
           preview: Preview
-          delete: Delete Newsroom 
+          delete: Delete Newsroom
+      messages: 
+        not_available_newsrooms: You don't have available newsrooms! 
     manage_users:
       buttons:
         manage: Manage Users
@@ -237,6 +276,16 @@ en:
       title: User management
       search_placeholder: Search User by Name or Email 
       input_placeholder: Type User Email
+      messages:
+        is_active: This user is already active
+        sent: The invitation has been sent
+        resent: The invitation has been resent
+        invalid_data: The data you have entered is not a valid email
+        not_available_seats: You don't have available seats!
+        remove_user: Remove this user?
+        remove_explanation: You will not be able to recover this user.
+        confirm_button: Delete
+        cancel_button: Cancel
     smart_release:
       top_menu:
         start: Start
