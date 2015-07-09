@@ -32,3 +32,23 @@ tr.campaign{
 #comment-error {
   margin-bottom: 0;
 }
+
+#comments {
+  ul {
+    li {
+      list-style: none;
+    }
+  }
+  .files_list {
+    .uploadcare-widget-button.btn {
+      line-height: 1.4em;
+      font-size: 14px;
+      padding: 6px 12px;
+    }
+  }
+
+  #files {
+    max-height: 200px;
+    overflow: auto;
+  }
+}
