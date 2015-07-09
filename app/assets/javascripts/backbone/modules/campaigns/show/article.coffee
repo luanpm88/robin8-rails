@@ -41,7 +41,10 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       else
         @model.set
           text: @editor.getValue()
-        @model.save()
+        @model.save {},
+          success: (m) ->
+            $.growl
+              message: "Saved!"
 
     save_comment: ()->
       text = @ui.commentInput.val()
