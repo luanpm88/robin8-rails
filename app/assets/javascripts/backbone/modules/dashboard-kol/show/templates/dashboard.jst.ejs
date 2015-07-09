@@ -10,7 +10,7 @@
             <tr>
               <th class="invite-cell invite-name" data-sort="string">Name</th>
               <th class="invite-cell invite-budget" data-sort="int">Budget</th>
-              <th class="invite-cell invite-budget" data-sort="string">Brand</th>
+              <th class="invite-cell invite-brand" data-sort="string">Brand</th>
               <th class="invite-cell invite-description" data-sort="string">Description</th>
               <th class="invite-cell invite-date" data-sort="int">Creation Date</th>
               <th class="invite-cell invite-deadline" data-sort="int">Deadline</th>
@@ -23,13 +23,13 @@
               <td class="invite-cell invite-name">
                 <%= item.campaign.name %>
               </td>
-              <td class="invite-cell invite-description" data-order="<%= item.budget %>">
+              <td class="invite-cell invite-description" data-order="<%= item.campaign.budget %>">
                 $<%= item.campaign.budget %>
               </td>
               <td class="invite-cell invite-description">
                   <%= item.user.first_name %> <%= item.user.last_name %>
               </td>
-              <td class="invite-cell invite-description">
+              <td class="invite-cell invite-description alignleft">
                 <%= item.campaign.description %>
               </td>
               <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
