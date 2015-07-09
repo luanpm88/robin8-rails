@@ -17,7 +17,11 @@
                     <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.text %></textarea>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="article-save">Save changes</button>
+                        <% if (disabled) { %>
+                          <button type="button" class="btn btn-success" id="article-save">Approve</button>
+                        <% } else { %>
+                          <button type="button" class="btn btn-primary" id="article-save">Save changes</button>
+                        <% } %>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="comments">
@@ -39,7 +43,7 @@
                         <div class="col-md-3">
                             <div class="pull-right">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="comment-save">Save</button>
+                                <button type="button" class="btn btn-primary" id="comment-save">Send</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>

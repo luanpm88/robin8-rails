@@ -15,6 +15,11 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       timestamp: (d) ->
         date = new Date d
         date.getTime()
+      code: (campaign) ->
+        if campaign.tracking_code?
+          campaign.tracking_code
+        else
+          "Not approved yet"
 
     events:
       "click .campaign": "show_editor"

@@ -19,5 +19,5 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         info: false
         searching: false
         lengthChange: false
-        pageLength: 25
+        pageLength: 10
 

@@ -3,7 +3,7 @@ class CampaignController < ApplicationController
   def index
     status = params[:status] == "declined" ? "D" : "A"
     campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
-    render json: campaigns, each_serializer: CampaignsSerializer
+    render json: campaigns, each_serializer: CampaignsSerializer, scope: current_kol
   end
 
   def show
@@ -31,6 +31,17 @@ class CampaignController < ApplicationController
     article.text = params[:text]
     article.save
     render json: article, serializer: ArticleSerializer
+  end
+
+  def approve_article
+    c = Campaign.find(params[:id])
+    user = current_user
+    if user.blank? or c.user_id != user.id
+      return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
+    end
+    article = c.articles.find(params[:article_id])
+    code = article.approve
+    render json: {:code => code}
   end
 
   def article_comments

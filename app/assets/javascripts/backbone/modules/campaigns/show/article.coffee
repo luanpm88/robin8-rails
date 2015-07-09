@@ -31,9 +31,16 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       @editor.disable() if @options.disabled
 
     save_data: () ->
-      @model.set
-        text: @editor.getValue()
-      @model.save()
+      if @options.disabled
+        @model.approve (data) ->
+          $.growl
+            message: "Article approved. Tracking code is #{data.code}."
+           ,
+            type: "success"
+      else
+        @model.set
+          text: @editor.getValue()
+        @model.save()
 
     save_comment: ()->
       text = @ui.commentInput.val()

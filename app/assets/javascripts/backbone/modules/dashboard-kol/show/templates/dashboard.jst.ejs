@@ -30,7 +30,7 @@
                   <%= item.user.first_name %> <%= item.user.last_name %>
               </td>
               <td class="invite-cell invite-description">
-                $ <%= item.campaign.description %>
+                <%= item.campaign.description %>
               </td>
               <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
                   <%= formatDate(item.created_at) %>
