@@ -32,11 +32,12 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
 
     save_data: () ->
       if @options.disabled
-        @model.approve (data) ->
+        @model.approve (data) =>
           $.growl
             message: "Article approved. Tracking code is #{data.code}."
            ,
             type: "success"
+          @options.onApprove? data.code
       else
         @model.set
           text: @editor.getValue()

@@ -32,6 +32,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: article
         title: @model.get("name")
         disabled: true
+        onApprove: (code) ->
+          $("#code_#{id}").html code
       article.fetch
         success: ()->
           articleDialog.render()

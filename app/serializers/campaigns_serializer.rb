@@ -4,7 +4,9 @@ class CampaignsSerializer < ActiveModel::Serializer
   def tracking_code
     if not scope.nil?
       article = object.articles.where(kol_id: scope.id).first
-      return article.tracking_code
+      if not article.nil?
+        return article.tracking_code
+      end
     end
     nil
   end
