@@ -587,7 +587,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           title: {
             validators: {
               notEmpty: {
-                message: 'The Title is required'
+                message: polyglot.t("releases.modal.messages.title_required")
               },
               serverError: {
                 message: 'something went wrong'
@@ -597,7 +597,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           news_room_id: {
             validators: {
               notEmpty: {
-                message: 'You should select a Brand Gallery'
+                message: polyglot.t("releases.modal.messages.select_newsroom")
               },
               serverError: {
                 message: 'something went wrong'
@@ -888,7 +888,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       $('#releaseForm').formValidation('revalidateField', 'myprgenie_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_myprgenie')){
-          $.growl("Please, buy corresponding addon in Billing settings!", {
+          $.growl(polyglot.t("releases.modal.messages.buy_addon"), {
             type: "info",
           });
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
@@ -905,7 +905,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       $('#releaseForm').formValidation('revalidateField', 'accesswire_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_accesswire')){
-          $.growl("Please, buy corresponding addon in Billing settings!", {
+          $.growl(polyglot.t("releases.modal.messages.buy_addon"), {
             type: "info",
           });
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
@@ -922,7 +922,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
       if ($(e.target).is(":checked")) {
         if(!Robin.user.get('can_create_prnewswire')){
-          $.growl("Please, buy corresponding addon in Billing settings!", {
+          $.growl(polyglot.t("releases.modal.messages.buy_addon"), {
             type: "info",
           });
           setTimeout(function(){ $(e.target).iCheck('uncheck'); }, 1);
