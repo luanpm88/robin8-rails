@@ -26,7 +26,27 @@
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="comments">
-                    <div class="row comments-title">Documents <button class="btn btn-primary glyphicon glyphicon-plus"></button></div>
+                    <div class="row comments-title"> Documents
+                        <ul class="files_list clearfix">
+                            <li>
+                                <div id="upload-tooltip">
+                                    <div class="image-preview-multiple-plus">
+                                        <input type="hidden" role="uploadcare-uploader" data-multiple="true" data-file="" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <ul id="files" class="files_list clearfix">
+                                    <% _.each(item.attachments, function(c) { %>
+                                    <li>
+                                        <a href="<%= c.url %>" target="_blank"><%= c.name %></a>
+                                    </li>
+                                    <% }); %>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
                     <hr />
                     <div class="row comments-title">Comments</div>
                     <div class="row comments-list" id="comments-list">

@@ -27,9 +27,16 @@ class CampaignController < ApplicationController
 
   def update_article
     campaign = Campaign.find(params[:id])
-    article = campaign.articles.where(kol_id: current_kol.id).first
-    article.text = params[:text]
-    article.save
+    if current_user.nil?
+      article = campaign.articles.where(kol_id: current_kol.id).first
+      article.text = params[:text]
+      article.save
+    else
+      article = Article.find(params[:article_id])
+    end
+    params[:attachments_attributes].each do |element|
+      Attachment.create(imageable: article, url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
+    end
     render json: article, serializer: ArticleSerializer
   end
 

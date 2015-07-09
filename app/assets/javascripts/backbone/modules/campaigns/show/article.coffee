@@ -10,7 +10,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
     regions:
-      "comments": "#comments-list"
+      comments: "#comments-list"
     events:
       "click #article-save": "save_data"
       "click #comment-save": "save_comment"
@@ -29,6 +29,26 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       @editor = @ui.wysihtml5.data('wysihtml5').editor
       @editor.focus()
       @editor.disable() if @options.disabled
+      setTimeout(()=>
+        @fileWidget = uploadcare.MultipleWidget('[role=uploadcare-uploader][data-multiple][data-file]')
+        @.$el.find(".image-preview-multiple-plus .uploadcare-widget-button-open").text("").addClass("btn glyphicon glyphicon-plus")
+        @fileWidget.onChange (fileGroup) =>
+          if (fileGroup)
+            $.when.apply(null, fileGroup.files()).done () =>
+              crop = '-/scale_crop/160x160/center/'
+              arr = _.clone @model.get('attachments_attributes') || []
+              _.each(arguments, (value, key) =>
+                if !_.find(arr, (item) -> item.url == value.cdnUrl)
+                  arr.push
+                    url: value.cdnUrl
+                    attachment_type: 'file'
+                    name: value.name
+                    thumbnail: value.cdnUrl + crop
+              ,this)
+              @model.set('attachments_attributes', arr)
+              @model.save()
+              @fileWidget.value null
+        , 0)
 
     save_data: () ->
       if @options.disabled
