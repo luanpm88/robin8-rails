@@ -13,6 +13,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         res.join ''
 
     ui:
+      tooltipFormatInfo: "[data-toggle=tooltip]"
       table: "#private_kols-table"
       fileInput: "#private_kols_file"
 
@@ -34,14 +35,35 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         success: =>
           @collection.fetch()
 
+          $.growl({message: "Your list has been successfully uploaded."
+          },{
+            type: 'success'
+          });
+
+          $.growl({message: "All contacts in incorrect format will be ignored."
+          },{
+            type: 'info'
+          });
+        error: (res) ->
+          if res && res.responseJSON
+            errorField = _.keys(res.responseJSON)[0]
+            errorMessage = res.responseJSON.message
+            errorField = s.capitalize errorField.replace(/_/g,' ')
+
+            $.growl {message: errorField + ': ' + errorMessage}, type: 'danger'
+
     inviteKols: (e) ->
       e.preventDefault()
       this.ui.fileInput.trigger "click"
 
     onRender: () ->
+      @initTooltip()
       @ui.table.DataTable
         info: false
         searching: false
         lengthChange: false
         pageLength: 25
 
+    initTooltip: () ->
+      @ui.tooltipFormatInfo.tooltip
+        trigger: 'hover'

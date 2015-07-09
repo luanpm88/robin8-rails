@@ -4,7 +4,6 @@ class Post < ActiveRecord::Base
   serialize :facebook_ids, Array
   serialize :linkedin_ids, Array
   serialize :weibo_ids, Array
-  serialize :wechat_ids, Array
 
   belongs_to :user
   validates :text, presence: true

@@ -39,9 +39,16 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         title: model.get("name")
       Robin.modal.show articleDialog
 
-    serializeData: ()->
+    serializeData: () ->
       items: @collection.toJSON()
       declined: @options.declined
+
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
 
 
   Show.ArticleComments = Backbone.Marionette.ItemView.extend
@@ -49,7 +56,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     templateHelpers:
       formatDate: (d) ->
         date = new Date d
-        date.toLocaleFormat '%d-%b-%Y'
+        date.toLocaleFormat '%d-%b-%Y %I:%M %r'
       timestamp: (d) ->
         date = new Date d
         date.getTime()

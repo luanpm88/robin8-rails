@@ -4,8 +4,7 @@ Robin.Models.Post = Backbone.Model.extend({
     "twitter_ids":  [],
     "facebook_ids":  [],
     "linkedin_ids":  [],
-    "weibo_ids":  [],
-    "wechat_ids":  []
+    "weibo_ids":  []
   },
 
   toJSON: function() {
@@ -13,7 +12,7 @@ Robin.Models.Post = Backbone.Model.extend({
     return { post: post };
   },
 
-  updateSocial: function(data, options) {    
+  updateSocial: function(data, options) {
     var model = this,
     url = model.url() + '/update_social',
     options = {

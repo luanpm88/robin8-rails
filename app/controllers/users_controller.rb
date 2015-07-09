@@ -86,7 +86,7 @@ class UsersController < ApplicationController
     kols = []
     CSV.foreach(params[:private_kols_file].tempfile.path, encoding: detection[:ruby_encoding]) do |row|
       row.reject! {|c| c.nil?}
-      if (row.size == 3) && (!row.any? { |col| col.strip.blank? })
+      if (row.size == 3) && (!row.any? { |col| col.strip.blank? }) && validate_email(row[2].strip)
         new_kol = Kol.where(email: row[2].strip).first
 
         if new_kol.nil?
@@ -103,6 +103,10 @@ class UsersController < ApplicationController
 
         kols << row
       end
+    end
+
+    if kols.size == 0
+      raise CSV::MalformedCSVError.new('Invalid file format or broken content')
     end
 
     render json: kols
