@@ -20,14 +20,23 @@ class TextAlertWorker
       "blog_ids" => blog_ids, "sort_column" => sort_column
       
     stories = response[:stories]
+    count_message = (stories.count > 10) ? "more than 10" : stories.count
+    message = "Hey there! There are #{count_message} new stories " +
+              "in the '#{stream.name}' stream in Robin8. " + 
+              "Please go to https://robin8.com to read the stories."
+    
+    if stories.count == 1
+      message = "Hey there! There is a new story " +
+              "in the '#{stream.name}' stream in Robin8. " + 
+              "Please go to https://robin8.com to read the story."
+    end
     
     if stories.count > 0
       twilio_client = Twilio::REST::Client.new
       twilio_client.messages.create(
         from: Rails.application.secrets.twilio[:from],
         to: alert.phone,
-        body: "Hey there! You have new stories in Robin8 streams (#{stream.name})." + 
-          "Please go to https://robin8.com to read the stories."
+        body: message
       )
       alert.update_column(:last_text_sent_at, Time.now.utc)
     end
