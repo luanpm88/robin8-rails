@@ -13,6 +13,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         res.join ''
 
     ui:
+      categories: "#categories"
+      add: "#add_kol_confirm"
+      form: "#add_kol-form"
       tooltipFormatInfo: "[data-toggle=tooltip]"
       table: "#private_kols-table"
       fileInput: "#private_kols_file"
@@ -20,6 +23,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     events:
       "click #invite_kols": "inviteKols"
       "change @ui.fileInput": "import_csv"
+      'click #add_kol': 'openModalDialog'
+      "click @ui.add": "add"
 
     collectionEvents:
       "add and reset add remove": "render"
@@ -38,12 +43,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           $.growl({message: "Your list has been successfully uploaded."
           },{
             type: 'success'
-          });
+          })
 
           $.growl({message: "All contacts in incorrect format will be ignored."
           },{
             type: 'info'
-          });
+          })
         error: (res) ->
           if res && res.responseJSON
             errorField = _.keys(res.responseJSON)[0]
@@ -63,7 +68,43 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         searching: false
         lengthChange: false
         pageLength: 25
+      @ui.form.validator()
+      @ui.categories.select2
+        placeholder: "Select influencer categories"
+        multiple: true
+        minimumInputLength: 1
+        maximumSelectionSize: 10
+        ajax:
+          url: "/kols/suggest_categories"
+          dataType: 'json'
+          quietMillis: 250
+          data: (term) ->
+            f: term
+          results: (data) ->
+            results: data
+          cache: true
+        escapeMarkup: _.identity
 
     initTooltip: () ->
       @ui.tooltipFormatInfo.tooltip
         trigger: 'hover'
+
+    openModalDialog: () ->
+      @$el.find('#kol_form').modal keyboard: false
+
+    add: () ->
+      data = _.reduce $("#add_kol-form").serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
+      $.post "/users/import_kol/", data, (data) =>
+        if data.status == "ok"
+          $("#kol_form input").val("")
+          @ui.categories.select2 "data", {}
+          $("#kol_form").modal("hide")
+          setTimeout () =>
+            @collection.fetch
+              success: () =>
+                @render()
+           ,
+            1500
+        else
+          $.growl {message: data.status}, {type: 'danger'}
+

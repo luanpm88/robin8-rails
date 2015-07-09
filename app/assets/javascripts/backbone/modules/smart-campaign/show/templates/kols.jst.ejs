@@ -9,6 +9,7 @@
       <input class="hide" type="button" id="submit_csv"/>
     </form>
   </div>
+  <button type="button" class="btn btn-success vcenter" id="add_kol"><i class="fa fa-plus"></i>  Add Influencer</button>
 </div>
 <% if (items.length == 0) { %>
   <div class="row">You haven't invited influencers yet. It's time to add some!</div>
@@ -32,3 +33,40 @@
     </table>
   </div>
 <% } %>
+
+<div class="modal fade edit-kol" id='kol_form' role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"> Add Influencer</h4>
+      </div>
+      <div class="modal-body">
+        <form role="form" id="add_kol-form" method="post" action="/users/import_kol/">
+          <label>First Name</label>
+          <div id='kol-first_name-block'>
+            <input class="form-control" id="kol-first_name-input" name="first_name" type="text" value="" placeholder="Enter first name..." required>
+          </div>
+          <label>Last Name</label>
+          <div id='kol-last_name-block'>
+            <input class="form-control" id="kol-last_name-input" name="last_name" type="text" value="" placeholder="Enter last name..." required>
+          </div>
+          <label>Email</label>
+          <div id='kol-email-block'>
+            <input class="form-control" id="kol-email-input" name="email" type="email" value="" placeholder="Enter email..." required>
+          </div>
+          <label class="control-label">Categories:</label>
+          <div>
+            <input class="form-control" id="categories" name="categories" type="hidden">
+          </div>
+        </form>
+        <div class="modal-footer">
+          <div id="add_kol-buttons">
+            <button type="button" class="btn btn-success" id="add_kol_confirm"><i class="fa fa-plus"></i> Add</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
