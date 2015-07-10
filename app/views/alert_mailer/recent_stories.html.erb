@@ -13,7 +13,7 @@
       <br />
       When you were away,
       <% if @stories.count <= 10 %>
-        we recieved <%= @stories.count %> stories
+        we recieved <%= pluralize(@stories.count, 'story') %>
       <% else %>
         we recieved more than 10 stories
       <% end %>
