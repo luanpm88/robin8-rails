@@ -37,7 +37,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         cache: false
         processData: false
         contentType: false
-        success: =>
+        success: (res) =>
           @collection.fetch()
 
           $.growl({message: "Your list has been successfully uploaded."
@@ -49,6 +49,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           },{
             type: 'info'
           })
+          if res
+            res.forEach (email) ->
+              $.growl({message: email + " already in your list"
+              },{
+                type: 'info'
+              })
         error: (res) ->
           if res && res.responseJSON
             errorField = _.keys(res.responseJSON)[0]

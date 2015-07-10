@@ -87,7 +87,7 @@ class UsersController < ApplicationController
       return render json: {:status => "First name, Last name and Email fields are required"}
     end
     status = create_private_kol(params)
-    render json: {:status => status}
+    render json: {:status => status[0]}
   end
 
   def import_kols
@@ -99,11 +99,15 @@ class UsersController < ApplicationController
     end
 
     kols = []
+    added_kols = []
     CSV.foreach(params[:private_kols_file].tempfile.path, encoding: detection[:ruby_encoding]) do |row|
       row.reject! {|c| c.nil?}
       if (row.size == 3) && (!row.any? { |col| col.strip.blank? }) && validate_email(row[2].strip)
         params = {first_name: row[0].strip, last_name: row[1].strip, email: row[2].strip}
-        create_private_kol(params)
+        status = create_private_kol(params)
+        if status[1]
+          added_kols << status[1]
+        end
         kols << row
       end
     end
@@ -111,8 +115,11 @@ class UsersController < ApplicationController
     if kols.size == 0
       raise CSV::MalformedCSVError.new('Attachment content type is invalid')
     end
-
-    render json: kols
+    if added_kols.length > 0
+      render json: added_kols
+    else
+      render json: status[0]
+    end
   end
 
   def validate_email(url)
@@ -134,7 +141,7 @@ class UsersController < ApplicationController
     if kol.nil?
       user = User.where(email: params[:email]).first
       if user
-        return "Brand with this email already exists"
+        return ["Brand with this email already exists", false]
       end
       pass = SecureRandom.hex
       categories = params[:categories]
@@ -156,9 +163,11 @@ class UsersController < ApplicationController
       new_private_kol = PrivateKol.where(kol_id: kol.id, user_id: current_user.id).first
       if new_private_kol.nil?
         PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
+      else
+        return ["Kol with this email already added", params[:email]]
       end
     end
-    "ok"
+    ["ok", false]
   end
 
 end
