@@ -11,6 +11,11 @@
 #   runner "Subscription.process_initial_invoice"
 # end
 
+set :output, {
+  :error => File.join(path, "log", "cron_error.log"),
+  :standard => File.join(path, "log", "cron.log")
+}
+
 every 12.hours do
   runner "UserProduct.process_recurring_invoice"
 end

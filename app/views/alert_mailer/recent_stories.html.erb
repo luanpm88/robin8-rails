@@ -13,10 +13,11 @@
       <br />
       When you were away,
       <% if @stories.count <= 10 %>
-        we recieved <%= @stories.count %> stories.
+        we recieved <%= @stories.count %> stories
       <% else %>
-        we recieved more than 10 stories.
+        we recieved more than 10 stories
       <% end %>
+      from one of your Robin8's streams which is named '<%= @stream.name %>'.
       Please log in to <%= link_to "Robin8", "https://robin8.com/" %>
       to read more stories.
     </p>
