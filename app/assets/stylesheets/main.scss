@@ -1733,6 +1733,18 @@ input.form-control[type="file"] {
   margin-right: 20px;
 }
 
+.kols-errors {
+  margin-left: 10px;
+  display: inline-block;
+
+  .form-group {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    padding-bottom: 0px !important;
+  }
+}
+
+
 
 
 
