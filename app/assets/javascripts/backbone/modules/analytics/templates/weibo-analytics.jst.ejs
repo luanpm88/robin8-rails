@@ -3,8 +3,8 @@
   <div class="row">Weibo report is empty!</div>
 <% } else { %>
   <div class="weibo-search">
-    <input type="text" name="authorname" placeholder="Author name">
-    <input type="text" name="categories" placeholder="Categories">
+    <input type="text" name="authorname" placeholder="Author name" class="analytics-input form-control">
+    <input type="text" name="categories" placeholder="Categories" class="analytics-input form-control">
     <input type="button" id="weiboReportSearch" class="btn btn-primary" value="Search">
     <div class="weibo-info">Showing <%= items.length %> entries</div>
   </div>
@@ -14,8 +14,8 @@
         <th>KOL</th>
         <th>Email</th>
         <th>Followers</th>
-        <th>Landing page clicks</th>
-        <th>Page views</th>
+        <th>Landing Page Clicks</th>
+        <th>Page Views</th>
         <th>Shares</th>
         <th>KPI</th>
        </tr></thead>
@@ -38,10 +38,10 @@
                 </div>
             </td>
             <td><%= c.email %></td>
-            <td><%= c.followers.toLocaleString() %></td>
-            <td><%= c.landing_page_clicks.toLocaleString() %></td>
-            <td><%= c.page_views.toLocaleString() %></td>
-            <td><%= c.shares.toLocaleString() %></td>
+            <td><%= c.followers.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></td>
+            <td><%= c.landing_page_clicks.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></td>
+            <td><%= c.page_views.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></td>
+            <td><%= c.shares.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></td>
             <td>
                <div class="progress active">
                 <div style="width: <%= c.kpi %>%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%= c.kpi %>" role="progressbar" class="progress-bar"><%= c.kpi %>%
