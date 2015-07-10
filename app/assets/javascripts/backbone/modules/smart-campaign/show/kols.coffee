@@ -90,21 +90,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         trigger: 'hover'
 
     openModalDialog: () ->
+      $("#kol_form input").val("")
+      @ui.categories.select2 "data", {}
+      $('.select2-search-choice').remove()
       @$el.find('#kol_form').modal keyboard: false
 
     add: () ->
-      data = _.reduce $("#add_kol-form").serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
-      $.post "/users/import_kol/", data, (data) =>
-        if data.status == "ok"
-          $("#kol_form input").val("")
-          @ui.categories.select2 "data", {}
-          $("#kol_form").modal("hide")
-          setTimeout () =>
-            @collection.fetch
-              success: () =>
-                @render()
-           ,
-            1500
-        else
-          $.growl {message: data.status}, {type: 'danger'}
+      @ui.form.validator('validate')
+      form_valid = $(".form-group.with-errors").length == 0
+      if form_valid
+        data = _.reduce $("#add_kol-form").serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
+        $.post "/users/import_kol/", data, (data) =>
+          if data.status == "ok"
+            $("#kol_form").modal("hide")
+            $('#kol_form').on 'hidden.bs.modal', () =>
+              @collection.fetch()
+          else
+            $.growl {message: data.status}, {type: 'danger'}
 

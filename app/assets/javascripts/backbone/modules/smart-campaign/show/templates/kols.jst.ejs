@@ -43,17 +43,26 @@
       </div>
       <div class="modal-body">
         <form role="form" id="add_kol-form" method="post" action="/users/import_kol/">
-          <label>First Name</label>
-          <div id='kol-first_name-block'>
-            <input class="form-control" id="kol-first_name-input" name="first_name" type="text" value="" placeholder="Enter first name..." required>
+          <div class="form-group">
+            <label>First Name</label>
+            <div class="help-block with-errors kols-errors"></div>
+            <div id='kol-first_name-block'>
+              <input class="form-control" id="kol-first_name-input" name="first_name" type="text" value="" placeholder="Enter first name..." required>
+            </div>
           </div>
-          <label>Last Name</label>
-          <div id='kol-last_name-block'>
-            <input class="form-control" id="kol-last_name-input" name="last_name" type="text" value="" placeholder="Enter last name..." required>
+          <div class="form-group">
+            <label>Last Name</label>
+            <div class="help-block with-errors kols-errors"></div>
+            <div id='kol-last_name-block'>
+              <input class="form-control" id="kol-last_name-input" name="last_name" type="text" value="" placeholder="Enter last name..." required>
+            </div>
           </div>
-          <label>Email</label>
-          <div id='kol-email-block'>
-            <input class="form-control" id="kol-email-input" name="email" type="email" value="" placeholder="Enter email..." required>
+          <div class="form-group">
+            <label>Email</label>
+            <div class="help-block with-errors kols-errors"></div>
+            <div id='kol-email-block'>
+              <input class="form-control" id="kol-email-input" name="email" type="email" value="" placeholder="Enter email..." required>
+            </div>
           </div>
           <label class="control-label">Categories:</label>
           <div>

@@ -80,37 +80,18 @@ class UsersController < ApplicationController
   end
 
   def import_kol
-    #FIXME: fix this hell
     if current_user.nil?
-      return render json: {:status => "nope"}
+      return render json: {:status => "This option is available only for registered brands"}
     end
-    kol = Kol.where(email: params[:email]).first
-    user = User.where(email: params[:email]).first
-    if not (kol.nil? and user.nil?)
-      return render json: {:status => "This email is already taken"}
+    if params[:first_name].nil? or params[:last_name].nil? or params[:email].nil?
+      return render json: {:status => "First name, Last name and Email fields are required"}
     end
-    kol = Kol.new
-    kol.first_name = params[:first_name]
-    kol.last_name = params[:last_name]
-    kol.email = params[:email]
-    pass = SecureRandom.hex
-    kol.password = pass
-    kol.password_confirmation = pass
-    kol.is_public = false
-    kol.save!
-    categories = params[:categories]
-    categories = '' if categories == nil
-    categories = categories.strip.split(',').map {|s| s.strip}.uniq
-    categories = IptcCategory.where :id => categories
-    kol.iptc_categories = categories
-    kol.save!
-    PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
-    render json: {:status => "ok"}
+    status = create_private_kol(params)
+    render json: {:status => status}
   end
 
   def import_kols
     contents = File.read(params[:private_kols_file].tempfile)
-    puts params[:private_kols_file].tempfile.path[-4..-1]
     detection = CharlockHolmes::EncodingDetector.detect(contents)
 
     if params[:private_kols_file].tempfile.path[-4..-1] != '.csv'
@@ -121,20 +102,8 @@ class UsersController < ApplicationController
     CSV.foreach(params[:private_kols_file].tempfile.path, encoding: detection[:ruby_encoding]) do |row|
       row.reject! {|c| c.nil?}
       if (row.size == 3) && (!row.any? { |col| col.strip.blank? }) && validate_email(row[2].strip)
-        new_kol = Kol.where(email: row[2].strip).first
-
-        if new_kol.nil?
-          new_kol = Kol.new(email: row[2].strip, first_name: row[0].strip, last_name: row[1].strip,
-                               encrypted_password: SecureRandom.hex, is_public: false)
-          new_kol.save(validate: false)
-          PrivateKol.create(kol_id: new_kol.id, user_id: current_user.id)
-        else
-          new_private_kol = PrivateKol.where(kol_id: new_kol.id, user_id: current_user.id).first
-          if new_private_kol.nil?
-            PrivateKol.create(kol_id: new_kol.id, user_id: current_user.id)
-          end
-        end
-
+        params = {first_name: row[0].strip, last_name: row[1].strip, email: row[2].strip}
+        create_private_kol(params)
         kols << row
       end
     end
@@ -158,6 +127,38 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name,:last_name,:email,:password)
+  end
+
+  def create_private_kol(params)
+    kol = Kol.where(email: params[:email]).first
+    if kol.nil?
+      user = User.where(email: params[:email]).first
+      if user
+        return "Brand with this email already exists"
+      end
+      pass = SecureRandom.hex
+      categories = params[:categories]
+      categories = '' if categories == nil
+      categories = categories.strip.split(',').map {|s| s.strip}.uniq
+      categories = IptcCategory.where :id => categories
+      kol = Kol.new(
+        first_name: params[:first_name],
+        last_name: params[:last_name],
+        email: params[:email],
+        password: pass,
+        password_confirmation: pass,
+        is_public: false,
+        iptc_categories: categories
+      )
+      kol.save!
+      PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
+    else
+      new_private_kol = PrivateKol.where(kol_id: kol.id, user_id: current_user.id).first
+      if new_private_kol.nil?
+        PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
+      end
+    end
+    "ok"
   end
 
 end
