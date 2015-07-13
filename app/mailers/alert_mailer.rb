@@ -30,7 +30,8 @@ class AlertMailer < ApplicationMailer
     
     @stories = response[:stories]
     
-    @stories = summarize_stories(@stories)
+    @stories = summarize_stories(@stories) 
+    set_inline_images(@stories)
     
     if @stories.count > 0
       mail(to: @alert.email, subject: "Robin8 streams alert - #{@stream.name}")
@@ -39,6 +40,24 @@ class AlertMailer < ApplicationMailer
   end
   
   private
+  
+  def set_inline_images(stories)
+    stories_images = {}
+    text_api_client = AylienTextApi::Client.new
+    threads = []
+    
+    stories.each do |story|
+      threads << Thread.new do
+        images = story[:images].push("http://lorempixel.com/550/413/abstract/")
+        params = { images: Base64.encode64(images.to_json) }
+        image_url = "http://#{Rails.application.secrets.host}/" + 
+          "image_proxy?#{URI.encode_www_form(params)}"
+        attachments.inline["image_#{story[:id]}.png"] = HTTParty.get(image_url).body
+      end
+    end
+    
+    threads.each(&:join)
+  end
   
   def summarize_stories(stories)
     stories_summary = {}

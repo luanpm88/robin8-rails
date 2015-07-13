@@ -53,9 +53,8 @@
                 </ul>
               </div>
               <div class="text-center">
-                <% images = story[:images].push("http://lorempixel.com/550/413/abstract/") %>
-                
-                <%= proxy_image_tag_url images.to_json, width: '600px' %>
+                <%= image_tag attachments["image_#{story[:id]}.png"].url, 
+                  width: "600px" %>
               </div>
             </div>
           </div>
