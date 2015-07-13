@@ -30,7 +30,6 @@ Rails.application.routes.draw do
   #
   # end
   post '/users/follow' => 'users#follow'
-  post '/users/new' => 'users#create'
 
   resources :posts do
     put 'update_social', on: :member
@@ -108,7 +107,7 @@ Rails.application.routes.draw do
   post 'textapi/hashtags'
 
   get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
-  
+
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
