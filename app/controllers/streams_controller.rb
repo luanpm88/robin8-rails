@@ -40,8 +40,11 @@ class StreamsController < ApplicationController
         if !params['page'] || params['page'] == 1
           last_story = @stories['stories'].first
           unless last_story.blank?
-            last_seen_story_at = Time.parse(last_story['published_at']).utc.to_s(:db)
-            @stream.update_column(:last_seen_story_at, last_seen_story_at)
+            last_seen_story_at = Time.parse(last_story['published_at']).utc
+            
+            if last_seen_story_at != @stream.last_seen_story_at
+              @stream.update_column(:last_seen_story_at, last_seen_story_at)
+            end
           end
         end
         
