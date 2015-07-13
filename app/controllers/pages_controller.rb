@@ -11,10 +11,13 @@ class PagesController < ApplicationController
       someone = current_kol if current_user.nil?
       locale = someone.locale.nil? ? 'en' : someone.locale
 
-      # translations = I18n.backend.send(:translations)
+      #using yaml file
+      translations = I18n.backend.send(:translations)
+      @phrases = translations[locale.to_sym][:application]
+      
+      #using redis store
       l ||= Localization.new
-      # @phrases = translations[locale.to_sym][:application]
-      @phrases = JSON.parse(l.store.get(locale))['application']
+      # @phrases = JSON.parse(l.store.get(locale))['application']
     else
 
     end

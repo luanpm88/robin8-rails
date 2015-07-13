@@ -121,8 +121,11 @@ en:
       all_newsrooms: All Newsrooms
       new_release: New release
       modal:
-        title: Create Release
-        basic_tab: 
+        title: Create Release        
+        website_tab:
+          title: Website
+          make_private: Make this release private
+        basic_tab:
           title: Basic
           newsroom: Newsroom
           release_title: Release title
@@ -130,7 +133,7 @@ en:
           release_text: Release text
           published_date: Published date
           text_placeholder: Paste your press release here...
-          paragraph_notification: *The editor uses paragraphs by default for copied text. To place a normal line break press Shift+Enter (Shift+Return)
+          paragraph_notification: "*The editor uses paragraphs by default for copied text. To place a normal line break press Shift+Enter (Shift+Return)"
           characteristics_view:
             characters: Characters
             words: Words
@@ -146,9 +149,6 @@ en:
             good: Good
             excellent: Excellent
             too_short: Too short
-        website_tab:
-          title: Website
-          make_private: Make this release private
         media_tab:
           title: Media
           select_logo: Please, select a logo for your release

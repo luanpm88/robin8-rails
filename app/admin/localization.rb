@@ -26,7 +26,7 @@ ActiveAdmin.register_page "Localization" do
     params[:keys].delete_if {|key, item| item['key'].blank? }
     h = {}
     new_translations = apply(h, params[:keys])
-    p '*'90
+    p '*'*90
     p new_translations
 
     @l_zh = JSON.parse(@l.store.get('zh'))
