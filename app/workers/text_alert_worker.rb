@@ -7,7 +7,14 @@ class TextAlertWorker
     
     client = AylienPressrApi::Client.new
     
-    last_seen_story = stream.last_seen_story_at.utc.iso8601
+    last_seen_story = if alert.last_text_sent_at && stream.last_seen_story_at
+      [alert.last_text_sent_at, stream.last_seen_story_at].max
+    elsif stream.last_seen_story_at
+      stream.last_seen_story_at
+    else
+      Time.now
+    end.utc.iso8601
+    
     topics = stream.topics.map {|a| a["id"]}
     keywords = stream.keywords.map {|a| a['id']}
     blog_ids = stream.blogs.map {|a| a['id']}
