@@ -261,7 +261,7 @@ Devise.setup do |config|
   config.omniauth :linkedin, Rails.application.secrets.linkedin[:api_key],
     Rails.application.secrets.linkedin[:api_secret], :scope => 'r_basicprofile r_emailaddress rw_company_admin w_share'
   config.omniauth :facebook, Rails.application.secrets.facebook[:app_id],
-    Rails.application.secrets.facebook[:app_secret]
+    Rails.application.secrets.facebook[:app_secret], :scope => 'email,publish_actions'
   config.omniauth :google_oauth2, Rails.application.secrets.google[:client_id],
     Rails.application.secrets.google[:client_secret]
   config.omniauth :weibo, Rails.application.secrets.weibo[:app_key],
