@@ -40,13 +40,7 @@ class User < ActiveRecord::Base
       user = User.where(:email => email).first if email
 
       if user.nil?
-        user = User.new(
-            name: auth[:name],
-            email: email,
-            password: Devise.friendly_token[0,20],
-            confirmed_at: DateTime.now
-        )
-        user.save!
+        raise "No sign ups"
       end
     end
     if identity.user != user
@@ -57,11 +51,11 @@ class User < ActiveRecord::Base
   end
 
   def current_user_features
-    is_primary? ? user_features : invited_by.user_features 
+    is_primary? ? user_features : invited_by.user_features
   end
 
   def is_feature_available?(slug)
-    @user = is_primary? ? self : invited_by 
+    @user = is_primary? ? self : invited_by
     Feature.joins(:user_features).where("user_features.user_id = '#{@user.id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
   end
 
@@ -280,12 +274,12 @@ class User < ActiveRecord::Base
     identities_by_providers[:facebook] = facebook_identities
     identities_by_providers[:google] = google_identities
     identities_by_providers[:linkedin] = linkedin_identities
-    identities_by_providers 
+    identities_by_providers
   end
 
   def twitter_post(message, identity_id=nil)
     identity = identity_id.nil? ? twitter_identity : Identity.find(identity_id)
-    
+
     unless identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]
@@ -338,7 +332,7 @@ class User < ActiveRecord::Base
   def as_json(options={})
     super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
   end
-  
+
   def full_name
     if !first_name.blank? && !last_name.blank?
       "#{first_name} #{last_name}"
