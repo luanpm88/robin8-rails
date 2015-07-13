@@ -278,11 +278,14 @@ class User < ActiveRecord::Base
     unless facebook_identity.blank?
       graph = Koala::Facebook::API.new(facebook_identity.token)
       Rails.logger.info graph.inspect
-      graph.put_wall_post("I've posted a new Post!", {
-                                                       "name" => '',
-                                                       "link" => '',
-                                                       "description" => message
-                                                   })
+      graph.put_wall_post(message,
+                          {"appsecret_proof" => OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha256"),
+                                                                        Rails.application.secrets.facebook[:app_secret],
+                                                                        facebook_identity.token),
+                           "name" => '',
+                           "link" => '',
+                           "description" => message
+                          })
     end
   end
 
