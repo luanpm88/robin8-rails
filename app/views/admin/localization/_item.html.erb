@@ -1,0 +1,24 @@
+<% if en[key].class == Hash %>
+  <%= render partial: "item", collection: en[key].keys, as: :key, locals: { en: en[key], zh: zh[key], key_label: [key_label, key].join('.'), text_field_name: "#{text_field_name}[#{key}]" } %>
+<% else %>
+  <tr>
+    <td width='20%'><%= [key_label, key].join('.') %></td>
+    <td width='40%'>
+      <% if en[key].length > 70 %>
+        <%= text_area_tag "en_#{text_field_name}[#{key}]", en[key], style: 'min-height: 50px' %>
+      <% else %>
+        <%= text_field_tag "en_#{text_field_name}[#{key}]", en[key] %>
+      <% end %>
+    </td>
+    <td width='40%'>
+      <% if en[key].length > 70 %>
+        <%= text_area_tag "zh_#{text_field_name}[#{key}]", zh[key], style: 'min-height: 50px' %>
+      <% else %>
+        <%= text_field_tag "zh_#{text_field_name}[#{key}]", zh[key] %>
+      <% end %>
+    </td>
+    <td>
+      <%= button_tag 'Delete', type: :button, class: 'delete-translation' %>
+    </td>
+  </tr>
+<% end %>

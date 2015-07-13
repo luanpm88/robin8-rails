@@ -10,8 +10,10 @@ class PagesController < ApplicationController
       locale = current_user.locale.nil? ? 'en' : current_user.locale
       # I18n.locale = locale
 
-      translations = I18n.backend.send(:translations)
-      @phrases = translations[locale.to_sym][:application]
+      # translations = I18n.backend.send(:translations)
+      l ||= Localization.new
+      # @phrases = translations[locale.to_sym][:application]
+      @phrases = JSON.parse(l.store.get(locale))['application']
     else
 
     end

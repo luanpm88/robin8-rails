@@ -1,0 +1,6 @@
+<div>
+  <% menu_items.each do |item| %>
+    <%= link_to item.humanize, admin_localization_section_path(name: item) %>
+    <br/>
+  <% end %>
+</div>
