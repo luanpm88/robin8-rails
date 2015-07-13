@@ -43,10 +43,16 @@ en:
   application:
     uploading:
       different_photo: Upload a different photo...
-      choose_image: Choose an image
+      choose_image: Choose an image!!!
       photos_label: Photos
       videos_label: Videos
-      files_label: Filed 
+      files_label: Filed
+    highcharts:
+      print_chart: Print chart
+      download_pdf: Download PDF document
+      download_png: Download PNG image
+      download_jpeg: Download JPEG image
+      download_svg: Download SVG vector image
     select2:
       too_short: Please enter %{count} or more characters
       searching: Searching...
@@ -65,6 +71,35 @@ en:
       social: Social
       analytics: Analytics
       profile: Profile
+    billing:
+      payment_title: Payment
+      created_at: Created at
+      card_last: Card last four
+      card_type: Card type
+      amount: Amount
+      addons_title: Add-ons
+      name: Name
+      price: Price
+      status: Status
+      action: Action
+      cancel_action: Cancel
+      current_plan: Current Pricing Plan
+      seat: Seat
+      newsroom: Newsroom
+      press_release: Press Release Postings on Robin8/month
+      smart_release: SmartReleases
+      personal_lists: Personal Media Lists
+      streams: Streams for Media Monitoring
+      per_month: '/mo'
+      annually: billed annually or
+      month: month-to-month
+      plan_is_canceled: Your current plan is canceled
+      buttons:
+        change: Change plan
+        new_plan: Subscribe to new plan
+        addons: Add ons
+        update: Update payment details
+        cancel: Cancel Subscription
     dashboard:
       title: Dashboard
       description1: What if you knew EXACTLY who to contact for every campaign, based on a data-driven prediction on how successful each pitch will be? Robin8 can do all this and more, taking the guesswork and chance out of PR.
@@ -106,10 +141,15 @@ en:
       profiles:
         title: Manage Connected Social Profiles
         description: Use Robin8 to manage your social profiles. Start by linking your Robin8 account to your social profiles so you can easily post or schedule your post (s) directly to your profiles with one click.
+        note: "* for adding multiple accounts for one social network you should be signed out from this network in your browser"
+        no_accounts: There is no accounts
+        add_button: Add
         twitter: Twitter
         facebook: Facebbok
         google: Google+
         linkedin: Linkedin
+        weibo: Weibo
+        wechat: WeChat
         connected_to: Connected to
         connect: Connect
         disconnect: Disconnect
@@ -117,6 +157,14 @@ en:
       visits: Newsroom and Releases Visits
       statisitcs: SmartRelease Email Statistics
       filter_by: Filter by
+      page_views: Page Views
+      newsrooms_views: Newsroom Views
+      values: Values
+      emails: Emails
+      sent: Sent
+      delivered: Delivered
+      opened: Opened
+      dropped: Dropped 
     releases:
       all_newsrooms: All Newsrooms
       new_release: New release
@@ -153,12 +201,12 @@ en:
           title: Media
           select_logo: Please, select a logo for your release
           upload_files: Here you can upload additional media files
-          newswire_tab:
-            release_option: Please, select options for distributing release
-            distribution: Financial Content Distribution
-            start_date: Start date
-            accesswire: Accesswire
-            newswire: PR Newswire
+        newswire_tab:
+          release_option: Please, select options for distributing release
+          distribution: Financial Content Distribution
+          start_date: Start date
+          accesswire: Accesswire
+          newswire: PR Newswire
         buttons: 
           next: Next
           save: Save draft
@@ -184,10 +232,13 @@ en:
       company: Company
       email: Email
       time_zone: Time Zone
+      time_placeholder: select an option 
       username: Username
       curr_password: Current password
       new_password: New password
       confirm_new_password: Confirm new password
+      messages:
+        required_email: The email address is required
       buttons: 
         save: Save changes
         cancel: Cancel 

@@ -35,7 +35,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 zoomType: 'xy',
               },
               title: {
-                text: 'Newsroom and Releases Visits'
+                text: polyglot.t("analytics.visits")
               },
               xAxis: [{
                 categories: dates
@@ -48,14 +48,14 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 }
               },
               title: {
-                text: 'Page Views',
+                text: polyglot.t("analytics.page_views"),
                 style: {
                   color: Highcharts.getOptions().colors[1]
                 }
               }
             }, { // Secondary yAxis
               title: {
-                text: 'Newsroom Views',
+                text: polyglot.t("analytics.newsrooms_views"),
                   style: {
                     color: Highcharts.getOptions().colors[0]
                   }
@@ -82,12 +82,12 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Newsroom Views',
+                name: polyglot.t("analytics.newsrooms_views"),
                 type: 'column',
                 yAxis: 1,
                 data: sessions
               }, {
-                name: 'Page Views',
+                name: polyglot.t("analytics.page_views"),
                 type: 'column',
                 data: pageViews,
               }]
@@ -99,12 +99,15 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 zoomType: 'xy',
               },
               title: {
-                text: 'SmartRelease Email Statistics'
+                text: polyglot.t("analytics.statisitcs")
               },
               xAxis: [{
-                categories: ['Sent', 'Delivered', 'Opened', 'Dropped']
+                categories: [polyglot.t("analytics.sent"), polyglot.t("analytics.delivered"), polyglot.t("analytics.opened"), polyglot.t("analytics.dropped")]
               }],
               yAxis: [{ // Primary yAxis
+                title: {
+                  text: polyglot.t("analytics.values"),
+                },
                 labels: {
                   format: '',
                   style: {
@@ -113,7 +116,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 }
               }, { // Secondary yAxis
                 title: {
-                  text: 'Emails',
+                  text: polyglot.t("analytics.emails"),
                     style: {
                       color: Highcharts.getOptions().colors[0]
                     }
@@ -140,7 +143,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Emails',
+                name: polyglot.t("analytics.emails"),
                 type: 'column',
                 yAxis: 1,
                 data: mailStatistics
