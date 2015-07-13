@@ -64,7 +64,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'The email address is required'
+                message: polyglot.t("profile.messages.required_email")
               },
               regexp: {
                 regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

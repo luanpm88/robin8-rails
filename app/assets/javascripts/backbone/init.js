@@ -111,7 +111,42 @@ Robin.vent.on("authentication:logged_out", function() {
 });
 
 Robin.bind("before:start", function() {
-  if(Robin.currentUser) {
+  UPLOADCARE_LOCALE_TRANSLATIONS = {
+    buttons: {
+      cancel: 'Cancel',
+      remove: 'Remove',
+      choose: {
+        files: {
+          one: 'Choose a file',
+          other: 'Choose files'
+        },
+        images: {
+          one: polyglot.t("uploading.choose_image"),
+          other: 'Choose images'
+        }
+      }
+    },
+    // messages for widget
+    errors: {
+      'fileType': 'This type of files is not allowed.',
+      'fileMaximumSize': 'File is too large'
+    },
+    // messages for dialog's error page
+    dialog: { tabs: { preview: { error: {
+      'fileType': {  
+        title: 'Title.',
+        text: 'Text.',
+        back: 'Back'
+      },
+      'fileMaximumSize': {
+        title: 'Selected file is too large!',
+        text: 'Maximum image size is 3 MB, please choose another one',
+        back: 'Back'
+      }
+    } } } }
+  };
+  Robin.KOL = Robin.currentKOL != null;
+  if(Robin.currentUser || Robin.currentKOL) {
     Robin.vent.trigger("authentication:logged_in");
   }
   else {
@@ -127,37 +162,3 @@ Robin.vent.on('SaySomething:close', function(){
 //UPLOADCARE_PUBLIC_KEY = "eaef90e4420402169d1f"
 UPLOADCARE_PUBLIC_KEY = "fe688dbff8d2a632a256"
 UPLOADCARE_AUTOSTORE = false;
-UPLOADCARE_LOCALE_TRANSLATIONS = {
-  buttons: {
-    cancel: 'Cancel',
-    remove: 'Remove',
-    choose: {
-      files: {
-        one: 'Choose a file',
-        other: 'Choose files'
-      },
-      images: {
-        one: polyglot.t("uploading.choose_image"),
-        other: 'Choose images'
-      }
-    }
-  },
-  // messages for widget
-  errors: {
-    'fileType': 'This type of files is not allowed.',
-    'fileMaximumSize': 'File is too large'
-  },
-  // messages for dialog's error page
-  dialog: { tabs: { preview: { error: {
-    'fileType': {  
-      title: 'Title.',
-      text: 'Text.',
-      back: 'Back'
-    },
-    'fileMaximumSize': {
-      title: 'Selected file is too large!',
-      text: 'Maximum image size is 3 MB, please choose another one',
-      back: 'Back'
-    }
-  } } } }
-};

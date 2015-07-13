@@ -8,7 +8,7 @@ Robin.Models.ReleaseCharacteristics = Backbone.Model.extend({
     "numberOfCharacters":           0,
     "numberOfParagraphs":           0,
     "numberOfAdjectives":           0,
-    "readabilityScoreTitle":        polyglot.t("releases.modal.basic_tab.characteristics_view.too_short"),
+    "readabilityScoreTitle":        'Too s',//polyglot.t("releases.modal.basic_tab.characteristics_view.too_short"),
     "numberOfNonSpaceCharacters":   0
   },
   titleToProgressBarLevel: {
