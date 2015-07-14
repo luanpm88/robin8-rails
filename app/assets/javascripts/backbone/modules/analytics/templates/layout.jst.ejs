@@ -1,36 +1,45 @@
 <div class="row">
-  <div class="col-lg-12">
-    <div class="panel panel-default panel-toolbar">
-      <div class="panel-body">
-        <div class="pull-right toolbar releases-toolbar">
-          Filter by&nbsp;&nbsp;
-          <div class="ui-select" id='select-region'></div>
+  <div class="col-lg-12" style='padding-bottom: 50px'>
+    <div role="tabpanel">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+          <a href="/#analytics" aria-controls="analytics" role="tab" data-toggle="tab" class='web-label'>Web</a>
+        </li>
+        <li role="presentation">
+          <a href="/#analytics-email" aria-controls="analytics-email" role="tab" data-toggle="tab" class='emails-label'>Emails</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        
+        <div role="tabpanel" class="tab-pane active" id="analytics">
+          <div class="panel-default panel-toolbar panel-body">
+            <div class="panel-body">
+              <div class="pull-right toolbar releases-toolbar">
+                Filter by&nbsp;&nbsp;
+                <div class="ui-select" id='select-web-region'></div>
+              </div>
+            </div>
+          </div>
+          <div id='analytics-region' class='row'></div>
         </div>
+
+        <div role="tabpanel" class="tab-pane" id="analytics-email">
+          <div class="panel-default panel-toolbar panel-body">
+            <div class="panel-body">
+              <div class="pull-right toolbar releases-toolbar">
+                Filter by&nbsp;&nbsp;
+                <div class="ui-select" id='select-email-region'></div>
+              </div>
+            </div>
+          </div>
+          <div id='emails-analytics-region' class='row'></div>
+          <div class="row">
+            <div class="col-lg-12" id='emails-list-region'>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
-<div id='analytics-region' class='row'></div>
-
-
-<!-- <div class="col-lg-12">
-<div class="col-lg-6">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <i class="fa fa-eye"></i> Total Figures
-    </div>
-    <div class="panel-body" align="center">
-      <div class="col-lg-4">
-        Total Views<br/>
-        <span style="font-size: 40px;">5.2k</span>
-      </div>
-      <div class="col-lg-4">
-        Total Likes<br/>
-        <span style="font-size: 40px;">523</span>
-      </div>
-      <div class="col-lg-4">
-        Total Followers<br/>
-        <span style="font-size: 40px;">17</span>
-      </div>
-    </div>
-  </div> -->
