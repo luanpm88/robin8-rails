@@ -18,7 +18,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       dateRangeField: "input[name=daterange]",
       emailAlertField: ".set-alert-dialog input[name=email]",
       phoneAlertField: ".set-alert-dialog input[name=phone]",
-      enableAlertCheckbox: ".set-alert-dialog input[name=enable]",
+      enabledAlertCheckbox: ".set-alert-dialog input[name=enabled]",
       saveAlertButton: ".set-alert-dialog button[type=submit]"
     },
     events: {
@@ -202,9 +202,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       this.ui.phoneAlertField.val(this.alertModel.get('phone'));
       
       if (this.alertModel.get('enabled'))
-        this.ui.enableAlertCheckbox.prop('checked', true);
+        this.ui.enabledAlertCheckbox.prop('checked', true);
       else
-        this.ui.enableAlertCheckbox.prop('checked', false);
+        this.ui.enabledAlertCheckbox.prop('checked', false);
     },
     onRender: function() {
       var curView = this;
@@ -445,7 +445,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       var streamId = this.model.id;
       var email = this.ui.emailAlertField.val();
       var phone = this.ui.phoneAlertField.val();
-      var enabled = this.ui.enableAlertCheckbox.prop('checked');
+      var enabled = this.ui.enabledAlertCheckbox.prop('checked');
       
       this.alertModel.set('email', email);
       this.alertModel.set('phone', phone);
@@ -454,6 +454,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       
       this.alertModel.save({}, { 
         success: function(model, response, options){
+          self.ui.setAlertDialog.toggleClass('closed');
           var sort_column = self.model.get('sort_column');
           
           if (sort_column == "published_at"){
