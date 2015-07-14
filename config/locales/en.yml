@@ -168,6 +168,8 @@ en:
       suggestions: Suggestions
       product_support: Product Support
       message_placeholder: Message
+      fill_out: Please fill out all required fields
+      send_button: Send
   team_page:
     title: Meet the team behind <b> Robin8</b>
     ceo_name: Miranda Tan
