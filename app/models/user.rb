@@ -57,11 +57,11 @@ class User < ActiveRecord::Base
   end
 
   def current_user_features
-    is_primary? ? user_features : invited_by.user_features 
+    is_primary? ? user_features : invited_by.user_features
   end
 
   def is_feature_available?(slug)
-    @user = is_primary? ? self : invited_by 
+    @user = is_primary? ? self : invited_by
     Feature.joins(:user_features).where("user_features.user_id = '#{@user.id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
   end
 
@@ -171,11 +171,15 @@ class User < ActiveRecord::Base
   end
 
   def can_cancel_add_on?(user_add_on_id)
-    add_on = user_products.where(id: user_add_on_id).first.product
-    if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution"
-      return current_user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
-    else
+    if !is_primary
       return false
+    else
+      add_on = user_products.where(id: user_add_on_id).first.product
+      if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution"
+        return current_user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
+      else
+        return false
+      end
     end
   end
 
@@ -239,7 +243,7 @@ class User < ActiveRecord::Base
   end
 
   def recurring_add_ons
-    user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
+    needed_user.user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
 
   def twitter_identity
@@ -280,12 +284,12 @@ class User < ActiveRecord::Base
     identities_by_providers[:facebook] = facebook_identities
     identities_by_providers[:google] = google_identities
     identities_by_providers[:linkedin] = linkedin_identities
-    identities_by_providers 
+    identities_by_providers
   end
 
   def twitter_post(message, identity_id=nil)
     identity = identity_id.nil? ? twitter_identity : Identity.find(identity_id)
-    
+
     unless identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]
@@ -338,7 +342,7 @@ class User < ActiveRecord::Base
   def as_json(options={})
     super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
   end
-  
+
   def full_name
     if !first_name.blank? && !last_name.blank?
       "#{first_name} #{last_name}"
