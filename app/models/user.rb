@@ -40,7 +40,13 @@ class User < ActiveRecord::Base
       user = User.where(:email => email).first if email
 
       if user.nil?
-        raise "No sign ups"
+        user = User.new(
+            name: auth[:name],
+            email: email,
+            password: Devise.friendly_token[0,20],
+            confirmed_at: DateTime.now
+        )
+        user.save!
       end
     end
     if identity.user != user
@@ -50,13 +56,22 @@ class User < ActiveRecord::Base
     user
   end
 
+  def invited_users_list
+    current_users=User.where(invited_by_id: needed_user.id)
+    invited_id=""
+    current_users.all.each do |current_user|
+      invited_id << current_user.id.to_s << ", "
+    end
+    return invited_id << needed_user.id.to_s
+  end
+
   def current_user_features
     is_primary? ? user_features : invited_by.user_features
   end
 
   def is_feature_available?(slug)
-    @user = is_primary? ? self : invited_by
-    Feature.joins(:user_features).where("user_features.user_id = '#{@user.id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
+    users_id = invited_users_list
+    Feature.joins(:user_features).unscope(where: :user_id).where("user_features.user_id IN (#{users_id}) AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
   end
 
   def used_count_by_slug(slug)
@@ -79,7 +94,8 @@ class User < ActiveRecord::Base
   end
 
   def available_features
-    current_user_features.where("user_features.available_count > '0'")
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_id IN (#{users_id})").where("user_features.available_count > '0'")
   end
 
   def is_primary?
@@ -88,7 +104,8 @@ class User < ActiveRecord::Base
 
 
   def newsroom_available_count
-    current_user_features.newsroom.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").newsroom.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def newsroom_count
@@ -101,7 +118,8 @@ class User < ActiveRecord::Base
 
 ########################################################################################################
   def myprgenie_available_count
-    current_user_features.myprgenie_web_distribution.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").myprgenie_web_distribution.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def can_create_myprgenie
@@ -110,7 +128,8 @@ class User < ActiveRecord::Base
 
 
   def accesswire_available_count
-    current_user_features.accesswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").accesswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def can_create_accesswire
@@ -119,7 +138,8 @@ class User < ActiveRecord::Base
 
 
   def prnewswire_available_count
-    current_user_features.pr_newswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").pr_newswire_distribution.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def can_create_prnewswire
@@ -129,7 +149,8 @@ class User < ActiveRecord::Base
 ##########################################################################################################
 
   def release_available_count
-    current_user_features.press_release.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").press_release.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def manageable_users
@@ -149,11 +170,13 @@ class User < ActiveRecord::Base
   end
 
   def stream_available_count
-    current_user_features.media_monitoring.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").media_monitoring.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def media_list_available_count
-    current_user_features.personal_media_list.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").personal_media_list.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def can_create_media_list
@@ -165,9 +188,10 @@ class User < ActiveRecord::Base
   end
 
   def can_cancel_add_on?(user_add_on_id)
-    add_on = user_products.where(id: user_add_on_id).first.product
-    if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution"
-      return current_user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
+    users_id = invited_users_list
+    add_on = user_products.unscope(where: :user_id).where("user_id IN (#{users_id})").where(id: user_add_on_id).first.product
+    if add_on.slug == "media_monitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution" || add_on.slug == "pr_newswire_distribution" || "accesswire_distribution"
+      return user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").where(product_id: add_on.id).first.available_count > 0 ? true : false
     else
       return false
     end
@@ -178,7 +202,8 @@ class User < ActiveRecord::Base
   end
 
   def smart_release_available_count
-    current_user_features.smart_release.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").smart_release.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def smart_release_count
@@ -190,7 +215,8 @@ class User < ActiveRecord::Base
   end
 
   def seat_available_count
-    current_user_features.seat.map(&:available_count).inject{|sum,x| sum + x }
+    users_id = invited_users_list
+    user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").seat.map(&:available_count).inject{|sum,x| sum + x }
   end
 
   def seat_count
@@ -210,7 +236,8 @@ class User < ActiveRecord::Base
   # end
 
   def media_lists_count
-    lists = current_user_features.personal_media_list
+    users_id = invited_users_list
+    lists = user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").personal_media_list
     lists.count == 0 ? 0 : lists.map(&:available_count).inject{|sum,x| sum + x }
   end
 
@@ -228,12 +255,14 @@ class User < ActiveRecord::Base
   end
 
   def current_add_ons
-    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
+    users_id = invited_users_list
+    add_ons_products = user_products.joins(:product).unscope(where: :user_id).where("user_products.user_id IN (#{users_id})").where("products.type ='AddOn'")
     AddOn.where(id: add_ons_products.map(&:product_id)) if add_ons_products.present?
   end
 
   def recurring_add_ons
-    user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
+    users_id = invited_users_list
+    user_products.joins(:product).unscope(where: :user_id).where("user_products.user_id IN (#{users_id})").where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
 
   def twitter_identity

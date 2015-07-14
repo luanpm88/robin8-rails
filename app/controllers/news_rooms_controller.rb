@@ -1,12 +1,26 @@
 require 'mailgun'
 class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
-  
+
+  def invited_users_list
+    current_users=User.where(invited_by_id: needed_user.id)
+    invited_id=""
+    current_users.all.each do |user|
+      invited_id << user.id.to_s << ", "
+    end
+    return invited_id << needed_user.id.to_s
+  end
+
+  def needed_user
+    current_user.is_primary ? current_user : current_user.invited_by
+  end
+
   def index
-    limit = current_user.current_user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
-    set_paginate_headers NewsRoom, current_user.news_rooms.count
+    users_id = invited_users_list
+    limit = current_user.current_user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").newsroom.map(&:max_count).inject{|sum,x| sum + x }
+    set_paginate_headers NewsRoom, current_user.news_rooms.unscope(where: :user_id).where("user_id IN (#{users_id})").count
     per_page = (limit < params[:per_page].to_i || params[:per_page].nil?) ? limit : params[:per_page].to_i
-    render json: current_user.news_rooms.order('created_at DESC').limit(limit).paginate(page: params[:page], per_page: per_page), each_serializer: NewsRoomSerializer
+    render json: current_user.news_rooms.unscope(where: :user_id).where("user_id IN (#{users_id})").order('created_at DESC').limit(limit).paginate(page: params[:page], per_page: per_page), each_serializer: NewsRoomSerializer
   end
 
   def create
@@ -119,7 +133,7 @@ private
       :toll_free_number, :publish_on_website, attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy],
       industry_ids: [])
   end
-  
+
   def ssl_configured?
     !Rails.env.development? && !['preview', 'presskit', 'follow'].include?(action_name)
   end

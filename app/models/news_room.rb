@@ -61,7 +61,7 @@ class NewsRoom < ActiveRecord::Base
   def permalink
     host = Rails.application.secrets[:host]
     subdomain_name = self.subdomain_name
-    
+
     "http://#{subdomain_name}.#{host}"
   end
 
@@ -69,6 +69,15 @@ class NewsRoom < ActiveRecord::Base
 
     def needed_user
       user.is_primary? ? user : user.invited_by
+    end
+
+    def invited_users_list
+      current_users=User.where(invited_by_id: needed_user.id)
+      invited_id=""
+      current_users.all.each do |current_user|
+        invited_id << current_user.id.to_s << ", "
+      end
+      return invited_id << needed_user.id.to_s
     end
 
     def can_be_created
@@ -104,16 +113,18 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def decrease_feature_number
-      af = needed_user.user_features.newsroom.available.joins(:product).where(products: {is_package: false}).first
-      uf = af.nil? ? needed_user.user_features.newsroom.available.first : af
+      users_id = invited_users_list
+      af = user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").newsroom.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").newsroom.available.first : af
       return false if uf.blank?
       uf.available_count -= 1
       uf.save
     end
 
     def increase_feature_number
-      af = needed_user.user_features.newsroom.used.joins(:product).where(products: {is_package: false}).first
-      uf = af.nil? ? needed_user.user_features.newsroom.used.first : af
+      users_id = invited_users_list
+      af = user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").newsroom.used.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").newsroom.used.first : af
       return false if uf.blank?
       uf.available_count += 1
       uf.save
@@ -127,5 +138,5 @@ class NewsRoom < ActiveRecord::Base
       rescue Exception => e
       end
     end
-    
+
 end

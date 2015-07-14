@@ -145,9 +145,10 @@ class PaymentsController < ApplicationController
 
   def destroy_add_on
     if current_user.current_add_ons.present?
-      if current_user.user_products.where(id: params[:id]).first.cancel!
-        add_on = current_user.user_products.where(id: params[:id]).first.product
-        feature =   current_user.user_features.where(product_id: add_on.id).first
+      users_id = invited_users_list
+      if current_user.user_products.where(id: params[:id]).unscope(where: :user_id).where("user_products.user_id IN (#{users_id})").first.cancel!
+        add_on = current_user.user_products.where(id: params[:id]).unscope(where: :user_id).where("user_products.user_id IN (#{users_id})").first.product
+        feature =   current_user.user_features.where(product_id: add_on.id).unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").first
         feature.update_attribute(:available_count,feature.available_count - 1)
         render json: current_user.to_json.html_safe, status: :ok
       else
@@ -199,9 +200,23 @@ class PaymentsController < ApplicationController
     end
   end
 
+  def invited_users_list
+    current_users=User.where(invited_by_id: needed_user.id)
+    invited_id=""
+    current_users.all.each do |user|
+      invited_id << user.id.to_s << ", "
+    end
+    return invited_id << needed_user.id.to_s
+  end
+
+  def needed_user
+    current_user.is_primary ? current_user : current_user.invited_by
+  end
+
   def validate_add_on_cancel
     if current_user.current_add_ons.present?
-      if current_user.user_products(id: params[:id]).exists?
+      users_id = invited_users_list
+      if current_user.user_products(id: params[:id]).unscope(where: :user_id).where("user_products.user_id IN (#{users_id})").exists?
         if current_user.can_cancel_add_on?(params[:id])
           return true
         else
