@@ -166,11 +166,15 @@ class User < ActiveRecord::Base
   end
 
   def can_cancel_add_on?(user_add_on_id)
-    add_on = user_products.where(id: user_add_on_id).first.product
-    if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution"
-      return current_user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
-    else
+    if !is_primary
       return false
+    else
+      add_on = user_products.where(id: user_add_on_id).first.product
+      if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution"
+        return current_user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
+      else
+        return false
+      end
     end
   end
 
@@ -234,9 +238,9 @@ class User < ActiveRecord::Base
   end
 
   def current_active_add_ons
-    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
+    add_ons_products = needed_user.user_products.joins(:product).where("products.type ='AddOn'")
     if add_ons_products.present?
-      user_addons_features = user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
+      user_addons_features = needed_user.user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
       add_ons_products.where(product_id: user_addons_features.map(&:product_id))
     else
       []
@@ -245,7 +249,7 @@ class User < ActiveRecord::Base
   end
 
   def recurring_add_ons
-    user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
+    needed_user.user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
 
   def twitter_post(message, identity_id=nil)

@@ -74,13 +74,15 @@
               </div>
             </div>
             <% } %>
-          <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
-            <a href="/pricing" class="btn btn-success">Change plan</a>
-          <% } else {%>
-            <a href="/pricing" class="btn btn-success">Subscribe to new plan</a>
+          <% if (Robin.currentUser.attributes.is_primary) {%>
+            <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
+              <a href="/pricing" class="btn btn-success">Change plan</a>
+            <% } else {%>
+              <a href="/pricing" class="btn btn-success">Subscribe to new plan</a>
+            <% } %>
+            <a href="/add-ons" class="btn btn-success">Add ons</a>
+            <a href="/change_card_info" class="btn btn-success">Update payment details</a>
           <% } %>
-          <a href="/add-ons" class="btn btn-success">Add ons</a>
-          <a href="/change_card_info" class="btn btn-success">Update payment details</a>
           <!-- <input type="button" value="Checkout" class="btn btn-success"> -->
           <% if (Robin.currentUser.attributes.is_primary) {%>
               <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>

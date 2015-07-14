@@ -203,6 +203,9 @@ class PaymentsController < ApplicationController
   end
 
   def validate_add_on_cancel
+    if !current_user.is_primary
+      return (render :json => {error: "You can't cancel this add-on. Contact support for more details."}, status: :forbidden)
+    end
     if current_user.current_add_ons.present?
       if current_user.user_products(id: params[:id]).exists?
         if current_user.can_cancel_add_on?(params[:id])
