@@ -39,9 +39,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var view = this;
       var url = prompt("Please paste you image's url");
       if (url) {
+        var href_url = (url.match("^http://")) ? url : "http://" + window.location.host + "/" +url;
         window.setTimeout(function() {
           view.ui.wysihtml5.data('wysihtml5').editor.focus();
-          view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("createLink", {href: url, target: '_blank'});
+          view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("createLink", {href: href_url, target: '_blank'});
         }, 200);
       }
     },
@@ -204,7 +205,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.$el.find('#prnewswire_date_input').on('dp.change', function(e) {
         $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
       });
-      
+
       var insertLinkButton = this.$el.find('#wyihtml5-insert-link').html();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
       var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
@@ -251,7 +252,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                 "h6": {},
                 "video": {
                     "check_attributes": {
-                        "controls": "any", 
+                        "controls": "any",
                         "preload": "any",
                         "class": "any",
                         "width": "any",
@@ -310,7 +311,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         "blockquote": true,
         "table": false,
         "link": false,
-        "textAlign": false        
+        "textAlign": false
       });
       this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
       this.editor.focus();
@@ -397,7 +398,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
       var formData = new FormData();
       $input = $('#upload');
-      
+
       if (_.last($input[0].files[0].name.split('.')) != 'docx'){
         alert("Not supported file! Supported is *.docx");
         $input.replaceWith($input.val('').clone(true));
@@ -405,7 +406,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       };
 
       formData.append('file', $input[0].files[0]);
-       
+
       $.ajax({
         url: "/releases/extract_from_word",
         data: formData,
@@ -710,7 +711,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.model.set('text', $(iframe).contents().find('body').html());
       };
       this.form.data('formValidation').validate();
-      var textLength = this.$el.find('iframe').contents().find('.wysihtml5-editor').html().length;      
+      var textLength = this.$el.find('iframe').contents().find('.wysihtml5-editor').html().length;
       if (textLength > 60000) {
         swal({
           title: "Release text is too long!",
@@ -724,7 +725,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.form.data('formValidation').isValid() && textLength <= 60000) {
         this.$el.find('#save_release').prop("disabled",true);
         this.$el.find('#smart_release').prop("disabled",true);
-        
+
         this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
         this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
         this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
@@ -875,7 +876,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           return;
         }
         $('#prnewswire_start_div').show();
-      } 
+      }
       else {
         $('#prnewswire_date_input').val('');
         $('#prnewswire_start_div').hide();
