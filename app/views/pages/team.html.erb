@@ -1,109 +1,143 @@
-
 <div class="team">
   <header class="int-header">
-    <%= render :partial => "pages/partials/menu"%>
-<%= render :partial => "pages/partials/page_banner", :locals => { :header => "Meet the team behind <b> Robin8</b>"}%>
-</header>
+    <%= render :partial => "pages/partials/menu" %>
+    <%= render :partial => "pages/partials/page_banner", :locals => {:header => "Meet the team behind <b> Robin8</b>"} %>
+  </header>
 
 
-<div class="team-content">
-  <div class="row">
-    <div class="small-12 medium-4 columns">
-      <div class="team-box">
-        <%=image_tag "team-miranda.png"%>
-        <h3>Miranda Tan</h3>
-        <h4>CEO</h4>
-        <p>Miranda Tan has more than 10 years experience in public relations, marketing, and tech.  Miranda has a BS from
-           Cornell University and a JD from St. John’s University School of Law.</p>
-      </div>
-    </div>
-    <div class="small-12 medium-4  columns">
-      <div class="team-box">
-        <!--<img src="team-hassan.png" />-->
-        <%=image_tag "team-hassan.png"%>
-        <h3>Hassan Miah</h3>
-        <h4>Chairman</h4>
-        <p>Hassan has nearly three decades of experience in the finance and technology. Previously, Hassan was the CEO of Xing Technology which sold to Real Networks for $75 Million.  Hassan was also the head of digital media at CAA and a managing director of Intel Capital.  He has a BBA from the University of Michigan and a MBA from Stanford University Graduate School of Business. </p>
-      </div>
-    </div>
-    <div class="small-12 medium-4  columns">
-      <div class="team-box">
-        <!--<img src="team-alex.png" />-->
-        <%=image_tag "team-alex.png"%>
-        <h3>Alex Stefanov</h3>
-        <h4>VP, Sales and Marketing</h4>
-        <p>Alex is a passionate marketer with extensive experience in sales and media outreach. He is an aggressive pitcher who loves connecting with his clients and their audience. Alex graduated from the University of Michigan, College of LS&amp;A with a BS in Neuroscience.
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-12 medium-4  columns">
-      <div class="team-box">
-        <!--<img src="team-olivia.png" />-->
-        <%=image_tag "team-olivia.png"%>
-        <h3>Olivia Quizon</h3>
-        <h4>VP, Support and Research</h4>
-        <p>Olivia joined MyPRGenie in October 2010. At MyPRGenie, she heads Customer Support and oversees the research team. Olivia has extensive experience in PR and marketing and has helped hundreds of companies with their PR campaign. In addition, she heads the research team for the media database.</p>
-      </div>
-    </div>
-    <div class="small-12 medium-4  columns">
-      <div class="team-box">
-        <!--<img src="team-cynthia.png" />-->
-        <%=image_tag "team-cynthia.png"%>
-        <h3>Cynthia Chen</h3>
-        <h4>VP, Operations</h4>
-        <p>Cynthia heads overall operations and administration for MyPRGenie. She has an MBA from Adelphi University and a BS in Accounting from Nanjing University of Science and Technology.</p>
-      </div>
-    </div>
-    <div class="small-12 medium-4  columns">
-      <div class="team-box">
-        <!--<img src="team-razee.png" />-->
-        <%=image_tag "team-razee.png"%>
-        <h3>Razee Khan</h3>
-        <h4>Engineer and Developer</h4>
-        <p>Razee has extensive experience in coding, testing, implementation and overall technical support of MyPRGenie. Razee earned a BS from the National University of Computer and Emerging Sciences in Pakistan.</p>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-12 medium-4 columns">
-      <div class="team-box">
-        <!--<img src="team-edison.png" />-->
-        <%=image_tag "team-edison.png"%>
-        <h3>Edison Xu Zhao</h3>
-        <h4>Data Scientist and Engineer</h4>
-        <p>Edison has over 5 years experience in machine learning and data mining in China working with Tencent and Quo360. He has published multiple articles on his work in the Journal of Applied Mathematics and other international outlets. Edison graduated Beijing University of Technology’s School of Mathematics with a BS in Mathematics in 2006 and School of Computer Science with a Master of Engineering CS degree in 2009. He is currently earning his Masters in Computer Science at the Polytechnic School of Engineering at New York University. </p>
-      </div>
-    </div>
-    <div class="small-12 medium-4 columns">
-      <div class="team-box">
-      </div>
-    </div>
-  </div>
-</div>
+  <div class="team-content">
+    <div class="row">
+      <div class="small-12 medium-4 columns">
+        <div class="team-box">
+          <%= image_tag "team-miranda.png" %>
+          <h3>Miranda Tan</h3>
+          <h4>CEO</h4>
 
-<div class="team-content ">
-  <div class="row advisors">
-    <div class="small-12  columns">
-      <h3>Robin8 <span>Advisors</span></h3>
-    </div>
-  </div>
-  <div class="row">
-    <div class="small-12 medium-4 columns">
-      <div class="team-box">
-        <!--<img src="Advisor_ONELLAMALABS_1x.png" />-->
-        <%=image_tag "Advisor_ONELLAMALABS_1x.png"%>
-        <h3>One Llama Labs</h3>
-        <p>One Llama Labs (<a href="http://www.onellamalabs.com" target="_blank">www.onellamalabs.com</a>) is the leading acoustic artificial intelligence for the Internet of Things. One Llama Labs was incubated from the University of Illinois and the National Center for Supercomputer Application with grants from the National Science Foundation. </p>
+          <p>Miranda Tan has more than 10 years experience in public relations, marketing, and tech. Miranda has a BS
+            from
+            Cornell University and a JD from St. John’s University School of Law.</p>
+        </div>
+      </div>
+      <div class="small-12 medium-4  columns">
+        <div class="team-box">
+          <%= image_tag "team-hassan.png" %>
+          <h3>Hassan Miah</h3>
+          <h4>Chairman</h4>
+
+          <p>Hassan has nearly three decades of experience in the finance and technology. Previously, Hassan was the CEO
+            of Xing Technology which sold to Real Networks for $75 Million. Hassan was also the head of digital media at
+            CAA and a managing director of Intel Capital. He has a BBA from the University of Michigan and a MBA from
+            Stanford University Graduate School of Business. </p>
+        </div>
+      </div>
+      <div class="small-12 medium-4  columns">
+        <div class="team-box">
+          <%= image_tag "team-alex.png" %>
+          <h3>Alex Stefanov</h3>
+          <h4>VP, Sales and Marketing</h4>
+
+          <p>Alex is a passionate marketer with extensive experience in sales and media outreach. He is an aggressive
+            pitcher who loves connecting with his clients and their audience. Alex graduated from the University of
+            Michigan, College of LS&amp;A with a BS in Neuroscience.
+          </p>
+        </div>
       </div>
     </div>
-    <div class="small-12 medium-4 columns">
-      <div class="team-box">
-        <!--<img src="Advisor_Chinaccelerator_1x.png" />-->
-        <%=image_tag "Advisor_Chinaccelerator_1x.png"%>
-        <h3>Chinaccelerator</h3>
-        <p>ChinaAccelerator (<a href="http://www.chinaccelerator.com" target="_blank">www.chinaccelerator.com</a>) is the top startup accelerator in East Asia. Since 2010, ChinAccelerator has backed over 60 companies and is supported by SOS Ventures, a $235 million fund. </p>
+    <div class="row">
+      <div class="small-12 medium-4  columns">
+        <div class="team-box">
+          <%= image_tag "team-olivia.png" %>
+          <h3>Olivia Quizon</h3>
+          <h4>VP, Support and Research</h4>
+
+          <p>Olivia joined MyPRGenie in October 2010. At MyPRGenie, she heads Customer Support and oversees the research
+            team. Olivia has extensive experience in PR and marketing and has helped hundreds of companies with their PR
+            campaign. In addition, she heads the research team for the media database.</p>
+        </div>
+      </div>
+      <div class="small-12 medium-4  columns">
+        <div class="team-box">
+          <%= image_tag "team-cynthia.png" %>
+          <h3>Cynthia Chen</h3>
+          <h4>VP, Operations</h4>
+
+          <p>Cynthia heads overall operations and administration for MyPRGenie. She has an MBA from Adelphi University
+            and a BS in Accounting from Nanjing University of Science and Technology.</p>
+        </div>
+      </div>
+      <div class="small-12 medium-4  columns">
+        <div class="team-box">
+          <%= image_tag "team-razee.png" %>
+          <h3>Razee Khan</h3>
+          <h4>Engineer and Developer</h4>
+
+          <p>Razee has extensive experience in coding, testing, implementation and overall technical support of
+            MyPRGenie. Razee earned a BS from the National University of Computer and Emerging Sciences in Pakistan.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-12 medium-4 columns">
+        <div class="team-box">
+          <%= image_tag "team-edison.png" %>
+          <h3>Edison Xu Zhao</h3>
+          <h4>Data Scientist and Engineer</h4>
+
+          <p>Edison has over 5 years experience in machine learning and data mining in China working with Tencent and
+            Quo360. He has published multiple articles on his work in the Journal of Applied Mathematics and other
+            international outlets. Edison graduated Beijing University of Technology’s School of Mathematics with a BS
+            in Mathematics in 2006 and School of Computer Science with a Master of Engineering CS degree in 2009. He is
+            currently earning his Masters in Computer Science at the Polytechnic School of Engineering at New York
+            University. </p>
+        </div>
+      </div>
+      <div class="small-12 medium-4 columns">
+        <div class="team-box">
+          <%= image_tag "team-elsa.png" %>
+          <h3>Elsa Wang</h3>
+          <h4>Marketing Specialist / Director</h4>
+
+          <p>Elsa is a strategic marketer with an eye for consumer insights and a passion for digital marketing (Social
+            Media, Content Marketing, SEO/SEM, Web analytics). She has Google certified Partner Certificates for Google
+            Analytics and Google Adwords. Most recently, she worked for prestige food brands in China such as Nescafe
+            and
+            Pringles chips. Elsa has a Masters from NYU in Integrated Marketing.</p>
+        </div>
+      </div>
+      <div class="small-12 medium-4 columns">
+        <div class="team-box">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="team-content">
+    <div class="row advisors">
+      <div class="small-12  columns">
+        <h3>Robin8 <span>Advisors</span></h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-12 medium-4 columns">
+        <div class="team-box">
+          <%= image_tag "Advisor_ONELLAMALABS_1x.png" %>
+          <h3>One Llama Labs</h3>
+
+          <p>One Llama Labs (<a href="http://www.onellamalabs.com" target="_blank">www.onellamalabs.com</a>) is the
+            leading acoustic artificial intelligence for the Internet of Things. One Llama Labs was incubated from the
+            University of Illinois and the National Center for Supercomputer Application with grants from the National
+            Science Foundation. </p>
+        </div>
+      </div>
+      <div class="small-12 medium-4 columns">
+        <div class="team-box">
+          <%= image_tag "Advisor_Chinaccelerator_1x.png" %>
+          <h3>Chinaccelerator</h3>
+
+          <p>ChinaAccelerator (<a href="http://www.chinaccelerator.com" target="_blank">www.chinaccelerator.com</a>) is
+            the top startup accelerator in East Asia. Since 2010, ChinAccelerator has backed over 60 companies and is
+            supported by SOS Ventures, a $235 million fund. </p>
+        </div>
       </div>
     </div>
   </div>
