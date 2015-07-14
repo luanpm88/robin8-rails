@@ -1,17 +1,17 @@
 <div class="signup">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Payment Confirmation"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('payment_confirm_page.thank')}%>
   </header>
 
   <div class="form-step step3">
     <div class="confirmation">
       <div class="row">
         <div class="small-12 columns">
-          <p class="selection-intro-heading">Thank you!</p>
-          <p class="selection-guarantee">Your payment has been successfully processed. Please check your email for transaction details.</p>
+          <p class="selection-intro-heading"><%= I18n.t 'payment_confirm_page.thank'%></p>
+          <p class="selection-guarantee"><%= I18n.t 'payment_confirm_page.desc'%></p>
 
-          <a class="button button-signup" href="/">Go to Robin8</a>
+          <a class="button button-signup" href="/"><%= I18n.t 'payment_confirm_page.go_to'%></a>
         </div>
       </div>
     </div>

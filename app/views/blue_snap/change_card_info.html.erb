@@ -1,7 +1,7 @@
 <div class="signup">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Update payment information"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('payment_update_page.title')}%>
   </header>
   
   <%= form_tag({controller: "blue_snap", action: "update_card_info"}, method: "post", class: "payment ", :id=>"edit-card-form") do |f|  %>
@@ -11,53 +11,53 @@
 
           <div class="row">
             <div class="small-12 columns">
-              <h3>Enter new Credit Card Information below </h3>
+              <h3><%= I18n.t 'payment_update_page.enter_info'%> </h3>
             </div>
           </div>
 
           <div class="row">
             <div class="small-2 medium-2 large-2 columns custom-padding">
-              <label>Title
-                <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "select-checkout"} %>
+              <label><%= I18n.t 'payment_page.your_title'%>
+                <%=select "contact", "title", [[I18n.t('payment_page.mr_title'), I18n.t('payment_page.mr_title')], [I18n.t('payment_page.ms_title'), I18n.t('payment_page.ms_title')], [I18n.t('payment_page.mrs_title'), I18n.t('payment_page.mrs_title')]], {}, {:class => "select-checkout"} %>
               </label>
             </div>
 
             <div class="small-10 medium-5 large-5 columns custom-padding">
-              <label>First Name
+              <label><%= I18n.t 'payment_page.first_name'%>
                 <%=text_field "contact", "first_name", :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "First name can't be blank"%>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.first_name_blank')%>
               </label>
             </div>
 
             <div class="small-12 medium-5 large-5 columns custom-padding">
-              <label>Last Name
+              <label><%= I18n.t 'payment_page.last_name'%>
                 <%=text_field "contact", "last_name", :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Last name can't be blank" %>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.last_name_blank') %>
               </label>
             </div>
           </div>
 
           <div class="row">
             <div class="small-12 columns custom-padding">
-              <label>Phone
+              <label><%= I18n.t 'payment_page.phone'%>
                 <%=text_field "contact", "phone", :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Phone can't be blank","data-validation"=>"number" %>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.phone_blank'),"data-validation"=>"number" %>
               </label>
             </div>
           </div>
 
           <div class="row">
             <div class="small-12 medium-6 large-8 columns custom-padding">
-              <label>Address
+              <label><%= I18n.t 'payment_page.address'%>
                 <%=text_field "contact", "address1", :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Address can't be blank" %>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.address_blank') %>
               </label>
             </div>
 
             <div class="small-12 medium-6 large-4 columns custom-padding">
-              <label>City
+              <label><%= I18n.t 'payment_page.city'%>
                 <%=text_field "contact", "city", :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "City can't be blank"
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.city_blank')
                 %>
               </label>
             </div>
@@ -65,21 +65,21 @@
 
           <div class="row">
             <div class="small-12 medium-4 large-4 columns custom-padding">
-              <label>State
+              <label><%= I18n.t 'payment_page.state'%>
                 <%=text_field "contact", "state", :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "State can't be blank",:placeholder => "NY" %>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.state_blank'),:placeholder => "NY" %>
               </label>
             </div>
 
             <div class="small-12 medium-4 large-3 columns custom-padding">
-              <label>Postal Code
+              <label><%= I18n.t 'payment_page.code'%>
                 <%=text_field "contact", "zip", :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Postal Code/Zip can't be blank" %>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.code_blank') %>
               </label>
             </div>
 
             <div class="small-12 medium-4 large-5 columns custom-padding">
-              <label>Country
+              <label><%= I18n.t 'payment_page.country'%>
                 <%=select_tag "contact[country]",options_for_select(Country.all.sort),{:class=>"select-checkout"}%>
               </label>
             </div>
@@ -87,24 +87,24 @@
 
           <div class="row">
             <div class="small-12 medium-12 large-4 columns custom-padding">
-              <label>Credit Card Type
+              <label><%= I18n.t 'payment_page.card_type'%>
                 <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'amex'],["Discover", 'discover'],["JCB","jcb"] ], {}, {:class => "select-checkout"} %>
               </label>
             </div>
 
             <div class="small-8 medium-8 large-5 columns custom-padding">
-              <label>Credit Card Number
+              <label><%= I18n.t 'payment_page.card_number'%>
                 <%=text_field "card", "credit_card_number", :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Card number can't be blank","data-validation"=>"number" %>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.card_number_blank'),"data-validation"=>"number" %>
                 <%=hidden_field "card", "last_four" %>
               </label>
             </div>
 
             <div class="small-4 medium-4 large-3 columns custom-padding">
-              <label>CVV
+              <label><%= I18n.t 'payment_page.cvv'%>
                 <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
                               "data-validation"=>"length", "data-validation-length"=>"min2",
-                              "data-validation-error-msg"=> "CVV must be greater then 2 characters","data-validation"=>"number"%>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.cvv_blank'),"data-validation"=>"number"%>
               </label>
             </div>
 
@@ -112,15 +112,15 @@
           </div>
           <div class="row">
             <div class="small-6 medium-6 large-3 columns custom-padding">
-              <label>Exp. Month
+              <label><%= I18n.t 'payment_page.exp_month'%>
                 <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Expiry Month can't be blank","data-validation"=>"number"  %>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.exp_month_blank'),"data-validation"=>"number"  %>
               </label>
             </div>
             <div class="small-6 medium-6 large-3 columns left custom-padding">
-              <label>Exp. Year
+              <label><%= I18n.t 'payment_page.exp_year'%>
                 <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Expiry Year can't be blank and must be in YYYY format", "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
+                              "data-validation-error-msg"=> I18n.t('payment_page.messages.exp_year_blank'), "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
               </label>
             </div>
           </div>
@@ -135,8 +135,8 @@
           <div class="row">
             <div class="small-12 columns">
               <div class="submit-wrap edit-card">
-                <a href="/#billing" class="button button-signup nextstep" id="go-back"><<< BACK</a>
-                <%= submit_tag "SUBMIT", :class=>"button button-signup nextstep" %>
+                <a href="/#billing" class="button button-signup nextstep" id="go-back"><%= I18n.t 'payment_update_page.back_btn'%></a>
+                <%= submit_tag I18n.t('payment_update_page.submit_btn'), :class=>"button button-signup nextstep" %>
               </div>
             </div>
           </div>
