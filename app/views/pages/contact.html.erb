@@ -2,7 +2,7 @@
 <div class="contact">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Contact Robin8"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('contact_page.title')}%>
   </header>
 
   <div class="int-content">
@@ -10,21 +10,19 @@
       <!-- CONTENT -->
 
       <div style="border-right: 1px solid #c1c1c1; padding-right: 15px;" class="small-4 columns address-info">
-        <h3>Main Office Address</h3>
+        <h3><%= I18n.t('contact_page.address_title') %></h3>
 
         <address class="contact-addresses">
-          MyPRGenie Inc.<br>
-          1745 Broadway, 17th Floor <br>
-          New York, NY 10019
+          <%= I18n.t('contact_page.address').html_safe %>
         </address>
 
         <div class="contact-addresses">
 
-          General Inquires:
+          <%= I18n.t('contact_page.inquires_title') %>:
           <a href="mailto:info@myprgenie.com"><br>info@robin8.com</a><br><br>
 
-          Phone (customer service):
-          <a href="#"><br>(212) 807-8300 Extension 3</a><br><br>
+          <%= I18n.t('contact_page.phone_title') %>:
+          <a href="#"><br><%= I18n.t('contact_page.phone') %></a><br><br>
 
         </div>
 
@@ -55,10 +53,10 @@
                 <div class="form-group columns small-12">
                   <label>
                     <select class="form-control columns small-12" id="subject" name="user[subject]" required>
-                      <option selected="" value="">Choose a Subject:</option>
-                      <option value="service">General Customer Service</option>
-                      <option value="suggestions">Suggestions</option>
-                      <option value="product">Product Support</option>
+                      <option selected="" value=""><%= I18n.t('contact_page.form.subject_select_placeholder') %>:</option>
+                      <option value="service"><%= I18n.t('contact_page.form.subject_select_placeholder') %></option>
+                      <option value="suggestions"><%= I18n.t('contact_page.form.suggestions') %></option>
+                      <option value="product"><%= I18n.t('contact_page.form.product_support') %> Support</option>
                     </select></label>
                 </div>
               </div>

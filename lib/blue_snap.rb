@@ -333,7 +333,7 @@ module BlueSnap
       # resp[:messages][:message].collect{|x|  resps << x.values if x.class == Hash}
       # resps.collect{|i| errs << i[1] if i.class == Array }
       # errs
-      ["Your card was declined. Please confirm your card details below and try again."]
+      [ I18n.t('payment_page.messages.card_was_declined') ]
     end
   end
 
