@@ -427,6 +427,10 @@ label.css-label {
 }
 // END of CSS checkbox
 
+iframe.wysihtml5-sandbox {
+  width: 100% !important;
+}
+
 .hide, .hide + label + label ~ div {
     display: none;
 }
