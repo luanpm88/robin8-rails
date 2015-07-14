@@ -50,9 +50,11 @@ class AlertMailer < ApplicationMailer
       threads << Thread.new do
         images = story[:images].push("http://lorempixel.com/550/413/abstract/")
         params = { images: Base64.encode64(images.to_json) }
-        image_url = "http://#{Rails.application.secrets.host}/" + 
+        scheme = Rails.env.development? ? "http" : "https"
+        image_url = "#{scheme}://#{Rails.application.secrets.host}/" + 
           "image_proxy?#{URI.encode_www_form(params)}"
-        attachments.inline["image_#{story[:id]}.png"] = HTTParty.get(image_url).body
+        id = "image_#{story[:id]}.png"
+        attachments.inline[id] = HTTParty.get(image_url, verify: false).body
       end
     end
     
