@@ -56,7 +56,7 @@
                       <option selected="" value=""><%= I18n.t('contact_page.form.subject_select_placeholder') %>:</option>
                       <option value="service"><%= I18n.t('contact_page.form.subject_select_placeholder') %></option>
                       <option value="suggestions"><%= I18n.t('contact_page.form.suggestions') %></option>
-                      <option value="product"><%= I18n.t('contact_page.form.product_support') %> Support</option>
+                      <option value="product"><%= I18n.t('contact_page.form.product_support') %></option>
                     </select></label>
                 </div>
               </div>
@@ -64,14 +64,14 @@
               <div class="row">
                 <div class="columns small-12 form-group">
                   <label>
-                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="Message"></textarea></label>
+                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="<%= I18n.t('contact_page.form.message_placeholder') %>"></textarea></label>
                 </div>
               </div>
               <div class="errorwarning">
-                <p>Please fill out all required fields</p>
+                <p><%= I18n.t('contact_page.form.fill_out') %></p>
               </div>
               <div class="submit-wrap">
-                <button class="button button-signup" type="submit">Send</button>
+                <button class="button button-signup" type="submit"><%= I18n.t('contact_page.form.send') %></button>
               </div>
             </div>
           </div>
