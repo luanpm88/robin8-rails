@@ -69,6 +69,6 @@ class ApplicationController < ActionController::Base
   private
 
   def ssl_configured?
-    !Rails.env.development?
+    !(Rails.env.development? or Rails.env.staging?)
   end
 end
