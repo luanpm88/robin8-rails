@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   get 'upgrade/:slug' => 'payments#edit'
   get 'change_card_info' => 'blue_snap#change_card_info'
   post 'change_card_info' => 'blue_snap#update_card_info'
+  get 'change_campaign_card_info' => 'blue_snap#change_campaign_card_info'
+  post 'change_campaign_card_info' => 'blue_snap#update_campaign_card_info'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
   get 'users/get_current_user' => 'users#get_current_user'
