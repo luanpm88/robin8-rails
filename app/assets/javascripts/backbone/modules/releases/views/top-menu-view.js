@@ -34,18 +34,55 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #direct-video-upload': 'uploadDirectVideo',
       'click #url-video-upload': 'uploadUrlVideo',
       'click #insert_link': 'insertLink',
+      'click #unlink': 'unLink',
+      'selectstart #insert_link': 'unselect',
+      'mousedown #insert_link': 'unselect',
+      'keydown #insert_link': 'unselect',
+      'selectstart #direct-image-upload': 'unselect',
+      'mousedown #direct-image-upload': 'unselect',
+      'keydown #direct-image-upload': 'unselect',
+      'selectstart #url-image-upload': 'unselect',
+      'mousedown #url-image-upload': 'unselect',
+      'keydown #url-image-upload': 'unselect',
+      'selectstart #unlink': 'unselect',
+      'mousedown #unlink': 'unselect',
+      'keydown #unlink': 'unselect',
+      'selectstart #direct-video-upload': 'unselect',
+      'mousedown #direct-video-upload': 'unselect',
+      'keydown #direct-video-upload': 'unselect',
+      'selectstart #url-video-upload': 'unselect',
+      'mousedown #url-video-upload': 'unselect',
+      'keydown #url-video-upload': 'unselect',
+    },
+    unselect: function() {
+      return(false);
     },
     insertLink: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
-      var url = prompt("Please paste you image's url");
+      var url = prompt("Please paste your url", '');
       if (url) {
         window.setTimeout(function() {
+          view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
           view.ui.wysihtml5.data('wysihtml5').editor.focus();
+          if (!/^(f|ht)tps?:\/\//i.test(url) && !/^mailto?:/i.test(url)) {
+            url = "http://" + url;
+          }
           view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("createLink", {href: url, target: '_blank'});
         }, 200);
       }
     },
+    unLink: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
+      var view = this;
+      window.setTimeout(function() {
+        view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
+        view.ui.wysihtml5.data('wysihtml5').editor.focus();
+        view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("unlink");
+      }, 200);
+    },
     uploadDirectImage: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
       uploadcare.openDialog(null, {
         tabs: 'file',
@@ -53,6 +90,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         imagesOnly: true
         }).done(function(file) {
             file.done(function(fileInfo) {
+              view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
               view.ui.wysihtml5.data('wysihtml5').editor.focus();
               view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl});
             });
@@ -62,12 +100,14 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       return false;
     },
     uploadUrlImage: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
       var url = prompt("Please paste you image's url");
       if(url){
         $.get( "/releases/img_url_exist?url=" + url, function( data ) {
           if (data) {
             window.setTimeout(function() {
+              view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
               view.ui.wysihtml5.data('wysihtml5').editor.focus();
               view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: url});
             }, 200);
@@ -81,6 +121,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       }
     },
     uploadDirectVideo: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
       uploadcare.openDialog(null, {
         tabs: 'file',
@@ -88,6 +129,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         multiple: false,
         }).done(function(file) {
           file.done(function(fileInfo) {
+            view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
             view.ui.wysihtml5.data('wysihtml5').editor.focus();
             view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertHTML", "<video width="+550+" class='video-js vjs-default-skin' controls='auto' preload='auto' data-setup='{}'> <source src='" + fileInfo.originalUrl + "'></video>");
           });
@@ -97,10 +139,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       return false;
     },
     uploadUrlVideo: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
       var url = prompt("Please paste you video's url");
       if (url) {
         window.setTimeout(function() {
+          view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
           view.ui.wysihtml5.data('wysihtml5').editor.focus();
           console.log(url);
           view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertVideo", url);
@@ -204,8 +248,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.$el.find('#prnewswire_date_input').on('dp.change', function(e) {
         $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
       });
-      
+
       var insertLinkButton = this.$el.find('#wyihtml5-insert-link').html();
+      var unLinkButton = this.$el.find('#wyihtml5-unlink').html();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
       var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
       var extractDirectImageTemplate = this.$el.find('#wyihtml5-direct-image-button').html();
@@ -213,6 +258,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var customTemplates = {
         insert: function(context) {
           return insertLinkButton
+        },
+        unlink: function(context) {
+          return unLinkButton
         },
         extract: function(context) {
           return extractButtonTemplate
@@ -230,6 +278,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.ui.wysihtml5.wysihtml5({
         toolbar: {
           insert: customTemplates.insert,
+          unlink: customTemplates.unlink,
           extract: customTemplates.extract,
           word: customTemplates.word,
           directImage: customTemplates.directImage,
@@ -251,7 +300,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                 "h6": {},
                 "video": {
                     "check_attributes": {
-                        "controls": "any", 
+                        "controls": "any",
                         "preload": "any",
                         "class": "any",
                         "width": "any",
@@ -273,8 +322,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                 },
                 "a":  {
                     check_attributes: {
-                        'href': "src", // use 'url' to avoid XSS
-                        'target': 'alt',
+                        'href': "href", // use 'url' to avoid XSS
+                        'target': 'any',
                         'rel': 'alt'
                     }
                 },
@@ -310,10 +359,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         "blockquote": true,
         "table": false,
         "link": false,
-        "textAlign": false        
+        "textAlign": false
       });
       this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
-      this.editor.focus();
+      window.setTimeout(function() {
+        this.editor.focus();
+      }, 200);
       this.editor.on('load', function() {
         self.updateStats();
         $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', function(e) {
@@ -400,7 +451,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
       var formData = new FormData();
       $input = $('#upload');
-      
+
       if (_.last($input[0].files[0].name.split('.')) != 'docx'){
         alert("Not supported file! Supported is *.docx");
         $input.replaceWith($input.val('').clone(true));
@@ -408,7 +459,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       };
 
       formData.append('file', $input[0].files[0]);
-       
+
       $.ajax({
         url: "/releases/extract_from_word",
         data: formData,
@@ -713,7 +764,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.model.set('text', $(iframe).contents().find('body').html());
       };
       this.form.data('formValidation').validate();
-      var textLength = this.$el.find('iframe').contents().find('.wysihtml5-editor').html().length;      
+      var textLength = this.$el.find('iframe').contents().find('.wysihtml5-editor').html().length;
       if (textLength > 60000) {
         swal({
           title: "Release text is too long!",
@@ -727,7 +778,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       if (this.form.data('formValidation').isValid() && textLength <= 60000) {
         this.$el.find('#save_release').prop("disabled",true);
         this.$el.find('#smart_release').prop("disabled",true);
-        
+
         this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
         this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
         this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
@@ -878,7 +929,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           return;
         }
         $('#prnewswire_start_div').show();
-      } 
+      }
       else {
         $('#prnewswire_date_input').val('');
         $('#prnewswire_start_div').hide();
