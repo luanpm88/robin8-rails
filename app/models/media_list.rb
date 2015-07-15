@@ -5,7 +5,12 @@ class MediaList < ActiveRecord::Base
   
   has_attached_file :attachment
   
-  validates_attachment_content_type :attachment, :content_type => 'text/csv'
+  validates_attachment_content_type :attachment, 
+    content_type: ['text/comma-separated-values', 'text/csv',
+      'application/csv', 'application/excel', 'application/vnd.ms-excel',
+      'application/vnd.msexcel', 'text/anytext', 'text/plain', 
+      'application/octet-stream']
+  validates_attachment_file_name :attachment, :matches => [/csv\Z/]
   validates_attachment_size :attachment, :in => 0..2.megabytes
   validates_presence_of :name
   validates_uniqueness_of :name
