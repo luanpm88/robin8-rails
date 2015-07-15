@@ -3,24 +3,25 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   before_action :set_video,:only => :home
 
-  before_action :set_translations,:only => [:home, :pricing]
+  before_action :set_translations,:only => [:home, :pricing, :signin, :signup, :pricing]
 
   def set_translations
     unless current_user.blank? and current_kol.blank?
+      p '!'
       someone = current_user
       someone = current_kol if current_user.nil?
       locale = someone.locale.nil? ? 'en' : someone.locale
 
-      #using yaml file
-      translations = I18n.backend.send(:translations)
-      @phrases = translations[locale.to_sym][:application]
-      
-      #using redis store
-      l ||= Localization.new
-      # @phrases = JSON.parse(l.store.get(locale))['application']
     else
-
+      locale = request.location && request.location.country.to_s == "China" ? 'zh' : 'en'
     end
+    #using yaml file
+    translations = I18n.backend.send(:translations)
+    @phrases = translations[locale.to_sym][:application]
+    
+    #using redis store
+    l ||= Localization.new
+    # @phrases = JSON.parse(l.store.get(locale))['application']
   end
 
   def set_locale
@@ -76,7 +77,7 @@ class PagesController < ApplicationController
   def contact
     if request.post?
       UserMailer.contact_support(params[:user]).deliver if params[:user].present?
-      flash.now[:success] = "Thank you for contacting us. Someone from our team will contact you shortly"
+      flash.now[:success] = I18n.t('contact_page.thank_you')
     end
 
     render :layout => "website"
