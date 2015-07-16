@@ -2,7 +2,7 @@
 <div class="signup pricing">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Select Pricing Plan"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('pricing.select_plan.title')}%>
 
   </header>
   <div class="form-step">
@@ -10,10 +10,10 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="tab-nav">
-            <p class="selection-intro business-plans">Empower your business with Robin8.  <br />Take the guesswork out of social and content marketing and get better results.</p>
+            <p class="selection-intro business-plans"><%= I18n.t('pricing.select_plan.empower').html_safe %></p>
           </div>
 
-          <p class="selection-intro-heading">Subscription Plans</p>
+          <p class="selection-intro-heading"><%= I18n.t('pricing.select_plan.plans') %></p>
         </div>
       </div>
       <div class="row business-plans" id="business-plans" data-equalizer>
@@ -91,7 +91,7 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="submit-wrap">
-            <input type="button" onclick="checkout();" value="Continue" class="button button-signup nextstep" id="planselect-button">
+            <input type="button" onclick="checkout();" value="<%= I18n.t('pricing.select_plan.continue') %>" class="button button-signup nextstep" id="planselect-button">
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@
   <div class="signup-footer">
     <div class="row">
       <div class="small-12 columns">
-        <h3>Service Details</h3>
+        <h3><%= I18n.t('pricing.service_details') %></h3>
       </div>
     </div>
     <div class="row">
@@ -114,8 +114,8 @@
             <!--<img src="img/icon-seat.png" />-->
           </div>
           <div class="details-right">
-            <h4>Seat</h4>
-            <p>Extra seat allows you to add another user to your account.</p>
+            <h4><%= I18n.t('pricing.seat') %></h4>
+            <p><%= I18n.t('pricing.seat_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -124,8 +124,8 @@
             <!--<img src="img/icon-newsroom.png" />-->
           </div>
           <div class="details-right">
-            <h4>Content Gallery</h4>
-            <p>Extra content gallery allows you add an extra content gallery on your account. A content gallery is a branded online profile where you can add your logo, content, videos and images. </p>
+            <h4><%= I18n.t('pricing.newsroom') %></h4>
+            <p><%= I18n.t('pricing.newsroom_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -134,8 +134,8 @@
             <!--<img src="img/icon-pressrelease.png" />-->
           </div>
           <div class="details-right">
-            <h4>Content on Robin8</h4>
-            <p>Post your content on Robin8 website. Get found on the web and share on social media outlets. </p>
+            <h4><%= I18n.t('pricing.press_release') %></h4>
+            <p><%= I18n.t('pricing.press_release_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -144,8 +144,8 @@
             <!--<img src="img/icon-smartrelease.png" />-->
           </div>
           <div class="details-right">
-            <h4>SmartContent Distribution</h4>
-            <p>SmartContent Releases uses Robin8's proprietary predictive intelligence engine to recommend the 100 reporters and top social influencers most interested to cover your news. SmartContent Releases identifies these top reporters and influencers with 1 click. </p>
+            <h4><%= I18n.t('pricing.smart_release') %></h4>
+            <p><%= I18n.t('pricing.smart_release_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -154,8 +154,8 @@
             <!--<img src="img/icon-mediamonitoring.png" />-->
           </div>
           <div class="details-right">
-            <h4>Media Monitoring Streams</h4>
-            <p>Media Monitoring allows you to monitor online a specific brand or updates in an industry so you can listen and keep abreast on the latest news and updates. All updates are in real time.</p>
+            <h4><%= I18n.t('pricing.monitoring_stream') %></h4>
+            <p><%= I18n.t('pricing.monitoring_stream_description') %></p>
           </div>
         </div><!-- end service-item -->
 
@@ -167,8 +167,8 @@
             <!--<img src="img/icon-personalmedia.png" />-->
           </div>
           <div class="details-right">
-            <h4>Personal Influencers List</h4>
-            <p>Upload your personal media list to Robin8 so you can manage and access it anytime</p>
+            <h4><%= I18n.t('pricing.media_list') %></h4>
+            <p><%= I18n.t('pricing.media_list_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -177,8 +177,8 @@
             <!--<img src="img/icon-prnewswire.png" />-->
           </div>
           <div class="details-right">
-            <h4>PR Newswire Distribution</h4>
-            <p>Distribute to more than 1,600 w​ebsites including Yahoo Finance​. You can also ​add an image to your message and drive even more traffic to your news. Distribution comes with a detailed, analytic report. </p>
+            <h4><%= I18n.t('pricing.newswire') %></h4>
+            <p><%= I18n.t('pricing.newswire_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -187,8 +187,8 @@
             <!--<img src="img/icon-myprgenieweb.png" />-->
           </div>
           <div class="details-right">
-            <h4>FinancialContent Web Distribution</h4>
-            <p>FinancialContent web distribution guarantees you placement on hundreds of top news websites including Boston Globe and Miami Herald. Each distribution comes with a report showing a sampling of the sites that posted your release.</p>
+            <h4><%= I18n.t('pricing.web_distribution') %></h4>
+            <p><%= I18n.t('pricing.web_distribution_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -196,8 +196,8 @@
             <%= image_tag("img/icon-accesswire.png")%>
           </div>
           <div class="details-right">
-            <h4>Accesswire Distribution</h4>
-            <p>Distribute to thousands of websites including Yahoo Finance, investor networks and calendars​. You can also add an image to your message and drive even more buzz to your news. Distribution comes with a real-time, analytic report.​</p>
+            <h4><%= I18n.t('pricing.accesswire_distribution') %></h4>
+            <p><%= I18n.t('pricing.accesswire_distribution_description') %></p>
           </div>
         </div>
 
