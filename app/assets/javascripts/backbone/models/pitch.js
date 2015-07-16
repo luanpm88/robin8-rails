@@ -14,7 +14,7 @@ Robin.Collections.PitchContacts = Backbone.Collection.extend({
 Robin.Models.Pitch = Backbone.RelationalModel.extend({
   urlRoot: '/pitches',
   defaults: {
-    email_pitch: "Dear @[First Name],<br /><br />Here's a press release you might find interesting. Please let me know your thoughts.<br /><br />@[Signature]<br /><br /> Press Release Text:<br /><br />@[Title]<br /><br />@[Text]",
+    email_pitch: "Dear @[First Name],<br /><br />Here's a press release you might find interesting. Please let me know your thoughts.<br /><br />@[Signature]<br /><br /> Press Release Text:<br /><br />@[Title]<br /><br />@[Text]<br /><br />P.S. We kindly recommend you to @[KolReghref] in our system as an Influencer.",
     twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
@@ -32,7 +32,7 @@ Robin.Models.Pitch = Backbone.RelationalModel.extend({
 Robin.Models.DraftPitch = Backbone.Model.extend({
   urlRoot: '/draft_pitches',
   defaults: {
-    email_pitch: "Dear @[First Name],<br /><br />Here's a press release you might find interesting. Please let me know your thoughts.<br /><br />@[Signature]<br /><br /> Press Release Text:<br /><br />@[Title]<br /><br />@[Text]",
+    email_pitch: "Dear @[First Name],<br /><br />Here's a press release you might find interesting. Please let me know your thoughts.<br /><br />@[Signature]<br /><br /> Press Release Text:<br /><br />@[Title]<br /><br />@[Text]<br /><br />P.S. We kindly recommend you to @[KolReghref] in our system as an Influencer.",
     twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
@@ -49,7 +49,7 @@ Robin.Collections.DraftPitches = Backbone.Collection.extend({
   },
   fetchDraftPitch: function(options){
     var self = this;
-    
+
     this.fetch({
       data: {
         release_id: self.releaseId

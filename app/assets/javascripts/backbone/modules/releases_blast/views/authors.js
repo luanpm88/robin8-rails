@@ -2,13 +2,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
   ReleasesBlast.ContactModel = Backbone.Model.extend({
     urlRoot: "/share_by_email"
   });
-  
+
   ReleasesBlast.ContactAuthorFormMessageView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/contact-author/contact-form-message',
-    tagName: 'textarea',
+    tagName: 'div',
     className: 'form-control',
     attributes: {
-      'rows': '7'
+      'contenteditable': 'true',
+      'id': 'emailTextarea'
     },
     initialize: function(options){
       this.authorModel = options.authorModel;
@@ -19,20 +20,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "author": this.authorModel,
         "summary": this.summary(),
         "release": this.model,
-        "currentUser": Robin.currentUser
+        "currentUser": Robin.currentUser,
+        "kolSignUpUrl": window.location.protocol + window.location.host + "/kols/new"
       }
     },
     summary: function(){
       var sentences = _(this.model.get('summaries')).first(this.sentencesNumber);
-      
+
       return _(sentences).reject(function(sentence){
         return s.isBlank(sentence);
-      }).map(function(sentence){ 
+      }).map(function(sentence){
         return "- " + sentence
       }).join('\n');
     }
   });
-  
+
   ReleasesBlast.ContactAuthorFormView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/contact-author/contact-form',
     model: Robin.Models.Author,
@@ -97,7 +99,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         sender: this.ui.emailInput.val(),
         reciever: this.model.get('email')
       });
-      
+
       this.contactModel.save({}, {
         success: function(model, response, options){
           Robin.modal.empty();
@@ -161,7 +163,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         author_id: this.model.get('id'),
         origin: 'pressr'
       });
-      
+
       if (current_model == null) {
         var model = new Robin.Models.Contact({
           author_id: this.model.get('id'),
@@ -184,7 +186,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     initialize: function(options){
       this.pitchContactsCollection = options.pitchContactsCollection;
       this.releaseModel = options.releaseModel;
-      
+
       this.listenTo(this.pitchContactsCollection, 'add remove', this.toggleAddRemove);
     },
     templateHelpers: function(){
@@ -195,26 +197,26 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     openInspectModal: function(e){
       e.preventDefault();
       var self = this;
-      
+
       var layout = new ReleasesBlast.AuthorInspectLayout({
         model: this.model
       });
-      
+
       Robin.modal.show(layout);
-      
+
       // Related stories
       var relatedStoriesCollection = new Robin.Collections.RelatedStories({
         author_id: this.model.get('id'),
         releaseModel: this.releaseModel
       });
-      
+
       // Loading view
       layout.relatedStoriesRegion.show(
         new Robin.Components.Loading.LoadingView({
           className: 'stories-loading-container'
         })
       );
-      
+
       relatedStoriesCollection.fetchStories({
         success: function(collection, data, response){
           var relatedStoriesView = new ReleasesBlast.StoriesList({
@@ -224,21 +226,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         }
       });
       // END Related stories
-      
-      
+
+
       // Recent stories
       var recentStoriesCollection = new Robin.Collections.RecentStories({
         author_id: this.model.get('id'),
         releaseModel: this.releaseModel
       });
-      
+
       // Loading view
       layout.recentStoriesRegion.show(
         new Robin.Components.Loading.LoadingView({
           className: 'stories-loading-container'
         })
       );
-      
+
       recentStoriesCollection.fetchStories({
         success: function(collection, data, response){
           var recentStoriesView = new ReleasesBlast.StoriesList({
@@ -248,15 +250,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         }
       });
       // END Recent stories
-      
+
       // Author stats
       var authorStatsModel = new Robin.Models.AuthorStats({ id: this.model.id });
-      
+
       // Loading view
       layout.statsRegion.show(
         new Robin.Components.Loading.LoadingView()
       );
-      
+
       authorStatsModel.fetch({
         success: function(model, response, options){
           var authorStatItemView = new ReleasesBlast.AuthorStatsView({
@@ -271,12 +273,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     openContactAuthorModal: function(e){
       e.preventDefault();
-      
+
       var contactAuthorFormView = new ReleasesBlast.ContactAuthorFormView({
         model: this.model,
         releaseModel: this.releaseModel
       });
-      
+
       Robin.modal.show(contactAuthorFormView);
     },
     wordMapper: function(word_count){
@@ -286,35 +288,35 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       if (word_count < 520 && word_count > 150){
         return {
-          label: "Short", 
+          label: "Short",
           tooltip: "Between <strong>150</strong> and <strong>520</strong> words"
         };
       }
 
       if (word_count < 990 && word_count > 520){
         return {
-          label: "Average", 
+          label: "Average",
           tooltip: "Between <strong>520</strong> and <strong>990</strong> words"
         };
       }
 
       if (word_count < 1940 && word_count > 990){
         return {
-          label: "Semi-long", 
+          label: "Semi-long",
           tooltip: "Between <strong>990</strong> and <strong>1940</strong> words"
         };
       }
 
       if (word_count < 4910 && word_count > 1940){
         return {
-          label: "Long", 
+          label: "Long",
           tooltip: "Between <strong>1940</strong> and <strong>4910</strong> words"
         };
       }
 
       if (word_count >= 4910){
         return {
-          label: "Very long", 
+          label: "Very long",
           tooltip: "<strong>4910</strong> words or more"
         };
       }
@@ -338,7 +340,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     onRender: function() {
       // this.initDataTable();
       this.scrollToView();
-      
+
       var $this = this;
       // this.initDataTable();
       Robin.user = new Robin.Models.User();
@@ -355,7 +357,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           author_id: model.get('id'),
           origin: 'pressr'
         });
-        
+
         _.each(models, function(item){
           self.pitchContactsCollection.remove(item);
         });
@@ -368,7 +370,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           author_id: model.get('id'),
           origin: 'pressr'
         });
-        
+
         if (current_model == null) {
           var model = new Robin.Models.Contact({
             author_id: model.get('id'),
@@ -408,13 +410,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 // var order = table.order();
                 // var csvContent = self.makeCsvData(order[0][0], order[0][1]);
 
-                // openWindow('POST', '/export_influencers.csv', 
+                // openWindow('POST', '/export_influencers.csv',
                 //   {items: csvContent});
                 if (Robin.user.get('can_export') == true) {
                   var order = table.order();
                   var csvContent = self.makeCsvData(order[0][0], order[0][1]);
 
-                  openWindow('POST', '/export_influencers.csv', 
+                  openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
                   $.growl('Only Enterprise and Ultra users can have this feature.', {
@@ -446,21 +448,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     makeCsvData: function(order_column, order_direction){
       var self = this;
       var csvObject = [];
-      var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){ 
+      var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){
         return item.get('origin') === 'pressr'
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
         return item == undefined;
       }).value();
-      
+
       csvObject.push(["First name", "Last name", "Outlet", "Contact"]); // CSV Headers
-      
+
       _(pitchContactsArray).each(function(model){
-        csvObject.push([model.get('first_name'), model.get('last_name'), 
+        csvObject.push([model.get('first_name'), model.get('last_name'),
           model.get('blog_names').join(', '), model.get('email')]);
       });
-      
+
       return JSON.stringify(csvObject);
     },
     scrollToView: function(){
@@ -469,7 +471,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         var offset = self.$el.offset();
         offset.left -= 20;
         offset.top -= 20;
-        
+
         $('html, body').animate({
           scrollTop: offset.top,
           scrollLeft: offset.left
@@ -498,7 +500,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     refineButtonClicked: function(e){
       e.preventDefault();
-      
+
       var location = this.ui.locationInput.val();
       if (s.isBlank(location)){
         $.growl({message: "Location can't be blank!"
@@ -536,7 +538,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           author_id: model.get('id'),
           origin: 'pressr'
         });
-        
+
         _.each(models, function(item){
           self.pitchContactsCollection.remove(item);
         });
@@ -549,7 +551,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           author_id: model.get('id'),
           origin: 'pressr'
         });
-        
+
         if (current_model == null) {
           var model = new Robin.Models.Contact({
             author_id: model.get('id'),
@@ -598,13 +600,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 // var order = table.order();
                 // var csvContent = self.makeCsvData(order[0][0], order[0][1]);
 
-                // openWindow('POST', '/export_influencers.csv', 
+                // openWindow('POST', '/export_influencers.csv',
                 //   {items: csvContent});
                 if (Robin.user.get('can_export') == true) {
                   var order = table.order();
                   var csvContent = self.makeCsvData(order[0][0], order[0][1]);
 
-                  openWindow('POST', '/export_influencers.csv', 
+                  openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
                   $.growl('Only Enterprise and Ultra users can have this feature.', {
@@ -635,25 +637,25 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
-      
-      var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){ 
+
+      var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){
         return (item.get('origin') === 'pressr');
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
         return item == undefined;
       }).value();
-      
+
       var csvObject = [];
       csvObject.push(["First name", "Last name", "Outlet", 
         "Relevance", "Contact"]); // CSV Headers
-      
+
       _(pitchContacts).each(function(item){
-        csvObject.push([item.get('first_name'), item.get('last_name'), 
-          item.get('blog_names').join(', '), item.get('level_of_interest'), 
+        csvObject.push([item.get('first_name'), item.get('last_name'),
+          item.get('blog_names').join(', '), item.get('level_of_interest'),
           item.get('email')]);
       });
-      
+
       return JSON.stringify(csvObject);
     }
   });
