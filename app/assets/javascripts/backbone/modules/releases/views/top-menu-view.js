@@ -34,19 +34,55 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #direct-video-upload': 'uploadDirectVideo',
       'click #url-video-upload': 'uploadUrlVideo',
       'click #insert_link': 'insertLink',
+      'click #unlink': 'unLink',
+      'selectstart #insert_link': 'unselect',
+      'mousedown #insert_link': 'unselect',
+      'keydown #insert_link': 'unselect',
+      'selectstart #direct-image-upload': 'unselect',
+      'mousedown #direct-image-upload': 'unselect',
+      'keydown #direct-image-upload': 'unselect',
+      'selectstart #url-image-upload': 'unselect',
+      'mousedown #url-image-upload': 'unselect',
+      'keydown #url-image-upload': 'unselect',
+      'selectstart #unlink': 'unselect',
+      'mousedown #unlink': 'unselect',
+      'keydown #unlink': 'unselect',
+      'selectstart #direct-video-upload': 'unselect',
+      'mousedown #direct-video-upload': 'unselect',
+      'keydown #direct-video-upload': 'unselect',
+      'selectstart #url-video-upload': 'unselect',
+      'mousedown #url-video-upload': 'unselect',
+      'keydown #url-video-upload': 'unselect',
+    },
+    unselect: function() {
+      return(false);
     },
     insertLink: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
-      var url = prompt("Please paste you image's url");
+      var url = prompt("Please paste your url", '');
       if (url) {
-        var href_url = (url.match("^http://")) ? url : "http://" + window.location.host + "/" +url;
         window.setTimeout(function() {
+          view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
           view.ui.wysihtml5.data('wysihtml5').editor.focus();
-          view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("createLink", {href: href_url, target: '_blank'});
+          if (!/^(f|ht)tps?:\/\//i.test(url) && !/^mailto?:/i.test(url)) {
+            url = "http://" + url;
+          }
+          view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("createLink", {href: url, target: '_blank'});
         }, 200);
       }
     },
+    unLink: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
+      var view = this;
+      window.setTimeout(function() {
+        view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
+        view.ui.wysihtml5.data('wysihtml5').editor.focus();
+        view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("unlink");
+      }, 200);
+    },
     uploadDirectImage: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
       uploadcare.openDialog(null, {
         tabs: 'file',
@@ -54,6 +90,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         imagesOnly: true
         }).done(function(file) {
             file.done(function(fileInfo) {
+              view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
               view.ui.wysihtml5.data('wysihtml5').editor.focus();
               view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl});
             });
@@ -63,12 +100,14 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       return false;
     },
     uploadUrlImage: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
       var url = prompt("Please paste you image's url");
       if(url){
         $.get( "/releases/img_url_exist?url=" + url, function( data ) {
           if (data) {
             window.setTimeout(function() {
+              view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
               view.ui.wysihtml5.data('wysihtml5').editor.focus();
               view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertImage", {src: url});
             }, 200);
@@ -82,6 +121,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       }
     },
     uploadDirectVideo: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
       uploadcare.openDialog(null, {
         tabs: 'file',
@@ -89,6 +129,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         multiple: false,
         }).done(function(file) {
           file.done(function(fileInfo) {
+            view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
             view.ui.wysihtml5.data('wysihtml5').editor.focus();
             view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertHTML", "<video width="+550+" class='video-js vjs-default-skin' controls='auto' preload='auto' data-setup='{}'> <source src='" + fileInfo.originalUrl + "'></video>");
           });
@@ -98,10 +139,12 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       return false;
     },
     uploadUrlVideo: function(e) {
+      var bookmark = this.ui.wysihtml5.data('wysihtml5').editor.composer.selection.getBookmark();
       var view = this;
       var url = prompt("Please paste you video's url");
       if (url) {
         window.setTimeout(function() {
+          view.ui.wysihtml5.data('wysihtml5').editor.composer.selection.setBookmark(bookmark);
           view.ui.wysihtml5.data('wysihtml5').editor.focus();
           console.log(url);
           view.ui.wysihtml5.data('wysihtml5').editor.composer.commands.exec("insertVideo", url);
@@ -207,6 +250,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       });
 
       var insertLinkButton = this.$el.find('#wyihtml5-insert-link').html();
+      var unLinkButton = this.$el.find('#wyihtml5-unlink').html();
       var extractButtonTemplate = this.$el.find('#wyihtml5-extract-button').html();
       var extractWordTemplate = this.$el.find('#wyihtml5-word-button').html();
       var extractDirectImageTemplate = this.$el.find('#wyihtml5-direct-image-button').html();
@@ -214,6 +258,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var customTemplates = {
         insert: function(context) {
           return insertLinkButton
+        },
+        unlink: function(context) {
+          return unLinkButton
         },
         extract: function(context) {
           return extractButtonTemplate
@@ -231,6 +278,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.ui.wysihtml5.wysihtml5({
         toolbar: {
           insert: customTemplates.insert,
+          unlink: customTemplates.unlink,
           extract: customTemplates.extract,
           word: customTemplates.word,
           directImage: customTemplates.directImage,
@@ -274,8 +322,8 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                 },
                 "a":  {
                     check_attributes: {
-                        'href': "src", // use 'url' to avoid XSS
-                        'target': 'alt',
+                        'href': "href", // use 'url' to avoid XSS
+                        'target': 'any',
                         'rel': 'alt'
                     }
                 },
@@ -314,7 +362,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         "textAlign": false
       });
       this.editor = this.ui.wysihtml5.data('wysihtml5').editor;
-      this.editor.focus();
+      window.setTimeout(function() {
+        this.editor.focus();
+      }, 200);
       this.editor.on('load', function() {
         self.updateStats();
         $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', function(e) {
