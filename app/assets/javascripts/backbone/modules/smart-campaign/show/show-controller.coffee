@@ -42,5 +42,3 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           page = new Show.NewCampaign
             kols: c.toJSON()
           Robin.layouts.main.content.show page
-
-

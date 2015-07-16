@@ -92,5 +92,12 @@ class CampaignController < ApplicationController
     render :json => c
   end
 
+  def add_budget
+    campaign = Campaign.find(params[:campaign])
+    campaign.budget = campaign.budget + params[:budget].to_i
+    campaign.save
+    render json: {:status => :ok}
+  rescue
+    render json: {:status => 'Cant add budget'}
+  end
 end
-
