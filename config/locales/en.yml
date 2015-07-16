@@ -47,6 +47,7 @@ en:
     inquires_title: General Inquires
     phone_title: Phone (customer service)
     phone: (212) 807-8300 Extension 3
+    thank_you: Thank you for contacting us. Someone from our team will contact you shortly
     form: 
       first_name_placeholder: First Name
       last_name_placeholder: Last Name
@@ -367,7 +368,86 @@ en:
         notify: "If your credit card is due to expire during the course of your subscription, MyPRGenie will notify you via email and/or telephone call. We will provide you with a link to a web form where you may submit your new card information."
         change: "If you wish to change credit cards during the course of an active subscription, you may do so by clicking the link to the Credit Card Update web form found in your payment histories page of your Account Settings section."
         failure: "In the event of credit card failure during a subscription period, we will notify you by email or telephone call, explaining the nature of the failure and present you with a link to an update form. A successful update submission will return your subscription to active status. Failure to update your subscription will result in a termination of your subscription. You may re-subscribe at any time. Repeat subscriptions however are not eligible for the free trial offer."
+  header:
+    title: Robin8
+    menu: Menu
+    pricing: Pricing
+    demo: Demo
+    log_in: Log in
+    sign_up: Sign up
+  footer:
+    right_reserved: 2015 Robin8 Inc. All rights reserved.
+    about: About
+    team: Team
+    contact: Contact
+    privacy: Privacy
+    terms: Terms
+  landing_page:
+    title: Next generation social and content marketing platform powered by artificial intelligence
+    kol_signup: Are you a KOL? Sign up
+    inf_signup: Are you an Influencer? Sign up
+    here: here.
+    learn_more: Learn More
+    text1: ROBIN8 makes reaching out to reporters and influencers effortless and effective.
+    text2: We’re changing the face of PR with technology that’s been years in the making. Predict the success of every pitch you make to a reporter by knowing with confidence they will share your content. It’s simply intelligent.
+    text3: Take the guesswork out of social and content marketing
+    text4: ROBIN8 is constantly tracking and analyzing data from the billions of articles that are released every day to create the ultimate curated database of influencers. By understanding the nuances behind every influencer and their interests, we can help make PR a simple four step process every time.
+    upload: Upload
+    upload_text: Upload your press release or content and watch it get analyzed in seconds.
+    target: Target
+    target_text: Select from the list of influencers Robin8 intelligently recommends in one click.
+    track: Track
+    track_text: Track your results through our robust analytic dashboard and use our media intelligence to keep abreast of the latest news.
+    recommend: Recommend
+    recommend_text: Influencers are curated and content is personalized to you. The Robin8 recommendation engine gets smarter every time you use it.
+    text5: What can ROBIN8 do for you?
+    text6: Spend less time doing database and research work and instead focus your efforts on actual pitches, contacts, planning, and content creation.
+    text7: Uses algorithms and machine-learning technology to adapt PR recommendations and content personalized to you.
+    text8: Achieve a higher return on your marketing spend thanks to better earned media results.
+    text9: Ready to see the world acording to ROBIN8?
+  register:
+    title: Signup
+    email_placeholder: Email
+    first_name_placeholder: First Name
+    last_name_placeholder: Last Name
+    password_placeholder: Password
+    messages:
+      email_blank: Email can't be blank
+      first_name_blank: First name can't be blank
+      last_name_blank: Last name can't be blank
+      pass_invalid: Password must be greater then 7 characters
+    agree: By signing up you agree to MyPRGenie's
+    terms: Terms of Service
+    kol_signup: Are you a KOL? Sign up
+    inf_signup: Are you an Influencer? Sign up
+    here: here.
+    signup_btn: SIGN UP
+    google_signup: Sign up using Google Plus
+    fb_signup: Sign up using Facebook
+    weibo_signup: Sign up using Weibo
+    wechat_signup: Sign up using WeChat
+    or: OR
   application:
+    login:
+      intro: 'Please enter your <strong>Email</strong> and <strong>Password</strong> or use <strong>Social Sign-in</strong>' 
+      login_label: Login
+      remember_me: Remember me
+      forgot: Forgot Password?
+      register: Register
+      google_login: Login using Google Plus
+      fb_login: Login using Facebook
+      weibo_login: Login using Weibo
+      wechat_login: Login using WeChat
+      or: OR
+      email: Email
+      password: Password
+    forgot:
+      retrieve_title: Retrieve your password
+      enter_title: Please enter your <strong>Email</strong> in order to reset your password.
+      placeholder: Email
+      submit_btn: Submit
+      user_not_found: The user with this email does not exist!
+      has_been_sent: An email with password reset information has been sent
     uploading:
       different_photo: Upload a different photo...
       choose_image: Choose an image!!!
@@ -456,6 +536,21 @@ en:
       loading: Loading
       no_news: There is no news
       untitled: Untitled Stream
+    say_something_box:
+      say_placeholder: Say something...
+      shrink_links: Shrink links
+      schedule_btn: Schedule
+      post_btn: Post
+      post_to_tw: Post to twitter
+      post_to_fb: Post to facebook
+      post_to_ln: Post to linkedin
+      post_to_wb: Post to weibo
+      post_to_wch: Post to wechat
+      tw_accounts: Twitter's account(s)
+      fb_accounts: Facebook's account(s)
+      ln_accounts: Linkedin's account(s)
+      wb_accounts: Weibo's account(s)
+      wch_accounts: Wechat's account(s)
     social:
       scheduled_posts: Scheduled Posts
       social_profiles: Social Profiles
