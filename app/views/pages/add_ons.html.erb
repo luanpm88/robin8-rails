@@ -14,7 +14,9 @@
           </div>
 
           <p class="selection-intro-heading">Add on services</p>
-          <p class="selection-guarantee">30 day money back guarantee!</p>
+          <% if current_user.active_subscription.present? %>
+            <p class="selection-guarantee">30 day money back guarantee!</p>
+          <% end %>
         </div>
       </div>
       <div class="row">
