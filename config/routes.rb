@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   #
   # end
   post '/users/follow' => 'users#follow'
+  post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
   get '/kols/new' => 'kols#create'
 
@@ -135,7 +136,7 @@ Rails.application.routes.draw do
   post 'textapi/hashtags'
 
   get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
-
+  
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
