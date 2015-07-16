@@ -27,15 +27,19 @@ class TextAlertWorker
       "blog_ids" => blog_ids, "sort_column" => sort_column
       
     stories = response[:stories]
+    
+    scheme = Rails.env.development? ? "http" : "https"
+    link = "#{scheme}://#{Rails.application.secrets[:host]}/#monitoring"
+    
     count_message = (stories.count > 10) ? "more than 10" : stories.count
     message = "Hey there! There are #{count_message} new stories " +
               "in the '#{stream.name}' stream in Robin8. " + 
-              "Please go to https://robin8.com to read the stories."
+              "Please go to #{link} to read the stories."
     
     if stories.count == 1
       message = "Hey there! There is a new story " +
               "in the '#{stream.name}' stream in Robin8. " + 
-              "Please go to https://robin8.com to read the story."
+              "Please go to #{link} to read the story."
     end
     
     if stories.count > 0
