@@ -33,6 +33,9 @@ class AlertMailer < ApplicationMailer
     @stories = summarize_stories(@stories) 
     set_inline_images(@stories)
     
+    scheme = Rails.env.development? ? "http" : "https"
+    @link = "#{scheme}://#{Rails.application.secrets[:host]}/#monitoring"
+    
     if @stories.count > 0
       mail(to: @alert.email, subject: "Robin8 streams alert - #{@stream.name}")
       @alert.update_column(:last_email_sent_at, Time.now.utc)
@@ -54,7 +57,8 @@ class AlertMailer < ApplicationMailer
         image_url = "#{scheme}://#{Rails.application.secrets.host}/" + 
           "image_proxy?#{URI.encode_www_form(params)}"
         id = "image_#{story[:id]}.png"
-        attachments.inline[id] = HTTParty.get(image_url, verify: false).body
+        attachments.inline[id] = HTTParty.get(image_url, 
+          verify: Rails.env.production?).body
       end
     end
     
