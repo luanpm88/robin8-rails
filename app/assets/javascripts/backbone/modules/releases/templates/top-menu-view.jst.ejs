@@ -45,7 +45,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <% if(release.news_room_id) {%>
-            <h4 class="modal-title truncate"> Edit <%= release.title %> </h4>
+            <h4 class="modal-title truncate"> <%= polyglot.t("releases.edit_title") %> <%= release.title %> </h4>
           <% } else {%>
             <h4 class="modal-title"> <%= polyglot.t("releases.modal.title") %> </h4>
           <% } %>

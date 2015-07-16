@@ -7,7 +7,7 @@
       <div class="row">
         <div class="col-lg-12">
           <% if @preview_mode %>
-            <i class="preview-notification">You are in a preview mode. You need to make this brand gallery public and/or save the changes in order to show it on your page</i>
+            <i class="preview-notification"><%= I18n.t('public_newsroom.notification') %></i>
           <% end %>
           <h1><%= @news_room.company_name %></h1>
           <p><%= @news_room.description %></p>
@@ -18,11 +18,11 @@
             <% end %>
           <% end %>
           <%= link_to new_public_news_room_follower_path, class: 'btn btn-default', disabled: @preview_mode do %>
-            <i class="fa fa-user-plus"></i> Follow
+            <i class="fa fa-user-plus"></i> <%= I18n.t('public_newsroom.follow') %>
           <% end %>
           <hr>
           <% if @releases.length == 0 %>
-            <i class="no-releases">No Content published yet</i>
+            <i class="no-releases"><%= I18n.t('public_newsroom.no_releases') %></i>
           <% end %>
           <div id='releases' class='row'>
             <div class="col-xs-12">
