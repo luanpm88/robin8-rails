@@ -15,3 +15,6 @@ Robin.Models.Article = Backbone.Model.extend
 
   approve: (callback) ->
     $.post "#{@urlRoot()}/#{@id}/approve", (data) -> callback? data
+
+  approve_request: (callback) ->
+    $.post "#{@urlRoot()}/#{@id}/approve_request", (data) -> callback? data

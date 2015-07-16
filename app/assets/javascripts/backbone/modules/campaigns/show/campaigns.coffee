@@ -16,10 +16,15 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
       code: (campaign) ->
-        if campaign.tracking_code?
+        if campaign.tracking_code? and campaign.tracking_code != 'Waiting'
           campaign.tracking_code
         else
           "Not approved yet"
+      code_status: (campaign) ->
+        if campaign.tracking_code? and campaign.tracking_code == 'Waiting'
+          "Pending approval"
+        else
+          "In Progress"
 
     events:
       "click .campaign": "show_editor"

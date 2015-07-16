@@ -51,6 +51,18 @@ class CampaignController < ApplicationController
     render json: {:code => code}
   end
 
+  def approve_request
+    campaign = Campaign.find(params[:id])
+    if current_user.nil?
+      article = campaign.articles.where(kol_id: current_kol.id).first
+      article.tracking_code = 'Waiting'
+      article.save
+    else
+      article = Article.find(params[:article_id])
+    end
+    render json: article, serializer: ArticleSerializer
+  end
+
   def article_comments
     article = Article.find(params[:article_id])
     render json: article.article_comments.order(created_at: :desc), each_serializer: ArticleCommentSerializer

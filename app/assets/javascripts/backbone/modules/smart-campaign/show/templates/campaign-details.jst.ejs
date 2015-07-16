@@ -23,6 +23,7 @@
           <th>Email</th>
           <th>Last update</th>
           <th>Tracking code</th>
+          <th>Status</th>
         </tr></thead>
         <tbody>
           <% _.each(accepted, function(k) { %>
@@ -31,6 +32,7 @@
               <td><%= k.email %></td>
               <td><%= formatDate(k.article.updated_at) %></td>
               <td id="code_<%= k.article.id %>"><%= code(k) %></td>
+              <td id="code_status_<%= k.article.id %>"><%= code_status(k) %></td>
             </tr>
           <% }); %>
         </tbody>

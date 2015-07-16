@@ -14,6 +14,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     events:
       "click #article-save": "save_data"
       "click #comment-save": "save_comment"
+      "click #article-approve": "approve_data"
     ui:
       wysihtml5: 'textarea.wysihtml5'
       commentInput: 'input#comment'
@@ -65,6 +66,22 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
           success: (m) ->
             $.growl
               message: "Saved!"
+
+    approve_data: ()->
+      current_text = @editor.getValue()
+      if @model.text != current_text
+        @model.set
+          text: @editor.getValue()
+        @model.save {},
+          success: (m) ->
+            $.growl
+              message: "Article saved!"
+      @model.approve_request (data) =>
+        $.growl
+            message: "Request for article approving send"
+           ,
+            type: "success"
+        $("#modal").modal("hide")
 
     save_comment: ()->
       text = @ui.commentInput.val()
