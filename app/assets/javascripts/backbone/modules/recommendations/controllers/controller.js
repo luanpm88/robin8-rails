@@ -5,6 +5,7 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
     initialize: function () {
         var self = this;
         self.module = Robin.module("Recommendations");
+
         Robin.vent.on("InsertUserTastes", function (topics, category) {
             self.insertUserTastes(topics, category);
         });
@@ -38,6 +39,18 @@ Robin.module('Recommendations', function(Recommendations, App, Backbone, Marione
         });
         Robin.vent.on("GetNextPage", function (page, recommendationType) {
             self.getNextPage(page, recommendationType);
+        });
+
+        this.on('destroy', function(){
+            Robin.vent.off("InsertUserTastes");
+            Robin.vent.off("ViewContent");
+            Robin.vent.off("ShareContent");
+            Robin.vent.off("LikeContent");
+            Robin.vent.off("DislikeContent");
+            Robin.vent.off("GetContentRecommendations");
+            Robin.vent.off("GetInfluenceRecommendations");
+            Robin.vent.off("GetBothRecommendations");
+            Robin.vent.off("GetNextPage");
         });
     },
 
