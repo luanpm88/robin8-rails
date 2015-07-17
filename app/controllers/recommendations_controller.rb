@@ -188,7 +188,7 @@ class RecommendationsController < ApplicationController
 
     def stories(page, pages)
         recommended_stories = []
-        base_url = Rails.application.secrets.robin_api_url + "stories"
+        base_url = Rails.application.secrets.robin_api_url + "uniq_stories"
         if page < pages.size
             params = "?"
             references = Hash.new
