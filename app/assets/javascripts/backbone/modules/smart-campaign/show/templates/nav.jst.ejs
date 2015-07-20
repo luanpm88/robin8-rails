@@ -1,0 +1,8 @@
+<% _.each(pages, function(p) { %>
+  <% var a = ""; if (true) a='class="active"'; %>
+  <li id="<%= p %>" <%= a %>>
+    <a href="/#smart_campaign/new/<%= p %>">
+      <%= p %>
+    </a>
+  </li>
+<% }); %>

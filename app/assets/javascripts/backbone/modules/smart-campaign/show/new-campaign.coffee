@@ -70,9 +70,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     regions:
       targets: "#target-kols"
+      nav: "#campaign-nav"
+      content: "#campaign-content"
 
     initialize: (opts) ->
       @targets_view = new Show.TargetKols()
+      @nav_view = new Show.Nav()
       @releases = _(opts.releases or []).pluck 'release'
 
     ui:
@@ -88,6 +91,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onRender: () ->
       @showChildView 'targets', @targets_view
+      @showChildView 'nav', @nav_view
       @$el.find("#deadline").datepicker
         dateFormat: "D, d M y"
       @ui.form.validator()
