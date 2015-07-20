@@ -25,6 +25,7 @@ en:
     messages:
       email_format: is not valid
       twitter_connect: is not connected to twitter
+      phone: is not valid
   activerecord:
     errors:
       models:

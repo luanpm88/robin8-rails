@@ -31,9 +31,23 @@ class StreamsController < ApplicationController
   end
 
   def stories
+    @stream = Stream.find(params[:id]) # ToDo: authorize reading stream
+    
     respond_to do |format|
       format.json do 
         @stories = fetch_stories
+        
+        if !params['page'] || params['page'] == 1
+          last_story = @stories['stories'].first
+          unless last_story.blank?
+            last_seen_story_at = Time.parse(last_story['published_at']).utc
+            
+            if last_seen_story_at != @stream.last_seen_story_at
+              @stream.update_column(:last_seen_story_at, last_seen_story_at)
+            end
+          end
+        end
+        
         render json: @stories
       end
       
@@ -70,12 +84,10 @@ class StreamsController < ApplicationController
       format.docx do
         @stories = fetch_stories
         @stories = summarize_stories(@stories["stories"])
-        @stream = Stream.find(params[:id])
       end
       
       format.html do 
         @stories = fetch_stories
-        @stream = Stream.find(params[:id])
         @colorize_background = params[:colorize_background]
         
         @stories = summarize_stories(@stories["stories"])
@@ -118,8 +130,7 @@ class StreamsController < ApplicationController
   end
   
   def fetch_stories
-    stream = Stream.find(params[:id]) # ToDo: authorize reading stream
-    req_params = stream.query_params
+    req_params = @stream.query_params
     req_params.merge!(page: URI.decode(params[:page])) if params[:page]
     req_params.merge!(per_page: params[:per_page]) if params[:per_page]
     req_params.merge!(published_at: params[:published_at]) if params[:published_at]

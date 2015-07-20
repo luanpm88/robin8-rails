@@ -1,5 +1,7 @@
 class Stream < ActiveRecord::Base
   belongs_to :user
+  has_one :alert
+  
   serialize :topics, Array
   serialize :blogs, Array
   serialize :keywords, Array
