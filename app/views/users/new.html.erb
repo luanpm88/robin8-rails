@@ -1,7 +1,7 @@
 <div class="signup">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || I18n.t('register.title') )}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || @l.t('register.title') )}%>
   </header>
 
   <div class="form-step step-one">
@@ -15,30 +15,30 @@
 
         <%= form_for @user,:url=>"/users/new" do |f|  %>
             <label>
-              <%=f.email_field :email,:placeholder=>I18n.t('register.email_placeholder'),"data-validation"=>"required",
-                               "data-validation-error-msg"=> I18n.t('register.messages.email_blank'),"data-validation"=>"email"%>
+              <%=f.email_field :email,:placeholder=>@l.t('register.email_placeholder'),"data-validation"=>"required",
+                               "data-validation-error-msg"=> @l.t('register.messages.email_blank'),"data-validation"=>"email"%>
               <!--<input type="email"  name="email" placeholder="Email" required />-->
             </label>
             <label>
-              <%=f.text_field :first_name,:placeholder=>I18n.t('register.first_name_placeholder'),"data-validation"=>"required",
-                              "data-validation-error-msg"=> I18n.t('register.messages.first_name_blank')%>
+              <%=f.text_field :first_name,:placeholder=>@l.t('register.first_name_placeholder'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('register.messages.first_name_blank')%>
               <!--<input type="text"  name="first_name" placeholder="First Name" required />-->
             </label>
             <label>
               <!--<input type="text"  name="last_name" placeholder="Last Name" required />-->
-              <%=f.text_field :last_name,:placeholder=>I18n.t('register.last_name_placeholder'),"data-validation"=>"required",
-                              "data-validation-error-msg"=> I18n.t('register.messages.last_name_blank')%>
+              <%=f.text_field :last_name,:placeholder=>@l.t('register.last_name_placeholder'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('register.messages.last_name_blank')%>
             </label>
             <label>
               <!--<input type="password"  name="password" placeholder="Password" required />-->
-              <%=f.password_field :password,:placeholder=>I18n.t('register.password_placeholder'),"data-validation"=>"length", "data-validation-length"=>"min8",
-                                  "data-validation-error-msg"=> I18n.t('register.messages.pass_invalid')%>
+              <%=f.password_field :password,:placeholder=>@l.t('register.password_placeholder'),"data-validation"=>"length", "data-validation-length"=>"min8",
+                                  "data-validation-error-msg"=> @l.t('register.messages.pass_invalid')%>
             </label>
-            <p class="agree"><%= I18n.t('register.agree')%> <a href="/terms"><%= I18n.t('register.terms')%></a>.
+            <p class="agree"> <a href="/terms"><%= @l.t('register.agree_terms')%></a>.
             <% if request.location && request.location.country.to_s == "China" %>
-              <p class="kols"><%= I18n.t('register.kol_signup')%> <a href="/kols/new"><%= I18n.t('register.here')%></a>
+              <p class="kols"><%= @l.t('register.kol_signup')%> <a href="/kols/new"><%= @l.t('register.here')%></a>
             <% else %>
-              <p class="kols"><%= I18n.t('register.inf_signup')%> <a href="/kols/new"><%= I18n.t('register.here')%></a>
+              <p class="kols"><%= @l.t('register.inf_signup')%> <a href="/kols/new"><%= @l.t('register.here')%></a>
             <% end %>
 
             <div class="errorwarning">

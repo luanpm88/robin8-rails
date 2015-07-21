@@ -1,7 +1,7 @@
 <div class="signup pricing">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('addons.title') }%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('addons.title') }%>
   </header>
 
   <div class="form-step step3">
@@ -10,20 +10,20 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="goback">
-            <a href="/pricing"><%= I18n.t 'addons.go_back'%></a>
+            <a href="/pricing"><%= @l.t 'addons.go_back'%></a>
           </div>
 
-          <p class="selection-intro-heading"><%= I18n.t 'addons.title'%> </p>
-          <p class="selection-guarantee"><%= I18n.t 'addons.money_back'%></p>
+          <p class="selection-intro-heading"><%= @l.t 'addons.title'%> </p>
+          <p class="selection-guarantee"><%= @l.t 'addons.money_back'%></p>
         </div>
       </div>
       <div class="row">
         <div class="small-12 columns">
           <table cellpadding="0" cellspacing="0">
             <tr>
-              <th class="qty"><%= I18n.t 'addons.table.qty'%></th>
-              <th><%= I18n.t 'addons.table.addon'%></th>
-              <th class="price"><%= I18n.t 'addons.table.price'%></th>
+              <th class="qty"><%= @l.t 'addons.table.qty'%></th>
+              <th><%= @l.t 'addons.table.addon'%></th>
+              <th class="price"><%= @l.t 'addons.table.price'%></th>
             </tr>
             <%@add_ons.each_with_index do |a,index|%>
                 <tr>
@@ -49,7 +49,7 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="submit-wrap">
-            <input type="submit" value="<%= I18n.t 'addons.continue'%>" class="button button-signup nextstep">
+            <input type="submit" value="<%= @l.t 'addons.continue'%>" class="button button-signup nextstep">
           </div>
         </div>
       </div>

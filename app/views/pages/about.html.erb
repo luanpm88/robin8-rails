@@ -1,12 +1,12 @@
 <div class="about">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-<%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('about.title')}%>
+<%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('about.title')}%>
 </header>
 <div class="int-content">
   <div class="row">
     <div class="small-12 columns">
-      <%= I18n.t('about.text').html_safe %>
+      <%= @l.t('about.text').html_safe %>
     </div>
   </div>
 </div>

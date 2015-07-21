@@ -2,7 +2,7 @@
 <div class="contact">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('contact_page.title')}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('contact_page.title')}%>
   </header>
 
   <div class="int-content">
@@ -10,19 +10,19 @@
       <!-- CONTENT -->
 
       <div style="border-right: 1px solid #c1c1c1; padding-right: 15px;" class="small-4 columns address-info">
-        <h3><%= I18n.t('contact_page.address_title') %></h3>
+        <h3><%= @l.t('contact_page.address_title') %></h3>
 
         <address class="contact-addresses">
-          <%= I18n.t('contact_page.address').html_safe %>
+          <%= @l.t('contact_page.address').html_safe %>
         </address>
 
         <div class="contact-addresses">
 
-          <%= I18n.t('contact_page.inquires_title') %>:
+          <%= @l.t('contact_page.inquires_title') %>:
           <a href="mailto:info@myprgenie.com"><br>info@robin8.com</a><br><br>
 
-          <%= I18n.t('contact_page.phone_title') %>:
-          <a href="#"><br><%= I18n.t('contact_page.phone') %></a><br><br>
+          <%= @l.t('contact_page.phone_title') %>:
+          <a href="#"><br><%= @l.t('contact_page.phone') %></a><br><br>
 
         </div>
 
@@ -53,10 +53,10 @@
                 <div class="form-group columns small-12">
                   <label>
                     <select class="form-control columns small-12" id="subject" name="user[subject]" required>
-                      <option selected="" value=""><%= I18n.t('contact_page.form.subject_select_placeholder') %>:</option>
-                      <option value="service"><%= I18n.t('contact_page.form.subject_select_placeholder') %></option>
-                      <option value="suggestions"><%= I18n.t('contact_page.form.suggestions') %></option>
-                      <option value="product"><%= I18n.t('contact_page.form.product_support') %></option>
+                      <option selected="" value=""><%= @l.t('contact_page.form.subject_select_placeholder') %>:</option>
+                      <option value="service"><%= @l.t('contact_page.form.subject_select_placeholder') %></option>
+                      <option value="suggestions"><%= @l.t('contact_page.form.suggestions') %></option>
+                      <option value="product"><%= @l.t('contact_page.form.product_support') %></option>
                     </select></label>
                 </div>
               </div>
@@ -64,14 +64,14 @@
               <div class="row">
                 <div class="columns small-12 form-group">
                   <label>
-                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="<%= I18n.t('contact_page.form.message_placeholder') %>"></textarea></label>
+                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="<%= @l.t('contact_page.form.message_placeholder') %>"></textarea></label>
                 </div>
               </div>
               <div class="errorwarning">
-                <p><%= I18n.t('contact_page.form.fill_out') %></p>
+                <p><%= @l.t('contact_page.form.fill_out') %></p>
               </div>
               <div class="submit-wrap">
-                <button class="button button-signup" type="submit"><%= I18n.t('contact_page.form.send') %></button>
+                <button class="button button-signup" type="submit"><%= @l.t('contact_page.form.send') %></button>
               </div>
             </div>
           </div>

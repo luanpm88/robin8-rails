@@ -7,21 +7,30 @@ class PagesController < ApplicationController
 
   def set_translations
     unless current_user.blank? and current_kol.blank?
-      p '!'
       someone = current_user
       someone = current_kol if current_user.nil?
       locale = someone.locale.nil? ? 'en' : someone.locale
 
     else
-      locale = request.location && request.location.country.to_s == "China" ? 'zh' : 'en'
+      if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
+        cookies['locale'] = { value: params[:locale], expires: 1.year.from_now }
+        I18n.locale = params[:locale].to_sym
+      elsif cookies['locale'] && [:en, :zh].include?(cookies['locale'].to_sym)
+        I18n.locale = cookies['locale'].to_sym
+      else
+        I18n.locale = request.location && request.location.country.to_s == "China" ? 'zh' : 'en'
+        cookies['locale'] = { value: I18n.locale, expires: 1.year.from_now }
+      end
+      locale = I18n.locale
     end
     #using yaml file
-    translations = I18n.backend.send(:translations)
-    @phrases = translations[locale.to_sym][:application]
+    # translations = I18n.backend.send(:translations)
+    # @phrases = translations[locale.to_sym][:application]
     
     #using redis store
-    l ||= Localization.new
-    # @phrases = JSON.parse(l.store.get(locale))['application']
+    @l ||= Localization.new
+    @l.locale = locale
+    @phrases = JSON.parse(@l.store.get(locale))['application']
   end
 
   def set_locale
@@ -77,7 +86,7 @@ class PagesController < ApplicationController
   def contact
     if request.post?
       UserMailer.contact_support(params[:user]).deliver if params[:user].present?
-      flash.now[:success] = I18n.t('contact_page.thank_you')
+      flash.now[:success] = @l.t('contact_page.thank_you')
     end
 
     render :layout => "website"
