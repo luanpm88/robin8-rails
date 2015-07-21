@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
 
   after_filter :set_csrf_headers
   # before_filter :validate_subscription, unless: :devise_controller?
+  before_filter :china_404
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
   ActiveAdmin::ResourceController.class_eval do
@@ -60,10 +61,17 @@ class ApplicationController < ActionController::Base
         render :json => {error: "500 Internal Server Error", message: e.message}, status: 500
     end
   end
-  
+
   private
-  
+
   def ssl_configured?
     !Rails.env.development?
   end
+
+  def china_404
+    if request.location && request.location.country.to_s == "China"
+      render "layouts/404", :status => 404, :layout => "404"
+    end
+  end
+
 end
