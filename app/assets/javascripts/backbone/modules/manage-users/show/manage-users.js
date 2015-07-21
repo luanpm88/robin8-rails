@@ -51,12 +51,13 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
       var viewObj = this;
       
       swal({
-        title: "Remove this user?",
-        text: "You will not be able to recover this user.",
+        title: polyglot.t("manage_users.messages.remove_user"),
+        text: polyglot.t("manage_users.messages.remove_explanation"),
         type: "error",
         showCancelButton: true,
+        cancelButtonText: polyglot.t("manage_users.messages.cancel_button"),
         confirmButtonClass: 'btn-danger',
-        confirmButtonText: 'Delete'
+        confirmButtonText: polyglot.t("manage_users.messages.confirm_button")
       },
       function(isConfirm) {
         if (isConfirm) {
@@ -151,7 +152,7 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
                   return value;
                 },
                 regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: 'The data you have entered is not a valid email'
+                message: polyglot.t("manage_users.messages.invalid_data")
               },
               serverError: {
                 message: 'something went wrong'
@@ -186,7 +187,7 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
 
     sendInvite: function(e){
       if (Robin.user.get('can_create_seat') != true) {
-        $.growl({message: "You don't have available seats!"},
+        $.growl({message: polyglot.t("manage_users.messages.not_available_seats")},
           {
             type: 'info'
           });
@@ -214,9 +215,13 @@ Robin.module('ManageUsers.Show', function(Show, App, Backbone, Marionette, $, _)
                 }
               })
               if (response.responseText == "active"){
-                $.growl('This user is already active', {type: "danger"});
+                $.growl(polyglot.t("manage_users.messages.is_active"), {type: "danger"});
               } else if (response.responseText == "sent" || response.responseText == "resent") {
-                $.growl('The invitation has been ' + response.responseText, {type: "success"});
+                if (response.responseText == "sent") {
+                  $.growl(polyglot.t("manage_users.messages.sent"), {type: "success"});
+                } else {
+                  $.growl(polyglot.t("manage_users.messages.resent"), {type: "success"});
+                };
                 viewObj.collection.fetch();
               } else {
                 var result = $.parseJSON(response.responseText);

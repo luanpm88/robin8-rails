@@ -1,7 +1,7 @@
 <div class="form-login">
   <div class="row">
-    <div class="small-12 columns">
-      <p class="loginintro">Please enter your <strong>Email</strong> and <strong>Password</strong> or use <strong>Social Sign-in</strong></p>
+    <div class="small-12 columns"> 
+      <p class="loginintro"><%= polyglot.t("login.intro") %></p>
       <form accept-charset="UTF-8" class="form-signup" id="formSignin">
 
         <label class="panel-login">
@@ -9,8 +9,8 @@
         </label>
 
         <div class="form-group">
-          <label>
-            <input type="text" class="form-control" name="email" placeholder="Email"/>
+          <label> 
+            <input type="text" class="form-control" name="email" placeholder="<%= polyglot.t("login.email") %>"/>
           </label>
         </div>
 
@@ -18,17 +18,17 @@
           <label>
             <input type="password" class="form-control" name="password" minlength="8"
                    data-fv-stringlength-message="The password must be at least 8 characters long"
-                   placeholder="Password" />
+                   placeholder="<%= polyglot.t("login.password") %>" />
           </label>
         </div>
 
         <div id="alert-danger" class="alert alert-danger" role="alert" style="display: none; text-align: center;"></div>
 
         <div class="submit-wrap">
-          <button class="button button-signup" type="button" id="login">Login</button>
+          <button class="button button-signup" type="button" id="login"><%= polyglot.t("login.login_label") %></button>
         </div>
-        <div class="rememberme"><input type="checkbox" name='remember_me' id="remember_me" /> Remember me</div>
-        <div class="forgotpass"><a href="#forgot">Forgot Password?</a> <a href="/users/new">Register</a></div>
+        <div class="rememberme"><input type="checkbox" name='remember_me' id="remember_me" /> <%= polyglot.t("login.remember_me") %></div>
+        <div class="forgotpass"><a href="#forgot"><%= polyglot.t("login.forgot") %></a> <a href="/users/new"><%= polyglot.t("login.register") %></a></div>
 
       </form>
     </div>
@@ -36,18 +36,28 @@
   <div class="row">
       <div class="small-12 columns">
           <div class="or-line">
-              <span>OR</span>
+              <span><%= polyglot.t("login.or") %></span>
           </div>
       </div>
   </div>
   <div class="row">
       <div class="small-12 columns social-login">
-          <button class="btn btn-google-plus" id="google_oauth2"><i class="fa fa-google-plus"></i> <span>Login using Google Plus</span></button>
+          <button class="btn btn-google-plus" id="google_oauth2"><i class="fa fa-google-plus"></i> <span><%= polyglot.t("login.google_login") %></span></button>
       </div>
   </div>
   <div class="row">
       <div class="small-12 columns social-login">
-          <button class="btn btn-facebook" id="facebook"><i class="fa fa-facebook"></i> <span>Login using Facebook</span></button>
+          <button class="btn btn-facebook" id="facebook"><i class="fa fa-facebook"></i> <span><%= polyglot.t("login.fb_login") %></span></button>
       </div>
   </div>
+  <!-- <div class="row">
+      <div class="small-12 columns social-login">
+          <button class="btn btn-weibo" id="weibo"><i class="fa fa-weibo"></i> <span><%= polyglot.t("login.weibo_login") %></span></button>
+      </div>
+  </div>
+  <div class="row">
+      <div class="small-12 columns social-login">
+          <button class="btn btn-wechat" id="wechat"><i class="fa fa-wechat"></i> <span><%= polyglot.t("login.wechat_login") %></span></button>
+      </div>
+  </div> -->
 </div>

@@ -8,7 +8,7 @@
       <div class="col-md-3">
         <div class="text-center" id="image-uploader-custom">
           <img src="//placehold.it/200" id="avatar-image" class="avatar img-circle" alt="avatar">
-          <h6>Upload a different photo...</h6>
+          <h6><%= polyglot.t("uploading.different_photo") %></h6>
           <input type="hidden" id="avatar-upload" role="uploadcare-uploader"
           data-crop="200x200 upscale"
           data-max-size="3145728"
@@ -48,7 +48,7 @@
             <div>
               <div class="ui-select">
                 <select id="user_time_zone" name="time_zone" class="form-control">
-                  <option value=""> -- select an option -- </option>
+                  <option value=""> -- <%= polyglot.t("profile.time_placeholder") %> -- </option>
                   <option value="American Samoa">(-11:00) American Samoa </option>
                   <option value="International Date Line West">(-11:00) International Date Line West </option>
                   <option value="Midway Island">(-11:00) Midway Island </option>

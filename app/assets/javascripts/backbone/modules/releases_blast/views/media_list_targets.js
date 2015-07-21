@@ -75,12 +75,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             pitchContactsCollection: self.pitchContactsCollection
           });
           
-          $.growl({message: "Your list has been successfully uploaded."
+          $.growl({message: polyglot.t("smart_release.targets_step.media_tab.successfully_uploaded")
           },{
             type: 'success'
           });
           
-          $.growl({message: "All contacts in incorrect format will be ignored."
+          $.growl({message: polyglot.t("smart_release.targets_step.media_tab.ignored_contacts")
           },{
             type: 'info'
           });
@@ -103,7 +103,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       e.preventDefault();
         
       if (Robin.user.get('can_create_media_list') != true) {
-        $.growl({message: "You don't have available media list in your subscription!"},
+        $.growl({message: polyglot.t("smart_release.targets_step.media_tab.not_available")},
           {
             type: 'info'
           });

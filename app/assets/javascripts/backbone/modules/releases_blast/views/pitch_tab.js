@@ -81,8 +81,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           self.model.clear({silent: true});
           self.model.get('media_contacts').add(self.collection.models);
           self.ui.mediaListNameInput.trigger('change');
-
-          $.growl({message: "Your list has been successfully saved."
+          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
           },{
             type: 'success'
           });
@@ -180,8 +179,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     serializeData: function() {
       return {
         mergeTags: [
-          'First Name', 'Last Name', 'Summary',
-          'Outlet', 'Link', 'Title', 'Text'
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.first_name"), 
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.last_name"),
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.summary"),
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.outlet"),
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.link"),
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.title"), 
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.text")
         ],
         pitch: this.model.toJSON()
       }
@@ -496,8 +500,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             data: { release_id: self.draftPitchModel.get('release_id') },
             processData: true
           });
-
-          $.growl({message: "Your pitch has been successfully sent."
+          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
           },{
             type: 'success'
           });

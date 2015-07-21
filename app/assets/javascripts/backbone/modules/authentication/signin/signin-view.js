@@ -19,7 +19,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
       this.kolBinder.bind(this.kolModel, this.el);
-      $('.signup-tag').text('login');
+      $('.signup-tag').text(polyglot.t('login.title'));
       $('.nav.fixed a').removeClass('active');
       $('#login-link').addClass('active');
     },

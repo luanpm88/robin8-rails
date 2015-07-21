@@ -36,6 +36,7 @@ gem 'oauth2'
 gem 'legato'
 gem 'google-api-client'
 gem 'sitemap_generator'
+gem 'redis-objects'
 
 # Character encoding detecting library
 gem 'charlock_holmes'
