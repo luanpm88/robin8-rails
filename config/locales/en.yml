@@ -363,7 +363,8 @@ en:
   landing_page:
     title: Next generation social and content marketing platform powered by artificial intelligence
     kol_signup: Are you a KOL? Sign up
-    inf_signup: Are you an Influencer? Sign up
+    inf_signup: "Are you an Influencer? Sign up "
+    sign_up: Sign Up
     here: here.
     learn_more: Learn More
     text1: ROBIN8 makes reaching out to reporters and influencers effortless and effective.
@@ -404,8 +405,30 @@ en:
     weibo_signup: Sign up using Weibo
     wechat_signup: Sign up using WeChat
     or: OR
+  kols:
+    title: Signup
+    email: Email
+    first_name: First Name
+    last_name: Last Name
+    password: Password
+    location: Location
+    interests: Interests
+    agree: By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service
+    email_error: Email can't be blank
+    fname_error: First name can't be blank
+    lname_error: Last name can't be blank
+    password_error: Password must be greater then 7 characters
+    location_error: Location can't be blank
+  public_release:
+    notification: "You are in a preview mode. You need to make this release and newsroom public in order to show it on your page"
+  public_newsroom:
+    notification: "You are in a preview mode. You need to make this newsroom public and/or save the changes in order to show it on your page"
+    no_releases: "No Releases published yet"
+    follow: Follow
+    pressroom: Pressroom
   application:
     login:
+      title: login
       intro: 'Please enter your <strong>Email</strong> and <strong>Password</strong> or use <strong>Social Sign-in</strong>' 
       login_label: Login
       remember_me: Remember me
@@ -566,6 +589,7 @@ en:
       opened: Opened
       dropped: Dropped 
     releases:
+      edit_title: Edit
       all_newsrooms: All Newsrooms
       new_release: New release
       modal:
@@ -860,6 +884,9 @@ en:
           length: Summary length
           sentences: sentences
           tags: Available merge tags
+          text_dear: Dear
+          text_here: "Here's a press release you might find interesting. Please let me know your thoughts."
+          text_text: Press Release Text
           merge_tags:
             first_name: First Name
             last_name: Last Name

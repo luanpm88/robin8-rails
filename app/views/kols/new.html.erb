@@ -6,7 +6,7 @@
 <% end %>
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || "Signup")}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || I18n.t('kols.title') )}%>
   </header>
 
   <div class="form-step step-one">
@@ -20,29 +20,29 @@
 
         <%= form_for @kol,:url=>"/kols/new" do |f|  %>
             <label>
-              <%=f.email_field :email,:placeholder=>"Email","data-validation"=>"required",
-                               "data-validation-error-msg"=> "Email can't be blank","data-validation"=>"email"%>
+              <%=f.email_field :email,:placeholder=> I18n.t('kols.email') ,"data-validation"=>"required",
+                               "data-validation-error-msg"=> I18n.t('kols.email_error'),"data-validation"=>"email"%>
             </label>
             <label>
-              <%=f.text_field :first_name,:placeholder=>"First Name","data-validation"=>"required",
-                              "data-validation-error-msg"=> "First name can't be blank"%>
+              <%=f.text_field :first_name,:placeholder=>I18n.t('kols.first_name'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> I18n.t('kols.fname_error')%>
             </label>
             <label>
-              <%=f.text_field :last_name,:placeholder=>"Last Name","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Last name can't be blank"%>
+              <%=f.text_field :last_name,:placeholder=>I18n.t('kols.last_name'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> I18n.t('kols.lname_error')%>
             </label>
             <label>
-              <%=f.password_field :password,:placeholder=>"Password","data-validation"=>"length", "data-validation-length"=>"min8",
-                                  "data-validation-error-msg"=> "Password must be greater then 7 characters"%>
+              <%=f.password_field :password,:placeholder=>I18n.t('kols.password'),"data-validation"=>"length", "data-validation-length"=>"min8",
+                                  "data-validation-error-msg"=> I18n.t('kols.password_error')%>
             </label>
             <label>
-              <%=f.text_field :location,:placeholder=>"Location","data-validation"=>"required",
-                                  "data-validation-error-msg"=> "Location can't be blank"%>
+              <%=f.text_field :location,:placeholder=>I18n.t('kols.location'),"data-validation"=>"required",
+                                  "data-validation-error-msg"=> I18n.t('kols.location_error')%>
             </label>
             <label>
-              <input type="hidden" id="interests" name="interests" placeholder="Interests" style="width:100%;" />
+              <input type="hidden" id="interests" name="interests" placeholder="<%= I18n.t('kols.interests')%>" style="width:100%;" />
             </label>
-            <p class="agree">By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service</a>.
+            <p class="agree"><%= I18n.t('kols.agree').html_safe %></a>.
 
             <div class="errorwarning">
               <p>Please fill out all required fields</p>
