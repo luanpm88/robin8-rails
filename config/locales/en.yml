@@ -4,7 +4,6 @@ en:
     messages:
       email_format: is not valid
       twitter_connect: is not connected to twitter
-      phone: is not valid
   activerecord:
     errors:
       models:
@@ -473,7 +472,6 @@ en:
     navigation:
       dashboard: Dashboard
       smart_release: SmartRelease
-      smart_campaign: SmartCampaign
       monitoring: Monitoring
       newsrooms: Newsrooms
       releases: Releases
@@ -527,7 +525,7 @@ en:
       popularity: Popularity
       time_range: Time range
       last_24_hours: Last 24 hours
-      last_week: Last week
+      last_week: Last week 
       last_month: Last month
       all_time: All time
       cancel: Cancel
@@ -556,10 +554,10 @@ en:
     social:
       scheduled_posts: Scheduled Posts
       social_profiles: Social Profiles
-      posts:
+      posts: 
         title: Review Scheduled Posts
-        description1: Below is a list of your scheduled post(s) to your social profiles.  To schedule a post, just go to the "Say Something" box next to the Robin8 logo, located on the top of the dashboard.
-        description2: To delete a scheduled post, just click on the delete button on this page.
+        description1: Below is a list of your scheduled post(s) to your social profiles.  To schedule a post, just go to the "Say Something" box next to the Robin8 logo, located on the top of the dashboard. 
+        description2: To delete a scheduled post, just click on the delete button on this page. 
         today: Today
         tomorrow: Tomorrow
         later: Later
@@ -637,7 +635,7 @@ en:
           next: Next
           save: Save draft
           delete: Delete Release
-        warning: This release won't be publicly displayed while the parent Newsroom remains unpublished.
+        warning: This release won't be publicly displayed while the parent Newsroom remains unpublished. 
         publish: Publish the newsroom!
         dropdown: 
           select: Select...
@@ -667,7 +665,7 @@ en:
         required_email: The email address is required
       buttons: 
         save: Save changes
-        cancel: Cancel
+        cancel: Cancel 
     newsrooms:
       buttons:
         new: New Newsroom
@@ -677,7 +675,7 @@ en:
         buttons:
           preview: Preview
           releases: Releases
-          edit: Edit
+          edit: Edit        
       modal:
         title: Create NewsRoom
         details_tab:
@@ -734,12 +732,12 @@ en:
           instagram: Instagram
         media_tab:
           title: Media
-        buttons:
+        buttons: 
           save: Save changes
           preview: Preview
           delete: Delete Newsroom
       messages: 
-        not_available_newsrooms: You don't have available newsrooms!
+        not_available_newsrooms: You don't have available newsrooms! 
     manage_users:
       buttons:
         manage: Manage Users
@@ -751,7 +749,7 @@ en:
         name: Name
         email: Email
       title: User management
-      search_placeholder: Search User by Name or Email
+      search_placeholder: Search User by Name or Email 
       input_placeholder: Type User Email
       messages:
         is_active: This user is already active
@@ -774,7 +772,7 @@ en:
         description: SmartRelease helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
         notification: You can't use smart release feature. Update your add ons.
         select: Select a release to start
-        buttons:
+        buttons: 
           analyze: Analyze
           new_release: New Release
         dropdown:
@@ -787,12 +785,12 @@ en:
         is_about: <strong> "%{name}" </strong> is about
         topics: and the following topics are mentioned in it
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
-        buttons:
+        buttons: 
           next: Next
       targets_step:
         title: Targets
         description: What if you knew EXACTLY who to contact for every campaign, based on a data-driven prediction on how successful each pitch will be? Robin8 helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
-        influencers_tab:
+        influencers_tab: 
           title: Influencers
           author: Author
           outlet: Outlet
@@ -812,12 +810,12 @@ en:
           title: Social
           influencer: Influencer
           followers: Followers
-          reach: Reach
+          reach: Reach 
           amplif: Amplif.
           relevance: Relevance
           pitch: Pitch?
           contact: Contact
-        search_tab:
+        search_tab: 
           title: Search
           search_authors:
             title: Search Authors
@@ -842,7 +840,7 @@ en:
             topic_placeholder: Topic
             location_placeholder: Location
           search: Search
-        media_tab:
+        media_tab: 
           title: Media List
           add_list: Add a previously saved list
           upload_button: Upload a new list
@@ -858,7 +856,7 @@ en:
             contacts: Contacts
             actions: Actions
             empty: You haven't selected any media list yet!
-        buttons:
+        buttons: 
           next: Next
       pitch_step:
         title: Pitch
