@@ -35,10 +35,10 @@ every 1.day, :at => '5:00 am' do
   rake "-s sitemap:refresh"
 end
 
-every 3.hours do
+every 5.minutes do
   rake 'alert:notify_users_via_email'
 end
 
-every 6.hours do
+every 3.hours do
   rake 'alert:notify_users_via_text'
 end
