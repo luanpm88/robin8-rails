@@ -6,7 +6,7 @@ class PhoneValidator < ActiveModel::EachValidator
       response.phone_number #if invalid, throws an exception. If valid, no problems.
     rescue => e
       if e.code == 20404
-        object.errors[attribute] << (options[:message] || I18n.t('errors.messages.phone'))
+        object.errors[attribute] << (options[:message] || @l.t('errors.messages.phone'))
       else
         raise e
       end

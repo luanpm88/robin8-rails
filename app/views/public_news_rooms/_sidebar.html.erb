@@ -11,7 +11,7 @@
         <% end %>
         <br>
         <strong><%= news_room.company_name %></strong>
-        <br /><%= I18n.t('public_newsroom.pressroom') %>
+        <br /><%= @l.t('public_newsroom.pressroom') %>
       </div>
     <% unless @preview_mode%>
       </a>
@@ -127,7 +127,7 @@
   <li class="btn-li">
     <div class="public-button-centered">
       <%= link_to new_public_news_room_follower_path, class: 'btn btn-default', disabled: @preview_mode do %>
-        <i class="fa fa-user-plus"></i> <%= I18n.t('public_newsroom.follow') %>
+        <i class="fa fa-user-plus"></i> <%= @l.t('public_newsroom.follow') %>
       <% end %>
     </div>
   </li>
