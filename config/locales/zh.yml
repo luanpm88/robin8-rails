@@ -429,7 +429,6 @@ zh:
     navigation:
       dashboard: 主界面
       smart_release: 智能发布
-      smart_campaign: SmartCampaign
       monitoring: 监控
       newsrooms: 新闻室
       releases: 发布
@@ -688,7 +687,7 @@ zh:
           instagram: Instagram
         media_tab:
           title: 素材
-        buttons:
+        buttons: 
           save: 保存修改
           preview: 预览
           delete: 删除内容库
@@ -728,7 +727,7 @@ zh:
         description: Robin8 可以通过智能分析来深度了解KOLs和大V们，帮你的推广活动找到最为合适的人选，从而最大程度的优化投递结果。
         notification: 对不起，你还不能使用智能发布。 请升级套餐
         select: 选择一篇文章
-        buttons:
+        buttons: 
           analyze: 分析
           new_release: 新的文章
         dropdown:
@@ -741,12 +740,12 @@ zh:
         is_about: <strong> "%{name}" </strong>是关于
         topics: 将会提到如下的话题
         summary: 如下是<strong> "%{name}" </strong>的小结
-        buttons:
+        buttons: 
           next: 下一步
       targets_step:
         title: 目标
         description: 如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的KOLs和大V们，这个听起来怎么样？Robin8 可以实现这一切，帮你摆脱PR世界里毫无依据的猜想和机会渺茫的投递
-        influencers_tab:
+        influencers_tab: 
           title: 大V
           author: 作者
           outlet: 媒介
@@ -771,7 +770,7 @@ zh:
           relevance: 相关度
           pitch: 投递？
           contact: 联系
-        search_tab:
+        search_tab: 
           title: 搜索
           search_authors:
             title: 搜索作者
@@ -796,7 +795,7 @@ zh:
             topic_placeholder: 主题
             location_placeholder: 地点
           search: 搜索
-        media_tab:
+        media_tab: 
           title: 媒体名单
           add_list: 添加过去保存过的名单
           upload_button: 上传新的名单
@@ -812,7 +811,7 @@ zh:
             contacts: 联系方式
             actions: 动作
             empty: 你还没有选择任何媒体名单
-        buttons:
+        buttons: 
           next: 下一步
       pitch_step:
         title: 投递
