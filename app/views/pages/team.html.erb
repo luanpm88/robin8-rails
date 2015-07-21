@@ -2,7 +2,7 @@
 <div class="team">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-<%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('team_page.title').html_safe}%>
+<%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('team_page.title').html_safe}%>
 </header>
 
 
@@ -11,27 +11,27 @@
     <div class="small-12 medium-4 columns">
       <div class="team-box">
         <%=image_tag "team-miranda.png"%>
-        <h3><%= I18n.t('team_page.ceo_name') %></h3>
-        <h4><%= I18n.t('team_page.ceo_pos') %></h4>
-        <p><%= I18n.t('team_page.ceo_desc') %></p>
+        <h3><%= @l.t('team_page.ceo_name') %></h3>
+        <h4><%= @l.t('team_page.ceo_pos') %></h4>
+        <p><%= @l.t('team_page.ceo_desc') %></p>
       </div>
     </div>
     <div class="small-12 medium-4  columns">
       <div class="team-box">
         <!--<img src="team-hassan.png" />-->
         <%=image_tag "team-hassan.png"%>
-        <h3><%= I18n.t('team_page.chairman_name') %></h3>
-        <h4><%= I18n.t('team_page.chairman_pos') %></h4>
-        <p><%= I18n.t('team_page.chairman_desc') %></p>
+        <h3><%= @l.t('team_page.chairman_name') %></h3>
+        <h4><%= @l.t('team_page.chairman_pos') %></h4>
+        <p><%= @l.t('team_page.chairman_desc') %></p>
       </div>
     </div>
     <div class="small-12 medium-4  columns">
       <div class="team-box">
         <!--<img src="team-alex.png" />-->
         <%=image_tag "team-alex.png"%>
-        <h3><%= I18n.t('team_page.sales_name') %></h3>
-        <h4><%= I18n.t('team_page.sales_pos') %></h4>
-        <p><%= I18n.t('team_page.sales_desc') %></p>
+        <h3><%= @l.t('team_page.sales_name') %></h3>
+        <h4><%= @l.t('team_page.sales_pos') %></h4>
+        <p><%= @l.t('team_page.sales_desc') %></p>
       </div>
     </div>
   </div>
@@ -40,27 +40,27 @@
       <div class="team-box">
         <!--<img src="team-olivia.png" />-->
         <%=image_tag "team-olivia.png"%>
-        <h3><%= I18n.t('team_page.support_name') %></h3>
-        <h4><%= I18n.t('team_page.support_pos') %></h4>
-        <p><%= I18n.t('team_page.support_desc') %></p>
+        <h3><%= @l.t('team_page.support_name') %></h3>
+        <h4><%= @l.t('team_page.support_pos') %></h4>
+        <p><%= @l.t('team_page.support_desc') %></p>
       </div>
     </div>
     <div class="small-12 medium-4  columns">
       <div class="team-box">
         <!--<img src="team-cynthia.png" />-->
         <%=image_tag "team-cynthia.png"%>
-        <h3><%= I18n.t('team_page.operations_name') %></h3>
-        <h4><%= I18n.t('team_page.operations_pos') %></h4>
-        <p><%= I18n.t('team_page.operations_desc') %></p>
+        <h3><%= @l.t('team_page.operations_name') %></h3>
+        <h4><%= @l.t('team_page.operations_pos') %></h4>
+        <p><%= @l.t('team_page.operations_desc') %></p>
       </div>
     </div>
     <div class="small-12 medium-4  columns">
       <div class="team-box">
         <!--<img src="team-razee.png" />-->
         <%=image_tag "team-razee.png"%>
-        <h3><%= I18n.t('team_page.developer_name') %></h3>
-        <h4><%= I18n.t('team_page.developer_pos') %></h4>
-        <p><%= I18n.t('team_page.developer_desc') %></p>
+        <h3><%= @l.t('team_page.developer_name') %></h3>
+        <h4><%= @l.t('team_page.developer_pos') %></h4>
+        <p><%= @l.t('team_page.developer_desc') %></p>
       </div>
     </div>
   </div>
@@ -69,9 +69,9 @@
       <div class="team-box">
         <!--<img src="team-edison.png" />-->
         <%=image_tag "team-edison.png"%>
-        <h3><%= I18n.t('team_page.scientist_name') %></h3>
-        <h4><%= I18n.t('team_page.scientist_pos') %></h4>
-        <p><%= I18n.t('team_page.scientist_desc') %></p>
+        <h3><%= @l.t('team_page.scientist_name') %></h3>
+        <h4><%= @l.t('team_page.scientist_pos') %></h4>
+        <p><%= @l.t('team_page.scientist_desc') %></p>
       </div>
     </div>
     <div class="small-12 medium-4 columns">
@@ -84,7 +84,7 @@
 <div class="team-content ">
   <div class="row advisors">
     <div class="small-12  columns">
-      <h3><%= I18n.t('team_page.advisors.title').html_safe %></h3>
+      <h3><%= @l.t('team_page.advisors.title').html_safe %></h3>
     </div>
   </div>
   <div class="row">
@@ -92,16 +92,16 @@
       <div class="team-box">
         <!--<img src="Advisor_ONELLAMALABS_1x.png" />-->
         <%=image_tag "Advisor_ONELLAMALABS_1x.png"%>
-        <h3><%= I18n.t('team_page.advisors.advisor1_name') %></h3>
-        <p><%= I18n.t('team_page.advisors.advisor1_name') %> (<a href="http://www.onellamalabs.com" target="_blank">www.onellamalabs.com</a>) <%= I18n.t('team_page.advisors.advisor1_desc') %> </p>
+        <h3><%= @l.t('team_page.advisors.advisor1_name') %></h3>
+        <p><%= @l.t('team_page.advisors.advisor1_name') %> (<a href="http://www.onellamalabs.com" target="_blank">www.onellamalabs.com</a>) <%= @l.t('team_page.advisors.advisor1_desc') %> </p>
       </div>
     </div>
     <div class="small-12 medium-4 columns">
       <div class="team-box">
         <!--<img src="Advisor_Chinaccelerator_1x.png" />-->
         <%=image_tag "Advisor_Chinaccelerator_1x.png"%>
-        <h3><%= I18n.t('team_page.advisors.advisor2_name') %></h3>
-        <p><%= I18n.t('team_page.advisors.advisor2_name') %> (<a href="http://www.chinaccelerator.com" target="_blank">www.chinaccelerator.com</a>) <%= I18n.t('team_page.advisors.advisor2_desc') %> </p>
+        <h3><%= @l.t('team_page.advisors.advisor2_name') %></h3>
+        <p><%= @l.t('team_page.advisors.advisor2_name') %> (<a href="http://www.chinaccelerator.com" target="_blank">www.chinaccelerator.com</a>) <%= @l.t('team_page.advisors.advisor2_desc') %> </p>
       </div>
     </div>
   </div>

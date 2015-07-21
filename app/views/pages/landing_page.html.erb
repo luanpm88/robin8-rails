@@ -2,16 +2,16 @@
   <div class="nav fixed">
     <nav class="top-bar" data-topbar role="navigation">
       <ul class="title-area">
-        <li><a class="logo" href="/"><%= I18n.t('header.title') %></a></li>
+        <li><a class="logo" href="/"><%= @l.t('header.title') %></a></li>
         <li class="toggle-topbar menu-icon">
-          <a href="#"><span><%= I18n.t('header.menu') %></span></a>
+          <a href="#"><span><%= @l.t('header.menu') %></span></a>
         </li>
       </ul>
       <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
           <li><a href="http://try.robin8.com/robin/" target="_blank">Contact Us</a></li>
-          <li><a href="/signin"><%= I18n.t('header.log_in') %></a></li>
+          <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
         </ul>
       </section>
     </nav>
@@ -19,21 +19,21 @@
   <div class="row">
     <div class="large-12 columns">
       <h1 class="logo" style="margin-top: 194px;">
-        <a href="/"><%= I18n.t('header.title') %></a>
+        <a href="/"><%= @l.t('header.title') %></a>
       </h1>
-      <h2><%= I18n.t('landing_page.title') %></h2>
+      <h2><%= @l.t('landing_page.title') %></h2>
       <a class="button button-signup" href="http://try.robin8.com/robin/">Contact Us</a>
     </div>
   </div>
-  <a class="learn-more"><%= I18n.t('landing_page.learn_more') %></a>
+  <a class="learn-more"><%= @l.t('landing_page.learn_more') %></a>
 </header>
 
 <div class="screenpane">
   <div class="row">
 
     <div class="small-12 medium-5 large-6  columns left">
-      <h2><%= I18n.t('landing_page.text1') %></h2>
-      <p><%= I18n.t('landing_page.text2') %></p>
+      <h2><%= @l.t('landing_page.text1') %></h2>
+      <p><%= @l.t('landing_page.text2') %></p>
       <p><a class="button button-signup" href="http://try.robin8.com/robin/">Contact Us</a></p>
     </div>
     <div class="small-12 medium-7  large-6  columns videoembedsection right">
@@ -47,8 +47,8 @@
 <div class="prsteps">
   <div class="row ">
     <div class="small-12 columns">
-      <h2><%= I18n.t('landing_page.text3') %></h2>
-      <p><%= I18n.t('landing_page.text4') %> </p>
+      <h2><%= @l.t('landing_page.text3') %></h2>
+      <p><%= @l.t('landing_page.text4') %> </p>
     </div>
   </div>
   <div class="row ">
@@ -59,8 +59,8 @@
         </div>
       </div>
       <div class="pr-content">
-        <h3><%= I18n.t('landing_page.upload') %></h3>
-        <p><%= I18n.t('landing_page.upload_text') %></p>
+        <h3><%= @l.t('landing_page.upload') %></h3>
+        <p><%= @l.t('landing_page.upload_text') %></p>
       </div>
     </div>
     <div class="medium-3 columns pr-types">
@@ -70,8 +70,8 @@
         </div>
       </div>
       <div class="pr-content">
-        <h3><%= I18n.t('landing_page.target') %></h3>
-        <p><%= I18n.t('landing_page.target_text') %></p>
+        <h3><%= @l.t('landing_page.target') %></h3>
+        <p><%= @l.t('landing_page.target_text') %></p>
       </div>
     </div>
     <div class="medium-3 columns pr-types">
@@ -81,8 +81,8 @@
         </div>
       </div>
       <div class="pr-content">
-        <h3><%= I18n.t('landing_page.track') %></h3>
-        <p><%= I18n.t('landing_page.track_text') %></p>
+        <h3><%= @l.t('landing_page.track') %></h3>
+        <p><%= @l.t('landing_page.track_text') %></p>
       </div>
     </div>
     <div class="medium-3 columns pr-types">
@@ -92,8 +92,8 @@
         </div>
       </div>
       <div class="pr-content">
-        <h3><%= I18n.t('landing_page.recommend') %></h3>
-        <p><%= I18n.t('landing_page.recommend_text') %></p>
+        <h3><%= @l.t('landing_page.recommend') %></h3>
+        <p><%= @l.t('landing_page.recommend_text') %></p>
       </div>
     </div>
   </div>
@@ -106,13 +106,13 @@
 <div class="whatwedo">
   <div class="row">
     <div class="large-12 columns">
-      <h2><%= I18n.t('landing_page.text5') %></h2>
+      <h2><%= @l.t('landing_page.text5') %></h2>
       <p><span class="icon-img-wrap left">
-      <%= image_tag 'icon-time.png', class: 'icon-left' %></span> <%= I18n.t('landing_page.text6') %></p>
+      <%= image_tag 'icon-time.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text6') %></p>
       <p><span class="icon-img-wrap left">
-      <%= image_tag 'icon-machine.png', class: 'icon-left' %></span> <%= I18n.t('landing_page.text7') %></p>
+      <%= image_tag 'icon-machine.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text7') %></p>
       <p><span class="icon-img-wrap left">
-      <%= image_tag 'icon-return.png', class: 'icon-left' %></span> <%= I18n.t('landing_page.text8') %></p>
+      <%= image_tag 'icon-return.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text8') %></p>
 
     </div>
   </div>
@@ -123,7 +123,7 @@
 <div class="ft-lead">
   <div class="row">
     <div class="large-12 columns">
-      <h2><%= I18n.t('landing_page.text9') %></h2>
+      <h2><%= @l.t('landing_page.text9') %></h2>
       <a class="button button-signup" href="http://try.robin8.com/robin/">Contact Us</a>
     </div>
   </div>
@@ -134,8 +134,14 @@
     <div class="small-12 medium-3 columns ft-logo right">
       <%= image_tag 'ROBIN8-logo.png' %>
     </div>
-    <div class="small-12 medium-9 columns left">
-      &copy;<%= I18n.t('footer.right_reserved') %> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= I18n.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= I18n.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= I18n.t('footer.contact') %></a> <a  href="/terms" class="ft-link privacy"><%= I18n.t('footer.privacy') %> &amp; <%= I18n.t('footer.terms') %></a>
+    <div class="small-12 medium-12 columns left">
+      &copy;<%= @l.t('footer.right_reserved') %> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/terms" class="ft-link privacy"><%= @l.t('footer.privacy_and_terms') %> </a>
+      <%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
+        <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: 'Switch to Chinese locale' %>
+      <% end %>
+      <%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
+        <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: 'Switch to Chinese locale' %>
+      <% end %>
     </div>
   </div>
 </footer>

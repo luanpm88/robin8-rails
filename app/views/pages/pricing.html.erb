@@ -2,7 +2,7 @@
 <div class="signup pricing">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => I18n.t('pricing.select_plan.title')}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('pricing.select_plan.title')}%>
 
   </header>
   <div class="form-step">
@@ -10,10 +10,10 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="tab-nav">
-            <p class="selection-intro business-plans"><%= I18n.t('pricing.select_plan.empower').html_safe %></p>
+            <p class="selection-intro business-plans"><%= @l.t('pricing.select_plan.empower').html_safe %></p>
           </div>
 
-          <p class="selection-intro-heading"><%= I18n.t('pricing.select_plan.plans') %></p>
+          <p class="selection-intro-heading"><%= @l.t('pricing.select_plan.plans') %></p>
         </div>
       </div>
       <div class="row business-plans" id="business-plans" data-equalizer>
@@ -91,7 +91,7 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="submit-wrap">
-            <input type="button" onclick="checkout();" value="<%= I18n.t('pricing.select_plan.continue') %>" class="button button-signup nextstep" id="planselect-button">
+            <input type="button" onclick="checkout();" value="<%= @l.t('pricing.select_plan.continue') %>" class="button button-signup nextstep" id="planselect-button">
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@
   <div class="signup-footer">
     <div class="row">
       <div class="small-12 columns">
-        <h3><%= I18n.t('pricing.service_details') %></h3>
+        <h3><%= @l.t('pricing.service_details') %></h3>
       </div>
     </div>
     <div class="row">
@@ -114,8 +114,8 @@
             <!--<img src="img/icon-seat.png" />-->
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.seat') %></h4>
-            <p><%= I18n.t('pricing.seat_description') %></p>
+            <h4><%= @l.t('pricing.seat') %></h4>
+            <p><%= @l.t('pricing.seat_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -124,8 +124,8 @@
             <!--<img src="img/icon-newsroom.png" />-->
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.newsroom') %></h4>
-            <p><%= I18n.t('pricing.newsroom_description') %></p>
+            <h4><%= @l.t('pricing.newsroom') %></h4>
+            <p><%= @l.t('pricing.newsroom_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -134,8 +134,8 @@
             <!--<img src="img/icon-pressrelease.png" />-->
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.press_release') %></h4>
-            <p><%= I18n.t('pricing.press_release_description') %></p>
+            <h4><%= @l.t('pricing.press_release') %></h4>
+            <p><%= @l.t('pricing.press_release_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -144,8 +144,8 @@
             <!--<img src="img/icon-smartrelease.png" />-->
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.smart_release') %></h4>
-            <p><%= I18n.t('pricing.smart_release_description') %></p>
+            <h4><%= @l.t('pricing.smart_release') %></h4>
+            <p><%= @l.t('pricing.smart_release_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -154,8 +154,8 @@
             <!--<img src="img/icon-mediamonitoring.png" />-->
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.monitoring_stream') %></h4>
-            <p><%= I18n.t('pricing.monitoring_stream_description') %></p>
+            <h4><%= @l.t('pricing.monitoring_stream') %></h4>
+            <p><%= @l.t('pricing.monitoring_stream_description') %></p>
           </div>
         </div><!-- end service-item -->
 
@@ -167,8 +167,8 @@
             <!--<img src="img/icon-personalmedia.png" />-->
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.media_list') %></h4>
-            <p><%= I18n.t('pricing.media_list_description') %></p>
+            <h4><%= @l.t('pricing.media_list') %></h4>
+            <p><%= @l.t('pricing.media_list_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -177,8 +177,8 @@
             <!--<img src="img/icon-prnewswire.png" />-->
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.newswire') %></h4>
-            <p><%= I18n.t('pricing.newswire_description') %></p>
+            <h4><%= @l.t('pricing.newswire') %></h4>
+            <p><%= @l.t('pricing.newswire_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -187,8 +187,8 @@
             <!--<img src="img/icon-myprgenieweb.png" />-->
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.web_distribution') %></h4>
-            <p><%= I18n.t('pricing.web_distribution_description') %></p>
+            <h4><%= @l.t('pricing.web_distribution') %></h4>
+            <p><%= @l.t('pricing.web_distribution_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -196,8 +196,8 @@
             <%= image_tag("img/icon-accesswire.png")%>
           </div>
           <div class="details-right">
-            <h4><%= I18n.t('pricing.accesswire_distribution') %></h4>
-            <p><%= I18n.t('pricing.accesswire_distribution_description') %></p>
+            <h4><%= @l.t('pricing.accesswire_distribution') %></h4>
+            <p><%= @l.t('pricing.accesswire_distribution_description') %></p>
           </div>
         </div>
 

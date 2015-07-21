@@ -50,7 +50,7 @@ class PagesController < ApplicationController
   def contact
     if request.post?
       UserMailer.contact_support(params[:user]).deliver if params[:user].present?
-      flash.now[:success] = I18n.t('contact_page.thank_you')
+      flash.now[:success] = @l.t('contact_page.thank_you')
     end
 
     render :layout => "website"
