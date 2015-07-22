@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   before_action :set_video,:only => :home
 
-  before_action :set_translations,:only => [:home, :pricing, :signin, :signup, :pricing]
+  before_action :set_translations#,:only => [:home, :pricing, :signin, :signup, :pricing]
 
   def set_translations
     unless current_user.blank? and current_kol.blank?
