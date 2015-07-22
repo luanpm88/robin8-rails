@@ -4,10 +4,12 @@ class Localization
 
   def initialize
     @store ||= Redis.new(db: 10)
+    @locale ||= 'en'
   end
 
-  def t keys
-    keys, r = keys.split('.'), storage
+  def t keys, application = true
+    keys = application ? ['application'] + keys.split('.') : keys.split('.')
+    r = storage
     begin
       keys.each { |key| r = r.send '[]', key }
     rescue Exception => e
