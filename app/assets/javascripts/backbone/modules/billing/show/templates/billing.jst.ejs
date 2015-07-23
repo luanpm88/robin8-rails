@@ -74,11 +74,11 @@
               </div>
             </div>
             <% } %>
-          <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
+            <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
             <a href="/pricing" class="btn btn-success"><%= polyglot.t("billing.buttons.change") %></a>
-          <% } else {%>
+            <% } else {%>
             <a href="/pricing" class="btn btn-success"><%= polyglot.t("billing.buttons.new_plan") %></a>
-          <% } %>
+            <% } %>
           <a href="/add-ons" class="btn btn-success"><%= polyglot.t("billing.buttons.addons") %></a>
           <a href="/change_card_info" class="btn btn-success"><%= polyglot.t("billing.buttons.update") %></a>
           <!-- <input type="button" value="Checkout" class="btn btn-success"> -->
