@@ -3,7 +3,7 @@ class Pitch < ActiveRecord::Base
   has_many :contacts, through: :pitches_contacts
   belongs_to :user
   belongs_to :release
-
+  
   validates_inclusion_of :email_targets, :twitter_targets, in: [true, false]
   validates :user, twitter_connect: true, if: :twitter_targets?
   validates_presence_of :user_id
@@ -12,26 +12,26 @@ class Pitch < ActiveRecord::Base
   validates :email_address, email_format: true, allow_blank: true
   validates_length_of :email_address, maximum: 255
   validates_length_of :email_subject, maximum: 2500
-  validates_numericality_of :summary_length,
+  validates_numericality_of :summary_length, 
     greater_than_or_equal_to: 1, less_than_or_equal_to: 10
   validates_presence_of :twitter_pitch, if: :twitter_targets?
-  validates_presence_of :email_pitch, :email_subject,
+  validates_presence_of :email_pitch, :email_subject, 
     :email_address, if: :email_targets?
   validate :can_be_created, on: :create
 
   after_create :decrease_feature_number
   after_destroy :increase_feature_number
-
+  
   private
 
   def can_be_created
     errors.add(:user, "you've reached the max numbers of smart releases.") if needed_user && !needed_user.can_create_smart_release
   end
-
+  
   def email_targets?
     email_targets
   end
-
+  
   def twitter_targets?
     twitter_targets
   end
@@ -40,28 +40,17 @@ class Pitch < ActiveRecord::Base
     user.is_primary? ? user : user.invited_by
   end
 
-  def invited_users_list
-    current_users=User.where(invited_by_id: needed_user.id)
-    invited_id=""
-    current_users.all.each do |current_user|
-      invited_id << current_user.id.to_s << ", "
-    end
-    return invited_id << needed_user.id.to_s
-  end
-
   def decrease_feature_number
-    users_id = invited_users_list
-    af = user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").smart_release.available.joins(:product).where(products: {is_package: false}).first
-    uf = af.nil? ? user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").smart_release.available.first : af
+    af = needed_user.user_features.smart_release.available.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.smart_release.available.first : af
     return false if uf.blank?
     uf.available_count -= 1
     uf.save
   end
 
   def increase_feature_number
-    users_id = invited_users_list
-    af = user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").smart_release.used.joins(:product).where(products: {is_package: false}).first
-    uf = af.nil? ? user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").smart_release.used.first : af
+    af = needed_user.user_features.smart_release.used.joins(:product).where(products: {is_package: false}).first
+    uf = af.nil? ? needed_user.user_features.smart_release.used.first : af
     return false if uf.blank?
     uf.available_count += 1
     uf.save

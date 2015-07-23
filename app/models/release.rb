@@ -16,12 +16,12 @@ class Release < ActiveRecord::Base
 
   scope :by_news_room, ->(id) {where(news_room_id: id)}
   scope :published, -> { where(is_private: false) }
-
+  
   before_save :pos_tagger, :entities_counter
   after_create :decrease_feature_number
   after_destroy :increase_feature_number
   after_save :update_images_links, :decrease_newswire_features, :set_published_at
-
+  
   def plain_text
     coder = HTMLEntities.new
     coder.decode ActionController::Base.helpers.strip_tags(text)
@@ -30,11 +30,11 @@ class Release < ActiveRecord::Base
   def should_generate_new_friendly_id?
     slug.blank? || title_changed?
   end
-
+  
   def permalink
     host = Rails.application.secrets[:host]
     subdomain_name = self.news_room.subdomain_name
-
+    
     "http://#{subdomain_name}.#{host}/releases/#{slug}"
   end
 
@@ -49,7 +49,7 @@ class Release < ActiveRecord::Base
   def files
     attachments.where(attachment_type: 'file')
   end
-
+  
   private
 
   def update_images_links
@@ -66,12 +66,12 @@ class Release < ActiveRecord::Base
   def set_published_at
     self.published_at = Time.now.utc if self.published_at.blank?
   end
-
+  
   def pos_tagger
     if Rails.application.secrets[:pos_tagger_api]
-      response = HTTParty.post(Rails.application.secrets[:pos_tagger_api][:url],
+      response = HTTParty.post(Rails.application.secrets[:pos_tagger_api][:url], 
         body: {text: plain_text}).parsed_response
-
+      
       self.characters_count = response["characters_count"]
       self.words_count = response["words_count"]
       self.sentences_count = response["sentences_count"]
@@ -81,12 +81,12 @@ class Release < ActiveRecord::Base
       self.adverbs_count = response["adverbs_count"]
     end
   end
-
+  
   def entities_counter
     client = AylienTextApi::Client.new
-
+    
     response = client.entities! text: plain_text
-
+    
     self.organizations_count = (response[:entities][:organization] || []).size
     self.places_count = (response[:entities][:location] || []).size
     self.people_count = (response[:entities][:person] || []).size
@@ -94,15 +94,6 @@ class Release < ActiveRecord::Base
 
   def needed_user
     user.is_primary? ? user : user.invited_by
-  end
-
-  def invited_users_list
-    current_users=User.where(invited_by_id: needed_user.id)
-    invited_id=""
-    current_users.all.each do |current_user|
-      invited_id << current_user.id.to_s << ", "
-    end
-    return invited_id << needed_user.id.to_s
   end
 
   def decrease_feature_number
@@ -122,24 +113,21 @@ class Release < ActiveRecord::Base
   end
 
   def decrease_newswire_myprgenie
-    users_id = invited_users_list
-    uf = user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").myprgenie_web_distribution.available.first
+    uf = needed_user.user_features.myprgenie_web_distribution.available.first
     return false if uf.blank?
     uf.available_count -= 1
     uf.save
   end
 
   def decrease_newswire_accesswire
-    users_id = invited_users_list
-    uf = user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").accesswire_distribution.available.first
+    uf = needed_user.user_features.accesswire_distribution.available.first
     return false if uf.blank?
     uf.available_count -= 1
     uf.save
   end
 
   def decrease_newswire_prnewswire
-    users_id = invited_users_list
-    uf = user_features.unscope(where: :user_id).where("user_features.user_id IN (#{users_id})").pr_newswire_distribution.available.first
+    uf = needed_user.user_features.pr_newswire_distribution.available.first
     return false if uf.blank?
     uf.available_count -= 1
     uf.save
@@ -162,7 +150,7 @@ class Release < ActiveRecord::Base
     prnewswire_publish = prnewswire_published_at.strftime('%m/%d/%Y') if prnewswire_published_at
 
     if (myprgenie_) || (accesswire_) || (prnewswire_)
-      UserMailer.newswire_support(myprgenie_, accesswire_, prnewswire_, title, text, myprgenie_publish, accesswire_publish, prnewswire_publish, publicLink).deliver
+      UserMailer.newswire_support(myprgenie_, accesswire_, prnewswire_, title, text, myprgenie_publish, accesswire_publish, prnewswire_publish, publicLink).deliver 
     end
   end
 
