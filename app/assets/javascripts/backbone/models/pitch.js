@@ -14,7 +14,7 @@ Robin.Collections.PitchContacts = Backbone.Collection.extend({
 Robin.Models.Pitch = Backbone.RelationalModel.extend({
   urlRoot: '/pitches',
   defaults: {
-    email_pitch: "<%= polyglot.t('smart_release.pitch_step.email_panel.text_dear') %> @[First Name],<br /><br /><%= polyglot.t('smart_release.pitch_step.email_panel.text_here') %><br /><br />@[Signature]<br /><br /> <%= polyglot.t('smart_release.pitch_step.email_panel.text_text') %>:<br /><br />@[Title]<br /><br />@[Text]",
+    email_pitch: "<%= polyglot.t('smart_release.pitch_step.email_panel.text_dear') %> @[First Name],<br /><br /><%= polyglot.t('smart_release.pitch_step.email_panel.text_here') %><br /><br />@[Signature]<br /><br /> <%= polyglot.t('smart_release.pitch_step.email_panel.text_text') %>:<br /><br />@[Title]<br /><br />@[Text]<br /><br /><%= polyglot.t('smart_release.pitch_step.email_panel.kols_register_href') %> @[KolReghref] <%= polyglot.t('smart_release.pitch_step.email_panel.kols_register_alias') %>",
     twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
@@ -32,7 +32,7 @@ Robin.Models.Pitch = Backbone.RelationalModel.extend({
 Robin.Models.DraftPitch = Backbone.Model.extend({
   urlRoot: '/draft_pitches',
   defaults: {
-    email_pitch: "<%= polyglot.t('smart_release.pitch_step.email_panel.text_dear') %> @[First Name],<br /><br /><%= polyglot.t('smart_release.pitch_step.email_panel.text_here') %><br /><br />@[Signature]<br /><br /> <%= polyglot.t('smart_release.pitch_step.email_panel.text_text') %>:<br /><br />@[Title]<br /><br />@[Text]",
+    email_pitch: "<%= polyglot.t('smart_release.pitch_step.email_panel.text_dear') %> @[First Name],<br /><br /><%= polyglot.t('smart_release.pitch_step.email_panel.text_here') %><br /><br />@[Signature]<br /><br /> <%= polyglot.t('smart_release.pitch_step.email_panel.text_text') %>:<br /><br />@[Title]<br /><br />@[Text]<br /><br /><%= polyglot.t('smart_release.pitch_step.email_panel.kols_register_href') %> @[KolReghref] <%= polyglot.t('smart_release.pitch_step.email_panel.kols_register_alias') %>",
     twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,

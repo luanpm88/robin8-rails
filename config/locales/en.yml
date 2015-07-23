@@ -28,7 +28,7 @@ en:
       phone_title: Phone (customer service)
       phone: (212) 807-8300 Extension 3
       thank_you: Thank you for contacting us. Someone from our team will contact you shortly
-      form: 
+      form:
         first_name_placeholder: First Name
         last_name_placeholder: Last Name
         email_placeholder: Email Address
@@ -93,7 +93,7 @@ en:
     payment_page:
       title: Payment
       go_back: GO BACK
-      table: 
+      table:
         plan: Plan
         price: Price
         remove: remove
@@ -116,7 +116,7 @@ en:
       cvv: CVV
       exp_month: Exp. Month
       exp_year: Exp. Year
-      messages: 
+      messages:
         card_was_declined: Your card was declined. Please confirm your card details below and try again.
         first_name_blank: First name can't be blank
         last_name_blank: Last name can't be blank
@@ -131,7 +131,7 @@ en:
         exp_year_blank: Expiry Year can't be blank and must be in YYYY format
       note:
         first_part: Robin8 accepts Visa, Mastercard, Discover and American Express.
-        second_part: By joining Robin8 you are agreeing to the 
+        second_part: By joining Robin8 you are agreeing to the
         third_part: Terms of Use
         fourth_part: and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled. Satisfaction guaranteed or your money back (within 30 days).
         fifth_part: All prices in US Dollars.
@@ -221,7 +221,7 @@ en:
       third_party:
         title: CERTAIN THIRD PARTY TRANSACTIONS
         text: Robin8 may disclose personal information to third parties we engage to assist us in providing you certain services. For example, we may hire a shipping company to help us deliver our products or services to you. We may also use a third party to process online transactions and credit card payments, provide products, advertising, marketing or promotional services/assistance, provide e-mail services, or facilitate our online services. In these instances, we may need to share your personal information. We require these companies to use your personal information only to provide that particular product or service and do not authorize them to use your personal information for any other reason. In addition, if some or all of the assets of Robin8 are sold to a third party, such third party will be entitled to use the information disclosed by users of our Site. Both the personal and non-personal information that we or other third parties have collected will likely be transferred as part of the transaction. If we sell our business, we will attempt to ensure that requests made of us regarding e-mail communications will be honored.
-      information_sharing: 
+      information_sharing:
         title: INFORMATION SHARING
         text: Though we make every effort to preserve user privacy, we may need to disclose information as required by law wherein we have a good-faith belief that such action is necessary to protect its rights and/or to comply with a current judicial proceeding, court order or other legal process. This includes exchanging information with other companies and organizations for fraud protection and credit risk reduction. Robin8 reserves the right to use or disclose non-personal information in any way we see fit.
       security:
@@ -429,7 +429,7 @@ en:
       pressroom: Pressroom
     login:
       title: login
-      intro: 'Please enter your <strong>Email</strong> and <strong>Password</strong> or use <strong>Social Sign-in</strong>' 
+      intro: 'Please enter your <strong>Email</strong> and <strong>Password</strong> or use <strong>Social Sign-in</strong>'
       login_label: Login
       remember_me: Remember me
       forgot: Forgot Password?
@@ -525,7 +525,7 @@ en:
       popularity: Popularity
       time_range: Time range
       last_24_hours: Last 24 hours
-      last_week: Last week 
+      last_week: Last week
       last_month: Last month
       all_time: All time
       cancel: Cancel
@@ -554,10 +554,10 @@ en:
     social:
       scheduled_posts: Scheduled Posts
       social_profiles: Social Profiles
-      posts: 
+      posts:
         title: Review Scheduled Posts
-        description1: Below is a list of your scheduled post(s) to your social profiles.  To schedule a post, just go to the "Say Something" box next to the Robin8 logo, located on the top of the dashboard. 
-        description2: To delete a scheduled post, just click on the delete button on this page. 
+        description1: Below is a list of your scheduled post(s) to your social profiles.  To schedule a post, just go to the "Say Something" box next to the Robin8 logo, located on the top of the dashboard.
+        description2: To delete a scheduled post, just click on the delete button on this page.
         today: Today
         tomorrow: Tomorrow
         later: Later
@@ -587,13 +587,13 @@ en:
       sent: Sent
       delivered: Delivered
       opened: Opened
-      dropped: Dropped 
+      dropped: Dropped
     releases:
       edit_title: Edit
       all_newsrooms: All Newsrooms
       new_release: New release
       modal:
-        title: Create Release        
+        title: Create Release
         website_tab:
           title: Website
           make_private: Make this release private
@@ -631,13 +631,13 @@ en:
           start_date: Start date
           accesswire: Accesswire
           newswire: PR Newswire
-        buttons: 
+        buttons:
           next: Next
           save: Save draft
           delete: Delete Release
-        warning: This release won't be publicly displayed while the parent Newsroom remains unpublished. 
+        warning: This release won't be publicly displayed while the parent Newsroom remains unpublished.
         publish: Publish the newsroom!
-        dropdown: 
+        dropdown:
           select: Select...
         messages:
           select_newsroom: You should select a newsroom
@@ -656,16 +656,16 @@ en:
       company: Company
       email: Email
       time_zone: Time Zone
-      time_placeholder: select an option 
+      time_placeholder: select an option
       username: Username
       curr_password: Current password
       new_password: New password
       confirm_new_password: Confirm new password
       messages:
         required_email: The email address is required
-      buttons: 
+      buttons:
         save: Save changes
-        cancel: Cancel 
+        cancel: Cancel
     newsrooms:
       buttons:
         new: New Newsroom
@@ -675,7 +675,7 @@ en:
         buttons:
           preview: Preview
           releases: Releases
-          edit: Edit        
+          edit: Edit
       modal:
         title: Create NewsRoom
         details_tab:
@@ -693,7 +693,7 @@ en:
             public_company: Public Company
             llc: LLC
             educational_institution: Educational Institution
-            myself_only: Myself Only 
+            myself_only: Myself Only
             employees: employees
             or_more_employees: or more employees
         public_tab:
@@ -732,12 +732,12 @@ en:
           instagram: Instagram
         media_tab:
           title: Media
-        buttons: 
+        buttons:
           save: Save changes
           preview: Preview
           delete: Delete Newsroom
-      messages: 
-        not_available_newsrooms: You don't have available newsrooms! 
+      messages:
+        not_available_newsrooms: You don't have available newsrooms!
     manage_users:
       buttons:
         manage: Manage Users
@@ -749,7 +749,7 @@ en:
         name: Name
         email: Email
       title: User management
-      search_placeholder: Search User by Name or Email 
+      search_placeholder: Search User by Name or Email
       input_placeholder: Type User Email
       messages:
         is_active: This user is already active
@@ -772,7 +772,7 @@ en:
         description: SmartRelease helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
         notification: You can't use smart release feature. Update your add ons.
         select: Select a release to start
-        buttons: 
+        buttons:
           analyze: Analyze
           new_release: New Release
         dropdown:
@@ -785,12 +785,12 @@ en:
         is_about: <strong> "%{name}" </strong> is about
         topics: and the following topics are mentioned in it
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
-        buttons: 
+        buttons:
           next: Next
       targets_step:
         title: Targets
         description: What if you knew EXACTLY who to contact for every campaign, based on a data-driven prediction on how successful each pitch will be? Robin8 helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
-        influencers_tab: 
+        influencers_tab:
           title: Influencers
           author: Author
           outlet: Outlet
@@ -798,10 +798,10 @@ en:
           length: Average length
           pitch: Pitch?
           contact: Contact
-          buttons: 
+          buttons:
             inspect: Inspect
             yes_but: !!str Yes
-            no_but: !!str No 
+            no_but: !!str No
             advanced: Advanced
             export: Export as CSV
             add_all: Add all
@@ -810,12 +810,12 @@ en:
           title: Social
           influencer: Influencer
           followers: Followers
-          reach: Reach 
+          reach: Reach
           amplif: Amplif.
           relevance: Relevance
           pitch: Pitch?
           contact: Contact
-        search_tab: 
+        search_tab:
           title: Search
           search_authors:
             title: Search Authors
@@ -840,7 +840,7 @@ en:
             topic_placeholder: Topic
             location_placeholder: Location
           search: Search
-        media_tab: 
+        media_tab:
           title: Media List
           add_list: Add a previously saved list
           upload_button: Upload a new list
@@ -856,7 +856,7 @@ en:
             contacts: Contacts
             actions: Actions
             empty: You haven't selected any media list yet!
-        buttons: 
+        buttons:
           next: Next
       pitch_step:
         title: Pitch
@@ -887,6 +887,8 @@ en:
           text_dear: Dear
           text_here: "Here's a press release you might find interesting. Please let me know your thoughts."
           text_text: Press Release Text
+          kols_register_href: P.S. We kindly recommend you to
+          kols_register_alias: in our system as an Influencer.
           merge_tags:
             first_name: First Name
             last_name: Last Name
@@ -896,5 +898,5 @@ en:
             title: Title
             text: Text
         delete_button: Delete
-        button: Pitch! 
+        button: Pitch!
         test_button: Send a Test Email
