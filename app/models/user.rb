@@ -248,9 +248,9 @@ class User < ActiveRecord::Base
     add_ons_products = user_products.joins(:product).unscope(where: :user_id).where("user_products.user_id IN (#{users_id})").where("products.type ='AddOn'")
     AddOn.where(id: add_ons_products.map(&:product_id)) if add_ons_products.present?
   end
-  
+
   def current_active_add_ons
-    add_ons_products = current_user.user_products.joins(:product).where("products.type ='AddOn'")
+    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
     if add_ons_products.present?
       user_addons_features = needed_user.user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
       add_ons_products.where(product_id: user_addons_features.map(&:product_id))
@@ -263,7 +263,7 @@ class User < ActiveRecord::Base
     users_id = invited_users_list
     user_products.joins(:product).unscope(where: :user_id).where("user_products.user_id IN (#{users_id})").where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
-  
+
 
 
   def twitter_post(message, identity_id=nil)
