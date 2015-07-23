@@ -103,11 +103,10 @@ class NewsRoomsController < ApplicationController
 
       res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
       parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
-      parsed_res['authors']
       parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
       emails_diff = emails - parsed_res_emails
       contacts = current_user.contacts.where(email: emails_diff)
-      contacts.each{ |c| parsed_res['authors'].push({'email': c.email, 'first_name': c.first_name, last_name: c.last_name}) }
+      contacts.each{ |c| parsed_res['authors'].push({'email': c.email, 'first_name': c.first_name, last_name: c.last_name, outlet: c.outlet}) }
       parsed_res['authors']
     end
 
@@ -122,11 +121,10 @@ class NewsRoomsController < ApplicationController
 
       res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
       parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
-      parsed_res['authors']
       parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
       emails_diff = emails_dropped - parsed_res_emails
       contacts = current_user.contacts.where(email: emails_diff)
-      contacts.each{ |c| parsed_res['authors'].push({'email': c.email, 'first_name': c.first_name, last_name: c.last_name}) }
+      contacts.each{ |c| parsed_res['authors'].push({'email': c.email, 'first_name': c.first_name, last_name: c.last_name, outlet: c.outlet}) }
       parsed_res['authors']
     end
 
