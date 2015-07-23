@@ -41,6 +41,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @data["concepts"] = @model.get('concepts')
       @data["categories"] = @model.get('iptc_categories')
       @model.save @data
+      #@ui.campaignTargets[0].className += (' active colored')
+      targets_tab_view = new Show.TargetsTabAnalytics (@model)
+      Robin.layouts.main.content.currentView.content.show targets_tab_view
 
     initSummariesEditable: () ->
       self = this

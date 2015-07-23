@@ -17,19 +17,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onShow: () ->
       start_tab = document.getElementById('campaign-home')
-      start_tab.className += ' active colored'
+      start_tab.className = ' active colored'
 
     onRender: () ->
       start_tab_view = new Show.StartTab
       @showChildView 'content', start_tab_view
 
     start: () ->
-      @ui.campaignHome[0].className += (' active colored')
+      @ui.campaignHome.className = ' active colored'
       start_tab_view = new Show.StartTab
       @showChildView 'content', start_tab_view
 
     targetsShow: () ->
-      @ui.campaignTargets[0].className += (' active colored')
+      @ui.campaignTargets.addClass(' active colored')
+      targets_tab_view = new Show.TargetsTabAnalytics
+      @showChildView 'content', targets_tab_view
 
     pitchShow: () ->
-      @ui.campaignPitch[0].className += (' active colored')
+      @ui.campaignPitch.addClass(' active colored')
