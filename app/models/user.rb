@@ -46,6 +46,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  validates_with EmailValidator
+
+  extend FriendlyId
+  friendly_id :email, use: :slugged
+
+  extend Models::Oauth
+
   def invited_users_list
     current_users=User.where(invited_by_id: needed_user.id)
     invited_id=""
