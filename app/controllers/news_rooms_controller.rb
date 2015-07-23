@@ -106,7 +106,8 @@ class NewsRoomsController < ApplicationController
       parsed_res['authors']
       parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
       emails_diff = emails - parsed_res_emails
-      emails_diff.each{ |e| parsed_res['authors'].push({'email': e, 'first_name': '', last_name: ''}) }
+      contacts = current_user.contacts.where(email: emails_diff)
+      contacts.each{ |e| parsed_res['authors'].push({'email': c.email, 'first_name': c.first_name, last_name: c.last_name}) }
       parsed_res['authors']
     end
 
@@ -124,7 +125,8 @@ class NewsRoomsController < ApplicationController
       parsed_res['authors']
       parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
       emails_diff = emails_dropped - parsed_res_emails
-      emails_diff.each{ |e| parsed_res['authors'].push({'email': e, 'first_name': '', last_name: ''}) }
+      contacts = current_user.contacts.where(email: emails_diff)
+      contacts.each{ |e| parsed_res['authors'].push({'email': c.email, 'first_name': c.first_name, last_name: c.last_name}) }
       parsed_res['authors']
     end
 
