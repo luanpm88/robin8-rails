@@ -27,28 +27,12 @@ class User < ActiveRecord::Base
   after_create :create_default_news_room, :decrease_feature_number
   after_destroy :increase_feature_number
 
+  include Models::Identities
+
   extend FriendlyId
   friendly_id :email, use: :slugged
 
-  def self.find_for_oauth(auth, signed_in_resource = nil)
-    identity = Identity.find_for_oauth(auth)
-
-    user = signed_in_resource ? signed_in_resource : identity.user
-
-    if user.nil?
-      email = auth[:email]
-      user = User.where(:email => email).first if email
-
-      if user.nil?
-        raise "No sign ups"
-      end
-    end
-    if identity.user != user
-      identity.user = user
-      identity.save!
-    end
-    user
-  end
+  extend Models::Oauth
 
   def current_user_features
     is_primary? ? user_features : invited_by.user_features
@@ -234,47 +218,6 @@ class User < ActiveRecord::Base
 
   def recurring_add_ons
     user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
-  end
-
-  def twitter_identity
-    identities.where(provider: 'twitter').first
-  end
-
-  def linkedin_identity
-    identities.where(provider: 'linkedin').first
-  end
-
-  def facebook_identity
-    identities.where(provider: 'facebook').first
-  end
-
-  def google_identity
-    identities.where(provider: 'google_oauth2').first
-  end
-
-  def twitter_identities
-    identities.where(provider: 'twitter')
-  end
-
-  def linkedin_identities
-    identities.where(provider: 'linkedin')
-  end
-
-  def facebook_identities
-    identities.where(provider: 'facebook')
-  end
-
-  def google_identities
-    identities.where(provider: 'google_oauth2')
-  end
-
-  def all_identities
-    identities_by_providers = {}
-    identities_by_providers[:twitter] = twitter_identities
-    identities_by_providers[:facebook] = facebook_identities
-    identities_by_providers[:google] = google_identities
-    identities_by_providers[:linkedin] = linkedin_identities
-    identities_by_providers
   end
 
   def twitter_post(message, identity_id=nil)
