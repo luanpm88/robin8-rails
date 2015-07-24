@@ -1,6 +1,6 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
-  Show.StartTabAnalytics = Backbone.Marionette.LayoutView.extend
+  Show.StartAnalytics = Backbone.Marionette.LayoutView.extend
     template: 'modules/smart-campaign/show/templates/start-tab-analysis'
 
     ui:
@@ -12,7 +12,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     events:
       'click @ui.reanalyzeButton': 'reanalyzeButtonClicked'
-      'click @ui.nextButton': 'openTargetsTab'
+      'click @ui.nextButton': 'openTargetTab'
 
     initialize: (options) ->
       @on("textapi_result:ready", @render)
@@ -20,7 +20,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @textapiResult = {}
       @title = document.getElementById("name").value.replace(/<(?:.|\n)*?>/gm, '')
       @model = if @options.model? then @options.model else new Robin.Models.Campaign()
-      @data = if @options.data? then @options.data else []
       @reanalyze = @options.reanalyze
 
     templateHelpers: () ->
@@ -32,25 +31,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @ui.reanalyzeButton.tooltip()
 
     reanalyzeButtonClicked: () ->
-      child = new Show.StartTabAnalytics ({
-        data: @data
+      child = new Show.StartAnalytics ({
         model: @model
         reanalyze: true
       })
       Robin.layouts.main.content.currentView.content.currentView.analyticsRegion.show child
 
-    openTargetsTab: () ->
-      @data["summaries"] = @model.get('summaries')
-      @data["hashtags"] = @model.get('hashtags')
-      @data["concepts"] = @model.get('concepts')
-      @data["categories"] = @model.get('iptc_categories')
-      #@model.save @data
-      #@ui.campaignTargets[0].className += (' active colored')
-      targets_tab_view = new Show.TargetsTab ({
-        data: @data
-        model: @model
-      })
-      Robin.layouts.main.content.currentView.content.show targets_tab_view
+    openTargetTab: () ->
+      @options.parent.setState('target')
 
     initSummariesEditable: () ->
       self = this
@@ -185,7 +173,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       that = this
       endpoints = [
         'textapi/classify',
-        #'textapi/concepts',
+        'textapi/concepts',
         'textapi/summarize',
         'textapi/hashtags'
       ]

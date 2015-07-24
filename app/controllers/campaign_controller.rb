@@ -80,7 +80,7 @@ class CampaignController < ApplicationController
     if current_user.blank?
       return render :json => {:status => "thanks for submitting this. we will contact you."}
     end
-    category_ids = params[:categories].split ','
+    category_ids = params[:iptc_categories].split ','
     kol_ids = params[:kols]
     categories = IptcCategory.where :id => category_ids
     kols = Kol.where :id => kol_ids
@@ -102,7 +102,6 @@ class CampaignController < ApplicationController
       i.status = ''
       i.campaign = c
       i.save
-      print "here2"
       KolMailer.campaign_invite(k, current_user, c).deliver
     end
     render :json => c

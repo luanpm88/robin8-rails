@@ -148,7 +148,7 @@ Rails.application.routes.draw do
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
 
-  resources :campaign, only: [:index, :create, :show]
+  resources :campaign, only: [:index, :create, :update, :show]
   get 'campaign/:id/article', to: 'campaign#article'
   get 'campaign/:id/article/:article_id', to: 'campaign#article'
   put 'campaign/:id/article', to: 'campaign#update_article'
