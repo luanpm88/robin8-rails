@@ -17,7 +17,7 @@ require 'logger'
 require 'uri'
 require 'net/http'
 
-module AylienPressrApi
+module BosonNlpApi
   class Connection
     def initialize(endpoint, params, config)
       @config = config
@@ -43,8 +43,8 @@ module AylienPressrApi
         if response.kind_of?(Net::HTTPSuccess)
           JSON.parse(response.body, :symbolize_names => true)
         else
-          klass = AylienPressrApi::Error::ERRORS[response.code.to_i]
-          error = klass.nil? ? AylienPressrApi::Error.new(response.body) : klass.from_response(response)
+          klass = BosonNlpApi::Error::ERRORS[response.code.to_i]
+          error = klass.nil? ? BosonNlpApi::Error.new(response.body) : klass.from_response(response)
           raise error
         end
       end
@@ -54,15 +54,14 @@ module AylienPressrApi
 
     def compile_request_params
       if @config[:method] == :post
-        @uri.query = URI.encode_www_form({type: @params["type"]}) if @params["type"]
         request = Net::HTTP::Post.new(@uri.request_uri)
-        request.set_form_data(@params)
+        request.body = @params[:text].to_json
       elsif @config[:method] == :get
         @uri.query = URI.encode_www_form(@params)
         request = Net::HTTP::Get.new(@uri.request_uri)
       end
       request['user-agent'] = @config[:user_agent]
-      request.basic_auth @config[:username], @config[:password]
+      request['x-token'] = @config[:token]
       
       @request = request
     end

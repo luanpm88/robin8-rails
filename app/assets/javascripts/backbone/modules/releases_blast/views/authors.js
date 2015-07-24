@@ -152,13 +152,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       e.preventDefault();
       var current_model = this.pitchContactsCollection.findWhere({
         author_id: this.model.get('id'),
-        origin: 'pressr'
+        origin: ReleasesBlast.originPressrContact
       });
       
       if (current_model == null) {
         var model = new Robin.Models.Contact({
           author_id: this.model.get('id'),
-          origin: 'pressr',
+          origin: ReleasesBlast.originPressrContact,
           first_name: this.model.get('first_name'),
           last_name: this.model.get('last_name'),
           email: this.model.get('email'),
@@ -171,7 +171,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       e.preventDefault();
       var model = this.pitchContactsCollection.findWhere({
         author_id: this.model.get('id'),
-        origin: 'pressr'
+        origin: ReleasesBlast.originPressrContact
       });
       this.pitchContactsCollection.remove(model);
     },
@@ -347,7 +347,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       _.each(self.collection.models, function(model){
         var models = self.pitchContactsCollection.where({
           author_id: model.get('id'),
-          origin: 'pressr'
+          origin: ReleasesBlast.originPressrContact
         });
         
         _.each(models, function(item){
@@ -360,13 +360,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       _.each(self.collection.models, function(model){
         var current_model = self.pitchContactsCollection.findWhere({
           author_id: model.get('id'),
-          origin: 'pressr'
+          origin: ReleasesBlast.originPressrContact
         });
         
         if (current_model == null) {
           var model = new Robin.Models.Contact({
             author_id: model.get('id'),
-            origin: 'pressr',
+            origin: ReleasesBlast.originPressrContact,
             first_name: model.get('first_name'),
             last_name: model.get('last_name'),
             email: model.get('email'),
@@ -441,7 +441,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       var csvObject = [];
       var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){ 
-        return item.get('origin') === 'pressr'
+        return item.get('origin') === ReleasesBlast.originPressrContact
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
@@ -528,7 +528,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       _.each(self.collection.models, function(model){
         var models = self.pitchContactsCollection.where({
           author_id: model.get('id'),
-          origin: 'pressr'
+          origin: ReleasesBlast.originPressrContact
         });
         
         _.each(models, function(item){
@@ -541,13 +541,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       _.each(self.collection.models, function(model){
         var current_model = self.pitchContactsCollection.findWhere({
           author_id: model.get('id'),
-          origin: 'pressr'
+          origin: ReleasesBlast.originPressrContact
         });
         
         if (current_model == null) {
           var model = new Robin.Models.Contact({
             author_id: model.get('id'),
-            origin: 'pressr',
+            origin: ReleasesBlast.originPressrContact,
             first_name: model.get('first_name'),
             last_name: model.get('last_name'),
             email: model.get('email'),
@@ -631,7 +631,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       
       var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){ 
-        return (item.get('origin') === 'pressr');
+        return (item.get('origin') === ReleasesBlast.originPressrContact);
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){

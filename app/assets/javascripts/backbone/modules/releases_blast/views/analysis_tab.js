@@ -172,15 +172,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       
       _.each(endpoints, function(endpoint){
+        var params = {
+          title: that.model.get('title'), 
+          text: that.model.get('plain_text'),
+          sentences_number: 10,
+        };
+        
+        if (endpoint == 'textapi/classify' && Robin.currentUser.get('locale') == 'zh'){
+          params.type = "weibo";
+        }
+    
         $.ajax({
           url: endpoint,
           dataType: 'json',
           method: 'POST',
-          data: {
-            title: that.model.get('title'), 
-            text: that.model.get('plain_text'),
-            sentences_number: 10
-          },
+          data: params,
           success: function(response){
             switch(endpoint) {
               case 'textapi/concepts':

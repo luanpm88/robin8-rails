@@ -64,7 +64,8 @@ class RobinApiController < ApplicationController
   end
   
   def author_stats
-    response = @client.author_stats id: params[:id]
+    type = params[:type] || 'default'
+    response = @client.author_stats id: params[:id], type: type
     
     render json: response
   end
