@@ -19,9 +19,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @getTextApiResult()
       @textapiResult = {}
       @title = document.getElementById("name").value.replace(/<(?:.|\n)*?>/gm, '')
-      @model = new Robin.Models.Campaign()
+      @model = if @options.model? then @options.model else new Robin.Models.Campaign()
+      @data = if @options.data? then @options.data else []
       @reanalyze = @options.reanalyze
-      @data = @options.data
 
     templateHelpers: () ->
         textapiResult: @textapiResult
@@ -32,7 +32,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @ui.reanalyzeButton.tooltip()
 
     reanalyzeButtonClicked: () ->
-      child = new Show.StartTabAnalytics()
+      child = new Show.StartTabAnalytics ({
+        data: @data
+        model: @model
+        reanalyze: true
+      })
       Robin.layouts.main.content.currentView.content.currentView.analyticsRegion.show child
 
     openTargetsTab: () ->
@@ -40,9 +44,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @data["hashtags"] = @model.get('hashtags')
       @data["concepts"] = @model.get('concepts')
       @data["categories"] = @model.get('iptc_categories')
-      @model.save @data
+      #@model.save @data
       #@ui.campaignTargets[0].className += (' active colored')
-      targets_tab_view = new Show.TargetsTabAnalytics (@model)
+      targets_tab_view = new Show.TargetsTab ({
+        data: @data
+        model: @model
+      })
       Robin.layouts.main.content.currentView.content.show targets_tab_view
 
     initSummariesEditable: () ->
@@ -178,7 +185,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       that = this
       endpoints = [
         'textapi/classify',
-        'textapi/concepts',
+        #'textapi/concepts',
         'textapi/summarize',
         'textapi/hashtags'
       ]

@@ -1,6 +1,6 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
-  Show.TargetsTabAnalytics = Marionette.LayoutView.extend
+  Show.TargetsTab = Marionette.LayoutView.extend
     template: 'modules/smart-campaign/show/templates/start-tab-targets'
 
     ui:
@@ -14,12 +14,20 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       blogsRegion: "#targets-blogs"
       searchRegion: "#targets-search"
 
-    initialize: (model) ->
-      @model = model
+    events:
+      'click @ui.nextButton': 'openPitchTab'
+
+    initialize: (options) ->
+      @model = if @options.model? then @options.model else new Robin.Models.Campaign()
+      @data = if @options.data? then @options.data else []
       @wechat_view = new Show.TargetKols()
 #      @weibo_view = new Show.TargetKols()
       @targets_view = new Show.TargetKols()
 #      @search_view = new Show.TargetKols()
+
+    openPitchTab: () ->
+      @model.save @data
+      #@ui.campaignTargets[0].className += (' active colored')
 
     categoriesChange: () ->
       iptc_categories = @model.iptc_categories

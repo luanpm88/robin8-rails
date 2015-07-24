@@ -43,13 +43,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       'keydown #url-video-upload': 'unselect'
       'click @ui.analyzeButton': 'analyzeCampaignRelease'
 
-    initialize: () ->
+    initialize: (options) ->
       @releaseCharacteristicsModel = new Robin.Models.ReleaseCharacteristics
+      @model = if @options.model? then @options.model else new Robin.Models.Campaign()
+      @modelBinder = new Backbone.ModelBinder()
+      @data = if @options.data? then @options.data else []
 
     onRender: () ->
-      @$el.find("#deadline").datepicker
-        dateFormat: "D, d M y"
-
       insertLinkButton = @$el.find('#wyihtml5-insert-link').html()
       unLinkButton = @$el.find('#wyihtml5-unlink').html()
       extractButtonTemplate = @$el.find('#wyihtml5-extract-button').html()
@@ -160,6 +160,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       self = this
       @editor.on('load', () ->
         self.updateStats()
+        if self.model.get('description')?
+          analyze_button = document.getElementById("analyze")
+          analyze_button.style.display = "none"
+          child = new Show.StartTabAnalytics ({
+            data: self.data
+            model: self.model
+            reanalyze: true
+          })
+          Robin.layouts.main.content.currentView.content.currentView.analyticsRegion.show child
         $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', (e) ->
           self.updateStats()
         )
@@ -167,6 +176,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @characteristicsRegion.show(new Show.CharacteristicsView({
         model: @releaseCharacteristicsModel
       }))
+      @modelBinder.bind(@model, @el)
+      @$el.find("#deadline").datepicker
+        dateFormat: "D, d M y"
+      if @model.get('deadline')?
+        @$el.find("#deadline").datepicker("setDate", new Date(@model.get('deadline')))
+
 
 
     insertLink: (e) ->
@@ -369,19 +384,20 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       }
     , 500)
 
-    analyzeCampaignRelease: (params) ->
-      data = _.reduce @ui.form.serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
+    analyzeCampaignRelease: () ->
+      @data = _.reduce @ui.form.serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
       @ui.form.validator('validate')
       el = document.getElementById("campaign-release-error")
       if @editor.getValue() == ""
         el.style.display = "inline"
       form_valid = $(".form-group.has-error").length == 0
       if form_valid && @editor.getValue() != ""
+        @model.set('description', @data['description'])
         el.style.display = "none"
         analyze_button = document.getElementById("analyze")
         analyze_button.style.display = "none"
         analytics_view = new Show.StartTabAnalytics({
-          reanalyze: params.reanalyze
-          data: data
+          data: @data
+          model: @model
         })
         @showChildView 'analyticsRegion', analytics_view
