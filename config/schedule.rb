@@ -11,6 +11,11 @@
 #   runner "Subscription.process_initial_invoice"
 # end
 
+set :output, {
+  :error => File.join(path, "log", "cron_error.log"),
+  :standard => File.join(path, "log", "cron.log")
+}
+
 every 12.hours do
   runner "UserProduct.process_recurring_invoice"
 end
@@ -28,4 +33,12 @@ end
 # updating sitemap
 every 1.day, :at => '5:00 am' do
   rake "-s sitemap:refresh"
+end
+
+every 5.minutes do
+  rake 'alert:notify_users_via_email'
+end
+
+every 3.hours do
+  rake 'alert:notify_users_via_text'
 end

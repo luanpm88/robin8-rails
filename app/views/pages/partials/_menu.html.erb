@@ -9,8 +9,7 @@
     <section class="top-bar-section">
       <!-- Right Nav Section -->
       <ul class="right">
-        <li><a href="http://try.myprgenie.com/robin" target="_blank">Demo</a></li>
-        <li><a href="/pricing" <%if params[:action] == "pricing"%> class="active" <%end%>>Pricing</a></li>
+        <li><a href="http://try.robin8.com/robin/" target="_blank">Contact Us</a></li>
 
         <%if user_signed_in?%>
           <%if current_user.first_name.blank? || current_user.last_name.blank?%>
@@ -21,7 +20,6 @@
           <li><%=link_to "Logout", destroy_user_session_path, :method => :delete%></li>
         <%else%>
           <li><a href="/signin">Log In</a></li>
-          <li class="signup-nav"><a href="/users/new" <%if params[:action] == "new"%> class="active" <%end%>>Sign Up</a></li>
         <%end%>
       </ul>
     </section>

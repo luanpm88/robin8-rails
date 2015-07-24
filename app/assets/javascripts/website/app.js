@@ -18,6 +18,13 @@ function setsizes(){
 
 }
 
+function trimPaymentInputs() {
+  $('.button-signup').click(function () {
+    $('input[id*=contact]:visible, input[id*=card]:visible').each(function() {
+      $(this).val($.trim($(this).val()));
+    });
+  })
+}
 
 $(document).ready(function(){
 

@@ -77,6 +77,7 @@ class NewsRoomsController < ApplicationController
     begin
       result = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats")
       result_on_opens = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=opened")
+      
       r = JSON.parse(result.body)
       opens = JSON.parse(result_on_opens.body)
       emails = opens.map{ |o| o['recipient'] }
@@ -95,6 +96,10 @@ class NewsRoomsController < ApplicationController
 
       res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
       parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
+      parsed_res['authors']
+      parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
+      emails_diff = emails - parsed_res_emails
+      emails_diff.each{ |e| parsed_res['authors'].push({'email': e, 'first_name': '', last_name: ''}) }
       parsed_res['authors']
     end
     render json: { mail: r, authors: authors }
