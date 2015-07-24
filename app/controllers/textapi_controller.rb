@@ -5,7 +5,7 @@ class TextapiController < ApplicationController
     response = @client.classify text: text
     
     respond_to do |format|
-      format.json { render json: response[:categories]}
+      format.json { render json: categories_response(response)}
     end
   end
 
@@ -48,7 +48,11 @@ class TextapiController < ApplicationController
   
   private
   def set_client
-    @client = AylienTextApi::Client.new
+    if params[:type] && params[:type] == 'weibo'
+      @client = BosonNlpApi::Client.new
+    else
+      @client = AylienTextApi::Client.new
+    end
   end
   
   def title_param
@@ -121,6 +125,36 @@ class TextapiController < ApplicationController
         term
       end
       memo
+    end
+  end
+  
+  def categories_response(response)
+    if params[:type] && params[:type] == 'weibo'
+      response.map do |c|
+        { label: map_boson_labels(c), code: "#{c}", confidence: 1.0}
+      end
+    else
+      response[:categories]
+    end
+  end
+  
+  def map_boson_labels(code)
+    case code
+      when 0  then 'sport'
+      when 1  then 'education'
+      when 2  then 'economic'
+      when 3  then 'society'
+      when 4  then 'entertainment'
+      when 5  then 'military'
+      when 6  then 'domestic'
+      when 7  then 'technology'
+      when 8  then 'internet'
+      when 9  then 'house property'
+      when 10 then 'international'
+      when 11 then 'women'
+      when 12 then 'automobile'
+      when 13 then 'game'
+      else map_boson_labels(Random.rand(14))
     end
   end
 end

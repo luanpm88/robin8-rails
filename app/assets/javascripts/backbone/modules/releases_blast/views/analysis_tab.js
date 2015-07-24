@@ -207,15 +207,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       
       _.each(endpoints, function(endpoint){
+        var params = {
+          title: that.model.get('title'), 
+          text: that.model.get('plain_text'),
+          sentences_number: 10,
+        };
+        
+        if (endpoint == 'textapi/classify' && Robin.currentUser.get('locale') == 'zh'){
+          params.type = "weibo";
+          that.reanalyze = true;
+        }
+    
         $.ajax({
           url: endpoint,
           dataType: 'json',
           method: 'POST',
-          data: {
-            title: that.model.get('title'), 
-            text: that.model.get('plain_text'),
-            sentences_number: 10
-          },
+          data: params,
           success: function(response){
             switch(endpoint) {
               case 'textapi/concepts':
@@ -272,7 +279,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 
                 break;
               case 'textapi/classify':
-                if (that.reanalyze || s.isBlank(that.model.get('iptc_categories'))){
+                if ((Robin.currentUser.get('locale') == 'zh') || that.reanalyze || 
+                  s.isBlank(that.model.get('iptc_categories'))){
                   that.textapiResult["classify"] = _(that.transformLabel(response[0].label, 
                     response[0].code)
                     .split(" - ")).map(function(p) {

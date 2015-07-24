@@ -14,6 +14,12 @@ Robin.Collections.SuggestedAuthors = Backbone.Collection.extend({
       included_email: true
     };
     
+    if (Robin.currentUser.get('locale') == 'zh'){
+      params.type = "weibo";
+      params.published_at = "[* TO *]";
+      delete params["iptc_categories[]"];
+    }
+    
     if (this.releaseModel.get('location')){
       params['location'] = this.releaseModel.get('location');
       params['blog_location'] = this.releaseModel.get('location');

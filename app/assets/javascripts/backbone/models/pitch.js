@@ -1,6 +1,9 @@
 Robin.Collections.PitchContacts = Backbone.Collection.extend({
   model: Robin.Models.Contact,
   getPressrContacts: function(){
+    if (Robin.currentUser.get('locale') == 'zh'){
+      return this.where({origin: 'pressr_weibo'});
+    }
     return this.where({origin: 'pressr'});
   },
   getTwtrlandContacts: function(){
