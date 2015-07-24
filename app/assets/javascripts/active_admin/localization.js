@@ -12,7 +12,25 @@ $(function(){
   });
 
   $( "table.localization-table tbody" ).on( "click", ".delete-translation", function() {
-    console.log('deleted');
+    var target = $(event.target),
+        tr = target.closest('tr'),
+        inputs = tr.find('input');
+    inputs.attr('name', 'deleted_' + inputs.attr('name'));
+    inputs.css('opacity', '.2');
+    tr.find('.delete-translation').hide();
+    tr.find('.undo-delete').show();
+    event.preventDefault();
+  });
+
+  $( "table.localization-table tbody" ).on( "click", ".undo-delete", function() {
+    var target = $(event.target),
+        tr = target.closest('tr'),
+        inputs = tr.find('input');
+    inputs.attr('name', inputs.attr('name').replace('deleted_', ''));
+    inputs.css('opacity', '1');
+    tr.find('.undo-delete').hide();
+    tr.find('.delete-translation').show();
+    event.preventDefault();
   });
 
 });
