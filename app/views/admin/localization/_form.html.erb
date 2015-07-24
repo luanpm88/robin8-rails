@@ -1,6 +1,6 @@
 <%= form_tag admin_localization_update_path do %>
   <%= submit_tag 'Update' %>
-  <%= button_tag 'Add new translation', type: :button, class: 'add-new-translation' %>
+  <%= button_tag 'Add new translation', type: :button, class: 'add-new-translation', data: { template: "#{render( partial:'row', locals: { key: text_field_name })}" } %>
   <%= link_to 'Cancel', admin_localization_path %>
   <%= hidden_field_tag :section, text_field_name %>
   <table style="margin-top: 30px" class='localization-table'>
