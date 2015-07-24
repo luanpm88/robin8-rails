@@ -44,3 +44,5 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     pitchShow: () ->
       @ui.campaignPitch.addClass(' active colored')
+      pitch_tab_view = new Show.PitchTab
+      @showChildView 'content', pitch_tab_view
