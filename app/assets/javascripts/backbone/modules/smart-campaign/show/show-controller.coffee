@@ -19,12 +19,19 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (c, r, o) ->
           page.showChildView 'kols', kols_view
 
-    showNewCampaign: () ->
-      releases = new Robin.Collections.Releases()
-      releases.fetch
-        success: (c, r, o) ->
+    showNewCampaign: (tab) ->
+      s = if tab? then tab else 'start'
+      page = new Show.NewCampaign
+        state: s
+      Robin.layouts.main.content.show page
+
+    showEditCampaign: (id) ->
+      campaign = new Robin.Models.Campaign { id: id }
+      campaign.fetch
+        success: (m, r, o) ->
           page = new Show.NewCampaign
-            releases: c.toJSON()
+            state: 'target'
+            model: m
           Robin.layouts.main.content.show page
 
     showCampaign: (id) ->

@@ -6,43 +6,59 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       content: "#tab-content"
 
     ui:
-      campaignHome: '#campaign-home-link'
-      campaignTargets: '#campaign-targets-link'
-      campaignPitch: '#campaign-pitch-link'
+      start: '#start-link'
+      target: '#target-link'
+      pitch: '#pitch-link'
 
     events:
-      "click #campaign-home-link": "start"
-      "click #campaign-targets-link": "targetsShow"
-      "click #campaign-pitch-link": "pitchShow"
+      "click @ui.start": "start"
+      "click @ui.target": "target"
+      "click @ui.pitch": "pitch"
 
-    initialize: () ->
-      @model = if @model? then @model else new Robin.Models.Campaign()
+    initialize: (options) ->
+      @options = options
+      @_states = ['start', 'target', 'pitch']
+      @empty = false
+      @state = @options.state or 'start'
+      if not @model?
+        @model = new Robin.Models.Campaign()
+        @empty = true
+        @state = 'start'
 
-    onShow: () ->
-      start_tab = document.getElementById('campaign-home')
-      start_tab.className = ' active colored'
+    setState: (s) ->
+      return if not @canSetState s
+      @state = s
+      viewClass = switch s
+        when 'start' then Show.StartTab
+        when 'target' then Show.TargetTab
+        when 'pitch' then Show.PitchTab
+      @view = new viewClass
+        model: @model
+        parent: @
+      _.each @_states, (tab) => @ui[tab].removeClass('active colored')
+      _.all @_states, (tab) =>
+        @ui[tab].addClass 'active colored'
+        tab != s
+      @showChildView 'content', @view
+
+    canSetState: (s) ->
+      console.log "HEY! FIX THIS. FIX FIX FIX!!!111"
+      return true
+      return false if s != 'start' and @empty
+      s in @_states
 
     onRender: () ->
-      start_tab_view = new Show.StartTab ({
-        model: @model
-      })
-      @showChildView 'content', start_tab_view
+      @setState @state
 
-    start: () ->
-      @ui.campaignHome.className = ' active colored'
-      start_tab_view = new Show.StartTab ({
-        model: @model
-      })
-      @showChildView 'content', start_tab_view
+    start: (e) ->
+      e?.preventDefault()
+      @setState 'start'
 
-    targetsShow: () ->
-      @ui.campaignTargets.addClass(' active colored')
-      targets_tab_view = new Show.TargetsTab ({
-        model: @model
-      })
-      @showChildView 'content', targets_tab_view
+    target: (e) ->
+      e?.preventDefault()
+      @setState 'target'
 
-    pitchShow: () ->
-      @ui.campaignPitch.addClass(' active colored')
-      pitch_tab_view = new Show.PitchTab
-      @showChildView 'content', pitch_tab_view
+    pitch: (e) ->
+      e?.preventDefault()
+      @setState 'pitch'
+

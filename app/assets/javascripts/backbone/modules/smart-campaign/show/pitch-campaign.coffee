@@ -303,8 +303,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     events:
       "click @ui.pitchButton": "pitchButtonClicked"
 
-    modelEvents:
-      'remove:contacts': 'contactRemovedFromPitch'
+    #modelEvents:
+    #  'remove:contacts': 'contactRemovedFromPitch'
 
     onRender: (opts) ->
 

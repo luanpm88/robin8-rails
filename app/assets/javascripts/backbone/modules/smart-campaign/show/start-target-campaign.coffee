@@ -1,6 +1,6 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
-  Show.TargetsTab = Marionette.LayoutView.extend
+  Show.TargetTab = Marionette.LayoutView.extend
     template: 'modules/smart-campaign/show/templates/start-tab-targets'
 
     ui:
