@@ -87,8 +87,8 @@ class NewsRoomsController < ApplicationController
       emails = opens.map{ |o| o['recipient'] }
       emails_dropped = dropped.map{ |o| o['recipient'] }
 
-      query = (emails.blank? ? nil : 'emails[]=' + emails.join('&emails[]='))
-      query_dropped = (emails_dropped.blank? ? nil : 'emails[]=' + emails_dropped.join('&emails[]='))
+      query = (emails.blank? ? nil : 'emails[]=' + emails.map{|e| URI.encode_www_form_component(e)}.join('&emails[]='))
+      query_dropped = (emails_dropped.blank? ? nil : 'emails[]=' + emails_dropped.map{|e| URI.encode_www_form_component(e)}.join('&emails[]='))
     rescue
       r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
     end
