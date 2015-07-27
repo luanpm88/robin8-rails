@@ -29,24 +29,23 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         searching: false
         lengthChange: false
         pageLength: 10
-      that = this;
-      @ui.form.ready(that.initFormValidation());
+      @ui.form.ready(_.bind @initFormValidation, @)
 
     openModalDialog: (e) ->
-      $("#add-budget-modal input").val("");
-      @ui.form.data('formValidation').resetForm();
-      campaignId = e.target.attributes["campaign"].value;
-      $("#campaign-input").val(campaignId);
+      $("#add-budget-modal input").val("")
+      @ui.form.data('formValidation').resetForm()
+      campaignId = e.target.attributes["campaign"].value
+      $("#campaign-input").val(campaignId)
       @$el.find('#add-budget-modal').modal keyboard: false
 
     add: () ->
-      @ui.form.data('formValidation').validate();
+      @ui.form.data('formValidation').validate()
       if @ui.form.data('formValidation').isValid()
-        @ui.form.data('formValidation').resetForm();
+        @ui.form.data('formValidation').resetForm()
         data = _.reduce $("#add-budget-form").serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
         $.post "/campaign/add_budget/", data, (data) =>
           if data.status == "ok"
-            $("#add-budget-modal").modal("hide");
+            $("#add-budget-modal").modal("hide")
             $('#add-budget-modal').on 'hidden.bs.modal', () =>
               @collection.fetch()
           else
