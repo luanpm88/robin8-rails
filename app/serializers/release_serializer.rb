@@ -5,7 +5,8 @@ class ReleaseSerializer < ActiveModel::Serializer
     :characters_count, :words_count, :sentences_count,
     :paragraphs_count, :adverbs_count, :adjectives_count,
     :nouns_count, :organizations_count, :places_count, :people_count,
-    :concepts, :iptc_categories, :summaries, :hashtags, :plain_text,
+    :concepts, :iptc_categories, :boson_categories, 
+    :summaries, :hashtags, :plain_text,
     :subdomain_name, :news_room_public, :text_html, :slug, :permalink,
     :average_characters_count_per_word, :average_words_count_per_sentence,
     :myprgenie, :accesswire, :prnewswire,
@@ -41,6 +42,14 @@ class ReleaseSerializer < ActiveModel::Serializer
   def iptc_categories
     unless object.iptc_categories.blank?
       JSON.parse(object.iptc_categories)
+    else
+      []
+    end
+  end
+  
+  def boson_categories
+    unless object.boson_categories.blank?
+      JSON.parse(object.boson_categories)
     else
       []
     end

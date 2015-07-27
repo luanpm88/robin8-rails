@@ -25,7 +25,9 @@ module BosonNlpApi
     DEFAULT_TOKEN       = nil
 
     ENDPOINTS = {
-      classify:  'classify/analysis'
+      classify:  'classify/analysis',
+      tag: 'tag/analysis',
+      ner: 'ner/analysis'
     }
 
     # Build accessor methods for every config options so we can do this, for example:

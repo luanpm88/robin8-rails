@@ -54,7 +54,8 @@ class ReleasesController < ApplicationController
   end
 
   def update
-    ["iptc_categories", "concepts", "hashtags", "summaries"].each do |item|
+    ["iptc_categories", "concepts", "hashtags", "summaries", 
+      "boson_categories"].each do |item|
       params["release"][item] = params["release"][item].to_json
     end
     release = current_user.releases.find(params[:id])
@@ -102,8 +103,9 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.require(:release).permit(:title, :text, :news_room_id, :is_private,
-      :logo_url, :thumbnail, :concepts, :published_at, :iptc_categories, :summaries, :hashtags,
+    params.require(:release).permit(:title, :text, :news_room_id, :is_private, 
+      :logo_url, :thumbnail, :concepts, :published_at, :iptc_categories, 
+      :summaries, :hashtags, :boson_categories,
       :characters_count, :words_count, :sentences_count,
       :paragraphs_count, :adverbs_count, :adjectives_count,
       :nouns_count, :organizations_count, :places_count, :people_count,

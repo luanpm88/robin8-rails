@@ -131,7 +131,10 @@ class RobinApiController < ApplicationController
           blog_names: [value[:blog_name]],
           avatar_url: value[:avatar_url],
           score: value[:score],
-          index: index
+          index: index,
+          followers_count: value[:followers_count],
+          verified: value[:verified],
+          profile_url: value[:profile_url]
         }
         
         memo[value[:email]] = new_author
