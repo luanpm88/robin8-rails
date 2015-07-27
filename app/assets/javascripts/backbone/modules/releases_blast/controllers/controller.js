@@ -109,7 +109,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       
       // Loading view
       targetsTabLayout.blogsRegion.show(new Robin.Components.Loading.LoadingView());
-      targetsTabLayout.socialRegion.show(new Robin.Components.Loading.LoadingView());
+      
+      // Don't show Twitter tab in chinese Language
+      if (Robin.currentUser.get('locale') != 'zh') {
+        targetsTabLayout.socialRegion.show(new Robin.Components.Loading.LoadingView());
+      }
       // END Loading view
       
       var suggestedAuthorsCollection = new Robin.Collections.SuggestedAuthors({
@@ -137,7 +141,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             releaseModel: self.module.releaseModel
           });
           
-          targetsTabLayout.socialRegion.show(socialTargetsView);
+          // Don't show Twitter tab in chinese Language
+          if (Robin.currentUser.get('locale') != 'zh') {
+            targetsTabLayout.socialRegion.show(socialTargetsView);
+          }
         }
       });
       
