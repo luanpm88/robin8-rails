@@ -51,6 +51,18 @@ class CampaignController < ApplicationController
     render json: {:code => code}
   end
 
+  def approve_request
+    campaign = Campaign.find(params[:id])
+    if current_user.nil?
+      article = campaign.articles.where(kol_id: current_kol.id).first
+      article.tracking_code = 'Waiting'
+      article.save
+    else
+      article = Article.find(params[:article_id])
+    end
+    render json: article, serializer: ArticleSerializer
+  end
+
   def article_comments
     article = Article.find(params[:article_id])
     render json: article.article_comments.order(created_at: :desc), each_serializer: ArticleCommentSerializer
@@ -75,11 +87,14 @@ class CampaignController < ApplicationController
     c = Campaign.new
     c.user = current_user
     c.name = params[:name]
-    c.description = params[:description]
+    c.description = (params[:description]).gsub( %r{</?[^>]+?>}, '' )
     c.budget = params[:budget]
     c.release_id = params[:release]
     c.deadline = Date.parse params[:deadline]
     c.iptc_categories = categories
+    c.concepts = params[:concepts]
+    c.summaries = params[:summaries]
+    c.hashtags = params[:hashtags]
     c.save!
     kols.each do |k|
       i = CampaignInvite.new
@@ -87,10 +102,19 @@ class CampaignController < ApplicationController
       i.status = ''
       i.campaign = c
       i.save
+      print "here2"
       KolMailer.campaign_invite(k, current_user, c).deliver
     end
     render :json => c
   end
 
-end
+  def add_budget
+    campaign = Campaign.find(params[:campaign])
+    campaign.budget = campaign.budget + params[:budget].to_i
+    campaign.save
+    render json: {:status => :ok}
+  rescue
+    render json: {:status => 'Cant add budget'}
+  end
 
+end

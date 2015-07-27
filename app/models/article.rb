@@ -7,7 +7,7 @@ class Article < ActiveRecord::Base
   has_many :attachments, as: :imageable, dependent: :destroy
 
   def approve
-    if tracking_code.nil?
+    if tracking_code.nil? || tracking_code == 'Waiting'
       sha1 = Digest::SHA1.new
       campaign = campaign_id
       kol = kol_id

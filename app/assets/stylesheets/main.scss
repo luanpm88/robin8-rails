@@ -968,7 +968,8 @@ nav{text-align: center;}
 .blast-release .blast-content {
   min-height: 200px;
 }
-.blast-release .breadcrumb {
+.blast-release .breadcrumb,
+.new-campaign-tabs .breadcrumb {
   margin-bottom: 0;
 }
 #textAPIConcepts span {
@@ -977,7 +978,8 @@ nav{text-align: center;}
   margin-bottom: 4px;
   font-size: 14px;
 }
-.blast-release .breadcrumb-arrow li a {
+.blast-release .breadcrumb-arrow li a,
+.new-campaign-tabs .breadcrumb-arrow li a {
   position: relative;
   border: none;
   color: inherit;
@@ -985,14 +987,17 @@ nav{text-align: center;}
   text-decoration: none;
 }
 .blast-release .breadcrumb-arrow li.active a,
-.blast-release .breadcrumb-arrow li.colored a {
+.blast-release .breadcrumb-arrow li.colored a,
+.new-campaign-tabs .breadcrumb-arrow li.active a,
+.new-campaign-tabs .breadcrumb-arrow li.colored a {
   position: relative;
   border: 1px solid #3c9eb6;
   color: #FFF;
   background-color: #3c9eb6;
   text-decoration: none;
 }
-.blast-release .breadcrumb-arrow li a:before {
+.blast-release .breadcrumb-arrow li a:before,
+.new-campaign-tabs .breadcrumb-arrow li a:before {
   right: -10px;
   border-left-width: 11px;
   border-left-style: solid;
@@ -1000,32 +1005,43 @@ nav{text-align: center;}
   z-index: 3;
 }
 .blast-release .breadcrumb-arrow li.active a:before,
-.blast-release .breadcrumb-arrow li.colored a:before {
+.blast-release .breadcrumb-arrow li.colored a:before,
+.new-campaign-tabs .breadcrumb-arrow li.active a:before,
+.new-campaign-tabs .breadcrumb-arrow li.colored a:before {
   right: -10px;
   border-left-width: 11px;
   border-left-style: solid;
   border-left-color: #3c9eb6;
   z-index: 3;
 }
-.blast-release .breadcrumb-arrow li a:after {
+.blast-release .breadcrumb-arrow li a:after,
+.new-campaign-tabs .breadcrumb-arrow li a:after {
   right: -11px;
   border-left: 11px solid transparent;
   z-index: 2;
 }
 .blast-release .breadcrumb-arrow li.active a:after,
-.blast-release .breadcrumb-arrow li.colored a:after {
+.blast-release .breadcrumb-arrow li.colored a:after,
+.new-campaign-tabs .breadcrumb-arrow li.active a:after,
+.new-campaign-tabs .breadcrumb-arrow li.colored a:after {
   right: -11px;
   border-left: 11px solid #2494be;
   z-index: 2;
 }
 .blast-release .breadcrumb-arrow li a:active:before,
-.blast-release .breadcrumb-arrow li a:active:after {
+.blast-release .breadcrumb-arrow li a:active:after,
+.new-campaign-tabs .breadcrumb-arrow li a:active:before,
+.new-campaign-tabs .breadcrumb-arrow li a:active:after {
   border-left-color: transparent;
 }
 .blast-release .breadcrumb-arrow li.active a:active:before,
 .blast-release .breadcrumb-arrow li.active a:active:after,
 .blast-release .breadcrumb-arrow li.colored a:active:before,
-.blast-release .breadcrumb-arrow li.colored a:active:after {
+.blast-release .breadcrumb-arrow li.colored a:active:after,
+.new-campaign-tabs .breadcrumb-arrow li.active a:active:before,
+.new-campaign-tabs .breadcrumb-arrow li.active a:active:after,
+.new-campaign-tabs .breadcrumb-arrow li.colored a:active:before,
+.new-campaign-tabs .breadcrumb-arrow li.colored a:active:after {
   border-left-color: #3c9eb6;
 }
 .select2-drop {
@@ -1744,31 +1760,7 @@ input.form-control[type="file"] {
     padding-bottom: 0px !important;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.new-campaign-tabs {
+  padding-right: 15px; 
+  padding-left: 15px;
+}

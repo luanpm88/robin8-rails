@@ -15,10 +15,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       status: (k) ->
         if k.status == "" then "Unknown" else "Declined"
       code: (k) ->
-        if k.article? and k.article.tracking_code?
+        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
           k.article.tracking_code
         else
           "Not approved yet"
+      code_status: (k) ->
+        if k.article? and k.article.tracking_code? and k.article.tracking_code == 'Waiting'
+          "Pending approval"
+        else
+          "In Progress"
 
     events:
       "click tr.preview": "preview"
@@ -34,6 +39,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         disabled: true
         onApprove: (code) ->
           $("#code_#{id}").html code
+          $("#code_status_#{id}").html 'In Progress'
       article.fetch
         success: ()->
           articleDialog.render()

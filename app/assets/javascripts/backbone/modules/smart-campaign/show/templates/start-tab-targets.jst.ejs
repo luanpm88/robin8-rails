@@ -1,0 +1,25 @@
+<div id="blast-targets" class="tab-pane active" role="tabpanel">
+  <h5> <%= polyglot.t("smart_release.targets_step.title") %></h5>
+  <p><%= polyglot.t("smart_release.targets_step.description") %></p>
+  <ul class="nav nav-tabs nav-justified">
+    <li class="active"><a data-toggle="tab" href="#targets-wechat" aria-expanded="true"><i class="fa fa-wechat"></i> Wechat</a></li>
+    <li><a data-toggle="tab" href="#targets-weibo" aria-expanded="true"><i class="fa fa-weibo"></i> Weibo</a></li>
+    <li><a data-toggle="tab" href="#targets-blogs" aria-expanded="true"><i class="fa fa-rss"></i> Influencers</a></li>
+    <li><a data-toggle="tab" href="#targets-search" aria-expanded="true"><i class="fa fa-search"></i> Search</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="targets-wechat" class="tab-pane active" role="tabpanel">
+
+    </div>
+    <div id="targets-weibo" class="tab-pane" role="tabpanel">
+
+    </div>
+    <div id="targets-blogs" class="tab-pane" role="tabpanel">
+
+    </div>
+    <div id="targets-search" class="tab-pane" role="tabpanel">
+
+    </div>
+  </div>
+  <button class="btn btn-primary pull-right" id="next-step"><i class="fa fa-chevron-right"></i> <%= polyglot.t("smart_release.analysis_step.buttons.next") %></button>
+</div>

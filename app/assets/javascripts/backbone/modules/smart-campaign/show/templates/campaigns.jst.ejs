@@ -15,17 +15,47 @@
       <tbody>
         <% _.each(items, function(c) { %>
           <tr data-id="<%= c.id %>">
-            <td>
+            <td  class="middle">
               <a href="#/smart_campaign/details/<%= c.id %>">
                 <%= c.name %>
               </a>
             </td>
-            <td data-order="<%= c.budget %>">$<%= c.budget %></td>
-            <td data-order="<%= timestamp(c.created_at)%>"><%= formatDate(c.created_at) %></td>
-            <td data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
+            <td class="middle" data-order="<%= c.budget %>">
+              $<span style="width: 50px; display: inline-block;"><%= c.budget %></span>
+              <button type="button" class="btn btn-success vcenter" id="add_budget" campaign="<%= c.id %>"><i class="fa fa-plus"></i>  Add Budget</button>
+            </td>
+            <td class="middle" data-order="<%= timestamp(c.created_at)%>"><%= formatDate(c.created_at) %></td>
+            <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
           </tr>
         <% }); %>
       </tbody>
     </table>
+  </div>
+
+  <div class="modal fade add-budget" id='add-budget-modal' role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"> Add Budget</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="add-budget-form" method="post" action="/campaign/add_budget/">
+                    <div class="form-group">
+                        <div id='budget--block'>
+                            <input class="form-control" id="campaign-input" type="hidden" name="campaign"  value="">
+                            <input class="form-control" id="budget-input" name="budget" value="" placeholder="100$" required>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <div id="add_kol-buttons">
+                        <button type="button" class="btn btn-success" id="add-budget-confirm"><i class="fa fa-plus"></i> Add</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 <% } %>
