@@ -29,7 +29,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       )
 
     openPitchTab: () ->
-
+      @options.parent.setState('pitch')
 
     onRender: () ->
 #      @showChildView 'wechatRegion', @wechat_view
