@@ -27,6 +27,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     events:
       "click tr.preview": "preview"
+      "click #edit_campaign": "edit"
 
     preview: (e) ->
       id = $(e.currentTarget).data "article-id"
@@ -78,3 +79,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         accepted: accepted
         declined: declined
       }
+
+    edit: () ->
+      start_tab_view = new Show.NewCampaign (
+        model: @model
+      )
+      Robin.layouts.main.content.show(start_tab_view)

@@ -13,7 +13,12 @@
       <th>Invite</th>
     </tr></thead>
     <tbody>
-      <% _.each(kols, function(k) { %>
+      <%
+        var invited_kols = kols_id();
+        var id = campaign_id();
+        _.each(kols, function(k) {
+          if (isPresent(k,id,invited_kols)) {
+       %>
         <tr data-id="<%= k.id %>">
           <td>
             <img width="20px" src="<%= AppAssets.images['user_avatar.png'] %>"></img>
@@ -24,10 +29,13 @@
           <td><%= categories(k) %></td>
           <td><%= public(k) %></td>
           <td>
-            <% var checked = ""; if (k.invited != null && k.invited == true) { checked = "checked"; } %>
+            <% var checked = "";
+            if ((k.invited != null && k.invited == true) || (isChecked(k, invited_kols)))
+              { checked = "checked"; } %>
             <input class="invite-checkbox" type="checkbox" name="invite_<%= k.id %>" data-kol-id="<%= k.id %>" <%= checked %> />
           </td>
         </tr>
+      <% } %>
       <% }); %>
     </tbody>
   </table>

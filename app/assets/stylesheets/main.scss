@@ -1058,7 +1058,8 @@ nav{text-align: center;}
 .blast-release .targets-author .media-left {
   padding-right: 4px;
 }
-.blast-release .targets-author .media-left img {
+.blast-release .targets-author .media-left img,
+.tab-content .targets-author .media-left img {
   height: 50px;
   width: 50px;
 }
@@ -1761,6 +1762,6 @@ input.form-control[type="file"] {
   }
 }
 .new-campaign-tabs {
-  padding-right: 15px; 
+  padding-right: 15px;
   padding-left: 15px;
 }

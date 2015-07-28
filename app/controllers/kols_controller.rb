@@ -45,7 +45,18 @@ class KolsController < ApplicationController
     kols = []
     categories = params[:categories]
     categories = categories.split(',') if not categories.blank?
-    if not categories.blank?
+    name =  params[:name].split(' ') if not params[:name].blank?
+    if not name.blank?
+      name.push "" if name.length ==1
+    end
+    location = params[:location] if not params[:location].blank?
+    if (not categories.blank?) && (not name.blank?) && (not location.blank?)
+      kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories }, :first_name => name[0], :last_name => name[1], :location => location
+    elsif (not categories.blank?) && (not name.blank?)
+      kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories }, :first_name => name[0], :last_name => name[1]
+    elsif (not categories.blank?) && (not location.blank?)
+      kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories }, :location => location
+    elsif not categories.blank?
       kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories }
     end
     render :json => kols.to_json(:methods => [:categories])

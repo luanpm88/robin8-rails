@@ -153,7 +153,7 @@ Rails.application.routes.draw do
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
 
-  resources :campaign, only: [:index, :create, :show]
+  resources :campaign, only: [:index, :create, :update, :show]
   get 'campaign/:id/article', to: 'campaign#article'
   get 'campaign/:id/article/:article_id', to: 'campaign#article'
   put 'campaign/:id/article', to: 'campaign#update_article'
@@ -163,6 +163,7 @@ Rails.application.routes.draw do
   post 'campaign/:id/article/:article_id/approve', to: 'campaign#approve_article'
   post 'campaign/add_budget', to: 'campaign#add_budget'
   post 'campaign/:id/article/:article_id/approve_request', to: 'campaign#approve_request'
+  post 'campaign/test_email', to: 'campaign#test_email'
   resources :campaign_invite, only: [:index, :create, :show, :update]
 
 end

@@ -80,8 +80,9 @@ class CampaignController < ApplicationController
     if current_user.blank?
       return render :json => {:status => "thanks for submitting this. we will contact you."}
     end
-    category_ids = params[:categories].split ','
-    kol_ids = params[:kols]
+    category_ids = params[:iptc_categories].split ','
+    kol_ids = params[:kols].map { |k| k[:id] }
+
     categories = IptcCategory.where :id => category_ids
     kols = Kol.where :id => kol_ids
     c = Campaign.new
@@ -102,8 +103,12 @@ class CampaignController < ApplicationController
       i.status = ''
       i.campaign = c
       i.save
-      print "here2"
-      KolMailer.campaign_invite(k, current_user, c).deliver
+
+      text = params[:email_pitch]
+      text = text.sub('@[First Name]', k.first_name)
+      text = text.sub('@[Last Name] ', k.last_name)
+
+      KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
     end
     render :json => c
   end
@@ -115,6 +120,13 @@ class CampaignController < ApplicationController
     render json: {:status => :ok}
   rescue
     render json: {:status => 'Cant add budget'}
+  end
+
+  def test_email
+    KolMailer.delay.send_invite(params[:email_address], params[:emails], params[:email_subject], params[:email_pitch])
+    render json: {:status => :ok}
+  rescue
+    render json: {:status => 'Cant send test email'}
   end
 
 end

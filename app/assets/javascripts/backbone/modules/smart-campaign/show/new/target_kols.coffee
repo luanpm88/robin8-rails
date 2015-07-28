@@ -17,12 +17,46 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         res.join ''
       public: (k) ->
         if k.is_public then "Yes" else "No"
+      kols_id: ()->
+        invited_kols = @model.model.get("kols")
+        kols_id = []
+        if invited_kols?
+          $(invited_kols).each(() ->
+            kols_id.push(this.id)
+          )
+        return kols_id
+      campaign_id: ()->
+        @model.model.get("id")
+      isPresent: (k, campaign_id, kols_id) ->
+        isShow = -1
+        if (kols_id.length >0) && campaign_id? 
+          isShow = kols_id.indexOf(k.id)
+        if isShow < 0 then true else false
+      isChecked: (k, kols_id) ->
+        isChecked = -1
+        invited_kols = @model.model.get("kols")
+        if invited_kols?
+          isChecked = invited_kols.indexOf(k.id)
+        if isChecked >=0 then true else false
 
-    initialize: () ->
+    initialize: (model) ->
       @kols = []
+      @model = model
 
     serializeData: () ->
-      kols: @kols
+      kols: @kols,
+      model: @model
+
+    kols_id: ()->
+      invited_kols = @model.model.get("kols")
+      kols_id = []
+      if invited_kols?
+        $(invited_kols).each(() ->
+          kols_id.push(this.id)
+        )
+      return kols_id
+    campaign_id: ()->
+      @model.model.get("id")
 
     invitedKols: () ->
       _.chain(@kols)
@@ -46,6 +80,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       kol_status = target.is ':checked'
       kol = _(@kols).find (k) -> k.id == kol_id
       kol.invited = kol_status
+      influencers = []
+      if not @model.model.get("kols")?
+        @model.model.set("kols",[])
+      else
+        influencers = @model.model.get("kols")
+      index = influencers.indexOf(kol_id)
+      if index >= 0
+        influencers.splice(index, 1)
+        $(document.getElementsByName(e.target.name)).each ->
+          @checked = false
+      else
+        influencers.push kol_id
+        $(document.getElementsByName(e.target.name)).each ->
+          @checked = true
+      @model.model.set("kols",influencers)
       @validate()
 
     validate: () ->
@@ -64,3 +113,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         searching: false
         lengthChange: false
         pageLength: 25
+      if @model.model.get("kols")?
+        $(".kol-header").removeClass "error"
+        $(".kol-errors").hide()
