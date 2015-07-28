@@ -77,14 +77,21 @@ class NewsRoomsController < ApplicationController
     begin
       result = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats")
       result_on_opens = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=opened")
-      
+      result_on_dropped = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=dropped")
+
       r = JSON.parse(result.body)
       opens = JSON.parse(result_on_opens.body)
+      dropped = JSON.parse(result_on_dropped.body)
+
       emails = opens.map{ |o| o['recipient'] }
-      query = (emails.blank? ? nil : 'emails[]=' + emails.join('&emails[]='))
+      emails_dropped = dropped.map{ |o| o['recipient'] }
+
+      query = (emails.blank? ? nil : 'emails[]=' + emails.map{|e| URI.encode_www_form_component(e)}.join('&emails[]='))
+      query_dropped = (emails_dropped.blank? ? nil : 'emails[]=' + emails_dropped.map{|e| URI.encode_www_form_component(e)}.join('&emails[]='))
     rescue
       r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
     end
+
     authors = if emails.blank?
       []
     else
@@ -96,13 +103,38 @@ class NewsRoomsController < ApplicationController
 
       res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
       parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
-      parsed_res['authors']
       parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
       emails_diff = emails - parsed_res_emails
-      emails_diff.each{ |e| parsed_res['authors'].push({'email': e, 'first_name': '', last_name: ''}) }
+      contacts = current_user.contacts.where(email: emails_diff)
+      emails_diff.each do |e|
+        c = contacts.select{|c| c.email == e }.first
+        parsed_res['authors'].push({'email': e, 'first_name': c.try(:first_name), last_name: c.try(:last_name), outlet: c.try(:outlet)})
+      end
       parsed_res['authors']
     end
-    render json: { mail: r, authors: authors }
+
+    authors_dropped = if emails_dropped.blank?
+      []
+    else
+      uri = URI(Rails.application.secrets.robin_api_url + 'authors')
+      uri.query = query_dropped
+
+      req = Net::HTTP::Get.new(uri)
+      req.basic_auth Rails.application.secrets.robin_api_user, Rails.application.secrets.robin_api_pass
+
+      res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
+      parsed_res = res.code == '200' ? JSON.parse(res.body) : {}
+      parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
+      emails_diff = emails_dropped - parsed_res_emails
+      contacts = current_user.contacts.where(email: emails_diff)
+      emails_diff.each do |e|
+        c = contacts.select{|c| c.email == e }.first
+        parsed_res['authors'].push({'email': e, 'first_name': c.try(:first_name), last_name: c.try(:last_name), outlet: c.try(:outlet)})
+      end
+      parsed_res['authors']
+    end
+
+    render json: { mail: r, authors: authors, authors_dropped: authors_dropped }
   end
 
 private

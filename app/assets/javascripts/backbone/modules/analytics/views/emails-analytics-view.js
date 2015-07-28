@@ -11,7 +11,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
           }
           id = ( id == undefined ? collection.models[0].get('id') : id );
           $.get('/news_rooms/' + id +'/email_analytics', function(data){
-            window.$data = data;
+            
             var mail = data.mail.total;
             var mailStatistics = [mail.sent, mail.delivered, mail.opened, mail.dropped]
 
@@ -107,6 +107,29 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     childViewContainer: "tbody",
 
     template: "modules/analytics/templates/emails-list",
+
+    onRender: function(){
+      this.initDataTable();
+    },
+
+    initDataTable: function(){
+      var self = this;
+      var table = this.$el.find('table').DataTable({
+        "info": false,
+        "searching": false,
+        "lengthChange": false,
+        "pageLength": 10,
+      });
+
+    },
+  });
+
+  Analytics.EmailsDroppedListCompositeView = Backbone.Marionette.CompositeView.extend({
+    childView: Analytics.EmailView,
+
+    childViewContainer: "tbody",
+
+    template: "modules/analytics/templates/emails-dropped-list",
 
     onRender: function(){
       this.initDataTable();
