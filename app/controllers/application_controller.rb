@@ -2,6 +2,30 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
 
+  before_action :set_translations
+
+  def set_translations
+    unless current_user.blank? and current_kol.blank?
+      someone = current_user
+      someone = current_kol if current_user.nil?
+      locale = someone.locale.nil? ? 'en' : someone.locale
+    else
+      if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
+        cookies['locale'] = { value: params[:locale], expires: 1.year.from_now }
+        I18n.locale = params[:locale].to_sym
+      elsif cookies['locale'] && [:en, :zh].include?(cookies['locale'].to_sym)
+        I18n.locale = cookies['locale'].to_sym
+      else
+        I18n.locale = request.location && request.location.country.to_s == "China" ? 'zh' : 'en'
+        cookies['locale'] = { value: I18n.locale, expires: 1.year.from_now }
+      end
+      locale = I18n.locale
+    end
+    @l ||= Localization.new
+    @l.locale = locale
+    @phrases = JSON.parse(@l.store.get(locale))['application']
+  end
+
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
   force_ssl if: :ssl_configured?
