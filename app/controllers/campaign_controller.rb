@@ -81,7 +81,7 @@ class CampaignController < ApplicationController
       return render :json => {:status => "thanks for submitting this. we will contact you."}
     end
     category_ids = params[:iptc_categories].split ','
-    kol_ids = params[:kols].map &:id
+    kol_ids = params[:kols].map { |k| k[:id] }
 
     categories = IptcCategory.where :id => category_ids
     kols = Kol.where :id => kol_ids
