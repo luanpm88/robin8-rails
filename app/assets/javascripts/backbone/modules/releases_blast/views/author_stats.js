@@ -9,6 +9,34 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.initHighcharts();
     },
     initHighcharts: function(){
+      var series_data = [
+        Math.ceil(this.model.get('syntactic').characters_count.mean),
+        Math.ceil(this.model.get('syntactic').words_count.mean),
+        Math.ceil(this.model.get('syntactic').sentences_count.mean),
+        Math.ceil(this.model.get('syntactic').paragraphs_count.mean),
+        Math.ceil(this.model.get('syntactic').nouns_count.mean),
+        Math.ceil(this.model.get('syntactic').adjectives_count.mean),
+        Math.ceil(this.model.get('syntactic').adverbs_count.mean),
+        Math.ceil(this.model.get('syntactic').people_count.mean),
+        Math.ceil(this.model.get('syntactic').places_count.mean),
+        Math.ceil(this.model.get('syntactic').organizations_count.mean)
+      ];
+      
+      if (Robin.currentUser.get('locale') == 'zh'){
+        series_data = [
+          Math.ceil(this.model.get('syntactic').characters_count.max),
+          Math.ceil(this.model.get('syntactic').words_count.max),
+          Math.ceil(this.model.get('syntactic').sentences_count.max),
+          Math.ceil(this.model.get('syntactic').paragraphs_count.max),
+          Math.ceil(this.model.get('syntactic').nouns_count.max),
+          Math.ceil(this.model.get('syntactic').adjectives_count.max),
+          Math.ceil(this.model.get('syntactic').adverbs_count.max),
+          Math.ceil(this.model.get('syntactic').people_count.max),
+          Math.ceil(this.model.get('syntactic').places_count.max),
+          Math.ceil(this.model.get('syntactic').organizations_count.max)
+        ];
+      }
+      
       this.$el.highcharts({
         chart: {
           type: 'column',
@@ -65,18 +93,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         },
         series: [{
           name: this.authorModel.get("full_name") + "'s average",
-          data: [
-            Math.ceil(this.model.get('syntactic').characters_count.mean),
-            Math.ceil(this.model.get('syntactic').words_count.mean),
-            Math.ceil(this.model.get('syntactic').sentences_count.mean),
-            Math.ceil(this.model.get('syntactic').paragraphs_count.mean),
-            Math.ceil(this.model.get('syntactic').nouns_count.mean),
-            Math.ceil(this.model.get('syntactic').adjectives_count.mean),
-            Math.ceil(this.model.get('syntactic').adverbs_count.mean),
-            Math.ceil(this.model.get('syntactic').people_count.mean),
-            Math.ceil(this.model.get('syntactic').places_count.mean),
-            Math.ceil(this.model.get('syntactic').organizations_count.mean)
-          ]
+          data: series_data
         }, {
           name: 'Your release',
           data: [
