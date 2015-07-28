@@ -23,6 +23,8 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       code_status: (campaign) ->
         if campaign.tracking_code? and campaign.tracking_code == 'Waiting'
           "Pending approval"
+        else if campaign.tracking_code? and campaign.tracking_code != 'Waiting'
+          "Approved"
         else
           "In Progress"
 
