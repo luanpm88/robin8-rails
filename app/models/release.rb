@@ -71,7 +71,7 @@ class Release < ActiveRecord::Base
   def pos_tagger
     if Rails.application.secrets[:pos_tagger_api]
       response = HTTParty.post(Rails.application.secrets[:pos_tagger_api][:url], 
-        body: {text: plain_text}).parsed_response
+        body: {text: plain_text, lang: self.user.locale}).parsed_response
       
       self.characters_count = response["characters_count"]
       self.words_count = response["words_count"]
@@ -84,13 +84,34 @@ class Release < ActiveRecord::Base
   end
   
   def entities_counter
-    client = AylienTextApi::Client.new
+    if self.user.locale == "zh"
+      client = BosonNlpApi::Client.new
+      
+      ner_response = client.ner! text: plain_text
+      
+      self.organizations_count = 0
+      self.places_count = 0
+      self.people_count = 0
+      
+      ner_response[0][:entity].each_with_index do |entity, index|
+        case entity[-1]
+          when "person_name"
+            self.people_count += 1
+          when "location"
+            self.places_count += 1
+          when "org_name"
+            self.organizations_count += 1
+        end
+      end
+    else
+      client = AylienTextApi::Client.new
     
-    response = client.entities! text: plain_text
-    
-    self.organizations_count = (response[:entities][:organization] || []).size
-    self.places_count = (response[:entities][:location] || []).size
-    self.people_count = (response[:entities][:person] || []).size
+      response = client.entities! text: plain_text
+      
+      self.organizations_count = (response[:entities][:organization] || []).size
+      self.places_count = (response[:entities][:location] || []).size
+      self.people_count = (response[:entities][:person] || []).size
+    end
   end
 
   def needed_user
