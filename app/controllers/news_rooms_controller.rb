@@ -107,7 +107,10 @@ class NewsRoomsController < ApplicationController
       parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
       emails_diff = emails - parsed_res_emails
       contacts = current_user.contacts.where(email: emails_diff)
-      contacts.each{ |c| parsed_res['authors'].push({'email': c.email, 'first_name': c.first_name, last_name: c.last_name, outlet: c.outlet}) }
+      emails_diff.each do |e|
+        c = contacts.select{|c| c.email == e }.first
+        parsed_res['authors'].push({'email': e, 'first_name': c.try(:first_name), last_name: c.try(:last_name), outlet: c.try(:outlet)})
+      end
       parsed_res['authors']
     end
 
@@ -125,7 +128,10 @@ class NewsRoomsController < ApplicationController
       parsed_res_emails = parsed_res['authors'].map{ |r| r['email'] }
       emails_diff = emails_dropped - parsed_res_emails
       contacts = current_user.contacts.where(email: emails_diff)
-      contacts.each{ |c| parsed_res['authors'].push({'email': c.email, 'first_name': c.first_name, last_name: c.last_name, outlet: c.outlet}) }
+      emails_diff.each do |e|
+        c = contacts.select{|c| c.email == e }.first
+        parsed_res['authors'].push({'email': e, 'first_name': c.try(:first_name), last_name: c.try(:last_name), outlet: c.try(:outlet)})
+      end
       parsed_res['authors']
     end
 
