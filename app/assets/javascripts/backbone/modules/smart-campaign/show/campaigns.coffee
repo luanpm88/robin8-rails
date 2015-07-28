@@ -29,6 +29,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         searching: false
         lengthChange: false
         pageLength: 10
+        columnDefs: [sortable: false, targets: ["no-sort"]]
+
       @ui.form.ready(_.bind @initFormValidation, @)
 
     openModalDialog: (e) ->

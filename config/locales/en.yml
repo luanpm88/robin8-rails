@@ -305,30 +305,31 @@ en:
         delete_button: Delete
         button: Pitch!
     smart_campaign:
-          pitch_step:
-            title: Pitch
-            description: Now that you know exactly which journalists and influencers to contact for your compaign, you need to prepare the note to these contacts. You can use the Robin8 default note or prepare your own personal note. If you are preparing your own personal note, we recommend you keep it short and no more than 3 paragraphs.
-            emailTargets: Targets will be contacted via Email
-            wechatTargets: Targets will be contacted via WeChat
-            weiboTargets: Targets will be contacted via Weibo
-            see: See list
-            targets_table:
-              name: Name
-              email: Email
-              actions: Actions
-              delete: Delete
-              save: Save as a list
-              button: Save
-            email_panel:
-              title: Email pitch
-              subject: Subject line
-              subject_placeholder: Enter a catchy subject line...
-              email: Your email address
-              email_placeholder: Enter an email address...
-              pitch_text: Pitch text
-              preview: Preview
-              length: Summary length
-              sentences: sentences
-              tags: Available merge tags
-            delete_button: Delete
-            button: Pitch!
+      add_money: Add money
+        pitch_step:
+          title: Pitch
+          description: Now that you know exactly which journalists and influencers to contact for your compaign, you need to prepare the note to these contacts. You can use the Robin8 default note or prepare your own personal note. If you are preparing your own personal note, we recommend you keep it short and no more than 3 paragraphs.
+          emailTargets: Targets will be contacted via Email
+          wechatTargets: Targets will be contacted via WeChat
+          weiboTargets: Targets will be contacted via Weibo
+          see: See list
+          targets_table:
+            name: Name
+            email: Email
+            actions: Actions
+            delete: Delete
+            save: Save as a list
+            button: Save
+          email_panel:
+            title: Email pitch
+            subject: Subject line
+            subject_placeholder: Enter a catchy subject line...
+            email: Your email address
+            email_placeholder: Enter an email address...
+            pitch_text: Pitch text
+            preview: Preview
+            length: Summary length
+            sentences: sentences
+            tags: Available merge tags
+          delete_button: Delete
+          button: Pitch!

@@ -9,6 +9,7 @@
       <thead style="cursor:pointer;"><tr>
         <th>Name</th>
         <th>Budget</th>
+        <th class="no-sort"></th>
         <th>Created</th>
         <th>Deadline</th>
       </tr></thead>
@@ -22,7 +23,9 @@
             </td>
             <td class="middle" data-order="<%= c.budget %>">
               $<span style="width: 50px; display: inline-block;"><%= c.budget %></span>
-              <button type="button" class="btn btn-success vcenter" id="add_budget" campaign="<%= c.id %>"><i class="fa fa-plus"></i>  Add Budget</button>
+            </td>
+            <td class="middle">
+              <button type="button" class="btn btn-success vcenter" id="add_budget" campaign="<%= c.id %>"><i class="fa fa-plus"></i>  <%= polyglot.t("smart_campaign.add_money") %></button>
             </td>
             <td class="middle" data-order="<%= timestamp(c.created_at)%>"><%= formatDate(c.created_at) %></td>
             <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
@@ -37,7 +40,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"> Add Budget</h4>
+                <h4 class="modal-title"> <%= polyglot.t("smart_campaign.add_money") %></h4>
             </div>
             <div class="modal-body">
                 <form role="form" id="add-budget-form" method="post" action="/campaign/add_budget/">
