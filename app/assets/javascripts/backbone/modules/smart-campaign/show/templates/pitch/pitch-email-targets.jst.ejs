@@ -16,10 +16,10 @@
       </thead>
       <tbody>
       <% _.each(items, function(c) { %>
-      <tr data-id="<%= c.id %>">
-        <td  class="middle"><%= c.name %></td>
+      <tr>
+        <td class="middle"><%= c.first_name %> <%= c.last_name %></td>
         <td class="middle"><%= c.email %></td>
-        <td><a class="btn btn-danger btn-xs" href="#"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
+        <td><a class="btn btn-danger btn-xs" href="#" data-kol-id="<%= c.id %>"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
       </tr>
       <% }); %>
       </tbody>

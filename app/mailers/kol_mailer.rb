@@ -5,4 +5,8 @@ class KolMailer < ApplicationMailer
     @campaign = campaign
     mail(:to => @kol.email, :subject => "You were invited to new campaign!",:from => "Robin8 <no-reply@robin8.com>")
   end
+
+  def send_invite(sender, mail, subject, text)
+    mail(:to => mail, :from => sender, :subject => subject, :body => text)
+  end
 end
