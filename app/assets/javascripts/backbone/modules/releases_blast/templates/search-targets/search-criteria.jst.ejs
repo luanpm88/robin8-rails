@@ -1,9 +1,11 @@
 <div class="panel-heading">
   <h1 class="panel-title">
     <i class="fa fa-search"></i><strong> <%= polyglot.t("smart_release.targets_step.search_tab.search_authors.title") %></strong>
-    <div class="pull-right">
-      <input type="checkbox" name="switch-find" checked />
-    </div>
+    <% if (Robin.currentUser.get('locale') != 'zh') { %>
+      <div class="pull-right">
+        <input type="checkbox" name="switch-find" checked />
+      </div>
+    <% } %>
   </h1>
 </div>
 <div class="panel-body">

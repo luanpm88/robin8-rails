@@ -23,6 +23,9 @@
       <th><%= polyglot.t("smart_release.targets_step.influencers_tab.author") %></th>
       <th><%= polyglot.t("smart_release.targets_step.influencers_tab.outlet") %></th>
       <th><%= polyglot.t("smart_release.targets_step.influencers_tab.relevance") %></th>
+      <% if (Robin.currentUser.get('locale') == 'zh') { %>
+        <th><%= polyglot.t("smart_release.targets_step.influencers_tab.followers_count") %></th>
+      <% } %>
       <th><%= polyglot.t("smart_release.targets_step.influencers_tab.pitch") %></th>
       <th><%= polyglot.t("smart_release.targets_step.influencers_tab.contact") %></th>
     </tr>
