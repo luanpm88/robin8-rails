@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-lg" id="campaign-article-modal">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -17,7 +17,10 @@
                     <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.text %></textarea>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <% var button_disabled = ""; if (item.tracking_code != null) { button_disabled = "disabled"; } %>
+                        <% var button_disabled = ""; if (item.tracking_code != null && item.tracking_code != "Waiting") { button_disabled = "disabled"; } %>
+                        <% if (!disabled) { %>
+                            <button type="button" class="btn btn-primary" id="article-approve"  <%= button_disabled %> >Send to approval</button>
+                        <% } %>
                         <% if (disabled) { %>
                           <button type="button" class="btn btn-success" id="article-save" <%= button_disabled %> >Approve</button>
                         <% } else { %>

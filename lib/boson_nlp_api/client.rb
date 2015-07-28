@@ -38,12 +38,40 @@ module BosonNlpApi
         Configuration::ENDPOINTS[:classify])
       Connection.new(endpoint, params, config).request!
     end
+    
+    def tag!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:tag])
+      Connection.new(endpoint, params, config).request!
+    end
+    
+    def ner!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:ner])
+      Connection.new(endpoint, params, config).request!
+    end
     # END Destructives methods
     
     
     def classify(value=nil, params={})
       begin
         classify!(value, params)
+      rescue => e
+        nil
+      end
+    end
+    
+    def tag(value=nil, params={})
+      begin
+        tag!(value, params)
+      rescue => e
+        nil
+      end
+    end
+    
+    def ner(value=nil, params={})
+      begin
+        ner!(value, params)
       rescue => e
         nil
       end

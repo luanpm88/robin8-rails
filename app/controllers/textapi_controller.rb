@@ -140,20 +140,20 @@ class TextapiController < ApplicationController
   
   def map_boson_labels(code)
     case code
-      when 0  then 'sport'
-      when 1  then 'education'
-      when 2  then 'economic'
-      when 3  then 'society'
-      when 4  then 'entertainment'
-      when 5  then 'military'
-      when 6  then 'domestic'
-      when 7  then 'technology'
-      when 8  then 'internet'
-      when 9  then 'house property'
-      when 10 then 'international'
-      when 11 then 'women'
-      when 12 then 'automobile'
-      when 13 then 'game'
+      when 0  then '体育'
+      when 1  then '教育'
+      when 2  then '财经'
+      when 3  then '社会'
+      when 4  then '娱乐'
+      when 5  then '军事'
+      when 6  then '国内'
+      when 7  then '科技'
+      when 8  then '互联网'
+      when 9  then '房产'
+      when 10 then '国际'
+      when 11 then '女人'
+      when 12 then '汽车'
+      when 13 then '游戏'
       else map_boson_labels(Random.rand(14))
     end
   end

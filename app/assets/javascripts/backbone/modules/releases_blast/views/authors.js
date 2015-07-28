@@ -386,7 +386,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initDataTable: function(){
       var self = this;
-      var table = this.$el.find('table').DataTable({
+      var options = {
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -394,6 +394,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "pageLength": 25,
         "bAutoWidth" :false,
         "columns": [
+          null,
           { "width": "30%" },
           null,
           null,
@@ -443,7 +444,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             }
           ]
         }
-      });
+      };
+      
+      if (Robin.currentUser.get('locale') == 'zh'){
+        options["columns"] = [
+          null,
+          { "width": "30%" },
+          null,
+          null,
+          null,
+          null
+        ];
+        options["ordering"] = true;
+      }
+      
+      var table = this.$el.find('table').DataTable(options);
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
@@ -567,7 +582,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initDataTable: function(){
       var self = this;
-      var table = this.$el.find('table').DataTable({
+      
+      var options = {
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -633,7 +649,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             }
           ]
         }
-      });
+      };
+      
+      if (Robin.currentUser.get('locale') == 'zh'){
+        options["columns"] = [
+          { "width": "30%" },
+          null,
+          null,
+          null,
+          null,
+          null
+        ];
+        options["ordering"] = true;
+        options["order"] = [[ 2, 'desc' ]];
+      }
+      
+      var table = this.$el.find('table').DataTable(options);
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;

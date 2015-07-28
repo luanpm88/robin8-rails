@@ -164,7 +164,7 @@ class UsersController < ApplicationController
       if new_private_kol.nil?
         PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
       else
-        return ["Kol with this email already added", params[:email]]
+        return ["Influencer with this email already added", params[:email]]
       end
     end
     ["ok", false]
