@@ -20,9 +20,10 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               var date = split[0] + '-' + monthDate[0] + '-' + monthDate[1];
               return date
             });
-            var sessions = _.map(data.web.sessions, parseInt);
-            var pageViews = _.map(data.web.views, parseInt);
-            var mailViews = _.map(data.web.mailViews, parseInt);
+            var radix10ParseInt = _.partial(parseInt, _, 10);
+            var sessions = _.map(data.web.sessions, radix10ParseInt);
+            var pageViews = _.map(data.web.views, radix10ParseInt);
+            var mailViews = _.map(data.web.mailViews, radix10ParseInt);
 
             $('#news-rooms').highcharts({
               chart: {

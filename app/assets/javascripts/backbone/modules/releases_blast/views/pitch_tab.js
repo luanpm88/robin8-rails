@@ -279,10 +279,10 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var parser = document.createElement('a');
       parser.href = this.releaseModel.get('permalink');
       var newsRoomsName = parser.hostname.substring(0, parser.hostname.indexOf('.'));
-      var link = this.releaseModel.get('permalink')+ encodeURIComponent('?utm_source=Robin8&utm_medium=email&utm_campaign=')+newsRoomsName;
+      var link = this.releaseModel.get('permalink')+ '?utm_source=Robin8&utm_medium=email&utm_campaign='+newsRoomsName;
       link = '<a href="' + link +'">' + link + '</a>';
       var linkable_title = '<a href="' + this.releaseModel.get('permalink') +
-        encodeURIComponent('?utm_source=Robin8&utm_medium=email&utm_campaign=')+newsRoomsName+'">' + title + '</a>';
+        '?utm_source=Robin8&utm_medium=email&utm_campaign='+newsRoomsName+'">' + title + '</a>';
       var summariesArr = this.releaseModel.get('summaries')
         .slice(0, this.model.get('summary_length'));
       var summaries = _(summariesArr).reject(function(item){
