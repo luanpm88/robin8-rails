@@ -85,7 +85,13 @@ class CampaignController < ApplicationController
 
     categories = IptcCategory.where :id => category_ids
     kols = Kol.where :id => kol_ids
-    c = Campaign.new
+
+    if params[:id]
+      c = Campaign.find(params[:id])
+    else
+      c = Campaign.new
+    end
+
     c.user = current_user
     c.name = params[:name]
     c.description = (params[:description]).gsub( %r{</?[^>]+?>}, '' )
@@ -98,19 +104,24 @@ class CampaignController < ApplicationController
     c.hashtags = params[:hashtags]
     c.save!
     kols.each do |k|
-      i = CampaignInvite.new
-      i.kol = k
-      i.status = ''
-      i.campaign = c
-      i.save
 
-      text = params[:email_pitch]
-      text = text.sub('@[First Name]', k.first_name)
-      text = text.sub('@[Last Name] ', k.last_name)
+      i = c.campaign_invites.where(kol_id: k.id).first
+      if i.empty?
+        i = CampaignInvite.new
 
-      KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
+        i.kol = k
+        i.status = ''
+        i.campaign = c
+        i.save
+
+        text = params[:email_pitch]
+        text = text.sub('@[First Name]', k.first_name)
+        text = text.sub('@[Last Name] ', k.last_name)
+
+        KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
+      end
     end
-    render :json => c
+    render json: {:status => :ok}
   end
 
   def add_budget

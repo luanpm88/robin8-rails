@@ -1768,3 +1768,13 @@ input.form-control[type="file"] {
 .smart-release-btn {
   margin-bottom: 5%;
 }
+
+.btn-primary-green, .btn-primary-green:active, .btn-primary-green.active, .btn-primary-green.disabled, .btn-primary-green[disabled] {
+  background-color: #6aa84f;
+  border-color: #6aa84f;
+}
+
+.btn-primary-green:hover {
+  background-color: #8bc86d;
+  border-color: #8bc86d;
+}

@@ -29,7 +29,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         @model.model.get("id")
       isPresent: (k, campaign_id, kols_id) ->
         isShow = -1
-        if (kols_id.length >0) && campaign_id? 
+        if (kols_id.length >0) && campaign_id?
           isShow = kols_id.indexOf(k.id)
         if isShow < 0 then true else false
       isChecked: (k, kols_id) ->
@@ -85,15 +85,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         @model.model.set("kols",[])
       else
         influencers = @model.model.get("kols")
-      index = influencers.indexOf(kol_id)
+
+
+      index = influencers.indexOf(kol)
       if index >= 0
         influencers.splice(index, 1)
         $(document.getElementsByName(e.target.name)).each ->
           @checked = false
       else
-        influencers.push kol_id
+        influencers.push kol
         $(document.getElementsByName(e.target.name)).each ->
           @checked = true
+
       @model.model.set("kols",influencers)
       @validate()
 
