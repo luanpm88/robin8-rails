@@ -27,13 +27,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       @search_view = new Show.SearchLayout(
         model: @model
       )
+      @wechat_view = new Show.TargetWechat()
+      @weibo_view = new Show.TargetWeibo()
 
     openPitchTab: () ->
       @options.parent.setState('pitch')
 
     onRender: () ->
-#      @showChildView 'wechatRegion', @wechat_view
-#      @showChildView 'weiboRegion', @weibo_view
+      @showChildView 'wechatRegion', @wechat_view
+      @showChildView 'weiboRegion', @weibo_view
       @showChildView 'blogsRegion', @targets_view
       @showChildView 'searchRegion', @search_view
 

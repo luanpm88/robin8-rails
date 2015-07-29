@@ -219,6 +219,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       renderedText = renderedText.replace(/\@\[Summary\]/g, summaries)
 
       this.model.set('email_pitch', renderedText)
+      @ui.textarea.value = renderedText
+
       return renderedText
 
     sendTestEmailButtonClicked: (e) ->
@@ -238,6 +240,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     initFormValidation: () ->
       @ui.form.formValidation({
         framework: 'bootstrap',
+        ignore: ':hidden:not(textarea)',
+        rules: {
+          WysiHtmlField: "required"
+        },
         icon: {
           valid: 'glyphicon glyphicon-ok',
           invalid: 'glyphicon glyphicon-remove',
@@ -260,8 +266,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               }
             }
           },
-          description: {
-            trigger: 'blur'
+          email_text: {
             validators: {
               notEmpty: {
                 message: 'The email text is required'

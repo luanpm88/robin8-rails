@@ -30,7 +30,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
 
     renderTab: () ->
-      @model.set('email_pitch' ,"Dear @[First Name], Here's a press release you might find interesting. Please let me know your thoughts. Best regards. ")
+      @model.set('email_pitch' , polyglot.t("smart_campaign.pitch_step.email_panel.email_pitch"))
 
       if @model.get('kols')
         @kols = @model.get('kols')
@@ -67,11 +67,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     pitchButtonClicked: (e) ->
       e.preventDefault()
 
-      @model.save
-        success:
-          Robin.module('SmartCampaign').start()
-        error:
-          $.growl({message: 'Cant save campaign'},{type: 'danger'})
+      @model.save {},
+        success: (m) ->
+          $.growl message: "Saved!"
+          location.href = '/#smart_campaign'
+        error: (m) ->
+          location.href = '/#smart_campaign'
+          
+      location.href = '/#smart_campaign'
+
+
+
+
+
+
+
 
 
 

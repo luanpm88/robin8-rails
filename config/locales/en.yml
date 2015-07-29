@@ -918,6 +918,7 @@ en:
           button: Save
         email_panel:
           title: Email pitch
+          email_pitch: Dear @[First Name],<br/> Here's a press release you might find interesting. Please let me know your thoughts.<br/> Best regards.
           subject: Subject line
           subject_placeholder: Enter a catchy subject line...
           email: Your email address
