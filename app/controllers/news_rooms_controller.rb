@@ -60,13 +60,15 @@ class NewsRoomsController < ApplicationController
     results = GoogleAnalytics.results(sa.first_profile, {
       start_date: (DateTime.now - 7.days),
       end_date: DateTime.now }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
+    mail_results = results.for_medium('email')
 
     collection = results.collection
+    mail_collection = mail_results.collection
     web = {
       dates: collection.map{|col| col.date},
       sessions: collection.map{|col| col.sessions},
       views: collection.map{|col| col.pageViews},
-      mailViews: collection.map{|col| col.organicSearches},
+      mailViews: mail_collection.map{|col| col.sessions}
     }
 
     render json: { web: web }
