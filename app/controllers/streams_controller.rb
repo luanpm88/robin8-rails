@@ -1,8 +1,9 @@
 class StreamsController < ApplicationController
 
   def index
+    users_id = current_user.invited_users_list
     limit = current_user.current_user_features.media_monitoring.map(&:max_count).inject{|sum,x| sum + x }
-    @streams = current_user.streams.order(:position).limit(limit)
+    streams = Stream.where(:user_id=>users_id).order(:position).limit(limit)
     render json: @streams.to_json
   end
 
@@ -32,28 +33,28 @@ class StreamsController < ApplicationController
 
   def stories
     @stream = Stream.find(params[:id]) # ToDo: authorize reading stream
-    
+
     respond_to do |format|
-      format.json do 
+      format.json do
         @stories = fetch_stories
-        
+
         if !params['page'] || params['page'] == 1
           last_story = @stories['stories'].first
           unless last_story.blank?
             last_seen_story_at = Time.parse(last_story['published_at']).utc
-            
+
             if last_seen_story_at != @stream.last_seen_story_at
               @stream.update_column(:last_seen_story_at, last_seen_story_at)
             end
           end
         end
-        
+
         render json: @stories
       end
-      
+
       format.rss do
         @stories = fetch_stories
-        
+
         render layout: false,
         locals: {
           stories: @stories,
@@ -62,34 +63,34 @@ class StreamsController < ApplicationController
           blogsForRss: params[:blogsForRss]
         }
       end
-      
+
       format.pdf do
         @stories = fetch_stories
-        
+
         pdf = StreamPdf.new(@stories["stories"])
         send_data pdf.render, filename: "Stream Export",
           type: "application/pdf", disposition: "inline"
       end
-      
+
       format.png do
         kit = IMGKit.new export_url,
-          format: 'png', 'scale-h': nil, 'scale-w': nil, 'crop-h': nil, 
+          format: 'png', 'scale-h': nil, 'scale-w': nil, 'crop-h': nil,
           'crop-w': nil, quality: 80, 'crop-x': nil, 'crop-y': nil,
           width: "1366"
-        
-        send_data kit.to_png, filename: "Robin8 Export.png", 
+
+        send_data kit.to_png, filename: "Robin8 Export.png",
           type: "image/png", disposition: 'attachment'
       end
-      
+
       format.docx do
         @stories = fetch_stories
         @stories = summarize_stories(@stories["stories"])
       end
-      
-      format.html do 
+
+      format.html do
         @stories = fetch_stories
         @colorize_background = params[:colorize_background]
-        
+
         @stories = summarize_stories(@stories["stories"])
         render layout: false
       end
@@ -109,26 +110,26 @@ class StreamsController < ApplicationController
   end
 
   private
-  
+
   def export_url
-    if Rails.env.development? 
+    if Rails.env.development?
       scheme = "http"
       host = "localhost:3001"
     else
       scheme = "https"
       host = Rails.application.secrets.host
     end
-      
+
     request_url = URI.parse("#{scheme}://#{host}/streams/#{params[:id]}/stories/")
     query_params = {}
     query_params[:per_page] = params[:per_page] || 10
     query_params[:colorize_background] = params[:colorize_background]
     query_params[:published_at] = params[:published_at] if params[:published_at]
-    
+
     request_url.query = URI.encode_www_form(query_params)
     request_url.to_s
   end
-  
+
   def fetch_stories
     req_params = @stream.query_params
     req_params.merge!(page: URI.decode(params[:page])) if params[:page]
@@ -136,7 +137,7 @@ class StreamsController < ApplicationController
     req_params.merge!(published_at: params[:published_at]) if params[:published_at]
 
     endpoint = "/uniq_stories"
-    
+
     uri = URI(Rails.application.secrets.robin_api_url + endpoint)
     uri.query = URI.encode_www_form req_params
 
@@ -146,21 +147,21 @@ class StreamsController < ApplicationController
     res = Net::HTTP.start(uri.hostname) {|http| http.request(req) }
     res.code == '200' ? JSON.parse(res.body) : {}
   end
-  
+
   def summarize_stories(stories)
     stories_summary = {}
     text_api_client = AylienTextApi::Client.new
     threads = []
-    
+
     stories.each do |story|
       threads << Thread.new do
-        stories_summary[story["id"]] = text_api_client.summarize title: story["title"], 
+        stories_summary[story["id"]] = text_api_client.summarize title: story["title"],
           text: story["description"]
       end
     end
-    
+
     threads.each(&:join)
-    
+
     stories.map do |s|
       s['summary'] = stories_summary[s["id"]][:sentences]
       s

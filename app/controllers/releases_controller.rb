@@ -103,7 +103,7 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.require(:release).permit(:title, :text, :news_room_id, :is_private, 
+    params.require(:release).permit(:title, :text, :news_room_id, :is_private,
       :logo_url, :thumbnail, :concepts, :published_at, :iptc_categories, 
       :summaries, :hashtags, :boson_categories,
       :characters_count, :words_count, :sentences_count,
