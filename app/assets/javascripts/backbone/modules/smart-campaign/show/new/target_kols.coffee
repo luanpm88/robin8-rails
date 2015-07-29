@@ -35,8 +35,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       isChecked: (k, kols_id) ->
         isChecked = -1
         invited_kols = @model.model.get("kols")
+        kols_id = []
         if invited_kols?
-          isChecked = invited_kols.indexOf(k.id)
+          $(invited_kols).each(() ->
+            kols_id.push(this.id)
+          )
+        if invited_kols?
+          isChecked = kols_id.indexOf(k.id)
         if isChecked >=0 then true else false
 
     initialize: (model) ->
@@ -125,4 +130,3 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       if @model.model.get("kols")?
         $(".kol-header").removeClass "error"
         $(".kol-errors").hide()
-        document.getElementById("next-step").disabled = false
