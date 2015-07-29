@@ -78,7 +78,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
               message: "Article saved!"
       @model.approve_request (data) =>
         $.growl
-            message: "Article's approval request has been sent successfully"
+            message: "Request for article approval sent"
            ,
             type: "success"
         $("#modal").modal("hide")
