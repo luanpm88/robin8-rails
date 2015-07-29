@@ -71,4 +71,4 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         success: (m) ->
           location.href = '/#smart_campaign'
         error: (m) ->
-          $.growl("Campaign cant been created!", {type: "danger"})
+          $.growl("Campaign can not be created!", {type: "danger"})
