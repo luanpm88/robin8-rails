@@ -22,6 +22,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       code_status: (k) ->
         if k.article? and k.article.tracking_code? and k.article.tracking_code == 'Waiting'
           "Pending approval"
+        else if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
+          "Approved"
         else
           "In Progress"
 
@@ -40,7 +42,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         disabled: true
         onApprove: (code) ->
           $("#code_#{id}").html code
-          $("#code_status_#{id}").html 'In Progress'
+          $("#code_status_#{id}").html 'Approved'
       article.fetch
         success: ()->
           articleDialog.render()

@@ -55,7 +55,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       if @options.disabled
         @model.approve (data) =>
           $.growl
-            message: "Article approved. Tracking code is #{data.code}."
+            message: "Article has been approved. Tracking code is  #{data.code}."
            ,
             type: "success"
           @options.onApprove? data.code
@@ -78,7 +78,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
               message: "Article saved!"
       @model.approve_request (data) =>
         $.growl
-            message: "Request for article approving send"
+            message: "Article's approval request has been sent successfully"
            ,
             type: "success"
         $("#modal").modal("hide")
