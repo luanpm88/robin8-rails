@@ -92,13 +92,19 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         influencers.splice(index, 1)
         $(document.getElementsByName(e.target.name)).each ->
           @checked = false
+          @value = "NO"
       else
         influencers.push kol
         $(document.getElementsByName(e.target.name)).each ->
           @checked = true
+          @value = "YES"
 
       @model.model.set("kols",influencers)
       @validate()
+      if influencers.length > 0
+        document.getElementById("next-step").disabled = false
+      else
+        document.getElementById("next-step").disabled = true
 
     validate: () ->
       is_valid = _(@kols).any (k) -> k.invited? and k.invited == true
@@ -119,3 +125,4 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       if @model.model.get("kols")?
         $(".kol-header").removeClass "error"
         $(".kol-errors").hide()
+        document.getElementById("next-step").disabled = false

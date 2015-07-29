@@ -1585,11 +1585,15 @@ body.login {
     .campaign-errors {
       margin-left: 10px;
       display: inline-block;
+      margin-bottom: 0px;
     }
     .form-group {
       margin-left: 0px !important;
       margin-right: 0px !important;
       padding-bottom: 0px !important;
+    }
+    .start-form {
+      color: #434A54;
     }
   }
   #kols-table {
@@ -1627,7 +1631,7 @@ body.login {
   padding-top: 2%;
 }
 #analytics-campaign-text {
-  padding-top: 32%;
+  padding-top: 500px;
   padding-left: 25px;
 }
 .error-field {

@@ -1048,12 +1048,20 @@ nav{text-align: center;}
   z-index: 10003;
 }
 .blast-release .table.targets td,
-.blast-release .table.targets th {
+.blast-release .table.targets th,
+#kols-table_wrapper .table.targets th,
+#kols-table_wrapper .table.targets td,
+ {
   text-align: center;
   white-space: nowrap;
 }
 .blast-release .targets-author {
   text-align: left;
+}
+#targets-blogs .targets-author,
+#targets-search .targets-author {
+  text-align: left;
+  display: table;
 }
 .blast-release .targets-author .media-left {
   padding-right: 4px;
@@ -1066,6 +1074,12 @@ nav{text-align: center;}
 .blast-release #blast-targets .nav-tabs > li.active > a,
 .blast-release #blast-targets .nav-tabs > li.active > a:focus,
 .blast-release #blast-targets .nav-tabs > li.active > a:hover {
+  background-color: #3c9eb6 !important;
+  color: #fff;
+}
+#tab-content #blast-targets .nav-tabs > li.active > a,
+#tab-content #blast-targets .nav-tabs > li.active > a:focus,
+#tab-content #blast-targets .nav-tabs > li.active > a:hover {
   background-color: #3c9eb6 !important;
   color: #fff;
 }
@@ -1766,7 +1780,15 @@ input.form-control[type="file"] {
   padding-left: 15px;
 }
 .smart-release-btn {
-  margin-bottom: 5%;
+  margin: 0px 15px 55px 0px;
+}
+#analytics-campaign-text ul > li {
+  display: list-item;
+}
+.campaign_author{
+  padding-left: 10px;
+  display: table-cell;
+  vertical-align: top;
 }
 
 .btn-primary-green, .btn-primary-green:active, .btn-primary-green.active, .btn-primary-green.disabled, .btn-primary-green[disabled] {
