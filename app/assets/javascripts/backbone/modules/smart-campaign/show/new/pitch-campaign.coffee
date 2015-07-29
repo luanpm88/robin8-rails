@@ -69,22 +69,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
       @model.save {},
         success: (m) ->
-          $.growl message: "Saved!"
           location.href = '/#smart_campaign'
         error: (m) ->
-          location.href = '/#smart_campaign'
-          
-      location.href = '/#smart_campaign'
-
-
-
-
-
-
-
-
-
-
-
-
-
+          $.growl("Campaign cant been created!", {type: "danger"})

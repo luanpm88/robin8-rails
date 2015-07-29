@@ -106,7 +106,7 @@ class CampaignController < ApplicationController
     kols.each do |k|
 
       i = c.campaign_invites.where(kol_id: k.id).first
-      if i.empty?
+      if !i
         i = CampaignInvite.new
 
         i.kol = k
