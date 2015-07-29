@@ -40,6 +40,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       @showChildView 'searchRegion', @search_view
 
       iptc_categories = @model.get('iptc_categories')
+      kols = @model.get('kols')
       $.get "/kols/suggest/", {categories: iptc_categories}, (data) =>
         @targets_view.updateKols data
         @targets_view.render()
