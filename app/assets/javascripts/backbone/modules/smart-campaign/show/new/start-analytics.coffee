@@ -107,6 +107,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         },
         success: (response, newValue) ->
           self.model.set('iptc_categories', [newValue])
+          if newValue
+            self.ui.nextButton.attr('disabled', false)
+          else
+            self.ui.nextButton.attr('disabled', true)
       )
 
     makeTopicsEditable: () ->
