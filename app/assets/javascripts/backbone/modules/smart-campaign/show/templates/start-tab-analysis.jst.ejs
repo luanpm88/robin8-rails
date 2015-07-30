@@ -19,7 +19,8 @@
     </ul>
   <% } %>
   <br />
-  <% if (!s.isBlank(textapiResult["summarize"]) || !s.isBlank(textapiResult["concepts"]) || !s.isBlank(textapiResult["classify"])) { %>
-    <button class="btn btn-primary pull-right smart-release-btn" id="btn-next"><i class="fa fa-chevron-right"></i> <%= polyglot.t("smart_release.analysis_step.buttons.next") %></button>
-  <% } %>
+  <% var disable = "disabled";
+  if (!s.isBlank(textapiResult["summarize"]) || !s.isBlank(textapiResult["concepts"]) || !s.isBlank(textapiResult["classify"]))
+  { disable = ""; } %>
+    <button <%= disable %> class="btn btn-primary pull-right smart-release-btn" id="btn-next"><i class="fa fa-chevron-right"></i> <%= polyglot.t("smart_release.analysis_step.buttons.next") %></button>
 </div>
