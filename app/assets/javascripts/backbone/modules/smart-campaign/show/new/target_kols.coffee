@@ -86,27 +86,32 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       kol = _(@kols).find (k) -> k.id == kol_id
       kol.invited = kol_status
       influencers = []
+      kols_id = []
       if not @model.model.get("kols")?
         @model.model.set("kols",[])
       else
         influencers = @model.model.get("kols")
+      if influencers.length > 0
+          $(influencers).each(() ->
+            kols_id.push(this.id)
+          )
 
-
-      index = influencers.indexOf(kol)
+      index = kols_id.indexOf(kol.id)
       if index >= 0
         influencers.splice(index, 1)
+        @model.model.set("kols",influencers)
         $(document.getElementsByName(e.target.name)).each ->
           @checked = false
           @value = "NO"
       else
         influencers.push kol
+        @model.model.set("kols",influencers)
         $(document.getElementsByName(e.target.name)).each ->
           @checked = true
           @value = "YES"
 
-      @model.model.set("kols",influencers)
       @validate()
-      if influencers.length > 0
+      if @model.model.get("kols").length > 0
         document.getElementById("next-step").disabled = false
       else
         document.getElementById("next-step").disabled = true
