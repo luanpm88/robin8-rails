@@ -535,7 +535,7 @@ footer a{
   font-family: "ProximaNovaSemibold";
   font-size: 36px;
   line-height: 36px;
-  margin-top: 44px;
+  margin-top: 64px;
 
 }
 .subscription-type .price-bubble .price-amount .permonth{
@@ -583,6 +583,15 @@ footer a{
   font-family: "ProximaNovaSemibold";
   float: left;
   padding-right: 5px;
+}
+
+.subscription-type .plan-inclusions ul li b{
+  display: inline-block;
+  text-align: right;
+  font-family: "ProximaNovaSemibold";
+  float: left;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 .subscription-type .plan-inclusions ul li span{
@@ -1170,7 +1179,7 @@ header.int-header h1{
   line-height: 60px;
 }
 a.btn-google-plus,
-a.btn-facebook  {  
+a.btn-facebook  {
   color: white;
   display: block;
 }

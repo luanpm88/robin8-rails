@@ -53,13 +53,15 @@
       <div class="col-md-5 col-lg-4">
         <div class="billing-current-plan">
           <h4 class="billing-title">Current Pricing Plan</h4>
-            <% if (currentPlan != undefined) {%>
+            <% if (currentPlan != undefined) { console.log(currentPlan)%>
             <div class="subscription-type active" id="plantype-ultra" data-plan="ultra" data-equalizer-watch="">
               <h2><%= currentPlan.name %></h2>
               <div class="price-bubble">
-                <div class="price-amount">
+                <div class="<%= priceClass(currentPlan.slug) %>">
                   $<%= currentPlan.properties.price %><span class="permonth">/mo</span>
-                  <em>billed annually or<br>$<%= currentPlan.properties.annually_price %> month-to-month </em>
+                  <% if (!s(currentPlan.slug).startsWith("new")) { %>
+                    <em>billed annually or<br>$<%= currentPlan.properties.annually_price %> month-to-month </em>
+                  <% } %>
                 </div>
               </div>
               <div class="plan-inclusions">
@@ -68,8 +70,8 @@
                   <li><strong><%= currentPlan.properties.newsroom %></strong> <span>Newsroom</span></li>
                   <li><strong><%= currentPlan.properties.press_release %></strong> <span>Press Release Postings on Robin8/month</span></li>
                   <li><strong><%= currentPlan.properties.smart_release %></strong> <span>SmartReleases</span></li>
-                  <li><strong><%= currentPlan.properties.media_list %></strong> <span>Personal Media Lists</span></li>
-                  <li><strong><%= currentPlan.properties.streams %></strong> <span>Streams for Media Monitoring</span></li>
+                  <li><%= count(currentPlan.properties.media_list) %> <span>Personal Media Lists</span></li>
+                  <li><%= count(currentPlan.properties.streams) %> <span>Streams for Media Monitoring</span></li>
                 </ul>
               </div>
             </div>
