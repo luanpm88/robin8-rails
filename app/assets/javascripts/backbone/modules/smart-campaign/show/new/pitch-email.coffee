@@ -28,7 +28,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       summarySlider: '#summary-slider',
       summarySliderAmount: '#summary-slider-amount',
       sendTestEmailButton: '#send-test-email-btn',
-      textarea: '#email-pitch-textarea'
+      textarea: '[name=email_text]'
 
     events:
       'click #direct-image-upload': 'uploadDirectImage'
@@ -65,6 +65,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     onRender: () ->
       @model.set('summary_length', 5)
       self = this
+      @ui.form.ready(self.initFormValidation())
       this.ui.summarySlider.slider({
         value: self.model.get('summary_length'),
         min: 1,
@@ -169,8 +170,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       this.model.set('email_address', this.ui.emailAddressInput.val())
       this.editor.setValue(this.model.get('email_pitch'))
 
-      that = this
-      @ui.form.ready(that.initFormValidation())
 
 
     addMergeTag: (e) ->
@@ -220,6 +219,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
       this.model.set('email_pitch', renderedText)
       @ui.textarea.value = renderedText
+      @ui.textarea.change()
+      #@ui.form.data('formValidation').validate()
 
       return renderedText
 
@@ -240,15 +241,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     initFormValidation: () ->
       @ui.form.formValidation({
         framework: 'bootstrap',
-        ignore: ':hidden:not(textarea)',
-        rules: {
-          WysiHtmlField: "required"
-        },
         icon: {
           valid: 'glyphicon glyphicon-ok',
           invalid: 'glyphicon glyphicon-remove',
           validating: 'glyphicon glyphicon-refresh'
         },
+        excluded: ':disabled',
         fields: {
           email_subject: {
             trigger: 'blur'
@@ -267,6 +265,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             }
           },
           email_text: {
+            trigger: 'change'
             validators: {
               notEmpty: {
                 message: 'The email text is required'
