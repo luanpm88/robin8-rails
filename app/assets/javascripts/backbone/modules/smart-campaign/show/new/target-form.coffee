@@ -40,7 +40,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       @showChildView 'searchRegion', @search_view
 
       iptc_categories = @model.get('iptc_categories')
-      kols = @model.get('kols')
       $.get "/kols/suggest/", {categories: iptc_categories}, (data) =>
         @targets_view.updateKols data
         @targets_view.render()
+      if @model.get("kols")?
+        if @model.get("kols").length > 0
+          @ui.nextButton.removeAttr('disabled')
