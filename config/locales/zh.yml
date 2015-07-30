@@ -1194,6 +1194,8 @@ zh:
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
           email_placeholder: "输入电子邮件地址"
+          kols_register_alias: in our system as an Influencer.
+          kols_register_text: P.S. We kindly recommend you to
           length: "文章小结长度"
           pitch_text: "投递内容"
           preview: "预览"

@@ -1248,6 +1248,8 @@ en:
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
           email_placeholder: Enter an email address...
+          kols_register_alias: in our system as an Influencer.
+          kols_register_text: P.S. We kindly recommend you to
           length: Summary length
           pitch_text: Pitch text
           preview: Preview
