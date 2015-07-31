@@ -13,7 +13,7 @@ class UserProduct < ActiveRecord::Base
       product.features.each do |f|
         product_quota = product.product_features.where(feature_id: f.id).first.quota
         if product.slug == 'smart_release'
-          available_count = product_quota 
+          available_count = product_quota
         else
           available_count = product.is_package ? product_quota - user.used_count_by_slug(f.slug) : product_quota
         end
@@ -52,6 +52,9 @@ class UserProduct < ActiveRecord::Base
 
   def create_payment
     bluesnap_order = Blue::Order.find(bluesnap_order_id)
+    discount = Discount.where(code: bluesnap_order.cart.coupons.coupon).first if bluesnap_order && bluesnap_order.cart && bluesnap_order.cart.try(:coupons).present?
+    recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.price
+    charged_amt =  discount.present? ? product.price - discount.calculate(user,product) : product.price
     if product.is_package? || product.is_recurring?
       bluesnap_subscription = ''
       begin
@@ -63,9 +66,6 @@ class UserProduct < ActiveRecord::Base
           bluesnap_subscription = Blue::Subscription.find(bluesnap_order.cart.cart_item.url.split("/").last)
         end
         if bluesnap_subscription.present?
-          discount = Discount.find_by(code: bluesnap_subscription.coupon) if product.is_package? && bluesnap_subscription.coupon.present?
-          recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.price
-          charged_amt =  discount.present? ? product.price - (product.price * discount.percentage / 100) : product.price
           update_attributes({bluesnap_subscription_id: bluesnap_subscription.subscription_id,
                              status: bluesnap_subscription.status,
                              next_charge_date: Date.parse(bluesnap_subscription.next_charge_date),
