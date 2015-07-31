@@ -47,10 +47,9 @@ class KolsController < ApplicationController
     categories = categories.split(',') if not categories.blank?
     name =  params[:name]
     location = params[:location] if not params[:location].blank?
+    kols = Kol.joins("LEFT JOIN private_kols ON kols.id = private_kols.kol_id").where("private_kols.user_id = ? or kols.is_public = ?", current_user.id, 1)
     if not categories.blank?
-      kols = Kol.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories }
-    else
-      kols = Kol.all
+      kols = kols.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories }
     end
     if (not name.blank?)
       kols = kols.where('kols.first_name LIKE ? OR kols.last_name like ?', "%#{name}%", "%#{name}%")

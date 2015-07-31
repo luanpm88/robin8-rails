@@ -37,12 +37,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         kols = new Backbone.Collection(@model.get('kols'))
 
         if @model.get('kols').length > 0
-          emailTargetsView = new Show.EmailTargets
+          @emailTargetsView = new Show.EmailTargets
             collection: kols
-          @showChildView 'emailTargets', emailTargetsView
-          emailView = new Show.EmailPitch
+          @showChildView 'emailTargets', @emailTargetsView
+          @emailView = new Show.EmailPitch
             model: @model
-          @showChildView 'emailPitch', emailView
+          @showChildView 'emailPitch', @emailView
         else
           @options.parent.setState('target')
       else
@@ -66,9 +66,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     pitchButtonClicked: (e) ->
       e.preventDefault()
-
-      @model.save {},
-        success: (m) ->
-          location.href = '/#smart_campaign'
-        error: (m) ->
-          $.growl("Campaign can not be created!", {type: "danger"})
+      form = @emailView.$el.find('#email_pitch_form')
+      if form != undefined
+        form.data('formValidation').validate()
+        if form.data('formValidation').isValid()
+          @model.save {},
+            success: (m) ->
+              location.href = '/#smart_campaign'
+            error: (m) ->
+              if @model.get('id')
+                $.growl("Campaign can not be updated!", {type: "danger"})
+              else
+                $.growl("Campaign can not be created!", {type: "danger"})

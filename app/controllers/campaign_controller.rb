@@ -78,20 +78,20 @@ class CampaignController < ApplicationController
 
   def create
     if current_user.blank?
-      return render :json => {:status => "thanks for submitting this. we will contact you."}
+      return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
     category_ids = params[:iptc_categories].split ','
     kol_ids = params[:kols].map { |k| k[:id] }
-
     categories = IptcCategory.where :id => category_ids
     kols = Kol.where :id => kol_ids
-
     if params[:id]
       c = Campaign.find(params[:id])
+      if c.user_id != current_user.id
+        return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
+      end
     else
       c = Campaign.new
     end
-
     c.user = current_user
     c.name = params[:name]
     c.description = (params[:description]).gsub( %r{</?[^>]+?>}, '' )
@@ -104,16 +104,13 @@ class CampaignController < ApplicationController
     c.hashtags = params[:hashtags]
     c.save!
     kols.each do |k|
-
       i = c.campaign_invites.where(kol_id: k.id).first
       if !i
         i = CampaignInvite.new
-
         i.kol = k
         i.status = ''
         i.campaign = c
         i.save
-
         text = params[:email_pitch]
         text = text.sub('@[First Name]', k.first_name)
         text = text.sub('@[Last Name] ', k.last_name)
@@ -123,6 +120,11 @@ class CampaignController < ApplicationController
     end
     render json: {:status => :ok}
   end
+
+  def update
+    create
+  end
+
 
   def add_budget
     campaign = Campaign.find(params[:campaign])
