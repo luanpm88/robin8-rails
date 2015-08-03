@@ -1,4 +1,4 @@
 <div>
-  <%= render 'form', collection: @l_en.keys, en: @l_en, zh: @l_zh, key_label: @key_label, text_field_name: @text_field_name
+  <%= render 'form', collection: (@l_en.class == String ? [] : @l_en.keys), en: @l_en, zh: @l_zh, key_label: @key_label, text_field_name: @text_field_name
   %>
 </div>

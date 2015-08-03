@@ -1,6 +1,22 @@
 <div>
-  <% menu_items.each do |item| %>
-    <%= link_to item.humanize, admin_localization_section_path(name: item) %>
-    <br/>
-  <% end %>
+  <%= button_to "Add Top Level", admin_localization_top_level_path, method: :get %>
+  <br />
+</div>
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Top Level Items</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% menu_items.each do |item| %>
+        <tr>
+          <td><%= link_to item.humanize, admin_localization_section_path(name: item) %></td>
+          <td><%= button_to "Delete", admin_localization_delete_path(name: item), method: :delete, data: { confirm: "Are you sure you want to delete '#{item.humanize}'?"} %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
