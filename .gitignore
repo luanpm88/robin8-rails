@@ -18,6 +18,7 @@ config/database.yml
 /.capistrano
 public/system
 .DS_Store
+/doc
 
 *.sublime-project
 *.sublime-workspace

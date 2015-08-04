@@ -26,6 +26,33 @@ plans:
     smart_release: 15
     media_list: 20
     streams: 25
+  newbasic:
+    price: 50
+    annually_price: 600
+    seat: 1
+    newsroom: 1
+    press_release: 5
+    smart_release: 5
+    media_list: 1
+    streams: 3
+  newbusiness:
+    price: 200
+    annually_price: 2400
+    seat: 5
+    newsroom: 5
+    press_release: 10
+    smart_release: 10
+    media_list: 5
+    streams: 10
+  newenterprise:
+    price: 2500
+    annually_price: 30000
+    seat: 75
+    newsroom: 75
+    press_release: 200
+    smart_release: 200
+    media_list: 9999
+    streams: 9999
   pro:
     price: 250
     annually_price: 299

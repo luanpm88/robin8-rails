@@ -9,12 +9,6 @@
     <form action="#" id="step2">
       <div class="row">
         <div class="small-12 columns">
-          <div class="tab-nav">
-            <a class="button button-signuptype active" id="selected-businesses"><%= @l.t('pricing.select_plan.businesses_button') %></a>
-            <a class="button button-signuptype" id="selected-agencies"><%= @l.t('pricing.select_plan.agencies_button') %></a>
-            <p class="selection-intro business-plans"><%= @l.t('pricing.select_plan.empower').html_safe %></p>
-            <p class="selection-intro agency-plans"><%= @l.t('pricing.select_plan.exceed').html_safe %></p>
-          </div>
 
           <p class="selection-intro-heading"><%= @l.t('pricing.select_plan.plans') %></p>
         </div>
@@ -25,153 +19,71 @@
             <h2><%= @products[0].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[1].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
-                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[0].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
+                $<%=(@products[0].price).to_i %><span class="permonth">/mo</span>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
-                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
-                <li><strong>3</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
-                <li><strong>3</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
-                <!--<li><strong></strong> <span></span></li>-->
-                <!--<li><strong></strong> <span></span></li>-->
-                <li><strong></strong> <span></span></li>
-                <li><strong></strong> <span></span></li>
+                <li><strong>5</strong> <span>SmartContent Releases</span></li>
+                <li><strong>1</strong> <span>Content Gallery</span></li>
+                <li><strong>1</strong> <span>Seat</span></li>
+                <li><strong>1</strong> <span>Personal Influencers List</span></li>
+                <li><strong>3</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>&nbsp;</strong> <span></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" data-select-text='Current' onclick="setPackage('<%=@products[1].slug%>');" onclick="setPackage('<%=@products[1].slug%>');" <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
+              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" data-select-text='Current' onclick="setPackage('<%=@products[0].slug%>');" onclick="setPackage('<%=@products[0].slug%>');" <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[0].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch>
-            <h2><%= @products[2].name.split(' ')[0] %></h2>
+            <h2><%= @products[1].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[3].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
-                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[2].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
+                $<%=(@products[1].price).to_i %><span class="permonth">/mo</span>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
-                <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
-                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
-                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
+                <li><strong>10</strong> <span>SmartContent Releases</span></li>
+                <li><strong>5</strong> <span>Content Galleries</span></li>
+                <li><strong>5</strong> <span>Seat</span></li>
+                <li><strong>5</strong> <span>Personal Influencers List</span></li>
+                <li><strong>10</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>&nbsp;</strong> <span></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
+              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch >
-            <h2><%= @products[4].name.split(' ')[0] %></h2>
+            <h2><%= @products[2].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[5].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
-                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[4].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
+                $<%=(@products[2].price).to_i %><span class="permonth">/mo</span>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
-                <li><strong>30</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
-                <li><strong>15</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
-                <li><strong>20</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
-                <li><strong>25</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
+                <li><strong>200</strong> <span>SmartContent Releases</span></li>
+                <li><strong>75</strong> <span>Content Galleries</span></li>
+                <li><strong>75</strong> <span>Seat</span></li>
+                <li><b>Unlimited</b> <span>Personal Influencers List</span></li>
+                <li><b>Unlimited</b> <span>Streams for Media Monitoring</span></li>
+                <li><b>20</b> <span> Hours of Customization</span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
+              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[2].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[2].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
             </div>
           </div>
         </div><!--end plan type column -->
       </div><!-- end #business-plans -->
-
-
-      <div class="row agency-plans" id="agency-plans" data-equalizer>
-        <div class="small-12 medium-6 large-4 columns">
-          <div class="subscription-type" id="plantype-pro" data-plan="pro" data-equalizer-watch>
-            <h2><%= @products[6].name.split(' ')[0] %></h2>
-            <div class="price-bubble">
-              <div class="price-amount">
-                $<%=(@products[7].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
-                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[6].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
-              </div>
-            </div>
-            <div class="plan-inclusions">
-              <ul>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
-                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
-                <li><strong>30</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
-                <li><strong>15</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
-                <li><strong>3</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
-                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
-              </ul>
-            </div>
-            <div class="selector-wrap">
-              <a data-selected="pro" <%if user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" onclick="setPackage('<%=@products[7].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector"  onclick="setPackage('<%=@products[7].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
-            </div>
-          </div>
-        </div><!--end plan type column -->
-        <div class="small-12 medium-6 large-4 columns">
-          <div class="subscription-type" id="plantype-premium" data-plan="premium" data-equalizer-watch>
-            <h2><%= @products[8].name.split(' ')[0] %></h2>
-            <div class="price-bubble">
-              <div class="price-amount">
-                $<%=(@products[9].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
-                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[8].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
-              </div>
-            </div>
-            <div class="plan-inclusions">
-              <ul>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
-                <li><strong>20</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
-                <li><strong>75</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
-                <li><strong>45</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
-                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
-                <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
-              </ul>
-            </div>
-            <div class="selector-wrap">
-              <a data-selected="premium" <%if user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
-            </div>
-          </div>
-        </div><!--end plan type column -->
-        <div class="small-12 medium-6 large-4 columns">
-          <div class="subscription-type" id="plantype-ultra" data-plan="ultra" data-equalizer-watch>
-            <h2><%= @products[10].name.split(' ')[0] %></h2>
-            <div class="price-bubble">
-              <div class="price-amount">
-                $<%=(@products[11].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
-                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[10].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
-              </div>
-            </div>
-            <div class="plan-inclusions">
-              <ul>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
-                <li><strong>100</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
-                <li><strong>400</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
-                <li><strong>200</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
-                <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
-                <li><strong>25</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
-              </ul>
-            </div>
-            <div class="selector-wrap">
-              <a data-plan="ultra" <%if user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
-            </div>
-          </div>
-        </div><!--end plan type column -->
-      </div><!-- end #agency-plans -->
 
       <div class="row">
         <div class="small-12 columns">

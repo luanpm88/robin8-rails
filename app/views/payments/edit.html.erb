@@ -28,8 +28,7 @@
                   <%=@product.name.split(' ')[0]%> <%= @l.t('new_package.plan') %>
                 </td>
                 <td>
-                  <select name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
-                    <option id="<%=@product.name%>" value="<%=@product.slug%>">Pay Annually ($<%=(@product.price/12).to_i %> x 12/mo) - save 20%</option>
+                  <select disabled name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
                     <option id="<%=@product.monthly_package.name%>" value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
                   </select>
                 </td>
