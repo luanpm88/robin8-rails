@@ -23,7 +23,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       },
       priceClass: function(slug) {
-        var res = "price-amount"
+        var res = "price-amount";
         if (s(slug).startsWith('new')) {
           res = res + "-new";
         }
