@@ -28,6 +28,7 @@
               <th class="price"><%= @l.t 'addons.table.price'%></th>
             </tr>
             <%@add_ons.each_with_index do |a,index|%>
+              <% next if HIDDEN_ADDONS.include? a.slug %>
                 <tr>
                   <td class="qty">
                     <input type="text" size="2" value="0" name="add_ons[<%=a.id%>]" id="qty-<%=index+1%>" />
