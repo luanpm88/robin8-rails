@@ -49,7 +49,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-progressjs'
   gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
-  gem 'rails-assets-font-awsome'
+  gem 'rails-assets-font-awsome', '4.3'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'
   gem 'rails-assets-backbone.marionette', '2.4.1'
