@@ -65,13 +65,16 @@
                 </div>
               </div>
               <div class="plan-inclusions">
+                <% var prop = currentPlan.properties; %>
                 <ul>
-                  <li><strong><%= currentPlan.properties.seat %></strong> <span><%= polyglot.t("billing.seat") %></span></li>
-                  <li><strong><%= currentPlan.properties.newsroom %></strong> <span><%= polyglot.t("billing.newsroom") %></span></li>
-                  <li><strong><%= currentPlan.properties.press_release %></strong> <span><%= polyglot.t("billing.press_release") %></span></li>
-                  <li><strong><%= currentPlan.properties.smart_release %></strong> <span><%= polyglot.t("billing.smart_release") %></span></li>
-                  <li><%= count(currentPlan.properties.media_list) %> <span><%= polyglot.t("billing.personal_lists") %></span></li>
-                  <li><%= count(currentPlan.properties.streams) %> <span><%= polyglot.t("billing.streams") %></span></li>
+                  <li><strong><%= prop.smart_release %></strong> <span>SmartContent</span></li>
+                  <li><strong><%= prop.newsroom %></strong> <span><%= p('Content Gallery', prop.newsroom) %></span></li>
+                  <li><strong><%= prop.seat %></strong> <span><%= p('Seat', prop.seat) %></span></li>
+                  <li><%= count(prop.media_list) %> <span><%= p('Personal Influencers List', prop.media_list) %></span></li>
+                  <li><%= count(prop.streams) %> <span>Streams for Media Monitoring</span></li>
+                  <% if (prop.streams == 9999)  { %>
+                    <li><b>20</b> <span>Hours of Customization </span></li>
+                  <% } %>
                 </ul>
               </div>
             </div>

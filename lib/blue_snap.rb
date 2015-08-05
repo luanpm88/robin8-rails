@@ -289,7 +289,7 @@ module BlueSnap
       Rails.logger.info "************************************************************************"
       Rails.logger.info "response is #{response} AND #{response.body}***************************"
       if not response.code.to_i == 200
-        ::SupportMailer.delay.payment_failure(Hash.from_xml(data).to_yaml, "#{response} body: #{Hash.from_xml(response.body).to_yaml}")
+        ::SupportMailer.delay.payment_failure(Hash.from_xml(data.gsub("PLACEHOLDER", placeholder)).to_yaml, "#{response} body: #{Hash.from_xml(response.body).to_yaml}")
       end
       Response.parse(response)
     end
