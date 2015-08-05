@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+require 'sidekiq/web'
 require 'sidetiq/web'
 
 Rails.application.routes.draw do
@@ -161,6 +162,7 @@ Rails.application.routes.draw do
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
   post 'campaign/:id/article/:article_id/approve', to: 'campaign#approve_article'
   post 'campaign/add_budget', to: 'campaign#add_budget'
+  post 'campaign/get_counter', to: 'campaign#get_counter'
   post 'campaign/:id/article/:article_id/approve_request', to: 'campaign#approve_request'
   post 'campaign/test_email', to: 'campaign#test_email'
   resources :campaign_invite, only: [:index, :create, :show, :update]

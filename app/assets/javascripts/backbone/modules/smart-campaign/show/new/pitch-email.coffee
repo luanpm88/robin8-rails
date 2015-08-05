@@ -1,10 +1,15 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
+  NoChildrenView = Marionette.ItemView.extend
+    template: 'modules/smart-campaign/show/templates/pitch/pitch-email-empty-targets'
+
   Show.EmailTargets = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-email-targets'
+    emptyView: NoChildrenView
 
     ui:
       deleteButton: 'a.btn-danger'
+      itemCount: '#item_count'
 
     events:
       'click @ui.deleteButton': 'deleteButtonClicked'
@@ -13,8 +18,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       e.preventDefault()
       target = $ e.currentTarget
       kol_id = target.data 'kol-id'
+      @count = @count - 1
+      @ui.itemCount.text(@count)
       target.parents('tr').remove()
       this.triggerMethod('email:target:removed', kol_id)
+
+    onRender: ->
+      @count = @collection.length
 
   Show.EmailPitch = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-email'
@@ -297,4 +307,3 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @editor.focus()
         @editor.composer.commands.exec("unlink")
       , 200)
-

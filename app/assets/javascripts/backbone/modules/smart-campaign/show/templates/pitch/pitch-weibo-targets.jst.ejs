@@ -1,4 +1,4 @@
-<div class="well"><span class="badge badge-success"><%= items.length%></span> <%= polyglot.t("smart_campaign.pitch_step.weiboTargets") %> <i class="fa fa-weibo"></i>
+<div class="well"><span class="badge badge-success" id="item_count"><%= items.length%></span> <%= polyglot.t("smart_campaign.pitch_step.weiboTargets") %> <i class="fa fa-weibo"></i>
 <a href="#weibo-targets-list" data-toggle="collapse">
   <small><%= polyglot.t("smart_campaign.pitch_step.see") %> <i class="fa fa-chevron-down"></i></small>
 </a>
@@ -9,14 +9,16 @@
     <thead>
     <tr>
       <th><%= polyglot.t("smart_campaign.pitch_step.targets_table.name") %></th>
+      <th><%= polyglot.t("smart_campaign.pitch_step.targets_table.email") %></th>
       <th><%= polyglot.t("smart_campaign.pitch_step.targets_table.actions") %></th>
     </tr>
     </thead>
     <tbody>
     <% _.each(items, function(c) { %>
     <tr>
-      <td  class="middle"><%= c.name %></td>
-      <td><a class="btn btn-danger btn-xs" href="#"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
+      <td  class="middle"><%= c.full_name %></td>
+      <td class="middle"><%= c.email %></td>
+      <td><a class="btn btn-danger btn-xs" href="#" data-weibo-id="<%= c.id %>"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
     </tr>
     <% }); %>
     </tbody>
