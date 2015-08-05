@@ -28,7 +28,8 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
           res = res + "-new";
         }
         return res;
-      }
+      },
+      p: function(s, c) { return _.pluralize(s, c); }
     },
 
     onRender: function() {
