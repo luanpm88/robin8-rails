@@ -13,11 +13,10 @@ Robin.Collections.PitchContacts = Backbone.Collection.extend({
     return this.where({origin: 'media_list'});
   }
 });
-
 Robin.Models.Pitch = Backbone.RelationalModel.extend({
   urlRoot: '/pitches',
   defaults: {
-    email_pitch: "<%= polyglot.t('smart_release.pitch_step.email_panel.text_dear') %> @[First Name],<br /><br /><%= polyglot.t('smart_release.pitch_step.email_panel.text_here') %><br /><br />@[Signature]<br /><br /> <%= polyglot.t('smart_release.pitch_step.email_panel.text_text') %>:<br /><br />@[Title]<br /><br />@[Text]",
+    email_pitch: '',
     twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
@@ -29,17 +28,23 @@ Robin.Models.Pitch = Backbone.RelationalModel.extend({
     key: 'contacts',
     relatedModel: Robin.Models.Contact,
     collectionType: Robin.Collections.PitchContacts
-  }]
+  }],
+  getEmailPitch: function(){
+    return polyglot.t('smart_release.pitch_step.email_panel.text_dear') + " @[First Name],<br /><br />" + polyglot.t('smart_release.pitch_step.email_panel.text_here') + "<br /><br />@[Signature]<br /><br /> " + polyglot.t('smart_release.pitch_step.email_panel.text_text') + ":<br /><br />@[Title]<br /><br />@[Text]";
+  }
 });
 
 Robin.Models.DraftPitch = Backbone.Model.extend({
   urlRoot: '/draft_pitches',
   defaults: {
-    email_pitch: "<%= polyglot.t('smart_release.pitch_step.email_panel.text_dear') %> @[First Name],<br /><br /><%= polyglot.t('smart_release.pitch_step.email_panel.text_here') %><br /><br />@[Signature]<br /><br /> <%= polyglot.t('smart_release.pitch_step.email_panel.text_text') %>:<br /><br />@[Title]<br /><br />@[Text]",
+    email_pitch: '',
     twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
     email_subject: null,
+  },
+  getEmailPitch: function(){
+    return polyglot.t('smart_release.pitch_step.email_panel.text_dear') + " @[First Name],<br /><br />" + polyglot.t('smart_release.pitch_step.email_panel.text_here') + "<br /><br />@[Signature]<br /><br /> " + polyglot.t('smart_release.pitch_step.email_panel.text_text') + ":<br /><br />@[Title]<br /><br />@[Text]";
   }
 });
 

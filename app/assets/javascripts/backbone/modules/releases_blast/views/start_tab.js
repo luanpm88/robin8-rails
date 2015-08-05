@@ -145,7 +145,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             if (!s.isBlank(email))
               signature.push(email);
               
-            var emailPitch = self.draftPitchModel.get('email_pitch');
+            var emailPitch = self.draftPitchModel.getEmailPitch();
             var signature_text = signature.join(",<br />").replace(',,', '');
             emailPitch = emailPitch.replace('@[Signature]', signature_text);
         
@@ -154,7 +154,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             
             self.pitchModel.set({
               twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
-              email_pitch: self.draftPitchModel.get('email_pitch'),
+              email_pitch: self.draftPitchModel.getEmailPitch(),
               summary_length: self.draftPitchModel.get('summary_length'),
               email_address: self.draftPitchModel.get('email_address'),
               release_id: self.draftPitchModel.get('release_id'),
