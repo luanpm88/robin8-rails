@@ -47,7 +47,7 @@ module BlueSnap
       update_card_url = "#{Rails.application.secrets[:bluesnap][:base_url]}/shoppers/#{shopper_id}"
       update_subscription_url = "#{Rails.application.secrets[:bluesnap][:base_url]}/subscriptions/#{subscription_id}"
       begin
-        errors = BlueSnap::Shopper.validate_params(params, user) 
+        errors = BlueSnap::Shopper.validate_params(params, user)
         if errors.blank?
           shopper = {"web-info" => BlueSnap::Shopper.web_info(request),
                      "shopper-info" => BlueSnap::Shopper.edit_card_info(params, user)}
@@ -288,6 +288,7 @@ module BlueSnap
       response = http.request(request)
       Rails.logger.info "************************************************************************"
       Rails.logger.info "response is #{response} AND #{response.body}***************************"
+      ::SupportMailer.delay.payment_failure(Hash.from_xml(data).to_yaml, "#{response} body: #{Hash.from_xml(response.body).to_yaml}")
       Response.parse(response)
     end
 
