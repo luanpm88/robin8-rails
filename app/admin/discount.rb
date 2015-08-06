@@ -1,5 +1,5 @@
 ActiveAdmin.register Discount do
-  permit_params :code , :description,:percentage,:max_count,:is_recurring ,:expiry,user_discounts_attributes: [:id, :user_id, :discount_id, :_destroy],product_discounts_attributes: [:id, :discount_id, :product_id, :_destroy]
+  permit_params :code , :discount_name, :description,:percentage,:max_count,:is_recurring ,:expiry,user_discounts_attributes: [:id, :user_id, :discount_id, :_destroy],product_discounts_attributes: [:id, :discount_id, :product_id, :_destroy]
 
   member_action :activate, method: :put do
     d = Discount.find(params[:id])
@@ -24,6 +24,7 @@ ActiveAdmin.register Discount do
   form do |f|
     f.inputs "Discount" do
       f.input :code,:hint => "IMPORTANT!!! Match this code to Bluesnap Code exactly"
+      f.input :discount_name
       f.input :description
       f.input :percentage, :hint => "How much % should be off. IMPORTANT!!! This should match Bluesnap percentage exactly"
       f.input :group_name, :hint => "Please specify group's name of discount"
@@ -41,8 +42,8 @@ ActiveAdmin.register Discount do
 
     f.inputs "To Users * If left empty, will be available to all users" do
 
-      users = User.all.map do |u| 
-        if u.name? 
+      users = User.all.map do |u|
+        if u.name?
           name = u.name
         elsif u.first_name? && u.last_name?
           name = "#{u.first_name} #{u.last_name}"
@@ -63,6 +64,7 @@ ActiveAdmin.register Discount do
   index do |d|
     id_column
     column :code
+    column :discount_name
     column :percentage
     column :expiry
     column :created_at
