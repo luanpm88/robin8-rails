@@ -1800,3 +1800,25 @@ input.form-control[type="file"] {
   background-color: #8bc86d;
   border-color: #8bc86d;
 }
+
+#wechat-perf-table > thead > tr > th {
+  vertical-align: middle;
+  text-align: center;
+}
+#wechat-perf-table > tbody > tr > td {
+  vertical-align: middle;
+  text-align: center;
+}
+#wechat-perf-table {
+  table-layout: fixed;
+}
+#wechat {
+  .photos_list  li{
+    display: block;
+  }
+}
+#claim-report-modal {
+  .article-content, .wysihtml5-sandbox {
+    max-width: 100%;
+  }
+}

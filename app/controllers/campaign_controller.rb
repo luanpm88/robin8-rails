@@ -35,7 +35,9 @@ class CampaignController < ApplicationController
       article = Article.find(params[:article_id])
     end
     params[:attachments_attributes].each do |element|
-      Attachment.create(imageable: article, url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
+      if element[:attachment_type] == "file"
+        Attachment.create(imageable: article, url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
+      end
     end
     render json: article, serializer: ArticleSerializer
   end
@@ -68,12 +70,38 @@ class CampaignController < ApplicationController
     render json: article.article_comments.order(created_at: :desc), each_serializer: ArticleCommentSerializer
   end
 
+  def wechat_performance
+    article = Article.find(params[:article_id])
+    render json: article.wechat_article_performances.order(created_at: :desc), each_serializer: WechatArticlePerformanceSerializer
+  end
+
   def create_article_comment
     article = Article.find(params[:article_id])
     someone = current_user
     someone = current_kol if someone.nil?
     comment = ArticleComment.create(article_id: article.id, sender: someone, text: params[:text], comment_type: "comment")
     render json: comment, serializer: ArticleCommentSerializer
+  end
+
+  def create_wechat_performance
+    article = Article.find(params[:article_id])
+    campaign = Campaign.find(article.campaign_id)
+    user = User.find(campaign.user_id)
+    wechat_perf = WechatArticlePerformance.create(article_id: article.id, period: params[:text], reached_peoples: params[:reached_peoples], page_views: params[:page_views], read_more: params[:read_more], favourite: params[:favourite], status: "Under moderation", period: Date.today.to_s, campaign_name: campaign.name, company_name: user.company)
+    params[:attachments_attributes].each do |element|
+      if element[:attachment_type] == "image"
+        Attachment.create(imageable_id: wechat_perf.id, imageable_type: "WechatArticlePerformance", url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
+      end
+    end
+    render json: wechat_perf, serializer: WechatArticlePerformanceSerializer
+  end
+
+  def claim_article_wechat_performance
+    wechat_report = WechatArticlePerformance.find(params[:reportId])
+    wechat_report.claim_reason = params[:reason]
+    wechat_report.status = 'Claimed'
+    wechat_report.save
+    render json: wechat_report, serializer: WechatArticlePerformanceSerializer
   end
 
   def create

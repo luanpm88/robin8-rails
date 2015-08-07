@@ -44,6 +44,22 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
               collection: article.get("article_comments")
             articleDialog.showChildView 'comments', commentsList
           )
+          article.fetch_wechat_perf(()->
+            wechat_performance = if article.get("wechat_performance")? then article.get("wechat_performance") else []
+            canUpload = true
+            if wechat_performance.length > 0
+              end = moment(new Date(wechat_performance.models[0].attributes.period).toLocaleFormat '%d-%b-%Y')
+              start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+              diff = start.diff(end, "days")
+              if diff < 7
+                canUpload = false
+            weChetPerf = new Show.ArticleWeChat
+              collection: article.get("wechat_performance")
+              model: article
+              disabled: false
+              canUpload: canUpload
+            articleDialog.showChildView 'weChat', weChetPerf
+          )
         error: (e)->
           console.log e
       articleDialog = new Show.ArticleDialog
@@ -72,3 +88,28 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       timestamp: (d) ->
         date = new Date d
         date.getTime()
+
+  Show.ArticleWeChat = Backbone.Marionette.ItemView.extend
+    template: 'modules/campaigns/show/templates/article-wechat'
+
+    templateHelpers:
+      timestamp: (d) ->
+        date = new Date d
+        date.getTime()
+
+    serializeData: () ->
+      items: @collection.toJSON()
+      disabled: @options.disabled
+      canUpload: @options.canUpload
+
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 10
+        autoWidth: false
+        columnDefs: [sortable: false, targets: ["no-sort"]]
+        order: [[ 0, "desc" ]]
+      if !@options.canUpload and document.getElementById("report_region")?
+        document.getElementById("report_region").style.display = "none"

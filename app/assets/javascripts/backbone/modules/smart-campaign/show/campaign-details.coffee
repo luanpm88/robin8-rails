@@ -36,6 +36,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       article = new Robin.Models.Article
         campaign_model: @model
         id: id
+        canUpload: false
       articleDialog = new App.Campaigns.Show.ArticleDialog
         model: article
         title: @model.get("name")
@@ -50,6 +51,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             commentsList = new App.Campaigns.Show.ArticleComments
               collection: article.get("article_comments")
             articleDialog.showChildView 'comments', commentsList
+          article.fetch_wechat_perf ()->
+            weChetPerf = new App.Campaigns.Show.ArticleWeChat
+              collection: article.get("wechat_performance")
+              disabled: true
+              canUpload = false
+            articleDialog.showChildView 'weChat', weChetPerf
         error: (e)->
           console.log e
       Robin.modal.show articleDialog
