@@ -43,8 +43,10 @@
                                 <tr>
                                   <td width="40%"><%=a.name%></td>
                                   <td width="5%"><%=@add_on_hash["#{a.id}"]%> </td>
-                                  <td width="20%">$<%=a.price%>  </td>
-                                  <td width="35%">$ <%= price = a.price *  (@add_on_hash["#{a.id}"]).to_i%></td>
+                                  <%addon_price = a.price%>
+                                  <%addon_price = @prices[a.id] if  @prices.has_key?(a.id)%>
+                                  <td width="20%">$<%=addon_price%>  </td>
+                                  <td width="35%">$ <%= price = addon_price *  (@add_on_hash["#{a.id}"]).to_i%></td>
                                   <%total += price%>
                                 </tr>
                             <%end%>

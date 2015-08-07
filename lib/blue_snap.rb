@@ -112,10 +112,19 @@ module BlueSnap
     def self.get_expected_total(product,add_ons,add_ons_hash,code,user)
       discount = Discount.active.where(code: code).last if code.present?
       discount_amount = 0.0
-      if discount.present? && product.present?
-        discount_amount =  discount.calculate(user,product) if discount.is_global?
-        discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.slug)
-        discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.slug)
+      if discount.present?
+        if product.present?
+          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+            discount_amount =  discount.calculate(user,product)
+          end
+        end
+        if add_ons.present?
+          add_ons.each do |addon|
+            if discount.is_global? || discount.on_user_and_addon?(user.id,addon.id) || discount.only_on_addon?(addon.id)
+              discount_amount += discount.calculate(user,addon) * (add_ons_hash["#{addon.id}"].to_i)
+            end
+          end
+        end
       end
       return (product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
     end
@@ -132,8 +141,8 @@ module BlueSnap
 
       discount = Discount.active.where(code: code).last if code.present?
       disc_code = ""
-      if discount.present? && product.present?
-        if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+      if discount.present?
+        if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug) || discount.on_user_and_addon?(user.id,add_ons.first) || discount.only_on_addon?(add_ons.first)
           disc_code = {"coupons"=>{"coupon"=> discount.code}}.to_xml(root: false,:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","").gsub("<hash>\n","").gsub("\n</hash>\n","")
         end
       end
@@ -245,8 +254,8 @@ module BlueSnap
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id" => new_sku_id.to_s, "status" => "A", "shopper-id" => shopper_id.to_s}
 
         discount,product = Discount.active.where(code: code).last,Package.where(sku_id: new_sku_id).first if code.present?
-        if discount.present? && product.present?
-          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+        if discount.present?
+          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug) || discount.on_user_and_addon?(user.id,add_ons.first) || discount.only_on_addon?(add_ons.first)
             shopper.merge({"coupon"=>discount.code})
           end
         end

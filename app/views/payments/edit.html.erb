@@ -140,6 +140,7 @@
             })
                     .done(function( amount ) {
                         if ( amount != '' ) {
+                            amount = amount[0][1];
                             previous_amount  = parseInt($("#"+$('#slug').val()).val());
                             $('#price-sub').html('$'+(previous_amount - amount));
                             $('#price-total').html('$'+(previous_amount - amount));

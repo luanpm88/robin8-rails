@@ -13,7 +13,7 @@ class UserProduct < ActiveRecord::Base
       product.features.each do |f|
         product_quota = product.product_features.where(feature_id: f.id).first.quota
         if product.slug == 'smart_release'
-          available_count = product_quota 
+          available_count = product_quota
         else
           available_count = product.is_package ? product_quota - user.used_count_by_slug(f.slug) : product_quota
         end
@@ -85,11 +85,18 @@ class UserProduct < ActiveRecord::Base
         return nil
       end
     else
+      card_last_four_digits = ""
+      card_type = ""
+      if bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.payment_method != "None"
+        card_last_four_digits = bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits
+        card_type = bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type
+      end
+
       payments.create(
-          amount: product.price, #bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
+          amount: charged_amt, #bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
           product_id: product_id,
-          card_last_four_digits:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits,
-          card_type:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type #,
+          card_last_four_digits:  card_last_four_digits,
+          card_type:  card_type #,
           # discount_id: discount.present? ?  discount.id : nil
       )
     end

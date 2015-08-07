@@ -50,25 +50,29 @@
                   </tr>
               <%end%>
               <% addons_price = 0.0 %>
-              <%@add_ons.each do |a|%>
-                  <tr id="checkout-item-<%=a.id%>">
-                    <input type="hidden" name="add_ons[<%=a.id%>]" value="<%=@add_on_hash["#{a.id}"]%>"/>
+              <% addons_id = [] %>
+              <%@add_ons.each do |add_on|%>
+                  <tr id="checkout-item-<%=add_on.id%>">
+                    <input type="hidden" name="add_ons[<%=add_on.id%>]" value="<%=@add_on_hash["#{add_on.id}"]%>"/>
                     <td class="">
-                      <%=a.name%> (<%=@add_on_hash["#{a.id}"]%>)
+                      <%=add_on.name%> (<%=@add_on_hash["#{add_on.id}"]%>)
                     </td>
                     <td>
                     </td>
                     <td class="remove">
-                      <a data-remove="checkout-item-<%=a.id%>" class="remove" onclick="removeAddonCost(<%=a.price * @add_on_hash["#{a.id}"].to_f%>)"><%= @l.t 'payment_page.table.remove'%></a>
+                      <a data-remove="checkout-item-<%=add_on.id%>" class="remove" onclick="removeAddonCost(<%=add_on.id%>)"><%= @l.t 'payment_page.table.remove'%></a>
                     </td>
-                    <td class="price">
-                      $<%=price = a.price * @add_on_hash["#{a.id}"].to_f%>
-                    </td>
+                    <td class="price"  id="<%=add_on.id%>">$<%=price = add_on.price * @add_on_hash["#{add_on.id}"].to_f%></td>
+                    <input type="hidden" value="<%=@add_on_hash["#{add_on.id}"].to_f%>" name="add_on<%=add_on.id%>count" id="add_on<%=add_on.id%>count"/>
                   </tr>
                   <%total += price %>
                   <%addons_price += price %>
+                  <%addons_id.push(add_on.id) %>
               <%end if @add_ons.present?%>
               <input type="hidden" id="addons-price" value="<%=addons_price%>"/>
+              <input type="hidden" value="<%=addons_id%>" name="addons_id" id="addons_id"/>
+              <input type="hidden" value="<%=total%>" name="order_price" id="order_price"/>
+              <input type="hidden" value="0" name="discount" id="discount"/>
               <tr class="totals">
                 <td class="">
                   <%= @l.t 'payment_page.table.total'%>
@@ -83,7 +87,7 @@
           </div>
         </div>
 
-        <%if @product.present?%>
+
             <div class="row">
               <div class="hide-for-small medium-7 columns"> &nbsp;
               </div>
@@ -95,7 +99,7 @@
 
               <div class="small-12 medium-2 columns">
                 <label>
-                  <input type="button" value="Apply Code" onclick="applyDiscount();" name="update">
+                    <input type="button" value="Apply Code" onclick="applyDiscount();" name="update">
                 </label>
               </div>
 
@@ -103,7 +107,6 @@
                 <p id="discount_response" style="margin-top:0px;"></p>
               </div>
             </div>
-        <%end%>
         <input type="hidden" id="discount-amount" value="0"/>
         <div class="alert alert-danger">
           <ul style="list-style:none;text-align:center;">
@@ -304,18 +307,42 @@
       }
 
       function applyDiscount(){
-        if($("#promo_code").val()!=''){
+        if($("#promo_code").val()!='' && $("#discount").val() != "1"){
           $.ajax({
-            url: "/payments/apply_discount?code="+$("#promo_code").val()+"&product_slug="+$('#slug').val()
+            url: "/payments/apply_discount?code=" + $("#promo_code").val() + "&product_slug=" + $('#slug').val() + "&addons_id=" + JSON.parse($('#addons_id').val())
           })
             .done(function( discountAmount ) {
               if ( discountAmount != '' ) {
-                $('#discount-amount').val(discountAmount);
+                var discountTotal = 0;
+                if ($('#slug').val() != "add-on") {
+                  $.each(discountAmount, function( index, value ) {
+                    if(index != discountAmount.length-1 && value[0]==$('#slug').val()){
+                      productCost = parseInt($("#"+$('#slug').val()).val());
+                      $('#price-sub').html('$'+parseInt((productCost - parseInt(value[1]))));
+                      discountTotal += parseFloat(value[1]);
+                    }
+                  });
+                }
+                var addons_total_price = 0;
+                $.each(discountAmount, function( index, value ) {
+                  if(index != discountAmount.length-1){
+                    if(value[0] != $('#slug').val()){
+                      productCost = parseInt($("#" + value[0]).html().slice(1));
+                      count = parseInt($("#add_on" + value[0] + "count").val());
+                      price = parseInt((productCost - (parseInt(value[1]) * count)));
+                      discountTotal += parseFloat(value[1] * count);
+                      $('#'+value[0]).html('$'+ price);
+                      $('#'+value[0]).val(price);
+                      addons_total_price += price;
+                    }
+                  }
+                });
+                $('#discount-amount').val(discountTotal);
                 updateTotal();
-                productCost = parseInt($("#"+$('#slug').val()).val());
-                $('#price-sub').html('$'+parseInt((productCost - parseInt(discountAmount))));
+                $('#addons-price').val(addons_total_price);
                 $('#discount_response').html("Discount successfully applied to your account");
                 $('#discount_response').css("color","#02BA64");
+                $("#discount").val("1");
               } else {
                 $('#discount_response').html("Discount code is not valid or expired");
                 $('#discount_response').css("color","#FF6301");
@@ -324,26 +351,31 @@
         }
       }
 
-      function removeAddonCost(amount){
+      function removeAddonCost(item){
+        addonPrice = parseInt($('#'+item).html().slice(1));
         if ($('#addons-price').length) {
           addonsCost = parseInt($('#addons-price').val());
-          $('#addons-price').html( addonsCost - amount );
+          $('#addons-price').html( addonsCost - addonPrice );
         }
 
         if ($('#price-total').length) {
           addonsCost = parseInt($('#price-total').html().slice(1));
-          $('#price-total').html( '$' + (addonsCost - amount).toString());
+          $('#price-total').html( '$' + (addonsCost - addonPrice).toString());
+          $('#order_price').val(addonsCost - addonPrice);
         }
+
+        addons_id = JSON.parse($('#addons_id').val());
+        addons_id.splice(addons_id.indexOf(item), 1);
+        $('#addons_id').val("[" + addons_id + "]");
 
         return true
       }
 
       function updateTotal() {
-        productCost    = parseInt($("#"+$('#slug').val()).val());
         discountAmount = parseInt($('#discount-amount').val());
-        addonsCost     = parseInt($('#addons-price').val());
-        total = productCost - discountAmount + addonsCost
-        $('#total').val(total);
+        price = parseInt($('#order_price').val());
+        total = price - discountAmount;
+        $('#order_price').val(total);
         $('#price-total').html('$'+ total);
         $('#t-price').html('$'+ total);
         return true
