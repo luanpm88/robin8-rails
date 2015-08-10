@@ -33,6 +33,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     reanalyzeButtonClicked: () ->
       child = new Show.StartAnalytics ({
         model: @model
+        parent: @options.parent
         reanalyze: true
       })
       Robin.layouts.main.content.currentView.content.currentView.analyticsRegion.show child
