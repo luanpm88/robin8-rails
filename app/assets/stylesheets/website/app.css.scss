@@ -1596,3 +1596,7 @@ p.loginintro strong{
 .selection-guarantee.error {
   color: red !important;
 }
+
+.select-with-error + .ui-widget {
+  border-color: red !important;
+}
