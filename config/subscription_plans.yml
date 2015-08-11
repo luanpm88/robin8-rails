@@ -6,7 +6,7 @@ plans:
     newsroom: 1
     press_release: 5
     smart_release: 3
-    media_list: '-'
+    media_list: 0
     streams: 3
   business:
     price: 150
