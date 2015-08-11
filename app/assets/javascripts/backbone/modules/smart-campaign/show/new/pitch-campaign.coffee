@@ -23,7 +23,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         index = _.indexOf(@kols, kol)
         @kols.splice(index, 1)
         @model.set('kols', @kols)
-        this.renderTab()
+
+        if @kols.length == 0
+          @options.parent.setState('target')
 
     onRender: (opts) ->
       this.renderTab()

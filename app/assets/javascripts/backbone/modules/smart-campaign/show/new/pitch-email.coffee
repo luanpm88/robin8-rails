@@ -13,8 +13,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       e.preventDefault()
       target = $ e.currentTarget
       kol_id = target.data 'kol-id'
+      target.parents('tr').remove()
       this.triggerMethod('email:target:removed', kol_id)
-
 
   Show.EmailPitch = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-email'
