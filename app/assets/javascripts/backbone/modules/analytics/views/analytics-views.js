@@ -12,7 +12,11 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
             $('.releases-toolbar').hide();
           }
           id = ( id == undefined ? collection.models[0].get('id') : id );
-          $.get('/news_rooms/' + id +'/web_analytics', function(data){
+
+          var start = new Date($('#start-date-input').val());
+          var end = new Date($('#end-date-input').val());
+
+          $.get('/news_rooms/' + id +'/web_analytics/', { start_date: start, end_date: end }, function(data){
 
             var dates = _.map(data.web.dates, function(date){
               var split = date.match(/.{1,4}/g);
@@ -103,7 +107,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     tagName: 'select',
     className: 'form-control change-web-news-room'
   });
-  
+
   Analytics.WebFilterItemView = Backbone.Marionette.ItemView.extend({
 
     template: 'modules/analytics/templates/filter',
@@ -119,7 +123,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     tagName: 'select',
     className: 'form-control change-emails-news-room'
   });
-  
+
   Analytics.EmailsFilterItemView = Backbone.Marionette.ItemView.extend({
 
     template: 'modules/analytics/templates/filter',
@@ -130,6 +134,6 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     }
 
   });
-  
+
 
 });

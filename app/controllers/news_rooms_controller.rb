@@ -1,7 +1,7 @@
 require 'mailgun'
 class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
-  
+
   def index
     limit = current_user.current_user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
     set_paginate_headers NewsRoom, current_user.news_rooms.count
@@ -54,11 +54,17 @@ class NewsRoomsController < ApplicationController
 
   def web_analytics
     @news_room = NewsRoom.find params[:news_room_id]
+
+    start_date = Date.parse params[:start_date]
+    end_date = Date.parse params[:end_date]
+    end_date <= DateTime.now ? end_date = end_date : end_date = DateTime.now
+    start_date <= end_date ? start_date = start_date : start_date = end_date
+
     sa = ServiceAccount.new
     sa.service_account_user
     results = GoogleAnalytics.results(sa.first_profile, {
-      start_date: (DateTime.now - 7.days),
-      end_date: DateTime.now }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
+      start_date: start_date,
+      end_date: end_date }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
 
     collection = results.collection
     web = {
@@ -151,7 +157,7 @@ private
       :toll_free_number, :publish_on_website, attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy],
       industry_ids: [])
   end
-  
+
   def ssl_configured?
     !Rails.env.development? && !['preview', 'presskit', 'follow'].include?(action_name)
   end
