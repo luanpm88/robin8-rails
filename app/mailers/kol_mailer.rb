@@ -7,6 +7,8 @@ class KolMailer < ApplicationMailer
   end
 
   def send_invite(sender, mail, subject, text)
-    mail(:to => mail, :from => sender, :subject => subject, :body => text)
+    mail(:to => mail, :from => sender, :subject => subject) do |format|
+      format.html { render html: text.html_safe }
+    end
   end
 end
