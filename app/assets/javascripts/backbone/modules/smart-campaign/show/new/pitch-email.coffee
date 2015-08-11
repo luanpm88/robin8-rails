@@ -13,8 +13,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       e.preventDefault()
       target = $ e.currentTarget
       kol_id = target.data 'kol-id'
+      target.parents('tr').remove()
       this.triggerMethod('email:target:removed', kol_id)
-
 
   Show.EmailPitch = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-email'
@@ -170,8 +170,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       this.model.set('email_address', this.ui.emailAddressInput.val())
       this.editor.setValue(this.model.get('email_pitch'))
 
-
-
     addMergeTag: (e) ->
       e.preventDefault()
       this.editor.composer.commands.exec("insertHTML", '@[' + e.target.textContent + '] ')
@@ -208,14 +206,19 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         return '<li>' + item + '</li>'
       ).join(' ')
 
-      summaries = '<ul>' + summaries + '</ul>'
+
+      if summaries.length > 0
+        summaries = '<ul>' + summaries + '</ul>'
+        renderedText = renderedText.replace(/\@\[Summary\]/g, summaries)
+
+
       kolLink = '<a href="' + window.location.origin + '/kols/new">register</a>'
 
       renderedText = renderedText.replace(/\@\[KolReghref\]/g, kolLink)
       #renderedText = renderedText.replace(/\@\[Title\]/g, linkable_title)
       #renderedText = renderedText.replace(/\@\[Text\]/g, html_text)
       #renderedText = renderedText.replace(/\@\[Link\]/g, link)
-      renderedText = renderedText.replace(/\@\[Summary\]/g, summaries)
+
 
       this.model.set('email_pitch', renderedText)
       @ui.textarea.value = renderedText
@@ -225,11 +228,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       return renderedText
 
     sendTestEmailButtonClicked: (e) ->
-
-      testEmailView = new Show.TestEmail
-        model: @model
-
-      Robin.modal.show(testEmailView)
+      @ui.form.data('formValidation').validate()
+      if @ui.form.data('formValidation').isValid()
+        testEmailView = new Show.TestEmail
+          model: @model
+        Robin.modal.show(testEmailView)
 
     subjectLineInputChanged: (e) ->
       this.model.set('email_subject', this.ui.subjectLineInput.val())

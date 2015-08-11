@@ -18,6 +18,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     events:
       "click #add_budget": "openModalDialog"
+      "click #add_budget_icon": "openModalDialog"
       "click @ui.add": "add"
 
     collectionEvents:

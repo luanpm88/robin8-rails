@@ -25,7 +25,7 @@
               $<span style="width: 50px; display: inline-block;"><%= c.budget %></span>
             </td>
             <td class="middle" align="center">
-              <button type="button" class="btn btn-success vcenter" id="add_budget" campaign="<%= c.id %>"><i class="fa fa-plus"></i>  <%= polyglot.t("smart_campaign.add_money") %></button>
+              <a class="btn btn-success vcenter" id="add_budget" campaign="<%= c.id %>"><i id="add_budget_icon" campaign="<%= c.id %>" class="fa fa-plus"></i>  <%= polyglot.t("smart_campaign.add_money") %></a>
             </td>
             <td class="middle" data-order="<%= timestamp(c.created_at)%>"><%= formatDate(c.created_at) %></td>
             <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
