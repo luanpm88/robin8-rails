@@ -282,7 +282,7 @@ if Rails.env.production?
   p = AddOn.create!(price:10 ,name: "Media Monitoring Stream (per month)", is_active: true, sku_id: 3264288,interval: 30,slug: "media_moitoring")
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 30,count: 1 )
 
-  p = AddOn.create!(price:20 ,name: "Newsroom (per month)", is_active: true, sku_id: 3264286,interval: 30,slug: "newsroom")
+  p = AddOn.create!(price:20 ,name: "Brand Gallery (per month)", is_active: true, sku_id: 3264286,interval: 30,slug: "newsroom")
   p.product_features.create!(feature_id:Feature.find_by_slug("newsroom").id,validity: 30,count: 1 )
 
   p = AddOn.create!(price: 2,name: "Press Release Distribution (per release)", is_active: true, sku_id: 3264268,slug: "press_release")

@@ -51,7 +51,7 @@ Robin.module('Dashboard.Show', function(Show, App, Backbone, Marionette, $, _){
 
     addNewsroom: function(){
       if (Robin.user.get('can_create_newsroom') != true) {
-        $.growl({message: "You don't have available newsrooms!"},
+        $.growl({message: "You don't have available brand galleries!"},
           {
             type: 'info'
           });

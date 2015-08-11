@@ -61,7 +61,7 @@ class NewsRoom < ActiveRecord::Base
   def permalink
     host = Rails.application.secrets[:host]
     subdomain_name = self.subdomain_name
-    
+
     "http://#{subdomain_name}.#{host}"
   end
 
@@ -72,7 +72,7 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def can_be_created
-      errors.add(:company_name, "you've reached the max numbers of newsrooms.") if needed_user && !needed_user.can_create_newsroom
+      errors.add(:company_name, "you've reached the max numbers of brand galleries.") if needed_user && !needed_user.can_create_newsroom
     end
 
     def twitter_account_exists
@@ -127,5 +127,5 @@ class NewsRoom < ActiveRecord::Base
       rescue Exception => e
       end
     end
-    
+
 end
