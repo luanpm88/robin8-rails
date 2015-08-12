@@ -68,6 +68,9 @@
                 <% var prop = currentPlan.properties; %>
                 <ul>
                   <li><strong><%= prop.smart_release %></strong> <span>SmartContent</span></li>
+                  <% if (!(currentPlan.slug).startsWith('new')) { %>
+                    <li><strong><%= currentPlan.properties.press_release %></strong> <span>Press Release Postings on Robin8/month</span></li>
+                  <% }%>
                   <li><strong><%= prop.newsroom %></strong> <span><%= p('Brand Gallery', prop.newsroom) %></span></li>
                   <li><strong><%= prop.seat %></strong> <span><%= p('Seat', prop.seat) %></span></li>
                   <li><%= count(prop.media_list) %> <span><%= p('Personal Influencers List', prop.media_list) %></span></li>
