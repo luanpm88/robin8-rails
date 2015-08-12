@@ -46,10 +46,15 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
             url: '/news_rooms/' + collectionNewsRooms.models[0].id +'/email_analytics',
             success: function(collection, data, response){
               var collection = new Robin.Collections.EmailAnalytics(data.authors);
+              var collectionDropped = new Robin.Collections.EmailAnalytics(data.authors_dropped);
               var emailListView = new Analytics.EmailsListCompositeView({
                 collection: collection
               });
+              var emailDroppedListView = new Analytics.EmailsDroppedListCompositeView({
+                collection: collectionDropped
+              });
               module.layout.emailsListRegion.show(emailListView);
+              module.layout.emailsDroppedListRegion.show(emailDroppedListView);
             }
           })
         }

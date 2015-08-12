@@ -8,6 +8,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       webAnalyticsRegion: '#analytics-region',
       emailsAnalyticsRegion: '#emails-analytics-region',
       emailsListRegion: '#emails-list-region',
+      emailsDroppedListRegion: '#emails-dropped-list-region'
       weChatAnalyticsRegion: '#wechat-analytics-region',
       weiboAnalyticsRegion: '#weibo-analytics-region',
       campaignAnalyticsRegion: '#campaign-analytics-region'
@@ -44,12 +45,18 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var collectionEmails = new Robin.Collections.EmailAnalytics()
       collectionEmails.fetch({
         url: '/news_rooms/' + $(event.target).val() +'/email_analytics',
+
         success: function(collection, data, response){
           var collection = new Robin.Collections.EmailAnalytics(data.authors);
+          var collection_dropped = new Robin.Collections.EmailAnalytics(data.authors_dropped);
           var emailListView = new Analytics.EmailsListCompositeView({
             collection: collection
           });
+          var emailDroppedListView = new Analytics.EmailsDroppedListCompositeView({
+            collection: collection_dropped
+          });
           $this.emailsListRegion.show(emailListView);
+          $this.emailsDroppedListRegion.show(emailDroppedListView);
         }
       })
     },
