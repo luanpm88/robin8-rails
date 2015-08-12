@@ -163,7 +163,7 @@
       if ($(link).hasClass('presskit-file') || $(link).hasClass('presskit-file--content')) {
         link = $(link).find('img').parents(".not-image")[0];
       };
-      
+
       var options = {index: link, event: event};
       var links = this.getElementsByTagName('a');
       blueimp.Gallery(links, options);
