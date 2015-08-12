@@ -14,6 +14,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initialize: function(options){
       this.model.set('location', null);
+      this.model.set('author_type_id', null);
       this.on("textapi_result:ready", this.render);
       this.getTextApiResult();
       this.textapiResult = {};

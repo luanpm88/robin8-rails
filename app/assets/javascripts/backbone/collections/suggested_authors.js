@@ -20,10 +20,13 @@ Robin.Collections.SuggestedAuthors = Backbone.Collection.extend({
       delete params["iptc_categories[]"];
     }
     
-    if (this.releaseModel.get('location')){
+    if (!s.isBlank(this.releaseModel.get('location'))){
       params['location'] = this.releaseModel.get('location');
       params['blog_location'] = this.releaseModel.get('location');
     }
+    
+    if (!s.isBlank(this.releaseModel.get('author_type_id')))
+      params['author_type_ids[]'] = this.releaseModel.get('author_type_id');
     
     this.fetch({
       url: this.url,

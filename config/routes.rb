@@ -99,6 +99,7 @@ Rails.application.routes.draw do
       get 'locations'
       get 'skills'
       get 'iptc_categories'
+      get 'author_types'
     end
   end
 

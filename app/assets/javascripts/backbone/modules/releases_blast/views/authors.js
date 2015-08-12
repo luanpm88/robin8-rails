@@ -499,23 +499,68 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     ui: {
       refinement: "#refinement",
-      locationInput: "#refinement input[type=text]",
+      locationInput: "#refinement input[name=location]",
+      authorTypeInput: "#refinement input[name=author_type]",
       refineButton: "#refinement button"
     },
     events: {
       "click @ui.refineButton": "refineButtonClicked"
     },
+    initSelect2: function(){
+      this.ui.authorTypeInput.select2({
+        placeholder: "Author type",
+        multiple: false,
+        formatInputTooShort: function (input, min) {
+          var n = min - input.length; 
+          return polyglot.t("select2.too_short", { count: n }); 
+        },
+        formatNoMatches: function () { return polyglot.t("select2.not_found"); },
+        formatSearching: function () { return polyglot.t("select2.searching"); },
+        formatResult: function (object, container, query) {
+          return object.text;
+        },
+        formatSelection: function (object, container) {
+          return object.text;
+        },
+        id: function (object) {
+          return object.id;
+        },
+        ajax: {
+          url: "/autocompletes/author_types",
+          dataType: "JSON",
+          data: function (term, page) {
+            return {
+              term: term
+            };
+          },
+          results: function (data, page) {
+            return {
+              results: _(data.author_types).map(function (item) {
+                return { id: item['id'], text: item['name'] };
+              })
+            }
+          }
+        },
+        minimumInputLength: 1,
+        createSearchChoice: function () { return null }
+      });
+    },
     refineButtonClicked: function(e){
       e.preventDefault();
       
       var location = this.ui.locationInput.val();
-      if (s.isBlank(location)){
-        $.growl({message: "Location can't be blank!"
+      var author_type_id = this.ui.authorTypeInput.select2('val');
+      
+      if (s.isBlank(location) && s.isBlank(author_type_id)){
+        $.growl({
+          message: "Location or Author type should be present, both can't be blank."
         },{
           type: 'danger'
         });
       } else {
         this.releaseModel.set('location', location);
+        this.releaseModel.set('author_type_id', author_type_id);
+        
         Robin.commands.execute("reloadTargetsTab");
       }
     },
@@ -524,6 +569,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     onShow: function(){
       this.initGeoAutocomplete();
+      this.initSelect2();
     },
     initGeoAutocomplete: function(){
       this.ui.locationInput.geocomplete();
