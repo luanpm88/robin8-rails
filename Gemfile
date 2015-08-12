@@ -41,6 +41,8 @@ gem 'redis-objects'
 # Character encoding detecting library
 gem 'charlock_holmes'
 
+gem 'twilio-ruby', '~> 4.2.1'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
   gem 'rails-assets-bootstrap.growl', '2.0.1'

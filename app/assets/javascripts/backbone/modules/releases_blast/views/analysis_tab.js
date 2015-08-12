@@ -7,10 +7,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       nextButton: '#btn-next',
       iptcCategoryLink: '#release-category',
       topicsLink: '#release-topics',
-      summariesLines: '#summaries li'
+      summariesLines: '#summaries li',
+      reanalyzeButton: 'sup i'
     },
     events: {
-      'click @ui.nextButton': 'openTargetsTab'
+      'click @ui.nextButton': 'openTargetsTab',
+      'click @ui.reanalyzeButton': 'reanalyzeButtonClicked'
     },
     initialize: function(options){
       this.model.set('location', null);
@@ -18,6 +20,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.on("textapi_result:ready", this.render);
       this.getTextApiResult();
       this.textapiResult = {};
+      this.reanalyze = this.options.reanalyze;
       
       var self = this;
       Robin.commands.setHandler("goToTargetsTab", function(){
@@ -34,6 +37,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       return {
         textapiResult: this.textapiResult
       }
+    },
+    initTooltip: function(){
+      this.ui.reanalyzeButton.tooltip();
+    },
+    reanalyzeButtonClicked: function(){
+      ReleasesBlast.controller.analysis({
+        releaseModel: this.model,
+        reanalyze: true
+      });
     },
     initSummariesEditable: function(){
       var self = this;
@@ -69,6 +81,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       
       this.ui.iptcCategoryLink.editable({
+        mode: 'popup',
         name: 'iptc_categories',
         select2: {
           placeholder: 'Select a category',
@@ -130,6 +143,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       
       this.ui.topicsLink.editable({
+        mode: 'popup',
         inputclass: 'input-large',
         select2: {
           tags: true,
@@ -179,18 +193,39 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         
       this.makeTopicsEditable();
       this.initSummariesEditable();
+      this.initTooltip();
     },
     openTargetsTab: function(){
       this.model.save();
       
       ReleasesBlast.controller.targets();
     },
+    transformLabel: function(label, code){
+      /* Temporary code */
+      if (code.substring(0, 2) == "16")
+        label = "Society - Issue";
+      
+      if (code === "12001000")
+        label = "Arts, Culture and Entertainment - Culture";
+      
+      return label;
+      /* END of Temporary code */
+    },
     boldTopicsInSummaryLine: function(summary){
-      var sfs = _.chain(this.textapiResult["concepts"])
-        .map(function(item){return '\\b' + RegExp.escape(item.sfs) + '\\b'; })
-        .uniq()
-        .value();
-
+      var sfs = [];
+      
+      if (_.isString(this.textapiResult["concepts"])){
+        sfs = _.chain(this.textapiResult["concepts"].split(','))
+          .map(function(item){ return '\\b' + RegExp.escape(item.trim()) + '\\b'; })
+          .uniq()
+          .value();
+      } else {
+        var sfs = _.chain(this.textapiResult["concepts"])
+          .map(function(item){return '\\b' + RegExp.escape(item.sfs) + '\\b'; })
+          .uniq()
+          .value();
+      }
+      
       var pattern = new RegExp('(' + sfs.join('|') + ')', 'ig');
 
       summary = summary.replace(pattern, function($1, match) { 
@@ -263,35 +298,71 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                     freq: countedTopics[topic.label]
                   };
                 }).value();
-                that.textapiResult["concepts"] = renderedTopics;
                 
-                var concepts = _.pluck(that.textapiResult["concepts"], 'uri');
-                concepts = _.map(concepts, function(item){
-                  return item.replace("http://dbpedia.org/resource/", '');
-                });
-                that.model.set('concepts', concepts);
+                if (that.reanalyze || s.isBlank(that.model.get('concepts'))){
+                  var concepts = _.pluck(renderedTopics, 'uri');
+                  concepts = _.map(concepts, function(item){
+                    return item.replace("http://dbpedia.org/resource/", '');
+                  });
+                  that.model.set('concepts', concepts);
+                  
+                  that.textapiResult["concepts"] = _.pluck(renderedTopics, 'topic')
+                    .join(', ');
+                    
+                  resultReady();
+                } else {
+                  that.textapiResult["concepts"] = _.map(that.model.get('concepts'), function(item){
+                    return item.replace(/_/g, ' ');
+                  }).join(', ');
+                  
+                  resultReady();
+                }
                 
-                resultReady();
                 break;
               case 'textapi/classify':
-                that.textapiResult["classify"] = _(response[0].label.split(" - ")).map(function(p) {
+                if (that.reanalyze || s.isBlank(that.model.get('iptc_categories'))){
+                  that.textapiResult["classify"] = _(that.transformLabel(response[0].label, 
+                    response[0].code)
+                    .split(" - ")).map(function(p) {
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
-                
+                  
                 var categories = _.chain(response).pluck('code').uniq().value();
                 if (Robin.currentUser.get('locale') == 'zh') {
                   that.model.set('boson_categories', categories);
                 } else {
                   that.model.set('iptc_categories', categories);
                 }
+                  
+                  resultReady();
+                } else {
+                  $.ajax({
+                    dataType: 'json',
+                    method: 'GET',
+                    url: '/iptc_categories/' + that.model.get('iptc_categories')[0],
+                    success: function(response){
+                      that.textapiResult["classify"] = that.transformLabel(response.label,
+                        response.id);
+                      
+                      resultReady();
+                    }
+                  });
+                }
                 
-                resultReady();
                 break;
               case 'textapi/summarize':
-                that.textapiResult["summarize"] = _(response).first(5);
-                that.model.set('summaries', response);
+                if (that.reanalyze || s.isBlank(that.model.get('summaries'))) {
+                  that.textapiResult["summarize"] = _(response).first(5);
+                  that.model.set('summaries', response);
+                  
+                  resultReady();
+                } else {
+                  that.textapiResult["summarize"] = _(that.model.get('summaries'))
+                    .first(5);
+                  
+                  resultReady();
+                }
                 
-                resultReady();
                 break;
               case 'textapi/hashtags':
                 that.textapiResult["hashtags"] = _.uniq(response);

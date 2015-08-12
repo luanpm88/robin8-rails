@@ -51,7 +51,8 @@ Rails.application.routes.draw do
     get 'others', on: :collection
   end
   resources :news_rooms do
-    get 'analytics'
+    get 'web_analytics'
+    get 'email_analytics'
   end
   resource :public_news_room do
     resources :followers, only: [:new, :create]
@@ -86,13 +87,14 @@ Rails.application.routes.draw do
     delete 'destroy_add_on',on: :member
   end
 
+  resources :alerts, only: [:create, :show, :update]
   resources :media_lists, only: [:index, :create, :show, :destroy]
   resources :contacts, only: [:index, :create, :show]
   resources :pitches, only: [:index, :create, :show]
   resources :draft_pitches
   resources :pitches_contacts, only: [:index, :create, :show, :destroy]
   resources :test_emails, only: [:create, :show]
-  resources :iptc_categories, only: [:index]
+  resources :iptc_categories, only: [:index, :show]
   resources :export_influencers, only: [:create]
   resources :autocompletes, only: [] do
     collection do

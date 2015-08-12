@@ -1,0 +1,12 @@
+<td><%- emailInfo.first_name + ' ' + emailInfo.last_name %></td>
+
+<% if (emailInfo.email) { %>
+  <td><%- emailInfo.email %></td>
+<%} else {%>
+  <td></td>
+<% } %>
+<% if (emailInfo.outlet) { %>
+  <td><%- emailInfo.outlet %></td>
+<%} else {%>
+  <td></td>
+<% } %>

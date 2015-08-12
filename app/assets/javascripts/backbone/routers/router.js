@@ -9,6 +9,7 @@ Robin.Routers.AppRouter = Backbone.Marionette.AppRouter.extend({
     'releases(/*path)': "showReleases",
     'social(/*path)': "showSocial",
     'analytics(/*path)': "showAnalytics",
+    'analytics-email(/*path)': 'showEmailsAnalytics',
     'profile(/*path)': "showProfile",
     'billing(/*path)': "showBilling",
     'recommendations(/*path)': "showRecommendations",

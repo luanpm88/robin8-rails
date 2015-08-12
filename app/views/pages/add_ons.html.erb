@@ -14,7 +14,9 @@
           </div>
 
           <p class="selection-intro-heading"><%= @l.t 'addons.title'%> </p>
-          <p class="selection-guarantee"><%= @l.t 'addons.money_back'%></p>
+          <% if current_user.active_subscription.present? %>
+            <p class="selection-guarantee"><%= @l.t 'addons.money_back'%></p>
+          <% end %>
         </div>
       </div>
       <div class="row">

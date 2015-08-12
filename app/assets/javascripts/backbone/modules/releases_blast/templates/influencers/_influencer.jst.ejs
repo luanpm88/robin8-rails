@@ -56,11 +56,13 @@
 </td>
 <td>
   <% if (pitchContactsCollection.findWhere({twitter_screen_name: influencer.screen_name})) { %>
-    <a disabled class="btn btn-xs btn-success" href="#"><i class="fa fa-check"></i> <%= polyglot.t("smart_release.targets_step.influencers_tab.buttons.yes_but") %></a> 
-    <a class="btn btn-xs btn-danger" href="#"><i class="fa fa-close"></i> <%= polyglot.t("smart_release.targets_step.influencers_tab.buttons.no_but") %></a>
+    <input id="influencer<%= influencer.screen_name %>" class="css-checkbox" type="checkbox" 
+      name="influencerPitch" value="YES" checked>
+    <label class="css-label" for="influencer<%= influencer.screen_name %>"></label>
   <% } else { %>
-    <a class="btn btn-xs btn-success" href="#"><i class="fa fa-check"></i> <%= polyglot.t("smart_release.targets_step.influencers_tab.buttons.yes_but") %></a> 
-    <a disabled class="btn btn-xs btn-danger" href="#"><i class="fa fa-close"></i> <%= polyglot.t("smart_release.targets_step.influencers_tab.buttons.no_but") %></a>
+    <input id="influencer<%= influencer.screen_name %>" class="css-checkbox" type="checkbox" 
+      name="influencerPitch" value="NO">
+    <label class="css-label" for="influencer<%= influencer.screen_name %>"></label>
   <% } %>
 </td>
 <td>

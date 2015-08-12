@@ -3,25 +3,66 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     template: 'modules/analytics/templates/layout',
 
     regions: {
-      selectRegion: '#select-region',
-      analyticsRegion: '#analytics-region'
+      selectWebRegion: '#select-web-region',
+      selectEmailRegion: '#select-email-region',
+      webAnalyticsRegion: '#analytics-region',
+      emailsAnalyticsRegion: '#emails-analytics-region',
+      emailsListRegion: '#emails-list-region',
+      emailsDroppedListRegion: '#emails-dropped-list-region'
     },
 
     events: {
-      'change .change-news-room': 'changeNewsRoom'
+      'change .change-web-news-room': 'changeWebNewsRoom',
+      'change .change-emails-news-room': 'changeEmailsNewsRoom',
+      'click .emails-label': 'navigateToEmails',
+      'click .web-label': 'navigateToWeb'
     },
 
-    changeNewsRoom: function(event) {
-      var analyticsPageView = new Analytics.AnalyticsPage({
+    changeWebNewsRoom: function(event) {
+      var webAnalyticsPageView = new Analytics.WebAnalyticsPage({
         collection: new Robin.Collections.NewsRooms()
       });
       
-      this.analyticsRegion.show(analyticsPageView);
-      analyticsPageView.renderAnalytics($(event.target).val());
-      // this.renderAnalytics($(event.target).val());
+      this.webAnalyticsRegion.show(webAnalyticsPageView);
+      webAnalyticsPageView.renderAnalytics($(event.target).val());
     },
 
+    changeEmailsNewsRoom: function(event) {
+      var $this = this;
+      var emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
+        collection: new Robin.Collections.NewsRooms()
+      });
+      
+      $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
+      emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val());
+
+      var collectionEmails = new Robin.Collections.EmailAnalytics()
+      collectionEmails.fetch({
+        url: '/news_rooms/' + $(event.target).val() +'/email_analytics',
+
+        success: function(collection, data, response){
+          var collection = new Robin.Collections.EmailAnalytics(data.authors);
+          var collection_dropped = new Robin.Collections.EmailAnalytics(data.authors_dropped);
+          var emailListView = new Analytics.EmailsListCompositeView({
+            collection: collection
+          });
+          var emailDroppedListView = new Analytics.EmailsDroppedListCompositeView({
+            collection: collection_dropped
+          });
+          $this.emailsListRegion.show(emailListView);
+          $this.emailsDroppedListRegion.show(emailDroppedListView);
+        }
+      })
+    },
+
+    navigateToEmails: function(){
+      Backbone.history.navigate('analytics-email', {trigger:true});
+    },
+
+    navigateToWeb: function(){
+      Backbone.history.navigate('analytics', {trigger:true});
+    }
+
   });
-  
 
 });

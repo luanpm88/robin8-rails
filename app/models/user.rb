@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :features,:through => :user_features
 
   has_many :media_lists, dependent: :destroy
+  has_many :contacts, through: :media_lists
   has_many :pitches
   has_many :pitches_contacts, through: :pitches
   # has_many :user_add_ons, dependent: :destroy
@@ -232,7 +233,7 @@ class User < ActiveRecord::Base
 
   def twitter_post(message, identity_id=nil)
     identity = identity_id.nil? ? twitter_identity : Identity.find(identity_id)
-    
+
     unless identity.blank?
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = Rails.application.secrets.twitter[:api_key]

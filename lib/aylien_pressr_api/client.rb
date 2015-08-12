@@ -88,6 +88,12 @@ module AylienPressrApi
       Connection.new(endpoint, params, config).request!
     end
     
+    def uniq_stories!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params, 
+        Configuration::ENDPOINTS[:uniq_stories])
+      Connection.new(endpoint, params, config).request!
+    end
+    
     def interesting_terms!(value=nil, params={})
       endpoint, params, config = common_endpoint(value, params, 
         Configuration::ENDPOINTS[:interesting_terms])
@@ -168,6 +174,14 @@ module AylienPressrApi
       end
     end
     
+    def uniq_stories(value=nil, params={})
+      begin
+        uniq_stories!(value, params)
+      rescue => e
+        nil
+      end
+    end
+    
     def interesting_terms(value=nil, params={})
       begin
         interesting_terms!(value, params)
@@ -183,7 +197,8 @@ module AylienPressrApi
     end
 
     def common_endpoint(value, params, endpoint)
-      params = value
+      params = value.blank? ? {} : value
+      
       config = {}
       Configuration::VALID_CONFIG_KEYS.each do |key|
         config[key] = send(key)
@@ -228,6 +243,15 @@ module AylienPressrApi
           params["blog_ids[]"] = params.delete("blog_ids") if params.key?("blog_ids")
           params["facet_fields[]"] = params.delete("facet_fields") if params.key?("facet_fields")
           params["group_fields[]"] = params.delete("group_fields") if params.key?("group_fields")
+          params["iptc_categories[]"] = params.delete("iptc_categories") if params.key?("iptc_categories")
+          params["iptc_categories_level_1[]"] = params.delete("iptc_categories_level_1") if params.key?("iptc_categories_level_1")
+          params["iptc_categories_level_2[]"] = params.delete("iptc_categories_level_2") if params.key?("iptc_categories_level_2")
+          params["iptc_categories_level_3[]"] = params.delete("iptc_categories_level_3") if params.key?("iptc_categories_level_3")
+          params["keywords[]"] = params.delete("keywords") if params.key?("keywords")
+          params["topics[]"] = params.delete("topics") if params.key?("topics")
+        when Configuration::ENDPOINTS[:uniq_stories]
+          params["author_ids[]"] = params.delete("author_ids") if params.key?("author_ids")
+          params["blog_ids[]"] = params.delete("blog_ids") if params.key?("blog_ids")
           params["iptc_categories[]"] = params.delete("iptc_categories") if params.key?("iptc_categories")
           params["iptc_categories_level_1[]"] = params.delete("iptc_categories_level_1") if params.key?("iptc_categories_level_1")
           params["iptc_categories_level_2[]"] = params.delete("iptc_categories_level_2") if params.key?("iptc_categories_level_2")
