@@ -17,6 +17,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     events: {
       'change .change-web-news-room': 'changeWebNewsRoom',
       'change .change-emails-news-room': 'changeEmailsNewsRoom',
+      'click #apply-date': 'changeDateRange',
       'click .emails-label': 'navigateToEmails',
       'click .web-label': 'navigateToWeb',
       'click .wechat-label': 'navigateToWeChatReport',
@@ -31,6 +32,15 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
       this.webAnalyticsRegion.show(webAnalyticsPageView);
       webAnalyticsPageView.renderAnalytics($(event.target).val());
+    },
+
+    changeDateRange: function(event) {
+      var webAnalyticsPageView = new Analytics.WebAnalyticsPage({
+        collection: new Robin.Collections.NewsRooms()
+      });
+
+      this.webAnalyticsRegion.show(webAnalyticsPageView);
+      webAnalyticsPageView.renderAnalytics();
     },
 
     changeEmailsNewsRoom: function(event) {

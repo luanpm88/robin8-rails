@@ -23,6 +23,10 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
         }
       });
       module.layout.webAnalyticsRegion.show(webAnalyticsPageView);
+
+      $('#start-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', "-1w");
+      $('#end-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', new Date());
+
       webAnalyticsPageView.renderAnalytics();
     },
 

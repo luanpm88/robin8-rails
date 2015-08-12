@@ -55,11 +55,17 @@ class NewsRoomsController < ApplicationController
 
   def web_analytics
     @news_room = NewsRoom.find params[:news_room_id]
+
+    start_date = Date.parse params[:start_date]
+    end_date = Date.parse params[:end_date]
+    end_date <= DateTime.now ? end_date = end_date : end_date = DateTime.now
+    start_date <= end_date ? start_date = start_date : start_date = end_date
+
     sa = ServiceAccount.new
     sa.service_account_user
     results = GoogleAnalytics.results(sa.first_profile, {
-      start_date: (DateTime.now - 7.days),
-      end_date: DateTime.now }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
+      start_date: start_date,
+      end_date: end_date }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
     mail_results = results.for_medium('email')
 
     collection = results.collection
