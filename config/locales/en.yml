@@ -301,6 +301,7 @@ en:
       lname_error: Last name can't be blank
       location: Location
       location_error: Location can't be blank
+      mobile_number_error: Mobile Number can't be blank and must be less then 15 and greater then 5 characters
       password: Password
       password_error: Password must be greater then 7 characters
       title: Signup
@@ -1777,7 +1778,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -1803,7 +1804,7 @@ en:
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-    - 
+    -
     - January
     - February
     - March
