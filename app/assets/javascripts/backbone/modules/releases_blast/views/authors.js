@@ -463,7 +463,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     makeCsvData: function(order_column, order_direction){
       var self = this;
       var csvObject = [];
-      var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){ 
+      var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){
         return item.get('origin') === ReleasesBlast.originPressrContact
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
@@ -720,8 +720,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
-      
-      var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){ 
+
+      var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){
         return (item.get('origin') === ReleasesBlast.originPressrContact);
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});

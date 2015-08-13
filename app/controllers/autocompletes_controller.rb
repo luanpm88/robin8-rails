@@ -16,7 +16,7 @@ class AutocompletesController < ApplicationController
       format.json { render json: response }
     end
   end
-  
+
   def author_types
     response = @client.author_types_autocompletes params
     

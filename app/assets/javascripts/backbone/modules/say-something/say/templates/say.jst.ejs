@@ -4,7 +4,6 @@
     <i class="fa fa-facebook <%= Robin.identities.facebook.length == 0 ? 'gray' : '' %>"></i>
     <i class="fa fa-linkedin <%= Robin.identities.linkedin.length == 0 ? 'gray' : '' %>"></i>
     <i class="fa fa-weibo <%= Robin.identities.weibo.length == 0 ? 'gray' : '' %>"></i>
-    <i class="fa fa-wechat <%= Robin.identities.wechat.length == 0 ? 'gray' : '' %>"></i>
     <input id='text-field' type="text" class="form-control" placeholder="<%= polyglot.t("say_something_box.say_placeholder") %>"/>
   </div>
 </form>
@@ -20,7 +19,6 @@
         </label>
       </div>
     </div>
-    <div class="col-xs-4 social-networks" style="width: 34%; padding-left: 14px;">
       <a class="btn twitter <%= Robin.identities.twitter.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="<%= polyglot.t("say_something_box.post_to_tw") %>"><i class="fa fa-twitter"></i></a>
       <input type='hidden' value='false' name="twitter" />
       <a class="btn facebook <%= Robin.identities.facebook.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="<%= polyglot.t("say_something_box.post_to_fb") %>"><i class="fa fa-facebook"></i></a>
@@ -29,8 +27,6 @@
       <input type='hidden' value='false' name="linkedin" />
       <a class="btn weibo <%= Robin.identities.weibo.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="<%= polyglot.t("say_something_box.post_to_wb") %>"><i class="fa fa-weibo"></i></a>
       <input type='hidden' value='false' name="weibo" />
-      <a class="btn wechat <%= Robin.identities.wechat.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="<%= polyglot.t("say_something_box.post_to_wch") %>"><i class="fa fa-wechat"></i></a>
-      <input type='hidden' value='false' name="wechat" />
     </div>
     <div class="col-xs-6" >
       <!-- <a id='submitPost' class="btn btn-success pull-right btn-sm" style="margin-left: 6px;">Post</a> -->
@@ -83,16 +79,6 @@
       <div class="col-lg-8" >
         <select class="form-control select-identities" name="weibo_ids" multiple="multiple" size="2" >
           <% _.each(Robin.identities.weibo, function(item){ %>
-            <option value="<%= item.id %>"> <%= item.name %> </option>
-          <% }); %>
-        </select>
-      </div>
-    </div>
-    <div id="wechat-identities" class="hidden" style="min-height: 69px;">
-      <label class="col-lg-4 control-label"><%= polyglot.t("say_something_box.wch_accounts") %>:</label>
-      <div class="col-lg-8" >
-        <select class="form-control select-identities" name="wechat_ids" multiple="multiple" size="2" >
-          <% _.each(Robin.identities.wechat, function(item){ %>
             <option value="<%= item.id %>"> <%= item.name %> </option>
           <% }); %>
         </select>

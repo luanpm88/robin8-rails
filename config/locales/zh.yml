@@ -510,7 +510,7 @@ zh:
     social:
       scheduled_posts: 已计划发布的
       social_profiles: 社交资料
-      posts: 
+      posts:
         title: 查看已计划发布的
         description1: 以下是你已计划发布到社交网络的信息。如果你想计划新的发布信息，请点击主界面Robin8标志旁边的“说点什么”
         description2: 如果你要删除已经计划的发布，直接点击该页面中的“X”
@@ -552,7 +552,7 @@ zh:
         website_tab:
           title: 网址
           make_private: 仅对自己可见
-        basic_tab: 
+        basic_tab:
           title: 基本信息
           newsroom: 内容库
           release_title: 文章标题
@@ -586,7 +586,7 @@ zh:
           start_date: Start date
           accesswire: Accesswire
           newswire: 美通社
-        buttons: 
+        buttons:
           next: 下一步
           save: 保存草稿
           delete: 删除文章
@@ -618,7 +618,7 @@ zh:
       confirm_new_password: 确认新密码
       messages:
         required_email: 需要邮箱地址
-      buttons: 
+      buttons:
         save: 保存修改
         cancel: 取消
     newsrooms:

@@ -81,6 +81,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           self.model.clear({silent: true});
           self.model.get('media_contacts').add(self.collection.models);
           self.ui.mediaListNameInput.trigger('change');
+
           $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
           },{
             type: 'success'
@@ -504,6 +505,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             data: { release_id: self.draftPitchModel.get('release_id') },
             processData: true
           });
+
           $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
           },{
             type: 'success'
