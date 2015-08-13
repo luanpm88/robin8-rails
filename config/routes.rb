@@ -109,6 +109,7 @@ Rails.application.routes.draw do
       get 'skills'
       get 'iptc_categories'
       get 'category'
+      get 'author_types'
     end
   end
 

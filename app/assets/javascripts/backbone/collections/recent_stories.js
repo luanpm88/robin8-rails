@@ -10,12 +10,19 @@ Robin.Collections.RecentStories = Backbone.Collection.extend({
     return response.stories;
   },
   fetchStories: function(options){
+    var params = {
+      "author_ids[]": this.author_id,
+      per_page: 3
+    };
+    
+    if (Robin.currentUser.get('locale') == 'zh'){
+      params.type = "weibo";
+      params.published_at = "[* TO *]";
+    }
+    
     this.fetch({
       url: this.url,
-      data: {
-        "author_ids[]": this.author_id,
-        per_page: 3
-      },
+      data: params,
       success: options.success
     });
   }

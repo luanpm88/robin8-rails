@@ -33,6 +33,7 @@ module AylienPressrApi
       authors: 'authors',
       locations_autocompletes: 'autocompletes/locations',
       skills_autocompletes: 'autocompletes/skills',
+      author_types_autocompletes: 'autocompletes/author_types',
       stories: 'stories',
       uniq_stories: 'uniq_stories',
       interesting_terms: 'interesting_terms'

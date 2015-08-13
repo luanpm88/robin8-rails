@@ -1,29 +1,31 @@
 <div class="panel-heading">
   <h1 class="panel-title">
     <i class="fa fa-search"></i><strong> <%= polyglot.t("smart_release.targets_step.search_tab.search_authors.title") %></strong>
-    <div class="pull-right">
-      <input type="checkbox" name="switch-find" checked />
-    </div>
+    <% if (Robin.currentUser.get('locale') != 'zh') { %>
+      <div class="pull-right">
+        <input type="checkbox" name="switch-find" checked />
+      </div>
+    <% } %>
   </h1>
 </div>
 <div class="panel-body">
   <form role="form" class="form" id="find-authors">
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_authors.keywords") %></label>
-      <input type="text" name="keywords" autocomplete="off" placeholder="Enter keywords" class="typeahead form-control">
+      <input type="text" name="keywords" autocomplete="off" placeholder="<%= polyglot.t("smart_release.targets_step.search_tab.search_authors.enter_keywords") %>" class="typeahead form-control">
     </div>
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_authors.name") %></label>
-      <input type="text" name="contact_name" autocomplete="off" placeholder="Contact's first and last name" class="typeahead form-control">
+      <input type="text" name="contact_name" autocomplete="off" placeholder="<%= polyglot.t("smart_release.targets_step.search_tab.search_authors.contact_names") %>" class="typeahead form-control">
     </div>
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_authors.outlet") %></label>
-      <input type="text" name="outlet" autocomplete="off" placeholder="Outlet website or blog name" class="typeahead form-control">
+      <input type="text" name="outlet" autocomplete="off" placeholder="<%= polyglot.t("smart_release.targets_step.search_tab.search_authors.outlet_names") %>" class="typeahead form-control">
     </div>
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_authors.location") %></label>
       <input type="text" name="location" autocomplete="off" 
-        placeholder="City or State/Province or Country" class="typeahead form-control">
+        placeholder="<%= polyglot.t("smart_release.targets_step.search_tab.search_authors.city_country") %>" class="typeahead form-control">
     </div>
     <button class="btn btn-success pull-right btn-small" type="submit" id="social-search"><%= polyglot.t("smart_release.targets_step.search_tab.search") %></button>
   </form>
@@ -32,12 +34,12 @@
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.show") %></label>
       <input type="text" autocomplete="off" name="topics" 
-        id="topic-input" placeholder="Topic" class="form-control">
+        id="topic-input" placeholder="<%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.topic_placeholder") %>" class="form-control">
     </div>
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.from") %></label>
       <input type="text" name="location" autocomplete="off" 
-        id="location-input" placeholder="Location" class="form-control">
+        id="location-input" placeholder="<%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.location_placeholder") %>" class="form-control">
     </div>
     
     <label><strong> <%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.who") %></strong></label>

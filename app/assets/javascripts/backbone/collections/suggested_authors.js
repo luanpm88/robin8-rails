@@ -14,10 +14,19 @@ Robin.Collections.SuggestedAuthors = Backbone.Collection.extend({
       included_email: true
     };
     
-    if (this.releaseModel.get('location')){
+    if (Robin.currentUser.get('locale') == 'zh'){
+      params.type = "weibo";
+      params.published_at = "[* TO *]";
+      delete params["iptc_categories[]"];
+    }
+    
+    if (!s.isBlank(this.releaseModel.get('location'))){
       params['location'] = this.releaseModel.get('location');
       params['blog_location'] = this.releaseModel.get('location');
     }
+    
+    if (!s.isBlank(this.releaseModel.get('author_type_id')))
+      params['author_type_ids[]'] = this.releaseModel.get('author_type_id');
     
     this.fetch({
       url: this.url,

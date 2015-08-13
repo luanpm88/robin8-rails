@@ -1,9 +1,9 @@
 <div class="nav fixed">
   <nav class="top-bar" data-topbar role="navigation">
     <ul class="title-area">
-      <li><a class="logo" href="/">Robin8</a></li>
+      <li><a class="logo" href="/"><%= @l.t('header.title') %></a></a></li>
       <li class="toggle-topbar menu-icon">
-        <a href="#"><span>Menu</span></a>
+        <a href="#"><span><%= @l.t('header.menu') %></span></a>
       </li>
     </ul>
     <section class="top-bar-section">
@@ -19,7 +19,7 @@
           <%end%>
           <li><%=link_to "Logout", destroy_user_session_path, :method => :delete%></li>
         <%else%>
-          <li><a href="/signin">Log In</a></li>
+          <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
         <%end%>
       </ul>
     </section>

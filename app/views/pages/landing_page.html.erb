@@ -2,16 +2,16 @@
   <div class="nav fixed">
     <nav class="top-bar" data-topbar role="navigation">
       <ul class="title-area">
-        <li><a class="logo" href="/">Robin8</a></li>
+        <li><a class="logo" href="/"><%= @l.t('header.title') %></a></li>
         <li class="toggle-topbar menu-icon">
-          <a href="#"><span>Menu</span></a>
+          <a href="#"><span><%= @l.t('header.menu') %></span></a>
         </li>
       </ul>
       <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
           <li><a href="http://try.robin8.com/robin/" target="_blank">Contact Us</a></li>
-          <li><a href="/signin">Log In</a></li>
+          <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
         </ul>
       </section>
     </nav>
@@ -19,25 +19,25 @@
   <div class="row">
     <div class="large-12 columns">
       <h1 class="logo" style="margin-top: 194px;">
-        <a href="/">Robin8</a>
+        <a href="/"><%= @l.t('header.title') %></a>
       </h1>
-      <h2>Next generation social and content marketing platform powered by artificial intelligence</h2>
+      <h2><%= @l.t('landing_page.title') %></h2>
       <a class="button button-signup" href="http://try.robin8.com/robin/">Contact Us</a>
       <% if request.location && request.location.country.to_s == "China" %>
-        <p class="kols">Are you a KOL? Sign up <a href="/kols/new">here.</a>
+        <p class="kols"><%= @l.t('landing_page.kol_signup') %> <a href="/kols/new"><%= @l.t('landing_page.here') %></a>
       <% else %>
-        <p class="kols">Are you an Influencer? Sign up <a href="/kols/new">here.</a>
+        <p class="kols"><%= @l.t('landing_page.inf_signup') %> <a href="/kols/new"><%= @l.t('landing_page.here') %></a>
       <% end %>
     </div>
   </div>
-  <a class="learn-more">Learn More</a>
+  <a class="learn-more"><%= @l.t('landing_page.learn_more') %></a>
 </header>
 
 <div class="screenpane">
   <div class="row">
 
     <div class="small-12 medium-5 large-6  columns left">
-      <h2>ROBIN8 makes reaching out to reporters and influencers effortless and effective.</h2>
+      <h2><%= @l.t('landing_page.text1') %></h2>
       <p>We're changing the face of PR with technology that's been years in the making. Predict the success of every pitch you make to a reporter or influencer by knowing with confidence they will share your content. It's simply intelligent.</p>
       <p><a class="button button-signup" href="http://try.robin8.com/robin/">Contact Us</a></p>
     </div>
@@ -52,8 +52,8 @@
 <div class="prsteps">
   <div class="row ">
     <div class="small-12 columns">
-      <h2>Take the guesswork out of social and content marketing</h2>
-      <p>ROBIN8 is constantly tracking and analyzing data from the billions of articles that are released every day to create the ultimate curated database of influencers. By understanding the nuances behind every influencer and their interests, we can help make PR a simple four step process every time. </p>
+      <h2><%= @l.t('landing_page.text3') %></h2>
+      <p><%= @l.t('landing_page.text4') %> </p>
     </div>
   </div>
   <div class="row ">
@@ -64,8 +64,8 @@
         </div>
       </div>
       <div class="pr-content">
-        <h3>Upload</h3>
-        <p>Upload your press release or content and watch it get analyzed in seconds.</p>
+        <h3><%= @l.t('landing_page.upload') %></h3>
+        <p><%= @l.t('landing_page.upload_text') %></p>
       </div>
     </div>
     <div class="medium-3 columns pr-types">
@@ -75,8 +75,8 @@
         </div>
       </div>
       <div class="pr-content">
-        <h3>Target</h3>
-        <p>Select from the list of influencers Robin8 intelligently recommends in one click.</p>
+        <h3><%= @l.t('landing_page.target') %></h3>
+        <p><%= @l.t('landing_page.target_text') %></p>
       </div>
     </div>
     <div class="medium-3 columns pr-types">
@@ -86,8 +86,8 @@
         </div>
       </div>
       <div class="pr-content">
-        <h3>Track</h3>
-        <p>Track your results through our robust analytic dashboard and use our media intelligence to keep abreast of the latest news.</p>
+        <h3><%= @l.t('landing_page.track') %></h3>
+        <p><%= @l.t('landing_page.track_text') %></p>
       </div>
     </div>
     <div class="medium-3 columns pr-types">
@@ -97,8 +97,8 @@
         </div>
       </div>
       <div class="pr-content">
-        <h3>Recommend</h3>
-        <p>Influencers are curated and content is personalized to you. The Robin8 recommendation engine gets smarter every time you use it.</p>
+        <h3><%= @l.t('landing_page.recommend') %></h3>
+        <p><%= @l.t('landing_page.recommend_text') %></p>
       </div>
     </div>
   </div>
@@ -111,13 +111,13 @@
 <div class="whatwedo">
   <div class="row">
     <div class="large-12 columns">
-      <h2>What can ROBIN8 do for you?</h2>
+      <h2><%= @l.t('landing_page.text5') %></h2>
       <p><span class="icon-img-wrap left">
-      <%= image_tag 'icon-time.png', class: 'icon-left' %></span> Spend less time doing database and research work and instead focus your efforts on actual pitches, contacts, planning, and content creation.</p>
+      <%= image_tag 'icon-time.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text6') %></p>
       <p><span class="icon-img-wrap left">
-      <%= image_tag 'icon-machine.png', class: 'icon-left' %></span> Uses algorithms and machine-learning technology to adapt PR recommendations and content personalized to you.</p>
+      <%= image_tag 'icon-machine.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text7') %></p>
       <p><span class="icon-img-wrap left">
-      <%= image_tag 'icon-return.png', class: 'icon-left' %></span> Achieve a higher return on your marketing spend thanks to better earned media results.</p>
+      <%= image_tag 'icon-return.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text8') %></p>
 
     </div>
   </div>
@@ -128,12 +128,12 @@
 <div class="ft-lead">
   <div class="row">
     <div class="large-12 columns">
-      <h2>Ready to see the world acording to ROBIN8?</h2>
+      <h2><%= @l.t('landing_page.text9') %></h2>
       <a class="button button-signup" href="http://try.robin8.com/robin/">Contact Us</a>
       <% if request.location && request.location.country.to_s == "China" %>
-        <p class="kols">Are you a KOL? Sign up <a href="/kols/new">here.</a>
+        <p class="kols"><%= @l.t('landing_page.kol_signup') %> <a href="/kols/new"><%= @l.t('landing_page.here') %></a>
       <% else %>
-        <p class="kols">Are you an Influencer? Sign up <a href="/kols/new">here.</a>
+        <p class="kols"><%= @l.t('landing_page.inf_signup') %> <a href="/kols/new"><%= @l.t('landing_page.here') %></a>
       <% end %>
     </div>
   </div>
@@ -144,8 +144,14 @@
     <div class="small-12 medium-3 columns ft-logo right">
       <%= image_tag 'ROBIN8-logo.png' %>
     </div>
-    <div class="small-12 medium-9 columns left">
-      &copy;2015 Robin8 Inc. All rights reserved. <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy">About</a> <a href="/team" class="ft-link privacy">Team</a> <a href="/contact" class="ft-link privacy">Contact</a> <a  href="/terms" class="ft-link privacy">Privacy &amp; Terms</a>
+    <div class="small-12 medium-12 columns left">
+      &copy;<%= @l.t('footer.right_reserved') %> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/terms" class="ft-link privacy"><%= @l.t('footer.privacy_and_terms') %> </a>
+      <%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
+        <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: 'Switch to Chinese locale' %>
+      <% end %>
+      <%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
+        <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: 'Switch to Chinese locale' %>
+      <% end %>
     </div>
   </div>
 </footer>

@@ -3,15 +3,15 @@
   <div class="col-xs-12">
     <div class="row">
       <div class="col-md-6">
-        <h4 class="billing-title">Payment</h4>
+        <h4 class="billing-title"><%= polyglot.t("billing.payment_title") %></h4>
         <table class="billing-data-table">
           <thead>
             <tr>
               <th>#</th>
-              <th>Created at</th>
-              <th>Card last four</th>
-              <th>Card type</th>
-              <th>Amount</th>
+              <th><%= polyglot.t("billing.created_at") %></th>
+              <th><%= polyglot.t("billing.card_last") %></th>
+              <th><%= polyglot.t("billing.card_type") %></th>
+              <th><%= polyglot.t("billing.amount") %></th>
             </tr>
           </thead>
           <tbody>
@@ -28,14 +28,14 @@
           </tbody>
         </table>
         <br>
-        <h4 class="billing-title">Add-ons</h4>
+        <h4 class="billing-title"><%= polyglot.t("billing.addons_title") %></h4>
         <table class="billing-data-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th><%= polyglot.t("billing.name") %></th>
+              <th><%= polyglot.t("billing.price") %></th>
+              <th><%= polyglot.t("billing.status") %></th>
+              <th><%= polyglot.t("billing.action") %></th>
             </tr>
           </thead>
           <tbody>
@@ -44,7 +44,7 @@
               <td><%= item.product.name %></td>
               <td><%= item.product.price %></td>
               <td><%= item.status %></td>
-              <td ><a class="<%= item.status == 'C' ? 'hidden' : ''%> cancel-addon">Cancel</a></td>
+              <td ><a class="<%= item.status == 'C' ? 'hidden' : ''%> cancel-addon"><%= polyglot.t("billing.cancel_action") %></a></td>
             </tr>
           <% }); %>
           </tbody>
@@ -52,41 +52,41 @@
       </div>
       <div class="col-md-5 col-lg-4">
         <div class="billing-current-plan">
-          <h4 class="billing-title">Current Pricing Plan</h4>
+          <h4 class="billing-title"><%= polyglot.t("billing.current_plan") %></h4>
             <% if (currentPlan != undefined) {%>
             <div class="subscription-type active" id="plantype-ultra" data-plan="ultra" data-equalizer-watch="">
               <h2><%= currentPlan.name %></h2>
               <div class="price-bubble">
                 <div class="price-amount">
-                  $<%= currentPlan.properties.price %><span class="permonth">/mo</span>
-                  <em>billed annually or<br>$<%= currentPlan.properties.annually_price %> month-to-month </em>
+                  $<%= currentPlan.properties.price %><span class="permonth"><%= polyglot.t("billing.per_month") %></span>
+                  <em><%= polyglot.t("billing.annually") %><br>$<%= currentPlan.properties.annually_price %> <%= polyglot.t("billing.month") %> </em>
                 </div>
               </div>
               <div class="plan-inclusions">
                 <ul>
-                  <li><strong><%= currentPlan.properties.seat %></strong> <span>Seat</span></li>
-                  <li><strong><%= currentPlan.properties.newsroom %></strong> <span>Newsroom</span></li>
-                  <li><strong><%= currentPlan.properties.press_release %></strong> <span>Press Release Postings on Robin8/month</span></li>
-                  <li><strong><%= currentPlan.properties.smart_release %></strong> <span>SmartReleases</span></li>
-                  <li><strong><%= currentPlan.properties.media_list %></strong> <span>Personal Media Lists</span></li>
-                  <li><strong><%= currentPlan.properties.streams %></strong> <span>Streams for Media Monitoring</span></li>
+                  <li><strong><%= currentPlan.properties.seat %></strong> <span><%= polyglot.t("billing.seat") %></span></li>
+                  <li><strong><%= currentPlan.properties.newsroom %></strong> <span><%= polyglot.t("billing.newsroom") %></span></li>
+                  <li><strong><%= currentPlan.properties.press_release %></strong> <span><%= polyglot.t("billing.press_release") %></span></li>
+                  <li><strong><%= currentPlan.properties.smart_release %></strong> <span><%= polyglot.t("billing.smart_release") %></span></li>
+                  <li><strong><%= currentPlan.properties.media_list %></strong> <span><%= polyglot.t("billing.personal_lists") %></span></li>
+                  <li><strong><%= currentPlan.properties.streams %></strong> <span><%= polyglot.t("billing.streams") %></span></li>
                 </ul>
               </div>
             </div>
             <% } %>
           <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
-            <a href="/pricing" class="btn btn-success">Change plan</a>
+            <a href="/pricing" class="btn btn-success"><%= polyglot.t("billing.buttons.change") %></a>
           <% } else {%>
-            <a href="/pricing" class="btn btn-success">Subscribe to new plan</a>
+            <a href="/pricing" class="btn btn-success"><%= polyglot.t("billing.buttons.new_plan") %></a>
           <% } %>
-          <a href="/add-ons" class="btn btn-success">Add ons</a>
-          <a href="/change_card_info" class="btn btn-success">Update payment details</a>
+          <a href="/add-ons" class="btn btn-success"><%= polyglot.t("billing.buttons.addons") %></a>
+          <a href="/change_card_info" class="btn btn-success"><%= polyglot.t("billing.buttons.update") %></a>
           <a href="/change_campaign_card_info" class="btn btn-success">Campaign payment details</a>
           <!-- <input type="button" value="Checkout" class="btn btn-success"> -->
           <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
-            <input type="button" id="cancel-subscription" value="Cancel Subscription" class="btn btn-danger user-list--delete">
+            <input type="button" id="cancel-subscription" value="<%= polyglot.t("billing.buttons.cancel") %>" class="btn btn-danger user-list--delete">
           <% } else {%>
-            <div><span class='canceled'> Your current plan is canceled </span></div>
+            <div><span class='canceled'> <%= polyglot.t("billing.plan_is_canceled") %> </span></div>
           <% } %>
         </div>
       </div>

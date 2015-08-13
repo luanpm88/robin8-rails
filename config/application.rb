@@ -30,6 +30,7 @@ module Robin8
     config.autoload_paths += %W(#{config.root}/lib)
 
     config.action_dispatch.perform_deep_munge = false
+    # config.I18n.available_locales = ['en', 'zh']
   end
   require Rails.root.to_s + '/lib/blue_snap.rb'
 end

@@ -17,6 +17,14 @@ class AutocompletesController < ApplicationController
     end
   end
 
+  def author_types
+    response = @client.author_types_autocompletes params
+    
+    respond_to do |format|
+      format.json { render json: response }
+    end
+  end
+  
   def iptc_categories
     @iptc_categories = if term_param
       IptcCategory.select(:id, :label, :level, :parent)

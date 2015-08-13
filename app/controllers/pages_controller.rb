@@ -3,21 +3,6 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   before_action :set_video,:only => :home
 
-  before_action :set_translations,:only => [:home, :pricing]
-
-  def set_translations
-    unless current_user.blank? and current_kol.blank?
-      someone = current_user
-      someone = current_kol if current_user.nil?
-      locale = someone.locale.nil? ? 'en' : someone.locale
-
-      translations = I18n.backend.send(:translations)
-      @phrases = translations[locale.to_sym][:application]
-    else
-
-    end
-  end
-
   def set_locale
     unless params[:locale].blank?
       someone = current_user
@@ -71,7 +56,7 @@ class PagesController < ApplicationController
   def contact
     if request.post?
       UserMailer.contact_support(params[:user]).deliver if params[:user].present?
-      flash.now[:success] = "Thank you for contacting us. Someone from our team will contact you shortly"
+      flash.now[:success] = @l.t('contact_page.thank_you')
     end
 
     render :layout => "website"

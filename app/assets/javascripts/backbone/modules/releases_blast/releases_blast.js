@@ -11,6 +11,12 @@ Robin.module("ReleasesBlast", function(ReleasesBlast, Robin, Backbone, Marionett
     
     this.router = new this.Router({controller: this.controller});
     
+    // This is the ugliest way it is javascript 
+    this.originPressrContact = "pressr"
+    if (Robin.currentUser.get('locale') == 'zh'){
+      this.originPressrContact = "pressr_weibo"
+    }
+    
     $('#nav-robin8').parent().addClass('active');
     Backbone.history.loadUrl(Backbone.history.fragment);
   });

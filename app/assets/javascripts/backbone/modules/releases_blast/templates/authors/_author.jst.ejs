@@ -1,15 +1,33 @@
+<% if(author.level_of_interest == undefined){ %>
+  <td><%= author.index + 1 %></td>
+<% } %>
 <td>
   <div class="media targets-author">
-    <a href="#" class="media-left">
-      <img alt="<%= author.full_name %>" 
-        src="<%= author.avatar_url %>" />
-    </a>
+    <% if (Robin.currentUser.get('locale') == 'zh') { %>
+      <a class="media-left" href="http://www.weibo.com/<%= author.profile_url %>" 
+        target="_blank">
+        <img alt="<%= author.full_name %>" 
+          src="<%= author.avatar_url %>" height="50" width="50" />
+        <% if (author.verified) { %>
+          <% if(author.level_of_interest == undefined){ %>
+            <i class="fa fa-check authors-search-verified" title="Verfied"></i>
+          <% } else { %>
+            <i class="fa fa-check verified" title="Verfied"></i>
+          <% } %>
+        <% } %>
+      </a>
+    <% } else { %>
+      <a href="#" class="media-left">
+        <img alt="<%= author.full_name %>" 
+          src="<%= author.avatar_url %>" />
+      </a>
+    <% } %>
     <div class="media-body">
       <h4 class="media-heading">
         <%= author.full_name %>
       </h4>
       <a class="btn btn-xs btn-primary inspect" href="#">
-        <i class="fa fa-search"></i> Inspect
+        <i class="fa fa-search"></i> <%= polyglot.t("smart_release.targets_step.influencers_tab.buttons.inspect") %>
       </a>
     </div>
   </div>
@@ -35,6 +53,12 @@
         <%= author.level_of_interest %>%
     </div>
   </div>
+</td>
+<% } %>
+
+<% if (Robin.currentUser.get('locale') == 'zh') { %>
+<td>
+  <%= s.numberFormat(parseInt(author.followers_count)) %>
 </td>
 <% } %>
 

@@ -2,7 +2,7 @@
 <div class="signup pricing">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Select Pricing Plan"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('pricing.select_plan.title')}%>
 
   </header>
   <div class="form-step">
@@ -10,13 +10,13 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="tab-nav">
-            <a class="button button-signuptype active" id="selected-businesses">Businesses</a>
-            <a class="button button-signuptype" id="selected-agencies">Agencies</a>
-            <p class="selection-intro business-plans">Empower your business with Robin8.  <br />Take the guesswork out of social and content marketing and get better results.</p>
-            <p class="selection-intro agency-plans">Exceed the demands of your clients with ease using Robin8's revolutionary intelligence engine.  <br />Take the guesswork out of social and content marketing and get better results.</p>
+            <a class="button button-signuptype active" id="selected-businesses"><%= @l.t('pricing.select_plan.businesses_button') %></a>
+            <a class="button button-signuptype" id="selected-agencies"><%= @l.t('pricing.select_plan.agencies_button') %></a>
+            <p class="selection-intro business-plans"><%= @l.t('pricing.select_plan.empower').html_safe %></p>
+            <p class="selection-intro agency-plans"><%= @l.t('pricing.select_plan.exceed').html_safe %></p>
           </div>
 
-          <p class="selection-intro-heading">Subscription Plans</p>
+          <p class="selection-intro-heading"><%= @l.t('pricing.select_plan.plans') %></p>
         </div>
       </div>
       <div class="row business-plans" id="business-plans" data-equalizer>
@@ -25,17 +25,17 @@
             <h2><%= @products[0].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[1].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@products[0].price).to_i%> month-to-month </em>
+                $<%=(@products[1].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
+                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[0].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span>Seat</span></li>
-                <li><strong>1</strong> <span>Newsroom</span></li>
-                <li><strong>5</strong> <span>Press Releases/month</span></li>
-                <li><strong>3</strong> <span>SmartReleases</span></li>
-                <li><strong>3</strong> <span> Streams for Media Monitoring</span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
+                <li><strong>3</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>3</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
                 <!--<li><strong></strong> <span></span></li>-->
                 <!--<li><strong></strong> <span></span></li>-->
                 <li><strong></strong> <span></span></li>
@@ -43,7 +43,7 @@
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" data-select-text='Current' onclick="setPackage('<%=@products[1].slug%>');" onclick="setPackage('<%=@products[1].slug%>');" <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" data-select-text='Current' onclick="setPackage('<%=@products[1].slug%>');" onclick="setPackage('<%=@products[1].slug%>');" <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -52,22 +52,22 @@
             <h2><%= @products[2].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[3].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@products[2].price).to_i%> month-to-month </em>
+                $<%=(@products[3].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
+                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[2].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span>Seat</span></li>
-                <li><strong>1</strong> <span>Newsroom</span></li>
-                <li><strong>10</strong> <span>Press Releases/month</span></li>
-                <li><strong>5</strong> <span>SmartReleases</span></li>
-                <li><strong>1</strong> <span>Personal Media Lists</span></li>
-                <li><strong>5</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[3].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -76,22 +76,22 @@
             <h2><%= @products[4].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[5].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@products[4].price).to_i%> month-to-month </em>
+                $<%=(@products[5].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
+                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[4].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span>Seat</span></li>
-                <li><strong>1</strong> <span>Newsroom</span></li>
-                <li><strong>30</strong> <span>Press Releases/month</span></li>
-                <li><strong>15</strong> <span>SmartReleases</span></li>
-                <li><strong>20</strong> <span>Personal Media Lists</span></li>
-                <li><strong>25</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>30</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
+                <li><strong>15</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>20</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>25</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[5].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -104,22 +104,22 @@
             <h2><%= @products[6].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[7].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@products[6].price).to_i%> month-to-month </em>
+                $<%=(@products[7].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
+                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[6].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span>Seat</span></li>
-                <li><strong>5</strong> <span>Newsrooms</span></li>
-                <li><strong>30</strong> <span>Press Release Postings on Robin8/month</span></li>
-                <li><strong>15</strong> <span>SmartReleases</span></li>
-                <li><strong>3</strong> <span>Personal Media Lists</span></li>
-                <li><strong>5</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>30</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
+                <li><strong>15</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>3</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="pro" <%if user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" onclick="setPackage('<%=@products[7].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector"  onclick="setPackage('<%=@products[7].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="pro" <%if user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" onclick="setPackage('<%=@products[7].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector"  onclick="setPackage('<%=@products[7].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  PRO_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -128,22 +128,22 @@
             <h2><%= @products[8].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[9].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@products[8].price).to_i%> month-to-month </em>
+                $<%=(@products[9].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
+                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[8].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span>Seat</span></li>
-                <li><strong>20</strong> <span>Newsroom</span></li>
-                <li><strong>75</strong> <span>Press Release Postings on Robin8/month</span></li>
-                <li><strong>45</strong> <span>SmartReleases</span></li>
-                <li><strong>5</strong> <span>Personal Media Lists</span></li>
-                <li><strong>10</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
+                <li><strong>20</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>75</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
+                <li><strong>45</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="premium" <%if user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="premium" <%if user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[9].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  PREMIUM_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -152,22 +152,22 @@
             <h2><%= @products[10].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[11].price/12).to_i %><span class="permonth">/mo</span>
-                <em>billed annually or<br />$<%=(@products[10].price).to_i%> month-to-month </em>
+                $<%=(@products[11].price/12).to_i %><span class="permonth">/<%= @l.t('pricing.select_plan.per_month') %></span>
+                <em><%= @l.t('pricing.select_plan.annually') %><br />$<%=(@products[10].price).to_i%> <%= @l.t('pricing.select_plan.month_to_month') %> </em>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>1</strong> <span>Seat</span></li>
-                <li><strong>100</strong> <span>Newsroom</span></li>
-                <li><strong>400</strong> <span>Press Release Postings on Robin8/month</span></li>
-                <li><strong>200</strong> <span>SmartReleases</span></li>
-                <li><strong>10</strong> <span>Personal Media Lists</span></li>
-                <li><strong>25</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
+                <li><strong>100</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>400</strong> <span><%= @l.t('pricing.select_plan.press_release') %></span></li>
+                <li><strong>200</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>25</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-plan="ultra" <%if user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-plan="ultra" <%if user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" data-select-text='Current' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[11].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ULTRA_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -176,7 +176,7 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="submit-wrap">
-            <input type="button" onclick="checkout();" value="Continue" class="button button-signup nextstep" id="planselect-button">
+            <input type="button" onclick="checkout();" value="<%= @l.t('pricing.select_plan.continue') %>" class="button button-signup nextstep" id="planselect-button">
           </div>
         </div>
       </div>
@@ -188,7 +188,7 @@
   <div class="signup-footer">
     <div class="row">
       <div class="small-12 columns">
-        <h3>Service Details</h3>
+        <h3><%= @l.t('pricing.service_details') %></h3>
       </div>
     </div>
     <div class="row">
@@ -199,8 +199,8 @@
             <!--<img src="img/icon-seat.png" />-->
           </div>
           <div class="details-right">
-            <h4>Seat</h4>
-            <p>Extra seat allows you to add another user to your account.</p>
+            <h4><%= @l.t('pricing.seat') %></h4>
+            <p><%= @l.t('pricing.seat_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -209,8 +209,8 @@
             <!--<img src="img/icon-newsroom.png" />-->
           </div>
           <div class="details-right">
-            <h4>Newsroom</h4>
-            <p>Extra newsroom allows you add an extra newsroom on your account. A newsroom is a branded online profile where you can add your logo, releases, videos and images. </p>
+            <h4><%= @l.t('pricing.newsroom') %></h4>
+            <p><%= @l.t('pricing.newsroom_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -219,8 +219,8 @@
             <!--<img src="img/icon-pressrelease.png" />-->
           </div>
           <div class="details-right">
-            <h4>Press Release on Robin8</h4>
-            <p>Post your release on Robin8 website. Get found on the web and share on social media outlets. </p>
+            <h4><%= @l.t('pricing.press_release') %></h4>
+            <p><%= @l.t('pricing.press_release_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -229,8 +229,8 @@
             <!--<img src="img/icon-smartrelease.png" />-->
           </div>
           <div class="details-right">
-            <h4>SmartRelease Distribution</h4>
-            <p>SmartRelease uses Robin8's proprietary predictive intelligence engine to recommend the 100 reporters and top social influencers most interested to cover your news. SmartRelease identifies these top reporters and influencers with 1 click. </p>
+            <h4><%= @l.t('pricing.smart_release') %></h4>
+            <p><%= @l.t('pricing.smart_release_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -239,8 +239,8 @@
             <!--<img src="img/icon-mediamonitoring.png" />-->
           </div>
           <div class="details-right">
-            <h4>Media Monitoring Streams</h4>
-            <p>Media Monitoring allows you to monitor online a specific brand or updates in an industry so you can listen and keep abreast on the latest news and updates. All updates are in real time.</p>
+            <h4><%= @l.t('pricing.monitoring_stream') %></h4>
+            <p><%= @l.t('pricing.monitoring_stream_description') %></p>
           </div>
         </div><!-- end service-item -->
 
@@ -252,8 +252,8 @@
             <!--<img src="img/icon-personalmedia.png" />-->
           </div>
           <div class="details-right">
-            <h4>Personal Media Lists</h4>
-            <p>Upload your personal media list to Robin8 so you can manage and access it anytime</p>
+            <h4><%= @l.t('pricing.media_list') %></h4>
+            <p><%= @l.t('pricing.media_list_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -262,8 +262,8 @@
             <!--<img src="img/icon-prnewswire.png" />-->
           </div>
           <div class="details-right">
-            <h4>PR Newswire Distribution</h4>
-            <p>Distribute to more than 1,600 w​ebsites including Yahoo Finance​. You can also ​add an image to your message and drive even more traffic to your news. Distribution comes with a detailed, analytic report. </p>
+            <h4><%= @l.t('pricing.newswire') %></h4>
+            <p><%= @l.t('pricing.newswire_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -272,8 +272,8 @@
             <!--<img src="img/icon-myprgenieweb.png" />-->
           </div>
           <div class="details-right">
-            <h4>FinancialContent Web Distribution</h4>
-            <p>FinancialContent web distribution guarantees you placement on hundreds of top news websites including Boston Globe and Miami Herald. Each distribution comes with a report showing a sampling of the sites that posted your release.</p>
+            <h4><%= @l.t('pricing.web_distribution') %></h4>
+            <p><%= @l.t('pricing.web_distribution_description') %></p>
           </div>
         </div><!-- end service-item -->
         <div class="service-item">
@@ -281,8 +281,8 @@
             <%= image_tag("img/icon-accesswire.png")%>
           </div>
           <div class="details-right">
-            <h4>Accesswire Distribution</h4>
-            <p>Distribute to thousands of websites including Yahoo Finance, investor networks and calendars​. You can also add an image to your message and drive even more buzz to your news. Distribution comes with a real-time, analytic report.​</p>
+            <h4><%= @l.t('pricing.accesswire_distribution') %></h4>
+            <p><%= @l.t('pricing.accesswire_distribution_description') %></p>
           </div>
         </div>
 

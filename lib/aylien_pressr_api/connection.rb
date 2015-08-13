@@ -54,6 +54,7 @@ module AylienPressrApi
 
     def compile_request_params
       if @config[:method] == :post
+        @uri.query = URI.encode_www_form({type: @params["type"]}) if @params["type"]
         request = Net::HTTP::Post.new(@uri.request_uri)
         request.set_form_data(@params)
       elsif @config[:method] == :get

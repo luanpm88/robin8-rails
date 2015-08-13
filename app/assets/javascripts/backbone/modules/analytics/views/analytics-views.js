@@ -34,7 +34,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 zoomType: 'xy',
               },
               title: {
-                text: 'Newsroom and Releases Visits'
+                text: polyglot.t("analytics.visits")
               },
               xAxis: [{
                 categories: dates
@@ -47,14 +47,14 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 }
               },
               title: {
-                text: 'Page Views',
+                text: polyglot.t("analytics.page_views"),
                 style: {
                   color: Highcharts.getOptions().colors[1]
                 }
               }
             }, { // Secondary yAxis
               title: {
-                text: 'Newsroom Views',
+                text: polyglot.t("analytics.newsrooms_views"),
                   style: {
                     color: Highcharts.getOptions().colors[0]
                   }
@@ -81,12 +81,12 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Newsroom Views',
+                name: polyglot.t("analytics.newsrooms_views"),
                 type: 'column',
                 yAxis: 1,
                 data: sessions
               }, {
-                name: 'Page Views',
+                name: polyglot.t("analytics.page_views"),
                 type: 'column',
                 data: pageViews,
               }]

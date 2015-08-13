@@ -161,13 +161,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     addAuthor: function() {
       var current_model = this.pitchContactsCollection.findWhere({
         author_id: this.model.get('id'),
-        origin: 'pressr'
+        origin: ReleasesBlast.originPressrContact
       });
 
       if (current_model == null) {
         var model = new Robin.Models.Contact({
           author_id: this.model.get('id'),
-          origin: 'pressr',
+          origin: ReleasesBlast.originPressrContact,
           first_name: this.model.get('first_name'),
           last_name: this.model.get('last_name'),
           email: this.model.get('email'),
@@ -179,7 +179,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     removeAuthor: function() {
       var model = this.pitchContactsCollection.findWhere({
         author_id: this.model.get('id'),
-        origin: 'pressr'
+        origin: ReleasesBlast.originPressrContact
       });
       this.pitchContactsCollection.remove(model);
     },
@@ -355,7 +355,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       _.each(self.collection.models, function(model){
         var models = self.pitchContactsCollection.where({
           author_id: model.get('id'),
-          origin: 'pressr'
+          origin: ReleasesBlast.originPressrContact
         });
 
         _.each(models, function(item){
@@ -368,13 +368,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       _.each(self.collection.models, function(model){
         var current_model = self.pitchContactsCollection.findWhere({
           author_id: model.get('id'),
-          origin: 'pressr'
+          origin: ReleasesBlast.originPressrContact
         });
 
         if (current_model == null) {
           var model = new Robin.Models.Contact({
             author_id: model.get('id'),
-            origin: 'pressr',
+            origin: ReleasesBlast.originPressrContact,
             first_name: model.get('first_name'),
             last_name: model.get('last_name'),
             email: model.get('email'),
@@ -386,7 +386,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initDataTable: function(){
       var self = this;
-      var table = this.$el.find('table').DataTable({
+      var options = {
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -394,6 +394,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "pageLength": 25,
         "bAutoWidth" :false,
         "columns": [
+          null,
           { "width": "30%" },
           null,
           null,
@@ -404,7 +405,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           "aButtons": [
             {
               "sExtends": "text",
-              "sButtonText": "Export as CSV",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.export"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 // var order = table.order();
@@ -427,7 +428,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             },
             {
               "sExtends": "text",
-              "sButtonText": "Select all",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.add_all"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.addAllContactsToPitch();
@@ -435,7 +436,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             },
             {
               "sExtends": "text",
-              "sButtonText": "Remove all",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.remove_all"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.removeAllContactsFromPitch();
@@ -443,13 +444,27 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             }
           ]
         }
-      });
+      };
+      
+      if (Robin.currentUser.get('locale') == 'zh'){
+        options["columns"] = [
+          null,
+          { "width": "30%" },
+          null,
+          null,
+          null,
+          null
+        ];
+        options["ordering"] = true;
+      }
+      
+      var table = this.$el.find('table').DataTable(options);
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
       var csvObject = [];
       var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){
-        return item.get('origin') === 'pressr'
+        return item.get('origin') === ReleasesBlast.originPressrContact
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
@@ -492,23 +507,74 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     ui: {
       refinement: "#refinement",
-      locationInput: "#refinement input[type=text]",
+      locationInput: "#refinement input[name=location]",
+      authorTypeInput: "#refinement input[name=author_type]",
       refineButton: "#refinement button"
     },
     events: {
       "click @ui.refineButton": "refineButtonClicked"
     },
+    initSelect2: function(){
+      this.ui.authorTypeInput.select2({
+        placeholder: "Author type",
+        multiple: false,
+        formatInputTooShort: function (input, min) {
+          var n = min - input.length; 
+          return polyglot.t("select2.too_short", { count: n }); 
+        },
+        formatNoMatches: function () { return polyglot.t("select2.not_found"); },
+        formatSearching: function () { return polyglot.t("select2.searching"); },
+        formatResult: function (object, container, query) {
+          return object.text;
+        },
+        formatSelection: function (object, container) {
+          return object.text;
+        },
+        id: function (object) {
+          return object.id;
+        },
+        ajax: {
+          url: "/autocompletes/author_types",
+          dataType: "JSON",
+          data: function (term, page) {
+            var params = {
+              term: term
+            };
+            
+            if (Robin.currentUser.get('locale') == 'zh'){
+              params.type = "weibo";
+            }
+            
+            return params;
+          },
+          results: function (data, page) {
+            return {
+              results: _(data.author_types).map(function (item) {
+                return { id: item['id'], text: item['name'] };
+              })
+            }
+          }
+        },
+        minimumInputLength: 1,
+        createSearchChoice: function () { return null }
+      });
+    },
     refineButtonClicked: function(e){
       e.preventDefault();
 
       var location = this.ui.locationInput.val();
-      if (s.isBlank(location)){
-        $.growl({message: "Location can't be blank!"
+      var author_type_id = this.ui.authorTypeInput.select2('val');
+      
+      if (s.isBlank(location) && s.isBlank(author_type_id)){
+        $.growl({
+          message: "Location or Author type should be present, both can't be blank."
         },{
           type: 'danger'
         });
       } else {
         this.releaseModel.set('location', location);
+        this.releaseModel.set('author_type_id', author_type_id);
+        
         Robin.commands.execute("reloadTargetsTab");
       }
     },
@@ -517,6 +583,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     onShow: function(){
       this.initGeoAutocomplete();
+      this.initSelect2();
     },
     initGeoAutocomplete: function(){
       this.ui.locationInput.geocomplete();
@@ -536,7 +603,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       _.each(self.collection.models, function(model){
         var models = self.pitchContactsCollection.where({
           author_id: model.get('id'),
-          origin: 'pressr'
+          origin: ReleasesBlast.originPressrContact
         });
 
         _.each(models, function(item){
@@ -549,13 +616,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       _.each(self.collection.models, function(model){
         var current_model = self.pitchContactsCollection.findWhere({
           author_id: model.get('id'),
-          origin: 'pressr'
+          origin: ReleasesBlast.originPressrContact
         });
 
         if (current_model == null) {
           var model = new Robin.Models.Contact({
             author_id: model.get('id'),
-            origin: 'pressr',
+            origin: ReleasesBlast.originPressrContact,
             first_name: model.get('first_name'),
             last_name: model.get('last_name'),
             email: model.get('email'),
@@ -567,7 +634,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initDataTable: function(){
       var self = this;
-      var table = this.$el.find('table').DataTable({
+      
+      var options = {
         "info": false,
         "searching": false,
         "lengthChange": false,
@@ -586,7 +654,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           "aButtons": [
             {
               "sExtends": "text",
-              "sButtonText": "Advanced",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.advanced"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.ui.refinement.toggle();
@@ -594,7 +662,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             },
             {
               "sExtends": "text",
-              "sButtonText": "Export as CSV",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.export"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 // var order = table.order();
@@ -617,7 +685,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             },
             {
               "sExtends": "text",
-              "sButtonText": "Select all",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.add_all"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.addAllContactsToPitch();
@@ -625,7 +693,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             },
             {
               "sExtends": "text",
-              "sButtonText": "Remove all",
+              "sButtonText": polyglot.t("smart_release.targets_step.influencers_tab.buttons.remove_all"),
               "bFooter": false,
               "fnClick": function ( nButton, oConfig, oFlash ) {
                 self.removeAllContactsFromPitch();
@@ -633,13 +701,28 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             }
           ]
         }
-      });
+      };
+      
+      if (Robin.currentUser.get('locale') == 'zh'){
+        options["columns"] = [
+          { "width": "30%" },
+          null,
+          null,
+          null,
+          null,
+          null
+        ];
+        options["ordering"] = true;
+        options["order"] = [[ 2, 'desc' ]];
+      }
+      
+      var table = this.$el.find('table').DataTable(options);
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
 
       var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){
-        return (item.get('origin') === 'pressr');
+        return (item.get('origin') === ReleasesBlast.originPressrContact);
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){

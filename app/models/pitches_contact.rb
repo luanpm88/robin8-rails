@@ -21,7 +21,7 @@ class PitchesContact < ActiveRecord::Base
   def render_pitch
     link = self.pitch.release.permalink
     
-    if [0, 2].include? self.contact.origin # pressr or media_list
+    if [0, 2, 3].include? self.contact.origin # pressr or pressr_weibo or media_list
       first_name = self.contact.first_name
       last_name = self.contact.last_name
       outlet = self.contact.outlet
@@ -54,7 +54,7 @@ class PitchesContact < ActiveRecord::Base
       pitch_text.gsub!('@[Link]', link)
       pitch_text
     else
-      raise "Contact origin is not between [0, 1, 2]"
+      raise "Contact origin is not between [0, 1, 2, 3]"
     end
   end
 end

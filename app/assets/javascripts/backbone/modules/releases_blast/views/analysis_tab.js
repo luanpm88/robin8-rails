@@ -16,6 +16,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initialize: function(options){
       this.model.set('location', null);
+      this.model.set('author_type_id', null);
       this.on("textapi_result:ready", this.render);
       this.getTextApiResult();
       this.textapiResult = {};
@@ -101,6 +102,43 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         }
       });
     },
+    makeBosonCategoriesEditable: function(){
+      var data = [
+        { id: "0", text: "体育"},
+        { id: "1", text: "教育"},
+        { id: "2", text: "财经"},
+        { id: "3", text: "社会"},
+        { id: "4", text: "娱乐"},
+        { id: "5", text: "军事"},
+        { id: "6", text: "国内"},
+        { id: "7", text: "科技"},
+        { id: "8", text: "互联网"},
+        { id: "9", text: "房产"},
+        { id: "10", text: "国际"},
+        { id: "11", text: "女人"},
+        { id: "12", text: "汽车"},
+        { id: "13", text: "游戏"}
+      ];
+      
+      var self = this;
+      
+      this.ui.iptcCategoryLink.editable({
+        name: 'boson_categories',
+        source: data,
+        select2: {
+          placeholder: 'Select a category',
+          allowClear: true,
+          createSearchChoice: function () { return null },
+          initSelection: function (element, callback) {
+            var found_element = _.findWhere(data, { text: element.val()});
+            callback(found_element);
+          } 
+        },
+        success: function(response, newValue) {
+          self.model.set('boson_categories', [newValue]);
+        }
+      });
+    },
     makeTopicsEditable: function(){
       var self = this;
       
@@ -148,7 +186,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     },
     onRender: function () {
-      this.makeIptcCategoriesEditable();
+      if (Robin.currentUser.get('locale') == 'zh')
+        this.makeBosonCategoriesEditable();
+      else
+        this.makeIptcCategoriesEditable();
+        
       this.makeTopicsEditable();
       this.initSummariesEditable();
       this.initTooltip();
@@ -207,15 +249,21 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
       
       _.each(endpoints, function(endpoint){
+        var params = {
+          title: that.model.get('title'), 
+          text: that.model.get('plain_text'),
+          sentences_number: 10,
+        };
+        
+        if (endpoint == 'textapi/classify' && Robin.currentUser.get('locale') == 'zh'){
+          params.type = "weibo";
+        }
+    
         $.ajax({
           url: endpoint,
           dataType: 'json',
           method: 'POST',
-          data: {
-            title: that.model.get('title'), 
-            text: that.model.get('plain_text'),
-            sentences_number: 10
-          },
+          data: params,
           success: function(response){
             switch(endpoint) {
               case 'textapi/concepts':
@@ -279,9 +327,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
                   
-                  var iptc_categories = _.chain(response).pluck('code')
-                    .uniq().value();
-                  that.model.set('iptc_categories', iptc_categories);
+                var categories = _.chain(response).pluck('code').uniq().value();
+                if (Robin.currentUser.get('locale') == 'zh') {
+                  that.model.set('boson_categories', categories);
+                } else {
+                  that.model.set('iptc_categories', categories);
+                }
                   
                   resultReady();
                 } else {

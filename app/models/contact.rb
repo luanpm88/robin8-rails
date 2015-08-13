@@ -2,7 +2,8 @@ class Contact < ActiveRecord::Base
   ORIGIN_TYPES = {
     0 => :pressr,
     1 => :twtrland,
-    2 => :media_list
+    2 => :media_list,
+    3 => :pressr_weibo
   }
   
   has_many :media_lists_contacts
@@ -17,6 +18,8 @@ class Contact < ActiveRecord::Base
     conditions: -> { where(origin: 1) }, allow_nil: true
   validates_uniqueness_of :email, scope: :origin, 
     conditions: -> { where(origin: 2) }, allow_nil: true
+  validates_uniqueness_of :author_id, scope: :origin, 
+    conditions: -> { where(origin: 3) }, allow_nil: true
   
   def self.bulk_find_or_create(contacts_param)
     contacts_param.map do |contact|
@@ -38,6 +41,14 @@ class Contact < ActiveRecord::Base
         end
       when 'media_list'
         self.find(contact['contact_id'])
+      when 'pressr_weibo'
+        self.find_or_create_by!(author_id: contact['author_id']) do |c|
+          c.first_name = contact['first_name']
+          c.last_name = contact['last_name']
+          c.email = contact['email']
+          c.outlet = contact['outlet']
+          c.origin = 3
+        end
       else
         nil
       end

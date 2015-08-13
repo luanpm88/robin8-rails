@@ -8,7 +8,7 @@ Robin.Models.ReleaseCharacteristics = Backbone.Model.extend({
     "numberOfCharacters":           0,
     "numberOfParagraphs":           0,
     "numberOfAdjectives":           0,
-    "readabilityScoreTitle":        "Too Short",
+    "readabilityScoreTitle":        'Too s',//polyglot.t("releases.modal.basic_tab.characteristics_view.too_short"),
     "numberOfNonSpaceCharacters":   0
   },
   titleToProgressBarLevel: {
@@ -20,18 +20,18 @@ Robin.Models.ReleaseCharacteristics = Backbone.Model.extend({
   },
   getReadabilityScoreTitle: function() {
     if(this.get("numberOfWords") <= 3) {
-      return 'Too short';
+      return polyglot.t("releases.modal.basic_tab.characteristics_view.too_short");
     }
   
     var iari = this.getReadabilityScore();
     if (iari <= 5) {
-      return 'Bad';
+      return polyglot.t("releases.modal.basic_tab.characteristics_view.bad");
     } else if (iari <= 10) {
-      return 'Ok';
+      return polyglot.t("releases.modal.basic_tab.characteristics_view.ok");
     } else if (iari <= 15) {
-      return 'Good';
+      return polyglot.t("releases.modal.basic_tab.characteristics_view.good");
     } else {
-      return 'Excellent';
+      return polyglot.t("releases.modal.basic_tab.characteristics_view.excellent");
     }
   },
   getReadabilityScore: function() {

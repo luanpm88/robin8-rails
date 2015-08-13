@@ -64,7 +64,8 @@ class RobinApiController < ApplicationController
   end
   
   def author_stats
-    response = @client.author_stats id: params[:id]
+    type = params[:type] || 'default'
+    response = @client.author_stats id: params[:id], type: type
     
     render json: response
   end
@@ -130,7 +131,10 @@ class RobinApiController < ApplicationController
           blog_names: [value[:blog_name]],
           avatar_url: value[:avatar_url],
           score: value[:score],
-          index: index
+          index: index,
+          followers_count: value[:followers_count],
+          verified: value[:verified],
+          profile_url: value[:profile_url]
         }
         
         memo[value[:email]] = new_author
