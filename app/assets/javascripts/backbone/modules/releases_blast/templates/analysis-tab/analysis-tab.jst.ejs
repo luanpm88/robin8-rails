@@ -7,7 +7,7 @@
 
   <p>
     <i style="color: #A0D468;" class="fa fa-check"></i> <%= polyglot.t("smart_release.analysis_step.is_about", {name: release.title }) %> <strong class="editable-parent">
-    "<a data-type="select2" data-value="<%= textapiResult['classify'] %>" data-title="Select a category" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> 
+    "<a data-type="select2" data-value="<%= textapiResult['classify'] %>" data-title="Select a category" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong class="editable-parent"><a data-type="select2" id="release-topics" data-title="Select topics" href="#" class="editable editable-click"><%= textapiResult["concepts"] %></a></strong>.</p>
     <% if (textapiResult["concepts"] && textapiResult["concepts"].length > 0) { %>
       <%= polyglot.t("smart_release.analysis_step.topics") %>: <strong class="editable-parent"><a data-type="select2" id="release-topics" data-title="Select topics" href="#" class="editable editable-click"><%= textapiResult["concepts"] %></a></strong>
     <% } %>    
@@ -15,7 +15,7 @@
   </p>
 
   <% if (!s.isBlank(textapiResult["summarize"])) { %>
-    <p><i style="color: #A0D468;" class="fa fa-check"></i> <%= polyglot.t("smart_release.analysis_step.summary", {name: release.title }) %> :</p>
+    <p><i style="color: #A0D468;" class="fa fa-check"></i> Here's a summary of what <strong>"<%= release.title %>"</strong> is all about:</p>
 
     <ul id="summaries" style="margin-left: 38px; margin-bottom: 10px;">
       <% _.each(textapiResult["summarize"], function(item, index){ %>

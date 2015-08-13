@@ -233,6 +233,10 @@
           <div class="row formdisclaimers">
             <div class="small-12 columns">
               <p><strong><%= @l.t 'payment_page.note.first_part'%> </strong><br /> <%= @l.t 'payment_page.note.second_part'%> <a href="terms.html"><%= @l.t 'payment_page.note.third_part'%></a> <%= @l.t 'payment_page.note.fourth_part'%> <br /><%= @l.t 'payment_page.note.fifth_part'%></p>
+                <% if current_user.active_subscription.present? %>
+                  Satisfaction guaranteed or your money back (within 30 days).
+                <% end %>
+              <br />All prices in US Dollars.</p>
               <%if @product.present?%>
                   <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @product.try(:interval).to_i.days %></span></p>
               <%end%>
