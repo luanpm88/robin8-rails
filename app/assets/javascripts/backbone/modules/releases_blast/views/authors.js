@@ -535,9 +535,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           url: "/autocompletes/author_types",
           dataType: "JSON",
           data: function (term, page) {
-            return {
+            var params = {
               term: term
             };
+            
+            if (Robin.currentUser.get('locale') == 'zh'){
+              params.type = "weibo";
+            }
+            
+            return params;
           },
           results: function (data, page) {
             return {
