@@ -108,7 +108,6 @@ class User < ActiveRecord::Base
   end
 
   def can_create_prnewswire
-    p prnewswire_available_count
     prnewswire_available_count.nil? ? false : prnewswire_available_count >= 1
   end
 ##########################################################################################################
@@ -217,6 +216,18 @@ class User < ActiveRecord::Base
     AddOn.where(id: add_ons_products.map(&:product_id)) if add_ons_products.present?
   end
 
+  def current_active_add_ons
+    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
+
+    if add_ons_products.present?
+      user_addons_features = user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
+      user_addons_features.map(&:product)
+    else
+      []
+    end
+
+  end
+
   def recurring_add_ons
     user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
   end
@@ -274,7 +285,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
+    super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons, :current_active_add_ons])
   end
 
   def full_name
@@ -312,22 +323,18 @@ class User < ActiveRecord::Base
     end
 
     def decrease_feature_number
-      if !is_primary
-        af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-        uf = af.nil? ? needed_user.user_features.seat.available.first : af
-        return false if uf.blank?
-        uf.available_count -= 1
-        uf.save
-      end
+      af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? needed_user.user_features.seat.available.used.first : af
+      return false if uf.blank?
+      uf.available_count -= 1
+      uf.save
     end
 
     def increase_feature_number
-      if !is_primary
-        af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-        uf = af.nil? ? needed_user.user_features.seat.used.first : af
-        return false if uf.blank?
-        uf.available_count += 1
-        uf.save
-      end
+      af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? needed_user.user_features.seat.first : af
+      return false if uf.blank?
+      uf.available_count += 1
+      uf.save
     end
 end
