@@ -14,6 +14,7 @@ class Kol < ActiveRecord::Base
   has_many :articles
   has_many :wechat_article_performances, as: :sender
   has_many :article_comments, as: :sender
+  has_many :kol_profile_screens
 
   include Models::Identities
   extend Models::Oauth
@@ -35,6 +36,12 @@ class Kol < ActiveRecord::Base
   def categories
     iptc_categories.reload.map do |c|
       { :id => c.id, :label => c.label }
+    end
+  end
+
+  def screens
+    kol_profile_screens.reload.map do |c|
+      { :id => c.id, :url => c.url, :thumbnail => c.thumbnail, :social_name => c.social_name }
     end
   end
 

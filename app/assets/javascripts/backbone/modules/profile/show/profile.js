@@ -2,6 +2,11 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.ProfilePage = Backbone.Marionette.LayoutView.extend({
     getTemplate: Robin.template('modules/profile/show/templates/profile'),
 
+    regions: {
+      social_profiles: "#social-profiles",
+      backend_screen: "#backend_screen"
+    },
+
     events: {
       'click #saveChanges': 'updateProfile'
     },
@@ -24,6 +29,16 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         checkboxClass: 'icheckbox_square-blue',
         increaseArea: '20%'
       });
+      if (Robin.KOL) {
+        var currentView = this;
+        $.get( "/users/get_identities", function( data ) {
+          App.identities = data;
+          var viewProfiles = new App.Social.Show.SocialProfiles({collection: new Robin.Collections.Identities(data)});
+          currentView.getRegion('social_profiles').show(viewProfiles);
+        });
+        var backendScreens = new Show.BackendScreens({model: this.model});
+        currentView.getRegion('backend_screen').show(backendScreens);
+      }
     },
 
     onShow: function() {
@@ -216,7 +231,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       currentAttributes = this.model.attributes;
       emailChanged = (initialAttributes.email != currentAttributes.email);
       formChanged = (JSON.stringify(initialAttributes) != JSON.stringify(currentAttributes));
-      if ((formChanged || Robin.KOL) && this.form.data('formValidation').isValid()) {
+      if ((formChanged || Robin.KOL) && this.$el.find("#profileForm").data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
         if (Robin.KOL) {
           this.model.set({"interests": $("#interests").val()});
@@ -264,7 +279,97 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         }
         this.form.data('formValidation').updateMessage(key, 'serverError', val)
       }, this);
-    }
+    },
+  });
+  Show.BackendScreens = Backbone.Marionette.ItemView.extend({
+    template: 'modules/profile/show/templates/profile_backend_screens',
 
+    events: {
+      'click #deleteAttach': 'deleteAttach'
+    },
+
+    initialize: function() {
+      this.model = this.options.model;
+    },
+
+    serializeData: function() {
+      return {
+        items: this.model.toJSON()
+      };
+    },
+
+    onRender: function() {
+      this.model = this.options.model;
+      setTimeout((function(_this) {
+        return function() {
+          _this.$el.find(".image-preview-multiple-plus .uploadcare-widget-button-open").text("").addClass("fa fa-plus-square");
+          _this.weiboFileWidget = uploadcare.MultipleWidget('[id=weiboScreen][role=uploadcare-uploader][data-multiple][data-photo]').onChange(function(fileGroup) {
+            if (fileGroup) {
+              return $.when.apply(null, fileGroup.files()).done(function() {
+                var arr, crop;
+                crop = '-/scale_crop/160x160/center/';
+                arr = _.clone(_this.model.get('screens') || []);
+                _.each(arguments, function(value, key) {
+                  if (!_.find(arr, function(item) {
+                    return item.url === value.cdnUrl;
+                  })) {
+                    return arr.push({
+                      url: value.cdnUrl,
+                      name: value.name,
+                      thumbnail: value.cdnUrl + crop,
+                      social_name: 'weiboScreenAccount'
+                    });
+                  }
+                }, _this);
+                _this.model.set('screens', arr);
+                _this.model.save();
+                return _this.weiboFileWidget.value(null);
+              });
+            }
+          }, 0);
+          _this.weChatFileWidget = uploadcare.MultipleWidget('[id=wechatScreen][role=uploadcare-uploader][data-multiple][data-photo]').onChange(function(fileGroup) {
+            if (fileGroup) {
+              return $.when.apply(null, fileGroup.files()).done(function() {
+                var arr, crop;
+                crop = '-/scale_crop/160x160/center/';
+                arr = _.clone(_this.model.get('screens') || []);
+                _.each(arguments, function(value, key) {
+                  if (!_.find(arr, function(item) {
+                    return item.url === value.cdnUrl;
+                  })) {
+                    return arr.push({
+                      url: value.cdnUrl,
+                      name: value.name,
+                      thumbnail: value.cdnUrl + crop,
+                      social_name: 'weChatScreenAccount'
+                    });
+                  }
+                }, _this);
+                _this.model.set('screens', arr);
+                _this.model.save();
+                return _this.weChatFileWidget.value(null);
+              });
+            }
+          }, 0);
+           _this.$el.find(".image-preview-multiple-plus .uploadcare-widget-button-open").text("").addClass("fa fa-plus-square");
+        };
+      })(this));
+      this.model.on('change', this.render, this);
+    },
+    deleteAttach: function(e) {
+      var arr = [];
+      if (this.model.get('screens') && this.model.get('screens').length){
+        arr = _.clone(this.model.get('screens'));
+      }
+      for(var i=0;i<arr.length;i++){
+        if(arr[i].thumbnail == e.currentTarget.previousElementSibling.currentSrc){
+          arr.splice(i, 1);
+          break;
+        }
+      }
+      this.model.unset('screens');
+      this.model.set('screens', arr);
+      this.model.save();
+    }
   });
 });

@@ -33,6 +33,10 @@ class KolsController < ApplicationController
     render :json => categories
   end
 
+  def get_attachments
+    render :json => Attachment.where(:imageable_id => current_kol.id)
+  end
+
   def current_categories
     categories = []
     if kol_signed_in?

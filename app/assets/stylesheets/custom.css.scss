@@ -255,6 +255,15 @@ span.canceled {
     }
   }
 }
+#social-profiles {
+  .no_accounts {
+    margin-bottom: 10px;
+  }
+}
+
+.social_profile {
+  margin: 50px 15px 15px -15px;
+}
 
 .btn-weibo {
   color:#fff;
@@ -515,21 +524,21 @@ span.social-networks {
 
 // CSS checkbox
 input[type=checkbox].css-checkbox {
-  position:absolute; 
-  z-index:-1000; 
-  left:-1000px; 
-  overflow: hidden; 
-  clip: rect(0 0 0 0); 
-  height:1px; 
-  width:1px; 
-  margin:-1px; 
-  padding:0; 
+  position:absolute;
+  z-index:-1000;
+  left:-1000px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height:1px;
+  width:1px;
+  margin:-1px;
+  padding:0;
   border:0;
 }
 
 input[type=checkbox].css-checkbox + label.css-label {
   padding-left:34px;
-  height:29px; 
+  height:29px;
   display:inline-block;
   line-height:29px;
   background-repeat:no-repeat;
@@ -553,3 +562,42 @@ label.css-label {
   user-select: none;
 }
 // END of CSS checkbox
+.backend_screen {
+  margin-bottom: 10px;
+  margin-top: -5px;
+  border-bottom: 1px solid #E6E9ED;
+  padding-bottom: 10px;
+  font-weight: bold;
+}
+.label_screen {
+  margin-left: -15px;
+  margin-right: 15px;
+}
+.comments-title ul > li {
+  float: left;
+  margin: 5px;
+  display: inline-block;
+}
+.comments-title {
+  margin-bottom: 90px;
+}
+.label_screen ul>li img {
+  height: 100px;
+  width: 100px;
+  border: 1px solid #ccc;
+}
+.label_screen ul > li div{
+  position: relative;
+}
+.label_screen ul>li div .delete{
+  color: #333;
+  position: absolute;
+  top: 0px;
+  right: 4px;
+  font-size: 16px;
+  display: none;
+  z-index: 2;
+}
+.label_screen ul > li div:hover .delete {
+  display: block;
+}
