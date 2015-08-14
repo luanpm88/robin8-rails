@@ -25,7 +25,7 @@ class Pitch < ActiveRecord::Base
   private
 
   def can_be_created
-    errors.add(:user, "you've reached the max numbers of smart releases.") if needed_user && !needed_user.can_create_smart_release
+    errors.add(:user, "you've reached the max numbers of smart content.") if needed_user && !needed_user.can_create_smart_release
   end
 
   def email_targets?

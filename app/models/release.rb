@@ -61,7 +61,7 @@ class Release < ActiveRecord::Base
   end
 
   def can_be_created
-    errors.add(:user, "you've reached the max numbers of releases.") if user && !user.can_create_release
+    errors.add(:user, "you've reached the max numbers of content.") if user && !user.can_create_release
   end
 
   def set_published_at

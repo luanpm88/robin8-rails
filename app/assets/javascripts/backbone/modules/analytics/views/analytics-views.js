@@ -30,7 +30,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 zoomType: 'xy',
               },
               title: {
-                text: 'Newsroom and Releases Visits'
+                text: 'Newsroom and Content Visits'
               },
               xAxis: [{
                 categories: dates

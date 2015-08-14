@@ -22,7 +22,7 @@ class PagesController < ApplicationController
   end
 
   def pricing
-    @products = Package.active
+    @products = Package.active.where "slug like 'new%'"
     render :layout => "website"
   end
 

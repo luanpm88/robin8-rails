@@ -14,6 +14,24 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
+    templateHelpers: {
+      count: function(c) {
+        if (c == 9999) {
+          return "<b>Unlimited</b>";
+        } else {
+          return "<strong>" + c + "</strong>";
+        }
+      },
+      priceClass: function(slug) {
+        var res = "price-amount";
+        if (s(slug).startsWith('new')) {
+          res = res + "-new";
+        }
+        return res;
+      },
+      p: function(s, c) { return _.pluralize(s, c); }
+    },
+
     onRender: function() {
     },
 

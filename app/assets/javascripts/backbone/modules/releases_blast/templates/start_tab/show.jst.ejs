@@ -1,17 +1,17 @@
 <div id="blast-home" class="tab-pane active" role="tabpanel">
-  <h5><i class="fa fa-rocket"></i> Welcome to SmartRelease</h5>
-  <p>SmartRelease helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign. </p>
+  <h5><i class="fa fa-rocket"></i> Welcome to SmartContent</h5>
+  <p>SmartContent helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign. </p>
   <br>
-  <div class="alert alert-danger" role="alert" style='display: none;'>You can't use smart release feature. Update your add ons.</div>
-  
+  <div class="alert alert-danger" role="alert" style='display: none;'>You can't use smart content feature. Update your add ons.</div>
+
   <form>
     <div class="form-group">
-      <label for="exampleInputFile">Select a release to start:</label>
+      <label for="exampleInputFile">Select a content to start:</label>
       <div class="ui-select">
         <select class="releases form-control loadinggif">
           <% if (Robin.user.get('can_create_release') != false) { %>
             <option value="-1">Select...</option>
-            <option id='option-new-release' value="-2">+ New Release</option>
+            <option id='option-new-release' value="-2">+ New Content</option>
           <% } else {%>
             <option value="-1">Select...</option>
           <% } %>
@@ -22,6 +22,6 @@
       </div>
     </div>
     <button disabled id="analyze" class="btn btn-primary pull-right" type="submit"><i class="fa fa-cogs"></i> Analyze</button>
-    <button style="display: none;" id="new-release" class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"></i> New Release</button>
+    <button style="display: none;" id="new-release" class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"></i> New Content</button>
   </form>
 </div>

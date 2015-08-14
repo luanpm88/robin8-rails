@@ -8,7 +8,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       Robin.user.fetch({
         success: function() {
           self.module.topMenuView.render();
-          self.module.topMenuView.$el.find(".badge-tooltip").tooltip({title: 'Available smart-releases count', trigger: 'hover', placement: 'right'});
+          self.module.topMenuView.$el.find(".badge-tooltip").tooltip({title: 'Available smart-content count', trigger: 'hover', placement: 'right'});
         }
       })
       this.module.selectedMediaListsCollection = new Robin.Collections.SelectedMediaLists();
@@ -20,22 +20,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         model: this.module.releasesBlastHeader
       });
       this.module.layout.topMenuRegion.show(this.module.topMenuView);
-      
+
       Robin.vent.on("search:authors:clicked", function(params) {
         self.searchAuthors(params);
       });
-      
+
       Robin.vent.on("search:influencers:clicked", function(params) {
         self.searchInfluencers(params);
       });
-      
-      
+
+
       Robin.vent.on("start:tab:clicked", function(params){
         if ([2, 3, 4].indexOf(self.module.releasesBlastHeader.get('level')) !== -1){
           self.module.trigger("stop", {restart: true});
         }
       });
-      
+
       Robin.vent.on("analysis:tab:clicked", function(params){
         if (self.module.pitchModel.get('sent') === false){
           if (self.module.releasesBlastHeader.get('level') === 1)
@@ -44,11 +44,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             self.analysis({releaseModel: self.module.releaseModel});
         }
       });
-      
+
       Robin.commands.setHandler("reloadTargetsTab", function(){
         self.targets();
       });
-      
+
       Robin.vent.on("targets:tab:clicked", function(params){
         if (self.module.pitchModel.get('sent') === false){
           if (self.module.releasesBlastHeader.get('level') === 4)
@@ -57,14 +57,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             Robin.commands.execute("goToTargetsTab");
         }
       });
-      
+
       Robin.vent.on("pitch:tab:clicked", function(params){
         if (self.module.pitchModel.get('sent') === false){
           if (self.module.releasesBlastHeader.get('level') === 3)
             Robin.commands.execute("goToPitchTab");
         }
       });
-      
+
       this.on('destroy', function(){
         Robin.vent.off("start:tab:clicked");
         Robin.vent.off("analysis:tab:clicked");
@@ -86,13 +86,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         this.module.releasesBlastHeader.set({ level: 1 });
         this.module.layout.tabContentRegion.show(startTabView);
       };
-      
+
     },
     analysis: function(params){
       this.module.releasesBlastHeader.set({ level: 2 });
 
       this.module.releaseModel = params.releaseModel;
-      
+
       var analysisTabView = new this.module.AnalysisTabView({
         model: this.module.releaseModel,
         reanalyze: params.reanalyze
@@ -107,12 +107,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         collection: this.module.pitchModel.get('contacts')
       });
       this.module.layout.tabContentRegion.show(targetsTabLayout);
-      
+
       // Loading view
       targetsTabLayout.blogsRegion.show(new Robin.Components.Loading.LoadingView());
       targetsTabLayout.socialRegion.show(new Robin.Components.Loading.LoadingView());
       // END Loading view
-      
+
       var suggestedAuthorsCollection = new Robin.Collections.SuggestedAuthors({
         releaseModel: this.module.releaseModel
       });
@@ -126,7 +126,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           targetsTabLayout.blogsRegion.show(blogTargetView);
         }
       });
-      
+
       var influencersCollection = new Robin.Collections.Influencers({
         releaseModel: this.module.releaseModel
       });
@@ -137,25 +137,25 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             pitchContactsCollection: self.module.pitchModel.get('contacts'),
             releaseModel: self.module.releaseModel
           });
-          
+
           targetsTabLayout.socialRegion.show(socialTargetsView);
         }
       });
-      
+
       // Load Search tab
       this.module.searchLayout = new ReleasesBlast.SearchLayout();
       targetsTabLayout.searchRegion.show(this.module.searchLayout);
-      
+
       var searchCriteriaView = new ReleasesBlast.SearchCriteriaView();
       this.module.searchLayout.searchCriteriaRegion.show(searchCriteriaView);
-      
+
       // Load Media List tab
       var mediaListCollection = new Robin.Collections.MediaLists();
-      
+
       mediaListCollection.fetch({reset: true});
       var mediaListLayout = new ReleasesBlast.MediaListLayout();
       targetsTabLayout.mediaListRegion.show(mediaListLayout);
-      
+
       var uploadMediaListView = new ReleasesBlast.UploadMediaListView({
         collection: mediaListCollection,
         pitchContactsCollection: self.module.pitchModel.get('contacts'),
@@ -165,7 +165,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         collection: this.module.selectedMediaListsCollection,
         pitchContactsCollection: self.module.pitchModel.get('contacts')
       });
-      
+
       mediaListLayout.selectedMediaListsRegion.show(selectedMediaListsView);
       mediaListLayout.uploadMediaListRegion.show(uploadMediaListView);
     },
@@ -182,12 +182,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var pressrContacts = this.module.pitchModel.get('contacts').getPressrContacts();
       var mediaListContacts = this.module.pitchModel.get('contacts').getMediaListContacts();
       var twtrlandContacts = this.module.pitchModel.get('contacts').getTwtrlandContacts();
-      
+
       var emailTargetsCollection = new Robin.Collections.EmailTargetsCollection(
         pressrContacts.concat(mediaListContacts)
       );
       var mediaList = new Robin.Models.MediaList();
-      
+
       var emailTargetsView = new ReleasesBlast.EmailTargetsView({
         collection: emailTargetsCollection,
         model: mediaList
@@ -214,7 +214,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         pitchTabView.emailTargets.show(emailTargetsView);
         pitchTabView.emailPitch.show(emailPitchView);
       }
-      
+
       if (twitterTargetsCollection.models.length > 0){
         pitchTabView.twitterTargets.show(twitterTargetsView);
         pitchTabView.twitterPitch.show(twitterPitchView);
@@ -224,13 +224,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     searchInfluencers: function(params){
       var self = this;
       var influencersCollection = new Robin.Collections.Influencers();
-      
+
       // Loading view
       this.module.searchLayout.searchResultRegion.show(
         new Robin.Components.Loading.LoadingView()
       );
       // END Loading view
-      
+
       influencersCollection.findInfluencers(params, {
         success: function(collection, data, response){
           var influencersCompositeView = new ReleasesBlast.SocialTargetsCompositeView({
@@ -238,22 +238,22 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             pitchContactsCollection: self.module.pitchModel.get('contacts'),
             releaseModel: self.module.releaseModel
           });
-          
+
           self.module.searchLayout.searchResultRegion.show(influencersCompositeView);
         }
       });
     },
-    
+
     searchAuthors: function(params){
       var self = this;
       var authorsCollection = new Robin.Collections.Authors();
-      
+
       // Loading view
       this.module.searchLayout.searchResultRegion.show(
         new Robin.Components.Loading.LoadingView()
       );
       // END Loading view
-      
+
       authorsCollection.fetchAuthors(params, {
         success: function(collection, data, response){
           var authorsCompositeView = new ReleasesBlast.AuthorsCompositeView({
@@ -261,7 +261,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             releaseModel: self.module.releaseModel,
             pitchContactsCollection: self.module.pitchModel.get('contacts')
           });
-          
+
           self.module.searchLayout.searchResultRegion.show(authorsCompositeView);
         }
       });

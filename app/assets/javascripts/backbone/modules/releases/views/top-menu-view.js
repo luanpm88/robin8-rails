@@ -494,7 +494,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       }
     },
     extractURL: function(e) {
-      var url = prompt("Enter a link to grab the press release from:", "");
+      var url = prompt("Enter a link to grab the content from:", "");
       var self = this;
       if (url) {
         $.ajax({
@@ -517,7 +517,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
             } else if (response.article.length > 60000) {
               swal({
                 title: "Provided release is too long",
-                text:"Target page contains a text that exceeds the release length limit. The maximum is 60.000 characters (including spaces)",
+                text:"Target page contains a text that exceeds the content length limit. The maximum is 60.000 characters (including spaces)",
                 type: "error",
                 showCancelButton: false,
                 confirmButtonClass: 'btn',
@@ -597,7 +597,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           news_room_id: {
             validators: {
               notEmpty: {
-                message: 'You should select a newsroom'
+                message: 'You should select a Brand Gallery'
               },
               serverError: {
                 message: 'something went wrong'
@@ -714,14 +714,14 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         var viewObj = this;
         this.modelBinder.copyViewValuesToModel();
         var iframe = document.getElementsByClassName("wysihtml5-sandbox");
-        if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
+        if ( $(iframe).contents().find('body').html() !== 'Paste your content here...' ) {
           this.model.set('text', $(iframe).contents().find('body').html());
         };
         this.form.data('formValidation').validate();
         var textLength = this.$el.find('iframe').contents().find('.wysihtml5-editor').html().length;
         if (textLength > 60000) {
           swal({
-            title: "Release text is too long!",
+            title: "Content text is too long!",
             text: "Relase text should not exceed 60.000 characters (including spaces and hidden HTML)",
             type: "error",
             showCancelButton: false,
@@ -760,14 +760,14 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var viewObj = this;
       this.modelBinder.copyViewValuesToModel();
       var iframe = document.getElementsByClassName("wysihtml5-sandbox");
-      if ( $(iframe).contents().find('body').html() !== 'Paste your press release here...' ) {
+      if ( $(iframe).contents().find('body').html() !== 'Paste your content here...' ) {
         this.model.set('text', $(iframe).contents().find('body').html());
       };
       this.form.data('formValidation').validate();
       var textLength = this.$el.find('iframe').contents().find('.wysihtml5-editor').html().length;
       if (textLength > 60000) {
         swal({
-          title: "Release text is too long!",
+          title: "Content text is too long!",
           text: "Relase text should not exceed 60.000 characters (including spaces and hidden HTML)",
           type: "error",
           showCancelButton: false,
@@ -850,7 +850,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       var viewObj = this;
       swal({
         title: "Remove this release?",
-        text: "You will not be able to recover this release.",
+        text: "You will not be able to recover this content.",
         type: "error",
         showCancelButton: true,
         confirmButtonClass: 'btn-danger',

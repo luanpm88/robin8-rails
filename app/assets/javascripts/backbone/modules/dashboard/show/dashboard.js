@@ -51,7 +51,7 @@ Robin.module('Dashboard.Show', function(Show, App, Backbone, Marionette, $, _){
 
     addNewsroom: function(){
       if (Robin.user.get('can_create_newsroom') != true) {
-        $.growl({message: "You don't have available newsrooms!"},
+        $.growl({message: "You don't have available brand galleries!"},
           {
             type: 'info'
           });
@@ -75,7 +75,7 @@ Robin.module('Dashboard.Show', function(Show, App, Backbone, Marionette, $, _){
 
     addSmartRelease: function(){
       if (Robin.user.get('can_create_smart_release') != true) {
-        $.growl({message: "You don't have available smart-releases!"},
+        $.growl({message: "You don't have available smart-content!"},
           {
             type: 'info'
           });
