@@ -9,6 +9,7 @@ namespace :localization do
 
   desc "Dumps Redis localizations into yaml files"
   task dump: :environment do
+    out = ENV['dest'] || Rails.root.join('config', 'locales/').to_s
     source = Dir[Rails.root.join('config', 'locales', '*.yml').to_s]
     date = Time.now.strftime("%d%m%Y%H%M")
     dest = Rails.root.join('config', 'locales_backup', date).to_s
@@ -16,18 +17,18 @@ namespace :localization do
     source.each do |filename|
       FileUtils.cp(filename, dest)
     end
-    saveYaml('en')
-    saveYaml('zh')
+    saveYaml('en', out)
+    saveYaml('zh', out)
   end
 
-  def saveYaml(locale)
+  def saveYaml(locale, out)
     l = Localization.new
     l.locale = locale
     phrases = l.store.get(locale)
     translate = JSON.parse(phrases)
     translate = {locale => translate}
     translate = sort(translate, true)
-    File.open(Rails.root.join('config', 'locales', "#{locale}.yml").to_s, 'w') {|f| f.write YAML::dump(translate) }
+    File.open("#{out}#{locale}.yml", 'w') {|f| f.write YAML::dump(translate) }
   end
 
   def sort(object, deep = false)
