@@ -46,7 +46,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
 
     startSmartRelease: function(options){
       if (Robin.user.get('can_create_smart_release') != true) {
-        $.growl({message: "You don't have available smart-releases!"},
+        $.growl({message: "You don't have available smart-content!"},
           {
             type: 'info'
           });

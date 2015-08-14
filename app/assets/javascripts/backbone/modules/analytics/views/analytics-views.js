@@ -34,7 +34,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 zoomType: 'xy',
               },
               title: {
-                text: 'Newsroom and Releases Visits'
+                text: 'Newsroom and Content Visits'
               },
               xAxis: [{
                 categories: dates
@@ -103,7 +103,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     tagName: 'select',
     className: 'form-control change-web-news-room'
   });
-  
+
   Analytics.WebFilterItemView = Backbone.Marionette.ItemView.extend({
 
     template: 'modules/analytics/templates/filter',
@@ -119,7 +119,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     tagName: 'select',
     className: 'form-control change-emails-news-room'
   });
-  
+
   Analytics.EmailsFilterItemView = Backbone.Marionette.ItemView.extend({
 
     template: 'modules/analytics/templates/filter',
@@ -130,6 +130,6 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     }
 
   });
-  
+
 
 });

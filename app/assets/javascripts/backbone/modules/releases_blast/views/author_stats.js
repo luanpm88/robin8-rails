@@ -78,7 +78,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             Math.ceil(this.model.get('syntactic').organizations_count.mean)
           ]
         }, {
-          name: 'Your release',
+          name: 'Your content',
           data: [
             this.releaseModel.get('characters_count'),
             this.releaseModel.get('word_count'),
