@@ -22,3 +22,4 @@ public/system
 perf - robin.sublime-project
 perf - robin.sublime-workspace
 .idea/
+.DS_Store
