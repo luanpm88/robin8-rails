@@ -5,9 +5,8 @@ class ApplicationController < ActionController::Base
   before_action :set_translations
 
   def set_translations
-    unless current_user.blank? and current_kol.blank?
+    unless current_user.blank?
       someone = current_user
-      someone = current_kol if current_user.nil?
       locale = someone.locale.nil? ? 'en' : someone.locale
     else
       if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
