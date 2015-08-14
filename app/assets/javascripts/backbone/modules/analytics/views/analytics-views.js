@@ -20,14 +20,10 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               var date = split[0] + '-' + monthDate[0] + '-' + monthDate[1];
               return date
             });
-            var sessions = _.map(data.web.sessions, function(session){
-              var session = parseInt(session);
-              return session;
-            });
-            var pageViews = _.map(data.web.views, function(pageView){
-              var pageView = parseInt(pageView);
-              return pageView;
-            });
+            var radix10ParseInt = _.partial(parseInt, _, 10);
+            var sessions = _.map(data.web.sessions, radix10ParseInt);
+            var pageViews = _.map(data.web.views, radix10ParseInt);
+            var mailViews = _.map(data.web.mailViews, radix10ParseInt);
 
             $('#news-rooms').highcharts({
               chart: {
@@ -81,10 +77,15 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Newsroom Views',
+                name: 'Newsroom Views All',
                 type: 'column',
                 yAxis: 1,
                 data: sessions
+              }, {
+                name: 'Newsroom Views From Email',
+                type: 'column',
+                yAxis: 1,
+                data: mailViews
               }, {
                 name: 'Page Views',
                 type: 'column',
@@ -103,7 +104,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     tagName: 'select',
     className: 'form-control change-web-news-room'
   });
-  
+
   Analytics.WebFilterItemView = Backbone.Marionette.ItemView.extend({
 
     template: 'modules/analytics/templates/filter',
@@ -119,7 +120,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     tagName: 'select',
     className: 'form-control change-emails-news-room'
   });
-  
+
   Analytics.EmailsFilterItemView = Backbone.Marionette.ItemView.extend({
 
     template: 'modules/analytics/templates/filter',
@@ -130,6 +131,6 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     }
 
   });
-  
+
 
 });

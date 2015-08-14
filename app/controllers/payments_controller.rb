@@ -97,6 +97,9 @@ class PaymentsController < ApplicationController
   end
 
   def destroy_subscription
+    if not current_user.is_primary?
+      return (render json: ["You don't have permissions to cancel subscription"], status: :forbidden)
+    end
     if current_user.active_subscription.present?
       if current_user.active_subscription.cancel!
         render json: current_user.to_json.html_safe, status: :ok
