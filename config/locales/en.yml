@@ -301,8 +301,7 @@ en:
       lname_error: Last name can't be blank
       location: Location
       location_error: Location can't be blank
-      mobile_number_error: Mobile Number can't be blank and must be less then 15 and
-        greater then 5 characters
+      mobile_number_error: Digits only
       password: Password
       password_error: Password must be greater then 7 characters
       title: Signup
