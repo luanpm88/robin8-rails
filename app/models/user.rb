@@ -175,7 +175,7 @@ class User < ActiveRecord::Base
   def can_cancel_add_on?(user_add_on_id)
     users_id = invited_users_list
     add_on = UserProduct.where(:id => user_add_on_id, :user_id=>users_id).first.product
-    if add_on.slug == "media_monitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution" || add_on.slug == "pr_newswire_distribution" || "accesswire_distribution"
+    if add_on.slug == "media_monitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution" || add_on.slug == "pr_newswire_distribution" || add_on.slug == "accesswire_distribution"
       return current_user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
     else
       return false

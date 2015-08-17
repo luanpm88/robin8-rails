@@ -18,26 +18,26 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     tweetContactButtonClicked: function(e){
       e.preventDefault();
       var self = this;
-      
+
       var view = Robin.layouts.main.saySomething.currentView;
-      text = "Hey @@[Handle] here's a press release you might find interesting: @[Link]";
+      text = "Hey @@[Handle] here's a content you might find interesting: @[Link]";
       text = text.replace('@[Handle]', self.model.get('screen_name'));
       text = text.replace('@[Link]', self.releaseModel.permalink);
-      
+
       $('form.navbar-search-sm').hide();
       $('#shrink-links').prop('checked', true);
       $('#shrink-links').prop('disabled', true);
       $('#createPost').find('textarea').val(text);
       $('#createPost').show();
       $('.progressjs-progress').show();
-      
+
       view.checkAbilityPosting();
       view.setCounter();
       e.stopPropagation();
     },
     changedPitchCheckbox: function(e){
       e.preventDefault();
-      
+
       if (this.ui.pitchCheckbox.val() == "YES")
         this.removeInfluencer();
       else
@@ -48,7 +48,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         origin: 'twtrland',
         twitter_screen_name: this.model.get('screen_name')
       });
-      
+
       if (current_model == null){
         var model = new Robin.Models.Contact({
           origin: 'twtrland',
@@ -70,7 +70,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     initialize: function(options) {
       this.pitchContactsCollection = options.pitchContactsCollection;
       this.releaseModel = options.releaseModel.toJSON().release;
-      
+
       this.listenTo(this.pitchContactsCollection, 'add remove', this.toggleAddRemove);
     },
     templateHelpers: function(){
@@ -113,13 +113,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     removeAllContactsFromPitch: function(){
       var self = this;
-      
+
       _.each(self.collection.models, function(model){
         var models = self.pitchContactsCollection.where({
           twitter_screen_name: model.get('screen_name'),
           origin: 'twtrland'
         });
-        
+
         _.each(models, function(item){
           self.pitchContactsCollection.remove(item);
         });
@@ -127,13 +127,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     addAllContactsToPitch: function(){
       var self = this;
-      
+
       _.each(self.collection.models, function(model){
         var current_model = self.pitchContactsCollection.findWhere({
           origin: 'twtrland',
           twitter_screen_name: model.get('screen_name')
         });
-        
+
         if (current_model == null){
           var model = new Robin.Models.Contact({
             origin: 'twtrland',
@@ -175,14 +175,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   var order = table.order();
                   var csvContent = self.makeCsvData(order[0][0], order[0][1]);
 
-                  openWindow('POST', '/export_influencers.csv', 
+                  openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
                   $.growl('Only Enterprise and Ultra users can have this feature.', {
                     type: "danger",
                   });
                 }
-                
+
               }
             },
             {
@@ -207,18 +207,18 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
-      
-      var pitchContactsCollection = this.pitchContactsCollection.chain().filter(function(item){ 
+
+      var pitchContactsCollection = this.pitchContactsCollection.chain().filter(function(item){
         return item.get('origin') === 'twtrland'
       }).map(function(item){
         return self.collection.findWhere({screen_name: item.get('twitter_screen_name')});
       }).reject(function(item){
         return item == undefined;
       }).value();
-      
+
       var sorted_collection = _.sortBy(pitchContactsCollection, function(item){
         var sort_value = parseInt(item.get('followers_count'));
-        
+
         switch(order_column){
           case 0:
             sort_value = item.get('name');
@@ -241,23 +241,23 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           default:
             sort_value = parseInt(item.get('followers_count'));
         }
-        
+
         return sort_value;
       });
-      
+
       if (order_direction == 'desc')
         sorted_collection = sorted_collection.reverse();
-      
+
       var csvObject = [];
-      csvObject.push(["Influencer", "Followers", "Reach", 
+      csvObject.push(["Influencer", "Followers", "Reach",
         "Amplification", "Relevance", "Contact"]); // CSV Headers
-      
+
       _.each(sorted_collection, function(item){
-        csvObject.push([item.get('name'), item.get('followers_count'), 
+        csvObject.push([item.get('name'), item.get('followers_count'),
           item.get('reachScore'), item.get('ampScore'), item.get('relScore'),
           '@' + item.get('screen_name')]);
       });
-      
+
       return JSON.stringify(csvObject);
     },
     scrollToView: function(){
@@ -266,7 +266,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         var offset = self.$el.offset();
         offset.left -= 20;
         offset.top -= 20;
-        
+
         $('html, body').animate({
           scrollTop: offset.top,
           scrollLeft: offset.left

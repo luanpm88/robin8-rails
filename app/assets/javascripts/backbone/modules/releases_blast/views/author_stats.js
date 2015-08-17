@@ -95,7 +95,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           name: this.authorModel.get("full_name") + "'s average",
           data: series_data
         }, {
-          name: 'Your release',
+          name: 'Your content',
           data: [
             this.releaseModel.get('characters_count'),
             this.releaseModel.get('word_count'),

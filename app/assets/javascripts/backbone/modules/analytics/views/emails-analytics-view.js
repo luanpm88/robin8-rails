@@ -11,7 +11,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
           }
           id = ( id == undefined ? collection.models[0].get('id') : id );
           $.get('/news_rooms/' + id +'/email_analytics', function(data){
-            
+
             var mail = data.mail.total;
             var mailStatistics = [mail.sent, mail.delivered, mail.opened, mail.dropped]
 
@@ -20,7 +20,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 zoomType: 'xy',
               },
               title: {
-                text: 'SmartRelease Email Statistics'
+                text: 'SmartContent Email Statistics'
               },
               xAxis: [{
                 categories: ['Sent', 'Delivered', 'Opened', 'Dropped']

@@ -17,7 +17,7 @@ Robin.Models.Pitch = Backbone.RelationalModel.extend({
   urlRoot: '/pitches',
   defaults: {
     email_pitch: '',
-    twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
+    twitter_pitch: "Hey @[Handle] here's a content you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
     email_subject: null,
@@ -38,7 +38,7 @@ Robin.Models.DraftPitch = Backbone.Model.extend({
   urlRoot: '/draft_pitches',
   defaults: {
     email_pitch: '',
-    twitter_pitch: "Hey @[Handle] here's a press release you might find interesting: @[Link]",
+    twitter_pitch: "Hey @[Handle] here's a content you might find interesting: @[Link]",
     summary_length: 5,
     email_address: null,
     email_subject: null,
