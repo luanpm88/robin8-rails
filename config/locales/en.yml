@@ -756,45 +756,51 @@ en:
       too_short: Please enter %{count} or more characters
     smart_campaign:
       add_money: Add money
-      targets_step:
-        weibo_tab:
-          author: Author
-          outlet: Outlet
-          relevance: Relevance
-          followers: Followers
-          invite: Invite
-          inspect: Inspect
       pitch_step:
-        title: Pitch
-        description: Now that you know exactly which journalists and influencers to contact for your compaign, you need to prepare the note to these contacts. You can use the Robin8 default note or prepare your own personal note. If you are preparing your own personal note, we recommend you keep it short and no more than 3 paragraphs.
+        delete_button: Delete
+        description: Now that you know exactly which journalists and influencers to
+          contact for your compaign, you need to prepare the note to these contacts.
+          You can use the Robin8 default note or prepare your own personal note. If
+          you are preparing your own personal note, we recommend you keep it short
+          and no more than 3 paragraphs.
         emailTargets: Targets will be contacted via Email
-        wechatTargets: Targets will be contacted via WeChat
-        weiboTargets: Targets will be contacted via Weibo
-        see: See list
-        targets_table:
-          name: Name
-          email: Email
-          actions: Actions
-          delete: Delete
-          save: Save as a list
-          button: Save
         email_panel:
-          title: Email pitch
-          email_pitch: Dear @[First Name],<br/> Here's a press release you might find interesting. Please let me know your thoughts.<br/> Best regards.
-          subject: Subject line
-          subject_placeholder: Enter a catchy subject line...
           email: Your email address
+          email_pitch: Dear @[First Name],<br/> Here's a press release you might find
+            interesting. Please let me know your thoughts.<br/> Best regards.
           email_placeholder: Enter an email address...
+          length: Summary length
           pitch_text: Pitch text
           preview: Preview
-          length: Summary length
           sentences: sentences
+          subject: Subject line
+          subject_placeholder: Enter a catchy subject line...
           tags: Available merge tags
+          title: Email pitch
+        see: See list
+        targets_table:
+          actions: Actions
+          button: Save
+          delete: Delete
+          email: Email
+          name: Name
+          save: Save as a list
+        title: Pitch
+        wechatTargets: Targets will be contacted via WeChat
+        weiboTargets: Targets will be contacted via Weibo
         weibo_panel:
           pitch_text: Pitch text
           preview: Preview
-          weibo_pitch: Dear @[First Name], Here's a press release you might find interesting. Please let me know your thoughts. Best regards.
-        delete_button: Delete
+          weibo_pitch: Dear @[First Name], Here's a press release you might find interesting.
+            Please let me know your thoughts. Best regards.
+      targets_step:
+        weibo_tab:
+          author: Author
+          followers: Followers
+          inspect: Inspect
+          invite: Invite
+          outlet: Outlet
+          relevance: Relevance
     smart_release:
       analysis_step:
         buttons:
