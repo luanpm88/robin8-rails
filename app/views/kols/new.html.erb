@@ -36,7 +36,7 @@
                                   "data-validation-error-msg"=> @l.t('kols.password_error')%>
             </label>
             <label>
-              <%=f.number_field :mobile_number,:placeholder=>"XXXXXXXXX","data-validation"=>"length", "data-validation-length"=>"5-15",
+              <%=f.number_field :mobile_number,:placeholder=>"Mobile Number","data-validation"=>"length", "data-validation-length"=>"5-15", "pattern" => "[0-9]*",
                                   "data-validation-error-msg"=> @l.t('kols.mobile_number_error')%>
             </label>
             <label>

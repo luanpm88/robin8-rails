@@ -12,7 +12,7 @@ class CampaignController < ApplicationController
     if user.blank? or c.user_id != user.id
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json(:include => [:kols, :campaign_invites, :articles])
+    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles])
   end
 
   def article
@@ -112,6 +112,7 @@ class CampaignController < ApplicationController
     kol_ids = params[:kols].map { |k| k[:id] }
     categories = IptcCategory.where :id => category_ids
     kols = Kol.where :id => kol_ids
+    weibos = params[:weibo]
     if params[:id]
       c = Campaign.find(params[:id])
       if c.user_id != current_user.id
@@ -131,6 +132,8 @@ class CampaignController < ApplicationController
     c.summaries = params[:summaries]
     c.hashtags = params[:hashtags]
     c.save!
+
+    #private kol
     kols.each do |k|
       i = c.campaign_invites.where(kol_id: k.id).first
       if !i
@@ -146,6 +149,30 @@ class CampaignController < ApplicationController
         KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
       end
     end
+
+    #weibo
+    weibos.each do |w|
+      stored_weibo = Weibo.where(pressr_id: w[:id]).first
+      if !stored_weibo
+        weibo = Weibo.new
+        weibo.pressr_id = w[:id]
+        weibo.first_name = w[:first_name]
+        weibo.last_name = w[:last_name]
+        weibo.full_name = w[:full_name]
+        weibo.email = w[:email]
+        weibo.save
+        stored_weibo = weibo
+      end
+
+      i = c.weibo_invites.where(weibo_id: stored_weibo.id).first
+      if !i
+        i = WeiboInvite.new
+        i.weibo = stored_weibo
+        i.campaign = c
+        i.save
+      end
+    end
+
     render json: {:status => :ok}
   end
 
@@ -161,6 +188,29 @@ class CampaignController < ApplicationController
     render json: {:status => :ok}
   rescue
     render json: {:status => 'Cant add budget'}
+  end
+
+  def get_counter
+    response = HTTParty.post(Rails.application.secrets[:pos_tagger_api][:url],
+                               body: {text: params[:description]}).parsed_response
+
+    characters_count = response["characters_count"]
+    words_count = response["words_count"]
+    sentences_count = response["sentences_count"]
+    paragraphs_count = response["paragraphs_count"]
+    nouns_count = response["nouns_count"]
+    adjectives_count = response["adjectives_count"]
+    adverbs_count = response["adverbs_count"]
+
+    client = AylienTextApi::Client.new
+
+    response = client.entities! text: params[:description]
+
+    organizations_count = (response[:entities][:organization] || []).size
+    places_count = (response[:entities][:location] || []).size
+    people_count = (response[:entities][:person] || []).size
+
+    render json: {'characters_count' => characters_count, 'words_count' => words_count, 'sentences_count' => sentences_count, 'paragraphs_count' => paragraphs_count, 'nouns_count' => nouns_count, 'adjectives_count' => adjectives_count, 'adverbs_count' => adverbs_count, 'organizations_count' => organizations_count, 'places_count' => places_count, 'people_count' => people_count}
   end
 
   def test_email

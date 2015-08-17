@@ -1,3 +1,80 @@
+<span class="weibo-errors">You need to invite at least someone to this campaign!</span>
+<% if (weibo.length == 0) { %>
 <div>
   <i>Couldn't match any influencers for you. Provivde more categories.</i>
 </div>
+<% } else { %>
+<table class="table table-hover targets dataTable no-footer" id="weibo-table">
+  <thead style="cursor:pointer;"><tr>
+    <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.author") %></th>
+    <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.outlet") %></th>
+    <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.relevance") %></th>
+    <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.followers") %></th>
+    <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.invite") %></th>
+  </tr></thead>
+  <tbody>
+  <%
+    var invited_weibo = weibo_id();
+    var id = campaign_id();
+          _.each(weibo, function(k) {
+  if (isPresent(k,id,invited_weibo)) {
+  %>
+  <tr data-id="<%= k.id %>">
+    <td>
+      <div class="media targets-author">
+        <a class="media-left" href="http://www.weibo.com/<%= k.profile_url %>" target="_blank">
+          <img alt="<%= k.full_name %>" width="48px" src="<%= k.avatar_url%>" style="vertical-align: middle"></img>
+          <% if (k.verified) { %>
+          <% if(k.level_of_interest == undefined){ %>
+          <i class="fa fa-check authors-search-verified" title="Verfied"></i>
+          <% } else { %>
+          <i class="fa fa-check verified" title="Verfied"></i>
+          <% } %>
+          <% } %>
+        </a>
+          <h4 class="media-heading" style="display: inline-block;">&nbsp;<%= k.full_name %></h4>
+        <a class="btn btn-xs btn-primary inspect" href="#" data-weibo-id="<%= k.id %>">
+          <i class="fa fa-search"></i> <%= polyglot.t("smart_campaign.targets_step.weibo_tab.inspect") %>
+        </a>
+      </div>
+    </td>
+    <td>
+      <% if (k.blog_names.length > 1) { %>
+      <% var blog_names = k.blog_names.slice(1).join("<br />") %>
+      <span data-toggle="tooltip" title="<%= blog_names %>" data-html="true">
+      <%= k.blog_names[0] %>
+    </span>
+      <% } else { %>
+      <%= k.blog_names[0] %>
+      <% } %>
+    </td>
+    <% if(k.level_of_interest){ %>
+    <td>
+      <div class="progress active">
+        <div class="progress-bar" role="progressbar"
+             aria-valuenow="<%= k.level_of_interest %>"
+             aria-valuemin="0" aria-valuemax="100"
+             style="width: <%= k.level_of_interest %>%;">
+          <%= k.level_of_interest %>%
+        </div>
+      </div>
+    </td>
+    <% } %>
+
+    <td>
+      <%= s.numberFormat(parseInt(k.followers_count)) %>
+    </td>
+    <td>
+      <% var is_checked = "";
+        var checked = "NO";
+        if ((k.invited != null && k.invited == true) || (isChecked(k, invited_weibo)))
+        { is_checked = "checked"; checked = "YES";} %>
+      <input id="invite_<%= k.id %>" class="css-checkbox" type="checkbox" name="invite_<%= k.id %>" data-weibo-id="<%= k.id %>" value=<%= checked %> <%= is_checked %>>
+      <label class="css-label" for="invite_<%= k.id %>"></label>
+    </td>
+  </tr>
+  <% } %>
+  <% }); %>
+  </tbody>
+</table>
+<% } %>

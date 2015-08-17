@@ -1,7 +1,31 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
+  NoChildrenView = Marionette.ItemView.extend
+    template: 'modules/smart-campaign/show/templates/pitch/pitch-weibo-empty-targets'
+
   Show.WeiboTargets = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-weibo-targets'
+    emptyView: NoChildrenView
+
+    ui:
+      deleteButton: 'a.btn-danger'
+      itemCount: '#item_count'
+
+    events:
+      'click @ui.deleteButton': 'deleteButtonClicked'
+
+    deleteButtonClicked: (e) ->
+      e.preventDefault()
+      target = $ e.currentTarget
+      weibo_id = target.data 'weibo-id'
+      @count = @count - 1
+      @ui.itemCount.text(@count)
+      target.parents('tr').remove()
+      this.triggerMethod('weibo:target:removed', weibo_id)
+
+    onRender: ->
+      @count = @collection.length
+
 
   Show.WeiboPitch = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-weibo'
@@ -16,8 +40,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       'keyup @ui.textarea': 'weiboPitchTextChanged'
 
     onRender: (opts) ->
-      this.ui.textarea.val(this.model.get('weibopitch'))
-      this.ui.textareaPreview.val(this.model.get('weibopitch'))
+      this.ui.textarea.val(this.model.get('weibo_pitch'))
+      this.ui.textareaPreview.val(this.model.get('weibo_pitch'))
       that = this;
       @ui.form.ready(that.initFormValidation())
 
@@ -45,4 +69,5 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     weiboPitchTextChanged: (e) ->
       @ui.form.data('formValidation').validate()
       if @ui.form.data('formValidation').isValid()
-        this.model.set("weibopitch", this.ui.textarea.val())
+        this.ui.textareaPreview.val(this.ui.textarea.val())
+        this.model.set("weibo_pitch", this.ui.textarea.val())

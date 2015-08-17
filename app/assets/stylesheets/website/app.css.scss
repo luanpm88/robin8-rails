@@ -1604,3 +1604,8 @@ p.loginintro strong{
 .select-with-error + .ui-widget {
   border-color: red !important;
 }
+.form-step input[type=number]::-webkit-outer-spin-button,
+.form-step input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

@@ -1669,3 +1669,8 @@ body.login {
   width: 150px;
   float: right;
 }
+.personal-info input[type=number]::-webkit-outer-spin-button,
+.personal-info input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

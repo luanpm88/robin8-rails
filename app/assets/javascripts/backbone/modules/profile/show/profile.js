@@ -157,6 +157,18 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
               }
             }
           },
+          mobile_number: {
+            enabled: false,
+            validators: {
+              notEmpty: {
+                message: 'Please enter a value'
+              },
+              regexp: {
+                regexp: /^(\w{5,15})$/,
+                message: 'Digits only'
+              },
+            }
+          },
         }
       })
       .on('keyup', '[name="password"]', function() {
@@ -174,6 +186,9 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       })
       .on('keydown', '[name="email"]', function() {
         $('#profileForm').formValidation('enableFieldValidators', 'email', true)
+      })
+      .on('keyup', '[name="mobile_number"]', function() {
+        $('#profileForm').formValidation('enableFieldValidators', 'mobile_number', true)
       })
       .on('err.field.fv', function(e, data) {
         // data.element --> The field element

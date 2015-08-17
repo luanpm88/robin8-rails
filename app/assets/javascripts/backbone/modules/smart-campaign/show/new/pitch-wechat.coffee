@@ -1,8 +1,10 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
-
+  NoChildrenView = Marionette.ItemView.extend
+    template: 'modules/smart-campaign/show/templates/pitch/pitch-wechat-empty-targets'
 
   Show.WeChatTargets = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-wechat-targets'
+    emptyView: NoChildrenView
 
   Show.WeChatPitch = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-wechat'

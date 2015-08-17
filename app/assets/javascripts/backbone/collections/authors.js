@@ -1,17 +1,17 @@
 Robin.Collections.Authors = Backbone.Collection.extend({
   model: Robin.Models.Author,
   url: '/robin8_api/authors',
-  
+
   fetchAuthors: function(data, options){
     var params = _.defaults(this.parseParams(data),{
       per_page: 100,
       included_email: true
     });
-    
+
     if (Robin.currentUser.get('locale') == 'zh'){
       params.type = "weibo";
     }
-    
+
     this.fetch({
       url: this.url,
       data: params,
@@ -20,7 +20,7 @@ Robin.Collections.Authors = Backbone.Collection.extend({
   },
   parseParams: function(params){
     var new_params = {};
-    
+
     _(params).each(function(val, key){
       switch(key){
         case 'contactName':
@@ -41,7 +41,7 @@ Robin.Collections.Authors = Backbone.Collection.extend({
           break;
       }
     });
-    
+
     return new_params;
   }
 });

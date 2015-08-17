@@ -2,6 +2,8 @@ class Campaign < ActiveRecord::Base
   belongs_to :user
   has_many :campaign_invites
   has_many :kols, through: :campaign_invites
+  has_many :weibo_invites
+  has_many :weibo, through: :weibo_invites
   has_many :articles
 
   has_many :campaign_categories
