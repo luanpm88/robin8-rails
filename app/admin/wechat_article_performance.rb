@@ -2,6 +2,8 @@ ActiveAdmin.register WechatArticlePerformance do
 
   permit_params :period, :reached_peoples, :page_views, :read_more, :favourite, :status
 
+   config.sort_order = "status_asc"
+
   actions :all, :except => [:new]
 
   article_id = 0
@@ -45,7 +47,7 @@ ActiveAdmin.register WechatArticlePerformance do
       report_id = my_resource.id
       Attachment.where(:imageable_id=>my_resource.id,:imageable_type=>'WechatArticlePerformance',:attachment_type=>'image').map(&:url)
     end
-    column :status
+    column :status, :sortable => 'status'
     column :claim_reason do |my_resource|
       truncate(my_resource.claim_reason, omision: "...", length: 40)
     end

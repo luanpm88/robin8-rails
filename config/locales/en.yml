@@ -792,6 +792,11 @@ en:
           preview: Preview
           weibo_pitch: Dear @[First Name], Here's a press release you might find interesting.
             Please let me know your thoughts. Best regards.
+      wechat_report:
+        people_reached: No of people reached
+        page_views: No of page views
+        read_more: No of "read more"
+        favourite: No of re-share + favourite
       targets_step:
         weibo_tab:
           author: Author
