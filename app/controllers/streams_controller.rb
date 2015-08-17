@@ -3,7 +3,7 @@ class StreamsController < ApplicationController
   def index
     users_id = current_user.invited_users_list
     limit = current_user.current_user_features.media_monitoring.map(&:max_count).inject{|sum,x| sum + x }
-    streams = Stream.where(:user_id=>users_id).order(:position).limit(limit)
+    @streams = Stream.where(:user_id=>users_id).order(:position).limit(limit)
     render json: @streams.to_json
   end
 
