@@ -12,6 +12,7 @@ class Kol < ActiveRecord::Base
   has_many :campaign_invites
   has_many :campaigns, :through => :campaign_invites
   has_many :articles
+  has_many :wechat_article_performances, as: :sender
   has_many :article_comments, as: :sender
 
   include Models::Identities

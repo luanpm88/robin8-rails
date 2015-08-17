@@ -1643,3 +1643,29 @@ body.login {
   padding-left: 25px;
   padding-right: 20px;
 }
+#wechat-perf-form {
+  .campaign-errors {
+    margin-left: 10px;
+    display: inline-block;
+    margin-bottom: 0px;
+  }
+  .col-md-3 {
+    display: inline-block;
+    float: initial;
+  }
+  .label-left-side {
+    width: 20%;
+    text-align: left;
+  }
+  .label-right-side {
+    width: 20%;
+    text-align: left;
+  }
+  .help-block {
+    display: table;
+  }
+}
+.btn-form {
+  width: 150px;
+  float: right;
+}

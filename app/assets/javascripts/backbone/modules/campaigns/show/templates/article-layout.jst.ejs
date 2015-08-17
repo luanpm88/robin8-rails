@@ -9,6 +9,7 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" data-action="accepted">Content</a></li>
                 <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab" data-action="declined">Comment</a></li>
+                <li role="presentation"><a href="#wechat" aria-controls="wechat" role="tab" data-toggle="tab" data-action="wechat_perf">WeChat Performance</a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -73,6 +74,65 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="wechat">
+                    <% if (!disabled) { %>
+                        <span>You have to submit your WeChat report on each 7th day after approval of your article, since WeChat only stores data during 7 days after the article was posted. If you will delay submission of the report, your performance data (number of people reached, number of page views, number of "read more", number of re-share + favorites) for the delayed days will not be count.</span>
+                        <div id='report_region'>
+                            <div class='images_region'></div>
+                            <hr>
+                            <form accept-charset="UTF-8" class="form-horizontal" role="form" autocomplete="off" id="wechat-perf-form" onsubmit="return false;">
+                                <div class="row">
+                                    <label class="control-label start-form label-left-side">No of people reached:</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div>
+                                                <input class="form-control" placeholder="0" id="reached" name="reached" type="number" value="" max="9000000000" min="0" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="row">
+                                    <label class="control-label start-form label-right-side">No of page views:</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div>
+                                                <input class="form-control" placeholder="0" id="page_views" name="page_views" type="number" max="9000000000" min="0" value="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row">
+                                    <label class="control-label start-form label-left-side">No of "read more":</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div>
+                                                <input class="form-control" placeholder="0" id="read_more" name="read_more" type="number" max="9000000000" min="0" value="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="row">
+                                    <label class="control-label start-form label-right-side">No of re-share + favourite:</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div>
+                                                <input class="form-control" placeholder="0" id="favourite" name="favourite" type="number" max="9000000000" min="0" value="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="btn-form">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="wechat_perf_save">Send</button>
+                                </div>
+                            </div>                            
+                        </div>
+                        <hr>
+                 <% } %>
+                 <div id="wechat-performance"></div>
                 </div>
             </div>
         </div>

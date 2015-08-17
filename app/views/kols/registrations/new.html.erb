@@ -21,6 +21,11 @@
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
 
+  <div class="field">
+    <%= f.label :mobile_number %><br />
+    <%= f.number_field :mobile_number, autocomplete: "off", "data-validation"=>"length", "data-validation-length"=>"5-15" %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>

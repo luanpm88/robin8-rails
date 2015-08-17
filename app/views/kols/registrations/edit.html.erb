@@ -27,6 +27,11 @@
     <%= f.password_field :current_password, autocomplete: "off" %>
   </div>
 
+  <div class="field">
+    <%= f.label :mobile_number %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.number_field :mobile_number, autocomplete: "off", "data-validation"=>"length", "data-validation-length"=>"5-15" %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Update" %>
   </div>

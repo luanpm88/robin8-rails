@@ -4,6 +4,7 @@ class Article < ActiveRecord::Base
   belongs_to :campaign
   belongs_to :kol
   has_many :article_comments
+  has_many :wechat_article_performances
   has_many :attachments, as: :imageable, dependent: :destroy
 
   def approve
