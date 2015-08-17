@@ -26,6 +26,12 @@ namespace :localization do
     l.locale = locale
     phrases = l.store.get(locale)
     translate = JSON.parse(phrases)
+
+    if locale != 'en'
+      en_translate = JSON.parse(l.store.get("en"))
+      translate = en_translate.deep_merge(translate)
+    end
+
     translate = {locale => translate}
     translate = sort(translate, true)
     File.open("#{out}#{locale}.yml", 'w') {|f| f.write YAML::dump(translate) }
