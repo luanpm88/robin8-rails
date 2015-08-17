@@ -122,7 +122,8 @@
           <div class="row">
             <div class="small-2 medium-2 large-2 columns custom-padding">
               <label><%= @l.t 'payment_page.your_title'%>
-                <%=select "contact", "title", [[@l.t('payment_page.mr_title'), @l.t('payment_page.mr_title')], [@l.t('payment_page.ms_title'), @l.t('payment_page.ms_title')], [@l.t('payment_page.mrs_title'), @l.t('payment_page.mrs_title')]], {}, {:class => "select-checkout"} %>
+                <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']],
+                    {:selected => params[:contact].present? ? params[:contact][:title] : ''}, {:class => "select-checkout" } %>
               </label>
             </div>
 
@@ -144,7 +145,7 @@
           <div class="row">
             <div class="small-12 columns custom-padding">
               <label><%= @l.t 'payment_page.phone'%>
-                <%=text_field "contact", "phone" , :class=>"form-control","data-validation"=>"required",
+                <%=text_field "contact", "phone", :value => params[:contact].present? ? params[:contact][:phone] : '', :class=>"form-control","data-validation"=>"required",
                               "data-validation-error-msg"=> @l.t('payment_page.messages.phone_blank'), "data-validation"=>"number" %>
               </label>
             </div>
@@ -153,15 +154,15 @@
           <div class="row">
             <div class="small-12 medium-6 large-8 columns custom-padding">
               <label><%= @l.t 'payment_page.address'%>
-                <%=text_field "contact", "address1" , :class=>"form-control","data-validation"=>"required",
+                <%=text_field "contact", "address1", :value => params[:contact].present? ? params[:contact][:address1] : '', :class=>"form-control","data-validation"=>"required",
                               "data-validation-error-msg"=> @l.t('payment_page.messages.address_blank') %>
               </label>
             </div>
 
             <div class="small-12 medium-6 large-4 columns custom-padding">
               <label><%= @l.t 'payment_page.city'%>
-                <%=text_field "contact", "city" , :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> @l.t('payment_page.messages.city_blank')
+                <%=text_field "contact", "city", :value => params[:contact].present? ? params[:contact][:city] : '',
+                    :class=>"form-control","data-validation"=>"required", "data-validation-error-msg"=> "City can't be blank"
                 %>
               </label>
             </div>
@@ -170,46 +171,72 @@
           <div class="row">
             <div class="small-12 medium-4 large-4 columns custom-padding">
               <label><%= @l.t 'payment_page.state'%>
-                <%=text_field "contact", "state" , :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> @l.t('payment_page.messages.state_blank'),:placeholder => "NY" %>
+                <% show_error = flash[:fields_errors].present? && flash[:fields_errors][:state].present? ? true : false
+                style = show_error ? "border-color: red;" : ""  %>
+                <%=text_field "contact", "state", :style => style, :value => params[:contact].present? ? params[:contact][:state] : '',
+                    :class=>"form-control","data-validation"=>"required", "data-validation-error-msg"=> "State can't be blank",:placeholder => "NY" %>
+                <% if show_error %>
+                <span class="help-block form-error"><%=flash[:fields_errors][:state]%></span>
+                <%end%>
               </label>
             </div>
 
             <div class="small-12 medium-4 large-3 columns custom-padding">
               <label><%= @l.t 'payment_page.code'%>
-                <%=text_field "contact", "zip" , :class=>"form-control","data-validation"=>"required",
+                <%=text_field "contact", "zip", :value => params[:contact].present? ? params[:contact][:zip] : '', :class=>"form-control","data-validation"=>"required",
                               "data-validation-error-msg"=> @l.t('payment_page.messages.code_blank') %>
               </label>
             </div>
 
             <div class="small-12 medium-4 large-5 columns custom-padding">
               <label><%= @l.t 'payment_page.country'%>
-                <%=select_tag "contact[country]",options_for_select(Country.all.sort),{:class=>"select-checkout"}%>
+                <% show_error = flash[:fields_errors].present? && flash[:fields_errors][:country].present? ? true : false
+                className = show_error ? "select-with-error" : ""  %>
+                <%=select "contact", "country", options_for_select(Country.all.sort, :selected => params[:contact].present? ? params[:contact][:country] : ''),
+                    {}, { :class=>"select-checkout #{className}", :style => style }%>
+                <% if show_error %>
+                <span class="help-block form-error"><%=flash[:fields_errors][:country]%></span>
+                <%end%>
               </label>
             </div>
           </div>
 
-
-
           <div class="row">
             <div class="small-12 medium-12 large-4 columns custom-padding">
               <label><%= @l.t 'payment_page.card_type'%>
-                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'amex'],["Discover", 'discover'],["JCB","jcb"] ], {}, {:class => "select-checkout"} %>
+                <% show_error = flash[:fields_errors].present? && flash[:fields_errors][:credit_card_type].present? ? true : false
+                className = show_error ? "select-with-error" : ""  %>
+                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'amex'],["Discover", 'discover'],["JCB","jcb"] ],
+                    { :selected => params[:card].present? ? params[:card][:credit_card_type] : '' }, { :class => "select-checkout #{className}"} %>
+                <% if show_error %>
+                <span class="help-block form-error"><%=flash[:fields_errors][:credit_card_type]%></span>
+                <%end%>
               </label>
             </div>
 
             <div class="small-8 medium-8 large-5 columns custom-padding">
               <label><%= @l.t 'payment_page.card_number'%>
-                <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
-                              "data-validation-error-msg"=> @l.t('payment_page.messages.card_number_blank'),"data-validation"=>"number" %>
+                <% show_error = flash[:fields_errors].present? && flash[:fields_errors][:credit_card_number].present? ? true : false
+                style = show_error ? "border-color: red;" : ""  %>
+                <%=text_field "card", "credit_card_number", :style => style, :class=>"form-control",
+                              :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
+                              "data-validation-error-msg"=> "Card number can't be blank","data-validation"=>"number" %>
+                <% if show_error %>
+                <span class="help-block form-error"><%=flash[:fields_errors][:credit_card_number]%></span>
+                <%end%>
               </label>
             </div>
 
             <div class="small-4 medium-4 large-3 columns custom-padding">
               <label><%= @l.t 'payment_page.cvv'%>
-                <%=password_field "card", "verification_code", :maxlength=> "4", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
+                <% show_error = flash[:fields_errors].present? && flash[:fields_errors][:verification_code].present? ? true : false
+                style = show_error ? "border-color: red;" : ""  %>
+                <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
                               "data-validation"=>"length", "data-validation-length"=>"min2",
                               "data-validation-error-msg"=> @l.t('payment_page.messages.cvv_blank'),"data-validation"=>"number"%>
+                <% if show_error %>
+                <span class="help-block form-error"><%=flash[:fields_errors][:verification_code]%></span>
+                <%end%>
               </label>
             </div>
 
@@ -218,13 +245,13 @@
           <div class="row">
             <div class="small-6 medium-6 large-3 columns custom-padding">
               <label><%= @l.t 'payment_page.exp_month'%>
-                <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
+                <%=text_field "card", "expiration_month", :value => params[:card].present? ? params[:card][:expiration_month] : '', :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
                               "data-validation-error-msg"=> @l.t('payment_page.messages.exp_month_blank'),"data-validation"=>"number"  %>
               </label>
             </div>
             <div class="small-6 medium-6 large-3 columns left custom-padding">
               <label><%= @l.t 'payment_page.exp_year'%>
-                <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
+                <%=text_field "card", "expiration_year", :value => params[:card].present? ? params[:card][:expiration_year] : '', :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
                               "data-validation-error-msg"=> @l.t('payment_page.messages.exp_year_blank'), "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
               </label>
             </div>
@@ -290,9 +317,15 @@
 
   <script>
       $.validate();
+
       <%if @discount.present?%>
       applyDiscount();
       <%end%>
+
+      $('.select-with-error').on('selectmenuchange', function(){
+        $(this).removeClass('select-with-error');
+        $(this).parent().find('.form-error').remove();
+      });
 
       function updatePackage(){
         $('#slug').val($('#payment-option').val());

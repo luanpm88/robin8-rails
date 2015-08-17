@@ -23,7 +23,7 @@ class PaymentsController < ApplicationController
   end
 
   def create
-    errors,resp = BlueSnap::Shopper.new(request, current_user, params, @product,@add_ons,@add_on_hash)
+    errors, resp = BlueSnap::Shopper.new(request, current_user, params, @product,@add_ons,@add_on_hash)
     @payment = Payment.new
     if errors.blank?
       begin
@@ -47,7 +47,8 @@ class PaymentsController < ApplicationController
       return redirect_to "/payment-confirmation"
 
     else
-      flash.now[:errors] = errors
+      flash.now[:errors] = errors[0]
+      flash.now[:fields_errors] = errors[1]
       render :new, :layout => "website"
     end
   end
