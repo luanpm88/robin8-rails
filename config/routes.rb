@@ -71,6 +71,7 @@ Rails.application.routes.draw do
     resources :followers, only: [:new, :create]
     get 'presskit'
   end
+  get '/articles/:code' => "public_news_rooms#article"
   resources :preview_news_rooms, only: [:index, :create, :show, :update, :destroy]
   resources :industries, only: :index
   resources :releases do

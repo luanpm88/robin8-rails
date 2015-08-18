@@ -26,8 +26,13 @@ class PublicNewsRoomsController < ApplicationController
     @news_room = NewsRoom.find_by(subdomain_name: request.subdomain)
   end
 
+  def article
+    code = params[:code] || "some string that is not in db and will raise RecordNotFound on the next line"
+    @article = Article.find_by! :tracking_code => code
+  end
+
   private
-  
+
   def ssl_configured?
     false
   end
