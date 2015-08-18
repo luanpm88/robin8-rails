@@ -8,7 +8,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       webAnalyticsRegion: '#analytics-region',
       emailsAnalyticsRegion: '#emails-analytics-region',
       emailsListRegion: '#emails-list-region',
-      emailsDroppedListRegion: '#emails-dropped-list-region'
+      emailsDroppedListRegion: '#emails-dropped-list-region',
       weChatAnalyticsRegion: '#wechat-analytics-region',
       weiboAnalyticsRegion: '#weibo-analytics-region',
       campaignAnalyticsRegion: '#campaign-analytics-region'
