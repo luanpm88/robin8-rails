@@ -10,7 +10,8 @@
             <% if (c.social_name == "weiboScreenAccount") { %>
               <li>
                 <div>
-                  <img src="<%= c.thumbnail %>">
+                  <a href="<%= c.url %>" target="_blank">
+                  <img src="<%= c.thumbnail %>"></a>
                     <a href="javascript:void(0)" class="delete" id="deleteAttach"><i class="fa fa-close delete-item"></i></a>
                 </div>
               </li>
@@ -40,7 +41,8 @@
             <% if (c.social_name == "weChatScreenAccount") { %>
               <li>
                 <div>
-                  <img src="<%= c.thumbnail %>">
+                  <a href="<%= c.url %>" target="_blank">
+                  <img src="<%= c.thumbnail %>"></a>
                     <a href="javascript:void(0)" class="delete" id="deleteAttach"><i class="fa fa-close delete-item"></i></a>
                 </div>
               </li>
