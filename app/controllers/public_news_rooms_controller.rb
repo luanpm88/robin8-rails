@@ -29,6 +29,7 @@ class PublicNewsRoomsController < ApplicationController
   def article
     code = params[:code] || "some string that is not in db and will raise RecordNotFound on the next line"
     @article = Article.find_by! :tracking_code => code
+    render :layout => 'public_articles'
   end
 
   private
