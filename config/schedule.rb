@@ -43,7 +43,7 @@ every 3.hours do
   rake 'alert:notify_users_via_text'
 end
 
-every 1.hour do
+every 10.minutes do
   rake 'alert:notify_kols_via_email'
 end
 
