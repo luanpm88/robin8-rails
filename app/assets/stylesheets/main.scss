@@ -1830,11 +1830,46 @@ input.form-control[type="file"] {
 }
 #wechat {
   .photos_list  li{
+    float: left;
+    margin: 3px;
+    display: inline-block;
+  }
+  .photos_list ul>li div .delete{
+    color: #333;
+    position: absolute;
+    top: 0px;
+    right: 4px;
+    font-size: 16px;
+    display: none;
+    z-index: 2;
+  }
+  .photos_list ul > li div:hover .delete {
     display: block;
   }
+  .photos_list ul>li img{
+    height: 100px;
+    width: 100px;
+    border: 1px solid #ccc;
+  }
+  .photos_list ul > li div{
+    position: relative;
+  }
+}
+#report_region .glyphicon-remove,
+#report_region .glyphicon-ok {
+  right: 0px;
+}
+#report_region .form-control {
+  padding-right: 23px;
 }
 #claim-report-modal {
   .article-content, .wysihtml5-sandbox {
     max-width: 100%;
   }
+}
+#wechat-perf-table .approved_status{
+  color: blue;
+}
+#wechat-perf-table .rejected_status{
+  color: red;
 }

@@ -93,9 +93,13 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     template: 'modules/campaigns/show/templates/article-wechat'
 
     templateHelpers:
-      timestamp: (d) ->
-        date = new Date d
-        date.getTime()
+      getClass: (status) ->
+        if status == "Approved"
+          return "approved_status"
+        if status == "Rejected"
+          return "rejected_status"
+        else
+          return ""
 
     serializeData: () ->
       items: @collection.toJSON()

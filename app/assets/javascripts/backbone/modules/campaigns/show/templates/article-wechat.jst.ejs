@@ -8,10 +8,10 @@
             <thead class="table-head">
             <tr>
                 <th>Period</th>
-                <th>No of people reached</th>
-                <th>No of page views</th>
-                <th>No of "read more"</th>
-                <th>No of re-share + favourite</th>
+                <th><%= polyglot.t("smart_campaign.wechat_report.people_reached") %></th>
+                <th><%= polyglot.t("smart_campaign.wechat_report.page_views") %></th>
+                <th><%= polyglot.t("smart_campaign.wechat_report.read_more") %></th>
+                <th><%= polyglot.t("smart_campaign.wechat_report.favourite") %></th>
                 <th>Status</th>
                 <th class="no-sort" ></th>
                 <% if (disabled) {%>
@@ -37,7 +37,7 @@
                     <td>
                         <%= c.favourite%>
                     </td>
-                    <td>
+                    <td class="<%= getClass(c.status) %>" >
                         <%= c.status%>
                     </td>
                     <td>
