@@ -17,7 +17,8 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date.getTime()
       code: (campaign) ->
         if campaign.tracking_code? and campaign.tracking_code != 'Waiting'
-          campaign.tracking_code
+          link = "http://#{window.location.host}/articles/#{k.article.tracking_code}"
+          "<a href=\"#{link}\">#{link}</a>"
         else
           "Not approved yet"
       code_status: (campaign) ->

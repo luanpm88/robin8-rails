@@ -16,7 +16,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         if k.status == "" then "Unknown" else "Declined"
       code: (k) ->
         if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
-          k.article.tracking_code
+          link = "http://#{window.location.host}/articles/#{k.article.tracking_code}"
+          "<a href=\"#{link}\">#{link}</a>"
         else
           "Not approved yet"
       code_status: (k) ->
