@@ -11,6 +11,7 @@
     <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.relevance") %></th>
     <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.followers") %></th>
     <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.invite") %></th>
+    <th><%= polyglot.t("smart_campaign.targets_step.weibo_tab.contact") %></th>
   </tr></thead>
   <tbody>
   <%
@@ -71,6 +72,11 @@
         { is_checked = "checked"; checked = "YES";} %>
       <input id="invite_<%= k.id %>" class="css-checkbox" type="checkbox" name="invite_<%= k.id %>" data-weibo-id="<%= k.id %>" value=<%= checked %> <%= is_checked %>>
       <label class="css-label" for="invite_<%= k.id %>"></label>
+    </td>
+    <td>
+      <a href="#" class='contact-author' data-weibo-id="<%= k.id %>">
+        <i class="fa fa-envelope"></i>
+      </a>
     </td>
   </tr>
   <% } %>

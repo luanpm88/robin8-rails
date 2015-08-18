@@ -1,0 +1,12 @@
+Hi <%= author.get('full_name') %>,
+</br></br>
+You were invited to participate in a new campaign:
+</br></br>
+"<%= release.get('name') %>"
+</br></br>
+<%= summary %>
+</br></br>
+Regards,
+<%= s.isBlank(currentUser.get('name')) ? '' : currentUser.get('name') %>
+</br></br>
+P.S. We kindly recommend you to <a href="<%= kolSignUpUrl %>">register</a> in our system as an Influencer.
