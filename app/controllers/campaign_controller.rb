@@ -87,7 +87,9 @@ class CampaignController < ApplicationController
     article = Article.find(params[:article_id])
     campaign = Campaign.find(article.campaign_id)
     user = User.find(campaign.user_id)
-    wechat_perf = WechatArticlePerformance.create(article_id: article.id, period: params[:text], reached_peoples: params[:reached_peoples], page_views: params[:page_views], read_more: params[:read_more], favourite: params[:favourite], status: "Under moderation", period: Date.today.to_s, campaign_name: campaign.name, company_name: user.company)
+    wechat_perf = WechatArticlePerformance.create(article_id: article.id, reached_peoples: params[:reached_peoples],
+                                                  page_views: params[:page_views], read_more: params[:read_more], favourite: params[:favourite],
+                                                  status: "Under moderation", period: Date.today.to_s, campaign_name: campaign.name, company_name: user.company)
     params[:attachments_attributes].each do |element|
       if element[:attachment_type] == "image"
         Attachment.create(imageable_id: wechat_perf.id, imageable_type: "WechatArticlePerformance", url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])

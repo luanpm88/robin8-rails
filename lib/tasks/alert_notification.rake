@@ -38,7 +38,7 @@ namespace :alert do
         report = WechatArticlePerformance.where(:article_id => item.id).order(created_at: :desc).first
         unless report.blank?
           if (Date.today - report.created_at.to_date).to_i == 8
-            kol = Kol.where(:id => report.sender_id).first
+            kol = Kol.where(:id => item.kol_id).first
             KolMailer.send_wechat_report_alert(kol.email, kol.first_name, kol.last_name, item.campaign.name).deliver_now
           end
         else
