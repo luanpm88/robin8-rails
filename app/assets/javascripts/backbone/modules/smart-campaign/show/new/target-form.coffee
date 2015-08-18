@@ -9,7 +9,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       nextButton: '#next-step'
 
     regions:
-      wechatRegion: "#targets-wechat"
+      #wechatRegion: "#targets-wechat"
       weiboRegion: "#targets-weibo"
       blogsRegion: "#targets-blogs"
       searchRegion: "#targets-search"
@@ -28,7 +28,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       @search_view = new Show.SearchLayout(
         model: @model
       )
-      @wechat_view = new Show.TargetWechat()
+      #@wechat_view = new Show.TargetWechat()
 
 
     openPitchTab: () ->
@@ -38,7 +38,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
       self = this
 
-      @showChildView 'wechatRegion', @wechat_view
+      #@showChildView 'wechatRegion', @wechat_view
       @showChildView 'weiboRegion', @weibo_view
       @showChildView 'blogsRegion', @targets_view
       @showChildView 'searchRegion', @search_view
