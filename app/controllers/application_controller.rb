@@ -2,6 +2,30 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
 
+  before_action :set_translations
+
+  def set_translations
+    unless current_user.blank? and current_kol.blank?
+      someone = current_user
+      someone = current_kol if current_user.nil?
+      locale = someone.locale.nil? ? 'en' : someone.locale
+    else
+      if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
+        cookies['locale'] = { value: params[:locale], expires: 1.year.from_now }
+        I18n.locale = params[:locale].to_sym
+      elsif cookies['locale'] && [:en, :zh].include?(cookies['locale'].to_sym)
+        I18n.locale = cookies['locale'].to_sym
+      else
+        I18n.locale = request.location && request.location.country.to_s == "China" ? 'zh' : 'en'
+        cookies['locale'] = { value: I18n.locale, expires: 1.year.from_now }
+      end
+      locale = I18n.locale
+    end
+    @l ||= Localization.new
+    @l.locale = locale
+    @phrases = JSON.parse(@l.store.get(locale))['application']
+  end
+
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
   force_ssl if: :ssl_configured?
@@ -35,7 +59,8 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up).push(:first_name, :last_name)
     devise_parameter_sanitizer.for(:account_update).push(:first_name,
-                                                         :last_name, :company, :time_zone, :name, :avatar_url)
+                                                         :last_name, :company, :time_zone, :name, :avatar_url,
+                                                         :location, :is_public, :date_of_birthday, :industry, :title, :mobile_number)
     devise_parameter_sanitizer.for(:invite).push(:is_primary)
   end
 
@@ -45,6 +70,10 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_exception(e)
+    if Rails.env.development?
+      logger.error e.message
+      logger.error e.backtrace.join("\n")
+    end
     case e
       when ActiveRecord::RecordNotFound
         render :json => {error: "404 Not Found", message: e.message}, status: 404
@@ -60,9 +89,9 @@ class ApplicationController < ActionController::Base
         render :json => {error: "500 Internal Server Error", message: e.message}, status: 500
     end
   end
-  
+
   private
-  
+
   def ssl_configured?
     !Rails.env.development?
   end

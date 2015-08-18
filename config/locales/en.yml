@@ -1,36 +1,2131 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
+---
 en:
-  hello: "Hello world"
-  errors:
-    messages:
-      email_format: is not valid
-      twitter_connect: is not connected to twitter
-      phone: is not valid
+  active_admin:
+    access_denied:
+      message: You are not authorized to perform this action.
+    any: Any
+    batch_actions:
+      action_label: "%{title} Selected"
+      button_label: Batch Actions
+      default_confirmation: Are you sure you want to do this?
+      delete_confirmation: Are you sure you want to delete these %{plural_model}?
+      labels:
+        destroy: Delete
+      link: Create one
+      selection_toggle_explanation: "(Toggle Selection)"
+      succesfully_destroyed:
+        one: Successfully destroyed 1 %{model}
+        other: Successfully destroyed %{count} %{plural_model}
+    blank_slate:
+      content: There are no %{resource_name} yet.
+      link: Create one
+    cancel: Cancel
+    comments:
+      add: Add Comment
+      author: Author
+      author_missing: Anonymous
+      author_type: Author Type
+      body: Body
+      errors:
+        empty_text: Comment wasn't saved, text was empty.
+      no_comments_yet: No comments yet.
+      resource: Resource
+      resource_type: Resource Type
+      title: Comment
+      title_content: Comments (%{count})
+    dashboard: Dashboard
+    dashboard_welcome:
+      call_to_action: To add dashboard sections, checkout 'app/admin/dashboard.rb'
+      welcome: Welcome to Active Admin. This is the default dashboard page.
+    delete: Delete
+    delete_confirmation: Are you sure you want to delete this?
+    delete_model: Delete %{model}
+    details: "%{model} Details"
+    devise:
+      change_password:
+        submit: Change my password
+        title: Change your password
+      email:
+        title: Email
+      links:
+        forgot_your_password: Forgot your password?
+        resend_confirmation_instructions: Re-send confirmation instructions
+        resend_unlock_instructions: Re-send unlock instructions
+        sign_in: Sign in
+        sign_in_with_omniauth_provider: Sign in with %{provider}
+        sign_up: Sign up
+      login:
+        remember_me: Remember me
+        submit: Login
+        title: Login
+      password:
+        title: Password
+      resend_confirmation_instructions:
+        submit: Resend confirmation instructions
+        title: Resend confirmation instructions
+      reset_password:
+        submit: Reset My Password
+        title: Forgot your password?
+      sign_up:
+        submit: Sign up
+        title: Sign up
+      subdomain:
+        title: Subdomain
+      unlock:
+        submit: Resend unlock instructions
+        title: Resend unlock instructions
+      username:
+        title: Username
+    download: 'Download:'
+    dropdown_actions:
+      button_label: Actions
+    edit: Edit
+    edit_model: Edit %{model}
+    empty: Empty
+    filters:
+      buttons:
+        clear: Clear Filters
+        filter: Filter
+      predicates:
+        contains: Contains
+        ends_with: Ends with
+        equals: Equals
+        greater_than: Greater than
+        less_than: Less than
+        starts_with: Starts with
+    has_many_delete: Delete
+    has_many_new: Add New %{model}
+    has_many_remove: Remove
+    index_list:
+      block: List
+      blog: Blog
+      grid: Grid
+      table: Table
+    logout: Logout
+    main_content: Please implement %{model}#main_content to display content.
+    new_model: New %{model}
+    next: Next
+    pagination:
+      empty: No %{model} found
+      entry:
+        one: entry
+        other: entries
+      multiple: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{total}</b>
+        in total
+      multiple_without_total: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b>
+      one: Displaying <b>1</b> %{model}
+      one_page: Displaying <b>all %{n}</b> %{model}
+    powered_by: Powered by %{active_admin} %{version}
+    previous: Previous
+    sidebars:
+      filters: Filters
+    status_tag:
+      'no': 'No'
+      'yes': 'Yes'
+    unsupported_browser:
+      headline: Please note that ActiveAdmin no longer supports Internet Explorer
+        versions 8 or less.
+      recommendation: We recommend upgrading to the latest <a href="http://windows.microsoft.com/ie">Internet
+        Explorer</a>, <a href="https://chrome.google.com/">Google Chrome</a>, or <a
+        href="https://mozilla.org/firefox/">Firefox</a>.
+      turn_off_compatibility_view: If you are using IE 9 or later, make sure you <a
+        href="http://windows.microsoft.com/en-US/windows7/webpages-look-incorrect-in-Internet-Explorer">turn
+        off "Compatibility View"</a>.
+    view: View
   activerecord:
     errors:
+      messages:
+        record_invalid: 'Validation failed: %{errors}'
+        restrict_dependent_destroy:
+          many: Cannot delete record because dependent %{record} exist
+          one: Cannot delete record because a dependent %{record} exists
       models:
         media_list:
           attributes:
             contacts:
               association_count_greater_than_or_equal_to: |
                 should be greater than or equal to %{count}
+            name:
+              presence: List name can't be blank
+              uniqueness: Name has already been taken
+        user:
+          attributes:
+            email:
+              blank: Email can't be blank
+  application:
+    about:
+      text: "<p>Miranda Tan, Founder and CEO of Robin8, founded her first PR firm,
+        ExcitePR, in 1999. She realized that businesses offering amazing products
+        were constantly running into the same problem: how could they reach out to
+        the right influencers and achieve maximum effectiveness for their message.</p>
+        \     <p>Miranda’s answer was an intuitive, easy to use, do-it-yourself PR
+        software platform she founded in 2007 with her partner, digital media pro
+        Hassan Miah. By 2010, the PR solution had been named a Top 100 OnDemand Software
+        Company, a Top 100 Mid-Atlantic Private Company, and a Top 100 OnMedia company
+        by AlwaysOn.</p>      <p>In 2014, with the emergence of big data and machine
+        learning as pillars of the latest technological advancements, Miranda and
+        Hassan, in partnership with some of the world’s brightest thought leaders,
+        rebuilt the platform to take advantage of next generation Artificial Intelligence.
+        After months of hard work and collaboration, Robin8 was created.</p>      <p>What
+        if you knew EXACTLY who to contact for every campaign, based on a data-driven
+        prediction on how successful each pitch will be? Robin8 can do all this and
+        more.</p>      <p>Robin8 uses artificial intelligence, machine learning, and
+        big data to take the guesswork out of social and content marketing.  With
+        its proprietary predictive intelligence engine, Robin8 helps you maximize
+        your reach by intelligently analyzing and understanding which journalists
+        and influencers will be the best fit for your campaign.</p>      <p>Robin8
+        is personalized to each user's digital profile.  Each time you use Robin8,
+        it learns your preferences, gets smarter and generates the best results for
+        your campaign.</p>"
+      title: ABOUT ROBIN8
+    addons:
+      continue: CONTINUE
+      go_back: GO BACK
+      money_back: 30 day money back guarantee!
+      table:
+        addon: Add-on
+        price: Price
+        qty: Qty
+      title: ADD ON SERVICES
+    analytics:
+      delivered: Delivered
+      dropped: Dropped
+      emails: Emails
+      filter_by: Filter by
+      newsrooms_views: Newsroom Views
+      opened: Opened
+      page_views: Page Views
+      sent: Sent
+      statisitcs: SmartRelease Email Statistics
+      values: Values
+      visits: Newsroom and Releases Visits
+    billing:
+      action: Action
+      addons_title: Add-ons
+      amount: Amount
+      annually: billed annually or
+      buttons:
+        addons: Add ons
+        cancel: Cancel Subscription
+        change: Change plan
+        new_plan: Subscribe to new plan
+        update: Update payment details
+      cancel_action: Cancel
+      card_last: Card last four
+      card_type: Card type
+      created_at: Created at
+      current_plan: Current Pricing Plan
+      month: month-to-month
+      name: Name
+      newsroom: Newsroom
+      payment_title: Payment
+      per_month: "/mo"
+      personal_lists: Personal Media Lists
+      plan_is_canceled: Your current plan is canceled
+      press_release: Press Release Postings on Robin8/month
+      price: Price
+      seat: Seat
+      smart_release: SmartReleases
+      status: Status
+      streams: Streams for Media Monitoring
+    contact_page:
+      address: Robin8 Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019
+      address_title: Main Office Address
+      form:
+        customer_service: General Customer Service
+        email_placeholder: Email Address
+        fill_out: Please fill out all required fields
+        first_name_placeholder: First Name
+        last_name_placeholder: Last Name
+        message_placeholder: Message
+        product_support: Product Support
+        send_button: Send
+        subject_select_placeholder: Choose a Subject
+        suggestions: Suggestions
+      inquires_title: General Inquires
+      phone: "(212) 807-8300 Extension 3"
+      phone_title: Phone (customer service)
+      thank_you: Thank you for contacting us. Someone from our team will contact you
+        shortly
+      title: Contact Robin8
+    dashboard:
+      description1: What if you knew EXACTLY who to contact for every campaign, based
+        on a data-driven prediction on how successful each pitch will be? Robin8 can
+        do all this and more, taking the guesswork and chance out of PR.
+      description2: Robin8 helps you maximize your reach by intelligently analyzing
+        and understanding which journalists and influencers will be the best fit for
+        your campaign.
+      description3: Robin8 provides you a powerful workflow and intelligent dashboard
+        to help you stay on top of your game and generate the best results for your
+        campaign.
+      new_monitoring_button: New Monitoring Stream
+      new_newsroom_button: Create a Newsroom
+      new_release_button: Publish a New Release
+      new_smartrelease_button: SmartRelease
+      title: Dashboard
+    footer:
+      about: About
+      contact: Contact
+      privacy_and_terms: Privacy & Terms
+      right_reserved: 2015 Robin8 Inc. All rights reserved.
+      team: Team
+    forgot:
+      enter_title: Please enter your <strong>Email</strong> in order to reset your
+        password.
+      has_been_sent: An email with password reset information has been sent
+      placeholder: Email
+      retrieve_title: Retrieve your password
+      submit_btn: Submit
+      user_not_found: The user with this email does not exist!
+    header:
+      demo: Demo
+      log_in: Log in
+      menu: Menu
+      pricing: Pricing
+      sign_up: Sign up
+      title: Robin8
+    highcharts:
+      download_jpeg: Download JPEG image
+      download_pdf: Download PDF document
+      download_png: Download PNG image
+      download_svg: Download SVG vector image
+      print_chart: Print chart
+    kols:
+      agree: By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service
+      email: Email
+      email_error: Email can't be blank
+      first_name: First Name
+      fname_error: First name can't be blank
+      interests: Interests
+      last_name: Last Name
+      lname_error: Last name can't be blank
+      location: Location
+      location_error: Location can't be blank
+      password: Password
+      password_error: Password must be greater then 7 characters
+      title: Signup
+    landing_page:
+      here: here.
+      inf_signup: 'Are you an Influencer? Sign up '
+      kol_signup: Are you a KOL? Sign up
+      learn_more: Learn More
+      recommend: Recommend
+      recommend_text: Influencers are curated and content is personalized to you.
+        The Robin8 recommendation engine gets smarter every time you use it.
+      sign_up: Sign Up
+      target: Target
+      target_text: Select from the list of influencers Robin8 intelligently recommends
+        in one click.
+      text1: ROBIN8 makes reaching out to reporters and influencers effortless and
+        effective.
+      text2: We’re changing the face of PR with technology that’s been years in the
+        making. Predict the success of every pitch you make to a reporter by knowing
+        with confidence they will share your content. It’s simply intelligent.
+      text3: Take the guesswork out of social and content marketing
+      text4: ROBIN8 is constantly tracking and analyzing data from the billions of
+        articles that are released every day to create the ultimate curated database
+        of influencers. By understanding the nuances behind every influencer and their
+        interests, we can help make PR a simple four step process every time.
+      text5: What can ROBIN8 do for you?
+      text6: Spend less time doing database and research work and instead focus your
+        efforts on actual pitches, contacts, planning, and content creation.
+      text7: Uses algorithms and machine-learning technology to adapt PR recommendations
+        and content personalized to you.
+      text8: Achieve a higher return on your marketing spend thanks to better earned
+        media results.
+      text9: Ready to see the world acording to ROBIN8?
+      title: Next generation social and content marketing platform powered by artificial
+        intelligence
+      track: Track
+      track_text: Track your results through our robust analytic dashboard and use
+        our media intelligence to keep abreast of the latest news.
+      upload: Upload
+      upload_text: Upload your press release or content and watch it get analyzed
+        in seconds.
+    login:
+      email: Email
+      fb_login: Login using Facebook
+      forgot: Forgot Password?
+      google_login: Login using Google Plus
+      intro: Please enter your <strong>Email</strong> and <strong>Password</strong>
+        or use <strong>Social Sign-in</strong>
+      login_label: Login
+      or: OR
+      password: Password
+      register: Register
+      remember_me: Remember me
+      title: login
+      wechat_login: Login using WeChat
+      weibo_login: Login using Weibo
+    manage_users:
+      buttons:
+        back: Back to Newsrooms
+        delete: Delete
+        delete_toggle: Delete user
+        invite: Invite User
+        manage: Manage Users
+      input_placeholder: Type User Email
+      messages:
+        cancel_button: Cancel
+        confirm_button: Delete
+        invalid_data: The data you have entered is not a valid email
+        is_active: This user is already active
+        not_available_seats: You don't have available seats!
+        remove_explanation: You will not be able to recover this user.
+        remove_user: Remove this user?
+        resent: The invitation has been resent
+        sent: The invitation has been sent
+      search_placeholder: Search User by Name or Email
+      table:
+        email: Email
+        name: Name
+      title: User management
+    monitoring:
+      all_time: All time
+      cancel: Cancel
+      done: Done
+      last_24_hours: Last 24 hours
+      last_month: Last month
+      last_week: Last week
+      loading: Loading
+      new_updates: new updates
+      no_news: There is no news
+      please_save: Please save stream first
+      popularity: Popularity
+      recency: Recency
+      rss_link: Rss Link
+      sort_by: Sort by
+      sources: Sources
+      time_range: Time range
+      topics: Topics
+      untitled: Untitled Stream
+    navigation:
+      analytics: Analytics
+      dashboard: Dashboard
+      monitoring: Monitoring
+      newsrooms: Newsrooms
+      profile: Profile
+      recommendations: Recommendations
+      releases: Releases
+      smart_release: SmartRelease
+      social: Social
+    new_package:
+      amount_info: You will be charged
+      apply: Apply Code
+      at: at
+      back: Go back
+      charge_notification: You will not be charged right away. Your payment will be
+        adjusted automatically in your next billing cycle, starting
+      confirm: CONFIRM PACKAGE CHANGE
+      current: Current
+      information: New Package Information
+      new: New Package
+      plan: Plan
+      price: Price
+      promo: Promo Code
+      title: New Package
+      total: TOTAL
+    newsrooms:
+      buttons:
+        new: New Newsroom
+      item:
+        buttons:
+          edit: Edit
+          preview: Preview
+          releases: Releases
+        description_placeholder: No description added.
+        releases: RELEASES
+      messages:
+        not_available_newsrooms: You don't have available newsrooms!
+      modal:
+        address_tab:
+          address1: Address 1
+          address2: Address 2
+          city: City
+          code: Zip/Postal Code
+          country: Country
+          dropdown:
+            select: Select...
+          state: State
+          title: Address
+        buttons:
+          delete: Delete Newsroom
+          preview: Preview
+          save: Save changes
+        contact_tab:
+          facebook: Facebook
+          instagram: Instagram
+          job_title: Job Title
+          linkedin: Linkedin
+          name: Company Contact Name
+          title: Contact
+          twitter: Twitter
+        details_tab:
+          dropdown:
+            educational_institution: Educational Institution
+            employees: employees
+            government_agency: Government Agency
+            llc: LLC
+            myself_only: Myself Only
+            non_profit: Non-Profit
+            or_more_employees: or more employees
+            privately_held: Privately Held
+            public_company: Public Company
+            select: Select...
+          industry: Industry
+          name: Company name
+          size: Size
+          tags: Tags
+          title: Company Details
+          type: Type
+        general_tab:
+          description: Description
+          description_placeholder: No description added
+          email: Email
+          fax: Fax
+          number: Toll-Free Number
+          phone: Phone
+          title: General
+          web_address: Web Address
+        media_tab:
+          title: Media
+        public_tab:
+          description: Here you can create a publicly accessible homepage for your
+            Newsroom, where readers and journalists can learn more about your company
+            or organization, as well as accessing your Press Releases and Press Kit.
+            Please pick a subdomain name for your Newsroom below
+          publish: Publish on public website
+          subdomain: Subdomain name
+          title: Public Page
+          validations:
+            subdomain_required: The Subdomain name is required
+        title: Create NewsRoom
+    payment_confirm_page:
+      desc: Your payment has been successfully processed. Please check your email
+        for transaction details.
+      go_to: Go to Robin8
+      thank: Thank you!
+      title: Payment Confirmation
+    payment_page:
+      address: Address
+      card_number: Credit Card Number
+      card_type: Credit Card Type
+      city: City
+      code: Postal Code
+      country: Country
+      cvv: CVV
+      exp_month: Exp. Month
+      exp_year: Exp. Year
+      first_name: First Name
+      go_back: GO BACK
+      info: Payment Information
+      last_name: Last Name
+      messages:
+        address_blank: Address can't be blank
+        card_number_blank: Card number can't be blank
+        card_was_declined: Your card was declined. Please confirm your card details
+          below and try again.
+        city_blank: City can't be blank
+        code_blank: Postal Code/Zip can't be blank
+        cvv_blank: CVV must be greater then 2 characters
+        exp_month_blank: Expiry Month can't be blank
+        exp_year_blank: Expiry Year can't be blank and must be in YYYY format
+        first_name_blank: First name can't be blank
+        last_name_blank: Last name can't be blank
+        phone_blank: Phone can't be blank
+        state_blank: State can't be blank
+      mr_title: Mr
+      mrs_title: Mrs
+      ms_title: Ms
+      note:
+        fifth_part: All prices in US Dollars.
+        first_part: Robin8 accepts Visa, Mastercard, Discover and American Express.
+        fourth_part: and Privacy Policy. To ensure continued service, your membership
+          will be auto-renewed unless canceled. Satisfaction guaranteed or your money
+          back (within 30 days).
+        second_part: By joining Robin8 you are agreeing to the
+        third_part: Terms of Use
+      phone: Phone
+      state: State
+      submit_btn: Submit
+      table:
+        plan: Plan
+        price: Price
+        remove: remove
+        total: TOTAL
+      title: Payment
+      your_title: Title
+    payment_update_page:
+      back_btn: "<<< BACK"
+      enter_info: Enter new Credit Card Information below
+      submit_btn: SUBMIT
+      title: UPDATE PAYMENT INFORMATION
+    pricing:
+      accesswire_distribution: Accesswire Distribution
+      accesswire_distribution_description: Distribute to thousands of websites including
+        Yahoo Finance, investor networks and calendars​. You can also add an image
+        to your message and drive even more buzz to your news. Distribution comes
+        with a real-time, analytic report.​
+      media_list: Personal Media Lists
+      media_list_description: Upload your personal media list to Robin8 so you can
+        manage and access it anytime
+      monitoring_stream: Media Monitoring Streams
+      monitoring_stream_description: Media Monitoring allows you to monitor online
+        a specific brand or updates in an industry so you can listen and keep abreast
+        on the latest news and updates. All updates are in real time.
+      newsroom: Newsroom
+      newsroom_description: Extra newsroom allows you add an extra newsroom on your
+        account. A newsroom is a branded online profile where you can add your logo,
+        releases, videos and images.
+      newswire: PR Newswire Distribution
+      newswire_description: Distribute to more than 1,600 w​ebsites including Yahoo
+        Finance​. You can also ​add an image to your message and drive even more traffic
+        to your news. Distribution comes with a detailed, analytic report.
+      press_release: Press Release on Robin8
+      press_release_description: Post your release on Robin8 website. Get found on
+        the web and share on social media outlets.
+      seat: Seat
+      seat_description: Extra seat allows you to add another user to your account.
+      select_plan:
+        agencies_button: Agencies
+        annually: billed annually or
+        businesses_button: Businesses
+        continue: Continue
+        current: Current
+        empower: Empower your business with Robin8.  <br />Take the guesswork out
+          of social and content marketing and get better results.
+        exceed: Exceed the demands of your clients with ease using Robin8's revolutionary
+          intelligence engine.  <br />Take the guesswork out of social and content
+          marketing and get better results.
+        media_lists: Personal Media Lists
+        month_to_month: month-to-month
+        newsroom: Newsroom
+        per_month: mo
+        plans: Subscription Plans
+        press_release: Press Releases/month
+        seat: Seat
+        select: Select
+        selected: Selected
+        smart_release: SmartReleases
+        stream: Streams for Media Monitoring
+        title: Select Pricing Plan
+      service_details: Service Details
+      smart_release: SmartRelease Distribution
+      smart_release_description: SmartRelease uses Robin8's proprietary predictive
+        intelligence engine to recommend the 100 reporters and top social influencers
+        most interested to cover your news. SmartRelease identifies these top reporters
+        and influencers with 1 click.
+      web_distribution: FinancialContent Web Distribution
+      web_distribution_description: FinancialContent web distribution guarantees you
+        placement on hundreds of top news websites including Boston Globe and Miami
+        Herald. Each distribution comes with a report showing a sampling of the sites
+        that posted your release.
+    profile:
+      buttons:
+        cancel: Cancel
+        save: Save changes
+      company: Company
+      confirm_new_password: Confirm new password
+      curr_password: Current password
+      email: Email
+      first_name: First name
+      last_name: Last name
+      messages:
+        required_email: The email address is required
+      new_password: New password
+      personal_info: Personal info
+      time_placeholder: select an option
+      time_zone: Time Zone
+      title: Edit Profile
+      username: Username
+    public_newsroom:
+      follow: Follow
+      no_releases: No Releases published yet
+      notification: You are in a preview mode. You need to make this newsroom public
+        and/or save the changes in order to show it on your page
+      pressroom: Pressroom
+    public_release:
+      notification: You are in a preview mode. You need to make this release and newsroom
+        public in order to show it on your page
+    register:
+      agree_terms: By signing up you agree to Robin8's Terms of Service
+      email_placeholder: Email
+      fb_signup: Sign up using Facebook
+      first_name_placeholder: First Name
+      google_signup: Sign up using Google Plus
+      here: here.
+      inf_signup: Are you an Influencer? Sign up
+      kol_signup: Are you a KOL? Sign up
+      last_name_placeholder: Last Name
+      messages:
+        email_blank: Email can't be blank
+        first_name_blank: First name can't be blank
+        last_name_blank: Last name can't be blank
+        pass_invalid: Password must be greater then 7 characters
+      or: OR
+      password_placeholder: Password
+      signup_btn: SIGN UP
+      title: Signup
+      wechat_signup: Sign up using WeChat
+      weibo_signup: Sign up using Weibo
+    releases:
+      all_newsrooms: All Newsrooms
+      edit_title: Edit
+      item:
+        buttons:
+          edit: Edit
+          preview: Preview
+          smart: SmartRelease
+      modal:
+        basic_tab:
+          characteristics_view:
+            adjectives: Adjectives
+            adverbs: Adverbs
+            bad: Bad
+            characters: Characters
+            excellent: Excellent
+            good: Good
+            highlight: Highlight
+            nouns: Nouns
+            ok: Ok
+            paragraphs: Paragraphs
+            score: Readability score
+            sentences: Sentences
+            too_short: Too short
+            words: Words
+          newsroom: Newsroom
+          paragraph_notification: "*The editor uses paragraphs by default for copied
+            text. To place a normal line break press Shift+Enter (Shift+Return)"
+          published_date: Published date
+          release_text: Release text
+          release_title: Release title
+          text_placeholder: Paste your press release here...
+          title: Basic
+          title_placeholder: Enter title...
+        buttons:
+          delete: Delete Release
+          next: Next
+          save: Save draft
+        dropdown:
+          select: Select...
+        media_tab:
+          select_logo: Please, select a logo for your release
+          title: Media
+          upload_files: Here you can upload additional media files
+        messages:
+          buy_addon: Please, buy corresponding addon in Billing settings
+          select_newsroom: You should select a newsroom
+          title_required: The Title is required
+        newswire_tab:
+          accesswire: Accesswire
+          distribution: Financial Content Distribution
+          newswire: PR Newswire
+          release_option: Please, select options for distributing release
+          start_date: Start date
+        publish: Publish the newsroom!
+        title: Create Release
+        warning: This release won't be publicly displayed while the parent Newsroom
+          remains unpublished.
+        website_tab:
+          make_private: Make this release private
+          title: Website
+      new_release: New release
+    say_something_box:
+      fb_accounts: Facebook's account(s)
+      ln_accounts: Linkedin's account(s)
+      post_btn: Post
+      post_to_fb: Post to facebook
+      post_to_ln: Post to linkedin
+      post_to_tw: Post to twitter
+      post_to_wb: Post to weibo
+      post_to_wch: Post to wechat
+      say_placeholder: Say something...
+      schedule_btn: Schedule
+      shrink_links: Shrink links
+      tw_accounts: Twitter's account(s)
+      wb_accounts: Weibo's account(s)
+      wch_accounts: Wechat's account(s)
+    select2:
+      not_found: No matches found
+      searching: Searching...
+      too_short: Please enter %{count} or more characters
+    smart_release:
+      analysis_step:
+        buttons:
+          next: Next
+        description1: Here's the analysis report for <strong> "%{name}" </strong>.
+          Please make any necessary changes, and click on <strong> %{button} </strong>
+          when you're finished
+        description2: when you're finished
+        is_about: <strong> "%{name}" </strong> is about
+        summary: Here's a summary of what <strong> "%{name}" </strong> is all about
+        title: Analysis
+        topics: and the following topics are mentioned in it
+      pitch_step:
+        button: Pitch!
+        delete_button: Delete
+        description: Now that you know exactly which journalists and influencers to
+          contact for your compaign, you need to prepare the note to these contacts.
+          You can use the Robin8 default note or prepare your own personal note. If
+          you are preparing your own personal note, we recommend you keep it short
+          and no more than 3 paragraphs.
+        email_panel:
+          email: Your email address
+          email_placeholder: Enter an email address...
+          length: Summary length
+          merge_tags:
+            first_name: First Name
+            last_name: Last Name
+            link: Link
+            outlet: Outlet
+            summary: Summary
+            text: Text
+            title: Title
+          pitch_text: Pitch text
+          preview: Preview
+          sentences: sentences
+          subject: Subject line
+          subject_placeholder: Enter a catchy subject line...
+          tags: Available merge tags
+          text_dear: Dear
+          text_here: Here's a press release you might find interesting. Please let
+            me know your thoughts.
+          text_text: Press Release Text
+          title: Email pitch
+        see: See list
+        targets: Targets will be contacted via Email
+        targets_table:
+          actions: Actions
+          button: Save
+          delete: Delete
+          name: Name
+          outlet: Outlet
+          save: Save as a list
+          save_placeholder: List name...
+          success_pitch_sent: Your pitch has been successfully sent.
+          success_uploaded_list: Your list has been successfully saved.
+        test_button: Send a Test Email
+        title: Pitch
+      start_step:
+        buttons:
+          analyze: Analyze
+          new_release: New Release
+        description: SmartRelease helps you maximize your reach by intelligently analyzing
+          and understanding which journalists and influencers will be the best fit
+          for your campaign.
+        dropdown:
+          plus_new_release: "+ New Release"
+          select: Select...
+        notification: You can't use smart release feature. Update your add ons.
+        select: Select a release to start
+        title: Welcome to SmartRelease
+      targets_step:
+        buttons:
+          next: Next
+        description: What if you knew EXACTLY who to contact for every campaign, based
+          on a data-driven prediction on how successful each pitch will be? Robin8
+          helps you maximize your reach by intelligently analyzing and understanding
+          which journalists and influencers will be the best fit for your campaign.
+        influencers_tab:
+          author: Author
+          buttons:
+            add_all: Add all
+            advanced: Advanced
+            export: Export as CSV
+            inspect: Inspect
+            no_but: 'No'
+            remove_all: Remove all
+            yes_but: 'Yes'
+          contact: Contact
+          length: Average length
+          outlet: Outlet
+          pitch: Pitch?
+          relevance: Relevance
+          title: Influencers
+        media_tab:
+          add_list: Add a previously saved list
+          delete: Delete
+          formats: Supported formats
+          ignored_contacts: All contacts in incorrect format will be ignored.
+          not_available: You don't have available media list in your subscription!
+          select_placeholder: Select a Media List or upload a new one...
+          successfully_uploaded: Your list has been successfully uploaded.
+          table:
+            actions: Actions
+            contacts: Contacts
+            empty: You haven't selected any media list yet!
+            name: List Name
+          title: Media List
+          upload_button: Upload a new list
+          uploaded_file_info: Uploaded file must have exactly <strong>four</strong>
+            columns, formatted as <strong>first name, last name, email address, outlet</strong>
+        search_tab:
+          search: Search
+          search_authors:
+            authors: Authors
+            city_country: City or State/Province or Country
+            contact_names: Contact's first and last name
+            enter_keywords: Enter keywords
+            keywords: Keywords
+            location: Location
+            name: Contact name
+            outlet: Outlet
+            outlet_names: Outlet website or blog name
+            title: Search Authors
+          search_influencers:
+            all: All
+            celebrities: Celebrities
+            from: From
+            influencers: Influencers
+            location_placeholder: Location
+            show: Show me influencers for
+            title: Search Influencers
+            topic_placeholder: Topic
+            users: Power users
+            who: Who are
+          title: Search
+        social_tab:
+          amplif: Amplif.
+          contact: Contact
+          followers: Followers
+          influencer: Influencer
+          pitch: Pitch?
+          reach: Reach
+          relevance: Relevance
+          title: Social
+        title: Targets
+      top_menu:
+        analysis: Analysis
+        pitch: Pitch
+        start: Start
+        targets: Targets
+    social:
+      posts:
+        description1: Below is a list of your scheduled post(s) to your social profiles.  To
+          schedule a post, just go to the "Say Something" box next to the Robin8 logo,
+          located on the top of the dashboard.
+        description2: To delete a scheduled post, just click on the delete button
+          on this page.
+        later: Later
+        title: Review Scheduled Posts
+        today: Today
+        tomorrow: Tomorrow
+      profiles:
+        add_button: Add
+        connect: Connect
+        connected_to: Connected to
+        description: Use Robin8 to manage your social profiles. Start by linking your
+          Robin8 account to your social profiles so you can easily post or schedule
+          your post (s) directly to your profiles with one click.
+        disconnect: Disconnect
+        facebook: Facebbok
+        google: Google+
+        linkedin: Linkedin
+        no_accounts: There is no accounts
+        note: "* for adding multiple accounts for one social network you should be
+          signed out from this network in your browser"
+        title: Manage Connected Social Profiles
+        twitter: Twitter
+        wechat: WeChat
+        weibo: Weibo
+      scheduled_posts: Scheduled Posts
+      social_profiles: Social Profiles
+    team_page:
+      advisors:
+        advisor1_desc: is the leading acoustic artificial intelligence for the Internet
+          of Things. One Llama Labs was incubated from the University of Illinois
+          and the National Center for Supercomputer Application with grants from the
+          National Science Foundation.
+        advisor1_name: One Llama Labs
+        advisor2_desc: is the top startup accelerator in East Asia. Since 2010, ChinAccelerator
+          has backed over 60 companies and is supported by SOS Ventures, a $235 million
+          fund.
+        advisor2_name: Chinaccelerator
+        title: Robin8 <span>Advisors</span>
+      ceo_desc: Miranda Tan has more than 10 years experience in public relations,
+        marketing, and tech. Miranda has a BS from Cornell University and a JD from
+        St. John’s University School of Law.
+      ceo_name: Miranda Tan
+      ceo_pos: CEO
+      chairman_desc: Hassan has nearly three decades of experience in the finance
+        and technology. Previously, Hassan was the CEO of Xing Technology which sold
+        to Real Networks for $75 Million. Hassan was also the head of digital media
+        at CAA and a managing director of Intel Capital. He has a BBA from the University
+        of Michigan and a MBA from Stanford University Graduate School of Business.
+      chairman_name: Hassan Miah
+      chairman_pos: Chairman
+      developer_desc: Razee has extensive experience in coding, testing, implementation
+        and overall technical support of Robin8. Razee earned a BS from the National
+        University of Computer and Emerging Sciences in Pakistan.
+      developer_name: Razee Khan
+      developer_pos: Engineer and Developer
+      operations_desc: Cynthia heads overall operations and administration for Robin8.
+        She has an MBA from Adelphi University and a BS in Accounting from Nanjing
+        University of Science and Technology.
+      operations_name: Cynthia Chen
+      operations_pos: VP, Operations
+      sales_desc: Alex is a passionate marketer with extensive experience in sales
+        and media outreach. He is an aggressive pitcher who loves connecting with
+        his clients and their audience. Alex graduated from the University of Michigan,
+        College of LS&amp;A with a BS in Neuroscience.
+      sales_name: Alex Stefanov
+      sales_pos: VP, Sales and Marketing
+      scientist_desc: Edison has over 5 years experience in machine learning and data
+        mining in China working with Tencent and Quo360. He has published multiple
+        articles on his work in the Journal of Applied Mathematics and other international
+        outlets. Edison graduated Beijing University of Technology’s School of Mathematics
+        with a BS in Mathematics in 2006 and School of Computer Science with a Master
+        of Engineering CS degree in 2009. He is currently earning his Masters in Computer
+        Science at the Polytechnic School of Engineering at New York University.
+      scientist_name: Edison Xu Zhao
+      scientist_pos: Data Scientist and Engineer
+      support_desc: Olivia joined Robin8 in October 2010. At Robin8, she heads Customer
+        Support and oversees the research team. Olivia has extensive experience in
+        PR and marketing and has helped hundreds of companies with their PR campaign.
+        In addition, she heads the research team for the media database.
+      support_name: Olivia Quizon
+      support_pos: VP, Support and Research
+      title: Meet the team behind <b> Robin8</b>
+    terms:
+      billing:
+        cancellation:
+          annual: Annual packages - You may cancel your subscription at any time.
+            Cancellation will terminate your subscription twelve months after the
+            start date of your subscription with no further charges.
+          monthly: Monthly packages - You may cancel your subscription at any time.
+            You will continue to receive the benefits of the service until the end
+            of the period in which you canceled. For monthly subscriptions, this period
+            will be until the end of the current month.
+          title: CANCELLATIONS
+        credit_card:
+          change: If you wish to change credit cards during the course of an active
+            subscription, you may do so by clicking the link to the Credit Card Update
+            web form found in your payment histories page of your Account Settings
+            section.
+          failure: In the event of credit card failure during a subscription period,
+            we will notify you by email or telephone call, explaining the nature of
+            the failure and present you with a link to an update form. A successful
+            update submission will return your subscription to active status. Failure
+            to update your subscription will result in a termination of your subscription.
+            You may re-subscribe at any time. Repeat subscriptions however are not
+            eligible for the free trial offer.
+          notify: If your credit card is due to expire during the course of your subscription,
+            Robin8 will notify you via email and/or telephone call. We will provide
+            you with a link to a web form where you may submit your new card information.
+          title: Credit Card Information Updates
+        intro: Your paid subscription will commence in the specified number of days,
+          depending on the package you select, after approval of your credit card
+          submission and continue either monthly or annually, depending on the package
+          you select, until cancellation.
+        title: Automatic Recurring Billing Policy
+      contact:
+        address:
+          city: New York, NY 10019
+          company: Robin8, Inc.
+          street: 1745 Broadway, 17th Floor
+          title: 'Postal Address:'
+        email: 'Email:'
+        phone: 'Phone Number:'
+        text: 'If you have any questions or suggestions regarding our Policy, or if
+          you have submitted personally identifiable information through the Site
+          and would like access to such information or to have that information corrected,
+          please contact our webmaster:'
+        title: HOW TO CONTACT US
+      cookies:
+        control: You have control over cookies. Most Internet browsers can be set
+          to refuse to accept cookies, although this may affect your Internet experience.
+          You can also erase cookies that are already on your computer, block all
+          cookies or receive a warning before a cookie is stored. Please refer to
+          your browser instructions or "help" screen to learn more about these functions
+        general_info: Robin8 may use "cookies" - pieces of data stored on your computer
+          tied to information about you. This information will be in the form of a
+          cookie or similar file and will help us enhance your web experience by saving
+          time on the Site. Cookies do not contain or store any personal information
+          but may be tied to the personal information you knowingly choose to provide
+          to us. Cookies can store non-personally identifiable information, such as
+          what websites, pages, or advertisements your browser has accessed.
+        title: COOKIES
+        types: Robin8 uses both persistent and session cookies. Session cookies exist
+          only for as long as your browser remains open. When the session ends, the
+          browser is closed and the cookies go away. We use session cookies to maintain
+          certain information that we need so that you may, for example, shop on our
+          Site. In this case, your browser retains the session ID cookie for your
+          shopping bag. Without this session ID cookie, you can't add merchandise
+          to your bag and carry it to Checkout. Persistent cookies, in contrast, last
+          from visit to visit. Persistent cookies are saved on a visitor's computer
+          by the browser and do not go away when you exist your browser. This allows
+          us to give you a more personalized experience and helps you navigate our
+          Site more efficiently. However, you can use our Site without accepting persistent
+          cookies. Robin8 uses both types of cookies to enable us to collect aggregate
+          information on the usage patterns of our Site, such as what areas of the
+          Site are visited most often, so we can tailor our site to user preferences.
+          This means that when you log into the Site using your user name and password,
+          information about what you visit on the Site, while you are logged in, will
+          be linked to the personal information that you provide to us. If you choose
+          to visit the site without logging in, then information about what you visit
+          on the Site is only collected on an anonymous, aggregate basis, and is not
+          tied to your personal information.
+      email:
+        text: 'If you send us an e-mail with questions or comments, we may use the
+          personal information you provide to respond to your questions or comments,
+          and we may save your questions or comments for future reference. There may
+          be times when you will have the opportunity to subscribe to an e-mail list
+          or electronic newsletter that will send information about our Site. However,
+          we will provide you with the option to change your preferences and opt-out
+          of receiving those communications. You may request at any time that we not
+          e-mail you in the future by clicking the "unsubscribe" link which is included
+          at the bottom of any e-mail that you receive from us and hitting send, or
+          by contracting us at info@myprgenie.com. When contacting us by email, please
+          insert "PRIVACY" in the subject line and one of the following in the body
+          of the message: (1) Please do not send me email, (2) Keep my email address
+          private, or (3) Don''t send email/Keep my email address private. If you
+          unsubscribe, you should assume that your request has been received and is
+          being processed. Please allow ten (10) business days from when the request
+          was received to complete the removal of your email address from our database
+          as some of our promotions may have been in process before submitting such
+          request we will make reasonable efforts to discontinue these e-mail communications
+          as soon as practicable. In addition, you may contact us at info@myprgenie.com
+          to request that we not disclose your personal information to unrelated third
+          parties for marketing purposes. Please include your name, address and state
+          "NO THIRD PARTY SHARING" in your request.'
+        title: E-MAIL COMMUNICATIONS
+      information:
+        age_restriction: Robin8 does not knowingly collect or maintain personal information
+          from children under the age of 13 or send them requests for personal information.
+          If you are under the age of 13, you should not furnish us with any identifiable
+          information about yourself without the written verifiable consent of your
+          parent or guardian. If Robin8 learns that personally identifiable information
+          of persons less than 13 years of age has been collected on the Site without
+          verified parental consent, then Robin8 will take the appropriate steps to
+          delete this information.
+        header: INFORMATION COLLECTION AND USE
+        identification_and_profile: At various locations on our Site, such as in registration
+          forms, online stores, message boards, blogs and surveys, we may request
+          that you supply us with personally identifiable information (e.g., name,
+          e-mail address, mailing and shipping addresses, home or work telephone number,
+          birth date, gender and/or credit card information). If you do not want your
+          personally identifiable information collected, please do not submit it to
+          us. When you do provide us with personally identifiable information, we
+          may use that information to better understand your needs and how we can
+          improve our products and services. We may also use that information to contact
+          you, for example, to answer a question or respond to a comment you have
+          submitted. In addition, we may use your personal information to keep you
+          up to date on the latest product and event announcements, news, special
+          offers, to notify the winners of our contests and sweepstakes and for communicating
+          other information we think you would like to hear about. In order to submit
+          yourself for a role listed on our Site, you must create a profile. Your
+          profile consists of your credits and special skills. Only those that you
+          have invited to view your profile, other than the Site administrators, will
+          be able to view your profile - no other Site visitors will have access to
+          your profile.
+        personal_information_header: Personal Information
+        possible_unsubscribe: If we ever send you information by e-mail concerning
+          new products or services that you did not expressly request, we will provide
+          you with the opportunity to opt-out of receiving future notices.
+        privacy_options: When available, your privacy options will be set by you as
+          the user according to the privacy settings under your account. Any adjustments
+          to the privacy policy will be based on the settings that you make. For the
+          avoidance of doubt, although your complete profile will not be available
+          to the public, the foregoing shall not be construed as a limitation of Robin8's
+          right to use or exploit one or more elements from your profile on the Site
+          in accordance with the Agreement. However, we will not provide your information
+          to third parties without your consent, except as required by law as explained
+          in the "Information Sharing" and "Certain Third Party Transactions" sections
+          below.
+        will_not_collect: Robin8 will not collect any personally identifiable information
+          about you - such as your name, address, telephone number or e-mail address
+          - unless you provide it to us voluntarily and approve its use.
+      information_sharing:
+        text: Though we make every effort to preserve user privacy, we may need to
+          disclose information as required by law wherein we have a good-faith belief
+          that such action is necessary to protect its rights and/or to comply with
+          a current judicial proceeding, court order or other legal process. This
+          includes exchanging information with other companies and organizations for
+          fraud protection and credit risk reduction. Robin8 reserves the right to
+          use or disclose non-personal information in any way we see fit.
+        title: INFORMATION SHARING
+      links:
+        text: Our Site contains links to other sites. Please be aware that Robin8
+          is not responsible for the privacy practices of other sites. We encourage
+          you to be aware when you leave our Site and to read the privacy statements
+          of every website that collects personally identifiable information. This
+          Policy applies solely to information collected by our Site.
+        title: LINKS TO NON-MYPRGENIE SITES
+      newswire:
+        accesswire:
+          agree: You agree that use of Accesswire distribution is entirely at your
+            own risk. EXCEPT AS SPECIFICALLY PROVIDED IN THIS AGREEMENT, THE ACCESSWIRE
+            SITE AND THE MATERIALS ON THE ACCESSWIRE SITE ARE PROVIDED AS IS, WITHOUT
+            WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING,
+            WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS
+            FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. ACCESSWIRE does not make
+            any representations or warranties that the ACCESSWIRE Site or materials
+            on the ACCESSWIRE Site or products and services purchased at or through
+            the ACCESSWIRE Site will meet your requirements or expectations, or that
+            the operation of the ACCESSWIRE Site will be uninterrupted, timely, secure
+            or error-free. Some jurisdictions do not allow the exclusion of certain
+            warranties, so some or all of the above exclusions may not apply to you.
+          intro: Use of the ACCESSWIRE site is limited to submission of news releases
+            for distribution via ACCESSWIRE and registration for and use of offered
+            products and services. You agree not to use the ACCESSWIRE Site for any
+            other purposes, including, without limitation, to store, aggregate, reproduce
+            or distribute information available on the ACCESSWIRE Site in any manner
+            or to compete directly or indirectly with ACCESSWIRE; to interfere with
+            or disrupt the operation of Site or the networks or servers connected
+            to the Site in any manner; to impersonate any person or entity or otherwise
+            misrepresent your affiliation with any person or entity; to upload, post
+            or otherwise transmit any content that infringes the proprietary rights
+            of any third party, or is otherwise unlawful or offensive; to harass or
+            otherwise harm ACCESSWIRE or any other person or entity; or to engage
+            in commercial activities of any kind without prior consent of ACCESSWIRE.
+          title: Accesswire Terms of Use and Disclaimer
+        disclaimer:
+          accuracy: The Customer acknowledges that Robin8, Inc. is an organization
+            engaged in the business of worldwide data transmission. As a Customer
+            of Robin8, Inc. I (we) warrant that I am (we are) solely responsible for
+            the accuracy, originality and factual content of all materials submitted
+            to Robin8 for distribution through any method, including the PR Newswire
+            distribution service.
+          acknowledge: The Customer acknowledges that Robin8 is providing access to
+            the PR Newswire press release distribution service for some materials,
+            and that access to PR Newswire is subject to the terms and conditions
+            set forth by PR Newswire and its contract with Robin8. If the contract
+            between Robin8 and PR Newswire is severed for any reason, or if any release
+            submitted by Robin8 to PR Newswire on behalf of a Customer is rejected
+            by PR Newswire for any reason, The Customer acknowledges that Robin8 has
+            no liability for the actions of PR Newswire. No refunds will be given
+            for any portion of the fee paid to Robin8 in the event PR Newswire rejects
+            materials submitted on behalf of Customer, or if the contract between
+            Robin8 and PR Newswire is terminated by PR Newswire.
+          customer_agrees: The Customer agrees to indemnify and hold harmless Robin8
+            and its officers, directors, employees and contractors from any claims
+            arising out of the content of the material furnished. Robin8 reserves
+            the right to refuse to disseminate any information that reasonably appears
+            to Robin8 or PR Newswire to be defamatory, obscene, false or misleading,
+            or to violate the editorial standards established by Robin8 and/or PR
+            Newswire.
+          does_not_infringe: The Customer further warrants that the material provided
+            to PR Newswire does not infringe upon any copyright, trademark or other
+            intellectual property rights worldwide of other persons, promote any illegal
+            act, or violate community standards in the geographic region selected
+            for distribution.
+          provide: The Customer will provide material for distribution by Robin8 and
+            PR Newswire in accordance with this agreement and hereby grants PR Newswire
+            the rights to reproduce, distribute, translate and create derivative works
+            of the material.
+          title: PR Newswire Disclaimer
+        title: PR Newswire Distribution Policy
+      non_personal_information:
+        text: In some cases, when you visit our Site, we may also collect information
+          that is non-personally identifiable information or information that, by
+          itself, cannot be used to identify or contact you. Examples of this type
+          of information include the type of Internet browser or computer operating
+          system you use, demographic information (your age, gender, income, education,
+          profession, zip code, etc.), the date and time you visited our Site, the
+          pages you accessed, the name of the website from which you linked to our
+          Site and other anonymous data involving your use of our Site. We use this
+          information to analyze trends and gather broad demographic information for
+          aggregate use. This information is not linked to any personally identifiable
+          information.
+        title: Non-Personal Information
+      online_store:
+        text: We may use the information that you provide to communicate with you
+          about products purchased through our online store, to provide customer support
+          in connection with those products, and to send you information about products
+          and services which we believe may be of interest to you. We do not share
+          your financial information with any third party without your consent, except
+          to a court or governmental agency if permitted by law, as authorized by
+          a court of competent jurisdiction or to the limited extent described below
+          under /"Certain Third Party Transactions/". If you make a purchase through
+          our online store, we may use the information you provide to send you important
+          announcements and updates regarding our Site, online products, services,
+          events and any other information that we think may be of interest to you.
+          You may also receive periodic mailings regarding new products and services.
+          However, you may opt-out from receiving future mailings by contacting us
+          at info@robin8.com
+        title: ONLINE STORE
+      published_content_1: For the avoidance of doubt, any video, image, or other
+        content submitted by you and posted on the Site in accordance with the Agreement
+        becomes published content and is not considered personally identifiable information
+        subject to this Policy.
+      published_content_2: For the avoidance of doubt, any video, image, or other
+        content submitted by you and posted on the Site in accordance with the Agreement
+        becomes published content and is not considered personally identifiable information
+        subject to this Policy.
+      security:
+        measures: Our Site has security measures in place to protect against the loss,
+          misuse and alteration of the information under our control. Robin8 safeguards
+          the security of the data you send us with physical, electronic, and other
+          procedures. However, as it is not possible to guarantee the security or
+          integrity of information you disclose online, we urge you to take every
+          precaution to protect your personal data when you are on the Internet. Change
+          your passwords often, use a combination of letters and numbers, and use
+          a secure browser.
+        ssl: All personal data you submit to us through the Site is encrypted with
+          secure server software (SSL) that encodes the information before your Web
+          browser software sends it to us. The SSL software decodes the data only
+          after it reaches Robin8's server, meaning that your data will be encrypted
+          were hackers to intercept it while in transit. Once the data reaches our
+          server, your private account and customer information is located on a secure
+          service behind a firewall. It is not directly connected to the Internet.
+        title: SECURITY
+      terms_definition: Robin8 ("Robin8," "we," "us" or "our") respects the privacy
+        of visitors to our website. This privacy policy (the "Policy") covers the
+        site at www.robin8.com ("Site"). The purpose of this Policy is to inform our
+        users ("you") about the types of information we gather about you when you
+        visit our Site, how we may use that information, what choices you have regarding
+        our use of your information and how you may access some of the information
+        you provide to us. MYPRGENIE reserves the right to change this Policy at any
+        time by posting a new privacy policy at this location. Therefore, you are
+        responsible for periodically checking the Policy for changes.
+      terms_of_use:
+        cease_use: The Site is maintained for your convenient access to information
+          about our company, products and services, as well as links, news and other
+          items of interest in the PR industry. In addition, in certain instances,
+          users with account information can order products online. IF AT ANY TIME
+          THE TERMS OF THIS AGREEMENT ARE NO LONGER ACCEPTABLE TO YOU, YOU SHOULD
+          IMMEDIATELY CEASE ALL USE OF THE SITE.
+        conduct:
+          general_rule: As a general rule, as set out in our Site's Privacy Policy,
+            no personally identifiable information is automatically collected from
+            users of our Site. If Robin8 does decide to change its policies, it will
+            post such changes in accordance with this Agreement and/or its Privacy
+            Policy. Please keep in mind, however, that whenever you voluntarily disclose
+            personal information online - for example, on your personal profile, message
+            boards, through e-mail, or in blogs - that information can be collected
+            and used by others, as set forth in the privacy policy. In short, if you
+            post personal information online that is accessible to other members,
+            we cannot control the other members' use of that information.
+          materials: Statements, messages, text, files, images, photos, videos, or
+            other materials ("Materials") posted by visitors to the Site, whether
+            on profiles, message boards, blogs or in other formats, are the sole responsibility
+            of the visitor who posted such Materials and reflect the opinions of the
+            visitor who has posted them and not of Robin8. Although we discourage
+            the use of any Site functionality, including profiles, message boards
+            and blogs, for anything other than lawful and constructive discourse,
+            we cannot effectively monitor all Materials posted by visitors on our
+            Site and, therefore, make no representation and warranty with respect
+            to the veracity, reliability or completeness of any such Materials. Accordingly,
+            your reliance on any such Materials shall be at your own risk
+          no_responsibility: Without limiting anything set out above, Robin8 assumes
+            no responsibility for monitoring the Site for inappropriate Materials
+            or conduct. If, at any time, we choose, in our sole discretion, to monitor
+            the Site, we nonetheless assume no responsibility for the Materials, no
+            obligation to modify or remove any inappropriate Materials and no responsibility
+            for the conduct of the visitor submitting any such Materials; however,
+            Robin8 does reserve the right to remove any Materials that it determines,
+            in its sole discretion, violates this Agreement or is otherwise unacceptable
+            or inappropriate. The visitor shall remain responsible for any and all
+            Materials he or she posts.
+          prohibition: 'Robin8 specifically prohibits, and by your use of the Site,
+            you expressly agree not to engage in, the following conduct: the deletion
+            or alteration of any Materials posted on our Site by Robin8 or a third
+            party; the taking of any action that imposes an unreasonable or disproportionately
+            large load on our Site infrastructure; using the Site directory information
+            to post or transmit any unsolicited advertising, promotional materials,
+            junk mail, spam, chain letters, telephone calls or other solicitations;
+            and printing or otherwise copying or using any personally identifiable
+            information about Site visitors or members for purposes other than contacting
+            such visitors or members for industry-related inquiries.'
+          sole_responsibility: Each visitor to the Site is solely responsible for
+            his or her interactions with other visitors. Robin8 reserves the right,
+            but has no obligation, to monitor disputes between visitors.
+          title: VISITOR CONDUCT/DISPUTES
+        content:
+          as_is: Content on the Site is provided to you "AS IS". You may download
+            or copy any Content owned by us for your own personal, noncommercial use,
+            provided that you maintain all copyright and other notices contained on
+            such Content. If you have any question as to whether we own certain Content
+            contained on our Site, do not download or copy it without first contacting
+            us (e.g., Content that appears to have been uploaded by a third party
+            should not be copied or downloaded by you). You may not copy, use, download,
+            modify, publish, transmit, transfer or sell, license, reproduce, create
+            derivative works from, distribute, perform, display, or in any way exploit
+            any of the Content, in whole or in part, without the prior written consent
+            of the owner thereof, except as expressly permitted in this Agreement
+            or under applicable law. Content consisting of downloadable software may
+            not be reverse engineered unless specifically authorized by the owner
+            of the software's patent and/or copyright.
+          authorization: You warrant and agree that any press releases, email contact(s),
+            media contact(s) or related content uploaded by you ("User Content and
+            Media Contact") is owned by you or that you have the right to post such
+            content and upload such media contacts. The posting and uploading of non-authorized
+            content or non-authorized media contact is a violation of this site's
+            terms of use and the posting of any User Content and Media Contact must
+            be legitimately authorized. If you are part of an organization, you must
+            obtain the necessary approvals within your organization before posting
+            the content or media contact. It is strictly forbidden to post content
+            about another organization or upload non-authorized media contacts without
+            their explicit approval. Furthermore, any organization subject to any
+            government oversight, such as a SEC registrant, must only post information
+            in accordance with the rules established by the government or oversight
+            organization.
+          intro: You acknowledge that the Site contains information, text, code and
+            software, photographs, audio and video clips, graphics, scripts, links,
+            interactive features and other material (collectively, the "Content")
+            that are protected by our copyright, trademark or other proprietary rights
+            of Robin8 or third parties. Robin8.com is a registered trademark, tradename,
+            service mark, or otherwise protected property of Robin8 and may not be
+            used, copied or imitated without our prior written consent. You agree
+            to comply with any copyright notices, information, or restrictions contained
+            in any Content available on or accessed through the Site.
+          links: The Site may contain links to websites that are unrelated to us and
+            are owned and operated by third parties (the "third-party sites"). These
+            links are provided solely as a convenience to you and do not constitute
+            an endorsement by Robin8 or imply that Robin8 sponsors, is affiliated
+            or associated with or otherwise recommends, certifies or endorses the
+            third-party sites. We are not responsible for the contents of, or any
+            products or services offered on, any third-party sites.
+          title: CONTENT AND MEDIA CONTACTS
+        copyright:
+          notice:
+            accurate: a statement by you, made under penalty of perjury, that the
+              above information in your notice is accurate and that you are the copyright
+              or intellectual property owner or authorized to act on the copyright
+              or intellectual property owner's behalf.
+            address: your address, telephone number, and email address;
+            all_smack_talk: a description of where the material that you claim is
+              infringing is located on the AllSmackTalk.com Site, with sufficient
+              detail that we may find it on the web site;
+            counter_notices: 'If you believe in good faith that someone has wrongfully
+              filed a notice of copyright infringement against you, the Digital Millenium
+              Copyright Act (the \"DMCA\") permits you to send us a counter-notice.
+              Notices and counter-notices must meet the then current statutory requirements
+              imposed by the DMCA; see www.loc.gov/copyright. Notices and counter-notices
+              should be sent to our Copyright Agent:'
+            identification: identification of the copyrighted work or other intellectual
+              property that you claim has been infringed upon;
+            infringing: information, if possible, sufficient to permit Robin8 to notify
+              the owner/administrator of the allegedly infringing webpage or other
+              content; and
+            intro: 'If you believe in good faith that any Materials on our Site infringe
+              on your copyright, you (or your agent) may send us a notice requesting
+              that we remove or block access to the infringing material that includes
+              the following information:'
+            note: Please note that, due to security concerns, attachments cannot be
+              accepted. Accordingly, any notification of infringement submitted electronically
+              with an attachment will not be received or processed.
+            signature: an electronic or physical signature of a person authorized
+              to act on behalf of the owner of the exclusive right that is allegedly
+              infringed;
+            statement: a statement by you that you have a good faith belief that the
+              disputed use is not authorized by the copyright or intellectual property
+              owner, its agent, or the law;
+            title: Notice for Claims of Intellectual Property Violations and Agent
+              for Notice
+          policy: It is Robin8's policy, in appropriate circumstances and at its discretion,
+            to disable and/or terminate the accounts of users who may infringe or
+            repeatedly infringe the copyrights or other intellectual property rights
+            of Robin8 and/or others.
+          protection: Robin8 respects the intellectual property of others, and we
+            ask our users to do the same. Robin8 may, in appropriate circumstances
+            and at its discretion, disable and/or terminate accounts of users who
+            may be infringing the intellectual property rights of others; however,
+            Robin8 has no responsibility for content on other websites that you may
+            find or access when using Robin8's products or services. Material available
+            on or through other websites may be protected by copyright and the intellectual
+            property laws of the United States and/or other countries. The terms of
+            use of those web sites, and not the terms and conditions of this Agreement,
+            govern your use of that material.
+          title: COPYRIGHT/INTELLECTUAL PROPERTY POLICY
+        date: As of July 25th, 2007
+        disclaimer:
+          acknowledge: You specifically acknowledge and agree that Robin8 and its
+            officers, directors, employees, agents, contractors, successors and assigns
+            are not liable for any defamatory, offensive or illegal conduct of any
+            user. In addition, while Robin8 intends to take reasonable steps to prevent
+            the introduction of viruses or other destructive materials to the Site,
+            we do not warrant, guarantee or make any representations that the Site,
+            or any Content available for downloading on the Site, will be free of
+            viruses or destructive materials and we shall not be liable for any viruses
+            or other destructive materials that may infect your computer equipment
+            or other property on account of your access to, use of, or browsing in
+            the Site or the server that makes it available, or your downloading of
+            any Content from the Site.
+          no_guarantee: ALTHOUGH THE INFORMATION PROVIDED TO VISITORS ON THIS SITE
+            IS OBTAINED OR COMPILED FROM SOURCES WE BELIEVE TO BE RELIABLE, MYPRGENIE
+            CANNOT AND DOES NOT GUARANTEE THE ACCURACY, VALIDITY, TIMELINESS OR COMPLETENESS
+            OF ANY INFORMATION OR DATA MADE AVAILABLE TO VISITORS OR ITS SUITABILITY
+            FOR ANY PARTICULAR PURPOSE. NEITHER MYPRGENIE, NOR ANY OF ITS OFFICERS,
+            DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS AND ASSIGNS, OPERATIONAL
+            OR PROMOTIONAL PROVIDERS, PROGRAM PRODUCERS OR SPONSORS ARE LIABLE OR
+            SHALL HAVE RESPONSIBILITY OF ANY KIND TO ANY VISITOR FOR ANY LOSS OR DAMAGE
+            THAT A VISITOR INCURS IN THE EVENT OF (I) ANY FAILURE OR INTERRUPTION
+            OF THIS SITE; (II) ANY ACT OR OMISSION OF ANY THIRD PARTY INVOLVED IN
+            MAKING THIS SITE OR THE DATA CONTAINED HEREIN AVAILABLE TO VISITORS; (III)
+            ANY OTHER CAUSE RELATING TO A VISITOR'S ACCESS OR USE, OR INABILITY TO
+            ACCESS OR USE, ANY PORTION OF THIS SITE OR MATERIALS ON THIS SITE; (IV)
+            ANY VISITOR'S INTERACTION OR SUBMISSIONS ON THE WEBSITE, INCLUDING, BUT
+            NOT LIMITED TO, MESSAGE POSTINGS; OR (V) FROM ANY VISITOR'S FAILURE TO
+            COMPLY WITH THIS AGREEMENT, WHETHER OR NOT THE CIRCUMSTANCES GIVING RISE
+            TO SUCH CAUSE MAY HAVE BEEN WITHIN THE CONTROL OF MYPRGENIE OR OF ANY
+            VENDOR PROVIDING SOFTWARE, SERVICES OR SUPPORT. IN NO EVENT WILL MYPRGENIE,
+            OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS OR ASSIGNS
+            BE LIABLE TO ANY VISITOR FOR ANY DIRECT, SPECIAL, INDIRECT, CONSEQUENTIAL,
+            OR INCIDENTAL DAMAGES OR ANY OTHER LOSS OR DAMAGES OF ANY KIND EVEN IF
+            MYPRGENIE, ITS AFFILIATES OR ANY OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY
+            THEREOF. PLEASE BE ADVISED THAT ONCE YOU LEAVE OUR WEBSITE, YOUR USE OF
+            THE INTERNET WILL BE GOVERNED BY THE TERMS OF USAGE AGREEMENTS AND PRIVACY
+            POLICIES, IF ANY, OF THE PARTICULAR SITE THAT YOU ARE ACCESSING, INCLUDING
+            THOSE OF OUR OPERATIONAL PROVIDERS, ADVERTISERS, SPONSORS, AND PROMOTIONAL
+            PARTNERS. MYPRGENIE, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS,
+            SUCCESSORS AND ASSIGNS WILL NOT BE RESPONSIBLE OR LIABLE FOR THE CONTENT,
+            ACTIVITIES, OR PRIVACY PRACTICES OF THE OTHER SITES, OR ANY LOSS OR DAMAGE
+            THAT COULD RESULT FROM LEAVING OUR WEBSITE.
+          not_responsible: We will not be responsible for delays or failures in performing
+            any obligations under the terms of this Agreement, whether or not due
+            to any cause beyond our reasonable control.
+          own_risk: You agree that your use and browsing of our Site is at your own
+            risk. If you are dissatisfied with the Site or any Content, or with any
+            of the terms and conditions of this Agreement, your sole and exclusive
+            remedy is to discontinue accessing and using the Site. MYPRGENIE DOES
+            NOT WARRANT THAT THE SITE WILL BE UNINTERRUPTED OR ERROR-FREE, NOR DOES
+            MYPRGENIE WARRANT THAT ANY DEFECTS IN THE SITE OR INACCURACIES IN THE
+            CONTENT WILL BE CORRECTED. WITHOUT LIMITING THE FOREGOING, THE SITE AND
+            ALL OF THE CONTENT ARE PROVIDED TO YOU "AS IS". NEITHER WE, NOR OUR AFFILIATES,
+            SUBSIDIARIES AND/OR RELATED ENTITIES, THIRD PARTY CONTENT PROVIDERS AND
+            OUR AND THEIR RESPECTIVE OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS,
+            SUCCESSORS AND ASSIGNS WARRANT, EITHER EXPRESSLY OR BY IMPLICATION, THE
+            ACCURACY OF ANY MATERIALS OR INFORMATION PROVIDED ON THE SITE OR THEIR
+            SUITABILITY FOR ANY PARTICULAR PURPOSE, AND EXPRESSLY DISCLAIMS ALL WARRANTIES,
+            INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF TITLE OR IMPLIED WARRANTIES
+            OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, WITH RESPECT TO
+            THE SITE, ANY CONTENT OR, IF APPLICABLE, ANY PRODUCTS OR SERVICES PURCHASED
+            OR OBTAINED, DIRECTLY OR INDIRECTLY, THROUGH USE OF THE SITE. YOU EXPRESSLY
+            AGREE THAT THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SITE
+            ARE ASSUMED SOLELY BY YOU. Where applicable law does not allow for the
+            exclusions of implied warranties, the forgoing exclusions may not apply.
+          title: DISCLAIMER
+        governing_law:
+          text: The terms of this Agreement shall be construed in accordance with
+            the internal laws of the State of New York without regard to its conflict
+            of laws, and you and we irrevocably consent, in connection with any action
+            to enforce this Agreement, to the jurisdiction of the federal and state
+            courts located in New York, New York.
+          title: GOVERNING LAW
+        grant:
+          avoidance: For the avoidance of doubt, you irrevocably grant to us the royalty-free,
+            unrestricted, world-wide, perpetual, non-exclusive and fully sub-licensable
+            right to exploit your image, photo, likeness, videos, in whole or in part,
+            and any other Materials you post on the Site or submit to us in connection
+            with any and all publicity and advertising for and promotion of the Site
+            and Robin8, and in connection with Robin8's exercise of any other rights
+            granted hereunder as Robin8 determines in its sole discretion. You hereby
+            release Robin8 from and against any and all claims, damages or liabilities
+            arising from or relating to the use of such Materials, image, photo, likeness,
+            and videos as set forth in this Agreement.
+          intro: By communicating with Robin8, including submitting or sending Materials
+            or other information or material to the Site, you grant Robin8 the royalty-free,
+            unrestricted, world-wide, perpetual, irrevocable, non-exclusive and fully
+            sub-licensable right and license to use, reproduce, modify, adapt, publish,
+            translate, create derivative works from, transfer, sell, distribute, transmit,
+            perform and display such Materials (in whole or part), including any information,
+            suggestions, ideas, drawings or concepts contained in such Materials,
+            worldwide and/or to incorporate it in other works in any form, media,
+            or technology now known or later developed. You will remain responsible
+            for the accuracy, copyright compliance, legality, decency, or any other
+            aspect of such submitted material or other communication to Robin8. You
+            also warrant that any "moral rights" in posted Materials have been waived.
+          title: USER'S GRANT OF LIMITED LICENSE
+        indemnity:
+          text: You agree to defend, indemnify, and hold harmless Robin8, its subsidiaries,
+            affiliates, and their respective officers, directors, employees and agents,
+            from and against any claims, actions or demands, including without limitation
+            reasonable legal and accounting fees, alleging or resulting from (i) any
+            Materials you submit, post, transmit or otherwise make available through
+            the Site, (ii) your use of the Site, or (iii) your breach of the terms
+            of this Agreement.
+          title: INDEMNITY
+        intro: Welcome to our website. PLEASE READ THE FOLLOWING TERMS OF USE CAREFULLY.
+          The following 'Terms of Use Agreement' ("Agreement") govern use of www.Robin8.com
+          website (the "Site") which is operated and maintained by Robin8 ("Robin8,"
+          "we," "us" or "our"). For the purposes of this Agreement, if the user is
+          not an individual, then "you" will include the user's company, its officers,
+          employees, members, agents, successors and assigns. This Agreement also
+          incorporates by reference the terms of Robin8's Privacy Policy. BY PRESSING
+          THE "I ACCEPT" BUTTON OR ACCESSING THE SITE, YOU ACCEPT, WITHOUT LIMITATION
+          OR QUALIFICATION, ALL OF THE TERMS AND CONDITIONS IN THIS AGREEMENT. We
+          reserve the right, in our discretion, to change or modify this Agreement
+          from time to time and at any time, and without actual notice to you. All
+          such changes to this Agreement will be effective immediately upon posting
+          by Robin8 to the Site. Your use of our Site will constitute your binding
+          acceptance of this Agreement, including any changes or modifications made
+          by us, whether or not you have reviewed. IF YOU DO NOT AGREE WITH THE TERMS
+          OF THIS AGREEMENT, OR ANY POSTED GUIDELINES OR RULES, THEN PLEASE DO NOT
+          USE THIS SITE.
+        liability:
+          accuracy: Robin8 provides a venue for companies and individuals to post
+            their PR or information and Robin8 does not screen or censor the profiles
+            or Materials on Robin8.com. As a result, Robin8 has no control over the
+            accuracy, reliability, completeness, or timeliness of the profiles or
+            Materials submitted on Robin8.com and makes no representations about any
+            profile or Materials on the Site.
+          no_control: Robin8 acts as a venue for users to post PR information and
+            other data about their company or the user. Robin8 is not involved in
+            the actual transaction between User that uploads PR or any other User
+            that might make use of the uploaded content, such as a news reporter or
+            publisher. As a result, Robin8 has no control over the quality, safety
+            or legality of the comments posted or profiles submitted the truth or
+            accuracy of any comments, videos, profiles or Materials on Robin8.com.
+          no_guarantees: Robin8 cannot guarantee and does not promise any specific
+            results from use of myprgenie.com. No advice or information, whether oral
+            or written, obtained by a member from Robin8 or through or from myprgenie.com
+            shall create any warranty not expressly stated herein.
+          risks: In addition, note that there are risks, including but not limited
+            to the risk of physical harm, of dealing with strangers or people acting
+            under false pretenses. Because user authentication on the Internet is
+            difficult, Robin8 cannot and does not confirm that each member is who
+            they claim to be. You assume all risks associated with dealing with the
+            users with whom you come in contact. We expect that you will use caution
+            and common sense when using Robin8.com.
+          sole_responsibility: You acknowledge and agree that you are solely responsible
+            for the form, content and accuracy of any profile or Materials contained
+            therein submitted by you on the Site.
+          title: MYPRGENIE'S LIABILITY
+        limitation_of_liability:
+          part_1: TO THE FULLEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW, MYPRGENIE,
+            OUR AFFILIATES, SUBSIDIARIES AND/OR RELATED ENTITIES, AND ANY THIRD PARTY
+            CONTENT PROVIDERS, AND OUR AND THEIR RESPECTIVE OFFICERS, DIRECTORS, EMPLOYEES,
+            AGENTS, CONTRACTORS, SUCCESSORS AND ASSIGNS, ARE NOT LIABLE FOR ANY DIRECT,
+            INCIDENTAL, CONSEQUENTIAL, SPECIAL, INDIRECT, PUNITIVE OR SIMILAR DAMAGES
+            ARISING OUT OF YOUR ACCESS TO, OR USE OF, OR INABILITY TO ACCESS OR USE
+            THIS SITE, INCLUDING WITHOUT LIMITATION, DAMAGES FOR HARM TO BUSINESS,
+            LOST PROFITS, LOST SAVINGS, OR LOST REVENUES, HOWEVER SUCH DAMAGE IS CAUSED
+            AND WHETHER BASED IN CONTRACT, TORT (INCLUDING NEGLIGENCE) OR ANY OTHER
+            THEORY OF LIABILITY. THE FOREGOING LIMITATIONS SHALL APPLY REGARDLESS
+            OF WHETHER WE, OUR AFFILIATES, SUBSIDIARIES AND/OR RELATED ENTITIES, ANY
+            THIRD PARTY CONTENT PROVIDER, OR ANY OF OUR OR THEIR RESPECTIVE OFFICERS,
+            DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS AND ASSIGNS HAVE
+            BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+          part_2: IN THE EVENT YOU TRANSMIT, INTRODUCE, OR OTHERWISE CAUSE ANY TECHNICAL
+            DISRUPTION OF THE SITE OR THE SERVICES TRANSMITTING THE SITE TO YOU, YOU
+            AGREE TO BE RESPONSIBLE FOR ANY AND ALL LIABILITIES AND COSTS AND EXPENSES
+            (INCLUDING ATTORNEYS' FEES AND EXPENSES) ARISING FROM ANY AND ALL CLAIMS
+            BROUGHT BY THIRD PARTIES BASED UPON SUCH TECHNICAL DISRUPTIONS. "TECHNICAL
+            DISRUPTION" INCLUDES DISTRIBUTION OF UNSOLICITED ADVERTISING OR CHAIN
+            LETTERS, PROPAGATION OF COMPUTER WORMS, VIRUSES OR OTHER HARMFUL CODE,
+            AND/OR USING THE SITE TO MAKE UNAUTHORIZED ENTRY TO ANY OTHER MACHINE
+            ACCESSIBLE VIA THE SITE. YOU ARE FURTHER SOLELY RESPONSIBLE FOR THE CONTENT
+            OF ANY TRANSMISSIONS USING THE SITE AND AGREE NOT TO UPLOAD, POST OR OTHERWISE
+            MAKE AVAILABLE ON THE SITE ANY MATERIAL PROTECTED BY A PROPRIETARY RIGHT
+            OF A THIRD PARTY WITHOUT FIRST OBTAINING THE EXPRESS PERMISSION OF THE
+            OWNER OF SUCH PROPRIETARY RIGHT. YOU SHALL BE SOLELY LIABLE FOR ANY DAMAGES,
+            LOSSES, COSTS OR EXPENSES (INCLUDING ATTORNEYS' FEES AND EXPENSES) ARISING
+            OUT OF INFRINGEMENT OF PROPRIETARY RIGHTS OR ANY OTHER HARM ARISING FROM
+            THE UPLOADING, POSTING OR OTHER SUBMISSION OF MATERIALS BY YOU.
+          title: LIMITATION OF LIABILITY
+        permissions:
+          text: If you are seeking permission to use Robin8 trademarks, logos, service
+            marks, trade dress, slogans, screen shots, copyrighted designs, or other
+            brand features, please contact the site administrator.
+          title: PERMISSIONS
+        registration:
+          intro: You need not register in order to use our Site; however, in order
+            to access most features of the Site, you will have to register and create
+            an account to obtain a Username and Password. You may never use another's
+            account without permission.
+          title: REGISTRATION OBLIGATIONS
+          under_thirteen: If applicable, Robin8 will establish specific rules and
+            terms for participation in each contest, sweepstake and/or special event
+            and will post this information on our Site. We will not knowingly collect
+            personal information from visitors under thirteen (13) years of age for
+            activities on our Site without the consent of that individual's parent
+            or guardian. Upon discovery of the participation of a person under thirteen
+            (13) years of age in such activities, his or her registration or participation
+            will be canceled immediately and all personal information will be deleted
+            from our files.
+          username_and_password: You may obtain a Username and Password by completing
+            (or, if under the 13 years of age, having a parent or guardian complete)
+            the form located on our Site. Submission of the form will signify your
+            agreement that (a) all information provided in the form is complete, correct
+            and accurate; (b) you will honor all charges incurred by you on your account;
+            and (c) you will keep your Username and Password confidential and notify
+            us within 24 hours of any unauthorized use of your account, or other breach
+            of security. Once you have registered, you are responsible for the maintaining
+            the security of your Username and Password and for updating your registration
+            information as necessary. All Username and/or Password changes will be
+            confirmed by a confirmation e-mail or via U.S. mail, at the user's request.
+            We have the right to rely on any information you provide to us and shall
+            have no liability for any such reliance. You are solely responsible for
+            any and all use of your account. Without limiting the foregoing, we reserve
+            the right to terminate your account without prior notice if your account
+            information contains any untruthful or inaccurate information. Our collection
+            and use of all information submitted in connection with registration is
+            subject to the terms of our Privacy Policy at Robin8.com
+        restrictions:
+          abide: You must abide by all additional copyright notices and other restrictions
+            contained on the Site.
+          text: Except as expressly permitted, you agree not to use the Site for sale,
+            trade or other commercial purposes, and, you may not modify, copy, publish,
+            display, transmit, adapt or in any way exploit the Content of the Site.
+            Only if you obtain prior written consent from us -- and from all other
+            entities with an interest in the relevant intellectual property -- may
+            you publish, display or commercially exploit any material from the Site.
+            To seek our permission, you may write to us at the address provided below.
+            If permission is granted by Robin8 and by all other entities with an interest
+            in the relevant intellectual property, you may not change or delete any
+            author attribution, trademark, legend or copyright notice.
+          title: RESTRICTIONS ON USE OF MATERIAL
+        security:
+          text: From time to time, we will use techniques designed to identify fraudulent
+            activities, including, without limitation, credit card fraud. You agree
+            to cooperate with such efforts as we may, in our sole discretion, deem
+            necessary to identify attempted fraud. You further agree that if, for
+            any reason, you or others acting on your behalf are suspected of fraud
+            or other breach of this Agreement, we may, in our sole discretion, declare
+            you to be in breach of this Agreement, suspend or terminate your use of
+            the Site, and/or seek prosecution to the fullest extent of the law
+          title: SECURITY
+        termination:
+          text: We reserve the right, in our sole discretion, to restrict, suspend
+            or terminate your access to all or any part of the Site at any time for
+            any reason without prior notice or liability. We may change, suspend,
+            discontinue or disable all or any aspect of our Site at any time, including
+            the availability of any feature, database, or Content, without prior notice
+            or liability.
+          title: TERMINATION
+        title: Robin8 Terms of Use
+        unsolicited:
+          text: Although comments and questions are welcome, in operating this site,
+            Robin8 does not solicit nor does it wish to receive any confidential,
+            secret or proprietary information or other material from you through its
+            Site or Robin8 mail and e-mail addresses, or in any other way. Any information
+            or material submitted or sent to us, will be deemed not to be confidential
+            or secret. By submitting or sending information or other material to us,
+            you represent and warrant that the information is original to you and
+            that no other party has any rights to the material. Accordingly, any unsolicited
+            material will become and remain the property of Robin8.
+          title: UNSOLICITED MATERIALS
+      third_party:
+        text: Robin8 may disclose personal information to third parties we engage
+          to assist us in providing you certain services. For example, we may hire
+          a shipping company to help us deliver our products or services to you. We
+          may also use a third party to process online transactions and credit card
+          payments, provide products, advertising, marketing or promotional services/assistance,
+          provide e-mail services, or facilitate our online services. In these instances,
+          we may need to share your personal information. We require these companies
+          to use your personal information only to provide that particular product
+          or service and do not authorize them to use your personal information for
+          any other reason. In addition, if some or all of the assets of Robin8 are
+          sold to a third party, such third party will be entitled to use the information
+          disclosed by users of our Site. Both the personal and non-personal information
+          that we or other third parties have collected will likely be transferred
+          as part of the transaction. If we sell our business, we will attempt to
+          ensure that requests made of us regarding e-mail communications will be
+          honored.
+        title: CERTAIN THIRD PARTY TRANSACTIONS
+      title: Robin8 Terms of Use, Privacy Policy,<br/> and Distribution Policies
+    uploading:
+      choose_image: Choose an image!!!
+      different_photo: Upload a different photo...
+      files_label: Filed
+      photos_label: Photos
+      videos_label: Videos
+    user_menu:
+      anonymous: Anonymous
+      billing_settings: Billing Settings
+      log_out: Log Out
+      profile: Profile
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    - 
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: "%Y-%m-%d"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    month_names:
+    - 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - year
+    - month
+    - day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: "%{count} days"
+      x_minutes:
+        one: 1 minute
+        other: "%{count} minutes"
+      x_months:
+        one: 1 month
+        other: "%{count} months"
+      x_seconds:
+        one: 1 second
+        other: "%{count} seconds"
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+  devise:
+    confirmations:
+      confirmed: Your email address has been successfully confirmed.
+      send_instructions: You will receive an email with instructions for how to confirm
+        your email address in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you
+        will receive an email with instructions for how to confirm your email address
+        in a few minutes.
+    failure:
+      already_authenticated: You are already signed in.
+      inactive: Your account is not activated yet.
+      invalid: Invalid %{authentication_keys} or password.
+      invited: You have a pending invitation, accept it to finish creating your account.
+      last_attempt: You have one more attempt before your account is locked.
+      locked: Your account is locked.
+      not_found_in_database: Invalid %{authentication_keys} or password.
+      timeout: Your session expired. Please sign in again to continue.
+      unauthenticated: You need to sign in or sign up before continuing.
+      unconfirmed: You have to confirm your email address before continuing.
+    invitations:
+      edit:
+        header: Set your password
+        submit_button: Set my password
+      invitation_removed: Your invitation was removed.
+      invitation_token_invalid: The invitation token provided is not valid!
+      new:
+        header: Send invitation
+        submit_button: Send an invitation
+      no_invitations_remaining: No invitations remaining
+      send_instructions: An invitation email has been sent to %{email}.
+      updated: Your password was set successfully. You are now signed in.
+      updated_not_active: Your password was set successfully.
+    mailer:
+      confirmation_instructions:
+        subject: Robin8 confirmation instructions
+      invitation_instructions:
+        accept: Accept invitation
+        hello: Hello %{email}
+        ignore: If you don't want to accept the invitation, please ignore this email.<br
+          />Your account won't be created until you access the link above and set
+          your password.
+        someone_invited_you: Someone has invited you to %{url}, you can accept it
+          through the link below.
+        subject: Invitation instructions
+      reset_password_instructions:
+        subject: Robin8 password reset instructions
+      unlock_instructions:
+        subject: Robin8 account unlock instructions
+    omniauth_callbacks:
+      failure: Could not authenticate you from %{kind} because "%{reason}".
+      success: Successfully authenticated from %{kind} account.
+    passwords:
+      no_token: You can't access this page without coming from a password reset email.
+        If you do come from a password reset email, please make sure you used the
+        full URL provided.
+      send_instructions: You will receive an email with instructions on how to reset
+        your password in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you
+        will receive a password recovery link at your email address in a few minutes.
+      updated: Your password has been changed successfully. You are now signed in.
+      updated_not_active: Your password has been changed successfully.
+    registrations:
+      destroyed: Bye! Your account has been successfully cancelled. We hope to see
+        you again soon.
+      signed_up: Welcome! You have signed up successfully.
+      signed_up_but_inactive: You have signed up successfully. However, we could not
+        sign you in because your account is not yet activated.
+      signed_up_but_locked: You have signed up successfully. However, we could not
+        sign you in because your account is locked.
+      signed_up_but_unconfirmed: A message with a confirmation link has been sent
+        to your email address. Please follow the link to activate your account.
+      update_needs_confirmation: You updated your account successfully, but we need
+        to verify your new email address. Please check your email and follow the confirm
+        link to confirm your new email address.
+      updated: Your account has been updated successfully.
+    sessions:
+      already_signed_out: Signed out successfully.
+      signed_in: Signed in successfully.
+      signed_out: Signed out successfully.
+    unlocks:
+      send_instructions: You will receive an email with instructions for how to unlock
+        your account in a few minutes.
+      send_paranoid_instructions: If your account exists, you will receive an email
+        with instructions for how to unlock it in a few minutes.
+      unlocked: Your account has been unlocked successfully. Please sign in to continue.
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: must be accepted
+      already_confirmed: was already confirmed, please try signing in
+      blank: can't be blank
+      confirmation: doesn't match %{attribute}
+      confirmation_period_expired: needs to be confirmed within %{period}, please
+        request a new one
+      email_format: is not valid
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      expired: has expired, please request a new one
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      in_between: must be in between %{min} and %{max}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      not_found: not found
+      not_locked: was not locked
+      not_saved:
+        one: '1 error prohibited this %{resource} from being saved:'
+        other: "%{count} errors prohibited this %{resource} from being saved:"
+      odd: must be odd
+      other_than: must be other than %{count}
+      present: must be blank
+      spoofed_media_type: has contents that are not what they are reported to be
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      twitter_connect: is not connected to twitter
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+  flash:
+    actions:
+      create:
+        notice: "%{resource_name} was successfully created."
+      destroy:
+        alert: "%{resource_name} could not be destroyed."
+        notice: "%{resource_name} was successfully destroyed."
+      update:
+        notice: "%{resource_name} was successfully updated."
+  hello: Hello world
+  helpers:
+    page_entries_info:
+      more_pages:
+        display_entries: Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b>
+          of <b>%{total}</b> in total
+      one_page:
+        display_entries:
+          one: Displaying <b>1</b> %{entry_name}
+          other: Displaying <b>all %{count}</b> %{entry_name}
+          zero: No %{entry_name} found
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+  ransack:
+    all: all
+    and: and
+    any: any
+    asc: ascending
+    attribute: attribute
+    combinator: combinator
+    condition: condition
+    desc: descending
+    or: or
+    predicate: predicate
+    predicates:
+      blank: is blank
+      cont: contains
+      cont_all: contains all
+      cont_any: contains any
+      does_not_match: doesn't match
+      does_not_match_all: doesn't match all
+      does_not_match_any: doesn't match any
+      end: ends with
+      end_all: ends with all
+      end_any: ends with any
+      eq: equals
+      eq_all: equals all
+      eq_any: equals any
+      'false': is false
+      gt: greater than
+      gt_all: greater than all
+      gt_any: greater than any
+      gteq: greater than or equal to
+      gteq_all: greater than or equal to all
+      gteq_any: greater than or equal to any
+      in: in
+      in_all: in all
+      in_any: in any
+      lt: less than
+      lt_all: less than all
+      lt_any: less than any
+      lteq: less than or equal to
+      lteq_all: less than or equal to all
+      lteq_any: less than or equal to any
+      matches: matches
+      matches_all: matches all
+      matches_any: matches any
+      not_cont: doesn't contain
+      not_cont_all: doesn't contain all
+      not_cont_any: doesn't contain any
+      not_end: doesn't end with
+      not_end_all: doesn't end with all
+      not_end_any: doesn't end with any
+      not_eq: not equal to
+      not_eq_all: not equal to all
+      not_eq_any: not equal to any
+      not_in: not in
+      not_in_all: not in all
+      not_in_any: not in any
+      not_null: is not null
+      not_start: doesn't start with
+      not_start_all: doesn't start with all
+      not_start_any: doesn't start with any
+      'null': is null
+      present: is present
+      start: starts with
+      start_all: starts with all
+      start_any: starts with any
+      'true': is true
+    search: search
+    sort: sort
+    value: value
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
+  time:
+    am: am
+    formats:
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: Last &raquo;
+      next: Next &rsaquo;
+      previous: "&lsaquo; Prev"
+      truncate: "&hellip;"
+  will_paginate:
+    next_label: Next &#8594;
+    page_entries_info:
+      multi_page: Displaying %{model} %{from} - %{to} of %{count} in total
+      multi_page_html: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b>
+        in total
+      single_page:
+        one: Displaying 1 %{model}
+        other: Displaying all %{count} %{model}
+        zero: No %{model} found
+      single_page_html:
+        one: Displaying <b>1</b> %{model}
+        other: Displaying <b>all&nbsp;%{count}</b> %{model}
+        zero: No %{model} found
+    page_gap: "&hellip;"
+    previous_label: "&#8592; Previous"

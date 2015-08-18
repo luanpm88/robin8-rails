@@ -3,6 +3,15 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   before_action :set_video,:only => :home
 
+  def set_locale
+    unless params[:locale].blank?
+      someone = current_user
+      someone = current_kol if current_user.nil?
+      someone.update_attributes(locale: params[:locale]) unless someone.blank?
+    end
+    redirect_to root_path + "##{params[:current_page]}"
+  end
+
   def home
     if user_signed_in? && !current_user.active_subscription.blank?
       render "home", :layout => 'application'

@@ -18,5 +18,11 @@ config/database.yml
 /.capistrano
 public/system
 
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
 perf - robin.sublime-project
 perf - robin.sublime-workspace
+.idea/
+config/locales_backup
