@@ -536,10 +536,10 @@ zh:
         wechatTargets: ''
         weiboTargets: ''
       wechat_report:
-        people_reached: 送达人数
-        page_views: 图文阅读人数
-        read_more: 原文阅读人数
-        favourite: 转发+收藏人数
+        favourite: "转发+收藏人数"
+        page_views: "图文阅读人数"
+        people_reached: "送达人数"
+        read_more: "原文阅读人数"
     smart_release:
       analysis_step:
         buttons:
