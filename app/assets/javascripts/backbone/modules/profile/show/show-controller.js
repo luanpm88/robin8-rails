@@ -8,7 +8,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     },
 
     getProfilePageView: function(){
-       return new Show.ProfilePage();
+      return new Show.ProfilePage();
     },
   }
 

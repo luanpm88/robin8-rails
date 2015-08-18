@@ -47,7 +47,7 @@
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
   <% if kol_signed_in? -%>
-    Robin.currentKOL = new Robin.Models.KOL(<%= current_kol.to_json.html_safe %>);
+    Robin.currentKOL = new Robin.Models.KOL(<%= current_kol.to_json(:methods => [:screens]).html_safe %>);
   <% else -%>
     if (Robin) {
       Robin.currentKOL = null;
