@@ -147,6 +147,7 @@ class CampaignController < ApplicationController
         text = params[:email_pitch]
         text = text.sub('@[First Name]', k.first_name)
         text = text.sub('@[Last Name]', k.last_name)
+        text = text.sub('@[User name]', current_user.first_name + ' ' + current_user.last_name)
 
         KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
       end
