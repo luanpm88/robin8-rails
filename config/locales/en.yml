@@ -800,6 +800,11 @@ en:
           invite: Invite
           outlet: Outlet
           relevance: Relevance
+      wechat_report:
+        favourite: No of re-share + favourite
+        page_views: No of page views
+        people_reached: No of people reached
+        read_more: No of "read more"
     smart_release:
       analysis_step:
         buttons:
