@@ -362,7 +362,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         arr = _.clone(this.model.get('screens'));
       }
       for(var i=0;i<arr.length;i++){
-        if(arr[i].thumbnail == e.currentTarget.previousElementSibling.currentSrc){
+        if(arr[i].url == e.currentTarget.previousElementSibling.href){
           arr.splice(i, 1);
           break;
         }
