@@ -164,7 +164,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
                 message: 'Please enter a value'
               },
               regexp: {
-                regexp: /^(\w{5,15})$/,
+                regexp: /^\d*$/,
                 message: 'Digits only'
               },
             }
