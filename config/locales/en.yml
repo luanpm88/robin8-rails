@@ -765,9 +765,7 @@ en:
         emailTargets: Targets will be contacted via Email
         email_panel:
           email: Your email address
-          email_pitch: Hi, @[First name]!<br/>You were invited to participate in a
-            new campaign @[Campaign title] by @[User name].  Please proceed to your
-            dashboard to accept the invitation.
+          email_pitch: Hi, @[First Name]!<br/>You were invited to participate in a new campaign @[Campaign Title] by @[User Name].  Please proceed to your dashboard to accept the invitation.
           email_placeholder: Enter an email address...
           length: Summary length
           pitch_text: Pitch text
@@ -791,9 +789,7 @@ en:
         weibo_panel:
           pitch_text: Pitch text
           preview: Preview
-          weibo_pitch: Hi, @[First name]!<br/>You were invited to participate in a
-            new campaign @[Campaign title] by @[User name].  Please proceed to your
-            dashboard to accept the invitation.
+          weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a new campaign @[Campaign Title] by @[User Name].  Please proceed to your dashboard to accept the invitation.
       targets_step:
         weibo_tab:
           author: Author
@@ -802,6 +798,7 @@ en:
           invite: Invite
           outlet: Outlet
           relevance: Relevance
+          contact: Contact
       wechat_report:
         favourite: No of re-share + favourite
         page_views: No of page views
