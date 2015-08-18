@@ -301,6 +301,7 @@ en:
       lname_error: Last name can't be blank
       location: Location
       location_error: Location can't be blank
+      mobile_number_error: Digits only
       password: Password
       password_error: Password must be greater then 7 characters
       title: Signup
@@ -755,7 +756,6 @@ en:
     smart_campaign:
       add_money: Add money
       pitch_step:
-        button: Pitch!
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
           contact for your compaign, you need to prepare the note to these contacts.
@@ -787,6 +787,19 @@ en:
         title: Pitch
         wechatTargets: Targets will be contacted via WeChat
         weiboTargets: Targets will be contacted via Weibo
+        weibo_panel:
+          pitch_text: Pitch text
+          preview: Preview
+          weibo_pitch: Dear @[First Name], Here's a press release you might find interesting.
+            Please let me know your thoughts. Best regards.
+      targets_step:
+        weibo_tab:
+          author: Author
+          followers: Followers
+          inspect: Inspect
+          invite: Invite
+          outlet: Outlet
+          relevance: Relevance
     smart_release:
       analysis_step:
         buttons:
