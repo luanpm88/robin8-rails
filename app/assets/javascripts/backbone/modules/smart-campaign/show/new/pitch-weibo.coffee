@@ -14,6 +14,16 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     events:
       'click @ui.deleteButton': 'deleteButtonClicked'
 
+    templateHelpers:
+      count: (items) ->
+        count: (items) ->
+        c = 0
+        $(items).each(() ->
+          if this.invited == true
+            c = c + 1
+        )
+        return c
+
     deleteButtonClicked: (e) ->
       e.preventDefault()
       target = $ e.currentTarget
@@ -24,12 +34,19 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       this.triggerMethod('weibo:target:removed', weibo_id)
 
     onRender: ->
-      @count = @collection.length
+      c = 0
+      $(@collection.models).each(() ->
+        if this.get("invited") == true
+          c = c + 1
+      )
+      @count = c
+
+
 
 
   Show.WeiboPitch = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-weibo'
-
+    className: 'panel panel-primary'
     ui:
       textarea: '#weibo_pitch_textarea',
       textareaPreview: '#weibo_pitch_preview'

@@ -1,12 +1,13 @@
 Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
   Show.TargetTab = Marionette.LayoutView.extend
-    template: 'modules/smart-campaign/show/templates/start-tab-targets'
+    template: 'modules/smart-campaign/show/templates/targets-tab'
 
     ui:
       categories: "#categories"
       select: "select.releases"
       nextButton: '#next-step'
+      targetsWeiboTab: '#targets-weibo-tab'
 
     regions:
       #wechatRegion: "#targets-wechat"
@@ -50,6 +51,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       if @model.get("kols")?
         if @model.get("kols").length > 0
           @ui.nextButton.removeAttr('disabled')
+      else if @model.get("weibo")?
+        if @model.get("weibo").length > 0
+          @ui.nextButton.removeAttr('disabled')
 
 
       params = {description: @model.get("description")}
@@ -68,6 +72,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         @weibo_view.updateWeibo data
         @weibo_view.setCampaignModel @model
         @weibo_view.render()
+        #$el.find('#targets-weibo-tab').click()
+        @ui.targetsWeiboTab.click()
+
 
 
 

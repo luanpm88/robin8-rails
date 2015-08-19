@@ -5,20 +5,22 @@
       <h4 class="modal-title text-center" id="myModalLabel">Send a Test</h4>
     </div>
     <div class="modal-body">
+      <label for="emails" class="col-sm-3 control-label">Send a test to</label>
+      <br />
       <form role="form" id="send-test-email" method="post" action="/campaign/test_email/">
         <div class="form-group">
-          <label for="emails" class="col-sm-3 control-label">Send a test to</label>
-          <br />
-          <div class="col-sm-10">
+
+          <div>
             <input class="form-control" id="email-address-input" type="hidden" name="email_address" value="">
             <input class="form-control" id="email-subject-input" type="hidden" name="email_subject" value="">
             <input class="form-control" id="email-pitch-input" type="hidden" name="email_pitch" value="">
-            <input type="email" class="form-control" id="test-pitch-emails-input"
-                   placeholder="Ex: freddie@mailchimp.com, mannie@mandrill.com..." name="emails">
-            <span id="helpBlock" class="help-block">Comma separate emails to send to multiple accounts</span>
+            <input class="form-control" id="emails"
+                   placeholder="Ex: freddie@mailchimp.com, mannie@mandrill.com..." name="emails" width="100%">
+
           </div>
         </div>
       </form>
+      <span id="helpBlock" class="help-block">Comma separate emails to send to multiple accounts</span>
     </div>
     <div class="modal-footer">
       <div>

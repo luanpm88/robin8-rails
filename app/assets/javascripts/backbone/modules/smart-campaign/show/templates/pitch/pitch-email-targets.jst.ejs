@@ -1,5 +1,5 @@
 <div class="well">
-  <span class="badge badge-success" id="item_count"><%= items.length%></span> <%= polyglot.t("smart_campaign.pitch_step.emailTargets") %> <i class="fa fa-envelope"></i>
+  <span class="badge badge-success" id="item_count"><%= count(items)%></span> <%= polyglot.t("smart_campaign.pitch_step.emailTargets") %> <i class="fa fa-envelope"></i>
   <a href="#email-targets-list" data-toggle="collapse">
     <small><%= polyglot.t("smart_campaign.pitch_step.see") %> <i class="fa fa-chevron-down"></i></small>
   </a>
@@ -15,13 +15,16 @@
       </tr>
       </thead>
       <tbody>
-      <% _.each(items, function(c) { %>
-      <tr>
-        <td class="middle"><%= c.first_name %> <%= c.last_name %></td>
-        <td class="middle"><%= c.email %></td>
-        <td><a class="btn btn-danger btn-xs" href="#" data-kol-id="<%= c.id %>"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
-      </tr>
-      <% }); %>
+      <% _.each(items, function(c) {
+      if (c.invited == true)
+      {
+      %>
+        <tr>
+          <td class="middle"><%= c.first_name %> <%= c.last_name %></td>
+          <td class="middle"><%= c.email %></td>
+          <td><a class="btn btn-danger btn-xs" href="#" data-kol-id="<%= c.id %>"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
+        </tr>
+      <% }}); %>
       </tbody>
     </table>
   </div>

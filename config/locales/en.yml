@@ -756,6 +756,7 @@ en:
     smart_campaign:
       add_money: Add money
       pitch_step:
+        button: Pitch!
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
           contact for your compaign, you need to prepare the note to these contacts.
