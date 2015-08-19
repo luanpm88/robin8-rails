@@ -765,8 +765,9 @@ en:
         emailTargets: Targets will be contacted via Email
         email_panel:
           email: Your email address
-          email_pitch: Dear @[First Name],<br/> Here's a content you might find interesting.
-            Please let me know your thoughts.<br/> Best regards.
+          email_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
+            new campaign @[Campaign Title] by @[User Name].  Please proceed to your
+            dashboard to accept the invitation.
           email_placeholder: Enter an email address...
           length: Summary length
           pitch_text: Pitch text
@@ -790,11 +791,13 @@ en:
         weibo_panel:
           pitch_text: Pitch text
           preview: Preview
-          weibo_pitch: Dear @[First Name], Here's a press release you might find interesting.
-            Please let me know your thoughts. Best regards.
+          weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
+            new campaign @[Campaign Title] by @[User Name].  Please proceed to your
+            dashboard to accept the invitation.
       targets_step:
         weibo_tab:
           author: Author
+          contact: Contact
           followers: Followers
           inspect: Inspect
           invite: Invite
