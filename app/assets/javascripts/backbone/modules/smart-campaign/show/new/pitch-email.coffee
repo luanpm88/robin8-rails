@@ -14,6 +14,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     events:
       'click @ui.deleteButton': 'deleteButtonClicked'
 
+    templateHelpers:
+      count: (items) ->
+        c = 0
+        $(items).each(() ->
+          if this.invited == true
+            c = c + 1
+        )
+        return c
+
     deleteButtonClicked: (e) ->
       e.preventDefault()
       target = $ e.currentTarget
@@ -24,11 +33,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       this.triggerMethod('email:target:removed', kol_id)
 
     onRender: ->
-      @count = @collection.length
+      c = 0
+      $(@collection.models).each(() ->
+        if this.get("invited") == true
+          c = c + 1
+      )
+      @count = c
+
 
   Show.EmailPitch = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/pitch/pitch-email'
-
+    className: 'panel panel-primary'
     ui:
       wysihtml5: 'textarea.wysihtml5'
       subjectLineInput: '[name=email_subject]',
@@ -98,8 +113,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @ui.wysihtml5.wysihtml5(
         toolbar:
           insert: customTemplates.insert
-          unlink: customTemplates.unlink
-        ,
+          unlink: customTemplates.unlink,
         parserRules: {
           tags: {
             "b":  {},
@@ -173,7 +187,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         self.insertRenderedText()
       )
 
+
       @editor.focus()
+      #@editor.css("padding") = "6 !important"
 
       @user = new Robin.Models.UserProfile(Robin.currentUser.attributes)
       this.ui.emailAddressInput.val(@user.get('email'))
@@ -188,7 +204,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: () ->
       return {
         mergeTags: [
-          'First Name', 'Last Name', 'Summary'
+          'First Name', 'Last Name', 'Campaign Title', 'Summary', 'Text', 'User Name'
         ],
       pitch: this.model.toJSON()
       }
@@ -204,8 +220,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       # "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"]
       renderedText = text
 
-      #title = this.releaseModel.get('title')
-      #html_text = this.releaseModel.get('text')
+      title = this.model.get('name')
+      html_text = this.model.get('description')
+      userName = Robin.currentUser.get('first_name') + ' ' + Robin.currentUser.get('last_name')
       #link = this.releaseModel.get('permalink')
       #link = '<a href="' + link + '">' + link + '</a>'
       #linkable_title = '<a href="' + this.releaseModel.get('permalink') + '">' + title + '</a>'
@@ -222,12 +239,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         renderedText = renderedText.replace(/\@\[Summary\]/g, summaries)
 
 
-      kolLink = '<a href="' + window.location.origin + '/kols/new">register</a>'
+      #kolLink = '<a href="' + window.location.origin + '/kols/new">register</a>'
 
-      renderedText = renderedText.replace(/\@\[KolReghref\]/g, kolLink)
-      #renderedText = renderedText.replace(/\@\[Title\]/g, linkable_title)
-      #renderedText = renderedText.replace(/\@\[Text\]/g, html_text)
-      #renderedText = renderedText.replace(/\@\[Link\]/g, link)
+      #renderedText = renderedText.replace(/\@\[KolReghref\]/g, kolLink)
+      renderedText = renderedText.replace(/\@\[Campaign Title\]/g, title)
+      renderedText = renderedText.replace(/\@\[Text\]/g, html_text)
+      renderedText = renderedText.replace(/\@\[User Name\]/g, userName)
 
 
       this.model.set('email_pitch', renderedText)

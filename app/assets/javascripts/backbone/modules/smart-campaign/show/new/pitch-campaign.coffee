@@ -39,8 +39,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
 
     renderTab: () ->
+
       @model.set('email_pitch' , polyglot.t("smart_campaign.pitch_step.email_panel.email_pitch"))
       @model.set('weibo_pitch' , polyglot.t("smart_campaign.pitch_step.weibo_panel.weibo_pitch"))
+      @model.set('wechat_pitch' , polyglot.t("smart_campaign.pitch_step.weibo_panel.weibo_pitch"))
 
       if @model.get('kols')
         @kols = @model.get('kols')
@@ -86,9 +88,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
 
       wechat = new Backbone.Collection()
-      wechatTargetsView = new Show.WeChatTargets
+      @wechatTargetsView = new Show.WeChatTargets
         collection: wechat
-      @showChildView 'wechatTargets', wechatTargetsView
+      @showChildView 'wechatTargets', @wechatTargetsView
+      @wechatView = new Show.WeChatPitch
+        model: @model
+      @showChildView 'wechatPitch', @wechatView
 
 
       #if wechat.length > 0

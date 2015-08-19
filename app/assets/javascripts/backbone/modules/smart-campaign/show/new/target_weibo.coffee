@@ -43,8 +43,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         return "- " + sentence
       ).join('\n')
 
-
-
   Show.ContactAuthorFormView = Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/contact-author/contact-form',
     model: Robin.Models.Author,
@@ -114,8 +112,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         error: (model, response, options) ->
           $.growl("Message can not be sent!", {type: "danger"})
 
-
-
   Show.TargetWeibo = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/targets-tab-weibo'
 
@@ -129,10 +125,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     templateHelpers:
       weibo_id: ()->
         invited_weibo = @model.model.get("weibo")
+
         weibo_id = []
         if invited_weibo?
           $(invited_weibo).each(() ->
-            weibo_id.push(this.id)
+            weibo_id.push(this.pressr_id)
           )
         return weibo_id
       campaign_id: ()->

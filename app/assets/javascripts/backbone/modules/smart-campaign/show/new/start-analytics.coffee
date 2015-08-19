@@ -39,6 +39,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.layouts.main.content.currentView.content.currentView.analyticsRegion.show child
 
     openTargetTab: () ->
+      @model.set('description', document.getElementById("release-form").value)
       @options.parent.setState('target')
 
     initSummariesEditable: () ->
