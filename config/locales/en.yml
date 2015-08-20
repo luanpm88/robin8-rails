@@ -192,13 +192,13 @@ en:
       dropped: Dropped
       emails: Emails
       filter_by: Filter by
-      newsrooms_views: Newsroom Views
+      newsrooms_views: Brand Gallery Views
       opened: Opened
       page_views: Page Views
       sent: Sent
       statisitcs: SmartRelease Email Statistics
       values: Values
-      visits: Newsroom and Releases Visits
+      visits: Brand Gallery and Content Visits
     billing:
       action: Action
       addons_title: Add-ons
@@ -217,15 +217,15 @@ en:
       current_plan: Current Pricing Plan
       month: month-to-month
       name: Name
-      newsroom: Newsroom
+      newsroom: Brand Gallery
       payment_title: Payment
       per_month: "/mo"
-      personal_lists: Personal Media Lists
+      personal_lists: Personal Influencers List
       plan_is_canceled: Your current plan is canceled
-      press_release: Press Release Postings on Robin8/month
+      press_release: Content Postings on Robin8/month
       price: Price
       seat: Seat
-      smart_release: SmartReleases
+      smart_release: SmartContent
       status: Status
       streams: Streams for Media Monitoring
     contact_page:
@@ -259,9 +259,9 @@ en:
         to help you stay on top of your game and generate the best results for your
         campaign.
       new_monitoring_button: New Monitoring Stream
-      new_newsroom_button: Create a Newsroom
-      new_release_button: Publish a New Release
-      new_smartrelease_button: SmartRelease
+      new_newsroom_button: Create a Brand Gallery
+      new_release_button: Publish New Content
+      new_smartrelease_button: SmartContent
       title: Dashboard
     footer:
       about: About
@@ -301,6 +301,7 @@ en:
       lname_error: Last name can't be blank
       location: Location
       location_error: Location can't be blank
+      mobile_number_error: Digits only
       password: Password
       password_error: Password must be greater then 7 characters
       title: Signup
@@ -340,8 +341,7 @@ en:
       track_text: Track your results through our robust analytic dashboard and use
         our media intelligence to keep abreast of the latest news.
       upload: Upload
-      upload_text: Upload your press release or content and watch it get analyzed
-        in seconds.
+      upload_text: Upload your content and watch it get analyzed in seconds.
     login:
       email: Email
       fb_login: Login using Facebook
@@ -359,7 +359,7 @@ en:
       weibo_login: Login using Weibo
     manage_users:
       buttons:
-        back: Back to Newsrooms
+        back: Back to Brand Gallery
         delete: Delete
         delete_toggle: Delete user
         invite: Invite User
@@ -403,11 +403,12 @@ en:
       analytics: Analytics
       dashboard: Dashboard
       monitoring: Monitoring
-      newsrooms: Newsrooms
+      newsrooms: Brand Gallery
       profile: Profile
       recommendations: Recommendations
       releases: Releases
-      smart_release: SmartRelease
+      smart_campaign: SmartCampaign
+      smart_release: SmartContent
       social: Social
     new_package:
       amount_info: You will be charged
@@ -427,14 +428,14 @@ en:
       total: TOTAL
     newsrooms:
       buttons:
-        new: New Newsroom
+        new: New Brand Gallery
       item:
         buttons:
           edit: Edit
           preview: Preview
-          releases: Releases
+          releases: Content
         description_placeholder: No description added.
-        releases: RELEASES
+        releases: CONTENT
       messages:
         not_available_newsrooms: You don't have available newsrooms!
       modal:
@@ -449,7 +450,7 @@ en:
           state: State
           title: Address
         buttons:
-          delete: Delete Newsroom
+          delete: Delete Brand Gallery
           preview: Preview
           save: Save changes
         contact_tab:
@@ -491,15 +492,15 @@ en:
           title: Media
         public_tab:
           description: Here you can create a publicly accessible homepage for your
-            Newsroom, where readers and journalists can learn more about your company
-            or organization, as well as accessing your Press Releases and Press Kit.
-            Please pick a subdomain name for your Newsroom below
+            Brand Gallery, where readers and journalists can learn more about your
+            company or organization, as well as accessing your Content and Press Kit.
+            Please pick a subdomain name for your Brand Gallery below
           publish: Publish on public website
           subdomain: Subdomain name
           title: Public Page
           validations:
             subdomain_required: The Subdomain name is required
-        title: Create NewsRoom
+        title: Create Brand Gallery
     payment_confirm_page:
       desc: Your payment has been successfully processed. Please check your email
         for transaction details.
@@ -566,23 +567,23 @@ en:
         Yahoo Finance, investor networks and calendars​. You can also add an image
         to your message and drive even more buzz to your news. Distribution comes
         with a real-time, analytic report.​
-      media_list: Personal Media Lists
-      media_list_description: Upload your personal media list to Robin8 so you can
-        manage and access it anytime
+      media_list: Personal Influencers List
+      media_list_description: Upload your personal influencers list to Robin8 so you
+        can manage and access it anytime
       monitoring_stream: Media Monitoring Streams
       monitoring_stream_description: Media Monitoring allows you to monitor online
         a specific brand or updates in an industry so you can listen and keep abreast
         on the latest news and updates. All updates are in real time.
-      newsroom: Newsroom
-      newsroom_description: Extra newsroom allows you add an extra newsroom on your
-        account. A newsroom is a branded online profile where you can add your logo,
-        releases, videos and images.
+      newsroom: Brand Gallery
+      newsroom_description: Extra brand gallery allows you add an extra content gallery
+        on your account. A content gallery is a branded online profile where you can
+        add your logo, content, videos and images.
       newswire: PR Newswire Distribution
       newswire_description: Distribute to more than 1,600 w​ebsites including Yahoo
         Finance​. You can also ​add an image to your message and drive even more traffic
         to your news. Distribution comes with a detailed, analytic report.
-      press_release: Press Release on Robin8
-      press_release_description: Post your release on Robin8 website. Get found on
+      press_release: Content on Robin8
+      press_release_description: Post your content on Robin8 website. Get found on
         the web and share on social media outlets.
       seat: Seat
       seat_description: Extra seat allows you to add another user to your account.
@@ -592,34 +593,37 @@ en:
         businesses_button: Businesses
         continue: Continue
         current: Current
+        customization: Hours of Customization
         empower: Empower your business with Robin8.  <br />Take the guesswork out
           of social and content marketing and get better results.
         exceed: Exceed the demands of your clients with ease using Robin8's revolutionary
           intelligence engine.  <br />Take the guesswork out of social and content
           marketing and get better results.
-        media_lists: Personal Media Lists
+        media_lists: Personal Influencers List
         month_to_month: month-to-month
-        newsroom: Newsroom
+        newsroom: Brand Gallery
+        newsrooms: Brand Galleries
         per_month: mo
         plans: Subscription Plans
-        press_release: Press Releases/month
-        seat: Seat
+        press_release: Content/month
+        seat: Seats
+        seats: Seats
         select: Select
         selected: Selected
-        smart_release: SmartReleases
+        smart_release: SmartContent
         stream: Streams for Media Monitoring
         title: Select Pricing Plan
       service_details: Service Details
-      smart_release: SmartRelease Distribution
-      smart_release_description: SmartRelease uses Robin8's proprietary predictive
+      smart_release: SmartContent Distribution
+      smart_release_description: SmartContent uses Robin8's proprietary predictive
         intelligence engine to recommend the 100 reporters and top social influencers
-        most interested to cover your news. SmartRelease identifies these top reporters
+        most interested to cover your news. SmartContent identifies these top reporters
         and influencers with 1 click.
       web_distribution: FinancialContent Web Distribution
       web_distribution_description: FinancialContent web distribution guarantees you
         placement on hundreds of top news websites including Boston Globe and Miami
         Herald. Each distribution comes with a report showing a sampling of the sites
-        that posted your release.
+        that posted your content.
     profile:
       buttons:
         cancel: Cancel
@@ -749,6 +753,62 @@ en:
       not_found: No matches found
       searching: Searching...
       too_short: Please enter %{count} or more characters
+    smart_campaign:
+      add_money: Add money
+      pitch_step:
+        button: Pitch!
+        delete_button: Delete
+        description: Now that you know exactly which journalists and influencers to
+          contact for your compaign, you need to prepare the note to these contacts.
+          You can use the Robin8 default note or prepare your own personal note. If
+          you are preparing your own personal note, we recommend you keep it short
+          and no more than 3 paragraphs.
+        emailTargets: Targets will be contacted via Email
+        email_panel:
+          email: Your email address
+          email_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
+            new campaign @[Campaign Title] by @[User Name].  Please proceed to your
+            dashboard to accept the invitation.
+          email_placeholder: Enter an email address...
+          length: Summary length
+          pitch_text: Pitch text
+          preview: Preview
+          sentences: sentences
+          subject: Subject line
+          subject_placeholder: Enter a catchy subject line...
+          tags: Available merge tags
+          title: Email pitch
+        see: See list
+        targets_table:
+          actions: Actions
+          button: Save
+          delete: Delete
+          email: Email
+          name: Name
+          save: Save as a list
+        title: Pitch
+        wechatTargets: Targets will be contacted via WeChat
+        weiboTargets: Targets will be contacted via Weibo
+        weibo_panel:
+          pitch_text: Pitch text
+          preview: Preview
+          weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
+            new campaign @[Campaign Title] by @[User Name].  Please proceed to your
+            dashboard to accept the invitation.
+      targets_step:
+        weibo_tab:
+          author: Author
+          contact: Contact
+          followers: Followers
+          inspect: Inspect
+          invite: Invite
+          outlet: Outlet
+          relevance: Relevance
+      wechat_report:
+        favourite: No of re-share + favourite
+        page_views: No of page views
+        people_reached: No of people reached
+        read_more: No of "read more"
     smart_release:
       analysis_step:
         buttons:
@@ -809,16 +869,16 @@ en:
       start_step:
         buttons:
           analyze: Analyze
-          new_release: New Release
-        description: SmartRelease helps you maximize your reach by intelligently analyzing
+          new_release: New Content
+        description: SmartContent helps you maximize your reach by intelligently analyzing
           and understanding which journalists and influencers will be the best fit
           for your campaign.
         dropdown:
-          plus_new_release: "+ New Release"
+          plus_new_release: "+ New Content"
           select: Select...
-        notification: You can't use smart release feature. Update your add ons.
-        select: Select a release to start
-        title: Welcome to SmartRelease
+        notification: You can't use smart content feature. Update your add ons.
+        select: Select a content to start
+        title: Welcome to SmartContent
       targets_step:
         buttons:
           next: Next
@@ -837,10 +897,12 @@ en:
             remove_all: Remove all
             yes_but: 'Yes'
           contact: Contact
+          followers_count: Followers count
           length: Average length
           outlet: Outlet
           pitch: Pitch?
           relevance: Relevance
+          row: Row
           title: Influencers
         media_tab:
           add_list: Add a previously saved list
@@ -848,14 +910,14 @@ en:
           formats: Supported formats
           ignored_contacts: All contacts in incorrect format will be ignored.
           not_available: You don't have available media list in your subscription!
-          select_placeholder: Select a Media List or upload a new one...
+          select_placeholder: Select a Influencers List or upload an new one...
           successfully_uploaded: Your list has been successfully uploaded.
           table:
             actions: Actions
             contacts: Contacts
-            empty: You haven't selected any media list yet!
+            empty: You haven't selected any influencers list yet!
             name: List Name
-          title: Media List
+          title: Influencers List
           upload_button: Upload a new list
           uploaded_file_info: Uploaded file must have exactly <strong>four</strong>
             columns, formatted as <strong>first name, last name, email address, outlet</strong>
@@ -1075,7 +1137,7 @@ en:
           of receiving those communications. You may request at any time that we not
           e-mail you in the future by clicking the "unsubscribe" link which is included
           at the bottom of any e-mail that you receive from us and hitting send, or
-          by contracting us at info@myprgenie.com. When contacting us by email, please
+          by contracting us at info@robin8.com. When contacting us by email, please
           insert "PRIVACY" in the subject line and one of the following in the body
           of the message: (1) Please do not send me email, (2) Keep my email address
           private, or (3) Don''t send email/Keep my email address private. If you
@@ -1084,7 +1146,7 @@ en:
           was received to complete the removal of your email address from our database
           as some of our promotions may have been in process before submitting such
           request we will make reasonable efforts to discontinue these e-mail communications
-          as soon as practicable. In addition, you may contact us at info@myprgenie.com
+          as soon as practicable. In addition, you may contact us at info@robin8.com
           to request that we not disclose your personal information to unrelated third
           parties for marketing purposes. Please include your name, address and state
           "NO THIRD PARTY SHARING" in your request.'
@@ -1150,7 +1212,7 @@ en:
           you to be aware when you leave our Site and to read the privacy statements
           of every website that collects personally identifiable information. This
           Policy applies solely to information collected by our Site.
-        title: LINKS TO NON-MYPRGENIE SITES
+        title: LINKS TO NON-ROBIN8 SITES
       newswire:
         accesswire:
           agree: You agree that use of Accesswire distribution is entirely at your
@@ -1165,7 +1227,7 @@ en:
             the operation of the ACCESSWIRE Site will be uninterrupted, timely, secure
             or error-free. Some jurisdictions do not allow the exclusion of certain
             warranties, so some or all of the above exclusions may not apply to you.
-          intro: Use of the ACCESSWIRE site is limited to submission of news releases
+          intro: Use of the ACCESSWIRE site is limited to submission of news content
             for distribution via ACCESSWIRE and registration for and use of offered
             products and services. You agree not to use the ACCESSWIRE Site for any
             other purposes, including, without limitation, to store, aggregate, reproduce
@@ -1187,16 +1249,16 @@ en:
             to Robin8 for distribution through any method, including the PR Newswire
             distribution service.
           acknowledge: The Customer acknowledges that Robin8 is providing access to
-            the PR Newswire press release distribution service for some materials,
-            and that access to PR Newswire is subject to the terms and conditions
-            set forth by PR Newswire and its contract with Robin8. If the contract
-            between Robin8 and PR Newswire is severed for any reason, or if any release
-            submitted by Robin8 to PR Newswire on behalf of a Customer is rejected
-            by PR Newswire for any reason, The Customer acknowledges that Robin8 has
-            no liability for the actions of PR Newswire. No refunds will be given
-            for any portion of the fee paid to Robin8 in the event PR Newswire rejects
-            materials submitted on behalf of Customer, or if the contract between
-            Robin8 and PR Newswire is terminated by PR Newswire.
+            the PR Newswire content distribution service for some materials, and that
+            access to PR Newswire is subject to the terms and conditions set forth
+            by PR Newswire and its contract with Robin8. If the contract between Robin8
+            and PR Newswire is severed for any reason, or if any content submitted
+            by Robin8 to PR Newswire on behalf of a Customer is rejected by PR Newswire
+            for any reason, The Customer acknowledges that Robin8 has no liability
+            for the actions of PR Newswire. No refunds will be given for any portion
+            of the fee paid to Robin8 in the event PR Newswire rejects materials submitted
+            on behalf of Customer, or if the contract between Robin8 and PR Newswire
+            is terminated by PR Newswire.
           customer_agrees: The Customer agrees to indemnify and hold harmless Robin8
             and its officers, directors, employees and contractors from any claims
             arising out of the content of the material furnished. Robin8 reserves
@@ -1275,7 +1337,7 @@ en:
         users ("you") about the types of information we gather about you when you
         visit our Site, how we may use that information, what choices you have regarding
         our use of your information and how you may access some of the information
-        you provide to us. MYPRGENIE reserves the right to change this Policy at any
+        you provide to us. Robin8 reserves the right to change this Policy at any
         time by posting a new privacy policy at this location. Therefore, you are
         responsible for periodically checking the Policy for changes.
       terms_of_use:
@@ -1346,7 +1408,7 @@ en:
             or under applicable law. Content consisting of downloadable software may
             not be reverse engineered unless specifically authorized by the owner
             of the software's patent and/or copyright.
-          authorization: You warrant and agree that any press releases, email contact(s),
+          authorization: You warrant and agree that any content, email contact(s),
             media contact(s) or related content uploaded by you ("User Content and
             Media Contact") is owned by you or that you have the right to post such
             content and upload such media contacts. The posting and uploading of non-authorized
@@ -1443,13 +1505,13 @@ en:
             the Site or the server that makes it available, or your downloading of
             any Content from the Site.
           no_guarantee: ALTHOUGH THE INFORMATION PROVIDED TO VISITORS ON THIS SITE
-            IS OBTAINED OR COMPILED FROM SOURCES WE BELIEVE TO BE RELIABLE, MYPRGENIE
+            IS OBTAINED OR COMPILED FROM SOURCES WE BELIEVE TO BE RELIABLE, ROBIN8
             CANNOT AND DOES NOT GUARANTEE THE ACCURACY, VALIDITY, TIMELINESS OR COMPLETENESS
             OF ANY INFORMATION OR DATA MADE AVAILABLE TO VISITORS OR ITS SUITABILITY
-            FOR ANY PARTICULAR PURPOSE. NEITHER MYPRGENIE, NOR ANY OF ITS OFFICERS,
-            DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS AND ASSIGNS, OPERATIONAL
-            OR PROMOTIONAL PROVIDERS, PROGRAM PRODUCERS OR SPONSORS ARE LIABLE OR
-            SHALL HAVE RESPONSIBILITY OF ANY KIND TO ANY VISITOR FOR ANY LOSS OR DAMAGE
+            FOR ANY PARTICULAR PURPOSE. NEITHER ROBIN8, NOR ANY OF ITS OFFICERS, DIRECTORS,
+            EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS AND ASSIGNS, OPERATIONAL OR
+            PROMOTIONAL PROVIDERS, PROGRAM PRODUCERS OR SPONSORS ARE LIABLE OR SHALL
+            HAVE RESPONSIBILITY OF ANY KIND TO ANY VISITOR FOR ANY LOSS OR DAMAGE
             THAT A VISITOR INCURS IN THE EVENT OF (I) ANY FAILURE OR INTERRUPTION
             OF THIS SITE; (II) ANY ACT OR OMISSION OF ANY THIRD PARTY INVOLVED IN
             MAKING THIS SITE OR THE DATA CONTAINED HEREIN AVAILABLE TO VISITORS; (III)
@@ -1458,43 +1520,43 @@ en:
             ANY VISITOR'S INTERACTION OR SUBMISSIONS ON THE WEBSITE, INCLUDING, BUT
             NOT LIMITED TO, MESSAGE POSTINGS; OR (V) FROM ANY VISITOR'S FAILURE TO
             COMPLY WITH THIS AGREEMENT, WHETHER OR NOT THE CIRCUMSTANCES GIVING RISE
-            TO SUCH CAUSE MAY HAVE BEEN WITHIN THE CONTROL OF MYPRGENIE OR OF ANY
-            VENDOR PROVIDING SOFTWARE, SERVICES OR SUPPORT. IN NO EVENT WILL MYPRGENIE,
-            OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS OR ASSIGNS
-            BE LIABLE TO ANY VISITOR FOR ANY DIRECT, SPECIAL, INDIRECT, CONSEQUENTIAL,
-            OR INCIDENTAL DAMAGES OR ANY OTHER LOSS OR DAMAGES OF ANY KIND EVEN IF
-            MYPRGENIE, ITS AFFILIATES OR ANY OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY
-            THEREOF. PLEASE BE ADVISED THAT ONCE YOU LEAVE OUR WEBSITE, YOUR USE OF
-            THE INTERNET WILL BE GOVERNED BY THE TERMS OF USAGE AGREEMENTS AND PRIVACY
-            POLICIES, IF ANY, OF THE PARTICULAR SITE THAT YOU ARE ACCESSING, INCLUDING
-            THOSE OF OUR OPERATIONAL PROVIDERS, ADVERTISERS, SPONSORS, AND PROMOTIONAL
-            PARTNERS. MYPRGENIE, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS,
-            SUCCESSORS AND ASSIGNS WILL NOT BE RESPONSIBLE OR LIABLE FOR THE CONTENT,
-            ACTIVITIES, OR PRIVACY PRACTICES OF THE OTHER SITES, OR ANY LOSS OR DAMAGE
-            THAT COULD RESULT FROM LEAVING OUR WEBSITE.
+            TO SUCH CAUSE MAY HAVE BEEN WITHIN THE CONTROL OF ROBIN8 OR OF ANY VENDOR
+            PROVIDING SOFTWARE, SERVICES OR SUPPORT. IN NO EVENT WILL ROBIN8, OFFICERS,
+            DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS OR ASSIGNS BE LIABLE
+            TO ANY VISITOR FOR ANY DIRECT, SPECIAL, INDIRECT, CONSEQUENTIAL, OR INCIDENTAL
+            DAMAGES OR ANY OTHER LOSS OR DAMAGES OF ANY KIND EVEN IF ROBIN8, ITS AFFILIATES
+            OR ANY OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY THEREOF. PLEASE
+            BE ADVISED THAT ONCE YOU LEAVE OUR WEBSITE, YOUR USE OF THE INTERNET WILL
+            BE GOVERNED BY THE TERMS OF USAGE AGREEMENTS AND PRIVACY POLICIES, IF
+            ANY, OF THE PARTICULAR SITE THAT YOU ARE ACCESSING, INCLUDING THOSE OF
+            OUR OPERATIONAL PROVIDERS, ADVERTISERS, SPONSORS, AND PROMOTIONAL PARTNERS.
+            ROBIN8, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS
+            AND ASSIGNS WILL NOT BE RESPONSIBLE OR LIABLE FOR THE CONTENT, ACTIVITIES,
+            OR PRIVACY PRACTICES OF THE OTHER SITES, OR ANY LOSS OR DAMAGE THAT COULD
+            RESULT FROM LEAVING OUR WEBSITE.
           not_responsible: We will not be responsible for delays or failures in performing
             any obligations under the terms of this Agreement, whether or not due
             to any cause beyond our reasonable control.
           own_risk: You agree that your use and browsing of our Site is at your own
             risk. If you are dissatisfied with the Site or any Content, or with any
             of the terms and conditions of this Agreement, your sole and exclusive
-            remedy is to discontinue accessing and using the Site. MYPRGENIE DOES
-            NOT WARRANT THAT THE SITE WILL BE UNINTERRUPTED OR ERROR-FREE, NOR DOES
-            MYPRGENIE WARRANT THAT ANY DEFECTS IN THE SITE OR INACCURACIES IN THE
-            CONTENT WILL BE CORRECTED. WITHOUT LIMITING THE FOREGOING, THE SITE AND
-            ALL OF THE CONTENT ARE PROVIDED TO YOU "AS IS". NEITHER WE, NOR OUR AFFILIATES,
-            SUBSIDIARIES AND/OR RELATED ENTITIES, THIRD PARTY CONTENT PROVIDERS AND
-            OUR AND THEIR RESPECTIVE OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS,
-            SUCCESSORS AND ASSIGNS WARRANT, EITHER EXPRESSLY OR BY IMPLICATION, THE
-            ACCURACY OF ANY MATERIALS OR INFORMATION PROVIDED ON THE SITE OR THEIR
-            SUITABILITY FOR ANY PARTICULAR PURPOSE, AND EXPRESSLY DISCLAIMS ALL WARRANTIES,
-            INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF TITLE OR IMPLIED WARRANTIES
-            OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, WITH RESPECT TO
-            THE SITE, ANY CONTENT OR, IF APPLICABLE, ANY PRODUCTS OR SERVICES PURCHASED
-            OR OBTAINED, DIRECTLY OR INDIRECTLY, THROUGH USE OF THE SITE. YOU EXPRESSLY
-            AGREE THAT THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SITE
-            ARE ASSUMED SOLELY BY YOU. Where applicable law does not allow for the
-            exclusions of implied warranties, the forgoing exclusions may not apply.
+            remedy is to discontinue accessing and using the Site. ROBIN8 DOES NOT
+            WARRANT THAT THE SITE WILL BE UNINTERRUPTED OR ERROR-FREE, NOR DOES ROBIN8
+            WARRANT THAT ANY DEFECTS IN THE SITE OR INACCURACIES IN THE CONTENT WILL
+            BE CORRECTED. WITHOUT LIMITING THE FOREGOING, THE SITE AND ALL OF THE
+            CONTENT ARE PROVIDED TO YOU "AS IS". NEITHER WE, NOR OUR AFFILIATES, SUBSIDIARIES
+            AND/OR RELATED ENTITIES, THIRD PARTY CONTENT PROVIDERS AND OUR AND THEIR
+            RESPECTIVE OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, CONTRACTORS, SUCCESSORS
+            AND ASSIGNS WARRANT, EITHER EXPRESSLY OR BY IMPLICATION, THE ACCURACY
+            OF ANY MATERIALS OR INFORMATION PROVIDED ON THE SITE OR THEIR SUITABILITY
+            FOR ANY PARTICULAR PURPOSE, AND EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING,
+            BUT NOT LIMITED TO, WARRANTIES OF TITLE OR IMPLIED WARRANTIES OF MERCHANTABILITY
+            OR FITNESS FOR A PARTICULAR PURPOSE, WITH RESPECT TO THE SITE, ANY CONTENT
+            OR, IF APPLICABLE, ANY PRODUCTS OR SERVICES PURCHASED OR OBTAINED, DIRECTLY
+            OR INDIRECTLY, THROUGH USE OF THE SITE. YOU EXPRESSLY AGREE THAT THE ENTIRE
+            RISK AS TO THE QUALITY AND PERFORMANCE OF THE SITE ARE ASSUMED SOLELY
+            BY YOU. Where applicable law does not allow for the exclusions of implied
+            warranties, the forgoing exclusions may not apply.
           title: DISCLAIMER
         governing_law:
           text: The terms of this Agreement shall be construed in accordance with
@@ -1511,7 +1573,7 @@ en:
             with any and all publicity and advertising for and promotion of the Site
             and Robin8, and in connection with Robin8's exercise of any other rights
             granted hereunder as Robin8 determines in its sole discretion. You hereby
-            release Robin8 from and against any and all claims, damages or liabilities
+            content Robin8 from and against any and all claims, damages or liabilities
             arising from or relating to the use of such Materials, image, photo, likeness,
             and videos as set forth in this Agreement.
           intro: By communicating with Robin8, including submitting or sending Materials
@@ -1568,8 +1630,8 @@ en:
             or legality of the comments posted or profiles submitted the truth or
             accuracy of any comments, videos, profiles or Materials on Robin8.com.
           no_guarantees: Robin8 cannot guarantee and does not promise any specific
-            results from use of myprgenie.com. No advice or information, whether oral
-            or written, obtained by a member from Robin8 or through or from myprgenie.com
+            results from use of robin8.com. No advice or information, whether oral
+            or written, obtained by a member from Robin8 or through or from robin8.com
             shall create any warranty not expressly stated herein.
           risks: In addition, note that there are risks, including but not limited
             to the risk of physical harm, of dealing with strangers or people acting
@@ -1581,9 +1643,9 @@ en:
           sole_responsibility: You acknowledge and agree that you are solely responsible
             for the form, content and accuracy of any profile or Materials contained
             therein submitted by you on the Site.
-          title: MYPRGENIE'S LIABILITY
+          title: ROBIN8'S LIABILITY
         limitation_of_liability:
-          part_1: TO THE FULLEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW, MYPRGENIE,
+          part_1: TO THE FULLEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW, ROBIN8,
             OUR AFFILIATES, SUBSIDIARIES AND/OR RELATED ENTITIES, AND ANY THIRD PARTY
             CONTENT PROVIDERS, AND OUR AND THEIR RESPECTIVE OFFICERS, DIRECTORS, EMPLOYEES,
             AGENTS, CONTRACTORS, SUCCESSORS AND ASSIGNS, ARE NOT LIABLE FOR ANY DIRECT,

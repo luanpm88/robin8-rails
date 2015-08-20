@@ -1,5 +1,157 @@
 ---
 zh:
+  active_admin:
+    access_denied:
+      message: You are not authorized to perform this action.
+    any: Any
+    batch_actions:
+      action_label: "%{title} Selected"
+      button_label: Batch Actions
+      default_confirmation: Are you sure you want to do this?
+      delete_confirmation: Are you sure you want to delete these %{plural_model}?
+      labels:
+        destroy: Delete
+      link: Create one
+      selection_toggle_explanation: "(Toggle Selection)"
+      succesfully_destroyed:
+        one: Successfully destroyed 1 %{model}
+        other: Successfully destroyed %{count} %{plural_model}
+    blank_slate:
+      content: There are no %{resource_name} yet.
+      link: Create one
+    cancel: Cancel
+    comments:
+      add: Add Comment
+      author: Author
+      author_missing: Anonymous
+      author_type: Author Type
+      body: Body
+      errors:
+        empty_text: Comment wasn't saved, text was empty.
+      no_comments_yet: No comments yet.
+      resource: Resource
+      resource_type: Resource Type
+      title: Comment
+      title_content: Comments (%{count})
+    dashboard: Dashboard
+    dashboard_welcome:
+      call_to_action: To add dashboard sections, checkout 'app/admin/dashboard.rb'
+      welcome: Welcome to Active Admin. This is the default dashboard page.
+    delete: Delete
+    delete_confirmation: Are you sure you want to delete this?
+    delete_model: Delete %{model}
+    details: "%{model} Details"
+    devise:
+      change_password:
+        submit: Change my password
+        title: Change your password
+      email:
+        title: Email
+      links:
+        forgot_your_password: Forgot your password?
+        resend_confirmation_instructions: Re-send confirmation instructions
+        resend_unlock_instructions: Re-send unlock instructions
+        sign_in: Sign in
+        sign_in_with_omniauth_provider: Sign in with %{provider}
+        sign_up: Sign up
+      login:
+        remember_me: Remember me
+        submit: Login
+        title: Login
+      password:
+        title: Password
+      resend_confirmation_instructions:
+        submit: Resend confirmation instructions
+        title: Resend confirmation instructions
+      reset_password:
+        submit: Reset My Password
+        title: Forgot your password?
+      sign_up:
+        submit: Sign up
+        title: Sign up
+      subdomain:
+        title: Subdomain
+      unlock:
+        submit: Resend unlock instructions
+        title: Resend unlock instructions
+      username:
+        title: Username
+    download: 'Download:'
+    dropdown_actions:
+      button_label: Actions
+    edit: Edit
+    edit_model: Edit %{model}
+    empty: Empty
+    filters:
+      buttons:
+        clear: Clear Filters
+        filter: Filter
+      predicates:
+        contains: Contains
+        ends_with: Ends with
+        equals: Equals
+        greater_than: Greater than
+        less_than: Less than
+        starts_with: Starts with
+    has_many_delete: Delete
+    has_many_new: Add New %{model}
+    has_many_remove: Remove
+    index_list:
+      block: List
+      blog: Blog
+      grid: Grid
+      table: Table
+    logout: Logout
+    main_content: Please implement %{model}#main_content to display content.
+    new_model: New %{model}
+    next: Next
+    pagination:
+      empty: No %{model} found
+      entry:
+        one: entry
+        other: entries
+      multiple: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{total}</b>
+        in total
+      multiple_without_total: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b>
+      one: Displaying <b>1</b> %{model}
+      one_page: Displaying <b>all %{n}</b> %{model}
+    powered_by: Powered by %{active_admin} %{version}
+    previous: Previous
+    sidebars:
+      filters: Filters
+    status_tag:
+      'no': 'No'
+      'yes': 'Yes'
+    unsupported_browser:
+      headline: Please note that ActiveAdmin no longer supports Internet Explorer
+        versions 8 or less.
+      recommendation: We recommend upgrading to the latest <a href="http://windows.microsoft.com/ie">Internet
+        Explorer</a>, <a href="https://chrome.google.com/">Google Chrome</a>, or <a
+        href="https://mozilla.org/firefox/">Firefox</a>.
+      turn_off_compatibility_view: If you are using IE 9 or later, make sure you <a
+        href="http://windows.microsoft.com/en-US/windows7/webpages-look-incorrect-in-Internet-Explorer">turn
+        off "Compatibility View"</a>.
+    view: View
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'Validation failed: %{errors}'
+        restrict_dependent_destroy:
+          many: Cannot delete record because dependent %{record} exist
+          one: Cannot delete record because a dependent %{record} exists
+      models:
+        media_list:
+          attributes:
+            contacts:
+              association_count_greater_than_or_equal_to: |
+                should be greater than or equal to %{count}
+            name:
+              presence: List name can't be blank
+              uniqueness: Name has already been taken
+        user:
+          attributes:
+            email:
+              blank: Email can't be blank
   application:
     about:
       text: "<p>Miranda Tan，Robin8创办人及首席执行官，在1999年创立了第一个PR公司，ExcitePR。她意识到企业提供令人惊叹的产品，同时不断产生了同样的问题：他们如何能够接触正确的意见领袖为实现他们的信息效益最大化。</p>
@@ -84,7 +236,7 @@ zh:
       new_monitoring_button: "新的观察频道"
       new_newsroom_button: "新建内容库"
       new_release_button: "发布新的文章"
-      new_smartrelease_button: SmartRelease
+      new_smartrelease_button: "智能发布"
       title: "主界面"
     footer:
       about: "大约"
@@ -112,6 +264,21 @@ zh:
       download_png: "下载PNG图片"
       download_svg: "下载SVG矢量图"
       print_chart: "打印图表"
+    kols:
+      agree: By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service
+      email: Email
+      email_error: Email can't be blank
+      first_name: First Name
+      fname_error: First name can't be blank
+      interests: Interests
+      last_name: Last Name
+      lname_error: Last name can't be blank
+      location: Location
+      location_error: Location can't be blank
+      mobile_number_error: Digits only
+      password: Password
+      password_error: Password must be greater then 7 characters
+      title: Signup
     landing_page:
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
@@ -119,6 +286,7 @@ zh:
       learn_more: "了解更多"
       recommend: "推荐"
       recommend_text: "意见领袖为你出谋划策，还有个性化的内容。你的每次使用，会让Robin8推荐引擎变得更智能。"
+      sign_up: ''
       target: "目标"
       target_text: "只需点击一下，Robin8将智能推荐意见领袖的名单。"
       text1: ROBIN8帮你更轻松和有效的找到记者和意见领袖。
@@ -146,6 +314,7 @@ zh:
       password: "密码"
       register: "注册"
       remember_me: "记住我"
+      title: login
       wechat_login: "使用微信账号登录"
       weibo_login: Login using Weibo
     manage_users:
@@ -196,7 +365,9 @@ zh:
       monitoring: "监控"
       newsrooms: "新闻室"
       profile: "轮廓"
+      recommendations: "推荐"
       releases: "发布"
+      smart_campaign: SmartCampaign
       smart_release: "智能发布"
       social: "社会"
     new_package:
@@ -363,15 +534,18 @@ zh:
         businesses_button: "企业"
         continue: "继续"
         current: "当前"
+        customization: ''
         empower: "授权与Robin8您的业务 <br />智能的社交和内容营销，带来更好的效果。"
         exceed: "使用Robin8革命性智能引擎轻松超越客户的需求。  <br />授权与Robin8您的业务。智能的社交和内容营销，带来更好的效果。"
         media_lists: "个私人媒体清单"
         month_to_month: "按月付费"
         newsroom: "个新闻中心"
+        newsrooms: ''
         per_month: "月"
         plans: "订阅计划"
         press_release: "篇新闻稿/月"
-        seat: "个席位"
+        seat: ''
+        seats: ''
         select: "选择"
         selected: "选择"
         smart_release: "个智能发布"
@@ -400,6 +574,15 @@ zh:
       time_zone: "时区"
       title: "编辑资料"
       username: "用户名"
+    public_newsroom:
+      follow: Follow
+      no_releases: No Releases published yet
+      notification: You are in a preview mode. You need to make this newsroom public
+        and/or save the changes in order to show it on your page
+      pressroom: Pressroom
+    public_release:
+      notification: You are in a preview mode. You need to make this release and newsroom
+        public in order to show it on your page
     register:
       agree_terms: "通过注册，你已同意MyPRGenie的服务条款。"
       email_placeholder: "电子邮件"
@@ -423,6 +606,7 @@ zh:
       weibo_signup: "使用Weibo账号登陆"
     releases:
       all_newsrooms: "所有内容库"
+      edit_title: Edit
       item:
         buttons:
           edit: "编辑"
@@ -430,6 +614,21 @@ zh:
           smart: "智能发布"
       modal:
         basic_tab:
+          characteristics_view:
+            adjectives: Adjectives
+            adverbs: Adverbs
+            bad: Bad
+            characters: Characters
+            excellent: Excellent
+            good: Good
+            highlight: Highlight
+            nouns: Nouns
+            ok: Ok
+            paragraphs: Paragraphs
+            score: Readability score
+            sentences: Sentences
+            too_short: Too short
+            words: Words
           newsroom: "内容库"
           paragraph_notification: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
           published_date: "发布日期"
@@ -499,6 +698,56 @@ zh:
       not_found: "未找到匹配"
       searching: "搜索..."
       too_short: "请输入 %{count} 或更多字符"
+    smart_campaign:
+      add_money: ''
+      pitch_step:
+        button: ''
+        delete_button: ''
+        description: ''
+        emailTargets: ''
+        email_panel:
+          email: ''
+          email_pitch: ''
+          email_placeholder: ''
+          length: ''
+          pitch_text: ''
+          preview: ''
+          sentences: ''
+          subject: ''
+          subject_placeholder: ''
+          tags: ''
+          title: ''
+        see: ''
+        targets_table:
+          actions: ''
+          button: ''
+          delete: ''
+          email: ''
+          name: ''
+          save: ''
+        title: ''
+        wechatTargets: ''
+        weiboTargets: ''
+        weibo_panel:
+          pitch_text: Pitch text
+          preview: Preview
+          weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
+            new campaign @[Campaign Title] by @[User Name].  Please proceed to your
+            dashboard to accept the invitation.
+      targets_step:
+        weibo_tab:
+          author: Author
+          contact: Contact
+          followers: Followers
+          inspect: Inspect
+          invite: Invite
+          outlet: Outlet
+          relevance: Relevance
+      wechat_report:
+        favourite: "转发+收藏人数"
+        page_views: "图文阅读人数"
+        people_reached: "送达人数"
+        read_more: "原文阅读人数"
     smart_release:
       analysis_step:
         buttons:
@@ -532,6 +781,10 @@ zh:
           subject: "邮件标题"
           subject_placeholder: "输入一个吸引人的标题"
           tags: "可用的智能替换标签"
+          text_dear: "亲爱的"
+          text_here: Here's a press release you might find interesting. Please let
+            me know your thoughts.
+          text_text: Press Release Text
           title: "投递邮件"
         see: "查看名单"
         targets: "通过电子邮件联系目标人"
@@ -574,10 +827,12 @@ zh:
             remove_all: "移除所有"
             yes_but: "是的"
           contact: "联络"
+          followers_count: "追随者数"
           length: "文章平均长度"
           outlet: "媒介"
           pitch: "投递？"
           relevance: "相关度"
+          row: "排"
           title: "大V"
         media_tab:
           add_list: "添加过去保存过的名单"
@@ -891,6 +1146,305 @@ zh:
       billing_settings: "结算设置"
       log_out: "登出"
       profile: "资料"
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    - 
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: "%Y-%m-%d"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    month_names:
+    - 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - year
+    - month
+    - day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: "%{count} days"
+      x_minutes:
+        one: 1 minute
+        other: "%{count} minutes"
+      x_months:
+        one: 1 month
+        other: "%{count} months"
+      x_seconds:
+        one: 1 second
+        other: "%{count} seconds"
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+  devise:
+    confirmations:
+      confirmed: Your email address has been successfully confirmed.
+      send_instructions: You will receive an email with instructions for how to confirm
+        your email address in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you
+        will receive an email with instructions for how to confirm your email address
+        in a few minutes.
+    failure:
+      already_authenticated: You are already signed in.
+      inactive: Your account is not activated yet.
+      invalid: Invalid %{authentication_keys} or password.
+      invited: You have a pending invitation, accept it to finish creating your account.
+      last_attempt: You have one more attempt before your account is locked.
+      locked: Your account is locked.
+      not_found_in_database: Invalid %{authentication_keys} or password.
+      timeout: Your session expired. Please sign in again to continue.
+      unauthenticated: You need to sign in or sign up before continuing.
+      unconfirmed: You have to confirm your email address before continuing.
+    invitations:
+      edit:
+        header: Set your password
+        submit_button: Set my password
+      invitation_removed: Your invitation was removed.
+      invitation_token_invalid: The invitation token provided is not valid!
+      new:
+        header: Send invitation
+        submit_button: Send an invitation
+      no_invitations_remaining: No invitations remaining
+      send_instructions: An invitation email has been sent to %{email}.
+      updated: Your password was set successfully. You are now signed in.
+      updated_not_active: Your password was set successfully.
+    mailer:
+      confirmation_instructions:
+        subject: Robin8 confirmation instructions
+      invitation_instructions:
+        accept: Accept invitation
+        hello: Hello %{email}
+        ignore: If you don't want to accept the invitation, please ignore this email.<br
+          />Your account won't be created until you access the link above and set
+          your password.
+        someone_invited_you: Someone has invited you to %{url}, you can accept it
+          through the link below.
+        subject: Invitation instructions
+      reset_password_instructions:
+        subject: Robin8 password reset instructions
+      unlock_instructions:
+        subject: Robin8 account unlock instructions
+    omniauth_callbacks:
+      failure: Could not authenticate you from %{kind} because "%{reason}".
+      success: Successfully authenticated from %{kind} account.
+    passwords:
+      no_token: You can't access this page without coming from a password reset email.
+        If you do come from a password reset email, please make sure you used the
+        full URL provided.
+      send_instructions: You will receive an email with instructions on how to reset
+        your password in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you
+        will receive a password recovery link at your email address in a few minutes.
+      updated: Your password has been changed successfully. You are now signed in.
+      updated_not_active: Your password has been changed successfully.
+    registrations:
+      destroyed: Bye! Your account has been successfully cancelled. We hope to see
+        you again soon.
+      signed_up: Welcome! You have signed up successfully.
+      signed_up_but_inactive: You have signed up successfully. However, we could not
+        sign you in because your account is not yet activated.
+      signed_up_but_locked: You have signed up successfully. However, we could not
+        sign you in because your account is locked.
+      signed_up_but_unconfirmed: A message with a confirmation link has been sent
+        to your email address. Please follow the link to activate your account.
+      update_needs_confirmation: You updated your account successfully, but we need
+        to verify your new email address. Please check your email and follow the confirm
+        link to confirm your new email address.
+      updated: Your account has been updated successfully.
+    sessions:
+      already_signed_out: Signed out successfully.
+      signed_in: Signed in successfully.
+      signed_out: Signed out successfully.
+    unlocks:
+      send_instructions: You will receive an email with instructions for how to unlock
+        your account in a few minutes.
+      send_paranoid_instructions: If your account exists, you will receive an email
+        with instructions for how to unlock it in a few minutes.
+      unlocked: Your account has been unlocked successfully. Please sign in to continue.
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: must be accepted
+      already_confirmed: was already confirmed, please try signing in
+      blank: can't be blank
+      confirmation: doesn't match %{attribute}
+      confirmation_period_expired: needs to be confirmed within %{period}, please
+        request a new one
+      email_format: is not valid
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      expired: has expired, please request a new one
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      in_between: must be in between %{min} and %{max}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      not_found: not found
+      not_locked: was not locked
+      not_saved:
+        one: '1 error prohibited this %{resource} from being saved:'
+        other: "%{count} errors prohibited this %{resource} from being saved:"
+      odd: must be odd
+      other_than: must be other than %{count}
+      present: must be blank
+      spoofed_media_type: has contents that are not what they are reported to be
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      twitter_connect: is not connected to twitter
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+  flash:
+    actions:
+      create:
+        notice: "%{resource_name} was successfully created."
+      destroy:
+        alert: "%{resource_name} could not be destroyed."
+        notice: "%{resource_name} was successfully destroyed."
+      update:
+        notice: "%{resource_name} was successfully updated."
+  hello: Hello world
+  helpers:
+    page_entries_info:
+      more_pages:
+        display_entries: Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b>
+          of <b>%{total}</b> in total
+      one_page:
+        display_entries:
+          one: Displaying <b>1</b> %{entry_name}
+          other: Displaying <b>all %{count}</b> %{entry_name}
+          zero: No %{entry_name} found
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
   ransack:
     all: "所有"
     and: "并且"
@@ -960,3 +1514,38 @@ zh:
     search: "搜索"
     sort: "排序"
     value: "数值"
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
+  time:
+    am: am
+    formats:
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: Last &raquo;
+      next: Next &rsaquo;
+      previous: "&lsaquo; Prev"
+      truncate: "&hellip;"
+  will_paginate:
+    next_label: Next &#8594;
+    page_entries_info:
+      multi_page: Displaying %{model} %{from} - %{to} of %{count} in total
+      multi_page_html: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b>
+        in total
+      single_page:
+        one: Displaying 1 %{model}
+        other: Displaying all %{count} %{model}
+        zero: No %{model} found
+      single_page_html:
+        one: Displaying <b>1</b> %{model}
+        other: Displaying <b>all&nbsp;%{count}</b> %{model}
+        zero: No %{model} found
+    page_gap: "&hellip;"
+    previous_label: "&#8592; Previous"
