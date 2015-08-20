@@ -34,3 +34,272 @@ en:
             contacts:
               association_count_greater_than_or_equal_to: |
                 should be greater than or equal to %{count}
+  application:
+    navigation:
+      dashboard: Dashboard
+      smart_release: SmartRelease
+      monitoring: Monitoring
+      newsrooms: Newsrooms
+      releases: Releases
+      social: Social
+      analytics: Analytics
+      profile: Profile
+    dashboard:
+      title: Dashboard
+      description1: What if you knew EXACTLY who to contact for every campaign, based on a data-driven prediction on how successful each pitch will be? Robin8 can do all this and more, taking the guesswork and chance out of PR.
+      description2: Robin8 helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
+      description3: Robin8 provides you a powerful workflow and intelligent dashboard to help you stay on top of your game and generate the best results for your campaign.
+      new_monitoring_button: New Monitoring Stream
+      new_newsroom_button: Create a Newsroom
+      new_release_button: Publish a New Release
+      new_smartrelease_button: SmartRelease
+    monitoring:
+      topics: Topics
+      sources: Sources
+      sort_by: Sort by
+      recency: Recency
+      popularity: Popularity
+      time_range: Time range
+      last_24_hours: Last 24 hours
+      last_week: Last week 
+      last_month: Last month
+      all_time: All time
+      cancel: Cancel
+      done: Done
+      rss_link: Rss Link
+      please_save: Please save stream first
+      new_updates: new updates
+      loading: Loading
+      no_news: There is no news
+      untitled: Untitled Stream
+    social:
+      scheduled_posts: Scheduled Posts
+      social_profiles: Social Profiles
+      posts: 
+        title: Review Scheduled Posts
+        description1: Below is a list of your scheduled post(s) to your social profiles.  To schedule a post, just go to the "Say Something" box next to the Robin8 logo, located on the top of the dashboard. 
+        description2: To delete a scheduled post, just click on the delete button on this page. 
+        today: Today
+        tomorrow: Tomorrow
+        later: Later
+      profiles:
+        title: Manage Connected Social Profiles
+        description: Use Robin8 to manage your social profiles. Start by linking your Robin8 account to your social profiles so you can easily post or schedule your post (s) directly to your profiles with one click.
+        twitter: Twitter
+        facebook: Facebbok
+        google: Google+
+        linkedin: Linkedin
+        connected_to: Connected to
+        connect: Connect
+        disconnect: Disconnect
+    analytics:
+      visits: Newsroom and Releases Visits
+      statisitcs: SmartRelease Email Statistics
+      filter_by: Filter by
+    releases:
+      all_newsrooms: All Newsrooms
+      new_release: New release
+      modal:
+        title: Create Release
+        basic_tab: 
+          title: Basic
+          newsroom: Newsroom
+          release_title: Release title
+          release_text: Release text
+        website_tab:
+          title: Website
+          make_private: Make this release private
+        media_tab:
+          title: Media
+          select_logo: Please, select a logo for your release
+          upload_files: Here you can upload additional media files
+        buttons: 
+          next: Next
+          save: Save draft
+          delete: Delete Release
+        warning: This release won't be publicly displayed while the parent Newsroom remains unpublished. 
+        publish: Publish the newsroom!
+      item:
+        buttons:
+          preview: Preview
+          smart: SmartRelease
+          edit: Edit
+    profile:
+      title: Edit Profile
+      personal_info: Personal info
+      first_name: First name
+      last_name: Last name
+      company: Company
+      email: Email
+      time_zone: Time Zone
+      username: Username
+      curr_password: Current password
+      new_password: New password
+      confirm_new_password: Confirm new password
+      buttons: 
+        save: Save changes
+        cancel: Cancel 
+    newsrooms:
+      buttons:
+        new: New Newsroom
+      item:
+        description_placeholder: No description added.
+        buttons:
+          preview: Preview
+          releases: Releases
+          edit: Edit        
+      modal:
+        title: Create NewsRoom
+        details_tab:
+          title: Company Details
+          name: Company name
+          type: Type
+          size: Size
+          industry: Industry
+          tags: Tags
+        public_tab:
+          title: Public Page
+          subdomain: Subdomain name
+          publish: Publish on public website
+        general_tab:
+          title: General
+          email: Email
+          phone: Phone
+          fax: Fax
+          number: Toll-Free Number
+          web_address: Web Address
+          description: Description
+        address_tab:
+          title: Address
+          address1: Address 1
+          address2: Address 2
+          city: City
+          state: State
+          code: Zip/Postal Code
+          country: Country
+        contact_tab:
+          title: Contact
+          name: Company Contact Name
+          job_title: Job Title
+          facebook: Facebook
+          twitter: Twitter
+          linkedin: Linkedin
+          instagram: Instagram
+        media_tab:
+          title: Media
+        buttons: 
+          save: Save changes
+          preview: Preview
+          delete: Delete Newsroom 
+    manage_users:
+      buttons:
+        manage: Manage Users
+        back: Back to Newsrooms
+        invite: Invite User
+        delete: Delete
+        delete_toggle: Delete user
+      table:
+        name: Name
+        email: Email
+      title: User management
+      search_placeholder: Search User by Name or Email 
+      input_placeholder: Type User Email
+    smart_release:
+      top_menu:
+        start: Start
+        analysis: Analysis
+        targets: Targets
+        pitch: Pitch
+      start_step:
+        title: Welcome to SmartRelease
+        description: SmartRelease helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
+        notification: You can't use smart release feature. Update your add ons.
+        select: Select a release to start
+        buttons: 
+          analyze: Analyze
+      analysis_step:
+        title: Analysis
+        description1: Here's the analysis report for <strong> "%{name}" </strong>. Please make any necessary changes, and click on <strong> %{button} </strong> when you're finished
+        description2: when you're finished
+        is_about: <strong> "%{name}" </strong> is about
+        topics: and the following topics are mentioned in it
+        summary: Here's a summary of what <strong> "%{name}" </strong> is all about
+        buttons: 
+          next: Next
+      targets_step:
+        title: Targets
+        description: What if you knew EXACTLY who to contact for every campaign, based on a data-driven prediction on how successful each pitch will be? Robin8 helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.
+        influencers_tab: 
+          title: Influencers
+          author: Author
+          outlet: Outlet
+          relevance: Relevance
+          length: Average length
+          pitch: Pitch?
+          contact: Contact
+        social_tab:
+          title: Social
+          influencer: Influencer
+          followers: Followers
+          reach: Reach 
+          amplif: Amplif.
+          relevance: Relevance
+          pitch: Pitch?
+          contact: Contact
+        search_tab: 
+          title: Search
+          search_authors:
+            title: Search Authors
+            authors: Authors
+            keywords: Keywords
+            name: Contact name
+            outlet: Outlet
+            location: Location
+          search_influencers:
+            influencers: Influencers
+            show: Show me influencers for
+            from: From
+            who: Who are
+            celebrities: Celebrities
+            users: Power users
+            all: All
+          search: Search
+        media_tab: 
+          title: Media List
+          add_list: Add a previously saved list
+          upload_button: Upload a new list
+          formats: Supported formats
+          select_placeholder: Select a Media List or upload a new one...
+          delete: Delete
+          table:
+            name: List Name
+            contacts: Contacts
+            actions: Actions
+            empty: You haven't selected any media list yet!
+        buttons: 
+          next: Next
+      pitch_step:
+        title: Pitch
+        description: Now that you know exactly which journalists and influencers to contact for your compaign, you need to prepare the note to these contacts. You can use the Robin8 default note or prepare your own personal note. If you are preparing your own personal note, we recommend you keep it short and no more than 3 paragraphs.
+        targets: Targets will be contacted via Email
+        see: See list
+        targets_table:
+          name: Name
+          outlet: Outlet
+          actions: Actions
+          delete: Delete
+          save: Save as a list
+          button: Save
+        email_panel:
+          title: Email pitch
+          subject: Subject line
+          subject_placeholder: Enter a catchy subject line...
+          email: Your email address
+          email_placeholder: Enter an email address...
+          pitch_text: Pitch text
+          preview: Preview
+          length: Summary length
+          sentences: sentences
+          tags: Available merge tags
+        delete_button: Delete
+        button: Pitch! 

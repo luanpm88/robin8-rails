@@ -1,12 +1,17 @@
 <div id="blast-home" class="tab-pane active" role="tabpanel">
-  <h5><i class="fa fa-rocket"></i> Welcome to SmartContent</h5>
-  <p>SmartContent helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign. </p>
+  <h5><i class="fa fa-rocket"></i> <%= polyglot.t("smart_release.start_step.title") %></h5>
+  <p><%= polyglot.t("smart_release.start_step.description") %> </p>
   <br>
-  <div class="alert alert-danger" role="alert" style='display: none;'>You can't use smart content feature. Update your add ons.</div>
+  
+  <div id="writing-pr-info" class="alert alert-warning alert-dismissible" role="alert" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <a href="http://www.wikihow.com/Write-a-Press-Release" target="_blank">How to Write a Press Release</a>
+  </div>
+  <div class="alert alert-danger" role="alert" style='display: none;'><%= polyglot.t("smart_release.start_step.notification") %></div>
 
   <form>
     <div class="form-group">
-      <label for="exampleInputFile">Select a content to start:</label>
+      <label for="exampleInputFile"><%= polyglot.t("smart_release.start_step.select") %>:</label>
       <div class="ui-select">
         <select class="releases form-control loadinggif">
           <% if (Robin.user.get('can_create_release') != false) { %>
@@ -21,7 +26,7 @@
         </select>
       </div>
     </div>
-    <button disabled id="analyze" class="btn btn-primary pull-right" type="submit"><i class="fa fa-cogs"></i> Analyze</button>
+    <button disabled id="analyze" class="btn btn-primary pull-right" type="submit"><i class="fa fa-cogs"></i> <%= polyglot.t("smart_release.start_step.buttons.analyze") %></button>
     <button style="display: none;" id="new-release" class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"></i> New Content</button>
   </form>
 </div>

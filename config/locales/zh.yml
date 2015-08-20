@@ -1,0 +1,270 @@
+zh:
+  application:
+    navigation:
+      dashboard: 主界面
+      smart_release: 智能发布
+      monitoring: 监控
+      newsrooms: 新闻室
+      releases: 发布
+      social: 社会
+      analytics: 分析
+      profile: 轮廓
+    dashboard:
+      title: 主界面
+      description1: 如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的记者，KOLs 和大V们，这个听起来怎么样？Robin8可以实现这一切，帮你摆脱PR世界里毫无依据的猜想和机会渺茫的投递
+      description2: Robin8 可以通过智能分析来深度了解KOLs和大V们，帮你的推广活动找到最为合适的人选，从而最大程度的优化投递结果。
+      description3: Robin8通过为你提供高效的工作流程和智能化的操作界面来帮助你获得最好的推广结果并在竞争中保持不败之地
+      new_monitoring_button: 新的观察频道
+      new_newsroom_button: 新建内容库
+      new_release_button: 发布新的文章
+      new_smartrelease_button: SmartRelease
+    monitoring:
+      topics: 主题
+      sources: 来源
+      sort_by: 排序
+      recency: 最新的
+      popularity: 最受关注的
+      time_range: 时段
+      last_24_hours: 过去24小时
+      last_week: 上周
+      last_month: 上个月
+      all_time: 全部时间
+      cancel: 取消
+      done: 完成
+      rss_link: 来源链接
+      please_save: 请先保存频道信息
+      new_updates: 新上传的
+      loading: 上传中
+      no_news: 没有新闻
+      untitled: 未命名频道
+    social:
+      scheduled_posts: 已计划发布的
+      social_profiles: Social Profiles
+      posts: 
+        title: 查看已计划发布的
+        description1: 以下是你已计划发布到社交网络的信息。如果你想计划新的发布信息，请点击主界面Robin8标志旁边的“说点什么”
+        description2: 如果你要删除已经计划的发布，直接点击该页面中的“X”
+        today: 今天
+        tomorrow: 明天
+        later: 未来
+      profiles:
+        title: 管理关联的社交网络信息
+        description: 使用Robin8来管理你的社交网络信息。请先关联你的社交账号，然后你就可以轻松的直接发布到或者计划发布到所关联的社交网络中
+        twitter: Twitter
+        facebook: Facebbok
+        google: Google+
+        linkedin: LinkedIn／领英
+        connected_to: 已关联的
+        connect: 关联
+        disconnect: 未关联的
+    analytics:
+      visits: 内容库和文章访问
+      statisitcs: 智能发布邮件数据统计
+      filter_by: 筛选
+    releases:
+      all_newsrooms: 所有内容库
+      new_release: New release
+      modal:
+        title: 新建文章
+        basic_tab: 
+          title: 基本信息
+          newsroom: Newsroom
+          release_title: 文章标题
+          release_text: 文章内容
+        website_tab:
+          title: 网址
+          make_private: 仅对自己可见
+        media_tab:
+          title: Media
+          select_logo: 请为你的文章加一个图标
+          upload_files: 这里上传其他的多媒体文件
+        buttons: 
+          next: 下一步
+          save: 保存草稿
+          delete: 删除文章
+        warning: 在内容库还没有发布之前这篇文章不会被公众看到
+        publish: 发布内容库
+      item:
+        buttons:
+          preview: 预览
+          smart: 智能发布
+          edit: 编辑
+    profile:
+      title: 编辑资料
+      personal_info: 个人信息
+      first_name: 名字
+      last_name: 姓氏
+      company: 公司名称
+      email: 电子邮件
+      time_zone: 时区
+      username: 用户名
+      curr_password: 现用密码
+      new_password: 新密码
+      confirm_new_password: 确认新密码
+      buttons: 
+        save: 保存修改
+        cancel: 取消
+    newsrooms:
+      buttons:
+        new: 新的内容库
+      item:
+        description_placeholder: 没有添加描述
+        buttons:
+          preview: 预览
+          releases: 文章
+          edit: 编辑
+      modal:
+        title: 建立内容库
+        details_tab:
+          title: 公司信息
+          name: 公司名称
+          type: 类型
+          size: 规模
+          industry: 行业
+          tags: 标签
+        public_tab:
+          title: 公共页
+          subdomain: 二级域名
+          publish: 发布到公共页
+        general_tab:
+          title: 通用
+          email: 电子邮件
+          phone: 电话
+          fax: 传真
+          number: 免费电话
+          web_address: 网址
+          description: 描述
+        address_tab:
+          title: 地址
+          address1: 地址1
+          address2: 地址2
+          city: 城市
+          state: 省份
+          code: 邮编
+          country: 国家
+        contact_tab:
+          title: 联系方式
+          name: 公司联系人姓名
+          job_title: 职位
+          facebook: Facebook
+          twitter: Twitter
+          linkedin: LinkedIn／领英
+          instagram: Instagram
+        media_tab:
+          title: 素材
+        buttons: 
+          save: 保存修改
+          preview: 预览
+          delete: 删除内容库
+    manage_users:
+      buttons:
+        manage: 管理用户
+        back: 返回内容库
+        invite: 邀请用户
+        delete: 删除
+        delete_toggle: 删除用户
+      table:
+        name: 名字
+        email: 电子邮件
+      title: 用户管理
+      search_placeholder: 通过邮件和名称搜索用户
+      input_placeholder: 输入用户电子邮件地址
+    smart_release:
+      top_menu:
+        start: 开始
+        analysis: 分析
+        targets: 目标
+        pitch: 投递
+      start_step:
+        title: 欢迎使用智能发送
+        description: Robin8 可以通过智能分析来深度了解KOLs和大V们，帮你的推广活动找到最为合适的人选，从而最大程度的优化投递结果。
+        notification: 对不起，你还不能使用智能发布。 请升级套餐
+        select: 选择一篇文章
+        buttons: 
+          analyze: 分析
+      analysis_step:
+        title: 分析
+        description1: 这是<strong> "%{name}" </strong>的分析报告。如需要修改，修改完成后，请点击 <strong> %{button} </strong>进行保存
+        description2: when you're finished
+        is_about: <strong> "%{name}" </strong>是关于
+        topics: 将会提到如下的话题
+        summary: 如下是<strong> "%{name}" </strong>的小结
+        buttons: 
+          next: 下一步
+      targets_step:
+        title: 目标
+        description: 如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的KOLs和大V们，这个听起来怎么样？Robin8 可以实现这一切，帮你摆脱PR世界里毫无依据的猜想和机会渺茫的投递
+        influencers_tab: 
+          title: 大V
+          author: 作者
+          outlet: 媒介
+          relevance: 相关度
+          length: 文章平均长度
+          pitch: 投递？
+          contact: 联络
+        social_tab:
+          title: 社交网络
+          influencer: 大V
+          followers: 关注者
+          reach: 影响力
+          amplif: 扩散力
+          relevance: 相关度
+          pitch: 投递？
+          contact: 联系
+        search_tab: 
+          title: 搜索
+          search_authors:
+            title: 搜索作者
+            authors: 作者
+            keywords: 关键字
+            name: 联系人姓名
+            outlet: 媒介
+            location: 地址
+          search_influencers:
+            influencers: 大V
+            show: 显示关于“”的大V
+            from: 从
+            who: 他们是
+            celebrities: 名人
+            users: 活跃用户
+            all: 所有
+          search: 搜索
+        media_tab: 
+          title: 媒体名单
+          add_list: 添加过去保存过的名单
+          upload_button: 上传新的名单
+          formats: 支持文件格式
+          select_placeholder: 选择一个媒体名单或者上传一个新的名单
+          delete: 删除
+          table:
+            name: 名单名称
+            contacts: 联系方式
+            actions: 动作
+            empty: 你还没有选择任何媒体名单
+        buttons: 
+          next: 下一步
+      pitch_step:
+        title: 投递
+        description: 你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。
+        targets: 通过电子邮件联系目标人
+        see: 查看名单
+        targets_table:
+          name: 姓名
+          outlet: 媒体公司
+          actions: 动作
+          delete: 删除
+          save: 保存为名单
+          button: 保存
+        email_panel:
+          title: 投递邮件
+          subject: 邮件标题
+          subject_placeholder: 输入一个吸引人的标题
+          email: 你的电子邮件地址
+          email_placeholder: 输入电子邮件地址
+          pitch_text: 投递内容
+          preview: 预览
+          length: 文章小结长度
+          sentences: 句子
+          tags: 可用的智能替换标签
+        delete_button: 删除
+        button: 投递

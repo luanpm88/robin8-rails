@@ -195,11 +195,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         max: 10,
         step: 1,
         slide: function(event, ui) {
-          self.ui.summarySliderAmount.text(ui.value + ' sentences');
+          self.ui.summarySliderAmount.text(ui.value + " " + polyglot.t("smart_release.pitch_step.email_panel.sentences"));
           self.model.set('summary_length', parseInt(ui.value));
         }
       });
-      this.ui.summarySliderAmount.text(this.ui.summarySlider.slider("value") + " sentences");
+      this.ui.summarySliderAmount.text(this.ui.summarySlider.slider("value") + " " + polyglot.t("smart_release.pitch_step.email_panel.sentences"));
     },
     initWysihtml5: function(){
       var self = this;

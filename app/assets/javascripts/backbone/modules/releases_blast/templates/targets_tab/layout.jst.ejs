@@ -1,11 +1,11 @@
 <div id="blast-targets" class="tab-pane active" role="tabpanel">
-<h5><i class="fa fa-bullseye"></i> Targets</h5>
-<p>What if you knew EXACTLY who to contact for every campaign, based on a data-driven prediction on how successful each pitch will be? Robin8 helps you maximize your reach by intelligently analyzing and understanding which journalists and influencers will be the best fit for your campaign.</p>
+<h5><i class="fa fa-bullseye"></i> <%= polyglot.t("smart_release.targets_step.title") %></h5>
+<p><%= polyglot.t("smart_release.targets_step.description") %></p>
 <ul class="nav nav-tabs nav-justified">
-  <li class="active"><a data-toggle="tab" href="#targets-blogs" aria-expanded="true"><i class="fa fa-rss"></i> Influencers</a></li>
-  <li><a data-toggle="tab" href="#targets-social" aria-expanded="true"><i class="fa fa-twitter"></i> Social</a></li>
-  <li><a data-toggle="tab" href="#targets-search" aria-expanded="true"><i class="fa fa-search"></i> Search</a></li>
-  <li><a data-toggle="tab" href="#targets-list" aria-expanded="true"><i class="fa fa-list"></i> Influencers List</a></li>
+  <li class="active"><a data-toggle="tab" href="#targets-blogs" aria-expanded="true"><i class="fa fa-rss"></i> <%= polyglot.t("smart_release.targets_step.influencers_tab.title") %></a></li>
+  <li><a data-toggle="tab" href="#targets-social" aria-expanded="true"><i class="fa fa-twitter"></i> <%= polyglot.t("smart_release.targets_step.social_tab.title") %></a></li>
+  <li><a data-toggle="tab" href="#targets-search" aria-expanded="true"><i class="fa fa-search"></i> <%= polyglot.t("smart_release.targets_step.search_tab.title") %></a></li>
+  <li><a data-toggle="tab" href="#targets-list" aria-expanded="true"><i class="fa fa-list"></i> <%= polyglot.t("smart_release.targets_step.media_tab.title") %></a></li>
 </ul>
 <div class="tab-content">
   <div id="targets-blogs" class="tab-pane active" role="tabpanel">
@@ -21,5 +21,5 @@
 
   </div>
 </div>
-<button disabled class="btn btn-primary pull-right" id="next-step"><i class="fa fa-chevron-right"></i> Next</button>
+<button disabled class="btn btn-primary pull-right" id="next-step"><i class="fa fa-chevron-right"></i> <%= polyglot.t("smart_release.analysis_step.buttons.next") %></button>
 </div>
