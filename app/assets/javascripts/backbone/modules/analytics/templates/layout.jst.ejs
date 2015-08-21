@@ -3,14 +3,14 @@
     <div role="tabpanel">
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
-          <a href="/#analytics" aria-controls="analytics" role="tab" data-toggle="tab" class='web-label'>Web</a>
+          <a href="/#analytics" aria-controls="analytics" role="tab" data-toggle="tab" class='web-label'><%=polyglot.t('analytics.web')%></a>
         </li>
         <li role="presentation">
-          <a href="/#analytics-email" aria-controls="analytics-email" role="tab" data-toggle="tab" class='emails-label'>Emails</a>
+          <a href="/#analytics-email" aria-controls="analytics-email" role="tab" data-toggle="tab" class='emails-label'><%=polyglot.t('analytics.emails')%></a>
         </li>
       </ul>
       <div class="tab-content">
-        
+
         <div role="tabpanel" class="tab-pane active" id="analytics">
           <div class="panel-default panel-toolbar panel-body">
             <div class="panel-body">
@@ -27,7 +27,7 @@
           <div class="panel-default panel-toolbar panel-body">
             <div class="panel-body">
               <div class="pull-right toolbar releases-toolbar">
-                Filter by&nbsp;&nbsp;
+                <%=polyglot.t('analytics.filter_by')%>&nbsp;&nbsp;
                 <div class="ui-select" id='select-email-region'></div>
               </div>
             </div>

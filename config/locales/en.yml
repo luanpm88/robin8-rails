@@ -188,17 +188,21 @@ en:
         qty: Qty
       title: ADD ON SERVICES
     analytics:
+      author: Author
       delivered: Delivered
       dropped: Dropped
+      email: Email
       emails: Emails
       filter_by: Filter by
       newsrooms_views: Brand Gallery Views
       opened: Opened
+      outlet: Outlet
       page_views: Page Views
       sent: Sent
       statisitcs: SmartContent Email Statistics
       values: Values
       visits: Brand Gallery and Content Visits
+      web: Web
     billing:
       action: Action
       addons_title: Add-ons
@@ -645,11 +649,19 @@ en:
       title: Edit Profile
       username: Username
     public_newsroom:
+      about: About
       follow: Follow
+      latest_tweets: Latest Tweets
+      location: Location
       no_releases: No Releases published yet
       notification: You are in a preview mode. You need to make this newsroom public
         and/or save the changes in order to show it on your page
+      press_kit: Press kit
       pressroom: Pressroom
+      read_more: Read more
+      social_media: Social Media
+      spokeperson: Spokeperson
+      what_is: What is
     public_release:
       notification: You are in a preview mode. You need to make this release and newsroom
         public in order to show it on your page
@@ -758,6 +770,7 @@ en:
     smart_campaign:
       add_money: Add money
       pitch_step:
+        button: Pitch!
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
           contact for your compaign, you need to prepare the note to these contacts.

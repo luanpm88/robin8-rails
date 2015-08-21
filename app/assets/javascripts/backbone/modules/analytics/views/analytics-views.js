@@ -82,12 +82,12 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 yAxis: 1,
                 data: sessions
               }, {
-                name: polyglot.t("analytics.page_views"),
+                name: polyglot.t("analytics.emails"),
                 type: 'column',
                 yAxis: 1,
                 data: mailViews
               }, {
-                name: 'Page Views',
+                name: polyglot.t("analytics.page_views"),
                 type: 'column',
                 data: pageViews,
               }]

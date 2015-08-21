@@ -170,17 +170,21 @@ zh:
         qty: "数量"
       title: "附加服务"
     analytics:
+      author: "作者"
       delivered: "送达"
       dropped: "下降"
+      email: "电子邮件"
       emails: "电子邮件"
       filter_by: "筛选"
       newsrooms_views: "新闻中心访问量"
       opened: "开放"
+      outlet: "媒体"
       page_views: "页面访问量"
       sent: "发送"
-      statisitcs: SmartContent Email Statistics
+      statisitcs: "智能发布邮件数据统计"
       values: "值"
-      visits: Brand Gallery and Content Visits
+      visits: "内容库和文章访问"
+      web: "网络"
     billing:
       action: "操作"
       addons_title: "附加组件"
@@ -577,12 +581,21 @@ zh:
       title: "编辑资料"
       username: "用户名"
     public_newsroom:
+      about: "大约"
       follow: "关注"
+      latest_tweets: "新鲜事"
+      location: "地点"
       no_releases: "尚未发布文章"
       notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
+      press_kit: Press kit
       pressroom: "新闻室"
+      read_more: "阅读更多"
+      social_media: "社交媒体"
+      spokeperson: "演讲人"
+      what_is: "什么是"
     public_release:
-      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
+      notification: You are in a preview mode. You need to make this release and newsroom
+        public in order to show it on your page
     register:
       agree_terms: "通过注册，你已同意MyPRGenie的服务条款。"
       email_placeholder: "电子邮件"
