@@ -180,12 +180,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     serializeData: function() {
       return {
         mergeTags: [
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.first_name"), 
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.first_name"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.last_name"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.summary"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.outlet"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.link"),
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.title"), 
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.title"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.text")
         ],
         pitch: this.model.toJSON()
@@ -400,8 +400,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.model.save({ release_id: this.draftPitchModel.get('release_id')}, {
         success: function(model, response, options){
           Robin.modal.empty();
-          $.growl({message: "Bon voyage, test email! " +
-            "Your test email is on its way to the test recipients."
+          $.growl({message: polyglot.t('smart_release.send_test.bon_voyage')
           },{
             type: 'success'
           });
