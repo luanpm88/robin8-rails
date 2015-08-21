@@ -297,6 +297,7 @@ en:
       user_not_found: The user with this email does not exist!
     header:
       contactus: Contact Us
+      contact_us: Contact Us
       demo: Demo
       log_in: Log in
       menu: Menu
@@ -542,6 +543,7 @@ en:
           tags: Tags
           title: Company Details
           type: Type
+        edit: Edit
         general_tab:
           description: Description
           description_placeholder: No description added
@@ -691,6 +693,7 @@ en:
         that posted your content.
     profile:
       account_changed: Your account data has been successfully changed
+      account_successfully_changed: Your account data has been successfully changed
       buttons:
         cancel: Cancel
         save: Save changes
@@ -825,6 +828,9 @@ en:
         website_tab:
           make_private: Make this release private
           title: Website
+      model:
+        newswire_tab:
+          newswire: Newswire
       new_release: New release
     say_something_box:
       fb_accounts: Facebook's account(s)

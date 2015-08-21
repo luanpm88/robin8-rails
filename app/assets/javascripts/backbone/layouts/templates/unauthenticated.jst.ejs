@@ -11,8 +11,8 @@
         <section class="top-bar-section">
           <!-- Right Nav Section -->
           <ul class="right">
-            <li><a href="http://try.robin8.com/robin/" target="_blank">Contact Us</a></li>
-            <li><a href="/signin" id='login-link' >Log In</a></li>
+            <li><a href="http://try.robin8.com/robin/" target="_blank"><%=polyglot.t('header.contact_us')%></a></li>
+            <li><a href="/signin" id='login-link' ><%=polyglot.t('header.log_in')%></a></li>
           </ul>
         </section>
       </nav>
@@ -33,7 +33,7 @@
         <img src="<%= AppAssets.path('ROBIN8-logo.png') %>" />
       </div>
       <div class="small-12 medium-9 columns left">
-        ©2015 Robin8 Inc. All rights reserved. <br class="show-for-medium-only"> <a href="about.html" class="ft-link privacy">About</a> <a href="/team" class="ft-link privacy">Team</a> <a href="/contact" class="ft-link privacy">Contact</a> <a href="/terms" class="ft-link privacy">Privacy &amp; Terms</a>
+        <%= polyglot.t('footer.right_reserved') %> <br class="show-for-medium-only"> <a href="about.html" class="ft-link privacy"><%= polyglot.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= polyglot.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= polyglot.t('footer.contact') %></a> <a href="/terms" class="ft-link privacy"><%= polyglot.t('footer.privacy_and_terms') %></a>
       </div>
     </div>
   </footer>

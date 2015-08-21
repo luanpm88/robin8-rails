@@ -302,6 +302,7 @@ zh:
       user_not_found: "与此电子邮件用户不存在！"
     header:
       contactus: "联系我们"
+      contact_us: "联系我们"
       demo: "演示"
       log_in: "登录"
       menu: Menu
@@ -389,7 +390,7 @@ zh:
       password: "密码"
       register: "注册"
       remember_me: "记住我"
-      title: login
+      title: "登录"
       wechat_login: "使用微信账号登录"
       weibo_login: Login using Weibo
     manage_users:
@@ -531,6 +532,7 @@ zh:
           tags: "标签"
           title: "公司信息"
           type: "类型"
+        edit: "编辑"
         general_tab:
           description: "描述"
           description_placeholder: "无补充说明"
@@ -653,6 +655,7 @@ zh:
       web_distribution_description: "网络发布保证你在数百个顶级新闻网站发布财经内容，包括波士顿环球报和迈阿密先驱报。每次发布自带一份报告，显示发布站点的取样。"
     profile:
       account_changed: "您的帐户数据已成功更改"
+      account_successfully_changed: "您的帐户数据已成功更改"
       buttons:
         cancel: "取消"
         save: "保存修改"
@@ -782,6 +785,9 @@ zh:
         website_tab:
           make_private: "仅对自己可见"
           title: "网址"
+      model:
+        newswire_tab:
+          newswire: "美通社"
       new_release: "新的文章"
     say_something_box:
       fb_accounts: Facebook's 帐户
@@ -1596,13 +1602,13 @@ zh:
     failure:
       already_authenticated: You are already signed in.
       inactive: Your account is not activated yet.
-      invalid: Invalid %{authentication_keys} or password.
+      invalid: "无效的电子邮件或密码。"
       invited: You have a pending invitation, accept it to finish creating your account.
       last_attempt: You have one more attempt before your account is locked.
       locked: Your account is locked.
-      not_found_in_database: Invalid %{authentication_keys} or password.
+      not_found_in_database: "无效的电子邮件或密码。"
       timeout: Your session expired. Please sign in again to continue.
-      unauthenticated: You need to sign in or sign up before continuing.
+      unauthenticated: "您需要登录或注册才能继续操作。"
       unconfirmed: You have to confirm your email address before continuing.
     invitations:
       edit:

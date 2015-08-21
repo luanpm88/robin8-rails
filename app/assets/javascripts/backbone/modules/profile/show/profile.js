@@ -157,7 +157,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       currentAttributes = this.model.attributes;
       emailChanged = (initialAttributes.email != currentAttributes.email);
       formChanged = (JSON.stringify(initialAttributes) != JSON.stringify(currentAttributes));
-      if (formChanged) this.form.data('formValidation').validate(); 
+      if (formChanged) this.form.data('formValidation').validate();
       if (formChanged&&this.form.data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
         this.model.save(this.model.attributes, {
@@ -165,7 +165,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             Robin.currentUser.attributes = currentAttributes;
             Robin.currentUser.attributes.current_password = "";
             Robin.layouts.main.onShow();
-            $.growl({message: polyglot.t('profile.account_changed')
+            $.growl({message: polyglot.t('profile.account_successfully_changed')
             },{
               element: '#growler-alert',
               type: 'success',
