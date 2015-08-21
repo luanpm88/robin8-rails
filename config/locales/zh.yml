@@ -537,6 +537,7 @@ zh:
         customization: ''
         empower: "授权与Robin8您的业务 <br />智能的社交和内容营销，带来更好的效果。"
         exceed: "使用Robin8革命性智能引擎轻松超越客户的需求。  <br />授权与Robin8您的业务。智能的社交和内容营销，带来更好的效果。"
+        hours_of_customization: Hours of Customization
         media_lists: "个私人媒体清单"
         month_to_month: "按月付费"
         newsroom: "个新闻中心"
@@ -551,6 +552,7 @@ zh:
         smart_release: "个智能发布"
         stream: "次流媒体监控"
         title: "选择价格计划"
+        unlimited: Unlimited
       service_details: "服务详情"
       smart_release: "智能发布"
       smart_release_description: "只需点击一下，智能发布即可采用Robin8专有的智能预测引擎，推荐对您的新闻最感兴趣的100位记者和意见领袖。"
