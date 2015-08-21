@@ -388,19 +388,38 @@ en:
       all_time: All time
       cancel: Cancel
       done: Done
+      download: Download
+      enabled: Enabled
+      format: Format
       last_24_hours: Last 24 hours
       last_month: Last month
       last_week: Last week
       loading: Loading
+      messages:
+        alert_saved: Your alert has been successfully saved.
+        alert_saved_not_sorted: Your alert has been successfully saved. But you will
+          not be notified about new stories because your stream is not sorted by Recency.
+        delete_stream: Delete Stream?
+        not_able_recover: You will not be able to recover this stream.
+        stream_saved: Your stream was saved!
+        topics_saved_as_keywords: Your topics was saved as keywords!
       new_updates: new updates
       no_news: There is no news
+      number_of_stories: Number of stories
       please_save: Please save stream first
       popularity: Popularity
       recency: Recency
       rss_link: Rss Link
+      save: Save
       sort_by: Sort by
       sources: Sources
       time_range: Time range
+      tooltips:
+        delete_stream: Delete Stream
+        export: Export
+        rss_feed: RSS Feed
+        set_alert: Set alert
+        stream_settings: Stream Settings
       topics: Topics
       untitled: Untitled Stream
     navigation:

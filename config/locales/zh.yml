@@ -1,5 +1,28 @@
 ---
 zh:
+  about:
+    text: "<p>Miranda Tan, Founder and CEO of Robin8, founded her first PR firm, ExcitePR,
+      in 1999. She realized that businesses offering amazing products were constantly
+      running into the same problem: how could they reach out to the right influencers
+      and achieve maximum effectiveness for their message.</p>      <p>Miranda’s answer
+      was an intuitive, easy to use, do-it-yourself PR software platform she founded
+      in 2007 with her partner, digital media pro Hassan Miah. By 2010, the PR solution
+      had been named a Top 100 OnDemand Software Company, a Top 100 Mid-Atlantic Private
+      Company, and a Top 100 OnMedia company by AlwaysOn.</p>      <p>In 2014, with
+      the emergence of big data and machine learning as pillars of the latest technological
+      advancements, Miranda and Hassan, in partnership with some of the world’s brightest
+      thought leaders, rebuilt the platform to take advantage of next generation Artificial
+      Intelligence. After months of hard work and collaboration, Robin8 was created.</p>
+      \     <p>What if you knew EXACTLY who to contact for every campaign, based on
+      a data-driven prediction on how successful each pitch will be? Robin8 can do
+      all this and more.</p>      <p>Robin8 uses artificial intelligence, machine
+      learning, and big data to take the guesswork out of social and content marketing.
+      \ With its proprietary predictive intelligence engine, Robin8 helps you maximize
+      your reach by intelligently analyzing and understanding which journalists and
+      influencers will be the best fit for your campaign.</p>      <p>Robin8 is personalized
+      to each user's digital profile.  Each time you use Robin8, it learns your preferences,
+      gets smarter and generates the best results for your campaign.</p>"
+    title: ABOUT ROBIN8
   active_admin:
     access_denied:
       message: You are not authorized to perform this action.
@@ -152,6 +175,15 @@ zh:
           attributes:
             email:
               blank: Email can't be blank
+  addons:
+    continue: CONTINUE
+    go_back: GO BACK
+    money_back: 30 day money back guarantee!
+    table:
+      addon: Add-on
+      price: Price
+      qty: Qty
+    title: ADD ON SERVICES
   application:
     about:
       text: "<p>Miranda Tan，Robin8创办人及首席执行官，在1999年创立了第一个PR公司，ExcitePR。她意识到企业提供令人惊叹的产品，同时不断产生了同样的问题：他们如何能够接触正确的意见领袖为实现他们的信息效益最大化。</p>
@@ -347,22 +379,40 @@ zh:
     monitoring:
       all_time: "全部时间"
       cancel: "取消"
-      done: "完成"
+      done: "已完成"
+      download: "下载"
+      enabled: "启用"
+      format: "格式"
       last_24_hours: "过去24小时"
       last_month: "上个月"
       last_week: "上周"
-      loading: "上传中"
+      loading: "载入中"
+      messages:
+        alert_saved: "您的提醒已成功保存。"
+        alert_saved_not_sorted: "您的提醒已成功保存。但您不会收到新事项的提醒，因为您新的新闻流不是按最新消息排序。"
+        delete_stream: "删除新闻流？"
+        not_able_recover: "你将无法恢复此新闻流。"
+        stream_saved: "您的新闻频道已保存！"
+        topics_saved_as_keywords: "你的主题被保存为关键字！"
       new_updates: "新上传的"
       no_news: "没有新闻"
+      number_of_stories: "故事数量"
       please_save: "请先保存频道信息"
       popularity: "最受关注的"
       recency: "最新的"
-      rss_link: "来源链接"
-      sort_by: "排序"
+      rss_link: RSS链接
+      save: "保存"
+      sort_by: "排序方式"
       sources: "来源"
-      time_range: "时段"
+      time_range: "时间范围"
+      tooltips:
+        delete_stream: "删除新闻频道"
+        export: "导出"
+        rss_feed: RSS订阅
+        set_alert: "设置提醒"
+        stream_settings: "新闻频道设置"
       topics: "主题"
-      untitled: "未命名频道"
+      untitled: "无主题新闻频道"
     navigation:
       analytics: "分析"
       dashboard: "主界面"
@@ -1134,6 +1184,24 @@ zh:
       billing_settings: "结算设置"
       log_out: "登出"
       profile: "资料"
+  contact_page:
+    address: MyPRGenie Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019
+    address_title: Main Office Address
+    form:
+      customer_service: General Customer Service
+      email_placeholder: Email Address
+      fill_out: Please fill out all required fields
+      first_name_placeholder: First Name
+      last_name_placeholder: Last Name
+      message_placeholder: Message
+      product_support: Product Support
+      send_button: Send
+      subject_select_placeholder: Choose a Subject
+      suggestions: Suggestions
+    inquires_title: General Inquires
+    phone: "(212) 807-8300 Extension 3"
+    phone_title: Phone (customer service)
+    title: Contact Robin8
   date:
     abbr_day_names:
     - Sun
@@ -1433,6 +1501,66 @@ zh:
     precision:
       format:
         delimiter: ''
+  payment_confirm_page:
+    desc: Your payment has been successfully processed. Please check your email for
+      transaction details.
+    go_to: Go to Robin8
+    thank: Thank you!
+    title: Payment Confirmation
+  payment_page:
+    address: Address
+    card_number: Credit Card Number
+    card_type: Credit Card Type
+    city: City
+    code: Postal Code
+    country: Country
+    cvv: CVV
+    exp_month: Exp. Month
+    exp_year: Exp. Year
+    first_name: First Name
+    go_back: GO BACK
+    info: Payment Information
+    last_name: Last Name
+    messages:
+      address_blank: Address can't be blank
+      card_number_blank: Card number can't be blank
+      card_was_declined: Your card was declined. Please confirm your card details
+        below and try again.
+      city_blank: City can't be blank
+      code_blank: Postal Code/Zip can't be blank
+      cvv_blank: CVV must be greater then 2 characters
+      exp_month_blank: Expiry Month can't be blank
+      exp_year_blank: Expiry Year can't be blank and must be in YYYY format
+      first_name_blank: First name can't be blank
+      last_name_blank: Last name can't be blank
+      phone_blank: Phone can't be blank
+      state_blank: State can't be blank
+    mr_title: Mr
+    mrs_title: Mrs
+    ms_title: Ms
+    note:
+      fifth_part: All prices in US Dollars.
+      first_part: Robin8 accepts Visa, Mastercard, Discover and American Express.
+      fourth_part: and Privacy Policy. To ensure continued service, your membership
+        will be auto-renewed unless canceled. Satisfaction guaranteed or your money
+        back (within 30 days).
+      second_part: By joining Robin8 you are agreeing to the
+      third_part: Terms of Use
+    phone: Phone
+    state: State
+    submit_btn: Submit
+    table:
+      plan: Plan
+      price: Price
+      remove: remove
+      total: TOTAL
+    title: Payment
+    your_title: Title
+  payment_update_page:
+    back_btn: "<<< BACK"
+    enter_info: Enter new Credit Card Information below
+    submit_btn: SUBMIT
+    title: UPDATE PAYMENT INFORMATION
   ransack:
     all: "所有"
     and: "并且"
@@ -1507,6 +1635,62 @@ zh:
       last_word_connector: ", and "
       two_words_connector: " and "
       words_connector: ", "
+  team_page:
+    advisors:
+      advisor1_desc: is the leading acoustic artificial intelligence for the Internet
+        of Things. One Llama Labs was incubated from the University of Illinois and
+        the National Center for Supercomputer Application with grants from the National
+        Science Foundation.
+      advisor1_name: One Llama Labs
+      advisor2_desc: is the top startup accelerator in East Asia. Since 2010, ChinAccelerator
+        has backed over 60 companies and is supported by SOS Ventures, a $235 million
+        fund.
+      advisor2_name: Chinaccelerator
+      title: Robin8 <span>Advisors</span>
+    ceo_desc: Miranda Tan has more than 10 years experience in public relations, marketing,
+      and tech. Miranda has a BS from Cornell University and a JD from St. John’s
+      University School of Law.
+    ceo_name: Miranda Tan
+    ceo_pos: CEO
+    chairman_desc: Hassan has nearly three decades of experience in the finance and
+      technology. Previously, Hassan was the CEO of Xing Technology which sold to
+      Real Networks for $75 Million. Hassan was also the head of digital media at
+      CAA and a managing director of Intel Capital. He has a BBA from the University
+      of Michigan and a MBA from Stanford University Graduate School of Business.
+    chairman_name: Hassan Miah
+    chairman_pos: Chairman
+    developer_desc: Razee has extensive experience in coding, testing, implementation
+      and overall technical support of MyPRGenie. Razee earned a BS from the National
+      University of Computer and Emerging Sciences in Pakistan.
+    developer_name: Razee Khan
+    developer_pos: Engineer and Developer
+    operations_desc: Cynthia heads overall operations and administration for MyPRGenie.
+      She has an MBA from Adelphi University and a BS in Accounting from Nanjing University
+      of Science and Technology.
+    operations_name: Cynthia Chen
+    operations_pos: VP, Operations
+    sales_desc: Alex is a passionate marketer with extensive experience in sales and
+      media outreach. He is an aggressive pitcher who loves connecting with his clients
+      and their audience. Alex graduated from the University of Michigan, College
+      of LS&amp;A with a BS in Neuroscience.
+    sales_name: Alex Stefanov
+    sales_pos: VP, Sales and Marketing
+    scientist_desc: Edison has over 5 years experience in machine learning and data
+      mining in China working with Tencent and Quo360. He has published multiple articles
+      on his work in the Journal of Applied Mathematics and other international outlets.
+      Edison graduated Beijing University of Technology’s School of Mathematics with
+      a BS in Mathematics in 2006 and School of Computer Science with a Master of
+      Engineering CS degree in 2009. He is currently earning his Masters in Computer
+      Science at the Polytechnic School of Engineering at New York University.
+    scientist_name: Edison Xu Zhao
+    scientist_pos: Data Scientist and Engineer
+    support_desc: Olivia joined MyPRGenie in October 2010. At MyPRGenie, she heads
+      Customer Support and oversees the research team. Olivia has extensive experience
+      in PR and marketing and has helped hundreds of companies with their PR campaign.
+      In addition, she heads the research team for the media database.
+    support_name: Olivia Quizon
+    support_pos: VP, Support and Research
+    title: Meet the team behind <b> Robin8</b>
   time:
     am: am
     formats:
