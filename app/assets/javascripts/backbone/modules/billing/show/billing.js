@@ -17,7 +17,7 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
     templateHelpers: {
       count: function(c) {
         if (c == 9999) {
-          return "<b>Unlimited</b>";
+          return "<b>" + polyglot.t('pricing.select_plan.unlimited') +"</b>";
         } else {
           return "<strong>" + c + "</strong>";
         }

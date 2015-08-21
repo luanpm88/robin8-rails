@@ -67,16 +67,16 @@
               <div class="plan-inclusions">
                 <% var prop = currentPlan.properties; %>
                 <ul>
-                  <li><strong><%= prop.smart_release %></strong> <span>SmartContent</span></li>
+                  <li><strong><%= prop.smart_release %></strong> <span><%= polyglot.t("pricing.select_plan.smart_release") %></span></li>
                   <% if (!(currentPlan.slug).startsWith('new')) { %>
-                    <li><strong><%= currentPlan.properties.press_release %></strong> <span>Content Postings on Robin8/month</span></li>
+                    <li><strong><%= currentPlan.properties.press_release %></strong> <span><%= polyglot.t("billing.press_release") %></span></li>
                   <% }%>
-                  <li><strong><%= prop.newsroom %></strong> <span><%= p('Brand Gallery', prop.newsroom) %></span></li>
-                  <li><strong><%= prop.seat %></strong> <span><%= p('Seat', prop.seat) %></span></li>
-                  <li><%= count(prop.media_list) %> <span><%= p('Personal Influencers List', prop.media_list) %></span></li>
-                  <li><%= count(prop.streams) %> <span>Streams for Media Monitoring</span></li>
+                  <li><strong><%= prop.newsroom %></strong> <span><%= p(polyglot.t('billing.newsroom'), prop.newsroom) %></span></li>
+                  <li><strong><%= prop.seat %></strong> <span><%= p(polyglot.t('billing.seat'), prop.seat) %></span></li>
+                  <li><%= count(prop.media_list) %> <span><%= p(polyglot.t('pricing.media_list'), prop.media_list) %></span></li>
+                  <li><%= count(prop.streams) %> <span><%= polyglot.t('pricing.select_plan.stream') %></span></li>
                   <% if (prop.streams == 9999)  { %>
-                    <li><b>20</b> <span>Hours of Customization </span></li>
+                    <li><b>20</b> <span><%= polyglot.t('pricing.select_plan.hours_of_customization')  %></span></li>
                   <% } %>
                 </ul>
               </div>
