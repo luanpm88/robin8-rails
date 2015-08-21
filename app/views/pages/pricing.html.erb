@@ -27,16 +27,16 @@
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>5</strong> <span>SmartContent</span></li>
-                <li><strong>1</strong> <span>Content Gallery</span></li>
-                <li><strong>1</strong> <span>Seat</span></li>
-                <li><strong>1</strong> <span>Personal Influencers List</span></li>
-                <li><strong>3</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>3</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
                 <li><strong>&nbsp;</strong> <span></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" data-select-text='Current' onclick="setPackage('<%=@products[0].slug%>');" onclick="setPackage('<%=@products[0].slug%>');" <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[0].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="basic" <%if user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug)%> class="button button-planselector" data-select-text='<%= @l.t('pricing.select_plan.current') %>' onclick="setPackage('<%=@products[0].slug%>');" onclick="setPackage('<%=@products[0].slug%>');" <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[0].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BASIC_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select') %></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -50,16 +50,16 @@
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>10</strong> <span>SmartContent</span></li>
-                <li><strong>5</strong> <span>Content Galleries</span></li>
-                <li><strong>5</strong> <span>Seats</span></li>
-                <li><strong>5</strong> <span>Personal Influencers List</span></li>
-                <li><strong>10</strong> <span>Streams for Media Monitoring</span></li>
+                <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.seats') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
                 <li><strong>&nbsp;</strong> <span></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-selected="business" <%if user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" data-select-text='<%= @l.t('pricing.select_plan.current') %>' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[1].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  BUSINESS_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
             </div>
           </div>
         </div><!--end plan type column -->
@@ -73,16 +73,16 @@
             </div>
             <div class="plan-inclusions">
               <ul>
-                <li><strong>200</strong> <span>SmartContent</span></li>
-                <li><strong>75</strong> <span>Content Galleries</span></li>
-                <li><strong>75</strong> <span>Seats</span></li>
-                <li><b>Unlimited</b> <span>Personal Influencers List</span></li>
-                <li><b>Unlimited</b> <span>Streams for Media Monitoring</span></li>
-                <li><b>20</b> <span> Hours of Customization</span></li>
+                <li><strong>200</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
+                <li><strong>75</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong><%= @l.t('pricing.select_plan.unlimited') %></strong> <span><%= @l.t('pricing.select_plan.seats') %></span></li>
+                <li><strong><%= @l.t('pricing.select_plan.unlimited') %></strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>20</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
+                <li><b>20</b> <span><%= @l.t('pricing.select_plan.hours_of_customization') %></span></li>
               </ul>
             </div>
             <div class="selector-wrap">
-              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[2].slug%>');" data-select-text='Current' <%else%> data-select-text='Select' class="button button-planselector" onclick="setPackage('<%=@products[2].slug%>');" <%end%> data-selected-text='Selected' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? "Current" : "Select"%></a>
+              <a data-plan="enterprise" <%if user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug)%>class="button button-planselector" onclick="setPackage('<%=@products[2].slug%>');" data-select-text='<%= @l.t('pricing.select_plan.current') %>' <%else%> data-select-text='<%= @l.t('pricing.select_plan.select') %>' class="button button-planselector" onclick="setPackage('<%=@products[2].slug%>');" <%end%> data-selected-text='<%= @l.t('pricing.select_plan.selected') %>' ><%=(user_signed_in? && current_user.active_subscription.present? &&  ENTERPRISE_SLUGS.include?(current_user.active_subscription.product.slug) )? @l.t('pricing.select_plan.current') : @l.t('pricing.select_plan.select')%></a>
             </div>
           </div>
         </div><!--end plan type column -->
