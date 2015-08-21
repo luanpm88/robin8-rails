@@ -296,8 +296,8 @@ en:
       submit_btn: Submit
       user_not_found: The user with this email does not exist!
     header:
-      contactus: Contact Us
       contact_us: Contact Us
+      contactus: Contact Us
       demo: Demo
       log_in: Log in
       menu: Menu
