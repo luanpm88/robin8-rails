@@ -1,0 +1,16 @@
+<tr class='new-translation-row'>
+  <td width='20%'>
+    <span><%= "#{key}." %></span>
+    <span><%= text_field_tag "keys[]", '', class: 'row-keys',style: "width: 100px;" %></span>
+  </td>
+  <td width='40%'>
+    <%= text_area_tag "", '', class: 'key-en-value', style: 'min-height: 50px' %>
+  </td>
+  <td width='40%'>
+    <%= text_area_tag "", '', class: 'key-zh-value', style: 'min-height: 50px' %>
+  </td>
+  <td>
+    <%= button_tag 'Delete', type: :button, class: 'delete-translation' %>
+    <%= button_tag 'Undo', type: :button, class: 'undo-delete', style: 'display: none;' %>
+  </td>
+</tr>

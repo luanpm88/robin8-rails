@@ -1,15 +1,15 @@
 <div class="nav fixed">
   <nav class="top-bar" data-topbar role="navigation">
     <ul class="title-area">
-      <li><a class="logo" href="/">Robin8</a></li>
+      <li><a class="logo" href="/"><%= @l.t('header.title') %></a></a></li>
       <li class="toggle-topbar menu-icon">
-        <a href="#"><span>Menu</span></a>
+        <a href="#"><span><%= @l.t('header.menu') %></span></a>
       </li>
     </ul>
     <section class="top-bar-section">
       <!-- Right Nav Section -->
       <ul class="right">
-        <li><a href="http://try.robin8.com/robin/" target="_blank">Contact Us</a></li>
+        <li><a href="http://try.robin8.com/robin/" target="_blank"><%= @l.t('header.contactus') %></a></li>
 
         <%if user_signed_in?%>
           <%if current_user.first_name.blank? || current_user.last_name.blank?%>
@@ -19,7 +19,7 @@
           <%end%>
           <li><%=link_to "Logout", destroy_user_session_path, :method => :delete%></li>
         <%else%>
-          <li><a href="/signin">Log In</a></li>
+          <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
         <%end%>
       </ul>
     </section>

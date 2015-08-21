@@ -43,8 +43,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         size: 'mini',
         onColor: "info",
         offColor: "info",
-        onText: "Authors",
-        offText: "Influencers"
+        onText: polyglot.t("smart_release.targets_step.search_tab.search_authors.authors"),
+        offText: polyglot.t("smart_release.targets_step.search_tab.search_influencers.influencers")
       });
     },
     initGeoAutocomplete: function(){
@@ -52,7 +52,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initSelect2: function(){
       this.ui.authorsKeywordsInput.select2({
-        tags: []
+        tags: [],
       });
       
       this.ui.influencersTopicsInput.select2({
@@ -90,6 +90,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.ui.influencersLocationInput.select2({
         placeholder: "Locations",
         multiple: false,
+        formatInputTooShort: function (input, min) { var n = min - input.length; return polyglot.t("select2.too_short", {count: n}); },
+        formatNoMatches: function () { return polyglot.t("select2.not_found"); },
+        formatSearching: function () { return polyglot.t("select2.searching"); },
         formatResult: function (object, container, query) {
           return object.text;
         },
@@ -129,12 +132,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.ui.title.text(text);
     },
     authorsSelect: function(){
-      this.changeTitle(" Search Authors");
+      this.changeTitle(" " + polyglot.t("smart_release.targets_step.search_tab.search_authors.title"));
       this.ui.authorsForm.removeClass('hide');
       this.ui.influencersForm.addClass('hide');
     },
     influencersSelect: function(){
-      this.changeTitle(" Search Influencers");
+      this.changeTitle(" " + polyglot.t("smart_release.targets_step.search_tab.search_influencers.title"));
       this.ui.authorsForm.addClass('hide');
       this.ui.influencersForm.removeClass('hide');
     },

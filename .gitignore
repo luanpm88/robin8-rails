@@ -19,7 +19,11 @@ config/database.yml
 public/system
 /doc
 
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
 perf - robin.sublime-project
 perf - robin.sublime-workspace
 .idea/
-.DS_Store
+config/locales_backup

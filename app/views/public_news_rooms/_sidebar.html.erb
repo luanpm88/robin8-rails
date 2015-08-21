@@ -11,7 +11,7 @@
         <% end %>
         <br>
         <strong><%= news_room.company_name %></strong>
-        <br />Pressroom
+        <br /><%= @l.t('public_newsroom.pressroom') %>
       </div>
     <% unless @preview_mode%>
       </a>
@@ -61,7 +61,7 @@
     <% end %>
   <% if news_room.has_social_links? %>
     <li class="navlinks">
-      <a data-toggle="collapse" href="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial" class="collapsed"><i class="fa fa-users"></i> Social Media</a>
+      <a data-toggle="collapse" href="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial" class="collapsed"><i class="fa fa-users"></i> <%=@l.t('public_newsroom.social_media')%></a>
       <div class="collapse collapsible" id="collapseSocial">
         <ul class="soc">
           <% unless news_room.twitter_link.blank? %>
@@ -82,7 +82,7 @@
   <% end %>
   <% unless news_room.owner_name.blank? %>
     <li class="navlinks">
-      <a data-toggle="collapse" href="#collapseSpokeperson" aria-expanded="false" aria-controls="collapseSpokeperson" class="collapsed"><i class="fa fa-user"></i> Spokeperson</a>
+      <a data-toggle="collapse" href="#collapseSpokeperson" aria-expanded="false" aria-controls="collapseSpokeperson" class="collapsed"><i class="fa fa-user"></i> <%=@l.t('public_newsroom.spokeperson')%></a>
       <div class="collapse collapsible" id="collapseSpokeperson">
         <div class="media">
           <a class="media-left" href="#">
@@ -105,7 +105,7 @@
   <% end %>
   <% unless news_room.twitter_link.blank? %>
     <li class="navlinks">
-      <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets" class="collapsed "><i class="fa fa-twitter"></i> Latest Tweets</a>
+      <a data-toggle="collapse" id='twitter-timeline' href="#collapseTweets" aria-expanded="false" aria-controls="collapseTweets" class="collapsed "><i class="fa fa-twitter"></i> <%=@l.t('public_newsroom.latest_tweets')</a>
       <div class="collapse collapsible <%= news_room.twitter_link.blank? ? 'blank' : 'correct' %>" id="collapseTweets" style="padding: 6px !important;">
         <!-- <a class="twitter-timeline <%= news_room.blank? ? 'hidden' : '' %>" href="<%= news_room.twitter_link %>"  data-screen-name="<%= news_room.twitter_link.blank? ? '' : news_room.twitter_link %>" data-widget-id="398762441560952832" data-chrome="nofooter noheader transparent">Tweets by @parsaghaffari</a> -->
         <div class="twitter-wrap  <%= news_room.twitter_link.blank? ? 'hidden' : '' %>">
@@ -119,7 +119,7 @@
     <li class="btn-li">
      <div class="public-button-centered">
         <%= link_to presskit_public_news_room_path, class: 'btn btn-default', disabled: @preview_mode do %>
-          <i class="fa fa-image"></i> Press kit
+          <i class="fa fa-image"></i> <%=@l.t('public_newsroom.press_kit')%>
         <% end %>
       </div>
     </li>
@@ -127,7 +127,7 @@
   <li class="btn-li">
     <div class="public-button-centered">
       <%= link_to new_public_news_room_follower_path, class: 'btn btn-default', disabled: @preview_mode do %>
-        <i class="fa fa-user-plus"></i> Follow
+        <i class="fa fa-user-plus"></i> <%= @l.t('public_newsroom.follow') %>
       <% end %>
     </div>
   </li>

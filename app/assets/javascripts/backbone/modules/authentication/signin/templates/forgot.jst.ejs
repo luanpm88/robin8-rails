@@ -1,19 +1,19 @@
 <div class="form-login"> 
   <div class="row">
     <div class="small-12 columns">
-      <p class="loginintro" style="margin-bottom: 0px;"> Retrieve your password</p>
-      <p class="loginintro">Please enter your <strong>Email</strong> in order to reset your password.</p>
+      <p class="loginintro" style="margin-bottom: 0px;"> <%= polyglot.t("forgot.retrieve_title") %></p>
+      <p class="loginintro"><%= polyglot.t("forgot.enter_title") %></p>
       <form accept-charset="UTF-8" role="form" class="form-signup" onsubmit="return false;">
         <label class="panel-login">
           <div class="login_result"></div>
         </label>
         <label>
-          <input class="form-control" placeholder="Email" name='email' id="email" type="text"/>
+          <input class="form-control" placeholder="<%= polyglot.t("forgot.placeholder") %>" name='email' id="email" type="text"/>
         </label>
-        <div class="alert alert-danger" role="alert" style="display: none; text-align: center;">The user with this email does not exist!</div>
+        <div class="alert alert-danger" role="alert" style="display: none; text-align: center;"><%= polyglot.t("forgot.user_not_found") %></div>
         <div class="submit-wrap" style="margin-top: 0">
         <br>
-          <button class="button button-signup" id='send' type="button">Submit</button>
+          <button class="button button-signup" id='send' type="button"><%= polyglot.t("forgot.submit_btn") %></button>
         </div>
       </form> 
     </div>

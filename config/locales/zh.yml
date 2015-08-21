@@ -1,0 +1,2016 @@
+---
+zh:
+  about:
+    text: "<p>Miranda Tan, Founder and CEO of Robin8, founded her first PR firm, ExcitePR,
+      in 1999. She realized that businesses offering amazing products were constantly
+      running into the same problem: how could they reach out to the right influencers
+      and achieve maximum effectiveness for their message.</p>      <p>Miranda’s answer
+      was an intuitive, easy to use, do-it-yourself PR software platform she founded
+      in 2007 with her partner, digital media pro Hassan Miah. By 2010, the PR solution
+      had been named a Top 100 OnDemand Software Company, a Top 100 Mid-Atlantic Private
+      Company, and a Top 100 OnMedia company by AlwaysOn.</p>      <p>In 2014, with
+      the emergence of big data and machine learning as pillars of the latest technological
+      advancements, Miranda and Hassan, in partnership with some of the world’s brightest
+      thought leaders, rebuilt the platform to take advantage of next generation Artificial
+      Intelligence. After months of hard work and collaboration, Robin8 was created.</p>
+      \     <p>What if you knew EXACTLY who to contact for every campaign, based on
+      a data-driven prediction on how successful each pitch will be? Robin8 can do
+      all this and more.</p>      <p>Robin8 uses artificial intelligence, machine
+      learning, and big data to take the guesswork out of social and content marketing.
+      \ With its proprietary predictive intelligence engine, Robin8 helps you maximize
+      your reach by intelligently analyzing and understanding which journalists and
+      influencers will be the best fit for your campaign.</p>      <p>Robin8 is personalized
+      to each user's digital profile.  Each time you use Robin8, it learns your preferences,
+      gets smarter and generates the best results for your campaign.</p>"
+    title: ABOUT ROBIN8
+  active_admin:
+    access_denied:
+      message: You are not authorized to perform this action.
+    any: Any
+    batch_actions:
+      action_label: "%{title} Selected"
+      button_label: Batch Actions
+      default_confirmation: Are you sure you want to do this?
+      delete_confirmation: Are you sure you want to delete these %{plural_model}?
+      labels:
+        destroy: Delete
+      link: Create one
+      selection_toggle_explanation: "(Toggle Selection)"
+      succesfully_destroyed:
+        one: Successfully destroyed 1 %{model}
+        other: Successfully destroyed %{count} %{plural_model}
+    blank_slate:
+      content: There are no %{resource_name} yet.
+      link: Create one
+    cancel: Cancel
+    comments:
+      add: Add Comment
+      author: Author
+      author_missing: Anonymous
+      author_type: Author Type
+      body: Body
+      errors:
+        empty_text: Comment wasn't saved, text was empty.
+      no_comments_yet: No comments yet.
+      resource: Resource
+      resource_type: Resource Type
+      title: Comment
+      title_content: Comments (%{count})
+    dashboard: Dashboard
+    dashboard_welcome:
+      call_to_action: To add dashboard sections, checkout 'app/admin/dashboard.rb'
+      welcome: Welcome to Active Admin. This is the default dashboard page.
+    delete: Delete
+    delete_confirmation: Are you sure you want to delete this?
+    delete_model: Delete %{model}
+    details: "%{model} Details"
+    devise:
+      change_password:
+        submit: Change my password
+        title: Change your password
+      email:
+        title: Email
+      links:
+        forgot_your_password: Forgot your password?
+        resend_confirmation_instructions: Re-send confirmation instructions
+        resend_unlock_instructions: Re-send unlock instructions
+        sign_in: Sign in
+        sign_in_with_omniauth_provider: Sign in with %{provider}
+        sign_up: Sign up
+      login:
+        remember_me: Remember me
+        submit: Login
+        title: Login
+      password:
+        title: Password
+      resend_confirmation_instructions:
+        submit: Resend confirmation instructions
+        title: Resend confirmation instructions
+      reset_password:
+        submit: Reset My Password
+        title: Forgot your password?
+      sign_up:
+        submit: Sign up
+        title: Sign up
+      subdomain:
+        title: Subdomain
+      unlock:
+        submit: Resend unlock instructions
+        title: Resend unlock instructions
+      username:
+        title: Username
+    download: 'Download:'
+    dropdown_actions:
+      button_label: Actions
+    edit: Edit
+    edit_model: Edit %{model}
+    empty: Empty
+    filters:
+      buttons:
+        clear: Clear Filters
+        filter: Filter
+      predicates:
+        contains: Contains
+        ends_with: Ends with
+        equals: Equals
+        greater_than: Greater than
+        less_than: Less than
+        starts_with: Starts with
+    has_many_delete: Delete
+    has_many_new: Add New %{model}
+    has_many_remove: Remove
+    index_list:
+      block: List
+      blog: Blog
+      grid: Grid
+      table: Table
+    logout: Logout
+    main_content: Please implement %{model}#main_content to display content.
+    new_model: New %{model}
+    next: Next
+    pagination:
+      empty: No %{model} found
+      entry:
+        one: entry
+        other: entries
+      multiple: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{total}</b>
+        in total
+      multiple_without_total: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b>
+      one: Displaying <b>1</b> %{model}
+      one_page: Displaying <b>all %{n}</b> %{model}
+    powered_by: Powered by %{active_admin} %{version}
+    previous: Previous
+    sidebars:
+      filters: Filters
+    status_tag:
+      'no': 'No'
+      'yes': 'Yes'
+    unsupported_browser:
+      headline: Please note that ActiveAdmin no longer supports Internet Explorer
+        versions 8 or less.
+      recommendation: We recommend upgrading to the latest <a href="http://windows.microsoft.com/ie">Internet
+        Explorer</a>, <a href="https://chrome.google.com/">Google Chrome</a>, or <a
+        href="https://mozilla.org/firefox/">Firefox</a>.
+      turn_off_compatibility_view: If you are using IE 9 or later, make sure you <a
+        href="http://windows.microsoft.com/en-US/windows7/webpages-look-incorrect-in-Internet-Explorer">turn
+        off "Compatibility View"</a>.
+    view: View
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'Validation failed: %{errors}'
+        restrict_dependent_destroy:
+          many: Cannot delete record because dependent %{record} exist
+          one: Cannot delete record because a dependent %{record} exists
+      models:
+        media_list:
+          attributes:
+            contacts:
+              association_count_greater_than_or_equal_to: should be greater than or
+                equal to %{count}
+            name:
+              presence: "列表名称不能为空"
+              uniqueness: "名称已被占用"
+        user:
+          attributes:
+            email:
+              blank: "电子邮件不能为空"
+  addons:
+    continue: CONTINUE
+    go_back: GO BACK
+    money_back: 30 day money back guarantee!
+    table:
+      addon: Add-on
+      price: Price
+      qty: Qty
+    title: ADD ON SERVICES
+  application:
+    about:
+      text: "<p>Miranda Tan，Robin8创办人及首席执行官，在1999年创立了第一个PR公司，ExcitePR。她意识到企业提供令人惊叹的产品，同时不断产生了同样的问题：他们如何能够接触正确的意见领袖为实现他们的信息效益最大化。</p>
+        \     <p>Miranda的答案是直观的，易于使用的，她于2007年与合作伙伴，数字媒体专家Hassan Miah成立自主化的PR软件平台。到2010年，这个PR软件平台已被评为百强OnDemand的软件公司，100强中大西洋私人公司，并且被AlwaysOn评为100强OnMedia企业。</p>
+        \     <p>2014年，随着大数据和机器学习技术的快速进步，Miranda和Hassan开始和一些世界级的思想领袖合作，并得以重建该平台下一代人工智能。经过数月的艰苦努力和协作，Robin8诞生了。</p>
+        \     <p>如何让你知道每一次活动应该准确联系谁，如何成功通过数据驱动的预测递送消息？ Robin8可以做到这一切甚至更多。</p>      <p>Robin8采用人工智能，机器学习和大数据采取推测社交和内容营销。凭借其专有的智能预测引擎，Robin8帮助您通过智能最大化您的需求分析和了解记者和意见领袖将是您的团队的最佳选择。</p>
+        \     <p>Robin8是个性化到每个用户的数字信息。当您每次使用Robin8时候，它能了解您的喜好，变得更加智能，从而为您带来更好的效果。</p>"
+      title: "关于Robin8"
+    addons:
+      continue: "继续"
+      go_back: "返回"
+      money_back: 30天退款保证！
+      table:
+        addon: "附加"
+        price: "价格"
+        qty: "数量"
+      title: "附加服务"
+    analytics:
+      author: "作者"
+      delivered: "送达"
+      dropped: "下降"
+      email: "电子邮件"
+      emails: "电子邮件"
+      filter_by: "筛选"
+      newsrooms_views: "新闻中心访问量"
+      opened: "开放"
+      outlet: "媒体"
+      page_views: "页面访问量"
+      sent: "发送"
+      statisitcs: "智能发布邮件数据统计"
+      values: "值"
+      visits: "内容库和文章访问"
+      web: "网络"
+    billing:
+      action: "操作"
+      addons_title: "附加组件"
+      amount: "量"
+      annually: "每年结算或"
+      buttons:
+        addons: "附加功能"
+        cancel: "取消订阅"
+        change: "更改计划"
+        new_plan: Subscribe to new plan
+        update: "更新付款详细信息"
+      cancel_action: "取消"
+      card_last: "卡的最后四位"
+      card_type: "卡的类型"
+      created_at: "于创建"
+      current_plan: "目前的价格计划"
+      month: "按月付费"
+      name: "姓名"
+      newsroom: "新闻中心"
+      payment_title: "付款"
+      per_month: "/月"
+      personal_lists: "个私人媒体清单"
+      plan_is_canceled: Your current plan is canceled
+      press_release: "在Robin8刊登个新闻稿/月"
+      price: "价格"
+      seat: "席位"
+      smart_release: "次智能发布"
+      status: "状态"
+      streams: "次流媒体监控"
+    contact_page:
+      address: Robin8<br> 1745百老汇大街，17楼<br> 纽约市，纽约州 10019
+      address_title: "主要办公地址"
+      form:
+        customer_service: "一般客户服务"
+        email_placeholder: "电子邮件地址"
+        fill_out: "请填写此空格。"
+        first_name_placeholder: "名"
+        last_name_placeholder: "姓氏"
+        message_placeholder: "信息"
+        product_support: "产品支持"
+        send_button: "发送"
+        subject_select_placeholder: "选择一个主题："
+        suggestions: "建议"
+      inquires_title: "一般查询"
+      phone: "(212) 807-8300 Extension 3"
+      phone_title: "电话（客户服务）："
+      thank_you: "感谢您与我们联系。我们团队将尽快与您联系"
+      title: "联系Robin8"
+    dashboard:
+      accept: "接受"
+      accepted: "已接受"
+      brand: "品牌"
+      budget: "預算"
+      check_to_activate: "请查看您的电子邮件来激活您的帐户!"
+      creation_date: "創建日期"
+      deadline: "截止日期"
+      decline: "拒绝"
+      declined: "已拒绝"
+      description: "描寫"
+      description1: "如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的记者，KOLs 和大V们，这个听起来怎么样？Robin8可以实现这一切，帮你摆脱PR世界里毫无依据的猜想和机会渺茫的投递"
+      description2: Robin8 可以通过智能分析来深度了解KOLs和大V们，帮你的推广活动找到最为合适的人选，从而最大程度的优化投递结果。
+      description3: Robin8通过为你提供高效的工作流程和智能化的操作界面来帮助你获得最好的推广结果并在竞争中保持不败之地
+      name: "姓名"
+      new_monitoring_button: "新的观察频道"
+      new_newsroom_button: "新建内容库"
+      new_release_button: "发布新的文章"
+      new_smartrelease_button: "智能发布"
+      not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
+      status: "状态"
+      title: "主界面"
+    footer:
+      about: "大约"
+      contact: "联系人"
+      privacy_and_terms: "隐私权和条款"
+      right_reserved: 2015 © Robin8 保留所有权利。
+      team: "球隊"
+    forgot:
+      enter_title: "请输入您的电子邮件以重置密码。"
+      has_been_sent: "与密码重置信息的电子邮件已经发送"
+      placeholder: "电子邮件"
+      retrieve_title: "找回您的密码"
+      submit_btn: "提交"
+      user_not_found: "与此电子邮件用户不存在！"
+    header:
+      contact_us: "联系我们"
+      contactus: "联系我们"
+      demo: "演示"
+      log_in: "登录"
+      menu: Menu
+      pricing: "定价"
+      sign_up: "注册"
+      title: Robin8
+    highcharts:
+      download_jpeg: "下载JPEG图像"
+      download_pdf: "下载PDF文档"
+      download_png: "下载PNG图片"
+      download_svg: "下载SVG矢量图"
+      print_chart: "打印图表"
+    kol_campaign:
+      approved: "批准"
+      article:
+        close: "关闭"
+        have_submit_wechat: You have to submit your WeChat report on each 7th day
+          after approval of your article, since WeChat only stores data during 7 days
+          after the article was posted. If you will delay submission of the report,
+          your performance data (number of people reached, number of page views, number
+          of "read more", number of re-share + favorites) for the delayed days will
+          not be count.
+        please_fill_field: "请填写领域"
+        save: "保存更改"
+        send: "發送"
+        send_for_approval: "发送审批"
+        type_comment: "编辑您的评论"
+      article_url: "文章"
+      brand: "品牌"
+      budget: "预算"
+      creation_date: "创建日期"
+      deadline: "期限"
+      in_progress: "进行中"
+      name: "姓名"
+      not_approved_yet: "尚未得到批准"
+      you_dont_have_any_accepted: "您没有已接受的推广活动"
+      you_dont_have_any_declined: "您没有被拒绝的推广活动"
+    kols:
+      agree: 通过注册，你已同意Robin8<a href="/terms">的服务条款。
+      email: "电子邮件"
+      email_error: "电子邮件不能为空"
+      first_name: "名"
+      fname_error: "名字不能为空"
+      interests: "兴趣爱好"
+      last_name: "姓氏"
+      lname_error: "姓氏不能为空"
+      location: "地点"
+      location_error: "地点不能为空"
+      mobile_number_error: Digits only
+      password: "密码"
+      password_error: "密码必须大于7个字符"
+      title: "注册"
+    landing_page:
+      here: "在这里."
+      inf_signup: "你是一个意见领袖吗? 注册"
+      kol_signup: Are you a KOL? Sign up
+      learn_more: "了解更多"
+      recommend: "推荐"
+      recommend_text: "意见领袖为你出谋划策，还有个性化的内容。你的每次使用，会让Robin8推荐引擎变得更智能。"
+      sign_up: "注册"
+      target: "目标"
+      target_text: "只需点击一下，Robin8将智能推荐意见领袖的名单。"
+      text1: ROBIN8帮你更轻松和有效的找到记者和意见领袖。
+      text2: "多年来，我们一直在用科技改变PR的面貌。成功将你的文章发送至了解与信任的记者，他们将分享您的每一次内容递送。简单智能。"
+      text3: "推测出适合的社交和内容营销"
+      text4: ROBIN8通过不断的跟踪每日发布的数十亿文章，并分析相关的数据，最终打造有影响力的终极数据库。通过了解每一个意见领袖背后的细微差别和他们的兴趣，我们
+      text5: ROBIN8可以为你做点什么？
+      text6: "花更少的时间在数据库和研究工作，集中精力于实际的内容投递，联系人，计划和内容创建。"
+      text7: "使用算法和机器学习技术来适应个性化的PR推荐和内容定制。"
+      text8: "让你的营销费用获得更高的回报。"
+      text9: "准备好通过ROBIN8看世界了吗？"
+      title: "下一代人工智能驱动的社交和内容营销平台"
+      track: "轨道"
+      track_text: "通过我们强大的分析系统追踪结果，利用我们的智能媒体，及时了解最新的新闻。"
+      upload: "上传"
+      upload_text: "上传您的新闻稿或内容，它在几秒钟内将得到分析。"
+    login:
+      email: "电子邮件"
+      fb_login: "使用Facebook账号登陆"
+      forgot: "忘记密码？"
+      google_login: "使用Google Plus账号登陆"
+      intro: "请输入您的电子邮件和密码，或者使用社交账号登录"
+      login_label: "登录"
+      or: "或"
+      password: "密码"
+      register: "注册"
+      remember_me: "记住我"
+      title: "登录"
+      wechat_login: "使用微信账号登录"
+      weibo_login: Login using Weibo
+    manage_users:
+      buttons:
+        back: "返回内容库"
+        delete: "删除"
+        delete_toggle: "删除用户"
+        invite: "邀请用户"
+        manage: "管理用户"
+      input_placeholder: "输入用户电子邮件地址"
+      messages:
+        cancel_button: "取消"
+        confirm_button: "删除"
+        invalid_data: "您所输入的不是一个有效的电子邮件"
+        is_active: This user is already active
+        not_available_seats: "你没有可用座位！"
+        remove_explanation: "你将无法恢复该用户。"
+        remove_user: "删除此用户"
+        resent: "该邀请已经发出"
+        sent: "该邀请已经发出"
+      search_placeholder: "通过邮件和名称搜索用户"
+      table:
+        email: "电子邮件"
+        name: "名字"
+      title: "用户管理"
+    monitoring:
+      all_time: "全部时间"
+      cancel: "取消"
+      done: "已完成"
+      download: "下载"
+      enabled: "启用"
+      format: "格式"
+      last_24_hours: "过去24小时"
+      last_month: "上个月"
+      last_week: "上周"
+      loading: "载入中"
+      messages:
+        alert_saved: "您的提醒已成功保存。"
+        alert_saved_not_sorted: "您的提醒已成功保存。但您不会收到新事项的提醒，因为您新的新闻流不是按最新消息排序。"
+        delete_stream: "删除新闻流？"
+        not_able_recover: "你将无法恢复此新闻流。"
+        stream_saved: "您的新闻频道已保存！"
+        topics_saved_as_keywords: "你的主题被保存为关键字！"
+      new_updates: "新上传的"
+      no_news: "没有新闻"
+      number_of_stories: "故事数量"
+      please_save: "请先保存频道信息"
+      popularity: "最受关注的"
+      recency: "最新的"
+      rss_link: RSS链接
+      save: "保存"
+      sort_by: "排序方式"
+      sources: "来源"
+      time_range: "时间范围"
+      tooltips:
+        delete_stream: "删除新闻频道"
+        export: "导出"
+        rss_feed: RSS订阅
+        set_alert: "设置提醒"
+        stream_settings: "新闻频道设置"
+      topics: "主题"
+      untitled: "无主题新闻频道"
+    navigation:
+      analytics: "分析"
+      dashboard: "主界面"
+      monitoring: "监控"
+      newsrooms: "新闻室"
+      profile: "轮廓"
+      recommendations: "推荐"
+      releases: "发布"
+      smart_campaign: "智能推广"
+      smart_release: "智能发布"
+      social: "社会"
+    new_package:
+      amount_info: "你会被收取..."
+      apply: "应用代码"
+      at: "在"
+      back: "返回"
+      charge_notification: "你不会立刻被扣款。您的付款会在你的下一个结算日自动进行调整，从...开始， "
+      confirm: "确认更改套餐"
+      current: "当前"
+      information: "新套餐信息"
+      new: "新套餐"
+      plan: "计划"
+      price: "价格"
+      promo: "促销代码"
+      title: "新套餐"
+      total: "总计"
+    newsrooms:
+      buttons:
+        new: "新的内容库"
+      item:
+        buttons:
+          edit: "编辑"
+          preview: "预览"
+          releases: "文章"
+        description_placeholder: "没有添加描述"
+        releases: "文章"
+      messages:
+        not_available_newsrooms: "你没有可用的编辑部！"
+      modal:
+        address_tab:
+          address1: "地址1"
+          address2: "地址2"
+          city: "城市"
+          code: "邮编"
+          country: "国家"
+          dropdown:
+            select: "选择..."
+          state: "省份"
+          title: "地址"
+        buttons:
+          delete: "删除内容库"
+          preview: "预览"
+          save: "保存修改"
+        contact_tab:
+          facebook: Facebook
+          instagram: Instagram
+          job_title: "职位"
+          linkedin: LinkedIn／领英
+          name: "公司联系人姓名"
+          title: "联系方式"
+          twitter: Twitter
+        details_tab:
+          dropdown:
+            educational_institution: "教育机构"
+            employees: "名员工"
+            government_agency: "政府机构"
+            llc: "有限责任公司"
+            myself_only: "只有我"
+            non_profit: "非盈利"
+            or_more_employees: "以上的员工"
+            privately_held: "私人持有"
+            public_company: "上市公司"
+            select: "选择..."
+          industry: "行业"
+          name: "公司名称"
+          size: "规模"
+          tags: "标签"
+          title: "公司信息"
+          type: "类型"
+        edit: "编辑"
+        general_tab:
+          description: "描述"
+          description_placeholder: "无补充说明"
+          email: "电子邮件"
+          fax: "传真"
+          number: "免费电话"
+          phone: "电话"
+          title: "通用"
+          web_address: "网址"
+        media_tab:
+          title: "素材"
+        public_tab:
+          description: "在这里，你可以为你的文章创建一个可公开访问的网页，读者和记者可以了解您的公司或组织，以及访问您的文章和资料。请挑选一个子域名"
+          publish: "发布到公共页"
+          subdomain: "二级域名"
+          title: "公共页"
+          validations:
+            subdomain_required: "子域名是必需的"
+        title: "建立内容库"
+    payment_confirm_page:
+      desc: "您已付款成功。请查阅您的电子邮件中的交易细节。"
+      go_to: "前往Robin8"
+      thank: "谢谢！"
+      title: "付款确认"
+    payment_page:
+      address: "地址"
+      card_number: "信用卡号码"
+      card_type: "信用卡类型"
+      city: "城市"
+      code: "邮政编码"
+      country: "国家"
+      cvv: "安全码"
+      exp_month: "有效期。月"
+      exp_year: "有效期。年"
+      first_name: "名"
+      go_back: "返回"
+      info: "付款信息："
+      last_name: "姓氏"
+      messages:
+        address_blank: "地址不能为空"
+        card_number_blank: "卡号不能为空"
+        card_was_declined: "你的卡被拒绝。请确认您的信用卡信息，然后再试一次。"
+        city_blank: "城市不能为空"
+        code_blank: "邮编不能为空"
+        cvv_blank: "安全码必须大于2位"
+        exp_month_blank: "有效期月份不能为空"
+        exp_year_blank: "有效期年份不能为空，且必须是YYYY格式"
+        first_name_blank: "名字不能为空"
+        last_name_blank: "姓氏不能为空"
+        phone_blank: "电话号码不能为空"
+        state_blank: "州不能为空"
+      mr_title: "先生"
+      mrs_title: "女士"
+      ms_title: "小姐"
+      note:
+        fifth_part: "以美元计价。"
+        first_part: Robin8接受Visa，Master，Discover和美国运通卡.
+        fourth_part: "和隐私政策. 为了确保服务的持续，您的会员资格会自动续期，除非取消. 满意退款保证（30天内）."
+        second_part: "通过加入Robin8您同意的"
+        third_part: "使用条款"
+      phone: "电话"
+      state: "州"
+      submit_btn: "提交"
+      table:
+        plan: "计划"
+        price: "价格"
+        remove: "移除"
+        total: "总计"
+      title: "付款"
+      your_title: "题目"
+    payment_update_page:
+      back_btn: "<<< 背部"
+      enter_info: "在下面输入新的信用卡信息"
+      submit_btn: "提交"
+      title: "更新付款信息"
+    pricing:
+      accesswire_distribution: Accesswire发布
+      accesswire_distribution_description: "分发信息到成千上万个网站，包括雅虎财经，投资者网络和日历？您还可以将图像添加到您的消息，并为您的消息带来更多浏览。信息发布配有详细的分析报告。"
+      media_list: "个人媒体清单"
+      media_list_description: "上传你的个人媒体列表至Robin8，您即可以随时进行访问和管理"
+      monitoring_stream: "媒体监测流"
+      monitoring_stream_description: "媒体监测，您可以在线监控特定品牌或更新的一个行业，所以你可以听，并及时了解最新的新闻和更新。所有更新都是实时的。"
+      newsroom: "内容库"
+      newsroom_description: "额外的新闻中心可以让您在您的帐户添加额外的新闻中心。一个新闻中心是一个品牌的介绍资料，您可以添加您的标志，发布信息，视频和图像。"
+      newswire: "美通社发布"
+      newswire_description: "分发信息到1600多个网站包括雅虎财经。您也可以将图像添加到您的消息，并为您的消息带来更多浏览。信息发布配有详细的分析报告。"
+      press_release: "通过Robin8发布"
+      press_release_description: "在Robin8网站上发表。在社交媒体和网络共享上找到。"
+      seat: "席位"
+      seat_description: "额外的席位可以让您的帐户添加一个用户。"
+      select_plan:
+        agencies_button: "机构"
+        annually: "每年结算或"
+        businesses_button: "企业"
+        continue: "继续"
+        current: "当前"
+        customization: ''
+        empower: "授权与Robin8您的业务 <br />智能的社交和内容营销，带来更好的效果。"
+        exceed: "使用Robin8革命性智能引擎轻松超越客户的需求。  <br />授权与Robin8您的业务。智能的社交和内容营销，带来更好的效果。"
+        hours_of_customization: Hours of Customization
+        media_lists: "个私人媒体清单"
+        month_to_month: "按月付费"
+        newsroom: "个新闻中心"
+        newsrooms: ''
+        per_month: "月"
+        plans: "订阅计划"
+        press_release: "篇新闻稿/月"
+        seat: "席"
+        seats: "席"
+        select: "选择"
+        selected: "选择"
+        smart_release: "个智能发布"
+        stream: "次流媒体监控"
+        title: "选择价格计划"
+        unlimited: Unlimited
+      service_details: "服务详情"
+      smart_release: "智能发布"
+      smart_release_description: "只需点击一下，智能发布即可采用Robin8专有的智能预测引擎，推荐对您的新闻最感兴趣的100位记者和意见领袖。"
+      web_distribution: "财经内容网络发布"
+      web_distribution_description: "网络发布保证你在数百个顶级新闻网站发布财经内容，包括波士顿环球报和迈阿密先驱报。每次发布自带一份报告，显示发布站点的取样。"
+    profile:
+      account_changed: "您的帐户数据已成功更改"
+      account_successfully_changed: "您的帐户数据已成功更改"
+      buttons:
+        cancel: "取消"
+        save: "保存修改"
+      company: "公司名称"
+      confirm_new_password: "确认新密码"
+      curr_password: "现用密码"
+      current_password_req: "当前需设置一个新的密码"
+      day_of_birth: "生日"
+      digits_only: Digits only
+      email: "电子邮件"
+      enter_value: Please enter a value
+      first_name: "名字"
+      industry: "行业"
+      interests: "興趣愛好"
+      last_name: "姓氏"
+      location: "地點"
+      messages:
+        required_email: "需要邮箱地址"
+      mobile_number: "手機號碼"
+      new_password: "新密码"
+      password_confirmation_must_same: "确认密码必须一致"
+      password_confirmation_req: "需要确认密码"
+      password_must_be_8: "新密码必须至少8个字符"
+      password_required: "需要密碼"
+      personal_info: "个人信息"
+      public_account: "公共账号"
+      select_interests: "選擇你的興趣"
+      set_up_payoneer: "设置信用卡支付"
+      something_wrong: something went wrong
+      time_placeholder: select an option
+      time_zone: "时区"
+      title: "稱號"
+      username: "用户名"
+    public_newsroom:
+      about: About
+      follow: "关注"
+      latest_tweets: "新鲜事"
+      location: "地点"
+      no_releases: "尚未发布文章"
+      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
+      press_kit: Press kit
+      pressroom: "新闻室"
+      read_more: "阅读更多"
+      social_media: "社交媒体"
+      spokeperson: "演讲人"
+      what_is: "什么是"
+    public_release:
+      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
+    register:
+      agree_terms: "通过注册，你已同意MyPRGenie的服务条款。"
+      email_already_taken: "该邮箱已被注册"
+      email_placeholder: "电子邮件"
+      fb_signup: "使用Facebook账号登陆"
+      first_name_placeholder: "名"
+      google_signup: "使用Google Plus账号登陆"
+      here: "在这里."
+      inf_signup: "你是一个意见领袖吗? 注册"
+      kol_signup: Are you a KOL? Sign up
+      last_name_placeholder: "姓氏"
+      messages:
+        email_blank: "电子邮件不能为空"
+        first_name_blank: "名字不能为空"
+        last_name_blank: "姓氏不能为空"
+        pass_invalid: "密码必须大于7个字符"
+      or: "或"
+      password_placeholder: "密码"
+      signup_btn: "注册"
+      title: "注册"
+      wechat_signup: "使用微信账号登录"
+      weibo_signup: "使用Weibo账号登陆"
+    releases:
+      all_newsrooms: "所有内容库"
+      edit_title: "编辑"
+      item:
+        buttons:
+          edit: "编辑"
+          preview: "预览"
+          smart: "智能发布"
+      modal:
+        basic_tab:
+          characteristics_view:
+            adjectives: "形容词"
+            adverbs: "副词"
+            bad: "不太好"
+            characters: "字符"
+            excellent: Excellent
+            good: Good
+            highlight: Highlight
+            nouns: "名词"
+            ok: "尚可"
+            paragraphs: "段落"
+            score: "可读性指数"
+            sentences: "句子"
+            too_short: "过段"
+            words: "字数"
+          newsroom: "内容库"
+          paragraph_notification: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
+          published_date: "发布日期"
+          release_text: "文章内容"
+          release_title: "文章标题"
+          text_placeholder: "在这里粘贴文章..."
+          title: "基本信息"
+          title_placeholder: "输入标题..."
+        buttons:
+          delete: "删除文章"
+          next: "下一步"
+          save: "保存草稿"
+        dropdown:
+          select: "选择..."
+        media_tab:
+          select_logo: "请为你的文章加一个图标"
+          title: "媒体"
+          upload_files: "这里上传其他的多媒体文件"
+        messages:
+          buy_addon: "请在结算设置中购买相应的插件！"
+          select_newsroom: "你应该选择一个"
+          title_required: "标题是必需的"
+        newswire_tab:
+          accesswire: Accesswire
+          distribution: "财务内容分发"
+          newswire: "美通社"
+          release_option: "请选择投递选项"
+          start_date: Start date
+        publish: "发布内容库"
+        title: "新建文章"
+        warning: "在内容库还没有发布之前这篇文章不会被公众看到"
+        website_tab:
+          make_private: "仅对自己可见"
+          title: "网址"
+      model:
+        newswire_tab:
+          newswire: "美通社"
+      new_release: "新的文章"
+    say_something_box:
+      fb_accounts: Facebook's 帐户
+      ln_accounts: Linkedin's 帐户
+      post_btn: "发布"
+      post_to_fb: "发布到 facebook"
+      post_to_ln: "发布到 linkedin"
+      post_to_tw: "发布到 twitter"
+      post_to_wb: "发布到 weibo"
+      post_to_wch: "发布到 wechat"
+      say_placeholder: "说些什么..."
+      schedule_btn: "日程表"
+      shrink_links: "短链接"
+      tw_accounts: Twitter's 帐户
+      wb_accounts: Weibo's 帐户
+      wch_accounts: Wechat's 帐户
+    select2:
+      not_found: "未找到匹配"
+      searching: "搜索..."
+      too_short: "请输入 %{count} 个或更多字符"
+    smart_campaign:
+      accepted: "已接受"
+      active: "活跃"
+      add: "添加"
+      add_influencer: "增加意见领袖"
+      add_money: "添加"
+      approved: "批准"
+      back: "背部"
+      budget: "预算"
+      budget_must_number: "预算必须是数字，并且只包含数字"
+      budget_required: The budget is required
+      campaigns: "宣传活动"
+      categories: "分类"
+      close: "关闭"
+      created: "创建 "
+      deadline: "期限"
+      declined: "已拒绝"
+      declined_unknown: "拒绝/未知"
+      edit_campaign: "编辑推广活动"
+      email: "电子邮件"
+      enter_email: "填写邮箱"
+      enter_first name: "填写姓"
+      enter_last_name: "填写名"
+      first_name: "名"
+      in_progress: "进行中"
+      invite_influencers: "邀请意见领袖"
+      kol:
+        alredy_in_list: " 已存在您的列表中"
+        attach_invalid: "附件内容类型无效"
+        incorrect_ignored: "所有格式不正确的联系人都将被忽略。"
+        list_uploaded: "您的列表已经成功上传。"
+        select_categories: "选择意见领袖的分类"
+      last_name: "姓氏"
+      last_update: Last Update
+      name: "姓名"
+      new_campaign: New Campaign
+      'no': "不是"
+      no_campaigns: You don't have any campaigns. It's time to create one!
+      no_invited_yet: You haven't invited influencers yet. It's time to add some!
+      no_one_accepted: "目前无人接受您的邀请。"
+      pending_approval: Pending Approval
+      pitch_step:
+        delete_button: "删除"
+        description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
+        emailTargets: "通过电子邮件联系目标人"
+        email_panel:
+          email: "你的电子邮件地址"
+          email_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
+            new campaign @[Campaign Title] by @[User Name].  Please proceed to your
+            dashboard to accept the invitation.
+          email_placeholder: "输入电子邮件地址"
+          length: "文章小结长度"
+          pitch_text: "投递内容"
+          preview: "预览"
+          sentences: "句子"
+          subject: "邮件标题"
+          subject_placeholder: "输入一个吸引人的标题"
+          tags: "可用的智能替换标签"
+          title: "投递邮件"
+        email_required: "该邮件地址必填"
+        emailtext_required: "该邮件内容必填"
+        see: "查看名单"
+        subject_required: "该主题必填"
+        targets_table:
+          actions: "动作"
+          button: "保存"
+          delete: "删除"
+          email: "电子邮件"
+          name: "姓名"
+          save: "保存为名单"
+        test_button: "发送测试邮件"
+        title: "投递"
+        wechatTargets: Targets will be contacted via WeChat
+        weiboTargets: Targets will be contacted via Weibo
+        weibo_panel:
+          pitch_text: "投递内容"
+          preview: "预览"
+          weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
+            new campaign @[Campaign Title] by @[User Name].  Please proceed to your
+            dashboard to accept the invitation.
+      private_influencers: "自有的意见领袖"
+      smart_campaign:
+        pitch_step:
+          button: "投递"
+      smartcampaign: "智能推广"
+      start_step:
+        analyze: "分析"
+        campaign_budged: "推广活动预算"
+        campaign_content: "推广活动内容"
+        campaign_deadline: "推广活动期限"
+        campaign_title: "推广活动名称"
+        editor_uses_paragraphs: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
+        enter_title: "填写名称"
+        following_topics: "将会提到如下的话题"
+        paste_press_here: "粘贴新闻稿"
+        pick_deadline: "选择一个期限"
+        summary: 如下是<strong> "%{name}" </strong>的小结
+      status: "状态"
+      supported_formats: "支持格式"
+      targets_step:
+        city_state: "城市或州/省或国家"
+        contact_first_last: "联系人的姓名"
+        couldnt_match_influencers: "未找到相匹配意见领袖"
+        email: "电子邮件"
+        enter_categories: "提供更多目录"
+        invite: "邀"
+        location: "地址"
+        name: "姓名"
+        need_invite: You need to invite at least someone to this campaign!
+        private: "私人"
+        weibo_tab:
+          author: "作者"
+          contact: "联系人"
+          followers: "关注者"
+          inspect: "检查"
+          invite: "邀"
+          outlet: "媒体"
+          relevance: "相关度"
+      total_influencers_invited: "已邀请所有的意见领袖"
+      unknown: "未知"
+      uploaded_file: "上传的文件必须具有完全相同的<strong>三</ STRONG>列，格式为<STRONG>姓，名，电子邮件地址</ STRONG>"
+      wechat_report:
+        favourite: "转发+收藏人数"
+        page_views: "图文阅读人数"
+        people_reached: "送达人数"
+        read_more: "原文阅读人数"
+      'yes': "是的"
+    smart_release:
+      analysis_step:
+        buttons:
+          next: "下一步"
+        description1: 这是<strong> "%{name}" </strong>的分析报告。如需要修改，修改完成后，请点击 <strong>
+          %{button} </strong>进行保存
+        description2: when you're finished
+        is_about: <strong> "%{name}" </strong>是关于
+        summary: 如下是<strong> "%{name}" </strong>的小结
+        title: "分析"
+        topics: "将会提到如下的话题"
+      pitch_step:
+        button: "投递"
+        delete_button: "删除"
+        description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
+        email_panel:
+          email: "你的电子邮件地址"
+          email_placeholder: "输入电子邮件地址"
+          length: "文章小结长度"
+          merge_tags:
+            first_name: "名"
+            last_name: "姓氏"
+            link: "链接"
+            outlet: "媒体"
+            summary: "总结"
+            text: "文本"
+            title: "题目"
+          pitch_text: "投递内容"
+          preview: "预览"
+          sentences: "句子"
+          subject: "邮件标题"
+          subject_placeholder: "输入一个吸引人的标题"
+          tags: "可用的智能替换标签"
+          text_dear: "亲爱的"
+          text_here: "这里有一个你可能会感兴趣的"
+          text_text: Press Release Text
+          title: "投递邮件"
+        see: "查看名单"
+        targets: "通过电子邮件联系目标人"
+        targets_table:
+          actions: "动作"
+          button: "保存"
+          delete: "删除"
+          name: "姓名"
+          outlet: "媒体公司"
+          save: "保存为名单"
+          save_placeholder: "列表名称..."
+          success_pitch_sent: "您的稿件已经投递成功"
+          success_uploaded_list: "您的列表已成功保存。"
+        test_button: "发送测试邮件"
+        title: "投递"
+      send_test:
+        bon_voyage: "一路顺风，测试邮件！测试邮件已经发往收信人了。"
+        cancel: "取消"
+        comma_separate: "用逗号分隔电子邮件发送到多个帐户"
+        ex: "例如"
+        send_test: "发送测试"
+        send_test_button: "发送测试"
+        send_test_to: "发送测试到"
+      start_step:
+        buttons:
+          analyze: "分析"
+          new_release: "新的文章"
+        description: Robin8 可以通过智能分析来深度了解KOLs和大V们，帮你的推广活动找到最为合适的人选，从而最大程度的优化投递结果。
+        dropdown:
+          plus_new_release: "+ 新的文章"
+          select: "选择..."
+        notification: "对不起，你还不能使用智能发布。 请升级套餐"
+        select: "选择一篇文章"
+        title: "欢迎使用智能发送"
+      targets_step:
+        buttons:
+          next: "下一步"
+        description: "如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的KOLs和大V们，这个听起来怎么样？Robin8
+          可以实现这一切，帮你摆脱PR世界里毫无依据的猜想和机会渺茫的投递"
+        influencers_tab:
+          author: "作者"
+          buttons:
+            add_all: "添加所有"
+            advanced: "高级"
+            export: "导出为CSV"
+            inspect: "检查"
+            no_but: "不是"
+            remove_all: "移除所有"
+            yes_but: "是的"
+          contact: "联络"
+          followers_count: "追随者数"
+          length: "文章平均长度"
+          outlet: "媒介"
+          pitch: "投递？"
+          relevance: "相关度"
+          row: "排"
+          title: "大V"
+        media_tab:
+          add_list: "添加过去保存过的名单"
+          delete: "删除"
+          formats: "支持文件格式"
+          ignored_contacts: All contacts in incorrect format will be ignored.
+          not_available: You don't have available media list in your subscription!
+          select_placeholder: "选择一个媒体名单或者上传一个新的名单"
+          successfully_uploaded: "您的列表已经成功上传。"
+          table:
+            actions: "动作"
+            contacts: "联系方式"
+            empty: "你还没有选择任何媒体名单"
+            name: "名单名称"
+          title: "媒体名单"
+          upload_button: "上传新的名单"
+          uploaded_file_info: "上传的文件必须恰好有四列，格式为姓，名，电子邮件地址，媒体"
+        search_tab:
+          search: "搜索"
+          search_authors:
+            authors: "作者"
+            city_country: "城市或州/省或国家"
+            contact_names: "联系人的姓氏和名字"
+            enter_keywords: "输入关键字"
+            keywords: "关键字"
+            location: "地址"
+            name: "联系人姓名"
+            outlet: "媒介"
+            outlet_names: "媒体或者博客的名字"
+            title: "搜索作者"
+          search_influencers:
+            all: "所有"
+            celebrities: "名人"
+            from: "从"
+            influencers: "意见领袖"
+            location_placeholder: "地点"
+            show: "显示关于“”的大V"
+            title: "搜索意见领袖"
+            topic_placeholder: "主题"
+            users: "活跃用户"
+            who: "他们是"
+          title: "搜索"
+        social_tab:
+          amplif: "扩散力"
+          contact: "联系"
+          followers: "关注者"
+          influencer: "大V"
+          pitch: "投递？"
+          reach: "影响力"
+          relevance: "相关度"
+          title: "社交网络"
+        title: "目标"
+      top_menu:
+        analysis: "分析"
+        pitch: "投递"
+        start: "开始"
+        targets: "目标"
+    social:
+      posts:
+        description1: "以下是你已计划发布到社交网络的信息。如果你想计划新的发布信息，请点击主界面Robin8标志旁边的“说点什么”"
+        description2: "如果你要删除已经计划的发布，直接点击该页面中的“X”"
+        later: "未来"
+        title: "查看已计划发布的"
+        today: "今天"
+        tomorrow: "明天"
+      profiles:
+        add_button: "添加"
+        connect: "关联"
+        connected_to: "已关联的"
+        description: "使用Robin8来管理你的社交网络信息。请先关联你的社交账号，然后你就可以轻松的直接发布到或者计划发布到所关联的社交网络中"
+        disconnect: "未关联的"
+        facebook: Facebbok
+        google: Google+
+        linkedin: LinkedIn／领英
+        no_accounts: "这个账户不存在"
+        note: "*在一个社交网络中添加多个帐户，你需要退出这个网络浏览器"
+        title: "管理关联的社交网络信息"
+        twitter: Twitter
+        wechat: WeChat
+        weibo: Weibo
+      scheduled_posts: "已计划发布的"
+      social_profiles: "社交资料"
+    team_page:
+      advisors:
+        advisor1_desc: "是领先的声学人工智能物联网。One Llama Labs诞生于伊利诺伊大学和国家中心研发与资助的超级计算机应用来自美国国家科学基金会。"
+        advisor1_name: One Llama Labs
+        advisor2_desc: "中国加速（www.chinaccelerator.com）是东亚地区领先的创业加速器。中国加速由市值2.35亿美元的SOS风险投资公司支持，自2010年以来，中国加速了支持超过60家公司。"
+        advisor2_name: Chinaccelerator
+        title: Robin8<span>顾问</span>
+      ceo_desc: Miranda Tan在公共关系，市场营销，技术方面拥有10年以上的经验。Miranda拥有康奈尔大学的学士学位，并取得圣约翰大学法学博士学位。
+      ceo_name: Miranda Tan
+      ceo_pos: "首席执行官"
+      chairman_desc: Hassan拥有近三十年的财政和技术经验。在此之前，Hassan是Xing科技的CEO，并将其以7500万美元出售给Real
+        Networks公司。Hassan也是数字媒体CAA的负责人和管理者。
+      chairman_name: Hassan Miah
+      chairman_pos: "主席"
+      developer_desc: Razee在编码，测试，实施和以全面的技术支持MyPRGenie方面拥有丰富的经验。 Razee获得了巴基斯坦国立大学的计算机和新兴科学学士学位。
+      developer_name: Razee Khan
+      developer_pos: "工程师和开发人员"
+      operations_desc: Cynthia负责整体运营和MyPRGenied的管理。她拥有Adelphi大学的MBA学位和南京理工大学会计学学士学位。
+      operations_name: Cynthia Chen
+      operations_pos: "副总裁，运营"
+      sales_desc: Alex is a passionate marketer with extensive experience in sales
+        and media outreach. He is an aggressive pitcher who loves connecting with
+        his clients and their audience. Alex graduated from the University of Michigan,
+        College of LS&amp;A with a BS in Neuroscience.
+      sales_name: Alex Stefanov
+      sales_pos: VP, Sales and Marketing
+      scientist_desc: Edison在机器学习和在中国数据搜索拥有超过5年的经验，并曾为腾讯和Quo360工作。他已于应用数学和其他国际直销杂志上发表了多篇文章。毕业于数学Technologyís学院北京大学，获得数学学士学位，2006年与计算机科学学院与工程CS硕士学位，2009年他目前赢得他的硕士学位计算机科学在
+        纽约大学工程理工学校。
+      scientist_name: Edison Xu Zhao
+      scientist_pos: "数据专家和工程师"
+      support_desc: Olivia于2010年10月加入MyPRGenie，她负责客户支持和监督的科研队伍。Olivia在公关和营销方面具有丰富经验，已经帮助数百家企业策划公关活动。此外，她领导媒体数据库的研究小组。
+      support_name: Olivia Quizon
+      support_pos: "副总裁，技术支持和研究"
+      title: "介绍<b>Robin8</b>团队"
+    terms:
+      billing:
+        cancellation:
+          annual: "年费套餐 - 您可以随时取消订阅。取消后，从订阅日期往后数12月之后，该订阅将不再收费"
+          monthly: "包月套餐 - 您可以随时取消订阅。您将继续获得服务直到您要结束的日期。对于每月订阅，将直到当前月底。"
+          title: "取消预订"
+        credit_card:
+          change: "如果你希望在订阅期间更换信用卡，您可以通过点击链接到您的帐户设置部分的付款历史页面，找到信用卡更新表单来更新。"
+          failure: "如果信用卡在订阅期内的失效，我们将通过电子邮件或电话通知您，解释故障的性质和并提供新的表格的链接。成功提交的更新将重新开始您的订阅状态。未更新您的信用卡将导致终止您的订阅。您可以在任何时候重新订阅。然而，重复订阅是免费试用资格的。"
+          notify: "如果您的信用卡在您的订阅期间到期，Robin8将通过电子邮件和/或电话通知您。我们将为您提供一个链接到一个网页表单，你可以提交你的新卡信息。"
+          title: "信用卡的信息更新"
+        intro: "你的付费预定将根据您选择的套餐在一定时间内生效。 在您的信用卡授权被通过之后，我们将会根据不同的套餐按月或按年计费，直到取消"
+        title: "自动定期结算政策"
+      contact:
+        address:
+          city: "纽约市，纽约州 10019"
+          company: Robin8公司
+          street: 1745百老汇大街，17楼
+          title: "邮寄地址："
+        email: "电子邮件:"
+        phone: "电话号码："
+        text: "如果您对我们的政策有任何问题或建议，或者如果您已经通过网站提交个人身份信息，并希望获得或修改这些信息，请联系我们的网站管理员："
+        title: "如何联系我们"
+      cookies:
+        control: "你有管理cookies的权限。大多数浏览器可以设置为拒绝接受cookies，尽管这可能会影响您的浏览体验。您也可以删除已经在您的计算机上的cookies，阻止所有Cookie或在cookie被保存之前收到一个警告。请参阅您的浏览器说明或“帮助”选项，以了解更多有关这些功能"
+        general_info: Robin8可能使用“cookies” - 存储在您的计算机连接到您的信息的数据块。这些信息将在一个cookie或类似文件的形式，将帮助我们提高通过节省时间在网站上您的网络体验。
+          Cookies不包含或储存任何个人信息，但可能会依赖于你故意选择提供给我们的个人信息。 Cookie可以存储​​非个人身份信息，如哪些网站，网页，或广告您的浏览器访问。
+        title: COOKIES
+        types: Robin8同时使用永久和缓存cookies。缓存cookies保存仅在您正在使用的浏览器资料。当关闭浏览器后，缓存cookies即被删除。我们使用缓存cookies来保证您的使用需求，例如，在我们的网络商店购物。在这种情况下，您的浏览器保留您的购物车的Cookies。如果没有这些缓存Cookies，你不能将商品添加到购物车，并且进行支付。相比之下，永久性Cookies会保存您每一次登陆信息。永久性Cookies保存在计算机的浏览器上，当你的退出浏览器时不会被删除。这使我们能够给您一个更个性化的体验，并帮助您更有效地浏览我们的网站。但是，您可以选择在使用我们的网站时，不保存永久性Cookies。
+          Robin8使用这两种类型的Cookies，帮助我们收集我们网站的使用信息，比如最常访问的网站内容汇总信息，因此我们可以了解用户的喜好。这意味着，当您使用您的用户名和密码登录后，您的使用情况，将和您的个人信息链接起来。如果您选择不登录访问网站，那么我们只在匿名，统计的基础上收集您的访问信息，并且不关联您的个人信息。
+      email:
+        text: "如果您向我们发送电子邮件提出问题或意见，我们可能会使用您的个人信息回复您的问题或意见，我们也可能参考您的问题或意见。您有机会收到订阅电子邮件和我们网站的最新消息。但是，您可以选择来订阅偏好或者拒绝接收这些讯息。您可以在任何时候，通过点击电子邮件底部的“退订”链接取消订阅，或者发送邮件至info@
+          robin8.com。当通过电子邮件与我们联系时，请在邮件主题行插入“隐私”，在并在邮件正文中填写的下列之一：（1）请不要给我发电子邮件，（2）保密我的电子邮件地址，或者（3）不要发送邮件/保存我的电子邮件地址。如果取消订阅，你应该确保你的要求已送达，并且正在处理中。我们需要十（10）个工作日完成从我们的数据库中删除您的电子邮件地址的请求，在此之前，您还将会收到我们的一些促销活动的邮件，我们将尽最大的努力阻止这些电子邮件。此外，您可以联系我们info@robin8.com要求我们不以营销为目的，向第三方泄露您的个人信息。请在“无第三方共享”邮件中提供您的姓名，地址和国家。"
+        title: "电子邮件通信"
+      information:
+        age_restriction: Robin8不会有意收集或保留13岁以下的儿童的个人信息，或发送询问个人信息的请求。如果你13岁以下，你不应该未经得父母或监护人的书面同意，而提供给我们有关自己的任何身份信息。如果Robin8得知网站上存在未经家长同意，13岁以下儿童的个人信息，Robin8将采取适当的措施来删除这些信息。
+        header: "信息的收集和使用"
+        identification_and_profile: "在我们网站上的不同位置，如在注册表，网上商店，留言板，博客和调查，我们可能会要求您提供给我们的个人身份信息（如姓名，电子邮件地址，邮寄和送货地址，家庭或工作电话号码，出生日期，性别和/或信用卡信息）。如果你不希望个人身份信息被收集，请不要将其提交给我们。当你向我们提供个人身份信息，我们可以利用这些信息更好地了解您的需求，如何改善我们的产品和服务。我们也可以使用该信息与您联系，例如，回答问题或者对您提交的评论做出回应。此外，我们可能会使用您的个人信息，让您及时了解最新的产品和活动公告，新闻，特别优惠，通知我们的竞赛和抽奖活动的获奖者和其他我们认为你想听到信息。您需呀创建个人信息。您的个人资料包括你的积分和特殊技能。只有通过您邀请的用户才有权查看您的个人资料，除网站管理员
+          - 网站的其他访客将没有机会获得您的个人资料。"
+        personal_information_header: "个人信息"
+        possible_unsubscribe: "如果您不需要我们通过电子邮件发送给您的的关于新产品及服务的信息，我们会为您提供拒绝接受信息的机会。"
+        privacy_options: "必要时，您的隐私选项将由您在帐户中的隐私设置中调整。将根据您所做的设置对隐私政策的任何调整。为免生疑问，尽管你的完整个人资料将不会提供给公众，上述规定不应被解释为对Robin8按照协议使用或利用您的个人资料的限制。但是，我们不会未经您同意将您的信息提供给第三方，“信息共享”和“第三方交易”的章节中解释法律规定不受影响。"
+        will_not_collect: Robin8不会收集任何关于您的个人身份信息 - 例如您的姓名，地址，电话号码或电子邮件地址 - 除非您自愿提供给我们并批准使用。
+      information_sharing:
+        text: "虽然我们尽一切努力保护用户的隐私，但我们可能需要根据法律的要求披露信息，并且我们有理由相信，为了保护其权利和/或遵守当前司法程序，法院命令或其他法律程序，这种行为是必要的。这包括与其他公司和组织为防止欺诈和降低信用风险的信息交流。
+          Robin8保留用我们认为合适的任何方式，使用或披露的非个人信息的权利。."
+        title: "信息共享"
+      links:
+        text: "我们的网站包含其他网站的链接。请注意，Robin8不负责其他网站的隐私政策。我们建议您了解并阅读每个网站关于收集个人信息的隐私声明。此政策仅适用于本网站收集信息。"
+        title: "链接非ROBIN8站点"
+      newswire:
+        accesswire:
+          agree: "您同意使用Accesswire分布是完全由您自己承担风险。除非特别规定在本协议中，ACCESSWIRE站点和体材料对ACCESSWIRE网站如IS，，对于不提供任何形式的明示或暗示，包括担保或条件包括但不限于适销性的默示担保，特定用途，或不侵权。
+            ACCESSWIRE不会使该ACCESSWIRE网站或材料上的ACCESSWIRE网站或产品和服务在购买或通过ACCESSWIRE网站将满足您的要求和期望，或者说，ACCESSWIRE网站的运行不会中断的，及时的任何陈述或保证，安全或无错误。某些司法管辖区不允许某些担保的排除，因此上述部分除外的部分或全部可能不适用于你。"
+          intro: "使用ACCESSWIRE网站仅限于提交新闻发布的用于经由ACCESSWIRE分配和注册和使用所提供的产品和服务。您同意不使用ACCESSWIRE网站用于任何其他目的，包括但不限于，存储，汇总，复制或以任何方式分发可在ACCESSWIRE网站信息或直接或间接地与ACCESSWIRE竞争;干扰或扰乱网站或连接到任何方式站点的网络或服务器的操作;冒充任何人或实体或以其它方式误传您与任何个人或实体;上传，发布或以其他方式传送侵犯任何第三方的专有权利，或以其他方式非法或冒犯任何内容;骚扰或伤害ACCESSWIRE或任何其他人或实体;或从事任何形式的商业活动，而不经ACCESSWIRE的事先同意。"
+          title: Accesswire使用条款和免责条款的
+        disclaimer:
+          accuracy: "客户确认Robin8，Inc.是一家从事全球范围内的数据传输业务的组织。作为Robin8的客户，我公司（我们）保证，我（我们）​​全权负责通过Robin8提交给美通社的所有材料和事实内容的准确性和原创性。"
+          acknowledge: "客户承认Robin8提供访问美通社（PR newswire）新闻稿发布服务的功能，使用这个功能必须遵守美通社及Robin8合同的条款和条件。如果Robin8与美通社之间的合同以任何理由被切断，或者代表客户向美通社提交的任何Robin8文稿被美通社以任何理由拒绝，客户确认Robin8不为美通社的行为承担任何责任。如果由Robin8代表客户提交给美通社的材料被拒绝，
+            或美通社终止与Robin的合作，任何付给Robin8的款项将不予退款"
+          customer_agrees: "客户同意赔偿和免除Robin8及其管理人员，董事，雇员和承包商的从因提供材料的内容和产生的责任和任何要求。
+            Robin8有权拒绝传播有关Robin8或美通社的似乎是诽谤，淫秽，虚假或误导性的，或违反由Robin8和/或美通社制定的编辑标准的任何信息的权利。"
+          does_not_infringe: "客户进一步保证提供给美通社的材料不涉嫌侵犯任何著作权，商标权或其他人的知识产权，不促进任何非法行为，或者违反所发布地区的社会标准"
+          provide: "客户将按照本协议发布到Robin8或向美通社提供材料，并特此授予美通社的权利，复制，发行，翻译和创建材料的衍生作品。"
+          title: "美通社免责声明"
+        title: "美通社分配政策"
+      non_personal_information:
+        text: "在某些情况下，当您访问我们的网站时，我们可能还会收集非个人身份信息，那些信息本身不能被用来识别或联系您。例如您使用Internet浏览器或计算机操作系统的类型，人口统计信息（你的年龄，性别，收入，教育，职业，邮政编码等），您访问我们的网站日期和时间，您访问的页面，您链接到我们的网站的信息和其他涉及您使用我们网站的匿名数据的网站名称。我们利用这些信息来分析趋势并收集广泛的统计信息。这些信息不会链接到任何个人身份信息。"
+        title: "非个人信息"
+      online_store:
+        text: "我们可能会使用您提供与您有关通过我们的网上商店购买的产品沟通，提供客户支持，这些产品连接，向您发送有关我们认为可能是您感兴趣的产品和服务信息的信息。我们不会未经您的同意分享你与任何第三方的财务信息，除非法院或政府机构，如果法律允许，授权由有管辖权的法院或在“某些第三方交易”下面描述的程度有限。如果您通过我们的网上商店进行购买，我们可能会使用您提供给您发送重要公告和更新对我们的网站，在线产品，服务，活动和我们认为可能是您感兴趣的任何其他信息的信息。您还可能会收到有关新产品和服务的定期邮寄。然而，你可以选择不接收将来的邮件通过在info@robin8.com与我们联系"
+        title: "网上商城"
+      published_content_1: "为免生疑问，您根据该协议于网站上发布任何的视频，图像或其他内容，不属于受这一政策的保护个人信息。"
+      published_content_2: "为免生疑问，您根据该协议于网站上发布任何的视频，图像或其他内容，不属于受这一政策的保护个人信息。"
+      security:
+        measures: "我们的网站有安全措施，以防止我们控制下的信息的丢失，滥用或被篡改。 Robin8用物理，电子和其他程序保障您发送给我们的数据的安全性。然而，因为无法保证您在网上透露的信息的安全性和完整性，我们强烈建议您采取一切预防措施，保护您在互联网上的个人资料。经常更改您的密码，使用字母和数字的组合，并使用安全的浏览器。"
+        ssl: "您的浏览器将您通过本网站提交的所有个人数据发送给我们之前，我们将进行加密与安全服务器软件（SSL）编码。SSL软件仅对已经到达Robin8服务器的数据进行编码，这意味着你的数据在运输途中若被黑客拦截，也将进行加密。一旦数据到达我们的服务器，您的私人帐户和客户信息将存储于防火墙后面的安全服务器。它不是直接连接到互联网。"
+        title: "安全"
+      terms_definition: Robin8（以下简称“Robin8”，“我们”，“我们”或“我们”）尊重访问我们网站用户的隐私。本隐私政策（以下简称“政策”），包括www.robin8.com（简称“网站”）。这项政策的目的是告知我们的用户（“您”）关于当您访问我们的网站时，我们收集有关您的信息的类型，我们如何使用这些信息，您对我们如何使用您的信息，以及如何访问您提供给我们的信息。
+        ROBIN8保留在任何时间变更隐私条款的权利。因此，你有责任定期检查政策的变化。
+      terms_of_use:
+        cease_use: "本网站是为了让您方便地访问我们的公司，产品和服务，以及链接，新闻和在公关行业感兴趣的其他项目的信息。另外，在某些情况下，有账户的用户可以在网上订购的产品。如果你在任何时候不再接受本协议的条款，你应该立即停止一切使用本网站。"
+        conduct:
+          general_rule: "作为本网站的隐私政策中的一般规则，我们的网站不自动收集用户的个人信息。如果Robin8决定改变这项政策，将根据本协议和/或它的隐私政策发布这种变化。但是，请当心，当你自愿在线披露个人信息
+            - 例如，您的个人资料，留言板，电子邮件，或在博客中的 - 这些信息可以被收集和使用的他人，如隐私政策中规定的。总之，如果你在网上发布的个人信息可以被其他人访问，我们无法控制其他人使用这些信息。"
+          materials: "由访问者发布在该网站上的陈述，信息，文本，文件，图像，照片，视频或其他材料（“材料”），无论是以资料，留言板，博客或其他格式发布的，是发布这些材料的访问者单独的的责任不是Robin8的意见。虽然我们不鼓励使用任何网站的功能，包括资料，留言板和博客，发布任何违反法律和建设的论述，但我们不能有效地监控访问者利用我们网站发布的所有材料，因此，我们不作任何陈述和保证与尊重任何此类材料的真实性，可靠性或完整性。因此，请自负任何此类材料应风险自负"
+          no_responsibility: "不只局限于上文，Robin8不承担监测站点的材料不当或行为的责任。如果有一天，我们经过决定选择来监控网站，我们仍然不承担材料的责任，我们没有义务修改或删除任何不当材料页不对访问者提交任何此类材料的行为承担任何责任;然而，如果材料根据我们的决定违反了规定，或者是不适当或不不可接受的。Robin8保留删除材料权利，，违反本协议或以其他方式接受或不恰当的。访问者应继续负责任何及所有材料，他或她的职位。"
+          prohibition: Robin8明确禁止，并通过您使用本网站，您明确同意不得从事下列行为：删除或变更任何由我们的网站通过Robin8或第三方发布的材料;强加给我们的网站基础设施任何不合理或不相称的大负荷的行动;使用本网站的目录信息张贴或传送任何未经请求的广告，宣传材料，垃圾邮件，病毒，连锁信，电话或其他招揽;印刷或以其他方式复制或使用任何关于网站的访客或成员的个人身份信息而目的不是针对行业的相关问询或联系其他访客的。
+          sole_responsibility: "每个访客都对访问网站时与其他访客的互动负责。Robin8保留权利，但没有义务，监视访客之间的纠纷。"
+          title: "访问者行为/争议"
+        content:
+          as_is: "本网站上的内容是“原始”的提供给你的。您可以下载或复制我们所拥有的内容用于个人，非商业用途，只要你保持所有版权和包含的内容通知。如果你不确定特定内容是否由我们所有，请不要在未跟我们联系之前下载或复制这些内容（例如，您不应该复制或使用已经由第三方上传的内容）。您不得在没有它的所有者的事先书面同意的情况下复制，使用，下载，修改，发布，传播，转让或出售，许可，复制，创作衍生作品，散布，表演，展示，或以任何方式利用全部或部分的内容，除非本协议或适用于本条款和法律。内容包括可下载软件不可以被反向工程，除非是通过软件的专利和/或版权所有者的特别授权。"
+          authorization: "您保证并同意任何新闻稿，电子邮件联系人，媒体联络人或由您上传的相关内容（“用户内容和媒体联系”）是由您所拥有的，你必须拥有发布并上传这些内容和媒体联系的权利。非授权内容的或非授权的媒体联络方式的发布和上传是违反使用本网站的条款的。任何用户内容的发布和媒体联系方式都必须合法授权。如果你是一个组织的一部分，你必须在张贴的内容或媒体联系之前获得组织内必要的批准。严禁在没有他人明确批准的情况下，发布与他人有关的内容和媒体联系方式。此外，任何受政府监管的组织，如美国证券交易委员会，只能张贴信息按照由政府或监管机构制定的规则。"
+          intro: "您承认本网站所包含的信息，文本，代码和软件，照片，音频和视频剪辑，图片，脚本，链接，交互功能和其他材料（统称为“内容”），是受我们的版权，商标或其他受Robin8或第三方专利保护的。
+            Robin8.com为注册商标，商标名称，服务标记，或Robin8中其他受保护财产，不得在未经我们事先书面同意的情况下被使用，复制或模仿。您同意遵守通过本网站所提供访问的任何内容任何版权声明，信息或限制。"
+          links: "本网站可能包含与我们无关的我们，拥有和运营由第三方（以下简称“第三方网站”）没有它的所有者的事先书面同意的网站链接。提供这些链接仅仅是为了方便您和Robin8并不代表Robin8的对第三方网站的赞助，附属或关联或推荐，证明或认可的。我们不为任何第三方网站的内容或提供的任何产品或服务负责。"
+          title: "内容和媒体联络"
+        copyright:
+          notice:
+            accurate: "你在知晓伪证会受处罚的情况下声明，就您通知书上面的信息是准确的，您是版权或知识产权所有者或授权代理著作权或代表知识产权所有者。"
+            address: "您的地址，电话号码和电子邮件地址;"
+            all_smack_talk: "关于您声称的侵权材料的描述在AllSmackTalk.com有详细的描述;"
+            counter_notices: "如果你有充分理由相信，有人已经对你提出不正当侵犯版权的通知，该 Digital Millenium Copyright
+              Act（以下简称“DMCA”），允许您向我们发送反通知。通知与反通知必须符合DMCA强加的然后当前法定要求;见www.loc.gov/copyright。通知与反通知应发送到我们的版权代理："
+            identification: "声称有版权或其他知识产权的作品被侵犯的证明;"
+            infringing: "信息，如果可能的话，足以让Robin8通知涉嫌侵权网页或其他内容的所有者/管理员;和"
+            intro: "如果你很确信我们网站的任何资料侵犯了您的版权，您（或您的代理人）可向我们发送通知，要求我们删除或包含以下信息侵权材料块的访问："
+            note: "请注意，出于安全考虑，附件不能被接受。因此，侵权带有附件的电子提交的任何通知，将不被接受或处理。"
+            signature: "涉嫌被侵权人的受权代表人的电子签名或亲笔签名;"
+            statement: "你声明，你有充分的理由认为这个有争议的使用不是经过版权作者或知识产权所有者，或代理人，或法律授权的;"
+            title: "对侵犯知识产权和代理通知索赔通知书"
+          policy: "这是Robin8的政策，在适当情况下自行决定，禁用和/或终止有意侵犯或反复侵犯版权或Robin8和/或其他人的其他知识产权的账户。"
+          protection: Robin8尊重他人的知识产权，我们页要求我们的用户这样做。 Robin8可能，在适当情况下自行决定，禁用和/或终止可能侵犯他人知识产权的用户的账户;然而，Robin8不对任何使用Robin8的产品或服务时时访问的其他网站的内容承担责任。他网站的材料可能受版权及美国和/或其他国家的知识产权法律保护。这些网站的使用条款，不受本条款的约束。
+          title: "版权/知识产权政策"
+        date: "截至2007年7月25日"
+        disclaimer:
+          acknowledge: "您明确承认并同意，Robin8和其管理人员，董事，雇员，代理人，承包商，继承人和受让人不为任何用户的任何诽谤，攻击性或非法行为承担责任。此外，虽然Robin8打算采取合理的措施来防止引入病毒或其他破坏性材料，我们不担保,保证或作出任何陈述，该网站，或下载本网站上的任何内容，不存在病毒或破坏性的材料，我们不对任何病毒或其他破坏性物质感染的您的计算机设备或其他您的账户上的财产，使用，或在浏览本网站或服务器，使得它可以下载您从本网站的任何内容负责。"
+          no_guarantee: "尽管这里免费提供给访客在本网站的信息获得或编译来源我们认为是可靠的，ROBIN8不能，并且不保证其提供给来访者及其适用于任何特定用途的任何信息或资料的准确性，有效性，及时性或完整性。ROBIN8，及其任何高级职员，董事，雇员，代理，承包商，继承人和受让人，业务或促销商，节目制作商或赞助商都无任何法带责任也无义务为访问者的任何情况下的丢失或伤害负责（i）任何本网站的故障，或断的情况;
+            （ii）任何作为或不作为第三方参与制作本网站或向本网站用户提供数据; （iii）与访问者的访问或使用，或无法访问或使用，本网站或材料对本网站的任何部分中的任何其他原因;
+            （iv）任何访客的相互作用或意见在网站上，包括但不限于消息的供求信息;或（v）从任何访客未能遵守本协议，是否将情况以致此类原因可能并没有超出ROBIN8或任何供应商提供软件，服务或技术支持人员的控制。在任何情况下ROBIN8，管理人员，董事，雇员，代理，承包商，继承人或受让人均不对任何访问者的任何直接，特殊，间接，必然或偶然的损失或任何种类即使ROBIN8的任何其他损失或损害，其关联公司或任何其他人已被告知发生的可能性。请注意，一旦你离开我们的网站，您利用互联网将成为制约BY平台服务协议和隐私策略的条款，如果有的话，你正在访问某些特定的站点，包括我们的运营商，广告商，赞助商和促销合作伙伴。
+            ROBIN8，管理人员，董事，雇员，代理，承包商，继承人和受让人将不承担任何责任的内容，活动或者隐私等网站做法或任何损失或损害，可能会导致离开我们的网站。"
+          not_responsible: "我们将不负责履行本协议项下的任何条款的义务，不论是否由于我们无法合理控制的原因。"
+          own_risk: "您同意使用和浏览我们的网站是您自己承担风险的。如果您不满意本网站或任何内容，或与任何本协议的条款和条件，您唯一的补救方法是停止访问和使用该网站。
+            ROBIN8不保证该网站将无中断或无错误，也不ROBIN8保证该网站或不准确内容作任何缺陷会被更正。除上述限制外，本网站和所有的内容都“按原样”提供给您。我们，我们分公司，子公司和/或相关实体，第三方内容提供商及其各自的管理人员，董事，雇员，代理，承包商，继承人和受让人，无论明示或暗示，都不保证，任何资料的准确性或信息提供的网站或是否适合任何特定目的，并明确否认所有担保，包括但不限于，针对本网站的任何内容的，程序的，如果适用，任何产品或购买或取得直接或间接地，通过使用网站提供的服务的所有权或适用于特定目的暗示的适销性或适用性的担保。您明确同意，整个的风险，如网站的质量和性能都完全由你熟悉。在适用法律不允许使用免除保证的地方，前述排除可能不适用。"
+          title: "免责声明"
+        governing_law:
+          text: "本协议的条款，须解释，根据纽约州的州内规律，不考虑其法律冲突，你和我不可撤销的同意，设在纽约市，纽约州的联邦和州法院采取任何与执行本协议相关的行动。"
+          title: "适用法律"
+        grant:
+          avoidance: "为免生疑问，您不可撤销地授予我们的免版税的，无限制的，世界范围内的，永久的，非独家的和完全再许可的权利来利用你的图像，照片，肖像，录像，在全部或部分，和您发布的任何其他材料的网站或提交给我们的任何连接，所有的宣传网站和Robin8以及广告和促销，并与Robin8行使的任何其他权利方面所授予的Robin8决定自行决定。您在此释放Robin8免于引起或与使用这些材料，图像，照片，肖像，和视频作为本协议规定的任何索赔，损失或责任。"
+          intro: "通过与Robin8传播的，包括通过网站提交或发送材料或其他信息或材料，您授予Robin8免版税的，无限制的，世界范围内的，永久的，不可撤销的，非独家的和完全再许可的权利和许可使用，复制，修改，改编，出版，翻译，距离，传递创作衍生作品，出售，分发，传送，执行和展示这些材料（全部或部分），包括包含在这样的图纸或概念材料中的任何信息，建议，想法，全世界和/或将它合并在任何形式的，媒体或技术现在已知或以后开发的其他工程。您将继续负责的准确性，版权合规性，合法性，适当性，或此类提交的材料或通过Robin8传播的任何其他方面。您还保证，发布材料的任何“道德权利”已被免去。"
+          title: "用户有限许可的授权"
+        indemnity:
+          text: "您同意维护，赔偿和证明Robin8，及其附属公司，联营公司及各自的管理人员，董事，员工和代理商，免受任何索赔，诉讼或要求，包括但不限于由来自（i）任何您通过本网站提交的任何材料，发布，传输或以其他方式（ii）您使用本网站，或（iii）您违反本协议的条款。合理的法律和会计费用，指控。"
+          title: "赔偿"
+        intro: "欢迎光临我们的网站。请阅读使用下列条款仔细。下面的“使用条款协议”（“协议”）规范了由Robin8（“Robin8”，“我们”或“我们的“）管理的www.robin8.com网站（以下简称“网站”）的使用。本协议的用途，如果用户不是个人，那么“你”会包含用户的公司，其管理人员，员工，会员，代理商，继承人和受让人。该协议还包含引用Robin8的隐私政策的条款。按“我接受”按钮或访问网站，意味着您同意无条件接受所有的条款和条件本协议。我们保留随时按我们的决定来修改，更正条款的权利，并不会给您发出通知。本协议的所有变化发布到Robin8网站之后即立刻生效。您使用本网站将构成您结合本协议的认可，包括我们所作的，无论您是否已经审查过任何变更或修改。如果您不同意本协议的条款或者任何已发布的指引或规则，那么请不要使用本网站。"
+        liability:
+          accuracy: Robin8作为一个使用户可以发布宣传资料和他们的公司或用户的其他信息的地点。 Robin8不过滤和检测上传到robin8.com的资料和材料。其结果是，Robin8没有发布或提交到Robin8.com上的任何评论，视频，个人资料或资料的真实性或准确性的意见的质量，安全性或合法性的控制权。
+          no_control: Robin8作为一个使用户可以发布宣传资料和他们的公司或用户的其他信息的地点。 Robin8不参与文稿上传或可能会利用上传的内容的任何其他用户，如新闻报道或出版商之间的用户的实际交易。其结果是，Robin8没有发布或提交到Robin8.com上的任何评论，视频，个人资料或资料的真实性或准确性的意见的质量，安全性或合法性的控制权。
+          no_guarantees: Robin8不能保证，也不保证使用robin8.com的任何具体成果。任何从Robin8或通过或从robin8.com由成员获得建议或信息，无论是口头或书面，都不应当对造成不明确表述提供任何担保。
+          risks: "此外，请注意风险，包括但不限于与陌生人打交道或蒙混过关行事的人打交道以造成的人身伤害的风险。由于互联网上的用户身份验证是困难的，Robin8没有也不能确认每个成员都是他们声称的身份。您将承担与处理人与你接触的用户相关联的所有风险。我们希望您使用Robin8.com时务必小心和使用常识。"
+          sole_responsibility: "您承认并同意，你全权负责所有有您上传到网站上的资料和材料的准确性。"
+          title: ROBIN8的责任
+        limitation_of_liability:
+          part_1: "允许的最大范围在适用法律，ROBIN8，我们的分支机构，附属公司及/或相关实体，和任何第三方内容提供商，我们的及其各自的管理人员，董事，雇员，代理，承包商，继承人和受让人，不承担任何直接的，偶然的，必然的，所产生的您访问或使用或不能访问或使用本网站造成损失的责任，包括但不限于损失伤害到业务，利润损失特殊，间接，惩罚性或类似的损害赔偿，LOST储蓄或收入损失，但这种损害造成的，无论是基于合同，侵权（包括过失）或责任任何其他理论。上述限制适用于所有我们，我们的关联公司，子公司和/或关联实体，任何第三方内容提供商，或我们或他们各自的管理人员，董事，雇员，代理，承包商，继承人和受让人已被告知此类损害的可能性。"
+          part_2: "在传达，介绍，或其他会引起本网站的任何技术中断的事件中，你同意承担任何及所有负债及成本与费用（包括律师费及开支）承担任何和基于这种技术的中断所带来第三方的所有申诉。
+            “技术破坏”可分发邀约的广告或连锁信件中，传播计算机蠕虫，病毒或其他有害代码的，和/或使用网站，使擅闯任何其他机器访问的网站VIA。您进一步自行承担使用本网站的任何传输的内容并同意不上传，张贴或以其他方式在网站上提供受保护由第三人专有权利未获得明确许可此类拥有人的任何材料专有权利。您须独自承担任何损害，损失，成本或费用（包括律师费和开支）所产生的侵犯专有权利或任何其他损害产生的从上传，张贴或由您材料的其他提交。"
+          title: "责任限制"
+        permissions:
+          text: "如果您正在寻求Robin8商标，标志，服务标记，商业外观，口号，屏幕截图，受版权保护的设计，或者其它品牌特征，请与网站管理员联系。"
+          title: "许可"
+        registration:
+          intro: "你不必为了使用我们的网站注册;但是，为了访问本网站的大多数功能，你必须注册并创建一个帐户来获得一个用户名和密码。请不要在未经他人允许的情况下使用他人的账户。"
+          title: "注册义务"
+          under_thirteen: "如果适用，Robin8将为参加抽奖和/或特殊事件的各个赛区建立具体的规则和条款，并会在我们的网站发布这些信息。我们不会故意在未经其家长或监护人的同意的情况下收集未满十三（13）岁访问者参加我们网站的活动的个人信息。一旦发现未满十三（13）岁的参与者参与了此类活动，他或她的注册或参与将被立即取消，所有的个人信息将从我们的文件中删除。"
+          username_and_password: "你可以填写表格来得到一个用户名和密码（或者，如果在13岁以下，有父母或监护人完成）。提交表格后，表示您同意（一）表格中所填的所有信息是完整的，正确的和准确的;
+            （二）你将为账户中不准确的信息所产生的费用负责; （三）你可以让你的用户名和密码保密，并且在24小时之内通知我们发现任何未经授权使用您的帐户，或安全漏洞的的情况。一旦你注册，你有责任为维护您的用户名和密码的安全性，并为您的注册信息进行必要的更新。所有的用户名和/或密码更改将通过确认电子邮件，由美国邮箱在用户的请求下确认。我们有权利相信您提供我们的任何信息都是可靠的，我们没有任何法代责任。你是全权负责任何及所有您的帐户使用行为。不仅限于上述规定，如果您的帐户信息中包含任何不实或不准确信息，我们有权终止您的帐户，恕不另行通知。我们收集的提交与注册有关的所有信息，受制于我们的隐私政策在Robin8.com条款"
+        restrictions:
+          abide: "你必须通过本网站包含的所有其他附加版权声明的限制约束。"
+          text: "除非明确允许，您同意不使用本网站做出售，交易或其他商业用途，并且，您不得修改，复制，出版，展示，传播，改编或以任何方式利用本网站的内容。只有当你从我们这里获得事先书面同意
+            - 以及所有其他实体有兴趣的相关知识产权时 - 你可以出版，展示或商业开发从本网站的任何材料。您可以写信给我们在下面提供的地址来寻求我们的许可。如果robin8和所有其他利益相关的实体授予相关知识产权的许可，你不能更改或删除任何作者归属，商标，图例或版权声明。"
+          title: "限制使用的材料"
+        security:
+          text: "不时，我们将使用的技术，来识别欺诈活动，包括但不限于信用卡诈骗罪。您同意努力与我们配合，在我们的决定，认为有必要的时候找出企图发生的诈骗。您进一步同意，如果出于任何原因，你或他人代表你涉嫌欺诈或其他违反本协议，我们可能会，在我们的决定下，声明你是在违反本协议，以此暂停或终止您使用本网站，和/​​或寻求法律允许的最大范围内的起诉"
+          title: "安全"
+        termination:
+          text: "我们保留权利，可以在任何时间处于特定理由自行决定的情况下，限制，暂停或终止您访问我们的所有界面，恕不另行通知或承担责任。我们可能会在任何时间改变，暂停，中止或禁止我们网站的全部或任何方面，包括任何功能，数据库或内容的可用性，恕不另行通知或法律责任。"
+          title: "终止"
+        title: Robin8使用条款
+        unsolicited:
+          text: "虽然意见和问题，欢迎，经营这个网站，Robin8不征求也不希望通过其网站或Robin8邮件和电子邮件地址或以任何其他方式来接收您的任何保密，机密或专有信息或其他材料。任何信息或提交，或发送给我们的材料，将被视为不保密的或秘密的。对于提交或发送给我们的信息或其他材料，您声明并保证信息的原始性且没有其他人有材料的任何权利。因此，任何主动提供的材料将成为并保持为Robin8的财产。"
+          title: "主动提供的材料"
+      third_party:
+        text: Robin8可能会向协助我们为您提供的服务的第三方透露个人信息。例如，我们可能聘请运输公司，来讲我们的产品或服务传输给您。我们也可能使用第三方来处理在线交易和信用卡付款，提供产品，广告，营销或促销服务/援助，提供电子邮件服务，或提升我们的在线服务。在这种情况下，我们可能需要分享您的个人信息。我们要求这些公司只在特定的产品或服务中使用您的个人信息，不授权他们将您的个人信息用于其他任何地方。此外，如果Robin8将其一部分或全部资产出售给第三方，该第三方将有权使用由我们网站的用户所披露的全部信息。我们或其他第三方所收集的个人和非个人信息都可能成为交易的一部分。如果我们出售我们的业务，我们将努力确保有关电子邮件使我的请求能够兑现。.
+        title: "第三方交易"
+      title: Robin8使用条款，隐私政策和发布政策
+    timezones:
+      Abu Dhabi: "(+4:00）阿布扎比"
+      Adelaide: "(+9:30）阿德莱德"
+      Alaska: "(-9:00) Alaska"
+      Almaty: "(+6:00）阿拉木图"
+      American_Samoa: "(-11:00) American Samoa"
+      Amsterdam: "(+1:00）阿姆斯特丹"
+      Arizona: "(-7:00) Arizona"
+      Astana: "(+6:00) 阿斯塔纳"
+      Athens: "(+2:00) 雅典"
+      Atlantic_Time: "(-4:00) Atlantic Time (Canada)"
+      Auckland: "(+12:00) 奥克兰"
+      Azores: "(-1:00) 亚速尔群岛"
+      Baghdad: "(+3:00) 巴格达"
+      Baku: "(+4:00) 巴库"
+      Bangkok: "(+7:00) 曼谷"
+      Beijing: "(+8:00) 北京"
+      Belgrade: "(+1:00) 贝尔格莱德"
+      Berlin: "(+1:00) 柏林"
+      Bern: "(+1:00) 伯尔尼"
+      Bogota: "(-5:00) Bogota"
+      Brasilia: "(-3:00) Brasilia"
+      Bratislava: "(+1:00) 布拉迪斯拉发"
+      Brisbane: "(+10:00) 布里斯班"
+      Brussels: "(+1:00) 布鲁塞尔"
+      Bucharest: "(+2:00) 布加勒斯特"
+      Budapest: "(+1:00) 布达佩斯"
+      Buenos_Aires: "(-3:00) Buenos Aires"
+      Cairo: "(+2:00) 开罗"
+      Canberra: "(+10:00) 堪培拉"
+      Cape_Verde: "(-1:00) 佛得角群岛"
+      Caracas: "(-4:30) Caracas"
+      Casablanca: "(0:00) 卡萨布兰卡"
+      Central_America: "(-6:00) Central America"
+      Central_Time: "(-6:00) Central Time (US & Canada)"
+      Chatham_Is: "(+12:45) Chatham岛"
+      Chennai: "(+5:30) 金奈"
+      Chihuahua: "(-7:00) Chihuahua"
+      Chongqing: "(+8:00) 重庆"
+      Copenhagen: "(+1:00) 哥本哈根"
+      Darwin: "(+9:30) 达尔文"
+      Dhaka: "(+6:00) 达卡"
+      Dublin: "(0:00) 都柏林"
+      Eastern_Time: "(-5:00) Eastern Time (US & Canada)"
+      Edinburgh: "(0:00) 爱丁堡"
+      Ekaterinburg: "(+5:00) 叶卡捷琳堡"
+      Fiji: "(+12:00) 斐济"
+      Georgetown: "(-4:00) Georgetown"
+      Greenland: "(-3:00) Greenland"
+      Guadalajara: "(-6:00) Guadalajara"
+      Guam: "(+10:00) 关岛"
+      Hanoi: "(+7:00) 河内"
+      Harare: "(+2:00) 哈拉雷"
+      Hawaii: "(-10:00) Hawaii"
+      Helsinki: "(+2:00) 赫尔辛基"
+      Hobart: "(+10:00) 霍巴特"
+      Hong_Kong: "(+8:00) 香港"
+      Indiana: "(-5:00) Indiana (East)"
+      International_Date_Line_West: "(-11:00) International Date Line West"
+      Irkutsk: "(+8:00) 伊尔库茨克"
+      Islamabad: "(+5:00) 伊斯兰堡"
+      Istanbul: "(+2:00) 伊斯坦布尔"
+      Jakarta: "(+7:00) 雅加达"
+      Jerusalem: "(+2:00) 耶路撒冷"
+      Kabul: "(+4:30) 喀布尔"
+      Kamchatka: "(+12:00) 堪察加"
+      Karachi: "(+5:00) 卡拉奇"
+      Kathmandu: "(+5:45) 加德满都"
+      Kolkata: "(+5:30) 加尔各答"
+      Krasnoyarsk: "(+7:00) 克拉斯诺亚尔斯克"
+      Kuala_Lumpur: "(+8:00) 吉隆坡"
+      Kuwait: "(+3:00) 科威特"
+      Kyiv: "(+2:00) 基辅"
+      La_Paz: "(-4:00) La Paz"
+      Lima: "(-5:00) Lima"
+      Lisbon: "(0:00) 里斯本"
+      Ljubljana: "(+1:00) 卢布尔雅那"
+      London: "(0:00) 伦敦"
+      Madrid: "(+1:00) 马德里"
+      Magadan: "(+10:00) 墨尔本"
+      Marshall_Is: "(+12:00) 马绍尔群岛"
+      Mazatlan: "(-7:00) Mazatlan"
+      Melbourne: "(+10:00) 墨尔本"
+      Mexico_City: "(-6:00) Mexico City"
+      Mid_Atlantic: "(-2:00) Mid-Atlantic"
+      Midway_Island: "(-11:00) Midway Island"
+      Minsk: "(+3:00) 明斯克"
+      Monrovia: "(0:00) 蒙罗维亚"
+      Monterrey: "(-6:00) Monterrey"
+      Montevideo: "(-3:30) Montevideo"
+      Moscow: "(+3:00) 莫斯科"
+      Mountain_Time: "(-7:00) Mountain Time (US & Canada)"
+      Mumbai: "(+5:30) 孟买"
+      Muscat: "(+4:00) 马斯喀特"
+      Nairobi: "(+3:00) 内罗毕"
+      New_Caledonia: "(+11:00) 新喀里多尼亚"
+      New_Delhi: "(+5:30) 新德里"
+      Newfoundland: "(-3:30) Newfoundland"
+      Novosibirsk: "(+6:00) 新西伯利亚"
+      Nuku'alofa: "(+13:00) 努库阿洛法"
+      Osaka: "(+9:00) 大阪"
+      Pacific_Time: "(-8:00) Pacific Time (US & Canada)"
+      Paris: "(+1:00) 巴黎"
+      Perth: "(+8:00) 珀斯"
+      Port_Moresby: "(+10:00) 莫尔兹比港"
+      Prague: "(+1:00) 布拉格"
+      Pretoria: "(+2:00) 比勒陀利亚"
+      Quito: "(-5:00) Quito"
+      Rangoon: "(+6:30) 仰光"
+      Riga: "(+2:00) 里加"
+      Riyadh: "(+3:00) 利雅得"
+      Rome: "(+1:00) 罗马"
+      Samoa: "(-11:00) Samoa"
+      Santiago: "(-4:00) Santiago"
+      Sapporo: "(+9:00) 札幌"
+      Sarajevo: "(+1:00) 萨拉热窝"
+      Saskatchewan: "(-6:00) Saskatchewan"
+      Seoul: "(+9:00) 首尔"
+      Singapore: "(+8:00) 新加坡"
+      Skopje: "(+1:00) 斯科普里"
+      Sofia: "(+2:00) 索菲亚"
+      Solomon_Is: "(+11:00) 所罗门群岛"
+      Sri_Jayawardenepura: "(+5:30) 斯里兰卡Jayawardenepura"
+      St_Petersburg: "(+3:00) 圣彼得堡"
+      Stockholm: "(+1:00) 斯德哥尔摩"
+      Sydney: "(+10:00) 悉尼"
+      Taipei: "(+8:00) 台北"
+      Tallinn: "(+2:00) 塔林"
+      Tashkent: "(+5:00) 塔什干"
+      Tbilisi: "(+4:00) 第比利斯"
+      Tehran: "(+3:30) 德黑兰"
+      Tijuana: "(-8:00) Tijuana"
+      Tokelau_Is: "(+13:00) 托克劳"
+      Tokyo: "(+9:00) 东京"
+      UTC: "(0:00) 协调时间时"
+      Ulaanbaatar: "(+8:00) 乌兰巴托"
+      Urumqi: "(+6:00) 乌鲁木齐"
+      Vienna: "(+1:00) 维也纳"
+      Vilnius: "(+2:00) 维尔纽斯"
+      Vladivostok: "(+10:00) 符拉迪沃斯托克"
+      Volgograd: "(+3:00) 伏尔加格勒"
+      Warsaw: "(+1:00) 华沙"
+      Wellington: "(+12:00) 惠灵顿"
+      West_Central_Africa: "(+1:00) 西中非"
+      Yakutsk: "(+9:00) 雅库茨克"
+      Yerevan: "(+4:00) 埃里温"
+      Zagreb: "(+1:00) 萨格勒布"
+    uploading:
+      choose_image: "选择图片!!!"
+      different_photo: "上传不同的照片..."
+      files_label: "文档"
+      photos_label: "照片"
+      videos_label: "视频"
+    user_menu:
+      anonymous: Anonymous
+      billing_settings: "结算设置"
+      log_out: "登出"
+      profile: "资料"
+  contact_page:
+    address: MyPRGenie Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019
+    address_title: Main Office Address
+    form:
+      customer_service: General Customer Service
+      email_placeholder: Email Address
+      fill_out: Please fill out all required fields
+      first_name_placeholder: First Name
+      last_name_placeholder: Last Name
+      message_placeholder: Message
+      product_support: Product Support
+      send_button: Send
+      subject_select_placeholder: Choose a Subject
+      suggestions: Suggestions
+    inquires_title: General Inquires
+    phone: "(212) 807-8300 Extension 3"
+    phone_title: Phone (customer service)
+    title: Contact Robin8
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    - 
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: "%Y-%m-%d"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    month_names:
+    - 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - year
+    - month
+    - day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: "%{count} days"
+      x_minutes:
+        one: 1 minute
+        other: "%{count} minutes"
+      x_months:
+        one: 1 month
+        other: "%{count} months"
+      x_seconds:
+        one: 1 second
+        other: "%{count} seconds"
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+  devise:
+    confirmations:
+      confirmed: Your email address has been successfully confirmed.
+      send_instructions: You will receive an email with instructions for how to confirm
+        your email address in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you
+        will receive an email with instructions for how to confirm your email address
+        in a few minutes.
+    failure:
+      already_authenticated: You are already signed in.
+      inactive: Your account is not activated yet.
+      invalid: "无效的电子邮件或密码。"
+      invited: You have a pending invitation, accept it to finish creating your account.
+      last_attempt: You have one more attempt before your account is locked.
+      locked: Your account is locked.
+      not_found_in_database: "无效的电子邮件或密码。"
+      timeout: Your session expired. Please sign in again to continue.
+      unauthenticated: "您需要登录或注册才能继续操作。"
+      unconfirmed: You have to confirm your email address before continuing.
+    invitations:
+      edit:
+        header: Set your password
+        submit_button: Set my password
+      invitation_removed: Your invitation was removed.
+      invitation_token_invalid: The invitation token provided is not valid!
+      new:
+        header: Send invitation
+        submit_button: Send an invitation
+      no_invitations_remaining: No invitations remaining
+      send_instructions: An invitation email has been sent to %{email}.
+      updated: Your password was set successfully. You are now signed in.
+      updated_not_active: Your password was set successfully.
+    mailer:
+      confirmation_instructions:
+        subject: Robin8 confirmation instructions
+      invitation_instructions:
+        accept: Accept invitation
+        hello: Hello %{email}
+        ignore: If you don't want to accept the invitation, please ignore this email.<br
+          />Your account won't be created until you access the link above and set
+          your password.
+        someone_invited_you: Someone has invited you to %{url}, you can accept it
+          through the link below.
+        subject: Invitation instructions
+      reset_password_instructions:
+        subject: Robin8 password reset instructions
+      unlock_instructions:
+        subject: Robin8 account unlock instructions
+    omniauth_callbacks:
+      failure: Could not authenticate you from %{kind} because "%{reason}".
+      success: Successfully authenticated from %{kind} account.
+    passwords:
+      no_token: You can't access this page without coming from a password reset email.
+        If you do come from a password reset email, please make sure you used the
+        full URL provided.
+      send_instructions: You will receive an email with instructions on how to reset
+        your password in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you
+        will receive a password recovery link at your email address in a few minutes.
+      updated: Your password has been changed successfully. You are now signed in.
+      updated_not_active: Your password has been changed successfully.
+    registrations:
+      destroyed: Bye! Your account has been successfully cancelled. We hope to see
+        you again soon.
+      signed_up: Welcome! You have signed up successfully.
+      signed_up_but_inactive: You have signed up successfully. However, we could not
+        sign you in because your account is not yet activated.
+      signed_up_but_locked: You have signed up successfully. However, we could not
+        sign you in because your account is locked.
+      signed_up_but_unconfirmed: A message with a confirmation link has been sent
+        to your email address. Please follow the link to activate your account.
+      update_needs_confirmation: You updated your account successfully, but we need
+        to verify your new email address. Please check your email and follow the confirm
+        link to confirm your new email address.
+      updated: Your account has been updated successfully.
+    sessions:
+      already_signed_out: Signed out successfully.
+      signed_in: Signed in successfully.
+      signed_out: Signed out successfully.
+    unlocks:
+      send_instructions: You will receive an email with instructions for how to unlock
+        your account in a few minutes.
+      send_paranoid_instructions: If your account exists, you will receive an email
+        with instructions for how to unlock it in a few minutes.
+      unlocked: Your account has been unlocked successfully. Please sign in to continue.
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: must be accepted
+      already_confirmed: was already confirmed, please try signing in
+      blank: can't be blank
+      confirmation: doesn't match %{attribute}
+      confirmation_period_expired: needs to be confirmed within %{period}, please
+        request a new one
+      email_format: is not valid
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      expired: has expired, please request a new one
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      in_between: must be in between %{min} and %{max}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      not_found: not found
+      not_locked: was not locked
+      not_saved:
+        one: '1 error prohibited this %{resource} from being saved:'
+        other: "%{count} errors prohibited this %{resource} from being saved:"
+      odd: must be odd
+      other_than: must be other than %{count}
+      present: must be blank
+      spoofed_media_type: has contents that are not what they are reported to be
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      twitter_connect: is not connected to twitter
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+  flash:
+    actions:
+      create:
+        notice: "%{resource_name} was successfully created."
+      destroy:
+        alert: "%{resource_name} could not be destroyed."
+        notice: "%{resource_name} was successfully destroyed."
+      update:
+        notice: "%{resource_name} was successfully updated."
+  hello: Hello world
+  helpers:
+    page_entries_info:
+      more_pages:
+        display_entries: Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b>
+          of <b>%{total}</b> in total
+      one_page:
+        display_entries:
+          one: Displaying <b>1</b> %{entry_name}
+          other: Displaying <b>all %{count}</b> %{entry_name}
+          zero: No %{entry_name} found
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+  payment_confirm_page:
+    desc: Your payment has been successfully processed. Please check your email for
+      transaction details.
+    go_to: Go to Robin8
+    thank: Thank you!
+    title: Payment Confirmation
+  payment_page:
+    address: Address
+    card_number: Credit Card Number
+    card_type: Credit Card Type
+    city: City
+    code: Postal Code
+    country: Country
+    cvv: CVV
+    exp_month: Exp. Month
+    exp_year: Exp. Year
+    first_name: First Name
+    go_back: GO BACK
+    info: Payment Information
+    last_name: Last Name
+    messages:
+      address_blank: Address can't be blank
+      card_number_blank: Card number can't be blank
+      card_was_declined: Your card was declined. Please confirm your card details
+        below and try again.
+      city_blank: City can't be blank
+      code_blank: Postal Code/Zip can't be blank
+      cvv_blank: CVV must be greater then 2 characters
+      exp_month_blank: Expiry Month can't be blank
+      exp_year_blank: Expiry Year can't be blank and must be in YYYY format
+      first_name_blank: First name can't be blank
+      last_name_blank: Last name can't be blank
+      phone_blank: Phone can't be blank
+      state_blank: State can't be blank
+    mr_title: Mr
+    mrs_title: Mrs
+    ms_title: Ms
+    note:
+      fifth_part: All prices in US Dollars.
+      first_part: Robin8 accepts Visa, Mastercard, Discover and American Express.
+      fourth_part: and Privacy Policy. To ensure continued service, your membership
+        will be auto-renewed unless canceled. Satisfaction guaranteed or your money
+        back (within 30 days).
+      second_part: By joining Robin8 you are agreeing to the
+      third_part: Terms of Use
+    phone: Phone
+    state: State
+    submit_btn: Submit
+    table:
+      plan: Plan
+      price: Price
+      remove: remove
+      total: TOTAL
+    title: Payment
+    your_title: Title
+  payment_update_page:
+    back_btn: "<<< BACK"
+    enter_info: Enter new Credit Card Information below
+    submit_btn: SUBMIT
+    title: UPDATE PAYMENT INFORMATION
+  ransack:
+    all: "所有"
+    and: "并且"
+    any: "任意"
+    asc: "升序"
+    attribute: "属性"
+    combinator: "条件组合(combinator)"
+    condition: "条件"
+    desc: "降序"
+    or: "或者"
+    predicate: "基于(predicate)"
+    predicates:
+      blank: "为空"
+      cont: "包含"
+      cont_all: "包含所有值"
+      cont_any: "包含任意一个值"
+      does_not_match: "不符合"
+      does_not_match_all: "不符合所有条件"
+      does_not_match_any: "符合任意条件"
+      end: "以改值结尾"
+      end_all: "以所有值结尾"
+      end_any: "以任意一个值结尾"
+      eq: "等于"
+      eq_all: "等于所有值"
+      eq_any: "等于任意值"
+      'false': "等于false"
+      gt: "大于"
+      gt_all: "大于所有值"
+      gt_any: "大于任意一个值"
+      gteq: "大于等于"
+      gteq_all: "大于等于所有值"
+      gteq_any: "大于等于任意一个值"
+      in: "被包含"
+      in_all: "被所有值包含"
+      in_any: "被任意值包含"
+      lt: "小于"
+      lt_all: "小于所有值"
+      lt_any: "小于任意一个值"
+      lteq: "小于等于"
+      lteq_all: "小于等于所有值"
+      lteq_any: "小于等于任意一个值"
+      matches: "符合"
+      matches_all: "符合所有条件"
+      matches_any: "符合任意条件"
+      not_cont: "不包含"
+      not_cont_all: "不包含所有值"
+      not_cont_any: "不包含任意一个值"
+      not_end: "不以改值结尾"
+      not_end_all: "不以所有值结尾"
+      not_end_any: "不以任意一个值结尾"
+      not_eq: "不等于"
+      not_eq_all: "不等于所有值"
+      not_eq_any: "不等于任意值"
+      not_in: "不被包含"
+      not_in_all: "不被所有值包含"
+      not_in_any: "不被任意值包含"
+      not_null: "不是null"
+      not_start: "不以改值开始"
+      not_start_all: "不以所有值开始"
+      not_start_any: "不以任意一个值开始"
+      'null': "是null"
+      present: "有值"
+      start: "以改值开始"
+      start_all: "以所有值开始"
+      start_any: "以任意一个值开始"
+      'true': "等于true"
+    search: "搜索"
+    sort: "排序"
+    value: "数值"
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
+  team_page:
+    advisors:
+      advisor1_desc: is the leading acoustic artificial intelligence for the Internet
+        of Things. One Llama Labs was incubated from the University of Illinois and
+        the National Center for Supercomputer Application with grants from the National
+        Science Foundation.
+      advisor1_name: One Llama Labs
+      advisor2_desc: is the top startup accelerator in East Asia. Since 2010, ChinAccelerator
+        has backed over 60 companies and is supported by SOS Ventures, a $235 million
+        fund.
+      advisor2_name: Chinaccelerator
+      title: Robin8 <span>Advisors</span>
+    ceo_desc: Miranda Tan has more than 10 years experience in public relations, marketing,
+      and tech. Miranda has a BS from Cornell University and a JD from St. John’s
+      University School of Law.
+    ceo_name: Miranda Tan
+    ceo_pos: CEO
+    chairman_desc: Hassan has nearly three decades of experience in the finance and
+      technology. Previously, Hassan was the CEO of Xing Technology which sold to
+      Real Networks for $75 Million. Hassan was also the head of digital media at
+      CAA and a managing director of Intel Capital. He has a BBA from the University
+      of Michigan and a MBA from Stanford University Graduate School of Business.
+    chairman_name: Hassan Miah
+    chairman_pos: Chairman
+    developer_desc: Razee has extensive experience in coding, testing, implementation
+      and overall technical support of MyPRGenie. Razee earned a BS from the National
+      University of Computer and Emerging Sciences in Pakistan.
+    developer_name: Razee Khan
+    developer_pos: Engineer and Developer
+    operations_desc: Cynthia heads overall operations and administration for MyPRGenie.
+      She has an MBA from Adelphi University and a BS in Accounting from Nanjing University
+      of Science and Technology.
+    operations_name: Cynthia Chen
+    operations_pos: VP, Operations
+    sales_desc: Alex is a passionate marketer with extensive experience in sales and
+      media outreach. He is an aggressive pitcher who loves connecting with his clients
+      and their audience. Alex graduated from the University of Michigan, College
+      of LS&amp;A with a BS in Neuroscience.
+    sales_name: Alex Stefanov
+    sales_pos: VP, Sales and Marketing
+    scientist_desc: Edison has over 5 years experience in machine learning and data
+      mining in China working with Tencent and Quo360. He has published multiple articles
+      on his work in the Journal of Applied Mathematics and other international outlets.
+      Edison graduated Beijing University of Technology’s School of Mathematics with
+      a BS in Mathematics in 2006 and School of Computer Science with a Master of
+      Engineering CS degree in 2009. He is currently earning his Masters in Computer
+      Science at the Polytechnic School of Engineering at New York University.
+    scientist_name: Edison Xu Zhao
+    scientist_pos: Data Scientist and Engineer
+    support_desc: Olivia joined MyPRGenie in October 2010. At MyPRGenie, she heads
+      Customer Support and oversees the research team. Olivia has extensive experience
+      in PR and marketing and has helped hundreds of companies with their PR campaign.
+      In addition, she heads the research team for the media database.
+    support_name: Olivia Quizon
+    support_pos: VP, Support and Research
+    title: Meet the team behind <b> Robin8</b>
+  time:
+    am: am
+    formats:
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: Last &raquo;
+      next: Next &rsaquo;
+      previous: "&lsaquo; Prev"
+      truncate: "&hellip;"
+  will_paginate:
+    next_label: Next &#8594;
+    page_entries_info:
+      multi_page: Displaying %{model} %{from} - %{to} of %{count} in total
+      multi_page_html: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b>
+        in total
+      single_page:
+        one: Displaying 1 %{model}
+        other: Displaying all %{count} %{model}
+        zero: No %{model} found
+      single_page_html:
+        one: Displaying <b>1</b> %{model}
+        other: Displaying <b>all&nbsp;%{count}</b> %{model}
+        zero: No %{model} found
+    page_gap: "&hellip;"
+    previous_label: "&#8592; Previous"

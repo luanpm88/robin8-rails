@@ -26,7 +26,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       this.model.save(this.model.attributes, {
         success: function(userSession, response) {
           window.location = ''
-          $.growl({message: 'An email with password reset information has been sent'
+          $.growl({message: polyglot.t("forgot.has_been_sent")
           },{
             type: 'success'
           });

@@ -1,19 +1,19 @@
-<span class="badge badge-success"><%= size %></span> Targets will be contacted via Email <i class="fa fa-envelope"></i>
+<span class="badge badge-success"><%= size %></span> <%= polyglot.t("smart_release.pitch_step.targets") %> <i class="fa fa-envelope"></i>
 <a href="#email-targets-list" data-toggle="collapse">
-  <small>See list <i class="fa fa-chevron-down"></i></small>
+  <small><%= polyglot.t("smart_release.pitch_step.see") %> <i class="fa fa-chevron-down"></i></small>
 </a>
 
 <div id="email-targets-list" class="collapse">
   <table class="table table-condensed">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Outlet</th>
-        <th>Actions</th>
+        <th><%= polyglot.t("smart_release.pitch_step.targets_table.name") %></th>
+        <th><%= polyglot.t("smart_release.pitch_step.targets_table.outlet") %></th>
+        <th><%= polyglot.t("smart_release.pitch_step.targets_table.actions") %></th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
-  Save as a list <input type="text" style="width: 140px; display: inline;" placeholder="List name..." class="form-control input-sm"> <button class="btn btn-primary btn-sm">Save</button>
+  <%= polyglot.t("smart_release.pitch_step.targets_table.save") %> <input type="text" style="width: 140px; display: inline;" placeholder="<%= polyglot.t("smart_release.pitch_step.targets_table.save_placeholder") %>" class="form-control input-sm"> <button class="btn btn-primary btn-sm"><%= polyglot.t("smart_release.pitch_step.targets_table.button") %> </button>
 </div>
 
