@@ -53,7 +53,7 @@
       <div class="col-md-5 col-lg-4">
         <div class="billing-current-plan">
           <h4 class="billing-title"><%= polyglot.t("billing.current_plan") %></h4>
-            <% if (currentPlan != undefined) { %>
+            <% if (currentPlan != undefined && currentPlan != null) { %>
             <div class="subscription-type active" id="plantype-ultra" data-plan="ultra" data-equalizer-watch="">
               <h2><%= currentPlan.name %></h2>
               <div class="price-bubble">
