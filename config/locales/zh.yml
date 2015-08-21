@@ -178,9 +178,9 @@ zh:
       opened: "开放"
       page_views: "页面访问量"
       sent: "发送"
-      statisitcs: "智能发布邮件数据统计"
+      statisitcs: SmartContent Email Statistics
       values: "值"
-      visits: "内容库和文章访问"
+      visits: Brand Gallery and Content Visits
     billing:
       action: "操作"
       addons_title: "附加组件"
@@ -265,20 +265,20 @@ zh:
       download_svg: "下载SVG矢量图"
       print_chart: "打印图表"
     kols:
-      agree: By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service
-      email: Email
-      email_error: Email can't be blank
-      first_name: First Name
-      fname_error: First name can't be blank
-      interests: Interests
-      last_name: Last Name
-      lname_error: Last name can't be blank
-      location: Location
-      location_error: Location can't be blank
+      agree: 通过注册，你已同意MyPRGenie的 <a href="/terms">服务条款。
+      email: "电子邮件"
+      email_error: "电子邮件不能为空"
+      first_name: "名"
+      fname_error: "名字不能为空"
+      interests: "兴趣爱好"
+      last_name: "姓氏"
+      lname_error: "姓氏不能为空"
+      location: "地点"
+      location_error: "地点不能为空"
       mobile_number_error: Digits only
-      password: Password
-      password_error: Password must be greater then 7 characters
-      title: Signup
+      password: "密码"
+      password_error: "密码必须大于7个字符"
+      title: "注册"
     landing_page:
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
@@ -367,7 +367,7 @@ zh:
       profile: "轮廓"
       recommendations: "推荐"
       releases: "发布"
-      smart_campaign: SmartCampaign
+      smart_campaign: "智能推广"
       smart_release: "智能发布"
       social: "社会"
     new_package:
@@ -575,14 +575,12 @@ zh:
       title: "编辑资料"
       username: "用户名"
     public_newsroom:
-      follow: Follow
-      no_releases: No Releases published yet
-      notification: You are in a preview mode. You need to make this newsroom public
-        and/or save the changes in order to show it on your page
-      pressroom: Pressroom
+      follow: "关注"
+      no_releases: "尚未发布文章"
+      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
+      pressroom: "新闻室"
     public_release:
-      notification: You are in a preview mode. You need to make this release and newsroom
-        public in order to show it on your page
+      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
     register:
       agree_terms: "通过注册，你已同意MyPRGenie的服务条款。"
       email_placeholder: "电子邮件"
@@ -606,7 +604,7 @@ zh:
       weibo_signup: "使用Weibo账号登陆"
     releases:
       all_newsrooms: "所有内容库"
-      edit_title: Edit
+      edit_title: "编辑"
       item:
         buttons:
           edit: "编辑"
@@ -615,20 +613,20 @@ zh:
       modal:
         basic_tab:
           characteristics_view:
-            adjectives: Adjectives
-            adverbs: Adverbs
-            bad: Bad
-            characters: Characters
+            adjectives: "形容词"
+            adverbs: "副词"
+            bad: "不太好"
+            characters: "字符"
             excellent: Excellent
             good: Good
             highlight: Highlight
-            nouns: Nouns
-            ok: Ok
-            paragraphs: Paragraphs
-            score: Readability score
-            sentences: Sentences
-            too_short: Too short
-            words: Words
+            nouns: "名词"
+            ok: "尚可"
+            paragraphs: "段落"
+            score: "可读性指数"
+            sentences: "句子"
+            too_short: "过段"
+            words: "字数"
           newsroom: "内容库"
           paragraph_notification: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
           published_date: "发布日期"
@@ -641,21 +639,6 @@ zh:
           delete: "删除文章"
           next: "下一步"
           save: "保存草稿"
-        characteristics_view:
-          adjectives: "形容词"
-          adverbs: "副词"
-          bad: "不太好"
-          characters: "字符"
-          excellent: Excellent
-          good: Good
-          highlight: Highlight
-          nouns: "名词"
-          ok: "尚可"
-          paragraphs: "段落"
-          score: "可读性指数"
-          sentences: "句子"
-          too_short: "过段"
-          words: "字数"
         dropdown:
           select: "选择..."
         media_tab:
@@ -795,9 +778,9 @@ zh:
           name: "姓名"
           outlet: "媒体公司"
           save: "保存为名单"
-          save_placeholder: List name...
-          success_pitch_sent: Your pitch has been successfully sent.
-          success_uploaded_list: Your list has been successfully saved.
+          save_placeholder: "列表名称…"
+          success_pitch_sent: "您的稿件已经投递成功"
+          success_uploaded_list: "您的列表已成功保存。"
         test_button: "发送测试邮件"
         title: "投递"
       start_step:
@@ -1016,17 +999,7 @@ zh:
           title: "美通社免责声明"
         title: "美通社分配政策"
       non_personal_information:
-        text: In some cases, when you visit our Site, we may also collect information
-          that is non-personally identifiable information or information that, by
-          itself, cannot be used to identify or contact you. Examples of this type
-          of information include the type of Internet browser or computer operating
-          system you use, demographic information (your age, gender, income, education,
-          profession, zip code, etc.), the date and time you visited our Site, the
-          pages you accessed, the name of the website from which you linked to our
-          Site and other anonymous data involving your use of our Site. We use this
-          information to analyze trends and gather broad demographic information for
-          aggregate use. This information is not linked to any personally identifiable
-          information.
+        text: "在某些情况下，当您访问我们的网站时，我们可能还会收集非个人身份信息，那些信息本身不能被用来识别或联系您。例如您使用Internet浏览器或计算机操作系统的类型，人口统计信息（你的年龄，性别，收入，教育，职业，邮政编码等），您访问我们的网站日期和时间，您访问的页面，您链接到我们的网站的信息和其他涉及您使用我们网站的匿名数据的网站名称。我们利用这些信息来分析趋势并收集广泛的统计信息。这些信息不会链接到任何个人身份信息。"
         title: "非个人信息"
       online_store:
         text: "我们可能会使用您提供与您有关通过我们的网上商店购买的产品沟通，提供客户支持，这些产品连接，向您发送有关我们认为可能是您感兴趣的产品和服务信息的信息。我们不会未经您的同意分享你与任何第三方的财务信息，除非法院或政府机构，如果法律允许，授权由有管辖权的法院或在“某些第三方交易”下面描述的程度有限。如果您通过我们的网上商店进行购买，我们可能会使用您提供给您发送重要公告和更新对我们的网站，在线产品，服务，活动和我们认为可能是您感兴趣的任何其他信息的信息。您还可能会收到有关新产品和服务的定期邮寄。然而，你可以选择不接收将来的邮件通过在info@robin8.com与我们联系"
