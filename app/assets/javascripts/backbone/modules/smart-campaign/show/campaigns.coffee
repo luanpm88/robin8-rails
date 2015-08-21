@@ -68,10 +68,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           budget: {
             validators: {
               notEmpty: {
-                message: 'The budget is required'
+                message: polyglot.t('smart_campaign.budget_required')
               },
               digits: {
-                message: 'The budget must be a number and contains only digits'
+                message: polyglot.t('smart_campaign.budget_must_number')
               }
             }
           }

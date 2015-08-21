@@ -8,13 +8,13 @@
         <table class="table table-striped" id="kol-dashboard">
           <thead class="table-head">
             <tr>
-              <th class="invite-cell invite-name" data-sort="string">Name</th>
-              <th class="invite-cell invite-budget" data-sort="int">Budget</th>
-              <th class="invite-cell invite-brand" data-sort="string">Brand</th>
-              <th class="invite-cell invite-description" data-sort="string">Description</th>
-              <th class="invite-cell invite-date" data-sort="int">Creation Date</th>
-              <th class="invite-cell invite-deadline" data-sort="int">Deadline</th>
-              <th class="invite-cell invite-status" data-sort="string">Status</th>
+              <th class="invite-cell invite-name" data-sort="string"><%=polyglot.t('dashboard.name')%>Name</th>
+              <th class="invite-cell invite-budget" data-sort="int"><%=polyglot.t('dashboard.budget')%>Budget</th>
+              <th class="invite-cell invite-brand" data-sort="string"><%=polyglot.t('dashboard.brand')%>Brand</th>
+              <th class="invite-cell invite-description" data-sort="string"><%=polyglot.t('dashboard.description')%>Description</th>
+              <th class="invite-cell invite-date" data-sort="int"><%=polyglot.t('dashboard.creation_date')%>Creation Date</th>
+              <th class="invite-cell invite-deadline" data-sort="int"><%=polyglot.t('dashboard.deadline')%>Deadline</th>
+              <th class="invite-cell invite-status" data-sort="string"><%=polyglot.t('dashboard.status')%>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -40,16 +40,16 @@
               </td>
               <% if (item.status === '') { %>
               <td class="invite-cell invite-action invite-nostatus">
-                <button type="button" class="btn btn-primary invitation-accept" data-invite-id="<%= item.id %>">Accept</button>
-                <button type="button" class="btn btn-danger invitation-decline" data-invite-id="<%= item.id %>">Decline</button>
+                <button type="button" class="btn btn-primary invitation-accept" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+                <button type="button" class="btn btn-danger invitation-decline" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.decline')%></button>
               </td>
               <% } else if (item.status === 'A') { %>
               <td class="invite-cell invite-status invite-accepted">
-                Accepted
+                <%=polyglot.t('dashboard.accepted')%>
               </td>
               <% } else if (item.status === 'D') { %>
               <td class="invite-cell invite-status invite-declined">
-                Declined
+                <%=polyglot.t('dashboard.declined')%>
               </td>
               <% } %>
             </tr>
@@ -60,7 +60,7 @@
 
         <% } else { %>
         <div class="col-sm-12">
-          Welcome to Robin8! You are not invited to any campaigns yet. Please <a href="#profile">update</a> your profile.
+          <%= polyglot.t("dashboard.not_invited_yet")%>
         </div>
         <% } %>
       </div>

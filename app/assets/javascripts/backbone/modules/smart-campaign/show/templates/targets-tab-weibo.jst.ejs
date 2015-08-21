@@ -1,7 +1,7 @@
-<span class="weibo-errors">You need to invite at least someone to this campaign!</span>
+<span class="weibo-errors"><%=polyglot.t('smart_campaign.targets_step.need_invite')%></span>
 <% if (weibo.length == 0) { %>
 <div>
-  <i>Couldn't match any influencers for you. Provivde more categories.</i>
+  <i><%=polyglot.t('smart_campaign.targets_step.couldnt_match_influencers')%></i>
 </div>
 <% } else { %>
 <table class="table table-hover targets dataTable no-footer" id="weibo-table">

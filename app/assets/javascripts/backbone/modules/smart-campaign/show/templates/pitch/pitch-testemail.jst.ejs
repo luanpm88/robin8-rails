@@ -2,10 +2,10 @@
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title text-center" id="myModalLabel">Send a Test</h4>
+      <h4 class="modal-title text-center" id="myModalLabel"><%=polyglot.t('smart_release.send_test.send_test')%></h4>
     </div>
     <div class="modal-body">
-      <label for="emails" class="col-sm-3 control-label">Send a test to</label>
+      <label for="emails" class="col-sm-3 control-label"><%=polyglot.t('smart_release.send_test.send_test_to')%></label>
       <br />
       <form role="form" id="send-test-email" method="post" action="/campaign/test_email/">
         <div class="form-group">
@@ -15,17 +15,17 @@
             <input class="form-control" id="email-subject-input" type="hidden" name="email_subject" value="">
             <input class="form-control" id="email-pitch-input" type="hidden" name="email_pitch" value="">
             <input class="form-control" id="emails"
-                   placeholder="Ex: freddie@mailchimp.com, mannie@mandrill.com..." name="emails" width="100%">
+                   placeholder="<%=polyglot.t('smart_release.send_test.ex')%>: freddie@mailchimp.com, mannie@mandrill.com..." name="emails" width="100%">
 
           </div>
         </div>
       </form>
-      <span id="helpBlock" class="help-block">Comma separate emails to send to multiple accounts</span>
+      <span id="helpBlock" class="help-block"><%=polyglot.t('smart_release.send_test.comma_separate')%></span>
     </div>
     <div class="modal-footer">
       <div>
-        <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="send-test-btn">Send Test</button>
+        <button type="button" class="btn btn-link" data-dismiss="modal"><%=polyglot.t('smart_release.send_test.cancel')%></button>
+        <button type="button" class="btn btn-primary" id="send-test-btn"><%=polyglot.t('smart_release.send_test.send_test_button')%></button>
       </div>
     </div>
   </div>

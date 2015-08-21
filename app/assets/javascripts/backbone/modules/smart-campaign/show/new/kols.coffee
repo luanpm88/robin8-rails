@@ -42,18 +42,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         success: (res) =>
           @collection.fetch()
 
-          $.growl({message: "Your list has been successfully uploaded."
+          $.growl({message: polyglot.t('smart_campaign.kol.list_uploaded')
           },{
             type: 'success'
           })
 
-          $.growl({message: "All contacts in incorrect format will be ignored."
+          $.growl({message: polyglot.t('smart_campaign.kol.incorrect_ignored')
           },{
             type: 'info'
           })
           if res
             res.forEach (email) ->
-              $.growl({message: email + " already in your list"
+              $.growl({message: email + polyglot.t('smart_campaign.kol.alredy_in_list')
               },{
                 type: 'info'
               })
@@ -78,7 +78,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         pageLength: 25
       @ui.form.validator()
       @ui.categories.select2
-        placeholder: "Select influencer categories"
+        placeholder: polyglot.t('smart_campaign.kol.select_categories')
         multiple: true
         minimumInputLength: 1
         maximumSelectionSize: 10

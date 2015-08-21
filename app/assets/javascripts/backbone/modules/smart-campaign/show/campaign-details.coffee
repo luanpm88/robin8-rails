@@ -11,9 +11,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
       public: (k) ->
-        if k.is_public then "Yes" else "No"
+        if k.is_public then polyglot.t('smart_campaign.yes') else polyglot.t('smart_campaign.no')
       status: (k) ->
-        if k.status == "" then "Unknown" else "Declined"
+        if k.status == "" then polyglot.t('smart_campaign.unknown') else polyglot.t('smart_campaign.declined')
       code: (k) ->
         if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
           link = "http://#{window.location.host}/articles/#{k.article.tracking_code}"
@@ -22,11 +22,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           "Not approved yet"
       code_status: (k) ->
         if k.article? and k.article.tracking_code? and k.article.tracking_code == 'Waiting'
-          "Pending approval"
+          polyglot.t('smart_campaign.pending_approval')
         else if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
-          "Approved"
+          polyglot.t('smart_campaign.approved')
         else
-          "In Progress"
+          polyglot.t('smart_campaign.in_progress')
 
     events:
       "click tr.preview": "preview"

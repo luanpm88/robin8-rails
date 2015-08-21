@@ -2,20 +2,24 @@
 <hr>
 <% if (items.length == 0) { %>
 <div class="row">
-    You don't have any <% if (!declined) { %>accepted<% } else { %>declined<% } %> campaigns.
+  <% if (!declined) { %>
+  <%=polyglot.t('kol_campaign.you_dont_have_any_accepted')%>
+  <% } else { %>
+  <%=polyglot.t('kol_campaign.you_dont_have_any_declined')%>
+  <% } %>
 </div>
 <% } else { %>
 <div class="row">
     <table class="table table-striped" id="campaigns-table">
         <thead class="table-head">
         <tr>
-            <th>Name</th>
-            <th>Brand</th>
-            <th>Budget</th>
-            <th>Creation Date</th>
-            <th>Deadline</th>
+            <th><%=polyglot.t('kol_campaign.name')%></th>
+            <th><%=polyglot.t('kol_campaign.brand')%></th>
+            <th><%=polyglot.t('kol_campaign.budget')%></th>
+            <th><%=polyglot.t('kol_campaign.creation_date')%></th>
+            <th><%=polyglot.t('kol_campaign.deadline')%></th>
             <% if (!declined) {%>
-              <th>Article URL</th>
+              <th><%=polyglot.t('kol_campaign.article_url')%></th>
             <% }%>
         </tr>
         </thead>

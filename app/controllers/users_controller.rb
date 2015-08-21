@@ -95,7 +95,7 @@ class UsersController < ApplicationController
     detection = CharlockHolmes::EncodingDetector.detect(contents)
 
     if params[:private_kols_file].tempfile.path[-4..-1] != '.csv'
-      raise CSV::MalformedCSVError.new('Attachment content type is invalid')
+      raise CSV::MalformedCSVError.new(@l.t('smart_campaign.kol.attach_invalid'))
     end
 
     kols = []
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
     end
 
     if kols.size == 0
-      raise CSV::MalformedCSVError.new('Attachment content type is invalid')
+      raise CSV::MalformedCSVError.new(@l.t('smart_campaign.kol.attach_invalid'))
     end
     if added_kols.length > 0
       render json: added_kols

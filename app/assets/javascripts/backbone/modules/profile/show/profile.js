@@ -48,7 +48,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
         var autocomplete = new google.maps.places.Autocomplete($("#location")[0], {});
 
         $('#interests').select2({
-          placeholder: "Select your interests",
+          placeholder: polyglot.t('profile.select_interests'),
           multiple: true,
           minimumInputLength: 1,
           maximumSelectionSize: 10,
@@ -176,11 +176,11 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'Please enter a value'
+                message: polyglot.t('profile.enter_value')
               },
               regexp: {
                 regexp: /^\d*$/,
-                message: 'Digits only'
+                message: polyglot.t('profile.digits_only')
               },
             }
           },
@@ -247,7 +247,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             }
 
             Robin.layouts.main.onShow();
-            $.growl({message: polyglot.t('profile.account_successfully_changed')
+            $.growl({message: polyglot.t('profile.account_changed')
             },{
               element: '#growler-alert',
               type: 'success',

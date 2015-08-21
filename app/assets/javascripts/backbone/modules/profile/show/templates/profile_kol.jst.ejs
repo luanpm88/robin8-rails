@@ -15,92 +15,92 @@
         <h3>Personal info</h3>
         <form class="form-horizontal" role="form" autocomplete="off" id="profileForm" onsubmit="return false;">
           <div class="form-group col-md-6">
-            <label class="control-label">First name:</label>
+            <label class="control-label"><%= polyglot.t("profile.first_name") %>:</label>
             <div>
               <input class="form-control" name="first_name" type="text" value="">
             </div>
           </div>
           <div class="form-group col-md-6">
-            <label class="control-label">Last name:</label>
+            <label class="control-label"><%= polyglot.t("profile.last_name") %>:</label>
             <div>
               <input class="form-control" name="last_name" type="text" value="">
             </div>
           </div>
           <div class="form-group col-md-6">
-            <label class="control-label">Location:</label>
+            <label class="control-label"><%= polyglot.t("profile.location") %>:</label>
             <div>
               <input class="form-control" name="location" id="location" type="text" value="">
             </div>
           </div>
           <div class="form-group col-md-6 pull-right">
-            <label class="control-label">Email:</label>
+            <label class="control-label"><%= polyglot.t("profile.email") %>:</label>
             <div>
               <input class="form-control" name="email" type="text" value="" readonly="readonly">
             </div>
           </div>
           <div class="form-group col-md-6">
-            <label class="control-label">Day of birth:</label>
+            <label class="control-label"><%= polyglot.t("profile.day_of_birth") %>:</label>
             <div>
               <input class="form-control" placeholder="Pick a date!" name = "date_of_birthday" id="date_of_birthday" value="">
             </div>
           </div>
           <div class="form-group col-md-6 pull-right">
-            <label class="control-label">Mobile number:</label>
+            <label class="control-label"><%= polyglot.t("profile.mobile_number") %>:</label>
             <div>
               <input class="form-control" name="mobile_number" type="text" value="" >
             </div>
           </div>
           <div class="form-group col-md-12">
-            <label class="control-label">Title:</label>
+            <label class="control-label"><%= polyglot.t("profile.title") %>:</label>
             <div>
               <input class="form-control" name="title" type="text" value="">
             </div>
           </div>
           <div class="form-group col-md-12">
-            <label class="control-label">Industry:</label>
+            <label class="control-label"><%= polyglot.t("profile.industry") %>:</label>
             <div>
               <input type="text" name="industry" class="form-control" value="" />
             </div>
           </div>
            <div class="form-group col-md-12">
-            <label class="control-label">Interests:</label>
+            <label class="control-label"><%= polyglot.t("profile.interests") %>:</label>
             <div>
-              <input type="hidden" id="interests" class="form-control" value="Interests" />
+              <input type="hidden" id="interests" class="form-control" value="<%= polyglot.t("profile.interests") %>" />
             </div>
           </div>
           <hr>
            <div class="form-group col-md-12" id="currentPassword">
-            <label class="control-label">Current password:</label>
+            <label class="control-label"><%= polyglot.t("profile.curr_password") %>:</label>
             <div>
               <input class="form-control" name="current_password" type="password" value="">
             </div>
           </div>
           <div class="form-group col-md-12">
-            <label class="control-label">New password:</label>
+            <label class="control-label"><%= polyglot.t("profile.new_password") %>:</label>
             <div>
               <input class="form-control" name="password" type="password" value="" minlength="8"
-               data-fv-stringlength-message="A new password must be at least 8 characters long">
+               data-fv-stringlength-message="<%= polyglot.t("profile.password_must_be_8") %>">
             </div>
           </div>
           <div class="form-group col-md-12">
-            <label class="control-label">Confirm new password:</label>
+            <label class="control-label"><%= polyglot.t("profile.confirm_new_password") %>:</label>
             <div>
               <input class="form-control" name="password_confirmation" type="password" value="">
             </div>
           </div>
           <div class="form-group col-md-12">
             <input type="checkbox" class='is_public-checkbox' id="is_public" name="is_public">
-            <label for="is_public" class="control-label">Public account</label>
+            <label for="is_public" class="control-label"><%= polyglot.t("profile.public_account") %></label>
           </div>
         </form>
         <div id="social-profiles">  </div>
         <div id="backend_screen">  </div>
         <div class="form-group col-md-12">
-          <input type="button" id="saveChanges" class="btn btn-primary" value="Save Changes">
+          <input type="button" id="saveChanges" class="btn btn-primary" value="<%= polyglot.t("profile.buttons.save") %>">
           <span></span>
-          <a class="btn btn-default" href="/#dashboard">Cancel</a>
+          <a class="btn btn-default" href="/#dashboard"><%= polyglot.t("profile.buttons.cancel") %></a>
           <span></span>
-          <input type="button" class="btn btn-primary pull-right" value="Set Up Payoneer payments">
+          <input type="button" class="btn btn-primary pull-right" value="<%= polyglot.t("profile.set_up_payoneer") %>">
         </div>
       </div>
     </div>
