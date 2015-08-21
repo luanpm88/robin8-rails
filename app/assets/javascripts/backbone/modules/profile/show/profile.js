@@ -71,7 +71,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
                 message: 'The data you have entered is not a valid email'
               },
               serverError: {
-                message: 'something went wrong'
+                message: polyglot.t('profile.something_wrong')
               }
             }
           },
@@ -79,10 +79,10 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'Current password is required in order to set a new one'
+                message: polyglot.t('profile.current_password_req')
               },
               serverError: {
-                message: 'something went wrong'
+                message: polyglot.t('profile.something_wrong')
               }
             }
           },
@@ -90,10 +90,10 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'The password is required'
+                message: polyglot.t('profile.password_required')
               },
               serverError: {
-                message: 'something went wrong'
+                message: polyglot.t('profile.something_wrong')
               }
             }
           },
@@ -101,14 +101,14 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'The password confirmation is required'
+                message: polyglot.t('profile.password_confirmation_req')
               },
               identical: {
                 field: 'password',
-                message: 'The password confirmation must be the same as original one'
+                message: polyglot.t('profile.password_confirmation_must_same')
               },
               serverError: {
-                message: 'something went wrong'
+                message: polyglot.t('profile.something_wrong')
               }
             }
           },
@@ -165,7 +165,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             Robin.currentUser.attributes = currentAttributes;
             Robin.currentUser.attributes.current_password = "";
             Robin.layouts.main.onShow();
-            $.growl({message: 'Your account data has been successfully changed'
+            $.growl({message: polyglot.t('profile.account_changed')
             },{
               element: '#growler-alert',
               type: 'success',
