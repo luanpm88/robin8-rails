@@ -162,6 +162,3 @@ $(window).on('scroll', function() {
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
-
-var dummy_function = function() {};
-
