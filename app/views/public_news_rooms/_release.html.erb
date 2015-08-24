@@ -28,7 +28,7 @@
       </div>
     <% end %>
   <% end %>
-  
+
   <div class="caption text-center">
     <h3>
       <%= link_to_unless @preview_mode, release.title, release_path(release) %>
@@ -49,7 +49,7 @@
     <hr>
     <p align="center">
       <%= link_to release_path(release), class: 'btn btn-info', disabled: @preview_mode do %>
-        <i class="fa fa-leanpub"></i> Read more</a>
+        <i class="fa fa-leanpub"></i> <%=@l.t('public_newsroom.read_more')%></a>
       <% end %>
     </p>
   </div>

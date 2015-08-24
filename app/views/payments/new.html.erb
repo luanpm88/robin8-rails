@@ -122,7 +122,7 @@
           <div class="row">
             <div class="small-2 medium-2 large-2 columns custom-padding">
               <label><%= @l.t 'payment_page.your_title'%>
-                <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']],
+                <%=select "contact", "title", [[@l.t('payment_page.mr_title'), @l.t('payment_page.mr_title')], [@l.t('payment_page.ms_title'), @l.t('payment_page.ms_title')], [@l.t('payment_page.mrs_title'), @l.t('payment_page.mrs_title')]], {}, {:class => "select-checkout"} %>
                     {:selected => params[:contact].present? ? params[:contact][:title] : ''}, {:class => "select-checkout" } %>
               </label>
             </div>
@@ -162,7 +162,7 @@
             <div class="small-12 medium-6 large-4 columns custom-padding">
               <label><%= @l.t 'payment_page.city'%>
                 <%=text_field "contact", "city", :value => params[:contact].present? ? params[:contact][:city] : '',
-                    :class=>"form-control","data-validation"=>"required", "data-validation-error-msg"=> "City can't be blank"
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.city_blank')
                 %>
               </label>
             </div>
@@ -172,7 +172,7 @@
             <div class="small-12 medium-4 large-4 columns custom-padding">
               <label><%= @l.t 'payment_page.state'%>
                 <% show_error = flash[:fields_errors].present? && flash[:fields_errors][:state].present? ? true : false
-                style = show_error ? "border-color: red;" : ""  %>
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.state_blank'),:placeholder => "NY" %>
                 <%=text_field "contact", "state", :style => style, :value => params[:contact].present? ? params[:contact][:state] : '',
                     :class=>"form-control","data-validation"=>"required", "data-validation-error-msg"=> "State can't be blank",:placeholder => "NY" %>
                 <% if show_error %>
@@ -217,10 +217,9 @@
             <div class="small-8 medium-8 large-5 columns custom-padding">
               <label><%= @l.t 'payment_page.card_number'%>
                 <% show_error = flash[:fields_errors].present? && flash[:fields_errors][:credit_card_number].present? ? true : false
-                style = show_error ? "border-color: red;" : ""  %>
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.card_number_blank'),"data-validation"=>"number" %>
                 <%=text_field "card", "credit_card_number", :style => style, :class=>"form-control",
                               :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Card number can't be blank","data-validation"=>"number" %>
                 <% if show_error %>
                 <span class="help-block form-error"><%=flash[:fields_errors][:credit_card_number]%></span>
                 <%end%>

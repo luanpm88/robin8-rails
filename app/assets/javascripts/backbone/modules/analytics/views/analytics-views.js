@@ -86,7 +86,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 yAxis: 1,
                 data: sessions
               }, {
-                name: 'Newsroom Views From Email',
+                name: polyglot.t("analytics.emails"),
                 type: 'column',
                 yAxis: 1,
                 data: mailViews
