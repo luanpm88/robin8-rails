@@ -60,10 +60,10 @@ class ApplicationController < ActionController::Base
         render :json => {error: "500 Internal Server Error", message: e.message}, status: 500
     end
   end
-
+  
   private
-
+  
   def ssl_configured?
-    Rails.env.production?
+    !Rails.env.development?
   end
 end

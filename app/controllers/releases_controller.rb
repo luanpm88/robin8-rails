@@ -101,17 +101,17 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.require(:release).permit(:title, :text, :news_room_id, :is_private,
+    params.require(:release).permit(:title, :text, :news_room_id, :is_private, 
       :logo_url, :thumbnail, :concepts, :published_at, :iptc_categories, :summaries, :hashtags,
       :characters_count, :words_count, :sentences_count,
       :paragraphs_count, :adverbs_count, :adjectives_count,
       :nouns_count, :organizations_count, :places_count, :people_count,
-      :myprgenie, :accesswire, :prnewswire,
+      :myprgenie, :accesswire, :prnewswire, 
       :myprgenie_published_at, :accesswire_published_at, :prnewswire_published_at,
       attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy])
   end
-
+  
   def ssl_configured?
-    Rails.env.production?
+    !Rails.env.development? && action_name != 'show'
   end
 end
