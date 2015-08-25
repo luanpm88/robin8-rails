@@ -76,14 +76,22 @@
     </div>
     <div class="small-12 medium-4 columns">
       <div class="team-box">
-          <%= image_tag "team-simon.png" %>
-          <h3>Simon Deng</h3>
-          <h4>VP, Tech Leader for China</h4>
-          <p>Simon specializes in data and technology. Previously, Simon was at eBay, VF Corporation and Anheuser-Busch InBev.
-          Simon has a BS in computer science and MS in data mining from East China Normal University.</p>
+        <%= image_tag "team-elsa.png" %>
+        <h3><%= @l.t('team_page.elsa_name') %></h3>
+        <h4><%= @l.t('team_page.elsa_pos') %></h4>
+        <p><%= @l.t('team_page.elsa_desc') %></p>
+      </div>
+    </div>
+    <div class="small-12 medium-4 columns">
+      <div class="team-box">
+        <%= image_tag "team-simon.png" %>
+        <h3><%= @l.t('team_page.simon_name') %></h3>
+        <h4><%= @l.t('team_page.simon_pos') %></h4>
+        <p><%= @l.t('team_page.simon_desc') %></p>
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <div class="team-content ">
