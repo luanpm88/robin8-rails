@@ -19,6 +19,7 @@
         </label>
       </div>
     </div>
+    <div class="col-xs-3 social-networks">
       <a class="btn twitter <%= Robin.identities.twitter.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="<%= polyglot.t("say_something_box.post_to_tw") %>"><i class="fa fa-twitter"></i></a>
       <input type='hidden' value='false' name="twitter" />
       <a class="btn facebook <%= Robin.identities.facebook.length == 0 ? 'disabled' : '' %>" data-toggle="tooltip" data-original-title="<%= polyglot.t("say_something_box.post_to_fb") %>"><i class="fa fa-facebook"></i></a>
