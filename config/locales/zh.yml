@@ -379,6 +379,8 @@ zh:
       track_text: "通过我们强大的分析系统追踪结果，利用我们的智能媒体，及时了解最新的新闻。"
       upload: "上传"
       upload_text: "上传您的新闻稿或内容，它在几秒钟内将得到分析。"
+      english_locale: Switch to English locale
+      chinese_locale: Switch to Chinese locale
     login:
       email: "电子邮件"
       fb_login: "使用Facebook账号登陆"

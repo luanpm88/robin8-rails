@@ -387,6 +387,8 @@ en:
         our media intelligence to keep abreast of the latest news.
       upload: Upload
       upload_text: Upload your content and watch it get analyzed in seconds.
+      english_locale: Switch to English locale
+      chinese_locale: Switch to Chinese locale
     login:
       email: Email
       fb_login: Login using Facebook
