@@ -1,7 +1,7 @@
 require 'mailgun'
 class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
-  
+
   def index
     users_id = current_user.invited_users_list
     limit = current_user.current_user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
@@ -161,8 +161,8 @@ private
       :toll_free_number, :publish_on_website, attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy],
       industry_ids: [])
   end
-  
+
   def ssl_configured?
-    !Rails.env.development? && !['preview', 'presskit', 'follow'].include?(action_name)
+    false
   end
 end
