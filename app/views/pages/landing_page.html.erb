@@ -10,6 +10,12 @@
       <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
+          <li><%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
+            <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: @l.t('landing_page.english_locale') %>
+          <% end %></li>
+          <li><%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
+            <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: @l.t('landing_page.chinese_locale') %>
+          <% end %></li>
           <li><a href="http://try.robin8.com/robin/" target="_blank"><%=@l.t('header.contact_us')%></a></li>
           <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
         </ul>
@@ -144,12 +150,6 @@
     </div>
     <div class="small-12 medium-12 columns left">
       &copy;<%= @l.t('footer.right_reserved') %> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/terms" class="ft-link privacy"><%= @l.t('footer.privacy_and_terms') %> </a>
-      <%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
-        <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: 'Switch to Chinese locale' %>
-      <% end %>
-      <%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
-        <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: 'Switch to Chinese locale' %>
-      <% end %>
     </div>
   </div>
 </footer>
