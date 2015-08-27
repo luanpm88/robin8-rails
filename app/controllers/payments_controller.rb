@@ -47,8 +47,7 @@ class PaymentsController < ApplicationController
       return redirect_to "/payment-confirmation"
 
     else
-      flash.now[:errors] = errors[0]
-      flash.now[:fields_errors] = errors[1]
+      flash.now[:errors] = errors
       render :new, :layout => "website"
     end
   end

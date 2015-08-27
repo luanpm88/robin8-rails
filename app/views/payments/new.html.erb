@@ -296,11 +296,6 @@
       applyDiscount();
       <%end%>
 
-      $('.select-with-error').on('selectmenuchange', function(){
-        $(this).removeClass('select-with-error');
-        $(this).parent().find('.form-error').remove();
-      });
-
       function updatePackage(){
         $('#slug').val($('#payment-option').val());
         productCost = parseInt($("#"+$('#slug').val()).val());
