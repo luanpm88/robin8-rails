@@ -356,16 +356,35 @@ zh:
       password_error: "密码必须大于7个字符"
       title: "注册"
     landing_page:
+      brand: Brand
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
+      influencer: Influencer
       kol_signup: Are you a KOL? Sign up
       learn_more: "了解更多"
+      monetize: Monetize
       recommend: "推荐"
       recommend_text: "意见领袖为你出谋划策，还有个性化的内容。你的每次使用，会让Robin8推荐引擎变得更智能。"
+      register: Register
+      register_text: Register now
+      score: My Score
       sign_up: "注册"
+      social: My Social
       target: "目标"
       target_text: "只需点击一下，Robin8将智能推荐意见领袖的名单。"
       text1: ROBIN8帮你更轻松和有效的找到记者和意见领袖。
+      text10: We are changing the face of media and technology that's been years in
+        the making. Sign up and immediately see your score and value as an influencer.
+        Help us help you unleash your influence!
+      text11: Robin8 is constantly tracking and analyzing data from millions of articles
+        and posts every second and every day. By understanding the nuances behind
+        every influencer, we can match you with the best brands and campaigns.
+      text12: Calculate your influence and value
+      text13: Help you increase your influence and value
+      text14: Uses Algorithm and machine-learning technology to adapt campaign recommendations
+        for you
+      text15: Help you monetize your influence and make money
+      text16: Do you know you are an influencer?
       text2: "多年来，我们一直在用科技改变PR的面貌。成功将你的文章发送至了解与信任的记者，他们将分享您的每一次内容递送。简单智能。"
       text3: "推测出适合的社交和内容营销"
       text4: ROBIN8通过不断的跟踪每日发布的数十亿文章，并分析相关的数据，最终打造有影响力的终极数据库。通过了解每一个意见领袖背后的细微差别和他们的兴趣，我们
@@ -379,6 +398,7 @@ zh:
       track_text: "通过我们强大的分析系统追踪结果，利用我们的智能媒体，及时了解最新的新闻。"
       upload: "上传"
       upload_text: "上传您的新闻稿或内容，它在几秒钟内将得到分析。"
+      welcome: Welcome to the Internet of everyone!
     login:
       email: "电子邮件"
       fb_login: "使用Facebook账号登陆"
@@ -850,6 +870,7 @@ zh:
       no_one_accepted: "目前无人接受您的邀请。"
       pending_approval: Pending Approval
       pitch_step:
+        button: Pitch!
         delete_button: "删除"
         description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
         emailTargets: "通过电子邮件联系目标人"

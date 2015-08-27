@@ -351,19 +351,42 @@ en:
       password_error: Password must be greater then 7 characters
       title: Signup
     landing_page:
+      brand: Brand
       here: here.
       inf_signup: 'Are you an Influencer? Sign up '
+      influencer: Influencer
       kol_signup: Are you a KOL? Sign up
       learn_more: Learn More
+      monetize: Monetize
       recommend: Recommend
       recommend_text: Influencers are curated and content is personalized to you.
         The Robin8 recommendation engine gets smarter every time you use it.
+      register: Register
+      register_text: Register now
+      score: My Score
       sign_up: Sign Up
+      social: My Social
       target: Target
       target_text: Select from the list of influencers Robin8 intelligently recommends
         in one click.
       text1: ROBIN8 makes reaching out to reporters and influencers effortless and
         effective.
+      text10: We are changing the face of media and technology that's been years in
+        the making. Sign up and immediately see your score and value as an influencer.
+        Help us help you unleash your influence!
+      text11: Robin8 is constantly tracking and analyzing data from millions of articles
+        and posts every second and every day. By understanding the nuances behind
+        every influencer, we can match you with the best brands and campaigns.
+      text12: Calculate your influence and value
+      text13: Help you increase your influence and value
+      text14: Uses Algorithm and machine-learning technology to adapt campaign recommendations
+        for you
+      text15: Help you monetize your influence and make money
+      text16: Do you know you are an influencer?
+      text17: ROBIN8 believes every person is an influencer and a media company.
+      text18: Welcome to the internet for everyone. With the rise of social media,
+        everyone has a voice and influence.
+      text19: Robin8 calculates your influence and estimates the value of your REACH.
       text2: We’re changing the face of PR with technology that’s been years in the
         making. Predict the success of every pitch you make to a reporter by knowing
         with confidence they will share your content. It’s simply intelligent.
@@ -380,6 +403,7 @@ en:
       text8: Achieve a higher return on your marketing spend thanks to better earned
         media results.
       text9: Ready to see the world acording to ROBIN8?
+      title_landing: Monetize your influence. Register here.
       title: Next generation social and content marketing platform powered by artificial
         intelligence
       track: Track
@@ -387,6 +411,7 @@ en:
         our media intelligence to keep abreast of the latest news.
       upload: Upload
       upload_text: Upload your content and watch it get analyzed in seconds.
+      welcome: Welcome to the Internet of everyone!
     login:
       email: Email
       fb_login: Login using Facebook
