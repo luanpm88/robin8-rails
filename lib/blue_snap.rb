@@ -330,35 +330,10 @@ module BlueSnap
 
     def self.get_errors(resp)
       errors = []
-      fields_errors = {}
-
-      error_codes = {
-        "UNKNOWN_STATE_CODE"   => :state,
-        "INVALID_BANK_COUNTRY" => :country,
-        "UNKNOWN_COUNTRY_CODE" => :country,
-        "INVALID_CARD_NUMBER"  => :credit_card_number,
-        "PICKUP_CARD"          => :credit_card_number,
-        "RESTRICTED_CARD"      => :credit_card_number,
-        "INVALID_CARD_TYPE"    => :credit_card_type,
-        "CVV_ERROR"            => :verification_code
-      }
-
       response = resp[:messages][:message]
+      response.class == Hash ? errors << response[:description] : response.collect{ |e| errors << e[:description] }
 
-      if response.class == Hash
-        error_codes.key?(response[:error_name]) ? fields_errors = { error_codes[response[:error_name]] => response[:description] } :
-                                                  errors << resp[:messages][:message][:description]
-      else
-        response.collect{ |e|
-          if error_codes.key?(e[:error_name])
-            fields_errors.merge!( error_codes[e[:error_name]] => e[:description] )
-          else
-            errors << e[:description]
-          end
-        }
-      end
-
-      return errors, fields_errors
+      return errors
     end
   end
 
