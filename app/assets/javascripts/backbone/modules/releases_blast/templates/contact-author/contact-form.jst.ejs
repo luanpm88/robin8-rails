@@ -9,18 +9,27 @@
 
     <div class="row">
       <div class="col-xs-6">
-        <label>Subject</label> <input name="subject" class="form-control" placeholder="Enter a catchy subject line..." type="text">
+        <label>Subject</label> <input name="subject" class="form-control" placeholder="<%= polyglot.t("smart_release.pitch_step.email_panel.subject_placeholder")%>" type="text">
       </div>
 
       <div class="col-xs-6">
-        <label>Your Email</label> <input class="form-control" name="email" placeholder="Email" type="text" value="<%= currentUser.get('email') %>">
+        <label>Your Email</label> <input class="form-control" name="email" placeholder="<%= polyglot.t("smart_release.pitch_step.email_panel.email_placeholder")%>" type="text" value="<%= currentUser.get('email') %>">
       </div>
     </div>
+    <% if (!author.email) {%>
+    <br/>
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="help-block" style="color: red"><%= polyglot.t("smart_release.targets_step.influencers_tab.no_email")%></span>
+        <input class="form-control" name="author_email" placeholder="<%= polyglot.t("smart_release.pitch_step.email_panel.email_placeholder")%>" type="text" value="<%= author.email %>">
+      </div>
+    </div>
+    <% } %>
     <hr>
 
     <div class="row">
       <div class="col-xs-12">
-        <label for="numberOfSentences" id="number-of-sentences">Number of summary sentences: <span>5</span></label>
+        <label for="numberOfSentences" id="number-of-sentences"><%= polyglot.t("smart_release.pitch_step.email_panel.length") %>: <span>5</span></label>
 
         <div id="slider"></div><label>Message</label>
         <div id="form-message">
