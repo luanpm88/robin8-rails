@@ -39,8 +39,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         if (self.ui.nextButton.prop('disabled') === false)
           self.openPitchTab();
       });
-      
-      this.on("close", function(){ 
+
+      this.on("close", function(){
         Robin.commands.removeHandler("goToPitchTab");
         Robin.vent.off("search:authors:clicked");
         Robin.vent.off("search:influencers:clicked");
@@ -52,11 +52,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       Robin.user.fetch({
         success: function() {
           if (Robin.user.get('can_create_media_list') != true) {
-            console.log('1');
-            console.log(curView.$el.find("#upload_button"));
             curView.$el.find("#upload_button").addClass('disabled-unavailable');
           } else {
-            console.log('2');
             curView.$el.find("#upload_button").removeClass('disabled-unavailable');
           }
         }
