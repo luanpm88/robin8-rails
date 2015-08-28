@@ -421,15 +421,41 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     }
   });
 
+  ReleasesBlast.EmailMissing = Marionette.ItemView.extend({
+    template: 'modules/releases_blast/templates/pitch-tab/email-missing',
+    ui: {
+      emailsButton: '#email',
+      pitchButton: '#pitch'
+    },
+    events: {
+      'click @ui.pitchButton': 'pitchButtonClicked',
+      'click @ui.emailsButton': 'emailsButtonClicked'
+    },
+    initialize: function(options){
+      this.parent = options.parent;
+    },
+
+    pitchButtonClicked: function(e){
+      e.preventDefault();
+      this.parent.savePitch();
+      Robin.modal.empty();
+    },
+    emailsButtonClicked: function(e){
+      e.preventDefault();
+      this.parent.addEmail();
+      Robin.modal.empty();
+    }
+  });
+
   ReleasesBlast.PitchTabView = Marionette.LayoutView.extend({
     template: 'modules/releases_blast/templates/pitch-tab/pitch-tab-layout',
-    id: "blast-pitch",
+
     className: "tab-pane active",
     attributes: {
       "role": "tabpanel"
     },
     ui: {
-      pitchButton: "#save-pitch"
+      pitchButton: "#save-pitch",
     },
     childEvents: {
       'email:target:removed': function (childView, emailModel) {
@@ -446,7 +472,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       twitterTargets: '#twitter-targets'
     },
     events: {
-      "click @ui.pitchButton": "pitchButtonClicked"
+      "click @ui.pitchButton": "pitchButtonClicked",
     },
     modelEvents: {
       'remove:contacts': 'contactRemovedFromPitch'
@@ -476,10 +502,60 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       if (this.model.get('contacts').length === 0 )
         this.ui.pitchButton.prop('disabled', true);
     },
+    addEmail: function()
+    {
+      console.log("add");
+      this.$el.find('a[name="email-targets-list"]').click();
+    },
     pitchButtonClicked: function(e){
       e.preventDefault();
 
-      this.savePitch();
+      emails = this.model.get('contacts').getPressrContacts();
+      console.log(this.model.get('contacts'));
+      contacts = this.model.get('contacts');
+      authorInputs = this.$el.find('input[name="author_email"]');
+      _.each(authorInputs, function(input){
+        email = input.value;
+        id = input.getAttribute('data-pressr-id');
+
+        _.each(emails, function(e) {
+          if(e.get('author_id') == id)
+          {
+            e.set('email', email);
+          }
+        });
+
+        _.each(contacts.models, function(contact) {
+          console.log(contact)
+          if (contact.get('origin') == 'pressr') {
+            if (contact.get('author_id') == id) {
+              contact.set('email', email);
+              contact.set('need_approve', true);
+            }
+          }
+        });
+      });
+
+      this.model.set('contacts',contacts);
+
+      allEmails = true;
+      _.each(emails, function(e) {
+        if (!e.get('email')) {
+          allEmails = false;
+        }
+      });
+
+      if(!allEmails)
+      {
+        var emailMissing = new ReleasesBlast.EmailMissing({
+          parent: this
+        });
+        Robin.modal.show(emailMissing);
+      }
+      else
+      {
+        this.savePitch();
+      }
     },
     errorFields: {
       "email_address": "Email address",
@@ -490,6 +566,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     savePitch: function(){
       var self = this;
+      console.log(self.model);
       self.model.off("change", self.updatePitchModel);
       self.ui.pitchButton.prop('disabled', true);
 

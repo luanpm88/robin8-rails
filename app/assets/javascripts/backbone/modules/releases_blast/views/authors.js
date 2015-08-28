@@ -46,7 +46,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       summarizeSlider: "#slider",
       formMessage: "#form-message",
       subjectInput: "[name=subject]",
-      emailInput: "[name=email]"
+      emailInput: "[name=email]",
+      targetInput: "[name=author_email]"
     },
     templateHelpers: function(){
       return {
@@ -93,11 +94,18 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     sendEmail: function(){
       var self = this;
+
+      targetEmail = this.model.get('email')
+      if(this.ui.targetInput.length )
+      {
+        targetEmail = this.ui.targetInput.val()
+      }
+
       this.contactModel.set({
         subject: this.ui.subjectInput.val(),
         body: this.ui.formMessage.find('textarea').val(),
         sender: this.ui.emailInput.val(),
-        reciever: this.model.get('email')
+        reciever: targetEmail
       });
 
       this.contactModel.save({}, {
@@ -152,7 +160,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     checkboxChanged: function(e){
       e.preventDefault();
-      
+
       if (this.ui.pitchCheckbox.val() == "YES")
         this.removeAuthor();
       else
@@ -463,8 +471,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     makeCsvData: function(order_column, order_direction){
       var self = this;
       var csvObject = [];
-      var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){
-        return item.get('origin') === ReleasesBlast.originPressrContact
+      var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){ 
+        return item.get('origin') === 'pressr'
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
@@ -720,9 +728,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
-
-      var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){
-        return (item.get('origin') === ReleasesBlast.originPressrContact);
+      
+      var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){ 
+        return (item.get('origin') === 'pressr');
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
@@ -730,7 +738,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }).value();
 
       var csvObject = [];
-      csvObject.push(["First name", "Last name", "Outlet", 
+      csvObject.push(["First name", "Last name", "Outlet",
         "Relevance", "Contact"]); // CSV Headers
 
       _(pitchContacts).each(function(item){

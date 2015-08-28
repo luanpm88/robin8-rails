@@ -143,8 +143,8 @@ en:
         media_list:
           attributes:
             contacts:
-              association_count_greater_than_or_equal_to: should be greater than or
-                equal to %{count}
+              association_count_greater_than_or_equal_to: |
+                should be greater than or equal to %{count}
             name:
               presence: List name can't be blank
               uniqueness: Name has already been taken
@@ -253,16 +253,6 @@ en:
         shortly
       title: Contact Robin8
     dashboard:
-      accept: Accept
-      accepted: Accepted
-      brand: Brand
-      budget: Budget
-      check_to_activate: Please, check your email to activate your account!
-      creation_date: Creation Date
-      deadline: Deadline
-      decline: Decline
-      declined: Declined
-      description: Description
       description1: What if you knew EXACTLY who to contact for every campaign, based
         on a data-driven prediction on how successful each pitch will be? Robin8 can
         do all this and more, taking the guesswork and chance out of PR.
@@ -272,14 +262,10 @@ en:
       description3: Robin8 provides you a powerful workflow and intelligent dashboard
         to help you stay on top of your game and generate the best results for your
         campaign.
-      name: Name
       new_monitoring_button: New Monitoring Stream
       new_newsroom_button: Create a Brand Gallery
       new_release_button: Publish New Content
       new_smartrelease_button: SmartContent
-      not_invited_yet: Welcome to Robin8! You are not invited to any campaigns yet.
-        Please <a href="#profile">update</a> your profile.
-      status: Status
       title: Dashboard
     footer:
       about: About
@@ -297,7 +283,6 @@ en:
       user_not_found: The user with this email does not exist!
     header:
       contact_us: Contact Us
-      contactus: Contact Us
       demo: Demo
       log_in: Log in
       menu: Menu
@@ -310,31 +295,6 @@ en:
       download_png: Download PNG image
       download_svg: Download SVG vector image
       print_chart: Print chart
-    kol_campaign:
-      approved: Approve
-      article:
-        close: Close
-        have_submit_wechat: You have to submit your WeChat report on each 7th day
-          after approval of your article, since WeChat only stores data during 7 days
-          after the article was posted. If you will delay submission of the report,
-          your performance data (number of people reached, number of page views, number
-          of "read more", number of re-share + favorites) for the delayed days will
-          not be count.
-        please_fill_field: Please fill the field
-        save: Save changes
-        send: Send
-        send_for_approval: Send for approval
-        type_comment: Type your comment
-      article_url: Article URL
-      brand: Brand
-      budget: Budget
-      creation_date: Creation Date
-      deadline: Deadline
-      in_progress: In Progress
-      name: Name
-      not_approved_yet: Not approved yet
-      you_dont_have_any_accepted: 'You don''t have any accepted campaigns. '
-      you_dont_have_any_declined: You don't have any declined campaigns.
     kols:
       agree: By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service
       email: Email
@@ -694,7 +654,6 @@ en:
         Herald. Each distribution comes with a report showing a sampling of the sites
         that posted your content.
     profile:
-      account_changed: Your account data has been successfully changed
       account_successfully_changed: Your account data has been successfully changed
       buttons:
         cancel: Cancel
@@ -702,33 +661,16 @@ en:
       company: Company
       confirm_new_password: Confirm new password
       curr_password: Current password
-      current_password_req: Current password is required in order to set a new one
-      day_of_birth: Day of birth
-      digits_only: Digits only
       email: Email
-      enter_value: Please enter a value
       first_name: First name
-      industry: Industry
-      interests: Interests
       last_name: Last name
-      location: Location
       messages:
         required_email: The email address is required
-      mobile_number: Mobile number
       new_password: New password
-      password_confirmation_must_same: The password confirmation must be the same
-        as original one
-      password_confirmation_req: The password confirmation is required
-      password_must_be_8: A new password must be at least 8 characters long
-      password_required: The password is required
       personal_info: Personal info
-      public_account: Public account
-      select_interests: Select your interests
-      set_up_payoneer: Set Up Payoneer payments
-      something_wrong: something went wrong
       time_placeholder: select an option
       time_zone: Time Zone
-      title: Title
+      title: Edit Profile
       username: Username
     public_newsroom:
       about: About
@@ -749,7 +691,6 @@ en:
         public in order to show it on your page
     register:
       agree_terms: By signing up you agree to Robin8's Terms of Service
-      email_already_taken: Email has already been taken
       email_placeholder: Email
       fb_signup: Sign up using Facebook
       first_name_placeholder: First Name
@@ -854,47 +795,9 @@ en:
       searching: Searching...
       too_short: Please enter %{count} or more characters
     smart_campaign:
-      accepted: Accepted
-      active: Active
-      add: Add
-      add_influencer: Add Influencer
       add_money: Add money
-      approved: Approved
-      back: Back
-      budget: Budged
-      budget_must_number: The budget must be a number and contains only digits
-      budget_required: The budget is required
-      campaigns: Campaigns
-      categories: Categories
-      close: Close
-      created: Created
-      deadline: Deadline
-      declined: Declined
-      declined_unknown: Declined/Unknown
-      edit_campaign: Edit campaign
-      email: Email
-      enter_email: Enter email…
-      enter_first name: Enter first name...
-      enter_last_name: Enter last name...
-      first_name: First Name
-      in_progress: In Progress
-      invite_influencers: Invite Influencers
-      kol:
-        alredy_in_list: " already in your list"
-        attach_invalid: Attachment content type is invalid
-        incorrect_ignored: All contacts in incorrect format will be ignored.
-        list_uploaded: Your list has been successfully uploaded.
-        select_categories: Select influencer categories
-      last_name: Last Name
-      last_update: Last Update
-      name: Name
-      new_campaign: New Campaign
-      'no': 'No'
-      no_campaigns: You don't have any campaigns. It's time to create one!
-      no_invited_yet: You haven't invited influencers yet. It's time to add some!
-      no_one_accepted: No one accepted your invitation yet.
-      pending_approval: Pending Approval
       pitch_step:
+        button: Pitch!
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
           contact for your compaign, you need to prepare the note to these contacts.
@@ -916,10 +819,7 @@ en:
           subject_placeholder: Enter a catchy subject line...
           tags: Available merge tags
           title: Email pitch
-        email_required: The email adress is required
-        emailtext_required: The email text is required
         see: See list
-        subject_required: The subject is required
         targets_table:
           actions: Actions
           button: Save
@@ -927,7 +827,6 @@ en:
           email: Email
           name: Name
           save: Save as a list
-        test_button: Send a Test Email
         title: Pitch
         wechatTargets: Targets will be contacted via WeChat
         weiboTargets: Targets will be contacted via Weibo
@@ -937,38 +836,7 @@ en:
           weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
-      private_influencers: Private Influencers
-      smart_campaign:
-        pitch_step:
-          button: Pitch!
-      smartcampaign: SmartCampaign
-      start_step:
-        analyze: Analyze
-        campaign_budged: Campaign budget
-        campaign_content: Campaign content
-        campaign_deadline: Campaign deadline
-        campaign_title: Campaign title
-        editor_uses_paragraphs: "*The editor uses paragraphs by default for copied
-          text. To place a normal line break press Shift+Enter (Shift+Return)"
-        enter_title: Enter title...
-        following_topics: and the following topics are mentioned in it
-        paste_press_here: Paste the press release!
-        pick_deadline: Pick a deadline!
-        summary: Here's a summary of what <strong> "%{name}" </strong> is all about
-      status: Status
-      supported_formats: Supported formats
       targets_step:
-        city_state: City or State/Province or Country
-        contact_first_last: Contact's first and last name
-        couldnt_match_influencers: Couldn't match any influencers for you. Provivde
-          more categories.
-        email: Email
-        enter_categories: Enters categories
-        invite: Invite
-        location: Location
-        name: Name
-        need_invite: You need to invite at least someone to this campaign!
-        private: Private
         weibo_tab:
           author: Author
           contact: Contact
@@ -977,16 +845,11 @@ en:
           invite: Invite
           outlet: Outlet
           relevance: Relevance
-      total_influencers_invited: Total influencers invited
-      unknown: Unknown
-      uploaded_file: Uploaded file must have exactly <strong>three</strong> columns,
-        formatted as <strong>first name, last name, email address</strong>
       wechat_report:
         favourite: No of re-share + favourite
         page_views: No of page views
         people_reached: No of people reached
         read_more: No of "read more"
-      'yes': 'Yes'
     smart_release:
       analysis_step:
         buttons:
@@ -999,6 +862,7 @@ en:
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
         title: Analysis
         topics: and the following topics are mentioned in it
+      cancel: Cancel
       pitch_step:
         button: Pitch!
         delete_button: Delete
@@ -1007,6 +871,12 @@ en:
           You can use the Robin8 default note or prepare your own personal note. If
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
+        email_missing: Email(s) Missing
+        email_missing_add: Add Email(s)
+        email_missing_pitch: Pitch anyway!
+        email_missing_text: There are no email addresses for some authors you've selected.<br/>You
+          may ignore authors without an email an send the pitch to rest.<br/>You may
+          also add the missing emails manually.
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
@@ -1036,6 +906,7 @@ en:
           actions: Actions
           button: Save
           delete: Delete
+          email: Email
           name: Name
           outlet: Outlet
           save: Save as a list
@@ -1044,15 +915,6 @@ en:
           success_uploaded_list: Your list has been successfully saved.
         test_button: Send a Test Email
         title: Pitch
-      send_test:
-        bon_voyage: Bon voyage, test email! Your test email is on its way to the test
-          recipients.
-        cancel: Cancel
-        comma_separate: Comma separate emails to send to multiple accounts
-        ex: Ex
-        send_test: Send a Test
-        send_test_button: Send Test
-        send_test_to: Send a test to
       start_step:
         buttons:
           analyze: Analyze
@@ -1086,6 +948,7 @@ en:
           contact: Contact
           followers_count: Followers count
           length: Average length
+          no_email: There's no email address for this author. Please enter one.
           outlet: Outlet
           pitch: Pitch?
           relevance: Relevance
@@ -1977,153 +1840,6 @@ en:
           honored.
         title: CERTAIN THIRD PARTY TRANSACTIONS
       title: Robin8 Terms of Use, Privacy Policy,<br/> and Distribution Policies
-    timezones:
-      Abu Dhabi: "(+4:00) Abu Dhabi"
-      Adelaide: "(+9:30) Adelaide"
-      Alaska: "(-9:00) Alaska"
-      Almaty: "(+6:00) Almaty"
-      American_Samoa: "(-11:00) American Samoa"
-      Amsterdam: "(+1:00) Amsterdam"
-      Arizona: "(-7:00) Arizona"
-      Astana: "(+6:00) Astana"
-      Athens: "(+2:00) Athens"
-      Atlantic_Time: "(-4:00) Atlantic Time (Canada)"
-      Auckland: "(+12:00) Auckland"
-      Azores: "(-1:00) Azores"
-      Baghdad: "(+3:00) Baghdad"
-      Baku: "(+4:00) Baku"
-      Bangkok: "(+7:00) Bangkok"
-      Beijing: "(+8:00) Beijing"
-      Belgrade: "(+1:00) Belgrade"
-      Berlin: "(+1:00) Berlin"
-      Bern: "(+1:00) Bern"
-      Bogota: "(-5:00) Bogota"
-      Brasilia: "(-3:00) Brasilia"
-      Bratislava: "(+1:00) Bratislava"
-      Brisbane: "(+10:00) Brisbane"
-      Brussels: "(+1:00) Brussels"
-      Bucharest: "(+2:00) Bucharest"
-      Budapest: "(+1:00) Budapest"
-      Buenos_Aires: "(-3:00) Buenos Aires"
-      Cairo: "(+2:00) Cairo"
-      Canberra: "(+10:00) Canberra"
-      Cape_Verde: "(-1:00) Cape Verde Is."
-      Caracas: "(-4:30) Caracas"
-      Casablanca: "(0:00) Casablanca"
-      Central_America: "(-6:00) Central America"
-      Central_Time: "(-6:00) Central Time (US & Canada)"
-      Chatham_Is: "(+12:45) Chatham Is."
-      Chennai: "(+5:30) Chennai"
-      Chihuahua: "(-7:00) Chihuahua"
-      Chongqing: "(+8:00) Chongqing"
-      Copenhagen: "(+1:00) Copenhagen"
-      Darwin: "(+9:30) Darwin"
-      Dhaka: "(+6:00) Dhaka"
-      Dublin: "(0:00) Dublin"
-      Eastern_Time: "(-5:00) Eastern Time (US & Canada)"
-      Edinburgh: "(0:00) Edinburgh"
-      Ekaterinburg: "(+5:00) Ekaterinburg"
-      Fiji: "(+12:00) Fiji"
-      Georgetown: "(-4:00) Georgetown"
-      Greenland: "(-3:00) Greenland"
-      Guadalajara: "(-6:00) Guadalajara"
-      Guam: "(+10:00) Guam"
-      Hanoi: "(+7:00) Hanoi"
-      Harare: "(+2:00) Harare"
-      Hawaii: "(-10:00) Hawaii"
-      Helsinki: "(+2:00) Helsinki"
-      Hobart: "(+10:00) Hobart"
-      Hong_Kong: "(+8:00) Hong Kong"
-      Indiana: "(-5:00) Indiana (East)"
-      International_Date_Line_West: "(-11:00) International Date Line West"
-      Irkutsk: "(+8:00) Irkutsk"
-      Islamabad: "(+5:00) Islamabad"
-      Istanbul: "(+2:00) Istanbul"
-      Jakarta: "(+7:00) Jakarta"
-      Jerusalem: "(+2:00) Jerusalem"
-      Kabul: "(+4:30) Kabul"
-      Kamchatka: "(+12:00) Kamchatka"
-      Karachi: "(+5:00) Karachi"
-      Kathmandu: "(+5:45) Kathmandu"
-      Kolkata: "(+5:30) Kolkata"
-      Krasnoyarsk: "(+7:00) Krasnoyarsk"
-      Kuala_Lumpur: "(+8:00) Kuala Lumpur"
-      Kuwait: "(+3:00) Kuwait"
-      Kyiv: "(+2:00) Kyiv"
-      La_Paz: "(-4:00) La Paz"
-      Lima: "(-5:00) Lima"
-      Lisbon: "(0:00) Lisbon"
-      Ljubljana: "(+1:00) Ljubljana"
-      London: "(0:00) London"
-      Madrid: "(+1:00) Madrid"
-      Magadan: "(+10:00) Magadan"
-      Marshall_Is: "(+12:00) Marshall Is."
-      Mazatlan: "(-7:00) Mazatlan"
-      Melbourne: "(+10:00) Melbourne"
-      Mexico_City: "(-6:00) Mexico City"
-      Mid_Atlantic: "(-2:00) Mid-Atlantic"
-      Midway_Island: "(-11:00) Midway Island"
-      Minsk: "(+3:00) Minsk"
-      Monrovia: "(0:00) Monrovia"
-      Monterrey: "(-6:00) Monterrey"
-      Montevideo: "(-3:30) Montevideo"
-      Moscow: "(+3:00) Moscow"
-      Mountain_Time: "(-7:00) Mountain Time (US & Canada)"
-      Mumbai: "(+5:30) Mumbai"
-      Muscat: "(+4:00) Muscat"
-      Nairobi: "(+3:00) Nairobi"
-      New_Caledonia: "(+11:00) New Caledonia"
-      New_Delhi: "(+5:30) New Delhi"
-      Newfoundland: "(-3:30) Newfoundland"
-      Novosibirsk: "(+6:00) Novosibirsk"
-      Nuku'alofa: "(+13:00) Nuku'alofa"
-      Osaka: "(+9:00) Osaka"
-      Pacific_Time: "(-8:00) Pacific Time (US & Canada)"
-      Paris: "(+1:00) Paris"
-      Perth: "(+8:00) Perth"
-      Port_Moresby: "(+10:00) Port Moresby"
-      Prague: "(+1:00) Prague"
-      Pretoria: "(+2:00) Pretoria"
-      Quito: "(-5:00) Quito"
-      Rangoon: "(+6:30) Rangoon"
-      Riga: "(+2:00) Riga"
-      Riyadh: "(+3:00) Riyadh"
-      Rome: "(+1:00) Rome"
-      Samoa: "(-11:00) Samoa"
-      Santiago: "(-4:00) Santiago"
-      Sapporo: "(+9:00) Sapporo"
-      Sarajevo: "(+1:00) Sarajevo"
-      Saskatchewan: "(-6:00) Saskatchewan"
-      Seoul: "(+9:00) Seoul"
-      Singapore: "(+8:00) Singapore"
-      Skopje: "(+1:00) Skopje"
-      Sofia: "(+2:00) Sofia"
-      Solomon_Is: "(+11:00) Solomon Is."
-      Sri_Jayawardenepura: "(+5:30) Sri Jayawardenepura"
-      St_Petersburg: "(+3:00) St. Petersburg"
-      Stockholm: "(+1:00) Stockholm"
-      Sydney: "(+10:00) Sydney"
-      Taipei: "(+8:00) Taipei"
-      Tallinn: "(+2:00) Tallinn"
-      Tashkent: "(+5:00) Tashkent"
-      Tbilisi: "(+4:00) Tbilisi"
-      Tehran: "(+3:30) Tehran"
-      Tijuana: "(-8:00) Tijuana"
-      Tokelau_Is: "(+13:00) Tokelau Is."
-      Tokyo: "(+9:00) Tokyo"
-      UTC: "(0:00) UTC"
-      Ulaanbaatar: "(+8:00) Ulaanbaatar"
-      Urumqi: "(+6:00) Urumqi"
-      Vienna: "(+1:00) Vienna"
-      Vilnius: "(+2:00) Vilnius"
-      Vladivostok: "(+10:00) Vladivostok"
-      Volgograd: "(+3:00) Volgograd"
-      Warsaw: "(+1:00) Warsaw"
-      Wellington: "(+12:00) Wellington"
-      West_Central_Africa: "(+1:00) West Central Africa"
-      Yakutsk: "(+9:00) Yakutsk"
-      Yerevan: "(+4:00) Yerevan"
-      Zagreb: "(+1:00) Zagreb"
     uploading:
       choose_image: Choose an image!!!
       different_photo: Upload a different photo...
