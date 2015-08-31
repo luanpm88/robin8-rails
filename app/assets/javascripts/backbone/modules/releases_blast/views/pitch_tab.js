@@ -150,7 +150,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     template: 'modules/releases_blast/templates/pitch-tab/email-pitch-view',
     className: 'panel panel-primary',
     ui: {
-      mergeTag: 'label.label a',
+      mergeTag: '.add_merge_tag',
       textarea: '#email-pitch-textarea',
       summarySlider: '#summary-slider',
       summarySliderAmount: '#summary-slider-amount',
@@ -170,8 +170,35 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     addMergeTag: function(e) {
       e.preventDefault();
 
-      this.editor.composer.commands.exec("insertHTML", '@[' + e.target.textContent + '] ')
-      this.insertRenderedText();
+      var insertedValue;
+      switch ($(e.target).data('tagname')) {
+        case 'summary':
+          var summariesArr = this.releaseModel.get('summaries')
+            .slice(0, this.model.get('summary_length'));
+          var summaries = _(summariesArr).reject(function(item){
+            return s.isBlank(item);
+          }).map(function(item){
+            return '<li>' + item + '</li>'
+          }).join(' ');
+          insertedValue = '<ul>' + summaries + '</ul>';
+          break
+        case 'link':
+          insertedValue = '<a href="' + this.releaseModel.get('permalink') + '">' +
+            this.releaseModel.get('permalink') + '</a>';
+          break
+        case 'title':
+          insertedValue = '<a href="' + this.releaseModel.get('permalink') +
+            '">' + this.releaseModel.get('title') + '</a>';
+          break
+        case 'text':
+          insertedValue = this.releaseModel.get('text');
+          break
+        default:
+          insertedValue = '@[' + e.target.textContent + '] ';
+      }
+
+      this.editor.composer.commands.exec("insertHTML", insertedValue);
+      this.model.set('email_pitch', this.editor.getValue());
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
@@ -292,9 +319,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         return '<li>' + item + '</li>'
       }).join(' ');
       summaries = '<ul>' + summaries + '</ul>';
-      var kolLink = '<a href="' + window.location.origin + '/kols/new">register</a>';
 
-      renderedText = renderedText.replace(/\@\[KolReghref\]/g, kolLink);
       renderedText = renderedText.replace(/\@\[Title\]/g, linkable_title);
       renderedText = renderedText.replace(/\@\[Text\]/g, html_text);
       renderedText = renderedText.replace(/\@\[Link\]/g, link);
@@ -449,7 +474,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.PitchTabView = Marionette.LayoutView.extend({
     template: 'modules/releases_blast/templates/pitch-tab/pitch-tab-layout',
-
+    id: "blast-pitch",
     className: "tab-pane active",
     attributes: {
       "role": "tabpanel"
