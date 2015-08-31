@@ -2,12 +2,16 @@
   <li>
     <a href="/#dashboard" id="nav-dashboard"> <%= polyglot.t("navigation.dashboard") %><span class="sub_icon glyphicon glyphicon-home"></span></a>
   </li>
-  <li>
-    <a href="/#robin8" id="nav-robin8"><%= polyglot.t("navigation.smart_release") %><span class="sub_icon fa fa-rocket"></span></a>
-  </li>
-  <li>
-    <a href="/#smart_campaign" id="nav-smart-campaign"><%= polyglot.t("navigation.smart_campaign") %><span class="sub_icon fa fa-bullhorn"></span></a>
-  </li>
+  <% if (locale != 'zh') { %>
+    <li>
+      <a href="/#robin8" id="nav-robin8"><%= polyglot.t("navigation.smart_release") %><span class="sub_icon fa fa-rocket"></span></a>
+    </li>
+  <% } %>
+  <% if (locale != 'en') { %>
+    <li>
+      <a href="/#smart_campaign" id="nav-smart-campaign"><%= polyglot.t("navigation.smart_campaign") %><span class="sub_icon fa fa-bullhorn"></span></a>
+    </li>
+  <% } %>
   <li>
     <a href="/#monitoring" id="nav-monitoring"><%= polyglot.t("navigation.monitoring") %><span class="sub_icon glyphicon glyphicon-eye-open"></span></a>
   </li>
