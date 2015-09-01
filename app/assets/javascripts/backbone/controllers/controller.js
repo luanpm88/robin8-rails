@@ -1,7 +1,6 @@
 Robin.Controllers.AppController = Marionette.Controller.extend({
   initialize: function (options) {
     this.stopAll();
-    locale = Robin.currentUser.get('locale');
     Robin.module('Navigation').start();
     if (!Robin.KOL) {
       Robin.module('SaySomething').start();
@@ -18,11 +17,7 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showRobin: function() {
     this.stopAll();
-    if (locale == 'zh') {
-      window.location.href = '#dashboard';
-    } else {
-      Robin.module('ReleasesBlast').start();
-    }
+    Robin.module('ReleasesBlast').start();
   },
 
   showManageUsers: function() {
@@ -48,11 +43,7 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showSmartCampaign: function() {
     this.stopAll();
-    if (locale == 'en') {
-      window.location.href = '#dashboard';
-    } else {
-      Robin.module("SmartCampaign").start();
-    }
+    Robin.module("SmartCampaign").start();
   },
 
   showReleases: function() {
