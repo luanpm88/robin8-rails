@@ -1,6 +1,7 @@
 Robin.Controllers.AppController = Marionette.Controller.extend({
   initialize: function (options) {
     this.stopAll();
+    locale = Robin.currentUser.get('locale');
     Robin.module('Navigation').start();
     if (!Robin.KOL) {
       Robin.module('SaySomething').start();
@@ -31,12 +32,20 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showMonitoring: function() {
     this.stopAll();
-    Robin.module('Monitoring').start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Monitoring').start();
+    }
   },
 
   showNewsRooms: function() {
     this.stopAll();
-    Robin.module("Newsroom").start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module("Newsroom").start();
+    }
     // Backbone.history.navigate('news_rooms',{trigger:true});
     // Robin.module("Newsroom").controller.index();
   },
@@ -48,12 +57,20 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showReleases: function() {
     this.stopAll();
-    Robin.module("Releases").start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module("Releases").start();
+    }
   },
 
   showSocial: function() {
     this.stopAll();
-    Robin.module('Social').start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Social').start();
+    }
   },
 
   showBilling: function() {
@@ -63,17 +80,29 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showAnalytics: function() {
     this.stopAll();
-    Robin.module('Analytics').start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Analytics').start();
+    }
   },
 
   showEmailsAnalytics: function() {
     this.stopAll();
-    Robin.module('Analytics').start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Analytics').start();
+    }
   },
 
   showCampaignAnalytics: function() {
     this.stopAll();
-    Robin.module('Analytics').start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Analytics').start();
+    }
   },
 
   showProfile: function() {
@@ -83,17 +112,29 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showWeChatAnalytics: function() {
     this.stopAll();
-    Robin.module('Analytics').start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Analytics').start();
+    }
   },
 
   showWeiboAnalytics: function() {
     this.stopAll();
-    Robin.module('Analytics').start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Analytics').start();
+    }
   },
 
   showRecommendations: function() {
     this.stopAll();
-    Robin.module('Recommendations').start();
+    if (locale == 'zh') {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Recommendations').start();
+    }
   },
 
   showCampaigns: function(){
