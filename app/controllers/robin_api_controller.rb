@@ -5,7 +5,6 @@ class RobinApiController < ApplicationController
     params["per_page"] = 200
     params["included_email"] = true
     response = @client.suggested_authors params
-    
     authors = unless response[:authors].blank?
       authors_response = uniq_authors(response[:authors])
       ids = authors_response.map{|a| a[:id]}

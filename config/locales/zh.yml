@@ -166,8 +166,8 @@ zh:
         media_list:
           attributes:
             contacts:
-              association_count_greater_than_or_equal_to: should be greater than or
-                equal to %{count}
+              association_count_greater_than_or_equal_to: |
+                should be greater than or equal to %{count}
             name:
               presence: "列表名称不能为空"
               uniqueness: "名称已被占用"
@@ -365,11 +365,7 @@ zh:
       monetize: Monetize
       recommend: "推荐"
       recommend_text: "意见领袖为你出谋划策，还有个性化的内容。你的每次使用，会让Robin8推荐引擎变得更智能。"
-      register: Register
-      register_text: Register now
-      score: My Score
       sign_up: "注册"
-      social: My Social
       target: "目标"
       target_text: "只需点击一下，Robin8将智能推荐意见领袖的名单。"
       text1: ROBIN8帮你更轻松和有效的找到记者和意见领袖。
@@ -431,7 +427,7 @@ zh:
         not_available_seats: "你没有可用座位！"
         remove_explanation: "你将无法恢复该用户。"
         remove_user: "删除此用户"
-        resent: "该邀请已经发出"
+        resent: The invitation has been resent
         sent: "该邀请已经发出"
       search_placeholder: "通过邮件和名称搜索用户"
       table:
@@ -662,8 +658,8 @@ zh:
         per_month: "月"
         plans: "订阅计划"
         press_release: "篇新闻稿/月"
-        seat: "席"
-        seats: "席"
+        seat: ''
+        seats: ''
         select: "选择"
         selected: "选择"
         smart_release: "个智能发布"
@@ -676,7 +672,6 @@ zh:
       web_distribution: "财经内容网络发布"
       web_distribution_description: "网络发布保证你在数百个顶级新闻网站发布财经内容，包括波士顿环球报和迈阿密先驱报。每次发布自带一份报告，显示发布站点的取样。"
     profile:
-      account_changed: "您的帐户数据已成功更改"
       account_successfully_changed: "您的帐户数据已成功更改"
       buttons:
         cancel: "取消"
@@ -684,35 +679,19 @@ zh:
       company: "公司名称"
       confirm_new_password: "确认新密码"
       curr_password: "现用密码"
-      current_password_req: "当前需设置一个新的密码"
-      day_of_birth: "生日"
-      digits_only: Digits only
       email: "电子邮件"
-      enter_value: Please enter a value
       first_name: "名字"
-      industry: "行业"
-      interests: "興趣愛好"
       last_name: "姓氏"
-      location: "地點"
       messages:
         required_email: "需要邮箱地址"
-      mobile_number: "手機號碼"
       new_password: "新密码"
-      password_confirmation_must_same: "确认密码必须一致"
-      password_confirmation_req: "需要确认密码"
-      password_must_be_8: "新密码必须至少8个字符"
-      password_required: "需要密碼"
       personal_info: "个人信息"
-      public_account: "公共账号"
-      select_interests: "選擇你的興趣"
-      set_up_payoneer: "设置信用卡支付"
-      something_wrong: something went wrong
       time_placeholder: select an option
       time_zone: "时区"
-      title: "稱號"
+      title: "编辑资料"
       username: "用户名"
     public_newsroom:
-      about: About
+      about: "大约"
       follow: "关注"
       latest_tweets: "新鲜事"
       location: "地点"
@@ -725,10 +704,10 @@ zh:
       spokeperson: "演讲人"
       what_is: "什么是"
     public_release:
-      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
+      notification: You are in a preview mode. You need to make this release and newsroom
+        public in order to show it on your page
     register:
       agree_terms: "通过注册，你已同意MyPRGenie的服务条款。"
-      email_already_taken: "该邮箱已被注册"
       email_placeholder: "电子邮件"
       fb_signup: "使用Facebook账号登陆"
       first_name_placeholder: "名"
@@ -829,48 +808,9 @@ zh:
     select2:
       not_found: "未找到匹配"
       searching: "搜索..."
-      too_short: "请输入 %{count} 个或更多字符"
+      too_short: "请输入 %{count} 或更多字符"
     smart_campaign:
-      accepted: "已接受"
-      active: "活跃"
-      add: "添加"
-      add_influencer: "增加意见领袖"
-      add_money: "添加"
-      approved: "批准"
-      back: "背部"
-      budget: "预算"
-      budget_must_number: "预算必须是数字，并且只包含数字"
-      budget_required: The budget is required
-      campaigns: "宣传活动"
-      categories: "分类"
-      close: "关闭"
-      created: "创建 "
-      deadline: "期限"
-      declined: "已拒绝"
-      declined_unknown: "拒绝/未知"
-      edit_campaign: "编辑推广活动"
-      email: "电子邮件"
-      enter_email: "填写邮箱"
-      enter_first name: "填写姓"
-      enter_last_name: "填写名"
-      first_name: "名"
-      in_progress: "进行中"
-      invite_influencers: "邀请意见领袖"
-      kol:
-        alredy_in_list: " 已存在您的列表中"
-        attach_invalid: "附件内容类型无效"
-        incorrect_ignored: "所有格式不正确的联系人都将被忽略。"
-        list_uploaded: "您的列表已经成功上传。"
-        select_categories: "选择意见领袖的分类"
-      last_name: "姓氏"
-      last_update: Last Update
-      name: "姓名"
-      new_campaign: New Campaign
-      'no': "不是"
-      no_campaigns: You don't have any campaigns. It's time to create one!
-      no_invited_yet: You haven't invited influencers yet. It's time to add some!
-      no_one_accepted: "目前无人接受您的邀请。"
-      pending_approval: Pending Approval
+      add_money: ''
       pitch_step:
         button: Pitch!
         delete_button: "删除"

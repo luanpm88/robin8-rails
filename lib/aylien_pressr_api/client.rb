@@ -32,46 +32,52 @@ module AylienPressrApi
         send("#{key}=", merged_options[key])
       end
     end
-    
+
     # Destructives methods
     def suggested_authors!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:suggested_authors])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def related_stories!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:related_stories])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def influencers!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:influencers])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def author_stats!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:author_stats])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def authors!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:authors])
       Connection.new(endpoint, params, config).request!
     end
-    
+
+    def author_update!(value=nil, params={})
+      endpoint, params, config = common_endpoint(value, params,
+        Configuration::ENDPOINTS[:author_update])
+      Connection.new(endpoint, params, config).request!
+    end
+
     def locations_autocompletes!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:locations_autocompletes])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def skills_autocompletes!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:skills_autocompletes])
       Connection.new(endpoint, params, config).request!
     end
@@ -173,7 +179,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def uniq_stories(value=nil, params={})
       begin
         uniq_stories!(value, params)
@@ -181,7 +187,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def interesting_terms(value=nil, params={})
       begin
         interesting_terms!(value, params)
@@ -197,13 +203,14 @@ module AylienPressrApi
     end
 
     def common_endpoint(value, params, endpoint)
+
       params = value.blank? ? {} : value
-      
+
       config = {}
       Configuration::VALID_CONFIG_KEYS.each do |key|
         config[key] = send(key)
       end
-      
+
       case endpoint
         when Configuration::ENDPOINTS[:suggested_authors]
           if params.key?("iptc_categories")
@@ -258,6 +265,12 @@ module AylienPressrApi
           params["iptc_categories_level_3[]"] = params.delete("iptc_categories_level_3") if params.key?("iptc_categories_level_3")
           params["keywords[]"] = params.delete("keywords") if params.key?("keywords")
           params["topics[]"] = params.delete("topics") if params.key?("topics")
+        when Configuration::ENDPOINTS[:author_update]
+          config[:method] = :put
+          endpoint = endpoint.scan(/:(\w+)/).inject("") do |memo, item|
+            memo = endpoint.gsub(":#{item[0]}", params[item[0].to_sym].to_s)
+            memo
+          end
       end
       [endpoint, params, config]
     end

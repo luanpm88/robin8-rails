@@ -422,7 +422,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.PitchTabView = Marionette.LayoutView.extend({
     template: 'modules/releases_blast/templates/pitch-tab/pitch-tab-layout',
-    id: "blast-pitch",
+
     className: "tab-pane active",
     attributes: {
       "role": "tabpanel"
@@ -539,6 +539,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     savePitch: function(){
       var self = this;
+      console.log(self.model);
       self.model.off("change", self.updatePitchModel);
       self.ui.pitchButton.prop('disabled', true);
 
