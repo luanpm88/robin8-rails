@@ -111,7 +111,7 @@ Rails.application.routes.draw do
   post 'textapi/hashtags'
 
   get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
-  
+
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
@@ -127,5 +127,8 @@ Rails.application.routes.draw do
   post '/contact', to: 'pages#contact'
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
+
+
+  get '/geocode/country', to: 'geocode#get_country'
 
 end

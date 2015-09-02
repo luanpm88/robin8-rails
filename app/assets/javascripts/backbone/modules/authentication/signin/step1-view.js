@@ -4,9 +4,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     template: 'modules/authentication/signin/templates/step1',
 
     events: {
-      'click #register' : 'signup',
-      'click .btn-facebook' : 'socialSignIn',
-      'click .btn-google-plus' : 'socialSignIn',
+      'click #register' : 'signup'
     },
 
     initialize: function() {

@@ -7,8 +7,13 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       'click #login' : 'login',
       'click .btn-facebook' : 'socialSignIn',
       'click .btn-google-plus' : 'socialSignIn',
+      'click .btn-weibo' : 'socialSignIn',
+      'click .btn-wechat' : 'socialSignIn',
     },
-
+    ui: {
+      world: 'world',
+      china: 'china'
+    },
     initialize: function() {
       this.model = new Robin.Models.UserSession();
       this.modelBinder = new Backbone.ModelBinder();
@@ -19,6 +24,21 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       $('.signup-tag').text(polyglot.t('login.title'));
       $('.nav.fixed a').removeClass('active');
       $('#login-link').addClass('active');
+
+      $.ajax({
+        dataType: 'json',
+        method: 'GET',
+        url: '/geocode/country',
+        success: function(response){
+          if(response == "China")
+          {
+            $('#world').hide()
+          }
+          else{
+            $('#china').hide()
+          }
+        }
+      });
     },
 
     login: function(e) {
@@ -27,7 +47,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       el = $(this.el);
 
       this.modelBinder.copyViewValuesToModel();
-      
+
       this.model.save(this.model.attributes, {
         success: function(data, response, jqXHR){
           var token = jqXHR.xhr.getResponseHeader('X-CSRF-Token');
@@ -42,7 +62,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
           this.$('#alert-danger').text(result.error);
         }
       });
-    },  
+    },
 
     socialSignIn: function(e) {
       e.preventDefault();
@@ -64,11 +84,11 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
             window.clearInterval(currentView.interval);
             if (data != undefined) {
               Robin.finishSignIn(data);
-            } 
+            }
           });
         }
       }), 500);
-    } 
+    }
 
   });
 });
