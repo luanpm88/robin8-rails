@@ -12,6 +12,7 @@
       <a href="/#smart_campaign" id="nav-smart-campaign"><%= polyglot.t("navigation.smart_campaign") %><span class="sub_icon fa fa-bullhorn"></span></a>
     </li>
   <% } %>
+  <% if (locale == 'en') { %>
   <li>
     <a href="/#monitoring" id="nav-monitoring"><%= polyglot.t("navigation.monitoring") %><span class="sub_icon glyphicon glyphicon-eye-open"></span></a>
   </li>
@@ -34,6 +35,7 @@
     <a href="/#recommendations" id="nav-recommendations">Recommendations <span id="new-recommendations-badge" class="badge"></span></a></span>
   </li>
   <!-- End of recommendations —>
+  <% } %>
 
   <!-- <li>
     <a id="nav-opportunities">Opportunities<span class="sub_icon glyphicon glyphicon-bullhorn"></span></a>
