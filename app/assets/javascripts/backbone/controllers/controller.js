@@ -1,9 +1,9 @@
 Robin.Controllers.AppController = Marionette.Controller.extend({
   initialize: function (options) {
     this.stopAll();
-    locale = Robin.currentUser.get('locale');
+    locale = !Robin.KOL ? Robin.currentUser.get('locale') : "";
     Robin.module('Navigation').start();
-    if (!Robin.KOL) {
+    if (!Robin.KOL && locale == 'en') {
       Robin.module('SaySomething').start();
     }
   },
