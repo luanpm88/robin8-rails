@@ -4,7 +4,7 @@ module Users
       class_eval %Q{
         def #{provider}
           auth = request.env['omniauth.auth']
-          
+
           params = {}
           params[:uid] = auth.uid
           params[:provider] = auth.provider
@@ -22,6 +22,8 @@ module Users
             auth.info.urls[:Twitter]
           when 'linkedin'
             auth.info.urls.public_profile
+          when 'weibo'
+            puts auth
           end
 
           if current_user.nil?
@@ -37,10 +39,10 @@ module Users
             end
           end
           if request.env['omniauth.params']['provider'].nil?
-            render 'twitter_popup_close', :layout => false     
+            render 'twitter_popup_close', :layout => false
           else
             redirect_to root_path
-          end     
+          end
         end
       }
     end
@@ -50,7 +52,7 @@ module Users
       render 'twitter_popup_close', :layout => false
     end
 
-    [:twitter, :linkedin, :facebook, :google_oauth2].each do |provider|
+    [:twitter, :linkedin, :facebook, :google_oauth2, :weibo].each do |provider|
       provides_callback_for provider
     end
   end
