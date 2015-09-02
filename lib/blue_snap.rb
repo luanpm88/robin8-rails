@@ -117,7 +117,24 @@ module BlueSnap
         discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.slug)
         discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.slug)
       end
-      return (product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
+      total = 0
+      if user.locale == 'zh'
+        total = (product.try(:china_price).to_f + (add_ons || []).collect{|a| (a.china_price*(add_ons_hash["#{a.id}"].to_f))}.sum) - discount_amount
+        url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/merchant-currency-convertor?from=CNY&to=USD&amount=#{total}"
+        begin
+          error, response = Request.get(url)
+          if error.blank?
+            return total == 0 ? 0 : response[:price][:value].to_f
+          else
+            return nil
+          end
+        rescue Exception => ex
+          return nil
+        end
+      else
+        total = (product.try(:price).to_f + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_f))}.sum) - discount_amount
+      end
+      return total
     end
 
     def self.cart_items(product, add_ons,add_ons_hash,code,user)
@@ -125,7 +142,7 @@ module BlueSnap
       if product.present?
         items <<  {"sku" => {
             "sku_id" => product.sku_id,
-            "amount" => product.price},
+            "amount" => unless user.locale == 'zh' then product.price else product.china_price end},
                    "quantity" => "1"}
       end
 
@@ -142,7 +159,7 @@ module BlueSnap
         items << {
             "sku" => {
                 "sku_id" => a.sku_id,
-                "amount" => a.price
+                "amount" => unless user.locale == 'zh' then a.price else a.china_price end
             },
             "quantity" => add_ons_hash["#{a.id}"] || 1
         }
@@ -165,7 +182,7 @@ module BlueSnap
       {
           "shopper-contact-info" => shopper_contact_info(user, params),
           "store-id" => Rails.application.secrets[:bluesnap][:store_id],
-          "shopper-currency" => "USD",
+          "shopper-currency" => unless user.locale == 'zh' then 'USD' else 'CNY' end,
           "locale" => 'en',
           "payment-info" => credit_cards(user, params)
       }

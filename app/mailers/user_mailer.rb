@@ -1,7 +1,8 @@
 class UserMailer < ActionMailer::Base
 
-  def payment_confirmation(payment)
+  def payment_confirmation(user, payment)
     @payment = payment
+    @user = user
     mail(:to => @payment.user_product.user.email, :subject => "Successfull Payment",:from => "Robin8 <no-reply@robin8.com>")
   end
 

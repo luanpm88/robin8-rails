@@ -22,7 +22,11 @@
             <h2><%= @products[0].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[0].price).to_i %><span class="permonth">/mo</span>
+                <% unless current_user.locale == 'zh' %>
+                  $<%=(@products[0].price).to_i %><span class="permonth">/mo</span>
+                <% else  %>
+                  ¥<%=(@products[0].china_price).to_i %><span class="permonth">/mo</span>
+                <% end %>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -45,7 +49,11 @@
             <h2><%= @products[1].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[1].price).to_i %><span class="permonth">/mo</span>
+                <% unless current_user.locale == 'zh' %>
+                  $<%=(@products[1].price).to_i %><span class="permonth">/mo</span>
+                <% else  %>
+                  ¥<%=(@products[1].china_price).to_i %><span class="permonth">/mo</span>
+                <% end %>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -68,7 +76,11 @@
             <h2><%= @products[2].name.split(' ')[0] %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[2].price).to_i %><span class="permonth">/mo</span>
+                <% unless current_user.locale == 'zh' %>
+                  $<%=(@products[2].price).to_i %><span class="permonth">/mo</span>
+                <% else  %>
+                  ¥<%=(@products[2].china_price).to_i %><span class="permonth">/mo</span>
+                <% end %>
               </div>
             </div>
             <div class="plan-inclusions">
