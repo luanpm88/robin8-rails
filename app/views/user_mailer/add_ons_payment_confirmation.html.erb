@@ -7,7 +7,7 @@
   <title>Robin8</title>
   <%= stylesheet_link_tag  'mail-template' %>
 </head>
-
+<% currency_sign = unless @user.locale == 'zh' then '$' else '¥' end %>
 <body>
 <table class="body-wrap">
   <tr>
@@ -43,8 +43,9 @@
                                 <tr>
                                   <td width="40%"><%=a.name%></td>
                                   <td width="5%"><%=@add_on_hash["#{a.id}"]%> </td>
-                                  <td width="20%">$<%=a.price%>  </td>
-                                  <td width="35%">$ <%= price = a.price *  (@add_on_hash["#{a.id}"]).to_i%></td>
+                                  <% addon_price = unless @user.locale == 'zh' then a.price else a.china_price end %>
+                                  <td width="20%"><%=currency_sign%><%=addon_price%>  </td>
+                                  <td width="35%"><%=currency_sign%> <%= price = addon_price *  (@add_on_hash["#{a.id}"]).to_i%></td>
                                   <%total += price%>
                                 </tr>
                             <%end%>
@@ -52,7 +53,7 @@
                               <td></td>
                               <td></td>
                               <td class="alignright" width="40%">Total</td>
-                              <td class="alignright" width="40%">$ <%=total%></td>
+                              <td class="alignright" width="40%"><%=currency_sign%> <%=total%></td>
                             </tr>
                           </table>
                         </td>
