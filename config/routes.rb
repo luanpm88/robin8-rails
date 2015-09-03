@@ -140,7 +140,7 @@ Rails.application.routes.draw do
   post 'textapi/hashtags'
 
   get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
-  
+
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
@@ -174,4 +174,5 @@ Rails.application.routes.draw do
   post 'campaign/test_email', to: 'campaign#test_email'
   resources :campaign_invite, only: [:index, :create, :show, :update]
 
+  get '/geocode/country', to: 'geocode#get_country'
 end

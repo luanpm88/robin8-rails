@@ -1172,7 +1172,9 @@ header.int-header h1{
 
 /* LOGIN PAGE */
 .btn-google-plus,
-.btn-facebook  {
+.btn-facebook,
+.btn-weibo,
+.btn-wechat {
   max-width: 560px;
   width: 100%;
   margin: 0 auto 20px;
@@ -1183,7 +1185,9 @@ header.int-header h1{
   line-height: 60px;
 }
 a.btn-google-plus,
-a.btn-facebook  {
+a.btn-facebook,
+a.btn-weibo,
+a.btn-wechat  {
   color: white;
   display: block;
 }
@@ -1194,13 +1198,25 @@ a.btn-facebook  {
   background-color: #df4a32;
 }
 
+.btn-weibo {
+  background-color: #3a579a;
+}
+
+.btn-wechat {
+  background-color: #3a579a;
+}
+
 .btn-facebook i.fa,
-.btn-google-plus i.fa{
+.btn-google-plus i.fa,
+.btn-weibo i.fa,
+.btn-wechat i.fa {
   display: none;
 }
 
 .btn-facebook span,
-.btn-google-plus span{
+.btn-google-plus span,
+.btn-weibo span,
+.btn-wechat span {
   display: inline-block;
   height: 60px;
   padding-left: 50px;
@@ -1214,6 +1230,16 @@ a.btn-facebook  {
   background: image-url("Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
 }
 
+.btn-weibo span{
+  background: image-url("Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+
+}
+
+.btn-weibo span{
+  background: image-url("Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+
+}
+
 .btn-google-plus:hover {
   background-color: #df4a32;
 
@@ -1223,6 +1249,22 @@ a.btn-facebook  {
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 .btn-facebook:hover {
+  background-color: #3a579a;
+  opacity: 0.8;
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.btn-weibo:hover {
+  background-color: #3a579a;
+  opacity: 0.8;
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.btn-wechat:hover {
   background-color: #3a579a;
   opacity: 0.8;
   transition-property: all;
