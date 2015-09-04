@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get 'users/get_current_user' => 'users#get_current_user'
   get 'users/get_active_subscription' => 'users#get_active_subscription'
   get 'payments/apply_discount' => 'payments#apply_discount'
+  get 'payments/check_tax_rate' => 'payments#check_tax_rate'
   delete '/users/disconnect_social' => 'users#disconnect_social'
   # resources :blue_snap
   # resources :payments do
@@ -111,7 +112,7 @@ Rails.application.routes.draw do
   post 'textapi/hashtags'
 
   get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
-  
+
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end

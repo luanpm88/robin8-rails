@@ -10,10 +10,38 @@ class PaymentsController < ApplicationController
   def apply_discount
     discount = Discount.active.where(code: params[:code]).last
     if discount.present?
-      return render :text => discount.calculate(current_user,Package.where(slug: params[:product_slug]).first) if discount.is_global?
-      return render :text => discount.calculate(current_user,Package.where(slug: params[:product_slug]).first) if discount.on_user_and_product?(current_user.id,params[:product_slug])
-      return render :text => discount.calculate(current_user,Package.where(slug: params[:product_slug]).first) if discount.only_on_product?(params[:product_slug])
+      prices = []
+      total_price = 0
+      if params[:addons_id].present?
+        addons = []
+        id = params[:addons_id].split(",").map { |x| x.to_i }
+        addons = AddOn.where(:id => id)
+        addons.each do |addon|
+          if discount.is_global? || discount.on_user_and_addon?(current_user.id,addon.id) || discount.only_on_addon?(addon.id)
+            price = discount.calculate(current_user,addon)
+            total_price = total_price + price
+            prices.push([addon.id, price])
+          end
+        end
+      end
+      if params[:product_slug].present? && params[:product_slug] != "add-on"
+        if discount.is_global? || discount.on_user_and_product?(current_user.id,params[:product_slug]) || discount.only_on_product?(params[:product_slug])
+          price = discount.calculate(current_user,Package.where(slug: params[:product_slug]).first)
+          total_price = total_price + price
+          prices.push([params[:product_slug], price])
+        end
+      end
+      @prices = prices
+      prices.push(["total", total_price])
+      return render :json => prices
     end
+    render :text => ""
+  end
+
+  def check_tax_rate
+    @tax = BlueSnap::Shopper.get_tax_rate(params[:sku_id], params[:country], params[:state])
+    @tax = -1 if @tax.blank?
+    return render :text => @tax
     render :text => ""
   end
 
@@ -33,14 +61,25 @@ class PaymentsController < ApplicationController
             bluesnap_order_id: resp[:batch_order][:order][:order_id]
         ) if @product.present?
 
+        @prices = {}
+
         @add_ons.each do |add_on|
+          if @discount.present?
+            if @discount.is_global? || @discount.on_user_and_addon?(current_user.id,add_on.id) || @discount.only_on_addon?(add_on.id)
+              price = unless current_user.locale == 'zh' then add_on.price - @discount.calculate(current_user,add_on) else add_on.china_price - @discount.calculate(current_user,add_on) end
+              @prices[add_on.id] = price
+            end
+          else
+            @prices[add_on.id] = unless current_user.locale == 'zh' then add_on.price else add_on.china_price end
+          end
+
           @add_on_hash["#{add_on.id}"].to_i.times{
             current_user.user_products.create!(product_id: add_on.id,
                                                bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
                                                bluesnap_order_id: resp[:batch_order][:order][:order_id])
           }
         end if @add_ons.present?
-        UserMailer.add_ons_payment_confirmation(@add_ons,current_user,@add_on_hash).deliver if @add_ons.present?
+        UserMailer.add_ons_payment_confirmation(@add_ons,current_user,@add_on_hash, params[:tax_rate], @prices).deliver if @add_ons.present?
       rescue Exception=> ex
         flash[:errors] = ["We are sorry, something is not right. Please contact support for more details."]
       end
@@ -168,7 +207,9 @@ class PaymentsController < ApplicationController
   private
 
   def require_package
-    @product = Package.where(slug: params[:slug]).last
+    if params[:slug] != "add-on"
+      @product = Package.where(slug: params[:slug]).last
+    end
     @discount = Discount.active.where(code: params[:code]).first if params[:code].present?
     if params[:add_ons]
       @add_on_hash = params[:add_ons]

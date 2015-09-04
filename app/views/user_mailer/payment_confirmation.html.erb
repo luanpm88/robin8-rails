@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -20,8 +19,7 @@
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    Hello <%=@payment.user_product.user.name.humanize%>,
-                    <!--<h1>$33.98 Paid</h1>-->
+                    Hello <%=@payment.user_product.user.name%>,
                   </td>
                 </tr>
                 <tr>
@@ -40,20 +38,17 @@
                         <td>
                           <table class="invoice-items" cellpadding="0" cellspacing="0">
                             <tr>
-                              <td><%=@payment.product.name%></td>
-                              <td class="alignright"><%=currency_sign%> <%=@payment.amount%></td>
+                              <td align="left">Product name</td>
+                              <td align="center">Amoun</td>
+                              <td align="right">Tax</td>
                             </tr>
-                            <!--<tr>-->
-                            <!--<td>Item 1</td>-->
-                            <!--<td class="alignright">$ 9.99</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                            <!--<td>Item 2</td>-->
-                            <!--<td class="alignright">$ 4.00</td>-->
-                            <!--</tr>-->
+                            <tr>
+                              <td align="left"><%=@payment.product.name%></td>
+                              <td align="center"><%=currency_sign%> <%=@payment.amount%></td>
+                              <td align="right"><%=currency_sign%> <%=@payment.tax%></td>
+                            </tr>
                             <tr class="total">
-                              <td class="alignright" width="80%">Total</td>
-                              <td class="alignright"><%=currency_sign%> <%=@payment.amount%></td>
+                              <td align="right" colspan="3">Total <%=currency_sign%> <%=@payment.amount + @payment.tax%></td>
                             </tr>
                           </table>
                         </td>
@@ -61,11 +56,6 @@
                     </table>
                   </td>
                 </tr>
-                <!--<tr>-->
-                  <!--<td class="content-block">-->
-                    <!---->
-                  <!--</td>-->
-                <!--</tr>-->
               </table>
             </td>
           </tr>
@@ -88,7 +78,3 @@
 
 </body>
 </html>
-
-
-
-

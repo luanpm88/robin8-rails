@@ -21,6 +21,20 @@ module BlueSnap
 
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
+    def self.get_tax_rate(product_sku, shopper_country, shopper_state)
+      url = "#{Rails.application.secrets[:bluesnap][:base_url]}/skus/#{product_sku}/merchant-price/resolve?country=#{shopper_country}&state=#{shopper_state}"
+      begin
+        error, response = Request.get(url)
+        if error.blank?
+          return response == 0 ? 0 : response[:item_price][:tax_rate].to_f
+        else
+          return nil
+        end
+      rescue Exception => ex
+        return nil
+      end
+    end
+
     def self.new(request, user, params, product, add_ons=nil,add_ons_hash=nil)
       begin
         errors = BlueSnap::Shopper.validate_params(params, user)
@@ -28,7 +42,7 @@ module BlueSnap
           shopper = {
               "shopper" => {"web-info" => BlueSnap::Shopper.web_info(request),
                             "shopper-info" => BlueSnap::Shopper.shopper_info(params, user)},
-              "order" => BlueSnap::Shopper.order_info(request, product, add_ons,add_ons_hash,params[:code],user)
+              "order" => BlueSnap::Shopper.order_info(request, product, add_ons,add_ons_hash,params[:code],user, params[:tax_rate])
           }
           placeholder = cart_items(product, add_ons,add_ons_hash,params[:code],user)
           Request.post(URL, shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new,:skip_types => true, :skip_instruct => true),placeholder)
@@ -101,25 +115,35 @@ module BlueSnap
       {"web-info" => {"ip" => request.ip, "remote-host" => remote_host, "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
     end
 
-    def self.order_info(request, product, add_ons,add_ons_hash,code,user)
+    def self.order_info(request, product, add_ons,add_ons_hash,code,user,tax_rate)
       {"ordering-shopper" => ordering_shopper(request),
        "cart" => "PLACEHOLDER",
        "expected-total-price" =>
-           {"amount" => get_expected_total(product,add_ons,add_ons_hash,code,user),
+           {"amount" => get_expected_total(product,add_ons,add_ons_hash,code,user,tax_rate),
             "currency" => "USD"}}
     end
 
-    def self.get_expected_total(product,add_ons,add_ons_hash,code,user)
+    def self.get_expected_total(product,add_ons,add_ons_hash,code,user,tax_rate)
       discount = Discount.active.where(code: code).last if code.present?
       discount_amount = 0.0
-      if discount.present? && product.present?
-        discount_amount =  discount.calculate(user,product) if discount.is_global?
-        discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.slug)
-        discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.slug)
+      if discount.present?
+        if product.present?
+          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+            discount_amount =  discount.calculate(user,product)
+          end
+        end
+        if add_ons.present?
+          add_ons.each do |addon|
+            if discount.is_global? || discount.on_user_and_addon?(user.id,addon.id) || discount.only_on_addon?(addon.id)
+              discount_amount += discount.calculate(user,addon) * (add_ons_hash["#{addon.id}"].to_i)
+            end
+          end
+        end
       end
       total = 0
       if user.locale == 'zh'
         total = (product.try(:china_price).to_i + (add_ons || []).collect{|a| (a.china_price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
+        total = (total + (total / 100 * tax_rate.to_f)).round(2)
         url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/merchant-currency-convertor?from=CNY&to=USD&amount=#{total}"
         begin
           error, response = Request.get(url)
@@ -134,7 +158,7 @@ module BlueSnap
       else
         total = (product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
       end
-      return total
+      return (total + (total / 100 * tax_rate.to_f)).round(2)
     end
 
     def self.cart_items(product, add_ons,add_ons_hash,code,user)
@@ -149,8 +173,8 @@ module BlueSnap
 
       discount = Discount.active.where(code: code).last if code.present?
       disc_code = ""
-      if discount.present? && product.present?
-        if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+      if discount.present?
+        if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug) || discount.on_user_and_addon?(user.id,add_ons.first) || discount.only_on_addon?(add_ons.first)
           disc_code = {"coupons"=>{"coupon"=> discount.code}}.to_xml(root: false,:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","").gsub("<hash>\n","").gsub("\n</hash>\n","")
         end
       end
@@ -262,8 +286,8 @@ module BlueSnap
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id" => new_sku_id.to_s, "status" => "A", "shopper-id" => shopper_id.to_s}
 
         discount,product = Discount.active.where(code: code).last,Package.where(sku_id: new_sku_id).first if code.present?
-        if discount.present? && product.present?
-          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+        if discount.present?
+          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug) || discount.on_user_and_addon?(user.id,add_ons.first) || discount.only_on_addon?(add_ons.first)
             shopper.merge({"coupon"=>discount.code})
           end
         end
@@ -341,6 +365,7 @@ module BlueSnap
   class Response
     def self.parse(response)
       resp = Hash.from_xml(response.body).deep_symbolize_keys
+      return nil, 0 if resp[:messages].present? && resp[:messages][:message][:error_name] == 'UNKNOWN_STATE_CODE'
       return get_errors(resp), nil if [400,401,402,403,404,500,501].include?(response.code.to_i)
       return nil, resp
     end

@@ -11,10 +11,12 @@ class UserMailer < ActionMailer::Base
     mail(:to => 'info@robin8.com', :subject => "Contact Us Request",:from => "Robin8 <no-reply@robin8.com>")
   end
 
-  def add_ons_payment_confirmation(add_ons,user,add_on_hash)
+  def add_ons_payment_confirmation(add_ons,user,add_on_hash,tax_rate,prices)
     @add_ons = add_ons
     @user = user
     @add_on_hash = add_on_hash
+    @tax_rate = tax_rate.to_f
+    @prices = prices
     mail(:to => @user.email, :subject => "Add Ons Confirmation",:from => "Robin8 <no-reply@robin8.com>")
   end
 
