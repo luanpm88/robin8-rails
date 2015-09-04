@@ -7,10 +7,9 @@
     <input id='text-field' type="text" class="form-control" placeholder="<%= polyglot.t("say_something_box.say_placeholder") %>"/>
   </div>
 </form>
-<form id='createPost' class="navbar-form navbar-left navbar-search navbar-search-lg" role="form" style='z-index: 100'>
+<form id='createPost' class="navbar-form navbar-left navbar-search navbar-search-lg" role="form">
   <textarea type="text" class="form-control" id='say-something-field' name='text' placeholder="<%= polyglot.t("say_something_box.say_placeholder") %>"></textarea>
-  <span class="label label-success label-sm post-counter" id="say-counter"
-        style="position: absolute; top: 100px; right: 13px;">140</span>
+  <span class="label label-success label-sm post-counter" id="say-counter" >140</span>
   <div class="post-settings row bottom-border-radius">
     <div class="col-xs-3">
       <div class="checkbox">
@@ -31,7 +30,7 @@
     </div>
     <div class="col-xs-6" >
       <!-- <a id='submitPost' class="btn btn-success pull-right btn-sm" style="margin-left: 6px;">Post</a> -->
-      <input type='submit' value='<%= polyglot.t("say_something_box.post_btn") %>' id="submit-post" class="btn btn-success pull-right btn-sm <%=_.filter(Robin.identities, function(num){ return num != undefined; }).length == 0 ? 'disabled' : ''%>" style="margin-left: 6px;" />
+      <input type='submit' value='<%= polyglot.t("say_something_box.post_btn") %>' id="submit-post" class="btn btn-success pull-right btn-sm <%=_.filter(Robin.identities, function(num){ return num != undefined; }).length == 0 ? 'disabled' : ''%>" />
       <a class="btn btn-default pull-right btn-sm schedule"><i class="fa fa-calendar"></i> <%= polyglot.t("say_something_box.schedule_btn") %></a>
       <div class="form-group pull-right schedule-datetimepicker" style="display: none;">
         <div class='input-group date' id='schedule-datetimepicker'>
@@ -40,12 +39,12 @@
             <span class="fa fa-calendar"></span>
           </span>
         </div>
-        <a class="btn btn-danger pull-right btn-sm cancel-schedule" style="margin-left: 6px;"><i class="fa fa-close"></i></a>
+        <a class="btn btn-danger pull-right btn-sm cancel-schedule"><i class="fa fa-close"></i></a>
       </div>
     </div>
   </div>
   <div class="post-identities row hidden">
-    <div id="twitter-identities" class="hidden" style="min-height: 69px;">
+    <div id="twitter-identities" class="hidden social_identities">
       <label class="col-lg-4 control-label"><%= polyglot.t("say_something_box.tw_accounts") %>:</label>
       <div class="col-lg-8" >
         <select class="form-control select-identities" name="twitter_ids" multiple="multiple" size="2" >
@@ -55,7 +54,7 @@
         </select>
       </div>
     </div>
-    <div id="facebook-identities" class="hidden" style="min-height: 69px;">
+    <div id="facebook-identities" class="hidden social_identities">
       <label class="col-lg-4 control-label"><%= polyglot.t("say_something_box.fb_accounts") %>:</label>
       <div class="col-lg-8" >
         <select class="form-control select-identities" name="facebook_ids" multiple="multiple" size="2" >
@@ -65,7 +64,7 @@
         </select>
       </div>
     </div>
-    <div id="linkedin-identities" class="hidden" style="min-height: 69px;">
+    <div id="linkedin-identities" class="hidden social_identities">
       <label class="col-lg-4 control-label"><%= polyglot.t("say_something_box.ln_accounts") %>:</label>
       <div class="col-lg-8" >
         <select class="form-control select-identities" name="linkedin_ids" multiple="multiple" size="2" >
@@ -75,7 +74,7 @@
         </select>
       </div>
     </div>
-    <div id="weibo-identities" class="hidden" style="min-height: 69px;">
+    <div id="weibo-identities" class="hidden social_identities">
       <label class="col-lg-4 control-label"><%= polyglot.t("say_something_box.wb_accounts") %>:</label>
       <div class="col-lg-8" >
         <select class="form-control select-identities" name="weibo_ids" multiple="multiple" size="2" >
