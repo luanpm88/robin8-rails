@@ -27,13 +27,12 @@
   <form role="form" class="form hide" id="find-influencers">
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.show") %></label>
-      <input type="text" autocomplete="off" name="topics"
-        id="topic-input" placeholder="Topic" class="form-control">
+      <input type="text" autocomplete="off" name="topics" id="topic-input" placeholder="<%= polyglot.t('smart_campaign.targets_step.topic') %>" class="form-control">
     </div>
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.from") %></label>
       <input type="text" name="location" autocomplete="off"
-        id="location-input" placeholder="Location" class="form-control">
+        id="location-input" placeholder="<%= polyglot.t('smart_campaign.targets_step.location') %>" class="form-control">
     </div>
 
     <label><strong> <%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.who") %></strong></label>

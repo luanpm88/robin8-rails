@@ -25,11 +25,11 @@
               </tr>
               <tr id="checkout-item-1">
                 <td class="">
-                  <%=@product.name.split(' ')[0]%> <%= @l.t('new_package.plan') %>
+                  <%= @l.t('products.first.' + @product.slug) %> <%= @l.t('new_package.plan') %>
                 </td>
                 <td>
                   <select disabled name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
-                    <option id="<%=@product.monthly_package.name%>" value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
+                    <option id="<%=@product.monthly_package.name%>" value="<%=@product.monthly_package.slug%>"><%= @l.t('new_package.pay_monthly') %></option>
                   </select>
                 </td>
                 <input type="hidden" id="<%=@product.slug%>" value="<%=@product.price%>"/>
@@ -89,9 +89,9 @@
             <div class="small-12 columns">
               <h3><%= @l.t('new_package.information') %></h3>
               <h4 style="text-align:center;color:#fff;">
-                <%= @l.t('new_package.current') %>: <%=current_user.active_subscription.product.name%> <%= @l.t('new_package.at') %> $<%=current_user.active_subscription.product.price%>
+                <%= @l.t('new_package.current') %>: <%= @l.t('products.first.' + current_user.active_subscription.product.slug) %> <%= @l.t('new_package.at') %> $<%=current_user.active_subscription.product.price%>
                 <br/> TO <br/>
-                <%= @l.t('new_package.new') %>: <span id='new-name'><%=@product.name%></span> <%= @l.t('new_package.at') %> $<span id='new-value'><%=@product.price%></span>
+                <%= @l.t('new_package.new') %>: <span id='new-name'><%= @l.t('products.first.' + @product.slug) %></span> <%= @l.t('new_package.at') %> $<span id='new-value'><%=@product.price%></span>
               </h4>
 
 
@@ -107,7 +107,7 @@
                 <div class="small-12 columns">
                   <p class="chargesummary"><%= @l.t('new_package.charge_notification') %> <span class="chargedate" id = "next-date">
                   <% date = current_user.active_subscription.next_charge_date || (Date.today + @product.interval.to_i.days) %>
-                  <%=date.strftime("%b #{date.day.ordinalize}, %Y")%></span>. <%= @l.t('new_package.amount_info') %> <span class="chargetotal" id="t-price">$<%=(@product.price).to_i %></span>.</p>
+                  <%=@l.t('date.monthes_abbr.m' + date.month.to_s) + date.strftime(" #{date.day.ordinalize}, %Y")%></span>. <%= @l.t('new_package.amount_info') %> <span class="chargetotal" id="t-price">$<%=(@product.price).to_i %></span>.</p>
                 </div>
               </div>
               <br/>
@@ -146,11 +146,11 @@
                             $('#t-price').html('$'+(previous_amount - amount) );
                             $('#new-value').html((previous_amount - amount));
 
-                            $('#discount_response').html("Discount successfully applied to your account");
+                            $('#discount_response').html("<%= @l.t('new_package.discount.success') %>");
                             $('#discount_response').css("color","#02BA64");
                         }
                         else{
-                            $('#discount_response').html("Discount code is not valid or expired");
+                            $('#discount_response').html("<%= @l.t('new_package.discount.invalid') %>");
                             $('#discount_response').css("color","#FF6301");
                         }
                     });

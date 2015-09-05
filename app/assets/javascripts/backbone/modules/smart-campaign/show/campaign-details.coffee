@@ -6,7 +6,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     templateHelpers:
       formatDate: (d) ->
         date = new Date d
-        date.toLocaleFormat '%d-%b-%Y'
+        monthNum = parseInt(date.getMonth()) + 1
+        date.toLocaleFormat '%d-' + polyglot.t('date.monthes_abbr.m' + monthNum) + '-%Y'
       timestamp: (d) ->
         date = new Date d
         date.getTime()
@@ -19,7 +20,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           link = "http://#{window.location.host}/articles/#{k.article.tracking_code}"
           "<a href=\"#{link}\">#{link}</a>"
         else
-          "Not approved yet"
+          polyglot.t('smart_campaign.not_approved_yet')
       code_status: (k) ->
         if k.article? and k.article.tracking_code? and k.article.tracking_code == 'Waiting'
           polyglot.t('smart_campaign.pending_approval')

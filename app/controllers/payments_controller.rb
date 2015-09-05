@@ -210,7 +210,7 @@ class PaymentsController < ApplicationController
         if current_user.can_cancel_add_on?(params[:id])
           return true
         else
-          render :json => {error: "You can't cancel this add-on. Contact support for more details."}, status: 422
+          render :json => {error: @l.t('billing.messages.cant_cancel_addon')}, status: 422
         end
       else
         render :json => {error: "No such add-on found"}, status: 422

@@ -7,7 +7,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     templateHelpers:
       active: (k) ->
-        if k.active then "Yes" else "No"
+        if k.active then polyglot.t('smart_campaign.yes') else polyglot.t('smart_campaign.no')
       categories: (k) ->
         res = _(k.categories).map (c) ->
           context = { label: c.label }
@@ -62,7 +62,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             errorField = _.keys(res.responseJSON)[0]
             errorMessage = res.responseJSON.message
             errorField = s.capitalize errorField.replace(/_/g,' ')
-
+            if errorField == 'Error'
+              errorField = polyglot.t('smart_campaign.kol.error')
             $.growl {message: errorField + ': ' + errorMessage}, type: 'danger'
 
     inviteKols: (e) ->
@@ -76,12 +77,23 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         searching: false
         lengthChange: false
         pageLength: 25
+        language:
+          paginate:
+            previous: polyglot.t('smart_campaign.prev'),
+            next: polyglot.t('smart_campaign.next')
       @ui.form.validator()
       @ui.categories.select2
         placeholder: polyglot.t('smart_campaign.kol.select_categories')
         multiple: true
         minimumInputLength: 1
         maximumSelectionSize: 10
+        formatInputTooShort: (input, min) -> 
+          n = min - input.length
+          return polyglot.t("select2.too_short", {count: n})
+        formatNoMatches: () -> 
+          return polyglot.t("select2.not_found")
+        formatSearching: () -> 
+          return polyglot.t("select2.searching")
         ajax:
           url: "/kols/suggest_categories"
           dataType: 'json'

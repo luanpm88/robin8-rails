@@ -16,7 +16,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           Show.KolCategoriesTemplate context
         res.join ''
       public: (k) ->
-        if k.is_public then "No" else "Yes"
+        if k.is_public then polyglot.t('smart_campaign.no') else polyglot.t('smart_campaign.yes')
       kols_id: ()->
         invited_kols = @model.model.get("kols")
         kols_id = []
@@ -132,6 +132,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         searching: false
         lengthChange: false
         pageLength: 25
+        language:
+          paginate:
+            previous: polyglot.t('smart_campaign.prev'),
+            next: polyglot.t('smart_campaign.next')
       if @model.model.get("kols")?
         $(".kol-header").removeClass "error"
         $(".kol-errors").hide()

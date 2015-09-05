@@ -41,7 +41,7 @@
           <tbody>
           <% _.each(Robin.currentUser.get('current_active_add_ons'), function(item, index) { %>
             <tr class='payment' id="<%= item.id %>">
-              <td><%= item.product.name %></td>
+              <td><%= polyglot.t("products." + item.product.slug) %></td>
               <td><%= item.product.price %></td>
               <td><%= item.status %></td>
               <td ><a class="<%= item.status == 'C' ? 'hidden' : ''%> cancel-addon"><%= polyglot.t("billing.cancel_action") %></a></td>
@@ -55,7 +55,7 @@
           <h4 class="billing-title"><%= polyglot.t("billing.current_plan") %></h4>
             <% if (currentPlan != undefined && currentPlan != null) { %>
             <div class="subscription-type active" id="plantype-ultra" data-plan="ultra" data-equalizer-watch="">
-              <h2><%= currentPlan.name %></h2>
+              <h2><%= polyglot.t('products.' + currentPlan.slug) %></h2>
               <div class="price-bubble">
                 <div class="<%= priceClass(currentPlan.slug) %>">
                   $<%= currentPlan.properties.price %><span class="permonth"><%= polyglot.t("billing.per_month") %></span>
@@ -89,7 +89,7 @@
             <% } %>
             <a href="/add-ons" class="btn btn-success"><%= polyglot.t("billing.buttons.addons") %></a>
             <a href="/change_card_info" class="btn btn-success"><%= polyglot.t("billing.buttons.update") %></a>
-          <a href="/change_campaign_card_info" class="btn btn-success">Campaign payment details</a>
+          <a href="/change_campaign_card_info" class="btn btn-success"><%= polyglot.t('billing.buttons.campaign_details') %></a>
           <!-- <input type="button" value="Checkout" class="btn btn-success"> -->
           <% if (Robin.currentUser.attributes.is_primary) {%>
               <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>

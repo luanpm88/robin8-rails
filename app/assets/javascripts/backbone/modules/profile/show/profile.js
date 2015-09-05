@@ -128,7 +128,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
               },
               regexp: {
                 regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: 'The data you have entered is not a valid email'
+                message: polyglot.t('profile.messages.invalid_email')
               },
               serverError: {
                 message: polyglot.t('profile.something_wrong')
