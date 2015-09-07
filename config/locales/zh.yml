@@ -1863,19 +1863,6 @@ zh:
     phone: Phone
     state: State
     submit_btn: Submit
-    mrs_title: Mrs
-    ms_title: Ms
-    note:
-      fifth_part: All prices in US Dollars.
-      first_part: Robin8 accepts Visa, Mastercard, Discover and American Express.
-      fourth_part: and Privacy Policy. To ensure continued service, your membership
-        will be auto-renewed unless canceled. Satisfaction guaranteed or your money
-        back (within 30 days).
-      second_part: By joining Robin8 you are agreeing to the
-      third_part: Terms of Use
-    phone: Phone
-    state: State
-    submit_btn: Submit
     table:
       plan: Plan
       price: Price
