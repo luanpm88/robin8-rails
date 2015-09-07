@@ -60,7 +60,7 @@ class PaymentsController < ApplicationController
         @subscription = current_user.user_products.create!(
             package_id: @package.id,
             bluesnap_shopper_id: resp[:batch_order][:shopper][:shopper_info][:shopper_id],
-            recurring_amount: @package.price,
+            recurring_amount: unless current_user.locale == 'zh' then @package.price else @package.china_price end,
             next_charge_date: nil # to be set by invoice generation
         )
         render json: {subscription: @subscription, message: 'Your package has been created'} , status: :ok
@@ -84,7 +84,7 @@ class PaymentsController < ApplicationController
 
         current_user.active_subscription.update_attributes(
             package_id: @package.id,
-            recurring_amount: @package.price
+            recurring_amount: unless current_user.locale == 'zh' then @package.price else @package.china_price end
         )
         render json: {subscription: current_user.active_subscription, message: 'Your package has been updated'} , status: :ok
       rescue Exception => ex
@@ -125,7 +125,7 @@ class PaymentsController < ApplicationController
 
       @subscription = current_user.active_subscription.update_attributes(
           product_id: @product.id,
-          recurring_amount: @product.price
+          recurring_amount: unless current_user.locale == 'zh' then @product.price else @product.china_price end
       )
       return redirect_to "/payment-confirmation"
     else

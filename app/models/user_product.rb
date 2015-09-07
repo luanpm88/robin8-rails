@@ -53,8 +53,13 @@ class UserProduct < ActiveRecord::Base
   def create_payment
     bluesnap_order = Blue::Order.find(bluesnap_order_id)
     discount = Discount.where(discount_name: bluesnap_order.cart.coupons.coupon).first if bluesnap_order && bluesnap_order.cart && bluesnap_order.cart.try(:coupons).present?
-    recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.price
-    charged_amt =  discount.present? ? product.price - discount.calculate(user,product) : product.price
+    unless user.locale == 'zh'
+      recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.price
+      charged_amt =  discount.present? ? product.price - discount.calculate(user,product) : product.price
+    else
+      recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.china_price
+      charged_amt =  discount.present? ? product.china_price - discount.calculate(user,product) : product.china_price
+    end
     if product.is_package? || product.is_recurring?
       bluesnap_subscription = ''
       begin
@@ -77,7 +82,8 @@ class UserProduct < ActiveRecord::Base
               amount: charged_amt, # bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
               card_last_four_digits: bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits,
               card_type: bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type,
-              discount_id: discount.present? ? discount.id : nil
+              discount_id: discount.present? ? discount.id : nil,
+              currency: unless user.locale == 'zh' then '$' else '¥' end
           )
           return payment
         end
@@ -86,10 +92,11 @@ class UserProduct < ActiveRecord::Base
       end
     else
       payments.create(
-          amount: product.price, #bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
+          amount: unless user.locale == 'zh' then product.price else product.china_price end, #bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
           product_id: product_id,
           card_last_four_digits:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits,
-          card_type:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type #,
+          card_type:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type,
+          currency: unless user.locale == 'zh' then '$' else '¥' end #,
           # discount_id: discount.present? ?  discount.id : nil
       )
     end

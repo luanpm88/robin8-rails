@@ -26,7 +26,11 @@ class Discount < ActiveRecord::Base
   end
 
   def calculate(user,product)
-    product.price - (product.price * ((100-percentage)/100)).round(2)
+    unless user.locale == 'zh'
+      product.price - (product.price * ((100-percentage)/100)).round(2)
+    else
+      product.china_price - (product.china_price * ((100-percentage)/100)).round(2)
+    end
   end
 
   # def is_user_only_discount?
