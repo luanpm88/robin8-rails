@@ -20,14 +20,10 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               var date = split[0] + '-' + monthDate[0] + '-' + monthDate[1];
               return date
             });
-            var sessions = _.map(data.web.sessions, function(session){
-              var session = parseInt(session);
-              return session;
-            });
-            var pageViews = _.map(data.web.views, function(pageView){
-              var pageView = parseInt(pageView);
-              return pageView;
-            });
+            var radix10ParseInt = _.partial(parseInt, _, 10);
+            var sessions = _.map(data.web.sessions, radix10ParseInt);
+            var pageViews = _.map(data.web.views, radix10ParseInt);
+            var mailViews = _.map(data.web.mailViews, radix10ParseInt);
 
             $('#news-rooms').highcharts({
               chart: {
@@ -85,6 +81,11 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 type: 'column',
                 yAxis: 1,
                 data: sessions
+              }, {
+                name: polyglot.t("analytics.emails"),
+                type: 'column',
+                yAxis: 1,
+                data: mailViews
               }, {
                 name: polyglot.t("analytics.page_views"),
                 type: 'column',

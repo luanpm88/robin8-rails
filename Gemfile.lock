@@ -355,6 +355,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    railroady (1.3.1)
     rails (4.2.0)
       actionmailer (= 4.2.0)
       actionpack (= 4.2.0)
@@ -440,6 +441,8 @@ GEM
     rails-assets-timeago (1.4.1)
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
+    rails-assets-underscore.inflection (1.1.1)
+      rails-assets-underscore (~> 1.6.0)
     rails-assets-underscore.string (3.1.1)
     rails-assets-uploadcare (2.0.4)
       rails-assets-jquery (>= 1.10.2)
@@ -671,6 +674,7 @@ DEPENDENCIES
   pry-rails
   puma
   quiet_assets
+  railroady
   rails (= 4.2.0)
   rails-assets-backbone-relational!
   rails-assets-backbone.babysitter!
@@ -689,7 +693,7 @@ DEPENDENCIES
   rails-assets-datatables-tabletools!
   rails-assets-datejs!
   rails-assets-eonasdan-bootstrap-datetimepicker (= 4.0.0)!
-  rails-assets-font-awsome!
+  rails-assets-font-awsome (= 4.3)!
   rails-assets-highcharts (= 4.1.1)!
   rails-assets-jquery-geocomplete!
   rails-assets-jquery-highlighttextarea!
@@ -704,6 +708,7 @@ DEPENDENCIES
   rails-assets-spinjs!
   rails-assets-spinkit!
   rails-assets-timeago!
+  rails-assets-underscore.inflection!
   rails-assets-underscore.string!
   rails-assets-uploadcare (= 2.0.4)!
   rails-assets-x-editable!

@@ -53,13 +53,19 @@ class User < ActiveRecord::Base
 
   extend Models::Oauth
 
+  def invited_users_list
+    invited_id = User.where(invited_by_id: needed_user.id).map(&:id)
+    return invited_id.push(needed_user.id)
+  end
+
   def current_user_features
-    is_primary? ? user_features : invited_by.user_features
+    users_id = invited_users_list
+    UserFeature.where :user_id => users_id
   end
 
   def is_feature_available?(slug)
-    @user = is_primary? ? self : invited_by
-    Feature.joins(:user_features).where("user_features.user_id = '#{@user.id}' AND user_features.available_count > '0' AND features.slug = '#{slug}'").exists?
+    users_id = invited_users_list
+    Feature.joins(:user_features).where(:user_features =>{:user_id => users_id,:available_count => 0..INFINITY},:slug=>slug).exists?
   end
 
   def used_count_by_slug(slug)
@@ -82,7 +88,7 @@ class User < ActiveRecord::Base
   end
 
   def available_features
-    current_user_features.where("user_features.available_count > '0'")
+     current_user_features.where("user_features.available_count > '0'")
   end
 
   def is_primary?
@@ -126,7 +132,6 @@ class User < ActiveRecord::Base
   end
 
   def can_create_prnewswire
-    p prnewswire_available_count
     prnewswire_available_count.nil? ? false : prnewswire_available_count >= 1
   end
 ##########################################################################################################
@@ -168,8 +173,9 @@ class User < ActiveRecord::Base
   end
 
   def can_cancel_add_on?(user_add_on_id)
-    add_on = user_products.where(id: user_add_on_id).first.product
-    if add_on.slug == "media_moitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution"
+    users_id = invited_users_list
+    add_on = UserProduct.where(:id => user_add_on_id, :user_id=>users_id).first.product
+    if add_on.slug == "media_monitoring" || add_on.slug == "newsroom" || add_on.slug == "seat" || add_on.slug == "myprgenie_web_distribution" || add_on.slug == "pr_newswire_distribution" || add_on.slug == "accesswire_distribution"
       return current_user_features.where(product_id: add_on.id).first.available_count > 0 ? true : false
     else
       return false
@@ -231,12 +237,26 @@ class User < ActiveRecord::Base
   end
 
   def current_add_ons
-    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
+    users_id = invited_users_list
+    add_ons_products = UserProduct.joins(:product).where(:user_id => users_id, :products => {:type => 'AddOn'})
     AddOn.where(id: add_ons_products.map(&:product_id)) if add_ons_products.present?
   end
 
+  def current_active_add_ons
+    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
+
+    if add_ons_products.present?
+      user_addons_features = user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
+      user_addons_features.map(&:product)
+    else
+      []
+    end
+
+  end
+
   def recurring_add_ons
-    user_products.joins(:product).where("products.type ='AddOn' and (products.interval is NOT NULL OR products.interval >= '30')")
+    users_id = invited_users_list
+    UserProduct.joins(:product).where(:user_id => users_id, :products => {:type => 'AddOn', :interval => 30..Float::INFINITY }).where.not(:products => {:interval => nil})
   end
 
   def twitter_post(message, identity_id=nil)
@@ -304,7 +324,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons])
+    super(methods: [:active_subscription, :sign_in_count, :recurring_add_ons, :current_active_add_ons])
   end
 
   def full_name
@@ -342,23 +362,19 @@ class User < ActiveRecord::Base
     end
 
     def decrease_feature_number
-      if !is_primary
-        af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-        uf = af.nil? ? needed_user.user_features.seat.available.first : af
-        return false if uf.blank?
-        uf.available_count -= 1
-        uf.save
-      end
+      af = current_user_features.seat.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? needed_user.user_features.seat.available.used.first : af
+      return false if uf.blank?
+      uf.available_count -= 1
+      uf.save
     end
 
     def increase_feature_number
-      if !is_primary
-        af = needed_user.user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-        uf = af.nil? ? needed_user.user_features.seat.used.first : af
-        return false if uf.blank?
-        uf.available_count += 1
-        uf.save
-      end
+      af = current_user_features.seat.available.joins(:product).where(products: {is_package: false}).first
+      uf = af.nil? ? needed_user.user_features.seat.first : af
+      return false if uf.blank?
+      uf.available_count += 1
+      uf.save
     end
 end
 

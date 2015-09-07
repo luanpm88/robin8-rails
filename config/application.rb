@@ -31,7 +31,7 @@ module Robin8
 
     config.action_dispatch.perform_deep_munge = false
     config.i18n.available_locales = ['en', 'zh']
-    I18n.enforce_available_locales = false
+    # I18n.enforce_available_locales = false
   end
   require Rails.root.to_s + '/lib/blue_snap.rb'
 end

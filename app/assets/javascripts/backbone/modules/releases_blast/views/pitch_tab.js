@@ -180,12 +180,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     serializeData: function() {
       return {
         mergeTags: [
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.first_name"), 
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.first_name"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.last_name"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.summary"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.outlet"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.link"),
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.title"), 
+          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.title"),
           polyglot.t("smart_release.pitch_step.email_panel.merge_tags.text")
         ],
         pitch: this.model.toJSON()
@@ -276,10 +276,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       var title = this.releaseModel.get('title');
       var html_text = this.releaseModel.get('text');
-      var link = this.releaseModel.get('permalink');
-      link = '<a href="' + link + '">' + link + '</a>';
+
+      var parser = document.createElement('a');
+      parser.href = this.releaseModel.get('permalink');
+      var newsRoomsName = parser.hostname.substring(0, parser.hostname.indexOf('.'));
+      var link = this.releaseModel.get('permalink')+ '?utm_source=Robin8&utm_medium=email&utm_campaign='+newsRoomsName;
+      link = '<a href="' + link +'">' + link + '</a>';
       var linkable_title = '<a href="' + this.releaseModel.get('permalink') +
-        '">' + title + '</a>';
+        '?utm_source=Robin8&utm_medium=email&utm_campaign='+newsRoomsName+'">' + title + '</a>';
       var summariesArr = this.releaseModel.get('summaries')
         .slice(0, this.model.get('summary_length'));
       var summaries = _(summariesArr).reject(function(item){
@@ -398,8 +402,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       this.model.save({ release_id: this.draftPitchModel.get('release_id')}, {
         success: function(model, response, options){
           Robin.modal.empty();
-          $.growl({message: "Bon voyage, test email! " +
-            "Your test email is on its way to the test recipients."
+          $.growl({message: polyglot.t('smart_release.send_test.bon_voyage')
           },{
             type: 'success'
           });

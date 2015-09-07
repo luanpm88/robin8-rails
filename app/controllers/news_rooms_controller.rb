@@ -1,12 +1,14 @@
 require 'mailgun'
 class NewsRoomsController < ApplicationController
   layout 'public_pages', only: [:preview, :presskit, :follow]
-  
+
   def index
+    users_id = current_user.invited_users_list
     limit = current_user.current_user_features.newsroom.map(&:max_count).inject{|sum,x| sum + x }
-    set_paginate_headers NewsRoom, current_user.news_rooms.count
+    limit = limit.nil? ? current_user.news_rooms.count : limit
+    set_paginate_headers NewsRoom, NewsRoom.where(:user_id => users_id).count
     per_page = (limit < params[:per_page].to_i || params[:per_page].nil?) ? limit : params[:per_page].to_i
-    render json: current_user.news_rooms.order('created_at DESC').limit(limit).paginate(page: params[:page], per_page: per_page), each_serializer: NewsRoomSerializer
+    render json: NewsRoom.where(:user_id=>users_id).order(created_at: :desc).limit(limit).paginate(:page => params[:page], :per_page => per_page), each_serializer: NewsRoomSerializer
   end
 
   def create
@@ -59,12 +61,15 @@ class NewsRoomsController < ApplicationController
     results = GoogleAnalytics.results(sa.first_profile, {
       start_date: (DateTime.now - 7.days),
       end_date: DateTime.now }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
+    mail_results = results.for_medium('email')
 
     collection = results.collection
+    mail_collection = mail_results.collection
     web = {
       dates: collection.map{|col| col.date},
       sessions: collection.map{|col| col.sessions},
       views: collection.map{|col| col.pageViews},
+      mailViews: mail_collection.map{|col| col.sessions}
     }
 
     render json: { web: web }
@@ -151,7 +156,7 @@ private
       :toll_free_number, :publish_on_website, attachments_attributes: [:id, :url, :attachment_type, :name, :thumbnail, :_destroy],
       industry_ids: [])
   end
-  
+
   def ssl_configured?
     !Rails.env.development? && !['preview', 'presskit', 'follow'].include?(action_name)
   end

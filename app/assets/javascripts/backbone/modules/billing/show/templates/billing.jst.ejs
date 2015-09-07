@@ -39,7 +39,7 @@
             </tr>
           </thead>
           <tbody>
-          <% _.each(Robin.currentUser.get('recurring_add_ons'), function(item, index) { %>
+          <% _.each(Robin.currentUser.get('current_active_add_ons'), function(item, index) { %>
             <tr class='payment' id="<%= item.id %>">
               <td><%= item.product.name %></td>
               <td><%= item.product.price %></td>
@@ -53,40 +53,50 @@
       <div class="col-md-5 col-lg-4">
         <div class="billing-current-plan">
           <h4 class="billing-title"><%= polyglot.t("billing.current_plan") %></h4>
-            <% if (currentPlan != undefined) {%>
+            <% if (currentPlan != undefined && currentPlan != null) { %>
             <div class="subscription-type active" id="plantype-ultra" data-plan="ultra" data-equalizer-watch="">
               <h2><%= currentPlan.name %></h2>
               <div class="price-bubble">
-                <div class="price-amount">
+                <div class="<%= priceClass(currentPlan.slug) %>">
                   $<%= currentPlan.properties.price %><span class="permonth"><%= polyglot.t("billing.per_month") %></span>
-                  <em><%= polyglot.t("billing.annually") %><br>$<%= currentPlan.properties.annually_price %> <%= polyglot.t("billing.month") %> </em>
+                  <% if (!s(currentPlan.slug).startsWith("new")) { %>
+                    <em><%= polyglot.t("billing.annually") %><br>$<%= currentPlan.properties.annually_price %> <%= polyglot.t("billing.month") %></em>
+                  <% } %>
                 </div>
               </div>
               <div class="plan-inclusions">
+                <% var prop = currentPlan.properties; %>
                 <ul>
-                  <li><strong><%= currentPlan.properties.seat %></strong> <span><%= polyglot.t("billing.seat") %></span></li>
-                  <li><strong><%= currentPlan.properties.newsroom %></strong> <span><%= polyglot.t("billing.newsroom") %></span></li>
-                  <li><strong><%= currentPlan.properties.press_release %></strong> <span><%= polyglot.t("billing.press_release") %></span></li>
-                  <li><strong><%= currentPlan.properties.smart_release %></strong> <span><%= polyglot.t("billing.smart_release") %></span></li>
-                  <li><strong><%= currentPlan.properties.media_list %></strong> <span><%= polyglot.t("billing.personal_lists") %></span></li>
-                  <li><strong><%= currentPlan.properties.streams %></strong> <span><%= polyglot.t("billing.streams") %></span></li>
+                  <li><strong><%= prop.smart_release %></strong> <span><%= polyglot.t("pricing.select_plan.smart_release") %></span></li>
+                  <% if (!(currentPlan.slug).startsWith('new')) { %>
+                    <li><strong><%= currentPlan.properties.press_release %></strong> <span><%= polyglot.t("billing.press_release") %></span></li>
+                  <% }%>
+                  <li><strong><%= prop.newsroom %></strong> <span><%= p(polyglot.t('billing.newsroom'), prop.newsroom) %></span></li>
+                  <li><strong><%= prop.seat %></strong> <span><%= p(polyglot.t('billing.seat'), prop.seat) %></span></li>
+                  <li><%= count(prop.media_list) %> <span><%= p(polyglot.t('pricing.media_list'), prop.media_list) %></span></li>
+                  <li><%= count(prop.streams) %> <span><%= polyglot.t('pricing.select_plan.stream') %></span></li>
+                  <% if (prop.streams == 9999)  { %>
+                    <li><b>20</b> <span><%= polyglot.t('pricing.select_plan.hours_of_customization')  %></span></li>
+                  <% } %>
                 </ul>
               </div>
             </div>
             <% } %>
-          <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
-            <a href="/pricing" class="btn btn-success"><%= polyglot.t("billing.buttons.change") %></a>
-          <% } else {%>
-            <a href="/pricing" class="btn btn-success"><%= polyglot.t("billing.buttons.new_plan") %></a>
-          <% } %>
-          <a href="/add-ons" class="btn btn-success"><%= polyglot.t("billing.buttons.addons") %></a>
-          <a href="/change_card_info" class="btn btn-success"><%= polyglot.t("billing.buttons.update") %></a>
+            <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
+              <a href="/pricing" class="btn btn-success"><%= polyglot.t("billing.buttons.change") %></a>
+            <% } else {%>
+              <a href="/pricing" class="btn btn-success"><%= polyglot.t("billing.buttons.new_plan") %></a>
+            <% } %>
+            <a href="/add-ons" class="btn btn-success"><%= polyglot.t("billing.buttons.addons") %></a>
+            <a href="/change_card_info" class="btn btn-success"><%= polyglot.t("billing.buttons.update") %></a>
           <a href="/change_campaign_card_info" class="btn btn-success">Campaign payment details</a>
           <!-- <input type="button" value="Checkout" class="btn btn-success"> -->
-          <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
-            <input type="button" id="cancel-subscription" value="<%= polyglot.t("billing.buttons.cancel") %>" class="btn btn-danger user-list--delete">
-          <% } else {%>
-            <div><span class='canceled'> <%= polyglot.t("billing.plan_is_canceled") %> </span></div>
+          <% if (Robin.currentUser.attributes.is_primary) {%>
+              <% if (Robin.currentUser.attributes.active_subscription.status != 'C') {%>
+                <input type="button" id="cancel-subscription" value="<%= polyglot.t("billing.buttons.cancel") %>" class="btn btn-danger user-list--delete">
+              <% } else {%>
+                <div><span class='canceled'><%= polyglot.t("billing.plan_is_canceled") %></span></div>
+              <% } %>
           <% } %>
         </div>
       </div>

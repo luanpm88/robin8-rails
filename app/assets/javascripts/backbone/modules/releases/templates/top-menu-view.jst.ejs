@@ -1,11 +1,14 @@
 <script id="wyihtml5-extract-button" type="text/template">
-  <li><a class="btn btn-default btn-sm" id="extract_url" title='Grab release from URL'><i class="fa fa-cloud-download font-12"></i></a></li>
+  <li><a class="btn btn-default btn-sm" id="extract_url" title='Grab content from URL'><i class="fa fa-cloud-download font-12"></i></a></li>
 </script>
 <script id="wyihtml5-insert-link" type="text/template">
   <li><a class="btn btn-default btn-sm" id="insert_link" title="Insert link"><i class="fa fa-external-link font-12"></i></a></li>
 </script>
+<script id="wyihtml5-unlink" type="text/template">
+  <li><a class="btn btn-default btn-sm" id="unlink" title="Delete link"><i class="fa fa-unlink font-12"></i></a></li>
+</script>
 <script id="wyihtml5-word-button" type="text/template">
-  <li><a class="btn btn-default btn-sm" title="Grab release from DOCX document " onclick="document.getElementById('upload').click(); return false" id="extract_word"><i class="fa fa-file-word-o font-12"></i></a></li>
+  <li><a class="btn btn-default btn-sm" title="Grab content from DOCX document " onclick="document.getElementById('upload').click(); return false" id="extract_word"><i class="fa fa-file-word-o font-12"></i></a></li>
 </script>
 <script id="wyihtml5-direct-image-button" type="text/template">
   <div class="btn-group">
@@ -29,7 +32,7 @@
             <option value=""><%= polyglot.t("releases.all_newsrooms") %></option>
           </select>
         </div>
-        <!-- <button class="btn btn-default"><i class="fa fa-rocket"></i> <strong>5 SmartReleases</strong> Remaining</button> -->
+        <!-- <button class="btn btn-default"><i class="fa fa-rocket"></i> <strong>5 SmartContents</strong> Remaining</button> -->
         <button class="btn btn-success" id='new_release'> <i class="fa fa-plus"></i> <%= polyglot.t("releases.new_release") %> </button>
       </div>
     </div>
@@ -55,7 +58,7 @@
               <li role="presentation" class="active"><a href="#release-company" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.basic_tab.title") %></a></a></li>
               <li role="presentation"><a href="#website" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.website_tab.title") %></a></li>
               <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab"><%= polyglot.t("releases.modal.media_tab.title") %></a></li>
-              <li role="presentation"><a href="#newswire" aria-controls="settings" role="tab" data-toggle="tab">Newswire</a></li>
+              <li role="presentation"><a href="#newswire" aria-controls="settings" role="tab" data-toggle="tab"><%=polyglot.t('releases.model.newswire_tab.newswire')%></a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -159,8 +162,8 @@
         </div>
         <div id="alert-container">
           <div id="public-alert" class="alert alert-warning" role="alert" style="display:none;">
-            This release won't be publicly displayed while the parent Newsroom remains unpublished.
-            <b><button id="make-public">Publish the newsroom!</button></b>
+              This content won't be publicly displayed while the parent Brand Gallery remains unpublished.
+              <b><button id="make-public">Publish the brand gallery!</button></b>
           </div>
         </div>
 

@@ -57,6 +57,7 @@
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
 //= require datejs
+//= require underscore.inflection
 //= require bootstrap-validator
 
 //= require_tree ./backbone/config

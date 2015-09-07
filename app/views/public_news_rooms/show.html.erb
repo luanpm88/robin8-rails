@@ -35,15 +35,15 @@
           <hr>
           <div id='content-footer'>
             <% unless @news_room.location.blank? %>
-              <h4>About <%= @news_room.company_name %></h4>
+              <h4><%=@l.t('public_newsroom.about')%> <%= @news_room.company_name %></h4>
               <p>
-                <strong>Location:</strong> 
+                <strong><%=@l.t('public_newsroom.location')%>:</strong>
                 <%= @news_room.location %>
               </p>
             <% end %>
             <% unless @news_room.description.blank? %>
               <p>
-                <strong>What Is <%= @news_room.company_name %>?</strong>
+                <strong><%=@l.t('public_newsroom.what_is')%> <%= @news_room.company_name %>?</strong>
               </p>
               <div>
                 <%= @news_room.description %>

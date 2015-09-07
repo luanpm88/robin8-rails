@@ -33,11 +33,11 @@
                       <% if @accesswire %>
                         <li>From <%= @accesswire_published_at %> - Accesswire</li>
                       <% end %>
-                      <% if @prnewswire %> 
+                      <% if @prnewswire %>
                         <li>From <%= @prnewswire_published_at %> - PR Newswire</li>
                       <% end %>
                     </ul>
-                    <b>Release URL:</b> <br>
+                    <b>Content URL:</b> <br>
                     <%= @publicLink %>
                   </td>
                 </tr>
@@ -53,10 +53,10 @@
                       <tr>
                         <td>
                           <b>Text:</b> <br>
-                          <% 
-                            if @text.length > 250 
-                              @text = @text.mb_chars[0, 1000] + "...<br><a href='" + @publicLink + "'>Read more...</a>" 
-                            end 
+                          <%
+                            if @text.length > 250
+                              @text = @text.mb_chars[0, 1000] + "...<br><a href='" + @publicLink + "'>Read more...</a>"
+                            end
                           %>
                           <%= @text.html_safe %>
                         </td>
