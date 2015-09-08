@@ -329,11 +329,11 @@ module BlueSnap
     end
 
     def self.get_errors(resp)
-      # resps = errs = []
-      # resp[:messages][:message].collect{|x|  resps << x.values if x.class == Hash}
-      # resps.collect{|i| errs << i[1] if i.class == Array }
-      # errs
-      [ @l.t('payment_page.messages.card_was_declined') ]
+      errors = []
+      response = resp[:messages][:message]
+      response.class == Hash ? errors << response[:description] : response.collect{ |e| errors << e[:description] }
+
+      return errors
     end
   end
 
