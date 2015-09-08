@@ -27,3 +27,4 @@ perf - robin.sublime-project
 perf - robin.sublime-workspace
 .idea/
 config/locales_backup
+config/initializers/app_instance.rb
