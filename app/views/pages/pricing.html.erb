@@ -19,7 +19,7 @@
       <div class="row business-plans" id="business-plans" data-equalizer>
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-basic" data-plan="basic" data-equalizer-watch>
-            <h2><%= @products[0].name.split(' ')[0] %></h2>
+            <h2><%= @l.t('products.first.' + @products[0].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
                 $<%=(@products[0].price).to_i %><span class="permonth">/mo</span>
@@ -42,7 +42,7 @@
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch>
-            <h2><%= @products[1].name.split(' ')[0] %></h2>
+            <h2><%= @l.t('products.first.' + @products[1].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
                 $<%=(@products[1].price).to_i %><span class="permonth">/mo</span>
@@ -65,7 +65,7 @@
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch >
-            <h2><%= @products[2].name.split(' ')[0] %></h2>
+            <h2><%= @l.t('products.first.' + @products[2].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
                 $<%=(@products[2].price).to_i %><span class="permonth">/mo</span>
