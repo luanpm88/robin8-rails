@@ -66,7 +66,7 @@
 //= require_tree ./backbone/collections
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/components
-//= require_tree ./backbone/modules
+//= require_tree ./backbone/modules/dashboard-kol
 
 var ready;
 ready = function() {

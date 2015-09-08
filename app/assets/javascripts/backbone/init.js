@@ -80,7 +80,7 @@ Robin.stopMainModules = function(){
 
 Robin.on('start', function(){
   if (Backbone.history && !Backbone.History.started){
-    Robin.addInitializer();
+    //Robin.addInitializer();
     Backbone.history.start();
     if (Robin.currentUser || Robin.currentKOL) {
       Robin.loadPleaseWait();
