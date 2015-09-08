@@ -1,29 +1,29 @@
 <div class="smart-campaign dashboard-btns col-sm-12" style="width: 99%;">
   <div class="row">
     <div class="col-md-6">
-      <h5><i class="fa fa-home glyphicon glyphicon-bullhorn"></i> SmartCampaign</h5>
+      <h5><i class="fa fa-home glyphicon glyphicon-bullhorn"></i> <%=polyglot.t('smart_campaign.smartcampaign')%></h5>
     </div>
     <div class="pull-right">
-      <a type="button" class="save-campaign btn btn-success vcenter" id="new_campaign" href="/#smart_campaign">Back</a>
+      <a type="button" class="save-campaign btn btn-success vcenter" id="new_campaign" href="/#smart_campaign"><%=polyglot.t('smart_campaign.back')%></a>
     </div>
   </div>
   <div class="row">
-    <b>Name: </b> <%= campaign.name %><br/>
-    <b>Deadline: </b> <%= formatDate(campaign.deadline) %><br/>
-    <b>Total influencers invited: </b> <%= campaign.campaign_invites.length %>
+    <b><%=polyglot.t('smart_campaign.name')%>: </b> <%= campaign.name %><br/>
+    <b><%=polyglot.t('smart_campaign.deadline')%>: </b> <%= formatDate(campaign.deadline) %><br/>
+    <b><%=polyglot.t('smart_campaign.total_influencers_invited')%>: </b> <%= campaign.campaign_invites.length %>
   </div>
   <div class="row">
-    <div class="vcenter region-title"><b>Accepted:</b></div>
+    <div class="vcenter region-title"><b><%=polyglot.t('smart_campaign.accepted')%>:</b></div>
     <% if (accepted.length == 0) { %>
-      <i>No one accepted your invitation yet.</i>
+      <i><%=polyglot.t('smart_campaign.no_one_accepted')%></i>
     <% } else { %>
       <table class="table table-striped" id="accepted-kols">
         <thead style="cursor:pointer;"><tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Last update</th>
-          <th>Article URL</th>
-          <th>Status</th>
+          <th><%=polyglot.t('smart_campaign.name')%></th>
+          <th><%=polyglot.t('smart_campaign.email')%></th>
+          <th><%=polyglot.t('smart_campaign.last_update')%></th>
+          <th><%=polyglot.t('kol_campaign.article_url')%></th>
+          <th><%=polyglot.t('smart_campaign.status')%></th>
         </tr></thead>
         <tbody>
           <% _.each(accepted, function(k) { %>
@@ -42,12 +42,12 @@
   <% if (declined.length !=0 ) { %>
     <hr/>
     <div class="row">
-      <div class="vcenter region-title"><b>Declined/Unknown:</b></div>
+      <div class="vcenter region-title"><b><%=polyglot.t('smart_campaign.declined_unknown')%>:</b></div>
       <table class="table table-striped" id="accepted-kols">
         <thead style="cursor:pointer;"><tr>
-          <th data-sort="string">Name</th>
-          <th data-sort="string">Email</th>
-          <th data-sort="string">Status</th>
+          <th data-sort="string"><%=polyglot.t('smart_campaign.name')%></th>
+          <th data-sort="string"><%=polyglot.t('smart_campaign.email')%></th>
+          <th data-sort="string"><%=polyglot.t('smart_campaign.status')%></th>
         </tr></thead>
         <tbody>
           <% _.each(declined, function(k) { %>
@@ -62,6 +62,6 @@
     </div>
   <% } %>
   <div class="pull-right">
-    <a type="button" class="save-campaign btn btn-success vcenter" id="edit_campaign" >Edit campaign</a>
+    <a type="button" class="save-campaign btn btn-success vcenter" id="edit_campaign" ><%=polyglot.t('smart_campaign.edit_campaign')%></a>
   </div>
 </div>

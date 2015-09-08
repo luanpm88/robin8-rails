@@ -282,7 +282,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             trigger: 'blur'
             validators: {
               notEmpty: {
-                message: 'The subject is required'
+                message: polyglot.t('smart_campaign.pitch_step.subject_required')
               }
             }
           },
@@ -290,7 +290,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             trigger: 'blur'
             validators: {
               notEmpty: {
-                message: 'The email adress is required'
+                message: polyglot.t('smart_campaign.pitch_step.email_required')
               }
             }
           },
@@ -298,7 +298,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             trigger: 'change'
             validators: {
               notEmpty: {
-                message: 'The email text is required'
+                message: polyglot.t('smart_campaign.pitch_step.emailtext_required')
               }
             }
           }

@@ -1,12 +1,12 @@
-Hi <%= author.get('full_name') %>,
-</br></br>
-You were invited to participate in a new campaign:
-</br></br>
+<%= polyglot.t('smart_campaign.targets_step.weibo.contact_form.message.hi') %> <%= author.get('full_name') %>,
+<br><br>
+<%= polyglot.t('smart_campaign.targets_step.weibo.contact_form.message.invited_msg') %>
+<br><br>
 "<%= release.get('name') %>"
-</br></br>
+<br><br>
 <%= summary %>
-</br></br>
-Regards,
+<br><br>
+<%= polyglot.t('smart_campaign.targets_step.weibo.contact_form.message.regards') %>,
 <%= s.isBlank(currentUser.get('name')) ? '' : currentUser.get('name') %>
-</br></br>
-P.S. We kindly recommend you to <a href="<%= kolSignUpUrl %>">register</a> in our system as an Influencer.
+<br><br>
+<%= polyglot.t('smart_campaign.targets_step.weibo.contact_form.message.ps', {kols_signup_url: kolSignUpUrl}) %>

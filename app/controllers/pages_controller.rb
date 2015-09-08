@@ -19,7 +19,7 @@ class PagesController < ApplicationController
       redirect_to pricing_path
     elsif kol_signed_in?
       if current_kol.confirmed_at == nil
-        flash[:confirmation_alert] = "Please, check your email to activate your account!"
+        flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
       end
       render "home", :layout => 'kol'
     else

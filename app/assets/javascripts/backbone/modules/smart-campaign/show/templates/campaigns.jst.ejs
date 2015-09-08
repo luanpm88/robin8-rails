@@ -1,17 +1,17 @@
 <div class="row">
-  <div class="col-md-2 col-md-offset-5 vcenter region-title"><b>Campaigns<b/></div>
+  <div class="col-md-2 col-md-offset-5 vcenter region-title"><b><%=polyglot.t('smart_campaign.campaigns')%><b/></div>
 </div>
 <% if (items.length == 0) { %>
-  <div class="row">You don't have any campaigns. It's time to create one!</div>
+  <div class="row"><%=polyglot.t('smart_campaign.no_campaigns')%></div>
 <% } else { %>
   <div class="row">
     <table class="table table-striped" id="campaigns-table">
       <thead style="cursor:pointer;"><tr>
-        <th>Name</th>
-        <th width="100px">Budget</th>
+        <th><%=polyglot.t('smart_campaign.name')%></th>
+        <th width="100px"><%=polyglot.t('smart_campaign.budget')%></th>
         <th class="no-sort" width="120px"></th>
-        <th width="100px">Created</th>
-        <th width="100px">Deadline</th>
+        <th width="100px"><%=polyglot.t('smart_campaign.created')%></th>
+        <th width="100px"><%=polyglot.t('smart_campaign.deadline')%></th>
       </tr></thead>
       <tbody>
         <% _.each(items, function(c) { %>
@@ -53,8 +53,8 @@
                 </form>
                 <div class="modal-footer">
                     <div id="add_kol-buttons">
-                        <button type="button" class="btn btn-success" id="add-budget-confirm"><i class="fa fa-plus"></i> Add</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="add-budget-confirm"><i class="fa fa-plus"></i> <%=polyglot.t('smart_campaign.add')%></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%=polyglot.t('smart_campaign.close')%></button>
                     </div>
                 </div>
             </div>

@@ -20,14 +20,14 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
           link = "http://#{window.location.host}/articles/#{campaign.tracking_code}"
           "<a href=\"#{link}\">#{link}</a>"
         else
-          "Not approved yet"
+          polyglot.t('kol_campaign.not_approved_yet')
       code_status: (campaign) ->
         if campaign.tracking_code? and campaign.tracking_code == 'Waiting'
           "Pending approval"
         else if campaign.tracking_code? and campaign.tracking_code != 'Waiting'
-          "Approved"
+          polyglot.t('kol_campaign.approved')
         else
-          "In Progress"
+          polyglot.t('kol_campaign.in_progress')
 
     events:
       "click .campaign": "show_editor"

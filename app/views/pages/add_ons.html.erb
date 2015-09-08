@@ -38,7 +38,7 @@
                     </div>
                   </td>
                   <td class="addon">
-                    <%=a.name%>
+                    <%= @l.t('products.' + a.slug) %>
                   </td>
                   <td class="price">
                     <% unless current_user.locale == 'zh' %>

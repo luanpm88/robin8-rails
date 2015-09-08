@@ -27,11 +27,11 @@
               </tr>
               <tr id="checkout-item-1">
                 <td class="">
-                  <%=@product.name.split(' ')[0]%> <%= @l.t('new_package.plan') %>
+                  <%= @l.t('products.first.' + @product.slug) %> <%= @l.t('new_package.plan') %>
                 </td>
                 <td>
                   <select disabled name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
-                    <option id="<%=@product.monthly_package.name%>" value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
+                    <option id="<%=@product.monthly_package.name%>" value="<%=@product.monthly_package.slug%>"><%= @l.t('new_package.pay_monthly') %></option>
                   </select>
                 </td>
                 <% unless current_user.locale == 'zh' %>
@@ -172,11 +172,11 @@
                             $('#t-price').html($('#currency_sign').val()+(previous_amount - amount) );
                             $('#new-value').html((previous_amount - amount));
 
-                            $('#discount_response').html("Discount successfully applied to your account");
+                            $('#discount_response').html("<%= @l.t('new_package.discount.success') %>");
                             $('#discount_response').css("color","#02BA64");
                         }
                         else{
-                            $('#discount_response').html("Discount code is not valid or expired");
+                            $('#discount_response').html("<%= @l.t('new_package.discount.invalid') %>");
                             $('#discount_response').css("color","#FF6301");
                         }
                     });

@@ -177,7 +177,6 @@ Robin.vent.on('SaySomething:close', function(){
 UPLOADCARE_PUBLIC_KEY = "fe688dbff8d2a632a256"
 UPLOADCARE_AUTOSTORE = false;
 
-
 if (!Date.prototype.toLocaleFormat) {
   (function() {
     Date.prototype.toLocaleFormat = function(formatString) {

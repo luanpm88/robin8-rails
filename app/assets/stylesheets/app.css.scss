@@ -1189,9 +1189,8 @@ body.login {
 
   /* LOGIN PAGE */
   .btn-google-plus,
-  .btn-facebook,
-  .btn-weibo,
-  .btn-wechat {
+  .btn-wechat,
+  .btn-facebook  {
     max-width: 560px;
     width: 100%;
     margin: 0 auto 20px;
@@ -1202,9 +1201,8 @@ body.login {
     line-height: 60px;
   }
   a.btn-google-plus,
-  a.btn-facebook,
-  a.btn-weibo,
-  a.btn-wechat  {
+  a.btn-wechat,
+  a.btn-facebook  {
     color: white;
     display: block;
   }
@@ -1214,9 +1212,6 @@ body.login {
     }
   .btn-google-plus {
       background-color: #df4a32;
-    }
-  .btn-weibo {
-    background-color: #3a579a;
   }
   .btn-wechat {
     background-color: #36df70;

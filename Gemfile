@@ -77,8 +77,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-spinjs'
   gem 'rails-assets-jquery-highlighttextarea'
   gem 'rails-assets-jquery-geocomplete'
-  gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-datejs'
+  gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-bootstrap-validator'
 end
 

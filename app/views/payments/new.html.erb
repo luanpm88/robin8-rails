@@ -34,7 +34,7 @@
                     </td>
                     <td>
                       <select disabled name="payment_option" id="payment-option" onchange="updatePackage()">
-                        <option value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
+                        <option value="<%=@product.monthly_package.slug%>"><%= @l.t('payment_page.pay_monthly') %></option>
                       </select>
                     </td>
                     <% unless current_user.locale == 'zh' %>
@@ -64,7 +64,7 @@
                   <tr id="checkout-item-<%=a.id%>">
                     <input type="hidden" name="add_ons[<%=a.id%>]" value="<%=@add_on_hash["#{a.id}"]%>"/>
                     <td class="">
-                      <%=a.name%> (<%=@add_on_hash["#{a.id}"]%>)
+                      <%= @l.t('products.' + a.slug) %> (<%=@add_on_hash["#{a.id}"]%>)
                     </td>
                     <td>
                     </td>
@@ -217,7 +217,7 @@
 
             <div class="small-4 medium-4 large-3 columns custom-padding">
               <label><%= @l.t 'payment_page.cvv'%>
-                <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
+                <%=password_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
                               "data-validation"=>"length", "data-validation-length"=>"min2",
                               "data-validation-error-msg"=> @l.t('payment_page.messages.cvv_blank'),"data-validation"=>"number"%>
               </label>
@@ -245,9 +245,8 @@
           <div class="row formdisclaimers">
             <div class="small-12 columns">
               <p><strong><%= @l.t 'payment_page.note.first_part'%> </strong><br /> <%= @l.t 'payment_page.note.second_part'%> <a href="terms.html"><%= @l.t 'payment_page.note.third_part'%></a> <%= @l.t 'payment_page.note.fourth_part'%> <br /><%= @l.t 'payment_page.note.fifth_part'%></p>
-                <% if current_user.active_subscription.present? %>
-                  Satisfaction guaranteed or your money back (within 30 days).
-                <% end %>
+              <%= @l.t 'payment_page.satisfaction_guaranteed' if current_user.active_subscription.present? %>
+              <br /><%= @l.t('payment_page.note.fifth_part') %></p>
                 <br />All prices in <%=currency %>.</p>
               <%if @product.present?%>
                   <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price"><%=currency_sign %> <%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @product.try(:interval).to_i.days %></span></p>
@@ -327,10 +326,10 @@
                 updateTotal();
                 productCost = parseInt($("#"+$('#slug').val()).val());
                 $('#price-sub').html($('#currency_sign').val()+parseInt((productCost - parseInt(discountAmount))));
-                $('#discount_response').html("Discount successfully applied to your account");
+                $('#discount_response').html("<%= @l.t('payment_page.discount.success') %>");
                 $('#discount_response').css("color","#02BA64");
               } else {
-                $('#discount_response').html("Discount code is not valid or expired");
+                $('#discount_response').html("<%= @l.t('payment_page.discount.invalid') %>");
                 $('#discount_response').css("color","#FF6301");
               }
           });

@@ -54,7 +54,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         size: 'mini'
         onColor: 'info'
         offColor: 'info'
-        onText: 'Influencers'
+        onText: polyglot.t('smart_campaign.targets_step.influencers')
         offText: 'Weibo/Wechat'
 
     initGeoAutocomplete: ->
@@ -62,9 +62,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     initSelect2: ->
       @ui.authorsKeywordsInput.select2
-        placeholder: 'Select a category'
         allowClear: true
         multiple: true
+        formatInputTooShort: (input, min) -> 
+          n = min - input.length
+          return polyglot.t("select2.too_short", {count: n})
+        formatNoMatches: () -> 
+          return polyglot.t("select2.not_found")
+        formatSearching: () -> 
+          return polyglot.t("select2.searching")
         ajax: {
           url: '/autocompletes/iptc_categories'
           dataType: 'json'
@@ -75,7 +81,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         }
 
       @ui.influencersTopicsInput.select2
-        placeholder: 'Topics'
         multiple: true
         formatResult: (object, container, query) ->
           object.text
@@ -83,6 +88,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           object.text
         id: (object) ->
           object.id
+        formatInputTooShort: (input, min) -> 
+          n = min - input.length
+          return polyglot.t("select2.too_short", {count: n})
+        formatNoMatches: () -> 
+          return polyglot.t("select2.not_found")
+        formatSearching: () -> 
+          return polyglot.t("select2.searching")
         ajax:
           url: 'autocompletes/iptc_categories'
           dataType: 'JSON'
@@ -99,7 +111,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         createSearchChoice: ->
           null
       @ui.influencersLocationInput.select2
-        placeholder: 'Locations'
         multiple: false
         formatResult: (object, container, query) ->
           object.text
@@ -107,6 +118,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           object.text.split(',')[0]
         id: (object) ->
           object.id.split(',')[0]
+        formatInputTooShort: (input, min) -> 
+          n = min - input.length
+          return polyglot.t("select2.too_short", {count: n})
+        formatNoMatches: () -> 
+          return polyglot.t("select2.not_found")
+        formatSearching: () -> 
+          return polyglot.t("select2.searching")
         ajax:
           url: '/autocompletes/locations'
           dataType: 'JSON'

@@ -596,6 +596,9 @@ iframe.wysihtml5-sandbox {
   left: 108px;
 }
 
+iframe.wysihtml5-sandbox {
+  width: 100% !important;
+}
 .backend_screen {
   margin-bottom: 10px;
   margin-top: -5px;

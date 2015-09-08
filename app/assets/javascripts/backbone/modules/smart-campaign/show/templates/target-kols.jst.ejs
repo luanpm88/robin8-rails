@@ -1,16 +1,16 @@
-<span class="kol-errors">You need to invite at least someone to this campaign!</span>
+<span class="kol-errors"><%=polyglot.t('smart_campaign.targets_step.need_invite')%></span>
 <% if (kols.length == 0) { %>
 <div>
-  <i>Couldn't match any influencers for you. Provivde more categories.</i>
+  <i><%=polyglot.t('smart_campaign.targets_step.couldnt_match_influencers')%></i>
 </div>
 <% } else { %>
   <table class="table table-hover targets dataTable no-footer" id="kols-table">
     <thead style="cursor:pointer;"><tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Location</th>
-      <th>Private</th>
-      <th>Invite</th>
+      <th><%=polyglot.t('smart_campaign.targets_step.name')%></th>
+      <th><%=polyglot.t('smart_campaign.targets_step.email')%></th>
+      <th><%=polyglot.t('smart_campaign.targets_step.location')%></th>
+      <th><%=polyglot.t('smart_campaign.targets_step.private')%></th>
+      <th><%=polyglot.t('smart_campaign.targets_step.invite')%></th>
     </tr></thead>
     <tbody>
       <%
