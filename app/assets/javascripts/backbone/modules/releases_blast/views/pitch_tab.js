@@ -150,7 +150,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     template: 'modules/releases_blast/templates/pitch-tab/email-pitch-view',
     className: 'panel panel-primary',
     ui: {
-      mergeTag: 'label.label a',
+      mergeTag: '.add_merge_tag',
       textarea: '#email-pitch-textarea',
       summarySlider: '#summary-slider',
       summarySliderAmount: '#summary-slider-amount',
@@ -170,8 +170,35 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     addMergeTag: function(e) {
       e.preventDefault();
 
-      this.editor.composer.commands.exec("insertHTML", '@[' + e.target.textContent + '] ')
-      this.insertRenderedText();
+      var insertedValue;
+      switch ($(e.target).data('tagname')) {
+        case 'summary':
+          var summariesArr = this.releaseModel.get('summaries')
+            .slice(0, this.model.get('summary_length'));
+          var summaries = _(summariesArr).reject(function(item){
+            return s.isBlank(item);
+          }).map(function(item){
+            return '<li>' + item + '</li>'
+          }).join(' ');
+          insertedValue = '<ul>' + summaries + '</ul>';
+          break
+        case 'link':
+          insertedValue = '<a href="' + this.releaseModel.get('permalink') + '">' +
+            this.releaseModel.get('permalink') + '</a>';
+          break
+        case 'title':
+          insertedValue = '<a href="' + this.releaseModel.get('permalink') +
+            '">' + this.releaseModel.get('title') + '</a>';
+          break
+        case 'text':
+          insertedValue = this.releaseModel.get('text');
+          break
+        default:
+          insertedValue = '@[' + e.target.textContent + '] ';
+      }
+
+      this.editor.composer.commands.exec("insertHTML", insertedValue);
+      this.model.set('email_pitch', this.editor.getValue());
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
@@ -179,15 +206,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     serializeData: function() {
       return {
-        mergeTags: [
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.first_name"),
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.last_name"),
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.summary"),
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.outlet"),
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.link"),
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.title"),
-          polyglot.t("smart_release.pitch_step.email_panel.merge_tags.text")
-        ],
         pitch: this.model.toJSON()
       }
     },
@@ -226,13 +244,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         self.editor = self.ui.textarea.data('wysihtml5').editor;
         var emailPitchTextChanged = function(){
           self.model.set('email_pitch', self.editor.getValue());
-          self.insertRenderedText();
         };
 
         self.editor.on('change', emailPitchTextChanged);
-        self.editor.on('blur', emailPitchTextChanged);
-
-        self.insertRenderedText();
       });
     },
     sendTestEmailButtonClicked: function(e){
@@ -262,45 +276,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     emailAddressInputChanged: function(e){
       this.model.set('email_address', this.ui.emailAddressInput.val());
-    },
-    insertRenderedText: function(){
-      var text = this.editor.getValue();
-      text = this.renderPitchText(text);
-      this.editor.setValue(text);
-    },
-    renderPitchText: function(text){
-      // Email pitch tags are:
-      // ["@[First Name]", "@[Last Name]", "@[Summary]",
-      // "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"]
-      var renderedText = text;
-
-      var title = this.releaseModel.get('title');
-      var html_text = this.releaseModel.get('text');
-
-      var parser = document.createElement('a');
-      parser.href = this.releaseModel.get('permalink');
-      var newsRoomsName = parser.hostname.substring(0, parser.hostname.indexOf('.'));
-      var link = this.releaseModel.get('permalink')+ '?utm_source=Robin8&utm_medium=email&utm_campaign='+newsRoomsName;
-      link = '<a href="' + link +'">' + link + '</a>';
-      var linkable_title = '<a href="' + this.releaseModel.get('permalink') +
-        '?utm_source=Robin8&utm_medium=email&utm_campaign='+newsRoomsName+'">' + title + '</a>';
-      var summariesArr = this.releaseModel.get('summaries')
-        .slice(0, this.model.get('summary_length'));
-      var summaries = _(summariesArr).reject(function(item){
-        return s.isBlank(item);
-      }).map(function(item){
-        return '<li>' + item + '</li>'
-      }).join(' ');
-      summaries = '<ul>' + summaries + '</ul>';
-
-      renderedText = renderedText.replace(/\@\[Title\]/g, linkable_title);
-      renderedText = renderedText.replace(/\@\[Text\]/g, html_text);
-      renderedText = renderedText.replace(/\@\[Link\]/g, link);
-      renderedText = renderedText.replace(/\@\[Summary\]/g, summaries);
-
-      this.model.set('email_pitch', renderedText);
-
-      return renderedText;
     }
   });
 
