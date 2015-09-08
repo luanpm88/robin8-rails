@@ -59,7 +59,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
   gem 'rails-assets-highcharts', '4.1.1'
-  gem 'rails-assets-select2'
+  gem 'rails-assets-select2', '3.5.2'
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
