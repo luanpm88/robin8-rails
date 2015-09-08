@@ -22,7 +22,7 @@
             <h2><%= @l.t('products.first.' + @products[0].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                <% unless current_user.locale == 'zh' %>
+                <% unless @l.locale == 'zh' %>
                   $<%=(@products[0].price).to_i %><span class="permonth">/mo</span>
                 <% else  %>
                   ¥<%=(@products[0].china_price).to_i %><span class="permonth">/mo</span>
@@ -49,7 +49,7 @@
             <h2><%= @l.t('products.first.' + @products[1].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                <% unless current_user.locale == 'zh' %>
+                <% unless @l.locale == 'zh' %>
                   $<%=(@products[1].price).to_i %><span class="permonth">/mo</span>
                 <% else  %>
                   ¥<%=(@products[1].china_price).to_i %><span class="permonth">/mo</span>
@@ -76,7 +76,7 @@
             <h2><%= @l.t('products.first.' + @products[2].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                <% unless current_user.locale == 'zh' %>
+                <% unless @l.locale == 'zh' %>
                   $<%=(@products[2].price).to_i %><span class="permonth">/mo</span>
                 <% else  %>
                   ¥<%=(@products[2].china_price).to_i %><span class="permonth">/mo</span>
