@@ -113,6 +113,6 @@ class ReleasesController < ApplicationController
   end
 
   def ssl_configured?
-    !Rails.env.development? && action_name != 'show'
+    false
   end
 end

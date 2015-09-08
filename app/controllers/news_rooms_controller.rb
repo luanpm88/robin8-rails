@@ -158,6 +158,6 @@ private
   end
 
   def ssl_configured?
-    !Rails.env.development? && !['preview', 'presskit', 'follow'].include?(action_name)
+    false
   end
 end
