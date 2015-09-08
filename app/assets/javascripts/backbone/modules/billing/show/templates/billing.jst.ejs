@@ -44,9 +44,9 @@
             <tr class='payment' id="<%= item.id %>">
               <td><%= polyglot.t("products." + item.product.slug) %></td>
               <% if (Robin.currentUser.attributes.locale != 'zh') { %>
-                <td><%=currency_sign%><%= item.price %></td>
+                <td><%=currency_sign%><%= item.product.price %></td>
               <% } else { %>
-                <td><%=currency_sign%><%= item.china_price %></td>
+                <td><%=currency_sign%><%= item.product.china_price %></td>
               <% } %>
               <td><%= item.status %></td>
               <td ><a class="<%= item.status == 'C' ? 'hidden' : ''%> cancel-addon"><%= polyglot.t("billing.cancel_action") %></a></td>
