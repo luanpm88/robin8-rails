@@ -417,7 +417,7 @@ GEM
     rails-assets-eonasdan-bootstrap-datetimepicker (4.0.0)
       rails-assets-jquery (>= 1.8.3)
       rails-assets-moment (>= 2.8.0)
-    rails-assets-font-awsome (4.4.0)
+    rails-assets-font-awsome (4.3.0)
     rails-assets-highcharts (4.1.1)
     rails-assets-jquery (2.1.4)
     rails-assets-jquery-geocomplete (1.6.5)
@@ -432,7 +432,7 @@ GEM
     rails-assets-please-wait (0.0.5)
     rails-assets-progressjs (0.1.0)
     rails-assets-sass-bootstrap-glyphicons (1.0.0)
-    rails-assets-select2 (3.5.3)
+    rails-assets-select2 (3.5.2)
       rails-assets-jquery (>= 1.7.1)
     rails-assets-select2-bootstrap-css (1.4.6)
       rails-assets-select2 (>= 3.3.2, < 4)
@@ -703,7 +703,7 @@ DEPENDENCIES
   rails-assets-please-wait!
   rails-assets-progressjs!
   rails-assets-sass-bootstrap-glyphicons!
-  rails-assets-select2!
+  rails-assets-select2 (= 3.5.2)!
   rails-assets-select2-bootstrap-css!
   rails-assets-spinjs!
   rails-assets-spinkit!
