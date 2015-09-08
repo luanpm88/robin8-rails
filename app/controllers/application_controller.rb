@@ -3,11 +3,19 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
 
   before_action :set_translations
+  before_action :china_redirect
+
+  def china_redirect
+    if Rails.env.production? and china_client? and not china_instance?
+      return redirect_to "http://robin8.cn#{request.fullpath}", :status => :moved_permanently
+    end
+  end
 
   def set_translations
+    default_locale = china_instance? ? 'zh' : 'en'
     unless current_user.blank?
       someone = current_user
-      locale = someone.locale.nil? ? 'en' : someone.locale
+      locale = someone.locale.nil? ? default_locale : someone.locale
     else
       if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
         cookies['locale'] = { value: params[:locale], expires: 1.year.from_now }
@@ -15,7 +23,7 @@ class ApplicationController < ActionController::Base
       elsif cookies['locale'] && [:en, :zh].include?(cookies['locale'].to_sym)
         I18n.locale = cookies['locale'].to_sym
       else
-        I18n.locale = request.location && request.location.country.to_s == "China" ? 'zh' : 'en'
+        I18n.locale = default_locale
         cookies['locale'] = { value: I18n.locale, expires: 1.year.from_now }
       end
       locale = I18n.locale
@@ -93,5 +101,13 @@ class ApplicationController < ActionController::Base
 
   def ssl_configured?
     !Rails.env.development?
+  end
+
+  def china_instance?
+    Rails.application.config.china_instance
+  end
+
+  def china_client?
+    request.location && request.location.country.to_s == "China"
   end
 end
