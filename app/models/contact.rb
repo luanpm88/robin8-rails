@@ -22,7 +22,7 @@ class Contact < ActiveRecord::Base
     conditions: -> { where(origin: 3) }, allow_nil: true
   
   def self.bulk_find_or_create(contacts_param)
-    contacts_param.map do |contact|
+    res = contacts_param.map do |contact|
       case contact['origin']
         when 'pressr'
           if !contact['email'].blank?
@@ -63,6 +63,7 @@ class Contact < ActiveRecord::Base
         nil
       end
     end
+    res.select {|x| not x.blank?}
   end
 
   def full_name

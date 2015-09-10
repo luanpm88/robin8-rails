@@ -1219,7 +1219,7 @@ en:
           text_dear: Dear
           text_here: Here's a press release you might find interesting. Please let
             me know your thoughts.
-          text_text: Press Release Text
+          text_text: Content Text
           title: Email pitch
         see: See list
         targets: Targets will be contacted via Email
