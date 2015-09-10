@@ -1884,3 +1884,84 @@ input.form-control[type="file"] {
 #wechat-perf-table .rejected_status{
   color: red;
 }
+.campaigns-tab-title {
+  text-align: center;
+  background-color: #f4f4f4;
+  margin: -20px 0 0 -200px;
+}
+.campaigns-tab-title span {
+  font-family: 'ProximaNovaSemibold';
+  font-size: 34px;
+  font-weight: normal;
+  vertical-align: middle;
+  color: #007183
+}
+.campaigns-tab-title img {
+  margin: 15px 0 15px 0;
+}
+#campaigns-list {
+  margin-right: 100px;
+}
+.campaigns-tables-title {
+  text-align: center;
+  background-color: #007183;
+  color: #fff;
+  height: 40px;
+  margin: 20px 0px 30px 0px;
+}
+.campaigns-tables-title span {
+  vertical-align: middle;
+  font-family: 'ProximaNova';
+  font-size: 24px;
+  color: #fff;
+}
+#campaigns-list .nav-tabs > li.active > a,
+#campaigns-list .nav-tabs > li.active > a:focus,
+#campaigns-list .nav-tabs > li.active > a:hover {
+  background-color: #007183 !important;
+  color: #fff;
+}
+#campaigns-list .nav-tabs > li > a{
+  color: #b2b2b2;
+}
+#campaigns-list .nav-tabs {
+  background-color: #fff;
+}
+#campaigns-list .nav-tabs > li {
+  background-color: #f4f4f4;
+  margin-right: 5px;
+  border-left: none;
+}
+
+#campaigns-list .nav-tabs {
+  border-bottom: 3px solid #007183;
+}
+.campaigns-tab-btn {
+  background: #a5cc63;
+  height: 40px;
+  width: 205px;
+  border-radius: 25px;
+  font-family: 'ProximaNova';
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 40px;
+  margin: auto;
+  padding: 0;
+  text-align: center;
+}
+.campaigns-tab-btn > a,
+.campaigns-tab-btn > a:focus,
+.campaigns-tab-btn > a:hover {
+  color: #fff;
+}
+.campaigns-tab-btn > li > a {
+  color: #fff;
+}
+.campaigns-tab-footer {
+  background-color: #f4f4f4;
+  margin: 70px 0 0 -200px;
+  height: 150px;
+}
+.campaigns-tab-back {
+  padding-top: 65px;
+}

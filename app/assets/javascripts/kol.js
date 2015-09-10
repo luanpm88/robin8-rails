@@ -67,6 +67,7 @@
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/components
 //= require_tree ./backbone/modules/dashboard-kol
+//= require_tree ./backbone/modules/campaigns
 
 var ready;
 ready = function() {

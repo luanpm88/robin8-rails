@@ -326,6 +326,10 @@ en:
         Please <a href="#profile">update</a> your profile.
       status: Status
       title: Dashboard
+    dashboard_kol:
+      campaigns_tab:
+        tables_title: Monetize!
+        title: Campaigns
     date:
       datepicker_days:
         d1: Su
