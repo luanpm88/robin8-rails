@@ -21,7 +21,7 @@ class Contact < ActiveRecord::Base
   validates_uniqueness_of :author_id, scope: :origin, 
     conditions: -> { where(origin: 3) }, allow_nil: true
   
-  def self.bulk_find_or_create(contacts_param)
+  def self.bulk_find_or_create(contacts_param, id)
     res = contacts_param.map do |contact|
       case contact['origin']
         when 'pressr'
@@ -32,6 +32,7 @@ class Contact < ActiveRecord::Base
                 c.last_name = contact['last_name']
                 c.email = contact['email']
                 c.outlet = contact['outlet']
+                c.user_id = id
               end
             end
             self.find_or_create_by!(author_id: contact['author_id']) do |c|

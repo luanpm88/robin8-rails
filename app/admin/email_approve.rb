@@ -24,7 +24,8 @@ ActiveAdmin.register EmailApprove do
 
   index do
     id_column
-    column :author_id
+    column "User ID", :user_id
+    column "Author ID", :author_id
     column :first_name
     column :last_name
     column :outlet
