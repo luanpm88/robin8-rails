@@ -502,8 +502,16 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     addEmail: function()
     {
-      console.log("add");
-      this.$el.find('a[name="email-targets-list"]').click();
+
+      if(this.$el.find('a[name="email-targets-list"]').attr('aria-expanded')) {
+        if (this.$el.find('a[name="email-targets-list"]').attr('aria-expanded') == "false") {
+          this.$el.find('a[name="email-targets-list"]').click();
+        }
+      }
+      else
+      {
+        this.$el.find('a[name="email-targets-list"]').click();
+      }
     },
     pitchButtonClicked: function(e){
       e.preventDefault();
