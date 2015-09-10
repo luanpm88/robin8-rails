@@ -210,15 +210,25 @@ en:
       annually: billed annually or
       buttons:
         addons: Add ons
+        campaign_details: Campaign payment details
         cancel: Cancel Subscription
         change: Change plan
         new_plan: Subscribe to new plan
         update: Update payment details
+      cancel:
+        'no': 'No'
+        'yes': 'Yes'
       cancel_action: Cancel
       card_last: Card last four
       card_type: Card type
       created_at: Created at
       current_plan: Current Pricing Plan
+      messages:
+        cancel_addon: Cancel this add-on?
+        cancel_subscription: Cancel current subscription?
+        cancel_subscription_success: Your current plan is canceled!
+        cant_cancel_addon: You can't cancel this add-on. Contact support for more
+          details.
       month: month-to-month
       name: Name
       newsroom: Brand Gallery
@@ -232,6 +242,41 @@ en:
       smart_release: SmartContent
       status: Status
       streams: Streams for Media Monitoring
+    campaign_payment_update:
+      enter_info: Enter new Credit Card Information below
+      error:
+        address: Address can't be blank
+        card_number: Card number can't be blank
+        city: City can't be blank
+        cvv: CVV must be greater then 2 characters
+        exp_month: Expiry Month can't be blank
+        exp_year: Expiry Year can't be blank and must be in YYYY format
+        first_name: First name can't be blank
+        last_name: Last name can't be blank
+        phone: Phone can't be blank
+        postal_code: Postal Code/Zip can't be blank
+        state: State can't be blank
+      form:
+        address: Address
+        button_back: Back
+        button_submit: Submit
+        city: City
+        country: Country
+        credit_card_number: Credit Card Number
+        credit_card_type: Credit Card Type
+        cvv: CVV
+        exp_month: Exp. Month
+        exp_year: Exp. Year
+        first_name: First Name
+        last_name: Last Name
+        mr: Mr
+        mrs: Mrs
+        ms: Ms
+        phone: Phone
+        postal_code: Postal Code
+        state: State
+        title: Title
+      title: Campaign Payment Information
     contact_page:
       address: Robin8 Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019
       address_title: Main Office Address
@@ -281,6 +326,51 @@ en:
         Please <a href="#profile">update</a> your profile.
       status: Status
       title: Dashboard
+    date:
+      datepicker_days:
+        d1: Su
+        d2: Mo
+        d3: Tu
+        d4: We
+        d5: Th
+        d6: Fr
+        d7: Sa
+      datepicker_next: Next
+      datepicker_prev: Prev
+      days_full:
+        d1: Sunday
+        d2: Monday
+        d3: Tuesday
+        d4: Wednesday
+        d5: Thursday
+        d6: Friday
+        d7: Saturday
+      monthes_abbr:
+        m1: Jan
+        m10: Oct
+        m11: Nov
+        m12: Dec
+        m2: Feb
+        m3: Mar
+        m4: Apr
+        m5: May
+        m6: Jun
+        m7: Jul
+        m8: Aug
+        m9: Sep
+      monthes_full:
+        m1: January
+        m10: October
+        m11: November
+        m12: December
+        m2: February
+        m3: March
+        m4: April
+        m5: May
+        m6: June
+        m7: July
+        m8: August
+        m9: September
     footer:
       about: About
       contact: Contact
@@ -300,6 +390,7 @@ en:
       contactus: Contact Us
       demo: Demo
       log_in: Log in
+      logout: Logout
       menu: Menu
       pricing: Pricing
       sign_up: Sign up
@@ -336,7 +427,7 @@ en:
       you_dont_have_any_accepted: 'You don''t have any accepted campaigns. '
       you_dont_have_any_declined: You don't have any declined campaigns.
     kols:
-      agree: By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service
+      agree: By signing up you agree to Robin8's <a href="/terms">Terms of Service
       email: Email
       email_error: Email can't be blank
       first_name: First Name
@@ -346,24 +437,49 @@ en:
       lname_error: Last name can't be blank
       location: Location
       location_error: Location can't be blank
+      mobile_number: Mobile Number
       mobile_number_error: Digits only
       password: Password
       password_error: Password must be greater then 7 characters
+      signup_btn: SIGN UP
       title: Signup
     landing_page:
+      brand: Brand
       here: here.
       inf_signup: 'Are you an Influencer? Sign up '
+      influencer: Influencer
       kol_signup: Are you a KOL? Sign up
       learn_more: Learn More
+      monetize: Monetize
       recommend: Recommend
       recommend_text: Influencers are curated and content is personalized to you.
         The Robin8 recommendation engine gets smarter every time you use it.
+      register: Register
+      register_text: Register now
+      score: My Score
       sign_up: Sign Up
+      social: My Social
       target: Target
       target_text: Select from the list of influencers Robin8 intelligently recommends
         in one click.
       text1: ROBIN8 makes reaching out to reporters and influencers effortless and
         effective.
+      text10: We are changing the face of media and technology that's been years in
+        the making. Sign up and immediately see your score and value as an influencer.
+        Help us help you unleash your influence!
+      text11: Robin8 is constantly tracking and analyzing data from millions of articles
+        and posts every second and every day. By understanding the nuances behind
+        every influencer, we can match you with the best brands and campaigns.
+      text12: Calculate your influence and value
+      text13: Help you increase your influence and value
+      text14: Uses Algorithm and machine-learning technology to adapt campaign recommendations
+        for you
+      text15: Help you monetize your influence and make money
+      text16: Do you know you are an influencer?
+      text17: ROBIN8 believes every person is an influencer and a media company.
+      text18: Welcome to the internet for everyone. With the rise of social media,
+        everyone has a voice and influence.
+      text19: Robin8 calculates your influence and estimates the value of your REACH.
       text2: We’re changing the face of PR with technology that’s been years in the
         making. Predict the success of every pitch you make to a reporter by knowing
         with confidence they will share your content. It’s simply intelligent.
@@ -382,11 +498,13 @@ en:
       text9: Ready to see the world acording to ROBIN8?
       title: Next generation social and content marketing platform powered by artificial
         intelligence
+      title_landing: Monetize your influence. Register here.
       track: Track
       track_text: Track your results through our robust analytic dashboard and use
         our media intelligence to keep abreast of the latest news.
       upload: Upload
       upload_text: Upload your content and watch it get analyzed in seconds.
+      welcome: Welcome to the Internet of everyone!
     login:
       email: Email
       fb_login: Login using Facebook
@@ -483,8 +601,12 @@ en:
         adjusted automatically in your next billing cycle, starting
       confirm: CONFIRM PACKAGE CHANGE
       current: Current
+      discount:
+        invalid: Discount code is not valid or expired
+        success: Discount successfully applied to your account
       information: New Package Information
       new: New Package
+      pay_monthly: Pay Monthly
       plan: Plan
       price: Price
       promo: Promo Code
@@ -580,6 +702,9 @@ en:
       code: Postal Code
       country: Country
       cvv: CVV
+      discount:
+        invalid: Discount code is not valid or expired
+        success: Discount successfully applied to your account
       exp_month: Exp. Month
       exp_year: Exp. Year
       first_name: First Name
@@ -611,7 +736,10 @@ en:
           back (within 30 days).
         second_part: By joining Robin8 you are agreeing to the
         third_part: Terms of Use
+      pay_monthly: Pay Monthly
       phone: Phone
+      satisfaction_guaranteed: Satisfaction guaranteed or your money back (within
+        30 days).
       state: State
       submit_btn: Submit
       table:
@@ -624,8 +752,13 @@ en:
     payment_update_page:
       back_btn: "<<< BACK"
       enter_info: Enter new Credit Card Information below
+      messages:
+        success: The Credit Card information has been successfully updated
       submit_btn: SUBMIT
+      thank_you: THANK YOU!
       title: UPDATE PAYMENT INFORMATION
+      title_confirmation: Update Confirmation
+      to_robin: Go to Robin8
     pricing:
       accesswire_distribution: Accesswire Distribution
       accesswire_distribution_description: Distribute to thousands of websites including
@@ -691,6 +824,25 @@ en:
         placement on hundreds of top news websites including Boston Globe and Miami
         Herald. Each distribution comes with a report showing a sampling of the sites
         that posted your content.
+    products:
+      10_smart_releases: 10 Smart Release Distribution (per 10 releases)
+      20_smart_releases: 20 Smart Release Distribution (per 20 releases)
+      5_smart_releases: 5 Smart Release Distribution (per 5 releases)
+      accesswire_distribution: Accesswire Distribution (per release)
+      first:
+        newbasic-monthly: Basic
+        newbusiness-monthly: Business
+        newenterprise-monthly: Entereprise
+      media_moitoring: Media Monitoring Stream (per month)
+      myprgenie_web_distribution: FinancialContent Web Distribution (per release)
+      newbasic-monthly: Basic Monthly
+      newbusiness-monthly: Business Monthly
+      newenterprise-monthly: Entereprise Monthly
+      newsroom: Newsroom (per month)
+      pr_newswire_distribution: PR Newswire Distribution (per release)
+      press_release: Press Release Distribution (per release)
+      seat: Seat (per month)
+      smart_release: Smart Release Distribution (per release)
     profile:
       account_changed: Your account data has been successfully changed
       account_successfully_changed: Your account data has been successfully changed
@@ -711,6 +863,7 @@ en:
       last_name: Last name
       location: Location
       messages:
+        invalid_email: The data you have entered is not a valid email
         required_email: The email address is required
       mobile_number: Mobile number
       new_password: New password
@@ -865,11 +1018,29 @@ en:
       campaigns: Campaigns
       categories: Categories
       close: Close
+      contact_form:
+        close: Close
+        email: Email
+        message: Message
+        send: Send
+        send_to: Send your content to
+        subject: Subject
+        title: Contact
+        your_email: Your Email
       created: Created
       deadline: Deadline
       declined: Declined
       declined_unknown: Declined/Unknown
       edit_campaign: Edit campaign
+      editor:
+        adjectives: Adjectives
+        adverbs: Adverbs
+        characters: Characters
+        nouns: Nouns
+        paragraphs: Paragraphs
+        readability_score: Readability score
+        sentences: Sentences
+        words: Words
       email: Email
       enter_email: Enter email…
       enter_first name: Enter first name...
@@ -880,19 +1051,27 @@ en:
       kol:
         alredy_in_list: " already in your list"
         attach_invalid: Attachment content type is invalid
+        error: Error
         incorrect_ignored: All contacts in incorrect format will be ignored.
         list_uploaded: Your list has been successfully uploaded.
         select_categories: Select influencer categories
       last_name: Last Name
       last_update: Last Update
       name: Name
+      new:
+        pitch: Pitch
+        start: Start
+        targets: Targets
       new_campaign: New Campaign
+      next: Next
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
       no_one_accepted: No one accepted your invitation yet.
+      not_approved_yet: Not approved yet
       pending_approval: Pending Approval
       pitch_step:
+        button: Pitch!
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
           contact for your compaign, you need to prepare the note to these contacts.
@@ -935,6 +1114,7 @@ en:
           weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
+      prev: Previous
       private_influencers: Private Influencers
       smart_campaign:
         pitch_step:
@@ -950,7 +1130,8 @@ en:
           text. To place a normal line break press Shift+Enter (Shift+Return)"
         enter_title: Enter title...
         following_topics: and the following topics are mentioned in it
-        paste_press_here: Paste the press release!
+        paste_press: Paste the press release!
+        paste_press_here: Paste the press release for your campaign here...
         pick_deadline: Pick a deadline!
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
       status: Status
@@ -962,11 +1143,23 @@ en:
           more categories.
         email: Email
         enter_categories: Enters categories
+        influencers: Influencers
         invite: Invite
         location: Location
         name: Name
         need_invite: You need to invite at least someone to this campaign!
         private: Private
+        search: Search
+        topic: Topic
+        weibo:
+          contact_form:
+            message:
+              hi: Hi
+              invited_msg: 'You were invited to participate in a new campaign:'
+              ps: P.S. We kindly recommend you to <a href="%{kols_signup_url}">register</a>
+                in our system as an Influencer.
+              regards: Regards
+            send_error: Message can not be sent!
         weibo_tab:
           author: Author
           contact: Contact
@@ -997,6 +1190,7 @@ en:
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
         title: Analysis
         topics: and the following topics are mentioned in it
+      cancel: Cancel
       pitch_step:
         button: Pitch!
         delete_button: Delete
@@ -1005,6 +1199,12 @@ en:
           You can use the Robin8 default note or prepare your own personal note. If
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
+        email_missing: Email(s) Missing
+        email_missing_add: Add Email(s)
+        email_missing_pitch: Pitch anyway!
+        email_missing_text: There are no email addresses for some authors you've selected.<br/>You
+          may ignore authors without an email and send the pitch to rest.<br/>You may
+          also add the missing emails manually.
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
@@ -1026,7 +1226,7 @@ en:
           text_dear: Dear
           text_here: Here's a press release you might find interesting. Please let
             me know your thoughts.
-          text_text: Press Release Text
+          text_text: Content Text
           title: Email pitch
         see: See list
         targets: Targets will be contacted via Email
@@ -1034,6 +1234,7 @@ en:
           actions: Actions
           button: Save
           delete: Delete
+          email: Email
           name: Name
           outlet: Outlet
           save: Save as a list
@@ -1084,6 +1285,7 @@ en:
           contact: Contact
           followers_count: Followers count
           length: Average length
+          no_email: There's no email address for this author. Please enter one.
           outlet: Outlet
           pitch: Pitch?
           relevance: Relevance
