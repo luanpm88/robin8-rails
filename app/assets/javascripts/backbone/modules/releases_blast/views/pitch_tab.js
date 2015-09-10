@@ -520,6 +520,29 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       console.log(this.model.get('contacts'));
       contacts = this.model.get('contacts');
       authorInputs = this.$el.find('input[name="author_email"]');
+
+      if(_.filter(authorInputs, function(x){
+          var email = x.value;
+
+          if(email != "") {
+            var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            return !re.test(email);
+          }
+          else{
+            return false;
+          }
+        }
+      ).length>0){
+        $.growl({message: polyglot.t('Email format is not valid')
+        },{
+          type: 'danger'
+        });
+        this.addEmail();
+        return
+      }
+
+
+
       _.each(authorInputs, function(input){
         email = input.value;
         id = input.getAttribute('data-pressr-id');
