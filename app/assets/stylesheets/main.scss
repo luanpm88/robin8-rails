@@ -1154,6 +1154,11 @@ nav{text-align: center;}
 #wrapper.active {
     padding-left: 180px;
 }
+
+#wrapper.kol {
+  padding-left: 180px;
+  padding-right: 180px;
+}
 #wrapper.active #sidebar-wrapper {
     left: 180px;
 }
