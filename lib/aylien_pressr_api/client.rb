@@ -81,33 +81,33 @@ module AylienPressrApi
         Configuration::ENDPOINTS[:skills_autocompletes])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def author_types_autocompletes!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:author_types_autocompletes])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def stories!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:stories])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def uniq_stories!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:uniq_stories])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def interesting_terms!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:interesting_terms])
       Connection.new(endpoint, params, config).request!
     end
     # END Destructives methods
-    
-    
+
+
     def suggested_authors(value=nil, params={})
       begin
         suggested_authors!(value, params)
@@ -115,7 +115,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def related_stories(value=nil, params={})
       begin
         related_stories!(value, params)
@@ -123,7 +123,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def influencers(value=nil, params={})
       begin
         influencers!(value, params)
@@ -131,7 +131,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def author_stats(value=nil, params={})
       begin
         author_stats!(value, params)
@@ -139,7 +139,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def authors(value=nil, params={})
       begin
         authors!(value, params)
@@ -147,7 +147,15 @@ module AylienPressrApi
         nil
       end
     end
-    
+
+    def author_update(value=nil, params={})
+     begin
+       author_update!(params, params)
+     rescue => e
+       nil
+     end
+    end
+
     def locations_autocompletes(value=nil, params={})
       begin
         locations_autocompletes!(value, params)
@@ -155,7 +163,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def skills_autocompletes(value=nil, params={})
       begin
         skills_autocompletes!(value, params)
@@ -163,7 +171,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def author_types_autocompletes(value=nil, params={})
       begin
         author_types_autocompletes!(value, params)
@@ -171,7 +179,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def stories(value=nil, params={})
       begin
         stories!(value, params)
@@ -216,7 +224,7 @@ module AylienPressrApi
           if params.key?("iptc_categories")
             params["iptc_categories[]"] = params.delete("iptc_categories")
           end
-          
+
           if params.key?("author_type_ids")
             params["author_type_ids[]"] = params.delete("author_type_ids")
           end
@@ -241,7 +249,7 @@ module AylienPressrApi
           end
         when Configuration::ENDPOINTS[:authors]
           params["keywords[]"] = params.delete("keywords") if params.key?("keywords")
-          
+
           if params.key?("author_type_ids")
             params["author_type_ids[]"] = params.delete("author_type_ids")
           end
