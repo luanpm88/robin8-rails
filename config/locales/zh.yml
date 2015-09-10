@@ -166,15 +166,15 @@ zh:
         media_list:
           attributes:
             contacts:
-              association_count_greater_than_or_equal_to: |
-                should be greater than or equal to %{count}
+              association_count_greater_than_or_equal_to: should be greater than or
+                equal to %{count}
             name:
-              presence: List name can't be blank
-              uniqueness: Name has already been taken
+              presence: "列表名称不能为空"
+              uniqueness: "名称已被占用"
         user:
           attributes:
             email:
-              blank: Email can't be blank
+              blank: "电子邮件不能为空"
   addons:
     continue: CONTINUE
     go_back: GO BACK
@@ -224,15 +224,24 @@ zh:
       annually: "每年结算或"
       buttons:
         addons: "附加功能"
+        campaign_details: "推广活动付款细节"
         cancel: "取消订阅"
         change: "更改计划"
         new_plan: Subscribe to new plan
         update: "更新付款详细信息"
+      cancel:
+        'no': "不是"
+        'yes': "是的"
       cancel_action: "取消"
       card_last: "卡的最后四位"
       card_type: "卡的类型"
       created_at: "于创建"
       current_plan: "目前的价格计划"
+      messages:
+        cancel_addon: "取消这个附加项？"
+        cancel_subscription: "取消目前的订阅？"
+        cancel_subscription_success: "您目前的订阅被取消！"
+        cant_cancel_addon: "您不能取消这个附加项。联系客服了解更多详情。"
       month: "按月付费"
       name: "姓名"
       newsroom: "新闻中心"
@@ -246,6 +255,41 @@ zh:
       smart_release: "次智能发布"
       status: "状态"
       streams: "次流媒体监控"
+    campaign_payment_update:
+      enter_info: "在下面输入新的信用卡信息"
+      error:
+        address: "地址不能为空"
+        card_number: "卡号不能为空"
+        city: "城市不能为空"
+        cvv: "安全码必须大于2位"
+        exp_month: "有效期月份不能为空"
+        exp_year: "有效期年份不能为空，且必须是YYYY格式"
+        first_name: "名字不能为空"
+        last_name: "姓氏不能为空"
+        phone: "电话号码不能为空"
+        postal_code: "邮编不能为空"
+        state: "州不能为空"
+      form:
+        address: "地址"
+        button_back: "背部"
+        button_submit: "提交"
+        city: "城市"
+        country: "国家"
+        credit_card_number: "信用卡号码"
+        credit_card_type: "信用卡类型"
+        cvv: "安全码"
+        exp_month: "有效期。月"
+        exp_year: "有效期。年"
+        first_name: "名"
+        last_name: "姓氏"
+        mr: "先生"
+        mrs: "女士"
+        ms: "小姐"
+        phone: "电话"
+        postal_code: "邮政编码"
+        state: "州"
+        title: "题目"
+      title: "推广活动付款信息"
     contact_page:
       address: Robin8<br> 1745百老汇大街，17楼<br> 纽约市，纽约州 10019
       address_title: "主要办公地址"
@@ -266,14 +310,72 @@ zh:
       thank_you: "感谢您与我们联系。我们团队将尽快与您联系"
       title: "联系Robin8"
     dashboard:
+      accept: "接受"
+      accepted: "已接受"
+      brand: "品牌"
+      budget: "預算"
+      check_to_activate: "请查看您的电子邮件来激活您的帐户!"
+      creation_date: "創建日期"
+      deadline: "截止日期"
+      decline: "拒绝"
+      declined: "已拒绝"
+      description: "描寫"
       description1: "如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的记者，KOLs 和大V们，这个听起来怎么样？Robin8可以实现这一切，帮你摆脱PR世界里毫无依据的猜想和机会渺茫的投递"
       description2: Robin8 可以通过智能分析来深度了解KOLs和大V们，帮你的推广活动找到最为合适的人选，从而最大程度的优化投递结果。
       description3: Robin8通过为你提供高效的工作流程和智能化的操作界面来帮助你获得最好的推广结果并在竞争中保持不败之地
+      name: "姓名"
       new_monitoring_button: "新的观察频道"
       new_newsroom_button: "新建内容库"
       new_release_button: "发布新的文章"
       new_smartrelease_button: "智能发布"
+      not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
+      status: "状态"
       title: "主界面"
+    date:
+      datepicker_days:
+        d1: "星期天"
+        d2: "星期一"
+        d3: "星期二"
+        d4: "星期三"
+        d5: "星期四"
+        d6: "星期五"
+        d7: "星期六"
+      datepicker_next: "下一步"
+      datepicker_prev: "上一步"
+      days_full:
+        d1: "星期天"
+        d2: "星期一"
+        d3: "星期二"
+        d4: "星期三"
+        d5: "星期四"
+        d6: "星期五"
+        d7: "星期六"
+      monthes_abbr:
+        m1: "一月"
+        m10: "十月"
+        m11: "十一月"
+        m12: "十二月"
+        m2: "二月"
+        m3: "三月"
+        m4: "四月"
+        m5: "五月"
+        m6: "六月"
+        m7: "七月"
+        m8: "八月"
+        m9: "九月"
+      monthes_full:
+        m1: "一月"
+        m10: "十月"
+        m11: "十一月"
+        m12: "十二月"
+        m2: "二月"
+        m3: "三月"
+        m4: "四月"
+        m5: "五月"
+        m6: "六月"
+        m7: "七月"
+        m8: "八月"
+        m9: "九月"
     footer:
       about: "大约"
       contact: "联系人"
@@ -289,8 +391,10 @@ zh:
       user_not_found: "与此电子邮件用户不存在！"
     header:
       contact_us: "联系我们"
+      contactus: "联系我们"
       demo: "演示"
       log_in: "登录"
+      logout: "登出"
       menu: Menu
       pricing: "定价"
       sign_up: "注册"
@@ -301,8 +405,33 @@ zh:
       download_png: "下载PNG图片"
       download_svg: "下载SVG矢量图"
       print_chart: "打印图表"
+    kol_campaign:
+      approved: "批准"
+      article:
+        close: "关闭"
+        have_submit_wechat: You have to submit your WeChat report on each 7th day
+          after approval of your article, since WeChat only stores data during 7 days
+          after the article was posted. If you will delay submission of the report,
+          your performance data (number of people reached, number of page views, number
+          of "read more", number of re-share + favorites) for the delayed days will
+          not be count.
+        please_fill_field: "请填写领域"
+        save: "保存更改"
+        send: "發送"
+        send_for_approval: "发送审批"
+        type_comment: "编辑您的评论"
+      article_url: "文章網址"
+      brand: "品牌"
+      budget: "预算"
+      creation_date: "创建日期"
+      deadline: "期限"
+      in_progress: "进行中"
+      name: "姓名"
+      not_approved_yet: "尚未得到批准"
+      you_dont_have_any_accepted: "您没有已接受的推广活动"
+      you_dont_have_any_declined: "您没有被拒绝的推广活动"
     kols:
-      agree: 通过注册，你已同意MyPRGenie的 <a href="/terms">服务条款。
+      agree: 通过注册，你已同意Robin8<a href="/terms">的服务条款。
       email: "电子邮件"
       email_error: "电子邮件不能为空"
       first_name: "名"
@@ -312,21 +441,44 @@ zh:
       lname_error: "姓氏不能为空"
       location: "地点"
       location_error: "地点不能为空"
-      mobile_number_error: Digits only
+      mobile_number: "手机号码"
+      mobile_number_error: "只可填数字"
       password: "密码"
       password_error: "密码必须大于7个字符"
+      signup_btn: "注册"
       title: "注册"
     landing_page:
+      brand: "品牌"
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
+      influencer: "社交达人"
       kol_signup: Are you a KOL? Sign up
       learn_more: "了解更多"
+      monetize: "赚钱"
       recommend: "推荐"
       recommend_text: "意见领袖为你出谋划策，还有个性化的内容。你的每次使用，会让Robin8推荐引擎变得更智能。"
-      sign_up: ''
+      register: "注册"
+      register_text: "立即注册"
+      score: "我的分数"
+      sign_up: "注册"
+      social: "我的社交资料"
       target: "目标"
       target_text: "只需点击一下，Robin8将智能推荐意见领袖的名单。"
       text1: ROBIN8帮你更轻松和有效的找到记者和意见领袖。
+      text10: "我们正在向陈旧的媒体和技术发起一场革命。注册就能立即看到你作为一个社交达人的分数和价值。让我们来帮助你发挥你的影响力吧！"
+      text11: Robin8每一分每一秒都在不断跟踪并分析数以百万计的文章和帖子。通过了解每一个社交达人背后的细微差别，我们可以为您匹配最好的品牌和活动。
+      text12: "计算你的影响力和价值"
+      text13: "帮助你提高你的影响力和价值"
+      text14: "运用算法和机器学习技术，来推荐适合您的活动"
+      text15: "帮助你估算影响力的价值并且赚钱"
+      text16: "你知不知道你是一个社交达人？"
+      text17: Robin8 相信每一个人都是一个社交达人，都可以成为一个媒体。
+      text18: "欢迎来到人人共享的网络世界。随着社交媒体的流行，每一个人都有话语权和影响力。"
+      text19: Robin8 calculates your influence and estimates the value of your REACH.
+      text17: ROBIN8 believes every person is an influencer and a media company.
+      text18: Welcome to the internet for everyone. With the rise of social media,
+        everyone has a voice and influence.
+      text19: Robin8 calculates your influence and estimates the value of your REACH.
       text2: "多年来，我们一直在用科技改变PR的面貌。成功将你的文章发送至了解与信任的记者，他们将分享您的每一次内容递送。简单智能。"
       text3: "推测出适合的社交和内容营销"
       text4: ROBIN8通过不断的跟踪每日发布的数十亿文章，并分析相关的数据，最终打造有影响力的终极数据库。通过了解每一个意见领袖背后的细微差别和他们的兴趣，我们
@@ -336,10 +488,12 @@ zh:
       text8: "让你的营销费用获得更高的回报。"
       text9: "准备好通过ROBIN8看世界了吗？"
       title: "下一代人工智能驱动的社交和内容营销平台"
+      title_landing: "用你的影响力来赚钱。点击注册！"
       track: "轨道"
       track_text: "通过我们强大的分析系统追踪结果，利用我们的智能媒体，及时了解最新的新闻。"
       upload: "上传"
       upload_text: "上传您的新闻稿或内容，它在几秒钟内将得到分析。"
+      welcome: "欢迎来到人人共享的网络世界。"
     login:
       email: "电子邮件"
       fb_login: "使用Facebook账号登陆"
@@ -370,7 +524,7 @@ zh:
         not_available_seats: "你没有可用座位！"
         remove_explanation: "你将无法恢复该用户。"
         remove_user: "删除此用户"
-        resent: The invitation has been resent
+        resent: "该邀请已经发出"
         sent: "该邀请已经发出"
       search_placeholder: "通过邮件和名称搜索用户"
       table:
@@ -433,8 +587,12 @@ zh:
       charge_notification: "你不会立刻被扣款。您的付款会在你的下一个结算日自动进行调整，从...开始， "
       confirm: "确认更改套餐"
       current: "当前"
+      discount:
+        invalid: "折扣代码无效或过期"
+        success: "折扣成功地应用到您的帐户"
       information: "新套餐信息"
       new: "新套餐"
+      pay_monthly: "按月支付"
       plan: "计划"
       price: "价格"
       promo: "促销代码"
@@ -526,6 +684,9 @@ zh:
       code: "邮政编码"
       country: "国家"
       cvv: "安全码"
+      discount:
+        invalid: "折扣代码无效或过期"
+        success: "折扣成功地应用到您的帐户"
       exp_month: "有效期。月"
       exp_year: "有效期。年"
       first_name: "名"
@@ -554,7 +715,9 @@ zh:
         fourth_part: "和隐私政策. 为了确保服务的持续，您的会员资格会自动续期，除非取消. 满意退款保证（30天内）."
         second_part: "通过加入Robin8您同意的"
         third_part: "使用条款"
+      pay_monthly: "按月支付"
       phone: "电话"
+      satisfaction_guaranteed: "满意退款保证（30天内）。"
       state: "州"
       submit_btn: "提交"
       table:
@@ -567,8 +730,13 @@ zh:
     payment_update_page:
       back_btn: "<<< 背部"
       enter_info: "在下面输入新的信用卡信息"
+      messages:
+        success: "信用卡信息已成功更新"
       submit_btn: "提交"
+      thank_you: "谢谢！"
       title: "更新付款信息"
+      title_confirmation: "更新确认"
+      to_robin: "前往Robin8"
     pricing:
       accesswire_distribution: Accesswire发布
       accesswire_distribution_description: "分发信息到成千上万个网站，包括雅虎财经，投资者网络和日历？您还可以将图像添加到您的消息，并为您的消息带来更多浏览。信息发布配有详细的分析报告。"
@@ -601,8 +769,8 @@ zh:
         per_month: "月"
         plans: "订阅计划"
         press_release: "篇新闻稿/月"
-        seat: ''
-        seats: ''
+        seat: "席"
+        seats: "席"
         select: "选择"
         selected: "选择"
         smart_release: "个智能发布"
@@ -614,7 +782,27 @@ zh:
       smart_release_description: "只需点击一下，智能发布即可采用Robin8专有的智能预测引擎，推荐对您的新闻最感兴趣的100位记者和意见领袖。"
       web_distribution: "财经内容网络发布"
       web_distribution_description: "网络发布保证你在数百个顶级新闻网站发布财经内容，包括波士顿环球报和迈阿密先驱报。每次发布自带一份报告，显示发布站点的取样。"
+    products:
+      10_smart_releases: 10次智能发布（每10次发布）
+      20_smart_releases: 20次智能发布（每20次发布）
+      5_smart_releases: 5次智能发布（每5次发布）
+      accesswire_distribution: Accesswire Distribution (per release)
+      first:
+        newbasic-monthly: "基本"
+        newbusiness-monthly: "业务"
+        newenterprise-monthly: "企业"
+      media_moitoring: "媒体监测流（每月）"
+      myprgenie_web_distribution: FinancialContent Web Distribution (per release)
+      newbasic-monthly: "基本每月"
+      newbusiness-monthly: "业务每月"
+      newenterprise-monthly: "企业每月"
+      newsroom: "新闻中心（每月）"
+      pr_newswire_distribution: "美通社分布（每次发布）"
+      press_release: "新闻发布（每次发布）"
+      seat: "席位（每月）"
+      smart_release: "智能发布（每次发布）"
     profile:
+      account_changed: "您的帐户数据已成功更改"
       account_successfully_changed: "您的帐户数据已成功更改"
       buttons:
         cancel: "取消"
@@ -622,19 +810,36 @@ zh:
       company: "公司名称"
       confirm_new_password: "确认新密码"
       curr_password: "现用密码"
+      current_password_req: "当前需设置一个新的密码"
+      day_of_birth: "生日"
+      digits_only: Digits only
       email: "电子邮件"
+      enter_value: Please enter a value
       first_name: "名字"
+      industry: "行业"
+      interests: "興趣愛好"
       last_name: "姓氏"
+      location: "地點"
       messages:
+        invalid_email: "您所输入电子邮箱无效"
         required_email: "需要邮箱地址"
+      mobile_number: "手機號碼"
       new_password: "新密码"
+      password_confirmation_must_same: "确认密码必须一致"
+      password_confirmation_req: "需要确认密码"
+      password_must_be_8: "新密码必须至少8个字符"
+      password_required: "需要密碼"
       personal_info: "个人信息"
-      time_placeholder: select an option
+      public_account: "公共账号"
+      select_interests: "選擇你的興趣"
+      set_up_payoneer: "设置信用卡支付"
+      something_wrong: something went wrong
+      time_placeholder: "选择一个选项"
       time_zone: "时区"
-      title: "编辑资料"
+      title: "稱號"
       username: "用户名"
     public_newsroom:
-      about: "大约"
+      about: About
       follow: "关注"
       latest_tweets: "新鲜事"
       location: "地点"
@@ -647,10 +852,10 @@ zh:
       spokeperson: "演讲人"
       what_is: "什么是"
     public_release:
-      notification: You are in a preview mode. You need to make this release and newsroom
-        public in order to show it on your page
+      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
     register:
-      agree_terms: "通过注册，你已同意MyPRGenie的服务条款。"
+      agree_terms: "通过注册，你已同意Robin8的服务条款。"
+      email_already_taken: "该邮箱已被注册"
       email_placeholder: "电子邮件"
       fb_signup: "使用Facebook账号登陆"
       first_name_placeholder: "名"
@@ -751,57 +956,173 @@ zh:
     select2:
       not_found: "未找到匹配"
       searching: "搜索..."
-      too_short: "请输入 %{count} 或更多字符"
+      too_short: "请输入 %{count} 个或更多字符"
     smart_campaign:
-      add_money: ''
+      accepted: "已接受"
+      active: "活跃"
+      add: "添加"
+      add_influencer: "增加意见领袖"
+      add_money: "添加"
+      approved: "批准"
+      back: "背部"
+      budget: "预算"
+      budget_must_number: "预算必须是数字，并且只包含数字"
+      budget_required: The budget is required
+      campaigns: "宣传活动"
+      categories: "分类"
+      close: "关闭"
+      contact_form:
+        close: "关闭"
+        email: "电子邮件"
+        message: "信息"
+        send: "发送"
+        send_to: "请将您的内容发送到"
+        subject: "主题"
+        title: "联系人"
+        your_email: "你的邮箱"
+      created: "创建 "
+      deadline: "期限"
+      declined: "已拒绝"
+      declined_unknown: "拒绝/未知"
+      edit_campaign: "编辑推广活动"
+      editor:
+        adjectives: "形容词"
+        adverbs: "副词"
+        characters: "字符"
+        nouns: "名词"
+        paragraphs: "段落"
+        readability_score: "可读性指数"
+        sentences: "句子"
+        words: "字数"
+      email: "电子邮件"
+      enter_email: "填写邮箱"
+      enter_first name: "填写姓"
+      enter_last_name: "填写名"
+      first_name: "名"
+      in_progress: "进行中"
+      invite_influencers: "邀请意见领袖"
+      kol:
+        alredy_in_list: " 已存在您的列表中"
+        attach_invalid: "附件内容类型无效"
+        error: "错误"
+        incorrect_ignored: "所有格式不正确的联系人都将被忽略。"
+        list_uploaded: "您的列表已经成功上传。"
+        select_categories: "选择意见领袖的分类"
+      last_name: "姓氏"
+      last_update: "最後更新"
+      name: "姓名"
+      new:
+        pitch: "投递"
+        start: "开始"
+        targets: "目标"
+      new_campaign: New Campaign
+      next: "下一步"
+      'no': "不是"
+      no_campaigns: You don't have any campaigns. It's time to create one!
+      no_invited_yet: You haven't invited influencers yet. It's time to add some!
+      no_one_accepted: "目前无人接受您的邀请。"
+      not_approved_yet: "尚未得到批准"
+      pending_approval: Pending Approval
       pitch_step:
-        button: ''
-        delete_button: ''
-        description: ''
-        emailTargets: ''
+        button: "投递！"
+        delete_button: "删除"
+        description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
+        emailTargets: "通过电子邮件联系目标人"
         email_panel:
-          email: ''
-          email_pitch: ''
-          email_placeholder: ''
-          length: ''
-          pitch_text: ''
-          preview: ''
-          sentences: ''
-          subject: ''
-          subject_placeholder: ''
-          tags: ''
-          title: ''
-        see: ''
+          email: "你的电子邮件地址"
+          email_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
+            new campaign @[Campaign Title] by @[User Name].  Please proceed to your
+            dashboard to accept the invitation.
+          email_placeholder: "输入电子邮件地址"
+          length: "文章小结长度"
+          pitch_text: "投递内容"
+          preview: "预览"
+          sentences: "句子"
+          subject: "邮件标题"
+          subject_placeholder: "输入一个吸引人的标题"
+          tags: "可用的智能替换标签"
+          title: "投递邮件"
+        email_required: "该邮件地址必填"
+        emailtext_required: "该邮件内容必填"
+        see: "查看名单"
+        subject_required: "该主题必填"
         targets_table:
-          actions: ''
-          button: ''
-          delete: ''
-          email: ''
-          name: ''
-          save: ''
-        title: ''
-        wechatTargets: ''
-        weiboTargets: ''
+          actions: "动作"
+          button: "保存"
+          delete: "删除"
+          email: "电子邮件"
+          name: "姓名"
+          save: "保存为名单"
+        test_button: "发送测试邮件"
+        title: "投递"
+        wechatTargets: Targets will be contacted via WeChat
+        weiboTargets: Targets will be contacted via Weibo
         weibo_panel:
-          pitch_text: Pitch text
-          preview: Preview
+          pitch_text: "投递内容"
+          preview: "预览"
           weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
+      prev: "上一步"
+      private_influencers: "自有的意见领袖"
+      smart_campaign:
+        pitch_step:
+          button: "投递"
+      smartcampaign: "智能推广"
+      start_step:
+        analyze: "分析"
+        campaign_budged: "推广活动预算"
+        campaign_content: "推广活动内容"
+        campaign_deadline: "推广活动期限"
+        campaign_title: "推广活动名称"
+        editor_uses_paragraphs: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
+        enter_title: "填写名称"
+        following_topics: "将会提到如下的话题"
+        paste_press: "粘贴新闻稿"
+        paste_press_here: "在这里粘贴推广活动的新闻稿"
+        pick_deadline: "选择一个期限"
+        summary: 如下是<strong> "%{name}" </strong>的小结
+      status: "状态"
+      supported_formats: "支持格式"
       targets_step:
+        city_state: "城市或州/省或国家"
+        contact_first_last: "联系人的姓名"
+        couldnt_match_influencers: "未找到相匹配意见领袖"
+        email: "电子邮件"
+        enter_categories: "提供更多目录"
+        influencers: "意见领袖"
+        invite: "邀"
+        location: "地点"
+        name: "姓名"
+        need_invite: You need to invite at least someone to this campaign!
+        private: "私人"
+        search: "搜"
+        topic: "主题"
+        weibo:
+          contact_form:
+            message:
+              hi: "你好"
+              invited_msg: "以下是你可能感兴趣的内容："
+              ps: 附：我们诚恳地推荐你作为一个社交达人来<a href="%{kols_signup_url}">注册</a>我们的平台
+              regards: "此致"
+            send_error: "消息无法发送！"
         weibo_tab:
-          author: Author
-          contact: Contact
-          followers: Followers
-          inspect: Inspect
-          invite: Invite
-          outlet: Outlet
-          relevance: Relevance
+          author: "作者"
+          contact: "联系人"
+          followers: "关注者"
+          inspect: "检查"
+          invite: "邀"
+          outlet: "媒体"
+          relevance: "相关度"
+      total_influencers_invited: "已邀请所有的意见领袖"
+      unknown: "未知"
+      uploaded_file: "上传的文件必须具有完全相同的<strong>三</ STRONG>列，格式为<STRONG>姓，名，电子邮件地址</ STRONG>"
       wechat_report:
         favourite: "转发+收藏人数"
         page_views: "图文阅读人数"
         people_reached: "送达人数"
         read_more: "原文阅读人数"
+      'yes': "是的"
     smart_release:
       analysis_step:
         buttons:
@@ -843,9 +1164,8 @@ zh:
           subject_placeholder: "输入一个吸引人的标题"
           tags: "可用的智能替换标签"
           text_dear: "亲爱的"
-          text_here: Here's a press release you might find interesting. Please let
-            me know your thoughts.
-          text_text: Press Release Text
+          text_here: "这里有一个你可能会感兴趣的"
+          text_text: Content Text
           title: "投递邮件"
         see: "查看名单"
         targets: "通过电子邮件联系目标人"
@@ -857,11 +1177,19 @@ zh:
           name: "姓名"
           outlet: "媒体公司"
           save: "保存为名单"
-          save_placeholder: "列表名称…"
+          save_placeholder: "列表名称..."
           success_pitch_sent: "您的稿件已经投递成功"
           success_uploaded_list: "您的列表已成功保存。"
         test_button: "发送测试邮件"
         title: "投递"
+      send_test:
+        bon_voyage: "一路顺风，测试邮件！测试邮件已经发往收信人了。"
+        cancel: "取消"
+        comma_separate: "用逗号分隔电子邮件发送到多个帐户"
+        ex: "例如"
+        send_test: "发送测试"
+        send_test_button: "发送测试"
+        send_test_to: "发送测试到"
       start_step:
         buttons:
           analyze: "分析"
@@ -930,7 +1258,7 @@ zh:
             all: "所有"
             celebrities: "名人"
             from: "从"
-            influencers: "大V"
+            influencers: "意见领袖"
             location_placeholder: "地点"
             show: "显示关于“”的大V"
             title: "搜索意见领袖"
@@ -995,6 +1323,14 @@ zh:
       developer_desc: Razee在编码，测试，实施和以全面的技术支持MyPRGenie方面拥有丰富的经验。 Razee获得了巴基斯坦国立大学的计算机和新兴科学学士学位。
       developer_name: Razee Khan
       developer_pos: "工程师和开发人员"
+      elsa_desc: Elsa is a strategic marketer with an eye for consumer insights and
+        a passion for digital marketing (Social Media, Content Marketing, SEO/SEM,
+        Web analytics). She has Google certified Partner Certificates for Google Analytics
+        and Google Adwords. Most recently, she worked for prestige food brands in
+        China such as Nescafe and Pringles chips. Elsa has a Masters from NYU in Integrated
+        Marketing.
+      elsa_name: Elsa Wang
+      elsa_pos: Marketing Specialist / Director
       operations_desc: Cynthia负责整体运营和MyPRGenied的管理。她拥有Adelphi大学的MBA学位和南京理工大学会计学学士学位。
       operations_name: Cynthia Chen
       operations_pos: "副总裁，运营"
@@ -1008,6 +1344,11 @@ zh:
         纽约大学工程理工学校。
       scientist_name: Edison Xu Zhao
       scientist_pos: "数据专家和工程师"
+      simon_desc: Simon specializes in data and technology. Previously, Simon was
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon has a BS in computer
+        science and MS in data mining from East China Normal University.
+      simon_name: Simon Deng
+      simon_pos: VP, Tech Leader for China
       support_desc: Olivia于2010年10月加入MyPRGenie，她负责客户支持和监督的科研队伍。Olivia在公关和营销方面具有丰富经验，已经帮助数百家企业策划公关活动。此外，她领导媒体数据库的研究小组。
       support_name: Olivia Quizon
       support_pos: "副总裁，技术支持和研究"
@@ -1188,6 +1529,153 @@ zh:
         text: Robin8可能会向协助我们为您提供的服务的第三方透露个人信息。例如，我们可能聘请运输公司，来讲我们的产品或服务传输给您。我们也可能使用第三方来处理在线交易和信用卡付款，提供产品，广告，营销或促销服务/援助，提供电子邮件服务，或提升我们的在线服务。在这种情况下，我们可能需要分享您的个人信息。我们要求这些公司只在特定的产品或服务中使用您的个人信息，不授权他们将您的个人信息用于其他任何地方。此外，如果Robin8将其一部分或全部资产出售给第三方，该第三方将有权使用由我们网站的用户所披露的全部信息。我们或其他第三方所收集的个人和非个人信息都可能成为交易的一部分。如果我们出售我们的业务，我们将努力确保有关电子邮件使我的请求能够兑现。.
         title: "第三方交易"
       title: Robin8使用条款，隐私政策和发布政策
+    timezones:
+      Abu Dhabi: "(+4:00) 阿布扎比"
+      Adelaide: "(+9:30) 阿德莱德"
+      Alaska: "(-9:00) 阿拉斯加"
+      Almaty: "(+6:00) 阿拉木图"
+      American_Samoa: "(-11:00) 美属萨摩亚"
+      Amsterdam: "(+1:00）阿姆斯特丹"
+      Arizona: "(-7:00) 亚利桑那州"
+      Astana: "(+6:00) 阿斯塔纳"
+      Athens: "(+2:00) 雅典"
+      Atlantic_Time: "(-4:00) 大西洋时间 (加拿大)"
+      Auckland: "(+12:00) 奥克兰"
+      Azores: "(-1:00) 亚速尔群岛"
+      Baghdad: "(+3:00) 巴格达"
+      Baku: "(+4:00) 巴库"
+      Bangkok: "(+7:00) 曼谷"
+      Beijing: "(+8:00) 北京"
+      Belgrade: "(+1:00) 贝尔格莱德"
+      Berlin: "(+1:00) 柏林"
+      Bern: "(+1:00) 伯尔尼"
+      Bogota: "(-5:00) 波哥大"
+      Brasilia: "(-3:00) 巴西利亚"
+      Bratislava: "(+1:00) 布拉迪斯拉发"
+      Brisbane: "(+10:00) 布里斯班"
+      Brussels: "(+1:00) 布鲁塞尔"
+      Bucharest: "(+2:00) 布加勒斯特"
+      Budapest: "(+1:00) 布达佩斯"
+      Buenos_Aires: "(-3:00) 布宜诺斯艾利斯"
+      Cairo: "(+2:00) 开罗"
+      Canberra: "(+10:00) 堪培拉"
+      Cape_Verde: "(-1:00) 佛得角群岛"
+      Caracas: "(-4:30) 加拉加斯"
+      Casablanca: "(0:00) 卡萨布兰卡"
+      Central_America: "(-6:00) 中美洲"
+      Central_Time: "(-6:00) 中部时间 (美国和加拿大)"
+      Chatham_Is: "(+12:45) Chatham岛"
+      Chennai: "(+5:30) 金奈"
+      Chihuahua: "(-7:00) 奇瓦瓦"
+      Chongqing: "(+8:00) 重庆"
+      Copenhagen: "(+1:00) 哥本哈根"
+      Darwin: "(+9:30) 达尔文"
+      Dhaka: "(+6:00) 达卡"
+      Dublin: "(0:00) 都柏林"
+      Eastern_Time: "(-5:00) 东部时间 (美国和加拿大)"
+      Edinburgh: "(0:00) 爱丁堡"
+      Ekaterinburg: "(+5:00) 叶卡捷琳堡"
+      Fiji: "(+12:00) 斐济"
+      Georgetown: "(-4:00) 乔治敦"
+      Greenland: "(-3:00) 格陵兰"
+      Guadalajara: "(-6:00) 瓜达拉哈拉"
+      Guam: "(+10:00) 关岛"
+      Hanoi: "(+7:00) 河内"
+      Harare: "(+2:00) 哈拉雷"
+      Hawaii: "(-10:00) 夏威夷"
+      Helsinki: "(+2:00) 赫尔辛基"
+      Hobart: "(+10:00) 霍巴特"
+      Hong_Kong: "(+8:00) 香港"
+      Indiana: "(-5:00)，印第安纳 (东)"
+      International_Date_Line_West: "(-11:00) 国际日期变更线西"
+      Irkutsk: "(+8:00) 伊尔库茨克"
+      Islamabad: "(+5:00) 伊斯兰堡"
+      Istanbul: "(+2:00) 伊斯坦布尔"
+      Jakarta: "(+7:00) 雅加达"
+      Jerusalem: "(+2:00) 耶路撒冷"
+      Kabul: "(+4:30) 喀布尔"
+      Kamchatka: "(+12:00) 堪察加"
+      Karachi: "(+5:00) 卡拉奇"
+      Kathmandu: "(+5:45) 加德满都"
+      Kolkata: "(+5:30) 加尔各答"
+      Krasnoyarsk: "(+7:00) 克拉斯诺亚尔斯克"
+      Kuala_Lumpur: "(+8:00) 吉隆坡"
+      Kuwait: "(+3:00) 科威特"
+      Kyiv: "(+2:00) 基辅"
+      La_Paz: "(-4:00) 拉巴斯"
+      Lima: "(-5:00) 利马"
+      Lisbon: "(0:00) 里斯本"
+      Ljubljana: "(+1:00) 卢布尔雅那"
+      London: "(0:00) 伦敦"
+      Madrid: "(+1:00) 马德里"
+      Magadan: "(+10:00) 墨尔本"
+      Marshall_Is: "(+12:00) 马绍尔群岛"
+      Mazatlan: "(-7:00) 马萨特兰"
+      Melbourne: "(+10:00) 墨尔本"
+      Mexico_City: "(-6:00) 墨西哥城"
+      Mid_Atlantic: "(-2:00) 中大西洋"
+      Midway_Island: "(-11:00) 中途岛"
+      Minsk: "(+3:00) 明斯克"
+      Monrovia: "(0:00) 蒙罗维亚"
+      Monterrey: "(-6:00) 蒙特雷"
+      Montevideo: "(-3:30) 蒙得维的亚"
+      Moscow: "(+3:00) 莫斯科"
+      Mountain_Time: "(-7:00) 山地时间 (美国和加拿大)"
+      Mumbai: "(+5:30) 孟买"
+      Muscat: "(+4:00) 马斯喀特"
+      Nairobi: "(+3:00) 内罗毕"
+      New_Caledonia: "(+11:00) 新喀里多尼亚"
+      New_Delhi: "(+5:30) 新德里"
+      Newfoundland: "(-3:30) 纽芬兰"
+      Novosibirsk: "(+6:00) 新西伯利亚"
+      Nuku'alofa: "(+13:00) 努库阿洛法"
+      Osaka: "(+9:00) 大阪"
+      Pacific_Time: "(-8:00) 太平洋时间 (美国和加拿大)"
+      Paris: "(+1:00) 巴黎"
+      Perth: "(+8:00) 珀斯"
+      Port_Moresby: "(+10:00) 莫尔兹比港"
+      Prague: "(+1:00) 布拉格"
+      Pretoria: "(+2:00) 比勒陀利亚"
+      Quito: "(-5:00) 基多"
+      Rangoon: "(+6:30) 仰光"
+      Riga: "(+2:00) 里加"
+      Riyadh: "(+3:00) 利雅得"
+      Rome: "(+1:00) 罗马"
+      Samoa: "(-11:00) 萨摩亚"
+      Santiago: "(-4:00) 圣地亚哥"
+      Sapporo: "(+9:00) 札幌"
+      Sarajevo: "(+1:00) 萨拉热窝"
+      Saskatchewan: "(-6:00) 萨斯喀彻温"
+      Seoul: "(+9:00) 首尔"
+      Singapore: "(+8:00) 新加坡"
+      Skopje: "(+1:00) 斯科普里"
+      Sofia: "(+2:00) 索菲亚"
+      Solomon_Is: "(+11:00) 所罗门群岛"
+      Sri_Jayawardenepura: "(+5:30) 斯里兰卡Jayawardenepura"
+      St_Petersburg: "(+3:00) 圣彼得堡"
+      Stockholm: "(+1:00) 斯德哥尔摩"
+      Sydney: "(+10:00) 悉尼"
+      Taipei: "(+8:00) 台北"
+      Tallinn: "(+2:00) 塔林"
+      Tashkent: "(+5:00) 塔什干"
+      Tbilisi: "(+4:00) 第比利斯"
+      Tehran: "(+3:30) 德黑兰"
+      Tijuana: "(-8:00) 蒂华纳"
+      Tokelau_Is: "(+13:00) 托克劳"
+      Tokyo: "(+9:00) 东京"
+      UTC: "(0:00) 协调时间时"
+      Ulaanbaatar: "(+8:00) 乌兰巴托"
+      Urumqi: "(+6:00) 乌鲁木齐"
+      Vienna: "(+1:00) 维也纳"
+      Vilnius: "(+2:00) 维尔纽斯"
+      Vladivostok: "(+10:00) 符拉迪沃斯托克"
+      Volgograd: "(+3:00) 伏尔加格勒"
+      Warsaw: "(+1:00) 华沙"
+      Wellington: "(+12:00) 惠灵顿"
+      West_Central_Africa: "(+1:00) 西中非"
+      Yakutsk: "(+9:00) 雅库茨克"
+      Yerevan: "(+4:00) 埃里温"
+      Zagreb: "(+1:00) 萨格勒布"
     uploading:
       choose_image: "选择图片!!!"
       different_photo: "上传不同的照片..."

@@ -143,8 +143,8 @@ en:
         media_list:
           attributes:
             contacts:
-              association_count_greater_than_or_equal_to: |
-                should be greater than or equal to %{count}
+              association_count_greater_than_or_equal_to: should be greater than or
+                equal to %{count}
             name:
               presence: List name can't be blank
               uniqueness: Name has already been taken
@@ -210,15 +210,25 @@ en:
       annually: billed annually or
       buttons:
         addons: Add ons
+        campaign_details: Campaign payment details
         cancel: Cancel Subscription
         change: Change plan
         new_plan: Subscribe to new plan
         update: Update payment details
+      cancel:
+        'no': 'No'
+        'yes': 'Yes'
       cancel_action: Cancel
       card_last: Card last four
       card_type: Card type
       created_at: Created at
       current_plan: Current Pricing Plan
+      messages:
+        cancel_addon: Cancel this add-on?
+        cancel_subscription: Cancel current subscription?
+        cancel_subscription_success: Your current plan is canceled!
+        cant_cancel_addon: You can't cancel this add-on. Contact support for more
+          details.
       month: month-to-month
       name: Name
       newsroom: Brand Gallery
@@ -232,6 +242,41 @@ en:
       smart_release: SmartContent
       status: Status
       streams: Streams for Media Monitoring
+    campaign_payment_update:
+      enter_info: Enter new Credit Card Information below
+      error:
+        address: Address can't be blank
+        card_number: Card number can't be blank
+        city: City can't be blank
+        cvv: CVV must be greater then 2 characters
+        exp_month: Expiry Month can't be blank
+        exp_year: Expiry Year can't be blank and must be in YYYY format
+        first_name: First name can't be blank
+        last_name: Last name can't be blank
+        phone: Phone can't be blank
+        postal_code: Postal Code/Zip can't be blank
+        state: State can't be blank
+      form:
+        address: Address
+        button_back: Back
+        button_submit: Submit
+        city: City
+        country: Country
+        credit_card_number: Credit Card Number
+        credit_card_type: Credit Card Type
+        cvv: CVV
+        exp_month: Exp. Month
+        exp_year: Exp. Year
+        first_name: First Name
+        last_name: Last Name
+        mr: Mr
+        mrs: Mrs
+        ms: Ms
+        phone: Phone
+        postal_code: Postal Code
+        state: State
+        title: Title
+      title: Campaign Payment Information
     contact_page:
       address: Robin8 Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019
       address_title: Main Office Address
@@ -253,6 +298,16 @@ en:
         shortly
       title: Contact Robin8
     dashboard:
+      accept: Accept
+      accepted: Accepted
+      brand: Brand
+      budget: Budget
+      check_to_activate: Please, check your email to activate your account!
+      creation_date: Creation Date
+      deadline: Deadline
+      decline: Decline
+      declined: Declined
+      description: Description
       description1: What if you knew EXACTLY who to contact for every campaign, based
         on a data-driven prediction on how successful each pitch will be? Robin8 can
         do all this and more, taking the guesswork and chance out of PR.
@@ -262,11 +317,60 @@ en:
       description3: Robin8 provides you a powerful workflow and intelligent dashboard
         to help you stay on top of your game and generate the best results for your
         campaign.
+      name: Name
       new_monitoring_button: New Monitoring Stream
       new_newsroom_button: Create a Brand Gallery
       new_release_button: Publish New Content
       new_smartrelease_button: SmartContent
+      not_invited_yet: Welcome to Robin8! You are not invited to any campaigns yet.
+        Please <a href="#profile">update</a> your profile.
+      status: Status
       title: Dashboard
+    date:
+      datepicker_days:
+        d1: Su
+        d2: Mo
+        d3: Tu
+        d4: We
+        d5: Th
+        d6: Fr
+        d7: Sa
+      datepicker_next: Next
+      datepicker_prev: Prev
+      days_full:
+        d1: Sunday
+        d2: Monday
+        d3: Tuesday
+        d4: Wednesday
+        d5: Thursday
+        d6: Friday
+        d7: Saturday
+      monthes_abbr:
+        m1: Jan
+        m10: Oct
+        m11: Nov
+        m12: Dec
+        m2: Feb
+        m3: Mar
+        m4: Apr
+        m5: May
+        m6: Jun
+        m7: Jul
+        m8: Aug
+        m9: Sep
+      monthes_full:
+        m1: January
+        m10: October
+        m11: November
+        m12: December
+        m2: February
+        m3: March
+        m4: April
+        m5: May
+        m6: June
+        m7: July
+        m8: August
+        m9: September
     footer:
       about: About
       contact: Contact
@@ -283,8 +387,10 @@ en:
       user_not_found: The user with this email does not exist!
     header:
       contact_us: Contact Us
+      contactus: Contact Us
       demo: Demo
       log_in: Log in
+      logout: Logout
       menu: Menu
       pricing: Pricing
       sign_up: Sign up
@@ -295,8 +401,33 @@ en:
       download_png: Download PNG image
       download_svg: Download SVG vector image
       print_chart: Print chart
+    kol_campaign:
+      approved: Approve
+      article:
+        close: Close
+        have_submit_wechat: You have to submit your WeChat report on each 7th day
+          after approval of your article, since WeChat only stores data during 7 days
+          after the article was posted. If you will delay submission of the report,
+          your performance data (number of people reached, number of page views, number
+          of "read more", number of re-share + favorites) for the delayed days will
+          not be count.
+        please_fill_field: Please fill the field
+        save: Save changes
+        send: Send
+        send_for_approval: Send for approval
+        type_comment: Type your comment
+      article_url: Article URL
+      brand: Brand
+      budget: Budget
+      creation_date: Creation Date
+      deadline: Deadline
+      in_progress: In Progress
+      name: Name
+      not_approved_yet: Not approved yet
+      you_dont_have_any_accepted: 'You don''t have any accepted campaigns. '
+      you_dont_have_any_declined: You don't have any declined campaigns.
     kols:
-      agree: By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service
+      agree: By signing up you agree to Robin8's <a href="/terms">Terms of Service
       email: Email
       email_error: Email can't be blank
       first_name: First Name
@@ -306,24 +437,49 @@ en:
       lname_error: Last name can't be blank
       location: Location
       location_error: Location can't be blank
+      mobile_number: Mobile Number
       mobile_number_error: Digits only
       password: Password
       password_error: Password must be greater then 7 characters
+      signup_btn: SIGN UP
       title: Signup
     landing_page:
+      brand: Brand
       here: here.
       inf_signup: 'Are you an Influencer? Sign up '
+      influencer: Influencer
       kol_signup: Are you a KOL? Sign up
       learn_more: Learn More
+      monetize: Monetize
       recommend: Recommend
       recommend_text: Influencers are curated and content is personalized to you.
         The Robin8 recommendation engine gets smarter every time you use it.
+      register: Register
+      register_text: Register now
+      score: My Score
       sign_up: Sign Up
+      social: My Social
       target: Target
       target_text: Select from the list of influencers Robin8 intelligently recommends
         in one click.
       text1: ROBIN8 makes reaching out to reporters and influencers effortless and
         effective.
+      text10: We are changing the face of media and technology that's been years in
+        the making. Sign up and immediately see your score and value as an influencer.
+        Help us help you unleash your influence!
+      text11: Robin8 is constantly tracking and analyzing data from millions of articles
+        and posts every second and every day. By understanding the nuances behind
+        every influencer, we can match you with the best brands and campaigns.
+      text12: Calculate your influence and value
+      text13: Help you increase your influence and value
+      text14: Uses Algorithm and machine-learning technology to adapt campaign recommendations
+        for you
+      text15: Help you monetize your influence and make money
+      text16: Do you know you are an influencer?
+      text17: ROBIN8 believes every person is an influencer and a media company.
+      text18: Welcome to the internet for everyone. With the rise of social media,
+        everyone has a voice and influence.
+      text19: Robin8 calculates your influence and estimates the value of your REACH.
       text2: We’re changing the face of PR with technology that’s been years in the
         making. Predict the success of every pitch you make to a reporter by knowing
         with confidence they will share your content. It’s simply intelligent.
@@ -342,11 +498,13 @@ en:
       text9: Ready to see the world acording to ROBIN8?
       title: Next generation social and content marketing platform powered by artificial
         intelligence
+      title_landing: Monetize your influence. Register here.
       track: Track
       track_text: Track your results through our robust analytic dashboard and use
         our media intelligence to keep abreast of the latest news.
       upload: Upload
       upload_text: Upload your content and watch it get analyzed in seconds.
+      welcome: Welcome to the Internet of everyone!
     login:
       email: Email
       fb_login: Login using Facebook
@@ -443,8 +601,12 @@ en:
         adjusted automatically in your next billing cycle, starting
       confirm: CONFIRM PACKAGE CHANGE
       current: Current
+      discount:
+        invalid: Discount code is not valid or expired
+        success: Discount successfully applied to your account
       information: New Package Information
       new: New Package
+      pay_monthly: Pay Monthly
       plan: Plan
       price: Price
       promo: Promo Code
@@ -540,6 +702,9 @@ en:
       code: Postal Code
       country: Country
       cvv: CVV
+      discount:
+        invalid: Discount code is not valid or expired
+        success: Discount successfully applied to your account
       exp_month: Exp. Month
       exp_year: Exp. Year
       first_name: First Name
@@ -571,7 +736,10 @@ en:
           back (within 30 days).
         second_part: By joining Robin8 you are agreeing to the
         third_part: Terms of Use
+      pay_monthly: Pay Monthly
       phone: Phone
+      satisfaction_guaranteed: Satisfaction guaranteed or your money back (within
+        30 days).
       state: State
       submit_btn: Submit
       table:
@@ -584,8 +752,13 @@ en:
     payment_update_page:
       back_btn: "<<< BACK"
       enter_info: Enter new Credit Card Information below
+      messages:
+        success: The Credit Card information has been successfully updated
       submit_btn: SUBMIT
+      thank_you: THANK YOU!
       title: UPDATE PAYMENT INFORMATION
+      title_confirmation: Update Confirmation
+      to_robin: Go to Robin8
     pricing:
       accesswire_distribution: Accesswire Distribution
       accesswire_distribution_description: Distribute to thousands of websites including
@@ -651,7 +824,27 @@ en:
         placement on hundreds of top news websites including Boston Globe and Miami
         Herald. Each distribution comes with a report showing a sampling of the sites
         that posted your content.
+    products:
+      10_smart_releases: 10 Smart Release Distribution (per 10 releases)
+      20_smart_releases: 20 Smart Release Distribution (per 20 releases)
+      5_smart_releases: 5 Smart Release Distribution (per 5 releases)
+      accesswire_distribution: Accesswire Distribution (per release)
+      first:
+        newbasic-monthly: Basic
+        newbusiness-monthly: Business
+        newenterprise-monthly: Entereprise
+      media_moitoring: Media Monitoring Stream (per month)
+      myprgenie_web_distribution: FinancialContent Web Distribution (per release)
+      newbasic-monthly: Basic Monthly
+      newbusiness-monthly: Business Monthly
+      newenterprise-monthly: Entereprise Monthly
+      newsroom: Newsroom (per month)
+      pr_newswire_distribution: PR Newswire Distribution (per release)
+      press_release: Press Release Distribution (per release)
+      seat: Seat (per month)
+      smart_release: Smart Release Distribution (per release)
     profile:
+      account_changed: Your account data has been successfully changed
       account_successfully_changed: Your account data has been successfully changed
       buttons:
         cancel: Cancel
@@ -659,16 +852,34 @@ en:
       company: Company
       confirm_new_password: Confirm new password
       curr_password: Current password
+      current_password_req: Current password is required in order to set a new one
+      day_of_birth: Day of birth
+      digits_only: Digits only
       email: Email
+      enter_value: Please enter a value
       first_name: First name
+      industry: Industry
+      interests: Interests
       last_name: Last name
+      location: Location
       messages:
+        invalid_email: The data you have entered is not a valid email
         required_email: The email address is required
+      mobile_number: Mobile number
       new_password: New password
+      password_confirmation_must_same: The password confirmation must be the same
+        as original one
+      password_confirmation_req: The password confirmation is required
+      password_must_be_8: A new password must be at least 8 characters long
+      password_required: The password is required
       personal_info: Personal info
+      public_account: Public account
+      select_interests: Select your interests
+      set_up_payoneer: Set Up Payoneer payments
+      something_wrong: something went wrong
       time_placeholder: select an option
       time_zone: Time Zone
-      title: Edit Profile
+      title: Title
       username: Username
     public_newsroom:
       about: About
@@ -689,6 +900,7 @@ en:
         public in order to show it on your page
     register:
       agree_terms: By signing up you agree to Robin8's Terms of Service
+      email_already_taken: Email has already been taken
       email_placeholder: Email
       fb_signup: Sign up using Facebook
       first_name_placeholder: First Name
@@ -793,7 +1005,71 @@ en:
       searching: Searching...
       too_short: Please enter %{count} or more characters
     smart_campaign:
+      accepted: Accepted
+      active: Active
+      add: Add
+      add_influencer: Add Influencer
       add_money: Add money
+      approved: Approved
+      back: Back
+      budget: Budged
+      budget_must_number: The budget must be a number and contains only digits
+      budget_required: The budget is required
+      campaigns: Campaigns
+      categories: Categories
+      close: Close
+      contact_form:
+        close: Close
+        email: Email
+        message: Message
+        send: Send
+        send_to: Send your content to
+        subject: Subject
+        title: Contact
+        your_email: Your Email
+      created: Created
+      deadline: Deadline
+      declined: Declined
+      declined_unknown: Declined/Unknown
+      edit_campaign: Edit campaign
+      editor:
+        adjectives: Adjectives
+        adverbs: Adverbs
+        characters: Characters
+        nouns: Nouns
+        paragraphs: Paragraphs
+        readability_score: Readability score
+        sentences: Sentences
+        words: Words
+      email: Email
+      enter_email: Enter email…
+      enter_first name: Enter first name...
+      enter_last_name: Enter last name...
+      first_name: First Name
+      in_progress: In Progress
+      invite_influencers: Invite Influencers
+      kol:
+        alredy_in_list: " already in your list"
+        attach_invalid: Attachment content type is invalid
+        error: Error
+        incorrect_ignored: All contacts in incorrect format will be ignored.
+        list_uploaded: Your list has been successfully uploaded.
+        select_categories: Select influencer categories
+      last_name: Last Name
+      last_update: Last Update
+      name: Name
+      new:
+        pitch: Pitch
+        start: Start
+        targets: Targets
+      new_campaign: New Campaign
+      next: Next
+      'no': 'No'
+      no_campaigns: You don't have any campaigns. It's time to create one!
+      no_invited_yet: You haven't invited influencers yet. It's time to add some!
+      no_one_accepted: No one accepted your invitation yet.
+      not_approved_yet: Not approved yet
+      pending_approval: Pending Approval
       pitch_step:
         button: Pitch!
         delete_button: Delete
@@ -817,7 +1093,10 @@ en:
           subject_placeholder: Enter a catchy subject line...
           tags: Available merge tags
           title: Email pitch
+        email_required: The email adress is required
+        emailtext_required: The email text is required
         see: See list
+        subject_required: The subject is required
         targets_table:
           actions: Actions
           button: Save
@@ -825,6 +1104,7 @@ en:
           email: Email
           name: Name
           save: Save as a list
+        test_button: Send a Test Email
         title: Pitch
         wechatTargets: Targets will be contacted via WeChat
         weiboTargets: Targets will be contacted via Weibo
@@ -834,7 +1114,52 @@ en:
           weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
+      prev: Previous
+      private_influencers: Private Influencers
+      smart_campaign:
+        pitch_step:
+          button: Pitch!
+      smartcampaign: SmartCampaign
+      start_step:
+        analyze: Analyze
+        campaign_budged: Campaign budget
+        campaign_content: Campaign content
+        campaign_deadline: Campaign deadline
+        campaign_title: Campaign title
+        editor_uses_paragraphs: "*The editor uses paragraphs by default for copied
+          text. To place a normal line break press Shift+Enter (Shift+Return)"
+        enter_title: Enter title...
+        following_topics: and the following topics are mentioned in it
+        paste_press: Paste the press release!
+        paste_press_here: Paste the press release for your campaign here...
+        pick_deadline: Pick a deadline!
+        summary: Here's a summary of what <strong> "%{name}" </strong> is all about
+      status: Status
+      supported_formats: Supported formats
       targets_step:
+        city_state: City or State/Province or Country
+        contact_first_last: Contact's first and last name
+        couldnt_match_influencers: Couldn't match any influencers for you. Provivde
+          more categories.
+        email: Email
+        enter_categories: Enters categories
+        influencers: Influencers
+        invite: Invite
+        location: Location
+        name: Name
+        need_invite: You need to invite at least someone to this campaign!
+        private: Private
+        search: Search
+        topic: Topic
+        weibo:
+          contact_form:
+            message:
+              hi: Hi
+              invited_msg: 'You were invited to participate in a new campaign:'
+              ps: P.S. We kindly recommend you to <a href="%{kols_signup_url}">register</a>
+                in our system as an Influencer.
+              regards: Regards
+            send_error: Message can not be sent!
         weibo_tab:
           author: Author
           contact: Contact
@@ -843,11 +1168,16 @@ en:
           invite: Invite
           outlet: Outlet
           relevance: Relevance
+      total_influencers_invited: Total influencers invited
+      unknown: Unknown
+      uploaded_file: Uploaded file must have exactly <strong>three</strong> columns,
+        formatted as <strong>first name, last name, email address</strong>
       wechat_report:
         favourite: No of re-share + favourite
         page_views: No of page views
         people_reached: No of people reached
         read_more: No of "read more"
+      'yes': 'Yes'
     smart_release:
       analysis_step:
         buttons:
@@ -896,7 +1226,7 @@ en:
           text_dear: Dear
           text_here: Here's a press release you might find interesting. Please let
             me know your thoughts.
-          text_text: Press Release Text
+          text_text: Content Text
           title: Email pitch
         see: See list
         targets: Targets will be contacted via Email
@@ -913,6 +1243,15 @@ en:
           success_uploaded_list: Your list has been successfully saved.
         test_button: Send a Test Email
         title: Pitch
+      send_test:
+        bon_voyage: Bon voyage, test email! Your test email is on its way to the test
+          recipients.
+        cancel: Cancel
+        comma_separate: Comma separate emails to send to multiple accounts
+        ex: Ex
+        send_test: Send a Test
+        send_test_button: Send Test
+        send_test_to: Send a test to
       start_step:
         buttons:
           analyze: Analyze
@@ -1069,6 +1408,14 @@ en:
         University of Computer and Emerging Sciences in Pakistan.
       developer_name: Razee Khan
       developer_pos: Engineer and Developer
+      elsa_desc: Elsa is a strategic marketer with an eye for consumer insights and
+        a passion for digital marketing (Social Media, Content Marketing, SEO/SEM,
+        Web analytics). She has Google certified Partner Certificates for Google Analytics
+        and Google Adwords. Most recently, she worked for prestige food brands in
+        China such as Nescafe and Pringles chips. Elsa has a Masters from NYU in Integrated
+        Marketing.
+      elsa_name: Elsa Wang
+      elsa_pos: Marketing Specialist / Director
       operations_desc: Cynthia heads overall operations and administration for Robin8.
         She has an MBA from Adelphi University and a BS in Accounting from Nanjing
         University of Science and Technology.
@@ -1089,6 +1436,11 @@ en:
         Science at the Polytechnic School of Engineering at New York University.
       scientist_name: Edison Xu Zhao
       scientist_pos: Data Scientist and Engineer
+      simon_desc: Simon specializes in data and technology. Previously, Simon was
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon has a BS in computer
+        science and MS in data mining from East China Normal University.
+      simon_name: Simon Deng
+      simon_pos: VP, Tech Leader for China
       support_desc: Olivia joined Robin8 in October 2010. At Robin8, she heads Customer
         Support and oversees the research team. Olivia has extensive experience in
         PR and marketing and has helped hundreds of companies with their PR campaign.
@@ -1825,6 +2177,153 @@ en:
           honored.
         title: CERTAIN THIRD PARTY TRANSACTIONS
       title: Robin8 Terms of Use, Privacy Policy,<br/> and Distribution Policies
+    timezones:
+      Abu Dhabi: "(+4:00) Abu Dhabi"
+      Adelaide: "(+9:30) Adelaide"
+      Alaska: "(-9:00) Alaska"
+      Almaty: "(+6:00) Almaty"
+      American_Samoa: "(-11:00) American Samoa"
+      Amsterdam: "(+1:00) Amsterdam"
+      Arizona: "(-7:00) Arizona"
+      Astana: "(+6:00) Astana"
+      Athens: "(+2:00) Athens"
+      Atlantic_Time: "(-4:00) Atlantic Time (Canada)"
+      Auckland: "(+12:00) Auckland"
+      Azores: "(-1:00) Azores"
+      Baghdad: "(+3:00) Baghdad"
+      Baku: "(+4:00) Baku"
+      Bangkok: "(+7:00) Bangkok"
+      Beijing: "(+8:00) Beijing"
+      Belgrade: "(+1:00) Belgrade"
+      Berlin: "(+1:00) Berlin"
+      Bern: "(+1:00) Bern"
+      Bogota: "(-5:00) Bogota"
+      Brasilia: "(-3:00) Brasilia"
+      Bratislava: "(+1:00) Bratislava"
+      Brisbane: "(+10:00) Brisbane"
+      Brussels: "(+1:00) Brussels"
+      Bucharest: "(+2:00) Bucharest"
+      Budapest: "(+1:00) Budapest"
+      Buenos_Aires: "(-3:00) Buenos Aires"
+      Cairo: "(+2:00) Cairo"
+      Canberra: "(+10:00) Canberra"
+      Cape_Verde: "(-1:00) Cape Verde Is."
+      Caracas: "(-4:30) Caracas"
+      Casablanca: "(0:00) Casablanca"
+      Central_America: "(-6:00) Central America"
+      Central_Time: "(-6:00) Central Time (US & Canada)"
+      Chatham_Is: "(+12:45) Chatham Is."
+      Chennai: "(+5:30) Chennai"
+      Chihuahua: "(-7:00) Chihuahua"
+      Chongqing: "(+8:00) Chongqing"
+      Copenhagen: "(+1:00) Copenhagen"
+      Darwin: "(+9:30) Darwin"
+      Dhaka: "(+6:00) Dhaka"
+      Dublin: "(0:00) Dublin"
+      Eastern_Time: "(-5:00) Eastern Time (US & Canada)"
+      Edinburgh: "(0:00) Edinburgh"
+      Ekaterinburg: "(+5:00) Ekaterinburg"
+      Fiji: "(+12:00) Fiji"
+      Georgetown: "(-4:00) Georgetown"
+      Greenland: "(-3:00) Greenland"
+      Guadalajara: "(-6:00) Guadalajara"
+      Guam: "(+10:00) Guam"
+      Hanoi: "(+7:00) Hanoi"
+      Harare: "(+2:00) Harare"
+      Hawaii: "(-10:00) Hawaii"
+      Helsinki: "(+2:00) Helsinki"
+      Hobart: "(+10:00) Hobart"
+      Hong_Kong: "(+8:00) Hong Kong"
+      Indiana: "(-5:00) Indiana (East)"
+      International_Date_Line_West: "(-11:00) International Date Line West"
+      Irkutsk: "(+8:00) Irkutsk"
+      Islamabad: "(+5:00) Islamabad"
+      Istanbul: "(+2:00) Istanbul"
+      Jakarta: "(+7:00) Jakarta"
+      Jerusalem: "(+2:00) Jerusalem"
+      Kabul: "(+4:30) Kabul"
+      Kamchatka: "(+12:00) Kamchatka"
+      Karachi: "(+5:00) Karachi"
+      Kathmandu: "(+5:45) Kathmandu"
+      Kolkata: "(+5:30) Kolkata"
+      Krasnoyarsk: "(+7:00) Krasnoyarsk"
+      Kuala_Lumpur: "(+8:00) Kuala Lumpur"
+      Kuwait: "(+3:00) Kuwait"
+      Kyiv: "(+2:00) Kyiv"
+      La_Paz: "(-4:00) La Paz"
+      Lima: "(-5:00) Lima"
+      Lisbon: "(0:00) Lisbon"
+      Ljubljana: "(+1:00) Ljubljana"
+      London: "(0:00) London"
+      Madrid: "(+1:00) Madrid"
+      Magadan: "(+10:00) Magadan"
+      Marshall_Is: "(+12:00) Marshall Is."
+      Mazatlan: "(-7:00) Mazatlan"
+      Melbourne: "(+10:00) Melbourne"
+      Mexico_City: "(-6:00) Mexico City"
+      Mid_Atlantic: "(-2:00) Mid-Atlantic"
+      Midway_Island: "(-11:00) Midway Island"
+      Minsk: "(+3:00) Minsk"
+      Monrovia: "(0:00) Monrovia"
+      Monterrey: "(-6:00) Monterrey"
+      Montevideo: "(-3:30) Montevideo"
+      Moscow: "(+3:00) Moscow"
+      Mountain_Time: "(-7:00) Mountain Time (US & Canada)"
+      Mumbai: "(+5:30) Mumbai"
+      Muscat: "(+4:00) Muscat"
+      Nairobi: "(+3:00) Nairobi"
+      New_Caledonia: "(+11:00) New Caledonia"
+      New_Delhi: "(+5:30) New Delhi"
+      Newfoundland: "(-3:30) Newfoundland"
+      Novosibirsk: "(+6:00) Novosibirsk"
+      Nuku'alofa: "(+13:00) Nuku'alofa"
+      Osaka: "(+9:00) Osaka"
+      Pacific_Time: "(-8:00) Pacific Time (US & Canada)"
+      Paris: "(+1:00) Paris"
+      Perth: "(+8:00) Perth"
+      Port_Moresby: "(+10:00) Port Moresby"
+      Prague: "(+1:00) Prague"
+      Pretoria: "(+2:00) Pretoria"
+      Quito: "(-5:00) Quito"
+      Rangoon: "(+6:30) Rangoon"
+      Riga: "(+2:00) Riga"
+      Riyadh: "(+3:00) Riyadh"
+      Rome: "(+1:00) Rome"
+      Samoa: "(-11:00) Samoa"
+      Santiago: "(-4:00) Santiago"
+      Sapporo: "(+9:00) Sapporo"
+      Sarajevo: "(+1:00) Sarajevo"
+      Saskatchewan: "(-6:00) Saskatchewan"
+      Seoul: "(+9:00) Seoul"
+      Singapore: "(+8:00) Singapore"
+      Skopje: "(+1:00) Skopje"
+      Sofia: "(+2:00) Sofia"
+      Solomon_Is: "(+11:00) Solomon Is."
+      Sri_Jayawardenepura: "(+5:30) Sri Jayawardenepura"
+      St_Petersburg: "(+3:00) St. Petersburg"
+      Stockholm: "(+1:00) Stockholm"
+      Sydney: "(+10:00) Sydney"
+      Taipei: "(+8:00) Taipei"
+      Tallinn: "(+2:00) Tallinn"
+      Tashkent: "(+5:00) Tashkent"
+      Tbilisi: "(+4:00) Tbilisi"
+      Tehran: "(+3:30) Tehran"
+      Tijuana: "(-8:00) Tijuana"
+      Tokelau_Is: "(+13:00) Tokelau Is."
+      Tokyo: "(+9:00) Tokyo"
+      UTC: "(0:00) UTC"
+      Ulaanbaatar: "(+8:00) Ulaanbaatar"
+      Urumqi: "(+6:00) Urumqi"
+      Vienna: "(+1:00) Vienna"
+      Vilnius: "(+2:00) Vilnius"
+      Vladivostok: "(+10:00) Vladivostok"
+      Volgograd: "(+3:00) Volgograd"
+      Warsaw: "(+1:00) Warsaw"
+      Wellington: "(+12:00) Wellington"
+      West_Central_Africa: "(+1:00) West Central Africa"
+      Yakutsk: "(+9:00) Yakutsk"
+      Yerevan: "(+4:00) Yerevan"
+      Zagreb: "(+1:00) Zagreb"
     uploading:
       choose_image: Choose an image!!!
       different_photo: Upload a different photo...
