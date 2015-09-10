@@ -517,7 +517,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       e.preventDefault();
 
       emails = this.model.get('contacts').getPressrContacts();
-      console.log(this.model.get('contacts'));
+
       contacts = this.model.get('contacts');
       authorInputs = this.$el.find('input[name="author_email"]');
 
@@ -555,7 +555,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         });
 
         _.each(contacts.models, function(contact) {
-          console.log(contact)
+
           if (contact.get('origin') == 'pressr') {
             if (contact.get('author_id') == id) {
               contact.set('email', email);
@@ -595,7 +595,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     savePitch: function(){
       var self = this;
-      console.log(self.model);
+
       self.model.off("change", self.updatePitchModel);
       self.ui.pitchButton.prop('disabled', true);
 
