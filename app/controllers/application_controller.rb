@@ -7,7 +7,12 @@ class ApplicationController < ActionController::Base
 
   def china_redirect
     if Rails.env.production? and china_client? and not china_instance?
-      return redirect_to "http://robin8.cn#{request.fullpath}", :status => :moved_permanently
+      china_domain = if not Rails.application.secrets.china_domain.nil?
+                       Rails.application.secrets.china_domain
+                     else
+                       "http://robin8.cn"
+                     end
+      return redirect_to "#{china_domain}#{request.fullpath}", :status => :moved_permanently
     end
   end
 
