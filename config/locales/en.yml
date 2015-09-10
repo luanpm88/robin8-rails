@@ -1203,7 +1203,7 @@ en:
         email_missing_add: Add Email(s)
         email_missing_pitch: Pitch anyway!
         email_missing_text: There are no email addresses for some authors you've selected.<br/>You
-          may ignore authors without an email an send the pitch to rest.<br/>You may
+          may ignore authors without an email and send the pitch to rest.<br/>You may
           also add the missing emails manually.
         email_panel:
           email: Your email address
