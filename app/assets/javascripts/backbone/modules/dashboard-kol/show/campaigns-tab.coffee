@@ -28,7 +28,17 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         error: (e)->
           console.log e
 
+      invites = new Robin.Collections.CampaignInvitations()
+      campaignsInvitationTab = new App.Campaigns.Show.CampaignsInvitations
+        collection: invites
+      invites.fetch
+        success: ()->
+          campaignsPage.showChildView 'invitation', campaignsInvitationTab
+        error: (e)->
+          console.log e
+
       campaignsPage = new App.Campaigns.Show.CampaignsLayout
       @showChildView 'campaigns', campaignsPage
 
     score: () ->
+      @options.parent.setState('score')

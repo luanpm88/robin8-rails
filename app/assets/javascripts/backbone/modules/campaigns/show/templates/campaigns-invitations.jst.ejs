@@ -1,0 +1,66 @@
+<div class="col-sm-12">
+  <div class="dashboard-btns dashboard-kol">
+    <div class="row">
+      <div class="invites" id="invites">
+
+        <% if (items.length != 0) { %>
+        <table class="table table-striped" id="kol-dashboard">
+          <thead class="table-head">
+            <tr>
+              <th class="invite-cell invite-name" data-sort="string"><%=polyglot.t('dashboard.name')%></th>
+              <th class="invite-cell invite-budget" data-sort="int"><%=polyglot.t('dashboard.budget')%></th>
+              <th class="invite-cell invite-brand" data-sort="string"><%=polyglot.t('dashboard.brand')%></th>
+              <th class="invite-cell invite-description" data-sort="string"><%=polyglot.t('dashboard.brief')%></th>
+              <th class="invite-cell invite-date" data-sort="int"><%=polyglot.t('dashboard.creation_date')%></th>
+              <th class="invite-cell invite-deadline" data-sort="int"><%=polyglot.t('dashboard.deadline')%></th>
+              <th class="invite-cell invite-status" data-sort="string"><%=polyglot.t('dashboard.status')%></th>
+            </tr>
+          </thead>
+          <tbody>
+          <% _.each(items, function(item){ %>
+            <tr>
+              <td class="invite-cell invite-name">
+                <%= item.campaign.name %>
+              </td>
+              <td class="invite-cell invite-description" data-order="<%= item.campaign.budget %>">
+                $<%= item.campaign.budget %>
+              </td>
+              <td class="invite-cell invite-description">
+                  <%= item.user.first_name %> <%= item.user.last_name %>
+              </td>
+              <td class="invite-cell invite-description alignleft">
+                <%= item.campaign.description %>
+              </td>
+              <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
+                  <%= formatDate(item.created_at) %>
+              </td>
+              <td data-order="<%= timestamp(item.campaign.deadline) %>" class="invite-cell invite-deadline">
+                <b><%= formatDate(item.campaign.deadline) %></b>
+              </td>
+              <% if (item.status === '') { %>
+              <td class="invite-cell invite-action invite-nostatus">
+                <button type="button" class="btn btn-primary invitation-accept" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+                <button type="button" class="btn btn-danger invitation-decline" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.decline')%></button>
+              </td>
+              <% } else if (item.status === 'A') { %>
+              <td class="invite-cell invite-status invite-accepted">
+                <%=polyglot.t('dashboard.accepted')%>
+              </td>
+              <% } else if (item.status === 'D') { %>
+              <td class="invite-cell invite-status invite-declined">
+                <%=polyglot.t('dashboard.declined')%>
+              </td>
+              <% } %>
+            </tr>
+          <% }); %>
+          </tbody>
+
+        </table>
+        <% } else { %>
+        <div class="col-sm-12">
+          <%= polyglot.t("dashboard.not_invited_yet")%>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>

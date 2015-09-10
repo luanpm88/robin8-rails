@@ -1887,7 +1887,7 @@ input.form-control[type="file"] {
 .campaigns-tab-title {
   text-align: center;
   background-color: #f4f4f4;
-  margin: -20px 0 0 -200px;
+  margin: -20px -180px 0 -180px;
 }
 .campaigns-tab-title span {
   font-family: 'ProximaNovaSemibold';
@@ -1898,9 +1898,6 @@ input.form-control[type="file"] {
 }
 .campaigns-tab-title img {
   margin: 15px 0 15px 0;
-}
-#campaigns-list {
-  margin-right: 100px;
 }
 .campaigns-tables-title {
   text-align: center;
@@ -1959,7 +1956,7 @@ input.form-control[type="file"] {
 }
 .campaigns-tab-footer {
   background-color: #f4f4f4;
-  margin: 70px 0 0 -200px;
+  margin: 70px -180px 0 -180px;
   height: 150px;
 }
 .campaigns-tab-back {

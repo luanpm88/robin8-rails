@@ -3,8 +3,11 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
   Show.CampaignsLayout = Backbone.Marionette.LayoutView.extend
     template: 'modules/campaigns/show/templates/layout'
     regions:
+      invitation: "#invitation"
       accepted: "#accepted"
       declined: "#declined"
+      all: "#all"
+      my_industry: "#my_industry"
 
   Show.CampaignsTab = Backbone.Marionette.ItemView.extend
     template: 'modules/campaigns/show/templates/campaigns'
@@ -118,3 +121,44 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         order: [[ 0, "desc" ]]
       if !@options.canUpload and document.getElementById("report_region")?
         document.getElementById("report_region").style.display = "none"
+
+  Show.CampaignsInvitations = Backbone.Marionette.ItemView.extend
+    template: 'modules/campaigns/show/templates/campaigns-invitations'
+    events:
+      "click .invitation-accept": "accept"
+      "click .invitation-decline": "decline"
+    templateHelpers:
+      formatDate: (d) ->
+        date = new Date d
+        date.toLocaleFormat '%d-%b-%Y'
+      timestamp: (d) ->
+        date = new Date d
+        date.getTime()
+
+    serializeData: () ->
+      items: @collection.toJSON()
+
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+
+    accept: (event) ->
+      event.preventDefault()
+      @perform_action($(event.currentTarget))
+
+    decline: (event) ->
+      event.preventDefault()
+      @perform_action($(event.currentTarget), "decline")
+
+    perform_action: (button, action="accept") ->
+      self = this
+      button_container = button.parent().parent()
+      id = button.data("inviteId")
+      item = self.collection.get(id)
+      action_method = if action == "accept" then item.accept() else item.decline()
+      $.when(action_method).then ()->
+        button_container.remove()
+        self.render()
