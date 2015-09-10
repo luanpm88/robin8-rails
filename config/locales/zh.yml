@@ -472,9 +472,6 @@ zh:
       text14: "运用算法和机器学习技术，来推荐适合您的活动"
       text15: "帮助你估算影响力的价值并且赚钱"
       text16: "你知不知道你是一个社交达人？"
-      text17: Robin8 相信每一个人都是一个社交达人，都可以成为一个媒体。
-      text18: "欢迎来到人人共享的网络世界。随着社交媒体的流行，每一个人都有话语权和影响力。"
-      text19: Robin8 calculates your influence and estimates the value of your REACH.
       text17: ROBIN8 believes every person is an influencer and a media company.
       text18: Welcome to the internet for everyone. With the rise of social media,
         everyone has a voice and influence.
@@ -1696,6 +1693,10 @@ zh:
     phone: "(212) 807-8300 Extension 3"
     phone_title: Phone (customer service)
     title: Contact Robin8
+  dashboard_kol:
+    campaigns_tab:
+      tables_title: Monetize!
+      title: Campaigns
   date:
     abbr_day_names:
     - Sun
