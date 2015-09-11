@@ -7,7 +7,7 @@ GIT
       sort_alphabetical (~> 1.0)
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://ruby.taobao.org/
   remote: https://rails-assets.org/
   specs:
     actionmailer (4.2.0)
@@ -719,3 +719,6 @@ DEPENDENCIES
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
+
+BUNDLED WITH
+   1.10.6

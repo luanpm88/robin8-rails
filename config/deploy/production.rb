@@ -15,11 +15,11 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server '45.33.79.67', user: 'deployer', roles: %w{web app db}
-set :branch, 'master'
+server '139.196.36.27', user: 'deployer', roles: %w{web app db}
+set :branch, 'master_cn'
 set :rails_env, "production"
 
-set :rbenv_ruby, '2.2.1'
+set :rbenv_ruby, '2.2.0'
 
 # Custom SSH Options
 # ==================
