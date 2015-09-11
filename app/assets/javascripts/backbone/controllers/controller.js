@@ -57,7 +57,7 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
   showSmartCampaign: function() {
     this.stopAll();
     if (locale == 'en') {
-      window.location.href = '#dashboard';
+      Robin.module("SmartCampaign").start();
     } else {
       Robin.module("SmartCampaign").start();
     }
