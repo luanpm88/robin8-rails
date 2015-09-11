@@ -18,8 +18,8 @@ class Release < ActiveRecord::Base
   scope :published, -> { where(is_private: false) }
 
   before_save :pos_tagger, :entities_counter
-  after_create :decrease_feature_number
-  after_destroy :increase_feature_number
+  after_create :decrease_feature_number, :set_campaign_name, :create_campaign
+  after_destroy :increase_feature_number, :delete_campaign
   after_save :update_images_links, :decrease_newswire_features, :set_published_at
 
   def plain_text
@@ -172,6 +172,26 @@ class Release < ActiveRecord::Base
 
     if (myprgenie_) || (accesswire_) || (prnewswire_)
       UserMailer.newswire_support(myprgenie_, accesswire_, prnewswire_, title, text, myprgenie_publish, accesswire_publish, prnewswire_publish, publicLink).deliver
+    end
+  end
+
+  def set_campaign_name
+    self.campaign_name = "#{self.id}-release-#{Rails.env}"
+    self.save
+  end
+
+  def create_campaign
+    mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+    domain = Rails.application.secrets.mailgun[:domain]
+    mg_client.post("#{domain}/campaigns", { id: self.campaign_name, name: self.campaign_name })
+  end
+
+  def delete_campaign
+    begin
+      mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
+      domain = Rails.application.secrets.mailgun[:domain]
+      mg_client.delete("#{domain}/campaigns/#{campaign_name}")
+    rescue StandardError => e
     end
   end
 

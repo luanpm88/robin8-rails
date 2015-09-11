@@ -34,9 +34,22 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
         collection: new Robin.Collections.NewsRooms()
       });
-      var selectView;
+      var selectView, selectReleasesView;
       var module = this.module;
       Robin.layouts.main.content.show(module.layout);
+
+      var collectionReleases = new Robin.Collections.Releases();
+      collectionReleases.fetchReleasesWithCampaignName({
+        success: function(collection) {
+          selectReleasesView = new Analytics.EmailsFilterReleasesCollectionView({
+            collection: collection,
+            childView: Analytics.EmailsFilterReleaseItemView
+          });
+
+          module.layout.selectReleaseRegion.show(selectReleasesView);
+        }
+      });
+
       module.collection.fetch({
         success: function(collection, data, response) {
           selectView = new Analytics.EmailsFilterCollectionView({

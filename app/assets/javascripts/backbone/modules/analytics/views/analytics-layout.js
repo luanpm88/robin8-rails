@@ -5,6 +5,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     regions: {
       selectWebRegion: '#select-web-region',
       selectEmailRegion: '#select-email-region',
+      selectReleaseRegion: '#select-release-region',
       webAnalyticsRegion: '#analytics-region',
       emailsAnalyticsRegion: '#emails-analytics-region',
       emailsListRegion: '#emails-list-region',
@@ -16,8 +17,9 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
     events: {
       'change .change-web-news-room': 'changeWebNewsRoom',
-      'change .change-emails-news-room': 'changeEmailsNewsRoom',
+      'change .change-emails-news-room': 'changeEmailsData',
       'click #apply-date': 'changeDateRange',
+      'change .change-emails-release' : 'changeEmailsData',
       'click .emails-label': 'navigateToEmails',
       'click .web-label': 'navigateToWeb',
       'click .wechat-label': 'navigateToWeChatReport',
@@ -43,18 +45,35 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       webAnalyticsPageView.renderAnalytics();
     },
 
-    changeEmailsNewsRoom: function(event) {
+    changeEmailsData: function(event) {
       var $this = this;
-      var emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
-        collection: new Robin.Collections.NewsRooms()
-      });
+      var params = '';
+      var emailsAnalyticsPageView;
+      var release = false;
+
+      if ($(event.target).hasClass('change-emails-release')) {
+        params = '?type=release';
+        release = true;
+        emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
+          collection: new Robin.Collections.Releases()
+        });
+      } else {
+        emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
+          collection: new Robin.Collections.NewsRooms()
+        });
+      }
 
       $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
-      emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val());
 
-      var collectionEmails = new Robin.Collections.EmailAnalytics()
+      if (release) {
+        emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val(), 'release');
+      } else {
+        emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val());
+      }
+
+      var collectionEmails = new Robin.Collections.EmailAnalytics();
       collectionEmails.fetch({
-        url: '/news_rooms/' + $(event.target).val() +'/email_analytics',
+        url: '/news_rooms/' + $(event.target).val() +'/email_analytics' + params,
 
         success: function(collection, data, response){
           var collection = new Robin.Collections.EmailAnalytics(data.authors);

@@ -212,6 +212,8 @@ zh:
       opened: "开放"
       outlet: "媒体"
       page_views: "页面访问量"
+      select_content: Select Content
+      select_placeholder: Please select content
       sent: "发送"
       statisitcs: "智能发布邮件数据统计"
       values: "值"
