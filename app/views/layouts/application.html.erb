@@ -57,6 +57,12 @@
     Robin.showLoading = true;
   <% end -%>
 
+  <% if not Rails.env.production? || Rails.application.config.china_instance %>
+  Robin.showLangPanel = true;
+  <% else %>
+  Robin.showLangPanel = false;
+  <% end %>
+
 </script>
 
 <!-- load bitly javascript sdk -->
