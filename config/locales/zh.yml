@@ -313,6 +313,7 @@ zh:
       accept: "接受"
       accepted: "已接受"
       brand: "品牌"
+      brief: Brief
       budget: "預算"
       check_to_activate: "请查看您的电子邮件来激活您的帐户!"
       creation_date: "創建日期"
@@ -331,6 +332,18 @@ zh:
       not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
       status: "状态"
       title: "主界面"
+    dashboard_kol:
+      campaigns_tab:
+        accepted: Accepted
+        all: All
+        back: Back
+        declined: Declined
+        industry: My industry
+        interested: Interested
+        invitation: Invitation
+        not_interested: Not Interested
+        tables_title: Monetize!
+        title: Campaigns
     date:
       datepicker_days:
         d1: "星期天"
@@ -427,7 +440,11 @@ zh:
       deadline: "期限"
       in_progress: "进行中"
       name: "姓名"
+      no_campaign: There isn't any active campaigns.
+      no_campaign_by_industry: You don't have any industry in your profile or there
+        isn't any campaign for this industry.
       not_approved_yet: "尚未得到批准"
+      status: Status
       you_dont_have_any_accepted: "您没有已接受的推广活动"
       you_dont_have_any_declined: "您没有被拒绝的推广活动"
     kols:

@@ -162,3 +162,36 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       $.when(action_method).then ()->
         button_container.remove()
         self.render()
+
+
+  Show.CampaignsSuggestedTab = Backbone.Marionette.ItemView.extend
+    template: 'modules/campaigns/show/templates/campaigns-suggested'
+
+    events:
+      "click .camp-interested": "camp_interested"
+      "click .camp-not-interested": "camp_not_interested"
+
+    templateHelpers:
+      formatDate: (d) ->
+        date = new Date d
+        date.toLocaleFormat '%d-%b-%Y'
+      timestamp: (d) ->
+        date = new Date d
+        date.getTime()
+
+    serializeData: () ->
+      items: @collection.toJSON()
+      all: @options.all
+
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+
+    camp_interested: (event) ->
+      id = $(event.currentTarget).data("campaignId")
+
+    camp_not_interested: (event) ->
+      id = $(event.currentTarget).data("campaignId")

@@ -1,8 +1,14 @@
 class CampaignController < ApplicationController
 
   def index
-    status = params[:status] == "declined" ? "D" : "A"
-    campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
+    if params[:status] != "all" && params[:status] != "industry"
+      status = params[:status] == "declined" ? "D" : "A"
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
+    elsif params[:status] == "industry"
+      campaigns = kol_signed_in? ? Campaign.where("deadline > ?",Time.zone.now.beginning_of_day) : current_user.campaigns
+    else
+      campaigns = kol_signed_in? ? Campaign.where("deadline > ?",Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    end
     render json: campaigns, each_serializer: CampaignsSerializer, scope: current_kol
   end
 

@@ -1928,6 +1928,8 @@ input.form-control[type="file"] {
   background-color: #f4f4f4;
   margin-right: 5px;
   border-left: none;
+  width: 130px;
+  text-align: center;
 }
 
 #campaigns-list .nav-tabs {
@@ -1961,4 +1963,26 @@ input.form-control[type="file"] {
 }
 .campaigns-tab-back {
   padding-top: 65px;
+}
+.camp-interested,
+.camp-interested > button:focus,
+.camp-interested > button:hover{
+  border-color: #93C832 !important;
+  background-color: #93C832 !important;
+}
+.camp-not-interested,
+.camp-not-interested > button:focus,
+.camp-not-interested > button:hover{
+  border-color: #007183 !important;
+  background-color: #007183 !important;
+}
+#campaigns-table, #all {
+  .campaign-cell {
+    vertical-align: middle;
+    height: 51px;
+  }
+  .invite-cell {
+    vertical-align: middle;
+    height: 51px;
+  }
 }

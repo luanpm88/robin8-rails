@@ -329,6 +329,14 @@ en:
       title: Dashboard
     dashboard_kol:
       campaigns_tab:
+        accepted: Accepted
+        all: All
+        back: Back
+        declined: Declined
+        industry: My industry
+        interested: Interested
+        invitation: Invitation
+        not_interested: Not Interested
         tables_title: Monetize!
         title: Campaigns
     date:
@@ -428,7 +436,11 @@ en:
       deadline: Deadline
       in_progress: In Progress
       name: Name
+      no_campaign: There isn't any active campaigns.
+      no_campaign_by_industry: You don't have any industry in your profile or there
+        isn't any campaign for this industry.
       not_approved_yet: Not approved yet
+      status: Status
       you_dont_have_any_accepted: 'You don''t have any accepted campaigns. '
       you_dont_have_any_declined: You don't have any declined campaigns.
     kols:
