@@ -15,3 +15,19 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+.filter_emails {
+  margin-left: 20px;
+  width: 20%;
+  height: 20%;
+}
+.bounced_table {
+  width: 80% !important;
+}
+.admin_bounced_emails {
+  .bounced_emails_content {
+    display: flex;
+  }
+  .button_to {
+    display: inline;
+  }
+}
