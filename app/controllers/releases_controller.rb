@@ -5,7 +5,13 @@ class ReleasesController < ApplicationController
   def index
     limit = current_user.current_user_features.press_release.map(&:max_count).inject{|sum,x| sum + x }
     limit = limit.nil? ? current_user.releases.count : limit
-    releases = params[:public] ? Release.where(news_room_id: params[:id]).limit(limit) : apply_scopes(current_user.releases).limit(limit)
+
+    if params[:with_campaign_name]
+      releases = Release.where(user_id: current_user.id).where.not('campaign_name' => '')
+    else
+      releases = params[:public] ? Release.where(news_room_id: params[:id]).limit(limit) : apply_scopes(current_user.releases).limit(limit)
+    end
+
     unless params[:for_blast].blank?
       releases = releases#.published
     end

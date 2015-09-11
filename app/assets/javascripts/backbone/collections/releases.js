@@ -22,5 +22,11 @@ Robin.Collections.Releases = Backbone.Collection.extend({
   },
   initialize: function (models,options) {
     this.options = options;
+  },
+  fetchReleasesWithCampaignName: function(options) {
+    this.fetch({
+      url: '/releases?with_campaign_name=true',
+      success: options.success
+    });
   }
 });

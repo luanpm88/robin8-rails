@@ -198,6 +198,8 @@ en:
       opened: Opened
       outlet: Outlet
       page_views: Page Views
+      select_content: Select Content
+      select_placeholder: Please select content
       sent: Sent
       statisitcs: SmartContent Email Statistics
       values: Values

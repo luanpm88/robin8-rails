@@ -132,5 +132,23 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
   });
 
+  Analytics.EmailsFilterReleasesCollectionView = Backbone.Marionette.CollectionView.extend({
+    tagName: 'select',
+    className: 'form-control change-emails-release',
+    onRender: function() {
+      this.$el.prepend('<option value="" disabled selected>' + polyglot.t('analytics.select_placeholder') + '</option>');
+    }
+  });
+
+  Analytics.EmailsFilterReleaseItemView = Backbone.Marionette.ItemView.extend({
+
+    template: 'modules/analytics/templates/filter-release',
+    tagName: 'option',
+
+    onRender: function() {
+      this.$el.val(this.model.id);
+    }
+
+  });
 
 });
