@@ -14,7 +14,7 @@ stderr_path "log/unicorn.stderr.log"
 stdout_path "log/unicorn.stdout.log"
 
 # workers
-worker_processes 8
+worker_processes 2
 
 # To save some memory and improve performance
 preload_app true
