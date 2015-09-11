@@ -144,6 +144,7 @@ group :development, :test do
   gem 'capistrano-bundler', '~> 1.1.4'
   gem 'capistrano-sidekiq', '~> 0.4.0'
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
+  gem 'capistrano3-unicorn', '~> 0.2.0'
   gem 'pry-rails'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -165,4 +166,8 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+end
+
+group :production do
+  gem 'unicorn', '4.8.3'
 end
