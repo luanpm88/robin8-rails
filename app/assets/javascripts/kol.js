@@ -59,7 +59,7 @@
 //= require datejs
 
 //= require_tree ./backbone/config
-//= require backbone/init
+//= require backbone/init-kol
 //= require_tree ./backbone/routers
 //= require_tree ./backbone/controllers
 //= require_tree ./backbone/models

@@ -333,10 +333,12 @@ zh:
       status: "状态"
       title: "主界面"
     dashboard_kol:
+      buttons:
+        back: Back
+        next: Next
       campaigns_tab:
         accepted: Accepted
         all: All
-        back: Back
         declined: Declined
         industry: My industry
         interested: Interested
@@ -344,6 +346,10 @@ zh:
         not_interested: Not Interested
         tables_title: Monetize!
         title: Campaigns
+      score_tab:
+        header: Your Score
+        tables_title: My Profile and Score
+        title: Your score
     date:
       datepicker_days:
         d1: "星期天"
@@ -1685,6 +1691,8 @@ zh:
       choose_image: "选择图片!!!"
       different_photo: "上传不同的照片..."
       files_label: "文档"
+      kol:
+        choose_image: Change Avatar
       photos_label: "照片"
       videos_label: "视频"
     user_menu:

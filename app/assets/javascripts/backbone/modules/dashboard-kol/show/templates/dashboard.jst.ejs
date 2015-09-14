@@ -1,12 +1,8 @@
 <div class="dashboard-tabs">
   <ul role="" class="breadcrumb breadcrumb-arrow blast-steps">
-    <li role="presentation" id="social-link" >
-      <a id="campaign-home-link" href="#/dashboard/social" aria-controls="home" role="tab">
-        <i class="fa fa-home"></i> <%= polyglot.t('dashboard_kol.social_tab.title') %>
-      </a>
-    </li>
-    <li role="presentation" id="score-link"><a href="#dashboard/score" aria-controls="messages" role="tab"><i class="fa fa-bullseye"></i> <%= polyglot.t('dashboard_kol.score_tab.title') %></a></li>
-    <li role="presentation" id="campaigns-link"><a href="#dashboard/campaigns" aria-controls="settings" role="tab"><i class="fa fa-send-o"></i> <%= polyglot.t('dashboard_kol.campaigns_tab.title') %><label class="badge badge-success"></label></a></li>
+    <li role="presentation" id="social-link" ><a id="campaign-home-link" href="#/dashboard/social" aria-controls="home" role="tab"><%= polyglot.t('dashboard_kol.social_tab.title') %></a></li>
+    <li role="presentation" id="score-link"><a href="#dashboard/score" aria-controls="messages" role="tab"><%= polyglot.t('dashboard_kol.score_tab.title') %></a></li>
+    <li role="presentation" id="campaigns-link"><a href="#dashboard/campaigns" aria-controls="settings" role="tab"><%= polyglot.t('dashboard_kol.campaigns_tab.title') %><label class="badge badge-success"></label></a></li>
   </ul>
 </div>
 <div id="tab-content"></div>
