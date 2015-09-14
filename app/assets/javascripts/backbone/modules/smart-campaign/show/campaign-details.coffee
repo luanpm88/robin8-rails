@@ -7,7 +7,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       formatDate: (d) ->
         date = new Date d
         monthNum = parseInt(date.getMonth()) + 1
-        date.toLocaleFormat '%d-' + polyglot.t('date.monthes_abbr.m' + monthNum) + '-%Y'
+        d = date.getDate()
+        y = date.getFullYear()
+        month = polyglot.t('date.monthes_abbr.m' + monthNum)
+        "#{d}-#{month}-#{y}"
       timestamp: (d) ->
         date = new Date d
         date.getTime()
