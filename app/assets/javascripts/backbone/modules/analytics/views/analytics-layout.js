@@ -20,6 +20,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       'change .change-emails-news-room': 'changeEmailsData',
       'click #apply-date': 'changeDateRange',
       'change .change-emails-release' : 'changeEmailsData',
+      'click #apply-email-date': 'changeEmailsData',
       'click .emails-label': 'navigateToEmails',
       'click .web-label': 'navigateToWeb',
       'click .wechat-label': 'navigateToWeChatReport',
@@ -46,6 +47,10 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     },
 
     changeEmailsData: function(event) {
+      var event_val = $(event.target).val();
+      if (event_val == false) {
+        event_val = $('.change-emails-news-room').val()
+      }
       var $this = this;
       var params = '';
       var emailsAnalyticsPageView;
@@ -66,14 +71,14 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
 
       if (release) {
-        emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val(), 'release');
+        emailsAnalyticsPageView.renderEmailAnalytics(event_val, 'release');
       } else {
-        emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val());
+        emailsAnalyticsPageView.renderEmailAnalytics(event_val);
       }
 
       var collectionEmails = new Robin.Collections.EmailAnalytics();
       collectionEmails.fetch({
-        url: '/news_rooms/' + $(event.target).val() +'/email_analytics' + params,
+        url: '/news_rooms/' + event_val +'/email_analytics/',
 
         success: function(collection, data, response){
           var collection = new Robin.Collections.EmailAnalytics(data.authors);

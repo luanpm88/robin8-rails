@@ -188,7 +188,9 @@ en:
         qty: Qty
       title: ADD ON SERVICES
     analytics:
+      apply: Apply
       author: Author
+      date_range: Date Range
       delivered: Delivered
       dropped: Dropped
       email: Email
