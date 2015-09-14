@@ -3,27 +3,9 @@ class RobinApiController < ApplicationController
 
   def suggested_authors
     params["per_page"] = 200
-    params["included_email"] = true
-    response = @client.suggested_authors params
-    authors = unless response[:authors].blank?
-      authors_response = uniq_authors(response[:authors])
-      ids = authors_response.map{|a| a[:id]}
-      @max_score = authors_response.first[:score]
-      @min_score = authors_response.last[:score]
-      authors_response.map do |author|
-        level_of_interest = calculate_level_of_interest(author[:score],
-          full_name(author[:first_name], author[:last_name]))
-        author[:level_of_interest] = level_of_interest
-        author[:full_name] = full_name(author[:first_name], author[:last_name])
-        author
-      end
-    else
-      []
-    end
-
     params["included_email"] = false
     response = @client.suggested_authors params
-    authors2 = unless response[:authors].blank?
+    authors = unless response[:authors].blank?
       authors_response = uniq_authors(response[:authors])
       ids = authors_response.map{|a| a[:id]}
       @max_score = authors_response.first[:score]
@@ -38,16 +20,7 @@ class RobinApiController < ApplicationController
     else
       []
     end
-
-    authors = authors+authors2
-
     authors = authors.sort_by { |v| v[:level_of_interest]}.reverse
-    authors = uniq_authors(authors)
-    #authors = authors.sort{ |x, y| x[:index] <=> y[:index] }[0...100]
-    puts authors
-    puts authors.count
-
-
     render json: authors
   end
 
@@ -139,12 +112,12 @@ class RobinApiController < ApplicationController
   end
 
   def uniq_authors(authors)
+
     uniq_authors = authors.each_with_index.inject({}) do |memo, item|
       value, index = item
 
       if memo[value[:email]]
         previous_author = memo[value[:email]]
-
         memo[value[:email]][:blog_names] << value[:blog_name]
         memo[value[:email]][:blog_names].uniq!
       else
@@ -164,7 +137,12 @@ class RobinApiController < ApplicationController
 	  level_of_interest: value[:level_of_interest]
         }
 
-        memo[value[:email]] = new_author
+        if !value[:email].blank?
+          memo[value[:email]] = new_author
+        else
+          memo[value[:id].to_s] = new_author
+        end
+
       end
 
       memo
