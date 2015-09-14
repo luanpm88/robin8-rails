@@ -114,3 +114,40 @@ body {
   position: relative;
   padding-bottom: 12rem;
 }
+
+.profile-content {
+  .full-width {
+    width: 100%;
+  }
+  .audience {
+    .row {
+      padding-top: 8px;
+    }
+  }
+  .score-tables {
+    .mf-label {
+      margin-right: 15px;
+    }
+    .cell {
+      input[type=text] {
+        width: 100%;
+      }
+      border: none;
+    }
+    .region-btn {
+      width: 80px;
+      margin-right: 15px;
+    }
+    .switch-button {
+      padding: 6px 5px !important;
+      &:focus {
+        background-color: #AAB2BD !important;
+      }
+      &.active:focus {
+        background-color: #CCD1D9 !important;
+      }
+    }
+  }
+}
+
+

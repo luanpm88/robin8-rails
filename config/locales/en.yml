@@ -361,6 +361,35 @@ en:
         you_dont_have_any_negotiating: You don't have any campaign with negotiating
           status.
         you_dont_have_history: You don't have expired campaigns.
+      profile_tab:
+        age_group: Age group
+        audience_subtitle: self-assessed, optional
+        audience_title: My Influence Circle
+        birthdate: Birth date
+        central: Central
+        city: City
+        country: Country
+        east: East
+        female: Female
+        gender: Gender
+        general_title: My Profile
+        industry: Industry
+        industry_placeholder: Select or input up to 5, separated by blanks
+        location: Location
+        male: Male
+        male_female: Male:Female
+        mobile: Mobile
+        name: Name
+        north: North
+        northeast: Northeast
+        province: Province
+        regions: Regions
+        secrecy: Secrecy
+        social_subtitle: monetize your influence on those channels
+        social_title: My social
+        south: South
+        title: My Profile
+        west: West
       score_tab:
         header: Your Score
         tables_title: My Profile and Score

@@ -44,7 +44,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
           {axis:"Other",value:0.07},
           {axis:"Use less Once week",value:0.08}
         ], [
-          
+
         ]
       ]
 
@@ -59,5 +59,5 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       #Call function to draw the Radar chart
       #Will expect that data is in %'s
-      RadarChart.draw("#graph-score2", d, mycfg)
+      #RadarChart.draw("#graph-score2", d, mycfg)
 

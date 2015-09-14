@@ -16,6 +16,20 @@ class Kol < ActiveRecord::Base
   has_many :article_comments, as: :sender
   has_many :kol_profile_screens
 
+  GENDERS = {
+    :NONE => 0,
+    :MALE => 1,
+    :FEMALE => 2
+  }
+
+  CITY_LEVEL = {
+    :first => 1,
+    :second => 2,
+    :third => 4,
+    :fourth => 8,
+    :fifth => 16
+  }
+
   include Models::Identities
   extend Models::Oauth
 

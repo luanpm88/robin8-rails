@@ -7,26 +7,26 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       content: "#tab-content"
 
     ui:
-      social: '#social-link'
+      profile: '#profile-link'
       score: '#score-link'
       campaigns: '#campaigns-link'
 
     events:
-      "click @ui.social": "social"
+      "click @ui.profile": "profile"
       "click @ui.score": "score"
       "click @ui.campaigns": "campaigns"
 
     initialize: (options) ->
       @options = options
-      @_states = ['social', 'score', 'campaigns']
+      @_states = ['profile', 'score', 'campaigns']
       @empty = false
-      @state = @options.state or 'social'
+      @state = @options.state or 'profile'
       if not @model?
         @model = new Robin.Models.KOL()
         if not @data?
           @data = []
         @empty = true
-        @state = 'social'
+        @state = 'profile'
 
     setState: (s) ->
       return if not @canSetState s
@@ -34,7 +34,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       @state = s
 
       viewClass = switch s
-        when 'social' then Show.SocialTab
+        when 'profile' then Show.ProfileTab
         when 'score' then Show.ScoreTab
         when 'campaigns' then Show.CampaignsTab
 
@@ -56,9 +56,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     onRender: () ->
       @setState @state
 
-    social: (e) ->
+    profile: (e) ->
       e?.preventDefault()
-      @setState 'social'
+      @setState 'profile'
 
     score: (e) ->
       e?.preventDefault()
