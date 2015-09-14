@@ -1928,7 +1928,7 @@ input.form-control[type="file"] {
   background-color: #f4f4f4;
   margin-right: 5px;
   border-left: none;
-  width: 130px;
+  width: 17%;
   text-align: center;
 }
 
@@ -1984,5 +1984,11 @@ input.form-control[type="file"] {
   .invite-cell {
     vertical-align: middle;
     height: 51px;
+  }
+  .invite-accepted {
+    color: #8CC152;
+  }
+  .invite-declined {
+    color: #DA4453;
   }
 }

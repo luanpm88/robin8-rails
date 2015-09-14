@@ -182,8 +182,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             error: (e)->
               console.log e
 
-
-
   Show.CampaignsSuggestedTab = Backbone.Marionette.ItemView.extend
     template: 'modules/campaigns/show/templates/campaigns-suggested'
 
