@@ -115,6 +115,7 @@ class CampaignController < ApplicationController
     categories = IptcCategory.where :id => category_ids
     kols = Kol.where :id => kol_ids
     weibos = params[:weibo]
+    weibos = [] if weibos.blank?
     if params[:id]
       c = Campaign.find(params[:id])
       if c.user_id != current_user.id
