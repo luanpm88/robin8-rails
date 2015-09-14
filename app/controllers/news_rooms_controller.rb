@@ -85,12 +85,24 @@ class NewsRoomsController < ApplicationController
     @news_room = NewsRoom.find params[:news_room_id]
     mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
     domain = Rails.application.secrets.mailgun[:domain]
-    begin
-      result = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats")
-      result_on_opens = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=opened")
-      result_on_dropped = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=dropped")
 
-      r = JSON.parse(result.body)
+    params[:start_date].nil? ? start_date = Date.today - 7.days : start_date = Date.parse(params[:start_date])
+    params[:end_date].nil? ? end_date = Date.today : end_date = Date.parse(params[:end_date])
+    end_date <= DateTime.now ? end_date = end_date : end_date = DateTime.now
+    start_date <= end_date ? start_date = start_date : start_date = end_date
+
+    begin
+      result_start = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats?start-date=#{start_date.strftime("%Y-%m-%d")}")
+      r = JSON.parse(result_start.body)
+      if end_date != Date.today
+        result_end = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats?start-date=#{end_date.strftime("%Y-%m-%d")}")
+        r_end = JSON.parse(result_end.body)
+        r['total'].each { |key, value| r['total'][key] = value - r_end['total'][key] }
+        puts r_end
+      end
+      result_on_opens = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=opened&begin=#{start_date}&end=#{end_date}")
+      result_on_dropped = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=dropped&begin=#{start_date}&end=#{end_date}")
+
       opens = JSON.parse(result_on_opens.body)
       dropped = JSON.parse(result_on_dropped.body)
 

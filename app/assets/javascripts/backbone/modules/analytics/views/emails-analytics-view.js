@@ -10,7 +10,11 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
             $('.releases-toolbar').hide();
           }
           id = ( id == undefined ? collection.models[0].get('id') : id );
-          $.get('/news_rooms/' + id +'/email_analytics', function(data){
+
+          var start = new Date($('#start-email-date-input').val());
+          var end = new Date($('#end-email-date-input').val());
+
+          $.get('/news_rooms/' + id +'/email_analytics/', { start_date: start, end_date: end }, function(data){
 
             var mail = data.mail.total;
             var mailStatistics = [mail.sent, mail.delivered, mail.opened, mail.dropped]

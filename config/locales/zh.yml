@@ -202,7 +202,9 @@ zh:
         qty: "数量"
       title: "附加服务"
     analytics:
+      apply: Apply
       author: "作者"
+      date_range: Date Range
       delivered: "送达"
       dropped: "下降"
       email: "电子邮件"

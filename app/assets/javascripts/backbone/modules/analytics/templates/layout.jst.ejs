@@ -15,14 +15,14 @@
           <div class="panel-default panel-toolbar panel-body">
             <div class="panel-body">
               <div class="pull-right toolbar releases-toolbar">
-                Date range&nbsp;&nbsp;
+                <%= polyglot.t("analytics.date_range") %> &nbsp;&nbsp;
                 <div class="input date" id='select-start-date-web-region'>
                   <input class="form-control" type="text" id="start-date-input">
                 </div>
                 <div class="input date" id='select-end-date-web-region'>
                   <input class="form-control" type="text" id="end-date-input">
                 </div>
-                <button class="btn btn-info" id="apply-date">Apply</button>
+                <button class="btn btn-info" id="apply-date"><%= polyglot.t("analytics.apply") %></button>
                 <%= polyglot.t("analytics.filter_by") %> &nbsp;&nbsp;
                 <div class="ui-select" id='select-web-region'></div>
               </div>
@@ -35,7 +35,15 @@
           <div class="panel-default panel-toolbar panel-body">
             <div class="panel-body">
               <div class="pull-right toolbar releases-toolbar">
-                <%=polyglot.t('analytics.filter_by')%>&nbsp;&nbsp;
+                <%= polyglot.t("analytics.date_range") %> &nbsp;&nbsp;
+                <div class="input date" id='select-start-date-email-region'>
+                  <input class="form-control" type="text" id="start-email-date-input">
+                </div>
+                <div class="input date" id='select-end-date-email-region'>
+                  <input class="form-control" type="text" id="end-email-date-input">
+                </div>
+                <button class="btn btn-info" id="apply-email-date"><%= polyglot.t("analytics.apply") %></button>
+                <%= polyglot.t("analytics.filter_by") %> &nbsp;&nbsp;
                 <div class="ui-select" id='select-email-region'></div>
               </div>
             </div>
