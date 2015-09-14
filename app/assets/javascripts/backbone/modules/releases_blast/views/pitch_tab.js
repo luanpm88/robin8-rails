@@ -6,7 +6,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
   Robin.Collections.TwitterTargetsCollection = Backbone.Collection.extend({
     model: Robin.Models.Contact
   });
-  
+
   ReleasesBlast.EmailTargetItemView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/pitch-tab/email-item-view',
     tagName: 'tr',
@@ -18,7 +18,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     deleteButtonClicked: function(e){
       e.preventDefault();
-      
+
       this.deleteTarget();
     },
     deleteTarget: function() {
@@ -81,8 +81,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           self.model.clear({silent: true});
           self.model.get('media_contacts').add(self.collection.models);
           self.ui.mediaListNameInput.trigger('change');
-          
-          $.growl({message: "Your list has been successfully saved."
+
+          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
           },{
             type: 'success'
           });
@@ -98,7 +98,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     }
   });
-  
+
   ReleasesBlast.TwitterTargetItemView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/pitch-tab/twitter-item-view',
     tagName: 'tr',
@@ -110,7 +110,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     deleteButtonClicked: function(e){
       e.preventDefault();
-      
+
       this.deleteTarget();
     },
     deleteTarget: function() {
@@ -150,7 +150,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     template: 'modules/releases_blast/templates/pitch-tab/email-pitch-view',
     className: 'panel panel-primary',
     ui: {
-      mergeTag: 'label.label a',
+      mergeTag: '.add_merge_tag',
       textarea: '#email-pitch-textarea',
       summarySlider: '#summary-slider',
       summarySliderAmount: '#summary-slider-amount',
@@ -169,9 +169,36 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
     addMergeTag: function(e) {
       e.preventDefault();
-      
-      this.editor.composer.commands.exec("insertHTML", '@[' + e.target.textContent + '] ')
-      this.insertRenderedText();
+
+      var insertedValue;
+      switch ($(e.target).data('tagname')) {
+        case 'summary':
+          var summariesArr = this.releaseModel.get('summaries')
+            .slice(0, this.model.get('summary_length'));
+          var summaries = _(summariesArr).reject(function(item){
+            return s.isBlank(item);
+          }).map(function(item){
+            return '<li>' + item + '</li>'
+          }).join(' ');
+          insertedValue = '<ul>' + summaries + '</ul>';
+          break
+        case 'link':
+          insertedValue = '<a href="' + this.releaseModel.get('permalink') + '">' +
+            this.releaseModel.get('permalink') + '</a>';
+          break
+        case 'title':
+          insertedValue = '<a href="' + this.releaseModel.get('permalink') +
+            '">' + this.releaseModel.get('title') + '</a>';
+          break
+        case 'text':
+          insertedValue = this.releaseModel.get('text');
+          break
+        default:
+          insertedValue = '@[' + e.target.textContent + '] ';
+      }
+
+      this.editor.composer.commands.exec("insertHTML", insertedValue);
+      this.model.set('email_pitch', this.editor.getValue());
     },
     initialize: function(options){
       this.releaseModel = options.releaseModel;
@@ -179,10 +206,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     serializeData: function() {
       return {
-        mergeTags: [
-          'First Name', 'Last Name', 'Summary',
-          'Outlet', 'Link', 'Title', 'Text'
-        ],
         pitch: this.model.toJSON()
       }
     },
@@ -190,20 +213,20 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       this.initWysihtml5();
       this.ui.summarySlider.slider({
-        value: self.draftPitchModel.get('summary_length'), 
+        value: self.draftPitchModel.get('summary_length'),
         min: 1,
         max: 10,
         step: 1,
         slide: function(event, ui) {
-          self.ui.summarySliderAmount.text(ui.value + ' sentences');
+          self.ui.summarySliderAmount.text(ui.value + " " + polyglot.t("smart_release.pitch_step.email_panel.sentences"));
           self.model.set('summary_length', parseInt(ui.value));
         }
       });
-      this.ui.summarySliderAmount.text(this.ui.summarySlider.slider("value") + " sentences");
+      this.ui.summarySliderAmount.text(this.ui.summarySlider.slider("value") + " " + polyglot.t("smart_release.pitch_step.email_panel.sentences"));
     },
     initWysihtml5: function(){
       var self = this;
-      
+
       this.ui.textarea.wysihtml5({
         "image": false,
         "video": false,
@@ -215,19 +238,15 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "textAlign": false,
         "autoLink": true
       });
-      
+
       var wysihtml5Editor = this.ui.textarea.data("wysihtml5").editor;
       wysihtml5Editor.on("load", function() {
         self.editor = self.ui.textarea.data('wysihtml5').editor;
         var emailPitchTextChanged = function(){
           self.model.set('email_pitch', self.editor.getValue());
-          self.insertRenderedText();
         };
-        
+
         self.editor.on('change', emailPitchTextChanged);
-        self.editor.on('blur', emailPitchTextChanged);
-        
-        self.insertRenderedText();
       });
     },
     sendTestEmailButtonClicked: function(e){
@@ -244,12 +263,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var testEmailModel = new Robin.Models.TestEmail({
         draft_pitch_id: this.draftPitchModel.id
       });
-      
+
       var testEmailView = new ReleasesBlast.TestEmailView({
         model: testEmailModel,
         draftPitchModel: this.draftPitchModel
       });
-      
+
       Robin.modal.show(testEmailView);
     },
     subjectLineInputChanged: function(e){
@@ -257,41 +276,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     emailAddressInputChanged: function(e){
       this.model.set('email_address', this.ui.emailAddressInput.val());
-    },
-    insertRenderedText: function(){
-      var text = this.editor.getValue();
-      text = this.renderPitchText(text);
-      this.editor.setValue(text);
-    },
-    renderPitchText: function(text){
-      // Email pitch tags are:
-      // ["@[First Name]", "@[Last Name]", "@[Summary]",
-      // "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"]
-      var renderedText = text;
-      
-      var title = this.releaseModel.get('title');
-      var html_text = this.releaseModel.get('text');
-      var link = this.releaseModel.get('permalink');
-      link = '<a href="' + link + '">' + link + '</a>';
-      var linkable_title = '<a href="' + this.releaseModel.get('permalink') + 
-        '">' + title + '</a>';
-      var summariesArr = this.releaseModel.get('summaries')
-        .slice(0, this.model.get('summary_length'));
-      var summaries = _(summariesArr).reject(function(item){
-        return s.isBlank(item);
-      }).map(function(item){
-        return '<li>' + item + '</li>'
-      }).join(' ');
-      summaries = '<ul>' + summaries + '</ul>';
-      
-      renderedText = renderedText.replace(/\@\[Title\]/g, linkable_title);
-      renderedText = renderedText.replace(/\@\[Text\]/g, html_text);
-      renderedText = renderedText.replace(/\@\[Link\]/g, link);
-      renderedText = renderedText.replace(/\@\[Summary\]/g, summaries);
-      
-      this.model.set('email_pitch', renderedText);
-      
-      return renderedText;
     }
   });
 
@@ -312,14 +296,14 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     addMergeTag: function(e) {
       e.preventDefault();
-      
+
       this.ui.textarea.caret('@[' + e.target.textContent + '] ');
       this.ui.textarea.trigger('change');
       this.previewPitchText();
     },
     addHashTag: function(e) {
       e.preventDefault();
-      
+
       this.ui.textarea.caret(e.target.textContent + ' ');
       this.ui.textarea.trigger('change');
       this.previewPitchText();
@@ -340,7 +324,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     twitterPitchTextChanged: function(e){
       this.model.set("twitter_pitch", this.ui.textarea.val());
-      
+
       this.previewPitchText();
     },
     previewPitchText: function(){
@@ -349,13 +333,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     renderPitchText: function(text){
       // Twitter pitch tags are:
-      // [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ] 
+      // [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ]
       var renderedText = text;
-      
+
       var link = this.releaseModel.get('permalink');
-      
+
       renderedText = renderedText.replace(/\@\[Link\]/g, link);
-      
+
       return renderedText;
     }
   });
@@ -374,7 +358,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     sendButtonClicked: function(e){
       e.preventDefault();
-      
+
       this.ui.sendButton.prop('disabled', true);
       this.sendTestEmail();
     },
@@ -387,19 +371,18 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     sendTestEmail: function(){
       var self = this;
       this.model.set('emails', this.ui.emailsInput.val());
-      
+
       this.model.save({ release_id: this.draftPitchModel.get('release_id')}, {
         success: function(model, response, options){
           Robin.modal.empty();
-          $.growl({message: "Bon voyage, test email! " + 
-            "Your test email is on its way to the test recipients."
+          $.growl({message: polyglot.t('smart_release.send_test.bon_voyage')
           },{
             type: 'success'
           });
         },
         error: function(model, response, options){
           self.ui.sendButton.prop('disabled', false);
-          
+
           _(response.responseJSON).each(function(val, key){
             $.growl({message: self.errorFields[key] + ' ' + val[0]
             },{
@@ -410,16 +393,42 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
     }
   });
-  
+
+  ReleasesBlast.EmailMissing = Marionette.ItemView.extend({
+    template: 'modules/releases_blast/templates/pitch-tab/email-missing',
+    ui: {
+      emailsButton: '#email',
+      pitchButton: '#pitch'
+    },
+    events: {
+      'click @ui.pitchButton': 'pitchButtonClicked',
+      'click @ui.emailsButton': 'emailsButtonClicked'
+    },
+    initialize: function(options){
+      this.parent = options.parent;
+    },
+
+    pitchButtonClicked: function(e){
+      e.preventDefault();
+      this.parent.savePitch();
+      Robin.modal.empty();
+    },
+    emailsButtonClicked: function(e){
+      e.preventDefault();
+      this.parent.addEmail();
+      Robin.modal.empty();
+    }
+  });
+
   ReleasesBlast.PitchTabView = Marionette.LayoutView.extend({
     template: 'modules/releases_blast/templates/pitch-tab/pitch-tab-layout',
-    id: "blast-pitch",
+
     className: "tab-pane active",
     attributes: {
-      "role": "tabpanel" 
+      "role": "tabpanel"
     },
     ui: {
-      pitchButton: "#save-pitch"
+      pitchButton: "#save-pitch",
     },
     childEvents: {
       'email:target:removed': function (childView, emailModel) {
@@ -436,7 +445,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       twitterTargets: '#twitter-targets'
     },
     events: {
-      "click @ui.pitchButton": "pitchButtonClicked"
+      "click @ui.pitchButton": "pitchButtonClicked",
     },
     modelEvents: {
       'remove:contacts': 'contactRemovedFromPitch'
@@ -456,7 +465,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         email_address: self.model.get('email_address'),
         email_subject: self.model.get('email_subject')
       });
-      
+
       clearInterval(this.timer);
       this.timer = setTimeout(function(){
         self.draftPitchModel.save();
@@ -466,10 +475,91 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       if (this.model.get('contacts').length === 0 )
         this.ui.pitchButton.prop('disabled', true);
     },
+    addEmail: function()
+    {
+
+      if(this.$el.find('a[name="email-targets-list"]').attr('aria-expanded')) {
+        if (this.$el.find('a[name="email-targets-list"]').attr('aria-expanded') == "false") {
+          this.$el.find('a[name="email-targets-list"]').click();
+        }
+      }
+      else
+      {
+        this.$el.find('a[name="email-targets-list"]').click();
+      }
+    },
     pitchButtonClicked: function(e){
       e.preventDefault();
-      
-      this.savePitch();
+
+      emails = this.model.get('contacts').getPressrContacts();
+
+      contacts = this.model.get('contacts');
+      authorInputs = this.$el.find('input[name="author_email"]');
+
+      if(_.filter(authorInputs, function(x){
+          var email = x.value;
+
+          if(email != "") {
+            var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            return !re.test(email);
+          }
+          else{
+            return false;
+          }
+        }
+      ).length>0){
+        $.growl({message: polyglot.t('Email format is not valid')
+        },{
+          type: 'danger'
+        });
+        this.addEmail();
+        return
+      }
+
+
+
+      _.each(authorInputs, function(input){
+        email = input.value;
+        id = input.getAttribute('data-pressr-id');
+
+        _.each(emails, function(e) {
+          if(e.get('author_id') == id)
+          {
+            e.set('email', email);
+          }
+        });
+
+        _.each(contacts.models, function(contact) {
+
+          if (contact.get('origin') == 'pressr') {
+            if (contact.get('author_id') == id) {
+              contact.set('email', email);
+              contact.set('need_approve', true);
+            }
+          }
+        });
+      });
+
+      this.model.set('contacts',contacts);
+
+      allEmails = true;
+      _.each(emails, function(e) {
+        if (!e.get('email')) {
+          allEmails = false;
+        }
+      });
+
+      if(!allEmails)
+      {
+        var emailMissing = new ReleasesBlast.EmailMissing({
+          parent: this
+        });
+        Robin.modal.show(emailMissing);
+      }
+      else
+      {
+        this.savePitch();
+      }
     },
     errorFields: {
       "email_address": "Email address",
@@ -480,12 +570,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     savePitch: function(){
       var self = this;
+
       self.model.off("change", self.updatePitchModel);
       self.ui.pitchButton.prop('disabled', true);
-      
+
       self.model.set('twitter_targets', self.getTwitterTargets());
       self.model.set('email_targets', self.getEmailTargets());
-      
+
       self.model.save({}, {
         success: function(model, response, options){
           self.model.set('sent', true);
@@ -494,8 +585,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             data: { release_id: self.draftPitchModel.get('release_id') },
             processData: true
           });
-          
-          $.growl({message: "Your pitch has been successfully sent."
+
+          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
           },{
             type: 'success'
           });
@@ -503,7 +594,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         error: function(model, response, options){
           self.model.on("change", self.updatePitchModel);
           self.ui.pitchButton.prop('disabled', false);
-          
+
           _(response.responseJSON).each(function(val, key){
             $.growl({message: self.errorFields[key] + ' ' + val[0]
             },{
@@ -516,7 +607,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     getEmailTargets: function(){
       var emailContacts = this.model.get('contacts').getPressrContacts();
       var mediaListContacts = this.model.get('contacts').getMediaListContacts();
-      
+
       if (emailContacts.concat(mediaListContacts).length > 0)
         return true;
       else

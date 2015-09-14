@@ -1,14 +1,14 @@
 <div class="signup">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "New Package"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('new_package.title')}%>
   </header>
 
   <%= form_for @payment, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
       <div class="row">
         <div class="small-12 columns">
           <div class="goback">
-            <a href="/pricing">Go back</a>
+            <a href="/pricing"><%= @l.t('new_package.back') %></a>
           </div>
         </div>
       </div>
@@ -18,18 +18,17 @@
           <div class="small-12 columns">
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <th class="">Plan</th>
+                <th class=""><%= @l.t('new_package.plan') %></th>
                 <th></th>
                 <th class="removecolumn"></th>
-                <th class="price">Price</th>
+                <th class="price"><%= @l.t('new_package.price') %></th>
               </tr>
               <tr id="checkout-item-1">
                 <td class="">
-                  <%=@product.name.split(' ')[0]%> Plan
+                  <%=@product.name.split(' ')[0]%> <%= @l.t('new_package.plan') %>
                 </td>
                 <td>
-                  <select name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
-                    <option id="<%=@product.name%>" value="<%=@product.slug%>">Pay Annually ($<%=(@product.price/12).to_i %> x 12/mo) - save 20%</option>
+                  <select disabled name="payment_option" class="select-checkout" id="payment-option" onchange="updatePackage()">
                     <option id="<%=@product.monthly_package.name%>" value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
                   </select>
                 </td>
@@ -49,15 +48,13 @@
               </tr>
               <tr class="totals">
                 <td class="">
-                  TOTAL
+                  <%= @l.t('new_package.total') %>
                 </td>
                 <td>
                 </td>
                 <td>
                 </td>
-                <td class="price" id="price-total">
-                  $<%=(@product.price).to_i %>
-                </td>
+                <td class="price" id="price-total">$<%=(@product.price).to_i %></td>
               </tr>
             </table>
           </div>
@@ -68,13 +65,13 @@
           </div>
           <div class="small-12 medium-3 columns">
             <label>
-              <input type="text" placeholder="Promo Code" name="code" id="promo_code" aria-invalid="false" autocomplete="off" value="<%=@discount.code if @discount.present?%>">
+              <input type="text" placeholder="<%= @l.t('new_package.promo') %>" name="code" id="promo_code" aria-invalid="false" autocomplete="off" value="<%=@discount.code if @discount.present?%>">
             </label>
           </div>
 
           <div class="small-12 medium-2 columns">
             <label>
-              <input type="button" value="Apply Code" onclick="applyDiscount();" name="update">
+              <input type="button" value="<%= @l.t('new_package.apply') %>" onclick="applyDiscount();" name="update">
             </label>
           </div>
 
@@ -90,16 +87,16 @@
         <div class="signup-footer ftform" id="checkoutdata">
           <div class="row">
             <div class="small-12 columns">
-              <h3>New Package Information</h3>
+              <h3><%= @l.t('new_package.information') %></h3>
               <h4 style="text-align:center;color:#fff;">
-                Current: <%=current_user.active_subscription.product.name%> at $<%=current_user.active_subscription.product.price%>
+                <%= @l.t('new_package.current') %>: <%=current_user.active_subscription.product.name%> <%= @l.t('new_package.at') %> $<%=current_user.active_subscription.product.price%>
                 <br/> TO <br/>
-                New Package: <span id='new-name'><%=@product.name%></span> at $<span id='new-value'><%=@product.price%></span>
+                <%= @l.t('new_package.new') %>: <span id='new-name'><%=@product.name%></span> <%= @l.t('new_package.at') %> $<span id='new-value'><%=@product.price%></span>
               </h4>
 
 
               <div class="submit-wrap">
-                <%= submit_tag "CONFIRM PACKAGE CHANGE", :class=>"button button-signup nextstep" %>
+                <%= submit_tag @l.t('new_package.confirm'), :class=>"button button-signup nextstep" %>
               </div>
             </div>
           </div>
@@ -108,9 +105,9 @@
             <div class="small-12 columns">
               <div class="row formdisclaimers">
                 <div class="small-12 columns">
-                  <p class="chargesummary">You will not be charged right away. Your payment will be adjusted automatically in your next billing cycle, starting <span class="chargedate" id = "next-date">
+                  <p class="chargesummary"><%= @l.t('new_package.charge_notification') %> <span class="chargedate" id = "next-date">
                   <% date = current_user.active_subscription.next_charge_date || (Date.today + @product.interval.to_i.days) %>
-                  <%=date.strftime("%b #{date.day.ordinalize}, %Y")%></span>. You will be charged <span class="chargetotal" id="t-price">$<%=(@product.price).to_i %></span>.</p>
+                  <%=date.strftime("%b #{date.day.ordinalize}, %Y")%></span>. <%= @l.t('new_package.amount_info') %> <span class="chargetotal" id="t-price">$<%=(@product.price).to_i %></span>.</p>
                 </div>
               </div>
               <br/>

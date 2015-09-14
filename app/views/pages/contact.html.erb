@@ -2,7 +2,7 @@
 <div class="contact">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Contact Robin8"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('contact_page.title')}%>
   </header>
 
   <div class="int-content">
@@ -10,21 +10,19 @@
       <!-- CONTENT -->
 
       <div style="border-right: 1px solid #c1c1c1; padding-right: 15px;" class="small-4 columns address-info">
-        <h3>Main Office Address</h3>
+        <h3><%= @l.t('contact_page.address_title') %></h3>
 
         <address class="contact-addresses">
-          MyPRGenie Inc.<br>
-          1745 Broadway, 17th Floor <br>
-          New York, NY 10019
+          <%= @l.t('contact_page.address').html_safe %>
         </address>
 
         <div class="contact-addresses">
 
-          General Inquires:
-          <a href="mailto:info@myprgenie.com"><br>info@robin8.com</a><br><br>
+          <%= @l.t('contact_page.inquires_title') %>:
+          <a href="mailto:info@robin8.com"><br>info@robin8.com</a><br><br>
 
-          Phone (customer service):
-          <a href="#"><br>(212) 807-8300 Extension 3</a><br><br>
+          <%= @l.t('contact_page.phone_title') %>:
+          <a href="#"><br><%= @l.t('contact_page.phone') %></a><br><br>
 
         </div>
 
@@ -38,27 +36,27 @@
               <div class="row">
                 <div class="columns small-6 form-group">
                   <label>
-                    <input type="text" placeholder="First Name" class="form-control col-sm-12" required="" name="user[first_name]"></label>
+                    <input type="text" placeholder="<%=@l.t('contact_page.form.first_name_placeholder')%>" class="form-control col-sm-12" required="" name="user[first_name]"></label>
                 </div>
                 <div class="columns small-6  form-group">
                   <label>
-                    <input type="text" placeholder="Last Name" class="form-control col-sm-12" required="" name="user[last_name]"></label>
+                    <input type="text" placeholder="<%=@l.t('contact_page.form.last_name_placeholder')%>" class="form-control col-sm-12" required="" name="user[last_name]"></label>
                 </div>
               </div>
               <div class="row">
                 <div class="columns small-12 form-group">
                   <label>
-                    <input type="email" placeholder="Email Address" class="form-control col-sm-12" required="" name="user[email]"></label>
+                    <input type="email" placeholder="<%=@l.t('contact_page.form.email_placeholder')%>" class="form-control col-sm-12" required="" name="user[email]"></label>
                 </div>
               </div>
               <div class="row">
                 <div class="form-group columns small-12">
                   <label>
                     <select class="form-control columns small-12" id="subject" name="user[subject]" required>
-                      <option selected="" value="">Choose a Subject:</option>
-                      <option value="service">General Customer Service</option>
-                      <option value="suggestions">Suggestions</option>
-                      <option value="product">Product Support</option>
+                      <option selected="" value=""><%= @l.t('contact_page.form.subject_select_placeholder') %>:</option>
+                      <option value="service"><%= @l.t('contact_page.form.subject_select_placeholder') %></option>
+                      <option value="suggestions"><%= @l.t('contact_page.form.suggestions') %></option>
+                      <option value="product"><%= @l.t('contact_page.form.product_support') %></option>
                     </select></label>
                 </div>
               </div>
@@ -66,14 +64,14 @@
               <div class="row">
                 <div class="columns small-12 form-group">
                   <label>
-                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="Message"></textarea></label>
+                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="<%= @l.t('contact_page.form.message_placeholder') %>"></textarea></label>
                 </div>
               </div>
               <div class="errorwarning">
-                <p>Please fill out all required fields</p>
+                <p><%= @l.t('contact_page.form.fill_out') %></p>
               </div>
               <div class="submit-wrap">
-                <button class="button button-signup" type="submit">Send</button>
+                <button class="button button-signup" type="submit"><%= @l.t('contact_page.form.send_button') %></button>
               </div>
             </div>
           </div>

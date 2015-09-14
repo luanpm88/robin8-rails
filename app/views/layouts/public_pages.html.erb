@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Robin8</title>
+  <title><%= @news_room.present? && @release.present? ? @release.title : @news_room.company_name %></title>
+  <meta name="description" content="<%=@news_room.present? && @release.present? ? strip_tags(@release.text) : strip_tags(@news_room.description) %>" />
   <% if request.location && request.location.country.to_s == "China" %>
     <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css"> 
   <% else %>
@@ -43,13 +44,8 @@
      ga('send', 'pageview');
     </script>
   <% end %>
-
-
-
-
 </head>
 <body id="main">
-
 
 <!-- load bitly javascript sdk -->
 <script type="text/javascript" src="//bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">

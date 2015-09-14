@@ -1,7 +1,7 @@
 <div class="signup">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "Payment"}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('payment_page.title') }%>
   </header>
   <%total = 0.0%>
   <%= form_for @payment, :html =>{:class=>"payment ", :id=>"checkout-form"} do |f|  %>
@@ -9,7 +9,7 @@
       <div class="row">
         <div class="small-12 columns">
           <div class="goback">
-            <a href="/add-ons<%="?plan="+ @product.slug if @product%>">Go back</a>
+            <a href="/add-ons<%="?plan="+ @product.slug if @product%>"><%= @l.t 'payment_page.go_back'%></a>
           </div>
         </div>
       </div>
@@ -19,10 +19,10 @@
           <div class="small-12 columns">
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <th class="">Plan</th>
+                <th class=""><%= @l.t 'payment_page.table.plan'%></th>
                 <th></th>
                 <th class="removecolumn"></th>
-                <th class="price">Price</th>
+                <th class="price"><%= @l.t 'payment_page.table.price'%></th>
               </tr>
               <%if @product%>
                   <tr id="checkout-item-1">
@@ -30,8 +30,7 @@
                       <%=@product.name.split(' ')[0]%> Plan
                     </td>
                     <td>
-                      <select name="payment_option" id="payment-option" onchange="updatePackage()">
-                        <option value="<%=@product.slug%>" selected>Pay Annually ($<%=(@product.price/12).to_i %> x 12/mo) - save 20%</option>
+                      <select disabled name="payment_option" id="payment-option" onchange="updatePackage()">
                         <option value="<%=@product.monthly_package.slug%>">Pay Monthly</option>
                       </select>
                     </td>
@@ -60,7 +59,7 @@
                     <td>
                     </td>
                     <td class="remove">
-                      <a data-remove="checkout-item-<%=a.id%>" class="remove" onclick="removeAddonCost(<%=a.price * @add_on_hash["#{a.id}"].to_f%>)">remove</a>
+                      <a data-remove="checkout-item-<%=a.id%>" class="remove" onclick="removeAddonCost(<%=a.price * @add_on_hash["#{a.id}"].to_f%>)"><%= @l.t 'payment_page.table.remove'%></a>
                     </td>
                     <td class="price">
                       $<%=price = a.price * @add_on_hash["#{a.id}"].to_f%>
@@ -72,15 +71,13 @@
               <input type="hidden" id="addons-price" value="<%=addons_price%>"/>
               <tr class="totals">
                 <td class="">
-                  TOTAL
+                  <%= @l.t 'payment_page.table.total'%>
                 </td>
                 <td>
                 </td>
                 <td>
                 </td>
-                <td class="price" id="price-total">
-                  $<%=total%>
-                </td>
+                <td class="price" id="price-total">$<%=total%></td>
               </tr>
             </table>
           </div>
@@ -118,101 +115,100 @@
         <div class="signup-footer ftform" id="checkoutdata">
           <div class="row">
             <div class="small-12 columns">
-              <h3>Payment Information</h3>
+              <h3><%= @l.t 'payment_page.info'%></h3>
             </div>
           </div>
           <input type="hidden" value="<%=@product.try(:slug) || "add-on"%>" name="slug" id="slug"/>
           <div class="row">
             <div class="small-2 medium-2 large-2 columns custom-padding">
-              <label>Title
-                <%=select "contact", "title", [["Mr", 'Mr'], ["Ms", 'Ms'], ["Mrs", 'Mrs']], {}, {:class => "select-checkout"} %>
+              <label><%= @l.t 'payment_page.your_title'%>
+                <%=select "contact", "title", [[@l.t('payment_page.mr_title'), @l.t('payment_page.mr_title')], [@l.t('payment_page.ms_title'), @l.t('payment_page.ms_title')], [@l.t('payment_page.mrs_title'), @l.t('payment_page.mrs_title')]], {:selected => params[:contact].present? ? params[:contact][:title] : ''}, {:class => "select-checkout"} %>
               </label>
             </div>
 
             <div class="small-10 medium-5 large-5 columns custom-padding">
-              <label>First Name
+              <label><%= @l.t 'payment_page.first_name'%>
                 <%=text_field "contact", "first_name" ,:value=>current_user.first_name, :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "First name can't be blank"%>
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.first_name_blank')%>
               </label>
             </div>
 
             <div class="small-12 medium-5 large-5 columns custom-padding">
-              <label>Last Name
+              <label><%= @l.t 'payment_page.last_name'%>
                 <%=text_field "contact", "last_name" , :value=>current_user.last_name, :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Last name can't be blank" %>
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.last_name_blank') %>
               </label>
             </div>
           </div>
 
           <div class="row">
             <div class="small-12 columns custom-padding">
-              <label>Phone
-                <%=text_field "contact", "phone" , :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Phone can't be blank","data-validation"=>"number" %>
+              <label><%= @l.t 'payment_page.phone'%>
+                <%=text_field "contact", "phone" , :value => params[:contact].present? ? params[:contact][:phone] : '', :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.phone_blank'), "data-validation"=>"number" %>
               </label>
             </div>
           </div>
 
           <div class="row">
             <div class="small-12 medium-6 large-8 columns custom-padding">
-              <label>Address
-                <%=text_field "contact", "address1" , :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Address can't be blank" %>
+              <label><%= @l.t 'payment_page.address'%>
+                <%=text_field "contact", "address1" , :value => params[:contact].present? ? params[:contact][:address1] : '', :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.address_blank') %>
               </label>
             </div>
 
             <div class="small-12 medium-6 large-4 columns custom-padding">
-              <label>City
-                <%=text_field "contact", "city" , :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "City can't be blank"
-                %>
+              <label><%= @l.t 'payment_page.city'%>
+                <%=text_field "contact", "city" , :value => params[:contact].present? ? params[:contact][:city] : '', :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.city_blank') %>
               </label>
             </div>
           </div>
 
           <div class="row">
             <div class="small-12 medium-4 large-4 columns custom-padding">
-              <label>State
-                <%=text_field "contact", "state" , :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "State can't be blank",:placeholder => "NY" %>
+              <label><%= @l.t 'payment_page.state'%>
+                <%=text_field "contact", "state" , :value => params[:contact].present? ? params[:contact][:state] : '', :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.state_blank'),:placeholder => "NY" %>
               </label>
             </div>
 
             <div class="small-12 medium-4 large-3 columns custom-padding">
-              <label>Postal Code
-                <%=text_field "contact", "zip" , :class=>"form-control","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Postal Code/Zip can't be blank" %>
+              <label><%= @l.t 'payment_page.code'%>
+                <%=text_field "contact", "zip" , :value => params[:contact].present? ? params[:contact][:zip] : '', :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.code_blank') %>
               </label>
             </div>
 
             <div class="small-12 medium-4 large-5 columns custom-padding">
-              <label>Country
-                <%=select_tag "contact[country]",options_for_select(Country.all.sort),{:class=>"select-checkout"}%>
+              <label><%= @l.t 'payment_page.country'%>
+                <%=select_tag "contact[country]",options_for_select(Country.all.sort, :selected => params[:contact].present? ? params[:contact][:country] : ''), 
+                    {:class=>"select-checkout"}%>
               </label>
             </div>
           </div>
 
-
-
           <div class="row">
             <div class="small-12 medium-12 large-4 columns custom-padding">
-              <label>Credit Card Type
-                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'amex'],["Discover", 'discover'],["JCB","jcb"] ], {}, {:class => "select-checkout"} %>
+              <label><%= @l.t 'payment_page.card_type'%>
+                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'amex'],["Discover", 'discover'],["JCB","jcb"] ], 
+                    {:selected => params[:card].present? ? params[:card][:credit_card_type] : ''}, {:class => "select-checkout"} %>
               </label>
             </div>
 
             <div class="small-8 medium-8 large-5 columns custom-padding">
-              <label>Credit Card Number
+              <label><%= @l.t 'payment_page.card_number'%>
                 <%=text_field "card", "credit_card_number" , :class=>"form-control", :autocomplete=>"off" , "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Card number can't be blank","data-validation"=>"number" %>
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.card_number_blank'),"data-validation"=>"number" %>
               </label>
             </div>
 
             <div class="small-4 medium-4 large-3 columns custom-padding">
-              <label>CVV
+              <label><%= @l.t 'payment_page.cvv'%>
                 <%=text_field "card", "verification_code", :class=>"form-control", :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
                               "data-validation"=>"length", "data-validation-length"=>"min2",
-                              "data-validation-error-msg"=> "CVV must be greater then 2 characters","data-validation"=>"number"%>
+                              "data-validation-error-msg"=> @l.t('payment_page.messages.cvv_blank'),"data-validation"=>"number"%>
               </label>
             </div>
 
@@ -220,22 +216,24 @@
           </div>
           <div class="row">
             <div class="small-6 medium-6 large-3 columns custom-padding">
-              <label>Exp. Month
-                <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Expiry Month can't be blank","data-validation"=>"number"  %>
+              <label><%= @l.t 'payment_page.exp_month'%>
+                <%=text_field "card", "expiration_month", :value => params[:card].present? ? params[:card][:expiration_month] : '',
+                  :class=>"form-control", :autocomplete=>"off",:placeholder=>"04","data-validation"=>"required",
+                  "data-validation-error-msg"=> @l.t('payment_page.messages.exp_month_blank'),"data-validation"=>"number"  %>
               </label>
             </div>
             <div class="small-6 medium-6 large-3 columns left custom-padding">
-              <label>Exp. Year
-                <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
-                              "data-validation-error-msg"=> "Expiry Year can't be blank and must be in YYYY format", "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
+              <label><%= @l.t 'payment_page.exp_year'%>
+                <%=text_field "card", "expiration_year", :value => params[:card].present? ? params[:card][:expiration_year] : '',
+                  :class=>"form-control", :autocomplete=>"off",:placeholder=>"2015","data-validation"=>"required",
+                  "data-validation-error-msg"=> @l.t('payment_page.messages.exp_year_blank'), "data-validation"=>"length" , "data-validation-length"=>"4-4"%>
               </label>
             </div>
           </div>
 
           <div class="row formdisclaimers">
             <div class="small-12 columns">
-              <p><strong>Robin8 accepts Visa, Mastercard, Discover and American Express. </strong><br /> By joining Robin8 you are agreeing to the <a href="terms.html">Terms of Use</a> and Privacy Policy. To ensure continued service, your membership will be auto-renewed unless canceled.
+              <p><strong><%= @l.t 'payment_page.note.first_part'%> </strong><br /> <%= @l.t 'payment_page.note.second_part'%> <a href="terms.html"><%= @l.t 'payment_page.note.third_part'%></a> <%= @l.t 'payment_page.note.fourth_part'%> <br /><%= @l.t 'payment_page.note.fifth_part'%></p>
                 <% if current_user.active_subscription.present? %>
                   Satisfaction guaranteed or your money back (within 30 days).
                 <% end %>
@@ -248,7 +246,7 @@
           <div class="row">
             <div class="small-12 columns">
               <div class="submit-wrap">
-                <%= submit_tag "SUBMIT", :class=>"button button-signup nextstep" %>
+                <%= submit_tag "#{@l.t('payment_page.submit_btn')}", :class=>"button button-signup nextstep" %>
               </div>
             </div>
           </div>
@@ -293,6 +291,7 @@
 
   <script>
       $.validate();
+
       <%if @discount.present?%>
       applyDiscount();
       <%end%>
@@ -328,8 +327,16 @@
       }
 
       function removeAddonCost(amount){
-        addonsCost = parseInt($('#addons-price').val());
-        $('#addons-price').html( addonsCost - amount);
+        if ($('#addons-price').length) {
+          addonsCost = parseInt($('#addons-price').val());
+          $('#addons-price').html( addonsCost - amount );
+        }
+
+        if ($('#price-total').length) {
+          addonsCost = parseInt($('#price-total').html().slice(1));
+          $('#price-total').html( '$' + (addonsCost - amount).toString());
+        }
+
         return true
       }
 

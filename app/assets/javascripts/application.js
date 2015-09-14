@@ -56,6 +56,7 @@
 //= require ./lib/icheck
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
+//= require underscore.inflection
 
 //= require_tree ./backbone/config
 //= require backbone/init
@@ -121,28 +122,38 @@ ready = function() {
     }
   }
   //end trimming space from both side of the string
-  
+
   /**
    * Indicates whether or not this string starts with the specified string.
    * @param {Object} string
    */
   String.prototype.startsWith = function(string){
-      if (!string) 
+      if (!string)
           return false;
       return this.indexOf(string) == 0;
   }
-  
+
   Marionette.Behaviors.behaviorsLookup = function() {
     return window.Behaviors;
   }
+
+  Highcharts.setOptions({
+    lang: {
+      printChart: polyglot.t("highcharts.print_chart"),
+      downloadPNG: polyglot.t("highcharts.download_png"),
+      downloadJPEG: polyglot.t("highcharts.download_jpeg"),
+      downloadPDF: polyglot.t("highcharts.download_pdf"),
+      downloadSVG: polyglot.t("highcharts.download_svg")
+    }
+  });
 };
 
 $(window).on('scroll', function() {
   scrollPosition = $(this).scrollTop();
-  if (scrollPosition >= 1) { 
-      $('.nav').addClass('fixedscroll'); 
+  if (scrollPosition >= 1) {
+      $('.nav').addClass('fixedscroll');
   }else{
-      $('.nav').removeClass('fixedscroll'); 
+      $('.nav').removeClass('fixedscroll');
   }
 });
 

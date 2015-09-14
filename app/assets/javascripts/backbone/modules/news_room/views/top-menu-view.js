@@ -41,7 +41,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       this.initSubdomain = this.model.attributes.subdomain_name;
       this.$el.find("#tagsinput").tagsinput();
       this.$el.find("#industries").select2({
-        placeholder: 'Select...'
+        placeholder: polyglot.t("newsrooms.modal.address_tab.dropdown.select")
       });
       this.initLogoView();
       this.initMediaTab();
@@ -71,7 +71,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
 
     openModalDialog: function(){
       if(Robin.user.get('can_create_newsroom') != true) {
-        $.growl({message: "You don't have available newsrooms!"},
+        $.growl({message: polyglot.t("newsrooms.messages.not_available_newsrooms")},
           {
             type: 'info'
           });
@@ -164,7 +164,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
           subdomain_name: {
             validators: {
               notEmpty: {
-                message: 'The Subdomain name is required'
+                message: polyglot.t("newsrooms.modal.public_tab.validations.subdomain_required")
               },
               regexp: {
                 regexp: /^[a-zA-Z0-9_-]*$/,

@@ -1,47 +1,47 @@
 <div class="stream-settings settings-dialog slider closed">
   <form role="form">
     <div class="form-group">
-      <label for="topics-select">Topics</label>
+      <label for="topics-select"><%= polyglot.t("monitoring.topics") %></label>
       <input type="text" class="form-control input-sm stream-input" id="topics-select" placeholder="Start typing to get suggestions...">
     </div>
     <div class="form-group">
-      <label for="blogs-select">Sources</label>
+      <label for="blogs-select"><%= polyglot.t("monitoring.sources") %></label>
       <input type="text" class="form-control input-sm stream-input" id="blogs-select" placeholder="Start typing to get suggestions...">
     </div>
     <div class="form-group sort-by">
-      <label>Sort by</label>
+      <label><%= polyglot.t("monitoring.sort_by") %></label>
       <div class="ui-select">
         <select class="form-control" name='sort_column'>
-          <option value="published_at">Recency</option>
-          <option value="shares_count">Popularity</option>
+          <option value="published_at"><%= polyglot.t("monitoring.recency") %></option>
+          <option value="shares_count"><%= polyglot.t("monitoring.popularity") %></option>
         </select>
       </div>
     </div>
     <div class="form-group time-range">
-      <label>Time range</label>
+      <label><%= polyglot.t("monitoring.time_range") %></label>
       <div class="ui-select">
         <select class="form-control" name='published_at'>
-          <option value="[NOW-24HOURS TO *]">Last 24 hours</option>
-          <option value="[NOW-7DAYS TO *]">Last week</option>
-          <option value="[NOW-1MONTH TO *]">Last month</option>
-          <option value="">All time</option>
+          <option value="[NOW-24HOURS TO *]"> <%= polyglot.t("monitoring.last_24_hours") %> </option>
+          <option value="[NOW-7DAYS TO *]"> <%= polyglot.t("monitoring.last_week") %> </option>
+          <option value="[NOW-1MONTH TO *]"> <%= polyglot.t("monitoring.last_month") %> </option>
+          <option value=""> <%= polyglot.t("monitoring.all_time") %></option>
         </select>
       </div>
     </div>
     <div class="pull-right">
-      <button class="btn btn-default btn-sm" id="close-settings">Cancel</button>
-      <button class="btn btn-success btn-sm" id="done" href="#"><i class="fa fa-check"></i> Done</button>
+      <button class="btn btn-default btn-sm" id="close-settings"> <%= polyglot.t("monitoring.cancel") %> </button>
+      <button class="btn btn-success btn-sm" id="done" href="#"><i class="fa fa-check"></i> <%= polyglot.t("monitoring.done") %> </button>
     </div>
   </form>
 </div>
 <div class="stream-settings rss-dialog slider closed">
   <form role="form">
     <div class="form-group">
-      <label for="topics-select">Rss Link</label>
+      <label for="topics-select"><%= polyglot.t("monitoring.rss_link") %></label>
       <% if(stream.id) {%>
         <input type="text" class="form-control input-sm rss-input" readonly value="<%= window.location.origin + '/streams/' + stream.id + '/stories.rss?topicsForRss='+topicsForRss()+'&blogsForRss='+blogsForRss()%>">
       <% } else {%>
-        <div>Please save stream first</div>
+        <div><%= polyglot.t("monitoring.please_save") %></div>
       <% } %>
     </div>
   </form>
@@ -51,7 +51,7 @@
     <div class="form-group">
       <% if(stream.id) {%>
         <div class="form-group">
-          <label for="stories-number">Number of stories</label>
+          <label for="stories-number"><%= polyglot.t("monitoring.number_of_stories") %></label>
           <output style="color: white;" for="stories-number" 
             id="stories-number" class="pull-right">10</output>
           <input type=range class="form-control input-sm stories-number" 
@@ -63,7 +63,7 @@
         </div>
   
         <div class="form-group">
-          <label>Format</label>
+          <label><%= polyglot.t("monitoring.format") %></label>
           <div class="ui-select">
             <select class="form-control" name='format'>
               <option value="png" selected>PNG</option>
@@ -73,7 +73,7 @@
         </div>
         
         <div class="form-group">
-          <label for="daterange">Time range</label>
+          <label for="daterange"><%= polyglot.t("monitoring.time_range") %></label>
           <div class='input-group'>
             <input type='text' name='daterange' class="form-control input-sm"
               readonly />
@@ -85,7 +85,7 @@
         
         <div class="pull-right form-group">
           <button class="btn btn-success btn-sm" id="download-report" 
-            href="#"><i class="fa fa-download"></i> Download</button>
+            href="#"><i class="fa fa-download"></i> <%= polyglot.t("monitoring.download") %></button>
         </div>
       <% } else { %>
         <div>Please save stream first</div>
@@ -111,13 +111,13 @@
           <div class="col-sm-12">
             <div class="checkbox">
               <label>
-                <input type="checkbox" name="enabled"> Enabled
+                <input type="checkbox" name="enabled"> <%= polyglot.t("monitoring.enabled") %>
               </label>
             </div>
           </div>
         </div>
         <div class="pull-right form-group">
-          <button class="btn btn-success btn-sm" type="submit">Save</button>
+          <button class="btn btn-success btn-sm" type="submit"><%= polyglot.t("monitoring.save") %></button>
         </div>
       <% } else { %>
         <div>Please save stream first</div>
@@ -128,27 +128,26 @@
 <div class="stream-header">
   <i class="fa fa-reorder grey"></i>  
   <span class='editable' id='title' data-emptytext="..."><%= stream.name %></span>
-  <button class="close pull-right delete-stream" data-toggle="tooltip" data-placement="left" title="Delete Stream">&times;</button>
-  <button class="close pull-right settings-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Stream Settings"><i class="fa fa-cog"></i></button>
-  <button class="close pull-right export-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Export"><i class="fa fa-download"></i></button>
-  <button class="close pull-right rss-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="RSS Feed"><i class="fa fa-rss"></i></button>
-  <button class="close pull-right set-alert-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="Set alert"><i class="fa fa-bell"></i></button>
+  <button class="close pull-right delete-stream" data-toggle="tooltip" data-placement="left" title="<%= polyglot.t("monitoring.tooltips.delete_stream") %>">&times;</button>
+  <button class="close pull-right settings-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="<%= polyglot.t("monitoring.tooltips.stream_settings") %>"><i class="fa fa-cog"></i></button>
+  <button class="close pull-right export-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="<%= polyglot.t("monitoring.tooltips.export") %>"><i class="fa fa-download"></i></button>
+  <button class="close pull-right rss-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="<%= polyglot.t("monitoring.tooltips.rss_feed") %>"><i class="fa fa-rss"></i></button>
+  <button class="close pull-right set-alert-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="<%= polyglot.t("monitoring.tooltips.set_alert") %>"><i class="fa fa-bell"></i></button>
 </div>
 <div class="stream-body">
   <ul class="stories"></ul>
 </div>
 <div class="stream-updates" align="center">
   <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Click to see updates" class="js-show-new-stories hidden">
-    <i class="fa fa-refresh fa-spin"></i> <span name="newStoriesCount"><%= stream.newStoriesCount %></span> new updates
+    <i class="fa fa-refresh fa-spin"></i> <span name="newStoriesCount"><%= stream.newStoriesCount %></span> <%= polyglot.t("monitoring.new_updates") %>
   </a>
 </div>
 
 <div class="stream-loading" align="center">
-  <i class="fa fa-refresh fa-spin"></i> <span>Loading</span>
+  <i class="fa fa-refresh fa-spin"></i> <span><%= polyglot.t("monitoring.loading") %></span>
 </div>
 
 <div class="empty-stream hidden" align="center">
-  <span class='placeholder'>There is no news </span>
-
+  <span class='placeholder'><%= polyglot.t("monitoring.no_news") %> </span>
   <a class='placeholder make-keyword'>Make a keyword search instead </a>
 </div>

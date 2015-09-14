@@ -98,7 +98,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           Robin.cachedStories[response.id] = view.collection;
           Robin.cachedStories[response.id].sortByPopularity = view.model.get('sort_column') == 'shares_count';
 
-          $.growl({message: "Your topics was saved as keywords!"
+          $.growl({message: polyglot.t("monitoring.messages.topics_saved_as_keywords")
           },{
             type: 'success'
           });
@@ -396,8 +396,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
       swal({
-        title: "Delete Stream?",
-        text: "You will not be able to recover this stream.",
+        title: polyglot.t("monitoring.messages.delete_stream"),
+        text: polyglot.t("monitoring.messages.not_able_recover"),
         type: "error",
         showCancelButton: true,
         confirmButtonClass: 'btn-danger',
@@ -458,14 +458,12 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           var sort_column = self.model.get('sort_column');
           
           if (sort_column == "published_at"){
-            $.growl({message: "Your alert has been successfully saved."
+            $.growl({message:  polyglot.t("monitoring.messages.alert_saved")
             },{
               type: 'success'
             });
           } else {
-            $.growl({message: "Your alert has been successfully saved. " +
-            "But you will not be notified about " + 
-            "new stories because your stream is not sorted by Recency."
+            $.growl({message:  polyglot.t("monitoring.messages.alert_saved_not_sorted")
             },{
               type: 'warning'
             });
@@ -569,7 +567,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
           $(curView.el).attr("data-pos",response.id);
           $(curView.el).find('.settings-dialog').addClass('closed');
-          $.growl({message: "Your stream was saved!"
+          $.growl({message: polyglot.t("monitoring.messages.stream_saved")
           },{
             type: 'success'
           });

@@ -64,14 +64,14 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'The email address is required'
+                message: polyglot.t("profile.messages.required_email")
               },
               regexp: {
                 regexp: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 message: 'The data you have entered is not a valid email'
               },
               serverError: {
-                message: 'something went wrong'
+                message: polyglot.t('profile.something_wrong')
               }
             }
           },
@@ -79,10 +79,10 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'Current password is required in order to set a new one'
+                message: polyglot.t('profile.current_password_req')
               },
               serverError: {
-                message: 'something went wrong'
+                message: polyglot.t('profile.something_wrong')
               }
             }
           },
@@ -90,10 +90,10 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'The password is required'
+                message: polyglot.t('profile.password_required')
               },
               serverError: {
-                message: 'something went wrong'
+                message: polyglot.t('profile.something_wrong')
               }
             }
           },
@@ -101,14 +101,14 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             enabled: false,
             validators: {
               notEmpty: {
-                message: 'The password confirmation is required'
+                message: polyglot.t('profile.password_confirmation_req')
               },
               identical: {
                 field: 'password',
-                message: 'The password confirmation must be the same as original one'
+                message: polyglot.t('profile.password_confirmation_must_same')
               },
               serverError: {
-                message: 'something went wrong'
+                message: polyglot.t('profile.something_wrong')
               }
             }
           },
@@ -157,7 +157,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       currentAttributes = this.model.attributes;
       emailChanged = (initialAttributes.email != currentAttributes.email);
       formChanged = (JSON.stringify(initialAttributes) != JSON.stringify(currentAttributes));
-      if (formChanged) this.form.data('formValidation').validate(); 
+      if (formChanged) this.form.data('formValidation').validate();
       if (formChanged&&this.form.data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
         this.model.save(this.model.attributes, {
@@ -165,7 +165,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
             Robin.currentUser.attributes = currentAttributes;
             Robin.currentUser.attributes.current_password = "";
             Robin.layouts.main.onShow();
-            $.growl({message: 'Your account data has been successfully changed'
+            $.growl({message: polyglot.t('profile.account_successfully_changed')
             },{
               element: '#growler-alert',
               type: 'success',

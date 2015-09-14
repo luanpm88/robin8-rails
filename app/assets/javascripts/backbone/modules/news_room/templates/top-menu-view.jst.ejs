@@ -3,10 +3,10 @@
     <div class="panel-body">
       <div class="pull-right toolbar">
         <% if (Robin.currentUser.attributes.is_primary != false) {%>
-          <a class="btn btn-default manage " href="/#manage_users"><i class="fa fa-users"></i> Manage Users</a>
+          <a class="btn btn-default manage " href="/#manage_users"><i class="fa fa-users"></i> <%= polyglot.t("manage_users.buttons.manage") %></a>
         <% } %>
         <!-- <button class="btn btn-default"><i class="fa fa-building"></i> <strong>5</strong> Newsrooms Remaining</button> -->
-        <button class="btn btn-success" id='new_newsroom'> <i class="fa fa-plus"></i> New Newsroom </button>
+        <button class="btn btn-success" id='new_newsroom'> <i class="fa fa-plus"></i> <%= polyglot.t("newsrooms.buttons.new") %> </button>
       </div>
     </div>
   </div>
@@ -18,9 +18,9 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <% if(news_room.company_name) {%>
-            <h4 class="modal-title truncate"> Edit <%= news_room.company_name%> </h4>
+            <h4 class="modal-title truncate"> <%=polyglot.t('newsrooms.modal.edit')%> <%= news_room.company_name%> </h4>
           <% } else {%>
-            <h4 class="modal-title"> Create NewsRoom </h4>
+            <h4 class="modal-title"> Create Brand Gallery </h4>
           <% } %>
           <!-- <h4 class="modal-title" id="myModalLabel"></h4> -->
         </div>
@@ -29,12 +29,12 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#company" aria-controls="home" role="tab" data-toggle="tab">Company Details</a></li>
-              <li role="presentation"><a href="#public_page" aria-controls="public_page" role="tab" data-toggle="tab">Public Page</a></li>
-              <li role="presentation"><a href="#general" aria-controls="messages" role="tab" data-toggle="tab">General</a></li>
-              <li role="presentation"><a href="#address" aria-controls="profile" role="tab" data-toggle="tab">Address</a></li>
-              <li role="presentation"><a href="#contact" aria-controls="settings" role="tab" data-toggle="tab">Contact</a></li>
-              <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab">Media</a></li>
+              <li role="presentation" class="active"><a href="#company" aria-controls="home" role="tab" data-toggle="tab"><%= polyglot.t("newsrooms.modal.details_tab.title") %></a></li>
+              <li role="presentation"><a href="#public_page" aria-controls="public_page" role="tab" data-toggle="tab"><%= polyglot.t("newsrooms.modal.public_tab.title") %></a></li>
+              <li role="presentation"><a href="#general" aria-controls="messages" role="tab" data-toggle="tab"><%= polyglot.t("newsrooms.modal.general_tab.title") %></a></li>
+              <li role="presentation"><a href="#address" aria-controls="profile" role="tab" data-toggle="tab"><%= polyglot.t("newsrooms.modal.address_tab.title") %></a></li>
+              <li role="presentation"><a href="#contact" aria-controls="settings" role="tab" data-toggle="tab"><%= polyglot.t("newsrooms.modal.contact_tab.title") %></a></li>
+              <li role="presentation"><a href="#media" aria-controls="settings" role="tab" data-toggle="tab"><%= polyglot.t("newsrooms.modal.media_tab.title") %></a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -51,49 +51,49 @@
                     </div> -->
 
                     <div class="form-group">
-                      <label class="col-lg-3 control-label">Company name:</label>
+                      <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.details_tab.name") %>:</label>
                       <div class="col-lg-8">
                         <input class="form-control" name="company_name" type="text" value="" />
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-lg-3 control-label">Type:</label>
+                      <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.details_tab.type") %>:</label>
                       <div class="col-lg-8">
                         <div class="ui-select">
                           <select name="room_type" class="form-control">
-                            <option value="">Select...</option>
-                            <option value="Government Agency">Government Agency</option>
-                            <option value="Non-Profit">Non-Profit</option>
-                            <option value="Privately Held">Privately Held</option>
-                            <option value="Public Company">Public Company</option>
-                            <option value="LLC">LLC</option>
-                            <option value="Educational Institution">Educational Institution</option>
+                            <option value=""><%= polyglot.t("newsrooms.modal.details_tab.dropdown.select") %></option>
+                            <option value="<%= polyglot.t("newsrooms.modal.details_tab.dropdown.government_agency") %>"><%= polyglot.t("newsrooms.modal.details_tab.dropdown.government_agency") %></option>
+                            <option value="<%= polyglot.t("newsrooms.modal.details_tab.dropdown.non_profit") %>"><%= polyglot.t("newsrooms.modal.details_tab.dropdown.non_profit") %></option>
+                            <option value="<%= polyglot.t("newsrooms.modal.details_tab.dropdown.privately_held") %>"><%= polyglot.t("newsrooms.modal.details_tab.dropdown.privately_held") %></option>
+                            <option value="<%= polyglot.t("newsrooms.modal.details_tab.dropdown.public_company") %>"><%= polyglot.t("newsrooms.modal.details_tab.dropdown.public_company") %></option>
+                            <option value="<%= polyglot.t("newsrooms.modal.details_tab.dropdown.llc") %>"><%= polyglot.t("newsrooms.modal.details_tab.dropdown.llc") %></option>
+                            <option value="<%= polyglot.t("newsrooms.modal.details_tab.dropdown.educational_institution") %>"><%= polyglot.t("newsrooms.modal.details_tab.dropdown.educational_institution") %></option>
                           </select>
                         </div>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-lg-3 control-label">Size:</label>
+                      <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.details_tab.size") %>:</label>
                       <div class="col-lg-8">
                         <div class="ui-select">
                           <select name="size" class="form-control">
-                            <option value="">Select...</option>
-                            <option value="Myself Only">Myself Only</option>
-                            <option value="1-5 employees">1-5 employees</option>
-                            <option value="6-10 employees">6-10 employees</option>
-                            <option value="11-50 employees">11-50 employees</option>
-                            <option value="51-200 employees">51-200 employees</option>
-                            <option value="201-500 employees">201-500 employees</option>
-                            <option value="501-1000 employees">501-1000 employees</option>
-                            <option value="1001-5000 employees">1001-5000 employees</option>
-                            <option value="5001-10,000 employees">5001-10,000 employees</option>
-                            <option value="10,001 or more employees">10,001 or more employees</option>
+                            <option value=""><%= polyglot.t("newsrooms.modal.details_tab.dropdown.select") %></option>
+                            <option value="Myself Only"><%= polyglot.t("newsrooms.modal.details_tab.dropdown.myself_only") %></option>
+                            <option value="1-5 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %>">1-5 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %></option>
+                            <option value="6-10 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %>">6-10 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %></option>
+                            <option value="11-50 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %>">11-50 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %></option>
+                            <option value="51-200 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %>">51-200 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %></option>
+                            <option value="201-500 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %>">201-500 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %></option>
+                            <option value="501-1000 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %>">501-1000 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %></option>
+                            <option value="1001-5000 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %>">1001-5000 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %></option>
+                            <option value="5001-10,000 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %>">5001-10,000 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.employees") %></option>
+                            <option value="10,001 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.or_more_employees") %>">10,001 <%= polyglot.t("newsrooms.modal.details_tab.dropdown.or_more_employees") %></option>
                           </select>
                         </div>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-lg-3 control-label">Industry:</label>
+                      <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.details_tab.industry") %>:</label>
                       <div class="col-lg-8" id="industry-select" style="min-height: 89px;">
                         <select class="form-control" name="industry_ids" id="industries" multiple="multiple" size="2" >
                           <% _.each(items.models, function(item){ %>
@@ -103,7 +103,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-lg-3 control-label">Tags:</label>
+                      <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.details_tab.tags") %>:</label>
                       <div class="col-lg-8">
                         <input id="tagsinput" name="tags" class="form-control" type="text">
                       </div>
@@ -112,16 +112,18 @@
                 </div>
                 <div role="tabpanel" class="tab-pane" id="public_page">
                   <div class="form-group">
+
                     <div class="col-lg-12">
-                      <p>Here you can create a publicly accessible homepage for your Newsroom, where readers and journalists can learn more about your company or organization, as well as accessing your Press Releases and Press Kit. Please pick a subdomain name for your Newsroom below:</p>
+                      <p><%= polyglot.t("newsrooms.modal.public_tab.description") %>:</p>
                     </div>
-                    <label class="col-lg-3 control-label">Subdomain name:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.public_tab.subdomain") %>:</label>
+
                     <div class="col-lg-8">
                       <input class="form-control" id="subdomain_name" name="subdomain_name" type="text" value="" />
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="publish_checkbox" class="col-lg-3 control-label">Publish on public website:</label>
+                    <label for="publish_checkbox" class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.public_tab.publish") %>:</label>
                     <div class="col-lg-8">
                       <input type="checkbox" id="publish_checkbox" name="publish_on_website">
                     </div>
@@ -129,79 +131,79 @@
                 </div>
                 <div role="tabpanel" class="tab-pane" id="general">
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Email:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.general_tab.email") %>:</label>
                     <div class="col-lg-8">
                       <input name="email" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Phone:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.general_tab.phone") %>:</label>
                     <div class="col-lg-8">
                       <input name="phone_number" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Fax:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.general_tab.fax") %>:</label>
                     <div class="col-lg-8">
                       <input name="fax" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Toll-Free Number:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.general_tab.number") %>:</label>
                     <div class="col-lg-8">
                       <input name="toll_free_number" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Web Address:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.general_tab.web_address") %>:</label>
                     <div class="col-lg-8">
                       <input name="web_address" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Description:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.general_tab.description") %>:</label>
                     <div class="col-lg-8">
-                      <textarea name="description" class="form-control" placeholder="No description added"></textarea>
+                      <textarea name="description" class="form-control" placeholder="<%= polyglot.t("newsrooms.modal.general_tab.description_placeholder") %>"></textarea>
                     </div>
                   </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="address">
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Address 1:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.address_tab.address1") %>:</label>
                     <div class="col-lg-8">
                       <input name="address_1" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Address 2:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.address_tab.address2") %>:</label>
                     <div class="col-lg-8">
                       <input name="address_2" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">City:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.address_tab.city") %>:</label>
                     <div class="col-lg-8">
                       <input name="city" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">State:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.address_tab.state") %>:</label>
                     <div class="col-lg-8">
                       <input name="state" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Zip/Postal Code:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.address_tab.code") %>:</label>
                     <div class="col-lg-8">
                       <input name="postal_code" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Country:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.address_tab.country") %>:</label>
                     <div class="col-lg-8">
                       <div class="ui-select">
                         <select name="country" class="form-control">
-                          <option value="">Select...</option>
+                          <option value=""><%= polyglot.t("newsrooms.modal.address_tab.dropdown.select") %></option>
                           <option value="Afghanistan">Afghanistan</option>
                           <option value="Aland Islands">Aland Islands</option>
                           <option value="Albania">Albania</option>
@@ -456,13 +458,13 @@
                 </div>
                 <div role="tabpanel" class="tab-pane" id="contact">
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Company Contact Name:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.contact_tab.name") %>:</label>
                     <div class="col-lg-8">
                       <input name="owner_name" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label">Job Title:</label>
+                    <label class="col-lg-3 control-label"><%= polyglot.t("newsrooms.modal.contact_tab.job_title") %>:</label>
                     <div class="col-lg-8">
                       <input name="job_title" class="form-control" type="text" value="">
                     </div>
@@ -474,25 +476,25 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label"><i class="fa fa-facebook-square"></i> Facebook:</label>
+                    <label class="col-lg-3 control-label"><i class="fa fa-facebook-square"></i> <%= polyglot.t("newsrooms.modal.contact_tab.facebook") %>:</label>
                     <div class="col-lg-8">
                       <input name="facebook_link" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label"><i class="fa fa-twitter-square"></i> Twitter:</label>
+                    <label class="col-lg-3 control-label"><i class="fa fa-twitter-square"></i> <%= polyglot.t("newsrooms.modal.contact_tab.twitter") %>:</label>
                     <div class="col-lg-8">
                       <input name="twitter_link" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label"><i class="fa fa-linkedin-square"></i> LinkedIn:</label>
+                    <label class="col-lg-3 control-label"><i class="fa fa-linkedin-square"></i> <%= polyglot.t("newsrooms.modal.contact_tab.linkedin") %>:</label>
                     <div class="col-lg-8">
                       <input name="linkedin_link" class="form-control" type="text" value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-lg-3 control-label"><i class="fa fa-instagram"></i> Instagram:</label>
+                    <label class="col-lg-3 control-label"><i class="fa fa-instagram"></i> <%= polyglot.t("newsrooms.modal.contact_tab.instagram") %>:</label>
                     <div class="col-lg-8">
                       <input name="instagram_link" class="form-control" type="text" value="">
                     </div>
@@ -511,12 +513,13 @@
           <% var windowUrl = location.host.split('.') %>
           <% var windowLocation = windowUrl.length == 3 ? _.last(windowUrl, 2).join('.') : location.host %>
           <% if(news_room.id) {%>
-            <a href="javascript:void(0)" id="delete_news_room" class="btn btn-danger pull-left"><i class="fa fa-trash"></i> Delete Newsroom</a>
+            <a href="javascript:void(0)" id="delete_news_room" class="btn btn-danger pull-left"><i class="fa fa-trash"></i> <%= polyglot.t("newsrooms.modal.buttons.delete") %></a>
           <% } %>
           <% if(news_room.id) {%>
-            <a id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> Preview</a>
+            <a id="preview_news_room" class="btn btn-primary"><i class="fa fa-eye"></i> <%= polyglot.t("newsrooms.modal.buttons.preview") %>
+            </a>
           <% } %>
-          <a href="javascript:void(0)" id="save_news_room" class="btn btn-success"><i class="fa fa-save"></i> Save changes</a>
+          <a href="javascript:void(0)" id="save_news_room" class="btn btn-success"><i class="fa fa-save"></i> <%= polyglot.t("newsrooms.modal.buttons.save") %></a>
         </div>
     </div>
   </div>

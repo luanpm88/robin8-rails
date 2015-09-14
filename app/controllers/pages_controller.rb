@@ -3,6 +3,14 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:add_ons]
   before_action :set_video,:only => :home
 
+  def set_locale
+    unless params[:locale].blank?
+      someone = current_user
+      someone.update_attributes(locale: params[:locale]) unless someone.blank?
+    end
+    redirect_to root_path + "##{params[:current_page]}"
+  end
+
   def home
     if user_signed_in? && !current_user.active_subscription.blank?
       render "home", :layout => 'application'
@@ -22,7 +30,7 @@ class PagesController < ApplicationController
   end
 
   def pricing
-    @products = Package.active
+    @products = Package.active.where "slug like 'new%'"
     render :layout => "website"
   end
 
@@ -42,7 +50,7 @@ class PagesController < ApplicationController
   def contact
     if request.post?
       UserMailer.contact_support(params[:user]).deliver if params[:user].present?
-      flash.now[:success] = "Thank you for contacting us. Someone from our team will contact you shortly"
+      flash.now[:success] = @l.t('contact_page.thank_you')
     end
 
     render :layout => "website"

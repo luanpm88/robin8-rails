@@ -4,4 +4,4 @@ class EmailFormatValidator < ActiveModel::EachValidator
       object.errors[attribute] << (options[:message] || I18n.t('errors.messages.email_format'))
     end
   end
-end 
+end

@@ -10,13 +10,22 @@ ActiveAdmin.register User do
   filter :email
   filter :last_sign_in_at
 
+  member_action :login_to_dashboard, method: :get do
+    user = User.find(params[:id])
+    return render :status => 404 if not current_admin_user.is_super_admin?
+    sign_in user
+    redirect_to "/"
+  end
+
   index do |user|
     id_column
     column :first_name
     column :last_name
     column :email
     column :created_at
-    actions
+    actions do |user|
+      link_to 'Open Dashboard ', login_to_dashboard_admin_user_path(user.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
+    end
   end
 
   form do |f|

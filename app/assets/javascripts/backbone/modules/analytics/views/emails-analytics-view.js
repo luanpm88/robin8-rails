@@ -11,7 +11,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
           }
           id = ( id == undefined ? collection.models[0].get('id') : id );
           $.get('/news_rooms/' + id +'/email_analytics', function(data){
-            
+
             var mail = data.mail.total;
             var mailStatistics = [mail.sent, mail.delivered, mail.opened, mail.dropped]
 
@@ -20,10 +20,10 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 zoomType: 'xy',
               },
               title: {
-                text: 'SmartRelease Email Statistics'
+                text: polyglot.t('analytics.statisitcs')
               },
               xAxis: [{
-                categories: ['Sent', 'Delivered', 'Opened', 'Dropped']
+                categories: [polyglot.t('analytics.sent'), polyglot.t('analytics.delivered'), polyglot.t('analytics.opened'), polyglot.t('analytics.dropped')]
               }],
               yAxis: [{ // Primary yAxis
                 labels: {
@@ -31,10 +31,16 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                   style: {
                     color: Highcharts.getOptions().colors[1]
                   }
+                },
+                title: {
+                  text: polyglot.t("analytics.values"),
+                  style: {
+                    color: Highcharts.getOptions().colors[1]
+                  }
                 }
               }, { // Secondary yAxis
                 title: {
-                  text: 'Emails',
+                  text: polyglot.t('analytics.emails'),
                     style: {
                       color: Highcharts.getOptions().colors[0]
                     }
@@ -61,7 +67,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Emails',
+                name: polyglot.t('analytics.emails'),
                 type: 'column',
                 yAxis: 1,
                 data: mailStatistics

@@ -2,22 +2,22 @@
   <div class="panel-body">
     <div class="tab-content">
       <div class="toolbar">
-        <a class="btn btn-default" id='back-to-newsrooms' href="/#news_rooms"><i class="fa fa-mail-reply"></i> Back to Newsrooms</a>
+        <a class="btn btn-default" id='back-to-newsrooms' href="/#news_rooms"><i class="fa fa-mail-reply"></i> <%= polyglot.t("manage_users.buttons.back") %></a>
       </div>
       <div style="margin-top: 20px;">
         <h4 class="pull-left" style="margin-top: 0;">
           <span style="color: #8cc152;">
-            <i class="fa fa-users"></i> User management 
+            <i class="fa fa-users"></i> <%= polyglot.t("manage_users.title") %>
           </span>
-          <input id="user-search" class="form-control" style="display: inline; width: auto;" name="user-search" type="text" value="" size="35" placeholder="Search User by Name or Email">
+          <input id="user-search" class="form-control" style="display: inline; width: auto;" name="user-search" type="text" value="" size="35" placeholder="<%= polyglot.t("manage_users.search_placeholder") %>">
         </h4>
         <form id="invite-form" class="form-inline pull-right" role="form" autocomplete="off" onsubmit="return false;">
           <div class="form-group">
             <div>
-              <input id="email" class="form-control" name="email" type="text" value="" size="35" placeholder="Type User Email">
+              <input id="email" class="form-control" name="email" type="text" value="" size="35" placeholder="<%= polyglot.t("manage_users.input_placeholder") %>">
             </div>
           </div>
-          <button class="btn btn-success invite"><i class="fa fa-plus"></i> Invite User</button>
+          <button class="btn btn-success invite"><i class="fa fa-plus"></i> <%= polyglot.t("manage_users.buttons.invite") %></button>
         </form>
         <div class="clearfix"></div>
       </div>
@@ -25,8 +25,8 @@
       <table class="user-list">
         <tr class="user-list--heading">
           <th class="text-center"></th>
-          <th class="text-center name">Name</th>
-          <th class="text-center">Email</th>
+          <th class="text-center name"><%= polyglot.t("manage_users.table.name") %></th>
+          <th class="text-center"><%= polyglot.t("manage_users.table.email") %></th>
           <th class="text-center"></th>
         </tr>
       </table>

@@ -24,21 +24,17 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               var date = split[0] + '-' + monthDate[0] + '-' + monthDate[1];
               return date
             });
-            var sessions = _.map(data.web.sessions, function(session){
-              var session = parseInt(session);
-              return session;
-            });
-            var pageViews = _.map(data.web.views, function(pageView){
-              var pageView = parseInt(pageView);
-              return pageView;
-            });
+            var radix10ParseInt = _.partial(parseInt, _, 10);
+            var sessions = _.map(data.web.sessions, radix10ParseInt);
+            var pageViews = _.map(data.web.views, radix10ParseInt);
+            var mailViews = _.map(data.web.mailViews, radix10ParseInt);
 
             $('#news-rooms').highcharts({
               chart: {
                 zoomType: 'xy',
               },
               title: {
-                text: 'Newsroom and Releases Visits'
+                text: polyglot.t("analytics.visits")
               },
               xAxis: [{
                 categories: dates
@@ -51,14 +47,14 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 }
               },
               title: {
-                text: 'Page Views',
+                text: polyglot.t("analytics.page_views"),
                 style: {
                   color: Highcharts.getOptions().colors[1]
                 }
               }
             }, { // Secondary yAxis
               title: {
-                text: 'Newsroom Views',
+                text: polyglot.t("analytics.newsrooms_views"),
                   style: {
                     color: Highcharts.getOptions().colors[0]
                   }
@@ -85,12 +81,17 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
               },
               series: [{
-                name: 'Newsroom Views',
+                name: polyglot.t("analytics.newsrooms_views"),
                 type: 'column',
                 yAxis: 1,
                 data: sessions
               }, {
-                name: 'Page Views',
+                name: polyglot.t("analytics.emails"),
+                type: 'column',
+                yAxis: 1,
+                data: mailViews
+              }, {
+                name: polyglot.t("analytics.page_views"),
                 type: 'column',
                 data: pageViews,
               }]

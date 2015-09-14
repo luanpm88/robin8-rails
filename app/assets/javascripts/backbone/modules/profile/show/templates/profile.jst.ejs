@@ -2,13 +2,13 @@
   <div id="growler-alert"></div>
   <div class="panel-body">
     <div class="row">
-      <h3>Edit Profile</h3>
+      <h3><%= polyglot.t("profile.title") %></h3>
       <hr>
       <!-- left column -->
       <div class="col-md-3">
         <div class="text-center" id="image-uploader-custom">
           <img src="//placehold.it/200" id="avatar-image" class="avatar img-circle" alt="avatar">
-          <h6>Upload a different photo...</h6>
+          <h6><%= polyglot.t("uploading.different_photo") %></h6>
           <input type="hidden" id="avatar-upload" role="uploadcare-uploader"
           data-crop="200x200 upscale"
           data-max-size="3145728"
@@ -17,218 +17,218 @@
       </div>
       <!-- edit form column -->
       <div class="col-md-9 personal-info">
-        <h3>Personal info</h3>
+        <h3><%= polyglot.t("profile.personal_info") %></h3>
         <form class="form-horizontal" role="form" autocomplete="off" id="profileForm" onsubmit="return false;">
           <div class="form-group col-md-6">
-            <label class="control-label">First name:</label>
+            <label class="control-label"><%= polyglot.t("profile.first_name") %>:</label>
             <div>
               <input class="form-control" name="first_name" type="text" value="">
             </div>
           </div>
           <div class="form-group col-md-6">
-            <label class="control-label">Last name:</label>
+            <label class="control-label"><%= polyglot.t("profile.last_name") %>:</label>
             <div>
               <input class="form-control" name="last_name" type="text" value="">
             </div>
           </div>
           <div class="form-group col-md-6">
-            <label class="control-label">Company:</label>
+            <label class="control-label"><%= polyglot.t("profile.company") %>:</label>
             <div>
               <input class="form-control" name="company" type="text" value="">
             </div>
           </div>
           <div class="form-group col-md-6 pull-right">
-            <label class="control-label">Email:</label>
+            <label class="control-label"><%= polyglot.t("profile.email") %> :</label>
             <div>
               <input class="form-control" name="email" type="text" value="">
             </div>
           </div>
           <div class="form-group col-md-12">
-            <label class="control-label">Time Zone:</label>
+            <label class="control-label"><%= polyglot.t("profile.time_zone") %>:</label>
             <div>
               <div class="ui-select">
                 <select id="user_time_zone" name="time_zone" class="form-control">
-                  <option value=""> -- select an option -- </option>
-                  <option value="American Samoa">(-11:00) American Samoa </option>
-                  <option value="International Date Line West">(-11:00) International Date Line West </option>
-                  <option value="Midway Island">(-11:00) Midway Island </option>
-                  <option value="Samoa">(-11:00) Samoa </option> 
-                  <option value="Hawaii">(-10:00) Hawaii</option>
-                  <option value="Alaska">(-9:00) Alaska</option>
-                  <option value="Pacific Time (US & Canada)">(-8:00) Pacific Time (US & Canada)</option>
-                  <option value="Tijuana">(-8:00) Tijuana</option>
-                  <option value="Arizona">(-7:00) Arizona</option>
-                  <option value="Chihuahua">(-7:00) Chihuahua</option>
-                  <option value="Mazatlan">(-7:00) Mazatlan</option>
-                  <option value="Mountain Time (US & Canada)">(-7:00) Mountain Time (US & Canada)</option>
-                  <option value="Central America">(-6:00) Central America</option>
-                  <option value="Central Time (US & Canada)">(-6:00) Central Time (US & Canada)</option>
-                  <option value="Guadalajara">(-6:00) Guadalajara</option>
-                  <option value="Mexico City">(-6:00) Mexico City</option>
-                  <option value="Monterrey">(-6:00) Monterrey</option>
-                  <option value="Saskatchewan">(-6:00) Saskatchewan</option>
-                  <option value="Bogota">(-5:00) Bogota</option>
-                  <option value="Eastern Time (US & Canada)">(-5:00) Eastern Time (US & Canada)</option> 
-                  <option value="Indiana (East)">(-5:00) Indiana (East)</option> 
-                  <option value="Lima">(-5:00) Lima</option> 
-                  <option value="Quito">(-5:00) Quito</option> 
-                  <option value="Caracas">(-4:30) Caracas</option> 
-                  <option value="Atlantic Time (Canada)">(-4:00) Atlantic Time (Canada)</option> 
-                  <option value="Georgetown">(-4:00) Georgetown</option> 
-                  <option value="La Paz">(-4:00) La Paz</option> 
-                  <option value="Santiago">(-4:00) Santiago</option> 
-                  <option value="Montevideo">(-3:30) Montevideo</option>
-                  <option value="Newfoundland">(-3:30) Newfoundland</option> 
-                  <option value="Brasilia">(-3:00) Brasilia</option> 
-                  <option value="Buenos Aires">(-3:00) Buenos Aires</option> 
-                  <option value="Greenland">(-3:00) Greenland</option> 
-                  <option value="Mid-Atlantic">(-2:00) Mid-Atlantic</option> 
-                  <option value="Azores">(-1:00) Azores</option> 
-                  <option value="Cape Verde Is.">(-1:00) Cape Verde Is.</option> 
-                  <option value="UTC">(0:00) UTC</option> 
-                  <option value="Casablanca">(0:00) Casablanca</option> 
-                  <option value="Dublin">(0:00) Dublin</option> 
-                  <option value="Edinburgh">(0:00) Edinburgh</option> 
-                  <option value="Lisbon">(0:00) Lisbon</option> 
-                  <option value="London">(0:00) London</option> 
-                  <option value="Monrovia">(0:00) Monrovia</option> 
-                  <option value="Amsterdam">(+1:00) Amsterdam</option> 
-                  <option value="Belgrade">(+1:00) Belgrade</option> 
-                  <option value="Berlin">(+1:00) Berlin</option> 
-                  <option value="Bern">(+1:00) Bern</option> 
-                  <option value="Bratislava">(+1:00) Bratislava</option> 
-                  <option value="Brussels">(+1:00) Brussels</option> 
-                  <option value="Budapest">(+1:00) Budapest</option> 
-                  <option value="Copenhagen">(+1:00) Copenhagen</option> 
-                  <option value="Ljubljana">(+1:00) Ljubljana</option> 
-                  <option value="Madrid">(+1:00) Madrid</option> 
-                  <option value="Paris">(+1:00) Paris</option> 
-                  <option value="Prague">(+1:00) Prague</option> 
-                  <option value="Rome">(+1:00) Rome</option> 
-                  <option value="Sarajevo">(+1:00) Sarajevo</option> 
-                  <option value="Skopje">(+1:00) Skopje</option> 
-                  <option value="Stockholm">(+1:00) Stockholm</option> 
-                  <option value="Vienna">(+1:00) Vienna</option> 
-                  <option value="Warsaw">(+1:00) Warsaw</option> 
-                  <option value="West Central Africa">(+1:00) West Central Africa</option> 
-                  <option value="Zagreb">(+1:00) Zagreb</option> 
-                  <option value="Athens">(+2:00) Athens</option> 
-                  <option value="Bucharest">(+2:00) Bucharest</option> 
-                  <option value="Cairo">(+2:00) Cairo</option> 
-                  <option value="Harare">(+2:00) Harare</option> 
-                  <option value="Helsinki">(+2:00) Helsinki</option> 
-                  <option value="Istanbul">(+2:00) Istanbul</option> 
-                  <option value="Jerusalem">(+2:00) Jerusalem</option> 
-                  <option value="Kyiv">(+2:00) Kyiv</option> 
-                  <option value="Pretoria">(+2:00) Pretoria</option> 
-                  <option value="Riga">(+2:00) Riga</option> 
-                  <option value="Sofia">(+2:00) Sofia</option> 
-                  <option value="Tallinn">(+2:00) Tallinn</option> 
-                  <option value="Vilnius">(+2:00) Vilnius</option> 
-                  <option value="Baghdad">(+3:00) Baghdad</option> 
-                  <option value="Kuwait">(+3:00) Kuwait</option> 
-                  <option value="Minsk">(+3:00) Minsk</option> 
-                  <option value="Moscow">(+3:00) Moscow</option> 
-                  <option value="Nairobi">(+3:00) Nairobi</option> 
-                  <option value="Riyadh">(+3:00) Riyadh</option> 
-                  <option value="St. Petersburg">(+3:00) St. Petersburg</option> 
-                  <option value="Volgograd">(+3:00) Volgograd</option> 
-                  <option value="Tehran">(+3:30) Tehran</option>
-                  <option value="Abu Dhabi">(+4:00) Abu Dhabi</option> 
-                  <option value="Baku">(+4:00) Baku</option> 
-                  <option value="Muscat">(+4:00) Muscat</option> 
-                  <option value="Tbilisi">(+4:00) Tbilisi</option> 
-                  <option value="Yerevan">(+4:00) Yerevan</option> 
-                  <option value="Kabul">(+4:30) Kabul</option>
-                  <option value="Ekaterinburg">(+5:00) Ekaterinburg</option> 
-                  <option value="Islamabad">(+5:00) Islamabad</option> 
-                  <option value="Karachi">(+5:00) Karachi</option> 
-                  <option value="Tashkent">(+5:00) Tashkent</option> 
-                  <option value="Chennai">(+5:30) Chennai</option>
-                  <option value="Kolkata">(+5:30) Kolkata</option>
-                  <option value="Mumbai">(+5:30) Mumbai</option>
-                  <option value="New Delhi">(+5:30) New Delhi</option>
-                  <option value="Sri Jayawardenepura">(+5:30) Sri Jayawardenepura</option>
-                  <option value="Kathmandu">(+5:45) Kathmandu</option>
-                  <option value="Almaty">(+6:00) Almaty</option> 
-                  <option value="Astana">(+6:00) Astana</option> 
-                  <option value="Dhaka">(+6:00) Dhaka</option> 
-                  <option value="Novosibirsk">(+6:00) Novosibirsk</option> 
-                  <option value="Urumqi">(+6:00) Urumqi</option> 
-                  <option value="Rangoon">(+6:30) Rangoon</option> 
-                  <option value="Bangkok">(+7:00) Bangkok</option> 
-                  <option value="Hanoi">(+7:00) Hanoi</option> 
-                  <option value="Jakarta">(+7:00) Jakarta</option> 
-                  <option value="Krasnoyarsk">(+7:00) Krasnoyarsk</option> 
-                  <option value="Beijing">(+8:00) Beijing</option>
-                  <option value="Chongqing">(+8:00) Chongqing</option>
-                  <option value="Hong Kong">(+8:00) Hong Kong</option>
-                  <option value="Irkutsk">(+8:00) Irkutsk</option>
-                  <option value="Kuala Lumpur">(+8:00) Kuala Lumpur</option>
-                  <option value="Perth">(+8:00) Perth</option>
-                  <option value="Singapore">(+8:00) Singapore</option>
-                  <option value="Taipei">(+8:00) Taipei</option>
-                  <option value="Ulaanbaatar">(+8:00) Ulaanbaatar</option>
-                  <option value="Osaka">(+9:00) Osaka</option>
-                  <option value="Sapporo">(+9:00) Sapporo</option>
-                  <option value="Seoul">(+9:00) Seoul</option>
-                  <option value="Tokyo">(+9:00) Tokyo</option>
-                  <option value="Yakutsk">(+9:00) Yakutsk</option>
-                  <option value="Adelaide">(+9:30) Adelaide</option>
-                  <option value="Darwin">(+9:30) Darwin</option>
-                  <option value="Brisbane">(+10:00) Brisbane</option>
-                  <option value="Canberra">(+10:00) Canberra</option>
-                  <option value="Guam">(+10:00) Guam</option>
-                  <option value="Hobart">(+10:00) Hobart</option>
-                  <option value="Magadan">(+10:00) Magadan</option>
-                  <option value="Melbourne">(+10:00) Melbourne</option>
-                  <option value="Port Moresby">(+10:00) Port Moresby</option>
-                  <option value="Sydney">(+10:00) Sydney</option>
-                  <option value="Vladivostok">(+10:00) Vladivostok</option>
-                  <option value="New Caledonia">(+11:00) New Caledonia</option>
-                  <option value="Solomon Is.">(+11:00) Solomon Is.</option>
-                  <option value="Auckland">(+12:00) Auckland</option>
-                  <option value="Fiji">(+12:00) Fiji</option>
-                  <option value="Kamchatka">(+12:00) Kamchatka</option>
-                  <option value="Marshall Is.">(+12:00) Marshall Is.</option>
-                  <option value="Wellington">(+12:00) Wellington</option>
-                  <option value="Chatham Is.">(+12:45) Chatham Is.</option>
-                  <option value="Nuku'alofa">(+13:00) Nuku'alofa</option>
-                  <option value="Tokelau Is.">(+13:00) Tokelau Is.</option>
+                  <option value=""> -- <%= polyglot.t("profile.time_placeholder") %> -- </option>
+                  <option value="American Samoa"><%= polyglot.t('timezones.American_Samoa') %></option>
+                  <option value="International Date Line West"><%= polyglot.t('timezones.International_Date_Line_West') %></option>
+                  <option value="Midway Island"><%= polyglot.t('timezones.Midway_Island') %></option>
+                  <option value="Samoa"><%= polyglot.t('timezones.Samoa') %></option>
+                  <option value="Hawaii"><%= polyglot.t('timezones.Hawaii') %></option>
+                  <option value="Alaska"><%= polyglot.t('timezones.Alaska') %></option>
+                  <option value="Pacific Time (US & Canada)"><%= polyglot.t('timezones.Pacific_Time') %></option>
+                  <option value="Tijuana"><%= polyglot.t('timezones.Tijuana') %></option>
+                  <option value="Arizona"><%= polyglot.t('timezones.Arizona') %></option>
+                  <option value="Chihuahua"><%= polyglot.t('timezones.Chihuahua') %></option>
+                  <option value="Mazatlan"><%= polyglot.t('timezones.Mazatlan') %></option>
+                  <option value="Mountain Time (US & Canada)"><%= polyglot.t('timezones.Mountain_Time') %></option>
+                  <option value="Central America"><%= polyglot.t('timezones.Central_America') %></option>
+                  <option value="Central Time (US & Canada)"><%= polyglot.t('timezones.Central_Time') %></option>
+                  <option value="Guadalajara"><%= polyglot.t('timezones.Guadalajara') %></option>
+                  <option value="Mexico City"><%= polyglot.t('timezones.Mexico_City') %></option>
+                  <option value="Monterrey"><%= polyglot.t('timezones.Monterrey') %></option>
+                  <option value="Saskatchewan"><%= polyglot.t('timezones.Saskatchewan') %></option>
+                  <option value="Bogota"><%= polyglot.t('timezones.Bogota') %></option>
+                  <option value="Eastern Time (US & Canada)"><%= polyglot.t('timezones.Eastern_Time') %></option>
+                  <option value="Indiana (East)"><%= polyglot.t('timezones.Indiana') %></option>
+                  <option value="Lima"><%= polyglot.t('timezones.Lima') %></option>
+                  <option value="Quito"><%= polyglot.t('timezones.Quito') %></option>
+                  <option value="Caracas"><%= polyglot.t('timezones.Caracas') %></option>
+                  <option value="Atlantic Time (Canada)"><%= polyglot.t('timezones.Atlantic_Time') %></option>
+                  <option value="Georgetown"><%= polyglot.t('timezones.Georgetown') %></option>
+                  <option value="La Paz"><%= polyglot.t('timezones.La_Paz') %></option>
+                  <option value="Santiago"><%= polyglot.t('timezones.Santiago') %></option>
+                  <option value="Montevideo"><%= polyglot.t('timezones.Montevideo') %></option>
+                  <option value="Newfoundland"><%= polyglot.t('timezones.Newfoundland') %></option>
+                  <option value="Brasilia"><%= polyglot.t('timezones.Brasilia') %></option>
+                  <option value="Buenos Aires"><%= polyglot.t('timezones.Buenos_Aires') %></option>
+                  <option value="Greenland"><%= polyglot.t('timezones.Greenland') %></option>
+                  <option value="Mid-Atlantic"><%= polyglot.t('timezones.Mid_Atlantic') %></option>
+                  <option value="Azores"><%= polyglot.t('timezones.Azores') %></option>
+                  <option value="Cape Verde Is."><%= polyglot.t('timezones.Cape_Verde') %></option>
+                  <option value="UTC"><%= polyglot.t('timezones.UTC') %></option>
+                  <option value="Casablanca"><%= polyglot.t('timezones.Casablanca') %></option>
+                  <option value="Dublin"><%= polyglot.t('timezones.Dublin') %></option>
+                  <option value="Edinburgh"><%= polyglot.t('timezones.Edinburgh') %></option>
+                  <option value="Lisbon"><%= polyglot.t('timezones.Lisbon') %></option>
+                  <option value="London"><%= polyglot.t('timezones.London') %></option>
+                  <option value="Monrovia"><%= polyglot.t('timezones.Monrovia') %></option>
+                  <option value="Amsterdam"><%= polyglot.t('timezones.Amsterdam') %></option>
+                  <option value="Belgrade"><%= polyglot.t('timezones.Belgrade') %></option>
+                  <option value="Berlin"><%= polyglot.t('timezones.Berlin') %></option>
+                  <option value="Bern"><%= polyglot.t('timezones.Bern') %></option>
+                  <option value="Bratislava"><%= polyglot.t('timezones.Bratislava') %></option>
+                  <option value="Brussels"><%= polyglot.t('timezones.Brussels') %></option>
+                  <option value="Budapest"><%= polyglot.t('timezones.Budapest') %></option>
+                  <option value="Copenhagen"><%= polyglot.t('timezones.Copenhagen') %></option>
+                  <option value="Ljubljana"><%= polyglot.t('timezones.Ljubljana') %></option>
+                  <option value="Madrid"><%= polyglot.t('timezones.Madrid') %></option>
+                  <option value="Paris"><%= polyglot.t('timezones.Paris') %></option>
+                  <option value="Prague"><%= polyglot.t('timezones.Prague') %></option>
+                  <option value="Rome"><%= polyglot.t('timezones.Rome') %></option>
+                  <option value="Sarajevo"><%= polyglot.t('timezones.Sarajevo') %></option>
+                  <option value="Skopje"><%= polyglot.t('timezones.Skopje') %></option>
+                  <option value="Stockholm"><%= polyglot.t('timezones.Stockholm') %></option>
+                  <option value="Vienna"><%= polyglot.t('timezones.Vienna') %></option>
+                  <option value="Warsaw"><%= polyglot.t('timezones.Warsaw') %></option>
+                  <option value="West Central Africa"><%= polyglot.t('timezones.West_Central_Africa') %></option>
+                  <option value="Zagreb"><%= polyglot.t('timezones.Zagreb') %></option>
+                  <option value="Athens"><%= polyglot.t('timezones.Athens') %></option>
+                  <option value="Bucharest"><%= polyglot.t('timezones.Bucharest') %></option>
+                  <option value="Cairo"><%= polyglot.t('timezones.Cairo') %></option>
+                  <option value="Harare"><%= polyglot.t('timezones.Harare') %></option>
+                  <option value="Helsinki"><%= polyglot.t('timezones.Helsinki') %></option>
+                  <option value="Istanbul"><%= polyglot.t('timezones.Istanbul') %></option>
+                  <option value="Jerusalem"><%= polyglot.t('timezones.Jerusalem') %></option>
+                  <option value="Kyiv"><%= polyglot.t('timezones.Kyiv') %></option>
+                  <option value="Pretoria"><%= polyglot.t('timezones.Pretoria') %></option>
+                  <option value="Riga"><%= polyglot.t('timezones.Riga') %></option>
+                  <option value="Sofia"><%= polyglot.t('timezones.Sofia') %></option>
+                  <option value="Tallinn"><%= polyglot.t('timezones.Tallinn') %></option>
+                  <option value="Vilnius"><%= polyglot.t('timezones.Vilnius') %></option>
+                  <option value="Baghdad"><%= polyglot.t('timezones.Baghdad') %></option>
+                  <option value="Kuwait"><%= polyglot.t('timezones.Kuwait') %></option>
+                  <option value="Minsk"><%= polyglot.t('timezones.Minsk') %></option>
+                  <option value="Moscow"><%= polyglot.t('timezones.Moscow') %></option>
+                  <option value="Nairobi"><%= polyglot.t('timezones.Nairobi') %></option>
+                  <option value="Riyadh"><%= polyglot.t('timezones.Riyadh') %></option>
+                  <option value="St. Petersburg"><%= polyglot.t('timezones.St_Petersburg') %></option>
+                  <option value="Volgograd"><%= polyglot.t('timezones.Volgograd') %></option>
+                  <option value="Tehran"><%= polyglot.t('timezones.Tehran') %></option>
+                  <option value="Abu Dhabi"><%= polyglot.t('timezones.Abu Dhabi') %></option>
+                  <option value="Baku"><%= polyglot.t('timezones.Baku') %></option>
+                  <option value="Muscat"><%= polyglot.t('timezones.Muscat') %></option>
+                  <option value="Tbilisi"><%= polyglot.t('timezones.Tbilisi') %></option>
+                  <option value="Yerevan"><%= polyglot.t('timezones.Yerevan') %></option>
+                  <option value="Kabul"><%= polyglot.t('timezones.Kabul') %></option>
+                  <option value="Ekaterinburg"><%= polyglot.t('timezones.Ekaterinburg') %></option>
+                  <option value="Islamabad"><%= polyglot.t('timezones.Islamabad') %></option>
+                  <option value="Karachi"><%= polyglot.t('timezones.Karachi') %></option>
+                  <option value="Tashkent"><%= polyglot.t('timezones.Tashkent') %></option>
+                  <option value="Chennai"><%= polyglot.t('timezones.Chennai') %></option>
+                  <option value="Kolkata"><%= polyglot.t('timezones.Kolkata') %></option>
+                  <option value="Mumbai"><%= polyglot.t('timezones.Mumbai') %></option>
+                  <option value="New Delhi"><%= polyglot.t('timezones.New_Delhi') %></option>
+                  <option value="Sri Jayawardenepura"><%= polyglot.t('timezones.Sri_Jayawardenepura') %></option>
+                  <option value="Kathmandu"><%= polyglot.t('timezones.Kathmandu') %></option>
+                  <option value="Almaty"><%= polyglot.t('timezones.Almaty') %></option>
+                  <option value="Astana"><%= polyglot.t('timezones.Astana') %></option>
+                  <option value="Dhaka"><%= polyglot.t('timezones.Dhaka') %></option>
+                  <option value="Novosibirsk"><%= polyglot.t('timezones.Novosibirsk') %></option>
+                  <option value="Urumqi"><%= polyglot.t('timezones.Urumqi') %></option>
+                  <option value="Rangoon"><%= polyglot.t('timezones.Rangoon') %></option>
+                  <option value="Bangkok"><%= polyglot.t('timezones.Bangkok') %></option>
+                  <option value="Hanoi"><%= polyglot.t('timezones.Hanoi') %></option>
+                  <option value="Jakarta"><%= polyglot.t('timezones.Jakarta') %></option>
+                  <option value="Krasnoyarsk"><%= polyglot.t('timezones.Krasnoyarsk') %></option>
+                  <option value="Beijing"><%= polyglot.t('timezones.Beijing') %></option>
+                  <option value="Chongqing"><%= polyglot.t('timezones.Chongqing') %></option>
+                  <option value="Hong Kong"><%= polyglot.t('timezones.Hong_Kong') %></option>
+                  <option value="Irkutsk"><%= polyglot.t('timezones.Irkutsk') %></option>
+                  <option value="Kuala Lumpur"><%= polyglot.t('timezones.Kuala_Lumpur') %></option>
+                  <option value="Perth"><%= polyglot.t('timezones.Perth') %></option>
+                  <option value="Singapore"><%= polyglot.t('timezones.Singapore') %></option>
+                  <option value="Taipei"><%= polyglot.t('timezones.Taipei') %></option>
+                  <option value="Ulaanbaatar"><%= polyglot.t('timezones.Ulaanbaatar') %></option>
+                  <option value="Osaka"><%= polyglot.t('timezones.Osaka') %></option>
+                  <option value="Sapporo"><%= polyglot.t('timezones.Sapporo') %></option>
+                  <option value="Seoul"><%= polyglot.t('timezones.Seoul') %></option>
+                  <option value="Tokyo"><%= polyglot.t('timezones.Tokyo') %></option>
+                  <option value="Yakutsk"><%= polyglot.t('timezones.Yakutsk') %></option>
+                  <option value="Adelaide"><%= polyglot.t('timezones.Adelaide') %></option>
+                  <option value="Darwin"><%= polyglot.t('timezones.Darwin') %></option>
+                  <option value="Brisbane"><%= polyglot.t('timezones.Brisbane') %></option>
+                  <option value="Canberra"><%= polyglot.t('timezones.Canberra') %></option>
+                  <option value="Guam"><%= polyglot.t('timezones.Guam') %></option>
+                  <option value="Hobart"><%= polyglot.t('timezones.Hobart') %></option>
+                  <option value="Magadan"><%= polyglot.t('timezones.Magadan') %></option>
+                  <option value="Melbourne"><%= polyglot.t('timezones.Melbourne') %></option>
+                  <option value="Port Moresby"><%= polyglot.t('timezones.Port_Moresby') %></option>
+                  <option value="Sydney"><%= polyglot.t('timezones.Sydney') %></option>
+                  <option value="Vladivostok"><%= polyglot.t('timezones.Vladivostok') %></option>
+                  <option value="New Caledonia"><%= polyglot.t('timezones.New_Caledonia') %></option>
+                  <option value="Solomon Is."><%= polyglot.t('timezones.Solomon') %></option>
+                  <option value="Auckland"><%= polyglot.t('timezones.Auckland') %></option>
+                  <option value="Fiji"><%= polyglot.t('timezones.Fiji') %></option>
+                  <option value="Kamchatka"><%= polyglot.t('timezones.Kamchatka') %></option>
+                  <option value="Marshall Is."><%= polyglot.t('timezones.Marshall') %></option>
+                  <option value="Wellington"><%= polyglot.t('timezones.Wellington') %></option>
+                  <option value="Chatham Is."><%= polyglot.t('timezones.Chatham') %></option>
+                  <option value="Nuku'alofa"><%= polyglot.t("timezones.Nuku'alofa") %></option>
+                  <option value="Tokelau Is."><%= polyglot.t('timezones.Tokelau') %></option>
                 </select>
               </div>
             </div>
           </div>
           <div class="form-group col-md-12">
-            <label class="control-label">Username:</label>
+            <label class="control-label"><%= polyglot.t("profile.username") %>:</label>
             <div>
               <input class="form-control" name="name" type="text" value="">
             </div>
           </div>
           <hr>
            <div class="form-group col-md-12" id="currentPassword">
-            <label class="control-label">Current password:</label>
+            <label class="control-label"><%= polyglot.t("profile.curr_password") %>:</label>
             <div>
               <input class="form-control" name="current_password" type="password" value="">
             </div>
           </div>
           <div class="form-group col-md-12">
-            <label class="control-label">New password:</label>
+            <label class="control-label"><%= polyglot.t("profile.new_password") %>:</label>
             <div>
               <input class="form-control" name="password" type="password" value="" minlength="8"
-               data-fv-stringlength-message="A new password must be at least 8 characters long">
+               data-fv-stringlength-message="<%= polyglot.t("profile.password_must_be_8") %>">
             </div>
           </div>
           <div class="form-group col-md-12">
-            <label class="control-label">Confirm new password:</label>
+            <label class="control-label"><%= polyglot.t("profile.confirm_new_password") %>:</label>
             <div>
               <input class="form-control" name="password_confirmation" type="password" value="">
             </div>
           </div>
           <div class="form-group col-md-12">
-            <input type="button" id="saveChanges" class="btn btn-primary" value="Save Changes">
+            <input type="button" id="saveChanges" class="btn btn-primary" value="<%= polyglot.t("profile.buttons.save") %>">
             <span></span>
-            <a class="btn btn-default" href="/#dashboard">Cancel</a>
+            <a class="btn btn-default" href="/#dashboard"><%= polyglot.t("profile.buttons.cancel") %></a>
           </div>
         </form>
       </div>
