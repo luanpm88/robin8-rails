@@ -1958,7 +1958,10 @@ input.form-control[type="file"] {
 }
 .dashboard-kol-tab-footer {
   background-color: #f4f4f4;
-  margin: 70px -180px 0 -180px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
   height: 150px;
 }
 .campaigns-tab-back {
@@ -1966,13 +1969,19 @@ input.form-control[type="file"] {
 }
 .camp-interested,
 .camp-interested > button:focus,
-.camp-interested > button:hover{
+.camp-interested > button:hover,
+.btn-accept,
+.btn-accept > button:focus,
+.btn-accept > button:hover{
   border-color: #93C832 !important;
   background-color: #93C832 !important;
 }
 .camp-not-interested,
 .camp-not-interested > button:focus,
-.camp-not-interested > button:hover{
+.camp-not-interested > button:hover,
+.btn-decline,
+.btn-decline > button:focus,
+.btn-decline > button:hover{
   border-color: #007183 !important;
   background-color: #007183 !important;
 }

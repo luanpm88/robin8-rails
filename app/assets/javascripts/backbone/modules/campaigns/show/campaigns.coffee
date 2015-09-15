@@ -163,24 +163,43 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         button_container.remove()
         self.render()
         if action == "accept"
-          campaignsAccepted = new Robin.Collections.Campaigns()
+          campaignsAccepted = new Robin.Collections.Campaigns
           campaignsAcceptedTab = new Show.CampaignsTab
             collection: campaignsAccepted
           campaignsAccepted.accepted
             success: ()->
-              self._parentLayoutView().accepted.show(campaignsAcceptedTab)
+              self._parentLayoutView().accepted.show campaignsAcceptedTab
             error: (e)->
               console.log e
         else
-          campaignsDeclined = new Robin.Collections.Campaigns()
+          campaignsDeclined = new Robin.Collections.Campaigns
           campaignsDeclinedTab = new Show.CampaignsTab
             collection: campaignsDeclined
             declined: true
           campaignsDeclined.declined
             success: ()->
-              self._parentLayoutView().declined.show(campaignsDeclinedTab)
+              self._parentLayoutView().declined.show campaignsDeclinedTab
             error: (e)->
               console.log e
+
+        campaignsAll = new Robin.Collections.Campaigns
+        campaignsAllTab = new Show.CampaignsSuggestedTab
+          collection: campaignsAll
+          all: true
+        campaignsAll.all
+          success: ()->
+           self._parentLayoutView().all.show campaignsAllTab
+          error: (e)->
+            console.log e
+
+        industry = new Robin.Collections.Campaigns
+        campaignsIndustryTab = new Show.CampaignsSuggestedTab
+          collection: industry
+        industry.industry
+          success: ()->
+            self._parentLayoutView().my_industry.show campaignsIndustryTab
+          error: (e)->
+            console.log e
 
   Show.CampaignsSuggestedTab = Backbone.Marionette.ItemView.extend
     template: 'modules/campaigns/show/templates/campaigns-suggested'

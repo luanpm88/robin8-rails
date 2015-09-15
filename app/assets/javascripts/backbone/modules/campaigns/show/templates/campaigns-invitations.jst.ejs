@@ -38,8 +38,8 @@
             </td>
             <% if (item.status === '') { %>
             <td class="invite-cell invite-action invite-nostatus">
-              <button type="button" class="btn btn-primary invitation-accept" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
-              <button type="button" class="btn btn-danger invitation-decline" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.decline')%></button>
+              <button type="button" class="btn btn-accept invitation-accept" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+              <button type="button" class="btn btn-decline invitation-decline" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.decline')%></button>
             </td>
             <% } else if (item.status === 'A') { %>
             <td class="invite-cell invite-status invite-accepted">
