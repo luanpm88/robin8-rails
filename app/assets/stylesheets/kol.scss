@@ -53,13 +53,16 @@
 
 
 .invites {
+  button {
+    width: 85px;
+  }
   .table-head {
     cursor: pointer;
   }
 
   .invite-cell {
     text-align: center;
-    vertical-align: middle;
+    vertical-align: top;
     height: 51px;
 
     &.invite-status {

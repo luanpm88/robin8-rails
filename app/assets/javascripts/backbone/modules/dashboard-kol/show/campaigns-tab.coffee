@@ -13,6 +13,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       campaignsAccepted = new Robin.Collections.Campaigns()
       campaignsAcceptedTab = new App.Campaigns.Show.CampaignsTab
         collection: campaignsAccepted
+        accepted: true
+        history: false
+        negotiating: false
+        declined: false
       campaignsAccepted.accepted
         success: ()->
           campaignsPage.showChildView 'accepted', campaignsAcceptedTab
@@ -23,6 +27,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       campaignsDeclinedTab = new App.Campaigns.Show.CampaignsTab
         collection: campaignsDeclined
         declined: true
+        accepted: false
+        history: false
+        negotiating: false
       campaignsDeclined.declined
         success: ()->
           campaignsPage.showChildView 'declined', campaignsDeclinedTab
@@ -48,12 +55,38 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         error: (e)->
           console.log e
 
-      industry = new Robin.Collections.Campaigns()
-      campaignsIndustryTab = new App.Campaigns.Show.CampaignsSuggestedTab
-        collection: industry
-      industry.industry
+      latest = new Robin.Collections.Campaigns()
+      campaignsLatestTab = new App.Campaigns.Show.CampaignsSuggestedTab
+        collection: latest
+      latest.latest
         success: ()->
-          campaignsPage.showChildView 'my_industry', campaignsIndustryTab
+          campaignsPage.showChildView 'latest', campaignsLatestTab
+        error: (e)->
+          console.log e
+
+      history = new Robin.Collections.Campaigns()
+      campaignsHistoryTab = new App.Campaigns.Show.CampaignsTab
+        collection: history
+        declined: false
+        accepted: false
+        history: true
+        negotiating: false
+      history.history
+        success: ()->
+          campaignsPage.showChildView 'history', campaignsHistoryTab
+        error: (e)->
+          console.log e
+
+      negotiating = new Robin.Collections.Campaigns()
+      campaignsNegotiatingTab = new App.Campaigns.Show.CampaignsTab
+        collection: negotiating
+        declined: false
+        accepted: false
+        history: false
+        negotiating: true
+      negotiating.negotiating
+        success: ()->
+          campaignsPage.showChildView 'negotiating', campaignsNegotiatingTab
         error: (e)->
           console.log e
 

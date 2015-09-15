@@ -3,11 +3,13 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
   Show.CampaignsLayout = Backbone.Marionette.LayoutView.extend
     template: 'modules/campaigns/show/templates/layout'
     regions:
-      invitation: "#invitation"
       accepted: "#accepted"
+      invitation: "#invitation"
+      negotiating: "#negotiating"
       declined: "#declined"
+      history: "#history"
       all: "#all"
-      my_industry: "#my_industry"
+      latest: "#latest"
 
   Show.CampaignsTab = Backbone.Marionette.ItemView.extend
     template: 'modules/campaigns/show/templates/campaigns'
@@ -74,6 +76,9 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: () ->
       items: @collection.toJSON()
       declined: @options.declined
+      accepted: @options.accepted
+      history: @options.history
+      negotiating: @options.negotiating
 
     onRender: () ->
       @$el.find('table').DataTable
@@ -165,6 +170,10 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         if action == "accept"
           campaignsAccepted = new Robin.Collections.Campaigns
           campaignsAcceptedTab = new Show.CampaignsTab
+            declined: false
+            accepted: true
+            history: false
+            negotiating: false
             collection: campaignsAccepted
           campaignsAccepted.accepted
             success: ()->
@@ -175,6 +184,9 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
           campaignsDeclined = new Robin.Collections.Campaigns
           campaignsDeclinedTab = new Show.CampaignsTab
             collection: campaignsDeclined
+            accepted: false
+            history: false
+            negotiating: false
             declined: true
           campaignsDeclined.declined
             success: ()->
@@ -189,15 +201,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         campaignsAll.all
           success: ()->
            self._parentLayoutView().all.show campaignsAllTab
-          error: (e)->
-            console.log e
-
-        industry = new Robin.Collections.Campaigns
-        campaignsIndustryTab = new Show.CampaignsSuggestedTab
-          collection: industry
-        industry.industry
-          success: ()->
-            self._parentLayoutView().my_industry.show campaignsIndustryTab
           error: (e)->
             console.log e
 

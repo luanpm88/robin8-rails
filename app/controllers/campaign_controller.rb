@@ -1,13 +1,21 @@
 class CampaignController < ApplicationController
 
   def index
-    if params[:status] != "all" && params[:status] != "industry"
+    if params[:status] == "declined" || params[:status] == "accepted"
       status = params[:status] == "declined" ? "D" : "A"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
-    elsif params[:status] == "industry"
-      campaigns = kol_signed_in? ? Campaign.where("deadline > ?",Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
-    else
-      campaigns = kol_signed_in? ? Campaign.where("deadline > ?",Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    end
+    if params[:status] == "latest"
+      campaigns = kol_signed_in? ? Campaign.where("created_at > ?",Date.today - 14).order('deadline DESC') : current_user.campaigns
+    end
+    if params[:status] == "history"
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaign_invites.status = 'A' and campaigns.deadline < ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
+    end
+    if params[:status] == "all"
+      campaigns = kol_signed_in? ? Campaign.where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    end
+    if params[:status] == "negotiating"
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'N'}) : current_user.campaigns
     end
     render json: campaigns, each_serializer: CampaignsSerializer, campaign_status: params[:status], scope: current_kol
   end

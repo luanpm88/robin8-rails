@@ -14,6 +14,14 @@ Robin.Collections.Campaigns = Backbone.Collection.extend
     params['data'] = $.param({ status: "all"})
     this.fetch(params)
 
-  industry: (params)->
-    params['data'] = $.param({ status: "industry"})
+  latest: (params)->
+    params['data'] = $.param({ status: "latest"})
+    this.fetch(params)
+
+  history: (params)->
+    params['data'] = $.param({ status: "history"})
+    this.fetch(params)
+
+  negotiating: (params)->
+    params['data'] = $.param({ status: "negotiating"})
     this.fetch(params)

@@ -301,7 +301,7 @@ en:
       accept: Accept
       accepted: Accepted
       brand: Brand
-      brief: Brief
+      brief: Briefing Digest
       budget: Budget
       check_to_activate: Please, check your email to activate your account!
       creation_date: Creation Date
@@ -332,15 +332,28 @@ en:
         back: Back
         next: Next
       campaigns_tab:
-        accepted: Accepted
-        all: All
-        declined: Declined
-        industry: My Industry
-        interested: Interested
+        accepted: To Execute
+        action: Action
+        all: You May Like
+        declined: Just Rejected
+        executed: Executed
+        history: History
+        interest: Interest
+        interested: You May Like
         invitation: Invitation
-        not_interested: Not Interested
-        tables_title: Monetize!
+        latest: Latest
+        negotiate: Negotiate
+        negotiating: Negotiating
+        not_expired: Not Expired
+        pending: Pending
+        reject: Reject
+        rejected: Rejected
+        tables_title: Monetize influence in campaigns
         title: Campaigns
+        view: View
+        you_dont_have_any_negotiating: You don't have any campaign with negotiating
+          status.
+        you_dont_have_history: You don't have expired campaigns.
       score_tab:
         header: Your Score
         tables_title: My Profile and Score
@@ -443,11 +456,10 @@ en:
       in_progress: In Progress
       name: Name
       no_campaign: There isn't any active campaigns.
-      no_campaign_by_industry: You don't have any industry in your profile or there
-        isn't any campaign for this industry.
+      no_latest_campaign: There are no campaigns created within last 2 weeks.
       not_approved_yet: Not approved yet
       status: Status
-      you_dont_have_any_accepted: 'You don''t have any accepted campaigns. '
+      you_dont_have_any_accepted: You don't have any accepted campaigns.
       you_dont_have_any_declined: You don't have any declined campaigns.
     kols:
       agree: By signing up you agree to Robin8's <a href="/terms">Terms of Service

@@ -1,7 +1,7 @@
 <% if (items.length == 0) { %>
 <div class="row">
   <% if (!all) { %>
-  <%=polyglot.t('kol_campaign.no_campaign_by_industry')%>
+  <%=polyglot.t('kol_campaign.no_latest_campaign')%>
   <% } else { %>
   <%=polyglot.t('kol_campaign.no_campaign')%>
   <% } %>
@@ -11,12 +11,14 @@
     <table class="table table-striped" id="campaigns-table">
         <thead class="table-head">
         <tr>
-            <th><%=polyglot.t('kol_campaign.name')%></th>
-            <th><%=polyglot.t('kol_campaign.brand')%></th>
-            <th><%=polyglot.t('kol_campaign.budget')%></th>
-            <th><%=polyglot.t('kol_campaign.creation_date')%></th>
-            <th><%=polyglot.t('kol_campaign.deadline')%></th>
-            <th><%=polyglot.t('kol_campaign.status')%></th>
+          <th><%=polyglot.t('kol_campaign.brand')%></th>
+          <th><%=polyglot.t('kol_campaign.name')%></th>
+          <th><%=polyglot.t('kol_campaign.budget')%></th>
+          <th><%=polyglot.t('dashboard.brief')%></th>
+          <th><%=polyglot.t('kol_campaign.creation_date')%></th>
+          <th><%=polyglot.t('kol_campaign.deadline')%></th>
+          <th><%=polyglot.t('kol_campaign.status')%></th>
+          <th><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
         </tr>
         </thead>
         <tbody>
@@ -24,13 +26,16 @@
           <% if (item.user != null) { %>
             <tr data-id="<%= item.id %>" >
                 <td class="campaign-cell">
-                    <%= item.name %>
+                    <%= item.user.first_name %> <%= item.user.last_name %>
                 </td>
                 <td class="campaign-cell">
-                    <%= item.user.first_name %> <%= item.user.last_name %>
+                    <%= item.name %>
                 </td>
                 <td class="campaign-cell" data-order="<%= item.budget %>">
                     $<%= item.budget %>
+                </td>
+                <td class="campaign-cell">
+                  <%= item.description %>
                 </td>
                 <td data-order="<%= timestamp(item.created_at) %>" class="campaign-cell">
                     <%= formatDate(item.created_at) %>
@@ -50,10 +55,13 @@
                   <% } %>
                 <%} else { %>
                   <td class="campaign-cell">
-                    <button type="button" class="btn camp-interested" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.interested')%></button>
-                    <button type="button" class="btn camp-not-interested" style="display: none;" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.not_interested')%></button>
+                    <%=polyglot.t('dashboard.not_expired')%>
                   </td>
                 <% } %>
+                <td>
+                  <button type="button" class="btn top-btn camp-default-btn" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.view')%></button>
+                  <button type="button" class="btn bottom-btn camp-interested" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.interest')%></button>
+                </td>
             </tr>
           <% } %>
         <% }); %>

@@ -1,13 +1,17 @@
-<% if (!declined) { %>
+<% if (accepted) { %>
     <div class="row">If you are WeChat author, please note that you have to submit your WeChat report for the campaign on each 7th day after approval of your article, since WeChat only stores data during 7 days after the article was posted. If you will delay submission of the report, your performance data (number of people reached, number of page views, number of "read more", number of re-share + favorites) for the delayed days will not be count.</div>
     <hr>
 <% } %>
 <% if (items.length == 0) { %>
 <div class="row">
-  <% if (!declined) { %>
+  <% if (accepted) { %>
   <%=polyglot.t('kol_campaign.you_dont_have_any_accepted')%>
-  <% } else { %>
+  <% } else if (declined) { %>
   <%=polyglot.t('kol_campaign.you_dont_have_any_declined')%>
+  <% } else if (history) { %>
+  <%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_history')%>
+  <% } else { %>
+  <%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_any_negotiating')%>
   <% } %>
 </div>
 <% } else { %>
@@ -15,27 +19,30 @@
     <table class="table table-striped" id="campaigns-table">
         <thead class="table-head">
         <tr>
-            <th><%=polyglot.t('kol_campaign.name')%></th>
             <th><%=polyglot.t('kol_campaign.brand')%></th>
+            <th><%=polyglot.t('kol_campaign.name')%></th>
             <th><%=polyglot.t('kol_campaign.budget')%></th>
+            <th><%=polyglot.t('dashboard.brief')%></th>
             <th><%=polyglot.t('kol_campaign.creation_date')%></th>
             <th><%=polyglot.t('kol_campaign.deadline')%></th>
-            <% if (!declined) {%>
-              <th><%=polyglot.t('kol_campaign.status')%></th>
-            <% }%>
+            <th><%=polyglot.t('kol_campaign.status')%></th>
+            <th><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
         </tr>
         </thead>
         <tbody>
         <% _.each(items, function(item){ %>
-        <tr data-id="<%= item.id %>" <% if (!declined) { %>class="campaign"<% } %>>
-            <td class="invite-cell invite-name">
-                <%= item.name %>
-            </td>
+        <tr data-id="<%= item.id %>" <% if (accepted) { %>class="campaign"<% } %>>
             <td class="invite-cell invite-description">
                 <%= item.user.first_name %> <%= item.user.last_name %>
             </td>
+            <td class="invite-cell invite-name">
+                <%= item.name %>
+            </td>
             <td class="invite-cell invite-description" data-order="<%= item.budget %>">
                 $<%= item.budget %>
+            </td>
+            <td class="invite-cell invite-description" >
+                <%= item.description %>
             </td>
             <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
                 <%= formatDate(item.created_at) %>
@@ -43,9 +50,17 @@
             <td data-order="<%= timestamp(item.deadline) %>" class="invite-cell invite-deadline">
                 <b><%= formatDate(item.deadline) %></b>
             </td>
-            <% if (!declined) {%>
+            <% if (accepted) {%>
               <td class="invite-cell"><%= code(item) %></td>
+            <% } else {%>
+              <td class="invite-cell"><%=polyglot.t('dashboard_kol.campaigns_tab.rejected')%></td>
             <% }%>
+            <td>
+                <button type="button" class="btn top-btn camp-default-btn" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.view')%></button>
+                 <% if (accepted) {%>
+                  <button type="button" class="btn bottom-btn camp-interested" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.executed')%></button>
+                <% } %>
+            </td>
         </tr>
         <% }); %>
         </tbody>

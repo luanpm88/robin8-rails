@@ -313,7 +313,7 @@ zh:
       accept: "接受"
       accepted: "已接受"
       brand: "品牌"
-      brief: Brief
+      brief: Briefing Digest
       budget: "預算"
       check_to_activate: "请查看您的电子邮件来激活您的帐户!"
       creation_date: "創建日期"
@@ -337,15 +337,29 @@ zh:
         back: Back
         next: Next
       campaigns_tab:
-        accepted: Accepted
+        accepted: To Execute
+        action: Action
         all: All
-        declined: Declined
-        industry: My Industry
-        interested: Interested
+        declined: Just Rejected
+        executed: Executed
+        history: History
+        interest: Interest
+        interested: You May Like
         invitation: Invitation
+        latest: Latest
+        negotiate: Negotiate
+        negotiating: Negotiating
+        not_expired: Not Expired
         not_interested: Not Interested
-        tables_title: Monetize!
+        pending: Pending
+        reject: Reject
+        rejected: Rejected
+        tables_title: Monetize influence in campaigns
         title: Campaigns
+        view: View
+        you_dont_have_any_negotiating: You don't have any campaign with negotiating
+          status.
+        you_dont_have_history: You don't have expired campaigns.
       score_tab:
         header: Your Score
         tables_title: My Profile and Score
@@ -447,8 +461,7 @@ zh:
       in_progress: "进行中"
       name: "姓名"
       no_campaign: There isn't any active campaigns.
-      no_campaign_by_industry: You don't have any industry in your profile or there
-        isn't any campaign for this industry.
+      no_latest_campaign: There are no campaigns created within last 2 weeks.
       not_approved_yet: "尚未得到批准"
       status: Status
       you_dont_have_any_accepted: "您没有已接受的推广活动"

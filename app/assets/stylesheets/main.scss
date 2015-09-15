@@ -1884,38 +1884,22 @@ input.form-control[type="file"] {
 #wechat-perf-table .rejected_status{
   color: red;
 }
-.dashboard-kol-tab-title {
-  text-align: center;
-  background-color: #f4f4f4;
-  margin: -20px -180px 0 -180px;
-}
-.dashboard-kol-tab-title span {
-  font-family: 'ProximaNovaSemibold';
-  font-size: 34px;
-  font-weight: normal;
-  vertical-align: middle;
-  color: #007183
-}
-.dashboard-kol-tab-title img {
-  margin: 15px 0 15px 0;
-}
 .campaigns-tables-title {
-  text-align: center;
-  background-color: #007183;
-  color: #fff;
-  height: 40px;
+  text-align: left;
+  color: #007183;
   margin: 20px 0px 30px 0px;
+  border-bottom: 2px solid #007183;
 }
 .campaigns-tables-title span {
-  vertical-align: middle;
-  font-family: 'ProximaNova';
-  font-size: 24px;
-  color: #fff;
+  font-family: 'ProximaNovaBold';
+  font-size: 20px;
+  color: #007183;
+  margin-left: 25px;
 }
 #campaigns-list .nav-tabs > li.active > a,
 #campaigns-list .nav-tabs > li.active > a:focus,
 #campaigns-list .nav-tabs > li.active > a:hover {
-  background-color: #007183 !important;
+  background-color: #28ADB2 !important;
   color: #fff;
 }
 #campaigns-list .nav-tabs > li > a{
@@ -1928,12 +1912,15 @@ input.form-control[type="file"] {
   background-color: #f4f4f4;
   margin-right: 5px;
   border-left: none;
-  width: 17%;
+  width: 13.5%;
   text-align: center;
 }
 
 #campaigns-list .nav-tabs {
   border-bottom: 3px solid #007183;
+}
+#campaigns-table, #kol-dashboard {
+  color: #007183;
 }
 .dashboard-kol-tab-btn {
   background: #a5cc63;
@@ -1969,29 +1956,29 @@ input.form-control[type="file"] {
 }
 .camp-interested,
 .camp-interested > button:focus,
-.camp-interested > button:hover,
-.btn-accept,
-.btn-accept > button:focus,
-.btn-accept > button:hover{
+.camp-interested > button:hover {
   border-color: #93C832 !important;
   background-color: #93C832 !important;
 }
 .camp-not-interested,
 .camp-not-interested > button:focus,
-.camp-not-interested > button:hover,
-.btn-decline,
-.btn-decline > button:focus,
-.btn-decline > button:hover{
+.camp-not-interested > button:hover {
   border-color: #007183 !important;
   background-color: #007183 !important;
 }
+.btn-decline,
+.btn-decline > button:focus,
+.btn-decline > button:hover{
+  border-color: #ff0000 !important;
+  background-color: #ff0000 !important;
+}
 #campaigns-table, #all {
   .campaign-cell {
-    vertical-align: middle;
+    vertical-align: top;
     height: 51px;
   }
   .invite-cell {
-    vertical-align: middle;
+    vertical-align: top;
     height: 51px;
   }
   .invite-accepted {
@@ -2000,4 +1987,17 @@ input.form-control[type="file"] {
   .invite-declined {
     color: #DA4453;
   }
+}
+.top-btn {
+  display: block;
+  margin-bottom: 10px;
+}
+.camp-default-btn,
+.camp-default-btn > button:focus,
+.camp-default-btn > button:hover {
+  border-color: #33B5C5 !important;
+  background-color: #33B5C5 !important;
+}
+#campaigns-table button {
+  width: 85px;
 }
