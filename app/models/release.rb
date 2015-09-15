@@ -21,7 +21,7 @@ class Release < ActiveRecord::Base
   after_create :decrease_feature_number
 
   after_destroy :increase_feature_number
-  after_save :update_images_links
+  after_save :update_images_links, :decrease_newswire_features
 
   def plain_text
     coder = HTMLEntities.new
@@ -140,20 +140,18 @@ class Release < ActiveRecord::Base
     accesswire_ = accesswire_changed? && accesswire
     prnewswire_ = prnewswire_changed? && prnewswire
 
-    decrease_newswire_myprgenie if myprgenie_
-    decrease_newswire_accesswire if accesswire_
-    decrease_newswire_prnewswire if prnewswire_
+    if (news_room.id && news_room.publish_on_website) && ((myprgenie_) || (accesswire_) || (prnewswire_))
+      newswire_types = []
+      newswire_types << "Financial Content Distribution" if myprgenie_
+      newswire_types << "Accesswire" if accesswire_
+      newswire_types << "PR Newswire" if prnewswire_
 
-    publicSuffix = (news_room.id && news_room.publish_on_website && !is_private) ? "" : "-preview"
-    publicLink = "http://" + news_room.subdomain_name + publicSuffix + "." + Rails.application.secrets.host + "/releases/" + slug
+      link_to_release = "http://" + news_room.subdomain_name + "." + Rails.application.secrets.host + "/release/" + slug
+      publish_date = updated_at.strftime("%Y-%m-%d %H-%M %Z")
 
-    myprgenie_publish = myprgenie_published_at.strftime('%m/%d/%Y') if myprgenie_published_at
-    accesswire_publish = accesswire_published_at.strftime('%m/%d/%Y') if accesswire_published_at
-    prnewswire_publish = prnewswire_published_at.strftime('%m/%d/%Y') if prnewswire_published_at
-
-    if (myprgenie_) || (accesswire_) || (prnewswire_)
-      UserMailer.newswire_support(myprgenie_, accesswire_, prnewswire_, title, text, myprgenie_publish, accesswire_publish, prnewswire_publish, publicLink).deliver
+      UserMailer.newswire_support(needed_user, title, newswire_types, publish_date, link_to_release).deliver
     end
+
   end
 
 end
