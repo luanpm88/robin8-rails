@@ -115,11 +115,16 @@ class RobinApiController < ApplicationController
 
     uniq_authors = authors.each_with_index.inject({}) do |memo, item|
       value, index = item
+      k = if value[:email].blank? then
+            "#{value[:first_name]}_#{value[:last_name]}"
+          else
+            value[:email]
+          end
 
-      if memo[value[:email]]
-        previous_author = memo[value[:email]]
-        memo[value[:email]][:blog_names] << value[:blog_name]
-        memo[value[:email]][:blog_names].uniq!
+      if memo[k]
+        previous_author = memo[k]
+        memo[k][:blog_names] << value[:blog_name]
+        memo[k][:blog_names].uniq!
       else
         new_author = {
           id: value[:id],
@@ -133,15 +138,8 @@ class RobinApiController < ApplicationController
           index: index,
           level_of_interest: value[:level_of_interest]
         }
-
-        if !value[:email].blank?
-          memo[value[:email]] = new_author
-        else
-          memo[value[:id].to_s] = new_author
-        end
-
+        memo[k] = new_author
       end
-
       memo
     end
 
