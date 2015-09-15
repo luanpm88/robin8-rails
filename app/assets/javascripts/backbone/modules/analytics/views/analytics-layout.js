@@ -34,14 +34,33 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var params = '';
       var emailsAnalyticsPageView;
       var release = false;
+      var target = $(event.target);
+      var itemId = target.val();
 
-      if ($(event.target).hasClass('change-emails-release')) {
+      if (target.hasClass('change-emails-release') && itemId != 0) {
         params = '?type=release';
         release = true;
         emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
           collection: new Robin.Collections.Releases()
         });
       } else {
+        if (itemId != 0) {
+          var collectionReleases = new Robin.Collections.Releases();
+          collectionReleases.fetchReleasesForBrandGallery({
+            brandGalleryId: itemId,
+            success: function(collection) {
+              selectReleasesView = new Analytics.EmailsFilterReleasesCollectionView({
+                collection: collection,
+                childView: Analytics.EmailsFilterReleaseItemView
+              });
+
+              $this.selectReleaseRegion.show(selectReleasesView);
+            }
+          });
+        } else {
+          itemId = $('.change-emails-news-room').val();
+        }
+
         emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
           collection: new Robin.Collections.NewsRooms()
         });
@@ -50,14 +69,14 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
 
       if (release) {
-        emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val(), 'release');
+        emailsAnalyticsPageView.renderEmailAnalytics(itemId, 'release');
       } else {
-        emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val());
+        emailsAnalyticsPageView.renderEmailAnalytics(itemId);
       }
 
       var collectionEmails = new Robin.Collections.EmailAnalytics();
       collectionEmails.fetch({
-        url: '/news_rooms/' + $(event.target).val() +'/email_analytics' + params,
+        url: '/news_rooms/' + itemId +'/email_analytics' + params,
 
         success: function(collection, data, response){
           var collection = new Robin.Collections.EmailAnalytics(data.authors);

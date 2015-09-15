@@ -136,7 +136,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     tagName: 'select',
     className: 'form-control change-emails-release',
     onRender: function() {
-      this.$el.prepend('<option value="" disabled selected>' + polyglot.t('analytics.select_placeholder') + '</option>');
+      this.$el.prepend('<option value="0" selected>' + polyglot.t('analytics.select_all') + '</option>');
     }
   });
 

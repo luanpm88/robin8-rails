@@ -1735,8 +1735,13 @@ input.form-control[type="file"] {
   padding: 8px 0;
   margin: 0 10px;
 }
-
-
+#emails-analytics {
+  .old_content {
+    text-align: center;
+    font-size: 24px;
+    line-height: 250px;
+  }
+}
 
 
 
