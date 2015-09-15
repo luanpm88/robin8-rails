@@ -20,6 +20,11 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
           }
           $.get('/news_rooms/' + id +'/email_analytics' + type, { start_date: start, end_date: end }, function(data){
 
+            if (data == 0) {
+              $('#emails-analytics').html('<p class="old_content">' + polyglot.t('analytics.email_old_content') + '</p>');
+              return;
+            }
+
             var mail = data.mail.total;
             var mailStatistics = [mail.sent, mail.delivered, mail.opened, mail.dropped]
 

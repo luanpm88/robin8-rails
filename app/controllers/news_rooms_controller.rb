@@ -83,6 +83,10 @@ class NewsRoomsController < ApplicationController
   def email_analytics
     if params[:type] == 'release'
       @news_room = Release.find params[:news_room_id]
+      if @news_room.campaign_name.nil?
+        render json: 0
+        return
+      end
     else
       @news_room = NewsRoom.find params[:news_room_id]
     end

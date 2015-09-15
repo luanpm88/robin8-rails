@@ -38,18 +38,6 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var module = this.module;
       Robin.layouts.main.content.show(module.layout);
 
-      var collectionReleases = new Robin.Collections.Releases();
-      collectionReleases.fetchReleasesWithCampaignName({
-        success: function(collection) {
-          selectReleasesView = new Analytics.EmailsFilterReleasesCollectionView({
-            collection: collection,
-            childView: Analytics.EmailsFilterReleaseItemView
-          });
-
-          module.layout.selectReleaseRegion.show(selectReleasesView);
-        }
-      });
-
       module.collection.fetch({
         success: function(collection, data, response) {
           selectView = new Analytics.EmailsFilterCollectionView({
@@ -59,6 +47,20 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
           var collectionNewsRooms = collection;
           module.layout.selectEmailRegion.show(selectView);
           var collectionEmails = new Robin.Collections.EmailAnalytics()
+
+          var collectionReleases = new Robin.Collections.Releases();
+          collectionReleases.fetchReleasesForBrandGallery({
+            brandGalleryId: collectionNewsRooms.models[0].id,
+            success: function(collection) {
+              selectReleasesView = new Analytics.EmailsFilterReleasesCollectionView({
+                collection: collection,
+                childView: Analytics.EmailsFilterReleaseItemView
+              });
+
+              module.layout.selectReleaseRegion.show(selectReleasesView);
+            }
+          });
+
           collectionEmails.fetch({
             url: '/news_rooms/' + collectionNewsRooms.models[0].id +'/email_analytics',
             success: function(collection, data, response){
@@ -73,10 +75,11 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
               module.layout.emailsListRegion.show(emailListView);
               module.layout.emailsDroppedListRegion.show(emailDroppedListView);
             }
-          })
+          });
         }
-      });
 
+      });
+      
       module.layout.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
 
       $('#start-email-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', "-1w");
