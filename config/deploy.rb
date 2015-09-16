@@ -2,7 +2,7 @@
 lock '3.4.0'
 
 set :application, 'robin8'
-set :repo_url, "git@github.com:AYLIEN/#{fetch(:application)}.git"
+set :repo_url, "git@git.coding.net:andyhu/robin8_cn_dev.git"
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call

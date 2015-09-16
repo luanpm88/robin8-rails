@@ -30,6 +30,7 @@ class PagesController < ApplicationController
   end
 
   def pricing
+    # 暂时注释掉
     @products = Package.active.where "slug like 'new%'"
     render :layout => "website"
   end
