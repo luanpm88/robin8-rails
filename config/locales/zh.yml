@@ -726,8 +726,9 @@ zh:
         plan: "计划"
         price: "价格"
         remove: "移除"
-        tax: Tax
+        tax: Tax*
         total: "总计"
+      tax_description: "*VAT amount for your order in your country or state"
       title: "付款"
       your_title: "题目"
     payment_update_page:

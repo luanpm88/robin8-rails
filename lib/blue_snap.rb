@@ -22,7 +22,11 @@ module BlueSnap
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
     def self.get_tax_rate(product_sku, shopper_country, shopper_state)
-      url = "#{Rails.application.secrets[:bluesnap][:base_url]}/skus/#{product_sku}/merchant-price/resolve?country=#{shopper_country}&state=#{shopper_state}"
+      state = ''
+      if shopper_country == 'US' || shopper_country == 'CA'
+        state += '&state=' + shopper_state
+      end
+      url = "#{Rails.application.secrets[:bluesnap][:base_url]}/skus/#{product_sku}/merchant-price/resolve?country=#{shopper_country}#{state}"
       begin
         error, response = Request.get(url)
         if error.blank?
@@ -365,7 +369,8 @@ module BlueSnap
   class Response
     def self.parse(response)
       resp = Hash.from_xml(response.body).deep_symbolize_keys
-      return nil, 0 if resp[:messages].present? && resp[:messages][:message][:error_name] == 'UNKNOWN_STATE_CODE'
+      return nil, 0 if resp[:messages].present? && (resp[:messages][:message][:error_name] == 'UNKNOWN_STATE_CODE' ||
+                    resp[:messages][:message][:error_name] == 'UNKNOWN_COUNTRY_CODE')
       return get_errors(resp), nil if [400,401,402,403,404,500,501].include?(response.code.to_i)
       return nil, resp
     end

@@ -80,7 +80,7 @@
                   <%addons_price += price %>
                   <%addons_id.push(add_on.id) %>
               <%end if @add_ons.present?%>
-              <tr class="tax_row" <%unless params[:tax].present? %>style="display: none;"<%end%>>
+              <tr class="tax_row <%unless params[:tax].present? %>hidden<%end%>">
                 <td colspan="3"><%= @l.t 'payment_page.table.tax' %></td>
                 <td class="price" id="tax-column"><%=currency_sign%><%= params[:tax].present? ? params[:tax] : 0 %></td>
               </tr>
@@ -100,6 +100,7 @@
               </tr>
             </table>
           </div>
+          <div class="tax_description <%unless params[:tax].present? %>hidden<%end%>"><%= @l.t('payment_page.tax_description') %></div>
         </div>
 
 
@@ -345,12 +346,12 @@
         $('#tax').val(tax);
         $('#t-price').html($('#currency_sign').val() + total);
         if (tax == 0) {
-          $('.tax_row').hide();
+          $('.tax_row, .tax_description').hide();
         } else {
           $('html, body').animate({
             scrollTop: $('#checkout-form').offset().top
           }, 300, function(){
-            $('.tax_row').show();
+            $('.tax_row, .tax_description').show();
           });
         }
       }

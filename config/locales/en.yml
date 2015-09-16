@@ -748,8 +748,9 @@ en:
         plan: Plan
         price: Price
         remove: remove
-        tax: Tax
+        tax: Tax*
         total: TOTAL
+      tax_description: "*VAT amount for your order in your country or state"
       title: Payment
       your_title: Title
     payment_update_page:
