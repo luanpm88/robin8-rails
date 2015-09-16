@@ -1027,7 +1027,7 @@ zh:
           pitch: "投递？"
           relevance: "相关度"
           row: "排"
-          title: "大V"
+          title: "媒体记者"
         media_tab:
           add_list: "添加过去保存过的名单"
           delete: "删除"
@@ -1047,7 +1047,7 @@ zh:
         search_tab:
           search: "搜索"
           search_authors:
-            authors: "作者"
+            authors: "媒体记者"
             city_country: "城市或州/省或国家"
             contact_names: "联系人的姓氏和名字"
             enter_keywords: "输入关键字"
@@ -1056,7 +1056,7 @@ zh:
             name: "联系人姓名"
             outlet: "媒介"
             outlet_names: "媒体或者博客的名字"
-            title: "搜索作者"
+            title: "搜索媒体记者"
           search_influencers:
             all: "所有"
             celebrities: "名人"
