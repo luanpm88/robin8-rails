@@ -33,7 +33,6 @@ class StreamsController < ApplicationController
 
   def stories
     @stream = Stream.find(params[:id]) # ToDo: authorize reading stream
-
     respond_to do |format|
       format.json do
         @stories = fetch_stories
@@ -51,7 +50,7 @@ class StreamsController < ApplicationController
 
         render json: @stories
       end
-
+      
       format.rss do
         @stories = fetch_stories
 
@@ -74,8 +73,8 @@ class StreamsController < ApplicationController
 
       format.png do
         kit = IMGKit.new export_url,
-          format: 'png', 'scale-h': nil, 'scale-w': nil, 'crop-h': nil,
-          'crop-w': nil, quality: 80, 'crop-x': nil, 'crop-y': nil,
+          format: 'png', 'scale-h' => nil, 'scale-w' => nil, 'crop-h' => nil,
+          'crop-w' => nil, quality: 80, 'crop-x' =>  nil, 'crop-y'=> nil,
           width: "1366"
 
         send_data kit.to_png, filename: "Robin8 Export.png",
