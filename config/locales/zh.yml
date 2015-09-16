@@ -687,7 +687,7 @@ zh:
       something_wrong: something went wrong
       time_placeholder: select an option
       time_zone: "时区"
-      title: "稱號"
+      title: "个人资料"
       username: "用户名"
     public_newsroom:
       about: About
@@ -1481,7 +1481,7 @@ zh:
       Zagreb: "(+1:00) 萨格勒布"
     uploading:
       choose_image: "选择图片!!!"
-      different_photo: "上传不同的照片..."
+      different_photo: "上传个人资料图片"
       files_label: "文档"
       photos_label: "照片"
       videos_label: "视频"
