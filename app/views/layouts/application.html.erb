@@ -37,6 +37,7 @@
     Robin.start();
   });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
+  en_polyglot = new Polyglot({phrases: <%= raw @en_phrases.to_json %>, locale: "en"});
   <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
