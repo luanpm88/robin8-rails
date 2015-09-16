@@ -67,10 +67,20 @@ class MediaList < ActiveRecord::Base
 
     self.contacts << contacts.inject([]) do |memo, contact|
 
-      contact.reject! {|c| c.nil?}
+      contact.reject! do |elem|
+        if elem.nil?
+          if contact.index(elem) == 1
+            contact[contact.index(elem)]= ""
+            false
+          else
+            true
+          end
+        end
+      end
+
       if (contact.size == 4) && !contact[0].strip.blank? &&
-        !contact[1].strip.blank? && !contact[2].strip.blank? &&
-        !contact[3].strip.blank? && validate_email(contact[2].strip)
+        !contact[2].strip.blank? && !contact[3].strip.blank? &&
+        validate_email(contact[2].strip)
 
         new_contact = Contact.where(email: contact[2].strip).first
 
@@ -81,9 +91,14 @@ class MediaList < ActiveRecord::Base
             outlet: contact[3].strip,
             origin: 2)
         else
-          new_contact.update(first_name: contact[0].strip,
-            last_name: contact[1].strip,
-            outlet: contact[3].strip)
+          if contact[1].strip.blank?
+            new_contact.update(first_name: contact[0].strip,
+                               outlet: contact[3].strip)
+          else
+            new_contact.update(first_name: contact[0].strip,
+                               last_name: contact[1].strip,
+                               outlet: contact[3].strip)
+          end
 
           new_contact
         end

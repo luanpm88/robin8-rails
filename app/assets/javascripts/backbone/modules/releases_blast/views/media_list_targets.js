@@ -6,7 +6,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       selectedMediaListsRegion: "#selected-media-lists"
     }
   });
-  
+
   ReleasesBlast.UploadMediaListView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/media-list/upload-media-list',
     className: 'well',
@@ -58,7 +58,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var formData = new FormData();
       formData.append('media_list[attachment]', this.ui.fileInput[0].files[0]);
       this.ui.fileInput.val("");
-      
+
       $.ajax({
         url: '/media_lists',
         data: formData,
@@ -69,17 +69,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         dataType: 'JSON',
         success: function(res){
           var model = new Robin.Models.MediaList(res);
-          
+
           self.collection.add(model);
           self.selectedMediaListsCollection.add(model, {
             pitchContactsCollection: self.pitchContactsCollection
           });
-          
+
           $.growl({message: polyglot.t("smart_release.targets_step.media_tab.successfully_uploaded")
           },{
             type: 'success'
           });
-          
+
           $.growl({message: polyglot.t("smart_release.targets_step.media_tab.ignored_contacts")
           },{
             type: 'info'
@@ -87,11 +87,16 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         },
         error: function(res){
           if (res && res.responseJSON) {
-            var errorField = _.keys(res.responseJSON)[0]
+            var errorField = _.keys(res.responseJSON)[0];
             var errorMessage = res.responseJSON[errorField][0];
-            errorField = s.capitalize(errorField.replace(/_/g,' '));
-            
-            $.growl({message: errorField + ' ' + errorMessage
+            errorField = s.capitalize(errorField.replace(/_/g,' ')) + ' ';
+
+            if (res.status == 500) {
+              errorMessage = res.responseJSON[_.keys(res.responseJSON)[1]];
+              errorField = ""
+            }
+
+            $.growl({message: errorField + errorMessage
             },{
               type: 'danger'
             });
@@ -101,7 +106,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     fileUploadButtonClicked: function(e){
       e.preventDefault();
-        
+
       if (Robin.user.get('can_create_media_list') != true) {
         $.growl({message: polyglot.t("smart_release.targets_step.media_tab.not_available")},
           {
@@ -112,7 +117,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     }
   });
-  
+
   ReleasesBlast.EmptyList = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/media-list/empty-list',
     tagName: 'tr'
@@ -139,11 +144,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     deleteButtonClicked: function(e){
       e.preventDefault();
-      
+
       this.deleteRow();
     }
   });
-  
+
   ReleasesBlast.SelectedMediaListsCompositeView = Marionette.CompositeView.extend({
     template: 'modules/releases_blast/templates/media-list/selected-media-lists',
     collection: Robin.Collections.SelectedMediaLists,
