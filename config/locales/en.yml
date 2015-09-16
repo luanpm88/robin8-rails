@@ -194,14 +194,15 @@ en:
       delivered: Delivered
       dropped: Dropped
       email: Email
+      email_old_content: Sorry, no tracking for this release available
       emails: Emails
       filter_by: Filter by
       newsrooms_views: Brand Gallery Views
       opened: Opened
       outlet: Outlet
       page_views: Page Views
+      select_all: All
       select_content: Select Content
-      select_placeholder: Please select content
       sent: Sent
       statisitcs: SmartContent Email Statistics
       values: Values

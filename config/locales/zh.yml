@@ -208,14 +208,15 @@ zh:
       delivered: "送达"
       dropped: "下降"
       email: "电子邮件"
+      email_old_content: Sorry, no tracking for this release available
       emails: "电子邮件"
       filter_by: "筛选"
       newsrooms_views: "新闻中心访问量"
       opened: "开放"
       outlet: "媒体"
       page_views: "页面访问量"
+      select_all: All
       select_content: Select Content
-      select_placeholder: Please select content
       sent: "发送"
       statisitcs: "智能发布邮件数据统计"
       values: "值"
