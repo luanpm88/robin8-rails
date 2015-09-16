@@ -52,21 +52,23 @@
 }
 
 
-.invites {
+.invites, #campaigns-table {
   button {
     width: 85px;
   }
   .table-head {
     cursor: pointer;
   }
+  .head-cell {
+    vertical-align: middle !important;
+  }
 
   .invite-cell {
-    text-align: center;
     vertical-align: top;
     height: 51px;
 
     &.invite-status {
-      width: 12%;
+      width: 10%;
       min-width: 180px;
     }
 

@@ -9,7 +9,7 @@ class CampaignController < ApplicationController
       campaigns = kol_signed_in? ? Campaign.where("created_at > ?",Date.today - 14).order('deadline DESC') : current_user.campaigns
     end
     if params[:status] == "history"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaign_invites.status = 'A' and campaigns.deadline < ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline < ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
     end
     if params[:status] == "all"
       campaigns = kol_signed_in? ? Campaign.where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns

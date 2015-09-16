@@ -6,14 +6,14 @@
       <table class="table table-striped" id="kol-dashboard">
         <thead class="table-head">
           <tr>
-            <th class="invite-cell invite-brand" data-sort="string"><%=polyglot.t('dashboard.brand')%></th>
-            <th class="invite-cell invite-name" data-sort="string"><%=polyglot.t('dashboard.name')%></th>
-            <th class="invite-cell invite-budget" data-sort="int"><%=polyglot.t('dashboard.budget')%></th>
-            <th class="invite-cell invite-description" data-sort="string"><%=polyglot.t('dashboard.brief')%></th>
-            <th class="invite-cell invite-date" data-sort="int"><%=polyglot.t('dashboard.creation_date')%></th>
-            <th class="invite-cell invite-deadline" data-sort="int"><%=polyglot.t('dashboard.deadline')%></th>
-            <th class="invite-cell invite-status" data-sort="string"><%=polyglot.t('dashboard.status')%></th>
-            <th class="invite-cell"><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
+            <th class="invite-cell head-cell invite-brand" data-sort="string"><%=polyglot.t('dashboard.brand')%></th>
+            <th class="invite-cell head-cell invite-name" data-sort="string"><%=polyglot.t('dashboard.name')%></th>
+            <th class="invite-cell head-cell invite-budget" data-sort="int"><%=polyglot.t('dashboard.budget')%></th>
+            <th class="invite-cell head-cell invite-description" data-sort="string"><%=polyglot.t('dashboard.brief')%></th>
+            <th class="invite-cell head-cell invite-date" data-sort="int"><%=polyglot.t('dashboard.creation_date')%></th>
+            <th class="invite-cell head-cell invite-deadline" data-sort="int"><%=polyglot.t('dashboard.deadline')%></th>
+            <th class="invite-cell head-cell invite-status" data-sort="string"><%=polyglot.t('dashboard.status')%></th>
+            <th class="invite-cell head-cell"><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
           </tr>
         </thead>
         <tbody>
@@ -37,11 +37,7 @@
             <td data-order="<%= timestamp(item.campaign.deadline) %>" class="invite-cell invite-deadline">
               <b><%= formatDate(item.campaign.deadline) %></b>
             </td>
-            <% if (item.status === '') { %>
-            <td class="invite-cell invite-action invite-nostatus">
-              <%=polyglot.t('dashboard_kol.campaigns_tab.pending')%>
-            </td>
-            <% } else if (item.status === 'A') { %>
+            <% if (item.status === 'A') { %>
             <td class="invite-cell invite-status invite-accepted">
               <%=polyglot.t('dashboard.accepted')%>
             </td>
@@ -49,10 +45,18 @@
             <td class="invite-cell invite-status invite-declined">
               <%=polyglot.t('dashboard.declined')%>
             </td>
+            <% } else if (item.status === 'N') { %>
+            <td class="invite-cell invite-status invite-declined">
+              <%=polyglot.t('dashboard_kol.campaigns_tab.negotiating')%>
+            </td>
+            <% } else { %>
+            <td class="invite-cell invite-action invite-nostatus">
+              <%=polyglot.t('dashboard_kol.campaigns_tab.pending')%>
+            </td>
             <% } %>
             <td>
               <button type="button" class="btn top-btn camp-default-btn" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.view')%></button>
-              <button type="button" class="btn top-btn camp-not-interested" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.negotiate')%></button>
+              <button type="button" class="btn top-btn camp-not-interested" id="negotiate" data-camp-id="<%= item.campaign.id %>" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.negotiate')%></button>
               <button type="button" class="btn top-btn camp-interested invitation-accept" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
               <button type="button" class="btn top-btn btn-decline invitation-decline" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.reject')%></button>
             </td>

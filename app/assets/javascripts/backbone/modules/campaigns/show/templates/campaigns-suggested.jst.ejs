@@ -11,36 +11,36 @@
     <table class="table table-striped" id="campaigns-table">
         <thead class="table-head">
         <tr>
-          <th><%=polyglot.t('kol_campaign.brand')%></th>
-          <th><%=polyglot.t('kol_campaign.name')%></th>
-          <th><%=polyglot.t('kol_campaign.budget')%></th>
-          <th><%=polyglot.t('dashboard.brief')%></th>
-          <th><%=polyglot.t('kol_campaign.creation_date')%></th>
-          <th><%=polyglot.t('kol_campaign.deadline')%></th>
-          <th><%=polyglot.t('kol_campaign.status')%></th>
-          <th><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
+          <th class="invite-cell head-cell invite-brand" ><%=polyglot.t('kol_campaign.brand')%></th>
+          <th class="invite-cell head-cell invite-name" ><%=polyglot.t('kol_campaign.name')%></th>
+          <th class="invite-cell head-cell invite-budget"><%=polyglot.t('kol_campaign.budget')%></th>
+          <th class="invite-cell head-cell invite-description"><%=polyglot.t('dashboard.brief')%></th>
+          <th class="invite-cell head-cell invite-date"><%=polyglot.t('kol_campaign.creation_date')%></th>
+          <th class="invite-cell head-cell invite-deadline"><%=polyglot.t('kol_campaign.deadline')%></th>
+          <th class="invite-cell head-cell invite-status"><%=polyglot.t('kol_campaign.status')%></th>
+          <th class="invite-cell head-cell"><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
         </tr>
         </thead>
         <tbody>
         <% _.each(items, function(item){ %>
           <% if (item.user != null) { %>
             <tr data-id="<%= item.id %>" >
-                <td class="campaign-cell">
+                <td class="campaign-cell invite-cell invite-description">
                     <%= item.user.first_name %> <%= item.user.last_name %>
                 </td>
-                <td class="campaign-cell">
+                <td class="campaign-cell invite-cell invite-name">
                     <%= item.name %>
                 </td>
-                <td class="campaign-cell" data-order="<%= item.budget %>">
+                <td class="campaign-cell invite-cell invite-description" data-order="<%= item.budget %>">
                     $<%= item.budget %>
                 </td>
-                <td class="campaign-cell">
+                <td class="campaign-cell invite-cell invite-description">
                   <%= item.description %>
                 </td>
-                <td data-order="<%= timestamp(item.created_at) %>" class="campaign-cell">
+                <td data-order="<%= timestamp(item.created_at) %>" class="campaign-cell invite-cell invite-date">
                     <%= formatDate(item.created_at) %>
                 </td>
-                <td data-order="<%= timestamp(item.deadline) %>" class="campaign-cell">
+                <td data-order="<%= timestamp(item.deadline) %>" class="campaign-cellinvite-cell invite-deadline">
                     <b><%= formatDate(item.deadline) %></b>
                 </td>
                 <% if (item.invite_status != null && item.invite_status != '') { %>
@@ -52,10 +52,14 @@
                     <td class="campaign-cell invite-declined">
                       <%=polyglot.t('dashboard.declined')%>
                     </td>
-                  <% } %>
+                  <% } else if (item.invite_status === 'N') { %>
+                    <td class="campaign-cell invite-declined">
+                      <%=polyglot.t('dashboard_kol.campaigns_tab.negotiating')%>
+                    </td>
+                  <%} %>
                 <%} else { %>
                   <td class="campaign-cell">
-                    <%=polyglot.t('dashboard.not_expired')%>
+                    <%=polyglot.t('dashboard_kol.campaigns_tab.not_expired')%>
                   </td>
                 <% } %>
                 <td>

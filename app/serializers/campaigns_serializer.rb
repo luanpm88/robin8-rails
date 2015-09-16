@@ -12,7 +12,7 @@ class CampaignsSerializer < ActiveModel::Serializer
   end
   def invite_status
     if not scope.nil? && !@options[:campaign_status].nil?
-      if @options[:campaign_status] != 'accepted' and @options[:campaign_status] != 'declined'
+      if @options[:campaign_status] != 'accepted'
         campaign_invite = object.campaign_invites.where(kol_id: scope.id).first
         if not campaign_invite.nil?
           return campaign_invite.status

@@ -34,12 +34,14 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       item: @model.toJSON()
       title: @options.title
       disabled: @options.disabled
+      no_tabs: if @options.no_tabs then @options.no_tabs else false
 
     onRender: () ->
       @ui.wysihtml5.wysihtml5()
       @editor = @ui.wysihtml5.data('wysihtml5').editor
       @editor.focus()
-      @editor.disable() if @options.disabled
+      if @options.disabled || @options.no_tabs
+        @editor.disable()
       setTimeout(()=>
         @fileWidget = uploadcare.MultipleWidget('[role=uploadcare-uploader][data-multiple][data-file]')
         @.$el.find(".comments-title .image-preview-multiple-plus .uploadcare-widget-button-open").text("").addClass("btn glyphicon glyphicon-plus")
