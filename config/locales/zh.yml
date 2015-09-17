@@ -851,7 +851,7 @@ zh:
       pending_approval: Pending Approval
       pitch_step:
         delete_button: "删除"
-        description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
+        description: "你现在找到了你想要联络的KOL和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
         emailTargets: "通过电子邮件联系目标人"
         email_panel:
           email: "你的电子邮件地址"

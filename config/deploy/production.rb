@@ -16,7 +16,7 @@
 # used to set extended properties on the server.
 
 server '139.196.36.27', user: 'deployer', roles: %w{web app db}
-set :branch, 'master_cn'
+set :branch, 'development_chinese'
 set :rails_env, "production"
 
 set :rbenv_ruby, '2.2.0'
