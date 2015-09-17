@@ -2001,3 +2001,10 @@ input.form-control[type="file"] {
 #campaigns-table button {
   width: 85px;
 }
+#negotiate-campaign-modal {
+  .negotiate-content, .wysihtml5-sandbox {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 150px;
+  }
+}

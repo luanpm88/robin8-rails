@@ -21,18 +21,20 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
       code: (campaign) ->
-        if campaign.tracking_code? and campaign.tracking_code != 'Waiting'
+        if campaign.tracking_code? and campaign.tracking_code != 'Waiting' and campaign.tracking_code != 'Negotiating'
           link = "http://#{window.location.host}/articles/#{campaign.tracking_code}"
           "<a href=\"#{link}\">#{link}</a>"
+        if campaign.tracking_code? and campaign.tracking_code == 'Negotiating'
+          polyglot.t('dashboard_kol.campaigns_tab.negotiating')
         else
           polyglot.t('kol_campaign.not_approved_yet')
       code_status: (campaign) ->
-        if campaign.invite_status == 'A'
+        if campaign.invite_status == 'A' and campaign.tracking_code != 'Negotiating'
           polyglot.t('kol_campaign.approved')
-        else if campaign.invite_status == 'N'
-          polyglot.t('dashboard_kol.campaigns_tab.negotiating')
-        else if campaign.invite_status == 'D'
+        else if campaign.invite_status == 'D' and campaign.tracking_code != 'Negotiating'
           polyglot.t('dashboard_kol.campaigns_tab.rejected')
+        else if campaign.tracking_code? and campaign.tracking_code == 'Negotiating'
+          polyglot.t('dashboard_kol.campaigns_tab.negotiating')
         else
           polyglot.t('dashboard_kol.campaigns_tab.expired')
 
@@ -138,10 +140,11 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
 
   Show.CampaignsInvitations = Backbone.Marionette.ItemView.extend
     template: 'modules/campaigns/show/templates/campaigns-invitations'
+
     events:
       "click .invitation-accept": "accept"
       "click .invitation-decline": "decline"
-      "click #negotiate": "show_editor"
+      "click #negotiate": "negotiate_campaign"
 
     templateHelpers:
       formatDate: (d) ->
@@ -161,26 +164,15 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         lengthChange: false
         pageLength: 25
 
-    show_editor: (event) ->
+    negotiate_campaign: (event) ->
       id = $(event.currentTarget).data("inviteId")
       model = this.collection.get(id)
-      article = new Robin.Models.Article
-        campaign_model: model
-        campaign_show: true
-      article.fetch
-        success: ()->
-          articleDialog.render()
-          article.fetch_comments(()->
-            commentsList = new Show.ArticleComments
-              collection: article.get("article_comments")
-            articleDialog.showChildView 'comments', commentsList
-          )
-        error: (e)->
-          console.log e
-      articleDialog = new Show.ArticleDialog
-        model: article
-        title: model.get("name")
-      Robin.modal.show articleDialog
+      negotiateCampaignDialog = new Show.NegotiateCampDialog
+        model: model
+        campaign_name: model.attributes.campaign.name
+        article_id: model.attributes.campaign.id
+        layout: this._parentLayoutView()
+      Robin.modal.show negotiateCampaignDialog
 
     accept: (event) ->
       event.preventDefault()
@@ -232,6 +224,19 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         campaignsAll.all
           success: ()->
            self._parentLayoutView().all.show campaignsAllTab
+          error: (e)->
+            console.log e
+
+        negotiating = new Robin.Collections.Campaigns()
+        campaignsNegotiatingTab = new App.Campaigns.Show.CampaignsTab
+          collection: negotiating
+          declined: false
+          accepted: false
+          history: false
+          negotiating: true
+        negotiating.negotiating
+          success: ()->
+            self._parentLayoutView().negotiating.show campaignsNegotiatingTab
           error: (e)->
             console.log e
 

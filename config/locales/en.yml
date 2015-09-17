@@ -335,7 +335,9 @@ en:
         accepted: To Execute
         action: Action
         all: You May Like
+        close: Close
         declined: Just Rejected
+        error: Please fill the field
         executed: Executed
         expired: Expired
         history: History
@@ -344,11 +346,15 @@ en:
         invitation: Invitation
         latest: Latest
         negotiate: Negotiate
+        negotiate_error: Something went wrong. Please, try again.
+        negotiate_success: Message was sent successfully.
+        negotiate_text: Negotiate campaign
         negotiating: Negotiating
         not_expired: Not Expired
         pending: Pending
         reject: Reject
         rejected: Rejected
+        send_negotiate: Send negotiate
         tables_title: Monetize influence in campaigns
         title: Campaigns
         view: View

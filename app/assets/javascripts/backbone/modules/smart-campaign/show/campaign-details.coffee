@@ -16,7 +16,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       status: (k) ->
         if k.status == "" then polyglot.t('smart_campaign.unknown') else polyglot.t('smart_campaign.declined')
       code: (k) ->
-        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
+        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting' and k.article.tracking_code != 'Negotiating'
           link = "http://#{window.location.host}/articles/#{k.article.tracking_code}"
           "<a href=\"#{link}\">#{link}</a>"
         else
@@ -24,6 +24,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       code_status: (k) ->
         if k.article? and k.article.tracking_code? and k.article.tracking_code == 'Waiting'
           polyglot.t('smart_campaign.pending_approval')
+        else if k.article? and k.article.tracking_code? and k.article.tracking_code == 'Negotiating'
+          polyglot.t('dashboard_kol.campaigns_tab.negotiating')
         else if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
           polyglot.t('smart_campaign.approved')
         else

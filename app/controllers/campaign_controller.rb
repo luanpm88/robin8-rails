@@ -15,7 +15,7 @@ class CampaignController < ApplicationController
       campaigns = kol_signed_in? ? Campaign.where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     end
     if params[:status] == "negotiating"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'N'}) : current_user.campaigns
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:articles).where(:articles => {:kol_id => current_kol.id, :tracking_code => 'Negotiating'}) : current_user.campaigns
     end
     render json: campaigns, each_serializer: CampaignsSerializer, campaign_status: params[:status], scope: current_kol
   end
@@ -118,6 +118,17 @@ class CampaignController < ApplicationController
     wechat_report.status = 'Claimed'
     wechat_report.save
     render json: wechat_report, serializer: WechatArticlePerformanceSerializer
+  end
+
+  def negotiate_campaign
+    campaign = Campaign.find(params[:id])
+    article = campaign.articles.where(kol_id: current_kol.id).first
+    article.tracking_code = 'Negotiating'
+    article.save
+    someone = current_user
+    someone = current_kol if someone.nil?
+    comment = ArticleComment.create(article_id: article.id, sender: someone, text: params[:text], comment_type: "comment")
+    render json: comment, serializer: ArticleCommentSerializer
   end
 
   def create
