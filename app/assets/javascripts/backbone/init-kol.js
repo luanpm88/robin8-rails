@@ -79,6 +79,7 @@ Robin.stopMainModules = function(){
 };
 
 Robin.on('start', function(){
+
   if (Backbone.history && !Backbone.History.started){
     //Robin.addInitializer();
     Backbone.history.start();
@@ -125,6 +126,7 @@ Robin.vent.on("authentication:logged_out", function() {
 });
 
 Robin.bind("before:start", function() {
+  UPLOADCARE_LOCALE = 'en';
   UPLOADCARE_LOCALE_TRANSLATIONS = {
     buttons: {
       cancel: 'Cancel',

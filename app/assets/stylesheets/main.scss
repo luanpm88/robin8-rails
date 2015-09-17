@@ -1890,6 +1890,8 @@ input.form-control[type="file"] {
   margin: 20px 0px 30px 0px;
   border-bottom: 2px solid #007183;
 }
+
+
 .campaigns-tables-title span {
   font-family: 'ProximaNovaBold';
   font-size: 20px;
@@ -2001,6 +2003,8 @@ input.form-control[type="file"] {
 #campaigns-table button {
   width: 85px;
 }
+
+
 #negotiate-campaign-modal {
   .negotiate-content, .wysihtml5-sandbox {
     max-width: 100%;
@@ -2008,3 +2012,105 @@ input.form-control[type="file"] {
     min-height: 150px;
   }
 }
+
+.kol-avatar,
+.uploadcare-widget-button{
+
+  background: #b2b2b2;
+  height: 40px;
+  width: 150px;
+  font-family: 'ProximaNova';
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 40px;
+  margin: 0;
+  margin-right: 0ex;
+  border-radius: 0em;
+  padding: 0;
+  text-align: center;
+}
+
+.score-tables span {
+  font-family: 'ProximaNovaBold';
+  font-size: 20px;
+  color: #007183;
+}
+
+.score-tables .cell {
+  height: 35px;
+  color: #007183;
+  border-bottom: 1px solid #d8d8d8;
+  font-family: 'ProximaNova';
+  font-size: 14px;
+  padding-top: 5px;
+}
+
+.score-tables .cell .social {
+  color: #007183;
+  font-family: 'ProximaNova';
+  font-size: 11px;
+}
+
+
+.radar-chart .level {
+  stroke: grey;
+  stroke-width: 0.5;
+}
+
+.radar-chart .axis line {
+  stroke: grey;
+  stroke-width: 1;
+}
+.radar-chart .axis .legend {
+  font-family: sans-serif;
+  font-size: 10px;
+}
+.radar-chart .axis .legend.top {
+  dy:1em;
+}
+.radar-chart .axis .legend.left {
+  text-anchor: start;
+}
+.radar-chart .axis .legend.middle {
+  text-anchor: middle;
+}
+.radar-chart .axis .legend.right {
+  text-anchor: end;
+}
+
+.radar-chart .tooltip {
+  font-family: sans-serif;
+  font-size: 13px;
+  transition: opacity 200ms;
+  opacity: 0;
+}
+.radar-chart .tooltip.visible {
+  opacity: 1;
+}
+
+/* area transition when hovering */
+.radar-chart .area {
+  stroke-width: 2;
+  fill-opacity: 0.5;
+}
+.radar-chart.focus .area {
+  fill-opacity: 0.1;
+}
+.radar-chart.focus .area.focused {
+  fill-opacity: 0.7;
+}
+
+.radar-chart .circle {
+  fill-opacity: 0.9;
+}
+
+/* transitions */
+.radar-chart .area, .radar-chart .circle {
+  transition: opacity 300ms, fill-opacity 200ms;
+  opacity: 1;
+}
+.radar-chart .d3-enter, .radar-chart .d3-exit {
+  opacity: 0;
+}
+
+

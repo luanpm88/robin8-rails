@@ -79,6 +79,7 @@ Robin.stopMainModules = function(){
 };
 
 Robin.on('start', function(){
+
   if (Backbone.history && !Backbone.History.started){
     //Robin.addInitializer();
     Backbone.history.start();
@@ -135,7 +136,7 @@ Robin.bind("before:start", function() {
           other: 'Choose files'
         },
         images: {
-          one: polyglot.t("uploading.choose_image"),
+          one: polyglot.t("uploading.kol.choose_image"),
           other: 'Choose images'
         }
       }
@@ -147,7 +148,7 @@ Robin.bind("before:start", function() {
     },
     // messages for dialog's error page
     dialog: { tabs: { preview: { error: {
-      'fileType': {  
+      'fileType': {
         title: 'Title.',
         text: 'Text.',
         back: 'Back'
