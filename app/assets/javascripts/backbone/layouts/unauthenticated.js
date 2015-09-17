@@ -9,4 +9,10 @@ Robin.Views.Layouts.Unauthenticated = Backbone.Marionette.LayoutView.extend({
     $(document).foundation();
   },
 
+  templateHelpers: function () {
+    return {
+      hostName: window.location.hostname
+    }
+  }
+
 });
