@@ -18,6 +18,7 @@ class BlueSnapController < ApplicationController
     if errors.blank?
       return render :card_update_confirmation, :layout => "website"
     else
+      ::SupportMailer.delay.payment_failure('', "#{resp} body: #{Hash.from_xml(resp.body).to_yaml}")
       render :card_update_error, :layout => "website"
     end
   end

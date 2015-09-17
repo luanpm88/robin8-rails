@@ -63,6 +63,7 @@ module BlueSnap
           Request.put(update_subscription_url, subscription.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new,
                                                   :skip_types => true, :skip_instruct => true))
         else
+          Rails.logger.error errors
           return errors, nil
         end
       rescue Exception => ex
