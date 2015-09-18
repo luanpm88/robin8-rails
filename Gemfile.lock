@@ -342,8 +342,13 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-nav (0.2.4)
+      pry (>= 0.9.10, < 0.11.0)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    pry-stack_explorer (0.4.9.1)
+      binding_of_caller (>= 0.7)
+      pry (>= 0.9.11)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
@@ -668,7 +673,9 @@ DEPENDENCIES
   paperclip (~> 4.2.1)
   prawn
   premailer-rails
+  pry-nav (= 0.2.4)
   pry-rails
+  pry-stack_explorer (= 0.4.9.1)
   quiet_assets
   railroady
   rails (= 4.2.0)

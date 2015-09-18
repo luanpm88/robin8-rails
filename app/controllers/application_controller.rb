@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
     @l ||= Localization.new
     @l.locale = locale
     @phrases = JSON.parse(@l.store.get(locale))['application']
+    @en_phrases = JSON.parse(@l.store.get("en"))['application']
   end
 
   protect_from_forgery with: :exception

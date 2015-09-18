@@ -32,7 +32,7 @@ class RobinApiController < ApplicationController
   
   def stories
     response = @client.stories! params.merge({
-      "group_fields[]": "signature",
+      "group_fields[]" => "signature",
       group_limit: 1,
     })
     

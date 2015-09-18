@@ -168,7 +168,8 @@
     }
     if (typeof phrase === 'string') {
       options = clone(options);
-      result = choosePluralForm(phrase, this.currentLocale, options.smart_count);
+
+      result = choosePluralForm(phrase,  this.currentLocale, options.smart_count);
       result = interpolate(result, options);
     }
     return result;

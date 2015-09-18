@@ -33,7 +33,7 @@ module Robin8
     config.i18n.available_locales = ['en', 'zh']
     # I18n.enforce_available_locales = false
 
-    config.china_instance = false
+    config.china_instance = true
   end
   require Rails.root.to_s + '/lib/blue_snap.rb'
 end
