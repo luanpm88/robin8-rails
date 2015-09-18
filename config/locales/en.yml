@@ -1088,8 +1088,11 @@ en:
       enter_first name: Enter first name...
       enter_last_name: Enter last name...
       first_name: First Name
+      history: History
       in_progress: In Progress
+      interested: Interested
       invite_influencers: Invite Influencers
+      invited: Invited
       kol:
         alredy_in_list: " already in your list"
         attach_invalid: Attachment content type is invalid
@@ -1100,6 +1103,7 @@ en:
       last_name: Last Name
       last_update: Last Update
       name: Name
+      negotiating: Negotiating
       new:
         pitch: Pitch
         start: Start
@@ -1110,6 +1114,7 @@ en:
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
       no_one_accepted: No one accepted your invitation yet.
+      no_one_declined: No one declined your invitation.
       not_approved_yet: Not approved yet
       pending_approval: Pending Approval
       pitch_step:

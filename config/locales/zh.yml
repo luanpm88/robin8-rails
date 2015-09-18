@@ -1039,8 +1039,11 @@ zh:
       enter_first name: "填写姓"
       enter_last_name: "填写名"
       first_name: "名"
+      history: History
       in_progress: "进行中"
+      interested: Interested
       invite_influencers: "邀请意见领袖"
+      invited: Invited
       kol:
         alredy_in_list: " 已存在您的列表中"
         attach_invalid: "附件内容类型无效"
@@ -1051,6 +1054,7 @@ zh:
       last_name: "姓氏"
       last_update: "最後更新"
       name: "姓名"
+      negotiating: Negotiating
       new:
         pitch: "投递"
         start: "开始"
@@ -1061,6 +1065,7 @@ zh:
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
       no_one_accepted: "目前无人接受您的邀请。"
+      no_one_declined: No one declined your invitation.
       not_approved_yet: "尚未得到批准"
       pending_approval: Pending Approval
       pitch_step:

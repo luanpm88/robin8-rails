@@ -1,0 +1,22 @@
+<% if (items.length == 0) { %>
+  <div class="row"><%=polyglot.t('smart_campaign.no_invited_yet')%></div>
+<% } else { %>
+  <div class="row">
+    <table class="table table-striped" id="private_kols-table">
+      <thead><tr>
+        <th><%=polyglot.t('smart_campaign.name')%></th>
+        <th><%=polyglot.t('smart_campaign.email')%></th>
+        <th><%=polyglot.t('smart_campaign.active')%></th>
+      </tr></thead>
+      <tbody>
+        <% _.each(items, function(c) { %>
+          <tr data-id="<%= c.private_kol.id %>">
+            <td><%= c.private_kol.full_name %></td>
+            <td><%= c.private_kol.email %></td>
+            <td><%= active(c.private_kol) %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>

@@ -1,0 +1,42 @@
+<div class="smart-campaign dashboard-btns col-sm-12" style="width: 99%;">
+  <div class="row">
+    <div class="col-md-6">
+      <h5><i class="fa fa-home glyphicon glyphicon-bullhorn"></i> <%=polyglot.t('smart_campaign.smartcampaign')%></h5>
+    </div>
+    <div class="pull-right">
+      <a type="button" class="save-campaign btn btn-success vcenter" id="new_campaign" href="/#smart_campaign"><%=polyglot.t('smart_campaign.back')%></a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="pull-right">
+      <a type="button" class="save-campaign btn btn-success vcenter" id="edit_campaign" ><%=polyglot.t('smart_campaign.edit_campaign')%></a>
+    </div>
+    <b><%=polyglot.t('smart_campaign.name')%>: </b> <%= campaign.name %><br/>
+    <b><%=polyglot.t('smart_campaign.deadline')%>: </b> <%= formatDate(campaign.deadline) %><br/>
+    <b><%=polyglot.t('smart_campaign.total_influencers_invited')%>: </b> <%= campaign.campaign_invites.length %>
+  </div>
+
+  <ul class="nav nav-tabs nav-justified campaign_details_tables">
+    <li class="active"><a data-toggle="tab" href="#campaign-accepted" aria-expanded="true"><i class="fa fa-play"></i> <%= polyglot.t("smart_campaign.in_progress") %></a></li>
+    <li><a data-toggle="tab" href="#campaign-negotiating" aria-expanded="true"><i class="fa fa-comment"></i> <%= polyglot.t("smart_campaign.negotiating") %></a></li>
+    <li><a data-toggle="tab" href="#campaign-declined" aria-expanded="true"><i class="fa fa-ban"></i> <%= polyglot.t("smart_campaign.declined") %></a></li>
+    <li><a data-toggle="tab" href="#campaign-invited" aria-expanded="true"><i class="fa fa-send-o"></i> <%= polyglot.t("smart_campaign.invited") %></a></li>
+    <li><a data-toggle="tab" href="#campaign-interested" aria-expanded="true"><i class="fa fa-magnet"></i> <%= polyglot.t("smart_campaign.interested") %></a></li>
+    <li><a data-toggle="tab" href="#campaign-history" aria-expanded="true"><i class="fa fa-history"></i> <%= polyglot.t("smart_campaign.history") %></a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="campaign-accepted" class="tab-pane active" role="tabpanel">
+    </div>
+    <div id="campaign-negotiating" class="tab-pane" role="tabpanel">
+    </div>
+    <div id="campaign-declined" class="tab-pane" role="tabpanel">
+    </div>
+    <div id="campaign-invited" class="tab-pane" role="tabpanel">
+    </div>
+    <div id="campaign-interested" class="tab-pane" role="tabpanel">
+    </div>
+    <div id="campaign-history" class="tab-pane" role="tabpanel">
+    </div>
+  </div>
+
+</div>

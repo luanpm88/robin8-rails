@@ -2112,5 +2112,24 @@ input.form-control[type="file"] {
 .radar-chart .d3-enter, .radar-chart .d3-exit {
   opacity: 0;
 }
-
-
+#kols .nav-tabs > li.active > a,
+#kols .nav-tabs > li.active > a:focus,
+#kols .nav-tabs > li.active > a:hover,
+.smart-campaign .campaign_details_tables > li.active > a,
+.smart-campaign .campaign_details_tables > li.active > a:focus,
+.smart-campaign .campaign_details_tables > li.active > a:hover {
+  background-color: #3c9eb6 !important;
+  color: #fff;
+}
+#kols .nav-tabs > li > a,
+#kols .nav-tabs > li > a:focus,
+#kols .nav-tabs > li > a:hover,
+.smart-campaign .campaign_details_tables > li > a,
+.smart-campaign .campaign_details_tables > li > a:focus,
+.smart-campaign .campaign_details_tables > li > a:hover {
+  background-color: #E6E9ED !important;
+  color: #000;
+}
+.smart-campaign .campaign_details_tables {
+  margin-top: 25px;
+}
