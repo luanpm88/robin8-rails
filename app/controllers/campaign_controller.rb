@@ -4,18 +4,16 @@ class CampaignController < ApplicationController
     if params[:status] == "declined" || params[:status] == "accepted"
       status = params[:status] == "declined" ? "D" : "A"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
-    end
-    if params[:status] == "latest"
+    elsif params[:status] == "latest"
       campaigns = kol_signed_in? ? Campaign.where("created_at > ?",Date.today - 14).order('deadline DESC') : current_user.campaigns
-    end
-    if params[:status] == "history"
+    elsif params[:status] == "history"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline < ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
-    end
-    if params[:status] == "all"
+    elsif params[:status] == "all"
       campaigns = kol_signed_in? ? Campaign.where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
-    end
-    if params[:status] == "negotiating"
+    elsif params[:status] == "negotiating"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:articles).where(:articles => {:kol_id => current_kol.id, :tracking_code => 'Negotiating'}) : current_user.campaigns
+    else
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'A'}) : current_user.campaigns
     end
     render json: campaigns, each_serializer: CampaignsSerializer, campaign_status: params[:status], scope: current_kol
   end

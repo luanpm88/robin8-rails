@@ -1,0 +1,20 @@
+<div class="row">
+  <% if (negotiating.length == 0) { %>
+    <i><%=polyglot.t('smart_campaign.no_negotiate')%></i>
+  <% } else { %>
+    <table class="table table-striped" id="accepted-kols">
+      <thead style="cursor:pointer;"><tr>
+        <th><%=polyglot.t('smart_campaign.name')%></th>
+        <th><%=polyglot.t('smart_campaign.status')%></th>
+      </tr></thead>
+      <tbody>
+        <% _.each(negotiating, function(k) { %>
+          <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>" class="preview">
+            <td><%= k.first_name %> <%= k.last_name %></td>
+            <td id="code_status_<%= k.article.id %>"><%= code_status(k) %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

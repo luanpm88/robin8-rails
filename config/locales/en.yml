@@ -1109,12 +1109,16 @@ en:
         start: Start
         targets: Targets
       new_campaign: New Campaign
+      new_content: New content
       next: Next
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
+      no_history: You don't have expired campaigns.
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
+      no_negotiate: You don't have any campaign with negotiating status.
       no_one_accepted: No one accepted your invitation yet.
       no_one_declined: No one declined your invitation.
+      no_one_interested: Nobody was interested in this campaign.
       not_approved_yet: Not approved yet
       pending_approval: Pending Approval
       pitch_step:

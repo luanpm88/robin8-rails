@@ -11,9 +11,15 @@
     <div class="pull-right">
       <a type="button" class="save-campaign btn btn-success vcenter" id="edit_campaign" ><%=polyglot.t('smart_campaign.edit_campaign')%></a>
     </div>
-    <b><%=polyglot.t('smart_campaign.name')%>: </b> <%= campaign.name %><br/>
-    <b><%=polyglot.t('smart_campaign.deadline')%>: </b> <%= formatDate(campaign.deadline) %><br/>
-    <b><%=polyglot.t('smart_campaign.total_influencers_invited')%>: </b> <%= campaign.campaign_invites.length %>
+    <div class="col-md-3">
+      <b><%=polyglot.t('smart_campaign.name')%>: </b> <%= campaign.name %><br/>
+      <b><%=polyglot.t('smart_campaign.deadline')%>: </b> <%= formatDate(campaign.deadline) %><br/>
+      <b><%=polyglot.t('smart_campaign.total_influencers_invited')%>: </b> <%= campaign.campaign_invites.length %>
+    </div>
+    <div class="col-md-3">
+      <b><%=polyglot.t('smart_campaign.budget')%>: </b> $<%= campaign.budget %><br/>
+      <b><%=polyglot.t('smart_campaign.new_content')%>: </b> new content
+    </div>
   </div>
 
   <ul class="nav nav-tabs nav-justified campaign_details_tables">
