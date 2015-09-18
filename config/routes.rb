@@ -132,6 +132,7 @@ Rails.application.routes.draw do
   get 'robin8_api/authors', to: 'robin_api#authors'
   get 'robin8_api/authors/:id/stats', to: 'robin_api#author_stats'
   get 'robin8_api/stories', to: 'robin_api#stories'
+  get '/home', to: 'pages#landing_page_brand'
 
   post 'textapi/classify'
   post 'textapi/concepts'
