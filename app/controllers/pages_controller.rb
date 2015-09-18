@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
-  before_action :set_video,:only => :home
+  before_action :set_video,:only => [:home,:landing_page_brand]
 
   def set_locale
     unless params[:locale].blank?
@@ -25,6 +25,10 @@ class PagesController < ApplicationController
     else
       render "landing_page", :layout => 'landing'
     end
+  end
+
+  def landing_page_brand
+    render "landing_page_brand", :layout => 'landing'
   end
 
   def singup
