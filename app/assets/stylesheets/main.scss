@@ -2133,3 +2133,55 @@ input.form-control[type="file"] {
 .smart-campaign .campaign_details_tables {
   margin-top: 25px;
 }
+.filter-btn {
+  margin-right: 7px;
+  border-radius: 0;
+  width: 90px;
+  text-align: center;
+}
+.filter-group {
+  margin-bottom: 20px;
+}
+.filter-label {
+  min-width: 140px;
+  color: #007183;
+}
+.age-group {
+    display: inline;
+}
+.age-group label {
+    cursor: pointer;
+    position: relative;
+    padding-left: 25px;
+    margin-right: 35px;
+}
+.age-group input[name=male] {
+    display: none;
+}
+.age-group label:before {
+    content: "";
+    display: inline-block;
+
+    width: 16px;
+    height: 16px;
+
+    margin-right: 10px;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px 0px grey;
+}
+.age-group label:before {
+    border-radius: 8px;
+}
+.age-group input[name=male]:checked + label:before {
+    background-color:#DDDDDD;
+}
+.location-input {
+  width: 550px;
+  display: inline;
+}
+.channels-label {
+  margin: 0 15px 0 5px;
+}

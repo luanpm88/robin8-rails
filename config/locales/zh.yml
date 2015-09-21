@@ -1134,19 +1134,38 @@ zh:
       status: "状态"
       supported_formats: "支持格式"
       targets_step:
+        age_group: Age Group
+        available_channels: Available Channels
+        categories: Categories
+        central: Central
         city_state: "城市或州/省或国家"
         contact_first_last: "联系人的姓名"
+        content: Content
         couldnt_match_influencers: "未找到相匹配意见领袖"
+        east: East
         email: "电子邮件"
+        enter_available_channels: Enters available channels
         enter_categories: "提供更多目录"
+        enter_industry: Enters industry
+        female: Female
         influencers: "意见领袖"
         invite: "邀"
+        linkedin: Linkedin
         location: "地点"
+        male: Male
         name: "姓名"
         need_invite: You need to invite at least someone to this campaign!
+        north: North
+        northeast: Northeast
+        offline: Offline
+        online: Online
         private: "私人"
+        regions: Regions
         search: "搜"
+        south: South
         topic: "主题"
+        wechat_personal: WeChat personal
+        wechat_public: WeChat public
         weibo:
           contact_form:
             message:
@@ -1155,6 +1174,7 @@ zh:
               ps: 附：我们诚恳地推荐你作为一个社交达人来<a href="%{kols_signup_url}">注册</a>我们的平台
               regards: "此致"
             send_error: "消息无法发送！"
+        weibo_channel: Weibo
         weibo_tab:
           author: "作者"
           contact: "联系人"
@@ -1163,6 +1183,7 @@ zh:
           invite: "邀"
           outlet: "媒体"
           relevance: "相关度"
+        west: West
       total_influencers_invited: "已邀请所有的意见领袖"
       unknown: "未知"
       uploaded_file: "上传的文件必须具有完全相同的<strong>三</ STRONG>列，格式为<STRONG>姓，名，电子邮件地址</ STRONG>"

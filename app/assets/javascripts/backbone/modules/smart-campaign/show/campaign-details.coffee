@@ -15,6 +15,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       formatDate: (d) ->
         date = new Date d
         monthNum = parseInt(date.getMonth()) + 1
+        d = date.getDate()
+        y = date.getFullYear()
         month = polyglot.t('date.monthes_abbr.m' + monthNum)
         "#{d}-#{month}-#{y}"
 
@@ -141,7 +143,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       data = @model.toJSON()
       declined = _.chain(data.campaign_invites)
         .filter (i) ->
-          i.status == "" or i.status == "D"
+          i.status == "D"
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.status
@@ -258,6 +260,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       invited = _.chain(data.campaign_invites)
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
+          article = _(data.articles).find (a) -> a.kol_id == i.kol_id
+          if not article?
+            console.log "that is not ok, no article for invitation #{i.id}"
+            article = {}
+          kol.article = article
           kol
         .value()
       {
@@ -312,6 +319,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       interested = _.chain(data.campaign_invites)
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
+          article = _(data.articles).find (a) -> a.kol_id == i.kol_id
+          if not article?
+            console.log "that is not ok, no article for invitation #{i.id}"
+            article = {}
+          kol.article = article
           kol
         .value()
       {
@@ -366,6 +378,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       history = _.chain(data.campaign_invites)
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
+          article = _(data.articles).find (a) -> a.kol_id == i.kol_id
+          if not article?
+            console.log "that is not ok, no article for invitation #{i.id}"
+            article = {}
+          kol.article = article
           kol
         .value()
       {

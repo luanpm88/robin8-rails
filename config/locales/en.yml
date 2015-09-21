@@ -1188,20 +1188,39 @@ en:
       status: Status
       supported_formats: Supported formats
       targets_step:
+        age_group: Age Group
+        available_channels: Available Channels
+        categories: Categories
+        central: Central
         city_state: City or State/Province or Country
         contact_first_last: Contact's first and last name
+        content: Content
         couldnt_match_influencers: Couldn't match any influencers for you. Provivde
           more categories.
+        east: East
         email: Email
+        enter_available_channels: Enters available channels
         enter_categories: Enters categories
+        enter_industry: Enters industry
+        female: Female
         influencers: Influencers
         invite: Invite
+        linkedin: Linkedin
         location: Location
+        male: Male
         name: Name
         need_invite: You need to invite at least someone to this campaign!
+        north: North
+        northeast: Northeast
+        offline: Offline
+        online: Online
         private: Private
+        regions: Regions
         search: Search
+        south: South
         topic: Topic
+        wechat_personal: WeChat personal
+        wechat_public: WeChat public
         weibo:
           contact_form:
             message:
@@ -1211,6 +1230,7 @@ en:
                 in our system as an Influencer.
               regards: Regards
             send_error: Message can not be sent!
+        weibo_channel: Weibo
         weibo_tab:
           author: Author
           contact: Contact
@@ -1219,6 +1239,7 @@ en:
           invite: Invite
           outlet: Outlet
           relevance: Relevance
+        west: West
       total_influencers_invited: Total influencers invited
       unknown: Unknown
       uploaded_file: Uploaded file must have exactly <strong>three</strong> columns,

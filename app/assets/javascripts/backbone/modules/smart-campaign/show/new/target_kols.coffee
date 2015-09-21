@@ -6,8 +6,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/smart-campaign/show/templates/target-kols'
     ui:
       table: "#kols-table"
+      ageGroup: "input[name=ageGroup]"
+      male: "input[name=male]"
+      regions: "input[name=regions]"
+      content: "input[name=content]"
+      locations: "input[id=locations]"
+
     events:
-      'change input': 'selectKol'
+      'change input[name=invite_kol]': 'selectKol'
+      'change @ui.ageGroup': 'changedAgeGroup'
+      'change @ui.male': 'changedMale'
+      'change @ui.regions': 'changedRegions'
+      'change @ui.content': 'changedContent'
 
     templateHelpers:
       categories: (k) ->
@@ -51,6 +61,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     serializeData: () ->
       kols: @kols,
       model: @model
+
+    onShow: ->
+      @ui.locations.geocomplete()
+      @$el.find('input[id=\'icheckbox_flat\']').iCheck
+        checkboxClass: 'icheckbox_square-blue'
+        increaseArea: '20%'
+      $("#locations").geocomplete()
 
     kols_id: ()->
       invited_kols = @model.model.get("kols")
@@ -115,6 +132,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         document.getElementById("next-step").disabled = false
       else
         document.getElementById("next-step").disabled = true
+
+    changedAgeGroup: (e) ->
+      target = $ e.currentTarget
+    changedMale: (e) ->
+      target = $ e.currentTarget
+    changedRegions: (e) ->
+      target = $ e.currentTarget
+    changedRegions: (e) ->
+      target = $ e.currentTarget
 
     validate: () ->
       is_valid = _(@kols).any (k) -> k.invited? and k.invited == true
