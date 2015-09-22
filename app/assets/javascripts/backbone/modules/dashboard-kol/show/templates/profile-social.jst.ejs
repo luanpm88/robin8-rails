@@ -1,3 +1,45 @@
-Social stuff
-
-<img src="http://vignette3.wikia.nocookie.net/uncyclopedia/images/3/3e/Red_Communist_Party.jpg/revision/latest?cb=20120229172022" />
+<div class="row">
+  <div class="col-md-1 cell">
+    <img src="<%= AppAssets.images['weibo-logo.png'] %>" width="50px" />
+  </div>
+  <div class="col-md-1 cell social-label"><%= polyglot.t('dashboard_kol.profile_tab.weibo') %></div>
+  <div class="col-md-2 cell">
+    <button class="btn" id="weibo"><%= polyglot.t('dashboard_kol.profile_tab.login') %></button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-1 cell">
+    <img src="<%= AppAssets.images['wechat-logo.png'] %>" width="50px" />
+  </div>
+  <div class="col-md-1 cell social-label"><%= polyglot.t('dashboard_kol.profile_tab.personal') %></div>
+  <div class="col-md-2 cell">
+    <button class="btn" id="personal"><%= polyglot.t('dashboard_kol.profile_tab.login') %></button>
+  </div>
+  <div class="col-md-2 cell">
+    <input type="text" id="personal_fans" name="personal_fans" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.fans_number') %>" />
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-1 cell">
+    <img src="<%= AppAssets.images['wechat-logo.png'] %>" width="50px" />
+  </div>
+  <div class="col-md-1 cell social-label"><%= polyglot.t('dashboard_kol.profile_tab.public') %></div>
+  <div class="col-md-2 cell">
+    <input type="text" id="public_name" name="public_name" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.name') %>" />
+  </div>
+  <div class="col-md-2 cell">
+    <input type="text" id="public_id" name="public_id" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.id') %>" />
+  </div>
+  <div class="col-md-2 cell">
+    <input type="text" id="public_fans" name="public_fans" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.fans_number') %>" />
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-1 cell">
+    <img src="<%= AppAssets.images['linkedin-logo.png'] %>" width="50px" />
+  </div>
+  <div class="col-md-1 cell social-label"><%= polyglot.t('dashboard_kol.profile_tab.linkedin') %></div>
+  <div class="col-md-2 cell">
+    <button class="btn" id="weibo"><%= polyglot.t('dashboard_kol.profile_tab.login') %></button>
+  </div>
+</div>

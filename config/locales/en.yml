@@ -376,25 +376,32 @@ en:
         city: City
         country: Country
         east: East
+        fans_number: Fans Number
         female: Female
         gender: Gender
         general_title: My Profile
+        id: ID
         industry: Industry
         industry_placeholder: Select or input up to 5, separated by blanks
+        linkedin: LinkedIn
         location: Location
+        login: Login
         male: Male
         male_female: Male:Female
         mobile: Mobile
         name: Name
         north: North
         northeast: Northeast
+        personal: Personal
         province: Province
+        public: Public
         regions: Regions
         secrecy: Secrecy
         social_subtitle: monetize your influence on those channels
         social_title: My social
         south: South
         title: My Profile
+        weibo: Weibo
         west: West
       score_tab:
         header: Your Score
