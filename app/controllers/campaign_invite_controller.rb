@@ -15,6 +15,9 @@ class CampaignInviteController < ApplicationController
       render json: {errors: {permission_denied: 'You must be authorized'}}, :status => :unauthorized
     else
       invite.status = params[:status]
+      if params[:status] == "D"
+        invite.decline_date = DateTime.now()
+      end
       invite.save
       if params[:status] == "A"
         a = Article.new(kol_id: current_kol.id, campaign_id: invite.campaign.id)

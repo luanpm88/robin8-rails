@@ -3,13 +3,17 @@
     <table class="table table-striped" id="accepted-kols">
       <thead style="cursor:pointer;"><tr>
         <th data-sort="string"><%=polyglot.t('smart_campaign.name')%></th>
+        <th><%=polyglot.t('smart_campaign.deadline')%></th>
         <th data-sort="string"><%=polyglot.t('smart_campaign.status')%></th>
+        <th><%=polyglot.t('smart_campaign.decline_date')%></th>
       </tr></thead>
       <tbody>
         <% _.each(declined, function(k) { %>
           <tr data-id="<%= k.id %>">
-            <td><%= k.first_name %> <%= k.last_name %></td>
+            <td><%= k.first_name %></td>
+            <td><%= formatDate(campaign.deadline) %></td>
             <td><%= status(k) %></td>
+            <td><%= formatDate(k.decline_date) %></td>
           </tr>
         <% }); %>
       </tbody>

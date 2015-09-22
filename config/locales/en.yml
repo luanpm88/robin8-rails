@@ -1077,6 +1077,7 @@ en:
       too_short: Please enter %{count} or more characters
     smart_campaign:
       accepted: Accepted
+      action: Action
       active: Active
       add: Add
       add_influencer: Add Influencer
@@ -1098,8 +1099,10 @@ en:
         subject: Subject
         title: Contact
         your_email: Your Email
+      content_type: Content Type
       created: Created
       deadline: Deadline
+      decline_date: Decline date
       declined: Declined
       declined_unknown: Declined/Unknown
       edit_campaign: Edit campaign
@@ -1116,10 +1119,13 @@ en:
       enter_email: Enter email…
       enter_first name: Enter first name...
       enter_last_name: Enter last name...
+      expired: Expired
       first_name: First Name
+      hide: Hide
       history: History
       in_progress: In Progress
       interested: Interested
+      invite: Invite
       invite_influencers: Invite Influencers
       invited: Invited
       kol:
@@ -1129,6 +1135,7 @@ en:
         incorrect_ignored: All contacts in incorrect format will be ignored.
         list_uploaded: Your list has been successfully uploaded.
         select_categories: Select influencer categories
+      last_login_date: Last login date
       last_name: Last Name
       last_update: Last Update
       name: Name
@@ -1138,7 +1145,6 @@ en:
         start: Start
         targets: Targets
       new_campaign: New Campaign
-      new_content: New content
       next: Next
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
@@ -1148,9 +1154,12 @@ en:
       no_one_accepted: No one accepted your invitation yet.
       no_one_declined: No one declined your invitation.
       no_one_interested: Nobody was interested in this campaign.
+      non_cash: Non-cash
       not_approved_yet: Not approved yet
+      pending: Pending
       pending_approval: Pending Approval
       pitch_step:
+        attend_event: Attend event
         button: Pitch!
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
@@ -1175,7 +1184,16 @@ en:
           title: Email pitch
         email_required: The email adress is required
         emailtext_required: The email text is required
+        endorsements: Endorsements
+        focus_event: Focus event
+        focus_group: Focus group
+        host_event: Host event
+        original: Original
+        post_product_review: Post-product review
+        pre_packaged: Pre-packaged
+        re_share: Re-share
         see: See list
+        speech_or_presentation: Speech or presentation
         subject_required: The subject is required
         targets_table:
           actions: Actions

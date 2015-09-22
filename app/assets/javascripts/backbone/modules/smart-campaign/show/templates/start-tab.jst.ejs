@@ -27,7 +27,7 @@
   <div class="row">
     <form accept-charset="UTF-8" class="form-horizontal" role="form" autocomplete="off" id="campaign-form" onsubmit="return false;">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div class="form-group">
             <label for="name" class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_title')%></label>
             <div class="help-block with-errors campaign-errors"></div>
@@ -36,26 +36,6 @@
             </div>
           </div>
         </div>
-
-          <div class="form-group col-md-3">
-            <label class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_budged')%></label>
-            <div class="help-block with-errors campaign-errors"></div>
-            <div>
-              <input class="form-control" placeholder="$1000" name="budget" type="number" maxlength="10" value="" required>
-            </div>
-          </div>
-
-
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_deadline')%></label>
-              <div class="help-block with-errors campaign-errors"></div>
-              <div>
-                <input class="form-control" placeholder="<%=polyglot.t('smart_campaign.start_step.pick_deadline')%>" id="deadline" name="deadline" type="text" value="" required>
-              </div>
-            </div>
-          </div>
-
           <div class="col-md-12">
             <div class="form-group">
               <label class="control-label"><%=polyglot.t('smart_campaign.start_step.campaign_content')%></label>

@@ -37,10 +37,25 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     templateHelpers:
       code_status: (k) ->
-        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
+        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting' and k.article.tracking_code != 'Negotiating'
           polyglot.t('smart_campaign.approved')
+        else if k.article? and k.article.tracking_code? and k.article.tracking_code == 'Waiting'
+          polyglot.t('smart_campaign.pending_approval')
         else
           polyglot.t('smart_campaign.in_progress')
+      code: (campaign) ->
+        if campaign.tracking_code? and campaign.tracking_code != 'Waiting' and campaign.tracking_code != 'Negotiating'
+          link = "http://#{window.location.host}/articles/#{campaign.tracking_code}"
+          "<a href=\"#{link}\">#{link}</a>"
+        else
+          polyglot.t('kol_campaign.not_approved_yet')
+      formatDate: (d) ->
+        date = new Date d
+        monthNum = parseInt(date.getMonth()) + 1
+        d = date.getDate()
+        y = date.getFullYear()
+        month = polyglot.t('date.monthes_abbr.m' + monthNum)
+        "#{d}-#{month}-#{y}"
 
     events:
       "click tr.preview": "preview"
@@ -100,11 +115,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     templateHelpers:
       status: (k) ->
         if k.status == "" then polyglot.t('smart_campaign.unknown') else polyglot.t('smart_campaign.declined')
-      code_status: (k) ->
-        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
-          polyglot.t('smart_campaign.approved')
-        else
-          polyglot.t('smart_campaign.in_progress')
+      formatDate: (d) ->
+        date = new Date d
+        monthNum = parseInt(date.getMonth()) + 1
+        d = date.getDate()
+        y = date.getFullYear()
+        month = polyglot.t('date.monthes_abbr.m' + monthNum)
+        "#{d}-#{month}-#{y}"
 
     events:
       "click tr.preview": "preview"
@@ -147,6 +164,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.status
+          kol.decline_date = if i.decline_date == undefined || i.decline_date == null then i.updated_at else i.decline_date
           kol
         .value()
       {
@@ -158,11 +176,23 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-negotiating'
 
     templateHelpers:
-      code_status: (k) ->
-        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
-          polyglot.t('smart_campaign.approved')
+      status: (k) ->
+        if k.article.tracking_code? and k.article.tracking_code != 'Waiting' and k.article.tracking_code == 'Negotiating'
+          polyglot.t('smart_campaign.negotiating')
         else
-          polyglot.t('smart_campaign.in_progress')
+          polyglot.t('smart_campaign.unknown')
+      formatDate: (d) ->
+        date = new Date d
+        monthNum = parseInt(date.getMonth()) + 1
+        d = date.getDate()
+        y = date.getFullYear()
+        month = polyglot.t('date.monthes_abbr.m' + monthNum)
+        "#{d}-#{month}-#{y}"
+      budget: (campaign) ->
+        if campaign.budget? and campaign.budget != 0
+          "$ " + campaign.budget
+        else
+          polyglot.t('smart_campaign.non_cash')
 
     events:
       "click tr.preview": "preview"
@@ -216,11 +246,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-invited'
 
     templateHelpers:
-      code_status: (k) ->
-        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
-          polyglot.t('smart_campaign.approved')
-        else
-          polyglot.t('smart_campaign.in_progress')
+      formatDate: (d) ->
+        date = new Date d
+        monthNum = parseInt(date.getMonth()) + 1
+        d = date.getDate()
+        y = date.getFullYear()
+        month = polyglot.t('date.monthes_abbr.m' + monthNum)
+        "#{d}-#{month}-#{y}"
 
     events:
       "click tr.preview": "preview"
@@ -275,70 +307,61 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-interested'
 
     templateHelpers:
-      code_status: (k) ->
-        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
-          polyglot.t('smart_campaign.approved')
-        else
-          polyglot.t('smart_campaign.in_progress')
-
-    events:
-      "click tr.preview": "preview"
-
-    preview: (e) ->
-      id = $(e.currentTarget).data "article-id"
-      article = new Robin.Models.Article
-        campaign_model: @model
-        id: id
-        canUpload: false
-      articleDialog = new App.Campaigns.Show.ArticleDialog
-        model: article
-        title: @model.get("name")
-        disabled: true
-        onApprove: (code) ->
-          $("#code_#{id}").html code
-          $("#code_status_#{id}").html 'Approved'
-      article.fetch
-        success: ()->
-          articleDialog.render()
-          article.fetch_comments ()->
-            commentsList = new App.Campaigns.Show.ArticleComments
-              collection: article.get("article_comments")
-            articleDialog.showChildView 'comments', commentsList
-          article.fetch_wechat_perf ()->
-            weChetPerf = new App.Campaigns.Show.ArticleWeChat
-              collection: article.get("wechat_performance")
-              disabled: true
-              canUpload = false
-            articleDialog.showChildView 'weChat', weChetPerf
-        error: (e)->
-          console.log e
-      Robin.modal.show articleDialog
+      formatDate: (d) ->
+        date = new Date d
+        monthNum = parseInt(date.getMonth()) + 1
+        d = date.getDate()
+        y = date.getFullYear()
+        month = polyglot.t('date.monthes_abbr.m' + monthNum)
+        "#{d}-#{month}-#{y}"
 
     serializeData: () ->
       data = @model.toJSON()
+      category_labels = @options.category_labels
       interested = _.chain(data.campaign_invites)
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
+
+          categories_id = _.map(data.kol_categories, (categories) ->
+            if categories.kol_id == i.kol_id
+              categories.iptc_category_id
+          )
+          categories_labels = _.map(category_labels, (categories) ->
+            if categories_id.indexOf(categories.id) > -1
+              return categories.text
+          )
+          if categories_labels.length != 0
+            categories_labels = categories_labels.join()
+
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
           if not article?
             console.log "that is not ok, no article for invitation #{i.id}"
             article = {}
           kol.article = article
+          kol.categories_labels = categories_labels
           kol
         .value()
       {
         campaign: data
         interested: interested
       }
+
   Show.CampaignHistory = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-history'
 
     templateHelpers:
-      code_status: (k) ->
-        if k.article? and k.article.tracking_code? and k.article.tracking_code != 'Waiting'
-          polyglot.t('smart_campaign.approved')
+      status: (k) ->
+        if k.status == "D"
+          polyglot.t('smart_campaign.declined')
         else
-          polyglot.t('smart_campaign.in_progress')
+          polyglot.t('smart_campaign.expired')
+      formatDate: (d) ->
+        date = new Date d
+        monthNum = parseInt(date.getMonth()) + 1
+        d = date.getDate()
+        y = date.getFullYear()
+        month = polyglot.t('date.monthes_abbr.m' + monthNum)
+        "#{d}-#{month}-#{y}"
 
     events:
       "click tr.preview": "preview"
@@ -375,7 +398,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     serializeData: () ->
       data = @model.toJSON()
+      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
       history = _.chain(data.campaign_invites)
+        .filter (i) ->
+          moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") <= 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id

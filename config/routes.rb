@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   get '/kols/suggest_categories' => 'kols#suggest_categories'
   get '/kols/suggest' => 'kols#suggest_kols'
   get '/kols/get_attachments' => 'kols#get_attachments'
+  get '/kols/get_categories_labels' => 'kols#categories_labels'
 
   resources :posts do
     put 'update_social', on: :member

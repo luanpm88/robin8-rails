@@ -94,9 +94,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           results:  (data, page) ->
             return { results: data }
         }
-
-
-
+        escapeMarkup: (m) -> m
+        initSelection: (el, callback) ->
+          @ui.categoriesInput.val ''
+          console.log @model.get('iptc_categories')
+          callback @model.get('iptc_categories')
 
     transformLabel: (label, code) ->
       if code.substring(0, 2) == "16"

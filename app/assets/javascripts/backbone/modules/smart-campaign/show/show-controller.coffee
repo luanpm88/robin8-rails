@@ -59,9 +59,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
             model: m
           page.showChildView 'campaignInvitedRegion', campaign_invited
 
-          campaign_interested = new Show.CampaignInterested
-            model: m
-          page.showChildView 'campaignInterestedRegion', campaign_interested
+          data = m.toJSON()
+          categories_id = _.map(data.kol_categories, (categories) -> categories.iptc_category_id)
+          category_labels = {}
+
+          $.get "/kols/get_categories_labels/", {categories_id: categories_id}, (data) =>
+            if data
+              category_labels = data
+            campaign_interested = new Show.CampaignInterested
+              model: m
+              category_labels: category_labels
+            page.showChildView 'campaignInterestedRegion', campaign_interested
 
           campaign_history = new Show.CampaignHistory
             model: m
