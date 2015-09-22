@@ -1293,10 +1293,15 @@ en:
           title: Influencers
         media_tab:
           add_list: Add a previously saved list
+          cancel: Cancel
           delete: Delete
+          delete_from_pitch: Delete from pitch
+          delete_this_list: Delete this list
           formats: Supported formats
           ignored_contacts: All contacts in incorrect format will be ignored.
           not_available: You don't have available media list in your subscription!
+          recover_unabled: You will not be able to recover this content.
+          remove_media_list: Remove this media list?
           select_placeholder: Select a Influencers List or upload an new one...
           successfully_uploaded: Your list has been successfully uploaded.
           table:
