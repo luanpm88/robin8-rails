@@ -51,9 +51,13 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
       emailsAnalyticsPageView.renderEmailAnalytics(event_val);
 
-      var collectionEmails = new Robin.Collections.EmailAnalytics()
+      var collectionEmails = new Robin.Collections.EmailAnalytics();
+
+      var start = new Date($('#start-email-date-input').val());
+      var end = new Date($('#end-email-date-input').val());
+
       collectionEmails.fetch({
-        url: '/news_rooms/' + event_val +'/email_analytics/',
+        url: '/news_rooms/' + event_val +'/email_analytics/' + '?start_date=' + start + '&end_date=' + end,
 
         success: function(collection, data, response){
           var collection = new Robin.Collections.EmailAnalytics(data.authors);
