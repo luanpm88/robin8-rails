@@ -141,15 +141,17 @@ class Release < ActiveRecord::Base
     prnewswire_ = prnewswire_changed? && prnewswire
 
     if (news_room.id && news_room.publish_on_website) && ((myprgenie_) || (accesswire_) || (prnewswire_))
-      newswire_types = []
-      newswire_types << "Financial Content Distribution" if myprgenie_
-      newswire_types << "Accesswire" if accesswire_
-      newswire_types << "PR Newswire" if prnewswire_
+      selected_newswire = []
+      selected_newswire << ["Financial Content Distribution", myprgenie_published_at.strftime("%Y-%m-%d")] if myprgenie_
+      selected_newswire << ["Accesswire", accesswire_published_at.strftime("%Y-%m-%d")] if accesswire_
+      selected_newswire << ["PR Newswire", prnewswire_published_at.strftime("%Y-%m-%d")] if prnewswire_
 
       link_to_release = "http://" + news_room.subdomain_name + "." + Rails.application.secrets.host + "/release/" + slug
-      publish_date = updated_at.strftime("%Y-%m-%d %H-%M %Z")
 
-      UserMailer.newswire_support(needed_user, title, newswire_types, publish_date, link_to_release).deliver
+      selected_newswire.each do |newswire|
+        selected_newswire_name, selected_newswire_start_date = newswire
+        UserMailer.newswire_support(needed_user, title, selected_newswire_name, selected_newswire_start_date, link_to_release).deliver
+      end
     end
 
   end
