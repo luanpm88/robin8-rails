@@ -66,6 +66,14 @@ class PagesController < ApplicationController
     render :layout => "website"
   end
 
+  def contact_us
+    if is_china_request?
+      render :file => "public/robin_cn.htm"
+    else
+      render :file => "public/robin.htm"
+    end
+  end
+
   def authenticate_user!
     if user_signed_in?
       redirect_to "/upgrade/#{params[:plan]}" if params[:plan].present? && current_user.active_subscription.present? && current_user.active_subscription.status == "A"

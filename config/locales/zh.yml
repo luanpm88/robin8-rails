@@ -276,9 +276,9 @@ zh:
       decline: "拒绝"
       declined: "已拒绝"
       description: "描寫"
-      description1: "如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的记者，KOLs 和大V们，这个听起来怎么样？Robin8可以实现这一切，帮你摆脱PR世界里的猜想和未知"
-      description2: Robin8 可以通过智能分析来深度了解KOLs和大V们，帮你的推广活动找到最为合适的人选，从而最大程度的优化投递结果。
-      description3: Robin8通过为你提供高效的工作流程和智能化的操作界面来帮助你获得最好的推广结果并在竞争中保持不败
+      description1: "如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的记者，KOL 和大V们，这个听起来怎么样？Robin8可以实现这一切，帮你摆脱PR世界里的猜想和未知。"
+      description2: Robin8 可以通过智能分析来深度了解KOLs和大V们，帮你的推广活动找到最为合适的人选，从而最大程度的优化推广结果。
+      description3: Robin8通过为你提供高效的工作流程和智能化的操作界面来帮助你获得最好的推广结果并在竞争中保持不败。
       name: "姓名"
       new_monitoring_button: "新的观察频道"
       new_newsroom_button: "新建内容库"
@@ -456,14 +456,14 @@ zh:
     navigation:
       analytics: "分析"
       dashboard: "主界面"
-      monitoring: "监控"
-      newsrooms: "新闻室"
+      monitoring: "观察"
+      newsrooms: "内容库"
       profile: "个人资料"
       recommendations: "推荐"
       releases: "发布"
       smart_campaign: "智能推广"
       smart_release: "智能发布"
-      social: "社会"
+      social: "社交网络"
     new_package:
       amount_info: "你会被收取..."
       apply: "应用代码"
@@ -687,7 +687,7 @@ zh:
       something_wrong: something went wrong
       time_placeholder: select an option
       time_zone: "时区"
-      title: "稱號"
+      title: "个人资料"
       username: "用户名"
     public_newsroom:
       about: About
@@ -851,7 +851,7 @@ zh:
       pending_approval: Pending Approval
       pitch_step:
         delete_button: "删除"
-        description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
+        description: "你现在找到了你想要联络的KOL和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
         emailTargets: "通过电子邮件联系目标人"
         email_panel:
           email: "你的电子邮件地址"
@@ -1008,8 +1008,8 @@ zh:
       targets_step:
         buttons:
           next: "下一步"
-        description: "如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的KOLs和大V们，这个听起来怎么样？Robin8
-          可以实现这一切，帮你摆脱PR世界里的猜想和未知"
+        description: "如果通过数据分析的预测和相关性的匹配，可以精准的帮你找到与你的每场推广活动高度相关的KOL和大V们，这个听起来怎么样？Robin8
+          可以实现这一切，帮你摆脱PR世界里的猜想和未知。"
         influencers_tab:
           author: "作者"
           buttons:
@@ -1027,7 +1027,7 @@ zh:
           pitch: "投递？"
           relevance: "相关度"
           row: "排"
-          title: "大V"
+          title: "媒体记者"
         media_tab:
           add_list: "添加过去保存过的名单"
           delete: "删除"
@@ -1047,7 +1047,7 @@ zh:
         search_tab:
           search: "搜索"
           search_authors:
-            authors: "作者"
+            authors: "媒体记者"
             city_country: "城市或州/省或国家"
             contact_names: "联系人的姓氏和名字"
             enter_keywords: "输入关键字"
@@ -1056,7 +1056,7 @@ zh:
             name: "联系人姓名"
             outlet: "媒介"
             outlet_names: "媒体或者博客的名字"
-            title: "搜索作者"
+            title: "搜索媒体记者"
           search_influencers:
             all: "所有"
             celebrities: "名人"
@@ -1481,7 +1481,7 @@ zh:
       Zagreb: "(+1:00) 萨格勒布"
     uploading:
       choose_image: "选择图片!!!"
-      different_photo: "上传不同的照片..."
+      different_photo: "上传个人资料图片"
       files_label: "文档"
       photos_label: "照片"
       videos_label: "视频"

@@ -146,6 +146,8 @@ group :development, :test do
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
   gem 'capistrano3-unicorn', '~> 0.2.0'
   gem 'pry-rails'
+  gem 'pry-nav',    '0.2.4'
+  gem 'pry-stack_explorer', '0.4.9.1'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

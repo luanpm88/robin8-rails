@@ -7,20 +7,11 @@
   <% else %>
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
   <% end %>
-  <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
-  <script type="text/javascript">
-    window.doorbellOptions = {
-        appKey: 'cnLho0pzQQjaENVjgmqrw9xI1H8Ljwn3BuFIg1t2MVRt530fIJbSbar2bcfyYb5u'
-    };
-    (function(d, t) {
-        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://embed.doorbell.io/button/1121?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
-    }(document, 'script'));
-  </script>
 </head>
 <body>
   <div id="main">
@@ -37,6 +28,7 @@
     Robin.start();
   });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
+  en_polyglot = new Polyglot({phrases: <%= raw @en_phrases.to_json %>, locale: "en"});
   <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
@@ -58,13 +50,5 @@
   <% end -%>
 
 </script>
-
-<!-- load bitly javascript sdk -->
-<% unless request.location && request.location.country.to_s == "China" %>
-  <script type="text/javascript" src="//bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">
-  </script>
-<% end %>
-<!-- end load bitly javascript sdk -->
-<script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
 </body>
 </html>

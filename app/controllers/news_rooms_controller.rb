@@ -113,7 +113,7 @@ class NewsRoomsController < ApplicationController
       contacts = current_user.contacts.where(email: emails_diff)
       emails_diff.each do |e|
         c = contacts.select{|c| c.email == e }.first
-        parsed_res['authors'].push({'email': e, 'first_name': c.try(:first_name), last_name: c.try(:last_name), outlet: c.try(:outlet)})
+        parsed_res['authors'].push({email: e, first_name: c.try(:first_name), last_name: c.try(:last_name), outlet: c.try(:outlet)})
       end
       parsed_res['authors']
     end
@@ -134,7 +134,7 @@ class NewsRoomsController < ApplicationController
       contacts = current_user.contacts.where(email: emails_diff)
       emails_diff.each do |e|
         c = contacts.select{|c| c.email == e }.first
-        parsed_res['authors'].push({'email': e, 'first_name': c.try(:first_name), last_name: c.try(:last_name), outlet: c.try(:outlet)})
+        parsed_res['authors'].push({email: e, first_name: c.try(:first_name), last_name: c.try(:last_name), outlet: c.try(:outlet)})
       end
       parsed_res['authors']
     end

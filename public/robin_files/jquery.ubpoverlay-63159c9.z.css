@@ -1,0 +1,201 @@
+#ubpoverlay-loading {
+	left: 50%; top: 50%; width: 40px; height: 40px; overflow: hidden; margin-top: -20px; margin-left: -20px; display: none; position: fixed; z-index: 1104; cursor: pointer;
+}
+#ubpoverlay-loading div {
+	left: 0px; top: 0px; width: 40px; height: 480px; position: absolute; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png");
+}
+#ubpoverlay-overlay {
+	left: 0px; top: 0px; width: 100%; display: none; position: absolute; z-index: 1100;
+}
+#ubpoverlay-tmp {
+	margin: 0px; padding: 0px; border: 0px currentColor; overflow: auto; display: none;
+}
+#ubpoverlay-wrap {
+	padding: 20px; left: 0px; top: 0px; display: none; position: absolute; z-index: 1101;
+}
+#ubpoverlay-outer {
+	background: rgb(255, 255, 255); width: 100%; height: 100%; position: relative;
+}
+#ubpoverlay-content {
+	padding: 0px; border: 0px solid rgb(255, 255, 255); width: 0px; height: 0px; overflow: hidden; position: relative; z-index: 1102;
+}
+#ubpoverlay-hide-sel-frame {
+	left: 0px; top: 0px; width: 100%; height: 100%; position: absolute; z-index: 1101;
+}
+#ubpoverlay-close {
+	background: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png") -40px 0px; top: -15px; width: 30px; height: 30px; right: -15px; display: none; position: absolute; z-index: 1103; cursor: pointer;
+}
+#ubpoverlay-error {
+	font: 12px/20px Arial; margin: 0px; padding: 14px; color: rgb(68, 68, 68); font-size-adjust: none; font-stretch: normal;
+}
+#ubpoverlay-img {
+	margin: 0px; padding: 0px; border: currentColor; width: 100%; height: 100%; line-height: 0; vertical-align: top;
+}
+#ubpoverlay-frame {
+	border: currentColor; width: 100%; height: 100%; display: block;
+}
+#ubpoverlay-left {
+	background: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/blank.gif"); width: 35%; height: 100%; bottom: 0px; display: none; position: absolute; z-index: 1102; cursor: pointer;
+}
+#ubpoverlay-right {
+	background: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/blank.gif"); width: 35%; height: 100%; bottom: 0px; display: none; position: absolute; z-index: 1102; cursor: pointer;
+}
+#ubpoverlay-left {
+	left: 0px;
+}
+#ubpoverlay-right {
+	right: 0px;
+}
+#ubpoverlay-left-ico {
+	left: -9999px; top: 50%; width: 30px; height: 30px; margin-top: -15px; display: block; position: absolute; z-index: 1102; cursor: pointer;
+}
+#ubpoverlay-right-ico {
+	left: -9999px; top: 50%; width: 30px; height: 30px; margin-top: -15px; display: block; position: absolute; z-index: 1102; cursor: pointer;
+}
+#ubpoverlay-left-ico {
+	background-position: -40px -30px; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png");
+}
+#ubpoverlay-right-ico {
+	background-position: -40px -60px; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png");
+}
+#ubpoverlay-left:hover {
+	visibility: visible;
+}
+#ubpoverlay-right:hover {
+	visibility: visible;
+}
+#ubpoverlay-left:hover span {
+	left: 20px;
+}
+#ubpoverlay-right:hover span {
+	left: auto; right: 20px;
+}
+.ubpoverlay-bg {
+	margin: 0px; padding: 0px; border: 0px currentColor; width: 20px; height: 20px; position: absolute; z-index: 1001;
+}
+#ubpoverlay-bg-n {
+	left: 0px; top: -20px; width: 100%; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay-x.png");
+}
+#ubpoverlay-bg-ne {
+	background-position: -40px -162px; top: -20px; right: -20px; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png");
+}
+#ubpoverlay-bg-e {
+	background-position: -20px 0px; top: 0px; height: 100%; right: -20px; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay-y.png");
+}
+#ubpoverlay-bg-se {
+	background-position: -40px -182px; right: -20px; bottom: -20px; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png");
+}
+#ubpoverlay-bg-s {
+	background-position: 0px -20px; left: 0px; width: 100%; bottom: -20px; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay-x.png");
+}
+#ubpoverlay-bg-sw {
+	background-position: -40px -142px; left: -20px; bottom: -20px; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png");
+}
+#ubpoverlay-bg-w {
+	left: -20px; top: 0px; height: 100%; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay-y.png");
+}
+#ubpoverlay-bg-nw {
+	background-position: -40px -122px; left: -20px; top: -20px; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png");
+}
+#ubpoverlay-title {
+	font-family: Helvetica; font-size: 12px; z-index: 1102;
+}
+.ubpoverlay-title-inside {
+	background: rgb(255, 255, 255); text-align: center; color: rgb(51, 51, 51); padding-bottom: 10px; position: relative;
+}
+.ubpoverlay-title-outside {
+	color: rgb(255, 255, 255); padding-top: 10px;
+}
+.ubpoverlay-title-over {
+	left: 0px; text-align: left; bottom: 0px; color: rgb(255, 255, 255); position: absolute;
+}
+#ubpoverlay-title-over {
+	padding: 10px; display: block; background-image: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay_title_over.png");
+}
+.ubpoverlay-title-float {
+	left: 0px; height: 32px; bottom: -20px; position: absolute;
+}
+#ubpoverlay-title-float-wrap {
+	border: currentColor; width: auto; border-collapse: collapse;
+}
+#ubpoverlay-title-float-wrap td {
+	border: currentColor; white-space: nowrap;
+}
+#ubpoverlay-title-float-left {
+	background: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png") no-repeat -40px -90px; padding: 0px 0px 0px 15px;
+}
+#ubpoverlay-title-float-main {
+	background: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay-x.png") 0px -40px; padding: 0px 0px 3px; color: rgb(255, 255, 255); line-height: 29px; font-weight: bold;
+}
+#ubpoverlay-title-float-right {
+	background: url("//assets.unbounce.com/m/lp-webapp/0.0.9/ubpoverlay/ubpoverlay.png") no-repeat -55px -90px; padding: 0px 0px 0px 15px;
+}
+.ubpoverlay-ie6 #ubpoverlay-close {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-left-ico {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-right-ico {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-title-over {
+	-ms-zoom: 1;
+}
+.ubpoverlay-ie6 #ubpoverlay-title-float-left {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-title-float-main {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-title-float-right {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-bg-w {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-bg-e {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-left {
+	
+}
+.ubpoverlay-ie6 #ubpoverlay-right {
+	
+}
+#ubpoverlay-hide-sel-frame {
+	
+}
+.ubpoverlay-ie6#ubpoverlay-loading {
+	margin-top: 0px; position: absolute;
+}
+.ubpoverlay-ie6#ubpoverlay-loading div {
+	
+}
+.ubpoverlay-ie .ubpoverlay-bg {
+	
+}
+.ubpoverlay-ie #ubpoverlay-bg-n {
+	
+}
+.ubpoverlay-ie #ubpoverlay-bg-ne {
+	
+}
+.ubpoverlay-ie #ubpoverlay-bg-e {
+	
+}
+.ubpoverlay-ie #ubpoverlay-bg-se {
+	
+}
+.ubpoverlay-ie #ubpoverlay-bg-s {
+	
+}
+.ubpoverlay-ie #ubpoverlay-bg-sw {
+	
+}
+.ubpoverlay-ie #ubpoverlay-bg-w {
+	
+}
+.ubpoverlay-ie #ubpoverlay-bg-nw {
+	
+}

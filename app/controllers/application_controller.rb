@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def is_china_request?
+    request.location && request.location.country.to_s == "China"
+  end
+
   def set_translations
     default_locale = china_instance? ? 'zh' : 'en'
     unless current_user.blank?
@@ -31,6 +35,7 @@ class ApplicationController < ActionController::Base
     @l ||= Localization.new
     @l.locale = locale
     @phrases = JSON.parse(@l.store.get(locale))['application']
+    @en_phrases = JSON.parse(@l.store.get("en"))['application']
   end
 
   protect_from_forgery with: :exception
