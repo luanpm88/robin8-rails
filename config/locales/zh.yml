@@ -1232,10 +1232,15 @@ zh:
           title: "大V"
         media_tab:
           add_list: "添加过去保存过的名单"
+          cancel: Cancel
           delete: "删除"
+          delete_from_pitch: Delete from pitch
+          delete_this_list: Delete this list
           formats: "支持文件格式"
           ignored_contacts: All contacts in incorrect format will be ignored.
           not_available: You don't have available media list in your subscription!
+          recover_unabled: You will not be able to recover this content.
+          remove_media_list: Remove this media list?
           select_placeholder: "选择一个媒体名单或者上传一个新的名单"
           successfully_uploaded: "您的列表已经成功上传。"
           table:

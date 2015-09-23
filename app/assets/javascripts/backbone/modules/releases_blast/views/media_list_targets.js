@@ -128,10 +128,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     tagName: 'tr',
     model: Robin.Models.MediaList,
     ui: {
-      deleteButton: 'a'
+      deleteFromPitch: '#delete-from-pitch',
+      deleteList: '#delete-list'
     },
     events: {
-      "click @ui.deleteButton": "deleteButtonClicked"
+      "click @ui.deleteFromPitch": "deleteFromPitchClicked",
+      "click @ui.deleteList": "deleteListClicked"
     },
     initialize: function(options){
       this.pitchContactsCollection = options.pitchContactsCollection;
@@ -142,10 +144,38 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         pitchContactsCollection: this.pitchContactsCollection
       });
     },
-    deleteButtonClicked: function(e){
+    deleteFromPitchClicked: function(e){
       e.preventDefault();
 
       this.deleteRow();
+    },
+    deleteListClicked: function(e){
+      var viewObj = this;
+      e.preventDefault();
+      swal({
+        title: polyglot.t("smart_release.targets_step.media_tab.remove_media_list"),
+        text: polyglot.t("smart_release.targets_step.media_tab.recover_unabled"),
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: polyglot.t("smart_release.targets_step.media_tab.delete"),
+        cancelButtonText: polyglot.t("smart_release.targets_step.media_tab.cancel")
+      },
+        function(isConfirm) {
+          if (isConfirm) {
+            viewObj.deleteRow();
+            viewObj.model.destroy({
+              success: function(model, response){
+                swal.close();
+                Robin.user.fetch();
+              },
+              error: function(data){
+                console.warn('error', data);
+              }
+            });
+          }
+        }
+      );
     }
   });
 
