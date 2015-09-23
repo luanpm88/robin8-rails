@@ -335,6 +335,8 @@ en:
         accepted: To Execute
         action: Action
         all: You May Like
+        ask_for_invite: Ask for invite
+        categories: Categories
         close: Close
         declined: Just Rejected
         error: Please fill the field
@@ -344,6 +346,7 @@ en:
         interest: Interest
         interested: You May Like
         invitation: Invitation
+        last_update: Last update
         latest: Latest
         negotiate: Negotiate
         negotiate_error: Something went wrong. Please, try again.
@@ -354,10 +357,13 @@ en:
         pending: Pending
         reject: Reject
         rejected: Rejected
+        request_rejected: Request rejected
+        running: Running
         send_negotiate: Send negotiate
         tables_title: Monetize influence in campaigns
         title: Campaigns
         view: View
+        waiting_for_invitation: Waiting for invitation
         you_dont_have_any_negotiating: You don't have any campaign with negotiating
           status.
         you_dont_have_history: You don't have expired campaigns.
@@ -470,7 +476,7 @@ en:
       download_svg: Download SVG vector image
       print_chart: Print chart
     kol_campaign:
-      approved: Approve
+      approved: Approved
       article:
         close: Close
         have_submit_wechat: You have to submit your WeChat report on each 7th day
@@ -654,6 +660,7 @@ en:
       untitled: Untitled Stream
     navigation:
       analytics: Analytics
+      campaigns: Campaigns
       dashboard: Dashboard
       monitoring: Monitoring
       newsrooms: Brand Gallery
@@ -1105,6 +1112,7 @@ en:
       decline_date: Decline date
       declined: Declined
       declined_unknown: Declined/Unknown
+      edit: Edit
       edit_campaign: Edit campaign
       editor:
         adjectives: Adjectives
@@ -1121,7 +1129,6 @@ en:
       enter_last_name: Enter last name...
       expired: Expired
       first_name: First Name
-      hide: Hide
       history: History
       in_progress: In Progress
       interested: Interested
@@ -1167,6 +1174,7 @@ en:
           You can use the Robin8 default note or prepare your own personal note. If
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
+        description_field: Description
         emailTargets: Targets will be contacted via Email
         email_panel:
           email: Your email address
@@ -1188,6 +1196,7 @@ en:
         focus_event: Focus event
         focus_group: Focus group
         host_event: Host event
+        non_cash_reward: Non cash reward
         original: Original
         post_product_review: Post-product review
         pre_packaged: Pre-packaged
@@ -1214,6 +1223,8 @@ en:
             dashboard to accept the invitation.
       prev: Previous
       private_influencers: Private Influencers
+      reject: Reject
+      rejected: Rejected
       smart_campaign:
         pitch_step:
           button: Pitch!

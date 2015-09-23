@@ -1,5 +1,5 @@
 class CampaignsSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :deadline, :budget, :created_at, :updated_at, :user, :tracking_code, :concepts, :summaries, :hashtags, :invite_status
+  attributes :id, :name, :description, :deadline, :budget, :created_at, :updated_at, :user, :tracking_code, :concepts, :summaries, :hashtags, :invite_status, :short_description, :content_type, :non_cash
 
   def tracking_code
     if not scope.nil?

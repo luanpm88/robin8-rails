@@ -22,24 +22,107 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date.getTime()
       code: (campaign) ->
         if campaign.tracking_code? and campaign.tracking_code != 'Waiting' and campaign.tracking_code != 'Negotiating'
-          link = "http://#{window.location.host}/articles/#{campaign.tracking_code}"
-          "<a href=\"#{link}\">#{link}</a>"
-        if campaign.tracking_code? and campaign.tracking_code == 'Negotiating'
-          polyglot.t('dashboard_kol.campaigns_tab.negotiating')
+          polyglot.t('kol_campaign.approved')
+        if campaign.tracking_code? and campaign.tracking_code == 'Waiting'
+          polyglot.t('smart_campaign.pending_approval')
         else
-          polyglot.t('kol_campaign.not_approved_yet')
+          polyglot.t('kol_campaign.in_progress')
       code_status: (campaign) ->
         if campaign.invite_status == 'A' and campaign.tracking_code != 'Negotiating'
           polyglot.t('kol_campaign.approved')
         else if campaign.invite_status == 'D' and campaign.tracking_code != 'Negotiating'
           polyglot.t('dashboard_kol.campaigns_tab.rejected')
-        else if campaign.tracking_code? and campaign.tracking_code == 'Negotiating'
-          polyglot.t('dashboard_kol.campaigns_tab.negotiating')
         else
           polyglot.t('dashboard_kol.campaigns_tab.expired')
+      budget: (campaign) ->
+        if campaign.non_cash == false
+          "$ " + campaign.budget
+        else
+          campaign.short_description
 
     events:
       "click .campaign": "show_editor"
+      "click .invitation-accept": "accept"
+      "click .invitation-decline": "decline"
+
+    accept: (event) ->
+      event.preventDefault()
+      @perform_action($(event.currentTarget))
+
+    decline: (event) ->
+      event.preventDefault()
+      @perform_action($(event.currentTarget), "decline")
+
+    perform_action: (button, action="accept") ->
+      self = this
+      button_container = button.parent().parent()
+      id = button.data("inviteId")
+      item = self.collection.get(id)
+      action_method = if action == "accept" then item.accept() else item.decline()
+      $.when(action_method).then ()->
+        button_container.remove()
+        self.render()
+        campaignsAccepted = new Robin.Collections.Campaigns
+        campaignsAcceptedTab = new Show.CampaignsTab
+          declined: false
+          accepted: true
+          history: false
+          negotiating: false
+          collection: campaignsAccepted
+        campaignsAccepted.accepted
+          success: ()->
+            self._parentLayoutView().accepted.show campaignsAcceptedTab
+          error: (e)->
+            console.log e
+
+        campaignsDeclined = new Robin.Collections.Campaigns
+        campaignsDeclinedTab = new Show.CampaignsTab
+          collection: campaignsDeclined
+          accepted: false
+          history: false
+          negotiating: false
+          declined: true
+        campaignsDeclined.declined
+          success: ()->
+            self._parentLayoutView().declined.show campaignsDeclinedTab
+          error: (e)->
+            console.log e
+
+        campaignsAll = new Robin.Collections.Campaigns
+        campaignsAllTab = new Show.CampaignsSuggestedTab
+          collection: campaignsAll
+          all: true
+        campaignsAll.all
+          success: ()->
+           self._parentLayoutView().all.show campaignsAllTab
+          error: (e)->
+            console.log e
+
+        negotiating = new Robin.Collections.Campaigns()
+        campaignsNegotiatingTab = new App.Campaigns.Show.CampaignsTab
+          collection: negotiating
+          declined: false
+          accepted: false
+          history: false
+          negotiating: true
+        negotiating.negotiating
+          success: ()->
+            self._parentLayoutView().negotiating.show campaignsNegotiatingTab
+          error: (e)->
+            console.log e
+
+        end = moment(new Date(item.attributes.campaign.created_at).toLocaleFormat '%d-%b-%Y')
+        start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+        diff = start.diff(end, "days")
+        if diff > 0
+          latest = new Robin.Collections.Campaigns
+          campaignsLatestTab = new Show.CampaignsSuggestedTab
+            collection: latest
+          latest.latest
+            success: ()->
+              self._parentLayoutView().latest.show campaignsLatestTab
+            error: (e)->
+              console.log e
 
     show_editor: (event) ->
       id = $(event.currentTarget).data("id")
@@ -78,10 +161,16 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
           )
         error: (e)->
           console.log e
+      no_comments = true
+      console.log no_comments
+      console.log @options
+      if @options.accepted or @options.negotiating
+        no_comments = false
       articleDialog = new Show.ArticleDialog
         model: article
         title: model.get("name")
         no_tabs: no_tabs
+        no_comments: no_comments
       Robin.modal.show articleDialog
 
     serializeData: () ->
@@ -153,6 +242,11 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       timestamp: (d) ->
         date = new Date d
         date.getTime()
+      budget: (campaign) ->
+        if campaign.non_cash == false
+          "$ " + campaign.budget
+        else
+          campaign.short_description
 
     serializeData: () ->
       items: @collection.toJSON()
@@ -259,6 +353,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     events:
       "click .camp-interested": "camp_interested"
       "click .camp-not-interested": "camp_not_interested"
+      "click .campaign": "show_editor"
 
     templateHelpers:
       formatDate: (d) ->
@@ -267,6 +362,11 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       timestamp: (d) ->
         date = new Date d
         date.getTime()
+      budget: (campaign) ->
+        if campaign.non_cash == false
+          "$ " + campaign.budget
+        else
+          campaign.short_description
 
     serializeData: () ->
       items: @collection.toJSON()
@@ -284,3 +384,47 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
 
     camp_not_interested: (event) ->
       id = $(event.currentTarget).data("campaignId")
+
+    show_editor: (event) ->
+      id = $(event.currentTarget).data("id")
+      model = this.collection.get(id)
+      article = new Robin.Models.Article
+        campaign_model: model
+      no_tabs = false
+      if this.options.history
+        no_tabs = true
+      self = this
+      article.fetch
+        success: ()->
+          articleDialog.render()
+          article.fetch_comments(()->
+            commentsList = new Show.ArticleComments
+              collection: article.get("article_comments")
+            articleDialog.showChildView 'comments', commentsList
+          )
+          article.fetch_wechat_perf(()->
+            wechat_performance = if article.get("wechat_performance")? then article.get("wechat_performance") else []
+            canUpload = true
+            if wechat_performance.length > 0
+              end = moment(new Date(wechat_performance.models[0].attributes.period).toLocaleFormat '%d-%b-%Y')
+              start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+              diff = start.diff(end, "days")
+              if diff < 7
+                canUpload = false
+            if self.options.history
+              canUpload = false
+            weChetPerf = new Show.ArticleWeChat
+              collection: article.get("wechat_performance")
+              model: article
+              disabled: false
+              canUpload: canUpload
+            articleDialog.showChildView 'weChat', weChetPerf
+          )
+        error: (e)->
+          console.log e
+      articleDialog = new Show.ArticleDialog
+        model: article
+        title: model.get("name")
+        no_tabs: no_tabs
+        no_comments: true
+      Robin.modal.show articleDialog

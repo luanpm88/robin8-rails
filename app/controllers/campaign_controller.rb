@@ -3,15 +3,15 @@ class CampaignController < ApplicationController
   def index
     if params[:status] == "declined" || params[:status] == "accepted"
       status = params[:status] == "declined" ? "D" : "A"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     elsif params[:status] == "latest"
-      campaigns = kol_signed_in? ? Campaign.where("created_at > ?",Date.today - 14).order('deadline DESC') : current_user.campaigns
+      campaigns = kol_signed_in? ? Campaign.where("created_at > ? and deadline > ?",Date.today - 14, Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     elsif params[:status] == "history"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline < ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
     elsif params[:status] == "all"
       campaigns = kol_signed_in? ? Campaign.where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     elsif params[:status] == "negotiating"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:articles).where(:articles => {:kol_id => current_kol.id, :tracking_code => 'Negotiating'}) : current_user.campaigns
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:articles).where(:articles => {:kol_id => current_kol.id, :tracking_code => 'Negotiating'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     else
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'A'}) : current_user.campaigns
     end
@@ -156,6 +156,10 @@ class CampaignController < ApplicationController
     c.concepts = params[:concepts]
     c.summaries = params[:summaries]
     c.hashtags = params[:hashtags]
+    c.non_cash = params[:non_cash]
+    c.content_type = params[:content_type]
+    c.short_description = params[:short_description]
+
     c.save!
 
     #private kol

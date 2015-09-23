@@ -17,7 +17,7 @@
             <td><%= k.categories_labels %></td>
             <td>
               <button type="button" class="btn top-btn camp-default-btn interested-btn" data-campaign-id="<%= k.id %>"><%=polyglot.t('smart_campaign.invite')%></button>
-              <button type="button" class="btn top-btn btn-decline invitation-decline interested-btn" data-invite-id="<%= k.id %>"><%=polyglot.t('smart_campaign.hide')%></button>
+              <button type="button" class="btn top-btn btn-decline invitation-decline interested-btn" data-invite-id="<%= k.id %>"><%=polyglot.t('smart_campaign.reject')%></button>
             </td>
           </tr>
         <% }); %>

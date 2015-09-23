@@ -1,9 +1,10 @@
 <span class="kol-errors"><%=polyglot.t('smart_campaign.targets_step.need_invite')%></span>
+<% if (!search) { %>
   <i class="fa fa-filter"></i>
   <a href="#email-targets-list" data-toggle="collapse">
     <small>Filter <i class="fa fa-chevron-down"></i></small>
   </a>
-
+<% } %>
   <div id="email-targets-list" class="collapse">
     <br/>
     <form role="form" class="form" id="filter-authors">
@@ -11,13 +12,13 @@
       <div class="form-group">
         <label class="filter-label"><%=polyglot.t('smart_campaign.targets_step.available_channels')%></label>
         <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_weibo" ></span>
-        <label for="icheckbox_flat" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.weibo_channel") %> </label>
+        <label for="is_weibo" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.weibo_channel") %> </label>
         <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_wechat_personal" ></span>
-        <label for="icheckbox_flat" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.wechat_personal") %> </label>
+        <label for="is_wechat_personal" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.wechat_personal") %> </label>
         <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_wechat_public" ></span>
-        <label for="icheckbox_flat" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.wechat_public") %> </label>
+        <label for="is_wechat_public" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.wechat_public") %> </label>
         <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_linkedin" ></span>
-        <label for="icheckbox_flat" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.linkedin") %> </label>
+        <label for="is_linkedin" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.linkedin") %> </label>
       </div>
 
       <div class="filter-group">
@@ -156,7 +157,7 @@
             var checked = "NO";
             if ((k.invited != null && k.invited == true) || (isChecked(k, invited_kols)))
               { is_checked = "checked"; checked = "YES";} %>
-            <input id="invite_<%= k.id %>" class="css-checkbox" type="checkbox" name="invite_kol" data-kol-id="<%= k.id %>" value=<%= checked %> <%= is_checked %>>
+            <input id="invite_<%= k.id %>" class="css-checkbox" type="checkbox" name="invite_<%= k.id %>" data-kol-id="<%= k.id %>" value=<%= checked %> <%= is_checked %>>
             <label class="css-label" for="invite_<%= k.id %>"></label>
           </td>
         </tr>

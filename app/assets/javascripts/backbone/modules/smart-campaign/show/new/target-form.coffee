@@ -97,7 +97,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         escapeMarkup: (m) -> m
         initSelection: (el, callback) ->
           @ui.categoriesInput.val ''
-          console.log @model.get('iptc_categories')
           callback @model.get('iptc_categories')
 
     transformLabel: (label, code) ->

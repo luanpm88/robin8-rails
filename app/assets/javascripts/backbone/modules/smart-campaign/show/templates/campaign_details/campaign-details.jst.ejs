@@ -17,7 +17,7 @@
       <b><%=polyglot.t('smart_campaign.total_influencers_invited')%>: </b> <%= campaign.campaign_invites.length %>
     </div>
     <div class="col-md-3">
-      <b><%=polyglot.t('smart_campaign.budget')%>: </b> $<%= campaign.budget %><br/>
+      <b><%=polyglot.t('smart_campaign.budget')%>: </b> <%= budget(campaign) %><br/>
       <b><%=polyglot.t('smart_campaign.content_type')%>: </b> <%= campaign.content_type %>
     </div>
   </div>
@@ -25,7 +25,7 @@
   <ul class="nav nav-tabs nav-justified campaign_details_tables">
     <li class="active"><a data-toggle="tab" href="#campaign-accepted" aria-expanded="true"><i class="fa fa-play"></i> <%= polyglot.t("smart_campaign.in_progress") %></a></li>
     <li><a data-toggle="tab" href="#campaign-negotiating" aria-expanded="true"><i class="fa fa-comment"></i> <%= polyglot.t("smart_campaign.negotiating") %></a></li>
-    <li><a data-toggle="tab" href="#campaign-declined" aria-expanded="true"><i class="fa fa-ban"></i> <%= polyglot.t("smart_campaign.declined") %></a></li>
+    <li><a data-toggle="tab" href="#campaign-declined" aria-expanded="true"><i class="fa fa-ban"></i> <%= polyglot.t("smart_campaign.rejected") %></a></li>
     <li><a data-toggle="tab" href="#campaign-invited" aria-expanded="true"><i class="fa fa-send-o"></i> <%= polyglot.t("smart_campaign.invited") %></a></li>
     <li><a data-toggle="tab" href="#campaign-interested" aria-expanded="true"><i class="fa fa-magnet"></i> <%= polyglot.t("smart_campaign.interested") %></a></li>
     <li><a data-toggle="tab" href="#campaign-history" aria-expanded="true"><i class="fa fa-history"></i> <%= polyglot.t("smart_campaign.history") %></a></li>

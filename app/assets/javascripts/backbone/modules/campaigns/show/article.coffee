@@ -37,12 +37,15 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       no_tabs: if @options.no_tabs then @options.no_tabs else false
 
     onRender: () ->
+      no_comments = if @options.no_comments then @options.no_comments else false
       @ui.wysihtml5.wysihtml5()
       @editor = @ui.wysihtml5.data('wysihtml5').editor
       @editor.focus()
       setTimeout(()=>
         if @options.disabled || @options.no_tabs
           @editor.disable()
+        if no_comments
+          @ui.commentInput.prop("disabled",true)
         @fileWidget = uploadcare.MultipleWidget('[role=uploadcare-uploader][data-multiple][data-file]')
         @.$el.find(".comments-title .image-preview-multiple-plus .uploadcare-widget-button-open").text("").addClass("btn glyphicon glyphicon-plus")
         @fileWidget.onChange (fileGroup) =>

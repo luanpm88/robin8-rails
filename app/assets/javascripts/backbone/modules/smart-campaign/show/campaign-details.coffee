@@ -19,6 +19,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         y = date.getFullYear()
         month = polyglot.t('date.monthes_abbr.m' + monthNum)
         "#{d}-#{month}-#{y}"
+      budget: (campaign) ->
+        if campaign.non_cash == false
+          "$ " + campaign.budget
+        else
+          polyglot.t('smart_campaign.non_cash')
 
     serializeData: () ->
       campaign: @model.toJSON()
@@ -70,6 +75,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: article
         title: @model.get("name")
         disabled: true
+        no_comments: false
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -91,10 +97,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
+      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
       data = @model.toJSON()
       accepted = _.chain(data.campaign_invites)
         .filter (i) ->
-          i.status == "A"
+          i.status == "A" and moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
@@ -114,7 +121,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     templateHelpers:
       status: (k) ->
-        if k.status == "" then polyglot.t('smart_campaign.unknown') else polyglot.t('smart_campaign.declined')
+        if k.status == "" then polyglot.t('smart_campaign.unknown') else polyglot.t('smart_campaign.rejected')
       formatDate: (d) ->
         date = new Date d
         monthNum = parseInt(date.getMonth()) + 1
@@ -122,6 +129,57 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         y = date.getFullYear()
         month = polyglot.t('date.monthes_abbr.m' + monthNum)
         "#{d}-#{month}-#{y}"
+
+    events:
+      "click tr.preview": "preview"
+
+    preview: (e) ->
+      id = $(e.currentTarget).data "article-id"
+      article = new Robin.Models.Article
+        campaign_model: @model
+        id: id
+        canUpload: false
+      articleDialog = new App.Campaigns.Show.ArticleDialog
+        model: article
+        title: @model.get("name")
+        disabled: true
+        no_comments: true
+        onApprove: (code) ->
+          $("#code_#{id}").html code
+          $("#code_status_#{id}").html 'Approved'
+      article.fetch
+        success: ()->
+          articleDialog.render()
+          article.fetch_comments ()->
+            commentsList = new App.Campaigns.Show.ArticleComments
+              collection: article.get("article_comments")
+            articleDialog.showChildView 'comments', commentsList
+          article.fetch_wechat_perf ()->
+            weChetPerf = new App.Campaigns.Show.ArticleWeChat
+              collection: article.get("wechat_performance")
+              disabled: true
+              canUpload = false
+            articleDialog.showChildView 'weChat', weChetPerf
+        error: (e)->
+          console.log e
+      Robin.modal.show articleDialog
+
+    serializeData: () ->
+      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+      data = @model.toJSON()
+      declined = _.chain(data.campaign_invites)
+        .filter (i) ->
+          i.status == "D" and moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
+        .map (i) ->
+          kol = _(data.kols).find (k) -> k.id == i.kol_id
+          kol.status = i.status
+          kol.decline_date = if i.decline_date == undefined || i.decline_date == null then i.updated_at else i.decline_date
+          kol
+        .value()
+      {
+        campaign: data
+        declined: declined
+      }
 
     events:
       "click tr.preview": "preview"
@@ -155,22 +213,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         error: (e)->
           console.log e
       Robin.modal.show articleDialog
-
-    serializeData: () ->
-      data = @model.toJSON()
-      declined = _.chain(data.campaign_invites)
-        .filter (i) ->
-          i.status == "D"
-        .map (i) ->
-          kol = _(data.kols).find (k) -> k.id == i.kol_id
-          kol.status = i.status
-          kol.decline_date = if i.decline_date == undefined || i.decline_date == null then i.updated_at else i.decline_date
-          kol
-        .value()
-      {
-        campaign: data
-        declined: declined
-      }
 
   Show.CampaignNegotiating = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-negotiating'
@@ -189,10 +231,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         month = polyglot.t('date.monthes_abbr.m' + monthNum)
         "#{d}-#{month}-#{y}"
       budget: (campaign) ->
-        if campaign.budget? and campaign.budget != 0
+        if campaign.non_cash == false
           "$ " + campaign.budget
         else
-          polyglot.t('smart_campaign.non_cash')
+          campaign.description
 
     events:
       "click tr.preview": "preview"
@@ -207,6 +249,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: article
         title: @model.get("name")
         disabled: true
+        no_comments: false
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -228,10 +271,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
+      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
       data = @model.toJSON()
       negotiating = _.chain(data.articles)
         .filter (i) ->
-          i.tracking_code == "Negotiating"
+          i.tracking_code == "Negotiating" and moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.tracking_code
@@ -267,6 +311,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: article
         title: @model.get("name")
         disabled: true
+        no_comments: true
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -289,7 +334,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     serializeData: () ->
       data = @model.toJSON()
+      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
       invited = _.chain(data.campaign_invites)
+        .filter (i) ->
+          moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
@@ -315,10 +363,47 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         month = polyglot.t('date.monthes_abbr.m' + monthNum)
         "#{d}-#{month}-#{y}"
 
+    events:
+      "click tr.preview": "preview"
+
+    preview: (e) ->
+      id = $(e.currentTarget).data "article-id"
+      article = new Robin.Models.Article
+        campaign_model: @model
+        id: id
+        canUpload: false
+      articleDialog = new App.Campaigns.Show.ArticleDialog
+        model: article
+        title: @model.get("name")
+        disabled: true
+        no_comments: true
+        onApprove: (code) ->
+          $("#code_#{id}").html code
+          $("#code_status_#{id}").html 'Approved'
+      article.fetch
+        success: ()->
+          articleDialog.render()
+          article.fetch_comments ()->
+            commentsList = new App.Campaigns.Show.ArticleComments
+              collection: article.get("article_comments")
+            articleDialog.showChildView 'comments', commentsList
+          article.fetch_wechat_perf ()->
+            weChetPerf = new App.Campaigns.Show.ArticleWeChat
+              collection: article.get("wechat_performance")
+              disabled: true
+              canUpload = false
+            articleDialog.showChildView 'weChat', weChetPerf
+        error: (e)->
+          console.log e
+      Robin.modal.show articleDialog
+
     serializeData: () ->
       data = @model.toJSON()
+      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
       category_labels = @options.category_labels
       interested = _.chain(data.campaign_invites)
+        .filter (i) ->
+          moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
 
@@ -353,6 +438,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       status: (k) ->
         if k.status == "D"
           polyglot.t('smart_campaign.declined')
+        else if k.status == "A"
+          polyglot.t('dashboard.accepted')
         else
           polyglot.t('smart_campaign.expired')
       formatDate: (d) ->
@@ -376,6 +463,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: article
         title: @model.get("name")
         disabled: true
+        no_comments: true
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'

@@ -11,9 +11,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       regions: "input[name=regions]"
       content: "input[name=content]"
       locations: "input[id=locations]"
+      invite_kol: "input[class=css-checkbox]"
 
     events:
-      'change input[name=invite_kol]': 'selectKol'
+      'change @ui.invite_kol': 'selectKol'
       'change @ui.ageGroup': 'changedAgeGroup'
       'change @ui.male': 'changedMale'
       'change @ui.regions': 'changedRegions'
@@ -61,9 +62,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     serializeData: () ->
       kols: @kols,
       model: @model
+      search: if @options.search then @options.search else false
 
-    onShow: ->
-      @ui.locations.geocomplete()
+    onRender: () ->
+      @ui.table.DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+        language:
+          paginate:
+            previous: polyglot.t('smart_campaign.prev'),
+            next: polyglot.t('smart_campaign.next')
+      if @model.model.get("kols")?
+        $(".kol-header").removeClass "error"
+        $(".kol-errors").hide()
       @$el.find('input[id=\'icheckbox_flat\']').iCheck
         checkboxClass: 'icheckbox_square-blue'
         increaseArea: '20%'
@@ -151,17 +164,3 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         $(".kol-header").removeClass "error"
         $(".kol-errors").hide()
       is_valid
-
-    onRender: () ->
-      @ui.table.DataTable
-        info: false
-        searching: false
-        lengthChange: false
-        pageLength: 25
-        language:
-          paginate:
-            previous: polyglot.t('smart_campaign.prev'),
-            next: polyglot.t('smart_campaign.next')
-      if @model.model.get("kols")?
-        $(".kol-header").removeClass "error"
-        $(".kol-errors").hide()

@@ -340,6 +340,8 @@ zh:
         accepted: To Execute
         action: Action
         all: All
+        ask_for_invite: Ask for invite
+        categories: Categories
         close: Close
         declined: Just Rejected
         error: Please fill the field
@@ -349,6 +351,7 @@ zh:
         interest: Interest
         interested: You May Like
         invitation: Invitation
+        last_update: Last update
         latest: Latest
         negotiate: Negotiate
         negotiate_error: Something went wrong. Please, try again.
@@ -360,10 +363,13 @@ zh:
         pending: Pending
         reject: Reject
         rejected: Rejected
+        request_rejected: Request rejected
+        running: Running
         send_negotiate: Send negotiate
         tables_title: Monetize influence in campaigns
         title: Campaigns
         view: View
+        waiting_for_invitation: Waiting for invitation
         you_dont_have_any_negotiating: You don't have any campaign with negotiating
           status.
         you_dont_have_history: You don't have expired campaigns.
@@ -639,6 +645,7 @@ zh:
       untitled: "无主题新闻频道"
     navigation:
       analytics: "分析"
+      campaigns: Campaigns
       dashboard: "主界面"
       monitoring: "监控"
       newsrooms: "新闻室"
@@ -1056,6 +1063,7 @@ zh:
       decline_date: Decline date
       declined: "已拒绝"
       declined_unknown: "拒绝/未知"
+      edit: Edit
       edit_campaign: "编辑推广活动"
       editor:
         adjectives: "形容词"
@@ -1072,7 +1080,6 @@ zh:
       enter_last_name: "填写名"
       expired: Expired
       first_name: "名"
-      hide: Hide
       history: History
       in_progress: "进行中"
       interested: Interested
@@ -1114,6 +1121,7 @@ zh:
         button: "投递！"
         delete_button: "删除"
         description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
+        description_field: Description
         emailTargets: "通过电子邮件联系目标人"
         email_panel:
           email: "你的电子邮件地址"
@@ -1135,6 +1143,7 @@ zh:
         focus_event: Focus event
         focus_group: Focus group
         host_event: Host event
+        non_cash_reward: Non cash reward
         original: Original
         post_product_review: Post-product review
         pre_packaged: Pre-packaged
@@ -1161,6 +1170,8 @@ zh:
             dashboard to accept the invitation.
       prev: "上一步"
       private_influencers: "自有的意见领袖"
+      reject: Reject
+      rejected: Rejected
       smart_campaign:
         pitch_step:
           button: "投递"

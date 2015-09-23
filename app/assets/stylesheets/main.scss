@@ -2197,3 +2197,29 @@ input.form-control[type="file"] {
 #interested-kols td{
   vertical-align: middle;
 }
+.non_cash_description {
+  width: 450px;
+}
+.content_type {
+  margin-top: 10px;
+}
+.campaign_details_form {
+  display: flex;
+}
+#short_description {
+  width: 100%;
+  padding-right: 20px;
+}
+#details_form{
+  .glyphicon {
+    margin-top: 30px;
+  }
+  #deadline {
+    padding-right: 20px;
+  }
+  #budget {
+    padding-right: 20px;
+  }
+}
+
+
