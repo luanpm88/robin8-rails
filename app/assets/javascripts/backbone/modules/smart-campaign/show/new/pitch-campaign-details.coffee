@@ -72,7 +72,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             trigger: 'blur'
             validators: {
               notEmpty: {
-                message: polyglot.t('smart_campaign.pitch_step.subject_required')
+                message: polyglot.t('smart_campaign.pitch_step.budget_required')
               }
             }
           },
@@ -80,7 +80,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             trigger: 'blur'
             validators: {
               notEmpty: {
-                message: polyglot.t('smart_campaign.pitch_step.email_required')
+                message: polyglot.t('smart_campaign.pitch_step.deadline_required')
               }
             }
           },
@@ -88,7 +88,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             trigger: 'change'
             validators: {
               notEmpty: {
-                message: polyglot.t('smart_campaign.pitch_step.emailtext_required')
+                message: polyglot.t('smart_campaign.pitch_step.description_required')
               }
             }
           }

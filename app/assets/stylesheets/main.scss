@@ -2005,7 +2005,6 @@ input.form-control[type="file"] {
   width: 85px;
 }
 
-
 #negotiate-campaign-modal {
   .negotiate-content, .wysihtml5-sandbox {
     max-width: 100%;
@@ -2222,5 +2221,18 @@ input.form-control[type="file"] {
     padding-right: 20px;
   }
 }
-
-
+#campaigns-table {
+  .camp-ask-invite {
+    width: 105px;
+  }
+}
+#filter-kols .filter-group .filter-btn {
+  color: #B2B2B2;
+  background-color: white;
+  border-color: #B2B2B2;
+}
+#filter-kols .filter-group .active {
+  color: white;
+  background-color: #DDDDDD;
+  border-color: #B2B2B2;
+}

@@ -16,7 +16,7 @@
           <th class="invite-cell head-cell invite-budget"><%=polyglot.t('kol_campaign.budget')%></th>
           <th class="invite-cell head-cell invite-date"><%=polyglot.t('kol_campaign.creation_date')%></th>
           <th class="invite-cell head-cell invite-deadline"><%=polyglot.t('kol_campaign.deadline')%></th>
-          <th class="invite-cell head-cell invite-deadline"><%=polyglot.t('kol_campaign.categories')%></th>
+          <th class="invite-cell head-cell invite-deadline"><%=polyglot.t('dashboard_kol.campaigns_tab.categories')%></th>
           <th class="invite-cell head-cell invite-status"><%=polyglot.t('kol_campaign.status')%></th>
           <th class="invite-cell head-cell"><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
         </tr>
@@ -41,25 +41,25 @@
                     <b><%= formatDate(item.deadline) %></b>
                 </td>
                 <td class="campaign-cellinvite-cell invite-deadline">
-
+                  <%= item.iptc_categories %>
                 </td>
                 <% if (item.invite_status != null && item.invite_status != '') { %>
                   <% if (item.invite_status === 'A') { %>
                     <td class="campaign-cell invite-accepted">
-                      <%=polyglot.t('kol_campaign.running')%>
+                      <%=polyglot.t('dashboard_kol.campaigns_tab.running')%>
                     </td>
-                  <% } else if (item.invite_status === 'D') { %>
+                  <% } if (item.invite_status === 'D') { %>
                     <td class="campaign-cell invite-declined">
-                      <%=polyglot.t('kol_campaign.request_rejected')%>
+                      <%=polyglot.t('dashboard_kol.campaigns_tab.request_rejected')%>
                     </td>
+                <%}%>
                 <%} else { %>
                   <td class="campaign-cell">
-                    <%=polyglot.t('kol_campaign.waiting_for_invitation')%>
+                    <%=polyglot.t('dashboard_kol.campaigns_tab.waiting_for_invitation')%>
                   </td>
                 <% } %>
-                <% } %>
                 <td>
-                  <button type="button" class="btn bottom-btn camp-interested" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.ask_for_invite')%></button>
+                  <button type="button" class="btn bottom-btn camp-ask-invite camp-interested" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.ask_for_invite')%></button>
                 </td>
             </tr>
           <% } %>
