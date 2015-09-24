@@ -70,11 +70,13 @@ class MediaList < ActiveRecord::Base
       contact.reject! do |elem|
         if elem.nil?
           if contact.index(elem) == 1
-            contact[contact.index(elem)]= ""
+            contact[1] = ""
             false
           else
             true
           end
+        else
+          elem.length > 255
         end
       end
 
