@@ -327,51 +327,6 @@ en:
         Please <a href="#profile">update</a> your profile.
       status: Status
       title: Dashboard
-    date:
-      datepicker_days:
-        d1: Su
-        d2: Mo
-        d3: Tu
-        d4: We
-        d5: Th
-        d6: Fr
-        d7: Sa
-      datepicker_next: Next
-      datepicker_prev: Prev
-      days_full:
-        d1: Sunday
-        d2: Monday
-        d3: Tuesday
-        d4: Wednesday
-        d5: Thursday
-        d6: Friday
-        d7: Saturday
-      monthes_abbr:
-        m1: Jan
-        m10: Oct
-        m11: Nov
-        m12: Dec
-        m2: Feb
-        m3: Mar
-        m4: Apr
-        m5: May
-        m6: Jun
-        m7: Jul
-        m8: Aug
-        m9: Sep
-      monthes_full:
-        m1: January
-        m10: October
-        m11: November
-        m12: December
-        m2: February
-        m3: March
-        m4: April
-        m5: May
-        m6: June
-        m7: July
-        m8: August
-        m9: September
     dashboard_kol:
       buttons:
         back: Back
@@ -1203,7 +1158,6 @@ en:
         pitch: Pitch
         start: Start
         targets: Targets
-        targets: Targets
       new_campaign: New Campaign
       next: Next
       'no': 'No'
@@ -1213,7 +1167,6 @@ en:
       no_negotiate: You don't have any campaign with negotiating status.
       no_one_accepted: No one accepted your invitation yet.
       no_one_declined: No one declined your invitation.
-      not_approved_yet: Not approved yet
       no_one_interested: Nobody was interested in this campaign.
       non_cash: Non-cash
       not_approved_yet: Not approved yet
@@ -1221,7 +1174,6 @@ en:
       pending_approval: Pending Approval
       pitch_step:
         attend_event: Attend event
-        button: Pitch!
         budget_required: The budget is required
         button: Pitch!
         deadline_required: The deadline is required
@@ -1319,7 +1271,6 @@ en:
         enter_available_channels: Enters available channels
         enter_categories: Enters categories
         enter_industry: Enters industry
-        influencers: Influencers
         female: Female
         influencers: Influencers
         invite: Invite
@@ -1393,8 +1344,8 @@ en:
         email_missing_add: Add Email(s)
         email_missing_pitch: Pitch anyway!
         email_missing_text: There are no email addresses for some authors you've selected.<br/>You
-          may ignore authors without an email and send the pitch to rest.<br/>You may
-          also add the missing emails manually.
+          may ignore authors without an email and send the pitch to rest.<br/>You
+          may also add the missing emails manually.
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
