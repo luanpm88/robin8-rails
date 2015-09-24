@@ -327,6 +327,51 @@ en:
         Please <a href="#profile">update</a> your profile.
       status: Status
       title: Dashboard
+    date:
+      datepicker_days:
+        d1: Su
+        d2: Mo
+        d3: Tu
+        d4: We
+        d5: Th
+        d6: Fr
+        d7: Sa
+      datepicker_next: Next
+      datepicker_prev: Prev
+      days_full:
+        d1: Sunday
+        d2: Monday
+        d3: Tuesday
+        d4: Wednesday
+        d5: Thursday
+        d6: Friday
+        d7: Saturday
+      monthes_abbr:
+        m1: Jan
+        m10: Oct
+        m11: Nov
+        m12: Dec
+        m2: Feb
+        m3: Mar
+        m4: Apr
+        m5: May
+        m6: Jun
+        m7: Jul
+        m8: Aug
+        m9: Sep
+      monthes_full:
+        m1: January
+        m10: October
+        m11: November
+        m12: December
+        m2: February
+        m3: March
+        m4: April
+        m5: May
+        m6: June
+        m7: July
+        m8: August
+        m9: September
     dashboard_kol:
       buttons:
         back: Back
@@ -1158,6 +1203,7 @@ en:
         pitch: Pitch
         start: Start
         targets: Targets
+        targets: Targets
       new_campaign: New Campaign
       next: Next
       'no': 'No'
@@ -1167,6 +1213,7 @@ en:
       no_negotiate: You don't have any campaign with negotiating status.
       no_one_accepted: No one accepted your invitation yet.
       no_one_declined: No one declined your invitation.
+      not_approved_yet: Not approved yet
       no_one_interested: Nobody was interested in this campaign.
       non_cash: Non-cash
       not_approved_yet: Not approved yet
@@ -1174,6 +1221,7 @@ en:
       pending_approval: Pending Approval
       pitch_step:
         attend_event: Attend event
+        button: Pitch!
         budget_required: The budget is required
         button: Pitch!
         deadline_required: The deadline is required
@@ -1271,6 +1319,7 @@ en:
         enter_available_channels: Enters available channels
         enter_categories: Enters categories
         enter_industry: Enters industry
+        influencers: Influencers
         female: Female
         influencers: Influencers
         invite: Invite
@@ -1331,6 +1380,7 @@ en:
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
         title: Analysis
         topics: and the following topics are mentioned in it
+      cancel: Cancel
       pitch_step:
         button: Pitch!
         delete_button: Delete
@@ -1339,6 +1389,12 @@ en:
           You can use the Robin8 default note or prepare your own personal note. If
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
+        email_missing: Email(s) Missing
+        email_missing_add: Add Email(s)
+        email_missing_pitch: Pitch anyway!
+        email_missing_text: There are no email addresses for some authors you've selected.<br/>You
+          may ignore authors without an email and send the pitch to rest.<br/>You may
+          also add the missing emails manually.
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
@@ -1360,7 +1416,7 @@ en:
           text_dear: Dear
           text_here: Here's a press release you might find interesting. Please let
             me know your thoughts.
-          text_text: Press Release Text
+          text_text: Content Text
           title: Email pitch
         see: See list
         targets: Targets will be contacted via Email
@@ -1368,6 +1424,7 @@ en:
           actions: Actions
           button: Save
           delete: Delete
+          email: Email
           name: Name
           outlet: Outlet
           save: Save as a list
@@ -1418,6 +1475,7 @@ en:
           contact: Contact
           followers_count: Followers count
           length: Average length
+          no_email: There's no email address for this author. Please enter one.
           outlet: Outlet
           pitch: Pitch?
           relevance: Relevance

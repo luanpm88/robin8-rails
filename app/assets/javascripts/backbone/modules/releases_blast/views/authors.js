@@ -46,7 +46,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       summarizeSlider: "#slider",
       formMessage: "#form-message",
       subjectInput: "[name=subject]",
-      emailInput: "[name=email]"
+      emailInput: "[name=email]",
+      targetInput: "[name=author_email]"
     },
     templateHelpers: function(){
       return {
@@ -93,11 +94,18 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     sendEmail: function(){
       var self = this;
+
+      targetEmail = this.model.get('email')
+      if(this.ui.targetInput.length )
+      {
+        targetEmail = this.ui.targetInput.val()
+      }
+
       this.contactModel.set({
         subject: this.ui.subjectInput.val(),
         body: this.ui.formMessage.find('textarea').val(),
         sender: this.ui.emailInput.val(),
-        reciever: this.model.get('email')
+        reciever: targetEmail
       });
 
       this.contactModel.save({}, {
