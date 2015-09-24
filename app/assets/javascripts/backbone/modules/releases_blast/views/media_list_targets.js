@@ -149,6 +149,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       e.preventDefault();
       swal({
         title: polyglot.t("smart_release.targets_step.media_tab.remove_media_list"),
+        titleClass: 'swal-title',
         text: polyglot.t("smart_release.targets_step.media_tab.recover_unabled"),
         type: "error",
         showCancelButton: true,
