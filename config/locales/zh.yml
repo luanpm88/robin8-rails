@@ -339,7 +339,7 @@ zh:
       campaigns_tab:
         accepted: To Execute
         action: Action
-        all: All
+        all: You May Like
         ask_for_invite: Ask for invite
         categories: Categories
         close: Close
@@ -359,7 +359,6 @@ zh:
         negotiate_text: Negotiate campaign
         negotiating: Negotiating
         not_expired: Not Expired
-        not_interested: Not Interested
         pending: Pending
         reject: Reject
         rejected: Rejected
@@ -367,7 +366,7 @@ zh:
         running: Running
         send_negotiate: Send negotiate
         tables_title: Monetize influence in campaigns
-        title: Campaigns
+        title: Monetize!
         view: View
         waiting_for_invitation: Waiting for invitation
         you_dont_have_any_negotiating: You don't have any campaign with negotiating
@@ -1273,10 +1272,17 @@ zh:
         summary: 如下是<strong> "%{name}" </strong>的小结
         title: "分析"
         topics: "将会提到如下的话题"
+      cancel: Cancel
       pitch_step:
         button: "投递"
         delete_button: "删除"
         description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
+        email_missing: Email(s) Missing
+        email_missing_add: Add Email(s)
+        email_missing_pitch: Pitch anyway!
+        email_missing_text: There are no email addresses for some authors you've selected.<br/>You
+          may ignore authors without an email and send the pitch to rest.<br/>You
+          may also add the missing emails manually.
         email_panel:
           email: "你的电子邮件地址"
           email_placeholder: "输入电子邮件地址"
@@ -1297,7 +1303,7 @@ zh:
           tags: "可用的智能替换标签"
           text_dear: "亲爱的"
           text_here: "这里有一个你可能会感兴趣的"
-          text_text: Press Release Text
+          text_text: Content Text
           title: "投递邮件"
         see: "查看名单"
         targets: "通过电子邮件联系目标人"
@@ -1305,6 +1311,7 @@ zh:
           actions: "动作"
           button: "保存"
           delete: "删除"
+          email: "電子郵件"
           name: "姓名"
           outlet: "媒体公司"
           save: "保存为名单"
@@ -1350,6 +1357,7 @@ zh:
           contact: "联络"
           followers_count: "追随者数"
           length: "文章平均长度"
+          no_email: There's no email address for this author. Please enter one.
           outlet: "媒介"
           pitch: "投递？"
           relevance: "相关度"
@@ -1837,10 +1845,6 @@ zh:
     phone: "(212) 807-8300 Extension 3"
     phone_title: Phone (customer service)
     title: Contact Robin8
-  dashboard_kol:
-    campaigns_tab:
-      tables_title: Monetize!
-      title: Campaigns
   date:
     abbr_day_names:
     - Sun

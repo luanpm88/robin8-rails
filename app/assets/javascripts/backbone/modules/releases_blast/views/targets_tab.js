@@ -39,8 +39,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         if (self.ui.nextButton.prop('disabled') === false)
           self.openPitchTab();
       });
-      
-      this.on("close", function(){ 
+
+      this.on("close", function(){
         Robin.commands.removeHandler("goToPitchTab");
         Robin.vent.off("search:authors:clicked");
         Robin.vent.off("search:influencers:clicked");

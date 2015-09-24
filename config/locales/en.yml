@@ -1331,6 +1331,7 @@ en:
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
         title: Analysis
         topics: and the following topics are mentioned in it
+      cancel: Cancel
       pitch_step:
         button: Pitch!
         delete_button: Delete
@@ -1339,6 +1340,12 @@ en:
           You can use the Robin8 default note or prepare your own personal note. If
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
+        email_missing: Email(s) Missing
+        email_missing_add: Add Email(s)
+        email_missing_pitch: Pitch anyway!
+        email_missing_text: There are no email addresses for some authors you've selected.<br/>You
+          may ignore authors without an email and send the pitch to rest.<br/>You
+          may also add the missing emails manually.
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
@@ -1360,7 +1367,7 @@ en:
           text_dear: Dear
           text_here: Here's a press release you might find interesting. Please let
             me know your thoughts.
-          text_text: Press Release Text
+          text_text: Content Text
           title: Email pitch
         see: See list
         targets: Targets will be contacted via Email
@@ -1368,6 +1375,7 @@ en:
           actions: Actions
           button: Save
           delete: Delete
+          email: Email
           name: Name
           outlet: Outlet
           save: Save as a list
@@ -1418,6 +1426,7 @@ en:
           contact: Contact
           followers_count: Followers count
           length: Average length
+          no_email: There's no email address for this author. Please enter one.
           outlet: Outlet
           pitch: Pitch?
           relevance: Relevance
