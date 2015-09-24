@@ -67,10 +67,10 @@ class MediaList < ActiveRecord::Base
 
     self.contacts << contacts.inject([]) do |memo, contact|
 
-      contact.reject! do |elem|
+      contact.reject!.each_with_index do |elem, i|
         if elem.nil?
-          if contact.index(elem) == 1
-            contact[1] = ""
+          if i == 1
+            contact[i] = ""
             false
           else
             true
