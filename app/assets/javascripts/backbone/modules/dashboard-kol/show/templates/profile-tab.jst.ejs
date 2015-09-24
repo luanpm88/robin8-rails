@@ -5,15 +5,15 @@
     </div>
     <div class="score-tables">
       <div class="row">
-        <div class="col-md-3 cell"><%= polyglot.t('dashboard_kol.profile_tab.name') %></div>
+        <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.name') %><sup>*</sup></div>
         <div class="col-md-6 cell"><input type="text" id="name" name="name" /></div>
       </div>
       <div class="row">
-        <div class="col-md-3 cell"><%= polyglot.t('dashboard_kol.profile_tab.mobile') %></div>
+        <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.mobile') %><sup>*</sup></div>
         <div class="col-md-6 cell"><input type="text" id="mobile" name="mobile_number" /></div>
       </div>
       <div class="row">
-        <div class="col-md-3 cell"><%= polyglot.t('dashboard_kol.profile_tab.location') %></div>
+        <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.location') %><sup>*</sup></div>
         <div class="col-md-2 cell">
           <input type="text" id="country" name="country" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.country') %>" />
         </div>
@@ -25,11 +25,11 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-3 cell"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %></div>
+        <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %><sup>*</sup></div>
         <div class="col-md-5 cell"><input type="text" name="birthdate" id="birthdate"/></div>
       </div>
       <div class="row">
-        <div class="col-md-3 cell"><%= polyglot.t('dashboard_kol.profile_tab.gender') %></div>
+        <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.gender') %><sup>*</sup></div>
         <% _(genders).each(function(g, i) { %>
           <div class="col-md-2 cell">
             <input type="radio" name="gender" value="<%= i %>" id="gender_<%= i %>" <%= checked('genders', i, k) %> />
