@@ -17,8 +17,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     ages: 'audience_age_groups'
     regions: 'audience_regions'
 
-  kol_fields_mapping_i = _.invert kol_fields_mapping
-
   Show.ProfileTab = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/profile-tab'
 
@@ -69,6 +67,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         separator: '|'
         width: '100%'
         placeholder: polyglot.t('dashboard_kol.profile_tab.industry_placeholder')
+      @ui.industry.val(@model.get 'industry').trigger('change')
       @$el.find('.industry-row button').click (e) =>
         _.defer -> $(e.target).removeClass('active').blur()
         index = parseInt e.target.name.split('_')[1]
@@ -86,10 +85,19 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       return true
 
     pickFields: ->
-
+      set_multi_value = (field) =>
+        v = _.chain(@$el.find(".#{field}-row button.active")).map (el) ->
+          el.name.split('_')[1]
+        .map (x) ->
+          target[field][x]
+        .compact().value().join('|')
+        @model.set kol_fields_mapping[field], v
+      set_multi_value 'ages'
+      set_multi_value 'regions'
 
     save: ->
       return if not @validate()
+      @pickFields()
       @model_binder.copyViewValuesToModel()
       window.debug_view = @
 

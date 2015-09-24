@@ -72,11 +72,11 @@
             </div>
           <% }); %>
         </div>
-        <div class="row">
+        <div class="row ages-row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.age_group') %></div>
           <% _(ages).each(function(g, i) { %>
             <div class="col-md-1 cell">
-              <button type="button" class="btn switch-button full-width <%= active('ages', i, k) %>" name="age_group_<%= i %>" data-toggle="button">
+              <button type="button" class="btn switch-button full-width <%= active('ages', i, k) %>" name="agegroup_<%= i %>" data-toggle="button">
                 <%= g %>
               </button>
             </div>
@@ -91,7 +91,7 @@
               <% }); %>
             </div>
         </div>
-        <div class="row">
+        <div class="row regions-row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.regions') %></div>
           <div class="col-md-10 cell">
             <% _(regions).each(function(r, i) { %>
