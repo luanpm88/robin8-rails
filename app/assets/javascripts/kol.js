@@ -55,6 +55,7 @@
 //= require spinjs/jquery.spin.js
 //= require jquery-highlighttextarea
 //= require ./lib/icheck
+//= require ./lib/crs.min
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
 //= require datejs
