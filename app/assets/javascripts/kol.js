@@ -61,6 +61,7 @@
 //= require datejs
 //= require d3
 //= require jquery-knob
+//= require bootstrap-validator
 
 //= require_tree ./backbone/config
 //= require backbone/init-kol

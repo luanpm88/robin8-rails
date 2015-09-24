@@ -58,7 +58,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @social_view = new Show.ProfileSocialView
         model: @model
       @showChildView 'social', @social_view
-      @initDatepicker()
       @initSelect2()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')  # I❤js
 
@@ -78,26 +77,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         if (not (new_val in old_val)) and old_val.length < 5
           old_val.push new_val
           @ui.industry.val(old_val.join '|').trigger 'change'
-
-    initDatepicker: ->
-      monthes = []
-      monthesShort = []
-      daysMin = []
-      days = []
-      for i in [0..11]
-        monthes[i] = polyglot.t('date.monthes_full.m' + (i + 1))
-        monthesShort[i] = polyglot.t('date.monthes_abbr.m' + (i + 1))
-      for i in [0..6]
-        days[i] = polyglot.t('date.days_full.d' + (i + 1))
-        daysMin[i] = polyglot.t('date.datepicker_days.d' + (i + 1))
-      @ui.birthdate.datepicker
-        monthNames: monthes
-        monthNamesShort: monthesShort
-        dayNames: days
-        dayNamesMin: daysMin
-        nextText: polyglot.t('date.datepicker_next')
-        prevText: polyglot.t('date.datepicker_prev')
-        dateFormat: "D, d M y"
 
     serializeData: ->
       _.extend @target,

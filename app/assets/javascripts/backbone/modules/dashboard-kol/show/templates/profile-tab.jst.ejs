@@ -1,5 +1,5 @@
 <div class="profile-content">
-  <form>
+  <form data-toggle="validator" role="form">
     <div class="general">
       <div class="campaigns-tables-title">
         <span><%= polyglot.t('dashboard_kol.profile_tab.general_title') %></span>
@@ -7,30 +7,30 @@
       <div class="score-tables">
         <div class="row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.name') %><sup>*</sup></div>
-          <div class="col-md-6 cell"><input type="text" id="name" name="name" /></div>
+          <div class="col-md-6 cell"><input required type="text" id="name" name="name" /></div>
         </div>
         <div class="row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.mobile') %><sup>*</sup></div>
-          <div class="col-md-6 cell"><input type="text" id="mobile" name="mobile_number" /></div>
+          <div class="col-md-6 cell"><input required type="tel" id="mobile" name="mobile_number" /></div>
         </div>
         <div class="row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.location') %><sup>*</sup></div>
           <div class="col-md-2 cell">
-            <select class="full-width crs-country" data-region-id="province" id="country" name="country"
+            <select required class="full-width crs-country" data-region-id="province" id="country" name="country"
                     placeholder="<%= polyglot.t('dashboard_kol.profile_tab.country') %>"
                     data-default-value="<%= k.country %>" ></select>
           </div>
           <div class="col-md-2 cell">
-            <select class="full-width" id="province" name="province" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.province') %>"
+            <select required class="full-width" id="province" name="province" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.province') %>"
                     data-default-value="<%= k.province %>" ></select>
           </div>
           <div class="col-md-2 cell">
-            <input type="text" id="city" name="city" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.city') %>" />
+            <input required type="text" id="city" name="city" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.city') %>" />
           </div>
         </div>
         <div class="row" style="margin-bottom: 10px;">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %><sup>*</sup></div>
-          <div class="col-md-5 cell"><input type="date" class="full-width" name="date_of_birthday" id="birthdate"/></div>
+          <div class="col-md-5 cell"><input required type="date" class="full-width" name="date_of_birthday" id="birthdate"/></div>
         </div>
         <div class="row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.gender') %><sup>*</sup></div>
