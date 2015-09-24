@@ -69,6 +69,7 @@
 //= require_tree ./backbone/collections
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/components
+//= require_tree ./backbone/modules/navigation
 //= require_tree ./backbone/modules/dashboard-kol
 //= require_tree ./backbone/modules/campaigns
 //= require_tree ./backbone/modules/upload/

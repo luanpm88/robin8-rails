@@ -16,9 +16,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         mf: ['80:20', '60:40', '50:50', '40:60', '20:80']
         industries: ['Industry 1', 'Industry 2 ', 'Industry 3',
           'Industry 4','Industry 5']
+      @model = App.currentKOL
 
     onRender: ->
-      @social_view = new Show.ProfileSocialView()
+      @social_view = new Show.ProfileSocialView
+        model: @model
       @showChildView 'social', @social_view
       monthes = []
       monthesShort = []
@@ -40,4 +42,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         dateFormat: "D, d M y"
 
     serializeData: ->
-      _.extend @target
+      _.extend @target,
+        k: @model.toJSON()
+

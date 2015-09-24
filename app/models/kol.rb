@@ -22,14 +22,6 @@ class Kol < ActiveRecord::Base
     :FEMALE => 2
   }
 
-  CITY_LEVEL = {
-    :first => 1,
-    :second => 2,
-    :third => 4,
-    :fourth => 8,
-    :fifth => 16
-  }
-
   include Models::Identities
   extend Models::Oauth
 
