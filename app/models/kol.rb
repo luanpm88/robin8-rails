@@ -16,6 +16,12 @@ class Kol < ActiveRecord::Base
   has_many :article_comments, as: :sender
   has_many :kol_profile_screens
 
+  GENDERS = {
+    :NONE => 0,
+    :MALE => 1,
+    :FEMALE => 2
+  }
+
   include Models::Identities
   extend Models::Oauth
 

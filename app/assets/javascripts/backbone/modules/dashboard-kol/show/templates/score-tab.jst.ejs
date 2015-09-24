@@ -1,0 +1,300 @@
+<div class="campaigns-tables-title">
+  <span><%= polyglot.t('dashboard_kol.score_tab.tables_title') %></span>
+</div>
+<form id="score_form">
+<div id="score-data" style="background-color: #f4f4f4;">
+  <div id="top-row" style="height: 210px">
+    <div class="col-md-3 text-center kol-avatar" style="margin-top: 10px; margin-left: 10px;">
+      <div class="text-center" id="image-uploader-custom">
+        <img src="<%= AppAssets.path('noavatar.jpg') %>" id="avatar-image" class="avatar" alt="avatar" style="width: 150px; height: 150px;">
+
+      </div>
+      <input type="hidden" id="avatar-upload" role="uploadcare-uploader"
+             data-crop="185x185 upscale"
+             data-max-size="3145728"
+             data-images-only="true"/>
+    </div>
+    <div class="col-md-4" style="margin-top: 10px; margin-left: 10px; padding: 0px;">
+      <div style="height: 170px;">
+        <div style="float: left">
+          <input type="text" value="75" class="graph-score" data-fgColor="#edac0a" data-angleOffset=-125 data-angleArc=250 data-readOnly=true data-width="120" data-height="120">
+        </div>
+        <div style="float: right">
+          <span style="font-family: 'ProximaNovaBold'; font-size: 20px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.social_score')%></span>
+          <br/><br/>
+          <div style="font-family: 'ProximaNova'; font-size: 14px; color: white; background-color: #edac0a; text-align: center;">+25% <%= polyglot.t('dashboard_kol.score_tab.vsmonth')%> </div>
+          <br/>
+          <div style="font-family: 'ProximaNova'; font-size: 14px; color: white; background-color: #edac0a; text-align: center;"><%= polyglot.t('dashboard_kol.score_tab.youbeat')%></div>
+        </div>
+      </div>
+
+      <div>
+        <span style="font-family: 'ProximaNova'; font-size: 12px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.calculated')%></span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div id="graph-score2"></div>
+    </div>
+  </div>
+
+</div>
+<br/>
+<div class="campaigns-tables-title">
+  <span><%= polyglot.t('dashboard_kol.score_tab.tables_title2') %></span>&nbsp;<%= polyglot.t('dashboard_kol.score_tab.tables_title3') %>
+</div>
+<div id="value" class="score-tables" style="height: 400px;">
+  <div>
+    <div class="col-md-3 text-center" style="background-color: #f4f4f4;">
+      &nbsp;
+    </div>
+    <div class="col-md-1 text-center" style="background-color: #f4f4f4; color: #007183;">
+      <%= polyglot.t('dashboard_kol.score_tab.interested')%>
+    </div>
+    <div class="col-md-3 text-center" style="background-color: #f4f4f4; color: #007183;">
+      <%= polyglot.t('dashboard_kol.score_tab.expected_price')%>
+    </div>
+    <div class="col-md-5 text-center" style="background-color: #f4f4f4; color: #007183;">
+      <%= polyglot.t('dashboard_kol.score_tab.set_price')%>
+    </div>
+  </div>
+  <div>
+    <div class="col-md-3 text-center cell">
+      <span><%= polyglot.t('dashboard_kol.score_tab.online')%></span>
+    </div>
+    <div class="col-md-1 text-center cell">
+      &nbsp;
+    </div>
+    <div class="col-md-3 text-center cell">
+      &nbsp;
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px;">
+      <div class="col-md-3 text-center">
+        <i class="fa fa-weibo"></i> <span class="social">Weibo</span>
+      </div>
+      <div class="col-md-3 text-center">
+        <i class="fa fa-wechat"></i> <span class="social">Personal</span>
+      </div>
+      <div class="col-md-3 text-center">
+        <i class="fa fa-wechat"></i> <span class="social">Public</span>
+      </div>
+      <div class="col-md-3 text-center">
+        <i class="fa fa-linkedin"></i> <span class="social">LinkedIn</span>
+      </div>
+    </div>
+  </div>
+
+  <div >
+    <div class="col-md-3 text-center cell" style="height: 45px;">
+      <%= polyglot.t('dashboard_kol.score_tab.post_content')%>
+    </div>
+    <div class="col-md-1 text-center cell"  style="height: 45px;">
+      <input type="checkbox" id="post_interested">
+    </div>
+    <div class="col-md-3 text-center cell"  style="height: 45px;">
+      <input type="number" id="post_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="post_weibo" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="post_personal" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="post_public" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="post_linkedin" style="width: 70px;">
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="col-md-3 text-center cell">
+      <%= polyglot.t('dashboard_kol.score_tab.create_content')%>
+    </div>
+    <div class="col-md-1 text-center cell">
+      <input type="checkbox" id="create_interested">
+    </div>
+    <div class="col-md-3 text-center cell">
+      <input type="number" id="create_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px;">
+      <div class="col-md-3 text-center" style="padding-top: 5px;">
+        <input type="number" id="create_weibo" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center" style="padding-top: 5px;">
+        <input type="number" id="create_personal" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center" style="padding-top: 5px;">
+        <input type="number" id="create_public" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center" style="padding-top: 5px;">
+        <input type="number" id="create_linkedin" style="width: 70px;">
+      </div>
+    </div>
+  </div>
+  <div >
+    <div class="col-md-3 text-center cell"  style="height: 45px;">
+      <%= polyglot.t('dashboard_kol.score_tab.share')%>
+    </div>
+    <div class="col-md-1 text-center cell"  style="height: 45px;">
+      <input type="checkbox" id="share_interested">
+    </div>
+    <div class="col-md-3 text-center cell"  style="height: 45px;">
+      <input type="number" id="share_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="share_weibo" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="share_personal" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="share_public" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="share_linkedin" style="width: 70px;">
+      </div>
+    </div>
+  </div>
+  <div >
+    <div class="col-md-3 text-center cell">
+      <%= polyglot.t('dashboard_kol.score_tab.review')%>
+    </div>
+    <div class="col-md-1 text-center cell">
+      <input type="checkbox" id="review_interested">
+    </div>
+    <div class="col-md-3 text-center cell">
+      <input type="number" id="review_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="review_weibo" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="review_personal" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="review_public" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="review_linkedin" style="width: 70px;">
+      </div>
+    </div>
+  </div>
+  <div >
+    <div class="col-md-3 text-center cell">
+      <%= polyglot.t('dashboard_kol.score_tab.speech')%>
+    </div>
+    <div class="col-md-1 text-center cell">
+      <input type="checkbox" id="speech_interested">
+    </div>
+    <div class="col-md-3 text-center cell">
+      <input type="number" id="speech_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="speech_weibo" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="speech_personal" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="speech_public" style="width: 70px;">
+      </div>
+      <div class="col-md-3 text-center"  style="padding-top: 5px;">
+        <input type="number" id="speech_linkedin" style="width: 70px;">
+      </div>
+    </div>
+  </div>
+  <div >
+    <div class="col-md-3 text-center cell">
+      <span><%= polyglot.t('dashboard_kol.score_tab.offline')%></span>
+    </div>
+    <div class="col-md-1 text-center cell">
+      &nbsp;
+    </div>
+    <div class="col-md-3 text-center cell">
+      &nbsp;
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px;">
+      &nbsp;
+    </div>
+  </div>
+
+  <div >
+    <div class="col-md-3 text-center cell" style="height: 45px;">
+      <%= polyglot.t('dashboard_kol.score_tab.attend')%>
+    </div>
+    <div class="col-md-1 text-center cell" style="height: 45px;">
+      <input type="checkbox" id="attend_interested">
+    </div>
+    <div class="col-md-3 text-center cell" style="height: 45px;">
+      <input type="number" id="attend_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
+      &nbsp;
+    </div>
+  </div>
+  <div >
+    <div class="col-md-3 text-center cell">
+      <%= polyglot.t('dashboard_kol.score_tab.focus')%>
+    </div>
+    <div class="col-md-1 text-center cell">
+      <input type="checkbox" id="focus_interested">
+    </div>
+    <div class="col-md-3 text-center cell">
+      <input type="number" id="focus_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px;">
+      &nbsp;
+    </div>
+  </div>
+  <div >
+    <div class="col-md-3 text-center cell">
+      <%= polyglot.t('dashboard_kol.score_tab.host')%>
+    </div>
+    <div class="col-md-1 text-center cell">
+      <input type="checkbox" id="host_interested">
+    </div>
+    <div class="col-md-3 text-center cell">
+      <input type="number" id="host_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px;">
+      &nbsp;
+    </div>
+  </div>
+  <div >
+    <div class="col-md-3 text-center cell">
+      <%= polyglot.t('dashboard_kol.score_tab.endorsements')%>
+    </div>
+    <div class="col-md-1 text-center cell">
+      <input type="checkbox" id="endorsements_interested">
+    </div>
+    <div class="col-md-3 text-center cell">
+      <input type="number" id="endorsements_price">
+    </div>
+    <div class="col-md-5 text-center cell" style="padding: 0px;">
+      &nbsp;
+    </div>
+  </div>
+
+
+</div>
+</form>
+<div class="dashboard-kol-tab-footer" style="align-content: center">
+  <div class="campaigns-tab-back">
+    <div style="float: left; width: 45%;">
+    <div class="dashboard-kol-tab-btn" style="float: right;">
+      <a id="back_to_score_btn" href="#"><%= polyglot.t('dashboard_kol.buttons.back') %></a>
+    </div>
+    </div>
+    <div style="float: right; width: 45%;">
+    <div class="dashboard-kol-tab-btn" style="float: left;">
+      <a id="back_to_score_btn" href="#"><%= polyglot.t('dashboard_kol.buttons.next') %></a>
+    </div>
+      </div>
+  </div>
+</div>
+

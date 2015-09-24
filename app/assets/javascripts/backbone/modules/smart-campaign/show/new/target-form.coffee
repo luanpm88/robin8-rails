@@ -8,6 +8,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       select: "select.releases"
       nextButton: '#next-step'
       targetsWeiboTab: '#targets-weibo-tab'
+      categoriesInput: 'input[name=categories]'
 
     regions:
       #wechatRegion: "#targets-wechat"
@@ -75,8 +76,28 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         #$el.find('#targets-weibo-tab').click()
         @ui.targetsWeiboTab.click()
 
-
-
+      @ui.categoriesInput.select2
+        allowClear: true
+        multiple: true
+        formatInputTooShort: (input, min) ->
+          n = min - input.length
+          return polyglot.t("select2.too_short", {count: n})
+        formatNoMatches: () ->
+          return polyglot.t("select2.not_found")
+        formatSearching: () ->
+          return polyglot.t("select2.searching")
+        ajax: {
+          url: '/autocompletes/iptc_categories'
+          dataType: 'json'
+          data: (term, page) ->
+            return { term: term }
+          results:  (data, page) ->
+            return { results: data }
+        }
+        escapeMarkup: (m) -> m
+        initSelection: (el, callback) ->
+          @ui.categoriesInput.val ''
+          callback @model.get('iptc_categories')
 
     transformLabel: (label, code) ->
       if code.substring(0, 2) == "16"

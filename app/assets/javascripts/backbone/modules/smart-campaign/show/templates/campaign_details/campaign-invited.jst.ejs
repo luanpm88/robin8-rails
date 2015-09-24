@@ -1,0 +1,22 @@
+<div class="row">
+  <% if (invited.length == 0) { %>
+    <i><%=polyglot.t('smart_campaign.no_invited_yet')%></i>
+  <% } else { %>
+    <table class="table table-striped" id="accepted-kols">
+      <thead style="cursor:pointer;"><tr>
+        <th><%=polyglot.t('smart_campaign.name')%></th>
+        <th><%=polyglot.t('smart_campaign.deadline')%></th>
+        <th><%=polyglot.t('smart_campaign.last_login_date')%></th>
+      </tr></thead>
+      <tbody>
+        <% _.each(invited, function(k) { %>
+          <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>" class="preview">
+            <td><%= k.first_name %></td>
+            <td><%= formatDate(campaign.deadline) %></td>
+            <td><%= formatDate(k.updated_at) %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

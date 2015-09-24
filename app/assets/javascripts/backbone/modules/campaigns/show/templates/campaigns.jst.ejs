@@ -1,11 +1,17 @@
-<div class="row">If you are WeChat author, please note that you have to submit your WeChat report for the campaign on each 7th day after approval of your article, since WeChat only stores data during 7 days after the article was posted. If you will delay submission of the report, your performance data (number of people reached, number of page views, number of "read more", number of re-share + favorites) for the delayed days will not be count.</div>
-<hr>
+<% if (accepted || negotiating) { %>
+    <div class="row">If you are WeChat author, please note that you have to submit your WeChat report for the campaign on each 7th day after approval of your article, since WeChat only stores data during 7 days after the article was posted. If you will delay submission of the report, your performance data (number of people reached, number of page views, number of "read more", number of re-share + favorites) for the delayed days will not be count.</div>
+<% } %>
 <% if (items.length == 0) { %>
+<hr>
 <div class="row">
-  <% if (!declined) { %>
+  <% if (accepted) { %>
   <%=polyglot.t('kol_campaign.you_dont_have_any_accepted')%>
-  <% } else { %>
+  <% } else if (declined) { %>
   <%=polyglot.t('kol_campaign.you_dont_have_any_declined')%>
+  <% } else if (history) { %>
+  <%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_history')%>
+  <% } else { %>
+  <%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_any_negotiating')%>
   <% } %>
 </div>
 <% } else { %>
@@ -13,37 +19,62 @@
     <table class="table table-striped" id="campaigns-table">
         <thead class="table-head">
         <tr>
-            <th><%=polyglot.t('kol_campaign.name')%></th>
-            <th><%=polyglot.t('kol_campaign.brand')%></th>
-            <th><%=polyglot.t('kol_campaign.budget')%></th>
-            <th><%=polyglot.t('kol_campaign.creation_date')%></th>
-            <th><%=polyglot.t('kol_campaign.deadline')%></th>
-            <% if (!declined) {%>
-              <th><%=polyglot.t('kol_campaign.article_url')%></th>
-            <% }%>
+            <th class="invite-cell head-cell invite-brand" ><%=polyglot.t('kol_campaign.brand')%></th>
+            <th class="invite-cell head-cell invite-name" ><%=polyglot.t('kol_campaign.name')%></th>
+            <th class="invite-cell head-cell invite-budget" ><%=polyglot.t('kol_campaign.budget')%></th>
+            <th class="invite-cell head-cell invite-date" ><%=polyglot.t('kol_campaign.creation_date')%></th>
+            <th class="invite-cell head-cell invite-deadline" ><%=polyglot.t('kol_campaign.deadline')%></th>
+            <% if (!negotiating && !declined) {%>
+              <th class="invite-cell head-cell invite-status" ><%=polyglot.t('kol_campaign.status')%></th>
+            <% } %>
+            <% if (negotiating) {%>
+              <th class="invite-cell head-cell" ><%=polyglot.t('dashboard_kol.campaigns_tab.last_update')%></th>
+            <% } %>
+            <% if (declined || negotiating) {%>
+              <th class="invite-cell head-cell" ><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
+            <% } %>
         </tr>
         </thead>
+        updated_at
         <tbody>
         <% _.each(items, function(item){ %>
-        <tr data-id="<%= item.id %>" <% if (!declined) { %>class="campaign"<% } %>>
-            <td class="invite-cell invite-name">
+        <tr data-id="<%= item.id %>">
+            <td class="invite-cell invite-description campaign" data-id="<%= item.id %>">
+                <%= item.user.company %>
+            </td>
+            <td class="invite-cell invite-name campaign" data-id="<%= item.id %>">
                 <%= item.name %>
             </td>
-            <td class="invite-cell invite-description">
-                <%= item.user.first_name %> <%= item.user.last_name %>
+            <td class="invite-cell invite-description campaign" data-order="<%= item.budget %>" data-id="<%= item.id %>">
+                <%= budget(item) %>
             </td>
-            <td class="invite-cell invite-description" data-order="<%= item.budget %>">
-                $<%= item.budget %>
-            </td>
-            <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
+            <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date campaign" data-id="<%= item.id %>">
                 <%= formatDate(item.created_at) %>
             </td>
-            <td data-order="<%= timestamp(item.deadline) %>" class="invite-cell invite-deadline">
+            <td data-order="<%= timestamp(item.deadline) %>" class="invite-cell invite-deadline campaign" data-id="<%= item.id %>">
                 <b><%= formatDate(item.deadline) %></b>
             </td>
-            <% if (!declined) {%>
-              <td><%= code(item) %></td>
-            <% }%>
+            <% if (!negotiating && !declined) {%>
+              <% if (accepted) {%>
+                <td class="invite-cell campaign" data-id="<%= item.id %>"><%= code(item) %></td>
+              <% } else {%>
+                <td class="invite-cell campaign" data-id="<%= item.id %>"><%= code_status(item) %></td>
+              <% }%>
+            <% } %>
+            <% if (negotiating) {%>
+              <td data-order="<%= timestamp(item.updated_at) %>" class="campaign" data-id="<%= item.id %>"><%= formatDate(item.updated_at) %></td>
+            <% } %>
+            <% if (negotiating) {%>
+              <td>
+                  <button type="button" class="btn top-btn camp-default-btn" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+                  <button type="button" class="btn bottom-btn camp-interested" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.reject')%></button>
+              </td>
+            <% } %>
+            <% if (declined) {%>
+              <td>
+                  <button type="button" class="btn top-btn camp-default-btn" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+              </td>
+            <% } %>
         </tr>
         <% }); %>
         </tbody>

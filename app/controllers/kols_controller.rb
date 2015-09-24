@@ -45,6 +45,14 @@ class KolsController < ApplicationController
     render :json => categories
   end
 
+  def categories_labels
+    labels = ""
+    unless params[:categories_id].blank?
+      labels = IptcCategory.where(:id => params[:categories_id]).map { |c| {:id => c.id, :text => c.label} }
+    end
+    render :json => labels
+  end
+
   def suggest_kols
     kols = []
     categories = params[:categories]

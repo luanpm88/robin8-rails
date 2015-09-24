@@ -1,40 +1,69 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
-  Show.DashboardKOLPage = Backbone.Marionette.ItemView.extend
+  Show.DashboardKOLPage = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/dashboard'
+
+    regions:
+      content: "#tab-content"
+
+    ui:
+      profile: '#profile-link'
+      score: '#score-link'
+      campaigns: '#campaigns-link'
+
     events:
-      "click .invitation-accept": "accept"
-      "click .invitation-decline": "decline"
+      "click @ui.profile": "profile"
+      "click @ui.score": "score"
+      "click @ui.campaigns": "campaigns"
 
-    templateHelpers:
-      formatDate: (d) ->
-        date = new Date d
-        date.toLocaleFormat '%d-%b-%Y'
-      timestamp: (d) ->
-        date = new Date d
-        date.getTime()
+    initialize: (options) ->
+      @options = options
+      @_states = ['profile', 'score', 'campaigns']
+      @empty = false
+      @state = @options.state or 'profile'
+      if not @model?
+        @model = new Robin.Models.KOL()
+        if not @data?
+          @data = []
+        @empty = true
+        @state = 'profile'
 
-    accept: (event) ->
-      event.preventDefault()
-      @perform_action($(event.currentTarget))
+    setState: (s) ->
+      return if not @canSetState s
 
-    decline: (event) ->
-      event.preventDefault()
-      @perform_action($(event.currentTarget), "decline")
+      @state = s
 
-    perform_action: (button, action="accept") ->
-      self = this
-      button_container = button.parent().parent()
-      id = button.data("inviteId")
-      item = self.collection.get(id)
-      action_method = if action == "accept" then item.accept() else item.decline()
-      $.when(action_method).then ()->
-        button_container.remove()
-        self.render()
+      viewClass = switch s
+        when 'profile' then Show.ProfileTab
+        when 'score' then Show.ScoreTab
+        when 'campaigns' then Show.CampaignsTab
+
+      @view = new viewClass
+        model: @model
+        data: @data
+        parent: @
+      _.each @_states, (tab) => @ui[tab].removeClass('active colored')
+      _.all @_states, (tab) =>
+        @ui[tab].addClass 'active colored'
+        tab != s
+
+      @showChildView 'content', @view
+
+    canSetState: (s) ->
+      return true
+      s in @_states
 
     onRender: () ->
-      @$el.find('table').DataTable
-        info: false
-        searching: false
-        lengthChange: false
-        pageLength: 25
+      @setState @state
+
+    profile: (e) ->
+      e?.preventDefault()
+      @setState 'profile'
+
+    score: (e) ->
+      e?.preventDefault()
+      @setState 'score'
+
+    campaigns: (e) ->
+      e?.preventDefault()
+      @setState 'campaigns'

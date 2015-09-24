@@ -15,6 +15,7 @@
 //= require jquery_ujs
 //= require uploadcare
 //= require jquery-ui
+//= require ./lib/radarchart
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
 //= require progressjs
@@ -57,16 +58,21 @@
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
 //= require datejs
+//= require d3
+//= require jquery-knob
 
 //= require_tree ./backbone/config
-//= require backbone/init
+//= require backbone/init-kol
 //= require_tree ./backbone/routers
 //= require_tree ./backbone/controllers
 //= require_tree ./backbone/models
 //= require_tree ./backbone/collections
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/components
-//= require_tree ./backbone/modules
+//= require_tree ./backbone/modules/navigation
+//= require_tree ./backbone/modules/dashboard-kol
+//= require_tree ./backbone/modules/campaigns
+//= require_tree ./backbone/modules/upload/
 
 var ready;
 ready = function() {

@@ -150,6 +150,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     Robin.module('Campaigns').start();
   },
 
+  showCampaignsList: function(){
+    this.stopAll();
+    Robin.module('CampaignsList').start();
+  },
+
   stopAll: function(){
     var routesCount = Robin.routesCount;
     if (Backbone.history.handlers.length > routesCount){

@@ -306,6 +306,7 @@ en:
       accept: Accept
       accepted: Accepted
       brand: Brand
+      brief: Briefing Digest
       budget: Budget
       check_to_activate: Please, check your email to activate your account!
       creation_date: Creation Date
@@ -331,6 +332,86 @@ en:
         Please <a href="#profile">update</a> your profile.
       status: Status
       title: Dashboard
+    dashboard_kol:
+      buttons:
+        back: Back
+        next: Next
+      campaigns_tab:
+        accepted: To Execute
+        action: Action
+        all: You May Like
+        ask_for_invite: Ask for invite
+        categories: Categories
+        close: Close
+        declined: Just Rejected
+        error: Please fill the field
+        executed: Executed
+        expired: Expired
+        history: History
+        interest: Interest
+        interested: You May Like
+        invitation: Invitation
+        last_update: Last update
+        latest: Latest
+        negotiate: Negotiate
+        negotiate_error: Something went wrong. Please, try again.
+        negotiate_success: Message was sent successfully.
+        negotiate_text: Negotiate campaign
+        negotiating: Negotiating
+        not_expired: Not Expired
+        pending: Pending
+        reject: Reject
+        rejected: Rejected
+        request_rejected: Request rejected
+        running: Running
+        send_negotiate: Send negotiate
+        tables_title: Monetize influence in campaigns
+        title: Campaigns
+        view: View
+        waiting_for_invitation: Waiting for invitation
+        you_dont_have_any_negotiating: You don't have any campaign with negotiating
+          status.
+        you_dont_have_history: You don't have expired campaigns.
+      profile_tab:
+        age_group: Age group
+        audience_subtitle: self-assessed, optional
+        audience_title: My Influence Circle
+        birthdate: Birth date
+        central: Central
+        city: City
+        country: Country
+        east: East
+        fans_number: Fans Number
+        female: Female
+        gender: Gender
+        general_title: My Profile
+        id: ID
+        industry: Industry
+        industry_placeholder: Select or input up to 5, separated by blanks
+        linkedin: LinkedIn
+        location: Location
+        login: Login
+        male: Male
+        male_female: Male:Female
+        mobile: Mobile
+        name: Name
+        north: North
+        northeast: Northeast
+        personal: Personal
+        province: Province
+        public: Public
+        regions: Regions
+        secrecy: Secrecy
+        social_subtitle: monetize your influence on those channels
+        social_title: My social
+        south: South
+        title: My Profile
+        weibo: Weibo
+        west: West
+      score_tab:
+        header: Your Score
+        tables_title: My Profile and Score
+        title: Your score
     date:
       datepicker_days:
         d1: Su
@@ -407,7 +488,7 @@ en:
       download_svg: Download SVG vector image
       print_chart: Print chart
     kol_campaign:
-      approved: Approve
+      approved: Approved
       article:
         close: Close
         have_submit_wechat: You have to submit your WeChat report on each 7th day
@@ -428,8 +509,11 @@ en:
       deadline: Deadline
       in_progress: In Progress
       name: Name
+      no_campaign: There isn't any active campaigns.
+      no_latest_campaign: There are no campaigns created within last 2 weeks.
       not_approved_yet: Not approved yet
-      you_dont_have_any_accepted: 'You don''t have any accepted campaigns. '
+      status: Status
+      you_dont_have_any_accepted: You don't have any accepted campaigns.
       you_dont_have_any_declined: You don't have any declined campaigns.
     kols:
       agree: By signing up you agree to Robin8's <a href="/terms">Terms of Service
@@ -588,6 +672,7 @@ en:
       untitled: Untitled Stream
     navigation:
       analytics: Analytics
+      campaigns: Campaigns
       dashboard: Dashboard
       monitoring: Monitoring
       newsrooms: Brand Gallery
@@ -1011,6 +1096,7 @@ en:
       too_short: Please enter %{count} or more characters
     smart_campaign:
       accepted: Accepted
+      action: Action
       active: Active
       add: Add
       add_influencer: Add Influencer
@@ -1032,10 +1118,13 @@ en:
         subject: Subject
         title: Contact
         your_email: Your Email
+      content_type: Content Type
       created: Created
       deadline: Deadline
+      decline_date: Decline date
       declined: Declined
       declined_unknown: Declined/Unknown
+      edit: Edit
       edit_campaign: Edit campaign
       editor:
         adjectives: Adjectives
@@ -1050,9 +1139,14 @@ en:
       enter_email: Enter email…
       enter_first name: Enter first name...
       enter_last_name: Enter last name...
+      expired: Expired
       first_name: First Name
+      history: History
       in_progress: In Progress
+      interested: Interested
+      invite: Invite
       invite_influencers: Invite Influencers
+      invited: Invited
       kol:
         alredy_in_list: " already in your list"
         attach_invalid: Attachment content type is invalid
@@ -1060,9 +1154,11 @@ en:
         incorrect_ignored: All contacts in incorrect format will be ignored.
         list_uploaded: Your list has been successfully uploaded.
         select_categories: Select influencer categories
+      last_login_date: Last login date
       last_name: Last Name
       last_update: Last Update
       name: Name
+      negotiating: Negotiating
       new:
         pitch: Pitch
         start: Start
@@ -1071,11 +1167,18 @@ en:
       next: Next
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
+      no_history: You don't have expired campaigns.
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
+      no_negotiate: You don't have any campaign with negotiating status.
       no_one_accepted: No one accepted your invitation yet.
+      no_one_declined: No one declined your invitation.
+      no_one_interested: Nobody was interested in this campaign.
+      non_cash: Non-cash
       not_approved_yet: Not approved yet
+      pending: Pending
       pending_approval: Pending Approval
       pitch_step:
+        attend_event: Attend event
         button: Pitch!
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
@@ -1083,6 +1186,7 @@ en:
           You can use the Robin8 default note or prepare your own personal note. If
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
+        description_field: Description
         emailTargets: Targets will be contacted via Email
         email_panel:
           email: Your email address
@@ -1100,7 +1204,17 @@ en:
           title: Email pitch
         email_required: The email adress is required
         emailtext_required: The email text is required
+        endorsements: Endorsements
+        focus_event: Focus event
+        focus_group: Focus group
+        host_event: Host event
+        non_cash_reward: Non cash reward
+        original: Original
+        post_product_review: Post-product review
+        pre_packaged: Pre-packaged
+        re_share: Re-share
         see: See list
+        speech_or_presentation: Speech or presentation
         subject_required: The subject is required
         targets_table:
           actions: Actions
@@ -1121,6 +1235,8 @@ en:
             dashboard to accept the invitation.
       prev: Previous
       private_influencers: Private Influencers
+      reject: Reject
+      rejected: Rejected
       smart_campaign:
         pitch_step:
           button: Pitch!
@@ -1142,20 +1258,39 @@ en:
       status: Status
       supported_formats: Supported formats
       targets_step:
+        age_group: Age Group
+        available_channels: Available Channels
+        categories: Categories
+        central: Central
         city_state: City or State/Province or Country
         contact_first_last: Contact's first and last name
+        content: Content
         couldnt_match_influencers: Couldn't match any influencers for you. Provivde
           more categories.
+        east: East
         email: Email
+        enter_available_channels: Enters available channels
         enter_categories: Enters categories
+        enter_industry: Enters industry
+        female: Female
         influencers: Influencers
         invite: Invite
+        linkedin: Linkedin
         location: Location
+        male: Male
         name: Name
         need_invite: You need to invite at least someone to this campaign!
+        north: North
+        northeast: Northeast
+        offline: Offline
+        online: Online
         private: Private
+        regions: Regions
         search: Search
+        south: South
         topic: Topic
+        wechat_personal: WeChat personal
+        wechat_public: WeChat public
         weibo:
           contact_form:
             message:
@@ -1165,6 +1300,7 @@ en:
                 in our system as an Influencer.
               regards: Regards
             send_error: Message can not be sent!
+        weibo_channel: Weibo
         weibo_tab:
           author: Author
           contact: Contact
@@ -1173,6 +1309,7 @@ en:
           invite: Invite
           outlet: Outlet
           relevance: Relevance
+        west: West
       total_influencers_invited: Total influencers invited
       unknown: Unknown
       uploaded_file: Uploaded file must have exactly <strong>three</strong> columns,
@@ -2338,6 +2475,8 @@ en:
       choose_image: Choose an image!!!
       different_photo: Upload a different photo...
       files_label: Filed
+      kol:
+        choose_image: Change Avatar
       photos_label: Photos
       videos_label: Videos
     user_menu:

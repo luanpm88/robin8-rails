@@ -192,7 +192,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         monthNamesShort: monthesShort
         dayNames: days
         dayNamesMin: daysMin
-        nextText: polyglot.t('date.datepicker_next') 
+        nextText: polyglot.t('date.datepicker_next')
         prevText: polyglot.t('date.datepicker_prev')
         dateFormat: "D, d M y"
       if @model.get('deadline')?

@@ -6,8 +6,19 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/smart-campaign/show/templates/target-kols'
     ui:
       table: "#kols-table"
+      ageGroup: "input[name=ageGroup]"
+      male: "input[name=male]"
+      regions: "input[name=regions]"
+      content: "input[name=content]"
+      locations: "input[id=locations]"
+      invite_kol: "input[class=css-checkbox]"
+
     events:
-      'change input': 'selectKol'
+      'change @ui.invite_kol': 'selectKol'
+      'change @ui.ageGroup': 'changedAgeGroup'
+      'change @ui.male': 'changedMale'
+      'change @ui.regions': 'changedRegions'
+      'change @ui.content': 'changedContent'
 
     templateHelpers:
       categories: (k) ->
@@ -51,6 +62,25 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     serializeData: () ->
       kols: @kols,
       model: @model
+      search: if @options.search then @options.search else false
+
+    onRender: () ->
+      @ui.table.DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+        language:
+          paginate:
+            previous: polyglot.t('smart_campaign.prev'),
+            next: polyglot.t('smart_campaign.next')
+      if @model.model.get("kols")?
+        $(".kol-header").removeClass "error"
+        $(".kol-errors").hide()
+      @$el.find('input[id=\'icheckbox_flat\']').iCheck
+        checkboxClass: 'icheckbox_square-blue'
+        increaseArea: '20%'
+      $("#locations").geocomplete()
 
     kols_id: ()->
       invited_kols = @model.model.get("kols")
@@ -116,6 +146,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       else
         document.getElementById("next-step").disabled = true
 
+    changedAgeGroup: (e) ->
+      target = $ e.currentTarget
+    changedMale: (e) ->
+      target = $ e.currentTarget
+    changedRegions: (e) ->
+      target = $ e.currentTarget
+    changedRegions: (e) ->
+      target = $ e.currentTarget
+
     validate: () ->
       is_valid = _(@kols).any (k) -> k.invited? and k.invited == true
       if not is_valid
@@ -125,17 +164,3 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         $(".kol-header").removeClass "error"
         $(".kol-errors").hide()
       is_valid
-
-    onRender: () ->
-      @ui.table.DataTable
-        info: false
-        searching: false
-        lengthChange: false
-        pageLength: 25
-        language:
-          paginate:
-            previous: polyglot.t('smart_campaign.prev'),
-            next: polyglot.t('smart_campaign.next')
-      if @model.model.get("kols")?
-        $(".kol-header").removeClass "error"
-        $(".kol-errors").hide()

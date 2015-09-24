@@ -19,7 +19,8 @@ describe('Robin.Routers.AppRouter appRoutes', function() {
       showAnalytics: function() {},
       showProfile: function() {},
       showBilling: function() {},
-      showRecommendations: function() {}
+      showRecommendations: function() {},
+      showCampaignsList: function() {}
     });
 
     this.routeSpy = sinon.spy();
@@ -104,6 +105,12 @@ describe('Robin.Routers.AppRouter appRoutes', function() {
   it('can navigate to #billing', function() {
     this.router.bind('route:showBilling', this.routeSpy);
     this.router.navigate('billing', true);
+    expect(this.routeSpy.calledOnce).toBeTruthy();
+  });
+
+  it('can navigate to #campaigns_list', function() {
+    this.router.bind('route:showCampaignsList', this.routeSpy);
+    this.router.navigate('campaigns_list', true);
     expect(this.routeSpy.calledOnce).toBeTruthy();
   });
 
