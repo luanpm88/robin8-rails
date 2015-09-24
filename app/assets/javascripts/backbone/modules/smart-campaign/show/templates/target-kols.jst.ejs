@@ -1,64 +1,64 @@
 <span class="kol-errors"><%=polyglot.t('smart_campaign.targets_step.need_invite')%></span>
 <% if (!search) { %>
   <i class="fa fa-filter"></i>
-  <a href="#email-targets-list" data-toggle="collapse">
+  <a href="#filter-kols" data-toggle="collapse">
     <small>Filter <i class="fa fa-chevron-down"></i></small>
   </a>
 <% } %>
-  <div id="email-targets-list" class="collapse">
+  <div id="filter-kols" class="collapse">
     <br/>
-    <form role="form" class="form" id="filter-authors">
+    <form role="form" class="form" id="filter-authors-form">
 
       <div class="form-group">
         <label class="filter-label"><%=polyglot.t('smart_campaign.targets_step.available_channels')%></label>
-        <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_weibo" ></span>
-        <label for="is_weibo" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.weibo_channel") %> </label>
-        <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_wechat_personal" ></span>
-        <label for="is_wechat_personal" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.wechat_personal") %> </label>
-        <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_wechat_public" ></span>
-        <label for="is_wechat_public" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.wechat_public") %> </label>
-        <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_linkedin" ></span>
-        <label for="is_linkedin" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.linkedin") %> </label>
+        <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="weibo" ></span>
+        <label for="weibo" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.weibo_channel") %> </label>
+        <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="wechat_personal" ></span>
+        <label for="wechat_personal" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.wechat_personal") %> </label>
+        <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="wechat_public" ></span>
+        <label for="wechat_public" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.wechat_public") %> </label>
+        <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="linkedin" ></span>
+        <label for="linkedin" class="control-label channels-label" style="margin-right: 5px;" ><%= polyglot.t("smart_campaign.targets_step.linkedin") %> </label>
       </div>
 
       <div class="filter-group">
         <label class="filter-label"><%=polyglot.t('smart_campaign.targets_step.age_group')%></label>
         <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="ageGroup" id="ageGroup"> < 12
+            <input type="checkbox" name="ageGroup" id="12"> < 12
           </label>
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="ageGroup" id="ageGroup"> 12-18
+            <input type="checkbox" name="ageGroup" id="12-18"> 12-18
           </label>
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="ageGroup" id="ageGroup"> 18-25
+            <input type="checkbox" name="ageGroup" id="18-25"> 18-25
           </label>
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="ageGroup" id="ageGroup"> 25-35
+            <input type="checkbox" name="ageGroup" id="25-35"> 25-35
           </label>
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="ageGroup" id="ageGroup"> 35-45
+            <input type="checkbox" name="ageGroup" id="35-45"> 35-45
           </label>
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="ageGroup" id="ageGroup"> 45-55
+            <input type="checkbox" name="ageGroup" id="45-55"> 45-55
           </label>
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="ageGroup" id="ageGroup"> > 55
+            <input type="checkbox" name="ageGroup" id="55"> > 55
           </label>
         </div>
       </div>
       <div class="filter-group">
         <label class="filter-label"><%=polyglot.t('smart_campaign.targets_step.male')%>:<%=polyglot.t('smart_campaign.targets_step.female')%></label>
         <div class="age-group">
-          <input type="radio" name="male" value="80male" id="80male">
+          <input type="checkbox" name="male" value="80male" id="80">
           <label class="radio-inline radio-btns" for="80male">80:20</label>
-          <input type="radio" name="male" value="60male" id="60male">
+          <input type="checkbox" name="male" value="60male" id="60">
           <label class="radio-inline radio-btns" for="60male">60:40</label>
-          <input type="radio" name="male" value="50male" id="50male">
+          <input type="checkbox" name="male" value="50male" id="50">
           <label class="radio-inline radio-btns" for="50male">50:50</label>
-          <input type="radio" name="male" value="40male" id="40male">
+          <input type="checkbox" name="male" value="40male" id="40">
           <label class="radio-inline radio-btns" for="40male">40:60</label>
-          <input type="radio" name="male" value="20male" id="20male">
+          <input type="checkbox" name="male" value="20male" id="20">
           <label class="radio-inline radio-btns" for="20male">20:80</label>
         </div>
       </div>
@@ -67,22 +67,22 @@
           <label class="filter-label"><%=polyglot.t('smart_campaign.targets_step.regions')%></label>
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="option1"> <%=polyglot.t('smart_campaign.targets_step.east')%>
+              <input type="radio" name="regions" id="east"> <%=polyglot.t('smart_campaign.targets_step.east')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="option2"> <%=polyglot.t('smart_campaign.targets_step.north')%>
+              <input type="radio" name="regions" id="north"> <%=polyglot.t('smart_campaign.targets_step.north')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="option3"> <%=polyglot.t('smart_campaign.targets_step.northeast')%>
+              <input type="radio" name="regions" id="northeast"> <%=polyglot.t('smart_campaign.targets_step.northeast')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="option3"> <%=polyglot.t('smart_campaign.targets_step.south')%>
+              <input type="radio" name="regions" id="south"> <%=polyglot.t('smart_campaign.targets_step.south')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="option3"> <%=polyglot.t('smart_campaign.targets_step.west')%>
+              <input type="radio" name="regions" id="west"> <%=polyglot.t('smart_campaign.targets_step.west')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="option3"> <%=polyglot.t('smart_campaign.targets_step.central')%>
+              <input type="radio" name="regions" id="central"> <%=polyglot.t('smart_campaign.targets_step.central')%>
             </label>
           </div>
         </div>
@@ -97,14 +97,15 @@
         <label class="filter-label"><%=polyglot.t('smart_campaign.targets_step.content')%></label>
         <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="content" id="option1"> <%=polyglot.t('smart_campaign.targets_step.online')%>
+            <input type="checkbox" name="content" id="online"> <%=polyglot.t('smart_campaign.targets_step.online')%>
           </label>
           <label class="btn btn-primary filter-btn">
-            <input type="radio" name="content" id="option2"> <%=polyglot.t('smart_campaign.targets_step.offline')%>
+            <input type="checkbox" name="content" id="offline"> <%=polyglot.t('smart_campaign.targets_step.offline')%>
           </label>
         </div>
       </div>
     </form>
+    <button class="btn btn-primary" id="apply-filter">Filter</button>
   </div>
 
 <% if (kols.length == 0) { %>

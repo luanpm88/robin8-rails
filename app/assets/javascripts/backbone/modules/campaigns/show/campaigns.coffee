@@ -56,71 +56,58 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
     perform_action: (button, action="accept") ->
       self = this
       button_container = button.parent().parent()
-      id = button.data("inviteId")
+      id = button.data("campaignId")
       item = self.collection.get(id)
-      action_method = if action == "accept" then item.accept() else item.decline()
-      $.when(action_method).then ()->
-        button_container.remove()
-        self.render()
-        campaignsAccepted = new Robin.Collections.Campaigns
-        campaignsAcceptedTab = new Show.CampaignsTab
-          declined: false
-          accepted: true
-          history: false
-          negotiating: false
-          collection: campaignsAccepted
-        campaignsAccepted.accepted
-          success: ()->
-            self._parentLayoutView().accepted.show campaignsAcceptedTab
-          error: (e)->
-            console.log e
-
-        campaignsDeclined = new Robin.Collections.Campaigns
-        campaignsDeclinedTab = new Show.CampaignsTab
-          collection: campaignsDeclined
-          accepted: false
-          history: false
-          negotiating: false
-          declined: true
-        campaignsDeclined.declined
-          success: ()->
-            self._parentLayoutView().declined.show campaignsDeclinedTab
-          error: (e)->
-            console.log e
-
-        campaignsAll = new Robin.Collections.Campaigns
-        campaignsAllTab = new Show.CampaignsSuggestedTab
-          collection: campaignsAll
-          all: true
-        campaignsAll.all
-          success: ()->
-           self._parentLayoutView().all.show campaignsAllTab
-          error: (e)->
-            console.log e
-
-        negotiating = new Robin.Collections.Campaigns()
-        campaignsNegotiatingTab = new App.Campaigns.Show.CampaignsTab
-          collection: negotiating
-          declined: false
-          accepted: false
-          history: false
-          negotiating: true
-        negotiating.negotiating
-          success: ()->
-            self._parentLayoutView().negotiating.show campaignsNegotiatingTab
-          error: (e)->
-            console.log e
-
-        end = moment(new Date(item.attributes.campaign.created_at).toLocaleFormat '%d-%b-%Y')
-        start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
-        diff = start.diff(end, "days")
-        if diff > 0
-          latest = new Robin.Collections.Campaigns
-          campaignsLatestTab = new Show.CampaignsSuggestedTab
-            collection: latest
-          latest.latest
+      data = {}
+      data["status"] = if action == "accept" then "A" else "D"
+      data["campaign_id"] = id
+      $.post "/campaign_invite/change_invite_status", data, (data) =>
+        if data.status == data["status"]
+          invites = new Robin.Collections.CampaignInvitations()
+          campaignsInvitationTab = new Show.CampaignsInvitations
+            collection: invites
+          invites.fetch
             success: ()->
-              self._parentLayoutView().latest.show campaignsLatestTab
+              self._parentLayoutView().invitation.show campaignsInvitationTab
+            error: (e)->
+              console.log e
+
+          end = moment(new Date(item.attributes.created_at).toLocaleFormat '%d-%b-%Y')
+          start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+          diff = start.diff(end, "days")
+          if diff > 0
+            latest = new Robin.Collections.Campaigns
+            campaignsLatestTab = new Show.CampaignsSuggestedTab
+              collection: latest
+            latest.latest
+              success: ()->
+                self._parentLayoutView().latest.show campaignsLatestTab
+              error: (e)->
+                console.log e
+
+          campaignsAccepted = new Robin.Collections.Campaigns
+          campaignsAcceptedTab = new Show.CampaignsTab
+            declined: false
+            accepted: true
+            history: false
+            negotiating: false
+            collection: campaignsAccepted
+          campaignsAccepted.accepted
+            success: ()->
+              self._parentLayoutView().accepted.show campaignsAcceptedTab
+            error: (e)->
+              console.log e
+
+          campaignsDeclined = new Robin.Collections.Campaigns
+          campaignsDeclinedTab = new Show.CampaignsTab
+            collection: campaignsDeclined
+            accepted: false
+            history: false
+            negotiating: false
+            declined: true
+          campaignsDeclined.declined
+            success: ()->
+              self._parentLayoutView().declined.show campaignsDeclinedTab
             error: (e)->
               console.log e
 
@@ -162,8 +149,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         error: (e)->
           console.log e
       no_comments = true
-      console.log no_comments
-      console.log @options
       if @options.accepted or @options.negotiating
         no_comments = false
       articleDialog = new Show.ArticleDialog
@@ -308,29 +293,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         campaignsDeclined.declined
           success: ()->
             self._parentLayoutView().declined.show campaignsDeclinedTab
-          error: (e)->
-            console.log e
-
-        campaignsAll = new Robin.Collections.Campaigns
-        campaignsAllTab = new Show.CampaignsSuggestedTab
-          collection: campaignsAll
-          all: true
-        campaignsAll.all
-          success: ()->
-           self._parentLayoutView().all.show campaignsAllTab
-          error: (e)->
-            console.log e
-
-        negotiating = new Robin.Collections.Campaigns()
-        campaignsNegotiatingTab = new App.Campaigns.Show.CampaignsTab
-          collection: negotiating
-          declined: false
-          accepted: false
-          history: false
-          negotiating: true
-        negotiating.negotiating
-          success: ()->
-            self._parentLayoutView().negotiating.show campaignsNegotiatingTab
           error: (e)->
             console.log e
 

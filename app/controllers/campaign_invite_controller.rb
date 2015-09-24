@@ -10,7 +10,13 @@ class CampaignInviteController < ApplicationController
   end
 
   def update
-    invite = CampaignInvite.find(params[:id])
+    invite = []
+    unless params[:campaign_id].blank?
+      invite = CampaignInvite.where(:campaign_id => params[:campaign_id])
+      invite = invite.first
+    else
+      invite = CampaignInvite.find(params[:id])
+    end
     if invite.kol != current_kol
       render json: {errors: {permission_denied: 'You must be authorized'}}, :status => :unauthorized
     else

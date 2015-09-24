@@ -170,5 +170,6 @@ Rails.application.routes.draw do
   post 'campaign/:id/article/:article_id/approve_request', to: 'campaign#approve_request'
   post 'campaign/test_email', to: 'campaign#test_email'
   resources :campaign_invite, only: [:index, :create, :show, :update]
+  post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
 
 end

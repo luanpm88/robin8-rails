@@ -9,6 +9,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       nextButton: '#next-step'
       targetsWeiboTab: '#targets-weibo-tab'
       categoriesInput: 'input[name=categories]'
+      selectForm: '#selectForm'
 
     regions:
       #wechatRegion: "#targets-wechat"
@@ -18,6 +19,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     events:
       'click @ui.nextButton': 'openPitchTab'
+      'select2-removed @ui.categoriesInput': 'removeCategory'
+      'select2-selecting @ui.categoriesInput': 'addCategory'
+      'click #apply-filter': 'applyFilter'
 
     initialize: (options) ->
       @model = if @options.model? then @options.model else new Robin.Models.Campaign()
@@ -36,7 +40,70 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     openPitchTab: () ->
       @options.parent.setState('pitch')
 
+    removeCategory: (e) ->
+      iptc_categories = @model.get('iptc_categories')
+      if iptc_categories.indexOf(e.val) > -1
+        iptc_categories.pop(e.val)
+        @model.set('iptc_categories',iptc_categories)
+        $('#selectForm').formValidation('revalidateField', 'categories')
+        if $('#selectForm').data('formValidation').isValid()
+          @weibo_view = new Show.TargetWeibo(
+            model: @model
+          )
+          @targets_view = new Show.TargetKols(
+            model: @model
+          )
+          @search_view = new Show.SearchLayout(
+            model: @model
+          )
+          @render()
+
+    addCategory: (e) ->
+      iptc_categories = @model.get('iptc_categories')
+      if iptc_categories.indexOf(e.val) < 0
+        iptc_categories.push(e.val)
+        @model.set('iptc_categories',iptc_categories)
+        $('#selectForm').formValidation('revalidateField', 'categories')
+        if $('#selectForm').data('formValidation').isValid()
+          @weibo_view = new Show.TargetWeibo(
+            model: @model
+          )
+          @targets_view = new Show.TargetKols(
+            model: @model
+          )
+          @search_view = new Show.SearchLayout(
+            model: @model
+          )
+          @render()
+
+    applyFilter: () ->
+      data = {}
+      channels = []
+      $('input[id=icheckbox_flat]').each (index, value) ->
+        if $(this).is(':checked')
+          channels.push $(this).attr('name')
+      data['channels'] = channels
+      ageFilter = []
+      $.each $('input[name=\'ageGroup\']:checked'), ->
+        ageFilter.push $(this).attr('id')
+      data["age"] = ageFilter
+      data["location"] = $('#locations').val()
+      contentFilter = []
+      $.each $('input[name=\'content\']:checked'), ->
+        contentFilter.push $(this).attr('id')
+      data["content"] = contentFilter
+      regions = []
+      $.each $('input[name=\'regions\']:checked'), ->
+        regions.push $(this).attr('id')
+      data["regions"] = regions
+      male = []
+      $.each $('input[name=\'male\']:checked'), ->
+        male.push $(this).attr('id')
+      data["male"] = male
+
+
     onRender: () ->
+      @ui.selectForm.ready(@initFormValidation())
 
       self = this
 
@@ -76,8 +143,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         #$el.find('#targets-weibo-tab').click()
         @ui.targetsWeiboTab.click()
 
-      @ui.categoriesInput.select2
-        allowClear: true
+      self.ui.categoriesInput.select2
+        allowClear: false
         multiple: true
         formatInputTooShort: (input, min) ->
           n = min - input.length
@@ -94,10 +161,28 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           results:  (data, page) ->
             return { results: data }
         }
-        escapeMarkup: (m) -> m
-        initSelection: (el, callback) ->
-          @ui.categoriesInput.val ''
-          callback @model.get('iptc_categories')
+        initSelection: (el, callback) =>
+          @ui.categoriesInput.val 'val'
+          $.get "/kols/get_categories_labels/", {categories_id: @model.get('iptc_categories')}, (data) =>
+            callback data
+        @ui.categoriesInput.val 'val'
+        @ui.categoriesInput.trigger("change");
+
+    initFormValidation: () ->
+      @ui.selectForm.formValidation
+        framework: 'bootstrap'
+        excluded: ':disabled'
+        icon:
+          valid: 'glyphicon glyphicon-ok'
+          invalid: 'glyphicon glyphicon-remove'
+          validating: 'glyphicon glyphicon-refresh'
+        fields: categories: validators: callback:
+          message: polyglot.t('smart_campaign.targets_step.choose_category')
+          callback: (value, validator, $field) ->
+            options = validator.getFieldElements('categories').val()
+            options2 = options.split(',')
+            options2.length > 1
+
 
     transformLabel: (label, code) ->
       if code.substring(0, 2) == "16"

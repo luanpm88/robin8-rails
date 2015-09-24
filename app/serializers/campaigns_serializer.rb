@@ -1,5 +1,5 @@
 class CampaignsSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :deadline, :budget, :created_at, :updated_at, :user, :tracking_code, :concepts, :summaries, :hashtags, :invite_status, :short_description, :content_type, :non_cash
+  attributes :id, :name, :description, :deadline, :budget, :created_at, :updated_at, :user, :tracking_code, :concepts, :summaries, :hashtags, :invite_status, :short_description, :content_type, :non_cash, :iptc_categories
 
   def tracking_code
     if not scope.nil?
@@ -20,5 +20,16 @@ class CampaignsSerializer < ActiveModel::Serializer
       end
     end
     nil
+  end
+  def iptc_categories
+    campaign_categories = Campaign.find(id).campaign_categories
+    if not campaign_categories.nil? and campaign_categories.length > 0
+      labels = []
+      campaign_categories.each do |category|
+        labels =  IptcCategory.where(:id => category.iptc_category_id).map(&:label)
+      end
+      return labels.join(',')
+    end
+    ""
   end
 end
