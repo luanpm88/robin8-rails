@@ -35,7 +35,6 @@
             <% } %>
         </tr>
         </thead>
-        updated_at
         <tbody>
         <% _.each(items, function(item){ %>
         <tr data-id="<%= item.id %>">
@@ -66,13 +65,13 @@
             <% } %>
             <% if (negotiating) {%>
               <td>
-                  <button type="button" class="btn top-btn camp-default-btn" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
-                  <button type="button" class="btn bottom-btn camp-interested" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.reject')%></button>
+                  <button type="button" class="btn top-btn camp-default-btn invitation-accept" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+                  <button type="button" class="btn bottom-btn camp-interested invitation-decline" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.reject')%></button>
               </td>
             <% } %>
             <% if (declined) {%>
               <td>
-                  <button type="button" class="btn top-btn camp-default-btn" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+                  <button type="button" class="btn top-btn camp-default-btn invitation-accept" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
               </td>
             <% } %>
         </tr>

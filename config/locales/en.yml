@@ -366,7 +366,7 @@ en:
         running: Running
         send_negotiate: Send negotiate
         tables_title: Monetize influence in campaigns
-        title: Campaigns
+        title: Monetize!
         view: View
         waiting_for_invitation: Waiting for invitation
         you_dont_have_any_negotiating: You don't have any campaign with negotiating
@@ -1179,7 +1179,9 @@ en:
       pending_approval: Pending Approval
       pitch_step:
         attend_event: Attend event
+        budget_required: The budget is required
         button: Pitch!
+        deadline_required: The deadline is required
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
           contact for your compaign, you need to prepare the note to these contacts.
@@ -1187,6 +1189,7 @@ en:
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
         description_field: Description
+        description_required: The description is required
         emailTargets: Targets will be contacted via Email
         email_panel:
           email: Your email address
@@ -1262,6 +1265,7 @@ en:
         available_channels: Available Channels
         categories: Categories
         central: Central
+        choose_category: Please choose at least one category
         city_state: City or State/Province or Country
         contact_first_last: Contact's first and last name
         content: Content
