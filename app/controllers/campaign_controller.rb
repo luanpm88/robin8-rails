@@ -1,9 +1,21 @@
 class CampaignController < ApplicationController
 
   def index
-    status = params[:status] == "declined" ? "D" : "A"
-    campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
-    render json: campaigns, each_serializer: CampaignsSerializer, scope: current_kol
+    if params[:status] == "declined" || params[:status] == "accepted"
+      status = params[:status] == "declined" ? "D" : "A"
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    elsif params[:status] == "latest"
+      campaigns = kol_signed_in? ? Campaign.where("created_at > ? and deadline > ?",Date.today - 14, Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    elsif params[:status] == "history"
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline < ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
+    elsif params[:status] == "all"
+      campaigns = kol_signed_in? ? Campaign.where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    elsif params[:status] == "negotiating"
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:articles).where(:articles => {:kol_id => current_kol.id, :tracking_code => 'Negotiating'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    else
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'A'}) : current_user.campaigns
+    end
+    render json: campaigns, each_serializer: CampaignsSerializer, campaign_status: params[:status], scope: current_kol
   end
 
   def show
@@ -12,7 +24,7 @@ class CampaignController < ApplicationController
     if user.blank? or c.user_id != user.id
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles])
+    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles, :kol_categories, :iptc_categories])
   end
 
   def article
@@ -106,6 +118,17 @@ class CampaignController < ApplicationController
     render json: wechat_report, serializer: WechatArticlePerformanceSerializer
   end
 
+  def negotiate_campaign
+    campaign = Campaign.find(params[:id])
+    article = campaign.articles.where(kol_id: current_kol.id).first
+    article.tracking_code = 'Negotiating'
+    article.save
+    someone = current_user
+    someone = current_kol if someone.nil?
+    comment = ArticleComment.create(article_id: article.id, sender: someone, text: params[:text], comment_type: "comment")
+    render json: comment, serializer: ArticleCommentSerializer
+  end
+
   def create
     if current_user.blank?
       return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
@@ -134,6 +157,10 @@ class CampaignController < ApplicationController
     c.concepts = params[:concepts]
     c.summaries = params[:summaries]
     c.hashtags = params[:hashtags]
+    c.non_cash = params[:non_cash]
+    c.content_type = params[:content_type]
+    c.short_description = params[:short_description]
+
     c.save!
 
     #private kol

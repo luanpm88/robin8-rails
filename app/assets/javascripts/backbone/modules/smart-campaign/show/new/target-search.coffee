@@ -64,12 +64,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       @ui.authorsKeywordsInput.select2
         allowClear: true
         multiple: true
-        formatInputTooShort: (input, min) -> 
+        formatInputTooShort: (input, min) ->
           n = min - input.length
           return polyglot.t("select2.too_short", {count: n})
-        formatNoMatches: () -> 
+        formatNoMatches: () ->
           return polyglot.t("select2.not_found")
-        formatSearching: () -> 
+        formatSearching: () ->
           return polyglot.t("select2.searching")
         ajax: {
           url: '/autocompletes/iptc_categories'
@@ -88,12 +88,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           object.text
         id: (object) ->
           object.id
-        formatInputTooShort: (input, min) -> 
+        formatInputTooShort: (input, min) ->
           n = min - input.length
           return polyglot.t("select2.too_short", {count: n})
-        formatNoMatches: () -> 
+        formatNoMatches: () ->
           return polyglot.t("select2.not_found")
-        formatSearching: () -> 
+        formatSearching: () ->
           return polyglot.t("select2.searching")
         ajax:
           url: 'autocompletes/iptc_categories'
@@ -118,12 +118,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           object.text.split(',')[0]
         id: (object) ->
           object.id.split(',')[0]
-        formatInputTooShort: (input, min) -> 
+        formatInputTooShort: (input, min) ->
           n = min - input.length
           return polyglot.t("select2.too_short", {count: n})
-        formatNoMatches: () -> 
+        formatNoMatches: () ->
           return polyglot.t("select2.not_found")
-        formatSearching: () -> 
+        formatSearching: () ->
           return polyglot.t("select2.searching")
         ajax:
           url: '/autocompletes/locations'
@@ -179,6 +179,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
       self.targetKolsSearch = new Show.TargetKols({
         model: self.model
+        search: true
       })
 
       Robin.layouts.main.content.currentView.content.currentView.search_view.searchResultRegion.show(@targetKolsSearch)

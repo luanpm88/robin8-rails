@@ -1,9 +1,13 @@
 <div id="blast-targets" class="tab-pane active" role="tabpanel">
   <h5><i class="fa fa-bullseye"></i>  <%= polyglot.t("smart_release.targets_step.title") %></h5>
   <p><%= polyglot.t("smart_release.targets_step.description") %></p>
+  <div class="form-group">
+    <label><%= polyglot.t("smart_campaign.targets_step.categories") %>:</label>
+    <input type="text" name="categories" id="categories" autocomplete="off" placeholder="<%=polyglot.t('smart_campaign.targets_step.enter_categories')%>" class="typeahead form-control">
+  </div>
   <ul class="nav nav-tabs nav-justified">
     <!--<li class="active"><a data-toggle="tab" href="#targets-wechat" aria-expanded="true"><i class="fa fa-wechat"></i> Wechat</a></li>-->
-    <li><a data-toggle="tab" href="#targets-weibo" aria-expanded="true" id="targets-weibo-tab"><i class="fa fa-weibo"></i> Weibo</a></li>
+    <li class="active"><a data-toggle="tab" href="#targets-weibo" aria-expanded="true" id="targets-weibo-tab"><i class="fa fa-weibo"></i> Weibo</a></li>
     <li><a data-toggle="tab" href="#targets-blogs" aria-expanded="true"><i class="fa fa-rss"></i> <%= polyglot.t('smart_campaign.targets_step.influencers') %></a></li>
     <li><a data-toggle="tab" href="#targets-search" aria-expanded="true"><i class="fa fa-search"></i> <%= polyglot.t('smart_campaign.targets_step.search') %></a></li>
   </ul>

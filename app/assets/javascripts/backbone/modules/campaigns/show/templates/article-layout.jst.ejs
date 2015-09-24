@@ -13,22 +13,24 @@
             </ul>
 
             <!-- Tab panes -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="content">
-                    <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.text %></textarea>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <% var button_disabled = ""; if (item.tracking_code != null && item.tracking_code != "Waiting") { button_disabled = "disabled"; } %>
-                        <% if (!disabled) { %>
-                            <button type="button" class="btn btn-primary" id="article-approve"  <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.send_for_approval')%></button>
-                        <% } %>
-                        <% if (disabled) { %>
-                          <button type="button" class="btn btn-success" id="article-save" <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.approve')%></button>
-                        <% } else { %>
-                          <button type="button" class="btn btn-primary" id="article-save" <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.save')%></button>
-                        <% } %>
-                    </div>
-                </div>
+              <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="content">
+                      <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.text %></textarea>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <% var button_disabled = ""; if (item.tracking_code != null && item.tracking_code != "Waiting" && item.tracking_code != "Negotiating") { button_disabled = "disabled"; } %>
+                          <% if (!no_tabs) { %>
+                            <% if (!disabled) { %>
+                                <button type="button" class="btn btn-primary" id="article-approve"  <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.send_for_approval')%></button>
+                            <% } %>
+                            <% if (disabled) { %>
+                              <button type="button" class="btn btn-success" id="article-save" <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.approve')%></button>
+                            <% } else { %>
+                              <button type="button" class="btn btn-primary" id="article-save" <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.save')%></button>
+                            <% } %>
+                          <% } %>
+                      </div>
+                  </div>
                 <div role="tabpanel" class="tab-pane" id="comments">
                     <div class="row comments-title"> Documents
                         <ul class="files_list clearfix">

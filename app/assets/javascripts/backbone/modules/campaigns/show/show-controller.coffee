@@ -5,6 +5,10 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _) ->
       campaignsAccepted = new Robin.Collections.Campaigns()
       campaignsDeclined = new Robin.Collections.Campaigns()
       campaignsAcceptedTab = new Show.CampaignsTab
+        declined: false
+        accepted: true
+        history: false
+        latest: false
         collection: campaignsAccepted
       campaignsAccepted.accepted
         success: ()->
@@ -14,6 +18,9 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _) ->
       campaignsDeclinedTab = new Show.CampaignsTab
         collection: campaignsDeclined
         declined: true
+        accepted: false
+        history: false
+        latest: false
       campaignsDeclined.declined
         success: ()->
           campaignsPage.showChildView 'declined', campaignsDeclinedTab

@@ -80,6 +80,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-datejs'
   gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-bootstrap-validator'
+  gem 'rails-assets-jquery-knob'
+  gem 'rails-assets-d3'
 end
 
 gem 'devise'
@@ -169,4 +171,7 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'puma'
+
+
+
 end

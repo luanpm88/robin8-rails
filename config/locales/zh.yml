@@ -313,6 +313,7 @@ zh:
       accept: "接受"
       accepted: "已接受"
       brand: "品牌"
+      brief: Briefing Digest
       budget: "預算"
       check_to_activate: "请查看您的电子邮件来激活您的帐户!"
       creation_date: "創建日期"
@@ -331,6 +332,87 @@ zh:
       not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
       status: "状态"
       title: "主界面"
+    dashboard_kol:
+      buttons:
+        back: Back
+        next: Next
+      campaigns_tab:
+        accepted: To Execute
+        action: Action
+        all: All
+        ask_for_invite: Ask for invite
+        categories: Categories
+        close: Close
+        declined: Just Rejected
+        error: Please fill the field
+        executed: Executed
+        expired: Expired
+        history: History
+        interest: Interest
+        interested: You May Like
+        invitation: Invitation
+        last_update: Last update
+        latest: Latest
+        negotiate: Negotiate
+        negotiate_error: Something went wrong. Please, try again.
+        negotiate_success: Message was sent successfully.
+        negotiate_text: Negotiate campaign
+        negotiating: Negotiating
+        not_expired: Not Expired
+        not_interested: Not Interested
+        pending: Pending
+        reject: Reject
+        rejected: Rejected
+        request_rejected: Request rejected
+        running: Running
+        send_negotiate: Send negotiate
+        tables_title: Monetize influence in campaigns
+        title: Campaigns
+        view: View
+        waiting_for_invitation: Waiting for invitation
+        you_dont_have_any_negotiating: You don't have any campaign with negotiating
+          status.
+        you_dont_have_history: You don't have expired campaigns.
+      profile_tab:
+        age_group: Age group
+        audience_subtitle: self-assessed, optional
+        audience_title: My Influence Circle
+        birthdate: Birth date
+        central: Central
+        city: City
+        country: Country
+        east: East
+        fans_number: Fans Number
+        female: Female
+        gender: Gender
+        general_title: My Profile
+        id: ID
+        industry: Industry
+        industry_placeholder: Select or input up to 5, separated by blanks
+        linkedin: LinkedIn
+        location: Location
+        login: Login
+        male: Male
+        male_female: Male:Female
+        mobile: Mobile
+        name: Name
+        north: North
+        northeast: Northeast
+        personal: Personal
+        province: Province
+        public: Public
+        regions: Regions
+        secrecy: Secrecy
+        social_subtitle: monetize your influence on those channels
+        social_title: My social
+        south: South
+        title: My Profile
+        weibo: Weibo
+        west: West
+      score_tab:
+        header: Your Score
+        tables_title: My Profile and Score
+        title: Your score
     date:
       datepicker_days:
         d1: "星期天"
@@ -427,7 +509,10 @@ zh:
       deadline: "期限"
       in_progress: "进行中"
       name: "姓名"
+      no_campaign: There isn't any active campaigns.
+      no_latest_campaign: There are no campaigns created within last 2 weeks.
       not_approved_yet: "尚未得到批准"
+      status: Status
       you_dont_have_any_accepted: "您没有已接受的推广活动"
       you_dont_have_any_declined: "您没有被拒绝的推广活动"
     kols:
@@ -472,9 +557,6 @@ zh:
       text14: "运用算法和机器学习技术，来推荐适合您的活动"
       text15: "帮助你估算影响力的价值并且赚钱"
       text16: "你知不知道你是一个社交达人？"
-      text17: Robin8 相信每一个人都是一个社交达人，都可以成为一个媒体。
-      text18: "欢迎来到人人共享的网络世界。随着社交媒体的流行，每一个人都有话语权和影响力。"
-      text19: Robin8 calculates your influence and estimates the value of your REACH.
       text17: ROBIN8 believes every person is an influencer and a media company.
       text18: Welcome to the internet for everyone. With the rise of social media,
         everyone has a voice and influence.
@@ -570,6 +652,7 @@ zh:
       untitled: "无主题新闻频道"
     navigation:
       analytics: "分析"
+      campaigns: Campaigns
       dashboard: "主界面"
       monitoring: "监控"
       newsrooms: "新闻室"
@@ -959,6 +1042,7 @@ zh:
       too_short: "请输入 %{count} 个或更多字符"
     smart_campaign:
       accepted: "已接受"
+      action: Action
       active: "活跃"
       add: "添加"
       add_influencer: "增加意见领袖"
@@ -980,10 +1064,13 @@ zh:
         subject: "主题"
         title: "联系人"
         your_email: "你的邮箱"
+      content_type: Content Type
       created: "创建 "
       deadline: "期限"
+      decline_date: Decline date
       declined: "已拒绝"
       declined_unknown: "拒绝/未知"
+      edit: Edit
       edit_campaign: "编辑推广活动"
       editor:
         adjectives: "形容词"
@@ -998,9 +1085,14 @@ zh:
       enter_email: "填写邮箱"
       enter_first name: "填写姓"
       enter_last_name: "填写名"
+      expired: Expired
       first_name: "名"
+      history: History
       in_progress: "进行中"
+      interested: Interested
+      invite: Invite
       invite_influencers: "邀请意见领袖"
+      invited: Invited
       kol:
         alredy_in_list: " 已存在您的列表中"
         attach_invalid: "附件内容类型无效"
@@ -1008,9 +1100,11 @@ zh:
         incorrect_ignored: "所有格式不正确的联系人都将被忽略。"
         list_uploaded: "您的列表已经成功上传。"
         select_categories: "选择意见领袖的分类"
+      last_login_date: Last login date
       last_name: "姓氏"
       last_update: "最後更新"
       name: "姓名"
+      negotiating: Negotiating
       new:
         pitch: "投递"
         start: "开始"
@@ -1019,14 +1113,22 @@ zh:
       next: "下一步"
       'no': "不是"
       no_campaigns: You don't have any campaigns. It's time to create one!
+      no_history: You don't have expired campaigns.
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
+      no_negotiate: You don't have any campaign with negotiating status.
       no_one_accepted: "目前无人接受您的邀请。"
+      no_one_declined: No one declined your invitation.
+      no_one_interested: Nobody was interested in this campaign.
+      non_cash: Non-cash
       not_approved_yet: "尚未得到批准"
+      pending: Pending
       pending_approval: Pending Approval
       pitch_step:
+        attend_event: Attend event
         button: "投递！"
         delete_button: "删除"
         description: "你现在找到了你想要联络的KOLs和大V们，你需要准备一段发送给他们的文字。你可以使用Robin8 为你准备好的这一段，或者自己编辑一段。如果你需要自己编辑，我们推荐你保持文字精简，不要超过三个段落。"
+        description_field: Description
         emailTargets: "通过电子邮件联系目标人"
         email_panel:
           email: "你的电子邮件地址"
@@ -1044,7 +1146,17 @@ zh:
           title: "投递邮件"
         email_required: "该邮件地址必填"
         emailtext_required: "该邮件内容必填"
+        endorsements: Endorsements
+        focus_event: Focus event
+        focus_group: Focus group
+        host_event: Host event
+        non_cash_reward: Non cash reward
+        original: Original
+        post_product_review: Post-product review
+        pre_packaged: Pre-packaged
+        re_share: Re-share
         see: "查看名单"
+        speech_or_presentation: Speech or presentation
         subject_required: "该主题必填"
         targets_table:
           actions: "动作"
@@ -1065,6 +1177,8 @@ zh:
             dashboard to accept the invitation.
       prev: "上一步"
       private_influencers: "自有的意见领袖"
+      reject: Reject
+      rejected: Rejected
       smart_campaign:
         pitch_step:
           button: "投递"
@@ -1085,19 +1199,38 @@ zh:
       status: "状态"
       supported_formats: "支持格式"
       targets_step:
+        age_group: Age Group
+        available_channels: Available Channels
+        categories: Categories
+        central: Central
         city_state: "城市或州/省或国家"
         contact_first_last: "联系人的姓名"
+        content: Content
         couldnt_match_influencers: "未找到相匹配意见领袖"
+        east: East
         email: "电子邮件"
+        enter_available_channels: Enters available channels
         enter_categories: "提供更多目录"
+        enter_industry: Enters industry
+        female: Female
         influencers: "意见领袖"
         invite: "邀"
+        linkedin: Linkedin
         location: "地点"
+        male: Male
         name: "姓名"
         need_invite: You need to invite at least someone to this campaign!
+        north: North
+        northeast: Northeast
+        offline: Offline
+        online: Online
         private: "私人"
+        regions: Regions
         search: "搜"
+        south: South
         topic: "主题"
+        wechat_personal: WeChat personal
+        wechat_public: WeChat public
         weibo:
           contact_form:
             message:
@@ -1106,6 +1239,7 @@ zh:
               ps: 附：我们诚恳地推荐你作为一个社交达人来<a href="%{kols_signup_url}">注册</a>我们的平台
               regards: "此致"
             send_error: "消息无法发送！"
+        weibo_channel: Weibo
         weibo_tab:
           author: "作者"
           contact: "联系人"
@@ -1114,6 +1248,7 @@ zh:
           invite: "邀"
           outlet: "媒体"
           relevance: "相关度"
+        west: West
       total_influencers_invited: "已邀请所有的意见领袖"
       unknown: "未知"
       uploaded_file: "上传的文件必须具有完全相同的<strong>三</ STRONG>列，格式为<STRONG>姓，名，电子邮件地址</ STRONG>"
@@ -1671,6 +1806,8 @@ zh:
       choose_image: "选择图片!!!"
       different_photo: "上传不同的照片..."
       files_label: "文档"
+      kol:
+        choose_image: Change Avatar
       photos_label: "照片"
       videos_label: "视频"
     user_menu:
@@ -1696,6 +1833,10 @@ zh:
     phone: "(212) 807-8300 Extension 3"
     phone_title: Phone (customer service)
     title: Contact Robin8
+  dashboard_kol:
+    campaigns_tab:
+      tables_title: Monetize!
+      title: Campaigns
   date:
     abbr_day_names:
     - Sun

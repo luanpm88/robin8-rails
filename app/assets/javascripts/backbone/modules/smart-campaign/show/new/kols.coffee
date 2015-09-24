@@ -2,24 +2,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
   Show.KolCategoriesTemplate = _.template '<span class="kol‐category"><%= label %></span>'
 
-  Show.Kols = Backbone.Marionette.ItemView.extend
-    template: 'modules/smart-campaign/show/templates/kols'
+  Show.Kols = Backbone.Marionette.LayoutView.extend
+    template: 'modules/smart-campaign/show/templates/kols/kols'
 
-    templateHelpers:
-      active: (k) ->
-        if k.active then polyglot.t('smart_campaign.yes') else polyglot.t('smart_campaign.no')
-      categories: (k) ->
-        res = _(k.categories).map (c) ->
-          context = { label: c.label }
-          Show.KolCategoriesTemplate context
-        res.join ''
+    regions:
+      influencersRegion: '#targets-blogs'
+      influencersListRegion: '#targets-list'
 
     ui:
       categories: "#categories"
       add: "#add_kol_confirm"
       form: "#add_kol-form"
       tooltipFormatInfo: "[data-toggle=tooltip]"
-      table: "#private_kols-table"
       fileInput: "#private_kols_file"
 
     events:
@@ -41,6 +35,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         contentType: false
         success: (res) =>
           @collection.fetch()
+          console.log @collection
 
           $.growl({message: polyglot.t('smart_campaign.kol.list_uploaded')
           },{
@@ -72,27 +67,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onRender: () ->
       @initTooltip()
-      @ui.table.DataTable
-        info: false
-        searching: false
-        lengthChange: false
-        pageLength: 25
-        language:
-          paginate:
-            previous: polyglot.t('smart_campaign.prev'),
-            next: polyglot.t('smart_campaign.next')
       @ui.form.validator()
       @ui.categories.select2
         placeholder: polyglot.t('smart_campaign.kol.select_categories')
         multiple: true
         minimumInputLength: 1
         maximumSelectionSize: 10
-        formatInputTooShort: (input, min) -> 
+        formatInputTooShort: (input, min) ->
           n = min - input.length
           return polyglot.t("select2.too_short", {count: n})
-        formatNoMatches: () -> 
+        formatNoMatches: () ->
           return polyglot.t("select2.not_found")
-        formatSearching: () -> 
+        formatSearching: () ->
           return polyglot.t("select2.searching")
         ajax:
           url: "/kols/suggest_categories"
@@ -127,4 +113,62 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               @collection.fetch()
           else
             $.growl {message: data.status}, {type: 'danger'}
+
+  Show.KolsView = Backbone.Marionette.ItemView.extend
+    template: 'modules/smart-campaign/show/templates/kols/kols_view'
+
+    templateHelpers:
+      active: (k) ->
+        if k.active then polyglot.t('smart_campaign.yes') else polyglot.t('smart_campaign.no')
+      categories: (k) ->
+        res = _(k.categories).map (c) ->
+          context = { label: c.label }
+          Show.KolCategoriesTemplate context
+        res.join ''
+
+    ui:
+      table: "#private_kols-table"
+
+    collectionEvents:
+      "add and reset add remove": "render"
+
+    onRender: () ->
+      @ui.table.DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+        language:
+          paginate:
+            previous: polyglot.t('smart_campaign.prev'),
+            next: polyglot.t('smart_campaign.next')
+
+  Show.KolsList = Backbone.Marionette.ItemView.extend
+    template: 'modules/smart-campaign/show/templates/kols/kols_list'
+
+    templateHelpers:
+      active: (k) ->
+        if k.active then polyglot.t('smart_campaign.yes') else polyglot.t('smart_campaign.no')
+      categories: (k) ->
+        res = _(k.categories).map (c) ->
+          context = { label: c.label }
+          Show.KolCategoriesTemplate context
+        res.join ''
+
+    ui:
+      table: "#private_kols-table"
+
+    collectionEvents:
+      "add and reset add remove": "render"
+
+    onRender: () ->
+      @ui.table.DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+        language:
+          paginate:
+            previous: polyglot.t('smart_campaign.prev'),
+            next: polyglot.t('smart_campaign.next')
 

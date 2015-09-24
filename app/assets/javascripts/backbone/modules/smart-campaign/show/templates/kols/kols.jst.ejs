@@ -11,28 +11,17 @@
   </div>
   <button type="button" class="btn btn-success vcenter" id="add_kol"><i class="fa fa-plus"></i>  <%=polyglot.t('smart_campaign.add_influencer')%></button>
 </div>
-<% if (items.length == 0) { %>
-  <div class="row"><%=polyglot.t('smart_campaign.no_invited_yet')%></div>
-<% } else { %>
-  <div class="row">
-    <table class="table table-striped" id="private_kols-table">
-      <thead><tr>
-        <th><%=polyglot.t('smart_campaign.name')%></th>
-        <th><%=polyglot.t('smart_campaign.email')%></th>
-        <th><%=polyglot.t('smart_campaign.active')%></th>
-      </tr></thead>
-      <tbody>
-        <% _.each(items, function(c) { %>
-          <tr data-id="<%= c.private_kol.id %>">
-            <td><%= c.private_kol.full_name %></td>
-            <td><%= c.private_kol.email %></td>
-            <td><%= active(c.private_kol) %></td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
+
+<ul class="nav nav-tabs nav-justified">
+  <li class="active"><a data-toggle="tab" href="#targets-blogs" aria-expanded="true"><i class="fa fa-rss"></i> <%= polyglot.t("smart_release.targets_step.influencers_tab.title") %></a></li>
+  <li><a data-toggle="tab" href="#targets-list" aria-expanded="true"><i class="fa fa-list"></i> <%= polyglot.t("smart_release.targets_step.media_tab.title") %></a></li>
+</ul>
+<div class="tab-content">
+  <div id="targets-blogs" class="tab-pane active" role="tabpanel">
   </div>
-<% } %>
+  <div id="targets-list" class="tab-pane" role="tabpanel">
+  </div>
+</div>
 
 <div class="modal fade edit-kol" id='kol_form' role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog">

@@ -10,6 +10,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       wechatTargets: '#wechat-targets',
       weiboPitch: '#weibo-pitch',
       weiboTargets: '#weibo-targets'
+      campaignDetails: '#campaign-details'
 
     ui:
       pitchButton: "#save-pitch"
@@ -95,6 +96,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: @model
       @showChildView 'wechatPitch', @wechatView
 
+      @campaignDetails = new Show.PitchCampaignDetails
+        model: @model
+      @showChildView 'campaignDetails', @campaignDetails
+
 
       #if wechat.length > 0
       #  wechatTargetsView = new Show.WeChatTargets
@@ -108,9 +113,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     pitchButtonClicked: (e) ->
       e.preventDefault()
       form = @emailView.$el.find('#email_pitch_form')
-      if form != undefined
+      details_form = @campaignDetails.$el.find('#details_form')
+      if form != undefined and details_form != undefined
         form.data('formValidation').validate()
-        if form.data('formValidation').isValid()
+        details_form.data('formValidation').validate()
+        if form.data('formValidation').isValid() && details_form.data('formValidation').isValid()
+          @model.set('budget', @campaignDetails.$el.find('#budget').val())
+          @model.set('content_type', @campaignDetails.$el.find('#content_type').val())
           @model.save {},
             success: (m) ->
               location.href = '/#smart_campaign'
@@ -119,3 +128,4 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                 $.growl("Campaign can not be updated!", {type: "danger"})
               else
                 $.growl("Campaign can not be created!", {type: "danger"})
+

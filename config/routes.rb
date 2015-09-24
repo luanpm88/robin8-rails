@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   get '/kols/suggest_categories' => 'kols#suggest_categories'
   get '/kols/suggest' => 'kols#suggest_kols'
   get '/kols/get_attachments' => 'kols#get_attachments'
+  get '/kols/get_categories_labels' => 'kols#categories_labels'
 
   resources :posts do
     put 'update_social', on: :member
@@ -163,6 +164,7 @@ Rails.application.routes.draw do
   post 'campaign/:id/article/:article_id/comments', to: 'campaign#create_article_comment'
   post 'campaign/:id/article/:article_id/wechat_performance', to: 'campaign#create_wechat_performance'
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
+  post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
   post 'campaign/:id/article/:article_id/approve', to: 'campaign#approve_article'
   post 'campaign/add_budget', to: 'campaign#add_budget'
   post 'campaign/get_counter', to: 'campaign#get_counter'

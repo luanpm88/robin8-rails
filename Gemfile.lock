@@ -408,6 +408,7 @@ GEM
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-chance (0.7.6)
+    rails-assets-d3 (3.5.6)
     rails-assets-datatables (1.10.8)
       rails-assets-jquery (>= 1.7.0)
     rails-assets-datatables-tabletools (2.2.4)
@@ -424,6 +425,8 @@ GEM
       rails-assets-jquery (>= 1.9.0)
     rails-assets-jquery-highlighttextarea (3.1.0)
       rails-assets-jquery (> 1.9)
+    rails-assets-jquery-knob (1.2.11)
+      rails-assets-jquery (>= 1.7.0)
     rails-assets-jquery.caret (1.5.2)
     rails-assets-jquery.dotdotdot (1.7.4)
       rails-assets-jquery (>= 1.4.3)
@@ -689,6 +692,7 @@ DEPENDENCIES
   rails-assets-bootstrap-validator!
   rails-assets-bootstrap.growl (= 2.0.1)!
   rails-assets-chance!
+  rails-assets-d3!
   rails-assets-datatables!
   rails-assets-datatables-tabletools!
   rails-assets-datejs!
@@ -697,6 +701,7 @@ DEPENDENCIES
   rails-assets-highcharts (= 4.1.1)!
   rails-assets-jquery-geocomplete!
   rails-assets-jquery-highlighttextarea!
+  rails-assets-jquery-knob!
   rails-assets-jquery.caret!
   rails-assets-jquery.dotdotdot!
   rails-assets-momentjs!
