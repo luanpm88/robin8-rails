@@ -90,31 +90,30 @@ class NewsRoomsController < ApplicationController
     else
       @news_room = NewsRoom.find params[:news_room_id]
     end
-    mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
-    domain = Rails.application.secrets.mailgun[:domain]
 
-    params[:start_date].nil? ? start_date = Date.today - 7.days : start_date = Date.parse(params[:start_date])
+    params[:start_date].nil? ? start_date = Date.today - 1.month : start_date = Date.parse(params[:start_date])
     params[:end_date].nil? ? end_date = Date.today : end_date = Date.parse(params[:end_date])
     end_date <= DateTime.now ? end_date = end_date : end_date = DateTime.now
     start_date <= end_date ? start_date = start_date : start_date = end_date
 
     begin
-      result_start = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats?start-date=#{start_date.strftime("%Y-%m-%d")}")
-      r = JSON.parse(result_start.body)
-      if end_date != Date.today
-        result_end = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats?start-date=#{end_date.strftime("%Y-%m-%d")}")
-        r_end = JSON.parse(result_end.body)
-        r['total'].each { |key, value| r['total'][key] = value - r_end['total'][key] }
-        puts r_end
-      end
-      result_on_opens = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=opened&begin=#{start_date}&end=#{end_date}")
-      result_on_dropped = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=dropped&begin=#{start_date}&end=#{end_date}")
+      r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
 
-      opens = JSON.parse(result_on_opens.body)
-      dropped = JSON.parse(result_on_dropped.body)
+      sent = MailgunEvent.where campaign_name: @news_room.campaign_name, event_type: 'accepted', event_time: start_date..(end_date + 1.day)
+      delivered = MailgunEvent.where campaign_name: @news_room.campaign_name, event_type: 'delivered', event_time: start_date..(end_date + 1.day)
+      opened = MailgunEvent.where campaign_name: @news_room.campaign_name, event_type: 'opened', event_time: start_date..(end_date + 1.day)
+      dropped = MailgunEvent.where campaign_name: @news_room.campaign_name, event_type: 'failed', event_time: start_date..(end_date + 1.day)
 
-      emails = opens.map{ |o| o['recipient'] }
-      emails_dropped = dropped.map{ |o| o['recipient'] }
+      r[:total][:sent] = sent.length
+      r[:total][:delivered] = delivered.length
+      r[:total][:opened] = opened.length
+      r[:total][:dropped] = dropped.length
+
+      emails = []
+      emails_dropped = []
+
+      opened.each { |event| emails << event.recipient }
+      dropped.each { |event| emails_dropped << event.recipient }
 
       query = (emails.blank? ? nil : 'emails[]=' + emails.map{|e| URI.encode_www_form_component(e)}.join('&emails[]='))
       query_dropped = (emails_dropped.blank? ? nil : 'emails[]=' + emails_dropped.map{|e| URI.encode_www_form_component(e)}.join('&emails[]='))

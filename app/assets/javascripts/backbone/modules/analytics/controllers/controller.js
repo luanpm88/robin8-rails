@@ -24,7 +24,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       });
       module.layout.webAnalyticsRegion.show(webAnalyticsPageView);
 
-      $('#start-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', "-1w");
+      $('#start-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', "-1m");
       $('#end-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', new Date());
 
       webAnalyticsPageView.renderAnalytics();
@@ -82,7 +82,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       
       module.layout.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
 
-      $('#start-email-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', "-1w");
+      $('#start-email-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', "-1m");
       $('#end-email-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', new Date());
 
       emailsAnalyticsPageView.renderEmailAnalytics();

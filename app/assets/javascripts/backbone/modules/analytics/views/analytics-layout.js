@@ -55,7 +55,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var itemId = target.val();
 
       if (target.hasClass('change-emails-release') && itemId != 0) {
-        params = '?type=release';
+        params = '&type=release';
         release = true;
         emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
           collection: new Robin.Collections.Releases()
@@ -85,15 +85,15 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
       $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
 
-      if (release) {
-        emailsAnalyticsPageView.renderEmailAnalytics(itemId, 'release');
-      } else {
-        emailsAnalyticsPageView.renderEmailAnalytics(itemId);
-      }
+      var collectionEmails = new Robin.Collections.EmailAnalytics();
+
+      var start = new Date($('#start-email-date-input').val());
+      var end = new Date($('#end-email-date-input').val());
+
 
       var collectionEmails = new Robin.Collections.EmailAnalytics();
       collectionEmails.fetch({
-        url: '/news_rooms/' + itemId +'/email_analytics' + params,
+        url: '/news_rooms/' + event_val +'/email_analytics/' + '?start_date=' + start + '&end_date=' + end,
 
         success: function(collection, data, response){
           var collection = new Robin.Collections.EmailAnalytics(data.authors);
