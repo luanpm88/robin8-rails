@@ -15,7 +15,6 @@
 //= require jquery_ujs
 //= require uploadcare
 //= require jquery-ui
-//= require ./lib/radarchart
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
 //= require progressjs
@@ -55,11 +54,14 @@
 //= require spinjs/jquery.spin.js
 //= require jquery-highlighttextarea
 //= require ./lib/icheck
+//= require ./lib/crs.min
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
 //= require datejs
 //= require d3
 //= require jquery-knob
+//= require bootstrap-validator
+//= require ./lib/radarchart
 
 //= require_tree ./backbone/config
 //= require backbone/init-kol

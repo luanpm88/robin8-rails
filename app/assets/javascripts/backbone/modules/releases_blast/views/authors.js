@@ -472,7 +472,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       var csvObject = [];
       var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){
-        return item.get('origin') === 'pressr'
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
@@ -730,7 +729,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
 
       var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){
-        return (item.get('origin') === 'pressr');
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
