@@ -90,7 +90,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       if @model.attributes.avatar_url
         $("#avatar-image").attr('src', @model.attributes.avatar_url)
 
-      viewObj = this;
+      viewObj = this
       this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete( (info) ->
         console.log(info.cdnUrl)
         $("#avatar-image").attr('src', info.cdnUrl)
