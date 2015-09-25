@@ -21,6 +21,23 @@ class RobinApiController < ApplicationController
       []
     end
     authors = authors.sort_by { |v| v[:level_of_interest]}.reverse
+
+    authors = authors.each_with_index.inject([]) do |memo, item|
+      # this is used to merge adjacent authors when
+      # one of them has email and the other one has not
+      author, index = item
+      if index != 0 && author[:first_name] == memo.last[:first_name] &&
+          author[:last_name] == memo.last[:last_name]
+        email = author[:email].blank? ? memo.last[:email] : author[:email]
+        memo.last[:blog_names] << author[:blog_names]
+        memo.last[:blog_names].flatten!.uniq!
+        memo.last[:email] = email
+      else
+        memo << author
+      end
+      memo
+    end
+
     render json: authors
   end
 
@@ -144,24 +161,7 @@ class RobinApiController < ApplicationController
       end
       memo
     end
-    uniq_authors = uniq_authors.values.sort{ |x, y| x[:index] <=> y[:index] }#[0...100]
-
-    uniq_authors.each_with_index.inject([]) do |memo, item|
-      # this is used to merge adjacent authors when
-      # one of them has email and the other one has not
-      author, index = item
-      if index != 0 && author[:first_name] == memo.last[:first_name] &&
-          author[:last_name] == memo.last[:last_name]
-        email = author[:email].blank? ? memo.last[:email] : author[:email]
-        memo.last[:blog_names] << author[:blog_name]
-        memo.last[:blog_names].uniq!
-        memo.last[:email] = email
-      else
-        memo << author
-      end
-      memo
-    end
-
+    uniq_authors.values.sort{ |x, y| x[:index] <=> y[:index] }#[0...100]
   end
 
   def calculate_max_min(author_name)
