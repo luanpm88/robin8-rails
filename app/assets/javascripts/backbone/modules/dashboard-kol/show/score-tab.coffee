@@ -85,18 +85,18 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       RadarChart.draw(el[0], d, mycfg)
 
-      if self.model.attributes.avatar_url
-        $("#avatar-image").attr('src', self.model.attributes.avatar_url)
+      #this.widget.validators.push(this.maxFileSize(3145728))
 
-      viewObj = self;
-      self.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete( (info) ->
+    onShow: () ->
+      if @model.attributes.avatar_url
+        $("#avatar-image").attr('src', @model.attributes.avatar_url)
+
+      viewObj = this;
+      this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete( (info) ->
         console.log(info.cdnUrl)
         $("#avatar-image").attr('src', info.cdnUrl)
         viewObj.model.set({avatar_url: info.cdnUrl})
       )
-
-      #this.widget.validators.push(this.maxFileSize(3145728))
-
 
     initFormValidation: () ->
       @ui.form.formValidation(
