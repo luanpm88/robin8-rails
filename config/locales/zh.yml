@@ -329,6 +329,7 @@ zh:
       new_newsroom_button: "新建内容库"
       new_release_button: "发布新的文章"
       new_smartrelease_button: "智能发布"
+      not_invited: You are not invited to any campaigns yet.
       not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
       status: "状态"
       title: "主界面"
@@ -431,8 +432,8 @@ zh:
         tables_title2: My Value
         tables_title3: and ways I'm open to monetize it
         title: My Value
-        vsmonth: vs last month
-        youbeat: You beat {beat}% people!
+        vsmonth: "%{per} vs last month"
+        youbeat: You beat %{per} people!
     date:
       datepicker_days:
         d1: "星期天"

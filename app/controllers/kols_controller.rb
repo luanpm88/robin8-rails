@@ -26,6 +26,19 @@ class KolsController < ApplicationController
     end
   end
 
+  def update_monetize
+    @kol = current_kol
+
+
+    #@kol.update(params)
+
+    if @kol.update(monetize_params)
+      render json: @kol, status: :ok
+    else
+      render :json => {error: "Something went wrong!"}, status: 422
+    end
+  end
+
   def suggest_categories
     filter = params[:f]
     filter = "" if filter == nil
@@ -97,6 +110,10 @@ class KolsController < ApplicationController
 
   def kol_params
     params.require(:kol).permit(:first_name,:last_name,:email,:password,:location,:is_public,:bank_account,:interests, :mobile_number)
+  end
+
+  def monetize_params
+    params.permit(:avatar_url, :monetize_interested_all, :monetize_interested_post, :monetize_interested_create, :monetize_interested_share, :monetize_interested_review, :monetize_interested_speech, :monetize_interested_event, :monetize_interested_focus, :monetize_interested_party, :monetize_interested_endorsements, :monetize_post, :monetize_post_weibo, :monetize_post_personal, :monetize_post_public1st, :monetize_post_public2nd, :monetize_create, :monetize_create_weibo, :monetize_create_personal, :monetize_create_public1st, :monetize_create_public2nd, :monetize_share, :monetize_share_weibo, :monetize_share_personal, :monetize_share_public1st, :monetize_share_public2nd, :monetize_review, :monetize_review_weibo, :monetize_review_personal, :monetize_review_public1st, :monetize_review_public2nd, :monetize_speech, :monetize_speech_weibo, :monetize_speech_personal, :monetize_speech_public1st, :monetize_speech_public2nd, :monetize_event, :monetize_focus, :monetize_party, :monetize_endorsements)
   end
 
 end

@@ -1,7 +1,7 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
   target =
-    ages: ['<12', '12-18', '12-25', '25-35', '35-45', '45-55', '>55']
+    ages: ['<12', '12-18', '18-25', '25-35', '35-45', '45-55', '>55']
     regions: ['east', 'north', 'northeast', 'south', 'west', 'central']
     mf: ['80:20', '60:40', '50:50', '40:60', '20:80']
     industries: ['Industry1', 'Industry2 ', 'Industry3',
@@ -49,6 +49,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @model = new Robin.Models.KolProfile App.currentKOL.attributes
       @model_binder = new Backbone.ModelBinder()
       @initial_attrs = @model.toJSON()
+      @parent_view = opts.parent
 
     onRender: ->
       @model_binder.bind @model, @el
@@ -57,6 +58,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @showChildView 'social', @social_view
       @initSelect2()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')  # I❤js
+      _.defer -> crs.init()
 
     initSelect2: ->
       @ui.industry.select2
@@ -106,6 +108,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (m, r) =>
           @initial_attrs = m.toJSON()
           $.growl "You profile was saved successfully", {type: "success"}
+          @parent_view?.score()
         error: (m, r) =>
           console.log "Error saving KOL profile. Response is:"
           console.log r

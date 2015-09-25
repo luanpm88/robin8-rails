@@ -11,33 +11,24 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       score: '#score-link'
       campaigns: '#campaigns-link'
 
-    events:
-      "click @ui.profile": "profile"
-      "click @ui.score": "score"
-      "click @ui.campaigns": "campaigns"
-
     initialize: (options) ->
       @options = options
       @_states = ['profile', 'score', 'campaigns']
       @empty = false
-      @state = @options.state or 'profile'
+      @state = @options.state or 'campaigns'
       if not @model?
         @model = new Robin.Models.KOL()
         if not @data?
           @data = []
         @empty = true
-        @state = 'profile'
 
     setState: (s) ->
       return if not @canSetState s
-
       @state = s
-
       viewClass = switch s
         when 'profile' then Show.ProfileTab
         when 'score' then Show.ScoreTab
         when 'campaigns' then Show.CampaignsTab
-
       @view = new viewClass
         model: @model
         data: @data
@@ -46,11 +37,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       _.all @_states, (tab) =>
         @ui[tab].addClass 'active colored'
         tab != s
-
       @showChildView 'content', @view
+      _.defer =>
+        $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active')
+        if @state == "campaigns"
+          $('#nav-campaigns').parent().addClass('active')
+        if @state == "profile"
+          $('#nav-sidebar-profile').parent().addClass('active')
 
     canSetState: (s) ->
-      return true
       s in @_states
 
     onRender: () ->
