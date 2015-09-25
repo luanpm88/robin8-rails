@@ -20,7 +20,7 @@
     </a>
     <div class="caption text-center">
       <h3 class="ellipsis-truncate"><a href="<%- publicLink %>" target="_blank"><%= release.title %></a></h3>
-      <small class="truncate"><i class="fa fa-clock-o"></i> <%= moment(release.published_at).format("DD MMM YY") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name.normalizeRSpace(55) : '' %></strong></small>
+      <small class="truncate"><i class="fa fa-clock-o"></i> <%= moment(release.published_at).format("DD MMM YY hh:mm A") %> &nbsp;&nbsp; <i class="fa fa-building"></i> <strong><%= release.news_room ? release.news_room.company_name.normalizeRSpace(55) : '' %></strong></small>
       <div class="release-title">
         <% if (release.text_html) { %>
           <%= release.text_html %>

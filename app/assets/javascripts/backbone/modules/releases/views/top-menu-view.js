@@ -229,22 +229,22 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
 
-      var date = moment(this.model.get('published_at')).toDate();
-      var datedate = moment(date).format('MM/DD/YYYY');
+      var date = moment(this.model.get('formamtted_published_at')).toDate();
+      var datedate = moment(date).format('MM/DD/YYYY hh:mm A');
       this.$el.find('#release-date-input').val(datedate).change();
-      this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
 
-      this.$el.find('#myprgenie_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#myprgenie_date_input').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
       this.$el.find('#myprgenie_date_input').on('dp.change', function(e) {
         $('#releaseForm').formValidation('revalidateField', 'myprgenie_published_at');
       });
 
-      this.$el.find('#accesswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#accesswire_date_input').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
       this.$el.find('#accesswire_date_input').on('dp.change', function(e) {
         $('#releaseForm').formValidation('revalidateField', 'accesswire_published_at');
       });
 
-      this.$el.find('#prnewswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#prnewswire_date_input').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
       this.$el.find('#prnewswire_date_input').on('dp.change', function(e) {
         $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
       });
@@ -614,9 +614,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                   }
 
                   if( $('.myprgenie-checkbox').is(':checked') ) {
-                    var now = moment().format("MM/DD/YYYY");
+                    var now = moment().format("MM/DD/YYYY hh:mm A");
                     var myDate = new Date($('#myprgenie_date_input').val());
-                    var myDate = moment($('#myprgenie_date_input').val(), 'MM/DD/YYYY')._i;
+                    var myDate = moment($('#myprgenie_date_input').val(), 'MM/DD/YYYY hh:mm A')._i;
                     if(myDate < now){
                       return false;
                     }
@@ -640,9 +640,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                   }
 
                   if( $('.accesswire-checkbox').is(':checked') ) {
-                    var now = moment().format("MM/DD/YYYY");
+                    var now = moment().format("MM/DD/YYYY hh:mm A");
                     var myDate = new Date($('#accesswire_date_input').val());
-                    var myDate = moment($('#accesswire_date_input').val(), 'MM/DD/YYYY')._i;
+                    var myDate = moment($('#accesswire_date_input').val(), 'MM/DD/YYYY hh:mm A')._i;
                     if(myDate < now){
                       return false;
                     }
@@ -666,9 +666,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                   }
 
                   if( $('.prnewswire-checkbox').is(':checked') ) {
-                    var now = moment().format("MM/DD/YYYY");
+                    var now = moment().format("MM/DD/YYYY hh:mm A");
                     var myDate = new Date($('#prnewswire_date_input').val());
-                    var myDate = moment($('#prnewswire_date_input').val(), 'MM/DD/YYYY')._i;
+                    var myDate = moment($('#prnewswire_date_input').val(), 'MM/DD/YYYY hh:mm A')._i;
                     if(myDate < now){
                       return false;
                     }
@@ -733,10 +733,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           this.$el.find('#save_release').prop("disabled",true);
           this.$el.find('#smart_release').prop("disabled",true);
 
-          this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
-          this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
-          this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
-          this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY').format('LL');
+          this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+          this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+          this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+          this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
 
           this.model.save(viewObj.model.attributes, {
             success: function(model, data, response){
@@ -779,10 +779,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.$el.find('#save_release').prop("disabled",true);
         this.$el.find('#smart_release').prop("disabled",true);
 
-        this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
-        this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
-        this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
-        this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+        this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY hh:mm A ').format('LLL');
+        this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+        this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){

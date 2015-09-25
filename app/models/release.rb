@@ -147,9 +147,9 @@ class Release < ActiveRecord::Base
     publicSuffix = (news_room.id && news_room.publish_on_website && !is_private) ? "" : "-preview"
     publicLink = "http://" + news_room.subdomain_name + publicSuffix + "." + Rails.application.secrets.host + "/releases/" + slug
 
-    myprgenie_publish = myprgenie_published_at.strftime('%m/%d/%Y') if myprgenie_published_at
-    accesswire_publish = accesswire_published_at.strftime('%m/%d/%Y') if accesswire_published_at
-    prnewswire_publish = prnewswire_published_at.strftime('%m/%d/%Y') if prnewswire_published_at
+    myprgenie_publish = myprgenie_published_at.strftime('%m/%d/%Y %H:%M:%S') if myprgenie_published_at
+    accesswire_publish = accesswire_published_at.strftime('%m/%d/%Y %H:%M:%S') if accesswire_published_at
+    prnewswire_publish = prnewswire_published_at.strftime('%m/%d/%Y %H:%M:%S') if prnewswire_published_at
 
     if (myprgenie_) || (accesswire_) || (prnewswire_)
       UserMailer.newswire_support(myprgenie_, accesswire_, prnewswire_, title, text, myprgenie_publish, accesswire_publish, prnewswire_publish, publicLink).deliver

@@ -1,5 +1,5 @@
 class ReleaseSerializer < ActiveModel::Serializer
-  attributes :id, :user_id, :news_room_id, 
+  attributes :id, :user_id, :news_room_id,
     :news_room, :title, :text, :published_at, :formamtted_published_at,
     :is_private, :logo_url, :thumbnail, :created_at,
     :characters_count, :words_count, :sentences_count,
@@ -13,7 +13,7 @@ class ReleaseSerializer < ActiveModel::Serializer
 
   has_many :attachments
   has_one :news_room
-  
+
   def concepts
     unless object.concepts.blank?
       JSON.parse(object.concepts)
@@ -23,21 +23,21 @@ class ReleaseSerializer < ActiveModel::Serializer
   end
 
   def formamtted_published_at
-    object.published_at.strftime('%m\%d\%Y') unless object.published_at.nil? 
+    object.published_at.strftime('%m/%d/%Y %H:%M:%S') unless object.published_at.nil?
   end
 
   def myprgenie_published_at
-    object.myprgenie_published_at.strftime('%m/%d/%Y') unless object.myprgenie_published_at.nil? 
+    object.myprgenie_published_at.strftime('%m/%d/%Y %H:%M:%S') unless object.myprgenie_published_at.nil?
   end
-  
+
   def accesswire_published_at
-    object.accesswire_published_at.strftime('%m/%d/%Y') unless object.accesswire_published_at.nil? 
+    object.accesswire_published_at.strftime('%m/%d/%Y %H:%M:%S') unless object.accesswire_published_at.nil?
   end
-  
+
   def prnewswire_published_at
-    object.prnewswire_published_at.strftime('%m/%d/%Y') unless object.prnewswire_published_at.nil? 
+    object.prnewswire_published_at.strftime('%m/%d/%Y %H:%M:%S') unless object.prnewswire_published_at.nil?
   end
-  
+
   def iptc_categories
     unless object.iptc_categories.blank?
       JSON.parse(object.iptc_categories)
@@ -45,7 +45,7 @@ class ReleaseSerializer < ActiveModel::Serializer
       []
     end
   end
-  
+
   def summaries
     unless object.summaries.blank?
       JSON.parse(object.summaries)
@@ -53,7 +53,7 @@ class ReleaseSerializer < ActiveModel::Serializer
       []
     end
   end
-  
+
   def hashtags
     unless object.hashtags.blank?
       JSON.parse(object.hashtags)
@@ -61,15 +61,15 @@ class ReleaseSerializer < ActiveModel::Serializer
       []
     end
   end
-  
+
   def average_characters_count_per_word
-    if !object.words_count.nil? && object.words_count != 0 
+    if !object.words_count.nil? && object.words_count != 0
       object.characters_count / object.words_count
     else
       0
     end
   end
-  
+
   def average_words_count_per_sentence
     if !object.sentences_count.nil? && object.sentences_count != 0
       object.words_count / object.sentences_count
