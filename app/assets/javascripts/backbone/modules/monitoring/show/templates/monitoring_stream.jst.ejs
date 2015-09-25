@@ -5,7 +5,7 @@
       <input type="text" class="form-control input-sm stream-input" id="topics-select" placeholder="Start typing to get suggestions...">
     </div>
     <div class="form-group">
-      <label for="blogs-select"><%= polyglot.t("monitoring.sources") %></label>
+      <label for="blogs-select"><%= polyglot.t("monitoring.outlets") %></label>
       <input type="text" class="form-control input-sm stream-input" id="blogs-select" placeholder="Start typing to get suggestions...">
     </div>
     <div class="form-group sort-by">
@@ -52,16 +52,16 @@
       <% if(stream.id) {%>
         <div class="form-group">
           <label for="stories-number"><%= polyglot.t("monitoring.number_of_stories") %></label>
-          <output style="color: white;" for="stories-number" 
+          <output style="color: white;" for="stories-number"
             id="stories-number" class="pull-right">10</output>
-          <input type=range class="form-control input-sm stories-number" 
+          <input type=range class="form-control input-sm stories-number"
             min=1 value=10 max=50 step=1 />
         </div>
-        
+
         <div class="form-group">
           <input type="checkbox" name="colorize-background" checked="checked"> Colorize background
         </div>
-  
+
         <div class="form-group">
           <label><%= polyglot.t("monitoring.format") %></label>
           <div class="ui-select">
@@ -71,7 +71,7 @@
             </select>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="daterange"><%= polyglot.t("monitoring.time_range") %></label>
           <div class='input-group'>
@@ -82,9 +82,9 @@
             </span>
           </div>
         </div>
-        
+
         <div class="pull-right form-group">
-          <button class="btn btn-success btn-sm" id="download-report" 
+          <button class="btn btn-success btn-sm" id="download-report"
             href="#"><i class="fa fa-download"></i> <%= polyglot.t("monitoring.download") %></button>
         </div>
       <% } else { %>
@@ -126,7 +126,7 @@
   </form>
 </div>
 <div class="stream-header">
-  <i class="fa fa-reorder grey"></i>  
+  <i class="fa fa-reorder grey"></i>
   <span class='editable' id='title' data-emptytext="..."><%= stream.name %></span>
   <button class="close pull-right delete-stream" data-toggle="tooltip" data-placement="left" title="<%= polyglot.t("monitoring.tooltips.delete_stream") %>">&times;</button>
   <button class="close pull-right settings-button" style="margin-top: -1px;" data-toggle="tooltip" data-placement="left" title="<%= polyglot.t("monitoring.tooltips.stream_settings") %>"><i class="fa fa-cog"></i></button>

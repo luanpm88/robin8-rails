@@ -565,13 +565,13 @@ en:
       new_updates: new updates
       no_news: There is no news
       number_of_stories: Number of stories
+      outlets: Outlets
       please_save: Please save stream first
       popularity: Popularity
       recency: Recency
       rss_link: Rss Link
       save: Save
       sort_by: Sort by
-      sources: Sources
       time_range: Time range
       tooltips:
         delete_stream: Delete Stream
