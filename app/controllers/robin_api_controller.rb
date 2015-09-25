@@ -64,6 +64,7 @@ class RobinApiController < ApplicationController
   end
 
   def author_stats
+    response = @client.author_stats id: params[:id]
 
     render json: response
   end
@@ -115,6 +116,7 @@ class RobinApiController < ApplicationController
     uniq_authors = authors.each_with_index.inject({}) do |memo, item|
       # group authors by email or by 'first_name+last_name' when email is empty
       value, index = item
+
       k = if value[:email].blank? then
             "#{value[:first_name]}_#{value[:last_name]}"
           else
@@ -140,7 +142,13 @@ class RobinApiController < ApplicationController
           verified: value[:verified],
           profile_url: value[:profile_url],
 	  level_of_interest: value[:level_of_interest]
+        }
+        memo[k] = new_author
+      end
+      memo
+    end
     uniq_authors = uniq_authors.values.sort{ |x, y| x[:index] <=> y[:index] }#[0...100]
+
     uniq_authors.each_with_index.inject([]) do |memo, item|
       # this is used to merge adjacent authors when
       # one of them has email and the other one has not
