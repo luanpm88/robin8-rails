@@ -49,6 +49,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @model = new Robin.Models.KolProfile App.currentKOL.attributes
       @model_binder = new Backbone.ModelBinder()
       @initial_attrs = @model.toJSON()
+      crs.init()
 
     onRender: ->
       @model_binder.bind @model, @el
