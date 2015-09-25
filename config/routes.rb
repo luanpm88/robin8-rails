@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   get 'users/get_current_user' => 'users#get_current_user'
   get 'users/get_active_subscription' => 'users#get_active_subscription'
   get 'users/private_kol' => 'users#get_private_kols'
-  post 'users/import_kols' => 'users#import_kols'
+  post 'users/import_kols' => 'kols_lists#create'
   post 'users/import_kol' => 'users#import_kol'
   get 'payments/apply_discount' => 'payments#apply_discount'
   delete '/users/disconnect_social' => 'users#disconnect_social'

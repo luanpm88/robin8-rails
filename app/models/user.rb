@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :features,:through => :user_features
 
   has_many :media_lists, dependent: :destroy
+  has_many :kols_lists, dependent: :destroy
   has_many :contacts, through: :media_lists
   has_many :pitches
   has_many :pitches_contacts, through: :pitches

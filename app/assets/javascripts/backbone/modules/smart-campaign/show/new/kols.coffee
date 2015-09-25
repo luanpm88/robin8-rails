@@ -33,8 +33,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         cache: false
         processData: false
         contentType: false
+        dataType: 'JSON'
         success: (res) =>
-          @collection.fetch()
+          console.log 'here'
+          console.log res
+          console.log @collection
+          #@collection.fetch()
           console.log @collection
 
           $.growl({message: polyglot.t('smart_campaign.kol.list_uploaded')
@@ -145,15 +149,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
   Show.KolsList = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/kols/kols_list'
-
-    templateHelpers:
-      active: (k) ->
-        if k.active then polyglot.t('smart_campaign.yes') else polyglot.t('smart_campaign.no')
-      categories: (k) ->
-        res = _(k.categories).map (c) ->
-          context = { label: c.label }
-          Show.KolCategoriesTemplate context
-        res.join ''
 
     ui:
       table: "#private_kols-table"
