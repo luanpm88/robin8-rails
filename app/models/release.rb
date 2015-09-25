@@ -161,9 +161,9 @@ class Release < ActiveRecord::Base
 
     if (news_room.id && news_room.publish_on_website) && ((myprgenie_) || (accesswire_) || (prnewswire_))
       selected_newswire = []
-      selected_newswire << ["Financial Content Distribution", myprgenie_published_at.strftime("%Y-%m-%d")] if myprgenie_
-      selected_newswire << ["Accesswire", accesswire_published_at.strftime("%Y-%m-%d")] if accesswire_
-      selected_newswire << ["PR Newswire", prnewswire_published_at.strftime("%Y-%m-%d")] if prnewswire_
+      selected_newswire << ["Financial Content Distribution", myprgenie_published_at.strftime("%Y-%m-%d %H:%M:%S")] if myprgenie_
+      selected_newswire << ["Accesswire", accesswire_published_at.strftime("%Y-%m-%d %H:%M:%S")] if accesswire_
+      selected_newswire << ["PR Newswire", prnewswire_published_at.strftime("%Y-%m-%d %H:%M:%S")] if prnewswire_
 
       link_to_release = "http://" + news_room.subdomain_name + "." + Rails.application.secrets.host + "/release/" + slug
 
