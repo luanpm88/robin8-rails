@@ -19,6 +19,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       'change @ui.male': 'changedMale'
       'change @ui.regions': 'changedRegions'
       'change @ui.content': 'changedContent'
+      'click #apply-filter': 'applyFilter'
 
     templateHelpers:
       categories: (k) ->
@@ -101,6 +102,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       .value()
 
     updateKols: (data) ->
+      @kols = []
       invited_kols = @invitedKols()
       @kols = _(data).map (k) ->
         if _.contains(invited_kols, k.id)
@@ -108,6 +110,44 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           k
         else
           k
+
+    applyFilter: () ->
+      channels = []
+      wechat_personal = ""
+      wechat_public = ""
+      $('input[id=icheckbox_flat]').each (index, value) ->
+        if $(this).is(':checked')
+          if $(this).attr('name') == 'wechat_personal'
+            wechat_personal = 'true'
+          else if $(this).attr('name') == 'wechat_public'
+            wechat_public = 'true'
+          else
+            channels.push $(this).attr('name')
+      ageFilter = []
+      $.each $('input[name=\'ageGroup\']:checked'), ->
+        ageFilter.push $(this).attr('id')
+      location = $('#locations').val()
+      contentFilter = []
+      $.each $('input[name=\'content\']:checked'), ->
+        contentFilter.push $(this).attr('id')
+      regions = []
+      $.each $('input[name=\'regions\']:checked'), ->
+        regions.push $(this).attr('id')
+      male = []
+      $.each $('input[name=\'male\']:checked'), ->
+        male.push $(this).attr('value')
+      categories = @model.model.get('iptc_categories')
+
+      $.get "/kols/suggest/", {channels: channels, ageFilter: ageFilter, location: location, contentFilter: contentFilter, regions: regions, male: male, categories: categories, wechat_personal: wechat_personal, wechat_public: wechat_public}, (data) =>
+        @updateKols data
+        @render()
+      if @model.model.get("kols")?
+        if @model.model.get("kols").length > 0
+          $('#next-step').removeAttr('disabled')
+      else if @model.model.get("weibo")?
+        if @model.model.get("weibo").length > 0
+          $('#next-step').removeAttr('disabled')
+
 
     selectKol: (e) ->
       target = $ e.currentTarget

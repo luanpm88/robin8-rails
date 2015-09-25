@@ -1259,6 +1259,7 @@ en:
       smart_campaign:
         pitch_step:
           button: Pitch!
+          execute: Execute campaign!
       smartcampaign: SmartCampaign
       start_step:
         analyze: Analyze

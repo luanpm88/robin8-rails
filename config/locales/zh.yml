@@ -1205,6 +1205,7 @@ zh:
       smart_campaign:
         pitch_step:
           button: "投递"
+          execute: Execute campaign!
       smartcampaign: "智能推广"
       start_step:
         analyze: "分析"
