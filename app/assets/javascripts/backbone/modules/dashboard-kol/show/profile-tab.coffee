@@ -1,7 +1,7 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
   target =
-    ages: ['<12', '12-18', '12-25', '25-35', '35-45', '45-55', '>55']
+    ages: ['<12', '12-18', '18-25', '25-35', '35-45', '45-55', '>55']
     regions: ['east', 'north', 'northeast', 'south', 'west', 'central']
     mf: ['80:20', '60:40', '50:50', '40:60', '20:80']
     industries: ['Industry1', 'Industry2 ', 'Industry3',
