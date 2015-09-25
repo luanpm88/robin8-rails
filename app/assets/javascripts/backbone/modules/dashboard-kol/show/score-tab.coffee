@@ -27,7 +27,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         @ui.form.data('formValidation').resetForm()
         @model_binder.copyViewValuesToModel()
         return if @model.toJSON() == @initial_attrs
-        @model.save @model.attributes,
+        @model.monetize @model.attributes,
           success: (m, r) =>
             @initial_attrs = m.toJSON()
             $.growl "You profile was saved successfully", {type: "success"}
@@ -71,11 +71,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         ]
       ]
       mycfg = {
-        w: 300,
+        w: 285,
         h: 150,
         maxValue: 100,
         levels: 1,
-        ExtraWidthX: 200
+        ExtraWidthX: 155
       }
 
 
