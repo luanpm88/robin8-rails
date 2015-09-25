@@ -21,7 +21,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       'click @ui.nextButton': 'openPitchTab'
       'select2-removed @ui.categoriesInput': 'removeCategory'
       'select2-selecting @ui.categoriesInput': 'addCategory'
-      'click #apply-filter': 'applyFilter'
 
     initialize: (options) ->
       @model = if @options.model? then @options.model else new Robin.Models.Campaign()
@@ -75,31 +74,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
             model: @model
           )
           @render()
-
-    applyFilter: () ->
-      data = {}
-      channels = []
-      $('input[id=icheckbox_flat]').each (index, value) ->
-        if $(this).is(':checked')
-          channels.push $(this).attr('name')
-      data['channels'] = channels
-      ageFilter = []
-      $.each $('input[name=\'ageGroup\']:checked'), ->
-        ageFilter.push $(this).attr('id')
-      data["age"] = ageFilter
-      data["location"] = $('#locations').val()
-      contentFilter = []
-      $.each $('input[name=\'content\']:checked'), ->
-        contentFilter.push $(this).attr('id')
-      data["content"] = contentFilter
-      regions = []
-      $.each $('input[name=\'regions\']:checked'), ->
-        regions.push $(this).attr('id')
-      data["regions"] = regions
-      male = []
-      $.each $('input[name=\'male\']:checked'), ->
-        male.push $(this).attr('id')
-      data["male"] = male
 
 
     onRender: () ->

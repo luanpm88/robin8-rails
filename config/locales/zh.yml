@@ -409,9 +409,30 @@ zh:
         weibo: Weibo
         west: West
       score_tab:
+        attend: Attend event (and post commentary)
+        calculated: Complete your profile to improve your score.
+        create_content: Create original content
+        endorsements: Endorsements
+        expected_price: Expected price for labor
+        focus: Focus group
         header: Your Score
-        tables_title: My Profile and Score
-        title: Your score
+        host: Host party (or event)
+        interested: Interested
+        interested_all: Interested All
+        offline: Offline
+        online: Online
+        post_content: Post pre-packaged content with personal comment
+        review: Post product review
+        set_price: Set price separately (overrides 'Expected price')
+        share: Re-share (pictures, articles, short post, videos)
+        social_score: Your Score
+        speech: Speech on presentation
+        tables_title: My Score
+        tables_title2: My Value
+        tables_title3: and ways I'm open to monetize it
+        title: My Value
+        vsmonth: vs last month
+        youbeat: You beat {beat}% people!
     date:
       datepicker_days:
         d1: "星期天"
@@ -1184,6 +1205,7 @@ zh:
       smart_campaign:
         pitch_step:
           button: "投递"
+          execute: Execute campaign!
       smartcampaign: "智能推广"
       start_step:
         analyze: "分析"

@@ -10,7 +10,6 @@
 
 var RadarChart = {
   draw: function(id, d, options){
-
     var cfg = {
       radius: 5,
       w: 600,
@@ -218,7 +217,5 @@ var RadarChart = {
       .style('opacity', 0)
       .style('font-family', 'sans-serif')
       .style('font-size', '13px');
-
-    alert('1');
   }
 };

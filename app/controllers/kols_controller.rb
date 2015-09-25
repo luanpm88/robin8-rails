@@ -63,11 +63,32 @@ class KolsController < ApplicationController
     if not categories.blank?
       kols = kols.includes(:iptc_categories).where :kol_categories => { :iptc_category_id => categories }
     end
-    if (not name.blank?)
+    unless name.blank?
       kols = kols.where('kols.first_name LIKE ? OR kols.last_name like ?', "%#{name}%", "%#{name}%")
     end
-    if (not location.blank?)
+    unless location.blank?
       kols = kols.where :location => location
+    end
+    unless params[:ageFilter].blank?
+      audience_age_groups = params[:ageFilter].join("|")
+      kols = kols.where("kols.audience_age_groups REGEXP ?", "#{audience_age_groups}")
+    end
+    unless params[:regions].blank?
+      regions = params[:regions].join("|")
+      kols = kols.where("kols.audience_regions REGEXP ?", "#{regions}")
+    end
+    unless params[:male].blank?
+      kols = kols.where(:audience_gender_ratio => params[:male])
+    end
+    unless params[:channels].blank?
+      channels = params[:channels].join("%")
+      kols = kols.joins(:identities).where("identities.provider LIKE ?", "%#{channels}%")
+    end
+    unless params[:wechat_personal].blank?
+      kols = kols.where("kols.wechat_personal_fans IS NOT NULL AND kols.wechat_personal_fans not like ''")
+    end
+    unless params[:wechat_public].blank?
+      kols = kols.where("kols.wechat_public_id IS NOT NULL AND kols.wechat_public_id not like ''")
     end
     render :json => kols.to_json(:methods => [:categories])
   end

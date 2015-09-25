@@ -50,15 +50,15 @@
       <div class="filter-group">
         <label class="filter-label"><%=polyglot.t('smart_campaign.targets_step.male')%>:<%=polyglot.t('smart_campaign.targets_step.female')%></label>
         <div class="age-group">
-          <input type="checkbox" name="male" value="80male" id="80">
+          <input type="checkbox" name="male" value="80:20" id="80male">
           <label class="radio-inline radio-btns" for="80male">80:20</label>
-          <input type="checkbox" name="male" value="60male" id="60">
+          <input type="checkbox" name="male" value="60:40" id="60male">
           <label class="radio-inline radio-btns" for="60male">60:40</label>
-          <input type="checkbox" name="male" value="50male" id="50">
+          <input type="checkbox" name="male" value="50:50" id="50male">
           <label class="radio-inline radio-btns" for="50male">50:50</label>
-          <input type="checkbox" name="male" value="40male" id="40">
+          <input type="checkbox" name="male" value="40:60" id="40male">
           <label class="radio-inline radio-btns" for="40male">40:60</label>
-          <input type="checkbox" name="male" value="20male" id="20">
+          <input type="checkbox" name="male" value="20:80" id="20male">
           <label class="radio-inline radio-btns" for="20male">20:80</label>
         </div>
       </div>
@@ -67,22 +67,22 @@
           <label class="filter-label"><%=polyglot.t('smart_campaign.targets_step.regions')%></label>
           <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="east"> <%=polyglot.t('smart_campaign.targets_step.east')%>
+              <input type="checkbox" name="regions" id="east"> <%=polyglot.t('smart_campaign.targets_step.east')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="north"> <%=polyglot.t('smart_campaign.targets_step.north')%>
+              <input type="checkbox" name="regions" id="north"> <%=polyglot.t('smart_campaign.targets_step.north')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="northeast"> <%=polyglot.t('smart_campaign.targets_step.northeast')%>
+              <input type="checkbox" name="regions" id="northeast"> <%=polyglot.t('smart_campaign.targets_step.northeast')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="south"> <%=polyglot.t('smart_campaign.targets_step.south')%>
+              <input type="checkbox" name="regions" id="south"> <%=polyglot.t('smart_campaign.targets_step.south')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="west"> <%=polyglot.t('smart_campaign.targets_step.west')%>
+              <input type="checkbox" name="regions" id="west"> <%=polyglot.t('smart_campaign.targets_step.west')%>
             </label>
             <label class="btn btn-primary filter-btn">
-              <input type="radio" name="regions" id="central"> <%=polyglot.t('smart_campaign.targets_step.central')%>
+              <input type="checkbox" name="regions" id="central"> <%=polyglot.t('smart_campaign.targets_step.central')%>
             </label>
           </div>
         </div>

@@ -139,7 +139,7 @@ body {
       margin-right: 15px;
     }
     .cell {
-      input[type=text] {
+      input[type=text], input[type=number], input[type=tel] {
         width: 100%;
         padding-left: 5px;
       }
