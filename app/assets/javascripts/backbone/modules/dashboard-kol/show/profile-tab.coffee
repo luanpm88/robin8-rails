@@ -40,16 +40,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       active: (key, index, kol) ->
         v = _.chain(kol[kol_fields_mapping[key]].split '|').map (x) ->
           x.trim()
-        .filter (x) ->
-          x != ""
-        .value()
+        .compact().value()
         return "active" if target[key][index] in v
         return ""
 
     initialize: (opts) ->
       @target = target
-      @model = App.currentKOL
+      @model = new Robin.Models.KolProfile App.currentKOL.attributes
       @model_binder = new Backbone.ModelBinder()
+      @initial_attrs = @model.toJSON()
 
     onRender: ->
       @model_binder.bind @model, @el
@@ -94,10 +93,21 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @model.set kol_fields_mapping[field], v
       set_multi_value 'ages'
       set_multi_value 'regions'
+      gender_ratio_i = _.find($("input[type=radio][name=mf]"), (el) -> el.checked).value.split('_')[1]
+      v = @target['mf'][gender_ratio_i]
+      @model.set kol_fields_mapping['mf'], v
 
     save: ->
       return if not @validate()
       @pickFields()
       @model_binder.copyViewValuesToModel()
-      window.debug_view = @
+      return if @model.toJSON() == @initial_attrs
+      @model.save @model.attributes,
+        success: (m, r) =>
+          @initial_attrs = m.toJSON()
+          $.growl "You profile was saved successfully", {type: "success"}
+        error: (m, r) =>
+          console.log "Error saving KOL profile. Response is:"
+          console.log r
+          $.growl "Can't save profile info", {type: "danger"}
 
