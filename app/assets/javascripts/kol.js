@@ -15,7 +15,6 @@
 //= require jquery_ujs
 //= require uploadcare
 //= require jquery-ui
-//= require ./lib/radarchart
 //= require bootstrap-sass
 //= require bootstrap-sweetalert
 //= require progressjs
@@ -62,6 +61,7 @@
 //= require d3
 //= require jquery-knob
 //= require bootstrap-validator
+//= require ./lib/radarchart
 
 //= require_tree ./backbone/config
 //= require backbone/init-kol

@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="col-md-4" style="height: 180px;">
-      <div id="graph-score2" style="position: absolute; top: 50px; left: 100px;"></div>
+      <div id="graph-score2" ></div>
     </div>
   </div>
 
@@ -62,7 +62,7 @@
       <span><%= polyglot.t('dashboard_kol.score_tab.online')%></span>
     </div>
     <div class="col-md-1 text-center cell" style="padding: 0px; padding-top: 5px;">
-      <input type="checkbox" id="post_interested_all">&nbsp;<span class="social"><%= polyglot.t('dashboard_kol.score_tab.interested_all')%></span>
+      <input type="checkbox" id="monetize_intrested_all" name="monetize_intrested_all">&nbsp;<span class="social"><%= polyglot.t('dashboard_kol.score_tab.interested_all')%></span>
     </div>
     <div class="col-md-3 text-center cell">
       &nbsp;
@@ -75,10 +75,10 @@
         <i class="fa fa-wechat"></i> <span class="social">Personal</span>
       </div>
       <div class="col-md-3 text-center">
-        <i class="fa fa-wechat"></i> <span class="social">Public</span>
+        <i class="fa fa-wechat"></i> <span class="social">Public 1st</span>
       </div>
       <div class="col-md-3 text-center">
-        <i class="fa fa-linkedin"></i> <span class="social">LinkedIn</span>
+        <i class="fa fa-wechat"></i> <span class="social">public 2nd</span>
       </div>
     </div>
   </div>
@@ -88,23 +88,23 @@
       <%= polyglot.t('dashboard_kol.score_tab.post_content')%>
     </div>
     <div class="col-md-1 text-center cell"  style="height: 45px;">
-      <input type="checkbox" id="post_interested">
+      <input type="checkbox" id="post_interested" name="monetize_intrested_post">
     </div>
     <div class="col-md-3 text-center cell"  style="height: 45px;">
-      <input type="number" id="post_price">
+      <input type="number" id="monetize_post" name="monetize_post">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="post_weibo" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 0px; padding-left: 0px;">
+        <input type="number" id="post_weibo" name="monetize_post_weibo" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="post_personal" style="width: 70px;">
+        <input type="number" id="post_personal" name="monetize_post_personal" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="post_public" style="width: 70px;">
+        <input type="number" id="post_public1st" name="monetize_post_public1st" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="post_linkedin" style="width: 70px;">
+        <input type="number" id="post_public2nd" name="monetize_post_public2nd" style="width: 70px;">
       </div>
     </div>
   </div>
@@ -113,23 +113,23 @@
       <%= polyglot.t('dashboard_kol.score_tab.create_content')%>
     </div>
     <div class="col-md-1 text-center cell">
-      <input type="checkbox" id="create_interested">
+      <input type="checkbox" id="create_interested" name="monetize_intrested_create">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="create_price">
+      <input type="number" id="create_price" name="monetize_create">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       <div class="col-md-3 text-center" style="padding-top: 5px;">
-        <input type="number" id="create_weibo" style="width: 70px;">
+        <input type="number" id="create_weibo" name="monetize_create_weibo" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center" style="padding-top: 5px;">
-        <input type="number" id="create_personal" style="width: 70px;">
+        <input type="number" id="create_personal" name="monetize_create_personal" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center" style="padding-top: 5px;">
-        <input type="number" id="create_public" style="width: 70px;">
+        <input type="number" id="create_public1st" name="monetize_create_public1st" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center" style="padding-top: 5px;">
-        <input type="number" id="create_linkedin" style="width: 70px;">
+        <input type="number" id="create_public2nd" name="monetize_create_public2nd" style="width: 70px;">
       </div>
     </div>
   </div>
@@ -138,23 +138,23 @@
       <%= polyglot.t('dashboard_kol.score_tab.share')%>
     </div>
     <div class="col-md-1 text-center cell"  style="height: 45px;">
-      <input type="checkbox" id="share_interested">
+      <input type="checkbox" id="share_interested" name="monetize_intrested_share">
     </div>
     <div class="col-md-3 text-center cell"  style="height: 45px;">
-      <input type="number" id="share_price">
+      <input type="number" id="share_price" name="monetize_share">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="share_weibo" style="width: 70px;">
+        <input type="number" id="share_weibo" name="monetize_share_weibo" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="share_personal" style="width: 70px;">
+        <input type="number" id="share_personal" name="monetize_share_personal" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="share_public" style="width: 70px;">
+        <input type="number" id="share_public1st" name="monetize_share_public1st" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="share_linkedin" style="width: 70px;">
+        <input type="number" id="share_public2nd" name="monetize_share_public2nd" style="width: 70px;">
       </div>
     </div>
   </div>
@@ -163,23 +163,23 @@
       <%= polyglot.t('dashboard_kol.score_tab.review')%>
     </div>
     <div class="col-md-1 text-center cell">
-      <input type="checkbox" id="review_interested">
+      <input type="checkbox" id="review_interested" name="monetize_intrested_review">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="review_price">
+      <input type="number" id="review_price" name="monetize_review">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="review_weibo" style="width: 70px;">
+        <input type="number" id="review_weibo" name="monetize_review_weibo" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="review_personal" style="width: 70px;">
+        <input type="number" id="review_personal" name="monetize_review_personal" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="review_public" style="width: 70px;">
+        <input type="number" id="review_public1st" name="monetize_review_public1st" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="review_linkedin" style="width: 70px;">
+        <input type="number" id="review_public2nd" name="monetize_review_public2nd" style="width: 70px;">
       </div>
     </div>
   </div>
@@ -188,23 +188,23 @@
       <%= polyglot.t('dashboard_kol.score_tab.speech')%>
     </div>
     <div class="col-md-1 text-center cell">
-      <input type="checkbox" id="speech_interested">
+      <input type="checkbox" id="speech_interested" name="monetize_intrested_speech">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="speech_price">
+      <input type="number" id="speech_price" name="monetize_speech">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="speech_weibo" style="width: 70px;">
+        <input type="number" id="speech_weibo" name="monetize_speech_weibo" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="speech_personal" style="width: 70px;">
+        <input type="number" id="speech_personal" name="monetize_speech_personal" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="speech_public" style="width: 70px;">
+        <input type="number" id="speech_public1st" name="monetize_speech_public1st" style="width: 70px;">
       </div>
       <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="speech_linkedin" style="width: 70px;">
+        <input type="number" id="speech_public2nd" name="monetize_speech_public2nd" style="width: 70px;">
       </div>
     </div>
   </div>
@@ -228,10 +228,10 @@
       <%= polyglot.t('dashboard_kol.score_tab.attend')%>
     </div>
     <div class="col-md-1 text-center cell" >
-      <input type="checkbox" id="attend_interested">
+      <input type="checkbox" id="attend_interested" name="monetize_intrested_event">
     </div>
     <div class="col-md-3 text-center cell" >
-      <input type="number" id="attend_price">
+      <input type="number" id="attend_price" name="monetize_event">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       &nbsp;
@@ -242,10 +242,10 @@
       <%= polyglot.t('dashboard_kol.score_tab.focus')%>
     </div>
     <div class="col-md-1 text-center cell">
-      <input type="checkbox" id="focus_interested">
+      <input type="checkbox" id="focus_interested" name="monetize_intrested_focus">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="focus_price">
+      <input type="number" id="focus_price" name="monetize_focus">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       &nbsp;
@@ -256,10 +256,10 @@
       <%= polyglot.t('dashboard_kol.score_tab.host')%>
     </div>
     <div class="col-md-1 text-center cell">
-      <input type="checkbox" id="host_interested">
+      <input type="checkbox" id="host_interested" name="monetize_intrested_party">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="host_price">
+      <input type="number" id="host_price" name="monetize_party">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       &nbsp;
@@ -270,10 +270,10 @@
       <%= polyglot.t('dashboard_kol.score_tab.endorsements')%>
     </div>
     <div class="col-md-1 text-center cell">
-      <input type="checkbox" id="endorsements_interested">
+      <input type="checkbox" id="endorsements_interested" name="monetize_intrested_endorsements">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="endorsements_price">
+      <input type="number" id="endorsements_price" name="monetize_endorsements">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       &nbsp;
@@ -287,12 +287,12 @@
   <div class="campaigns-tab-back">
     <div style="float: left; width: 45%;">
     <div class="dashboard-kol-tab-btn" style="float: right;">
-      <a id="back_to_score_btn" href="#"><%= polyglot.t('dashboard_kol.buttons.back') %></a>
+      <a id="back_to_profile_btn" href="#"><%= polyglot.t('dashboard_kol.buttons.back') %></a>
     </div>
     </div>
     <div style="float: right; width: 45%;">
     <div class="dashboard-kol-tab-btn" style="float: left;">
-      <a id="back_to_score_btn" href="#"><%= polyglot.t('dashboard_kol.buttons.next') %></a>
+      <a id="next_to_campaign_btn" href="#"><%= polyglot.t('dashboard_kol.buttons.next') %></a>
     </div>
       </div>
   </div>
