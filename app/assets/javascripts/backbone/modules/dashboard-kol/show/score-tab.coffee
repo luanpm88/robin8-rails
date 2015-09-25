@@ -38,16 +38,18 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     next: ->
       @save()
-      @options.parent.setState('campaigns')
+      @parent_view?.campaigns()
+
 
     back: ->
       @save()
-      @options.parent.setState('profile')
+      @parent_view?.profile()
 
     initialize: (opts) ->
       @model = new Robin.Models.KolProfile App.currentKOL.attributes
       @initial_attrs = @model.toJSON()
       @model_binder = new Backbone.ModelBinder()
+      @parent_view = opts.parent
 
     onRender: () ->
       @model_binder.bind @model, @el
