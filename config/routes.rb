@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
   get '/kols/new' => 'kols#create'
+  post '/kols/monetize' => 'kols#update_monetize'
 
   # kols
   devise_for :kols, controllers: {

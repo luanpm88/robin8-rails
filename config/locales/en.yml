@@ -328,6 +328,7 @@ en:
       new_newsroom_button: Create a Brand Gallery
       new_release_button: Publish New Content
       new_smartrelease_button: SmartContent
+      not_invited: You are not invited to any campaigns yet.
       not_invited_yet: Welcome to Robin8! You are not invited to any campaigns yet.
         Please <a href="#profile">update</a> your profile.
       status: Status
@@ -431,8 +432,8 @@ en:
         tables_title2: My Value
         tables_title3: and ways I'm open to monetize it
         title: My Value
-        vsmonth: vs last month
-        youbeat: You beat {beat}% people!
+        vsmonth: "%{per} vs last month"
+        youbeat: You beat %{per} people!
     date:
       datepicker_days:
         d1: Su
