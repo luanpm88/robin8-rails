@@ -49,6 +49,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @model = new Robin.Models.KolProfile App.currentKOL.attributes
       @model_binder = new Backbone.ModelBinder()
       @initial_attrs = @model.toJSON()
+      @parent_view = opts.parent
 
     onRender: ->
       @model_binder.bind @model, @el
@@ -107,6 +108,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (m, r) =>
           @initial_attrs = m.toJSON()
           $.growl "You profile was saved successfully", {type: "success"}
+          @parent_view?.score()
         error: (m, r) =>
           console.log "Error saving KOL profile. Response is:"
           console.log r

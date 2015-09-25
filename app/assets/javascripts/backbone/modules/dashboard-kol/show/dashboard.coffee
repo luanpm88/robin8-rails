@@ -11,11 +11,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       score: '#score-link'
       campaigns: '#campaigns-link'
 
-    events:
-      "click @ui.profile": "profile"
-      "click @ui.score": "score"
-      "click @ui.campaigns": "campaigns"
-
     initialize: (options) ->
       @options = options
       @_states = ['profile', 'score', 'campaigns']

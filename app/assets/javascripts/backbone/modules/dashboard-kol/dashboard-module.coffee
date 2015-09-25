@@ -1,10 +1,13 @@
-Robin.module "DashboardKol", (Dashboard, Robin, Backbone, Marionette, $, _)->
+Robin.module "DashboardKol", (DashboardKol, Robin, Backbone, Marionette, $, _)->
   @startWithParent = false
 
-  API =
-    showDashboardPage: ()->
-      Dashboard.Show.Controller.showDashboardPage()
+  DashboardKol.on 'start', ()->
+    $('#nav-dashboard').parent().addClass('active')
+    @controller = new DashboardKol.Show.Controller()
+    @router = new DashboardKol.Router
+      controller: @controller
+    @controller.showDashboardPage()
+    DashboardKol.history.loadUrl Backbone.history.fragment
 
-  Dashboard.on 'start', ()->
-      API.showDashboardPage()
-      $('#nav-dashboard').parent().addClass('active')
+  DashboardKol.on 'stop', () ->
+    @controller.destroy()
