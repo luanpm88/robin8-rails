@@ -426,8 +426,8 @@ en:
         tables_title2: My Value
         tables_title3: and ways I'm open to monetize it
         title: My Value
-        vsmonth: vs last month
-        youbeat: You beat {beat}% people!
+        vsmonth: "%{per} vs last month"
+        youbeat: You beat %{per} people!
     date:
       datepicker_days:
         d1: Su

@@ -39,7 +39,7 @@ var RadarChart = {
     var allAxis = (d[0].map(function(i, j){return i.axis}));
     var total = allAxis.length;
     var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
-    var Format = d3.format('%');
+    var Format = d3.format('');
     d3.select(id).select("svg").remove();
 
     var g = d3.select(id)
@@ -81,7 +81,7 @@ var RadarChart = {
         .attr("y", function(d){return levelFactor*(1-cfg.factor*Math.cos(0));})
         .attr("class", "legend")
         .style("font-family", "sans-serif")
-        .style("font-size", "10px")
+        .style("font-size", "8px")
         .attr("transform", "translate(" + (cfg.w/2-levelFactor + cfg.ToRight) + ", " + (cfg.h/2-levelFactor) + ")")
         .attr("fill", "#737373")
         .text(Format((j+1)*cfg.maxValue/cfg.levels));
@@ -108,7 +108,7 @@ var RadarChart = {
       .attr("class", "legend")
       .text(function(d){return d})
       .style("font-family", "sans-serif")
-      .style("font-size", "11px")
+      .style("font-size", "10px")
       .attr("text-anchor", "middle")
       .attr("dy", "1.5em")
       .attr("transform", function(d, i){return "translate(0, -10)"})
