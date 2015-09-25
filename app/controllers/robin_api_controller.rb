@@ -68,6 +68,7 @@ class RobinApiController < ApplicationController
 
   def authors
     params["per_page"] = 200
+    params["included_email"] = false
     response = @client.authors params
 
     authors_response = uniq_authors(response[:authors])

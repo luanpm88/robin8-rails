@@ -660,13 +660,13 @@ zh:
       new_updates: "新上传的"
       no_news: "没有新闻"
       number_of_stories: "故事数量"
+      outlets: Outlets
       please_save: "请先保存频道信息"
       popularity: "最受关注的"
       recency: "最新的"
       rss_link: RSS链接
       save: "保存"
       sort_by: "排序方式"
-      sources: "来源"
       time_range: "时间范围"
       tooltips:
         delete_stream: "删除新闻频道"
