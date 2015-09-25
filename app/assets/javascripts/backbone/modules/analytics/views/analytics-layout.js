@@ -85,6 +85,12 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
       $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
 
+      if (release) {
+        emailsAnalyticsPageView.renderEmailAnalytics(itemId, 'release');
+      } else {
+        emailsAnalyticsPageView.renderEmailAnalytics(itemId);
+      }
+
       var collectionEmails = new Robin.Collections.EmailAnalytics();
 
       var start = new Date($('#start-email-date-input').val());
