@@ -11,7 +11,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       'click @ui.next': 'next'
       'click @ui.back': 'back'
 
-
     templateHelpers: () ->
       vs: () ->
         polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "+25%" })
