@@ -1,0 +1,14 @@
+<form class="form" accept-charset="UTF-8" enctype="multipart/form-data" 
+  method="post" action="/kols_lists" data-remote="true">
+  <div class="form-group">
+    <label><%= polyglot.t("smart_release.targets_step.media_tab.add_list") %></label>
+    <div style="display: inline;" class="ui-select">
+      <select class="form-control">
+        <option value="-1"><%= polyglot.t("smart_campaign.targets_step.select_placeholder") %></option>
+        <% _(items).each(function(item){ %>
+          <option value="<%= item.attributes.id %>"><%= item.attributes.name %></option>
+        <% }); %>
+      </select>
+    </div>
+  </div>
+</form>

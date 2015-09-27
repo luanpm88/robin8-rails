@@ -16,6 +16,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       weiboRegion: "#targets-weibo"
       blogsRegion: "#targets-blogs"
       searchRegion: "#targets-search"
+      kolsListRegion: "#kolslist-upload"
 
     events:
       'click @ui.nextButton': 'openPitchTab'
@@ -33,6 +34,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       @search_view = new Show.SearchLayout(
         model: @model
       )
+      @kolslist_view = new Show.KolsListLayout(
+        model: @model
+      )
+
       #@wechat_view = new Show.TargetWechat()
 
 
@@ -57,7 +62,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           )
           @render()
 
-    addCategory: (e) ->
+    addCategory: (e) ->      
       iptc_categories = @model.get('iptc_categories')
       if iptc_categories.indexOf(e.val) < 0
         iptc_categories.push(e.val)
@@ -81,6 +86,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
       self = this
 
+      @showChildView 'kolsListRegion', @kolslist_view
       #@showChildView 'wechatRegion', @wechat_view
       @showChildView 'weiboRegion', @weibo_view
       @showChildView 'blogsRegion', @targets_view
@@ -153,7 +159,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         fields: categories: validators: callback:
           message: polyglot.t('smart_campaign.targets_step.choose_category')
           callback: (value, validator, $field) ->
-            options = validator.getFieldElements('categories').val()
+            options = $field.val()
             options2 = options.split(',')
             options2.length > 1
 

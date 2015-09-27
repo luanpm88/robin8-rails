@@ -1,24 +1,12 @@
 class KolsListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_kols_list, only: [:show, :edit, :update, :destroy]
 
-  # GET /kols_lists
-  # GET /media_lists.json
-  def index
-    @kols_lists = current_user.kols_lists.all
+  def get_contacts_list
+    @kols_lists = current_user.kols_lists.where('kols_lists.kols_count > 0')
 
-    respond_to do |format|
-      format.json
-    end
+    render json: @kols_lists.to_json(:include => [:kols_lists_contacts])
   end
 
-  # GET /kols_lists/1
-  # GET /kols_lists/1.json
-  def show
-  end
-
-  # POST /kols_lists
-  # POST /kols_lists.json
   def create
     contents = File.read(params[:private_kols_file].tempfile)
     detection = CharlockHolmes::EncodingDetector.detect(contents)
@@ -27,30 +15,49 @@ class KolsListsController < ApplicationController
       raise CSV::MalformedCSVError.new(@l.t('smart_campaign.kol.attach_invalid'))
     end
 
-    kols = []
-    added_kols = []
-    CSV.foreach(params[:private_kols_file].tempfile.path, encoding: detection[:ruby_encoding]) do |row|
-      row.reject! {|c| c.nil?}
-      if (row.size == 3) && (!row.any? { |col| col.strip.blank? }) && validate_email(row[2].strip)
-        parameters = {name: params[:private_kols_file].original_filename}
-        kols = current_user.kols_lists.new(parameters)
-        kols.contacts = KolsListsContact.create(email: contact[2].strip,
-            name: contact[0].strip << " " << contact[1].strip)
-        if status[1]
-          added_kols << status[1]
-        end
-        kols << row
+    @kols = []   
+    unless contents.blank?
+      parameters = {name: params[:private_kols_file].original_filename}
+      @kols = current_user.kols_lists.new(parameters)
+      @kols.save!
+    end
+
+    contacts = []
+    detection.each do |current|
+      begin
+        contacts = CSV.read params[:private_kols_file].tempfile, encoding: detection[:ruby_encoding]
+        break
+      rescue Exception
+        next
       end
     end
 
-    if kols.size == 0
+    kols_count = 0
+
+    @kols.kols_lists_contacts << contacts.inject([]) do |memo, contact|
+      contact.reject! {|c| c.nil?}
+      if (contact.size == 3) && !contact[0].strip.blank? &&
+        !contact[1].strip.blank? && validate_email(contact[2].strip)
+
+        new_contact = KolsListsContact.create(email: contact[2].strip,
+            name: contact[0].strip << " " << contact[1].strip, kols_list_id: @kols.id)
+        kols_count = kols_count + 1
+
+        memo << new_contact
+      end
+
+      memo
+    end
+
+    @kols.kols_count = kols_count
+    @kols.save!
+
+    if @kols.blank?
       raise CSV::MalformedCSVError.new(@l.t('smart_campaign.kol.attach_invalid'))
     end
-    if added_kols.length > 0
-      render json: added_kols
-    else
-      render json: status[0]
-    end
+
+    render json: @kols
+
   end
 
   def validate_email(url)
@@ -61,12 +68,10 @@ class KolsListsController < ApplicationController
     end
   end
 
-  # DELETE /kols_lists/1
-  # DELETE /kols_lists/1.json
-  def destroy
-    @kols_lists.destroy
+  def delete_kols_list
+    @kols_list = KolsList.find(params[:id])
+    @kols_list.destroy
     respond_to do |format|
-#      format.html { redirect_to kols_lists_url, notice: 'Media list was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

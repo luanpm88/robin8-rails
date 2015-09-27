@@ -1,3 +1,3 @@
 class KolsListsContact < ActiveRecord::Base
-  belongs_to :kols_list
+  belongs_to :kols_lists
 end

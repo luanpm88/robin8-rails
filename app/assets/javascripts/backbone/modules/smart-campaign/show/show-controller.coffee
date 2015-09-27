@@ -19,7 +19,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (c, r, o) ->
           kolsPage.showChildView 'influencersRegion', kols_view
 
-      kols_list = new Robin.Collections.PrivateKols()
+      kols_list = new Robin.Collections.KolsLists()
       kols_list_view = new Show.KolsList
         collection: kols_list
       kols_list.fetch

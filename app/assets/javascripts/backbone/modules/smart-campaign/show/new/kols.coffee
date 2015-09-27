@@ -15,6 +15,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       form: "#add_kol-form"
       tooltipFormatInfo: "[data-toggle=tooltip]"
       fileInput: "#private_kols_file"
+      
+    collectionEvents:
+      "add and reset add remove": "render"
 
     events:
       "click #invite_kols": "inviteKols"
@@ -22,10 +25,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       'click #add_kol': 'openModalDialog'
       "click @ui.add": "add"
 
-    collectionEvents:
-      "add and reset add remove": "render"
-
-    import_csv: () ->
+    import_csv: (e) ->
       $.ajax
         url: 'users/import_kols'
         type: 'POST'
@@ -35,11 +35,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         contentType: false
         dataType: 'JSON'
         success: (res) =>
-          console.log 'here'
-          console.log res
-          console.log @collection
-          #@collection.fetch()
-          console.log @collection
 
           $.growl({message: polyglot.t('smart_campaign.kol.list_uploaded')
           },{
@@ -50,12 +45,19 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           },{
             type: 'info'
           })
-          if res
-            res.forEach (email) ->
-              $.growl({message: email + polyglot.t('smart_campaign.kol.alredy_in_list')
-              },{
-                type: 'info'
-              })
+          if res.kols_count == 0
+            $.growl({message: polyglot.t('smart_campaign.kol.empty_list')
+            },{
+              type: 'danger'
+            })
+          else
+            kols_list = new Robin.Collections.KolsLists()
+            kols_list_view = new Show.KolsList
+              collection: kols_list
+            kols_list.fetch
+              success: (c, r, o) =>
+                @showChildView 'influencersListRegion', kols_list_view
+
         error: (res) ->
           if res && res.responseJSON
             errorField = _.keys(res.responseJSON)[0]
@@ -152,9 +154,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     ui:
       table: "#private_kols-table"
-
+      deleteButton: 'a.btn-danger'
+      
     collectionEvents:
       "add and reset add remove": "render"
+
+     events:
+      'click @ui.deleteButton': 'deleteButtonClicked'
 
     onRender: () ->
       @ui.table.DataTable
@@ -166,4 +172,41 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           paginate:
             previous: polyglot.t('smart_campaign.prev'),
             next: polyglot.t('smart_campaign.next')
+
+    templateHelpers:
+      count: (items) ->
+        c = 0
+        $(items).each(() ->
+          if this.invited == true
+            c = c + 1
+        )
+        return c
+
+    deleteButtonClicked: (e) ->
+      e.preventDefault()
+      target = $ e.currentTarget
+      kol_id = target.data 'list-id'
+      data = {}
+      data['id'] = kol_id
+      swal {
+        title: polyglot.t('smart_campaign.targets_step.delete_list')
+        type: 'error'
+        showCancelButton: true
+        confirmButtonClass: 'btn-danger'
+        confirmButtonText: polyglot.t('billing.cancel.yes')
+        cancelButtonText: polyglot.t('billing.cancel.no')
+      }, (isConfirm) =>
+        if isConfirm
+          $.ajax
+            type: 'DELETE'
+            url: '/users/delete_kols_list'
+            dataType: 'json'
+            data: data
+            success: () =>
+              kols_list = new Robin.Collections.KolsLists()
+              kols_list_view = new Show.KolsList
+                collection: kols_list
+              kols_list.fetch
+                success: (c, r, o) =>
+                  Robin.layouts.main.content.currentView.kols.currentView.influencersListRegion.show(kols_list_view)
 
