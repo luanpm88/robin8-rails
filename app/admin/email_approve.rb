@@ -45,6 +45,13 @@ ActiveAdmin.register EmailApprove do
     actions
   end
 
+  form do |f|
+    f.inputs "Edit Email Approve" do
+      f.input :email
+    end
+    f.actions
+  end
+
 end
 
 
