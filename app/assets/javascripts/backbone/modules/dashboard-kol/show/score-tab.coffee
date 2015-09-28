@@ -84,8 +84,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       RadarChart.draw(el[0], d, mycfg)
 
-      #this.widget.validators.push(this.maxFileSize(3145728))
-
     onShow: () ->
       if @model.attributes.avatar_url
         $("#avatar-image").attr('src', @model.attributes.avatar_url)

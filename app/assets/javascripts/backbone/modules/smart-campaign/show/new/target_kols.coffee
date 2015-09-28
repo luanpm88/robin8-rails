@@ -164,8 +164,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       $.each $('input[name=\'male\']:checked'), ->
         male.push $(this).attr('value')
       categories = @model.model.get('iptc_categories')
+      content_offline = ""
+      content_online = ""
+      $.each $('input[name=\'content\']:checked'), ->
+        if $(this).attr('id') == 'online'
+          content_online = 'true'
+        if $(this).attr('id') == 'offline'
+          content_offline = 'true'
 
-      $.get "/kols/suggest/", {channels: channels, ageFilter: ageFilter, location: location, contentFilter: contentFilter, regions: regions, male: male, categories: categories, wechat_personal: wechat_personal, wechat_public: wechat_public}, (data) =>
+      $.get "/kols/suggest/", {channels: channels, ageFilter: ageFilter, location: location, contentFilter: contentFilter, regions: regions, male: male, categories: categories, wechat_personal: wechat_personal, wechat_public: wechat_public, content_online:  content_online, content_offline:  content_offline}, (data) =>
         @updateKols data
         @render()
       if @model.model.get("kols")?
