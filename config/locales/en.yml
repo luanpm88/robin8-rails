@@ -1167,6 +1167,7 @@ en:
       kol:
         alredy_in_list: " already in your list"
         attach_invalid: Attachment content type is invalid
+        empty_list: Your list is empty!
         error: Error
         incorrect_ignored: All contacts in incorrect format will be ignored.
         list_uploaded: Your list has been successfully uploaded.
@@ -1190,6 +1191,7 @@ en:
       no_one_accepted: No one accepted your invitation yet.
       no_one_declined: No one declined your invitation.
       no_one_interested: Nobody was interested in this campaign.
+      no_uploaded: You haven't any uploaded lists.
       non_cash: Non-cash
       not_approved_yet: Not approved yet
       pending: Pending
@@ -1289,6 +1291,9 @@ en:
         content: Content
         couldnt_match_influencers: Couldn't match any influencers for you. Provivde
           more categories.
+        delete_contacts_from_campaign: Delete from campaign
+        delete_contacts_list: Delete this list
+        delete_list: Remove this influencers list?
         east: East
         email: Email
         enter_available_channels: Enters available channels
@@ -1309,6 +1314,7 @@ en:
         private: Private
         regions: Regions
         search: Search
+        select_placeholder: Select a Influencers List
         south: South
         topic: Topic
         wechat_personal: WeChat personal

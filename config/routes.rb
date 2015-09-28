@@ -27,10 +27,12 @@ Rails.application.routes.draw do
   post 'change_campaign_card_info' => 'blue_snap#update_campaign_card_info'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
+  delete '/users/delete_kols_list' => 'kols_lists#delete_kols_list'
   get 'users/get_current_user' => 'users#get_current_user'
   get 'users/get_active_subscription' => 'users#get_active_subscription'
   get 'users/private_kol' => 'users#get_private_kols'
-  post 'users/import_kols' => 'users#import_kols'
+  get 'users/kols_lists' => 'kols_lists#get_contacts_list'
+  post 'users/import_kols' => 'kols_lists#create'
   post 'users/import_kol' => 'users#import_kol'
   get 'payments/apply_discount' => 'payments#apply_discount'
   delete '/users/disconnect_social' => 'users#disconnect_social'
@@ -173,5 +175,6 @@ Rails.application.routes.draw do
   post 'campaign/test_email', to: 'campaign#test_email'
   resources :campaign_invite, only: [:index, :create, :show, :update]
   post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
+  resources :kols_lists, only: [:index, :create, :show, :update]
 
 end
