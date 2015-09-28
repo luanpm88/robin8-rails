@@ -208,12 +208,15 @@ zh:
       delivered: "送达"
       dropped: "下降"
       email: "电子邮件"
+      email_old_content: Sorry, no tracking for this release available
       emails: "电子邮件"
       filter_by: "筛选"
       newsrooms_views: "新闻中心访问量"
       opened: "开放"
       outlet: "媒体"
       page_views: "页面访问量"
+      select_all: All
+      select_content: Select Content
       sent: "发送"
       statisitcs: "智能发布邮件数据统计"
       values: "值"
@@ -474,9 +477,6 @@ zh:
       text14: "运用算法和机器学习技术，来推荐适合您的活动"
       text15: "帮助你估算影响力的价值并且赚钱"
       text16: "你知不知道你是一个社交达人？"
-      text17: Robin8 相信每一个人都是一个社交达人，都可以成为一个媒体。
-      text18: "欢迎来到人人共享的网络世界。随着社交媒体的流行，每一个人都有话语权和影响力。"
-      text19: Robin8 calculates your influence and estimates the value of your REACH.
       text17: ROBIN8 believes every person is an influencer and a media company.
       text18: Welcome to the internet for everyone. With the rise of social media,
         everyone has a voice and influence.
@@ -1145,8 +1145,8 @@ zh:
         email_missing_add: Add Email(s)
         email_missing_pitch: Pitch anyway!
         email_missing_text: There are no email addresses for some authors you've selected.<br/>You
-          may ignore authors without an email and send the pitch to rest.<br/>You may
-          also add the missing emails manually.
+          may ignore authors without an email and send the pitch to rest.<br/>You
+          may also add the missing emails manually.
         email_panel:
           email: "你的电子邮件地址"
           email_placeholder: "输入电子邮件地址"
@@ -1229,10 +1229,15 @@ zh:
           title: "大V"
         media_tab:
           add_list: "添加过去保存过的名单"
+          cancel: Cancel
           delete: "删除"
+          delete_from_pitch: Delete from pitch
+          delete_this_list: Delete this list
           formats: "支持文件格式"
           ignored_contacts: All contacts in incorrect format will be ignored.
           not_available: You don't have available media list in your subscription!
+          recover_unabled: You will not be able to recover this content.
+          remove_media_list: Remove this media list?
           select_placeholder: "选择一个媒体名单或者上传一个新的名单"
           successfully_uploaded: "您的列表已经成功上传。"
           table:
@@ -1297,7 +1302,7 @@ zh:
         connected_to: "已关联的"
         description: "使用Robin8来管理你的社交网络信息。请先关联你的社交账号，然后你就可以轻松的直接发布到或者计划发布到所关联的社交网络中"
         disconnect: "未关联的"
-        facebook: Facebbok
+        facebook: Facebook
         google: Google+
         linkedin: LinkedIn／领英
         no_accounts: "这个账户不存在"
