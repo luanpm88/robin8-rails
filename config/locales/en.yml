@@ -1200,6 +1200,7 @@ en:
         attend_event: Attend event
         budget_required: The budget is required
         button: Pitch!
+        created_success: Your campaign has been successfully created!
         deadline_required: The deadline is required
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to

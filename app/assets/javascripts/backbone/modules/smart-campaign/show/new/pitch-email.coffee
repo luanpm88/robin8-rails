@@ -122,16 +122,32 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
       insertLinkButton = @$el.find('#wyihtml5-insert-link').html()
       unLinkButton = @$el.find('#wyihtml5-unlink').html()
+      extractButtonTemplate = @$el.find('#wyihtml5-extract-button').html()
+      extractWordTemplate = @$el.find('#wyihtml5-word-button').html()
+      extractDirectImageTemplate = @$el.find('#wyihtml5-direct-image-button').html()
+      extractDirectVideoTemplate = @$el.find('#wyihtml5-direct-video-button').html()
       customTemplates =
         insert: (context) ->
           return insertLinkButton
         unlink: (context) ->
           return unLinkButton
+        extract: (context) ->
+          return extractButtonTemplate
+        word: (context) ->
+          return extractWordTemplate
+        directImage: (context) ->
+          return extractDirectImageTemplate
+        directVideo: (context) ->
+          return extractDirectVideoTemplate
 
       @ui.wysihtml5.wysihtml5(
         toolbar:
           insert: customTemplates.insert
-          unlink: customTemplates.unlink,
+          unlink: customTemplates.unlink
+          extract: customTemplates.extract
+          word: customTemplates.word
+          directImage: customTemplates.directImage
+          directVideo: customTemplates.directVideo
         parserRules: {
           tags: {
             "b":  {},
@@ -342,3 +358,141 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @editor.focus()
         @editor.composer.commands.exec("unlink")
       , 200)
+
+    uploadDirectImage: (e) ->
+      bookmark = @editor.composer.selection.getBookmark()
+      uploadcare.openDialog(null, {
+        tabs: 'file'
+        multiple: false
+        imagesOnly: true
+        }).done((file) ->
+            file.done((fileInfo) ->
+              @editor.composer.selection.setBookmark(bookmark)
+              @editor.focus()
+              @editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl})
+            )
+        ).fail((error, fileInfo) ->
+            console.log(error)
+        )
+      return false
+
+    uploadUrlImage: (e) ->
+      bookmark = @editor.composer.selection.getBookmark()
+      url = prompt("Please paste you image's url")
+      if url
+        $.get( "/releases/img_url_exist?url=" + url, ( data ) ->
+          if data
+            window.setTimeout(() ->
+              @editor.composer.selection.setBookmark(bookmark)
+              @editor.focus()
+              @editor.composer.commands.exec("insertImage", {src: url})
+            , 200)
+          else
+            $.growl
+              message: "Invalid url!"
+              type: "info"
+        )
+    uploadDirectVideo: (e) ->
+      bookmark = @editor.composer.selection.getBookmark()
+      uploadcare.openDialog(null, {
+        tabs: 'file'
+        inputAcceptTypes: 'video/*'
+        multiple: false
+        }).done((file) ->
+          file.done((fileInfo) ->
+            @editor.composer.selection.setBookmark(bookmark)
+            @editor.focus()
+            @editor.composer.commands.exec("insertHTML", "<video width="+550+" class='video-js vjs-default-skin' controls='auto' preload='auto' data-setup='{}'> <source src='" + fileInfo.originalUrl + "'></video>")
+          )
+        ).fail((error, fileInfo) ->
+          console.log(error);
+        )
+      return false;
+
+    uploadUrlVideo: (e) ->
+      bookmark = @editor.composer.selection.getBookmark()
+      url = prompt("Please paste you video's url")
+      if url
+        window.setTimeout(() ->
+          @editor.composer.selection.setBookmark(bookmark)
+          @editor.focus()
+          @editor.composer.commands.exec("insertVideo", url)
+        , 200)
+
+    uploadWord: (changeEvent) ->
+      self = this
+
+      formData = new FormData()
+      $input = $('#upload')
+
+      if (_.last($input[0].files[0].name.split('.')) != 'docx')
+        alert("Not supported file! Supported is *.docx")
+        $input.replaceWith($input.val('').clone(true))
+        return false
+
+      formData.append('file', $input[0].files[0])
+
+      $.ajax({
+        url: "/releases/extract_from_word"
+        data: formData
+        cache: false
+        contentType: false
+        processData: false
+        dataType: 'json'
+        type: 'POST'
+        complete: (response) ->
+          $.ajax({
+            url: 'textapi/extract'
+            dataType: 'json'
+            method: 'POST'
+            data:
+              html: response.responseText
+            success: (text) ->
+              self.parseResponseFromApi(text)
+          })
+      })
+
+    extractURL: (e) ->
+      url = prompt("Enter a link to grab the press release from:", "")
+      editor = @editor
+      if url
+        $.ajax({
+          url: 'textapi/extract'
+          dataType: 'json'
+          method: 'POST'
+          data:
+            url: url
+          ,
+          success: (response) ->
+            if response.article.length == 0
+              swal {
+                title: "Invalid link!"
+                text: "The link you've provided is invalid or the site it leads to contains no usable information"
+                type: "error"
+                showCancelButton: false
+                confirmButtonClass: 'btn'
+                confirmButtonText: 'ok'
+              }
+            else if (response.article.length > 60000)
+              swal {
+                title: "Provided release is too long"
+                text:"Target page contains a text that exceeds the release length limit. The maximum is 60.000 characters (including spaces)"
+                type: "error"
+                showCancelButton: false
+                confirmButtonClass: 'btn'
+                confirmButtonText: 'ok'
+              }
+            else
+              editor.setValue(response.article.replace(/(\r\n|\n\r|\r|\n)/g, '<br>'))
+            if response.article.length > 0
+              editor.setValue(response.article.replace(/(\r\n|\n\r|\r|\n)/g, '<br>'))
+            else
+              swal {
+                title: "Invalid link!"
+                text: "The link you've provided is invalid or the site it leads to contains no usable information"
+                type: "error"
+                showCancelButton: false
+                confirmButtonClass: 'btn'
+                confirmButtonText: 'ok'
+              }
+        })
