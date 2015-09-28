@@ -893,7 +893,7 @@ en:
       pressroom: Pressroom
       read_more: Read more
       social_media: Social Media
-      spokeperson: Spokeperson
+      spokeperson: Spokesperson
       what_is: What is
     public_release:
       notification: You are in a preview mode. You need to make this release and newsroom
@@ -1203,8 +1203,8 @@ en:
         email_missing_add: Add Email(s)
         email_missing_pitch: Pitch anyway!
         email_missing_text: There are no email addresses for some authors you've selected.<br/>You
-          may ignore authors without an email and send the pitch to rest.<br/>You may
-          also add the missing emails manually.
+          may ignore authors without an email and send the pitch to rest.<br/>You
+          may also add the missing emails manually.
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
@@ -1367,10 +1367,10 @@ en:
           Robin8 account to your social profiles so you can easily post or schedule
           your post (s) directly to your profiles with one click.
         disconnect: Disconnect
-        facebook: Facebbok
+        facebook: Facebook
         google: Google+
         linkedin: Linkedin
-        no_accounts: There is no accounts
+        no_accounts: There are no accounts
         note: "* for adding multiple accounts for one social network you should be
           signed out from this network in your browser"
         title: Manage Connected Social Profiles
