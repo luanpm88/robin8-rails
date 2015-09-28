@@ -28,7 +28,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       });
 
       this.webAnalyticsRegion.show(webAnalyticsPageView);
-      webAnalyticsPageView.renderAnalytics();
+      webAnalyticsPageView.renderAnalytics($(".change-web-news-room").val());
     },
 
     changeWebNewsRoom: function(event) {
