@@ -39,6 +39,146 @@ class Kol < ActiveRecord::Base
     not confirmed_at.nil?
   end
 
+  def stats
+    stat = Hash.new
+    stat[:total] = 0
+    stat[:channels] = 0
+    stat[:completeness] = 0
+    stat[:fans] = 0
+    stat[:content] = 0
+    stat[:engagement] = 0
+
+    accounts = 0
+    token, uid, token_secret = ""
+
+
+=begin
+    self.identities.each do |identity|
+      case identity.provider
+        when "weibo"
+          uid = identity.uid
+          token = identity.token
+          token_secret = identity.token_secret
+          accounts += 1
+        when "wechat"
+          accounts += 1
+        when "linkedin"
+          accounts += 1
+      end
+    end
+
+    if self.wechat_public_id != '' && self.wechat_public_name != ''
+      accounts += 1
+    end
+
+    case accounts
+      when 0
+        stat[:channels] = 0
+      when 1
+        stat[:channels] = 10
+      when 2
+        stat[:channels] = 15
+      when 3
+        stat[:channels] = 20
+      when 4
+        stat[:channels] = 25
+      else
+        stat[:channels] = 30
+    end
+
+    stat[:total] += stat[:channels]
+
+
+    client = Weibo2::Client.new
+    client.auth_code.authorize_url(:response_type => "token")
+    client = Weibo2::Client.from_hash(:access_token => token, :expires_in => 86400)
+
+
+      if client.is_authorized?
+
+        param = {}
+        param[:uid ] = uid
+
+
+
+        #valid
+        stat[:completeness] = 20
+
+        #completeness
+        response =  client.users.show(param).parsed
+        #has description
+        if response['description'] != ''
+          stat[:completeness] += 10
+        end
+
+        #has avatar
+        if response['profile_image_url'] != ''
+          stat[:completeness] += 10
+        end
+        stat[:total] += stat[:completeness]
+
+        #fans
+        fans =  response['followers_count'].to_i
+        friend = response['friends_count'].to_i
+
+        if fans > 1000 && friend > 100
+          stat[:fans] = 10
+          stat[:total] +=  10
+        end
+
+        #content & engagement
+        response =  client.statuses.user_timeline(param).parsed
+        current = Time.now
+        content = Hash.new
+        response['statuses'].each do |status|
+          date = Date.parse status['created_at']
+
+          if (current.month - date.month) <= 6
+            if !content[(current.month - date.month)].is_a?(Hash)
+              content[(current.month - date.month)] = Hash.new
+              content[(current.month - date.month)][:post] = 0
+              content[(current.month - date.month)][:repost] = 0
+            end
+
+            content[(current.month - date.month)][:post] +=  + 1
+            content[(current.month - date.month)][:repost] +=  status['reposts_count'] + status['comments_count']
+
+          end
+        end
+
+        post = true
+        repost = true
+
+        if content.length == 6
+          content.each do |content|
+            if content[:post] == 0
+              post = false
+            end
+
+            if content[:repost] == 0
+              repost = false
+            end
+          end
+        else
+          post = false
+          repost = false
+        end
+
+        if post
+          stat[:content] = 10
+          stat[:total] += 10
+        end
+
+        if repost
+          stat[:engagement] = 10
+          stat[:total] += 10
+        end
+      end
+=end
+
+    return stat
+  end
+
   def categories
     iptc_categories.reload.map do |c|
       { :id => c.id, :label => c.label }

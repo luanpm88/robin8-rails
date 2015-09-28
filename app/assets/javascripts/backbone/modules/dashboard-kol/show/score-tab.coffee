@@ -11,13 +11,18 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       'click @ui.next': 'next'
       'click @ui.back': 'back'
 
+    serializeData: () ->
+      k: @model.toJSON()
+
+
     templateHelpers: () ->
-      vs: () ->
-        polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "+25%" })
-      beat: () ->
-        polyglot.t('dashboard_kol.score_tab.youbeat', {per: "50%" })
-      score: () ->
-        "75"
+      vs: (k) ->
+        polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "+0%" })
+      beat: (k) ->
+        polyglot.t('dashboard_kol.score_tab.youbeat', {per: "0%" })
+      score: (k) ->
+        k.stats.total
+
 
 
     save: ->
@@ -64,17 +69,17 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       d = [
         [
-          {axis:"Your influence channel",value:50},
-          {axis:"Validity of social profile",value:60},
-          {axis:"Weibo fans",value:42},
-          {axis:"Content generation",value:34},
-          {axis:"Social engagement",value:48},
+          {axis:"Your influence channel",value:@model.attributes.stats.channels},
+          {axis:"Validity of social profile",value:@model.attributes.stats.completeness},
+          {axis:"Weibo fans",value:@model.attributes.stats.fans},
+          {axis:"Content generation",value:@model.attributes.stats.content},
+          {axis:"Social engagement",value:@model.attributes.stats.engagement},
         ]
       ]
       mycfg = {
         w: 285,
         h: 150,
-        maxValue: 100,
+        maxValue: 40,
         levels: 1,
         ExtraWidthX: 155
       }
