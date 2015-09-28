@@ -1122,6 +1122,7 @@ zh:
       kol:
         alredy_in_list: " 已存在您的列表中"
         attach_invalid: "附件内容类型无效"
+        empty_list: Your list is empty!
         error: "错误"
         incorrect_ignored: "所有格式不正确的联系人都将被忽略。"
         list_uploaded: "您的列表已经成功上传。"
@@ -1145,6 +1146,7 @@ zh:
       no_one_accepted: "目前无人接受您的邀请。"
       no_one_declined: No one declined your invitation.
       no_one_interested: Nobody was interested in this campaign.
+      no_uploaded: You haven't any uploaded lists.
       non_cash: Non-cash
       not_approved_yet: "尚未得到批准"
       pending: Pending
@@ -1176,6 +1178,7 @@ zh:
         email_required: "该邮件地址必填"
         emailtext_required: "该邮件内容必填"
         endorsements: Endorsements
+        execute: Execute campaign!
         focus_event: Focus event
         focus_group: Focus group
         host_event: Host event
@@ -1238,6 +1241,9 @@ zh:
         contact_first_last: "联系人的姓名"
         content: Content
         couldnt_match_influencers: "未找到相匹配意见领袖"
+        delete_contacts_from_campaign: Delete from campaign
+        delete_contacts_list: Delete this list
+        delete_list: Remove this influencers list?
         east: East
         email: "电子邮件"
         enter_available_channels: Enters available channels
@@ -1258,6 +1264,7 @@ zh:
         private: "私人"
         regions: Regions
         search: "搜"
+        select_placeholder: Select a Influencers List
         south: South
         topic: "主题"
         wechat_personal: WeChat personal

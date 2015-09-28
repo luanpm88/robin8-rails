@@ -45,7 +45,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     collectionEvents: 'reset add remove': 'render'
 
     onRender: () ->
-      $('#next-step').removeAttr('disabled')
       if @model.get("kols")?
         if @model.get("kols").length > 0
           $('#next-step').removeAttr('disabled')
@@ -55,6 +54,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       else if @model.get("kols_list_contacts")?
         if @model.get("kols_list_contacts").length > 0
           $('#next-step').removeAttr('disabled')
+        else
+          $('#next-step').prop("disabled",true)
       else
         $('#next-step').prop("disabled",true)
 
@@ -67,7 +68,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           contacts = @options.collection.findWhere({id: id}).attributes.kols_lists_contacts
           _.each contacts, (c) ->
             if kols_lists_contacts.indexOf(c.email) == -1
-              kols_lists_contacts.push c.email
+              kols_lists_contacts.push c
           @model.set('kols_list_contacts',kols_lists_contacts)
           list = @options.collection.findWhere({id: id}).attributes
           kols_list.push(list)
@@ -75,13 +76,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           kols_list_view = new Show.SelectedKolListView
             model: @model
           Robin.layouts.main.content.currentView.content.currentView.kolslist_view.selectedKolsListsRegion.show(kols_list_view)
-          $('#next-step').removeAttr('disabled')
-          
+
 
   Show.SelectedKolListView = Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/selected-kols-list'
 
-    ui: 
+    ui:
       deleteContactsButton: '#delete_contacts'
       deleteListButton: '#delete_list'
 
@@ -96,7 +96,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       @model = @options.model
 
     onRender: () ->
-      $('#next-step').removeAttr('disabled')
       if @model.get("kols")?
         if @model.get("kols").length > 0
           $('#next-step').removeAttr('disabled')
@@ -106,6 +105,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       else if @model.get("kols_list_contacts")?
         if @model.get("kols_list_contacts").length > 0
           $('#next-step').removeAttr('disabled')
+        else
+          $('#next-step').prop("disabled",true)
       else
         $('#next-step').prop("disabled",true)
 
@@ -115,15 +116,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       list_id = target.data 'list-id'
       emails_list = []
       kols_list = if @options.model.get('kols_list')? then @options.model.get('kols_list') else []
-      _.each kols_list, (c) -> 
+      _.each kols_list, (c) ->
         if c.id == list_id
           emails_list.push c.kols_lists_contacts
           kols_list.pop c
       @model.set('kols_list',kols_list)
       kols_lists_contacts = if @model.get('kols_list_contacts')? then @model.get('kols_list_contacts') else []
-      _.each emails_list, (c) ->
-        if kols_lists_contacts.indexOf(c) > -1
-          kols_lists_contacts.pop c
+      _.each emails_list[0], (c,index) ->
+        if c.kols_list_id  == list_id
+          kols_lists_contacts.pop(index)
       @model.set('kols_list_contacts',kols_lists_contacts)
       kols_list_view = new Show.SelectedKolListView
         model: @model
@@ -157,5 +158,5 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
             dataType: 'json'
             data: data
             success: () =>
-              @deleteContactsButtonClicked e 
-              
+              @deleteContactsButtonClicked e
+

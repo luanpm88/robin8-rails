@@ -60,6 +60,7 @@
 //= require datejs
 //= require underscore.inflection
 //= require bootstrap-validator
+//= require jquery-knob
 //= require_tree ./backbone/config
 //= require backbone/init
 //= require_tree ./backbone/routers

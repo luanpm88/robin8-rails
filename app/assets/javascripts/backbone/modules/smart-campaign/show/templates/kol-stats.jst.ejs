@@ -1,0 +1,22 @@
+    <div class="col-md-4" style="margin-top: 10px; margin-left: 10px; padding: 0px;">
+      <div style="height: 170px;">
+        <div style="float: left; padding-left: 40px; padding-top: 30px;">
+          <input type="text" value="<%= score() %>" class="graph-score" data-fgColor="#edac0a" data-angleOffset=-125 data-angleArc=250 data-readOnly=true data-width="120" data-height="120">
+        </div>
+        <div style="float: right">
+          <span style="font-family: 'ProximaNovaBold'; font-size: 20px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.social_score')%></span>
+          <br/><br/>
+          <div style="font-family: 'ProximaNova'; font-size: 13px; color: white; background-color: #edac0a; text-align: center;">&nbsp;<%= vs()%>&nbsp;</div>
+          <br/>
+          <div style="font-family: 'ProximaNova'; font-size: 13px; color: white; background-color: #edac0a; text-align: center;">&nbsp;<%= beat() %>&nbsp;</div>
+        </div>
+      </div>
+
+      <div>
+        <span style="font-family: 'ProximaNova'; font-size: 12px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.calculated')%></span>
+      </div>
+    </div>
+    <div class="col-md-5" style="height: 180px; margin-left: 20px; ">
+      <div id="graph_score2" name="graph_score2"></div>
+    </div>
+  </div>

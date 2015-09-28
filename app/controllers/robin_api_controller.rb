@@ -159,7 +159,7 @@ class RobinApiController < ApplicationController
           followers_count: value[:followers_count],
           verified: value[:verified],
           profile_url: value[:profile_url],
-	  level_of_interest: value[:level_of_interest]
+          level_of_interest: value[:level_of_interest]
         }
         memo[k] = new_author
       end

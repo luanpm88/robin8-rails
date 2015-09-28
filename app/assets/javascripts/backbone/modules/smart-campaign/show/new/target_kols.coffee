@@ -2,6 +2,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
   Show.KolCategoriesTemplate = _.template '<span class="kol‐category"><%= label %></span>'
 
+  Show.KolInspectLayout = Marionette.LayoutView.extend
+    template: 'modules/smart-campaign/show/templates/kol-inspect-layout',
+    regions:
+      statsRegion: '#kol-stats'
+    className: 'modal-dialog'
+
   Show.TargetKols = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/target-kols'
     ui:
@@ -20,6 +26,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       'change @ui.regions': 'changedRegions'
       'change @ui.content': 'changedContent'
       'click #apply-filter': 'applyFilter'
+      'click #inspect': "showKolStats"
 
     templateHelpers:
       categories: (k) ->
@@ -59,6 +66,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     initialize: (model) ->
       @kols = []
       @model = model
+      @initial_kols = _(@model.model.get("kols")).pluck "id"
 
     serializeData: () ->
       kols: @kols,
@@ -83,6 +91,24 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         increaseArea: '20%'
       $("#locations").geocomplete()
 
+    showKolStats: (e) ->
+      e.preventDefault()
+      self = this
+
+      target = $ e.currentTarget
+      kol_id = target.data 'kol-id'
+      kol = _(@kols).find (k) -> k.id == kol_id
+
+      layout = new Show.KolInspectLayout
+
+      Robin.modal.show layout
+
+      kol_collection = new Backbone.Collection(kol)
+
+      kolStatItemView = new Show.KolStatsView
+        kol: kol
+      layout.statsRegion.show kolStatItemView
+
     kols_id: ()->
       invited_kols = @model.model.get("kols")
       kols_id = []
@@ -102,9 +128,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       .value()
 
     updateKols: (data) ->
-      @kols = []
       invited_kols = @invitedKols()
-      @kols = _(data).map (k) ->
+      @kols = _(data).filter (k) =>
+        @initial_kols.indexOf(k.id) == -1
+      .map (k) ->
         if _.contains(invited_kols, k.id)
           k.invited = true
           k
@@ -148,38 +175,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         if @model.model.get("weibo").length > 0
           $('#next-step').removeAttr('disabled')
 
-
     selectKol: (e) ->
       target = $ e.currentTarget
       kol_id = target.data 'kol-id'
       kol_status = target.is ':checked'
       kol = _(@kols).find (k) -> k.id == kol_id
       kol.invited = kol_status
-      influencers = []
-      kols_id = []
-      if not @model.model.get("kols")?
-        @model.model.set("kols",[])
-      else
-        influencers = @model.model.get("kols")
-      if influencers.length > 0
-          $(influencers).each(() ->
-            kols_id.push(this.id)
-          )
-
-      index = kols_id.indexOf(kol.id)
-      if index >= 0
-        influencers.splice(index, 1)
-        @model.model.set("kols",influencers)
-        $(document.getElementsByName(e.target.name)).each ->
-          @checked = false
-          @value = "NO"
-      else
-        influencers.push kol
-        @model.model.set("kols",influencers)
-        $(document.getElementsByName(e.target.name)).each ->
-          @checked = true
-          @value = "YES"
-
+      @model.model.set "kols", _(@kols).filter (k) ->
+        k.invited? and k.invited == true
       @validate()
       if @model.model.get("kols").length > 0
         document.getElementById("next-step").disabled = false

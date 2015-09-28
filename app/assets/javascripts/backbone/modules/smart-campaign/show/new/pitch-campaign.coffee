@@ -27,6 +27,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         if @kols.length == 0
           this.renderTab()
 
+      'email_list_item:target:removed': (childView, id) ->
+        kol = _(@kols_list).find (k) -> k.id == id
+        index = _.indexOf(@kols_list, kol)
+        @kols_list.splice(index, 1)
+        @model.set('kols_list', @kols_list)
+        if @kols_list.length == 0
+          this.renderTab()
+
       'weibo:target:removed': (childView, id) ->
         weibo = _(@weibo).find (k) -> k.id == id
         index = _.indexOf(@weibo, weibo)
@@ -45,10 +53,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @model.set('weibo_pitch' , polyglot.t("smart_campaign.pitch_step.weibo_panel.weibo_pitch"))
       @model.set('wechat_pitch' , polyglot.t("smart_campaign.pitch_step.weibo_panel.weibo_pitch"))
 
-      if @model.get('kols')
-        @kols = @model.get('kols')
-        kols = new Backbone.Collection(@model.get('kols'))
-        if @model.get('kols').length > 0
+      if @model.get('kols') or @model.get('kols_list_contacts')
+        @kols = if @model.get('kols') then @model.get('kols') else []
+        @kols_list = if @model.get('kols_list_contacts') then @model.get('kols_list_contacts') else []
+
+        if @kols.length > 0 or @kols_list.length > 0
+          all_kols = {}
+          if @kols.length > 0
+            all_kols['kols'] = @kols
+          if @kols_list.length > 0
+            all_kols['kols_list'] = @kols_list
+          kols = new Backbone.Collection(all_kols)
           @emailTargetsView = new Show.EmailTargets
             collection: kols
           @showChildView 'emailTargets', @emailTargetsView
