@@ -5,6 +5,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
     regions: {
       selectWebRegion: '#select-web-region',
       selectEmailRegion: '#select-email-region',
+      selectReleaseRegion: '#select-release-region',
       webAnalyticsRegion: '#analytics-region',
       emailsAnalyticsRegion: '#emails-analytics-region',
       emailsListRegion: '#emails-list-region',
@@ -13,7 +14,8 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
     events: {
       'change .change-web-news-room': 'changeWebNewsRoom',
-      'change .change-emails-news-room': 'changeEmailsNewsRoom',
+      'change .change-emails-news-room': 'changeEmailsData',
+      'change .change-emails-release' : 'changeEmailsData',
       'click .emails-label': 'navigateToEmails',
       'click .web-label': 'navigateToWeb'
     },
@@ -27,18 +29,54 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       webAnalyticsPageView.renderAnalytics($(event.target).val());
     },
 
-    changeEmailsNewsRoom: function(event) {
+    changeEmailsData: function(event) {
       var $this = this;
-      var emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
-        collection: new Robin.Collections.NewsRooms()
-      });
-      
-      $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
-      emailsAnalyticsPageView.renderEmailAnalytics($(event.target).val());
+      var params = '';
+      var emailsAnalyticsPageView;
+      var release = false;
+      var target = $(event.target);
+      var itemId = target.val();
 
-      var collectionEmails = new Robin.Collections.EmailAnalytics()
+      if (target.hasClass('change-emails-release') && itemId != 0) {
+        params = '?type=release';
+        release = true;
+        emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
+          collection: new Robin.Collections.Releases()
+        });
+      } else {
+        if (itemId != 0) {
+          var collectionReleases = new Robin.Collections.Releases();
+          collectionReleases.fetchReleasesForBrandGallery({
+            brandGalleryId: itemId,
+            success: function(collection) {
+              selectReleasesView = new Analytics.EmailsFilterReleasesCollectionView({
+                collection: collection,
+                childView: Analytics.EmailsFilterReleaseItemView
+              });
+
+              $this.selectReleaseRegion.show(selectReleasesView);
+            }
+          });
+        } else {
+          itemId = $('.change-emails-news-room').val();
+        }
+
+        emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
+          collection: new Robin.Collections.NewsRooms()
+        });
+      }
+
+      $this.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
+
+      if (release) {
+        emailsAnalyticsPageView.renderEmailAnalytics(itemId, 'release');
+      } else {
+        emailsAnalyticsPageView.renderEmailAnalytics(itemId);
+      }
+
+      var collectionEmails = new Robin.Collections.EmailAnalytics();
       collectionEmails.fetch({
-        url: '/news_rooms/' + $(event.target).val() +'/email_analytics',
+        url: '/news_rooms/' + itemId +'/email_analytics' + params,
 
         success: function(collection, data, response){
           var collection = new Robin.Collections.EmailAnalytics(data.authors);

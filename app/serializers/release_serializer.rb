@@ -9,7 +9,7 @@ class ReleaseSerializer < ActiveModel::Serializer
     :subdomain_name, :news_room_public, :text_html, :slug, :permalink,
     :average_characters_count_per_word, :average_words_count_per_sentence,
     :myprgenie, :accesswire, :prnewswire,
-    :myprgenie_published_at, :accesswire_published_at, :prnewswire_published_at
+    :myprgenie_published_at, :accesswire_published_at, :prnewswire_published_at, :campaign_name
 
   has_many :attachments
   has_one :news_room
