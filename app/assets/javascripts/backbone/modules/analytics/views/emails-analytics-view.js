@@ -2,7 +2,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
   Analytics.EmailsAnalyticsPage = Backbone.Marionette.ItemView.extend({
     template: 'modules/analytics/templates/emails-analytics',
 
-    renderEmailAnalytics: function(id) {
+    renderEmailAnalytics: function(id, type_param) {
       var collection = this.collection;
       this.collection.fetch({
         success: function(){
@@ -10,7 +10,16 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
             $('.releases-toolbar').hide();
           }
           id = ( id == undefined ? collection.models[0].get('id') : id );
-          $.get('/news_rooms/' + id +'/email_analytics', function(data){
+          var type = '';
+          if(type_param && type_param == 'release') {
+            type = '?type=release';
+          }
+          $.get('/news_rooms/' + id +'/email_analytics' + type, function(data){
+
+            if (data == 0) {
+              $('#emails-analytics').html('<p class="old_content">' + polyglot.t('analytics.email_old_content') + '</p>');
+              return;
+            }
 
             var mail = data.mail.total;
             var mailStatistics = [mail.sent, mail.delivered, mail.opened, mail.dropped]

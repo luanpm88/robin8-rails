@@ -76,7 +76,15 @@ class NewsRoomsController < ApplicationController
   end
 
   def email_analytics
-    @news_room = NewsRoom.find params[:news_room_id]
+    if params[:type] == 'release'
+      @news_room = Release.find params[:news_room_id]
+      if @news_room.campaign_name.nil?
+        render json: 0
+        return
+      end
+    else
+      @news_room = NewsRoom.find params[:news_room_id]
+    end
     mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
     domain = Rails.application.secrets.mailgun[:domain]
     begin
