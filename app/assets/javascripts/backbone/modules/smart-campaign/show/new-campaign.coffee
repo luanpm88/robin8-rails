@@ -29,6 +29,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     setState: (s) ->
       return if not @canSetState s
+      return if $.active > 0
       @state = s
       viewClass = switch s
         when 'start' then Show.StartTab

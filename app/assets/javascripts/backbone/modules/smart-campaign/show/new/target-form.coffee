@@ -47,9 +47,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
     removeCategory: (e) ->
       iptc_categories = @model.get('iptc_categories')
       if iptc_categories.indexOf(e.val) > -1
-        iptc_categories.pop(e.val)
+        iptc_categories = _(iptc_categories).reject (x) -> x == e.val
         @model.set('iptc_categories',iptc_categories)
         $('#selectForm').formValidation('revalidateField', 'categories')
+        $('#selectForm').data('formValidation').isValid()
+        $.get "/kols/suggest/", {categories: iptc_categories}, (data) =>
+          @targets_view.updateKols data
+          @targets_view.render()
 
     addCategory: (e) ->
       iptc_categories = @model.get('iptc_categories')
@@ -57,6 +61,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         iptc_categories.push(e.val)
         @model.set('iptc_categories',iptc_categories)
         $('#selectForm').formValidation('revalidateField', 'categories')
+        $('#selectForm').data('formValidation').isValid()
+        $.get "/kols/suggest/", {categories: iptc_categories}, (data) =>
+          @targets_view.updateKols data
+          @targets_view.render()
 
     onRender: () ->
       @ui.selectForm.ready(@initFormValidation())

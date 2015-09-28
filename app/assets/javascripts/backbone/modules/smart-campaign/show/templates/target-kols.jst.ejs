@@ -126,7 +126,6 @@
         var invited_kols = kols_id();
         var id = campaign_id();
         _.each(kols, function(k) {
-          if (isPresent(k,id,invited_kols)) {
        %>
         <tr data-id="<%= k.id %>">
           <td>
@@ -146,7 +145,7 @@
                       <% }); %>
                     <% } %>
                     <br>
-                    <a class="btn btn-xs btn-primary inspect" id="inspect" data-kol-id="<%= k.id %>"><i class="fa fa-search"></i><%=polyglot.t('smart_campaign.targets_step.weibo_tab.inspect')%></a>
+                    <a class="btn btn-xs btn-primary inspect" href="#"><i class="fa fa-search"></i><%=polyglot.t('smart_campaign.targets_step.weibo_tab.inspect')%></a>
                 </div>
               </div>
           </td>
@@ -162,7 +161,6 @@
             <label class="css-label" for="invite_<%= k.id %>"></label>
           </td>
         </tr>
-      <% } %>
       <% }); %>
     </tbody>
   </table>
