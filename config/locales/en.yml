@@ -1005,7 +1005,7 @@ en:
       pressroom: Pressroom
       read_more: Read more
       social_media: Social Media
-      spokeperson: Spokeperson
+      spokeperson: Spokesperson
       what_is: What is
     public_release:
       notification: You are in a preview mode. You need to make this release and newsroom
@@ -1548,10 +1548,10 @@ en:
           Robin8 account to your social profiles so you can easily post or schedule
           your post (s) directly to your profiles with one click.
         disconnect: Disconnect
-        facebook: Facebbok
+        facebook: Facebook
         google: Google+
         linkedin: Linkedin
-        no_accounts: There is no accounts
+        no_accounts: There are no accounts
         note: "* for adding multiple accounts for one social network you should be
           signed out from this network in your browser"
         title: Manage Connected Social Profiles

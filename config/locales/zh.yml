@@ -1474,7 +1474,7 @@ zh:
         connected_to: "已关联的"
         description: "使用Robin8来管理你的社交网络信息。请先关联你的社交账号，然后你就可以轻松的直接发布到或者计划发布到所关联的社交网络中"
         disconnect: "未关联的"
-        facebook: Facebbok
+        facebook: Facebook
         google: Google+
         linkedin: LinkedIn／领英
         no_accounts: "这个账户不存在"
