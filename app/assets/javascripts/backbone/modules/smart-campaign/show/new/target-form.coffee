@@ -50,20 +50,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         iptc_categories.pop(e.val)
         @model.set('iptc_categories',iptc_categories)
         $('#selectForm').formValidation('revalidateField', 'categories')
-        if $('#selectForm').data('formValidation').isValid()
-          @weibo_view = new Show.TargetWeibo(
-            model: @model
-          )
-          @targets_view = new Show.TargetKols(
-            model: @model
-          )
-          @search_view = new Show.SearchLayout(
-            model: @model
-          )
-          @kolslist_view = new Show.KolsListLayout(
-            model: @model
-          )
-          @render()
 
     addCategory: (e) ->
       iptc_categories = @model.get('iptc_categories')
@@ -71,32 +57,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         iptc_categories.push(e.val)
         @model.set('iptc_categories',iptc_categories)
         $('#selectForm').formValidation('revalidateField', 'categories')
-        if $('#selectForm').data('formValidation').isValid()
-          @weibo_view = new Show.TargetWeibo(
-            model: @model
-          )
-          @targets_view = new Show.TargetKols(
-            model: @model
-          )
-          @search_view = new Show.SearchLayout(
-            model: @model
-          )
-          @kolslist_view = new Show.KolsListLayout(
-            model: @model
-          )
-          @render()
-
 
     onRender: () ->
       @ui.selectForm.ready(@initFormValidation())
 
       self = this
-
-      @showChildView 'kolsListRegion', @kolslist_view
-      #@showChildView 'wechatRegion', @wechat_view
-      @showChildView 'weiboRegion', @weibo_view
-      @showChildView 'blogsRegion', @targets_view
-      @showChildView 'searchRegion', @search_view
 
       iptc_categories = @model.get('iptc_categories')
       $.get "/kols/suggest/", {categories: iptc_categories}, (data) =>
@@ -108,7 +73,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       else if @model.get("weibo")?
         if @model.get("weibo").length > 0
           @ui.nextButton.removeAttr('disabled')
-
 
       params = {description: @model.get("description")}
       $.ajax({
@@ -126,8 +90,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         @weibo_view.updateWeibo data
         @weibo_view.setCampaignModel @model
         @weibo_view.render()
-        #$el.find('#targets-weibo-tab').click()
-        @ui.targetsWeiboTab.click()
+        _.defer ->
+          e = $("li.active a#targets-weibo-tab")
+          $("li.active a#targets-weibo-tab").parent().removeClass("active")
+          e.tab("show")
 
       self.ui.categoriesInput.select2
         allowClear: false
@@ -152,7 +118,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           $.get "/kols/get_categories_labels/", {categories_id: @model.get('iptc_categories')}, (data) =>
             callback data
         @ui.categoriesInput.val 'val'
-        @ui.categoriesInput.trigger("change");
+        @ui.categoriesInput.trigger("change")
+
+      @showChildView 'kolsListRegion', @kolslist_view
+      @showChildView 'weiboRegion', @weibo_view
+      @showChildView 'blogsRegion', @targets_view
+      @showChildView 'searchRegion', @search_view
 
     initFormValidation: () ->
       @ui.selectForm.formValidation
