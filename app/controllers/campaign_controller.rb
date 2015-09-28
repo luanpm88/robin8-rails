@@ -130,14 +130,13 @@ class CampaignController < ApplicationController
   end
 
   def create
+
     if current_user.blank?
       return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
     category_ids = params[:iptc_categories].split ','
-    kol_ids = params[:kols].map { |k| k[:id] }
-    categories = IptcCategory.where :id => category_ids
-    kols = Kol.where :id => kol_ids
-    weibos = params[:weibo]
+    categories_list = IptcCategory.where :id => category_ids
+    weibos = if params[:weibo].nil? then [] else params[:weibo] end
     weibos = [] if weibos.blank?
     if params[:id]
       c = Campaign.find(params[:id])
@@ -153,7 +152,7 @@ class CampaignController < ApplicationController
     c.budget = params[:budget]
     c.release_id = params[:release]
     c.deadline = Date.parse params[:deadline]
-    c.iptc_categories = categories
+    c.iptc_categories = categories_list
     c.concepts = params[:concepts]
     c.summaries = params[:summaries]
     c.hashtags = params[:hashtags]
@@ -163,8 +162,50 @@ class CampaignController < ApplicationController
 
     c.save!
 
+    kols_list = []
+
+    unless params[:kols].blank?
+      kol_ids = params[:kols].map { |k| k[:id] }
+      kols = Kol.where :id => kol_ids
+      kols_list = kols
+    end
+
+    unless params[:kols_list_contacts].blank?
+      params[:kols_list_contacts].each do |contact|
+        kol = Kol.where(email: contact["email"]).first
+        if kol.nil?
+          user = User.where(email: contact["email"]).first
+          if user
+            kols_list.push(user)
+          else
+            pass = SecureRandom.hex
+            categories = categories_list
+            name = contact["name"].split(" ")
+            new_kol = Kol.new(
+              first_name: name[0],
+              last_name: name[1],
+              email: contact["email"],
+              password: pass,
+              password_confirmation: pass,
+              is_public: false,
+              iptc_categories: categories
+            )
+            new_kol.save!
+            PrivateKol.create(kol_id: new_kol.id, user_id: current_user.id)
+            kols_list.push(new_kol)
+          end
+        else
+          new_private_kol = PrivateKol.where(kol_id: kol.id, user_id: current_user.id).first
+          kols_list.push(kol)
+          if new_private_kol.nil?
+            PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
+          end
+        end
+      end
+    end
+
     #private kol
-    kols.each do |k|
+    kols_list.each do |k|
       i = c.campaign_invites.where(kol_id: k.id).first
       if !i
         i = CampaignInvite.new
@@ -176,7 +217,7 @@ class CampaignController < ApplicationController
         text = text.sub('@[First Name]', k.first_name)
         text = text.sub('@[Last Name]', k.last_name)
 
-        KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
+        KolMailer.send_invite(params[:email_address], k.email, params[:email_subject], text)
       end
     end
 

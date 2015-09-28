@@ -2,6 +2,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
   Show.KolCategoriesTemplate = _.template '<span class="kol‐category"><%= label %></span>'
 
+  Show.KolInspectLayout = Marionette.LayoutView.extend
+    template: 'modules/smart-campaign/show/templates/kol-inspect-layout',
+    regions:
+      statsRegion: '#kol-stats'
+    className: 'modal-dialog'
+
   Show.TargetKols = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/target-kols'
     ui:
@@ -20,6 +26,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       'change @ui.regions': 'changedRegions'
       'change @ui.content': 'changedContent'
       'click #apply-filter': 'applyFilter'
+      'click #inspect': "showKolStats"
 
     templateHelpers:
       categories: (k) ->
@@ -82,6 +89,24 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         checkboxClass: 'icheckbox_square-blue'
         increaseArea: '20%'
       $("#locations").geocomplete()
+
+    showKolStats: (e) ->
+      e.preventDefault()
+      self = this
+
+      target = $ e.currentTarget
+      kol_id = target.data 'kol-id'
+      kol = _(@kols).find (k) -> k.id == kol_id
+
+      layout = new Show.KolInspectLayout
+
+      Robin.modal.show layout
+
+      kol_collection = new Backbone.Collection(kol)
+
+      kolStatItemView = new Show.KolStatsView
+        kol: kol
+      layout.statsRegion.show kolStatItemView
 
     kols_id: ()->
       invited_kols = @model.model.get("kols")

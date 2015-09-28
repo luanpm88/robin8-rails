@@ -97,11 +97,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
-      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+      oneDay = 24*60*60*1000
+      end = Date.today()
       data = @model.toJSON()
+      console.log data
       accepted = _.chain(data.campaign_invites)
         .filter (i) ->
-          i.status == "A" and moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
+          i.status == "A" and (Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0)
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
@@ -165,11 +167,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
-      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+      oneDay = 24*60*60*1000
+      end = Date.today()
       data = @model.toJSON()
       declined = _.chain(data.campaign_invites)
         .filter (i) ->
-          i.status == "D" and moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
+          i.status == "D" and (Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0)
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.status
@@ -271,11 +274,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
-      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+      oneDay = 24*60*60*1000
+      end = Date.today()
       data = @model.toJSON()
       negotiating = _.chain(data.articles)
         .filter (i) ->
-          i.tracking_code == "Negotiating" and moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
+          i.tracking_code == "Negotiating" and (Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0)
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.tracking_code
@@ -333,11 +337,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
+      oneDay = 24*60*60*1000
       data = @model.toJSON()
-      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+      end = Date.today()
       invited = _.chain(data.campaign_invites)
         .filter (i) ->
-          moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
+          Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
@@ -398,12 +403,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
+      oneDay = 24*60*60*1000
       data = @model.toJSON()
-      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+      end = Date.today()
       category_labels = @options.category_labels
       interested = _.chain(data.campaign_invites)
         .filter (i) ->
-          moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") > 0
+          Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
 
@@ -485,11 +491,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
+      oneDay = 24*60*60*1000
       data = @model.toJSON()
-      start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
+      end = Date.today()
       history = _.chain(data.campaign_invites)
         .filter (i) ->
-          moment(new Date(data.deadline).toLocaleFormat '%d-%b-%Y').diff(start, "days") <= 0
+          Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) <= 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id

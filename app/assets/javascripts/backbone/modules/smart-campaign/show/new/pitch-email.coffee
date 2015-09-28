@@ -8,19 +8,24 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     emptyView: NoChildrenView
 
     ui:
-      deleteButton: 'a.btn-danger'
+      deleteButton: '#kol_item'
       itemCount: '#item_count'
+      deleteKolListItemButton: '#list_item'
 
     events:
       'click @ui.deleteButton': 'deleteButtonClicked'
+      'click @ui.deleteKolListItemButton': 'deleteKolListItemButtonClicked'
 
     templateHelpers:
       count: (items) ->
         c = 0
-        $(items).each(() ->
-          if this.invited == true
-            c = c + 1
-        )
+        if items[0].kols?
+          $(items[0].kols).each(() ->
+            if this.invited == true
+              c = c + 1
+          )
+        if items[0].kols_list?
+          c = c + items[0].kols_list.length
         return c
 
     deleteButtonClicked: (e) ->
@@ -32,11 +37,24 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       target.parents('tr').remove()
       this.triggerMethod('email:target:removed', kol_id)
 
+    deleteKolListItemButtonClicked: (e) ->
+      e.preventDefault()
+      target = $ e.currentTarget
+      kol_id = target.data 'kol-email'
+      @count = @count - 1
+      @ui.itemCount.text(@count)
+      target.parents('tr').remove()
+      this.triggerMethod('email_list_item:target:removed', kol_id)
+
     onRender: ->
       c = 0
       $(@collection.models).each(() ->
-        if this.get("invited") == true
-          c = c + 1
+        if this.attributes.kols?
+          _.each this.attributes.kols, (kol) ->
+            if kol.invited
+              c = c + 1
+        if this.attributes.kols_list?
+          c = c + this.attributes.kols_list.length
       )
       @count = c
 

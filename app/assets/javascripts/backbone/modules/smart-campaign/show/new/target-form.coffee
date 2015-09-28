@@ -60,9 +60,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           @search_view = new Show.SearchLayout(
             model: @model
           )
+          @kolslist_view = new Show.KolsListLayout(
+            model: @model
+          )
           @render()
 
-    addCategory: (e) ->      
+    addCategory: (e) ->
       iptc_categories = @model.get('iptc_categories')
       if iptc_categories.indexOf(e.val) < 0
         iptc_categories.push(e.val)
@@ -76,6 +79,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
             model: @model
           )
           @search_view = new Show.SearchLayout(
+            model: @model
+          )
+          @kolslist_view = new Show.KolsListLayout(
             model: @model
           )
           @render()
@@ -158,10 +164,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           validating: 'glyphicon glyphicon-refresh'
         fields: categories: validators: callback:
           message: polyglot.t('smart_campaign.targets_step.choose_category')
-          callback: (value, validator, $field) ->
-            options = $field.val()
-            options2 = options.split(',')
-            options2.length > 1
+          callback: (value, validator, $field) =>
+            options = @model.get('iptc_categories')
+            options.length > 0
 
 
     transformLabel: (label, code) ->

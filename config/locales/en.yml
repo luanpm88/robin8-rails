@@ -1227,6 +1227,7 @@ en:
         email_required: The email adress is required
         emailtext_required: The email text is required
         endorsements: Endorsements
+        execute: Execute campaign!
         focus_event: Focus event
         focus_group: Focus group
         host_event: Host event
@@ -1262,7 +1263,6 @@ en:
       smart_campaign:
         pitch_step:
           button: Pitch!
-          execute: Execute campaign!
       smartcampaign: SmartCampaign
       start_step:
         analyze: Analyze
