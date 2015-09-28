@@ -11,11 +11,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       score: () ->
         "75"
 
-    initialize: (options) ->
-      console.log 'g'
-      console.log @
-      #@model = @options.kol
-
     onRender: () ->
       self = this
       self.initHighcharts(self)
@@ -26,18 +21,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       d = [
         [
           {axis:"Your influence channel",value:50},
-          {axis:"Validity of social profile",value:60},
-          {axis:"Weibo fans",value:42},
-          {axis:"Content generation",value:34},
-          {axis:"Social engagement",value:48},
+          {axis:"Social engagement",value:60},
+          {axis:"Content generation",value:42},
+          {axis:"Weibo fans",value:34},
+          {axis:"Validity of social profile",value:48},
         ]
       ]
       mycfg = {
-        w: 285,
+        w: 200,
         h: 150,
         maxValue: 100,
         levels: 1,
-        ExtraWidthX: 155
+        ExtraWidthX: 150
       }
 
 

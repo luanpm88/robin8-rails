@@ -2246,3 +2246,22 @@ input.form-control[type="file"] {
 #kols-lists .left-btn {
   margin-right: 15px;
 }
+#kol-stats {
+  background-color: #F4F4F4;
+  left: 0;
+  right: 0;
+  margin-left: -15px;
+  margin-right: -15px;
+  height: 215px;
+}
+#kol_avatar {
+  border-bottom: 4px solid #B2B2B2;
+}
+.validate_input {
+  .glyphicon-remove {
+    margin-right: 10px;
+  }
+  .glyphicon-ok {
+    margin-right: 10px;
+  }
+}

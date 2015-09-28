@@ -8,6 +8,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       form: '#details_form'
       invite_kol: "input[id=\'icheckbox_flat\']"
       budget: "input[name=budget]"
+      wysihtml5: 'textarea.wysihtml5'
 
     events:
       'ifChecked @ui.invite_kol': 'setNonCashBudget'
@@ -54,8 +55,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     setNonCashBudget: (e) ->
       @ui.budget.val(0);
       @model.set('non_cash', true)
+      $('#short_description').prop("disabled",false)
     setCashBudget: (e) ->
       @model.set('non_cash', false)
+      $('#short_description').prop("disabled",true)
 
 
     initFormValidation: () ->

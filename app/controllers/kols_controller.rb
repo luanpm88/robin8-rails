@@ -1,7 +1,7 @@
 class KolsController < ApplicationController
 
   def get_current_kol
-    render json: current_kol, :methods => [:identities]
+    render json: current_kol, :methods => [:identities, :stats]
   end
 
   def create
@@ -102,6 +102,12 @@ class KolsController < ApplicationController
     end
     unless params[:wechat_public].blank?
       kols = kols.where("kols.wechat_public_id IS NOT NULL AND kols.wechat_public_id not like ''")
+    end
+    unless params[:content_offline].blank?
+      kols = kols.where("kols.monetize_interested_all='true' or kols.monetize_interested_event='true' or kols.monetize_interested_focus='true' or kols.monetize_interested_party='true' or kols.monetize_interested_endorsements='true'")
+    end
+    unless params[:content_online].blank?
+      kols = kols.where("kols.monetize_interested_all='true' or kols.monetize_interested_post='true' or kols.monetize_interested_create='true' or kols.monetize_interested_share='true' or kols.monetize_interested_review='true' or kols.monetize_interested_speech='true'")
     end
     render :json => kols.to_json(:methods => [:categories])
   end

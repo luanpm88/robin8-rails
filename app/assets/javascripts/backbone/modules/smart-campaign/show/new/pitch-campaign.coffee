@@ -137,6 +137,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           @model.set('content_type', @campaignDetails.$el.find('#content_type').val())
           @model.save {},
             success: (m) ->
+              $.growl(polyglot.t('smart_campaign.pitch_step.created_success'), {type: "info"})
               location.href = '/#smart_campaign'
             error: (m) ->
               if @model.get('id')

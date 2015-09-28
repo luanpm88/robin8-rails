@@ -100,7 +100,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       oneDay = 24*60*60*1000
       end = Date.today()
       data = @model.toJSON()
-      console.log data
       accepted = _.chain(data.campaign_invites)
         .filter (i) ->
           i.status == "A" and (Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0)
