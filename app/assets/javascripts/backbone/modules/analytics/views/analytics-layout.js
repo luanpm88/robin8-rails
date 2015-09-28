@@ -22,6 +22,15 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       'click .web-label': 'navigateToWeb'
     },
 
+    changeDateRange: function(event) {
+      var webAnalyticsPageView = new Analytics.WebAnalyticsPage({
+        collection: new Robin.Collections.NewsRooms()
+      });
+
+      this.webAnalyticsRegion.show(webAnalyticsPageView);
+      webAnalyticsPageView.renderAnalytics();
+    },
+
     changeWebNewsRoom: function(event) {
       var webAnalyticsPageView = new Analytics.WebAnalyticsPage({
         collection: new Robin.Collections.NewsRooms()
@@ -36,7 +45,10 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var params = '';
       var emailsAnalyticsPageView;
       var release = false;
-      var target = $(event.target);
+      var target = '';
+      var release_selector = $('.change-emails-release');
+      var news_room_selector = $('.change-emails-news-room');
+      release_selector.val() != 0 ? target = release_selector : target = news_room_selector;
       var itemId = target.val();
 
       if (target.hasClass('change-emails-release') && itemId != 0) {
@@ -60,7 +72,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
             }
           });
         } else {
-          itemId = $('.change-emails-news-room').val();
+          itemId = news_room_selector.val();
         }
 
         emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
