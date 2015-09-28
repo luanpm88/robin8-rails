@@ -1,5 +1,5 @@
 <% if (items.length == 0) { %>
-  <div class="row"><%=polyglot.t('smart_campaign.no_invited_yet')%></div>
+  <div class="row"><%=polyglot.t('smart_campaign.no_uploaded')%></div>
 <% } else { %>
   <div class="row">
     <table class="table table-striped" id="private_kols-table">
@@ -10,10 +10,10 @@
       </tr></thead>
       <tbody>
         <% _.each(items, function(c) { %>
-          <tr data-id="<%= c.private_kol.id %>">
-            <td><%= c.private_kol.full_name %></td>
-            <td><%= c.private_kol.email %></td>
-            <td><a class="btn btn-danger btn-xs" href="#"><i class="fa fa-close"></i> <%= polyglot.t("smart_release.targets_step.media_tab.delete") %></a></td>
+          <tr data-id="<%= c.kols_list.id %>">
+            <td><%= c.kols_list.name %></td>
+            <td><%= c.kols_list.kols_count %></td>
+            <td><a class="btn btn-danger btn-xs" href="#" data-list-id="<%= c.kols_list.id %>"><i class="fa fa-close"></i> <%= polyglot.t("smart_release.targets_step.media_tab.delete") %></a></td>
           </tr>
         <% }); %>
       </tbody>
