@@ -87,11 +87,16 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         },
         error: function(res){
           if (res && res.responseJSON) {
-            var errorField = _.keys(res.responseJSON)[0]
+            var errorField = _.keys(res.responseJSON)[0];
             var errorMessage = res.responseJSON[errorField][0];
-            errorField = s.capitalize(errorField.replace(/_/g,' '));
+            errorField = s.capitalize(errorField.replace(/_/g,' ')) + ' ';
 
-            $.growl({message: errorField + ' ' + errorMessage
+            if (res.status == 500) {
+              errorMessage = res.responseJSON[_.keys(res.responseJSON)[1]];
+              errorField = ""
+            }
+
+            $.growl({message: errorField + errorMessage
             },{
               type: 'danger'
             });
