@@ -107,6 +107,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @model.save @model.attributes,
         success: (m, r) =>
           @initial_attrs = m.toJSON()
+          App.currentKOL.set m.attributes
           $.growl "You profile was saved successfully", {type: "success"}
           @parent_view?.score()
         error: (m, r) =>
