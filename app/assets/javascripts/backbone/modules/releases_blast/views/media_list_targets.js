@@ -6,7 +6,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       selectedMediaListsRegion: "#selected-media-lists"
     }
   });
-  
+
   ReleasesBlast.UploadMediaListView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/media-list/upload-media-list',
     className: 'well',
@@ -58,7 +58,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var formData = new FormData();
       formData.append('media_list[attachment]', this.ui.fileInput[0].files[0]);
       this.ui.fileInput.val("");
-      
+
       $.ajax({
         url: '/media_lists',
         data: formData,
@@ -69,17 +69,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         dataType: 'JSON',
         success: function(res){
           var model = new Robin.Models.MediaList(res);
-          
+
           self.collection.add(model);
           self.selectedMediaListsCollection.add(model, {
             pitchContactsCollection: self.pitchContactsCollection
           });
-          
+
           $.growl({message: polyglot.t("smart_release.targets_step.media_tab.successfully_uploaded")
           },{
             type: 'success'
           });
-          
+
           $.growl({message: polyglot.t("smart_release.targets_step.media_tab.ignored_contacts")
           },{
             type: 'info'
@@ -90,7 +90,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             var errorField = _.keys(res.responseJSON)[0]
             var errorMessage = res.responseJSON[errorField][0];
             errorField = s.capitalize(errorField.replace(/_/g,' '));
-            
+
             $.growl({message: errorField + ' ' + errorMessage
             },{
               type: 'danger'
@@ -101,7 +101,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     fileUploadButtonClicked: function(e){
       e.preventDefault();
-        
+
       if (Robin.user.get('can_create_media_list') != true) {
         $.growl({message: polyglot.t("smart_release.targets_step.media_tab.not_available")},
           {
@@ -112,7 +112,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }
     }
   });
-  
+
   ReleasesBlast.EmptyList = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/media-list/empty-list',
     tagName: 'tr'
@@ -123,10 +123,12 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     tagName: 'tr',
     model: Robin.Models.MediaList,
     ui: {
-      deleteButton: 'a'
+      deleteFromPitch: '#delete-from-pitch',
+      deleteList: '#delete-list'
     },
     events: {
-      "click @ui.deleteButton": "deleteButtonClicked"
+      "click @ui.deleteFromPitch": "deleteFromPitchClicked",
+      "click @ui.deleteList": "deleteListClicked"
     },
     initialize: function(options){
       this.pitchContactsCollection = options.pitchContactsCollection;
@@ -137,13 +139,42 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         pitchContactsCollection: this.pitchContactsCollection
       });
     },
-    deleteButtonClicked: function(e){
+    deleteFromPitchClicked: function(e){
       e.preventDefault();
-      
+
       this.deleteRow();
+    },
+    deleteListClicked: function(e){
+      var viewObj = this;
+      e.preventDefault();
+      swal({
+        title: polyglot.t("smart_release.targets_step.media_tab.remove_media_list"),
+        titleClass: 'swal-title',
+        text: polyglot.t("smart_release.targets_step.media_tab.recover_unabled"),
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: polyglot.t("smart_release.targets_step.media_tab.delete"),
+        cancelButtonText: polyglot.t("smart_release.targets_step.media_tab.cancel")
+      },
+        function(isConfirm) {
+          if (isConfirm) {
+            viewObj.deleteRow();
+            viewObj.model.destroy({
+              success: function(model, response){
+                swal.close();
+                Robin.user.fetch();
+              },
+              error: function(data){
+                console.warn('error', data);
+              }
+            });
+          }
+        }
+      );
     }
   });
-  
+
   ReleasesBlast.SelectedMediaListsCompositeView = Marionette.CompositeView.extend({
     template: 'modules/releases_blast/templates/media-list/selected-media-lists',
     collection: Robin.Collections.SelectedMediaLists,
