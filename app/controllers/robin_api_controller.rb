@@ -138,7 +138,7 @@ class RobinApiController < ApplicationController
           avatar_url: value[:avatar_url],
           score: value[:score],
           index: index,
-          level_of_interest: value[:level_of_interest]
+          level_of_interest: value[:level_of_interest],
           verified: value[:verified],
           profile_url: value[:profile_url]
         }
