@@ -77,9 +77,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
             }
           });
         }
-
       });
-      
       module.layout.emailsAnalyticsRegion.show(emailsAnalyticsPageView);
 
       $('#start-email-date-input').datepicker({dateFormat: "mm/dd/yy", maxDate: new Date()}).datepicker('setDate', "-1m");

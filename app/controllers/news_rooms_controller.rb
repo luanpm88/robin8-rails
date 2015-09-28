@@ -56,8 +56,8 @@ class NewsRoomsController < ApplicationController
   def web_analytics
     @news_room = NewsRoom.find params[:news_room_id]
 
-    start_date = Date.parse params[:start_date]
-    end_date = Date.parse params[:end_date]
+    params[:start_date].nil? ? start_date = Date.today - 1.month : start_date = Date.parse(params[:start_date])
+    params[:end_date].nil? ? end_date = Date.today : end_date = Date.parse(params[:end_date])
     end_date <= DateTime.now ? end_date = end_date : end_date = DateTime.now
     start_date <= end_date ? start_date = start_date : start_date = end_date
 

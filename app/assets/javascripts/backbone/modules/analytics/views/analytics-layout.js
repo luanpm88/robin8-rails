@@ -20,21 +20,13 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       'change .change-emails-news-room': 'changeEmailsData',
       'click #apply-date': 'changeDateRange',
       'change .change-emails-release' : 'changeEmailsData',
+      'click #apply-date': 'changeDateRange',
       'click #apply-email-date': 'changeEmailsData',
       'click .emails-label': 'navigateToEmails',
       'click .web-label': 'navigateToWeb',
       'click .wechat-label': 'navigateToWeChatReport',
       'click .weibo-label': 'navigateToWeiboReport',
       'click .campaigns-label': 'navigateToCampaign'
-    },
-
-    changeWebNewsRoom: function(event) {
-      var webAnalyticsPageView = new Analytics.WebAnalyticsPage({
-        collection: new Robin.Collections.NewsRooms()
-      });
-
-      this.webAnalyticsRegion.show(webAnalyticsPageView);
-      webAnalyticsPageView.renderAnalytics($(event.target).val());
     },
 
     changeDateRange: function(event) {
@@ -46,12 +38,24 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       webAnalyticsPageView.renderAnalytics();
     },
 
+    changeWebNewsRoom: function(event) {
+      var webAnalyticsPageView = new Analytics.WebAnalyticsPage({
+        collection: new Robin.Collections.NewsRooms()
+      });
+
+      this.webAnalyticsRegion.show(webAnalyticsPageView);
+      webAnalyticsPageView.renderAnalytics($(event.target).val());
+    },
+
     changeEmailsData: function(event) {
       var $this = this;
       var params = '';
       var emailsAnalyticsPageView;
       var release = false;
-      var target = $(event.target);
+      var target = '';
+      var release_selector = $('.change-emails-release');
+      var news_room_selector = $('.change-emails-news-room');
+      release_selector.val() != 0 ? target = release_selector : target = news_room_selector;
       var itemId = target.val();
 
       if (target.hasClass('change-emails-release') && itemId != 0) {
@@ -75,7 +79,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
             }
           });
         } else {
-          itemId = $('.change-emails-news-room').val();
+          itemId = news_room_selector.val();
         }
 
         emailsAnalyticsPageView = new Analytics.EmailsAnalyticsPage({
@@ -90,7 +94,6 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       } else {
         emailsAnalyticsPageView.renderEmailAnalytics(itemId);
       }
-
       var collectionEmails = new Robin.Collections.EmailAnalytics();
 
       var start = new Date($('#start-email-date-input').val());
@@ -99,7 +102,7 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
 
       var collectionEmails = new Robin.Collections.EmailAnalytics();
       collectionEmails.fetch({
-        url: '/news_rooms/' + event_val +'/email_analytics/' + '?start_date=' + start + '&end_date=' + end,
+        url: '/news_rooms/' + itemId +'/email_analytics' + '?start_date=' + start + '&end_date=' + end + params,
 
         success: function(collection, data, response){
           var collection = new Robin.Collections.EmailAnalytics(data.authors);
