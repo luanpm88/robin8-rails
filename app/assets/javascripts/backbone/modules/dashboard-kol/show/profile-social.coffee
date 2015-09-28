@@ -41,6 +41,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
           clearInterval @interval
           $.get "/kols/get_current_kol", (data) =>
             @model.set "identities", data.identities
+            App.currentKOL.set "identities", data.identities
             @render()
 
     serializeData: ->
