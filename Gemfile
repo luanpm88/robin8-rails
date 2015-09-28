@@ -37,6 +37,7 @@ gem 'legato'
 gem 'google-api-client'
 gem 'sitemap_generator'
 gem 'redis-objects'
+gem 'redis-rails'
 
 # Character encoding detecting library
 gem 'charlock_holmes'

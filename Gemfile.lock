@@ -399,6 +399,7 @@ GEM
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-chance (0.8.0)
+    rails-assets-d3 (3.5.6)
     rails-assets-datatables (1.10.9)
       rails-assets-jquery (>= 1.7.0)
     rails-assets-datatables-tabletools (2.2.4)
@@ -465,10 +466,26 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.2.0)
     redis (3.2.1)
+    redis-actionpack (4.0.1)
+      actionpack (~> 4)
+      redis-rack (~> 1.5.0)
+      redis-store (~> 1.1.0)
+    redis-activesupport (4.1.1)
+      activesupport (~> 4)
+      redis-store (~> 1.1.0)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
     redis-objects (1.2.0)
       redis (>= 3.0.2)
+    redis-rack (1.5.0)
+      rack (~> 1.5)
+      redis-store (~> 1.1.0)
+    redis-rails (4.0.0)
+      redis-actionpack (~> 4)
+      redis-activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.6)
+      redis (>= 2.2)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rest-client (1.8.0)
@@ -698,6 +715,7 @@ DEPENDENCIES
   rails-assets-uploadcare (= 2.0.4)!
   rails-assets-x-editable!
   redis-objects
+  redis-rails
   roadie (~> 3.0.5)
   rspec-activemodel-mocks
   rspec-mocks

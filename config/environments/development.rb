@@ -44,6 +44,9 @@ Rails.application.configure do
   # Configure to use with mailcatcher - for more information (http://mailcatcher.me/)
   config.action_mailer.delivery_method = :smtp
 
+  # uncomment to avoid caching during dev
+  # config.cache_store = :null_store
+
   ActionMailer::Base.smtp_settings = {
     :user_name => Rails.application.secrets[:smtp][:user_name],
     :password => Rails.application.secrets[:smtp][:password],
