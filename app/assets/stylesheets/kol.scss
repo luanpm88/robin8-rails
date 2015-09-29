@@ -159,10 +159,12 @@ body {
     }
     .switch-button {
       padding: 6px 5px !important;
-      &:focus {
-        background-color: #AAB2BD !important;
-      }
+      background-color: #ffffff !important;
+      color: #434A54;
       &.active:focus {
+        background-color: #CCD1D9 !important;
+      }
+      &.active {
         background-color: #CCD1D9 !important;
       }
     }

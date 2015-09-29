@@ -29,6 +29,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         @ui.form.data('formValidation').resetForm()
         @model_binder.copyViewValuesToModel()
         return if @model.toJSON() == @initial_attrs
+        App.currentKOL.set m.attributes
         @model.monetize @model.attributes,
           success: (m, r) =>
             @initial_attrs = m.toJSON()
