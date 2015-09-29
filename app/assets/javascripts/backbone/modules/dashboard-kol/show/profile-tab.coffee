@@ -52,15 +52,38 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @parent_view = opts.parent
 
     onRender: ->
-      console.log "profile render"
       @model_binder.bind @model, @el
       @social_view = new Show.ProfileSocialView
         model: @model
       @showChildView 'social', @social_view
       @initSelect2()
+      @initDatepicker()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')  # I❤js
       _.defer ->
         crs.init()
+
+    initDatepicker: ->
+      monthes = []
+      monthesShort = []
+      daysMin = []
+      days = []
+      for i in [0..11]
+        monthes[i] = polyglot.t('date.monthes_full.m' + (i + 1))
+        monthesShort[i] = polyglot.t('date.monthes_abbr.m' + (i + 1))
+      for i in [0..6]
+        days[i] = polyglot.t('date.days_full.d' + (i + 1))
+        daysMin[i] = polyglot.t('date.datepicker_days.d' + (i + 1))
+      @ui.birthdate.datepicker
+        monthNames: monthes
+        monthNamesShort: monthesShort
+        dayNames: days
+        dayNamesMin: daysMin
+        nextText: polyglot.t('date.datepicker_next')
+        prevText: polyglot.t('date.datepicker_prev')
+        dateFormat: "D, d M y"
+      if @model.get('date_of_birthday')?
+        @ui.birthdate.datepicker("setDate", new Date(@model.get('date_of_birthday')))
+
 
     initSelect2: ->
       @ui.industry.select2
@@ -79,11 +102,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           cache:true
         escapeMarkup: _.identity
         initSelection: (el, callback) ->
-          console.log 'init selection'
           $("#interests").val ''
           $.get "/kols/current_categories", (data) ->
-            console.log "got data"
-            console.log data
             callback data
 
       @$el.find('.industry-row button').click (e) =>

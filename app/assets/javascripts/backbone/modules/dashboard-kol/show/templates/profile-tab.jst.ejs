@@ -6,15 +6,15 @@
       </div>
       <div class="score-tables">
         <div class="row">
-          <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.name') %><sup>*</sup></div>
+          <div class="col-md-1 cell"><%= polyglot.t('dashboard_kol.profile_tab.name') %><sup>*</sup></div>
           <div class="col-md-6 cell"><input required class="form-control" type="text" id="name" name="name" /></div>
         </div>
         <div class="row">
-          <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.mobile') %><sup>*</sup></div>
+          <div class="col-md-1 cell"><%= polyglot.t('dashboard_kol.profile_tab.mobile') %><sup>*</sup></div>
           <div class="col-md-6 cell"><input required class="form-control" type="tel" id="mobile" name="mobile_number" /></div>
         </div>
         <div class="row">
-          <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.location') %><sup>*</sup></div>
+          <div class="col-md-1 cell"><%= polyglot.t('dashboard_kol.profile_tab.location') %><sup>*</sup></div>
           <div class="col-md-2 cell">
             <select required class="full-width crs-country form-control" data-region-id="province" id="country" name="country"
                     placeholder="<%= polyglot.t('dashboard_kol.profile_tab.country') %>"
@@ -29,11 +29,11 @@
           </div>
         </div>
         <div class="row" style="margin-bottom: 10px;">
-          <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %><sup>*</sup></div>
-          <div class="col-md-5 cell"><input required type="date" class="full-width form-control" name="date_of_birthday" id="birthdate"/></div>
+          <div class="col-md-1 cell"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %><sup>*</sup></div>
+          <div class="col-md-4 cell"><input required type="text" class="full-width form-control" name="date_of_birthday" id="birthdate"/></div>
         </div>
         <div class="row">
-          <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.gender') %><sup>*</sup></div>
+          <div class="col-md-1 cell"><%= polyglot.t('dashboard_kol.profile_tab.gender') %><sup>*</sup></div>
           <% _(genders).each(function(g, i) { %>
             <div class="col-md-2 cell">
               <input class="" type="radio" name="gender" value="<%= i %>" id="gender_<%= i %>" <%= checked('genders', i, k) %> />
