@@ -23,8 +23,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       score: (k) ->
         k.stats.total
 
-
-
     save: ->
       @ui.form.data('formValidation').validate()
       if @ui.form.data('formValidation').isValid()
