@@ -52,7 +52,7 @@ class Kol < ActiveRecord::Base
     token, uid, token_secret = ""
 
 
-=begin
+
     self.identities.each do |identity|
       case identity.provider
         when "weibo"
@@ -89,92 +89,86 @@ class Kol < ActiveRecord::Base
     stat[:total] += stat[:channels]
 
 
-    client = Weibo2::Client.new
-    client.auth_code.authorize_url(:response_type => "token")
-    client = Weibo2::Client.from_hash(:access_token => token, :expires_in => 86400)
+    begin
+      response = HTTParty.get("https://api.weibo.com/2/users/show.json",
+                               headers: { 'Content-Type' => 'application/json'},
+                               query: {access_token: token, uid: uid})
 
+      #valid
+      stat[:completeness] = 20
 
-      if client.is_authorized?
+      #completeness
+      #has description
+      if response['description'] != ''
+        stat[:completeness] += 10
+      end
 
-        param = {}
-        param[:uid ] = uid
+      #has avatar
+      if response['profile_image_url'] != ''
+        stat[:completeness] += 10
+      end
+      stat[:total] += stat[:completeness]
 
+      #fans
+      fans =  response['followers_count'].to_i
+      friend = response['friends_count'].to_i
 
+      if fans > 1000 && friend > 100
+        stat[:fans] = 10
+        stat[:total] +=  10
+      end
 
-        #valid
-        stat[:completeness] = 20
+      #content & engagement
+      response =  response = HTTParty.get("https://api.weibo.com/2/statuses/user_timeline.json",
+                                          headers: { 'Content-Type' => 'application/json'},
+                                          query: {access_token: token, uid: uid})
+      current = Time.now
+      content = Hash.new
+      response['statuses'].each do |status|
+        date = Date.parse status['created_at']
 
-        #completeness
-        response =  client.users.show(param).parsed
-        #has description
-        if response['description'] != ''
-          stat[:completeness] += 10
-        end
-
-        #has avatar
-        if response['profile_image_url'] != ''
-          stat[:completeness] += 10
-        end
-        stat[:total] += stat[:completeness]
-
-        #fans
-        fans =  response['followers_count'].to_i
-        friend = response['friends_count'].to_i
-
-        if fans > 1000 && friend > 100
-          stat[:fans] = 10
-          stat[:total] +=  10
-        end
-
-        #content & engagement
-        response =  client.statuses.user_timeline(param).parsed
-        current = Time.now
-        content = Hash.new
-        response['statuses'].each do |status|
-          date = Date.parse status['created_at']
-
-          if (current.month - date.month) <= 6
-            if !content[(current.month - date.month)].is_a?(Hash)
-              content[(current.month - date.month)] = Hash.new
-              content[(current.month - date.month)][:post] = 0
-              content[(current.month - date.month)][:repost] = 0
-            end
-
-            content[(current.month - date.month)][:post] +=  + 1
-            content[(current.month - date.month)][:repost] +=  status['reposts_count'] + status['comments_count']
-
+        if (current.month - date.month) <= 5
+          if !content[(current.month - date.month)].is_a?(Hash)
+            content[(current.month - date.month)] = Hash.new
+            content[(current.month - date.month)][:post] = 0
+            content[(current.month - date.month)][:repost] = 0
           end
-        end
-
-        post = true
-        repost = true
-
-        if content.length == 6
-          content.each do |content|
-            if content[:post] == 0
-              post = false
-            end
-
-            if content[:repost] == 0
-              repost = false
-            end
-          end
-        else
-          post = false
-          repost = false
-        end
-
-        if post
-          stat[:content] = 10
-          stat[:total] += 10
-        end
-
-        if repost
-          stat[:engagement] = 10
-          stat[:total] += 10
+          content[(current.month - date.month)][:post] +=  + 1
+          content[(current.month - date.month)][:repost] +=  status['reposts_count'] + status['comments_count']
         end
       end
-=end
+
+      post = true
+      repost = true
+
+      if content.length == 6
+        content.each do |content|
+          if content[:post] == 0
+            post = false
+          end
+
+          if content[:repost] == 0
+            repost = false
+          end
+        end
+      else
+        post = false
+        repost = false
+      end
+
+      if post
+        stat[:content] = 10
+        stat[:total] += 10
+      end
+
+      if repost
+        stat[:engagement] = 10
+        stat[:total] += 10
+      end
+
+    rescue
+
+    end
 
     return stat
   end
