@@ -7,36 +7,36 @@
       <div class="score-tables">
         <div class="row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.name') %><sup>*</sup></div>
-          <div class="col-md-6 cell"><input required type="text" id="name" name="name" /></div>
+          <div class="col-md-6 cell"><input required class="form-control" type="text" id="name" name="name" /></div>
         </div>
         <div class="row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.mobile') %><sup>*</sup></div>
-          <div class="col-md-6 cell"><input required type="tel" id="mobile" name="mobile_number" /></div>
+          <div class="col-md-6 cell"><input required class="form-control" type="tel" id="mobile" name="mobile_number" /></div>
         </div>
         <div class="row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.location') %><sup>*</sup></div>
           <div class="col-md-2 cell">
-            <select required class="full-width crs-country" data-region-id="province" id="country" name="country"
+            <select required class="full-width crs-country form-control" data-region-id="province" id="country" name="country"
                     placeholder="<%= polyglot.t('dashboard_kol.profile_tab.country') %>"
                     data-default-value="<%= k.country %>" ></select>
           </div>
           <div class="col-md-2 cell">
-            <select required class="full-width" id="province" name="province" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.province') %>"
+            <select required class="full-width form-control" id="province" name="province" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.province') %>"
                     data-default-value="<%= k.province %>" ></select>
           </div>
           <div class="col-md-2 cell">
-            <input required type="text" id="city" name="city" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.city') %>" />
+            <input required class="form-control" type="text" id="city" name="city" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.city') %>" />
           </div>
         </div>
         <div class="row" style="margin-bottom: 10px;">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %><sup>*</sup></div>
-          <div class="col-md-5 cell"><input required type="date" class="full-width" name="date_of_birthday" id="birthdate"/></div>
+          <div class="col-md-5 cell"><input required type="date" class="full-width form-control" name="date_of_birthday" id="birthdate"/></div>
         </div>
         <div class="row">
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.gender') %><sup>*</sup></div>
           <% _(genders).each(function(g, i) { %>
             <div class="col-md-2 cell">
-              <input type="radio" name="gender" value="<%= i %>" id="gender_<%= i %>" <%= checked('genders', i, k) %> />
+              <input class="" type="radio" name="gender" value="<%= i %>" id="gender_<%= i %>" <%= checked('genders', i, k) %> />
               <label for="gender_<%= i %>"><%= polyglot.t('dashboard_kol.profile_tab.' + g) %></label>
             </div>
           <% }); %>
@@ -66,7 +66,7 @@
           <div class="col-md-2 cell">&nbsp;</div>
           <% _(industries).each(function(ind, i) { %>
             <div class="col-md-2 cell">
-              <button type="button" class="btn full-width" name="industry_<%= i %>" data-toggle="button">
+              <button type="button" class="btn full-width form-control" name="industry_<%= i %>" data-toggle="button">
                 <%= ind %>
               </button>
             </div>
@@ -76,7 +76,7 @@
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.age_group') %></div>
           <% _(ages).each(function(g, i) { %>
             <div class="col-md-1 cell">
-              <button type="button" class="btn switch-button full-width <%= active('ages', i, k) %>" name="agegroup_<%= i %>" data-toggle="button">
+              <button type="button" class="btn switch-button form-control full-width <%= active('ages', i, k) %>" name="agegroup_<%= i %>" data-toggle="button">
                 <%= g %>
               </button>
             </div>
@@ -95,7 +95,7 @@
           <div class="col-md-2 cell"><%= polyglot.t('dashboard_kol.profile_tab.regions') %></div>
           <div class="col-md-10 cell">
             <% _(regions).each(function(r, i) { %>
-              <button type="button" class="btn switch-button region-btn <%= active('regions', i, k) %>" name="region_<%= i %>" data-toggle="button">
+              <button type="button" class="btn switch-button form-control region-btn <%= active('regions', i, k) %>" name="region_<%= i %>" data-toggle="button">
                 <%= polyglot.t('dashboard_kol.profile_tab.' + r) %>
               </button>
             <% }); %>
