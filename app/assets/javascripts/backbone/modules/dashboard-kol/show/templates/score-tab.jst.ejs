@@ -68,17 +68,17 @@
       &nbsp;
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
-      <div class="col-md-3 text-center">
-        <i class="fa fa-weibo"></i> <span class="social">Weibo</span>
+      <div class="col-md-3 text-center" style="padding: 0px;">
+        <i class="fa fa-weibo fa-2x"></i> <span class="social">Weibo</span>
       </div>
-      <div class="col-md-3 text-center">
-        <i class="fa fa-wechat"></i> <span class="social">Personal</span>
+      <div class="col-md-3 text-center" style="padding: 0px;">
+        <i class="fa fa-wechat fa-2x"></i> <span class="social">Personal</span>
       </div>
-      <div class="col-md-3 text-center">
-        <i class="fa fa-wechat"></i> <span class="social">Public 1st</span>
+      <div class="col-md-3 text-center" style="padding: 0px;">
+        <i class="fa fa-wechat fa-2x"></i> <span class="social">Public 1st</span>
       </div>
-      <div class="col-md-3 text-center">
-        <i class="fa fa-wechat"></i> <span class="social">public 2nd</span>
+      <div class="col-md-3 text-center" style="padding: 0px; vertical-align: middle;">
+        <i class="fa fa-wechat fa-2x"></i> <span class="social">Public 2nd</span>
       </div>
     </div>
   </div>
@@ -279,22 +279,10 @@
       &nbsp;
     </div>
   </div>
-
-
 </div>
 </form>
-<div class="dashboard-kol-tab-footer" style="align-content: center">
-  <div class="campaigns-tab-back">
-    <div style="float: left; width: 45%;">
-    <div class="dashboard-kol-tab-btn" style="float: right;">
-      <a id="back_to_profile_btn" href="#"><%= polyglot.t('dashboard_kol.buttons.back') %></a>
-    </div>
-    </div>
-    <div style="float: right; width: 45%;">
-    <div class="dashboard-kol-tab-btn" style="float: left;">
-      <a id="next_to_campaign_btn" href="#"><%= polyglot.t('dashboard_kol.buttons.next') %></a>
-    </div>
-      </div>
-  </div>
+<div class="dashboard-kol-tab-footer">
+  <button id="back_to_profile_btn" class="btn btn-primary pull-left" type="submit"><i class="fa fa-chevron-left"></i> <%= polyglot.t('dashboard_kol.buttons.back') %></button>
+  <button id="next_to_campaign_btn" class="btn btn-primary pull-right" type="submit"><i class="fa fa-chevron-right"></i> <%= polyglot.t('dashboard_kol.buttons.next') %></button>
 </div>
 

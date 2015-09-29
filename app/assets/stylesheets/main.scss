@@ -1954,12 +1954,15 @@ input.form-control[type="file"] {
 }
 .dashboard-kol-tab-footer {
   padding-left: 200px;
-  background-color: #f4f4f4;
+  padding-bottom: 20px;
+  padding-right: 20px;
+  vertical-align: bottom;
+  background-color: #ffffff;
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
-  height: 150px;
+
 }
 .campaigns-tab-back {
   padding-top: 65px;
