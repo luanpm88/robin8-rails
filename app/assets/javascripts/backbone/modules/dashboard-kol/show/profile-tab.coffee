@@ -52,13 +52,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @parent_view = opts.parent
 
     onRender: ->
+      console.log "profile render"
       @model_binder.bind @model, @el
       @social_view = new Show.ProfileSocialView
         model: @model
       @showChildView 'social', @social_view
       @initSelect2()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')  # I❤js
-      _.defer -> crs.init()
+      _.defer ->
+        crs.init()
 
     initSelect2: ->
       @ui.industry.select2
@@ -77,8 +79,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           cache:true
         escapeMarkup: _.identity
         initSelection: (el, callback) ->
+          console.log 'init selection'
           $("#interests").val ''
           $.get "/kols/current_categories", (data) ->
+            console.log "got data"
+            console.log data
             callback data
 
       @$el.find('.industry-row button').click (e) =>
