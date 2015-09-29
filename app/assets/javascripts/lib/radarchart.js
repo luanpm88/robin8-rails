@@ -11,7 +11,7 @@
 var RadarChart = {
   draw: function(id, d, options){
     var cfg = {
-      radius: 5,
+      radius: 1,
       w: 600,
       h: 600,
       factor: 1,
@@ -27,6 +27,8 @@ var RadarChart = {
       ExtraWidthY: 100,
       color: d3.scale.category10()
     };
+
+
 
     if('undefined' !== typeof options){
       for(var i in options){
@@ -52,23 +54,7 @@ var RadarChart = {
 
     var tooltip;
 
-    //Circular segments
-    for(var j=0; j<cfg.levels-1; j++){
-      var levelFactor = cfg.factor*radius*((j+1)/cfg.levels);
-      g.selectAll(".levels")
-        .data(allAxis)
-        .enter()
-        .append("svg:line")
-        .attr("x1", function(d, i){return levelFactor*(1-cfg.factor*Math.sin(i*cfg.radians/total));})
-        .attr("y1", function(d, i){return levelFactor*(1-cfg.factor*Math.cos(i*cfg.radians/total));})
-        .attr("x2", function(d, i){return levelFactor*(1-cfg.factor*Math.sin((i+1)*cfg.radians/total));})
-        .attr("y2", function(d, i){return levelFactor*(1-cfg.factor*Math.cos((i+1)*cfg.radians/total));})
-        .attr("class", "line")
-        .style("stroke", "grey")
-        .style("stroke-opacity", "0.75")
-        .style("stroke-width", "0.3px")
-        .attr("transform", "translate(" + (cfg.w/2-levelFactor) + ", " + (cfg.h/2-levelFactor) + ")");
-    }
+
 
     //Text indicating at what % each level is
     for(var j=0; j<cfg.levels; j++){
@@ -108,7 +94,7 @@ var RadarChart = {
       .attr("class", "legend")
       .text(function(d){return d})
       .style("font-family", "sans-serif")
-      .style("font-size", "10px")
+      .style("font-size", "9px")
       .attr("text-anchor", "middle")
       .attr("dy", "1.5em")
       .attr("transform", function(d, i){return "translate(0, -10)"})
@@ -116,7 +102,22 @@ var RadarChart = {
       .attr("y", function(d, i){return cfg.h/2*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total);});
 
 
+
+    series = 0
+
     d.forEach(function(y, x){
+
+      if(series == 1)
+      {
+        fillColor = "#8cbf2f"
+        cfg.opacityArea = 1
+      }
+      else
+      {
+        fillColor = "#ffffff"
+        cfg.opacityArea = 0.5
+      }
+
       dataValues = [];
       g.selectAll(".nodes")
         .data(y, function(j, i){
@@ -131,8 +132,8 @@ var RadarChart = {
         .enter()
         .append("polygon")
         .attr("class", "radar-chart-serie"+series)
-        .style("stroke-width", "2px")
-        .style("stroke", cfg.color(series))
+        .style("stroke-width", "1px")
+        .style("stroke", fillColor)
         .attr("points",function(d) {
           var str="";
           for(var pti=0;pti<d.length;pti++){
@@ -140,9 +141,9 @@ var RadarChart = {
           }
           return str;
         })
-        .style("fill", function(j, i){return cfg.color(series)})
+        .style("fill", function(j, i){return fillColor})
         .style("fill-opacity", cfg.opacityArea)
-        .on('mouseover', function (d){
+        /*.on('mouseover', function (d){
           z = "polygon."+d3.select(this).attr("class");
           g.selectAll("polygon")
             .transition(200)
@@ -155,13 +156,16 @@ var RadarChart = {
           g.selectAll("polygon")
             .transition(200)
             .style("fill-opacity", cfg.opacityArea);
-        });
+        });*/
       series++;
     });
+
     series=0;
 
 
-    d.forEach(function(y, x){
+
+
+    /*d.forEach(function(y, x){
       g.selectAll(".nodes")
         .data(y).enter()
         .append("svg:circle")
@@ -179,7 +183,7 @@ var RadarChart = {
           return cfg.h/2*(1-(Math.max(j.value, 0)/cfg.maxValue)*cfg.factor*Math.cos(i*cfg.radians/total));
         })
         .attr("data-id", function(j){return j.axis})
-        .style("fill", cfg.color(series)).style("fill-opacity", .9)
+        .style("fill", "#8cbf2f").style("fill-opacity", .9)
         .on('mouseover', function (d){
           newX =  parseFloat(d3.select(this).attr('cx')) - 10;
           newY =  parseFloat(d3.select(this).attr('cy')) - 5;
@@ -211,11 +215,30 @@ var RadarChart = {
         .text(function(j){return Math.max(j.value, 0)});
 
       series++;
-    });
+    });*/
     //Tooltip
     tooltip = g.append('text')
       .style('opacity', 0)
       .style('font-family', 'sans-serif')
-      .style('font-size', '13px');
+      .style('font-size', '10px');
+
+
+    //Circular segments
+    for(var j=0; j<cfg.levels-1; j++){
+      var levelFactor = cfg.factor*radius*((j+1)/cfg.levels);
+      g.selectAll(".levels")
+        .data(allAxis)
+        .enter()
+        .append("svg:line")
+        .attr("x1", function(d, i){return levelFactor*(1-cfg.factor*Math.sin(i*cfg.radians/total));})
+        .attr("y1", function(d, i){return levelFactor*(1-cfg.factor*Math.cos(i*cfg.radians/total));})
+        .attr("x2", function(d, i){return levelFactor*(1-cfg.factor*Math.sin((i+1)*cfg.radians/total));})
+        .attr("y2", function(d, i){return levelFactor*(1-cfg.factor*Math.cos((i+1)*cfg.radians/total));})
+        .attr("class", "line")
+        .style("stroke", "grey")
+        .style("stroke-opacity", "0")
+        .style("stroke-width", "0.5px")
+        .attr("transform", "translate(" + (cfg.w/2-levelFactor) + ", " + (cfg.h/2-levelFactor) + ")");
+    }
   }
 };
