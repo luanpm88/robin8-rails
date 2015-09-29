@@ -166,8 +166,8 @@ class Kol < ActiveRecord::Base
         stat[:total] += 10
       end
 
-    rescue
-
+    rescue => ex
+      puts ex.inspect
     end
 
     return stat
