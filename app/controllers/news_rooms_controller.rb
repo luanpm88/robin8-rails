@@ -56,11 +56,17 @@ class NewsRoomsController < ApplicationController
 
   def web_analytics
     @news_room = NewsRoom.find params[:news_room_id]
+
+    params[:start_date].nil? ? start_date = Date.today - 1.month : start_date = Date.parse(params[:start_date])
+    params[:end_date].nil? ? end_date = Date.today : end_date = Date.parse(params[:end_date])
+    end_date <= DateTime.now ? end_date = end_date : end_date = DateTime.now
+    start_date <= end_date ? start_date = start_date : start_date = end_date
+
     sa = ServiceAccount.new
     sa.service_account_user
     results = GoogleAnalytics.results(sa.first_profile, {
-      start_date: (DateTime.now - 7.days),
-      end_date: DateTime.now }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
+      start_date: start_date,
+      end_date: end_date }).for_hostname(sa.first_profile, @news_room.subdomain_name + '.' + Rails.application.secrets.host)
     mail_results = results.for_medium('email')
 
     collection = results.collection
@@ -76,20 +82,39 @@ class NewsRoomsController < ApplicationController
   end
 
   def email_analytics
-    @news_room = NewsRoom.find params[:news_room_id]
-    mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
-    domain = Rails.application.secrets.mailgun[:domain]
+    if params[:type] == 'release'
+      @news_room = Release.find params[:news_room_id]
+      if @news_room.campaign_name.nil?
+        render json: 0
+        return
+      end
+    else
+      @news_room = NewsRoom.find params[:news_room_id]
+    end
+
+    params[:start_date].nil? ? start_date = Date.today - 1.month : start_date = Date.parse(params[:start_date])
+    params[:end_date].nil? ? end_date = Date.today : end_date = Date.parse(params[:end_date])
+    end_date <= DateTime.now ? end_date = end_date : end_date = DateTime.now
+    start_date <= end_date ? start_date = start_date : start_date = end_date
+
     begin
-      result = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/stats")
-      result_on_opens = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=opened")
-      result_on_dropped = mg_client.get("#{domain}/campaigns/#{@news_room.campaign_name}/events?event=dropped")
+      r = { total: { sent: 0, delivered: 0, opened: 0, dropped: 0 } }
 
-      r = JSON.parse(result.body)
-      opens = JSON.parse(result_on_opens.body)
-      dropped = JSON.parse(result_on_dropped.body)
+      sent = MailgunEvent.where campaign_name: @news_room.campaign_name, event_type: 'accepted', event_time: start_date..(end_date + 1.day)
+      delivered = MailgunEvent.where campaign_name: @news_room.campaign_name, event_type: 'delivered', event_time: start_date..(end_date + 1.day)
+      opened = MailgunEvent.where campaign_name: @news_room.campaign_name, event_type: 'opened', event_time: start_date..(end_date + 1.day)
+      dropped = MailgunEvent.where campaign_name: @news_room.campaign_name, event_type: 'failed', event_time: start_date..(end_date + 1.day)
 
-      emails = opens.map{ |o| o['recipient'] }
-      emails_dropped = dropped.map{ |o| o['recipient'] }
+      r[:total][:sent] = sent.length
+      r[:total][:delivered] = delivered.length
+      r[:total][:opened] = opened.length
+      r[:total][:dropped] = dropped.length
+
+      emails = []
+      emails_dropped = []
+
+      opened.each { |event| emails << event.recipient }
+      dropped.each { |event| emails_dropped << event.recipient }
 
       query = (emails.blank? ? nil : 'emails[]=' + emails.map{|e| URI.encode_www_form_component(e)}.join('&emails[]='))
       query_dropped = (emails_dropped.blank? ? nil : 'emails[]=' + emails_dropped.map{|e| URI.encode_www_form_component(e)}.join('&emails[]='))
