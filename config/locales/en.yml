@@ -1266,6 +1266,7 @@ en:
         pitch_step:
           button: Pitch!
       smartcampaign: SmartCampaign
+      something_wrong: Something went wrong. Please, try again.
       start_step:
         analyze: Analyze
         campaign_budged: Campaign budget
@@ -1281,6 +1282,9 @@ en:
         pick_deadline: Pick a deadline!
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
       status: Status
+      success_ask_invite: Thanks! Your request was sent successfully!
+      success_invite: Successfully invited
+      success_reject: Successfully rejected
       supported_formats: Supported formats
       targets_step:
         age_group: Age Group

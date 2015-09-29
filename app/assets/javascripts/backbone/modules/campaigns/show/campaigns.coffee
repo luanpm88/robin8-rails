@@ -316,7 +316,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
 
     events:
       "click .camp-interested": "camp_interested"
-      "click .camp-not-interested": "camp_not_interested"
       "click .campaign": "show_editor"
 
     templateHelpers:
@@ -344,10 +343,41 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         pageLength: 25
 
     camp_interested: (event) ->
+      self = this
       id = $(event.currentTarget).data("campaignId")
+      $.post "/campaign_invite/ask_for_invite/", {interested_campaign_id: id}, (data) =>
+        if data
+          $.growl(polyglot.t('smart_campaign.success_ask_invite'), {type: "success"})
+          latest = new Robin.Collections.Campaigns()
+          campaignsLatestTab = new App.Campaigns.Show.CampaignsSuggestedTab
+            collection: latest
+            declined: false
+            accepted: false
+            history: false
+            negotiating: false
+          latest.latest
+            success: ()->
+              console.log self
+              self._parentLayoutView().latest.show campaignsLatestTab
+            error: (e)->
+              console.log e
+          campaignsAll = new Robin.Collections.Campaigns()
+          campaignsAllTab = new App.Campaigns.Show.CampaignsSuggestedTab
+            collection: campaignsAll
+            all: true
+            declined: false
+            accepted: false
+            history: false
+            negotiating: false
+          campaignsAll.all
+            success: ()=>
+              self._parentLayoutView().all.show campaignsAllTab
+            error: (e)->
+              console.log e
 
-    camp_not_interested: (event) ->
-      id = $(event.currentTarget).data("campaignId")
+        else
+          $.growl(polyglot.t('smart_campaign.something_wrong'), {type: "danger"})
+
 
     show_editor: (event) ->
       id = $(event.currentTarget).data("id")

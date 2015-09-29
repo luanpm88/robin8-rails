@@ -9,7 +9,13 @@ class CampaignController < ApplicationController
     elsif params[:status] == "history"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline < ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
     elsif params[:status] == "all"
-      campaigns = kol_signed_in? ? Campaign.where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+      if kol_signed_in?
+        categories = KolCategory.where(:kol_id => current_kol.id).map { |c| c.iptc_category_id }
+        campaigns_all = CampaignCategory.where(:iptc_category_id => categories).map { |c| c.id }
+        campaigns = Campaign.where(:id => campaigns_all).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
+      else
+        campaigns = current_user.campaigns
+      end
     elsif params[:status] == "negotiating"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:articles).where(:articles => {:kol_id => current_kol.id, :tracking_code => 'Negotiating'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     else
@@ -24,7 +30,7 @@ class CampaignController < ApplicationController
     if user.blank? or c.user_id != user.id
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles, :kol_categories, :iptc_categories])
+    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles, :kol_categories, :iptc_categories, :interested_campaigns])
   end
 
   def article

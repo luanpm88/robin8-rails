@@ -177,4 +177,8 @@ Rails.application.routes.draw do
   post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
   resources :kols_lists, only: [:index, :create, :show, :update]
 
+  post 'campaign_invite/reject', to: 'interested_campaigns#update'
+  post 'campaign_invite/invite', to: 'interested_campaigns#update'
+  post 'campaign_invite/ask_for_invite', to: 'interested_campaigns#ask_for_invite'
+
 end
