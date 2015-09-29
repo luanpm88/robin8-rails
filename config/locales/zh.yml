@@ -511,6 +511,7 @@ zh:
     kol_campaign:
       approved: "批准"
       article:
+        approve: Approve
         close: "关闭"
         have_submit_wechat: You have to submit your WeChat report on each 7th day
           after approval of your article, since WeChat only stores data during 7 days

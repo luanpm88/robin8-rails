@@ -40,6 +40,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       campaignsAllTab = new App.Campaigns.Show.CampaignsSuggestedTab
         collection: campaignsAll
         all: true
+        declined: false
+        accepted: false
+        history: false
+        negotiating: false
       campaignsAll.all
         success: ()->
           campaignsPage.showChildView 'all', campaignsAllTab
@@ -58,6 +62,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       latest = new Robin.Collections.Campaigns()
       campaignsLatestTab = new App.Campaigns.Show.CampaignsSuggestedTab
         collection: latest
+        declined: false
+        accepted: false
+        history: false
+        negotiating: false
       latest.latest
         success: ()->
           campaignsPage.showChildView 'latest', campaignsLatestTab

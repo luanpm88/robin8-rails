@@ -2,7 +2,7 @@ class CampaignInviteController < ApplicationController
   def index
     someone = current_user
     someone = current_kol if someone.nil?
-    invites = someone.nil? ? [] : someone.campaign_invites.joins("RIGHT JOIN campaigns ON campaign_invites.campaign_id = campaigns.id").where("campaigns.deadline > ?", Time.zone.now.beginning_of_day)
+    invites = someone.nil? ? [] : someone.campaign_invites.joins("RIGHT JOIN campaigns ON campaign_invites.campaign_id = campaigns.id").where("campaigns.deadline > ? and (campaign_invites.status IS NULL or campaign_invites.status='')", Time.zone.now.beginning_of_day)
     render json: invites, each_serializer: CampaignInviteSerializer
   end
 

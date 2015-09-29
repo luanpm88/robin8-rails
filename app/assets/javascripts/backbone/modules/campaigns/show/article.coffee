@@ -35,6 +35,8 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       title: @options.title
       disabled: @options.disabled
       no_tabs: if @options.no_tabs then @options.no_tabs else false
+      negotiating: @options.negotiating
+      accepted: @options.accepted
 
     onRender: () ->
       no_comments = if @options.no_comments then @options.no_comments else false
@@ -42,7 +44,11 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       @editor = @ui.wysihtml5.data('wysihtml5').editor
       @editor.focus()
       setTimeout(()=>
-        if @options.disabled || @options.no_tabs
+        if @options.accepted == false and @options.negotiating == false
+          document.getElementById('comment').style.display = "none"
+        if @options.accepted == false
+          document.getElementById('wechat_perf').style.display = "none"
+        if @options.disabled || @options.no_tabs || (@options.accepted == false and @options.negotiating == false)
           @editor.disable()
         if no_comments
           @ui.commentInput.prop("disabled",true)

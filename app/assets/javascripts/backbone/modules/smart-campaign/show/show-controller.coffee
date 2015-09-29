@@ -62,6 +62,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
           data = m.toJSON()
           categories_id = _.map(data.kol_categories, (categories) -> categories.iptc_category_id)
           category_labels = {}
+          if data.kol_categories.length == 0
+            campaign_interested = new Show.CampaignInterested
+              model: m
+              category_labels: category_labels
+            page.showChildView 'campaignInterestedRegion', campaign_interested
 
           $.get "/kols/get_categories_labels/", {categories_id: categories_id}, (data) =>
             if data
