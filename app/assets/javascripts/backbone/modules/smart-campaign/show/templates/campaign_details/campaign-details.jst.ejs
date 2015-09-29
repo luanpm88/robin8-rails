@@ -18,7 +18,7 @@
     </div>
     <div class="col-md-3">
       <b><%=polyglot.t('smart_campaign.budget')%>: </b> <%= budget(campaign) %><br/>
-      <b><%=polyglot.t('smart_campaign.content_type')%>: </b> <%= campaign.content_type %>
+      <b><%=polyglot.t('smart_campaign.content_type')%>: </b> <%= polyglot.t("smart_campaign.pitch_step." + campaign.content_type) %>
     </div>
   </div>
 

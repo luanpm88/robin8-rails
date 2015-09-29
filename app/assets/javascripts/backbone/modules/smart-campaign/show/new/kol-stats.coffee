@@ -3,28 +3,27 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.KolStatsView = Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/kol-stats'
 
-    templateHelpers: () ->
-      vs: () ->
-        polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "+25%" })
-      beat: () ->
-        polyglot.t('dashboard_kol.score_tab.youbeat', {per: "50%" })
-      score: () ->
-        "75"
+    serializeData: () ->
+      k: @model.toJSON()
 
     onRender: () ->
       self = this
       self.initHighcharts(self)
+
+    initialize: (opts) ->
+      @model = new Robin.Models.KolProfile @options.kol
+      @initial_attrs = @model.toJSON()
 
     initHighcharts: (self) ->
       self.$(".graph-score").knob()
 
       d = [
         [
-          {axis:"Your influence channel",value:50},
-          {axis:"Social engagement",value:60},
-          {axis:"Content generation",value:42},
-          {axis:"Weibo fans",value:34},
-          {axis:"Validity of social profile",value:48},
+          {axis:"Your influence channel",value:@model.attributes.stats.channels},
+          {axis:"Social engagement",value:@model.attributes.stats.engagement},
+          {axis:"Content generation",value:@model.attributes.stats.content},
+          {axis:"Weibo fans",value:@model.attributes.stats.fans},
+          {axis:"Validity of social profile",value:@model.attributes.stats.completeness},
         ]
       ]
       mycfg = {

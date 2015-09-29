@@ -109,7 +109,7 @@ class KolsController < ApplicationController
     unless params[:content_online].blank?
       kols = kols.where("kols.monetize_interested_all='true' or kols.monetize_interested_post='true' or kols.monetize_interested_create='true' or kols.monetize_interested_share='true' or kols.monetize_interested_review='true' or kols.monetize_interested_speech='true'")
     end
-    render :json => kols.to_json(:methods => [:categories])
+    render :json => kols.to_json(:methods => [:categories, :stats])
   end
 
   private

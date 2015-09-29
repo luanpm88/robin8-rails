@@ -76,6 +76,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         title: @model.get("name")
         disabled: true
         no_comments: false
+        declined: false
+        accepted: true
+        history: false
+        negotiating: false
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -90,7 +94,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             weChetPerf = new App.Campaigns.Show.ArticleWeChat
               collection: article.get("wechat_performance")
               disabled: true
-              canUpload = false
+              canUpload: false
             articleDialog.showChildView 'weChat', weChetPerf
         error: (e)->
           console.log e
@@ -145,6 +149,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         title: @model.get("name")
         disabled: true
         no_comments: true
+        declined: true
+        accepted: false
+        history: false
+        negotiating: false
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -159,7 +167,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             weChetPerf = new App.Campaigns.Show.ArticleWeChat
               collection: article.get("wechat_performance")
               disabled: true
-              canUpload = false
+              canUpload: false
             articleDialog.showChildView 'weChat', weChetPerf
         error: (e)->
           console.log e
@@ -182,39 +190,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         campaign: data
         declined: declined
       }
-
-    events:
-      "click tr.preview": "preview"
-
-    preview: (e) ->
-      id = $(e.currentTarget).data "article-id"
-      article = new Robin.Models.Article
-        campaign_model: @model
-        id: id
-        canUpload: false
-      articleDialog = new App.Campaigns.Show.ArticleDialog
-        model: article
-        title: @model.get("name")
-        disabled: true
-        onApprove: (code) ->
-          $("#code_#{id}").html code
-          $("#code_status_#{id}").html 'Approved'
-      article.fetch
-        success: ()->
-          articleDialog.render()
-          article.fetch_comments ()->
-            commentsList = new App.Campaigns.Show.ArticleComments
-              collection: article.get("article_comments")
-            articleDialog.showChildView 'comments', commentsList
-          article.fetch_wechat_perf ()->
-            weChetPerf = new App.Campaigns.Show.ArticleWeChat
-              collection: article.get("wechat_performance")
-              disabled: true
-              canUpload = false
-            articleDialog.showChildView 'weChat', weChetPerf
-        error: (e)->
-          console.log e
-      Robin.modal.show articleDialog
 
   Show.CampaignNegotiating = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-negotiating'
@@ -252,6 +227,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         title: @model.get("name")
         disabled: true
         no_comments: false
+        declined: false
+        accepted: false
+        history: false
+        negotiating: true
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -266,7 +245,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             weChetPerf = new App.Campaigns.Show.ArticleWeChat
               collection: article.get("wechat_performance")
               disabled: true
-              canUpload = false
+              canUpload: false
             articleDialog.showChildView 'weChat', weChetPerf
         error: (e)->
           console.log e
@@ -315,6 +294,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         title: @model.get("name")
         disabled: true
         no_comments: true
+        declined: false
+        accepted: false
+        history: false
+        negotiating: false
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -329,7 +312,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             weChetPerf = new App.Campaigns.Show.ArticleWeChat
               collection: article.get("wechat_performance")
               disabled: true
-              canUpload = false
+              canUpload: false
             articleDialog.showChildView 'weChat', weChetPerf
         error: (e)->
           console.log e
@@ -381,6 +364,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         title: @model.get("name")
         disabled: true
         no_comments: true
+        declined: false
+        accepted: false
+        history: false
+        negotiating: false
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -395,7 +382,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             weChetPerf = new App.Campaigns.Show.ArticleWeChat
               collection: article.get("wechat_performance")
               disabled: true
-              canUpload = false
+              canUpload: false
             articleDialog.showChildView 'weChat', weChetPerf
         error: (e)->
           console.log e
@@ -469,6 +456,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         title: @model.get("name")
         disabled: true
         no_comments: true
+        declined: false
+        accepted: false
+        history: true
+        negotiating: false
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -483,7 +474,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             weChetPerf = new App.Campaigns.Show.ArticleWeChat
               collection: article.get("wechat_performance")
               disabled: true
-              canUpload = false
+              canUpload: false
             articleDialog.showChildView 'weChat', weChetPerf
         error: (e)->
           console.log e

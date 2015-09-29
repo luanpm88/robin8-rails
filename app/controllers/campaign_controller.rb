@@ -46,9 +46,11 @@ class CampaignController < ApplicationController
     else
       article = Article.find(params[:article_id])
     end
-    params[:attachments_attributes].each do |element|
-      if element[:attachment_type] == "file"
-        Attachment.create(imageable: article, url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
+    unless params[:attachments_attributes].blank?
+      params[:attachments_attributes].each do |element|
+        if element[:attachment_type] == "file"
+          Attachment.create(imageable: article, url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
+        end
       end
     end
     render json: article, serializer: ArticleSerializer
@@ -217,7 +219,7 @@ class CampaignController < ApplicationController
         text = text.sub('@[First Name]', k.first_name)
         text = text.sub('@[Last Name]', k.last_name)
 
-        KolMailer.send_invite(params[:email_address], k.email, params[:email_subject], text)
+        KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
       end
     end
 

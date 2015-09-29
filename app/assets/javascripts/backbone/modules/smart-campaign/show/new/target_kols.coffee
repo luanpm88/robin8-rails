@@ -100,11 +100,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       kol = _(@kols).find (k) -> k.id == kol_id
 
       layout = new Show.KolInspectLayout
-
       Robin.modal.show layout
 
       kol_collection = new Backbone.Collection(kol)
-
       kolStatItemView = new Show.KolStatsView
         kol: kol
       layout.statsRegion.show kolStatItemView

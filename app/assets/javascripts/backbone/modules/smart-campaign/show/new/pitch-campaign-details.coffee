@@ -80,7 +80,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             }
           },
           deadline: {
-            trigger: 'blur'
+            trigger: 'change'
             validators: {
               notEmpty: {
                 message: polyglot.t('smart_campaign.pitch_step.deadline_required')

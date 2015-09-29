@@ -121,7 +121,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         no_tabs = true
       self = this
       article.fetch
-        success: ()->
+        success: ()=>
           articleDialog.render()
           article.fetch_comments(()->
             commentsList = new Show.ArticleComments
@@ -132,10 +132,9 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             wechat_performance = if article.get("wechat_performance")? then article.get("wechat_performance") else []
             canUpload = true
             if wechat_performance.length > 0
-              end = moment(new Date(wechat_performance.models[0].attributes.period).toLocaleFormat '%d-%b-%Y')
-              start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
-              diff = start.diff(end, "days")
-              if diff < 7
+              oneDay = 24*60*60*1000
+              end = Date.today()
+              if Math.round(Math.abs(((new Date(wechat_performance.models[0].attributes.period)).getTime() - end.getTime())/(oneDay))) >= 7
                 canUpload = false
             if self.options.history
               canUpload = false
@@ -156,6 +155,10 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         title: model.get("name")
         no_tabs: no_tabs
         no_comments: no_comments
+        declined: @options.declined
+        accepted: @options.accepted
+        history: @options.history
+        negotiating: @options.negotiating
       Robin.modal.show articleDialog
 
     serializeData: () ->
@@ -296,10 +299,9 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
           error: (e)->
             console.log e
 
-        end = moment(new Date(item.attributes.campaign.created_at).toLocaleFormat '%d-%b-%Y')
-        start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
-        diff = start.diff(end, "days")
-        if diff > 0
+        oneDay = 24*60*60*1000
+        end = Date.today()
+        if Math.round(Math.abs(((new Date(item.attributes.campaign.created_at)).getTime() - end.getTime())/(oneDay))) > 0
           latest = new Robin.Collections.Campaigns
           campaignsLatestTab = new Show.CampaignsSuggestedTab
             collection: latest
@@ -389,4 +391,8 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         title: model.get("name")
         no_tabs: no_tabs
         no_comments: true
+        declined: @options.declined
+        accepted: @options.accepted
+        history: @options.history
+        negotiating: @options.negotiating
       Robin.modal.show articleDialog
