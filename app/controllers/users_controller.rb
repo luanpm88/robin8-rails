@@ -136,38 +136,4 @@ class UsersController < ApplicationController
     params.require(:user).permit(:first_name,:last_name,:email,:password)
   end
 
-  def create_private_kol(params)
-    kol = Kol.where(email: params[:email]).first
-    if kol.nil?
-      user = User.where(email: params[:email]).first
-      if user
-        return ["Brand with this email already exists", false]
-      end
-      #pass = SecureRandom.hex
-      #categories = params[:categories]
-      #categories = '' if categories == nil
-      #categories = categories.strip.split(',').map {|s| s.strip}.uniq
-      #categories = IptcCategory.where :id => categories
-      #kol = Kol.new(
-       # first_name: params[:first_name],
-        #last_name: params[:last_name],
-        #email: params[:email],
-        #password: pass,
-        #password_confirmation: pass,
-        #is_public: false,
-        #iptc_categories: categories
-      #)
-      #kol.save!
-      #PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
-    else
-      new_private_kol = PrivateKol.where(kol_id: kol.id, user_id: current_user.id).first
-      if new_private_kol.nil?
-        #PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
-      else
-        return ["Influencer with this email already added", params[:email]]
-      end
-    end
-    ["ok", false]
-  end
-
 end

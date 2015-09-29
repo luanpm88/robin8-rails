@@ -183,4 +183,8 @@ Rails.application.routes.draw do
   resources :kols_lists, only: [:index, :create, :show, :update]
 
   get '/geocode/country', to: 'geocode#get_country'
+  post 'campaign_invite/reject', to: 'interested_campaigns#update'
+  post 'campaign_invite/invite', to: 'interested_campaigns#update'
+  post 'campaign_invite/ask_for_invite', to: 'interested_campaigns#ask_for_invite'
+
 end

@@ -9,6 +9,7 @@ class Campaign < ActiveRecord::Base
 
   has_many :campaign_categories
   has_many :iptc_categories, :through => :campaign_categories
-
+  has_many :interested_campaigns
   belongs_to :release
+
 end

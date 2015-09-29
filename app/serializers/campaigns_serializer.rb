@@ -1,5 +1,5 @@
 class CampaignsSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :deadline, :budget, :created_at, :updated_at, :user, :tracking_code, :concepts, :summaries, :hashtags, :invite_status, :short_description, :content_type, :non_cash, :iptc_categories
+  attributes :id, :name, :description, :deadline, :budget, :created_at, :updated_at, :user, :tracking_code, :concepts, :summaries, :hashtags, :invite_status, :short_description, :content_type, :non_cash, :iptc_categories, :interested
 
   def tracking_code
     if not scope.nil?
@@ -31,5 +31,13 @@ class CampaignsSerializer < ActiveModel::Serializer
       return labels.join(',')
     end
     ""
+  end
+  def interested
+    if not scope.nil? && @options[:campaign_status].nil?
+      campaign_interested = []
+      campaign_interested = InterestedCampaign.where(:campaign_id => id, :kol_id => scope.id)
+      return campaign_interested
+    end
+    nil
   end
 end

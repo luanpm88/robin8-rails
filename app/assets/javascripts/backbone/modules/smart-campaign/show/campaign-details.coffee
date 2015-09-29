@@ -351,7 +351,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         "#{d}-#{month}-#{y}"
 
     events:
-      "click tr.preview": "preview"
+      "click td.preview": "preview"
+      "click #invite": "inviteToCampaign"
+      "click #reject": "rejectToCampaign"
 
     preview: (e) ->
       id = $(e.currentTarget).data "article-id"
@@ -388,34 +390,82 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           console.log e
       Robin.modal.show articleDialog
 
+    inviteToCampaign: (e) ->
+      e.preventDefault()
+
+      target = $ e.currentTarget
+      campaign_id = target.data 'campaign-id'
+      status = 'I'
+      $.post "/campaign_invite/invite/", {interested_campaign_id: campaign_id, status: status}, (data) =>
+        if data
+          $.growl(polyglot.t('smart_campaign.success_invite'), {type: "success"})
+          @showTabs()
+        else
+          $.growl(polyglot.t('smart_campaign.something_wrong'), {type: "danger"})
+    rejectToCampaign: (e) ->
+      e.preventDefault()
+      target = $ e.currentTarget
+      campaign_id = target.data 'campaign-id'
+      status = 'R'
+      self = this
+      $.post "/campaign_invite/reject/", {interested_campaign_id: campaign_id, status: status}, (data) =>
+        if data
+          $.growl(polyglot.t('smart_campaign.success_reject'), {type: "success"})
+          @showTabs()
+        else
+          $.growl(polyglot.t('smart_campaign.something_wrong'), {type: "danger"})
+
+    showTabs: () ->
+      model = @model.toJSON()
+      campaign = new Robin.Models.Campaign { id: model.id }
+      campaign.fetch
+        success: (m, r, o) =>
+          campaign_invited = new Show.CampaignInvitedList
+            model: m
+          @_parent._parent._parent.campaignInvitedRegion.show(campaign_invited)
+          data = m.toJSON()
+          interested = {}
+          users_id = _.map(data.interested_campaigns, (campaigns) -> campaigns.kol_id)
+          if data.interested_campaigns.length == 0
+            campaign_interested = new Show.CampaignInterested
+              model: m
+              interested: interested
+            @_parent._parent._parent.campaignInterestedRegion.show(campaign_interested)
+          $.get "/kols/get_categories_labels/", {users_id: users_id}, (data) =>
+            if data
+              interested = data
+            campaign_interested = new Show.CampaignInterested
+              model: m
+              interested: interested
+            @_parent._parent._parent.campaignInterestedRegion.show(campaign_interested)
+
     serializeData: () ->
       oneDay = 24*60*60*1000
       data = @model.toJSON()
       end = Date.today()
-      category_labels = @options.category_labels
-      interested = _.chain(data.campaign_invites)
+      interested_list = @options.interested
+      interested = _.chain(data.interested_campaigns)
         .filter (i) ->
-          Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0
+          i.status != "I" and i.status != "R" and Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0
         .map (i) ->
-          kol = _(data.kols).find (k) -> k.id == i.kol_id
+          kol = _(interested_list.users).find (k) -> k.id == i.kol_id
 
-          categories_id = _.map(data.kol_categories, (categories) ->
-            if categories.kol_id == i.kol_id
-              categories.iptc_category_id
-          )
-          categories_labels = _.map(category_labels, (categories) ->
-            if categories_id.indexOf(categories.id) > -1
+          categories = _(interested_list.categories).find (k) -> k.kol_id == kol.id
+
+          categories_labels = _.map(interested_list.categories_labels, (categories) ->
+            if interested_list.categories_list.indexOf(categories.id) > -1
               return categories.text
           )
           if categories_labels.length != 0
             categories_labels = categories_labels.join()
 
-          article = _(data.articles).find (a) -> a.kol_id == i.kol_id
+          article = _(data.articles).find (a) -> a.kol_id == kol.id
           if not article?
             console.log "that is not ok, no article for invitation #{i.id}"
             article = {}
           kol.article = article
           kol.categories_labels = categories_labels
+          kol.interested_id = i.id
           kol
         .value()
       {

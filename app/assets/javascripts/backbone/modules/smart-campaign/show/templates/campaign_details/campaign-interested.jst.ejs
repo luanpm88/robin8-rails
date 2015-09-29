@@ -11,13 +11,13 @@
       </tr></thead>
       <tbody>
         <% _.each(interested, function(k) { %>
-          <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>" class="preview">
-            <td><%= k.first_name %></td>
-            <td><%= formatDate(campaign.deadline) %></td>
-            <td><%= k.categories_labels %></td>
+          <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>">
+            <td class="preview"><%= k.first_name %></td>
+            <td class="preview"><%= formatDate(campaign.deadline) %></td>
+            <td class="preview"><%= k.categories_labels %></td>
             <td>
-              <button type="button" class="btn top-btn camp-default-btn interested-btn" data-campaign-id="<%= k.id %>"><%=polyglot.t('smart_campaign.invite')%></button>
-              <button type="button" class="btn top-btn btn-decline invitation-decline interested-btn" data-invite-id="<%= k.id %>"><%=polyglot.t('smart_campaign.reject')%></button>
+              <button type="button" class="btn top-btn camp-default-btn interested-btn" id='invite' data-campaign-id="<%= k.interested_id %>"><%=polyglot.t('smart_campaign.invite')%></button>
+              <button type="button" class="btn top-btn btn-decline invitation-decline interested-btn" id='reject' data-campaign-id="<%= k.interested_id %>"><%=polyglot.t('smart_campaign.reject')%></button>
             </td>
           </tr>
         <% }); %>

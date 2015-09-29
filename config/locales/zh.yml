@@ -1218,6 +1218,7 @@ zh:
           button: "投递"
           execute: Execute campaign!
       smartcampaign: "智能推广"
+      something_wrong: Something went wrong. Please, try again.
       start_step:
         analyze: "分析"
         campaign_budged: "推广活动预算"
@@ -1232,6 +1233,9 @@ zh:
         pick_deadline: "选择一个期限"
         summary: 如下是<strong> "%{name}" </strong>的小结
       status: "状态"
+      success_ask_invite: Thanks! Your request was sent successfully!
+      success_invite: Successfully invited
+      success_reject: Successfully rejected
       supported_formats: "支持格式"
       targets_step:
         age_group: Age Group

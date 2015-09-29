@@ -23,7 +23,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     ui:
       birthdate: "#birthdate"
       next: '#back_to_score_btn'
-      industry: '#industry'
+      industry: '#interests'
 
     regions:
       social: ".social-content"
@@ -63,20 +63,26 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     initSelect2: ->
       @ui.industry.select2
         maximumSelectionSize: 5
-        tokenSeparators: [' ']
-        tags: @target.industries
-        separator: '|'
+        multiple: true
+        minimumInputLength: 1
         width: '100%'
         placeholder: polyglot.t('dashboard_kol.profile_tab.industry_placeholder')
-      @ui.industry.val(@model.get 'industry').trigger('change')
+        ajax:
+          url: '/kols/suggest_categories'
+          dataType: 'json'
+          data: (term, page) ->
+            return { f: term }
+          results:  (data, page) ->
+            return { results: data }
+          cache:true
+        escapeMarkup: _.identity
+        initSelection: (el, callback) ->
+          $("#interests").val ''
+          $.get "/kols/current_categories", (data) ->
+            callback data
+
       @$el.find('.industry-row button').click (e) =>
         _.defer -> $(e.target).removeClass('active').blur()
-        index = parseInt e.target.name.split('_')[1]
-        new_val = @target.industries[index]
-        old_val = _.compact @ui.industry.val().split('|')
-        if (not (new_val in old_val)) and old_val.length < 5
-          old_val.push new_val
-          @ui.industry.val(old_val.join '|').trigger 'change'
 
     serializeData: ->
       _.extend @target,

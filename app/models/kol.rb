@@ -15,6 +15,7 @@ class Kol < ActiveRecord::Base
   has_many :wechat_article_performances, as: :sender
   has_many :article_comments, as: :sender
   has_many :kol_profile_screens
+  has_many :interested_campaigns
 
   GENDERS = {
     :NONE => 0,
