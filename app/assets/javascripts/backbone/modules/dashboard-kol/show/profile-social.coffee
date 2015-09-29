@@ -6,7 +6,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     </div>
   """
   logged_in_template = _.template """
-    <div class="col-md-3 cell">
+    <div class="col-md-3 cell social-label">
       Logged in as <a href="<%= url %>"><%= name %></a>.&nbsp;&nbsp;
       <a href="#" id="<%= provider %>" class="disconnect"><i id="<%= provider %>" class="fa fa-trash"></i></a>
     </div>

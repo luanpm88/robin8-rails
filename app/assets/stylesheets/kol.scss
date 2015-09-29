@@ -119,7 +119,12 @@ body {
 
 .profile-content {
   .row {
-    padding: 5px;
+    padding: 5px 0px;
+    max-width: 1000px;
+  }
+  select {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
   }
   .full-width {
     width: 100%;
