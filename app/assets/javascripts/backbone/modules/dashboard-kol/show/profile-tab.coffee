@@ -4,8 +4,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     ages: ['<12', '12-18', '18-25', '25-35', '35-45', '45-55', '>55']
     regions: ['east', 'north', 'northeast', 'south', 'west', 'central']
     mf: ['80:20', '60:40', '50:50', '40:60', '20:80']
-    industries: ['Industry1', 'Industry2 ', 'Industry3',
-      'Industry4','Industry5']
+    industries:
+      "01021000": "entertainment"
+      "01022000": "culture"
+      "04017000": "economy"
+      "04018000": "business"
+      "13010000": "technology"
     genders:
       0: 'secrecy'
       1: 'male'
