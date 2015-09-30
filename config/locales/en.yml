@@ -1283,8 +1283,8 @@ en:
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
       status: Status
       success_ask_invite: Your request has been sent
-      success_invite: Successfully invited
-      success_reject: Successfully rejected
+      success_invite: Invitation has been sent
+      success_reject: Request has been rejected
       supported_formats: Supported formats
       targets_step:
         age_group: Age Group

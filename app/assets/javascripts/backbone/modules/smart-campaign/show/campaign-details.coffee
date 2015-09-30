@@ -183,6 +183,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.status
+          article = _(data.articles).find (a) -> a.kol_id == i.kol_id
+          if not article?
+            console.log "that is not ok, no article for invitation #{i.id}"
+            article = {}
+          kol.article = article
           kol.decline_date = if i.decline_date == undefined || i.decline_date == null then i.updated_at else i.decline_date
           kol
         .value()
@@ -261,6 +266,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.tracking_code
+          article = _(data.articles).find (a) -> a.kol_id == i.kol_id
+          if not article?
+            console.log "that is not ok, no article for invitation #{i.id}"
+            article = {}
+          kol.article = article
           kol
         .value()
       {

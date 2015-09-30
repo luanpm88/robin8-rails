@@ -26,13 +26,13 @@ class InterestedCampaignsController < InheritedResources::Base
       if params[:status] == 'I'
         kol = Kol.find(interested_campaign.kol_id)
         campaign = Campaign.find(interested_campaign.campaign_id)
-        user = User.find(interested_campaign)
+        user = User.find(interested_campaign.user_id)
         invite = CampaignInvite.new
         invite.kol = kol
         invite.status = ''
         invite.campaign = campaign
         invite.save
-        campaign.delete
+        interested_campaign.delete
         KolMailer.campaign_invite(kol,user,campaign).deliver
       end
     end

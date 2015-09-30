@@ -11,7 +11,9 @@ class CampaignController < ApplicationController
     elsif params[:status] == "all"
       if kol_signed_in?
         categories = KolCategory.where(:kol_id => current_kol.id).map { |c| c.iptc_category_id }
-        campaigns_all = CampaignCategory.where(:iptc_category_id => categories).map { |c| c.id }
+        campaigns_all = CampaignCategory.where(:iptc_category_id => categories).map { |c| c.campaign_id }
+        campaigns_invites = CampaignInvite.where(:kol_id => current_kol.id).map { |c| c.campaign_id }
+        campaigns_all-=campaigns_invites
         campaigns = Campaign.where(:id => campaigns_all).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
       else
         campaigns = current_user.campaigns
