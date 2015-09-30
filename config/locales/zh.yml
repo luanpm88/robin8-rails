@@ -537,7 +537,7 @@ zh:
       deadline: "期限"
       in_progress: "进行中"
       name: "姓名"
-      no_campaign: There isn't any active campaigns.
+      no_campaign: There are not any active campaigns.
       no_latest_campaign: There are no campaigns created within last 2 weeks.
       not_approved_yet: "尚未得到批准"
       status: Status

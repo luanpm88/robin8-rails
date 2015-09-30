@@ -47,6 +47,8 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
 
     accept: (event) ->
       event.preventDefault()
+      console.log 'here'
+      console.log event
       @perform_action($(event.currentTarget))
 
     decline: (event) ->
@@ -108,6 +110,19 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
           campaignsDeclined.declined
             success: ()->
               self._parentLayoutView().declined.show campaignsDeclinedTab
+            error: (e)->
+              console.log e
+
+          negotiating = new Robin.Collections.Campaigns()
+          campaignsNegotiatingTab = new App.Campaigns.Show.CampaignsTab
+            collection: negotiating
+            declined: false
+            accepted: false
+            history: false
+            negotiating: true
+          negotiating.negotiating
+            success: ()->
+              self._parentLayoutView().negotiating.show campaignsNegotiatingTab
             error: (e)->
               console.log e
 
@@ -223,6 +238,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       "click .invitation-accept": "accept"
       "click .invitation-decline": "decline"
       "click #negotiate": "negotiate_campaign"
+      "click .campaign": "show_editor"
 
     templateHelpers:
       formatDate: (d) ->
@@ -256,6 +272,58 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         article_id: model.attributes.campaign.id
         layout: this._parentLayoutView()
       Robin.modal.show negotiateCampaignDialog
+
+    show_editor: (event) ->
+      id = $(event.currentTarget).data("id")
+      model = this.collection.get(id)
+      article = new Robin.Models.Article
+        campaign_model: model
+      no_tabs = false
+      if this.options.history
+        no_tabs = true
+      self = this
+      article.fetch
+        success: ()=>
+          articleDialog.render()
+          article.fetch_comments(()->
+            commentsList = new Show.ArticleComments
+              collection: article.get("article_comments")
+            articleDialog.showChildView 'comments', commentsList
+          )
+          article.fetch_wechat_perf(()->
+            wechat_performance = if article.get("wechat_performance")? then article.get("wechat_performance") else []
+            canUpload = true
+            if wechat_performance.length > 0
+              end = moment(new Date(wechat_performance.models[0].attributes.period))
+              start = moment(Date.today())
+              diff = start.diff(end, "days")
+              if diff < 7
+                canUpload = false
+            if self.options.history
+              canUpload = false
+            weChetPerf = new Show.ArticleWeChat
+              collection: article.get("wechat_performance")
+              model: article
+              disabled: false
+              canUpload: canUpload
+            articleDialog.showChildView 'weChat', weChetPerf
+          )
+        error: (e)->
+          console.log e
+      no_comments = true
+      if @options.accepted or @options.negotiating
+        no_comments = false
+      articleDialog = new Show.ArticleDialog
+        model: article
+        title: model.get("name")
+        no_tabs: no_tabs
+        no_comments: no_comments
+        declined: false
+        accepted: true
+        history: false
+        negotiating: false
+      Robin.modal.show articleDialog
+
 
     accept: (event) ->
       event.preventDefault()

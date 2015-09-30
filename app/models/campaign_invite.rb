@@ -1,5 +1,5 @@
 class CampaignInvite < ActiveRecord::Base
-  STATUSES = ['', 'A', 'D']
+  STATUSES = ['', 'A', 'D', 'N']
   validates_inclusion_of :status, :in => STATUSES
 
   belongs_to :campaign

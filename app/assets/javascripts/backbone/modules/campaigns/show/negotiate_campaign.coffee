@@ -37,7 +37,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             $('body').removeClass('modal-open')
             $('.modal-backdrop').remove()
             $('.fade').remove()
-            self.options.layout
             negotiating = new Robin.Collections.Campaigns()
             campaignsNegotiatingTab = new App.Campaigns.Show.CampaignsTab
               collection: negotiating
@@ -74,6 +73,15 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             campaignsDeclined.declined
               success: ()->
                 self.options.layout.declined.show campaignsDeclinedTab
+              error: (e)->
+                console.log e
+
+            invites = new Robin.Collections.CampaignInvitations
+            campaignsInvitationTab = new Show.CampaignsInvitations
+              collection: invites
+            invites.fetch
+              success: ()->
+                self.options.layout.invitation.show campaignsInvitationTab
               error: (e)->
                 console.log e
           else
