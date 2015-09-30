@@ -137,7 +137,7 @@ class CampaignController < ApplicationController
 
   def negotiate_campaign
     campaign = Campaign.find(params[:id])
-    campaign_invite = CampaignInvite.where(:campaign_id=>40, :kol_id=>3).first
+    campaign_invite = CampaignInvite.where(:campaign_id=>campaign.id, :kol_id=>current_kol.id).first
     campaign_invite.status = 'N'
     campaign_invite.save
     article = campaign.articles.where(kol_id: current_kol.id).first
