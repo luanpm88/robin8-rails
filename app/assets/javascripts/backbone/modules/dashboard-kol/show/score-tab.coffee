@@ -6,10 +6,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       form: '#score_form'
       next: '#next_to_campaign_btn'
       back: '#back_to_profile_btn'
+      check_all: '#monetize_intrested_all'
 
     events:
       'click @ui.next': 'next'
       'click @ui.back': 'back'
+      'click @ui.check_all': 'check_all'
+
 
     serializeData: () ->
       k: @model.toJSON()
@@ -84,7 +87,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       mycfg = {
         w: 160,
         h: 150,
-        maxValue: 45,
+        maxValue: 40,
         levels: 0,
         ExtraWidthX: 190
       }
@@ -96,11 +99,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initGauge: (self, value) ->
 
-      console.log(value)
-
       percent = value
       barWidth = 10
-      numSections = 100
+      numSections = 40
       sectionPerc = 1 / numSections / 1.5
       padRad = 0.05
       chartInset = 10
@@ -110,9 +111,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       #el = self.$('.chart-gauge')
       console.log(self.$('.chart-gauge')[0])
       el = d3.select(self.$('.chart-gauge')[0])
-      console.log(el)
-
-      console.log
 
       margin = { top: 20, right: 20, bottom: 20, left: 20 }
       width = 160 - margin.left - margin.right
@@ -182,6 +180,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         $("#avatar-image").attr('src', info.cdnUrl)
         viewObj.model.set({avatar_url: info.cdnUrl})
       )
+
+    check_all: () ->
+      if @ui.check_all.checked
+        console.log("checked")
+      else
+        console.log("unchecked")
 
     initFormValidation: () ->
       @ui.form.formValidation(

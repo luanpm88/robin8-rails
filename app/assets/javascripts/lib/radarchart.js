@@ -87,7 +87,7 @@ var RadarChart = {
       .attr("x2", function(d, i){return cfg.w/2*(1-cfg.factor*Math.sin(i*cfg.radians/total));})
       .attr("y2", function(d, i){return cfg.h/2*(1-cfg.factor*Math.cos(i*cfg.radians/total));})
       .attr("class", "line")
-      .style("stroke", "grey")
+      .style("stroke", "#007183")
       .style("stroke-width", "1px");
 
     axis.append("text")
@@ -97,8 +97,9 @@ var RadarChart = {
       .style("font-size", "11px")
       .attr("text-anchor", "middle")
       .attr("dy", "1.5em")
+      .attr("fill", "#007183")
       .attr("transform", function(d, i){return "translate(0, -10)"})
-      .attr("x", function(d, i){return cfg.w/2*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total) + 10 ;})
+      .attr("x", function(d, i){return cfg.w/2*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total);})
       .attr("y", function(d, i){return cfg.h/2*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total);});
 
 
