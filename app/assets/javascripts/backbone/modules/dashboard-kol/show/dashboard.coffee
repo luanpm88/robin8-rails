@@ -15,7 +15,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       @options = options
       @_states = ['profile', 'score', 'campaigns']
       @empty = false
-      @state = @options.state or 'campaigns'
+      @state = @options.state or 'CRASH AND BURN'
       if not @model?
         @model = new Robin.Models.KOL()
         if not @data?
