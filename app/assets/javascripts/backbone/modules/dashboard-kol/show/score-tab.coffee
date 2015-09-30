@@ -23,7 +23,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     templateHelpers: () ->
       vs: (k) ->
-        polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "+#{k.stats.total_progress}%" })
+        if k.stats.total_progress > 0
+          polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "+#{k.stats.total_progress}%" })
+        else
+          polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "#{k.stats.total_progress}%" })
       beat: (k) ->
         polyglot.t('dashboard_kol.score_tab.youbeat', {per: "#{k.stats.total_beat}%" })
       score: (k) ->
