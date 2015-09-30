@@ -7,6 +7,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       next: '#next_to_campaign_btn'
       back: '#back_to_profile_btn'
       check_all: '#monetize_intrested_all'
+      post_interested: '#post_interested'
+      create_interested: '#create_interested'
+      share_interested: '#share_interested'
 
     events:
       'click @ui.next': 'next'
@@ -35,12 +38,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
           success: (m, r) =>
             @initial_attrs = m.toJSON()
             App.currentKOL.set m.attributes
-            $.growl "You profile was saved successfully", {type: "success"}
+            $.growl "You value was saved successfully", {type: "success"}
             cb()
           error: (m, r) =>
             console.log "Error saving KOL profile. Response is:"
             console.log r
-            $.growl "Can't save profile info", {type: "danger"}
+            $.growl "Can't save value info", {type: "danger"}
 
     next: ->
       @save =>
@@ -58,13 +61,20 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onRender: () ->
       @model_binder.bind @model, @el
-      @$el.find('input[type=radio][checked]').prop('checked', 'checked')  # I❤js
+      @$el.find('input[type=checkbox][checked]').prop('checked', 'checked')  # I❤js
       self = this
       @ui.form.validator()
       @ui.form.ready(self.init(self))
 
+
     init: (self) ->
       self.initFormValidation()
+
+
+      self.$el.find('input[type=checkbox][checked]').prop('checked', 'checked')  # I❤js
+      if self.$("input:checkbox:checked").length == 8
+        self.$el.find('#monetize_interested_all').prop('checked', 'checked')
+
 
       self.initGauge(self, @model.attributes.stats.total)
 
@@ -183,10 +193,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       )
 
     check_all: () ->
-      if @ui.check_all.checked
-        console.log("checked")
+      if @ui.check_all.is(':checked')
+        @$el.find('input[type=checkbox]').prop('checked', 'checked')
       else
-        console.log("unchecked")
+        @$el.find('input[type=checkbox]').prop('checked', '')
 
     initFormValidation: () ->
       @ui.form.formValidation(

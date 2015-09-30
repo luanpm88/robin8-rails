@@ -130,7 +130,7 @@ class KolsController < ApplicationController
   end
 
   def monetize_params
-    params.require(:kol).permit(:avatar_url, :monetize_interested_all, :monetize_interested_post, :monetize_interested_create,
+    params.require(:kol).permit(:avatar_url, :monetize_interested_post, :monetize_interested_create,
                                 :monetize_interested_share, :monetize_interested_review, :monetize_interested_speech,
                                 :monetize_interested_event, :monetize_interested_focus, :monetize_interested_party,
                                 :monetize_interested_endorsements, :monetize_post, :monetize_post_weibo, :monetize_post_personal,
