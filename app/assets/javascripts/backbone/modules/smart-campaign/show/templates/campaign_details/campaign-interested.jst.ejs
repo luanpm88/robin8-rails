@@ -2,12 +2,12 @@
   <% if (interested.length == 0) { %>
     <i><%=polyglot.t('smart_campaign.no_one_interested')%></i>
   <% } else { %>
-    <table class="table table-striped" id="interested-kols">
+    <table class="table table-striped detailed-table" id="interested-kols">
       <thead style="cursor:pointer;"><tr>
-        <th><%=polyglot.t('smart_campaign.name')%></th>
-        <th><%=polyglot.t('smart_campaign.deadline')%></th>
-        <th><%=polyglot.t('smart_campaign.categories')%></th>
-        <th><%=polyglot.t('smart_campaign.action')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.name')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.deadline')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.categories')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.action')%></th>
       </tr></thead>
       <tbody>
         <% _.each(interested, function(k) { %>
