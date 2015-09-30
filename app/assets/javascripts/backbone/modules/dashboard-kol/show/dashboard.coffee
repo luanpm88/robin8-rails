@@ -40,9 +40,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       @showChildView 'content', @view
       _.defer =>
         $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active')
-        if @state == "campaigns"
+        if s == "campaigns"
           $('#nav-campaigns').parent().addClass('active')
-        if @state == "profile"
+        if s == "profile"
           $('#nav-sidebar-profile').parent().addClass('active')
         state_url = ({
           profile: "#/dashboard/profile"
