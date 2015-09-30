@@ -16,12 +16,11 @@
     </div>
     <div class="col-md-4" style="margin-top: 10px; margin-left: 10px; padding: 0px;">
       <div style="height: 170px;">
-        <div style="float: left; padding-left: 40px; padding-top: 30px;">
-          <input type="text" value="<%= score(k) %>" class="graph-score" data-fgColor="#edac0a" data-bgColor="#AAAAAA" data-angleOffset=-125 data-angleArc=250 data-readOnly=true data-width="120" data-height="120">
+        <div style="float: left; padding-left: 60px; padding-top: 30px;">
+          <input type="text" value="<%= score(k) %>" class="graph-score" data-fgColor="#edac0a" data-bgColor="#AAAAAA" data-angleOffset=-125 data-angleArc=250 data-readOnly=true data-width="130" data-height="130">
         </div>
-        <div style="float: right">
-          <span style="font-family: 'ProximaNovaBold'; font-size: 20px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.social_score')%></span>
-          <br/><br/>
+        <div style="float: right; padding-top: 40px;">
+          <span style="font-family: 'ProximaNovaBold'; font-size: 20px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.social_score')%></span><br/><br/>
           <div style="font-family: 'ProximaNova'; font-size: 13px; color: white; background-color: #edac0a; text-align: center;">&nbsp;<%= vs(k)%>&nbsp;</div>
           <br/>
           <div style="font-family: 'ProximaNova'; font-size: 13px; color: white; background-color: #edac0a; text-align: center;">&nbsp;<%= beat(k) %>&nbsp;</div>
@@ -91,20 +90,20 @@
       <input type="checkbox" id="post_interested" name="monetize_interested_post">
     </div>
     <div class="col-md-3 text-center cell"  style="height: 45px;">
-      <input type="number" id="monetize_post" name="monetize_post">
+      <input type="number" id="monetize_post" name="monetize_post" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
-      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 0px; padding-left: 0px;">
-        <input type="number" id="post_weibo" name="monetize_post_weibo" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="post_weibo" name="monetize_post_weibo" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="post_personal" name="monetize_post_personal" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="post_personal" name="monetize_post_personal" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="post_public1st" name="monetize_post_public1st" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="post_public1st" name="monetize_post_public1st" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="post_public2nd" name="monetize_post_public2nd" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="post_public2nd" name="monetize_post_public2nd" style="width: 100%; text-align: center;">
       </div>
     </div>
   </div>
@@ -116,20 +115,20 @@
       <input type="checkbox" id="create_interested" name="monetize_interested_create">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="create_price" name="monetize_create">
+      <input type="number" id="create_price" name="monetize_create" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
-      <div class="col-md-3 text-center" style="padding-top: 5px;">
-        <input type="number" id="create_weibo" name="monetize_create_weibo" style="width: 70px;">
+      <div class="col-md-3 text-center" style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="create_weibo" name="monetize_create_weibo" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center" style="padding-top: 5px;">
-        <input type="number" id="create_personal" name="monetize_create_personal" style="width: 70px;">
+      <div class="col-md-3 text-center" style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="create_personal" name="monetize_create_personal" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center" style="padding-top: 5px;">
-        <input type="number" id="create_public1st" name="monetize_create_public1st" style="width: 70px;">
+      <div class="col-md-3 text-center" style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="create_public1st" name="monetize_create_public1st" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center" style="padding-top: 5px;">
-        <input type="number" id="create_public2nd" name="monetize_create_public2nd" style="width: 70px;">
+      <div class="col-md-3 text-center" style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="create_public2nd" name="monetize_create_public2nd" style="width: 100%; text-align: center;">
       </div>
     </div>
   </div>
@@ -141,20 +140,20 @@
       <input type="checkbox" id="share_interested" name="monetize_interested_share">
     </div>
     <div class="col-md-3 text-center cell"  style="height: 45px;">
-      <input type="number" id="share_price" name="monetize_share">
+      <input type="number" id="share_price" name="monetize_share" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="share_weibo" name="monetize_share_weibo" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="share_weibo" name="monetize_share_weibo" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="share_personal" name="monetize_share_personal" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="share_personal" name="monetize_share_personal" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="share_public1st" name="monetize_share_public1st" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="share_public1st" name="monetize_share_public1st" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="share_public2nd" name="monetize_share_public2nd" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="share_public2nd" name="monetize_share_public2nd" style="width: 100%; text-align: center;">
       </div>
     </div>
   </div>
@@ -166,20 +165,20 @@
       <input type="checkbox" id="review_interested" name="monetize_interested_review">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="review_price" name="monetize_review">
+      <input type="number" id="review_price" name="monetize_review" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="review_weibo" name="monetize_review_weibo" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="review_weibo" name="monetize_review_weibo" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="review_personal" name="monetize_review_personal" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="review_personal" name="monetize_review_personal" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="review_public1st" name="monetize_review_public1st" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="review_public1st" name="monetize_review_public1st" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="review_public2nd" name="monetize_review_public2nd" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="review_public2nd" name="monetize_review_public2nd" style="width: 100%; text-align: center;">
       </div>
     </div>
   </div>
@@ -191,20 +190,20 @@
       <input type="checkbox" id="speech_interested" name="monetize_interested_speech">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="speech_price" name="monetize_speech">
+      <input type="number" id="speech_price" name="monetize_speech" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="speech_weibo" name="monetize_speech_weibo" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="speech_weibo" name="monetize_speech_weibo" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="speech_personal" name="monetize_speech_personal" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="speech_personal" name="monetize_speech_personal" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="speech_public1st" name="monetize_speech_public1st" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="speech_public1st" name="monetize_speech_public1st" style="width: 100%; text-align: center;">
       </div>
-      <div class="col-md-3 text-center"  style="padding-top: 5px;">
-        <input type="number" id="speech_public2nd" name="monetize_speech_public2nd" style="width: 70px;">
+      <div class="col-md-3 text-center"  style="padding-top: 5px; padding-right: 5px; padding-left: 5px;">
+        <input type="number" id="speech_public2nd" name="monetize_speech_public2nd" style="width: 100%; text-align: center;">
       </div>
     </div>
   </div>
@@ -231,7 +230,7 @@
       <input type="checkbox" id="attend_interested" name="monetize_interested_event">
     </div>
     <div class="col-md-3 text-center cell" >
-      <input type="number" id="attend_price" name="monetize_event">
+      <input type="number" id="attend_price" name="monetize_event" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       &nbsp;
@@ -245,7 +244,7 @@
       <input type="checkbox" id="focus_interested" name="monetize_interested_focus">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="focus_price" name="monetize_focus">
+      <input type="number" id="focus_price" name="monetize_focus" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       &nbsp;
@@ -259,7 +258,7 @@
       <input type="checkbox" id="host_interested" name="monetize_interested_party">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="host_price" name="monetize_party">
+      <input type="number" id="host_price" name="monetize_party" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       &nbsp;
@@ -273,7 +272,7 @@
       <input type="checkbox" id="endorsements_interested" name="monetize_interested_endorsements">
     </div>
     <div class="col-md-3 text-center cell">
-      <input type="number" id="endorsements_price" name="monetize_endorsements">
+      <input type="number" id="endorsements_price" name="monetize_endorsements" style="width: 100%; text-align: center;">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px;">
       &nbsp;
@@ -282,7 +281,7 @@
 </div>
 </form>
 <div class="dashboard-kol-tab-footer">
-  <button id="back_to_profile_btn" class="btn btn-primary pull-left" type="submit"><i class="fa fa-chevron-left"></i> <%= polyglot.t('dashboard_kol.buttons.back') %></button>
+  <button id="back_to_profile_btn" class="btn btn-default btn-green pull-left" type="submit" style="min-width: 45px;"><i class="fa fa-chevron-left"></i> <%= polyglot.t('dashboard_kol.buttons.back') %></button>
   <button id="next_to_campaign_btn" class="btn btn-primary pull-right" type="submit"><i class="fa fa-chevron-right"></i> <%= polyglot.t('dashboard_kol.buttons.next') %></button>
 </div>
 
