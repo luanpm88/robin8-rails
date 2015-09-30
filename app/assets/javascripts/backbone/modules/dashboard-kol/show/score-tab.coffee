@@ -7,6 +7,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       next: '#next_to_campaign_btn'
       back: '#back_to_profile_btn'
       check_all: '#monetize_intrested_all'
+      post_interested: '#post_interested'
+      create_interested: '#create_interested'
+      share_interested: '#share_interested'
 
     events:
       'click @ui.next': 'next'
@@ -20,7 +23,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     templateHelpers: () ->
       vs: (k) ->
-        polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "+#{k.stats.total_progress}%" })
+        if k.stats.total_progress > 0
+          polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "+#{k.stats.total_progress}%" })
+        else
+          polyglot.t('dashboard_kol.score_tab.vsmonth', {per: "#{k.stats.total_progress}%" })
       beat: (k) ->
         polyglot.t('dashboard_kol.score_tab.youbeat', {per: "#{k.stats.total_beat}%" })
       score: (k) ->
@@ -35,12 +41,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
           success: (m, r) =>
             @initial_attrs = m.toJSON()
             App.currentKOL.set m.attributes
-            $.growl "You profile was saved successfully", {type: "success"}
+            $.growl "You value was saved successfully", {type: "success"}
             cb()
           error: (m, r) =>
             console.log "Error saving KOL profile. Response is:"
             console.log r
-            $.growl "Can't save profile info", {type: "danger"}
+            $.growl "Can't save value info", {type: "danger"}
 
     next: ->
       @save =>
@@ -58,36 +64,48 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onRender: () ->
       @model_binder.bind @model, @el
-      @$el.find('input[type=radio][checked]').prop('checked', 'checked')  # I❤js
+      @$el.find('input[type=checkbox][checked]').prop('checked', 'checked')  # I❤js
       self = this
       @ui.form.validator()
       @ui.form.ready(self.init(self))
 
+
     init: (self) ->
       self.initFormValidation()
 
+
+      self.$el.find('input[type=checkbox][checked]').prop('checked', 'checked')  # I❤js
+      if self.$("input:checkbox:checked").length == 8
+        self.$el.find('#monetize_interested_all').prop('checked', 'checked')
+
+
       self.initGauge(self, @model.attributes.stats.total)
+
+      normalize = (max, v) ->
+        if v == 0
+          return 10  # avoid zero values so graph looks nicer for losers
+        (v / max) * 100
 
       d = [
         [
-          {axis:"Your influence channel",value:40},
-          {axis:"Social engagement",value:40},
-          {axis:"Content generation",value:40},
-          {axis:"Weibo fans",value:40},
-          {axis:"Validity of social profile",value:40},
+          {axis: "Your influence channel", value: 100},
+          {axis: "Social engagement", value: 100},
+          {axis: "Content generation", value: 100},
+          {axis: "Weibo fans", value: 100},
+          {axis: "Validity of social profile", value: 100},
         ],
         [
-          {axis:"Your influence channel",value:@model.attributes.stats.channels},
-          {axis:"Social engagement",value:@model.attributes.stats.engagement},
-          {axis:"Content generation",value:@model.attributes.stats.content},
-          {axis:"Weibo fans",value:@model.attributes.stats.fans},
-          {axis:"Validity of social profile",value:@model.attributes.stats.completeness}
+          {axis: "Your influence channel", value: normalize(30, @model.attributes.stats.channels)},
+          {axis: "Social engagement", value: normalize(10, @model.attributes.stats.engagement)},
+          {axis: "Content generation", value: normalize(10, @model.attributes.stats.content)},
+          {axis: "Weibo fans", value: normalize(10, @model.attributes.stats.fans)},
+          {axis: "Validity of social profile", value: normalize(40, @model.attributes.stats.completeness)}
         ]
       ]
       mycfg = {
         w: 160,
         h: 150,
-        maxValue: 40,
+        maxValue: 100,
         levels: 0,
         ExtraWidthX: 190
       }
@@ -99,7 +117,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initGauge: (self, value) ->
 
-      percent = value
+      percent = (value / 100) * 40
       barWidth = 10
       numSections = 40
       sectionPerc = 1 / numSections / 1.5
@@ -107,9 +125,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       chartInset = 10
       totalPercent = .67
 
-
-      #el = self.$('.chart-gauge')
-      console.log(self.$('.chart-gauge')[0])
       el = d3.select(self.$('.chart-gauge')[0])
 
       margin = { top: 20, right: 20, bottom: 20, left: 20 }
@@ -167,7 +182,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       .attr('x', -23)
       .attr('y', 13)
       .attr('class', 'chart-text')
-      .text(percent)
+      .text(value)
 
 
     onShow: () ->
@@ -176,16 +191,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       viewObj = this
       this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete( (info) ->
-        console.log(info.cdnUrl)
         $("#avatar-image").attr('src', info.cdnUrl)
         viewObj.model.set({avatar_url: info.cdnUrl})
       )
 
     check_all: () ->
-      if @ui.check_all.checked
-        console.log("checked")
+      if @ui.check_all.is(':checked')
+        @$el.find('input[type=checkbox]').prop('checked', 'checked')
       else
-        console.log("unchecked")
+        @$el.find('input[type=checkbox]').prop('checked', '')
 
     initFormValidation: () ->
       @ui.form.formValidation(
