@@ -4,11 +4,11 @@
   <% } else { %>
     <table class="table table-striped" id="accepted-kols">
       <thead style="cursor:pointer;"><tr>
-        <th><%=polyglot.t('smart_campaign.name')%></th>
-        <th><%=polyglot.t('smart_campaign.deadline')%></th>
-        <th><%=polyglot.t('smart_campaign.status')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.name')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.deadline')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.status')%></th>
         <th class="non_cash_description"><%=polyglot.t('smart_campaign.budget')%></th>
-        <th><%=polyglot.t('smart_campaign.last_update')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.last_update')%></th>
       </tr></thead>
       <tbody>
         <% _.each(negotiating, function(k) { %>
