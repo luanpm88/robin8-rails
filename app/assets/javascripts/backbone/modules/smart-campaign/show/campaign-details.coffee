@@ -23,7 +23,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         if campaign.non_cash == false or campaign.non_cash == null
           "$ " + campaign.budget
         else
-          polyglot.t('smart_campaign.non_cash')
+          campaign.short_description
 
     serializeData: () ->
       campaign: @model.toJSON()

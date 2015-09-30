@@ -19,6 +19,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       timestamp: (d) ->
         date = new Date d
         date.getTime()
+      budget: (campaign) ->
+        if campaign.non_cash == false or campaign.non_cash == null
+          "$ " + campaign.budget
+        else
+          polyglot.t('smart_campaign.non_cash')
 
     events:
       "click #add_budget": "openModalDialog"

@@ -16,7 +16,7 @@
             <td class="preview"><%= formatDate(campaign.deadline) %></td>
             <td class="preview"><%= k.categories_labels %></td>
             <td>
-              <button type="button" class="btn top-btn camp-default-btn interested-btn" id='invite' data-campaign-id="<%= k.interested_id %>"><%=polyglot.t('smart_campaign.invite')%></button>
+              <button type="button" class="btn top-btn camp-invite-btn interested-btn" id='invite' data-campaign-id="<%= k.interested_id %>"><%=polyglot.t('smart_campaign.invite')%></button>
               <button type="button" class="btn top-btn btn-decline invitation-decline interested-btn" id='reject' data-campaign-id="<%= k.interested_id %>"><%=polyglot.t('smart_campaign.reject')%></button>
             </td>
           </tr>
