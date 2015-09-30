@@ -1934,7 +1934,7 @@ input.form-control[type="file"] {
 
 #campaigns-list {
   #campaigns-table, #kol-dashboard {
-    color: #007183;
+    color: #000;
     text-align: center;
   }
 }
@@ -2309,9 +2309,6 @@ tr.campaign-tabs {
 td.campaign {
   cursor: pointer;
 }
-#campaigns-table tbody td {
-  font-weight: bold;
-}
 .edit-btn {
   width: 110px;
   height: 34px;
@@ -2337,21 +2334,20 @@ td.campaign {
  * For more JQuery/Bootstrap plugins and demos visit http://plugins.krajee.com
  * For more Yii related demos visit http://demos.krajee.com
  */
-.cbx-loading {
-  width: 25px;
-  height: 25px;
-  font-size: 0;
-  color: #fff;
-  background: transparent url('../img/loading.gif') top left no-repeat;
-  border: none;
-}
 
 .cbx, .cbx-container {
   display: inline-block;
   cursor: pointer;
   text-align: center;
   vertical-align: middle;
+
 }
+
+.cbx span {
+  color: #aab2bd;
+}
+
+
 
 .cbx {
   text-align: center;
@@ -2567,3 +2563,13 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
 .cbx-block + .cbx-block {
   margin: 5px 0 0 0;
 }
+.tab-content {
+  margin-bottom: 50px;
+}
+.negotiating-actions {
+  display: inline-block;
+}
+.monetize-btn{
+  display: inline-block;
+}
+

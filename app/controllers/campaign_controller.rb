@@ -5,9 +5,16 @@ class CampaignController < ApplicationController
       status = params[:status] == "declined" ? "D" : "A"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     elsif params[:status] == "latest"
-      campaigns = kol_signed_in? ? Campaign.where("created_at > ? and deadline > ?",Date.today - 14, Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+      if kol_signed_in?
+        campaigns_invited = current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC').map { |c| c.id }
+        campaigns_latest = Campaign.where("created_at > ? and deadline > ?",Date.today - 14, Time.zone.now.beginning_of_day).order('deadline DESC').map { |c| c.id }
+        campaigns_latest-=campaigns_invited
+        campaigns = Campaign.where(:id => campaigns_latest).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
+      else
+        campaigns = current_user.campaigns
+      end
     elsif params[:status] == "history"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline < ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline <= ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
     elsif params[:status] == "all"
       if kol_signed_in?
         categories = KolCategory.where(:kol_id => current_kol.id).map { |c| c.iptc_category_id }
@@ -19,7 +26,7 @@ class CampaignController < ApplicationController
         campaigns = current_user.campaigns
       end
     elsif params[:status] == "negotiating"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:articles).where(:articles => {:kol_id => current_kol.id, :tracking_code => 'Negotiating'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'N'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     else
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'A'}) : current_user.campaigns
     end
@@ -130,6 +137,9 @@ class CampaignController < ApplicationController
 
   def negotiate_campaign
     campaign = Campaign.find(params[:id])
+    campaign_invite = CampaignInvite.where(:campaign_id=>40, :kol_id=>3).first
+    campaign_invite.status = 'N'
+    campaign_invite.save
     article = campaign.articles.where(kol_id: current_kol.id).first
     if article.blank?
       article = Article.new(kol_id: current_kol.id, campaign_id: params[:id], tracking_code: 'Negotiating')

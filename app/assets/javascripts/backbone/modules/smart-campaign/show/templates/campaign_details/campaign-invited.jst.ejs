@@ -10,10 +10,15 @@
       </tr></thead>
       <tbody>
         <% _.each(invited, function(k) { %>
+        <% console.log(invited); %>
           <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>" class="preview">
             <td><%= k.first_name %></td>
             <td><%= formatDate(campaign.deadline) %></td>
-            <td><%= formatDate(k.updated_at) %></td>
+            <% if(k.sign_in_info.last_sign_in_at!=null && k.sign_in_info.last_sign_in_at!=undefined){ %>
+            <td><%= formatDate(k.sign_in_info.last_sign_in_at) %></td>
+            <% }else{ %>
+            <td>N/A</td>
+            <% } %>
           </tr>
         <% }); %>
       </tbody>

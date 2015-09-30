@@ -12,7 +12,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     events:
       'click @ui.next': 'next'
       'click @ui.back': 'back'
-      'click @ui.check_all': 'check_all'
+      'change @ui.check_all': 'check_all'
 
 
     serializeData: () ->
@@ -71,12 +71,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     init: (self) ->
       self.initFormValidation()
 
-
-
-      self.$el.find('input[type=checkbox][checked]').prop('checked', 'checked')  # I❤js
-
       if self.$("input:checkbox:checked").length == 9
         self.$el.find('#monetize_interested_all').prop('checked', 'checked')
+
+      @.$el.find("input:checkbox:checked").prop('value', '1')
 
       @.$('input[type="checkbox"]').checkboxX({threeState: false, size:'lg'})
 
@@ -199,8 +197,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     check_all: () ->
       if @ui.check_all.is(':checked')
         @$el.find('input[type=checkbox]').prop('checked', 'checked')
+        @.$el.find("input:checkbox").prop('value', '1')
       else
         @$el.find('input[type=checkbox]').prop('checked', '')
+        @.$el.find("input:checkbox").prop('value', '0')
+
+      #@.$("input:checkbox").checkboxX({threeState: false, size:'lg'})
+      @.$el.find("input:checkbox").checkboxX('refresh');
 
     initFormValidation: () ->
       @ui.form.formValidation(
