@@ -12,7 +12,6 @@ Robin.Models.KolProfile = Backbone.Model.extend({
 
     this.save(data, _.extend(options, {
       url: '/kols/monetize',
-      type: 'POST',
     }));
 
   },

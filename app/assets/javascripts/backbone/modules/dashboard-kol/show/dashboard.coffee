@@ -50,7 +50,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
           campaigns: "#/dashboard/campaigns"
         })[s]
         if location.hash != state_url
-          history.pushState({}, "Robin8", state_url)
+          history.pushState({}, "", state_url)
 
     canSetState: (s) ->
       s in @_states
