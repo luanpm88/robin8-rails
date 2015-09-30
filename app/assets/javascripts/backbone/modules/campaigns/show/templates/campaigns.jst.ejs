@@ -1,14 +1,13 @@
 <% if (items.length == 0) { %>
-<hr>
 <div class="row">
   <% if (accepted) { %>
-  <%=polyglot.t('kol_campaign.you_dont_have_any_accepted')%>
+  <i><%=polyglot.t('kol_campaign.you_dont_have_any_accepted')%></i>
   <% } else if (declined) { %>
-  <%=polyglot.t('kol_campaign.you_dont_have_any_declined')%>
+  <i><%=polyglot.t('kol_campaign.you_dont_have_any_declined')%></i>
   <% } else if (history) { %>
-  <%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_history')%>
+  <i><%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_history')%></i>
   <% } else { %>
-  <%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_any_negotiating')%>
+  <i><%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_any_negotiating')%></i>
   <% } %>
 </div>
 <% } else { %>
@@ -61,13 +60,13 @@
               <td data-order="<%= timestamp(item.updated_at) %>" class="campaign" data-id="<%= item.id %>"><%= formatDate(item.updated_at) %></td>
             <% } %>
             <% if (negotiating) {%>
-              <td>
-                  <button type="button" class="btn top-btn camp-default-btn invitation-accept" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
-                  <button type="button" class="btn bottom-btn camp-interested invitation-decline" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.reject')%></button>
+              <td class='negotiating-actions'>
+                  <button type="button" class="btn top-btn camp-interested invitation-accept" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+                  <button type="button" class="btn top-btn btn-decline invitation-decline" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.reject')%></button>
               </td>
             <% } %>
             <% if (declined) {%>
-              <td>
+              <td class='monetize-btn'>
                   <button type="button" class="btn top-btn camp-default-btn invitation-accept" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
               </td>
             <% } %>

@@ -11,7 +11,6 @@
             <th class="invite-cell head-cell invite-budget" data-sort="int"><%=polyglot.t('dashboard.budget')%></th>
             <th class="invite-cell head-cell invite-date" data-sort="int"><%=polyglot.t('dashboard.creation_date')%></th>
             <th class="invite-cell head-cell invite-deadline" data-sort="int"><%=polyglot.t('dashboard.deadline')%></th>
-            <th class="invite-cell head-cell invite-status" data-sort="string"><%=polyglot.t('dashboard.status')%></th>
             <th class="invite-cell head-cell"><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
           </tr>
         </thead>
@@ -19,25 +18,22 @@
         <% _.each(items, function(item){ %>
           <% if (item.status != 'A' && item.status != 'D'){ %>
             <tr >
-              <td class="invite-cell invite-description">
+              <td class="invite-cell invite-description campaign" data-id="<%= item.id %>">
                   <%= item.user.company %>
               </td>
-              <td class="invite-cell invite-name">
+              <td class="invite-cell invite-name campaign" data-id="<%= item.id %>">
                 <%= item.campaign.name %>
               </td>
-              <td class="invite-cell invite-description" data-order="<%= item.campaign.budget %>">
+              <td class="invite-cell invite-description campaign" data-order="<%= item.campaign.budget %>" data-id="<%= item.id %>">
                 <%= budget(item.campaign) %>
               </td>
-              <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date">
+              <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date campaign" data-id="<%= item.id %>">
                   <%= formatDate(item.created_at) %>
               </td>
-              <td data-order="<%= timestamp(item.campaign.deadline) %>" class="invite-cell invite-deadline">
+              <td data-order="<%= timestamp(item.campaign.deadline) %>" class="invite-cell invite-deadline campaign" data-id="<%= item.id %>">
                 <b><%= formatDate(item.campaign.deadline) %></b>
               </td>
-              <td class="invite-cell invite-action invite-nostatus">
-                <%=polyglot.t('dashboard_kol.campaigns_tab.pending')%>
-              </td>
-              <td>
+              <td class='monetize-btn'>
                 <button type="button" class="btn top-btn camp-not-interested" id="negotiate" data-camp-id="<%= item.campaign.id %>" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.negotiate')%></button>
                 <button type="button" class="btn top-btn camp-interested invitation-accept" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
                 <button type="button" class="btn top-btn btn-decline invitation-decline" data-invite-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.reject')%></button>
@@ -50,7 +46,7 @@
       </table>
       <% } else { %>
       <div class="col-sm-12">
-        <%= polyglot.t("dashboard.not_invited")%>
+        <i><%= polyglot.t("dashboard.not_invited")%></i>
       </div>
       <% } %>
     </div>

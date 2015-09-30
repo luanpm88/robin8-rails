@@ -1931,7 +1931,7 @@ input.form-control[type="file"] {
 
 #campaigns-list {
   #campaigns-table, #kol-dashboard {
-    color: #007183;
+    color: #000;
     text-align: center;
   }
 }
@@ -2306,9 +2306,6 @@ tr.campaign-tabs {
 td.campaign {
   cursor: pointer;
 }
-#campaigns-table tbody td {
-  font-weight: bold;
-}
 .edit-btn {
   width: 110px;
   height: 34px;
@@ -2563,3 +2560,13 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
 .cbx-block + .cbx-block {
   margin: 5px 0 0 0;
 }
+.tab-content {
+  margin-bottom: 50px;
+}
+.negotiating-actions {
+  display: inline-block;
+}
+.monetize-btn{
+  display: inline-block;
+}
+

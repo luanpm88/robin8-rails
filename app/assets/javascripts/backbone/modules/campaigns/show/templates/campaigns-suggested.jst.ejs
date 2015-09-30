@@ -1,9 +1,9 @@
 <% if (items.length == 0) { %>
 <div class="row">
   <% if (!all) { %>
-  <%=polyglot.t('kol_campaign.no_latest_campaign')%>
+  <i><%=polyglot.t('kol_campaign.no_latest_campaign')%></i>
   <% } else { %>
-  <%=polyglot.t('kol_campaign.no_campaign')%>
+  <i><%=polyglot.t('kol_campaign.no_campaign')%></i>
   <% } %>
 </div>
 <% } else { %>
@@ -61,7 +61,7 @@
                   </td>
                 <% } %>
                 <td>
-                  <button type="button" class="btn bottom-btn camp-ask-invite camp-interested" data-campaign-id="<%= item.id %>" <%= button_disabled %> ><%=polyglot.t('dashboard_kol.campaigns_tab.ask_for_invite')%></button>
+                  <button type="button" class="btn bottom-btn camp-ask-invite camp-interested monetize-btn" data-campaign-id="<%= item.id %>" <%= button_disabled %> ><%=polyglot.t('dashboard_kol.campaigns_tab.ask_for_invite')%></button>
                 </td>
             </tr>
           <% } %>

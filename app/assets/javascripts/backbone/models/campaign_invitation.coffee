@@ -11,3 +11,8 @@ Robin.Models.CampaignInvitation = Backbone.Model.extend
       status: "A"
     this.save()
 
+  negotiate: ()->
+    this.set
+      status: "N"
+    this.save()
+
