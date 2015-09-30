@@ -44,6 +44,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
           $('#nav-campaigns').parent().addClass('active')
         if @state == "profile"
           $('#nav-sidebar-profile').parent().addClass('active')
+        state_url = ({
+          profile: "#/dashboard/profile"
+          score: "#/dashboard/score"
+          campaigns: "#/dashboard/campaigns"
+        })[s]
+        if location.hash != state_url
+          history.pushState({}, "", state_url)
 
     canSetState: (s) ->
       s in @_states

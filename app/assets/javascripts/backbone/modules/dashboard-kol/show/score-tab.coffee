@@ -23,30 +23,29 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       score: (k) ->
         k.stats.total
 
-    save: ->
+    save: (cb) ->
       @ui.form.data('formValidation').validate()
       if @ui.form.data('formValidation').isValid()
-        @ui.form.data('formValidation').resetForm()
         @model_binder.copyViewValuesToModel()
         return if @model.toJSON() == @initial_attrs
-        App.currentKOL.set m.attributes
         @model.monetize @model.attributes,
           success: (m, r) =>
             @initial_attrs = m.toJSON()
+            App.currentKOL.set m.attributes
             $.growl "You profile was saved successfully", {type: "success"}
+            cb()
           error: (m, r) =>
             console.log "Error saving KOL profile. Response is:"
             console.log r
             $.growl "Can't save profile info", {type: "danger"}
 
     next: ->
-      @save()
-      @parent_view?.campaigns()
-
+      @save =>
+        @parent_view?.campaigns()
 
     back: ->
-      @save()
-      @parent_view?.profile()
+      @save =>
+        @parent_view?.profile()
 
     initialize: (opts) ->
       @model = new Robin.Models.KolProfile App.currentKOL.attributes
@@ -87,7 +86,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         h: 150,
         maxValue: 45,
         levels: 0,
-        ExtraWidthX: 180
+        ExtraWidthX: 190
       }
 
 
