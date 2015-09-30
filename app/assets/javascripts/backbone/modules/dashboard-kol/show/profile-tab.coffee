@@ -60,11 +60,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @social_view = new Show.ProfileSocialView
         model: @model
       @showChildView 'social', @social_view
-      @initSelect2()
       @initDatepicker()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')  # I❤js
-      _.defer ->
+      _.defer =>
         crs.init()
+        @initSelect2()
 
     initDatepicker: ->
       monthes = []
@@ -88,8 +88,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       if @model.get('date_of_birthday')?
         @ui.birthdate.datepicker("setDate", new Date(@model.get('date_of_birthday')))
 
-
     initSelect2: ->
+      $('#interests').val("Industries")  # need to put something there for initSelection to be called
       @ui.industry.select2
         maximumSelectionSize: 5
         multiple: true
@@ -99,19 +99,44 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         ajax:
           url: '/kols/suggest_categories'
           dataType: 'json'
+          quietMillis: 250,
           data: (term, page) ->
             return { f: term }
           results:  (data, page) ->
             return { results: data }
           cache:true
         escapeMarkup: _.identity
-        initSelection: (el, callback) ->
-          $("#interests").val ''
-          $.get "/kols/current_categories", (data) ->
-            callback data
+        initSelection: (el, callback) =>
+          v = $("#interests").val()
+          if v == "Industries"
+            $("#interests").val('')
+            $.get "/kols/current_categories", (data) ->
+              callback data
+          else
+            old_data = $("#interests").select2 'data'
+            new_ids = _.compact v.split(',')
+            new_data = _(new_ids).map (i) ->
+              obj = _(old_data).find (x) -> x.id == i
+              if typeof obj == "undefined"
+                {
+                  id: i
+                  text: target.industries[i]
+                }
+              else
+                obj
+            $("#interests").select2 'data', new_data
 
       @$el.find('.industry-row button').click (e) =>
         _.defer -> $(e.target).removeClass('active').blur()
+        e.preventDefault()
+        id = e.target.name.split('_')[1]
+        old_val = _.compact @ui.industry.val().split(',')
+        if old_val.length == 5
+          return
+        if not (id in old_val)
+          old_val.push id
+          $("#interests").val old_val
+          $("#interests").trigger 'change'
 
     serializeData: ->
       _.extend @target,
