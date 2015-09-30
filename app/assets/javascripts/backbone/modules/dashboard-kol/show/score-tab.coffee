@@ -6,10 +6,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       form: '#score_form'
       next: '#next_to_campaign_btn'
       back: '#back_to_profile_btn'
-      check_all: '#monetize_intrested_all'
-      post_interested: '#post_interested'
-      create_interested: '#create_interested'
-      share_interested: '#share_interested'
+      check_all: '#monetize_interested_all'
+
 
     events:
       'click @ui.next': 'next'
@@ -74,8 +72,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       self.initFormValidation()
 
 
+
       self.$el.find('input[type=checkbox][checked]').prop('checked', 'checked')  # I❤js
-      if self.$("input:checkbox:checked").length == 8
+
+      console.log(self.$("input:checkbox:checked").length)
+
+      if self.$("input:checkbox:checked").length == 9
+        console.log("aa")
         self.$el.find('#monetize_interested_all').prop('checked', 'checked')
 
 
@@ -107,7 +110,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         h: 150,
         maxValue: 100,
         levels: 0,
-        ExtraWidthX: 190
+        ExtraWidthX: 230
       }
 
 
@@ -149,7 +152,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       .attr('transform', "translate(#{(width + margin.left) / 1.6}, #{(height + margin.top) / 1.6})")
 
       # build gauge bg
-      for sectionIndx in [1..numSections-1]
+      for sectionIndx in [1..numSections]
 
         arcStartRad = percToRad totalPercent
         arcEndRad = arcStartRad + percToRad sectionPerc
