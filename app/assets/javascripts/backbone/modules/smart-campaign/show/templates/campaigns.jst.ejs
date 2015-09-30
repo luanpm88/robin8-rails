@@ -8,7 +8,7 @@
     <table class="table table-striped" id="campaigns-table">
       <thead style="cursor:pointer;"><tr>
         <th><%=polyglot.t('smart_campaign.name')%></th>
-        <th width="100px"><%=polyglot.t('smart_campaign.budget')%></th>
+        <th width="150px"><%=polyglot.t('smart_campaign.budget')%></th>
         <th class="no-sort" width="120px"></th>
         <th width="100px"><%=polyglot.t('smart_campaign.created')%></th>
         <th width="100px"><%=polyglot.t('smart_campaign.deadline')%></th>
@@ -22,7 +22,7 @@
               </a>
             </td>
             <td class="middle" data-order="<%= c.budget %>">
-              $<span style="width: 50px; display: inline-block;"><%= c.budget %></span>
+              <span style="width: 100px; display: inline-block;"><%= budget(c) %></span>
             </td>
             <td class="middle" align="center">
               <a class="btn btn-success vcenter" id="add_budget" campaign="<%= c.id %>"><i id="add_budget_icon" campaign="<%= c.id %>" class="fa fa-plus"></i>  <%= polyglot.t("smart_campaign.add_money") %></a>

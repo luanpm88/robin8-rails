@@ -1256,6 +1256,7 @@ en:
           save: Save as a list
         test_button: Send a Test Email
         title: Pitch
+        updated_success: Your campaign has been successfully updated!
         wechatTargets: Targets will be contacted via WeChat
         weiboTargets: Targets will be contacted via Weibo
         weibo_panel:

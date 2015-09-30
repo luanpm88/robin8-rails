@@ -1202,6 +1202,7 @@ zh:
           save: "保存为名单"
         test_button: "发送测试邮件"
         title: "投递"
+        updated_success: Your campaign has been successfully updated!
         wechatTargets: Targets will be contacted via WeChat
         weiboTargets: Targets will be contacted via Weibo
         weibo_panel:

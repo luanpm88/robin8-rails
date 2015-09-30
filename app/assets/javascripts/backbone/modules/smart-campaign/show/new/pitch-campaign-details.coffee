@@ -49,17 +49,25 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       if @model.get('non_cash')?
         if @model.get('non_cash') == true
           @ui.invite_kol.iCheck('check');
-      if @model.get('content_type')?
-        @$el.find("#content_type").value = @model.get('content_type')
+
+      setTimeout(()=>
+        if @model.get('content_type')?
+          $('#content_type').val(@model.get('content_type'))
+      , 0)
+
+
+      if @model.get('non_cash')?
+        if @model.get('non_cash') == true
+          $('#short_description').prop("disabled",true)
 
     setNonCashBudget: (e) ->
       @ui.budget.val(0);
       @model.set('non_cash', true)
       $('#short_description').prop("disabled",false)
+
     setCashBudget: (e) ->
       @model.set('non_cash', false)
       $('#short_description').prop("disabled",true)
-
 
     initFormValidation: () ->
       @ui.form.formValidation({
