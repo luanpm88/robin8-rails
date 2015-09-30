@@ -2,7 +2,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
   login_template = _.template """
     <div class="col-md-2 cell">
-      <button class="btn form-control social-login" id="<%= provider %>"><%= polyglot.t('dashboard_kol.profile_tab.login') %></button>
+      <button class="btn full-width social-login" id="<%= provider %>"><%= polyglot.t('dashboard_kol.profile_tab.login') %></button>
     </div>
   """
   logged_in_template = _.template """
