@@ -1233,7 +1233,7 @@ zh:
         pick_deadline: "选择一个期限"
         summary: 如下是<strong> "%{name}" </strong>的小结
       status: "状态"
-      success_ask_invite: Thanks! Your request was sent successfully!
+      success_ask_invite: Your request has been sent
       success_invite: Successfully invited
       success_reject: Successfully rejected
       supported_formats: "支持格式"

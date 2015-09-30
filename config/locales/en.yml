@@ -1287,7 +1287,7 @@ en:
         pick_deadline: Pick a deadline!
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
       status: Status
-      success_ask_invite: Thanks! Your request was sent successfully!
+      success_ask_invite: Your request has been sent
       success_invite: Successfully invited
       success_reject: Successfully rejected
       supported_formats: Supported formats
