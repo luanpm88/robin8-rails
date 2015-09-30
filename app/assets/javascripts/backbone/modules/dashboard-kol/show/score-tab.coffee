@@ -75,10 +75,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       self.$el.find('input[type=checkbox][checked]').prop('checked', 'checked')  # I❤js
 
-      console.log(self.$("input:checkbox:checked").length)
-
       if self.$("input:checkbox:checked").length == 9
-        console.log("aa")
         self.$el.find('#monetize_interested_all').prop('checked', 'checked')
 
 
