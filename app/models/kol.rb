@@ -212,4 +212,14 @@ class Kol < ActiveRecord::Base
     end
   end
 
+  def serializable_hash(options={})
+    res = super(options)
+    sign_in_info = {
+      "sign_in_count" => self.sign_in_count,
+      "last_sign_in_at" => self.last_sign_in_at
+    }
+    res["sign_in_info"] = sign_in_info
+    res
+  end
+
 end

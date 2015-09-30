@@ -78,6 +78,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       if self.$("input:checkbox:checked").length == 9
         self.$el.find('#monetize_interested_all').prop('checked', 'checked')
 
+      @.$('input[type="checkbox"]').checkboxX({threeState: false, size:'lg'})
 
       self.initGauge(self, @model.attributes.stats.total)
 

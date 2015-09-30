@@ -36,6 +36,7 @@
 
 </div>
 <br/>
+
 <div class="campaigns-tables-title">
   <span><%= polyglot.t('dashboard_kol.score_tab.tables_title2') %></span>&nbsp;<%= polyglot.t('dashboard_kol.score_tab.tables_title3') %>
 </div>
@@ -44,10 +45,10 @@
     <div class="col-md-3 text-center" style="background-color: #f4f4f4;">
       &nbsp;
     </div>
-    <div class="col-md-1 text-center" style="background-color: #f4f4f4; color: #007183;">
+    <div class="col-md-1 text-center" style="background-color: #f4f4f4; color: #007183; width: 12%;">
       <%= polyglot.t('dashboard_kol.score_tab.interested')%>
     </div>
-    <div class="col-md-3 text-center" style="background-color: #f4f4f4; color: #007183;">
+    <div class="col-md-3 text-center" style="background-color: #f4f4f4; color: #007183; width: 21%;">
       <%= polyglot.t('dashboard_kol.score_tab.expected_price')%>
     </div>
     <div class="col-md-5 text-center" style="background-color: #f4f4f4; color: #007183;">
@@ -55,16 +56,16 @@
     </div>
   </div>
   <div>
-    <div class="col-md-3 text-center cell">
+    <div class="col-md-3 text-center cell" style="height: 45px;">
       <span><%= polyglot.t('dashboard_kol.score_tab.online')%></span>
     </div>
-    <div class="col-md-1 text-center cell" style="padding: 0px; padding-top: 5px;">
+    <div class="col-md-1 text-center cell" style="padding: 0px; width: 12%; height: 45px; padding-top: 5px;">
       <input type="checkbox" id="monetize_interested_all" name="monetize_interested_all">&nbsp;<span class="social"><%= polyglot.t('dashboard_kol.score_tab.interested_all')%></span>
     </div>
-    <div class="col-md-3 text-center cell">
+    <div class="col-md-3 text-center cell" style="width: 21%; height: 45px;">
       &nbsp;
     </div>
-    <div class="col-md-5 text-center cell" style="padding: 0px;">
+    <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
       <div class="col-md-3 text-center" style="padding: 0px;">
         <i class="fa fa-weibo fa-2x"></i> <span class="social">Weibo</span>
       </div>
@@ -84,10 +85,10 @@
     <div class="col-md-3 text-center cell" style="height: 45px;">
       <%= polyglot.t('dashboard_kol.score_tab.post_content')%>
     </div>
-    <div class="col-md-1 text-center cell"  style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell"  style="height: 45px; width: 12%;">
       <input type="checkbox" id="post_interested" name="monetize_interested_post">
     </div>
-    <div class="col-md-3 text-center cell"  style="height: 45px;">
+    <div class="col-md-3 text-center cell"  style="height: 45px; width: 21%;">
       <input type="number" id="monetize_post" name="monetize_post" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
@@ -109,10 +110,10 @@
     <div class="col-md-3 text-center cell" style="height: 45px; padding-top: 10px;">
       <%= polyglot.t('dashboard_kol.score_tab.create_content')%>
     </div>
-    <div class="col-md-1 text-center cell" style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell" style="height: 45px; width: 12%;">
       <input type="checkbox" id="create_interested" name="monetize_interested_create">
     </div>
-    <div class="col-md-3 text-center cell" style="height: 45px;">
+    <div class="col-md-3 text-center cell" style="height: 45px; width: 21%;">
       <input type="number" id="create_price" name="monetize_create" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
@@ -134,10 +135,10 @@
     <div class="col-md-3 text-center cell"  style="height: 45px;">
       <%= polyglot.t('dashboard_kol.score_tab.share')%>
     </div>
-    <div class="col-md-1 text-center cell"  style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell"  style="height: 45px; width: 12%;">
       <input type="checkbox" id="share_interested" name="monetize_interested_share">
     </div>
-    <div class="col-md-3 text-center cell"  style="height: 45px;">
+    <div class="col-md-3 text-center cell"  style="height: 45px; width: 21%;">
       <input type="number" id="share_price" name="monetize_share" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
@@ -159,10 +160,10 @@
     <div class="col-md-3 text-center cell" style="height: 45px; padding-top: 10px;">
       <%= polyglot.t('dashboard_kol.score_tab.review')%>
     </div>
-    <div class="col-md-1 text-center cell" style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell" style="height: 45px; width: 12%;">
       <input type="checkbox" id="review_interested" name="monetize_interested_review">
     </div>
-    <div class="col-md-3 text-center cell" style="height: 45px;">
+    <div class="col-md-3 text-center cell" style="height: 45px; width: 21%;">
       <input type="number" id="review_price" name="monetize_review" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
@@ -184,10 +185,10 @@
     <div class="col-md-3 text-center cell" style="height: 45px; padding-top: 10px;">
       <%= polyglot.t('dashboard_kol.score_tab.speech')%>
     </div>
-    <div class="col-md-1 text-center cell" style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell" style="height: 45px; width: 12%;">
       <input type="checkbox" id="speech_interested" name="monetize_interested_speech">
     </div>
-    <div class="col-md-3 text-center cell" style="height: 45px;">
+    <div class="col-md-3 text-center cell" style="height: 45px; width: 21%;">
       <input type="number" id="speech_price" name="monetize_speech" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="padding: 0px; height: 45px;">
@@ -224,10 +225,10 @@
     <div class="col-md-3 text-center cell" style="height: 45px; padding-top: 10px;">
       <%= polyglot.t('dashboard_kol.score_tab.attend')%>
     </div>
-    <div class="col-md-1 text-center cell" style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell" style="height: 45px; width: 12%;">
       <input type="checkbox" id="attend_interested" name="monetize_interested_event">
     </div>
-    <div class="col-md-3 text-center cell" style="height: 45px;">
+    <div class="col-md-3 text-center cell" style="height: 45px; width: 21%;">
       <input type="number" id="attend_price" name="monetize_event" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="height: 45px;">
@@ -238,10 +239,10 @@
     <div class="col-md-3 text-center cell" style="height: 45px; padding-top: 10px;">
       <%= polyglot.t('dashboard_kol.score_tab.focus')%>
     </div>
-    <div class="col-md-1 text-center cell" style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell" style="height: 45px; width: 12%;">
       <input type="checkbox" id="focus_interested" name="monetize_interested_focus">
     </div>
-    <div class="col-md-3 text-center cell" style="height: 45px;">
+    <div class="col-md-3 text-center cell" style="height: 45px; width: 21%;">
       <input type="number" id="focus_price" name="monetize_focus" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="height: 45px;">
@@ -252,10 +253,10 @@
     <div class="col-md-3 text-center cell" style="height: 45px; padding-top: 10px;">
       <%= polyglot.t('dashboard_kol.score_tab.host')%>
     </div>
-    <div class="col-md-1 text-center cell" style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell" style="height: 45px; width: 12%;">
       <input type="checkbox" id="host_interested" name="monetize_interested_party">
     </div>
-    <div class="col-md-3 text-center cell" style="height: 45px;">
+    <div class="col-md-3 text-center cell" style="height: 45px; width: 21%;">
       <input type="number" id="host_price" name="monetize_party" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="height: 45px;">
@@ -266,10 +267,10 @@
     <div class="col-md-3 text-center cell" style="height: 45px; padding-top: 10px;">
       <%= polyglot.t('dashboard_kol.score_tab.endorsements')%>
     </div>
-    <div class="col-md-1 text-center cell" style="height: 45px; padding-top: 10px;">
+    <div class="col-md-1 text-center cell" style="height: 45px; width: 12%;">
       <input type="checkbox" id="endorsements_interested" name="monetize_interested_endorsements">
     </div>
-    <div class="col-md-3 text-center cell" style="height: 45px;">
+    <div class="col-md-3 text-center cell" style="height: 45px; width: 21%;">
       <input type="number" id="endorsements_price" name="monetize_endorsements" style=" text-align: center;" class="form-control">
     </div>
     <div class="col-md-5 text-center cell" style="height: 45px;">
