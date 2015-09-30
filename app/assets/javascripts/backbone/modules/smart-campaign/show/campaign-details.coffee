@@ -121,6 +121,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         accepted: accepted
       }
 
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+
   Show.CampaignDeclined = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-declined'
 
@@ -195,6 +202,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         campaign: data
         declined: declined
       }
+
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
 
   Show.CampaignNegotiating = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-negotiating'
@@ -278,6 +292,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         negotiating: negotiating
       }
 
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+
   Show.CampaignInvitedList = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-invited'
 
@@ -308,6 +329,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         accepted: false
         history: false
         negotiating: false
+        notShowBtns: true
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -348,6 +370,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         campaign: data
         invited: invited
       }
+
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+
   Show.CampaignInterested = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-interested'
 
@@ -412,6 +442,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           @showTabs()
         else
           $.growl(polyglot.t('smart_campaign.something_wrong'), {type: "danger"})
+
     rejectToCampaign: (e) ->
       e.preventDefault()
       target = $ e.currentTarget
@@ -483,6 +514,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         interested: interested
       }
 
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25
+
   Show.CampaignHistory = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/campaign_details/campaign-history'
 
@@ -520,6 +558,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         accepted: false
         history: true
         negotiating: false
+        notShowBtns: true
         onApprove: (code) ->
           $("#code_#{id}").html code
           $("#code_status_#{id}").html 'Approved'
@@ -560,3 +599,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         campaign: data
         history: history
       }
+
+    onRender: () ->
+      @$el.find('table').DataTable
+        info: false
+        searching: false
+        lengthChange: false
+        pageLength: 25

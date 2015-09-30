@@ -12,7 +12,7 @@
       <tbody>
         <% _.each(items, function(c) { %>
           <tr data-id="<%= c.id %>">
-            <td  class="middle">
+            <td  class="middle col-md-6">
               <a href="#/smart_campaign/details/<%= c.id %>">
                 <%= c.name %>
               </a>
@@ -20,7 +20,7 @@
             <td class="middle" data-order="<%= timestamp(c.created_at)%>"><%= formatDate(c.created_at) %></td>
             <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
             <td class="middle" align="center">
-              <a class="btn btn-success vcenter" id="edit_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.edit") %></a>
+              <a class="btn btn-success vcenter edit-btn" id="edit_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.edit") %></a>
             </td>
           </tr>
         <% }); %>

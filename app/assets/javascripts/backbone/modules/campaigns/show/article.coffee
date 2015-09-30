@@ -37,6 +37,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       no_tabs: if @options.no_tabs then @options.no_tabs else false
       negotiating: @options.negotiating
       accepted: @options.accepted
+      notShowBtns: @options.notShowBtns
 
     onRender: () ->
       no_comments = if @options.no_comments then @options.no_comments else false
