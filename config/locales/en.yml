@@ -379,11 +379,13 @@ en:
         east: East
         fans_number: Fans Number
         female: Female
+        first_name: First Name
         gender: Gender
         general_title: My Profile
         id: ID
         industry: Industry
         industry_placeholder: Select or input up to 5, separated by blanks
+        last_name: Last Name
         linkedin: LinkedIn
         location: Location
         login: Login

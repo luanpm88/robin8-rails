@@ -64,6 +64,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')  # I❤js
       _.defer =>
         crs.init()
+      _.defer =>
         @initSelect2()
 
     initDatepicker: ->
