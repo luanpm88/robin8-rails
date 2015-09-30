@@ -89,7 +89,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         h: 150,
         maxValue: 40,
         levels: 0,
-        ExtraWidthX: 190
+        ExtraWidthX: 230
       }
 
 
