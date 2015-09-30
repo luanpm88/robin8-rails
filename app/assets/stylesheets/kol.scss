@@ -69,7 +69,7 @@
 
     &.invite-status {
       width: 10%;
-      min-width: 180px;
+      min-width: 100px;
     }
 
     &.invite-status.invite-declined {
@@ -83,7 +83,7 @@
     &.invite-deadline,
     &.invite-date {
       width: 10%;
-      min-width: 100px;
+      min-width: 130px;
     }
 
     &.invite-budget {

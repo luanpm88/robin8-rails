@@ -27,12 +27,13 @@
                             <% if (!disabled) { %>
                                 <button type="button" class="btn btn-primary" id="article-approve"  <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.send_for_approval')%></button>
                             <% } %>
+                            <% if (!notShowBtns) { %>
                             <% if (disabled) { %>
                               <button type="button" class="btn btn-success" id="article-save" <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.approve')%></button>
                             <% } else { %>
                               <button type="button" class="btn btn-primary" id="article-save" <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.save')%></button>
                             <% } %>
-                          <% } %>
+                          <% } }%>
                       </div>
                   </div>
                 <div role="tabpanel" class="tab-pane" id="comments">
