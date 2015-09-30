@@ -62,6 +62,7 @@
 //= require jquery-knob
 //= require bootstrap-validator
 //= require ./lib/radarchart
+//= require ./lib/bootstrap-checkbox
 
 //= require_tree ./backbone/config
 //= require backbone/init-kol
