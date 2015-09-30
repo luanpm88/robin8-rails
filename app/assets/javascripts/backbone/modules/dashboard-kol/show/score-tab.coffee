@@ -68,28 +68,33 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       self.initGauge(self, @model.attributes.stats.total)
 
+      normalize = (max, v) ->
+        if v == 0
+          return 10  # avoid zero values so graph looks nicer for losers
+        (v / max) * 100
+
       d = [
         [
-          {axis:"Your influence channel",value:40},
-          {axis:"Social engagement",value:40},
-          {axis:"Content generation",value:40},
-          {axis:"Weibo fans",value:40},
-          {axis:"Validity of social profile",value:40},
+          {axis: "Your influence channel", value: 100},
+          {axis: "Social engagement", value: 100},
+          {axis: "Content generation", value: 100},
+          {axis: "Weibo fans", value: 100},
+          {axis: "Validity of social profile", value: 100},
         ],
         [
-          {axis:"Your influence channel",value:@model.attributes.stats.channels},
-          {axis:"Social engagement",value:@model.attributes.stats.engagement},
-          {axis:"Content generation",value:@model.attributes.stats.content},
-          {axis:"Weibo fans",value:@model.attributes.stats.fans},
-          {axis:"Validity of social profile",value:@model.attributes.stats.completeness}
+          {axis: "Your influence channel", value: normalize(30, @model.attributes.stats.channels)},
+          {axis: "Social engagement", value: normalize(10, @model.attributes.stats.engagement)},
+          {axis: "Content generation", value: normalize(10, @model.attributes.stats.content)},
+          {axis: "Weibo fans", value: normalize(10, @model.attributes.stats.fans)},
+          {axis: "Validity of social profile", value: normalize(40, @model.attributes.stats.completeness)}
         ]
       ]
       mycfg = {
         w: 160,
         h: 150,
-        maxValue: 40,
+        maxValue: 100,
         levels: 0,
-        ExtraWidthX: 230
+        ExtraWidthX: 190
       }
 
 
@@ -99,7 +104,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initGauge: (self, value) ->
 
-      percent = value
+      percent = (value / 100) * 40
       barWidth = 10
       numSections = 40
       sectionPerc = 1 / numSections / 1.5
@@ -107,9 +112,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       chartInset = 10
       totalPercent = .67
 
-
-      #el = self.$('.chart-gauge')
-      console.log(self.$('.chart-gauge')[0])
       el = d3.select(self.$('.chart-gauge')[0])
 
       margin = { top: 20, right: 20, bottom: 20, left: 20 }
@@ -167,7 +169,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       .attr('x', -23)
       .attr('y', 13)
       .attr('class', 'chart-text')
-      .text(percent)
+      .text(value)
 
 
     onShow: () ->
@@ -176,7 +178,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       viewObj = this
       this.widget = uploadcare.Widget('[role=uploadcare-uploader]').onUploadComplete( (info) ->
-        console.log(info.cdnUrl)
         $("#avatar-image").attr('src', info.cdnUrl)
         viewObj.model.set({avatar_url: info.cdnUrl})
       )
