@@ -5,7 +5,14 @@ class CampaignController < ApplicationController
       status = params[:status] == "declined" ? "D" : "A"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
     elsif params[:status] == "latest"
-      campaigns = kol_signed_in? ? Campaign.where("created_at > ? and deadline > ?",Date.today - 14, Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+      if kol_signed_in?
+        campaigns_invited = current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC').map { |c| c.id }
+        campaigns_latest = Campaign.where("created_at > ? and deadline > ?",Date.today - 14, Time.zone.now.beginning_of_day).order('deadline DESC').map { |c| c.id }
+        campaigns_latest-=campaigns_invited
+        campaigns = Campaign.where(:id => campaigns_latest).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
+      else
+        campaigns = current_user.campaigns
+      end
     elsif params[:status] == "history"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline <= ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
     elsif params[:status] == "all"
