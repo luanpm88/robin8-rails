@@ -46,7 +46,7 @@
                 <% var button_disabled = "";%>
                 <% if (item.interested != null && item.interested.length != 0) {
                    button_disabled = "disabled";
-                   if (item.interested === 'R') { %>
+                   if (item.interested[0].status === 'R') { %>
                     <td class="campaign-cell invite-declined campaign" data-id="<%= item.id %>">
                       <%=polyglot.t('dashboard_kol.campaigns_tab.request_rejected')%>
                     </td>

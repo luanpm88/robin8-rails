@@ -1234,8 +1234,8 @@ zh:
         summary: 如下是<strong> "%{name}" </strong>的小结
       status: "状态"
       success_ask_invite: Your request has been sent
-      success_invite: Successfully invited
-      success_reject: Successfully rejected
+      success_invite: Invitation has been sent
+      success_reject: Request has been rejected
       supported_formats: "支持格式"
       targets_step:
         age_group: Age Group
