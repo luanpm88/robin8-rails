@@ -42,12 +42,10 @@ class Kol < ActiveRecord::Base
 
   def stats
 
-    cache_key = "kol_stats_#{self.id}"
+    cache_key = "social_stats_#{self.id}"
     res = Rails.cache.read cache_key
 
     if res.nil?
-
-      puts "empty"
 
       stat = Hash.new
       stat[:total] = 0
@@ -97,47 +95,48 @@ class Kol < ActiveRecord::Base
 
 
       begin
-        response = HTTParty.get("https://api.weibo.com/2/users/show.json",
-                                 headers: { 'Content-Type' => 'application/json'},
-                                 query: {access_token: token, uid: uid})
+        weibo_show_key = "weibo_show_#{uid}"
+        response = Rails.cache.read weibo_show_key
+        if response.nil?
+          response = HTTParty.get("https://api.weibo.com/2/users/show.json",
+                                  headers: { 'Content-Type' => 'application/json'},
+                                  query: {access_token: token, uid: uid})
+          Rails.cache.write weibo_show_key, response.to_h, :expires_in => 24.hours
+        end
 
         #valid
         stat[:completeness] = 20
-
         #completeness
         #has description
         if response['description'] != ''
           stat[:completeness] += 10
         end
-
         #has avatar
         if response['profile_image_url'] != ''
           stat[:completeness] += 10
         end
         stat[:total] += stat[:completeness]
-
         #fans
         fans =  response['followers_count'].to_i
         friend = response['friends_count'].to_i
-
         if fans > 1000 && friend > 100
           stat[:fans] = 10
           stat[:total] +=  10
         end
-
         #content & engagement
-        response =  response = HTTParty.get("https://api.weibo.com/2/statuses/user_timeline.json",
-                                            headers: { 'Content-Type' => 'application/json'},
-                                            query: {access_token: token, uid: uid})
-
-        #puts response
-
+        weibo_timeline_key = "weibo_timeline_#{uid}"
+        response = Rails.cache.read weibo_timeline_key
+        if response.nil?
+          response = HTTParty.get("https://api.weibo.com/2/statuses/user_timeline.json",
+                                              headers: { 'Content-Type' => 'application/json'},
+                                              query: {access_token: token, uid: uid})
+          Rails.cache.write weibo_timeline_key, response.to_h, :expires_in => 24.hours
+        end
         current = Time.now
         content = Hash.new
         unless response['statuses'].blank?
           response['statuses'].each do |status|
             date = Date.parse status['created_at']
-
             if (current.month - date.month) <= 5
               if !content[(current.month - date.month)].is_a?(Hash)
                 content[(current.month - date.month)] = Hash.new
@@ -149,10 +148,8 @@ class Kol < ActiveRecord::Base
             end
           end
         end
-
         post = true
         repost = true
-
         if content.length == 6
           content.each do |content|
             if content[:post] == 0
@@ -167,27 +164,21 @@ class Kol < ActiveRecord::Base
           post = false
           repost = false
         end
-
         if post
           stat[:content] = 10
           stat[:total] += 10
         end
-
         if repost
           stat[:engagement] = 10
           stat[:total] += 10
         end
-
       rescue => ex
         puts ex.inspect
         puts ex.backtrace
       end
-
-      Rails.cache.write cache_key, stat #:expires_in => 666.minutes param here, default is 90 mins.
-
+      Rails.cache.write cache_key, stat, :expires_in => 10.minutes
       return stat
     else
-
       return res
     end
   end

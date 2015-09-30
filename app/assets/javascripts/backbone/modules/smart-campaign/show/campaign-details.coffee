@@ -101,12 +101,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
-      oneDay = 24*60*60*1000
-      end = Date.today()
+      start = moment(Date.today())
       data = @model.toJSON()
       accepted = _.chain(data.campaign_invites)
         .filter (i) ->
-          i.status == "A" and (Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0)
+          i.status == "A" and moment(new Date(data.deadline)).diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
@@ -181,12 +180,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
-      oneDay = 24*60*60*1000
-      end = Date.today()
       data = @model.toJSON()
+      start = moment(Date.today())
       declined = _.chain(data.campaign_invites)
         .filter (i) ->
-          i.status == "D" and (Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0)
+          i.status == "D" and moment(new Date(data.deadline)).diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.status
@@ -271,12 +269,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
-      oneDay = 24*60*60*1000
-      end = Date.today()
+      start = moment(Date.today())
       data = @model.toJSON()
       negotiating = _.chain(data.articles)
         .filter (i) ->
-          i.tracking_code == "Negotiating" and (Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0)
+          i.tracking_code == "Negotiating" and moment(new Date(data.deadline)).diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           kol.status = i.tracking_code
@@ -351,12 +348,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
-      oneDay = 24*60*60*1000
+      start = moment(Date.today())
       data = @model.toJSON()
-      end = Date.today()
       invited = _.chain(data.campaign_invites)
         .filter (i) ->
-          Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0
+          moment(new Date(data.deadline)).diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
@@ -481,13 +477,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             @_parent._parent._parent.campaignInterestedRegion.show(campaign_interested)
 
     serializeData: () ->
-      oneDay = 24*60*60*1000
       data = @model.toJSON()
-      end = Date.today()
+      start = moment(Date.today())
       interested_list = @options.interested
       interested = _.chain(data.interested_campaigns)
         .filter (i) ->
-          i.status != "I" and i.status != "R" and Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) > 0
+          i.status != "I" and i.status != "R" and moment(new Date(data.deadline)).diff(start, "days") > 0
         .map (i) ->
           kol = _(interested_list.users).find (k) -> k.id == i.kol_id
 
@@ -580,12 +575,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       Robin.modal.show articleDialog
 
     serializeData: () ->
-      oneDay = 24*60*60*1000
+      start = moment(Date.today())
       data = @model.toJSON()
-      end = Date.today()
       history = _.chain(data.campaign_invites)
         .filter (i) ->
-          Math.round(Math.abs(((new Date(data.deadline)).getTime() - end.getTime())/(oneDay))) <= 0
+          moment(new Date(data.deadline)).diff(start, "days") <= 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
