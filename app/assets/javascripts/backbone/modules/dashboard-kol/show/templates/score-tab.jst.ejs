@@ -16,18 +16,16 @@
     </div>
     <div class="col-md-4" style="margin-top: 10px; margin-left: 10px; padding: 0px;">
       <div style="height: 170px;">
-        <div style="float: left; padding-left: 60px; padding-top: 30px;">
-          <input type="text" value="<%= score(k) %>" class="graph-score" data-fgColor="#edac0a" data-bgColor="#AAAAAA" data-angleOffset=-125 data-angleArc=250 data-readOnly=true data-width="130" data-height="130">
-        </div>
-        <div style="float: right; padding-top: 40px;">
-          <span style="font-family: 'ProximaNovaBold'; font-size: 20px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.social_score')%></span><br/><br/>
-          <div style="font-family: 'ProximaNova'; font-size: 13px; color: white; background-color: #edac0a; text-align: center;">&nbsp;<%= vs(k)%>&nbsp;</div>
+        <div class="chart-gauge" style="float: left;"></div>
+        <div style="float: left; padding-top: 20px; padding-left: 20px;">
+          <span style="font-family: 'ProximaNovaBold'; font-size: 20px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.social_score')%></span>
+          <div style="font-family: 'ProximaNova'; font-size: 13px; color: white; background-color: #edac0a; text-align: center; margin-top: 15px; ">&nbsp;<%= vs(k)%>&nbsp;</div>
           <br/>
           <div style="font-family: 'ProximaNova'; font-size: 13px; color: white; background-color: #edac0a; text-align: center;">&nbsp;<%= beat(k) %>&nbsp;</div>
         </div>
       </div>
 
-      <div style="padding-left: 40px; ">
+      <div style="padding-left: 30px; ">
       <span style="font-family: 'ProximaNova'; font-size: 12px; color: #007183;"><%= polyglot.t('dashboard_kol.score_tab.calculated')%></span>
       </div>
     </div>

@@ -2126,6 +2126,25 @@ input.form-control[type="file"] {
 .radar-chart .d3-enter, .radar-chart .d3-exit {
   opacity: 0;
 }
+
+.chart-color1 {
+  fill: #edac0a;
+}
+
+.chart-color2 {
+  fill: #AAAAAA;
+}
+
+.chart-center {
+  fill: #edac0a;
+}
+
+.chart-text {
+  font-family: sans-serif;
+  font-size: 40px;
+  fill: #FFFFFF
+}
+
 #kols .nav-tabs > li.active > a,
 #kols .nav-tabs > li.active > a:focus,
 #kols .nav-tabs > li.active > a:hover,
