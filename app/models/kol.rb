@@ -74,7 +74,7 @@ class Kol < ActiveRecord::Base
         end
       end
 
-      if self.wechat_public_id != '' && self.wechat_public_name != ''
+      if !self.wechat_public_id.nil? && !self.wechat_public_name.nil?
         accounts += 1
       end
 

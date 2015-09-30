@@ -177,11 +177,18 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       .attr('cy', 0)
       .attr('r', 50)
 
-      chart.append('text')
-      .attr('x', -23)
-      .attr('y', 13)
-      .attr('class', 'chart-text')
-      .text(value)
+      if (value >= 10)
+        chart.append('text')
+        .attr('x', -23)
+        .attr('y', 13)
+        .attr('class', 'chart-text')
+        .text(value)
+      else
+        chart.append('text')
+        .attr('x', -10)
+        .attr('y', 13)
+        .attr('class', 'chart-text')
+        .text(value)
 
 
     onShow: () ->
