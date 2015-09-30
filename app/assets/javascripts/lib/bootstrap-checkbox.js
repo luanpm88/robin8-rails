@@ -216,7 +216,7 @@
     valueNull: null,
     size: 'md',
     enclosedLabel: false,
-    useNative: true,
+    useNative: false,
     tabindex: "1000"
   };
 

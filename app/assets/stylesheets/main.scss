@@ -2334,21 +2334,20 @@ td.campaign {
  * For more JQuery/Bootstrap plugins and demos visit http://plugins.krajee.com
  * For more Yii related demos visit http://demos.krajee.com
  */
-.cbx-loading {
-  width: 25px;
-  height: 25px;
-  font-size: 0;
-  color: #fff;
-  background: transparent url('../img/loading.gif') top left no-repeat;
-  border: none;
-}
 
 .cbx, .cbx-container {
   display: inline-block;
   cursor: pointer;
   text-align: center;
   vertical-align: middle;
+
 }
+
+.cbx span {
+  color: #aab2bd;
+}
+
+
 
 .cbx {
   text-align: center;
