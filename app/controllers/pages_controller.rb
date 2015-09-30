@@ -1,11 +1,12 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
-  before_action :set_video,:only => :home
+  before_action :set_video,:only => [:home,:landing_page_brand]
 
   def set_locale
     unless params[:locale].blank?
       someone = current_user
+      someone = current_kol if current_user.nil?
       someone.update_attributes(locale: params[:locale]) unless someone.blank?
     end
     redirect_to root_path + "##{params[:current_page]}"
@@ -16,9 +17,18 @@ class PagesController < ApplicationController
       render "home", :layout => 'application'
     elsif user_signed_in?
       redirect_to pricing_path
+    elsif kol_signed_in?
+      if current_kol.confirmed_at == nil
+        flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
+      end
+      render "home", :layout => 'kol'
     else
       render "landing_page", :layout => 'landing'
     end
+  end
+
+  def landing_page_brand
+    render "landing_page_brand", :layout => 'landing'
   end
 
   def singup

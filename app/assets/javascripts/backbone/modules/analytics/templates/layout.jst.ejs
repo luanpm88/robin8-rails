@@ -8,6 +8,15 @@
         <li role="presentation">
           <a href="/#analytics-email" aria-controls="analytics-email" role="tab" data-toggle="tab" class='emails-label'><%=polyglot.t('analytics.emails')%></a>
         </li>
+        <li role="presentation">
+          <a href="/#analytics-campaign" aria-controls="analytics-campaign" role="tab" data-toggle="tab" class='campaigns-label'>Campaigns</a>
+        </li>
+	     <li role="presentation">
+          <a href="/#analytics-wechat" aria-controls="analytics-wechat" role="tab" data-toggle="tab" class='wechat-label'>WeChat report</a>
+        </li>
+         <li role="presentation">
+          <a href="/#analytics-weibo" aria-controls="analytics-weibo" role="tab" data-toggle="tab" class='weibo-label'>Weibo report</a>
+        </li>
       </ul>
       <div class="tab-content">
 
@@ -40,6 +49,17 @@
             </div>
           </div>
         </div>
+
+        <div role="tabpanel" class="tab-pane" id="analytics-campaign">
+          <div id='campaign-analytics-region' class='row'></div>
+        </div>
+	     <div role="tabpanel" class="tab-pane" id="analytics-wechat">
+          <div id='wechat-analytics-region' class='row'></div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="analytics-weibo">
+          <div id='weibo-analytics-region' class='row'></div>
+	     </div>
 
       </div>
     </div>

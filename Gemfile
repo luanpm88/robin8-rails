@@ -38,6 +38,7 @@ gem 'legato'
 gem 'google-api-client'
 gem 'sitemap_generator'
 gem 'redis-objects'
+gem 'redis-rails'
 
 # Character encoding detecting library
 gem 'charlock_holmes'
@@ -60,7 +61,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
   gem 'rails-assets-highcharts', '4.1.1'
-  gem 'rails-assets-select2'
+  gem 'rails-assets-select2', '3.5.2'
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
@@ -78,7 +79,11 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-spinjs'
   gem 'rails-assets-jquery-highlighttextarea'
   gem 'rails-assets-jquery-geocomplete'
+  gem 'rails-assets-datejs'
   gem 'rails-assets-underscore.inflection'
+  gem 'rails-assets-bootstrap-validator'
+  gem 'rails-assets-jquery-knob'
+  gem 'rails-assets-d3'
 end
 
 gem 'devise'
@@ -89,6 +94,8 @@ gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-linkedin'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
+gem 'omniauth-weibo-oauth2'
+gem 'omniauth-wechat-oauth2'
 gem 'active_model_serializers', "~> 0.8.0"
 
 gem 'sinatra', require: nil
@@ -168,6 +175,10 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'puma'
+
+
+
 end
 
 group :production do

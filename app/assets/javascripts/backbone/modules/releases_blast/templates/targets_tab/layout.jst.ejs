@@ -3,7 +3,9 @@
 <p><%= polyglot.t("smart_release.targets_step.description") %></p>
 <ul class="nav nav-tabs nav-justified">
   <li class="active"><a data-toggle="tab" href="#targets-blogs" aria-expanded="true"><i class="fa fa-rss"></i> <%= polyglot.t("smart_release.targets_step.influencers_tab.title") %></a></li>
-  <li><a data-toggle="tab" href="#targets-social" aria-expanded="true"><i class="fa fa-twitter"></i> <%= polyglot.t("smart_release.targets_step.social_tab.title") %></a></li>
+  <% if (Robin.currentUser.get('locale') != 'zh') { %>
+    <li><a data-toggle="tab" href="#targets-social" aria-expanded="true"><i class="fa fa-twitter"></i> <%= polyglot.t("smart_release.targets_step.social_tab.title") %></a></li>
+  <% } %>
   <li><a data-toggle="tab" href="#targets-search" aria-expanded="true"><i class="fa fa-search"></i> <%= polyglot.t("smart_release.targets_step.search_tab.title") %></a></li>
   <li><a data-toggle="tab" href="#targets-list" aria-expanded="true"><i class="fa fa-list"></i> <%= polyglot.t("smart_release.targets_step.media_tab.title") %></a></li>
 </ul>
@@ -11,9 +13,9 @@
   <div id="targets-blogs" class="tab-pane active" role="tabpanel">
 
   </div>
-  <div id="targets-social" class="tab-pane" role="tabpanel">
-
-  </div>
+  <% if (Robin.currentUser.get('locale') != 'zh') { %>
+    <div id="targets-social" class="tab-pane" role="tabpanel"></div>
+  <% } %>
   <div id="targets-search" class="tab-pane" role="tabpanel">
 
   </div>

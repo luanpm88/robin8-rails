@@ -1,0 +1,16 @@
+<div class="modal-dialog modal-lg" id="negotiate-campaign-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"> <%=polyglot.t('dashboard_kol.campaigns_tab.negotiate_text')%> "<%= campaign_name %>"</h4>
+        </div>
+        <div class="modal-body">
+            <textarea class="wysihtml5 negotiate-content" id="negotiate-text" ></textarea>
+            <p class="help-block with-errors hidden" id="report-error"><%=polyglot.t('dashboard_kol.campaigns_tab.error')%></p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><%=polyglot.t('dashboard_kol.campaigns_tab.close')%></button>
+                <button type="button" class="btn btn-success" id="negotiate-save" ><%=polyglot.t('dashboard_kol.campaigns_tab.send_negotiate')%></button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

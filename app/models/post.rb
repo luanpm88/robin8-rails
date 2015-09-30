@@ -3,6 +3,7 @@ class Post < ActiveRecord::Base
   serialize :twitter_ids, Array
   serialize :facebook_ids, Array
   serialize :linkedin_ids, Array
+  serialize :weibo_ids, Array
 
   belongs_to :user
   validates :text, presence: true

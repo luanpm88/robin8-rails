@@ -6,7 +6,7 @@ Robin.module("Dashboard", function(Dashboard, Robin, Backbone, Marionette, $, _)
     showDashboardPage: function() {
       Dashboard.Show.Controller.showDashboardPage();
     }
-  }
+  };
 
   Dashboard.on('start', function(){
     API.showDashboardPage();

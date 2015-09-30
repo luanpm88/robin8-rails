@@ -1,0 +1,80 @@
+<% if (items.length == 0) { %>
+<hr>
+<div class="row">
+  <% if (accepted) { %>
+  <%=polyglot.t('kol_campaign.you_dont_have_any_accepted')%>
+  <% } else if (declined) { %>
+  <%=polyglot.t('kol_campaign.you_dont_have_any_declined')%>
+  <% } else if (history) { %>
+  <%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_history')%>
+  <% } else { %>
+  <%=polyglot.t('dashboard_kol.campaigns_tab.you_dont_have_any_negotiating')%>
+  <% } %>
+</div>
+<% } else { %>
+<div class="row">
+    <table class="table table-striped" id="campaigns-table">
+        <thead class="table-head">
+        <tr>
+            <th class="invite-cell head-cell invite-brand col-md-2" ><%=polyglot.t('kol_campaign.brand')%></th>
+            <th class="invite-cell head-cell invite-name" ><%=polyglot.t('kol_campaign.name')%></th>
+            <th class="invite-cell head-cell invite-budget" ><%=polyglot.t('kol_campaign.budget')%></th>
+            <th class="invite-cell head-cell invite-date" ><%=polyglot.t('kol_campaign.creation_date')%></th>
+            <th class="invite-cell head-cell invite-deadline" ><%=polyglot.t('kol_campaign.deadline')%></th>
+            <% if (!negotiating && !declined) {%>
+              <th class="invite-cell head-cell invite-status" ><%=polyglot.t('kol_campaign.status')%></th>
+            <% } %>
+            <% if (negotiating) {%>
+              <th class="invite-cell head-cell" ><%=polyglot.t('dashboard_kol.campaigns_tab.last_update')%></th>
+            <% } %>
+            <% if (declined || negotiating) {%>
+              <th class="invite-cell head-cell" ><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
+            <% } %>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(items, function(item){ %>
+        <tr data-id="<%= item.id %>" class="campaign-tabs">
+            <td class="invite-cell invite-description campaign" data-id="<%= item.id %>">
+                <%= item.user.company %>
+            </td>
+            <td class="invite-cell invite-name campaign" data-id="<%= item.id %>">
+                <%= item.name %>
+            </td>
+            <td class="invite-cell invite-description campaign" data-order="<%= item.budget %>" data-id="<%= item.id %>">
+                <%= budget(item) %>
+            </td>
+            <td data-order="<%= timestamp(item.created_at) %>" class="invite-cell invite-date campaign" data-id="<%= item.id %>">
+                <%= formatDate(item.created_at) %>
+            </td>
+            <td data-order="<%= timestamp(item.deadline) %>" class="invite-cell invite-deadline campaign" data-id="<%= item.id %>">
+                <b><%= formatDate(item.deadline) %></b>
+            </td>
+            <% if (!negotiating && !declined) {%>
+              <% if (accepted) {%>
+                <td class="invite-cell campaign" data-id="<%= item.id %>"><%= code(item) %></td>
+              <% } else {%>
+                <td class="invite-cell campaign" data-id="<%= item.id %>"><%= code_status(item) %></td>
+              <% }%>
+            <% } %>
+            <% if (negotiating) {%>
+              <td data-order="<%= timestamp(item.updated_at) %>" class="campaign" data-id="<%= item.id %>"><%= formatDate(item.updated_at) %></td>
+            <% } %>
+            <% if (negotiating) {%>
+              <td>
+                  <button type="button" class="btn top-btn camp-default-btn invitation-accept" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+                  <button type="button" class="btn bottom-btn camp-interested invitation-decline" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard_kol.campaigns_tab.reject')%></button>
+              </td>
+            <% } %>
+            <% if (declined) {%>
+              <td>
+                  <button type="button" class="btn top-btn camp-default-btn invitation-accept" data-campaign-id="<%= item.id %>"><%=polyglot.t('dashboard.accept')%></button>
+              </td>
+            <% } %>
+        </tr>
+        <% }); %>
+        </tbody>
+
+    </table>
+</div>
+<% } %>

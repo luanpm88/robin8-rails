@@ -320,6 +320,12 @@ GEM
     omniauth-twitter (1.2.0)
       json (~> 1.3)
       omniauth-oauth (~> 1.1)
+    omniauth-wechat-oauth2 (0.1.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+    omniauth-weibo-oauth2 (0.4.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     orm_adapter (0.5.0)
     paperclip (4.2.2)
       activemodel (>= 3.0.0)
@@ -346,6 +352,7 @@ GEM
       pry (>= 0.9.10, < 0.11.0)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    puma (2.13.4)
     pry-stack_explorer (0.4.9.1)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
@@ -373,8 +380,8 @@ GEM
     rails-assets-backbone-relational (0.9.0)
       rails-assets-backbone (>= 1.1.2)
       rails-assets-underscore (>= 1.5.0)
-    rails-assets-backbone.babysitter (0.1.8)
-      rails-assets-backbone (>= 0.9.9, <= 1.2.1)
+    rails-assets-backbone.babysitter (0.1.10)
+      rails-assets-backbone (>= 0.9.9, <= 1.2.3)
       rails-assets-underscore (>= 1.4.0, <= 1.8.3)
     rails-assets-backbone.marionette (2.4.1)
       rails-assets-backbone (>= 1.0.0, < 1.1.3)
@@ -386,8 +393,8 @@ GEM
       rails-assets-backbone (>= 0.9.0)
       rails-assets-jquery (>= 1.7.1)
       rails-assets-underscore (>= 1.3.1)
-    rails-assets-backbone.wreqr (1.3.3)
-      rails-assets-backbone (>= 0.9.9, <= 1.2.1)
+    rails-assets-backbone.wreqr (1.3.5)
+      rails-assets-backbone (>= 0.9.9, <= 1.2.3)
       rails-assets-underscore (>= 1.3.3, <= 1.8.3)
     rails-assets-blueimp-gallery (2.16.0)
     rails-assets-bootstrap (3.3.5)
@@ -403,15 +410,19 @@ GEM
       rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-tagsinput (0.5.0)
       rails-assets-jquery (~> 2.1.1)
+    rails-assets-bootstrap-validator (0.9.0)
+      rails-assets-jquery (>= 1.8.3)
     rails-assets-bootstrap.growl (2.0.1)
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
-    rails-assets-chance (0.7.6)
-    rails-assets-datatables (1.10.7)
+    rails-assets-chance (0.8.0)
+    rails-assets-d3 (3.5.6)
+    rails-assets-datatables (1.10.9)
       rails-assets-jquery (>= 1.7.0)
     rails-assets-datatables-tabletools (2.2.4)
       rails-assets-datatables (>= 1.9.0)
       rails-assets-jquery (>= 1.7.0)
+    rails-assets-datejs (1.0.0.rc3)
     rails-assets-eonasdan-bootstrap-datetimepicker (4.0.0)
       rails-assets-jquery (>= 1.8.3)
       rails-assets-moment (>= 2.8.0)
@@ -420,8 +431,10 @@ GEM
     rails-assets-jquery (2.1.4)
     rails-assets-jquery-geocomplete (1.6.5)
       rails-assets-jquery (>= 1.9.0)
-    rails-assets-jquery-highlighttextarea (3.1.0)
+    rails-assets-jquery-highlighttextarea (3.1.1)
       rails-assets-jquery (> 1.9)
+    rails-assets-jquery-knob (1.2.11)
+      rails-assets-jquery (>= 1.7.0)
     rails-assets-jquery.caret (1.5.2)
     rails-assets-jquery.dotdotdot (1.7.4)
       rails-assets-jquery (>= 1.4.3)
@@ -435,13 +448,13 @@ GEM
     rails-assets-select2-bootstrap-css (1.4.6)
       rails-assets-select2 (>= 3.3.2, < 4)
     rails-assets-spinjs (2.3.2)
-    rails-assets-spinkit (1.2.1)
-    rails-assets-timeago (1.4.1)
+    rails-assets-spinkit (1.2.2)
+    rails-assets-timeago (1.4.3)
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.inflection (1.1.1)
       rails-assets-underscore (~> 1.6.0)
-    rails-assets-underscore.string (3.1.1)
+    rails-assets-underscore.string (3.2.2)
     rails-assets-uploadcare (2.0.4)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-x-editable (1.5.1)
@@ -474,10 +487,26 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.2.0)
     redis (3.2.1)
+    redis-actionpack (4.0.1)
+      actionpack (~> 4)
+      redis-rack (~> 1.5.0)
+      redis-store (~> 1.1.0)
+    redis-activesupport (4.1.1)
+      activesupport (~> 4)
+      redis-store (~> 1.1.0)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
     redis-objects (1.2.0)
       redis (>= 3.0.2)
+    redis-rack (1.5.0)
+      rack (~> 1.5)
+      redis-store (~> 1.1.0)
+    redis-rails (4.0.0)
+      redis-actionpack (~> 4)
+      redis-activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.6)
+      redis (>= 2.2)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rest-client (1.8.0)
@@ -670,12 +699,15 @@ DEPENDENCIES
   omniauth-linkedin
   omniauth-linkedin-oauth2
   omniauth-twitter
+  omniauth-wechat-oauth2
+  omniauth-weibo-oauth2
   paperclip (~> 4.2.1)
   prawn
   premailer-rails
   pry-nav (= 0.2.4)
   pry-rails
   pry-stack_explorer (= 0.4.9.1)
+  puma
   quiet_assets
   railroady
   rails (= 4.2.0)
@@ -689,22 +721,26 @@ DEPENDENCIES
   rails-assets-bootstrap-sweetalert!
   rails-assets-bootstrap-switch!
   rails-assets-bootstrap-tagsinput!
+  rails-assets-bootstrap-validator!
   rails-assets-bootstrap.growl (= 2.0.1)!
   rails-assets-chance!
+  rails-assets-d3!
   rails-assets-datatables!
   rails-assets-datatables-tabletools!
+  rails-assets-datejs!
   rails-assets-eonasdan-bootstrap-datetimepicker (= 4.0.0)!
   rails-assets-font-awsome (= 4.3)!
   rails-assets-highcharts (= 4.1.1)!
   rails-assets-jquery-geocomplete!
   rails-assets-jquery-highlighttextarea!
+  rails-assets-jquery-knob!
   rails-assets-jquery.caret!
   rails-assets-jquery.dotdotdot!
   rails-assets-momentjs!
   rails-assets-please-wait!
   rails-assets-progressjs!
   rails-assets-sass-bootstrap-glyphicons!
-  rails-assets-select2!
+  rails-assets-select2 (= 3.5.2)!
   rails-assets-select2-bootstrap-css!
   rails-assets-spinjs!
   rails-assets-spinkit!
@@ -714,6 +750,7 @@ DEPENDENCIES
   rails-assets-uploadcare (= 2.0.4)!
   rails-assets-x-editable!
   redis-objects
+  redis-rails
   roadie (~> 3.0.5)
   rspec-activemodel-mocks
   rspec-mocks

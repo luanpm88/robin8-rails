@@ -34,6 +34,13 @@ module Robin8
     # I18n.enforce_available_locales = false
 
     config.china_instance = true
+
+    config.cache_store = :redis_store, { :host => "localhost",
+                                         :port => 6379,
+                                         :db => 0,
+                                         :namespace => "robcache",
+                                         :expires_in => 90.minutes }
   end
+
   require Rails.root.to_s + '/lib/blue_snap.rb'
 end

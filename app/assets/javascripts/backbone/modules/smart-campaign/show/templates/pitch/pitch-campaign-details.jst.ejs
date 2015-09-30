@@ -1,0 +1,57 @@
+<form role="form" id="details_form">
+  <div class="campaign_details_form">
+    <div class="form-group col-md-3">
+      <label class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_budged')%></label>
+      <div class="help-block with-errors campaign-errors"></div>
+      <div class="validate_input">
+        <input class="form-control" placeholder="$1000" name="budget" id="budget" type="number" min="0" max="1000000000" value="" required>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="form-group">
+        <label class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_deadline')%></label>
+        <div class="help-block with-errors campaign-errors"></div>
+        <div>
+          <input class="form-control" placeholder="<%=polyglot.t('smart_campaign.start_step.pick_deadline')%>" id="deadline" name="deadline" type="text" value="" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="form-group">
+        <label class="control-label start-form"><%=polyglot.t('smart_campaign.content_type')%></label>
+        <div class="ui-select content_type">
+          <select class="form-control" name='sort_column' id='content_type'>
+            <option value="pre_packaged"><%= polyglot.t("smart_campaign.pitch_step.pre_packaged") %></option>
+            <option value="original"><%= polyglot.t("smart_campaign.pitch_step.original") %></option>
+            <option value="re_share"><%= polyglot.t("smart_campaign.pitch_step.re_share") %></option>
+            <option value="post_product_review"><%= polyglot.t("smart_campaign.pitch_step.post_product_review") %></option>
+            <option value="speech_or_presentation"><%= polyglot.t("smart_campaign.pitch_step.speech_or_presentation") %></option>
+            <option value="attend_event"><%= polyglot.t("smart_campaign.pitch_step.attend_event") %></option>
+            <option value="focus_event"><%= polyglot.t("smart_campaign.pitch_step.focus_event") %></option>
+            <option value="focus_group"><%= polyglot.t("smart_campaign.pitch_step.focus_group") %></option>
+            <option value="host_event"><%= polyglot.t("smart_campaign.pitch_step.host_event") %></option>
+            <option value="endorsements"><%= polyglot.t("smart_campaign.pitch_step.endorsements") %></option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="campaign_details_form">
+    <div class="col-md-3">
+      <label for="is_non_cash" class="control-label channels-label" ><%=polyglot.t('smart_campaign.pitch_step.non_cash_reward')%></label>
+      <span><input type="checkbox" class='private-checkbox' id="icheckbox_flat" name="is_non_cash" ></span>
+    </div>
+
+    <div class="col-md-7">
+      <div class="form-group">
+        <label class="control-label start-form"><%=polyglot.t('smart_campaign.pitch_step.description_field')%>:</label>
+        <div class="help-block with-errors campaign-errors"></div>
+        <div>
+          <textarea class="wysihtml5 form-control widearea" id="short_description" name="short_description" required disabled></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,58 @@
+// Place all the styles related to the campaign controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+tr.campaign{
+  cursor: pointer;
+}
+
+.article-content {
+  width: 100%;
+  overflow: auto;
+}
+
+.comments-list {
+  max-height: 300px;
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
+.comments-title {
+  font-size: 22px;
+}
+
+.comment-text {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.comment-date {
+  margin-bottom: 5px;
+}
+
+#comment-error {
+  margin-bottom: 0;
+}
+
+#comments {
+  ul {
+    li {
+      list-style: none;
+    }
+  }
+  .files_list {
+    .uploadcare-widget-button.btn {
+      line-height: 1.4em;
+      font-size: 14px;
+      padding: 6px 12px;
+    }
+  }
+
+  #files {
+    max-height: 200px;
+    overflow: auto;
+  }
+}
+
+td.middle {
+  vertical-align: middle !important;
+}

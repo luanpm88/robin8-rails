@@ -1,0 +1,59 @@
+<% if (items.length == 0) { %>
+    <div class="row">
+        <div class="row">No WeChat Performance yet</div><hr>
+    </div>
+<% } else { %>
+    <div class="row">
+        <table class="table table-striped" id="wechat-perf-table">
+            <thead class="table-head">
+            <tr>
+                <th>Period</th>
+                <th><%= polyglot.t("smart_campaign.wechat_report.people_reached") %></th>
+                <th><%= polyglot.t("smart_campaign.wechat_report.page_views") %></th>
+                <th><%= polyglot.t("smart_campaign.wechat_report.read_more") %></th>
+                <th><%= polyglot.t("smart_campaign.wechat_report.favourite") %></th>
+                <th>Status</th>
+                <th class="no-sort" ></th>
+                <% if (disabled) {%>
+                    <th class="no-sort" ></th>
+                <% }%>
+            </tr>
+            </thead>
+            <tbody>
+            <% _.each(items, function(c) { %>
+                <tr  data-id="<%= c.id %>" >
+                    <td>
+                        <%= c.period %>
+                    </td>
+                    <td>
+                        <%= c.reached_peoples%>
+                    </td>
+                    <td>
+                        <%= c.page_views%>
+                    </td>
+                    <td>
+                       <%= c.read_more%>
+                    </td>
+                    <td>
+                        <%= c.favourite%>
+                    </td>
+                    <td class="<%= getClass(c.status) %>" >
+                        <%= c.status%>
+                    </td>
+                    <td>
+                        <% _.each(c.attachments, function(attach) { %>
+                        <a href="<%=  attach.url %>" target="_blank"><i class="fa fa-image"></i></a>
+                         <% }); %>
+                    </td>
+                    <% if (disabled) { %>
+                        <td>
+                            <% var button_disabled = ""; if (c.status == "Claimed") { button_disabled = "disabled"; } %>
+                            <button type="button" class="btn btn-primary" id="wechat_claim" report="<%= c.id %>" period="<%= c.period %>" <%= button_disabled %> >Claim</button>
+                        </td>
+                    <% } %>
+                </tr>
+             <% }); %>
+            </tbody>
+        </table>
+    </div>
+<% } %>

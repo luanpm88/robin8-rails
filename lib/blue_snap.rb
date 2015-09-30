@@ -63,6 +63,7 @@ module BlueSnap
           Request.put(update_subscription_url, subscription.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new,
                                                   :skip_types => true, :skip_instruct => true))
         else
+          Rails.logger.error errors
           return errors, nil
         end
       rescue Exception => ex
@@ -305,6 +306,9 @@ module BlueSnap
       request["Content-Type"] ='application/xml'
       response = http.request(request)
       Rails.logger.info "response is #{response} AND #{response.body}***************************"
+      if not response.code.to_i == 200
+        ::SupportMailer.delay.payment_failure(Hash.from_xml(request.body).to_yaml, "#{response} body: #{Hash.from_xml(response.body).to_yaml}")
+      end
       return "Something is not right with the transaction, Please try again." if [400,401,402,403,404,500,501].include?(response.code.to_i)
       response.body
     end

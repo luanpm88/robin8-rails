@@ -41,6 +41,8 @@ class PostsController < ApplicationController
     params[:post][:twitter_ids] = [] if params[:post][:twitter_ids].blank?
     params[:post][:facebook_ids] = [] if params[:post][:facebook_ids].blank?
     params[:post][:linkedin_ids] = [] if params[:post][:linkedin_ids].blank?
+    params[:post][:weibo_ids] = [] if params[:post][:weibo_ids].blank?
+    params[:post][:wechat_ids] = [] if params[:post][:wechat_ids].blank?
 
     if @post.update_attributes(post_params)
       render json: @post
@@ -68,7 +70,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:text, :scheduled_date, :shrinked_links, facebook_ids:[], linkedin_ids:[], twitter_ids:[])
+    params.require(:post).permit(:text, :scheduled_date, :shrinked_links, facebook_ids:[], linkedin_ids:[], twitter_ids:[], weibo_ids:[], wechat_ids:[])
   end
 
 end

@@ -1,0 +1,12 @@
+<%= polyglot.t('smart_campaign.targets_step.weibo.contact_form.message.hi') %> <%= author.get('full_name') %>,
+<br><br>
+<%= polyglot.t('smart_campaign.targets_step.weibo.contact_form.message.invited_msg') %>
+<br><br>
+"<%= release.get('name') %>"
+<br><br>
+<%= summary %>
+<br><br>
+<%= polyglot.t('smart_campaign.targets_step.weibo.contact_form.message.regards') %>,
+<%= s.isBlank(currentUser.get('name')) ? '' : currentUser.get('name') %>
+<br><br>
+<%= polyglot.t('smart_campaign.targets_step.weibo.contact_form.message.ps', {kols_signup_url: kolSignUpUrl}) %>

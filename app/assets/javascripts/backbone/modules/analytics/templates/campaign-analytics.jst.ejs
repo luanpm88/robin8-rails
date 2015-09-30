@@ -1,0 +1,44 @@
+<div class="campaigns-tab">
+<% if (items.length == 0) { %>
+  <div class="row">You don't have stats for any campaigns.</div>
+<% } else { %>
+  <% _.each(items, function(c) { %>
+  <input class="hide" id="campaign-<%= c.id %>" type="checkbox">
+  <label for="campaign-<%= c.id %>" id ="campaign-name"><%= c.campaign_name %></label>
+  <label for="campaign-<%= c.id %>"><%= c.campaign_date_start %> - <%= c.campaign_date_end %></label>
+  <div>
+      <table class="table table-hover targets dataTable no-footer an-campaigns-table">
+       <thead><tr>
+        <th>Title</th>
+        <th>Blog Name</th>
+        <th>Author Name</th>
+        <th>Views</th>
+        <th>Shares</th>
+        <th>Likes</th>
+        <th>Published At</th>
+       </tr></thead>
+       <tbody>
+      <% _.each(c.table, function(t) { %>
+        <tr >
+          <td>
+            <div class="targets-author">
+              <%= t.title %>
+            </div>
+          </td>
+          <td><%= t.blog_name %></td>
+          <td><%= t.author_name %></td>
+          <td><%= t.views.toLocaleString() %></td>
+          <td><i class="fa fa-<%= t.social_share_name %>"></i><%= t.shares.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></td>
+          <td><%= t.likes.toLocaleString() %></td>
+          <td><%= t.published_at %></td>
+        </tr>
+      <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <br/>
+  <br/>
+  <% }); %>
+<% } %>
+</div>
+

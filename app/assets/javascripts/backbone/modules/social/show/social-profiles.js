@@ -7,10 +7,12 @@ var disconnectSocial = function(id, currentView){
     success: function(data, textStatus, jqXHR) {
       Robin.identities = data;
       currentView.render();
-      Robin.module("Social").postsView.render();
-      Robin.module("Social").tomorrowPostsView.render();
-      Robin.module("Social").othersPostsView.render();
-      Robin.SaySomething.Say.Controller.showSayView();
+      if (!Robin.KOL) {
+        Robin.module("Social").postsView.render();
+        Robin.module("Social").tomorrowPostsView.render();
+        Robin.module("Social").othersPostsView.render();
+        Robin.SaySomething.Say.Controller.showSayView();
+      }
     },
     error: function(jqXHR, textStatus, errorThrown) {
       $.growl(textStatus, {
@@ -30,6 +32,8 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .btn-google-plus': 'connectProfile',
       'click .btn-twitter': 'connectProfile',
       'click .btn-linkedin': 'connectProfile',
+      'click .btn-weibo': 'connectProfile',
+      'click .btn-wechat': 'connectProfile',
       'click .disconnect': 'disconnect'
     },
 
@@ -38,7 +42,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     connectProfile: function(e) {
       e.preventDefault();
-     
+
       if ($(e.target).children().length != 0) {
         var provider = $(e.target).attr('name');
       } else {
@@ -46,7 +50,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       };
 
       var currentView = this;
-      
+
       var url = '/users/auth/' + provider,
       params = 'location=0,status=0,width=800,height=600';
       currentView.connect_window = window.open(url, "connect_window", params);
@@ -54,13 +58,15 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       currentView.interval = window.setInterval((function() {
         if (currentView.connect_window.closed) {
           $.get( "/users/get_identities", function( data ) {
-            Robin.identities = data; 
+            Robin.identities = data;
             // Robin.setIdentities(data);
             currentView.render();
-            Robin.module("Social").postsView.render();
-            Robin.module("Social").tomorrowPostsView.render();
-            Robin.module("Social").othersPostsView.render();
-            Robin.SaySomething.Say.Controller.showSayView();
+            if (!Robin.KOL) {
+              Robin.module("Social").postsView.render();
+              Robin.module("Social").tomorrowPostsView.render();
+              Robin.module("Social").othersPostsView.render();
+              Robin.SaySomething.Say.Controller.showSayView();
+            }
             window.clearInterval(currentView.interval);
           });
         }

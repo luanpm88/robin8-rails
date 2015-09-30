@@ -78,7 +78,7 @@ body.login {
   }
   header h2{
     font-size: 24px;
-    font-family: 'ProximaNova';
+    font-family: 'ProximaNovaSemibold';
     font-weight: normal;
     color: #ffffff;
     text-align: center;
@@ -113,23 +113,34 @@ body.login {
     padding-top: 85px;
   }
 
+  .screenpane .register a{
+    color: #93C832;
+  }
+
   .screenpane .screenbg{
   }
   .screenpane h2{
-    font-family: 'ProximaNovaSemibold';
+    font-family: 'ProximaNovaBold';
     font-size: 24px;
     font-weight: normal;
-    margin: 80px 0 40px;
-    max-width: 450px;
+    margin: 20px 0 30px;
+    text-align: center;
+    color: #007183;
+  }
+  .screenpane .center {
+    margin: auto;
   }
 
   .screenpane p{
-    font-size: 15px;
-    line-height: 18px;
+    font-size: 16px;
+    line-height: 20px;
     color: #666666;
       font-family: "ProximaNova";
-    margin: 0 0 40px;
-
+    margin: 40px auto 0;
+    max-width: 720px;
+    color: #007183;
+  }
+  .screenpane .btn{
     max-width: 450px;
   }
 
@@ -142,52 +153,58 @@ body.login {
 
   .prsteps{
     text-align: center;
-    background: #f2f2f2;
+    background: #007183;
   }
   .prsteps h2{
     font-family: 'ProximaNovaSemibold';
     font-size: 24px;
     font-weight: normal;
-    margin: 80px 0 40px;
+    margin: 20px auto 30px;
     text-align: center;
+    color: #FFFFFF;
+    max-width: 520px;
   }
 
   .prsteps p{
+    font-family: 'ProximaNova';
     font-size: 18px;
-    line-height: 24px;
-    color: #666666;
-      font-family: "ProximaNova";
-    margin: 0 0 40px;
-    max-width: 1000px;
-
+    font-weight: normal;
+    margin: 20px auto 30px;
+    text-align: left;
+    color: #FFFFFF;
   }
 
   .prsteps .pr-types{
 
   }
+
+  .prsteps .row{
+    max-width: 47.5rem;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
   .prsteps .pr-types .icon-wrap{
 
   }
   .prsteps .pr-types .icon-wrap .icon-img{
-    height: 106px;
-    width: 106px;
+    height: 75px;
+    width: 75px;
     margin: 0 auto 30px;
     background: #ffffff;
     border-radius: 55px;
-  }
-
-  .prsteps .pr-types .icon-wrap .icon-img img{
-    margin: 13px;
   }
   .prsteps .pr-types .pr-content{
 
   }
   .prsteps .pr-types .pr-content h3{
     font-size: 18px;
-    text-transform: uppercase;
     font-family: 'ProximaNovaSemibold';
     font-weight: normal;
-
+    color: #FFFFFF;
   }
   .prsteps .pr-types .pr-content p{
     font-size: 15px;
@@ -197,36 +214,71 @@ body.login {
     line-height: 18px;
   }
 
+  .pr-types img {
+    height: auto;
+    max-width: 100%;
+  }
+
   .bgpane{
-    background: image-url("bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+    background: image-url("welcome.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
     background-size: cover;
     min-height: 640px;
   }
+  .bgpane-title {
+    padding-top: 30px;
+  }
 
-  .whatwedo h2{
+  .bgpane-image {
+    background: image-url("arrow.png") no-repeat center center;
+    display: list-item;
+    height: 38px;
+  }
+
+  .bgpane-title h2{
+    font-size: 36px;
+    font-family: 'ProximaNovaBold';
+    font-weight: normal;
+    color: #007183;
+    text-align: center;
+  }
+
+  .whatwedo-title h2{
     font-family: 'ProximaNovaSemibold';
     font-size: 24px;
     font-weight: normal;
-    margin: 70px 0 50px;
+    margin: 10px 0 10px;
     text-align: center;
+    color: #ffffff;
+  }
+  .whatwedo-title {
+    margin-bottom: 50px;
+    background-color: #007183;
+    max-width: 100%;
   }
 
   .whatwedo p{
     font-size: 16px;
     color: #666666;
-      font-family: "ProximaNova";
-    margin: 0 0 80px;
-    max-width: 1000px;
+    font-family: "ProximaNova";
+    margin: 0 auto 40px;
+    max-width: 770px;
     line-height: 20px;
+    border-radius: 150px;
+    border: 1px solid #d9d9d9;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+    color: #007183;
   }
 
   .whatwedo p .icon-img-wrap{
     display: inline-block;
-    margin-right: 24px;
-    margin-left: 24px;
   }
+
   .whatwedo p .icon-img-wrap img{
-    margin-top: -22px;
+    margin-top: -20px;
+    margin-left: -5px;
+    float: left;
   }
 
   /* FOOTER */
@@ -1137,6 +1189,7 @@ body.login {
 
   /* LOGIN PAGE */
   .btn-google-plus,
+  .btn-wechat,
   .btn-facebook  {
     max-width: 560px;
     width: 100%;
@@ -1148,6 +1201,7 @@ body.login {
     line-height: 60px;
   }
   a.btn-google-plus,
+  a.btn-wechat,
   a.btn-facebook  {
     color: white;
     display: block;
@@ -1159,13 +1213,18 @@ body.login {
   .btn-google-plus {
       background-color: #df4a32;
     }
+  .btn-wechat {
+      background-color: #36df70;
+    }
 
   .btn-facebook i.fa,
+  .btn-wechat i.fa,
   .btn-google-plus i.fa{
     display: none;
   }
 
   .btn-facebook span,
+  .btn-wechat span,
   .btn-google-plus span{
       display: inline-block;
       height: 60px;
@@ -1179,6 +1238,9 @@ body.login {
   .btn-google-plus span{
       background: image-url("Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
   }
+  .btn-wechat span{
+      background: image-url("Login_WeChat_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  }
 
   .btn-google-plus:hover {
       background-color: #df4a32;
@@ -1190,6 +1252,13 @@ body.login {
   }
   .btn-facebook:hover {
       background-color: #3a579a;
+    opacity: 0.8;
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  }
+  .btn-wechat:hover {
+      background-color: #36df70;
     opacity: 0.8;
     transition-property: all;
     transition-duration: 0.5s;
@@ -1265,6 +1334,14 @@ body.login {
       text-align: center;
       text-transform: uppercase;
       width: 50px;
+  }
+  p.kols{
+    text-align: center;
+    margin-top: 40px;
+    color: #ffffff;
+  }
+  .kols a{
+    color: #a5cc63;
   }
 
   /* CONTACT PAGE */
@@ -1546,4 +1623,214 @@ body.login {
     //   margin-right: 15px;
     // }
   }
+}
+
+.smart-campaign {
+  .region-title {
+    line-height: 34px;
+  }
+  .save-campaign {
+    margin-right: 16px;
+    margin-top: 10px;
+  }
+  #campaign-form {
+    .campaign-errors {
+      margin-left: 10px;
+      display: inline-block;
+      margin-bottom: 0px;
+    }
+    .form-group {
+      margin-left: 0px !important;
+      margin-right: 0px !important;
+      padding-bottom: 0px !important;
+    }
+    .start-form {
+      color: #434A54;
+    }
+  }
+  #kols-table {
+    .invite-checkbox {
+      margin-left: 10px;
+    }
+  }
+  span.kol-category {
+    display: inline-block;
+    border-color: #cccccc;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-right: 3px;
+    margin-left: 3px;
+    background-color: #cccccc;
+    border-radius: 3px;
+  }
+  .kol-header.error {
+    color: red;
+  }
+  .kol-errors {
+    display: none;
+    color: red;
+    margin-left: 10px;
+  }
+  .preview {
+    cursor: pointer;
+  }
+}
+#emailTextarea {
+  height: 150px;
+  overflow: auto;
+}
+#campaign-content{
+  padding-top: 2%;
+}
+#analytics-campaign-text {
+  padding-top: 500px;
+  padding-left: 25px;
+}
+.error-field {
+  display: none;
+  color: #DA4453;
+}
+#blast-targets {
+  padding-top: 1%;
+  padding-left: 25px;
+  padding-right: 20px;
+}
+#wechat-perf-form {
+  .campaign-errors {
+    margin-left: 10px;
+    display: inline-block;
+    margin-bottom: 0px;
+  }
+  .col-md-3 {
+    display: inline-block;
+    float: initial;
+  }
+  .label-left-side {
+    width: 20%;
+    text-align: left;
+  }
+  .label-right-side {
+    width: 20%;
+    text-align: left;
+  }
+  .help-block {
+    display: table;
+  }
+}
+.btn-form {
+  width: 150px;
+  float: right;
+}
+#report_region .images_region hr{
+  margin-bottom: 5px;
+  margin-top: 0;
+}
+.personal-info input[type=number]::-webkit-outer-spin-button,
+.personal-info input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.brand_page_title {
+  font-family: 'ProximaNova' !important;
+}
+.screenpane_brand h2 {
+  font-family: 'ProximaNovaSemibold' !important;
+  font-size: 24px !important;
+  font-weight: normal !important;
+  margin: 80px 0 40px !important;
+  max-width: 450px !important;
+}
+.screenpane_brand p{
+  font-size: 15px;
+  line-height: 18px;
+  color: #666666;
+  font-family: "ProximaNova";
+  margin: 0 0 40px;
+  max-width: 450px;
+}
+.screenpane_brand .videoembedsection{
+  padding-top: 85px;
+}
+.screenpane_brand .button.button-signup{
+  width: 100%;
+  max-width: 415px;
+  margin-bottom: 80px;
+}
+.prsteps_brand {
+  text-align: center;
+  background: #f2f2f2;
+}
+.prsteps_brand h2{
+  font-family: 'ProximaNovaSemibold' !important;
+  font-size: 24px !important;
+  font-weight: normal !important;
+  margin: 80px 0 40px !important;
+  text-align: center;
+}
+
+.prsteps_brand p{
+  font-size: 18px !important;
+  line-height: 24px !important;
+  color: #666666;
+  font-family: "ProximaNova" !important;
+  margin: 0 0 40px !important;
+  max-width: 1000px;
+}
+.prsteps_brand .pr-types .icon-wrap .icon-img{
+  height: 106px;
+  width: 106px;
+  margin: 0 auto 30px;
+  background: #ffffff;
+  border-radius: 55px;
+}
+
+.prsteps_brand .pr-types .icon-wrap .icon-img img{
+  margin: 13px;
+}
+.prsteps_brand .pr-types .pr-content{
+
+}
+.prsteps_brand .pr-types .pr-content h3{
+  font-size: 18px;
+  text-transform: uppercase;
+  font-family: 'ProximaNovaSemibold';
+  font-weight: normal;
+
+}
+.prsteps_brand .pr-types .pr-content p{
+  font-size: 15px !important;
+  font-family: 'ProximaNova' !important;
+  font-weight: normal;
+  color: #666666;
+  line-height: 18px !important;
+}
+.bgpane_brand{
+  background: image-url("bg-pane.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
+  background-size: cover;
+  min-height: 640px;
+}
+.whatwedo_brand h2{
+  font-family: 'ProximaNovaSemibold' !important;
+  font-size: 24px !important;
+  font-weight: normal !important;
+  margin: 70px 0 50px !important;
+  text-align: center;
+}
+
+.whatwedo_brand p{
+  font-size: 16px !important;
+  color: #666666;
+  font-family: "ProximaNova" !important;
+  margin: 0 0 80px !important;
+  max-width: 1000px;
+  line-height: 20px !important;
+}
+
+.whatwedo_brand p .icon-img-wrap{
+  display: inline-block;
+  margin-right: 24px;
+  margin-left: 24px;
+}
+.whatwedo_brand p .icon-img-wrap img{
+  margin-top: -22px;
 }

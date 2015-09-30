@@ -1,0 +1,115 @@
+<div class="signup">
+<% if request.location && request.location.country.to_s == "China" %>
+  <script type="text/javascript" src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
+<% else %>
+  <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+<% end %>
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || @l.t('kols.title') )}%>
+  </header>
+
+  <div class="form-step step-one">
+    <div class="row">
+      <div class="small-12 columns">
+        <div class="errorwarning">
+          <%flash[:errors].each do |e|%>
+              <p><%=e%></p>
+          <%end if flash[:errors].present?%>
+        </div>
+
+        <%= form_for @kol,:url=>"/kols/new" do |f|  %>
+            <label>
+              <%=f.email_field :email,:placeholder=> @l.t('kols.email'),"data-validation"=>"required",
+                               "data-validation-error-msg"=> @l.t('kols.email_error'),"data-validation"=>"email"%>
+            </label>
+            <label>
+              <%=f.text_field :first_name,:placeholder=>@l.t('kols.first_name'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('kols.fname_error')%>
+            </label>
+            <label>
+              <%=f.text_field :last_name,:placeholder=>@l.t('kols.last_name'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('kols.lname_error')%>
+            </label>
+            <label>
+              <%=f.password_field :password,:placeholder=>@l.t('kols.password'),"data-validation"=>"length", "data-validation-length"=>"min8",
+                                  "data-validation-error-msg"=> @l.t('kols.password_error')%>
+            </label>
+            <label>
+              <%=f.text_field :mobile_number,:placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"required",
+                                  "data-validation-error-msg"=> @l.t('kols.mobile_number_error'), "data-validation"=>"number"%>
+            </label>
+            <label>
+              <%=f.text_field :location,:placeholder=>@l.t('kols.location'),"data-validation"=>"required",
+                                  "data-validation-error-msg"=> @l.t('kols.location_error')%>
+            </label>
+            <label>
+              <input type="hidden" id="interests" name="interests" placeholder="<%= @l.t('kols.interests')%>" style="width:100%;" />
+            </label>
+            <p class="agree"><%= @l.t('kols.agree').html_safe %></a>.
+
+            <div class="errorwarning">
+              <p>Please fill out all required fields</p>
+            </div>
+            <div class="submit-wrap">
+              <%= f.submit @l.t('kols.signup_btn'), :class=>"button button-signup" %>
+            </div>
+        <%end%>
+      </div>
+    </div>
+  </div>
+  <%= render :partial => "shared/social_sign_up" %>
+</div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
+
+
+  <script> $.validate(); </script>
+  <script>
+    var autocomplete = new google.maps.places.Autocomplete($("#kol_location")[0], {});
+
+    $('#interests').select2({
+      multiple: true,
+      minimumInputLength: 1,
+      maximumSelectionSize: 10,
+      ajax: {
+        url: "/kols/suggest_categories",
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term) {
+          return {
+            f: term // search term
+          };
+        },
+        results: function (data) {
+          return {
+            results: data
+          };
+        },
+        cache: true
+      },
+      escapeMarkup: function (m) { return m; }
+    });
+    $(function(){
+      $(".btn.social").click(function(){
+        var fiveMins = new Date();
+        fiveMins.setMinutes(fiveMins.getMinutes() + 5);
+        $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
+        return true;
+      });
+    });
+  </script>
+
+  <style>
+      .form-error{
+          font-size: 15px;
+          color: #FF0000;
+      }
+
+      .custom-padding {
+          margin-bottom: 10px;
+      }
+
+
+  </style>

@@ -12,5 +12,5 @@ Robin.module("Profile", function(Profile, Robin, Backbone, Marionette, $, _){
     API.showProfilePage();
     $('#nav-sidebar-profile').parent().addClass('active');
   })
-  
+
 });

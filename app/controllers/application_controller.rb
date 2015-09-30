@@ -7,7 +7,12 @@ class ApplicationController < ActionController::Base
 
   def china_redirect
     if Rails.env.production? and china_client? and not china_instance?
-      # return redirect_to "http://robin8.cn#{request.fullpath}", :status => :moved_permanently
+      china_domain = if not Rails.application.secrets.china_domain.nil?
+                       Rails.application.secrets.china_domain
+                     else
+                       "http://robin8.cn"
+                     end
+      # return redirect_to "#{china_domain}#{request.fullpath}", :status => :moved_permanently
     end
   end
 
@@ -17,8 +22,9 @@ class ApplicationController < ActionController::Base
 
   def set_translations
     default_locale = china_instance? ? 'zh' : 'en'
-    unless current_user.blank?
+    unless current_user.blank? and current_kol.blank?
       someone = current_user
+      someone = current_kol if current_user.nil?
       locale = someone.locale.nil? ? default_locale : someone.locale
     else
       if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
@@ -72,7 +78,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up).push(:first_name, :last_name)
     devise_parameter_sanitizer.for(:account_update).push(:first_name,
                                                          :last_name, :company, :time_zone, :name, :avatar_url,
-                                                         :location, :is_public, :date_of_birthday, :industry, :title, :mobile_number)
+                                                         :location, :is_public, :date_of_birthday, :industry, :title, :mobile_number,
+                                                         :gender, :country, :province, :city, :audience_gender_ratio, :audience_age_groups,
+                                                         :wechat_personal_fans, :wechat_public_name, :wechat_public_id, :wechat_public_fans,
+                                                         :audience_regions)
     devise_parameter_sanitizer.for(:invite).push(:is_primary)
   end
 

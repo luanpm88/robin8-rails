@@ -1,5 +1,5 @@
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
-  
+
   Show.ScheduledEmptyToday = Backbone.Marionette.ItemView.extend({
     template: 'modules/social/show/templates/_scheduled-empty',
     tagName: "li",
@@ -79,11 +79,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         view.$el.find('.edit-post').addClass('disabled');
         view.$el.find('.social-networks a').addClass('disabled');
         // view.$el.find('#edit-post-textarea').highlightTextarea({color: '#FFC0C0'});
-                
+
         view.interval = window.setInterval((function() {
           renderedCheckbox = view.$el.find(".editableform #edit-shrink-links")
           if (renderedCheckbox.length != 0) {
-            
+
             // set date to utc format
             var utcDate = moment.utc(view.model.attributes.scheduled_date).toDate();
             var datedate = moment(utcDate).format('MM/DD/YYYY hh:mm A');
@@ -118,6 +118,8 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       'click .edit-social-networks .btn.twitter': 'enableTwitterNetwork',
       'click .edit-social-networks .btn.facebook': 'enableFacebookNetwork',
       'click .edit-social-networks .btn.linkedin': 'enableLinkedinNetwork',
+      'click .edit-social-networks .btn.weibo': 'enableWeiboNetwork',
+      'click .edit-social-networks .btn.wechat': 'enableWechatNetwork',
       'select2-close .select-identities': 'afterSelectingIdentity',
       'select2-removed .select-identities': 'afterRemoveIdentity'
     },
@@ -151,10 +153,12 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('#linkedin-identities').addClass('hidden');
       // this.$el.find('#twitter-identities')
       this.$el.find('#twitter-identities').removeClass('hidden');
-      
+      this.$el.find('#weibo-identities').addClass('hidden');
+      this.$el.find('#wechat-identities').addClass('hidden');
+
       var el = $(e.target);
       var btn = el.closest('.btn');
-      
+
       this.renderSocialButtons(btn);
     },
 
@@ -162,7 +166,9 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('#facebook-identities').removeClass('hidden');
       this.$el.find('#linkedin-identities').addClass('hidden');
       this.$el.find('#twitter-identities').addClass('hidden');
-      
+      this.$el.find('#weibo-identities').addClass('hidden');
+      this.$el.find('#wechat-identities').addClass('hidden');
+
       var el = $(e.target);
       var btn = el.closest('.btn');
       this.renderSocialButtons(btn);
@@ -172,7 +178,33 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.$el.find('#facebook-identities').addClass('hidden');
       this.$el.find('#linkedin-identities').removeClass('hidden');
       this.$el.find('#twitter-identities').addClass('hidden');
-      
+      this.$el.find('#weibo-identities').addClass('hidden');
+      this.$el.find('#wechat-identities').addClass('hidden');
+
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      this.renderSocialButtons(btn);
+    },
+
+    enableWeiboNetwork: function(e) {
+      this.$el.find('#facebook-identities').addClass('hidden');
+      this.$el.find('#linkedin-identities').addClass('hidden');
+      this.$el.find('#twitter-identities').addClass('hidden');
+      this.$el.find('#weibo-identities').removeClass('hidden');
+      this.$el.find('#wechat-identities').addClass('hidden');
+
+      var el = $(e.target);
+      var btn = el.closest('.btn');
+      this.renderSocialButtons(btn);
+    },
+
+    enableWechatNetwork: function(e) {
+      this.$el.find('#facebook-identities').addClass('hidden');
+      this.$el.find('#linkedin-identities').addClass('hidden');
+      this.$el.find('#twitter-identities').addClass('hidden');
+      this.$el.find('#weibo-identities').addClass('hidden');
+      this.$el.find('#wechat-identities').removeClass('hidden');
+
       var el = $(e.target);
       var btn = el.closest('.btn');
       this.renderSocialButtons(btn);
@@ -184,7 +216,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
         var editPostContent = view.$el.find('#edit-post-textarea').val();
         var www_pattern = /(^|[\s\n]|<br\/?>)((www).[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi
         var www_urls = editPostContent.match(www_pattern);
-        
+
         if (www_urls != null) {
           $.each(www_urls, function( index, value ) {
             value = $.trim(value)
@@ -249,20 +281,21 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       this.rowIdentities.removeClass('hidden');
       this.rowIdentities.removeClass('template-post-identities');
       this.rowIdentities.addClass('edit-post-identities');
-      
+
       this.$el.find('textarea').parent().append(this.row);
       this.$el.find('textarea').parent().append(this.rowIdentities);
       this.$el.find('textarea').attr('name', 'text');
       this.$el.find('textarea').attr('id', 'edit-post-textarea');
-      this.$el.find('textarea').width("600px");
-      
+      this.$el.find('textarea').width("650px");
+
       var postBindings = {
         text: '[name=text]',
         scheduled_date: '[name=scheduled_date]',
         shrinked_links: '[name=shrinked_links]',
         twitter_ids: '[name=twitter_ids]',
         facebook_ids: '[name=facebook_ids]',
-        linkedin_ids: '[name=linkedin_ids]'
+        linkedin_ids: '[name=linkedin_ids]',
+        weibo_ids: '[name=weibo_ids]'
       };
       this.modelBinder.bind(this.model, this.el, postBindings);
       this.rowIdentities.find('.select-identities').select2();
@@ -287,8 +320,8 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     updatePost: function() {
       var view = this;
-      if (view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='facebook_ids']").val() == null 
-          && view.rowIdentities.find("select[name='linkedin_ids']").val() == null) {
+      if (view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='facebook_ids']").val() == null
+          && view.rowIdentities.find("select[name='linkedin_ids']").val() == null && view.rowIdentities.find("select[name='weibo_ids']").val() == null) {
         swal({
           title: "You can not update post without enabled social networks",
           text: "At least one should be selected in order to publish the post!",
@@ -321,7 +354,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
 
-    afterSelectingIdentity: function() {      
+    afterSelectingIdentity: function() {
       var view = this;
       view.setCounter();
 
@@ -336,9 +369,17 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       if (view.rowIdentities.find("select[name='linkedin_ids']").val() != null) {
         view.row.find('.btn.linkedin').addClass('btn-primary');
       }
+
+      if (view.rowIdentities.find("select[name='weibo_ids']").val() != null) {
+        view.row.find('.btn.weibo').addClass('btn-primary');
+      }
+
+      if (view.rowIdentities.find("select[name='wechat_ids']").val() != null) {
+        view.row.find('.btn.wechat').addClass('btn-primary');
+      }
     },
 
-    afterRemoveIdentity: function() {      
+    afterRemoveIdentity: function() {
       var view = this;
       view.setCounter();
 
@@ -352,6 +393,14 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
       if (view.rowIdentities.find("select[name='linkedin_ids']").val() == null) {
         view.row.find('.btn.linkedin').removeClass('btn-primary');
+      }
+
+      if (view.rowIdentities.find("select[name='weibo_ids']").val() == null) {
+        view.row.find('.btn.weibo').removeClass('btn-primary');
+      }
+
+      if (view.rowIdentities.find("select[name='wechat_ids']").val() == null) {
+        view.row.find('.btn.wechat').removeClass('btn-primary');
       }
     },
 
@@ -395,7 +444,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       var view = this;
       view.$el.find('#edit-post-textarea').highlightTextarea({color: '#FFC0C0'});
       var limit;
-      
+
       if ( view.rowIdentities.find("select[name='twitter_ids']").val() != null ) {
         limit = 140;
         view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
@@ -405,7 +454,11 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
       } else if ( view.rowIdentities.find("select[name='facebook_ids']").val() != null ) {
         limit = 2000;
         view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
-      } else if ( view.rowIdentities.find("select[name='facebook_ids']").val() == null && view.rowIdentities.find("select[name='twitter_ids']").val() == null && view.rowIdentities.find("select[name='linkedin_ids']").val() == null ){
+      } else if ( view.rowIdentities.find("select[name='weibo_ids']").val() != null ) {
+        limit = 140;
+        view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
+      } else if ( view.rowIdentities.find("select[name='facebook_ids']").val() == null && view.rowIdentities.find("select[name='twitter_ids']").val() == null
+          && view.rowIdentities.find("select[name='linkedin_ids']").val() == null && view.rowIdentities.find("select[name='weibo_ids']").val() == null ){
         limit = 140;
         view.$el.find('#edit-post-textarea').highlightTextarea('setRanges', [limit,15000]);
       }
@@ -426,20 +479,22 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onRender: function() {
       var currentView = this;
-      currentView.getRegion('today').show(Robin.module("Social").postsView);
-      currentView.getRegion('tomorrow').show(Robin.module("Social").tomorrowPostsView);
-      currentView.getRegion('other').show(Robin.module("Social").othersPostsView);
+      if (!Robin.KOL) {
+        currentView.getRegion('today').show(Robin.module("Social").postsView);
+        currentView.getRegion('tomorrow').show(Robin.module("Social").tomorrowPostsView);
+        currentView.getRegion('other').show(Robin.module("Social").othersPostsView);
+      }
     },
 
   });
-   
+
   Show.TodayPostsComposite = Backbone.Marionette.CompositeView.extend({
     collection: Robin.Collections.Posts,
     template: "modules/social/show/templates/todays",
     childView: Show.ScheduledPost,
     childViewContainer: "ul",
     emptyView: Show.ScheduledEmptyToday,
-    
+
     collectionEvents: {
       "sync": "sync"
     },
@@ -497,7 +552,7 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
     childViewContainer: "ul",
     emptyView: Show.ScheduledEmptyOther,
 
-      collectionEvents: {
+    collectionEvents: {
       "sync": "sync"
     },
 

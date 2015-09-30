@@ -1,6 +1,6 @@
 Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
   Show.SocialPage = Backbone.Marionette.LayoutView.extend({
-    template: 'modules/social/show/templates/social',
+    getTemplate: App.template('modules/social/show/templates/social'),
 
     regions: {
       profiles: "#social-profiles",
@@ -10,10 +10,13 @@ Robin.module('Social.Show', function(Show, App, Backbone, Marionette, $, _){
 
     onRender: function() {
       var currentView = this;
-    $.get( "/users/get_identities", function( data ) {
+      $.get( "/users/get_identities", function( data ) {
+        App.identities = data;
         var viewProfiles = new Show.SocialProfiles({collection: new Robin.Collections.Identities(data)});
         currentView.getRegion('profiles').show(viewProfiles);
-        currentView.getRegion('scheduled').show(Robin.module("Social").generalView);
+        if (!Robin.KOL) { // no scheduled posts for KOL
+          currentView.getRegion('scheduled').show(Robin.module("Social").generalView);
+        }
         if (_.last(window.location.href.split('/')) == 'posts') {
           currentView.$el.find('li.posts a').tab('show');
         } else if (_.last(window.location.href.split('/')) == 'profiles') {

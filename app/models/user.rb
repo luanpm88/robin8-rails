@@ -19,9 +19,18 @@ class User < ActiveRecord::Base
   has_many :features,:through => :user_features
 
   has_many :media_lists, dependent: :destroy
+  has_many :kols_lists, dependent: :destroy
   has_many :contacts, through: :media_lists
   has_many :pitches
   has_many :pitches_contacts, through: :pitches
+
+  has_many :campaigns
+  has_many :campaign_invites, through: :campaigns
+
+  has_many :article_comments, as: :sender
+
+  has_many :private_kols
+  has_many :kols, through: :private_kols
   # has_many :user_add_ons, dependent: :destroy
   # has_many :add_ons, through: :user_add_ons
 
@@ -29,6 +38,16 @@ class User < ActiveRecord::Base
   after_destroy :increase_feature_number
 
   include Models::Identities
+
+  class EmailValidator < ActiveModel::Validator
+    def validate(record)
+      if record.new_record? and Kol.exists?(:email=>record.email)
+        record.errors[:email] << @l.t('register.email_already_taken')
+      end
+    end
+  end
+
+  validates_with EmailValidator
 
   extend FriendlyId
   friendly_id :email, use: :slugged
@@ -267,16 +286,28 @@ class User < ActiveRecord::Base
     end
   end
 
+  def weibo_post message, identity_id
+    weibo_identity = Identity.find(identity_id)
+    unless weibo_identity.blank?
+      response = HTTParty.post("https://api.weibo.com/2/statuses/update.json",
+                               query: {access_token: weibo_identity.token},
+                               body: { status: message })
+    end
+  end
+
   def facebook_post message, identity_id
     facebook_identity = Identity.find(identity_id)
     unless facebook_identity.blank?
       graph = Koala::Facebook::API.new(facebook_identity.token)
       Rails.logger.info graph.inspect
-      graph.put_wall_post("I've posted a new Post!", {
-                                                       "name" => '',
-                                                       "link" => '',
-                                                       "description" => message
-                                                   })
+      graph.put_wall_post(message,
+                          {"appsecret_proof" => OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha256"),
+                                                                        Rails.application.secrets.facebook[:app_secret],
+                                                                        facebook_identity.token),
+                           "name" => '',
+                           "link" => '',
+                           "description" => message
+                          })
     end
   end
 
@@ -347,3 +378,4 @@ class User < ActiveRecord::Base
       uf.save
     end
 end
+

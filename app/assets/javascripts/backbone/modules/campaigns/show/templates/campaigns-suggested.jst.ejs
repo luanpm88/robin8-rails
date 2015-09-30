@@ -1,0 +1,73 @@
+<% if (items.length == 0) { %>
+<div class="row">
+  <% if (!all) { %>
+  <%=polyglot.t('kol_campaign.no_latest_campaign')%>
+  <% } else { %>
+  <%=polyglot.t('kol_campaign.no_campaign')%>
+  <% } %>
+</div>
+<% } else { %>
+<div class="row">
+    <table class="table table-striped" id="campaigns-table">
+        <thead class="table-head">
+        <tr>
+          <th class="invite-cell head-cell invite-brand" ><%=polyglot.t('kol_campaign.brand')%></th>
+          <th class="invite-cell head-cell invite-name" ><%=polyglot.t('kol_campaign.name')%></th>
+          <th class="invite-cell head-cell invite-budget"><%=polyglot.t('kol_campaign.budget')%></th>
+          <th class="invite-cell head-cell invite-date"><%=polyglot.t('kol_campaign.creation_date')%></th>
+          <th class="invite-cell head-cell invite-deadline"><%=polyglot.t('kol_campaign.deadline')%></th>
+          <th class="invite-cell head-cell invite-deadline"><%=polyglot.t('dashboard_kol.campaigns_tab.categories')%></th>
+          <th class="invite-cell head-cell invite-status"><%=polyglot.t('kol_campaign.status')%></th>
+          <th class="invite-cell head-cell"><%=polyglot.t('dashboard_kol.campaigns_tab.action')%></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(items, function(item){ %>
+          <% if (item.user != null) { %>
+            <tr data-id="<%= item.id %>">
+                <td class="campaign-cell invite-cell invite-description campaign" data-id="<%= item.id %>">
+                    <%= item.user.company %>
+                </td>
+                <td class="campaign-cell invite-cell invite-name campaign" data-id="<%= item.id %>">
+                    <%= item.name %>
+                </td>
+                <td class="campaign-cell invite-cell invite-description campaign" data-order="<%= item.budget %>" data-id="<%= item.id %>">
+                    <%= budget(item) %>
+                </td>
+                <td data-order="<%= timestamp(item.created_at) %>" class="campaign-cell invite-cell invite-date campaign" data-id="<%= item.id %>">
+                    <%= formatDate(item.created_at) %>
+                </td>
+                <td data-order="<%= timestamp(item.deadline) %>" class="campaign-cellinvite-cell invite-deadline campaign" data-id="<%= item.id %>">
+                    <b><%= formatDate(item.deadline) %></b>
+                </td>
+                <td class="campaign-cellinvite-cell invite-deadline campaign" data-id="<%= item.id %>">
+                  <%= item.iptc_categories %>
+                </td>
+                <% var button_disabled = "";%>
+                <% if (item.interested != null && item.interested.length != 0) {
+                   button_disabled = "disabled";
+                   if (item.interested[0].status === 'R') { %>
+                    <td class="campaign-cell invite-declined campaign" data-id="<%= item.id %>">
+                      <%=polyglot.t('dashboard_kol.campaigns_tab.request_rejected')%>
+                    </td>
+                  <% } else { %>
+                    <td class="campaign-cell invite-accepted campaign" data-id="<%= item.id %>">
+                      <%=polyglot.t('dashboard_kol.campaigns_tab.waiting_for_invitation')%>
+                    </td>
+                <%}%>
+                <%} else { %>
+                  <td class="campaign-cell campaign" data-id="<%= item.id %>">
+                    <%=polyglot.t('dashboard_kol.campaigns_tab.running')%>
+                  </td>
+                <% } %>
+                <td>
+                  <button type="button" class="btn bottom-btn camp-ask-invite camp-interested" data-campaign-id="<%= item.id %>" <%= button_disabled %> ><%=polyglot.t('dashboard_kol.campaigns_tab.ask_for_invite')%></button>
+                </td>
+            </tr>
+          <% } %>
+        <% }); %>
+        </tbody>
+
+    </table>
+</div>
+<% } %>

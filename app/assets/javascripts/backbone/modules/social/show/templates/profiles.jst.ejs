@@ -1,3 +1,4 @@
+<% if (!Robin.KOL) {%>
 <h5><%= polyglot.t("social.profiles.title") %></h5>
 <p><%= polyglot.t("social.profiles.description") %></p>
 <p class='note'><%= polyglot.t("social.profiles.note") %></p>
@@ -87,4 +88,98 @@
       <% }) %>
     <%} %>
   </ul>
+  <ul class="list-group item <%= Robin.identities.weibo.length == 0 ? "no-padding-bottom" : ""%>">
+    <span class="pull-right">
+      <a class="btn btn-xs btn-social btn-weibo" name='weibo'>
+      <i class="fa fa-weibo"></i>
+        <%= polyglot.t("social.profiles.add_button") %>
+      </a>
+    </span>
+    <span class='name'><%= polyglot.t("social.profiles.weibo") %></span>
+    <% if (Robin.identities.weibo.length == 0) {%>
+      <li class="identity">
+        <span> There is no accounts </span>
+      </li>
+    <%} else {%>
+      <% $.each(Robin.identities.weibo, function( index, value ) { %>
+        <li class="identity">
+          <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a>
+          <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
+        </li>
+      <% }) %>
+    <%} %>
+  </ul>
+  <ul class="list-group item <%= Robin.identities.wechat.length == 0 ? "no-padding-bottom" : ""%>">
+    <span class="pull-right">
+      <a class="btn btn-xs btn-social btn-wechat" name='wechat'>
+      <i class="fa fa-wechat"></i>
+        <%= polyglot.t("social.profiles.add_button") %>
+      </a>
+    </span>
+    <span class='name'><%= polyglot.t("social.profiles.wechat") %></span>
+    <% if (Robin.identities.wechat.length == 0) {%>
+      <li class="identity">
+        <span> There is no accounts </span>
+      </li>
+    <%} else {%>
+      <% $.each(Robin.identities.wechat, function( index, value ) { %>
+        <li class="identity">
+          <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a>
+          <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
+        </li>
+      <% }) %>
+    <%} %>
+  </ul>
 </ul>
+<%} else {%>
+  <div class="col-md-6 social_profile">
+    <ul class="list-group">
+      <ul class="list-group item <%= Robin.identities.weibo.length == 0 ? "no-padding-bottom" : ""%>">
+        <span class="pull-right">
+          <a class="btn btn-xs btn-social btn-weibo" name='weibo'>
+          <i class="fa fa-weibo"></i>
+            <%= polyglot.t("social.profiles.add_button") %>
+          </a>
+        </span>
+        <span class='name'><%= polyglot.t("social.profiles.weibo") %></span>
+        <% if (Robin.identities.weibo.length == 0) {%>
+          <li class="identity no_accounts">
+            <span> There is no accounts </span>
+          </li>
+        <%} else {%>
+          <% $.each(Robin.identities.weibo, function( index, value ) { %>
+            <li class="identity">
+              <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a>
+              <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
+            </li>
+          <% }) %>
+        <%} %>
+      </ul>
+    </ul>
+  </div>
+  <div class="col-md-6 social_profile">
+    <ul class="list-group">
+      <ul class="list-group item <%= Robin.identities.wechat.length == 0 ? "no-padding-bottom" : ""%>">
+        <span class="pull-right">
+          <a class="btn btn-xs btn-social btn-wechat" name='wechat'>
+          <i class="fa fa-wechat"></i>
+            <%= polyglot.t("social.profiles.add_button") %>
+          </a>
+        </span>
+        <span class='name'><%= polyglot.t("social.profiles.wechat") %></span>
+        <% if (Robin.identities.wechat.length == 0) {%>
+          <li class="identity no_accounts">
+            <span> There is no accounts </span>
+          </li>
+        <%} else {%>
+          <% $.each(Robin.identities.wechat, function( index, value ) { %>
+            <li class="identity">
+              <a class='link' href="<%= value.url%>" target="_blank"><%= value.name%></a>
+              <a href="" class='disconnect' identityid='<%= value.id%>'>Disconnect</a></span>
+            </li>
+          <% }) %>
+        <%} %>
+      </ul>
+    </ul>
+  </div>
+<%} %>

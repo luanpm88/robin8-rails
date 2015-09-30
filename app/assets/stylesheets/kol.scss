@@ -1,0 +1,174 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require bootstrap-sass
+ *= require bootstrap-sweetalert
+ *= require sass-bootstrap-glyphicons
+ *= require blueimp-gallery
+ * require bootstrap3-wysihtml5-bower
+ *= require eonasdan-bootstrap-datetimepicker
+ *= require please-wait
+ *= require progressjs
+ *= require font-awsome
+ *= require select2
+ *= require_self
+ * require login
+ *= require_directory ./bootflat
+ *= require_directory ./lib
+ *= require main
+ *= require foundation
+ *= require app
+ *= require bootstrap-tagsinput
+ *= require x-editable/dist/bootstrap3-editable/css/bootstrap-editable
+ *= require datatables
+ *= require datatables-tabletools
+ *= require jquery-ui
+ *= require bootstrap-switch
+ * require dataTables.bootstrap
+ *= require select2-bootstrap-css
+ *= require jquery-highlighttextarea
+ *= require bootstrap-daterangepicker
+ *= require custom
+ *= require campaign
+ */
+
+@import "bootstrap";
+.confirmation {
+  text-align: center;
+}
+
+.activation-alert {
+  padding-top: 20px !important;
+  padding-bottom: 1px !important
+}
+
+
+.invites, #campaigns-table {
+  button {
+    width: 85px;
+  }
+  .table-head {
+    cursor: pointer;
+  }
+  .head-cell {
+    vertical-align: middle !important;
+  }
+
+  .invite-cell {
+    vertical-align: top;
+    height: 51px;
+
+    &.invite-status {
+      width: 10%;
+      min-width: 100px;
+    }
+
+    &.invite-status.invite-declined {
+      color: #DA4453;
+    }
+
+    &.invite-status.invite-accepted {
+      color: #8CC152;
+    }
+
+    &.invite-deadline,
+    &.invite-date {
+      width: 10%;
+      min-width: 130px;
+    }
+
+    &.invite-budget {
+      width: 8%;
+      min-width: 100px;
+    }
+
+    &.invite-name {
+      width: 17%;
+      min-width: 100px;
+    }
+
+    &.invite-id {
+      width: 3%;
+      min-width: 30px;
+    }
+
+    &.alignleft {
+      text-align: left;
+    }
+  }
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 12rem;
+}
+
+.profile-content {
+  .row {
+    padding: 5px 0px;
+    max-width: 1000px;
+  }
+  select {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+  }
+  .full-width {
+    width: 100%;
+  }
+  .audience {
+    .row {
+      padding-top: 8px;
+    }
+  }
+  .social-content {
+    .row {
+      padding: 10px 0px;
+      .cell.social-label {
+        line-height: 35px;
+      }
+    }
+  }
+  .score-tables {
+    .mf-label {
+      margin-right: 15px;
+    }
+    .cell {
+      input[type=text], input[type=number], input[type=tel] {
+        width: 100%;
+        padding-left: 5px;
+      }
+      border: none;
+    }
+    .region-btn {
+      width: 80px;
+      margin-right: 15px;
+    }
+    .switch-button {
+      padding: 6px 5px !important;
+      background-color: #ffffff !important;
+      color: #434A54;
+      &.active:focus {
+        background-color: #CCD1D9 !important;
+      }
+      &.active {
+        background-color: #CCD1D9 !important;
+      }
+    }
+  }
+}
+
+

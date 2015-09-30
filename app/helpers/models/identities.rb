@@ -15,6 +15,14 @@ module Models::Identities
     identities.where(provider: 'google_oauth2').first
   end
 
+  def weibo_identity
+    identities.where(provider: 'weibo').first
+  end
+
+  def wechat_identity
+    identities.where(provider: 'wechat').first
+  end
+
   def twitter_identities
     identities.where(provider: 'twitter')
   end
@@ -31,12 +39,22 @@ module Models::Identities
     identities.where(provider: 'google_oauth2')
   end
 
+  def weibo_identities
+    identities.where(provider: 'weibo')
+  end
+
+  def wechat_identities
+    identities.where(provider: 'wechat')
+  end
+
   def all_identities
     identities_by_providers = {}
     identities_by_providers[:twitter] = twitter_identities
     identities_by_providers[:facebook] = facebook_identities
     identities_by_providers[:google] = google_identities
     identities_by_providers[:linkedin] = linkedin_identities
+    identities_by_providers[:weibo] = weibo_identities
+    identities_by_providers[:wechat] = wechat_identities
     identities_by_providers
   end
 end

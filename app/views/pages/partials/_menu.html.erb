@@ -17,7 +17,7 @@
           <%else%>
             <li><a href="/"><%=current_user.first_name.humanize + " " + current_user.last_name.humanize%></a></li>
           <%end%>
-          <li><%=link_to "Logout", destroy_user_session_path, :method => :delete%></li>
+          <li><%=link_to @l.t('header.logout'), destroy_user_session_path, :method => :delete%></li>
         <%else%>
           <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
         <%end%>

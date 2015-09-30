@@ -3,11 +3,13 @@
 <head>
   <title>Robin8</title>
   <% if request.location && request.location.country.to_s == "China" %>
-    <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css"> 
+    <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+    <script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
   <% else %>
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+    <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   <% end %>
-  
+
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -16,15 +18,16 @@
 <body>
   <div id="main">
     <%= yield %>
-    
+
   </div>
-  
-  <div class="modal fade" id="modal" tabindex="-1" 
+
+  <div class="modal fade" id="modal" tabindex="-1"
     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 
 <script type="text/javascript">
 
   $(document).ready(function() {
+    Robin.china = <%= !request.location.nil? and request.location.country.to_s == "China" %>;
     Robin.start();
   });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
@@ -48,6 +51,12 @@
   <% else -%>
     Robin.showLoading = true;
   <% end -%>
+
+  <% if not Rails.env.production? || Rails.application.config.china_instance %>
+  Robin.showLangPanel = true;
+  <% else %>
+  Robin.showLangPanel = false;
+  <% end %>
 
 </script>
 </body>

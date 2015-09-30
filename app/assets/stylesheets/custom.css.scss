@@ -133,6 +133,21 @@ a.dashboard-btn {
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
+#weibo-pitch .panel {
+  background-color: #fff;
+  border: medium none;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+#wechat-pitch .panel {
+  background-color: #fff;
+  border: medium none;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+
 .select2-search-field{
   width: 10px;
 }
@@ -255,6 +270,75 @@ span.canceled {
     }
   }
 }
+#social-profiles {
+  .no_accounts {
+    margin-bottom: 10px;
+  }
+}
+
+.social_profile {
+  margin: 50px 15px 15px -15px;
+}
+
+.btn-weibo {
+  color:#fff;
+  background-color: #fb9114;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-weibo:hover, .btn-weibo:focus, .btn-weibo:active, .btn-weibo.active, .open>.dropdown-toggle.btn-weibo {
+  color: #fff;
+  background-color: #e28112;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-weibo:active, .btn-weibo.active, .open>.dropdown-toggle.btn-weibo {
+  background-image: none
+}
+
+.btn-weibo.disabled, .btn-weibo[disabled], fieldset[disabled] .btn-weibo, .btn-weibo.disabled:hover,
+.btn-weibo[disabled]:hover, fieldset[disabled] .btn-weibo:hover, .btn-weibo.disabled:focus, .btn-weibo[disabled]:focus,
+fieldset[disabled] .btn-weibo:focus, .btn-weibo.disabled:active, .btn-weibo[disabled]:active,
+fieldset[disabled] .btn-weibo:active, .btn-weibo.disabled.active, .btn-weibo[disabled].active,
+fieldset[disabled] .btn-weibo.active {
+  background-color: #007bb6;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-weibo .badge {
+  color: #007bb6;
+  background-color: #fff
+}
+
+.btn-wechat {
+  color:#fff;
+  background-color: #40b609;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-wechat:hover, .btn-wechat:focus, .btn-wechat:active, .btn-wechat.active, .open>.dropdown-toggle.btn-wechat {
+  color: #fff;
+  background-color: #39a006;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-wechat:active, .btn-wechat.active, .open>.dropdown-toggle.btn-wechat {
+  background-image: none
+}
+
+.btn-wechat.disabled, .btn-wechat[disabled], fieldset[disabled] .btn-wechat, .btn-wechat.disabled:hover,
+.btn-wechat[disabled]:hover, fieldset[disabled] .btn-wechat:hover, .btn-wechat.disabled:focus, .btn-wechat[disabled]:focus,
+fieldset[disabled] .btn-wechat:focus, .btn-wechat.disabled:active, .btn-wechat[disabled]:active,
+fieldset[disabled] .btn-wechat:active, .btn-wechat.disabled.active, .btn-wechat[disabled].active,
+fieldset[disabled] .btn-wechat.active {
+  background-color: #007bb6;
+  border-color: rgba(0,0,0,0.2)
+}
+
+.btn-wechat .badge {
+  color: #007bb6;
+  background-color: #fff
+}
 
 .btn-social {
   padding-right: 15px;
@@ -287,7 +371,7 @@ span.canceled {
     margin-top: 10px;
   }
 
-  #twitter-identities, #facebook-identities, #linkedin-identities {
+  #twitter-identities, #facebook-identities, #linkedin-identities, #weibo-identities, #wechat-identities {
     border-bottom: 1px solid #aab2bd;
     border-radius: 0 0 4px 4px;
   }
@@ -297,7 +381,7 @@ span.canceled {
   border-radius: 0 0 4px 4px;
 }
 
-#twitter-identities, #facebook-identities, #linkedin-identities {
+#twitter-identities, #facebook-identities, #linkedin-identities, #weibo-identities, #wechat-identities {
   margin-top: 20px;
 }
 
@@ -325,24 +409,151 @@ span.social-networks {
   padding: 0;
   color: #000;
 }
+.hide, .hide + label + label ~ div {
+    display: none;
+}
+
+.hide + label + label,
+.hide:checked + label + label {
+    padding: 0;
+    cursor: pointer;
+}
+
+.hide:checked + label + label + div {
+  display: block;
+  margin-left: 20px;
+  padding: 10px;
+   -webkit-animation:fade ease-in 0.5s;
+   -moz-animation:fade ease-in 0.5s;
+   animation:fade ease-in 0.5s;
+}
+
+.hide + label:before {
+  content: "+";
+  display: block;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  height: 16px;
+  line-height: 16px;
+  margin: 2px 5px 0px;
+  text-align: center;
+  width: 16px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.hide:checked + #campaign-name:before {
+  content: "\2212";
+}
+
+.campaigns-tab {
+  margin: 2% 1%;
+  font-size: 16px;
+  font-family: "ProximaNova";
+  line-height: initial;
+}
+
+#campaign-name {
+  min-width: 35%;
+}
+
+.campaigns-tab + label {
+  font-weight: normal;
+  font-family: "ProximaNovaSemibold" !important;
+}
+
+.campaign-date {
+  float: right;
+}
+
+.campaigns-tab li {
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  max-width: 42.4%;
+}
+
+.campaigns-tab table {
+  font-size: 14px;
+}
+.campaigns-tab table i {
+  margin-right: 10px;
+  color: #3c9eb6;
+}
+
+.wechat-tab, .weibo-tab {
+  margin: 1% 1%;
+  font-size: 16px;
+  font-family: "ProximaNova";
+  line-height: initial;
+}
+
+.wechat-info, .weibo-info {
+  margin-top: 1%;
+  float: right;
+}
+
+.wechat-search, .weibo-search {
+  margin-bottom: 1%;
+}
+
+.analytics-input {
+  display: inline;
+  width: 15%;
+}
+
+.wechat-tab table,  .weibo-tab table {
+  font-size: 14px;
+  clear: both;
+}
+.wechat-tab .targets-author .media-left img, .weibo-tab  .targets-author .media-left img {
+  height: 50px;
+  width: 50px;
+}
+.wechat-tab .table.targets td, .wechat-tab .table.targets th,
+.weibo-tab .table.targets td, .weibo-tab .table.targets th,
+.campaigns-tab .table.targets td, .campaigns-tab .table.targets th {
+  text-align: center;
+  white-space: nowrap;
+}
+.wechat-tab .targets-author, .weibo-tab .targets-author, .campaigns-tab .targets-author {
+  text-align: left;
+}
+.wechat-tab .table.targets td:first-child, .wechat-tab .table.targets th:first-child,
+.weibo-tab .table.targets td:first-child, .weibo-tab .table.targets th:first-child,
+.campaigns-tab .table.targets td:first-child, .campaigns-tab .table.targets th:first-child {
+  width: 30%;
+}
+
+.verified {
+  position: absolute;
+  left: 9px;
+}
+
+.authors-search-verified {
+  position: absolute;
+  left: 108px;
+}
 
 // CSS checkbox
 input[type=checkbox].css-checkbox {
-  position:absolute; 
-  z-index:-1000; 
-  left:-1000px; 
-  overflow: hidden; 
-  clip: rect(0 0 0 0); 
-  height:1px; 
-  width:1px; 
-  margin:-1px; 
-  padding:0; 
+  position:absolute;
+  z-index:-1000;
+  left:-1000px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height:1px;
+  width:1px;
+  margin:-1px;
+  padding:0;
   border:0;
 }
 
 input[type=checkbox].css-checkbox + label.css-label {
   padding-left:34px;
-  height:29px; 
+  height:29px;
   display:inline-block;
   line-height:29px;
   background-repeat:no-repeat;
@@ -368,4 +579,53 @@ label.css-label {
 // END of CSS checkbox
 iframe.wysihtml5-sandbox {
   width: 100% !important;
+}
+.backend_screen {
+  margin-bottom: 10px;
+  margin-top: -5px;
+  border-bottom: 1px solid #E6E9ED;
+  padding-bottom: 10px;
+  font-weight: bold;
+}
+.label_screen {
+  margin-left: -15px;
+  margin-right: 15px;
+}
+.comments-title ul > li {
+  float: left;
+  margin: 5px;
+  display: inline-block;
+}
+.comments-title {
+  margin-bottom: 90px;
+}
+.label_screen ul>li img {
+  height: 100px;
+  width: 100px;
+  border: 1px solid #ccc;
+}
+.label_screen ul > li div{
+  position: relative;
+}
+.label_screen ul>li div .delete{
+  color: #333;
+  position: absolute;
+  top: 0px;
+  right: 4px;
+  font-size: 16px;
+  display: none;
+  z-index: 2;
+}
+.label_screen ul > li div:hover .delete {
+  display: block;
+}
+.comments-title .fa-plus-square {
+  cursor: pointer;
+}
+
+.wysihtml5-sandbox {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
 }

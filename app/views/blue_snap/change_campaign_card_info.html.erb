@@ -1,0 +1,201 @@
+<div class="signup">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('campaign_payment_update.title') }%>
+  </header>
+
+  <%= form_tag({controller: "blue_snap", action: "update_card_info"}, method: "post", class: "payment ", :id=>"edit-card-form") do |f|  %>
+    <div class="form-step step3">
+
+        <div class="signup-footer ftform edit" id="checkoutdata">
+
+          <div class="row">
+            <div class="small-12 columns">
+              <h3><%= @l.t('campaign_payment_update.enter_info') %></h3>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-2 medium-2 large-2 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.title') %>
+                <%=select "contact", "title", [[@l.t('campaign_payment_update.form.mr'), @l.t('campaign_payment_update.form.mr')], 
+                    [@l.t('campaign_payment_update.form.ms'), @l.t('campaign_payment_update.form.ms')],
+                    [@l.t('campaign_payment_update.form.mrs'), @l.t('campaign_payment_update.form.mrs')]], {},
+                    {:class => "select-checkout"} %>
+              </label>
+            </div>
+
+            <div class="small-10 medium-5 large-5 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.first_name') %>
+                <%=text_field "contact", "first_name", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.first_name') %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-5 large-5 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.last_name') %>
+                <%=text_field "contact", "last_name", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.last_name') %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.phone') %>
+                <%=text_field "contact", "phone", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.phone'),"data-validation"=>"number" %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 medium-6 large-8 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.address') %>
+                <%=text_field "contact", "address1", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.address') %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-6 large-4 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.city') %>
+                <%=text_field "contact", "city", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.city')
+                %>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 medium-4 large-4 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.state') %>
+                <%=text_field "contact", "state", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.state'),:placeholder => "NY" %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-4 large-3 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.postal_code') %>
+                <%=text_field "contact", "zip", :class=>"form-control","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.postal_code') %>
+              </label>
+            </div>
+
+            <div class="small-12 medium-4 large-5 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.country') %>
+                <%=select_tag "contact[country]",options_for_select(Country.all.sort),{:class=>"select-checkout"}%>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="small-12 medium-12 large-4 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.credit_card_type') %>
+                <%=select "card", "credit_card_type", [["Visa", 'visa'], ["Master Card", 'mastercard'],["American Express", 'amex'],["Discover", 'discover'],["JCB","jcb"] ], {}, {:class => "select-checkout"} %>
+              </label>
+            </div>
+
+            <div class="small-8 medium-8 large-5 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.credit_card_number') %>
+                <%=text_field "card", "credit_card_number", :class=>"form-control", :autocomplete=>"off" ,
+                              "data-bluesnap"=>"encryptedCreditCard","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.card_number'),
+                              "data-validation"=>"number" %>
+                <%=hidden_field "card", "last_four" %>
+              </label>
+            </div>
+
+            <div class="small-4 medium-4 large-3 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.cvv') %>
+                <%=password_field "card", "verification_code", :class=>"form-control", 
+                              :autocomplete=>"off", "data-bluesnap" =>"encryptedCvv",
+                              "data-validation"=>"length", "data-validation-length"=>"min2",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.cvv'),
+                              "data-validation"=>"number"%>
+              </label>
+            </div>
+
+
+          </div>
+          <div class="row">
+            <div class="small-6 medium-6 large-3 columns custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.exp_month') %>
+                <%=text_field "card", "expiration_month", :class=>"form-control", :autocomplete=>"off",
+                              :placeholder=>"04","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.exp_month'),
+                              "data-validation"=>"number"  %>
+              </label>
+            </div>
+            <div class="small-6 medium-6 large-3 columns left custom-padding">
+              <label><%= @l.t('campaign_payment_update.form.exp_year') %>
+                <%=text_field "card", "expiration_year", :class=>"form-control", :autocomplete=>"off",
+                              :placeholder=>"2015","data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('campaign_payment_update.error.exp_year'), 
+                              "data-validation"=>"length", "data-validation-length"=>"4-4"%>
+              </label>
+            </div>
+          </div>
+
+          <div class="row formdisclaimers">
+            <div class="small-12 columns">
+              <%if @product.present?%>
+                  <p class="chargesummary">Today your charge will be <span class="chargetotal" id = "t-price">$<%=total%></span> and your next bill date will be <span class="chargedate" id = "next-date"><%=Date.today + @product.try(:interval).to_i.days %></span></p>
+              <%end%>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 columns">
+              <div class="submit-wrap edit-card">
+                <a href="/#billing" class="button button-signup nextstep" id="go-back"><<< <%= @l.t('campaign_payment_update.form.button_back') %></a>
+                <%= submit_tag @l.t('campaign_payment_update.form.button_submit'), :class=>"button button-signup nextstep" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <%end%>
+
+  <style>
+    .ui-selectmenu-button {
+        margin-top:10px;
+    }
+    .ui-selectmenu-menu .ui-menu{
+        max-height: 200px;
+    }
+    .signup-footer.ftform .ui-selectmenu-button {
+        background: none repeat scroll 0 0 transparent;
+        border: 1px solid #ffffff;
+        color: #ffffff;
+        height: 40px!important;
+        margin-top: 10px;
+    }
+    .form-error{
+        font-size: 15px;
+        color: #FF0000;
+        vertical-align:top;
+    }
+    .signup form .signup-footer.ftform label input {
+        margin-bottom: 5px;
+    }
+    .custom-padding {
+        margin-bottom: 25px;
+    }
+  </style>
+
+  <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>
+  <script>
+    $("#card_credit_card_number").keyup(function(){
+      $("#card_last_four").val($("#card_credit_card_number").val().slice(-4))
+    });
+    $.validate();
+    $(document).ready(function(){
+        if( !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $( ".select-checkout" ).selectmenu();
+        }
+    });
+    BlueSnap.publicKey = '<%=Rails.application.secrets[:bluesnap][:public_key]%>';
+    BlueSnap.setTargetFormId("edit-card-form");
+  </script>
+
+</div>

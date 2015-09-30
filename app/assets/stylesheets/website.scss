@@ -3,4 +3,13 @@
  *= require website/app
  *= require website/jquery-ui
  *= require website/normalize
+ *= require select2
 */
+
+.select2-container-multi .select2-choices .select2-search-choice {
+    margin-top: 10px !important;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input {
+    padding-left: 16px !important;
+}

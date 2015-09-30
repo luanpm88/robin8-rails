@@ -35,36 +35,25 @@
                                   "data-validation-error-msg"=> @l.t('register.messages.pass_invalid')%>
             </label>
             <p class="agree"> <a href="/terms"><%= @l.t('register.agree_terms')%></a>.
+            <% if request.location && request.location.country.to_s == "China" %>
+              <p class="kols"><%= @l.t('register.kol_signup')%> <a href="/kols/new"><%= @l.t('register.here')%></a>
+            <% else %>
+              <p class="kols"><%= @l.t('register.inf_signup')%> <a href="/kols/new"><%= @l.t('register.here')%></a>
+            <% end %>
 
             <div class="errorwarning">
               <p>Please fill out all required fields</p>
             </div>
             <div class="submit-wrap">
-              <%= f.submit "Sign Up", :class=>"button button-signup" %>
+              <%= f.submit @l.t('register.signup_btn'), :class=>"button button-signup" %>
               <!--<input type="submit" value="Sign Up" class="button button-signup">-->
             </div>
         <%end%>
         <!--</form>-->
       </div>
     </div>
-    <div class="row">
-      <div class="small-12 columns">
-        <div class="or-line">
-          <span>OR</span>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="color:#fff!important;">
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/google_oauth2?provider=google_oauth2" class="btn btn-google-plus"><i class="fa fa-google-plus"></i> <span>Sign up using Google Plus</span></a>
-      </div>
-    </div>
-    <div class="row" style="color:#fff!important;">
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/facebook?provider=facebook" class="btn btn-facebook"><i class="fa fa-facebook"></i> <span>Sign up using Facebook</span></a><br /><br /><br />
-      </div>
-    </div>
-  </div>
+    <%= render :partial => "shared/social_sign_up" %>
+</div>
 
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>

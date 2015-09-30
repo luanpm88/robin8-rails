@@ -23,6 +23,10 @@ public/system
 *.sublime-workspace
 .DS_Store
 
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
 perf - robin.sublime-project
 perf - robin.sublime-workspace
 .idea/

@@ -1,0 +1,147 @@
+<div class="modal-dialog modal-lg" id="campaign-article-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><%= title %></h4>
+        </div>
+        <div class="modal-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" data-action="accepted">Content</a></li>
+                <li role="presentation" id="comment"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab" data-action="declined">Comment</a></li>
+                <li role="presentation" id="wechat_perf"><a href="#wechat" aria-controls="wechat" role="tab" data-toggle="tab" data-action="wechat_perf">WeChat Performance</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+              <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="content">
+                    <% if (item.text != null && item.text != ''){ %>
+                      <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.text %></textarea>
+                    <% } else { %>
+                      <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.campaign_model.attributes.description %></textarea>
+                    <% } %>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <% var button_disabled = ""; if ((item.tracking_code != null && item.tracking_code != "Waiting" && item.tracking_code != "Negotiating")||(accepted==false && negotiating==false)) { button_disabled = "disabled"; } %>
+                          <% if (!no_tabs) { %>
+                            <% if (!disabled) { %>
+                                <button type="button" class="btn btn-primary" id="article-approve"  <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.send_for_approval')%></button>
+                            <% } %>
+                            <% if (!notShowBtns) { %>
+                            <% if (disabled) { %>
+                              <button type="button" class="btn btn-success" id="article-save" <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.approve')%></button>
+                            <% } else { %>
+                              <button type="button" class="btn btn-primary" id="article-save" <%= button_disabled %> ><%=polyglot.t('kol_campaign.article.save')%></button>
+                            <% } %>
+                          <% } }%>
+                      </div>
+                  </div>
+                <div role="tabpanel" class="tab-pane" id="comments">
+                    <div class="row comments-title"> Documents
+                        <ul class="files_list clearfix">
+                            <li>
+                                <div id="upload-tooltip">
+                                    <div class="image-preview-multiple-plus">
+                                        <input type="hidden" role="uploadcare-uploader" data-multiple="true" data-file="" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <ul id="files" class="files_list clearfix">
+                                    <% _.each(item.attachments, function(c) { %>
+                                    <li>
+                                        <a href="<%= c.url %>" target="_blank"><%= c.name %></a>
+                                    </li>
+                                    <% }); %>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <hr />
+                    <div class="row comments-title">Comments</div>
+                    <div class="row comments-list" id="comments-list">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <input type="text" id="comment" value="" class="form-control" placeholder="<%=polyglot.t('kol_campaign.article.type_comment')%>" />
+                                    <p class="help-block with-errors hidden" id="comment-error"><%=polyglot.t('kol_campaign.article.please_fill_field')%></p>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><%=polyglot.t('kol_campaign.article.close')%></button>
+                                <button type="button" class="btn btn-primary" id="comment-save"><%=polyglot.t('kol_campaign.article.send')%></button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="wechat">
+                    <% if (!disabled) { %>
+                        <span><%=polyglot.t('kol_campaign.article.have_submit_wechat')%></span>
+                        <div id='report_region'>
+                            <div class='images_region'></div>
+                            <hr>
+                            <form accept-charset="UTF-8" class="form-horizontal" role="form" autocomplete="off" id="wechat-perf-form" onsubmit="return false;">
+                                <div class="row">
+                                    <label class="control-label start-form label-left-side"><%= polyglot.t("smart_campaign.wechat_report.people_reached") %>:</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div>
+                                                <input class="form-control" placeholder="0" id="reached" name="reached" type="number" value="" max="9000000000" min="0" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="row">
+                                    <label class="control-label start-form label-right-side"><%= polyglot.t("smart_campaign.wechat_report.page_views") %>:</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div>
+                                                <input class="form-control" placeholder="0" id="page_views" name="page_views" type="number" max="9000000000" min="0" value="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row">
+                                    <label class="control-label start-form label-left-side"><%= polyglot.t("smart_campaign.wechat_report.read_more") %>:</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div>
+                                                <input class="form-control" placeholder="0" id="read_more" name="read_more" type="number" max="9000000000" min="0" value="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="row">
+                                    <label class="control-label start-form label-right-side"><%= polyglot.t("smart_campaign.wechat_report.favourite") %>:</label>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div>
+                                                <input class="form-control" placeholder="0" id="favourite" name="favourite" type="number" max="9000000000" min="0" value="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="btn-form">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="wechat_perf_save">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                 <% } %>
+                 <div id="wechat-performance"></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

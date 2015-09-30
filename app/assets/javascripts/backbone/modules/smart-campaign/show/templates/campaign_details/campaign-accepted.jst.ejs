@@ -1,0 +1,26 @@
+<div class="row">
+  <% if (accepted.length == 0) { %>
+    <i><%=polyglot.t('smart_campaign.no_one_accepted')%></i>
+  <% } else { %>
+    <table class="table table-striped" id="accepted-kols">
+      <thead style="cursor:pointer;"><tr>
+        <th><%=polyglot.t('smart_campaign.name')%></th>
+        <th><%=polyglot.t('smart_campaign.deadline')%></th>
+        <th><%=polyglot.t('smart_campaign.status')%></th>
+        <th><%=polyglot.t('smart_campaign.last_update')%></th>
+        <th><%=polyglot.t('kol_campaign.article_url')%></th>
+      </tr></thead>
+      <tbody>
+        <% _.each(accepted, function(k) { %>
+          <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>" class="preview">
+            <td><%= k.first_name %></td>
+            <td><%= formatDate(campaign.deadline) %></td>
+            <td id="code_status_<%= k.article.id %>"><%= code_status(k) %></td>
+            <td><%= formatDate(k.article.updated_at) %></td>
+            <td><%= code(k) %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

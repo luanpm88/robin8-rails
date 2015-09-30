@@ -1,6 +1,9 @@
 require 'sidekiq/web'
+require 'sidekiq/web'
 require 'sidetiq/web'
+
 Rails.application.routes.draw do
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   mount Sidekiq::Web => '/sidekiq'
@@ -20,10 +23,17 @@ Rails.application.routes.draw do
   get 'upgrade/:slug' => 'payments#edit'
   get 'change_card_info' => 'blue_snap#change_card_info'
   post 'change_card_info' => 'blue_snap#update_card_info'
+  get 'change_campaign_card_info' => 'blue_snap#change_campaign_card_info'
+  post 'change_campaign_card_info' => 'blue_snap#update_campaign_card_info'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
+  delete '/users/delete_kols_list' => 'kols_lists#delete_kols_list'
   get 'users/get_current_user' => 'users#get_current_user'
   get 'users/get_active_subscription' => 'users#get_active_subscription'
+  get 'users/private_kol' => 'users#get_private_kols'
+  get 'users/kols_lists' => 'kols_lists#get_contacts_list'
+  post 'users/import_kols' => 'kols_lists#create'
+  post 'users/import_kol' => 'users#import_kol'
   get 'payments/apply_discount' => 'payments#apply_discount'
   delete '/users/disconnect_social' => 'users#disconnect_social'
   # resources :blue_snap
@@ -32,6 +42,21 @@ Rails.application.routes.draw do
   # end
   post '/users/follow' => 'users#follow'
   post '/users/new' => 'users#create'
+  post '/kols/new' => 'kols#create'
+  get '/kols/new' => 'kols#create'
+  put '/kols/monetize' => 'kols#update_monetize'
+
+  # kols
+  devise_for :kols, controllers: {
+    registrations: "kols/registrations",
+    sessions: "users/sessions",
+  }
+  get '/kols/get_current_kol' => 'kols#get_current_kol'
+  get '/kols/current_categories' => 'kols#current_categories'
+  get '/kols/suggest_categories' => 'kols#suggest_categories'
+  get '/kols/suggest' => 'kols#suggest_kols'
+  get '/kols/get_attachments' => 'kols#get_attachments'
+  get '/kols/get_categories_labels' => 'kols#categories_labels'
 
   resources :posts do
     put 'update_social', on: :member
@@ -46,6 +71,7 @@ Rails.application.routes.draw do
     resources :followers, only: [:new, :create]
     get 'presskit'
   end
+  get '/articles/:code' => "public_news_rooms#article"
   resources :preview_news_rooms, only: [:index, :create, :show, :update, :destroy]
   resources :industries, only: :index
   resources :releases do
@@ -89,6 +115,8 @@ Rails.application.routes.draw do
       get 'locations'
       get 'skills'
       get 'iptc_categories'
+      get 'category'
+      get 'author_types'
     end
   end
 
@@ -103,6 +131,7 @@ Rails.application.routes.draw do
   get 'robin8_api/authors', to: 'robin_api#authors'
   get 'robin8_api/authors/:id/stats', to: 'robin_api#author_stats'
   get 'robin8_api/stories', to: 'robin_api#stories'
+  get '/home', to: 'pages#landing_page_brand'
 
   post 'textapi/classify'
   post 'textapi/concepts'
@@ -111,7 +140,7 @@ Rails.application.routes.draw do
   post 'textapi/hashtags'
 
   get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
-  
+
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
@@ -128,4 +157,28 @@ Rails.application.routes.draw do
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
   get '/contact_us', to: "pages#contact_us"
+
+  resources :campaign, only: [:index, :create, :update, :show]
+  get 'campaign/:id/article', to: 'campaign#article'
+  get 'campaign/:id/article/:article_id', to: 'campaign#article'
+  put 'campaign/:id/article', to: 'campaign#update_article'
+  put 'campaign/:id/article/:article_id', to: 'campaign#update_article'
+  get 'campaign/:id/article/:article_id/comments', to: 'campaign#article_comments'
+  get 'campaign/:id/article/:article_id/wechat_performance', to: 'campaign#wechat_performance'
+  post 'campaign/:id/article/:article_id/comments', to: 'campaign#create_article_comment'
+  post 'campaign/:id/article/:article_id/wechat_performance', to: 'campaign#create_wechat_performance'
+  post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
+  post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
+  post 'campaign/:id/article/:article_id/approve', to: 'campaign#approve_article'
+  post 'campaign/add_budget', to: 'campaign#add_budget'
+  post 'campaign/get_counter', to: 'campaign#get_counter'
+  post 'campaign/:id/article/:article_id/approve_request', to: 'campaign#approve_request'
+  post 'campaign/test_email', to: 'campaign#test_email'
+  resources :campaign_invite, only: [:index, :create, :show, :update]
+  post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
+  resources :kols_lists, only: [:index, :create, :show, :update]
+
+  post 'campaign_invite/reject', to: 'interested_campaigns#update'
+  post 'campaign_invite/invite', to: 'interested_campaigns#update'
+  post 'campaign_invite/ask_for_invite', to: 'interested_campaigns#ask_for_invite'
 end

@@ -39,19 +39,19 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
       var view = this;
       var r = this.model;
       swal({
-        title: "Cancel current subscription?",
+        title: polyglot.t('billing.messages.cancel_subscription'),
         // text: "You will not be able to recover this post.",
         type: "error",
         showCancelButton: true,
         confirmButtonClass: 'btn-danger',
-        confirmButtonText: 'Yes',
-        cancelButtonText: "No",
+        confirmButtonText: polyglot.t('billing.cancel.yes'),
+        cancelButtonText: polyglot.t('billing.cancel.no'),
       },
       function(isConfirm) {
         if (isConfirm) {
           Robin.currentUser.cancelSubscription().done(function(data){
             Robin.currentUser = new Robin.Models.User(data);
-            $.growl("Your current plan is canceled!", {
+            $.growl(polyglot.t('billing.messages.cancel_subscription_success'), {
               type: "info",
             });
             view.render();
@@ -69,12 +69,12 @@ Robin.module('Billing.Show', function(Show, App, Backbone, Marionette, $, _){
       var id = $(event.target).parents('tr').attr('id');
       console.log(id);
       swal({
-        title: "Cancel this add-on?",
+        title: polyglot.t('billing.messages.cancel_addon'),
         type: "error",
         showCancelButton: true,
         confirmButtonClass: 'btn-danger',
-        confirmButtonText: 'Yes',
-        cancelButtonText: "No",
+        confirmButtonText: polyglot.t('billing.cancel.yes'),
+        cancelButtonText: polyglot.t('billing.cancel.no'),
       },
       function(isConfirm) {
         if (isConfirm) {

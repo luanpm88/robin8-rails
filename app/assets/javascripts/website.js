@@ -18,3 +18,4 @@
 //= require website/vendor/placeholder
 //= require website/app
 //= require website/foundation.min
+//= require select2

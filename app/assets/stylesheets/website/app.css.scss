@@ -329,6 +329,10 @@ footer a{
   text-align: center;
   margin-top: 40px;
 }
+ .signup form p.kols{
+    text-align: center;
+    margin-top: 40px;
+  }
 
 .signup form .submit-wrap{
   text-align: center;
@@ -1595,4 +1599,9 @@ p.loginintro strong{
 
 .selection-guarantee.error {
   color: red !important;
+}
+.form-step input[type=number]::-webkit-outer-spin-button,
+.form-step input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

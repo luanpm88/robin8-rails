@@ -38,6 +38,7 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <% if(Robin.showLangPanel) { %>
         <li class='locales'>
           <a href="/set_locale?locale=en"> 
             <img src="<%= AppAssets.path('us-flag-icon.png') %>" height="13" title='Switch to US local'>
@@ -46,6 +47,7 @@
             <img src="<%= AppAssets.path('china-flag-icon.png') %>" height="13" title='Switch to Chinese local'>
           </a>
         </li>
+        <% } %>
       </ul>
     </div><!--/.navbar-collapse -->
   </div>

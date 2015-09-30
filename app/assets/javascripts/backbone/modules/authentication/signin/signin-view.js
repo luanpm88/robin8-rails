@@ -11,11 +11,14 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
     initialize: function() {
       this.model = new Robin.Models.UserSession();
+      this.kolModel = new Robin.Models.KOLSession();
       this.modelBinder = new Backbone.ModelBinder();
+      this.kolBinder = new Backbone.ModelBinder();
     },
 
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
+      this.kolBinder.bind(this.kolModel, this.el);
       $('.signup-tag').text(polyglot.t('login.title'));
       $('.nav.fixed a').removeClass('active');
       $('#login-link').addClass('active');
@@ -25,24 +28,31 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       e.preventDefault();
 
       el = $(this.el);
+      var that = this;
 
       this.modelBinder.copyViewValuesToModel();
-      
+      this.kolBinder.copyViewValuesToModel();
+      var loggedIn = function(data, response, jqXHR){
+        var token = jqXHR.xhr.getResponseHeader('X-CSRF-Token');
+        if (token) {
+          $("meta[name='csrf-token']").attr('content', token);
+          Robin.finishSignIn(response);
+        }
+      }
       this.model.save(this.model.attributes, {
-        success: function(data, response, jqXHR){
-          var token = jqXHR.xhr.getResponseHeader('X-CSRF-Token');
-          if (token) {
-            $("meta[name='csrf-token']").attr('content', token);
-            Robin.finishSignIn(response);
-          }
-        },
+        success: loggedIn,
         error: function(userSession, response) {
-          var result = $.parseJSON(response.responseText);
-          this.$('#alert-danger').show();
-          this.$('#alert-danger').text(result.error);
+          that.kolModel.save(that.kolModel.attributes, {
+            success: loggedIn,
+            error: function(data, response) {
+              var result = $.parseJSON(response.responseText);
+              this.$('#alert-danger').show();
+              this.$('#alert-danger').text(result.error);
+            }
+          });
         }
       });
-    },  
+    },
 
     socialSignIn: function(e) {
       e.preventDefault();
@@ -57,18 +67,22 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       var url = '/users/auth/' + provider,
       params = 'location=0,status=0,width=800,height=600';
       currentView.connect_window = window.open(url, "connect_window", params);
-
       currentView.interval = window.setInterval((function() {
         if (currentView.connect_window.closed) {
-          $.get( "/users/get_current_user", function( data ) {
+          if ($.cookie('kol_signin') == 'no') {
+            current_entity_path = "/users/get_current_user";
+          } else {
+            current_entity_path = "/kols/get_current_kol";
+          }
+          $.get( current_entity_path, function( data ) {
             window.clearInterval(currentView.interval);
             if (data != undefined) {
               Robin.finishSignIn(data);
-            } 
+            }
           });
         }
       }), 500);
-    } 
+    }
 
   });
 });
