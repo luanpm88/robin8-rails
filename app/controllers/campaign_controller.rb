@@ -129,8 +129,13 @@ class CampaignController < ApplicationController
   def negotiate_campaign
     campaign = Campaign.find(params[:id])
     article = campaign.articles.where(kol_id: current_kol.id).first
-    article.tracking_code = 'Negotiating'
-    article.save
+    if article.blank?
+      article = Article.new(kol_id: current_kol.id, campaign_id: params[:id], tracking_code: 'Negotiating')
+      article.save
+    else
+      article.tracking_code = 'Negotiating'
+      article.save
+    end
     someone = current_user
     someone = current_kol if someone.nil?
     comment = ArticleComment.create(article_id: article.id, sender: someone, text: params[:text], comment_type: "comment")

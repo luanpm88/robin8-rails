@@ -134,17 +134,19 @@ class Kol < ActiveRecord::Base
 
         current = Time.now
         content = Hash.new
-        response['statuses'].each do |status|
-          date = Date.parse status['created_at']
+        unless response['statuses'].blank?
+          response['statuses'].each do |status|
+            date = Date.parse status['created_at']
 
-          if (current.month - date.month) <= 5
-            if !content[(current.month - date.month)].is_a?(Hash)
-              content[(current.month - date.month)] = Hash.new
-              content[(current.month - date.month)][:post] = 0
-              content[(current.month - date.month)][:repost] = 0
+            if (current.month - date.month) <= 5
+              if !content[(current.month - date.month)].is_a?(Hash)
+                content[(current.month - date.month)] = Hash.new
+                content[(current.month - date.month)][:post] = 0
+                content[(current.month - date.month)][:repost] = 0
+              end
+              content[(current.month - date.month)][:post] +=  + 1
+              content[(current.month - date.month)][:repost] +=  status['reposts_count'] + status['comments_count']
             end
-            content[(current.month - date.month)][:post] +=  + 1
-            content[(current.month - date.month)][:repost] +=  status['reposts_count'] + status['comments_count']
           end
         end
 

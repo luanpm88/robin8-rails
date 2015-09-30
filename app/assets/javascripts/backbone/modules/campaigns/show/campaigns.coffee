@@ -21,9 +21,9 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
       code: (campaign) ->
-        if campaign.tracking_code? and campaign.tracking_code != 'Waiting' and campaign.tracking_code != 'Negotiating'
+        if campaign.tracking_code? and campaign.tracking_code != 'Waiting'
           polyglot.t('kol_campaign.approved')
-        if campaign.tracking_code? and campaign.tracking_code == 'Waiting'
+        else if campaign.tracking_code? and campaign.tracking_code == 'Waiting'
           polyglot.t('smart_campaign.pending_approval')
         else
           polyglot.t('kol_campaign.in_progress')
@@ -35,7 +35,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         else
           polyglot.t('dashboard_kol.campaigns_tab.expired')
       budget: (campaign) ->
-        if campaign.non_cash == false
+        if campaign.non_cash == false or campaign.non_cash == null
           "$ " + campaign.budget
         else
           campaign.short_description
@@ -231,7 +231,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
       budget: (campaign) ->
-        if campaign.non_cash == false
+        if campaign.non_cash == false or campaign.non_cash == null
           "$ " + campaign.budget
         else
           campaign.short_description
@@ -326,7 +326,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
       budget: (campaign) ->
-        if campaign.non_cash == false
+        if campaign.non_cash == false or campaign.non_cash == null
           "$ " + campaign.budget
         else
           campaign.short_description
@@ -381,9 +381,21 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
 
     show_editor: (event) ->
       id = $(event.currentTarget).data("id")
-      model = this.collection.get(id)
+      campaign_model = this.collection.get(id)
       article = new Robin.Models.Article
-        campaign_model: model
+        campaign_model: campaign_model
+        id: id
+        canUpload: false
+      articleDialog = new Show.ArticleDialog
+        model: article
+        title: campaign_model.get("name")
+        no_tabs: no_tabs
+        no_comments: true
+        declined: @options.declined
+        accepted: @options.accepted
+        history: @options.history
+        negotiating: @options.negotiating
+
       no_tabs = false
       if this.options.history
         no_tabs = true
@@ -392,37 +404,19 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         success: ()->
           articleDialog.render()
           article.fetch_comments(()->
-            commentsList = new Show.ArticleComments
+            commentsList = new App.Campaigns.Show.ArticleComments
               collection: article.get("article_comments")
             articleDialog.showChildView 'comments', commentsList
           )
           article.fetch_wechat_perf(()->
             wechat_performance = if article.get("wechat_performance")? then article.get("wechat_performance") else []
-            canUpload = true
-            if wechat_performance.length > 0
-              end = moment(new Date(wechat_performance.models[0].attributes.period).toLocaleFormat '%d-%b-%Y')
-              start = moment(Date.today().toLocaleFormat('%d-%b-%Y'))
-              diff = start.diff(end, "days")
-              if diff < 7
-                canUpload = false
-            if self.options.history
-              canUpload = false
             weChetPerf = new Show.ArticleWeChat
-              collection: article.get("wechat_performance")
-              model: article
-              disabled: false
-              canUpload: canUpload
+              collection: wechat_performance
+              disabled: true
+              canUpload: false
             articleDialog.showChildView 'weChat', weChetPerf
           )
         error: (e)->
           console.log e
-      articleDialog = new Show.ArticleDialog
-        model: article
-        title: model.get("name")
-        no_tabs: no_tabs
-        no_comments: true
-        declined: @options.declined
-        accepted: @options.accepted
-        history: @options.history
-        negotiating: @options.negotiating
       Robin.modal.show articleDialog
+

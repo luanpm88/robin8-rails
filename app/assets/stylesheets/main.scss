@@ -2015,22 +2015,22 @@ input.form-control[type="file"] {
     min-height: 150px;
   }
 }
-
-.kol-avatar,
-.uploadcare-widget-button{
-
-  background: #b2b2b2;
-  height: 40px;
-  width: 150px;
-  font-family: 'ProximaNova';
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 40px;
-  margin: 0;
-  margin-right: 0ex;
-  border-radius: 0em;
-  padding: 0;
-  text-align: center;
+#score_form{
+  .kol-avatar,
+  .uploadcare-widget-button{
+    background: #b2b2b2;
+    height: 40px;
+    width: 150px;
+    font-family: 'ProximaNova';
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 40px;
+    margin: 0;
+    margin-right: 0ex;
+    border-radius: 0em;
+    padding: 0;
+    text-align: center;
+  }
 }
 
 .score-tables span {
@@ -2262,5 +2262,8 @@ input.form-control[type="file"] {
   }
 }
 tr.campaign-tabs {
+  cursor: pointer;
+}
+td.campaign {
   cursor: pointer;
 }

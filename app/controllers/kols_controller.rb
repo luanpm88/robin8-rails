@@ -59,8 +59,8 @@ class KolsController < ApplicationController
   end
 
   def categories_labels
-    labels = {}
     unless params[:users_id].blank?
+      labels = {}
       labels["users"] = Kol.where(:id => params[:users_id])
       categories = KolCategory.where(:kol_id => params[:users_id])
       unless categories.blank?
@@ -69,6 +69,10 @@ class KolsController < ApplicationController
         labels["categories_list"] = categories_list
         labels["categories_labels"] = IptcCategory.where(:id => categories_list).map { |c| {:id => c.id, :text => c.label} }
       end
+    end
+    unless params[:categories_id].blank?
+      labels = ""
+      labels = IptcCategory.where(:id => params[:categories_id]).map { |c| {:id => c.id, :text => c.label} }
     end
 
     render :json => labels

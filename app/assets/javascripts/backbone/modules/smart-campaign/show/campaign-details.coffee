@@ -20,7 +20,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         month = polyglot.t('date.monthes_abbr.m' + monthNum)
         "#{d}-#{month}-#{y}"
       budget: (campaign) ->
-        if campaign.non_cash == false
+        if campaign.non_cash == false or campaign.non_cash == null
           "$ " + campaign.budget
         else
           polyglot.t('smart_campaign.non_cash')
@@ -208,7 +208,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         month = polyglot.t('date.monthes_abbr.m' + monthNum)
         "#{d}-#{month}-#{y}"
       budget: (campaign) ->
-        if campaign.non_cash == false
+        if campaign.non_cash == false or campaign.non_cash == null
           "$ " + campaign.budget
         else
           campaign.description
