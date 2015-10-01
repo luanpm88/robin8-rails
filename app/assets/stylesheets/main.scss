@@ -2189,35 +2189,39 @@ input.form-control[type="file"] {
   color: #007183;
 }
 .age-group {
-    display: inline;
+  display: inline;
 }
 .age-group label {
-    cursor: pointer;
-    position: relative;
-    padding-left: 25px;
-    margin-right: 35px;
+  cursor: pointer;
+  position: relative;
+  padding-left: 25px;
+  margin-right: 35px;
 }
-.age-group input[name=male] {
-    display: none;
+.age-group input[name=male],
+.age-group input[name=gender],
+.age-group input[name=mf] {
+  display: none;
 }
 .age-group label:before {
-    content: "";
-    display: inline-block;
+  content: "";
+  display: inline-block;
 
-    width: 16px;
-    height: 16px;
+  width: 16px;
+  height: 16px;
 
-    margin-right: 10px;
-    position: absolute;
-    left: 0;
-    bottom: 1px;
-    background-color: #fff;
-    box-shadow: 0px 0px 5px 0px grey;
+  margin-right: 10px;
+  position: absolute;
+  left: 0;
+  bottom: 1px;
+  background-color: #fff;
+  box-shadow: 0px 0px 5px 0px grey;
 }
 .age-group label:before {
     border-radius: 8px;
 }
-.age-group input[name=male]:checked + label:before {
+.age-group input[name=male]:checked + label:before,
+.age-group input[name=gender]:checked + label:before,
+.age-group input[name=mf]:checked + label:before {
     background-color:#DDDDDD;
 }
 .location-input {
@@ -2268,12 +2272,16 @@ input.form-control[type="file"] {
     width: 105px;
   }
 }
-#filter-kols .filter-group .filter-btn {
+#filter-kols .filter-group .filter-btn,
+.regions-row .filter-group .filter-btn,
+.ages-row .filter-group .filter-btn {
   color: #B2B2B2;
   background-color: white;
   border-color: #B2B2B2;
 }
-#filter-kols .filter-group .active {
+#filter-kols .filter-group .active,
+.regions-row .filter-group .active,
+.ages-row .filter-group .active {
   color: white;
   background-color: #DDDDDD;
   border-color: #B2B2B2;
@@ -2572,4 +2580,19 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
 .campaigns-list-table {
   margin-bottom: 50px;
 }
-
+.label-profile {
+ color: #434A54;
+}
+.label-profile {
+  color: #434A54;
+}
+.label-influence-circle {
+  margin-right: 10px;
+  font-weight: bold;
+}
+.profile-labels {
+  font-weight: bold;
+}
+.kol-profile {
+  margin-top: 7px;
+}
