@@ -16,7 +16,7 @@
       <b><%=polyglot.t('smart_campaign.deadline')%>: </b> <%= formatDate(campaign.deadline) %><br/>
       <b><%=polyglot.t('smart_campaign.total_influencers_invited')%>: </b> <%= campaign.campaign_invites.length %>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
       <b><%=polyglot.t('smart_campaign.budget')%>: </b> <%= budget(campaign) %><br/>
       <% if (campaign.content_type != null && campaign.content_type != undefined) { %>
       <b><%=polyglot.t('smart_campaign.content_type')%>: </b> <%= polyglot.t("smart_campaign.pitch_step." + campaign.content_type) %>

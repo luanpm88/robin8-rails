@@ -15,11 +15,7 @@
             <!-- Tab panes -->
               <div class="tab-content">
                   <div role="tabpanel" class="tab-pane active" id="content">
-                    <% if (item.text != null && item.text != ''){ %>
-                      <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.text %></textarea>
-                    <% } else { %>
-                      <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= item.campaign_model.attributes.description %></textarea>
-                    <% } %>
+                      <textarea class="wysihtml5 article-content" <% if (disabled) { %>disabled="disabled"<% } %>><%= getCampaignDetails (item) %></textarea>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                           <% var button_disabled = ""; if ((item.tracking_code != null && item.tracking_code != "Waiting" && item.tracking_code != "Negotiating")||(accepted==false && negotiating==false)) { button_disabled = "disabled"; } %>

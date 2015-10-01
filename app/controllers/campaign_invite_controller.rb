@@ -12,7 +12,7 @@ class CampaignInviteController < ApplicationController
   def update
     invite = []
     unless params[:campaign_id].blank?
-      invite = CampaignInvite.where(:campaign_id => params[:campaign_id])
+      invite = CampaignInvite.where(:campaign_id => params[:campaign_id], :kol_id=>current_kol.id)
       invite = invite.first
     else
       invite = CampaignInvite.find(params[:id])

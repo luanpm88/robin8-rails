@@ -9,6 +9,15 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       timestamp: (d) ->
         date = new Date d
         date.getTime()
+      getCampaignDetails: (item) ->
+        console.log item
+        if item.text != null and item.text != '' && item.text != undefined
+          item.text
+        else
+          if item.campaign_model.attributes.campaign?
+            item.campaign_model.attributes.campaign.description
+          else
+            item.campaign_model.attributes.description
     regions:
       comments: "#comments-list"
       weChat: "#wechat-performance"
