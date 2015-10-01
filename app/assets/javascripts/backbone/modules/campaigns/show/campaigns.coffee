@@ -47,8 +47,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
 
     accept: (event) ->
       event.preventDefault()
-      console.log 'here'
-      console.log event
       @perform_action($(event.currentTarget))
 
     decline: (event) ->
@@ -65,12 +63,13 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       data["campaign_id"] = id
       $.post "/campaign_invite/change_invite_status", data, (data) =>
         if data.status == data["status"]
+          layout = self._parentLayoutView()
           invites = new Robin.Collections.CampaignInvitations()
           campaignsInvitationTab = new Show.CampaignsInvitations
             collection: invites
           invites.fetch
             success: ()->
-              self._parentLayoutView().invitation.show campaignsInvitationTab
+              layout.invitation.show campaignsInvitationTab
             error: (e)->
               console.log e
 
@@ -83,7 +82,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
               collection: latest
             latest.latest
               success: ()->
-                self._parentLayoutView().latest.show campaignsLatestTab
+                layout.latest.show campaignsLatestTab
               error: (e)->
                 console.log e
 
@@ -96,7 +95,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             collection: campaignsAccepted
           campaignsAccepted.accepted
             success: ()->
-              self._parentLayoutView().accepted.show campaignsAcceptedTab
+              layout.accepted.show campaignsAcceptedTab
             error: (e)->
               console.log e
 
@@ -109,7 +108,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             declined: true
           campaignsDeclined.declined
             success: ()->
-              self._parentLayoutView().declined.show campaignsDeclinedTab
+              layout.declined.show campaignsDeclinedTab
             error: (e)->
               console.log e
 
@@ -122,7 +121,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             negotiating: true
           negotiating.negotiating
             success: ()->
-              self._parentLayoutView().negotiating.show campaignsNegotiatingTab
+              layout.negotiating.show campaignsNegotiatingTab
             error: (e)->
               console.log e
 
@@ -318,10 +317,12 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         title: model.get("name")
         no_tabs: no_tabs
         no_comments: no_comments
-        declined: false
-        accepted: true
+        declined: true
+        accepted: false
         history: false
         negotiating: false
+        disabled: true
+        notShowBtns: true
       Robin.modal.show articleDialog
 
 
