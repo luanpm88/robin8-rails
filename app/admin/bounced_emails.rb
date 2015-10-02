@@ -47,13 +47,13 @@ ActiveAdmin.register_page "Bounced emails" do
         previous_page = response["paging"]["previous"].split('?')[1]
         next_page = response["paging"]["next"].split('?')[1]
 
-        button do
+        div :class => 'admin_bounced_btns' do
           if previous_page!="limit=#{limit}" && !params["page"].nil? && (session[:first_item] != emails[0]["address"])
             link_to 'Prev', 'bounced_emails?' <<  previous_page
           else 'Prev'
           end
         end
-        button do
+        div :class => 'admin_bounced_btns' do
           if next_page!="limit=#{limit}" && emails.length == limit
             link_to 'Next', 'bounced_emails?' << next_page
           else 'Next'
