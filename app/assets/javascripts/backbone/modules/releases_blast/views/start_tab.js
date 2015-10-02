@@ -70,7 +70,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           {
             type: 'info'
           });
-      } else {        
+      } else {
         var selectValue = this.ui.releasesSelect.val();
         if ((selectValue != -1) || (selectValue != -2)){
           this.analyzeRelease(parseInt(selectValue));
@@ -87,17 +87,17 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     analyzeRelease: function(releaseId){
       var self = this;
       var the_release = this.collection.findWhere({id: releaseId});
-      
+
       // Find or create DraftPitch
       var draftPitchesCollection = new Robin.Collections.DraftPitches({
         releaseId: the_release.id
       });
-      
+
       draftPitchesCollection.fetchDraftPitch({success: function(collection){
         if (collection.length > 0){
           var model = collection.models[0];
           self.draftPitchModel.set(model.attributes);
-          
+
           self.pitchModel.set({
             twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
             email_pitch: self.draftPitchModel.get('email_pitch'),
@@ -106,45 +106,45 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             release_id: self.draftPitchModel.get('release_id'),
             email_subject: self.draftPitchModel.get('email_subject')
           });
-          
+
           ReleasesBlast.controller.analysis({releaseModel: the_release});
         } else {
           self.draftPitchModel.set('release_id', the_release.id);
-          
+
           var signature = [];
           signature.push('Best regards');
-          
+
           // Full name
           var name = Robin.currentUser.get('name');
           if (!s.isBlank(name))
             signature.push(name + ','); // This is just for tracking name
-          
+
           // Company name
           var company = Robin.currentUser.get('company');
           if (!s.isBlank(company))
             signature.push(company);
-          
+
           // Email
           var email = Robin.currentUser.get('email');
           if (!s.isBlank(email))
             signature.push(email);
-            
+
           var emailPitch = self.draftPitchModel.getEmailPitch();
           var signature_text = signature.join(",<br />").replace(',,', '');
           emailPitch = emailPitch.replace('@[Signature]', signature_text);
-      
+
           self.draftPitchModel.set('email_pitch', emailPitch);
           self.draftPitchModel.set('email_address', Robin.currentUser.get('email'));
-          
+
           self.pitchModel.set({
             twitter_pitch: self.draftPitchModel.get('twitter_pitch'),
-            email_pitch: self.draftPitchModel.getEmailPitch(),
+            email_pitch: emailPitch,
             summary_length: self.draftPitchModel.get('summary_length'),
             email_address: self.draftPitchModel.get('email_address'),
             release_id: self.draftPitchModel.get('release_id'),
             email_subject: self.draftPitchModel.get('email_subject')
           });
-          
+
           self.draftPitchModel.save({}, {
             success: function(model, response, options){
               ReleasesBlast.controller.analysis({releaseModel: the_release});
@@ -165,7 +165,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       this.pitchModel = options.pitchModel;
       this.draftPitchModel = options.draftPitchModel;
-      
+
       Robin.commands.setHandler("goToAnalysisTab", function(){
         if (self.ui.analyzeButton.prop('disabled') === false){
           var selectValue = self.ui.releasesSelect.val();
@@ -174,8 +174,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           }
         }
       });
-      
-      this.on("close", function(){ 
+
+      this.on("close", function(){
         Robin.commands.removeHandler("goToAnalysisTab");
       });
     }
