@@ -81,9 +81,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       });
 
       if (Robin.releaseForBlast != undefined) {
-        this.module.releasesBlastHeader.set({ level: 2 });
+        this.module.releasesBlastHeader.set({ level: 2, start: false });
       } else {
-        this.module.releasesBlastHeader.set({ level: 1 });
+        this.module.releasesBlastHeader.set({ level: 1, start: true});
         this.module.layout.tabContentRegion.show(startTabView);
       };
 
@@ -174,6 +174,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       var pitchTabView = new this.module.PitchTabView({
         model: this.module.pitchModel,
+        start: this.module.releasesBlastHeader.get('start'),
         draftPitchModel: this.module.draftPitchModel,
         releaseModel: this.module.releaseModel
       });
