@@ -342,7 +342,7 @@ class User < ActiveRecord::Base
   def can_export
     user_product = user_products.first
     return false if user_product.blank?
-    ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual"].include? user_product.product.slug
+    ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual", "newenterprise-monthly"].include? user_product.product.slug
   end
 
   private
