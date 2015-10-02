@@ -585,8 +585,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             data: { release_id: self.draftPitchModel.get('release_id') },
             processData: true
           });
-
-          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
+          Backbone.history.navigate('releases', {trigger: true});
+          if (self.options.start == true) {
+            Backbone.history.navigate('robin8', {trigger: true})
+          }
+          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_pitch_sent")
           },{
             type: 'success'
           });
