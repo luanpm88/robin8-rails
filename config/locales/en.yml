@@ -379,11 +379,13 @@ en:
         east: East
         fans_number: Fans Number
         female: Female
+        first_name: First Name
         gender: Gender
         general_title: My Profile
         id: ID
         industry: Industry
         industry_placeholder: Select or input up to 5, separated by blanks
+        last_name: Last Name
         linkedin: LinkedIn
         location: Location
         login: Login
@@ -591,6 +593,7 @@ en:
       text2: We’re changing the face of PR with technology that’s been years in the
         making. Predict the success of every pitch you make to a reporter by knowing
         with confidence they will share your content. It’s simply intelligent.
+      text20: Recommends relevant campaigns for you
       text3: Take the guesswork out of social and content marketing
       text4: ROBIN8 is constantly tracking and analyzing data from the billions of
         articles that are released every day to create the ultimate curated database

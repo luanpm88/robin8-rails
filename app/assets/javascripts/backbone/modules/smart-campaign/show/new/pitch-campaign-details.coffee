@@ -46,19 +46,16 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         dateFormat: "D, d M y"
       if @model.get('deadline')?
         @$el.find("#deadline").datepicker("setDate", new Date(@model.get('deadline')))
-      if @model.get('non_cash')?
-        if @model.get('non_cash') == true
-          @ui.invite_kol.iCheck('check');
+      non_cash = if @model.get('non_cash')? then @model.get('non_cash') else false
 
       setTimeout(()=>
         if @model.get('content_type')?
           $('#content_type').val(@model.get('content_type'))
-      , 0)
-
-
-      if @model.get('non_cash')?
         if @model.get('non_cash') == true
+          @ui.invite_kol.iCheck('check');
+        else
           $('#short_description').prop("disabled",true)
+      , 0)
 
     setNonCashBudget: (e) ->
       @ui.budget.val(0);

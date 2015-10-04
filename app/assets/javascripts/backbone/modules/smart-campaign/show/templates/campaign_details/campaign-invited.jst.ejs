@@ -10,7 +10,6 @@
       </tr></thead>
       <tbody>
         <% _.each(invited, function(k) { %>
-        <% console.log(invited); %>
           <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>" class="preview">
             <td><%= k.first_name %></td>
             <td><%= formatDate(campaign.deadline) %></td>

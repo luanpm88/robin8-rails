@@ -226,8 +226,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         tabs: 'file'
         multiple: false
         imagesOnly: true
-        }).done((file) ->
-            file.done((fileInfo) ->
+        }).done((file) =>
+            file.done((fileInfo) =>
               @editor.composer.selection.setBookmark(bookmark)
               @editor.focus()
               @editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl})

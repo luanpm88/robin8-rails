@@ -162,28 +162,44 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             "h4": {},
             "h5": {},
             "h6": {},
+            "video": {
+                "check_attributes": {
+                    "controls": "any",
+                    "preload": "any",
+                    "class": "any",
+                    "width": "any",
+                }},
             "source": {
-              "check_attributes": {
-                "src": "any",
-              }},
+                "check_attributes": {
+                    "src": "any",
+                }},
             "blockquote": {},
             "u": 1,
+            "img": {
+                "check_attributes": {
+                    "width": "numbers",
+                    "alt": "alt",
+                    "src": "any",
+                    "height": "numbers",
+                    "title": "alt"
+                }
+            },
             "a":  {
-              check_attributes: {
-                'href': "href",
-                'target': 'any',
-                'rel': 'alt'
-              }
+                check_attributes: {
+                    'href': "href",
+                    'target': 'any',
+                    'rel': 'alt'
+                }
             },
             "iframe": {
-              "check_attributes": {
-                "src":"any",
-                "width":"numbers",
-                "height":"numbers"
-              },
-              "set_attributes": {
-                "frameborder":"0"
-              }
+                "check_attributes": {
+                    "src":"any",
+                    "width":"numbers",
+                    "height":"numbers"
+                },
+                "set_attributes": {
+                    "frameborder":"0"
+                }
             },
             "p": 1,
             "span": 1,
@@ -212,7 +228,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @editor = @ui.wysihtml5.data('wysihtml5').editor
 
       @editor.on("load", () ->
-        self.editor = self.ui.textarea.data('wysihtml5').editor
         emailPitchTextChanged = () ->
           self.model.set('email_pitch', self.editor.getValue())
           self.insertRenderedText()
@@ -365,8 +380,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         tabs: 'file'
         multiple: false
         imagesOnly: true
-        }).done((file) ->
-            file.done((fileInfo) ->
+        }).done((file) =>
+            file.done((fileInfo) =>
               @editor.composer.selection.setBookmark(bookmark)
               @editor.focus()
               @editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl})

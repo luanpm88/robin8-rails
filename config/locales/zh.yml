@@ -384,11 +384,13 @@ zh:
         east: East
         fans_number: Fans Number
         female: Female
+        first_name: First Name
         gender: Gender
         general_title: My Profile
         id: ID
         industry: Industry
         industry_placeholder: Select or input up to 5, separated by blanks
+        last_name: Last Name
         linkedin: LinkedIn
         location: Location
         login: Login
@@ -587,6 +589,7 @@ zh:
       text18: Welcome to the internet for everyone. With the rise of social media,
         everyone has a voice and influence.
       text19: Robin8 calculates your influence and estimates the value of your REACH.
+      text20: Recommends relevant campaigns for you
       text5: ROBIN8可以为你做点什么？
       text6: "花更少的时间在数据库和研究工作，集中精力于实际的内容投递，联系人，计划和内容创建。"
       text7: "使用算法和机器学习技术来适应个性化的PR推荐和内容定制。"
