@@ -5,8 +5,16 @@ class RobinApiController < ApplicationController
     params["per_page"] = 200
     params["included_email"] = false
     response = @client.suggested_authors params
-    authors = unless response[:authors].blank?
-      authors_response = uniq_authors(response[:authors])
+    authors_list = response[:authors]
+
+    if response[:authors].length == 200
+      params["page"] = 2
+      response_next = @client.suggested_authors params
+      authors_list += response_next[:authors]
+    end
+
+    authors = unless authors_list.blank?
+      authors_response = uniq_authors(authors_list)
       ids = authors_response.map{|a| a[:id]}
       @max_score = authors_response.first[:score]
       @min_score = authors_response.last[:score]
@@ -70,8 +78,15 @@ class RobinApiController < ApplicationController
     params["per_page"] = 200
     params["included_email"] = false
     response = @client.authors params
+    authors_list = response[:authors]
 
-    authors_response = uniq_authors(response[:authors])
+    if response[:authors].length == 200
+      params["cursor"] = response[:next_page_cursor]
+      response_next = @client.authors params
+      authors_list += response_next[:authors]
+    end
+
+    authors_response = uniq_authors(authors_list)
 
     authors = authors_response.map do |author|
       author[:full_name] = full_name(author[:first_name], author[:last_name])
