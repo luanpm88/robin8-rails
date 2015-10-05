@@ -21,16 +21,21 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
       code: (campaign) ->
-        if campaign.tracking_code? and campaign.tracking_code != 'Waiting'
+        if campaign.tracking_code? and campaign.tracking_code != 'Waiting' and campaign.tracking_code != 'Negotiating'
           polyglot.t('kol_campaign.approved')
         else if campaign.tracking_code? and campaign.tracking_code == 'Waiting'
           polyglot.t('smart_campaign.pending_approval')
         else
           polyglot.t('kol_campaign.in_progress')
       code_status: (campaign) ->
-        if campaign.invite_status == 'A' and campaign.tracking_code != 'Negotiating'
+        if campaign.tracking_code? and campaign.tracking_code != 'Waiting' and campaign.tracking_code != 'Negotiating'
           polyglot.t('kol_campaign.approved')
-        else if campaign.invite_status == 'D' and campaign.tracking_code != 'Negotiating'
+        else if campaign.interested.length != 0
+          if campaign.interested[0].status == 'R'
+            polyglot.t('dashboard_kol.campaigns_tab.rejected')
+          else
+            polyglot.t('dashboard_kol.campaigns_tab.expired')
+        else if campaign.invite_status == 'D'
           polyglot.t('dashboard_kol.campaigns_tab.rejected')
         else
           polyglot.t('dashboard_kol.campaigns_tab.expired')
@@ -419,6 +424,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       $.post "/campaign_invite/ask_for_invite/", {interested_campaign_id: id}, (data) =>
         if data
           $.growl(polyglot.t('smart_campaign.success_ask_invite'), {type: "success"})
+          layout = self._parentLayoutView()
           latest = new Robin.Collections.Campaigns()
           campaignsLatestTab = new App.Campaigns.Show.CampaignsSuggestedTab
             collection: latest
@@ -428,8 +434,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             negotiating: false
           latest.latest
             success: ()->
-              console.log self
-              self._parentLayoutView().latest.show campaignsLatestTab
+              layout.latest.show campaignsLatestTab
             error: (e)->
               console.log e
           campaignsAll = new Robin.Collections.Campaigns()
@@ -442,7 +447,7 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
             negotiating: false
           campaignsAll.all
             success: ()=>
-              self._parentLayoutView().all.show campaignsAllTab
+              layout.all.show campaignsAllTab
             error: (e)->
               console.log e
 

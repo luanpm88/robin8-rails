@@ -14,7 +14,7 @@ class CampaignController < ApplicationController
         campaigns = current_user.campaigns
       end
     elsif params[:status] == "history"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline <= ?", 3, Time.zone.now.beginning_of_day) : current_user.campaigns
+      campaigns = kol_signed_in? ? Campaign.joins(:interested_campaigns).where("interested_campaigns.kol_id = ? and campaigns.deadline <= ?", current_kol.id, Time.zone.now.beginning_of_day) | current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline <= ?", current_kol.id, Time.zone.now.beginning_of_day) : current_user.campaigns
     elsif params[:status] == "all"
       if kol_signed_in?
         categories = KolCategory.where(:kol_id => current_kol.id).map { |c| c.iptc_category_id }
