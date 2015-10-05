@@ -47,10 +47,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
             model: m
           page.showChildView 'campaignAcceptedRegion', campaign_accepted
 
-          campaign_declined = new Show.CampaignDeclined
-            model: m
-          page.showChildView 'campaignDeclinedRegion', campaign_declined
-
           campaign_negotiating = new Show.CampaignNegotiating
             model: m
           page.showChildView 'campaignNegotiatingRegion', campaign_negotiating
@@ -77,9 +73,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
               interested: interested
             page.showChildView 'campaignInterestedRegion', campaign_interested
 
-          campaign_history = new Show.CampaignHistory
-            model: m
-          page.showChildView 'campaignHistoryRegion', campaign_history
+            campaign_declined = new Show.CampaignDeclined
+              model: m
+              interested: interested
+            page.showChildView 'campaignDeclinedRegion', campaign_declined
+
+            campaign_history = new Show.CampaignHistory
+              model: m
+              interested: interested
+            page.showChildView 'campaignHistoryRegion', campaign_history
 
 
 

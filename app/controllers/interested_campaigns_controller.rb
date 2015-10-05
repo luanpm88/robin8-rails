@@ -22,6 +22,9 @@ class InterestedCampaignsController < InheritedResources::Base
     end
     unless interested_campaign.blank?
       interested_campaign.status = params[:status]
+      if params[:status] == 'R'
+        interested_campaign.decline_date = DateTime.now()
+      end
       interested_campaign.save!
       if params[:status] == 'I'
         kol = Kol.find(interested_campaign.kol_id)

@@ -10,7 +10,6 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
         date = new Date d
         date.getTime()
       getCampaignDetails: (item) ->
-        console.log item
         if item.text != null and item.text != '' && item.text != undefined
           item.text
         else
@@ -99,6 +98,13 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
            ,
             type: "success"
           @options.onApprove? data.code
+          $("#modal").modal("hide")
+          campaign = new Robin.Models.Campaign { id: @model.attributes.campaign_model.attributes.id }
+          campaign.fetch
+            success: (m, r, o) ->
+              campaign_accepted = new Robin.SmartCampaign.Show.CampaignAccepted
+                model: m
+              Robin.layouts.main.content.currentView.campaignAcceptedRegion.show campaign_accepted
       else
         @model.set
           text: @editor.getValue()
@@ -122,6 +128,18 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
            ,
             type: "success"
         $("#modal").modal("hide")
+        campaignsAccepted = new Robin.Collections.Campaigns
+        campaignsAcceptedTab = new Show.CampaignsTab
+          declined: false
+          accepted: true
+          history: false
+          negotiating: false
+          collection: campaignsAccepted
+        campaignsAccepted.accepted
+          success: ()->
+            Robin.layouts.main.content.currentView.content.currentView.campaigns.currentView.accepted.show campaignsAcceptedTab
+          error: (e)->
+            console.log e
 
     save_comment: ()->
       text = @ui.commentInput.val()

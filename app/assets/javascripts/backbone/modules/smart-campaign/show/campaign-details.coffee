@@ -49,9 +49,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         else
           polyglot.t('smart_campaign.in_progress')
       code: (campaign) ->
-        if campaign.tracking_code? and campaign.tracking_code != 'Waiting' and campaign.tracking_code != 'Negotiating'
-          link = "http://#{window.location.host}/articles/#{campaign.tracking_code}"
-          "<a href=\"#{link}\">#{link}</a>"
+        if campaign.article?
+          if campaign.article.tracking_code? and campaign.article.tracking_code != 'Waiting' and campaign.article.tracking_code != 'Negotiating'
+            polyglot.t('smart_campaign.approved')
+          else
+            polyglot.t('kol_campaign.not_approved_yet')
         else
           polyglot.t('kol_campaign.not_approved_yet')
       formatDate: (d) ->
@@ -182,11 +184,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: () ->
       data = @model.toJSON()
       start = moment(Date.today())
-      declined = _.chain(data.campaign_invites)
+      campaign_invites = data.campaign_invites.concat(data.interested_campaigns)
+      interested_list = @options.interested
+      declined = _.chain(campaign_invites)
         .filter (i) ->
-          i.status == "D" and moment(new Date(data.deadline)).diff(start, "days") > 0
+          (i.status == "D" or i.status == "R") and moment(new Date(data.deadline)).diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
+          if kol == null or kol == undefined
+            kol = _(interested_list.users).find (k) -> k.id == i.kol_id
           kol.status = i.status
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
           if not article?
@@ -459,7 +465,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         success: (m, r, o) =>
           campaign_invited = new Show.CampaignInvitedList
             model: m
-          @_parent._parent._parent.campaignInvitedRegion.show(campaign_invited)
+          @_parent._parent._parent.campaignInvitedRegion.show campaign_invited
+
           data = m.toJSON()
           interested = {}
           users_id = _.map(data.interested_campaigns, (campaigns) -> campaigns.kol_id)
@@ -471,10 +478,16 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           $.get "/kols/get_categories_labels/", {users_id: users_id}, (data) =>
             if data
               interested = data
+            layout = @_parent._parent._parent
             campaign_interested = new Show.CampaignInterested
               model: m
               interested: interested
-            @_parent._parent._parent.campaignInterestedRegion.show(campaign_interested)
+            layout.campaignInterestedRegion.show(campaign_interested)
+
+            campaign_declined = new Show.CampaignDeclined
+              model: m
+              interested: interested
+            layout.campaignDeclinedRegion.show campaign_declined
 
     serializeData: () ->
       data = @model.toJSON()
@@ -521,10 +534,16 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     templateHelpers:
       status: (k) ->
-        if k.status == "D"
-          polyglot.t('smart_campaign.declined')
+        if k.status == "D" or k.status == "R"
+          polyglot.t('smart_campaign.rejected')
         else if k.status == "A"
-          polyglot.t('dashboard.accepted')
+          if k.article? and k.article.tracking_code?
+            if k.article.tracking_code != 'Waiting' and k.article.tracking_code != 'Negotiating'
+              polyglot.t('smart_campaign.approved')
+            else
+              polyglot.t('smart_campaign.expired')
+          else
+            polyglot.t('smart_campaign.expired')
         else
           polyglot.t('smart_campaign.expired')
       formatDate: (d) ->
@@ -577,12 +596,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: () ->
       start = moment(Date.today())
       data = @model.toJSON()
-      history = _.chain(data.campaign_invites)
+      campaign_invites = data.campaign_invites.concat(data.interested_campaigns)
+      interested_list = @options.interested
+      history = _.chain(campaign_invites)
         .filter (i) ->
           moment(new Date(data.deadline)).diff(start, "days") <= 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
+          if kol == null or kol == undefined
+            kol = _(interested_list.users).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
+          kol.status = i.status
           if not article?
             console.log "that is not ok, no article for invitation #{i.id}"
             article = {}
