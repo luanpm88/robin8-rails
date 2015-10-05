@@ -27,12 +27,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       influencersForm: '#find-influencers'
       title: '.panel-title strong'
       authorsSearch: '#find-authors button'
-      influencersSearch: '#find-influencers button'
-      authorsKeywordsInput: '#find-authors [name=categories]'
+      influencersSearch: '#weibo-search'
+      authorsKeywordsInput: '#find-authors [name=search_categories]'
       authorsContactNameInput: '#find-authors [name=contact_name]'
       authorsLocationInput: '#find-authors [name=location]'
       influencersTopicsInput: '#find-influencers [name=topics]'
-      influencersLocationInput: '#find-influencers [name=location]'
+      influencersLocationInput: '#find-influencers [name=weibo_location]'
 
     events:
       'switchChange.bootstrapSwitch @ui.checkbox': 'changeFinder'
@@ -55,7 +55,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         onColor: 'info'
         offColor: 'info'
         onText: polyglot.t('smart_campaign.targets_step.influencers')
-        offText: 'Weibo/Wechat'
+        offText: 'Weibo'
 
     initGeoAutocomplete: ->
       @ui.authorsLocationInput.geocomplete()
@@ -80,66 +80,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
             return { results: data }
         }
 
-      @ui.influencersTopicsInput.select2
-        multiple: true
-        formatResult: (object, container, query) ->
-          object.text
-        formatSelection: (object, container) ->
-          object.text
-        id: (object) ->
-          object.id
-        formatInputTooShort: (input, min) ->
-          n = min - input.length
-          return polyglot.t("select2.too_short", {count: n})
-        formatNoMatches: () ->
-          return polyglot.t("select2.not_found")
-        formatSearching: () ->
-          return polyglot.t("select2.searching")
-        ajax:
-          url: 'autocompletes/iptc_categories'
-          dataType: 'JSON'
-          data: (term, page) ->
-            { term: term }
-          results: (data, page) ->
-            { results: _(data.skills).map((item) ->
-              {
-                id: item['id']
-                text: item['name']
-              }
-            ) }
-        minimumInputLength: 1
-        createSearchChoice: ->
-          null
-      @ui.influencersLocationInput.select2
-        multiple: false
-        formatResult: (object, container, query) ->
-          object.text
-        formatSelection: (object, container) ->
-          object.text.split(',')[0]
-        id: (object) ->
-          object.id.split(',')[0]
-        formatInputTooShort: (input, min) ->
-          n = min - input.length
-          return polyglot.t("select2.too_short", {count: n})
-        formatNoMatches: () ->
-          return polyglot.t("select2.not_found")
-        formatSearching: () ->
-          return polyglot.t("select2.searching")
-        ajax:
-          url: '/autocompletes/locations'
-          dataType: 'JSON'
-          data: (term, page) ->
-            { term: term }
-          results: (data, page) ->
-            { results: _(data.locations).map((item) ->
-              {
-                id: item['id']
-                text: item['name']
-              }
-            ) }
-        minimumInputLength: 2
-        createSearchChoice: ->
-          null
+      @ui.influencersLocationInput.geocomplete()
 
     changeFinder: (event, state) ->
       if state
@@ -183,7 +124,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       })
 
       Robin.layouts.main.content.currentView.content.currentView.search_view.searchResultRegion.show(@targetKolsSearch)
-      @model.set('iptc_categories',params['categories'])
+      #@model.set('iptc_categories',params['categories'])
       $.get "/kols/suggest/", {categories: params['categories'], name: params['contactName'], location: params['location']}, (data) =>
         @targetKolsSearch.updateKols data
         @targetKolsSearch.render()
@@ -196,9 +137,25 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     searchInfluencers: (event) ->
       event.preventDefault()
-      params = {}
-      params['topics'] = @ui.influencersTopicsInput.select2('val')
-      params['location'] = @ui.influencersLocationInput.select2('val')
-      params['typecast'] = @ui.influencersForm.find('[type=radio]:checked').val()
 
-      Robin.vent.trigger 'search:influencers:clicked', params
+      keywords = $('#find-influencers [name=topics]').val()
+      location = @ui.influencersLocationInput.val()
+
+      @search_view = new Show.SearchLayout({
+        model: @model
+      })
+
+      @weibo_view = new Show.TargetWeibo(
+        model: @model
+      )
+
+      Robin.layouts.main.content.currentView.content.currentView.search_view.searchResultRegion.show(
+        new Robin.Components.Loading.LoadingView()
+      )
+
+      Robin.layouts.main.content.currentView.content.currentView.search_view.searchResultRegion.show(@weibo_view)
+
+      $.post "/robin8_api/filter_authors", {per_page: 100, included_email: true, type: "weibo", location: location, keywords: keywords}, (data) =>
+        @weibo_view.updateWeibo data
+        @weibo_view.setCampaignModel @model
+        @weibo_view.render()

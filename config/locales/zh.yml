@@ -1244,6 +1244,8 @@ zh:
         central: Central
         choose_category: Please choose at least one category
         city_state: "城市或州/省或国家"
+        comma_separate: Enter comma separated keywords which authors mentioned in
+          their stories
         contact_first_last: "联系人的姓名"
         content: Content
         couldnt_match_influencers: "未找到相匹配意见领袖"

@@ -10,7 +10,7 @@
   <form role="form" class="form" id="find-authors">
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_authors.keywords") %></label>
-      <input type="text" name="categories" autocomplete="off" placeholder="<%=polyglot.t('smart_campaign.targets_step.enter_categories')%>" class="typeahead form-control">
+      <input type="text" name="search_categories" autocomplete="off" placeholder="<%=polyglot.t('smart_campaign.targets_step.enter_categories')%>" class="typeahead form-control">
     </div>
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_authors.name") %></label>
@@ -27,25 +27,14 @@
   <form role="form" class="form hide" id="find-influencers">
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.show") %></label>
-      <input type="text" autocomplete="off" name="topics" id="topic-input" placeholder="<%= polyglot.t('smart_campaign.targets_step.topic') %>" class="form-control">
+      <input type="text" autocomplete="off" name="topics" id="topic-input" placeholder="<%= polyglot.t('smart_campaign.targets_step.comma_separate') %>" class="form-control">
     </div>
     <div class="form-group">
       <label><%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.from") %></label>
-      <input type="text" name="location" autocomplete="off"
+      <input type="text" name="weibo_location" autocomplete="off"
         id="location-input" placeholder="<%= polyglot.t('smart_campaign.targets_step.location') %>" class="form-control">
     </div>
 
-    <label><strong> <%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.who") %></strong></label>
-    <label class="radio-inline">
-      <input type="radio" checked="" name="socialTargetRadio" value="celebrity"> <%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.celebrities") %>
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="socialTargetRadio" value="power_user"> <%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.users") %>
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="socialTargetRadio" value=""> <%= polyglot.t("smart_release.targets_step.search_tab.search_influencers.all") %>
-    </label>
-
-    <button class="btn btn-success pull-right btn-small" type="submit" id="social-search"><%= polyglot.t("smart_release.targets_step.search_tab.search") %></button>
+    <button class="btn btn-success pull-right btn-small" type="submit" id="weibo-search"><%= polyglot.t("smart_release.targets_step.search_tab.search") %></button>
   </form>
 </div>

@@ -2596,3 +2596,11 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
 .kol-profile {
   margin-top: 7px;
 }
+#search-result {
+  .media-left {
+    display: table-row;
+  }
+  .media-heading {
+    margin-right: 5px;
+  }
+}
