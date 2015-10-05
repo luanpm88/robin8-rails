@@ -1,0 +1,17 @@
+<div class="unsubscribe">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => @l.t('unsubscribe.title')}%>
+  </header>
+</div>
+<div class="int-content">
+  <div class="row unsub">
+    <div class="small-12 columns">
+      <% if defined?(action) and action == "unsub"%>
+        <p><%= @l.t('unsubscribe.success') %></p>
+      <% else %>
+        <p><%= @l.t('unsubscribe.invalid_token') %></p>
+      <% end %>
+    </div>
+  </div>
+</div>

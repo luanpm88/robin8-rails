@@ -1233,6 +1233,7 @@ en:
             me know your thoughts.
           text_text: Content Text
           title: Email pitch
+          unsubscribe_text: You can unsubscribe by following link below
         see: See list
         targets: Targets will be contacted via Email
         targets_table:
@@ -2334,6 +2335,10 @@ en:
       Yakutsk: "(+9:00) Yakutsk"
       Yerevan: "(+4:00) Yerevan"
       Zagreb: "(+1:00) Zagreb"
+    unsubscribe:
+      invalid_token: Invalid Token
+      success: You've successfully unsubscribed
+      title: Unsubscribe
     uploading:
       choose_image: Choose an image!!!
       different_photo: Upload a different photo...

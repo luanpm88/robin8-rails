@@ -130,6 +130,9 @@ class RobinApiController < ApplicationController
 
   def uniq_authors(authors)
 
+    unsubscribed_emails = UnsubscribeEmail.where(user_id: current_user.id).map(&:email)
+    authors.reject! { |author| unsubscribed_emails.include?(author[:email])}
+
     uniq_authors = authors.each_with_index.inject({}) do |memo, item|
       # group authors by email or by 'first_name+last_name' when email is empty
       value, index = item
