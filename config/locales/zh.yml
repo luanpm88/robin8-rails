@@ -1866,6 +1866,10 @@ zh:
       Yakutsk: "(+9:00) 雅库茨克"
       Yerevan: "(+4:00) 埃里温"
       Zagreb: "(+1:00) 萨格勒布"
+    unsubscribe:
+      invalid_token: Invalid Token
+      success: You've successfully unsubscribed
+      title: Unsubscribe
     uploading:
       choose_image: "选择图片!!!"
       different_photo: "上传不同的照片..."

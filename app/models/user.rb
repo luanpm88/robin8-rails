@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
+  has_many :unsubscribe_emails, dependent: :destroy
 
   has_many :user_products , dependent: :destroy
   has_many :payments ,through: :user_products

@@ -1045,6 +1045,10 @@ header.int-header h1{
 .int-content .row {
   max-width: 840px;
 }
+.int-content .row.unsub {
+  height: 460px;
+  text-align: center;
+}
 .int-content p{
   font-size: 18px;
   color: #666666;

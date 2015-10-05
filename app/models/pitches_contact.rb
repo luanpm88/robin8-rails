@@ -1,7 +1,7 @@
 class PitchesContact < ActiveRecord::Base
   belongs_to :pitch
   belongs_to :contact
-  
+
   GREETINGS = [
     "Hi",
     "Hello",
@@ -14,24 +14,27 @@ class PitchesContact < ActiveRecord::Base
 
   # Email pitch tags are:
   # ["@[First Name]", "@[Last Name]", "@[Summary]",
-  # "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"]
+  # "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"], "@[Unsubscribe Link]"]
   #
   # Twitter pitch tags are:
-  # [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ]  
+  # [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ]
   def render_pitch
     link = self.pitch.release.permalink
-    
-    if [0, 2, 3].include? self.contact.origin # pressr or pressr_weibo or media_list
+
+    host = Rails.application.secrets[:host]
+    unsub_link = "http://#{host}/unsubscribe/?token=#{self.unsubscribe_token}"
+
+    if [0, 2, 3].include? self.contact.origin # pressr or media_list
       first_name = self.contact.first_name
       last_name = self.contact.last_name
       outlet = self.contact.outlet
-      
+
       title = self.pitch.release.title
       text = self.pitch.release.text
-      
-      summary_arr = JSON.parse(self.pitch.release.summaries).take(self.pitch.summary_length) 
+
+      summary_arr = JSON.parse(self.pitch.release.summaries).take(self.pitch.summary_length)
       summary_str = summary_arr.reject{|s| s.blank?}.map{|s| "<li>#{s}</li>"}.join(" ")
-      
+
       pitch_text = self.pitch.email_pitch
       pitch_text.gsub!('@[First Name]', first_name)
       pitch_text.gsub!('@[Last Name]', last_name)
@@ -40,13 +43,14 @@ class PitchesContact < ActiveRecord::Base
       pitch_text.gsub!('@[Link]', "<a href='#{link}'>#{link}</a>")
       pitch_text.gsub!('@[Title]', title)
       pitch_text.gsub!('@[Text]', text)
+      pitch_text.gsub!('@[Unsubscribe Link]', unsub_link)
 #      pitch_text.gsub!("\n", "<br />")
       pitch_text
     elsif self.contact.origin == 1 # twtrland
       handle = "@#{self.contact.twitter_screen_name}"
       name = self.contact.full_name
       random_greeting = GREETINGS.sample
-      
+
       pitch_text = self.pitch.twitter_pitch
       pitch_text.gsub!('@[Handle]', handle)
       pitch_text.gsub!('@[Name]', name)

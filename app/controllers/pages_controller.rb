@@ -70,8 +70,20 @@ class PagesController < ApplicationController
     render :layout => "website"
   end
 
-  def about
-    render :layout => "website"
+  def unsubscribe
+    if self.request.params["token"]
+      pitch_contact = PitchesContact.find_by unsubscribe_token: self.request.params["token"]
+      if !pitch_contact.nil?
+        email = pitch_contact.contact.email
+        user_id = pitch_contact.pitch.user_id
+        UnsubscribeEmail.find_or_create_by email: email, user_id: user_id
+        render :layout => "website", :locals => {:action => "unsub"}
+      else
+        render :layout => "website"
+      end
+    else
+      render :layout => "website"
+    end
   end
 
   def authenticate_user!
