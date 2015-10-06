@@ -51,7 +51,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       code: (campaign) ->
         if campaign.article?
           if campaign.article.tracking_code? and campaign.article.tracking_code != 'Waiting' and campaign.article.tracking_code != 'Negotiating'
-            polyglot.t('smart_campaign.approved')
+            link = "http://#{window.location.host}/articles/#{campaign.article.tracking_code}"
+            "<a href=\"#{link}\">#{link}</a>"
           else
             polyglot.t('kol_campaign.not_approved_yet')
         else
@@ -358,7 +359,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       data = @model.toJSON()
       invited = _.chain(data.campaign_invites)
         .filter (i) ->
-          moment(new Date(data.deadline)).diff(start, "days") > 0
+          i.status != "D" and i.status != "A" and i.status != "N" and moment(new Date(data.deadline)).diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
@@ -461,11 +462,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     showTabs: () ->
       model = @model.toJSON()
       campaign = new Robin.Models.Campaign { id: model.id }
+      layout = @_parent._parent._parent
       campaign.fetch
         success: (m, r, o) =>
           campaign_invited = new Show.CampaignInvitedList
             model: m
-          @_parent._parent._parent.campaignInvitedRegion.show campaign_invited
+          layout.campaignInvitedRegion.show campaign_invited
 
           data = m.toJSON()
           interested = {}
@@ -474,11 +476,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             campaign_interested = new Show.CampaignInterested
               model: m
               interested: interested
-            @_parent._parent._parent.campaignInterestedRegion.show(campaign_interested)
+            layout.campaignInterestedRegion.show(campaign_interested)
           $.get "/kols/get_categories_labels/", {users_id: users_id}, (data) =>
             if data
               interested = data
-            layout = @_parent._parent._parent
+
             campaign_interested = new Show.CampaignInterested
               model: m
               interested: interested
