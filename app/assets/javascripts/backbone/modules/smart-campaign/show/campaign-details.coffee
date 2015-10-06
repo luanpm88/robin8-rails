@@ -278,12 +278,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: () ->
       start = moment(Date.today())
       data = @model.toJSON()
-      negotiating = _.chain(data.articles)
+      negotiating = _.chain(data.campaign_invites)
         .filter (i) ->
-          i.tracking_code == "Negotiating" and moment(new Date(data.deadline)).diff(start, "days") > 0
+          i.status == "N" and moment(new Date(data.deadline)).diff(start, "days") > 0
         .map (i) ->
           kol = _(data.kols).find (k) -> k.id == i.kol_id
-          kol.status = i.tracking_code
           article = _(data.articles).find (a) -> a.kol_id == i.kol_id
           if not article?
             console.log "that is not ok, no article for invitation #{i.id}"
