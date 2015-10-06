@@ -1,12 +1,12 @@
 class MediaListsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_media_list, only: [:show, :edit, :update, :destroy]
-  
+
   # GET /media_lists
   # GET /media_lists.json
   def index
     @media_lists = current_user.media_lists.includes(:contacts).all
-    
+
     respond_to do |format|
       format.json
     end
@@ -21,13 +21,13 @@ class MediaListsController < ApplicationController
   # POST /media_lists.json
   def create
     @media_list = current_user.media_lists.new(media_list_params)
-    
+
     unless media_list_params['attachment'].blank?
       @media_list.name = media_list_params['attachment'].original_filename
     else
-      @media_list.contacts = Contact.bulk_find_or_create(params['media_contacts'])
+      @media_list.contacts = Contact.bulk_find_or_create(params['media_contacts'], current_user.id)
     end
-    
+
     respond_to do |format|
       if @media_list.save
         format.json { render :show, status: :created, location: @media_list }
@@ -36,7 +36,7 @@ class MediaListsController < ApplicationController
       end
     end
   end
-  
+
   # DELETE /media_lists/1
   # DELETE /media_lists/1.json
   def destroy

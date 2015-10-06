@@ -1,6 +1,6 @@
 class MediaList < ActiveRecord::Base
   has_many :contacts, through: :media_lists_contacts
-  has_many :media_lists_contacts
+  has_many :media_lists_contacts, dependent: :destroy
   belongs_to :user
 
   has_attached_file :attachment
