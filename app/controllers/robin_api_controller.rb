@@ -77,16 +77,36 @@ class RobinApiController < ApplicationController
   def authors
     params["per_page"] = 200
     params["included_email"] = false
-    response = @client.authors params
-    authors_list = response[:authors]
+    if params["blog_name"].nil?
+      authors_key =  "authors_search_#{Digest::SHA1.hexdigest params.to_s}"
+      authors_response = Rails.cache.read authors_key
+      if authors_response.nil?
+        response = @client.authors params
+        authors_list = response[:authors]
 
-    if response[:authors].length == 200
-      params["cursor"] = response[:next_page_cursor]
-      response_next = @client.authors params
-      authors_list += response_next[:authors]
+        if response[:authors].length == 200
+          params["cursor"] = response[:next_page_cursor]
+          response_next = @client.authors params
+          authors_list += response_next[:authors]
+        end
+
+        authors_response = uniq_authors(authors_list)
+        Rails.cache.write authors_key, authors_response, :expires_in => 24.hours
+      end
+    else
+      authors_response = params["blog_name"].inject([]) do |memo, outlet|
+        params["blog_name"] = [outlet]
+        authors_key =  "authors_search_#{Digest::SHA1.hexdigest params.to_s}"
+        redis_response = Rails.cache.read authors_key
+        if redis_response.nil?
+          response = @client.authors params
+          redis_response = uniq_authors(response[:authors])
+          Rails.cache.write authors_key, redis_response, :expires_in => 24.hours
+        end
+        memo.concat(redis_response)
+        memo
+      end
     end
-
-    authors_response = uniq_authors(authors_list)
 
     authors = authors_response.map do |author|
       author[:full_name] = full_name(author[:first_name], author[:last_name])
