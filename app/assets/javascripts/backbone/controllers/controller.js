@@ -3,7 +3,7 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     this.stopAll();
     locale = !Robin.KOL ? Robin.currentUser.get('locale') : "";
     Robin.module('Navigation').start();
-    if (!Robin.KOL) {
+    if ((!Robin.KOL) && (Robin.chinaInstance == false)) {
       Robin.module('SaySomething').start();
     }
   },
@@ -18,7 +18,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showRobin: function() {
     this.stopAll();
-    Robin.module('ReleasesBlast').start();
+    if (Robin.chinaInstance) {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('ReleasesBlast').start();
+    }
   },
 
   showManageUsers: function() {
@@ -32,19 +36,31 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showMonitoring: function() {
     this.stopAll();
-    Robin.module('Monitoring').start();
+    if (Robin.chinaInstance) {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Monitoring').start();
+    }
   },
 
   showNewsRooms: function() {
     this.stopAll();
-    Robin.module("Newsroom").start();
+    if (Robin.chinaInstance) {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module("Newsroom").start();
+    }
     // Backbone.history.navigate('news_rooms',{trigger:true});
     // Robin.module("Newsroom").controller.index();
   },
 
   showSmartCampaign: function() {
     this.stopAll();
-    Robin.module("SmartCampaign").start();
+    if (Robin.chinaInstance) {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module("Releases").start();
+    }
   },
 
   showReleases: function() {
@@ -54,7 +70,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showSocial: function() {
     this.stopAll();
-    Robin.module('Social').start();
+    if (Robin.chinaInstance) {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Social').start();
+    }
   },
 
   showBilling: function() {
@@ -64,7 +84,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showAnalytics: function() {
     this.stopAll();
-    Robin.module('Analytics').start();
+    if (Robin.chinaInstance) {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Analytics').start();
+    }
   },
 
   showEmailsAnalytics: function() {
@@ -94,7 +118,11 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
 
   showRecommendations: function() {
     this.stopAll();
-    Robin.module('Recommendations').start();
+    if (Robin.chinaInstance) {
+      window.location.href = '#dashboard';
+    } else {
+      Robin.module('Recommendations').start();
+    }
   },
 
   showCampaigns: function(){
