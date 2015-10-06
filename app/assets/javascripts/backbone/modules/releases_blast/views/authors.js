@@ -425,8 +425,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
-                  $.growl('Only Enterprise and Ultra users can have this feature.', {
-                    type: "danger",
+                  $.growl(polyglot.t("smart_release.targets_step.influencers_tab.buttons.only_enterprise"), {
+                    type: "danger"
                   });
                 }
               }
@@ -615,8 +615,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
-                  $.growl('Only Enterprise and Ultra users can have this feature.', {
-                    type: "danger",
+                  $.growl(polyglot.t("smart_release.targets_step.influencers_tab.buttons.only_enterprise"), {
+                    type: "danger"
                   });
                 }
               }

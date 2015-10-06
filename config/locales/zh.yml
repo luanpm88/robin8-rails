@@ -1216,6 +1216,7 @@ zh:
             export: "导出为CSV"
             inspect: "检查"
             no_but: "不是"
+            only_enterprise: Only Enterprise users can have this feature.
             remove_all: "移除所有"
             yes_but: "是的"
           contact: "联络"

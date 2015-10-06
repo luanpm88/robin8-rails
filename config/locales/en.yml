@@ -1285,6 +1285,7 @@ en:
             export: Export as CSV
             inspect: Inspect
             no_but: 'No'
+            only_enterprise: Only Enterprise users can have this feature.
             remove_all: Remove all
             yes_but: 'Yes'
           contact: Contact
