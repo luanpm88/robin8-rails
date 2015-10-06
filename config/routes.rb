@@ -109,9 +109,9 @@ Rails.application.routes.draw do
   resources :alerts, only: [:create, :show, :update]
   resources :media_lists, only: [:index, :create, :show, :destroy]
   resources :contacts, only: [:index, :create, :show]
-  resources :pitches, only: [:index, :create, :show]
+  resources :pitches, only: [:index, :create, :update, :show]
   resources :draft_pitches
-  resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+  resources :pitches_contacts, only: [:index, :create, :update, :show, :destroy]
   resources :test_emails, only: [:create, :show]
   resources :iptc_categories, only: [:index, :show]
   resources :export_influencers, only: [:create]
