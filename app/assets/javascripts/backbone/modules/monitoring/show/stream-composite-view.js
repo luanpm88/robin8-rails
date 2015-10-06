@@ -159,13 +159,13 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
 
     initialize: function() {
       var self = this;
-      
+
       this.modelBinder = new Backbone.ModelBinder();
       this.alertModel = new Robin.Models.Alert();
-      
-      // id of the alerts resource is not important cause 
-      // each stream has just one alert 
-      this.alertModel.fetch({ 
+
+      // id of the alerts resource is not important cause
+      // each stream has just one alert
+      this.alertModel.fetch({
         url: '/alerts/12',
         data: {
           stream_id: self.model.get('id')
@@ -175,7 +175,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           self.render();
         }
       });
-      
+
       var streamId = this.model.get('id');
 
       if (streamId && !Robin.cachedStories[streamId]) {
@@ -200,7 +200,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     updateAlertDialog: function(){
       this.ui.emailAlertField.val(this.alertModel.get('email'));
       this.ui.phoneAlertField.val(this.alertModel.get('phone'));
-      
+
       if (this.alertModel.get('enabled'))
         this.ui.enabledAlertCheckbox.prop('checked', true);
       else
@@ -208,7 +208,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
     onRender: function() {
       var curView = this;
-      
+
       Robin.user.fetch({
         success: function() {
           if (Robin.user.get('can_create_stream') != true) {
@@ -228,8 +228,8 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (Robin.cachedStories[this.model.get('id')] != undefined) {
         if (Robin.cachedStories[this.model.get('id')].length > 0){
           this.$el.find('.stream-loading').addClass('hidden');
-        } 
-        
+        }
+
         if (Robin.cachedStories[this.model.get('id')].alreadyRendered && Robin.cachedStories[this.model.get('id')].length == 0) {
           this.$el.find('.stream-loading').addClass('hidden');
           this.$el.find('.empty-stream').removeClass('hidden');
@@ -245,13 +245,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       if (!this.model.get('id')) {
         this.$el.find('.stream-loading').addClass('hidden');
         this.$el.find('.settings-dialog').removeClass('closed');
-      } 
+      }
 
       this.$el.find('[data-toggle=tooltip]').tooltip({trigger:'hover'});
       this.$el.find('.stream-body').on('scroll', this.checkScroll(this));
 
       this.refreshTimeRangeVisibility();
       this.$el.find("input.select2-input").css('width', '150%');
+
       this.ui.colorizeBackground.prop('checked', true);
       this.ui.colorizeBackground.parent().hide();
       this.ui.formatFileInput.val('docx').trigger('change');
@@ -265,7 +266,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
           'Last 7 Days': [moment().subtract(6, 'days'), new Date()],
           'Last 30 Days': [moment().subtract(29, 'days'), new Date()],
           'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), 
+          'Last Month': [moment().subtract(1, 'month').startOf('month'),
             moment().subtract(1, 'month').endOf('month')]
         },
         opens: 'right'
@@ -305,14 +306,14 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         ajax: {
           url: '/autocompletes/' + val,
           dataType: 'json',
-          data: function(term, page) { 
+          data: function(term, page) {
             currentValue = term;
-            return { term: term } 
+            return { term: term }
           },
-          results: function(data, page) { 
+          results: function(data, page) {
             if (data.length > 3) {
               data.splice(0, 1);
-            } 
+            }
             if (val == 'topics') {
               newValue = {
                 id: currentValue,
@@ -321,7 +322,7 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
               };
               data.unshift(newValue);
             }
-            return { results: data }; 
+            return { results: data };
           }
         },
         initSelection : function (element, callback) {
@@ -403,13 +404,13 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       },
       function(isConfirm) {
         if (isConfirm) {
-          r.destroy({ 
+          r.destroy({
             dataType: "text",
             success: function() {
               var index = Robin.loadingStreams.indexOf(modelId);
               if (index > -1) {
                 Robin.loadingStreams.splice(index, 1);
-              } 
+              }
 
               Robin.user.fetch({
                 success: function() {
@@ -425,8 +426,13 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
         }
       });
     },
+    closeDialogs: function(el) {
+      $('.stream-settings').not(el).addClass('closed');
+    },
     setAlertButtonClicked: function(e){
-      this.ui.setAlertDialog.toggleClass('closed');
+      var el = this.ui.setAlertDialog;
+      this.closeDialogs(el);
+      el.toggleClass('closed');
     },
     errorFields: {
       "email": "Email",
@@ -437,24 +443,24 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
     saveAlertButtonClicked: function(e){
       e.preventDefault();
-      
+
       var self = this;
-      
+
       var streamId = this.model.id;
       var email = this.ui.emailAlertField.val();
       var phone = this.ui.phoneAlertField.val();
       var enabled = this.ui.enabledAlertCheckbox.prop('checked');
-      
+
       this.alertModel.set('email', email);
       this.alertModel.set('phone', phone);
       this.alertModel.set('enabled', enabled);
       this.alertModel.set('stream_id', streamId);
-      
-      this.alertModel.save({}, { 
+
+      this.alertModel.save({}, {
         success: function(model, response, options){
           self.ui.setAlertDialog.toggleClass('closed');
           var sort_column = self.model.get('sort_column');
-          
+
           if (sort_column == "published_at"){
             $.growl({message:  polyglot.t("monitoring.messages.alert_saved")
             },{
@@ -478,7 +484,9 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       });
     },
     exportButtonClicked: function(e){
-      this.ui.exportDialog.toggleClass('closed');
+      var el = this.ui.exportDialog;
+      this.closeDialogs(el);
+      el.toggleClass('closed');
     },
     storiesNumberSliderChanged: function(e){
       currentValue = this.ui.storiesNumberSlider.val();
@@ -486,12 +494,12 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
     },
     downloadReportButtonClicked: function(e){
       e.preventDefault();
-      
+
       this.downloadReport();
     },
     formatFileInputChanged: function(e){
       var fileFormat = this.ui.formatFileInput.val();
-      
+
       if (fileFormat === "docx")
         this.ui.colorizeBackground.parent().hide();
       else
@@ -504,34 +512,38 @@ Robin.module('Monitoring.Show', function(Show, App, Backbone, Marionette, $, _){
       var colorizeBackground = null;
       var dateRange = this.ui.dateRangeField.val();
       var published_at = null;
-      
+
       if (!s.isBlank(dateRange)){
-        published_at = "[" + _(dateRange.split('-')).map(function(i){ 
-          return new Date(i.trim()).toISOString() 
+        published_at = "[" + _(dateRange.split('-')).map(function(i){
+          return new Date(i.trim()).toISOString()
         }).join(' TO ') + "]";
       }
-      
+
       if (this.ui.colorizeBackground.is(":checked"))
         colorizeBackground = true
       else
         colorizeBackground = false
-      
+
       var params = {
-        colorize_background: colorizeBackground, 
+        colorize_background: colorizeBackground,
         per_page: numberOfStories
       };
-      
+
       if (published_at)
         params['published_at'] = published_at
-        
+
       openWindow('GET', '/streams/' + streamId + '/stories.' + format, params);
     },
     toggleRssDialog: function(){
-      $(this.el).find('.rss-dialog').toggleClass('closed');
+      var el = $(this.el).find('.rss-dialog');
+      this.closeDialogs(el);
+      el.toggleClass('closed');
     },
 
     settings: function() {
-      $(this.el).find('.settings-dialog').toggleClass('closed');
+      var el = $(this.el).find('.settings-dialog');
+      this.closeDialogs(el);
+      el.toggleClass('closed');
     },
 
     closeSettings: function(e) {
