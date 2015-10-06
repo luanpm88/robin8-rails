@@ -60,9 +60,15 @@
   <% end -%>
 
   <% if not Rails.env.production? || Rails.application.config.china_instance %>
-  Robin.showLangPanel = true;
+    Robin.showLangPanel = true;
   <% else %>
-  Robin.showLangPanel = false;
+    Robin.showLangPanel = false;
+  <% end %>
+
+  <% if Rails.application.config.china_instance %>
+    Robin.chinaInstance = true;
+  <% else %>
+    Robin.chinaInstance = false;
   <% end %>
 
 </script>
