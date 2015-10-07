@@ -11,11 +11,12 @@ class TestEmailsController < ApplicationController
     email_pitch = @draft_pitch.email_pitch
     email_pitch = email_pitch.sub('@[Title]', '<a href="' + release.permalink + '">' + release.title + '</a>')
     email_pitch = email_pitch.sub('@[Text]', release.text)
+    email_pitch = email_pitch.sub('@[Link]', release.permalink)
+    email_pitch = email_pitch.sub('@[Unsubscribe Link]', "http://#{Rails.application.secrets[:host]}/unsubscribe/?token=****************************************")
     if email_pitch != @draft_pitch.email_pitch
       @draft_pitch.email_pitch = email_pitch
       @draft_pitch.save
     end
-
     @temp_pitch = current_user.pitches.build(email_pitch: email_pitch,
       email_address: @draft_pitch.email_address, release_id: @draft_pitch.release_id,
       email_subject: @draft_pitch.email_subject, email_targets: true)
