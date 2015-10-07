@@ -90,7 +90,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         error: function(model, response, options){
           _(response.responseJSON).each(function(val, key){
             var msg = "";
-            $.type(val) == "string" ? msg = val : msg = self.errorFields[key] + ' ' + val[0];
+            $.type(val) == "string" ? msg = val : (self.errorFields[key] != undefined ? msg = self.errorFields[key] + ' ' + val[0] : msg = val[0]);
             $.growl({message: msg
             },{
               type: 'danger'
@@ -581,7 +581,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           self.model.set('sent', true);
           self.draftPitchModel.set('is_deleted', true);
 
-          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
+          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_pitch_sent")
           },{
             type: 'success'
           });
