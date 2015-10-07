@@ -4,7 +4,7 @@ class Discount < ActiveRecord::Base
   has_many :products,:through => :product_discounts
   has_many :users,:through => :user_discounts
 
-  validates :code,:expiry,:percentage, :presence => true
+  validates :code, :discount_name, :expiry,:percentage, :presence => true
   validates :code,:uniqueness => true
 
   accepts_nested_attributes_for :user_discounts,:product_discounts, allow_destroy: true

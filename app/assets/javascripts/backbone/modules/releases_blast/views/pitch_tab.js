@@ -89,7 +89,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         },
         error: function(model, response, options){
           _(response.responseJSON).each(function(val, key){
-            $.growl({message: self.errorFields[key] + ' ' + val[0]
+            var msg = "";
+            $.type(val) == "string" ? msg = val : (self.errorFields[key] != undefined ? msg = self.errorFields[key] + ' ' + val[0] : msg = val[0]);
+            $.growl({message: msg
             },{
               type: 'danger'
             });
@@ -571,9 +573,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     savePitch: function(){
       var self = this;
 
-      self.model.off("change", self.updatePitchModel);
-      self.ui.pitchButton.prop('disabled', true);
-
       self.model.set('twitter_targets', self.getTwitterTargets());
       self.model.set('email_targets', self.getEmailTargets());
 
@@ -581,19 +580,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         success: function(model, response, options){
           self.model.set('sent', true);
           self.draftPitchModel.set('is_deleted', true);
-          self.draftPitchModel.destroy({
-            data: { release_id: self.draftPitchModel.get('release_id') },
-            processData: true
-          });
 
-          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
+          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_pitch_sent")
           },{
             type: 'success'
           });
         },
         error: function(model, response, options){
-          self.model.on("change", self.updatePitchModel);
-          self.ui.pitchButton.prop('disabled', false);
 
           _(response.responseJSON).each(function(val, key){
             $.growl({message: self.errorFields[key] + ' ' + val[0]

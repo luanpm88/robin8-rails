@@ -50,6 +50,26 @@ class PitchesController < ApplicationController
     end
   end
 
+  # PUT /pitches/1
+  # PUT /pitches/1.json
+  def update
+    respond_to do |format|
+      if @pitch.update(pitch_params)
+        if @pitch.valid?
+          unless params['contacts'].blank?
+            @pitch.contacts = Contact.bulk_find_or_create(params['contacts'],current_user.id)
+          end
+          PitchWorker.perform_async(@pitch.id)
+          format.json { render :show, status: :created, location: @pitch }
+        else
+          format.json { render json: @pitch.errors, status: :unprocessable_entity }
+        end
+      else
+        format.json { render json: @pitch.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pitch
