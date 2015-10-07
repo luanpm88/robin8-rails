@@ -2,6 +2,7 @@ class RobinApiController < ApplicationController
   before_action :authenticate_user!, :set_client
 
   def suggested_authors
+
     params["per_page"] = 200
     params["included_email"] = false
     response = @client.suggested_authors params
@@ -20,6 +21,35 @@ class RobinApiController < ApplicationController
       end
     else
       []
+    end
+    authors = authors.sort_by { |v| v[:level_of_interest]}.reverse
+    render json: authors
+  end
+
+  def filtered_authors
+    params["per_page"] = 200
+    params["included_email"] = false
+    params["keywords[]"] = params["keywords"]
+    params.delete("keywords")
+    response = @client.authors params
+    if response.blank?
+      authors = []
+    else
+      authors = unless response[:authors].blank?
+        authors_response = uniq_authors(response[:authors])
+        ids = authors_response.map{|a| a[:id]}
+        @max_score = authors_response.first[:score]
+        @min_score = authors_response.last[:score]
+        authors_response.map do |author|
+          level_of_interest = calculate_level_of_interest(author[:score],
+                                                          full_name(author[:first_name], author[:last_name]))
+          author[:level_of_interest] = level_of_interest
+          author[:full_name] = full_name(author[:first_name], author[:last_name])
+          author
+        end
+      else
+        []
+      end
     end
     authors = authors.sort_by { |v| v[:level_of_interest]}.reverse
     render json: authors

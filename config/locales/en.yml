@@ -1298,6 +1298,8 @@ en:
         central: Central
         choose_category: Please choose at least one category
         city_state: City or State/Province or Country
+        comma_separate: Enter comma separated keywords which authors mentioned in
+          their stories
         contact_first_last: Contact's first and last name
         content: Content
         couldnt_match_influencers: Couldn't match any influencers for you. Provivde
