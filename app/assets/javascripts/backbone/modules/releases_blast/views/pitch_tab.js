@@ -579,7 +579,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           self.model.set('sent', true);
           self.draftPitchModel.set('is_deleted', true);
 
-          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_uploaded_list")
+          $.growl({message: polyglot.t("smart_release.pitch_step.targets_table.success_pitch_sent")
           },{
             type: 'success'
           });
