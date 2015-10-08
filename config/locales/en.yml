@@ -329,6 +329,7 @@ en:
       new_release_button: Publish New Content
       new_smartrelease_button: SmartContent
       not_invited: You are not invited to any campaigns yet.
+      no_available_content: You don't have available content!
       not_invited_yet: Welcome to Robin8! You are not invited to any campaigns yet.
         Please <a href="#profile">update</a> your profile.
       status: Status
@@ -560,6 +561,8 @@ en:
       title: Signup
     landing_page:
       brand: Brand
+      chinese_locale: Switch to Chinese locale
+      english_locale: Switch to English locale
       here: here.
       inf_signup: 'Are you an Influencer? Sign up '
       influencer: Influencer
@@ -705,7 +708,7 @@ en:
       newsrooms: Brand Gallery
       profile: Profile
       recommendations: Recommendations
-      releases: Releases
+      releases: Content
       smart_campaign: SmartCampaign
       smart_release: SmartContent
       social: Social
@@ -732,6 +735,7 @@ en:
     newsrooms:
       buttons:
         new: New Brand Gallery
+      delete_brand_gallery: Delete this Brand Gallery?
       item:
         buttons:
           edit: Edit
@@ -1001,12 +1005,14 @@ en:
       username: Username
     public_newsroom:
       about: About
+      brand_gallery: Brand Gallery
       follow: Follow
       latest_tweets: Latest Tweets
       location: Location
+      no_content: No content published yet
       no_releases: No Releases published yet
-      notification: You are in a preview mode. You need to make this newsroom public
-        and/or save the changes in order to show it on your page
+      notification: You are in a preview mode. You need to make this brand gallery
+        public and/or save the changes in order to show it on your page
       press_kit: Press kit
       pressroom: Pressroom
       read_more: Read more
@@ -1014,8 +1020,8 @@ en:
       spokeperson: Spokesperson
       what_is: What is
     public_release:
-      notification: You are in a preview mode. You need to make this release and newsroom
-        public in order to show it on your page
+      notification: You are in a preview mode. You need to make this content and brand
+        gallery public in order to show it on your page
     register:
       agree_terms: By signing up you agree to Robin8's Terms of Service
       email_already_taken: Email has already been taken
@@ -1039,6 +1045,7 @@ en:
       wechat_signup: Sign up using WeChat
       weibo_signup: Sign up using Weibo
     releases:
+      all_brand_gallery: All Brand Gallery
       all_newsrooms: All Newsrooms
       edit_title: Edit
       item:
@@ -1046,8 +1053,10 @@ en:
           edit: Edit
           preview: Preview
           smart: SmartRelease
+          smart_content_btn: SmartContent
       modal:
         basic_tab:
+          brand_gallery: Brand Gallery
           characteristics_view:
             adjectives: Adjectives
             adverbs: Adverbs
@@ -1063,6 +1072,8 @@ en:
             sentences: Sentences
             too_short: Too short
             words: Words
+          content_text: Content text
+          content_title: Content title
           newsroom: Newsroom
           paragraph_notification: "*The editor uses paragraphs by default for copied
             text. To place a normal line break press Shift+Enter (Shift+Return)"
@@ -1074,20 +1085,24 @@ en:
           title_placeholder: Enter title...
         buttons:
           delete: Delete Release
+          delete_content: Delete Content
           next: Next
           save: Save draft
         dropdown:
           select: Select...
         media_tab:
+          select_content_logo: Please, select a logo for your content
           select_logo: Please, select a logo for your release
           title: Media
           upload_files: Here you can upload additional media files
         messages:
           buy_addon: Please, buy corresponding addon in Billing settings
+          select_brand_gallery: You should select a Brand Gallery
           select_newsroom: You should select a newsroom
           title_required: The Title is required
         newswire_tab:
           accesswire: Accesswire
+          content_option: Please, select options for distributing content
           distribution: Financial Content Distribution
           newswire: PR Newswire
           release_option: Please, select options for distributing release
@@ -1097,6 +1112,7 @@ en:
         warning: This release won't be publicly displayed while the parent Newsroom
           remains unpublished.
         website_tab:
+          make_content_private: Make this content private
           make_private: Make this release private
           title: Website
       model:

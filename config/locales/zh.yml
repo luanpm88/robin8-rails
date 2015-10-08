@@ -335,6 +335,7 @@ zh:
       new_release_button: "发布新的文章"
       new_smartrelease_button: "智能发布"
       not_invited: You are not invited to any campaigns yet.
+      no_available_content: You don't have available content!
       not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
       status: "状态"
       title: "主界面"
@@ -564,6 +565,8 @@ zh:
       title: "注册"
     landing_page:
       brand: "品牌"
+      chinese_locale: Switch to Chinese locale
+      english_locale: Switch to English locale
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
       influencer: "社交达人"
@@ -715,6 +718,7 @@ zh:
     newsrooms:
       buttons:
         new: "新的内容库"
+      delete_brand_gallery: Delete this Brand Gallery?
       item:
         buttons:
           edit: "编辑"
@@ -955,9 +959,11 @@ zh:
       username: "用户名"
     public_newsroom:
       about: About
+      brand_gallery: Brand Gallery
       follow: "关注"
       latest_tweets: "新鲜事"
       location: "地点"
+      no_content: No content published yet
       no_releases: "尚未发布文章"
       notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
       press_kit: Press kit
@@ -991,6 +997,7 @@ zh:
       wechat_signup: "使用微信账号登录"
       weibo_signup: "使用Weibo账号登陆"
     releases:
+      all_brand_gallery: All Brand Gallery
       all_newsrooms: "所有内容库"
       edit_title: "编辑"
       item:
@@ -998,8 +1005,10 @@ zh:
           edit: "编辑"
           preview: "预览"
           smart: "智能发布"
+          smart_content_btn: SmartContent
       modal:
         basic_tab:
+          brand_gallery: Brand Gallery
           characteristics_view:
             adjectives: "形容词"
             adverbs: "副词"
@@ -1015,6 +1024,8 @@ zh:
             sentences: "句子"
             too_short: "过段"
             words: "字数"
+          content_text: Content text
+          content_title: Content title
           newsroom: "内容库"
           paragraph_notification: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
           published_date: "发布日期"
@@ -1025,20 +1036,24 @@ zh:
           title_placeholder: "输入标题..."
         buttons:
           delete: "删除文章"
+          delete_content: Delete Content
           next: "下一步"
           save: "保存草稿"
         dropdown:
           select: "选择..."
         media_tab:
+          select_content_logo: Please, select a logo for your content
           select_logo: "请为你的文章加一个图标"
           title: "媒体"
           upload_files: "这里上传其他的多媒体文件"
         messages:
           buy_addon: "请在结算设置中购买相应的插件！"
+          select_brand_gallery: You should select a Brand Gallery
           select_newsroom: "你应该选择一个"
           title_required: "标题是必需的"
         newswire_tab:
           accesswire: Accesswire
+          content_option: Please, select options for distributing content
           distribution: "财务内容分发"
           newswire: "美通社"
           release_option: "请选择投递选项"
@@ -1047,6 +1062,7 @@ zh:
         title: "新建文章"
         warning: "在内容库还没有发布之前这篇文章不会被公众看到"
         website_tab:
+          make_content_private: Make this content private
           make_private: "仅对自己可见"
           title: "网址"
       model:

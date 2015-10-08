@@ -396,7 +396,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     openModalDialog: function(){
       if(Robin.user.get('can_create_release') != true) {
-        $.growl({message: "You don't have available releases!"},
+        $.growl({message: polyglot.t("dashboard.no_available_content")},
           {
             type: 'info'
           });
@@ -594,7 +594,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           news_room_id: {
             validators: {
               notEmpty: {
-                message: polyglot.t("releases.modal.messages.select_newsroom")
+                message: polyglot.t("releases.modal.messages.select_brand_gallery")
               },
               serverError: {
                 message: 'something went wrong'
@@ -846,7 +846,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     deleteRelease: function(){
       var viewObj = this;
       swal({
-        title: "Remove this release?",
+        title: "Remove this content?",
         text: "You will not be able to recover this content.",
         type: "error",
         showCancelButton: true,
