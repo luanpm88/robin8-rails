@@ -60,6 +60,11 @@
     Robin.showLoading = true;
   <% end -%>
 
+  <% if Rails.application.config.china_instance %>
+    Robin.chinaInstance = true;
+  <% else %>
+    Robin.chinaInstance = false;
+  <% end %>
 
 </script>
 
