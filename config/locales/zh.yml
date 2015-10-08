@@ -1250,6 +1250,8 @@ zh:
         editor_uses_paragraphs: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
         enter_title: "填写名称"
         following_topics: "将会提到如下的话题"
+        paste_content: Paste the content!
+        paste_content_here: Paste the content for your campaign here...
         paste_press: "粘贴新闻稿"
         paste_press_here: "在这里粘贴推广活动的新闻稿"
         pick_deadline: "选择一个期限"
