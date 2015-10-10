@@ -13,6 +13,7 @@
               <th><%= polyglot.t("billing.card_last") %></th>
               <th><%= polyglot.t("billing.card_type") %></th>
               <th><%= polyglot.t("billing.amount") %></th>
+              <th><%= polyglot.t("billing.tax") %></th>
             </tr>
           </thead>
           <tbody>
@@ -24,6 +25,7 @@
               <td><%= item.payment.card_last_four_digits %></td>
               <td><%= item.payment.card_type %></td>
               <td><%= item.payment.currency ? item.payment.currency : '$'%><%= item.payment.amount %></td>
+              <td><%= item.payment.currency ? item.payment.currency : '$'%><%= item.payment.tax %></td>
             </tr>
           <% }); %>
           </tbody>

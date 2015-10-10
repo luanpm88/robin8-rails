@@ -846,6 +846,8 @@ en:
         last_name_blank: Last name can't be blank
         phone_blank: Phone can't be blank
         state_blank: State can't be blank
+        tax_error: Oops...Something went wrong when trying to get tax for order. Please,
+          try again later.
       mr_title: Mr
       mrs_title: Mrs
       ms_title: Ms
@@ -867,7 +869,9 @@ en:
         plan: Plan
         price: Price
         remove: remove
+        tax: Tax*
         total: TOTAL
+      tax_description: "*VAT amount for your order in your country or state"
       title: Payment
       your_title: Title
     payment_update_page:

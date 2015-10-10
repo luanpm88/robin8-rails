@@ -56,9 +56,11 @@ class UserProduct < ActiveRecord::Base
     unless user.locale == 'zh'
       recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.price
       charged_amt =  discount.present? ? product.price - discount.calculate(user,product) : product.price
+      tax_rate = (bluesnap_order.cart.tax_rate).to_f
     else
       recurring_amount = (discount.present? && discount.is_recurring? ) ? bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount : product.china_price
       charged_amt =  discount.present? ? product.china_price - discount.calculate(user,product) : product.china_price
+      tax_rate = (bluesnap_order.cart.tax_rate).to_f
     end
     if product.is_package? || product.is_recurring?
       bluesnap_subscription = ''
@@ -82,7 +84,8 @@ class UserProduct < ActiveRecord::Base
               amount: charged_amt, # bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
               card_last_four_digits: bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits,
               card_type: bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type,
-              discount_id: discount.present? ? discount.id : nil,
+              discount_id: discount.present? ?  discount.id : nil,
+              tax: tax_rate > 0 ? (charged_amt / 100 * tax_rate).round(2) : 0,
               currency: unless user.locale == 'zh' then '$' else '¥' end
           )
           return payment
@@ -91,12 +94,19 @@ class UserProduct < ActiveRecord::Base
         return nil
       end
     else
+      card_last_four_digits = ""
+      card_type = ""
+      if bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.payment_method != "None"
+        card_last_four_digits = bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits
+        card_type = bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type
+      end
       payments.create(
-          amount: unless user.locale == 'zh' then product.price else product.china_price end, #bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
+          amount: charged_amt, #bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.amount,
           product_id: product_id,
-          card_last_four_digits:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_last_four_digits,
-          card_type:  bluesnap_order.post_sale_info.invoices.invoice.financial_transactions.financial_transaction.credit_card.card_type,
-          currency: unless user.locale == 'zh' then '$' else '¥' end #,
+          card_last_four_digits:  card_last_four_digits,
+          card_type:  card_type,
+          currency: unless user.locale == 'zh' then '$' else '¥' end,
+          tax: tax_rate > 0 ? (charged_amt / 100 * tax_rate).round(2) : 0
           # discount_id: discount.present? ?  discount.id : nil
       )
     end

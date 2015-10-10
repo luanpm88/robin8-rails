@@ -824,6 +824,8 @@ zh:
         last_name_blank: "姓氏不能为空"
         phone_blank: "电话号码不能为空"
         state_blank: "州不能为空"
+        tax_error: Oops...Something went wrong when trying to get tax for order. Please,
+          try again later.
       mr_title: "先生"
       mrs_title: "女士"
       ms_title: "小姐"
@@ -842,7 +844,9 @@ zh:
         plan: "计划"
         price: "价格"
         remove: "移除"
+        tax: Tax*
         total: "总计"
+      tax_description: "*VAT amount for your order in your country or state"
       title: "付款"
       your_title: "题目"
     payment_update_page:

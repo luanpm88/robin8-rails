@@ -1655,3 +1655,17 @@ p.loginintro strong{
     -webkit-appearance: none;
     margin: 0;
 }
+#promo_code {
+  margin-bottom: 0;
+}
+.tax_description {
+  clear: both;
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  margin-bottom: 1.25rem;
+  font-size: 12px;
+}
+.tax_description.hidden,
+.tax_row.hidden {
+  display: none;
+}

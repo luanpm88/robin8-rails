@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   post 'users/import_kols' => 'kols_lists#create'
   post 'users/import_kol' => 'users#import_kol'
   get 'payments/apply_discount' => 'payments#apply_discount'
+  get 'payments/check_tax_rate' => 'payments#check_tax_rate'
   delete '/users/disconnect_social' => 'users#disconnect_social'
   # resources :blue_snap
   # resources :payments do
