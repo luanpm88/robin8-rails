@@ -334,8 +334,8 @@ zh:
       new_newsroom_button: "新建内容库"
       new_release_button: "发布新的文章"
       new_smartrelease_button: "智能发布"
-      not_invited: You are not invited to any campaigns yet.
       no_available_content: You don't have available content!
+      not_invited: You are not invited to any campaigns yet.
       not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
       status: "状态"
       title: "主界面"
@@ -1372,6 +1372,7 @@ zh:
           text_here: "这里有一个你可能会感兴趣的"
           text_text: Content Text
           title: "投递邮件"
+          unsubscribe_text: You can unsubscribe by following link below
         see: "查看名单"
         targets: "通过电子邮件联系目标人"
         targets_table:

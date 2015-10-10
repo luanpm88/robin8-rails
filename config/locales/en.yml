@@ -328,8 +328,8 @@ en:
       new_newsroom_button: Create a Brand Gallery
       new_release_button: Publish New Content
       new_smartrelease_button: SmartContent
-      not_invited: You are not invited to any campaigns yet.
       no_available_content: You don't have available content!
+      not_invited: You are not invited to any campaigns yet.
       not_invited_yet: Welcome to Robin8! You are not invited to any campaigns yet.
         Please <a href="#profile">update</a> your profile.
       status: Status
