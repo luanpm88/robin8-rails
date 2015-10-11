@@ -59,7 +59,7 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     if (Robin.chinaInstance == false) {
       window.location.href = '#dashboard';
     } else {
-      Robin.module("Releases").start();
+      Robin.module("SmartCampaign").start();
     }
   },
 
