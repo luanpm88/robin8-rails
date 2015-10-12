@@ -33,7 +33,7 @@ module Robin8
     config.i18n.available_locales = ['en', 'zh']
     # I18n.enforce_available_locales = false
 
-    config.china_instance = false
+    config.china_instance = true
 
     config.cache_store = :redis_store, { :host => "localhost",
                                          :port => 6379,

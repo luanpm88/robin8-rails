@@ -2,26 +2,33 @@
 <html>
 <head>
   <title>Robin8</title>
-  <% if request.location && request.location.country.to_s == "China" %>
-    <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
-    <script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
+  <% if Rails.env.development? %>
+    <!-- 压缩文件压缩日期： 2015-10-12-->
+    <%= javascript_include_tag "kol_dev/kol_compact.js","kol_dev/reload.js", 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    "kol_dev/kol_compact.css","kol_dev/reload.css", media: 'all', 'data-turbolinks-track' => true %>
   <% else %>
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
-    <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+    <% if request.location && request.location.country.to_s == "China" %>
+      <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+    <% else %>
+      <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+    <% end %>
+    <script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
+    <%= javascript_include_tag "kol/application.js" %>
+    <%= stylesheet_link_tag    'kol', media: 'all', 'data-turbolinks-track' => true %>
   <% end %>
 
-  <%= stylesheet_link_tag    'kol', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'kol', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
-  <script type="text/javascript">
-    window.doorbellOptions = {
-        appKey: 'cnLho0pzQQjaENVjgmqrw9xI1H8Ljwn3BuFIg1t2MVRt530fIJbSbar2bcfyYb5u'
-    };
-    (function(d, t) {
-        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://embed.doorbell.io/button/1121?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
-    }(document, 'script'));
-  </script>
+  <% unless Rails.env.development? %>
+    <script type="text/javascript">
+      window.doorbellOptions = {
+          appKey: 'cnLho0pzQQjaENVjgmqrw9xI1H8Ljwn3BuFIg1t2MVRt530fIJbSbar2bcfyYb5u'
+      };
+      (function(d, t) {
+          var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://embed.doorbell.io/button/1121?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
+      }(document, 'script'));
+    </script>
+  <% end %>
 </head>
 <body>
   <% if flash[:confirmation_alert] %>
@@ -30,14 +37,12 @@
 
   <div id="main">
     <%= yield %>
-
   </div>
 
   <div class="modal fade" id="modal" tabindex="-1"
     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 
 <script type="text/javascript">
-
   $(document).ready(function() {
     Robin.china = <%= !request.location.nil? and request.location.country.to_s == "China" %>;
     Robin.start();
@@ -59,9 +64,6 @@
   <% else -%>
     Robin.showLoading = true;
   <% end -%>
-
-
 </script>
-
 </body>
 </html>
