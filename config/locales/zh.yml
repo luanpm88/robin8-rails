@@ -926,6 +926,7 @@ zh:
           delete_content: Delete Content
           next: "下一步"
           save: "保存草稿"
+        content_title: Create Content
         dropdown:
           select: "选择..."
         media_tab:
@@ -955,6 +956,7 @@ zh:
       model:
         newswire_tab:
           newswire: "美通社"
+      new_content: New content
       new_release: "新的文章"
     say_something_box:
       fb_accounts: Facebook's 帐户

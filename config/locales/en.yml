@@ -975,6 +975,7 @@ en:
           delete_content: Delete Content
           next: Next
           save: Save draft
+        content_title: Create Content
         dropdown:
           select: Select...
         media_tab:
@@ -1005,6 +1006,7 @@ en:
       model:
         newswire_tab:
           newswire: Newswire
+      new_content: New content
       new_release: New release
     say_something_box:
       fb_accounts: Facebook's account(s)
