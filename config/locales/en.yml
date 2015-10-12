@@ -939,24 +939,24 @@ en:
         Herald. Each distribution comes with a report showing a sampling of the sites
         that posted your content.
     products:
-      10_smart_releases: 10 Smart Release Distribution (per 10 releases)
-      20_smart_releases: 20 Smart Release Distribution (per 20 releases)
-      5_smart_releases: 5 Smart Release Distribution (per 5 releases)
-      accesswire_distribution: Accesswire Distribution (per release)
+      10_smart_releases: 10 Smart Content Distribution (per 10 content)
+      20_smart_releases: 20 Smart Content Distribution (per 20 content)
+      5_smart_releases: 5 Smart Content Distribution (per 5 content)
+      accesswire_distribution: Accesswire Distribution (per content)
       first:
         newbasic-monthly: Basic
         newbusiness-monthly: Business
         newenterprise-monthly: Entereprise
       media_moitoring: Media Monitoring Stream (per month)
-      myprgenie_web_distribution: FinancialContent Web Distribution (per release)
+      myprgenie_web_distribution: FinancialContent Web Distribution (per content)
       newbasic-monthly: Basic Monthly
       newbusiness-monthly: Business Monthly
       newenterprise-monthly: Entereprise Monthly
-      newsroom: Newsroom (per month)
-      pr_newswire_distribution: PR Newswire Distribution (per release)
-      press_release: Press Release Distribution (per release)
+      newsroom: Brand Gallery (per month)
+      pr_newswire_distribution: PR Newswire Distribution (per content)
+      press_release: Content Distribution (per content)
       seat: Seat (per month)
-      smart_release: Smart Release Distribution (per release)
+      smart_release: Smart Content Distribution (per content)
     profile:
       account_changed: Your account data has been successfully changed
       account_successfully_changed: Your account data has been successfully changed
