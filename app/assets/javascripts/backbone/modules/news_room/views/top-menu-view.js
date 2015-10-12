@@ -354,7 +354,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       var viewObj = this;
       if (this.model.get('default_news_room')){
         swal({
-          title: "This is default newsroom",
+          title: "This is default brand gallery",
           text: "You are not able to delete it!",
           type: "error",
           showCancelButton: false,
