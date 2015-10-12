@@ -104,9 +104,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       mycfg = {
         w: 160,
         h: 150,
+        factor: 0.75,
         maxValue: 100,
         levels: 0,
-        ExtraWidthX: 230
+        ExtraWidthX: 260,
+        ExtraWidthY: 100
       }
 
 
