@@ -33,7 +33,7 @@
           </select>
         </div>
         <!-- <button class="btn btn-default"><i class="fa fa-rocket"></i> <strong>5 SmartContents</strong> Remaining</button> -->
-        <button class="btn btn-success" id='new_release'> <i class="fa fa-plus"></i> <%= polyglot.t("releases.new_release") %> </button>
+        <button class="btn btn-success" id='new_release'> <i class="fa fa-plus"></i> <%= polyglot.t("releases.new_content") %> </button>
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@
           <% if(release.news_room_id) {%>
             <h4 class="modal-title truncate"> <%= polyglot.t("releases.edit_title") %> <%= release.title %> </h4>
           <% } else {%>
-            <h4 class="modal-title"> <%= polyglot.t("releases.modal.title") %> </h4>
+            <h4 class="modal-title"> <%= polyglot.t("releases.modal.content_title") %> </h4>
           <% } %>
         </div>
         <div class="modal-body">

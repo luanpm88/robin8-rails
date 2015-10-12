@@ -496,6 +496,7 @@ zh:
       submit_btn: "提交"
       user_not_found: "与此电子邮件用户不存在！"
     header:
+      advertisers: Advertisers
       contact_us: "联系我们"
       contactus: "联系我们"
       demo: "演示"
@@ -581,9 +582,9 @@ zh:
       text10: "我们正在向陈旧的媒体和技术发起一场革命。注册就能立即看到你作为一个社交达人的分数和价值。让我们来帮助你发挥你的影响力吧！"
       text11: Robin8每一分每一秒都在不断跟踪并分析数以百万计的文章和帖子。通过了解每一个社交达人背后的细微差别，我们可以为您匹配最好的品牌和活动。
       text12: "计算你的影响力和价值"
-      text13: "帮助你提高你的影响力和价值"
+      text13: Showcase your relevance
       text14: "运用算法和机器学习技术，来推荐适合您的活动"
-      text15: "帮助你估算影响力的价值并且赚钱"
+      text15: Monetize your influence and make money
       text16: "你知不知道你是一个社交达人？"
       text17: ROBIN8 believes every person is an influencer and a media company.
       text18: Welcome to the internet for everyone. With the rise of social media,
@@ -596,8 +597,9 @@ zh:
       text8: "让你的营销费用获得更高的回报。"
       text9: "准备好通过ROBIN8看世界了吗？"
       title: "下一代人工智能驱动的社交和内容营销平台"
+      title_landing: Calling all KOLs!!!  Join the world's first global marketplace
       track: "监测"
-      title_landing: "用你的影响力来赚钱。点击注册！"
+        for paid influence!
       track_text: "通过我们强大的分析系统追踪结果，利用我们的智能媒体，及时了解最新的新闻。"
       upload: "上传"
       upload_text: "上传您的新闻稿或内容，分析只需几秒钟。"
@@ -1021,6 +1023,7 @@ zh:
           delete: "删除文章"
           next: "下一步"
           save: "保存草稿"
+        content_title: Create Content
         dropdown:
           select: "选择..."
         media_tab:
@@ -1046,6 +1049,7 @@ zh:
       model:
         newswire_tab:
           newswire: "美通社"
+      new_content: New content
       new_release: "新的文章"
     say_something_box:
       fb_accounts: Facebook's 帐户

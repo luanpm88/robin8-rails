@@ -350,7 +350,7 @@ class User < ActiveRecord::Base
     def create_default_news_room
       if is_primary?
         news_room = self.news_rooms.new(
-            company_name: "#{self.email}'s Default Newsroom",
+            company_name: "#{self.email}'s Default Brand Gallery",
             subdomain_name: self.slug,
             default_news_room: true
         )
