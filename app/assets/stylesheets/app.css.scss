@@ -50,7 +50,9 @@ body.login {
     text-transform: uppercase;
 
   }
-
+  .kols_register_button {
+    width: 415px;
+  }
 
   /* HEADER */
 
@@ -222,10 +224,11 @@ body.login {
   .bgpane{
     background: image-url("welcome.jpg") no-repeat scroll center bottom rgba(0, 0, 0, 0);
     background-size: cover;
-    min-height: 640px;
+    min-height: 746px;
   }
   .bgpane-title {
     padding-top: 30px;
+    padding-bottom: 15px;
   }
 
   .bgpane-image {

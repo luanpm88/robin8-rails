@@ -498,6 +498,7 @@ en:
       submit_btn: Submit
       user_not_found: The user with this email does not exist!
     header:
+      advertisers: Advertisers
       contact_us: Contact Us
       contactus: Contact Us
       demo: Demo
@@ -589,10 +590,10 @@ en:
         and posts every second and every day. By understanding the nuances behind
         every influencer, we can match you with the best brands and campaigns.
       text12: Calculate your influence and value
-      text13: Help you increase your influence and value
+      text13: Showcase your relevance
       text14: Uses Algorithm and machine-learning technology to adapt campaign recommendations
         for you
-      text15: Help you monetize your influence and make money
+      text15: Monetize your influence and make money
       text16: Do you know you are an influencer?
       text17: ROBIN8 believes every person is an influencer and a media company.
       text18: Welcome to the internet for everyone. With the rise of social media,
@@ -617,7 +618,8 @@ en:
       text9: Ready to see the world acording to ROBIN8?
       title: Next generation social and content marketing platform powered by artificial
         intelligence
-      title_landing: Monetize your influence. Register here.
+      title_landing: Calling all KOLs!!!  Join the world's first global marketplace
+        for paid influence!
       track: Track
       track_text: Track your results through our robust analytic dashboard and use
         our media intelligence to keep abreast of the latest news.
@@ -951,24 +953,24 @@ en:
         Herald. Each distribution comes with a report showing a sampling of the sites
         that posted your content.
     products:
-      10_smart_releases: 10 Smart Release Distribution (per 10 releases)
-      20_smart_releases: 20 Smart Release Distribution (per 20 releases)
-      5_smart_releases: 5 Smart Release Distribution (per 5 releases)
-      accesswire_distribution: Accesswire Distribution (per release)
+      10_smart_releases: 10 Smart Content Distribution (per 10 content)
+      20_smart_releases: 20 Smart Content Distribution (per 20 content)
+      5_smart_releases: 5 Smart Content Distribution (per 5 content)
+      accesswire_distribution: Accesswire Distribution (per content)
       first:
         newbasic-monthly: Basic
         newbusiness-monthly: Business
         newenterprise-monthly: Entereprise
       media_moitoring: Media Monitoring Stream (per month)
-      myprgenie_web_distribution: FinancialContent Web Distribution (per release)
+      myprgenie_web_distribution: FinancialContent Web Distribution (per content)
       newbasic-monthly: Basic Monthly
       newbusiness-monthly: Business Monthly
       newenterprise-monthly: Entereprise Monthly
-      newsroom: Newsroom (per month)
-      pr_newswire_distribution: PR Newswire Distribution (per release)
-      press_release: Press Release Distribution (per release)
+      newsroom: Brand Gallery (per month)
+      pr_newswire_distribution: PR Newswire Distribution (per content)
+      press_release: Content Distribution (per content)
       seat: Seat (per month)
-      smart_release: Smart Release Distribution (per release)
+      smart_release: Smart Content Distribution (per content)
     profile:
       account_changed: Your account data has been successfully changed
       account_successfully_changed: Your account data has been successfully changed
@@ -1092,6 +1094,7 @@ en:
           delete_content: Delete Content
           next: Next
           save: Save draft
+        content_title: Create Content
         dropdown:
           select: Select...
         media_tab:
@@ -1122,6 +1125,7 @@ en:
       model:
         newswire_tab:
           newswire: Newswire
+      new_content: New content
       new_release: New release
     say_something_box:
       fb_accounts: Facebook's account(s)
