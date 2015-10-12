@@ -16,6 +16,7 @@
           <li><%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
             <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: @l.t('landing_page.chinese_locale') %>
           <% end %></li>
+          <li><a href="/home"><%= @l.t('header.advertisers') %></a></li>
           <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
         </ul>
       </section>
@@ -27,11 +28,8 @@
         <a href="/"><%= @l.t('header.title') %></a>
       </h1>
       <h2><%= @l.t('landing_page.title_landing') %></h2>
-      <div class="small-12 medium-5 large-6 columns left">
-        <a class="button button-signup" href="/home"><%= @l.t('landing_page.brand') %></a>
-      </div>
-      <div class="small-12 medium-7 large-6 columns right">
-        <a class="button button-signup" href="/kols/new"><%= @l.t('landing_page.influencer') %></a>
+      <div class="small-12 medium-12 large-12 columns">
+        <a class="button button-signup kols_register_button" href="/kols/new"><%= @l.t('landing_page.register_text') %></a>
       </div>
     </div>
   </div>

@@ -492,6 +492,7 @@ en:
       submit_btn: Submit
       user_not_found: The user with this email does not exist!
     header:
+      advertisers: Advertisers
       contact_us: Contact Us
       contactus: Contact Us
       demo: Demo
@@ -581,10 +582,10 @@ en:
         and posts every second and every day. By understanding the nuances behind
         every influencer, we can match you with the best brands and campaigns.
       text12: Calculate your influence and value
-      text13: Help you increase your influence and value
+      text13: Showcase your relevance
       text14: Uses Algorithm and machine-learning technology to adapt campaign recommendations
         for you
-      text15: Help you monetize your influence and make money
+      text15: Monetize your influence and make money
       text16: Do you know you are an influencer?
       text17: ROBIN8 believes every person is an influencer and a media company.
       text18: Welcome to the internet for everyone. With the rise of social media,
@@ -609,7 +610,8 @@ en:
       text9: Ready to see the world acording to ROBIN8?
       title: Next generation social and content marketing platform powered by artificial
         intelligence
-      title_landing: Monetize your influence. Register here.
+      title_landing: Calling all KOLs!!!  Join the world's first global marketplace
+        for paid influence!
       track: Track
       track_text: Track your results through our robust analytic dashboard and use
         our media intelligence to keep abreast of the latest news.
