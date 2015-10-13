@@ -918,6 +918,7 @@ zh:
           published_date: "发布日期"
           release_text: "文章内容"
           release_title: "文章标题"
+          text_content_placeholder: Paste your content here...
           text_placeholder: "在这里粘贴文章..."
           title: "基本信息"
           title_placeholder: "输入标题..."
