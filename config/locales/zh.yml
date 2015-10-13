@@ -1537,11 +1537,11 @@ zh:
         title: Robin8<span>顾问</span>
       ceo_desc: Miranda Tan在公共关系，市场营销，技术方面拥有10年以上的经验。Miranda拥有康奈尔大学的学士学位，并取得圣约翰大学法学博士学位。
       ceo_name: Miranda Tan
-      ceo_pos: "首席执行官"
+      ceo_pos: Co-CEO and Founder
       chairman_desc: Hassan拥有近三十年的财政和技术经验。在此之前，Hassan是Xing科技的CEO，并将其以7500万美元出售给Real
         Networks公司。Hassan也是数字媒体CAA的负责人和管理者。
       chairman_name: Hassan Miah
-      chairman_pos: "主席"
+      chairman_pos: Co-CEO and Founder
       developer_desc: Razee在编码，测试，实施和以全面的技术支持MyPRGenie方面拥有丰富的经验。 Razee获得了巴基斯坦国立大学的计算机和新兴科学学士学位。
       developer_name: Razee Khan
       developer_pos: "工程师和开发人员"
@@ -1553,24 +1553,66 @@ zh:
         Marketing.
       elsa_name: Elsa Wang
       elsa_pos: Marketing Specialist / Director
+      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more 
+        than 15 years in Shanghai. A native of Central New York State, Francis’ work 
+        experience in China includes stints in media, advertising and consulting. 
+        Francis received his bachelor’s degree from the University of Pennsylvania 
+        and has a master’s degree in International Relations from The Johns Hopkins University - 
+        School of Advanced International Studies. Prior to joining Robin8, Francis was 
+        the Director of Operations at Forestry Innovation Investment (Shanghai), 
+        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee 
+        the completion of 15 wood-frame construction projects in China, 
+        including the Vancouver Pavilion at the 2010 Shanghai EXPO.
+      francis_name: Francis Huang
+      francis_pos: General Manager, China
+      jenny_desc: Jenny is an experienced developer who spent six years at Huawei Technologies Co. 
+        She was most recently the Chief Technology Officer at a digital media agency. Jenny received 
+        her BS in Electronic Engineering from Shanghai University and a MS in Computer Science 
+        from the Royal Melbourne Institute of Technology.
+      jenny_name: Jenny Qian
+      jenny_pos: Head Product Manager and Senior Developer, China
+      joey_desc: Joey has more than fifteen years experience in China’s social media and 
+        public relations landscape. She began her career as an investment manager for media and 
+        entertainment for Poly Group, one of China’s largest state owned enterprises. Previously,
+        she was the marketing director at Sinomonitor LTd. in China and the Strategy Director at a number 
+        of digital media companies before opening her own agency. Joey earned her MA in Marketing from 
+        the Royal Melbourne Institute of Technology and received her BS from Xinjiang Medical University.
+      joey_name: Joey Jiao
+      joey_pos: Vice President, Marketing Engineer, China
+      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU, 
+        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from 
+        Nanjing Agricultural University and Georgia Southwestern State University.
+      jun_name: Jun Yang
+      jun_pos: Sales and Marketing Specialist
       operations_desc: Cynthia负责整体运营和MyPRGenied的管理。她拥有Adelphi大学的MBA学位和南京理工大学会计学学士学位。
       operations_name: Cynthia Chen
       operations_pos: "副总裁，运营"
+      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups 
+        in terms of marketing, business development and fundraising. Peter has a BA from 
+        George Washington University.
+      peter_name: Peter Chernin
+      peter_pos: Director of Sales and Business Development
       sales_desc: Alex is a passionate marketer with extensive experience in sales
         and media outreach. He is an aggressive pitcher who loves connecting with
         his clients and their audience. Alex graduated from the University of Michigan,
         College of LS&amp;A with a BS in Neuroscience.
       sales_name: Alex Stefanov
       sales_pos: VP, Sales and Marketing
+      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team. 
+        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices 
+        and other human resource policies. Sally has helped a number of foreign companies 
+        establish a presence in China and assists with the day-to-day operation of the company. 
+      sally_name: Sally Zheng
+      sally_pos: Administrative Manager, China
       scientist_desc: Edison在机器学习和在中国数据搜索拥有超过5年的经验，并曾为腾讯和Quo360工作。他已于应用数学和其他国际直销杂志上发表了多篇文章。毕业于数学Technologyís学院北京大学，获得数学学士学位，2006年与计算机科学学院与工程CS硕士学位，2009年他目前赢得他的硕士学位计算机科学在
         纽约大学工程理工学校。
       scientist_name: Edison Xu Zhao
       scientist_pos: "数据专家和工程师"
-      simon_desc: Simon specializes in data and technology. Previously, Simon was
-        at eBay, VF Corporation and Anheuser-Busch InBev. Simon has a BS in computer
-        science and MS in data mining from East China Normal University.
+      simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS 
+        from East China Normal University.
       simon_name: Simon Deng
-      simon_pos: VP, Tech Leader for China
+      simon_pos: Tech Lead China
       support_desc: Olivia于2010年10月加入MyPRGenie，她负责客户支持和监督的科研队伍。Olivia在公关和营销方面具有丰富经验，已经帮助数百家企业策划公关活动。此外，她领导媒体数据库的研究小组。
       support_name: Olivia Quizon
       support_pos: "副总裁，技术支持和研究"
