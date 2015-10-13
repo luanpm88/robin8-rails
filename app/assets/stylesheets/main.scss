@@ -2611,3 +2611,14 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
     margin-right: 5px;
   }
 }
+#graph_score2 .axis text {
+  font-size: 13px !important;
+  font-family: "ProximaNova" !important;
+  fill: #007183 !important;
+}
+#graph_score2 .axis line {
+  stroke-width: 1.5px !important;
+}
+circle.radar-chart-serie1 {
+  display: none;
+}
