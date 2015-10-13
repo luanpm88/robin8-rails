@@ -1405,14 +1405,14 @@ en:
         marketing, and tech. Miranda has a BS from Cornell University and a JD from
         St. John’s University School of Law.
       ceo_name: Miranda Tan
-      ceo_pos: CEO
+      ceo_pos: Co-CEO and Founder
       chairman_desc: Hassan has nearly three decades of experience in the finance
         and technology. Previously, Hassan was the CEO of Xing Technology which sold
         to Real Networks for $75 Million. Hassan was also the head of digital media
         at CAA and a managing director of Intel Capital. He has a BBA from the University
         of Michigan and a MBA from Stanford University Graduate School of Business.
       chairman_name: Hassan Miah
-      chairman_pos: Chairman
+      chairman_pos: Co-CEO and Founder
       developer_desc: Razee has extensive experience in coding, testing, implementation
         and overall technical support of Robin8. Razee earned a BS from the National
         University of Computer and Emerging Sciences in Pakistan.
@@ -1426,17 +1426,59 @@ en:
         Marketing.
       elsa_name: Elsa Wang
       elsa_pos: Marketing Specialist / Director
+      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more 
+        than 15 years in Shanghai. A native of Central New York State, Francis’ work 
+        experience in China includes stints in media, advertising and consulting. 
+        Francis received his bachelor’s degree from the University of Pennsylvania 
+        and has a master’s degree in International Relations from The Johns Hopkins University - 
+        School of Advanced International Studies. Prior to joining Robin8, Francis was 
+        the Director of Operations at Forestry Innovation Investment (Shanghai), 
+        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee 
+        the completion of 15 wood-frame construction projects in China, 
+        including the Vancouver Pavilion at the 2010 Shanghai EXPO.
+      francis_name: Francis Huang
+      francis_pos: General Manager, China
+      jenny_desc: Jenny is an experienced developer who spent six years at Huawei Technologies Co. 
+        She was most recently the Chief Technology Officer at a digital media agency. Jenny received 
+        her BS in Electronic Engineering from Shanghai University and a MS in Computer Science 
+        from the Royal Melbourne Institute of Technology.
+      jenny_name: Jenny Qian
+      jenny_pos: Head Product Manager and Senior Developer, China
+      joey_desc: Joey has more than fifteen years experience in China’s social media and 
+        public relations landscape. She began her career as an investment manager for media and 
+        entertainment for Poly Group, one of China’s largest state owned enterprises. Previously,
+        she was the marketing director at Sinomonitor LTd. in China and the Strategy Director at a number 
+        of digital media companies before opening her own agency. Joey earned her MA in Marketing from 
+        the Royal Melbourne Institute of Technology and received her BS from Xinjiang Medical University.
+      joey_name: Joey Jiao
+      joey_pos: Vice President, Marketing Engineer, China
+      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU, 
+        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from 
+        Nanjing Agricultural University and Georgia Southwestern State University.
+      jun_name: Jun Yang
+      jun_pos: Sales and Marketing Specialist
       operations_desc: Cynthia heads overall operations and administration for Robin8.
         She has an MBA from Adelphi University and a BS in Accounting from Nanjing
         University of Science and Technology.
       operations_name: Cynthia Chen
       operations_pos: VP, Operations
+      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups 
+        in terms of marketing, business development and fundraising. Peter has a BA from 
+        George Washington University.
+      peter_name: Peter Chernin
+      peter_pos: Director of Sales and Business Development
       sales_desc: Alex is a passionate marketer with extensive experience in sales
         and media outreach. He is an aggressive pitcher who loves connecting with
         his clients and their audience. Alex graduated from the University of Michigan,
         College of LS&amp;A with a BS in Neuroscience.
       sales_name: Alex Stefanov
       sales_pos: VP, Sales and Marketing
+      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team. 
+        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices 
+        and other human resource policies. Sally has helped a number of foreign companies 
+        establish a presence in China and assists with the day-to-day operation of the company. 
+      sally_name: Sally Zheng
+      sally_pos: Administrative Manager, China
       scientist_desc: Edison has over 5 years experience in machine learning and data
         mining in China working with Tencent and Quo360. He has published multiple
         articles on his work in the Journal of Applied Mathematics and other international
@@ -1446,11 +1488,11 @@ en:
         Science at the Polytechnic School of Engineering at New York University.
       scientist_name: Edison Xu Zhao
       scientist_pos: Data Scientist and Engineer
-      simon_desc: Simon specializes in data and technology. Previously, Simon was
-        at eBay, VF Corporation and Anheuser-Busch InBev. Simon has a BS in computer
-        science and MS in data mining from East China Normal University.
+      simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS 
+        from East China Normal University.
       simon_name: Simon Deng
-      simon_pos: VP, Tech Leader for China
+      simon_pos: Tech Lead China
       support_desc: Olivia joined Robin8 in October 2010. At Robin8, she heads Customer
         Support and oversees the research team. Olivia has extensive experience in
         PR and marketing and has helped hundreds of companies with their PR campaign.
