@@ -8,7 +8,7 @@
         <div class="row">
           <div class="col-lg-12">
             <% if @preview_mode %>
-              <i class="preview-notification"><%= I18n.t('public_release.notification') %></i>
+              <i class="preview-notification"><%= @l.t('public_release.notification') %></i>
             <% end %>
             <div class="jumbotron release">
               <div class='jumbotron-photo'>
@@ -19,7 +19,7 @@
               <div class='jumbotron-contents'>
                 <h1><%= @release.title %></h1>
                 <div>
-                  <div id="share-block" style="<%= @preview_mode ? "pointer-events: none;" : "" %>">
+                  <div id="share-block">
                     <ul>
                       <li class="facebook-button">
                         <div id="fb-root"></div>

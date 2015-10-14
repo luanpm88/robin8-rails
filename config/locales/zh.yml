@@ -854,7 +854,8 @@ zh:
       spokeperson: "演讲人"
       what_is: "什么是"
     public_release:
-      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
+      notification: You are in a preview mode. You need to make this content and brand gallery 
+        public in order to show it on your page
     register:
       agree_terms: "通过注册，你已同意Robin8的服务条款。"
       email_already_taken: "该邮箱已被注册"
