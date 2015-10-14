@@ -30,6 +30,46 @@
   .button_to {
     display: inline;
   }
+  .filter_emails {
+    .button_to input {
+      border-top-color: #d3d3d3;
+      border-right-color: #c7c7c7;
+      border-bottom-color: #c2c2c2;
+      border-left-color: #c7c7c7;
+      text-shadow: #fff 0 1px 0;
+      color: #5E6469;
+      background-image: linear-gradient(180deg, #fff, #E7E7E7);
+    }
+    .sidebar_section {
+      box-shadow: none;
+      margin-left: -15px;
+    }
+  }
+  .col-error_code {
+    width: 60px;
+  }
+  .blank_slate {
+    border-radius: 3px;
+    border: 1px dashed #DADADA;
+    color: #AAA;
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 14px 25px;
+    text-align: center;
+    clear: both;
+    height: 17px;
+  }
+  .bounced_emails_content > .blank_slate {
+    clear: both;
+    text-align: center;
+  }
+  .blank_div {
+    width: 100%;
+    clear: both;
+    text-align: center;
+    margin-top: 80px;
+  }
 }
 .admin_bounced_btns {
   display: inline-block;

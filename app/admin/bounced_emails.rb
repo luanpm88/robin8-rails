@@ -32,13 +32,13 @@ ActiveAdmin.register_page "Bounced emails" do
 
       div :class => 'bounced_emails_content' do
         table_for emails, { :class => 'index_table bounced_table'} do
-          column ('Email address') { |i| i["address"] }
-          column ("Error code") { |i| i["code"] }
-          column ("Error message") { |i| i["error"] }
-          column ("Send at") { |i| i["created_at"] }
+          column ('Email Address') { |i| i["address"] }
+          column ("Error Code") { |i| i["code"] }
+          column ("Error Message") { |i| i["error"] }
+          column ("Send At") { |i| i["created_at"] }
         end
 
-        panel "Search details", {:class => 'panel filter_emails'} do
+        panel "Filters", {:class => 'panel filter_emails'} do
           render :partial => "form"
         end
       end
@@ -61,8 +61,15 @@ ActiveAdmin.register_page "Bounced emails" do
         end
       end
     else
-      h2 do
-        "No results."
+      div :class => 'bounced_emails_content' do
+        div :class => 'blank_div' do
+          span :class => 'blank_slate' do
+            "No results"
+          end
+        end
+        panel "Filters", {:class => 'panel filter_emails'} do
+          render :partial => "form"
+        end
       end
       if !params["page"].nil?
         button do
