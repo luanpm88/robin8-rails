@@ -1335,6 +1335,9 @@ zh:
         email_panel:
           email: "你的电子邮件地址"
           email_placeholder: "输入电子邮件地址"
+          kols_register_alias: in our system as an Influencer.
+          kols_register_href_text: P.S. We kindly recommend you to
+          kols_register_text: P.S. We kindly recommend you to
           length: "文章小结长度"
           merge_tags:
             first_name: "名"

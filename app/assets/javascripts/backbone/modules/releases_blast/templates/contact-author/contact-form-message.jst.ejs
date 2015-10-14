@@ -8,5 +8,7 @@ Here's a content you might find interesting:
 </br></br>
 Regards,
 <%= s.isBlank(currentUser.get('name')) ? '' : currentUser.get('name') %>
+<% if (china_instance) { %>
 </br></br>
 P.S. We kindly recommend you to <a href="<%= kolSignUpUrl %>">register</a> in our system as an Influencer.
+<% } %>
