@@ -369,10 +369,10 @@ en:
           status.
         you_dont_have_history: You don't have expired campaigns.
       profile_tab:
-        age_group: Age group
+        age_group: Age Group
         audience_subtitle: self-assessed, optional
         audience_title: My Influence Circle
-        birthdate: Birth date
+        birthdate: Birth Date
         central: Central
         city: City
         country: Country
@@ -400,8 +400,9 @@ en:
         public: Public
         regions: Regions
         secrecy: Secrecy
+        select_region: Select region
         social_subtitle: monetize your influence on those channels
-        social_title: My social
+        social_title: My Social
         south: South
         title: My Profile
         weibo: Weibo
@@ -432,6 +433,13 @@ en:
         title: My Value
         vsmonth: "%{per} vs last month"
         youbeat: You beat %{per} people!
+      validation:
+        city: The City is required
+        country: The Country is required
+        first_name: The First Name is required
+        last_name: The Last Name is required
+        mobile: The Mobile is required
+        region: The Region is required
     date:
       datepicker_days:
         d1: Su

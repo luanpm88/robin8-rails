@@ -8,6 +8,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     events:
       "click #back_to_score_btn": "score"
+      "click td.campaign" : "highlightRow"
 
     onRender: () ->
       campaignsAccepted = new Robin.Collections.Campaigns()
@@ -100,6 +101,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       campaignsPage = new App.Campaigns.Show.CampaignsLayout
       @showChildView 'campaigns', campaignsPage
+      $('#modal').on 'hidden.bs.modal', () ->
+        $('#campaigns-list tr.selected').removeClass 'selected'
 
     score: () ->
       @options.parent.setState('score')
+
+    highlightRow: (event) ->
+      $(event.target).parent('tr').addClass('selected')
