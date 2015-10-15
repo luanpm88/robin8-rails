@@ -22,6 +22,9 @@ class PitchesContact < ActiveRecord::Base
     link = self.pitch.release.permalink
 
     host = Rails.application.secrets[:host]
+    register_text = @l.t('smart_release.pitch_step.email_panel.kols_register_href_text')
+    print register_text
+
     unsub_link = "http://#{host}/unsubscribe/?token=#{self.unsubscribe_token}"
 
     if [0, 2, 3].include? self.contact.origin # pressr or media_list
@@ -44,6 +47,7 @@ class PitchesContact < ActiveRecord::Base
       pitch_text.gsub!('@[Title]', title)
       pitch_text.gsub!('@[Text]', text)
       pitch_text.gsub!('@[Unsubscribe Link]', unsub_link)
+      pitch_text.gsub!('@[KolReghref]', "<a href='http://#{Rails.application.secrets[:host]}/kols/new'>#{register_text}</a>")
 #      pitch_text.gsub!("\n", "<br />")
       pitch_text
     elsif self.contact.origin == 1 # twtrland

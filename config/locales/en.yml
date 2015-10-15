@@ -1425,6 +1425,9 @@ en:
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
+          kols_register_alias: in our system as an Influencer.
+          kols_register_href_text: register
+          kols_register_text: P.S. We kindly recommend you to
           length: Summary length
           merge_tags:
             first_name: First Name

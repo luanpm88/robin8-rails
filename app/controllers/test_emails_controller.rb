@@ -9,14 +9,14 @@ class TestEmailsController < ApplicationController
     release = current_user.releases.find(params[:release_id])
     @draft_pitch = release.draft_pitches.find(params[:draft_pitch_id])
     email_pitch = @draft_pitch.email_pitch
-    email_pitch = email_pitch.sub('@[Title]', '<a href="' + release.permalink + '">' + release.title + '</a>')
-    email_pitch = email_pitch.sub('@[Text]', release.text)
-    email_pitch = email_pitch.sub('@[Link]', release.permalink)
+    email_pitch.gsub!('@[Title]', '<a href="' + release.permalink + '">' + release.title + '</a>')
+    email_pitch.gsub!('@[Text]', release.text)
+    email_pitch.gsub!('@[Link]', release.permalink)
     email_pitch = email_pitch.sub('@[Unsubscribe Link]', "http://#{Rails.application.secrets[:host]}/unsubscribe/?token=****************************************")
-    if email_pitch != @draft_pitch.email_pitch
-      @draft_pitch.email_pitch = email_pitch
-      @draft_pitch.save
-    end
+    register_text = @l.t('smart_release.pitch_step.email_panel.kols_register_href_text')
+    email_pitch.gsub!('@[KolReghref]', "<a href='http://#{Rails.application.secrets[:host]}/kols/new'>#{register_text}</a>")
+    @draft_pitch.email_pitch = email_pitch
+    @draft_pitch.save
     @temp_pitch = current_user.pitches.build(email_pitch: email_pitch,
       email_address: @draft_pitch.email_address, release_id: @draft_pitch.release_id,
       email_subject: @draft_pitch.email_subject, email_targets: true)

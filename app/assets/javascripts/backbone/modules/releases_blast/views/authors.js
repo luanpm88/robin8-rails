@@ -21,6 +21,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "summary": this.summary(),
         "release": this.model,
         "currentUser": Robin.currentUser,
+        "china_instance": Robin.chinaInstance,
         "kolSignUpUrl": window.location.protocol + window.location.host + "/kols/new"
       }
     },
