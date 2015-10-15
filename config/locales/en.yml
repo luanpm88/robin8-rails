@@ -1026,8 +1026,8 @@ en:
       spokeperson: Spokesperson
       what_is: What is
     public_release:
-      notification: You are in a preview mode. You need to make this content and brand
-        gallery public in order to show it on your page
+      notification: You are in a preview mode. You need to make this content and brand gallery 
+        public in order to show it on your page
     register:
       agree_terms: By signing up you agree to Robin8's Terms of Service
       email_already_taken: Email has already been taken
