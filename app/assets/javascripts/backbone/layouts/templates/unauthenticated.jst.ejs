@@ -11,7 +11,11 @@
         <section class="top-bar-section">
           <!-- Right Nav Section -->
           <ul class="right">
-            <li><a href="/contact_us" target="_blank"><%=polyglot.t('header.contact_us')%></a></li>
+            <% if (Robin.chinaInstance) { %>
+              <li><a href="/contact_us" target="_blank"><%=polyglot.t('header.contact_us')%></a></li>
+            <% } else {%>
+              <li><a href="http://try.robin8.com/robin/" target="_blank"><%=polyglot.t('header.contact_us')%></a></li>
+            <% } %>
             <li><a href="/signin" id='login-link' ><%=polyglot.t('header.log_in')%></a></li>
           </ul>
         </section>
