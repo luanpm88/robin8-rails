@@ -10,13 +10,15 @@
       <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
-          <li><%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
-            <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: @l.t('landing_page.english_locale') %>
-          <% end %></li>
-          <li><%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
-            <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: @l.t('landing_page.chinese_locale') %>
-          <% end %></li>
-          <li><a href="/home"><%= @l.t('header.advertisers') %></a></li>
+          <% if not Rails.env.production? || Rails.application.config.china_instance %>
+            <li><%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
+              <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: 'landing_page.english_locale' %>
+            <% end %></li>
+            <li><%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
+              <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: 'landing_page.chinese_locale' %>
+            <% end %></li>
+          <% end %>
+          <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
           <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
         </ul>
       </section>
