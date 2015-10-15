@@ -17,6 +17,7 @@
 
 server '139.196.36.27', user: 'deployer', roles: %w{web app db}
 set :branch, 'development_chinese_marketplace'
+
 set :rails_env, "production"
 
 set :rbenv_ruby, '2.2.0'

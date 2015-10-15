@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_translations
   before_action :china_redirect
+  helper_method :china_instance?
 
   def china_redirect
     if Rails.env.production? and china_client? and not china_instance?
