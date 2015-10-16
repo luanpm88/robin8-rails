@@ -137,10 +137,33 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             validators:
               notEmpty:
                 message: polyglot.t('dashboard_kol.validation.city')
+          current_password:
+            validators:
+              notEmpty:
+                message: polyglot.t('profile.current_password_req')
+          password:
+            validators:
+              notEmpty:
+                message: polyglot.t('profile.password_required')
+          password_confirmation:
+            validators:
+              notEmpty:
+                message: polyglot.t('profile.password_confirmation_req')
+              identical:
+                field: 'password'
+                message: polyglot.t('profile.password_confirmation_must_same')
+
       ).on('err.field.fv', (e, data) ->
           data.element.parents('.cell').addClass 'has-error'
-      ).on 'success.field.fv', (e, data) ->
+      ).on('success.field.fv', (e, data) ->
           data.element.parents('.cell').removeClass 'has-error'
+      ).on 'keyup', '[name="password"]', (e, data) ->
+          isEmpty = $(this).val() == ''
+          $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+          # Revalidate the field when user starts typing in the password field
+          if $(this).val().length == 1
+            $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+
 
     showDatepicker: ->
       @ui.birthdate.datepicker('show')
