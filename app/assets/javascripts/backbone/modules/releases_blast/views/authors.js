@@ -5,7 +5,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
   ReleasesBlast.ContactAuthorFormMessageView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/contact-author/contact-form-message',
-    tagName: 'textarea',
+    tagName: 'div',
     className: 'form-control',
     attributes: {
       'contenteditable': 'true',
