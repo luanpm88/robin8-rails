@@ -70,6 +70,10 @@ class PagesController < ApplicationController
     render :layout => "website"
   end
 
+  def about
+    render :layout => "website"
+  end
+
   def unsubscribe
     if self.request.params["token"]
       pitch_contact = PitchesContact.find_by unsubscribe_token: self.request.params["token"]
