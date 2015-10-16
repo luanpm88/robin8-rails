@@ -5,7 +5,11 @@
         <div class="filter_form_field filter_numeric select_and_search">
           <label for="q_email" class="label">Email</label>
           <span >Equals</span>
-          <input id="q_email" step="any" type="text" name="q[email_equals]">
+          <% value = "" %>
+          <% unless params["q"].nil? %>
+          <% value =  params["q"]["email_equals"] %>
+          <% end %>
+          <input id="q_email" step="any" type="text" name="q[email_equals]" value="<%= value %>">
           <div class="buttons">
             <%= button_to "Filter", admin_bounced_emails_email_filter_path, method: :get %>
             <%= button_to "Clear Filters", admin_bounced_emails_path, method: :get %>
