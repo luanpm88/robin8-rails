@@ -386,7 +386,9 @@ zh:
         birthdate: Birth Date
         central: Central
         city: City
+        confirm_password: Confirm new password
         country: Country
+        current_password: Current password
         east: East
         fans_number: Fans Number
         female: Female
@@ -404,6 +406,7 @@ zh:
         male_female: Male:Female
         mobile: Mobile
         name: Name
+        new_password: New password
         north: North
         northeast: Northeast
         personal: Personal
