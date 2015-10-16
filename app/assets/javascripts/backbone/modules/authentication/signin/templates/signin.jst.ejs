@@ -10,7 +10,7 @@
 
         <div class="form-group">
           <label>
-            <input type="text" class="form-control" name="email" placeholder="<%= polyglot.t("login.email") %>"/>
+            <input type="text" class="form-control" id="email" name="email" placeholder="<%= polyglot.t("login.email") %>"/>
           </label>
         </div>
 
@@ -25,7 +25,7 @@
         <div id="alert-danger" class="alert alert-danger" role="alert" style="display: none; text-align: center;"></div>
 
         <div class="submit-wrap">
-          <button class="button button-signup" type="button" id="login"><%= polyglot.t("login.login_label") %></button>
+          <button class="button button-signup" type="submit" id="login"><%= polyglot.t("login.login_label") %></button>
         </div>
         <div class="rememberme"><input type="checkbox" name='remember_me' id="remember_me" /> <%= polyglot.t("login.remember_me") %></div>
         <div class="forgotpass"><a href="#forgot"><%= polyglot.t("login.forgot") %></a></div>

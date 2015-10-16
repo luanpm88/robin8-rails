@@ -21,6 +21,10 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       $('#login-link').addClass('active');
     },
 
+    onShow:function() {
+      $('#email').focus();
+    },
+
     login: function(e) {
       e.preventDefault();
 
