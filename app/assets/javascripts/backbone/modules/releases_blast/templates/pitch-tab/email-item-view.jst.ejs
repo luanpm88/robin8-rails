@@ -1,8 +1,9 @@
 <td><%= full_name %></td>
 <td><%= outlet %></td>
+<% if (isShow){ %>
 <% if (email) {%>
-<td><%= email %></td>
+<td></td>
 <%} else {%>
 <td><input class="form-control" name="author_email" data-pressr-id="<%= author_id%>" placeholder="<%= polyglot.t("smart_release.pitch_step.email_panel.email_placeholder")%>" type="text" value=""></td>
-<%}%>
+<%} }%>
 <td><a class="btn btn-danger btn-xs" href="#"><i class="fa fa-close"></i> <%= polyglot.t("smart_release.pitch_step.delete_button") %></a></td>
