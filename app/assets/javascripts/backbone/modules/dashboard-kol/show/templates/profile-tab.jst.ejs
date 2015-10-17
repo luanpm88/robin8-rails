@@ -105,7 +105,7 @@
           <div class="col-md-1 cell label-influence-circle kol-profile" style="white-space: nowrap;"><%= polyglot.t('dashboard_kol.profile_tab.age_group') %></div>
           <div class="filter-group">
           <% _(ages).each(function(g, i) { %>
-            <div class="col-md-1 cell label-influence-circle">
+            <div class="col-md-1 cell label-influence-circle kol-ages-group">
               <button type="button" class="btn switch-button form-control full-width filter-btn <%= active('ages', i, k) %>" name="agegroup_<%= i %>" data-toggle="button">
                 <%= g %>
               </button>
