@@ -31,11 +31,23 @@ Robin.Models.Pitch = Backbone.RelationalModel.extend({
   }],
   getEmailPitch: function(){
     if (Robin.chinaInstance) {
-      return polyglot.t('smart_release.pitch_step.email_panel.text_dear') + " @[First Name],<br /><br />" + polyglot.t('smart_release.pitch_step.email_panel.text_here') + "<br /><br />@[Signature]<br /><br /> " + polyglot.t('smart_release.pitch_step.email_panel.text_text') + ":<br /><br />@[Title]<br /><br />@[Text]<br /><br />"+ polyglot.t('smart_release.pitch_step.email_panel.kols_register_text') + " @[KolReghref] " + polyglot.t('smart_release.pitch_step.email_panel.kols_register_alias') + "<br /><br />";
-    }
-    else
-    {
-      return polyglot.t('smart_release.pitch_step.email_panel.text_dear') + " @[First Name],<br /><br />" + polyglot.t('smart_release.pitch_step.email_panel.text_here') + "<br /><br />@[Signature]<br /><br /> " + polyglot.t('smart_release.pitch_step.email_panel.text_text') + ":<br /><br />@[Title]<br /><br />@[Text]";
+      return (polyglot.t('smart_release.pitch_step.email_panel.text_dear') +
+          " @[First Name],<br /><br />" +
+          polyglot.t('smart_release.pitch_step.email_panel.text_here') +
+          "<br /><br />@[Signature]<br /><br /> " +
+          polyglot.t('smart_release.pitch_step.email_panel.text_text') +
+          ":<br /><br />@[Title]<br /><br />@[Text]<br /><br />"+
+          polyglot.t('smart_release.pitch_step.email_panel.kols_register_text') +
+          " @[KolReghref] " +
+          polyglot.t('smart_release.pitch_step.email_panel.kols_register_alias') +
+          "<br /><br />");
+    } else {
+      return (polyglot.t('smart_release.pitch_step.email_panel.text_dear') +
+          " @[First Name],<br /><br />" +
+          polyglot.t('smart_release.pitch_step.email_panel.text_here') +
+          "<br /><br />@[Signature]<br /><br /> " +
+          polyglot.t('smart_release.pitch_step.email_panel.text_text') +
+          ":<br /><br />@[Title]<br /><br />@[Text]");
     }
   }
 });
@@ -51,11 +63,23 @@ Robin.Models.DraftPitch = Backbone.Model.extend({
   },
   getEmailPitch: function(){
     if (Robin.chinaInstance) {
-      return polyglot.t('smart_release.pitch_step.email_panel.text_dear') + " @[First Name],<br /><br />" + polyglot.t('smart_release.pitch_step.email_panel.text_here') + "<br /><br />@[Signature]<br /><br /> " + polyglot.t('smart_release.pitch_step.email_panel.text_text') + ":<br /><br />@[Title]<br /><br />@[Text]<br /><br />"+ polyglot.t('smart_release.pitch_step.email_panel.kols_register_text') + " @[KolReghref] " + polyglot.t('smart_release.pitch_step.email_panel.kols_register_alias') + "<br /><br />";
-    }
-    else
-    {
-      return polyglot.t('smart_release.pitch_step.email_panel.text_dear') + " @[First Name],<br /><br />" + polyglot.t('smart_release.pitch_step.email_panel.text_here') + "<br /><br />@[Signature]<br /><br /> " + polyglot.t('smart_release.pitch_step.email_panel.text_text') + ":<br /><br />@[Title]<br /><br />@[Text]";
+      return (polyglot.t('smart_release.pitch_step.email_panel.text_dear') +
+          " @[First Name],<br /><br />" +
+          polyglot.t('smart_release.pitch_step.email_panel.text_here') +
+          "<br /><br />@[Signature]<br /><br /> " +
+          polyglot.t('smart_release.pitch_step.email_panel.text_text') +
+          ":<br /><br />@[Title]<br /><br />@[Text]<br /><br />"+
+          polyglot.t('smart_release.pitch_step.email_panel.kols_register_text') +
+          " @[KolReghref] " +
+          polyglot.t('smart_release.pitch_step.email_panel.kols_register_alias') +
+          "<br /><br />");
+    } else {
+      return (polyglot.t('smart_release.pitch_step.email_panel.text_dear') +
+          " @[First Name],<br /><br />" +
+          polyglot.t('smart_release.pitch_step.email_panel.text_here') +
+          "<br /><br />@[Signature]<br /><br /> " +
+          polyglot.t('smart_release.pitch_step.email_panel.text_text') +
+          ":<br /><br />@[Title]<br /><br />@[Text]");
     }
   }
 });
