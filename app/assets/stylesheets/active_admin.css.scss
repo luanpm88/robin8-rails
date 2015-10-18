@@ -16,22 +16,20 @@
 //
 //   .status_tag { background: #6090DB; }
 .filter_emails {
-  margin-left: 20px;
-  width: 240px;
   height: 145px;
+  width: 270px;
+  margin-left: 25px;
 }
 .filter_emails .sidebar_section {
   height: 100px;
 }
 .filter_emails #q_email {
-  width: 114px !important;
-}
-.bounced_table {
-  width: 84% !important;
+  width: 56% !important;
 }
 .admin_bounced_emails {
   .bounced_emails_content {
-    display: flex;
+    width: 85%;
+    -ms-flex: 1;
   }
   .button_to {
     display: inline;
@@ -59,6 +57,9 @@
       box-shadow: none;
       margin-left: -15px;
     }
+    .buttons {
+      width: 200px;
+    }
   }
   .col-error_code {
     width: 65px;
@@ -84,6 +85,10 @@
     clear: both;
     text-align: center;
     margin-top: 80px;
+  }
+  #main_content {
+    display: flex;
+    width: 100%;
   }
 }
 .admin_bounced_btns {

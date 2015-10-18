@@ -37,29 +37,30 @@ ActiveAdmin.register_page "Bounced emails" do
           column ("Error Message") { |i| i["error"] }
           column ("Send At") { |i| i["created_at"] }
         end
+        if !response["paging"].nil?
+          previous_page = response["paging"]["previous"].split('?')[1]
+          next_page = response["paging"]["next"].split('?')[1]
 
-        panel "Filters", {:class => 'panel filter_emails'} do
-          render :partial => "form"
-        end
-      end
-
-      if !response["paging"].nil?
-        previous_page = response["paging"]["previous"].split('?')[1]
-        next_page = response["paging"]["next"].split('?')[1]
-
-        div :class => 'admin_bounced_btns' do
-          if previous_page!="limit=#{limit}" && !params["page"].nil? && (session[:first_item] != emails[0]["address"])
-            link_to 'Prev', 'bounced_emails?' <<  previous_page
-          else 'Prev'
+          div :class => 'admin_bounced_btns' do
+            if previous_page!="limit=#{limit}" && !params["page"].nil? && (session[:first_item] != emails[0]["address"])
+              link_to 'Prev', 'bounced_emails?' <<  previous_page
+            else 'Prev'
+            end
           end
-        end
-        div :class => 'admin_bounced_btns' do
-          if next_page!="limit=#{limit}" && emails.length == limit
-            link_to 'Next', 'bounced_emails?' << next_page
-          else 'Next'
+          div :class => 'admin_bounced_btns' do
+            if next_page!="limit=#{limit}" && emails.length == limit
+              link_to 'Next', 'bounced_emails?' << next_page
+            else 'Next'
+            end
           end
         end
       end
+
+      panel "Filters", {:class => 'panel filter_emails'} do
+        render :partial => "form"
+      end
+
+
     else
       div :class => 'bounced_emails_content' do
         div :class => 'blank_div' do
