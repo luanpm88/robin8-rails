@@ -202,16 +202,21 @@ zh:
         qty: "数量"
       title: "附加服务"
     analytics:
+      apply: Apply
       author: "作者"
+      date_range: Date Range
       delivered: "送达"
       dropped: "下降"
       email: "电子邮件"
+      email_old_content: Sorry, no tracking for this release available
       emails: "电子邮件"
       filter_by: "筛选"
       newsrooms_views: "新闻中心访问量"
       opened: "开放"
       outlet: "媒体"
       page_views: "页面访问量"
+      select_all: All
+      select_content: Select Content
       sent: "发送"
       statisitcs: "智能发布邮件数据统计"
       values: "值"
@@ -1428,10 +1433,15 @@ zh:
           title: "大V"
         media_tab:
           add_list: "添加过去保存过的名单"
+          cancel: Cancel
           delete: "删除"
+          delete_from_pitch: Delete from pitch
+          delete_this_list: Delete this list
           formats: "支持文件格式"
           ignored_contacts: All contacts in incorrect format will be ignored.
           not_available: You don't have available media list in your subscription!
+          recover_unabled: You will not be able to recover this content.
+          remove_media_list: Remove this media list?
           select_placeholder: "选择一个媒体名单或者上传一个新的名单"
           successfully_uploaded: "您的列表已经成功上传。"
           table:
@@ -1496,7 +1506,7 @@ zh:
         connected_to: "已关联的"
         description: "使用Robin8来管理你的社交网络信息。请先关联你的社交账号，然后你就可以轻松的直接发布到或者计划发布到所关联的社交网络中"
         disconnect: "未关联的"
-        facebook: Facebbok
+        facebook: Facebook
         google: Google+
         linkedin: LinkedIn／领英
         no_accounts: "这个账户不存在"

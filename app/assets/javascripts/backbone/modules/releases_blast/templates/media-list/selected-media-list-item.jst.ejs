@@ -1,3 +1,6 @@
 <td><%= name %></td>
 <td><%= contacts.length %></td>
-<td><a class="btn btn-danger btn-xs" href="#"><i class="fa fa-close"></i> <%= polyglot.t("smart_release.targets_step.media_tab.delete") %></a></td>
+<td class="col-md-4">
+  <a class="btn btn-danger btn-xs" href="#" id="delete-from-pitch"><i class="fa fa-close"></i> <%= polyglot.t("smart_release.targets_step.media_tab.delete_from_pitch") %></a>
+  <a class="btn btn-danger btn-xs" href="#" id="delete-list"><i class="fa fa-close"></i> <%= polyglot.t("smart_release.targets_step.media_tab.delete_this_list") %></a>
+</td>

@@ -1787,6 +1787,21 @@ input.form-control[type="file"] {
   overflow-y: auto;
 }
 
+.content-filter {
+  padding: 8px 0;
+  margin: 0 10px;
+}
+#emails-analytics {
+  .old_content {
+    text-align: center;
+    font-size: 24px;
+    line-height: 250px;
+  }
+}
+.change-emails-release {
+  max-width: 250px;
+}
+
 #invite_kols {
   min-width: 0px;
   background-color: #8CC152;
@@ -1822,7 +1837,6 @@ input.form-control[type="file"] {
   display: table-cell;
   vertical-align: top;
 }
-
 .btn-primary-green, .btn-primary-green:active, .btn-primary-green.active, .btn-primary-green.disabled, .btn-primary-green[disabled] {
   background-color: #6aa84f;
   border-color: #6aa84f;
