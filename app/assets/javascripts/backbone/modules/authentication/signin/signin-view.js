@@ -44,6 +44,10 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       });
     },
 
+    onShow:function() {
+      $('#email').focus();
+    },
+
     login: function(e) {
       e.preventDefault();
 
