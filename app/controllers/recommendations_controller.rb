@@ -34,8 +34,8 @@ class RecommendationsController < ApplicationController
             topics = ""
             analytics_client = AylienTextApi::Client.new
             concepts = analytics_client.concepts(text)[:concepts].keys
-            concepts.each{ |concept| 
-                topics = topics + "," + concept.to_s.split("/resource/")[1] 
+            concepts.each{ |concept|
+                topics = topics + "," + concept.to_s.split("/resource/")[1]
             }
             topics[0] = ''
 
@@ -47,8 +47,10 @@ class RecommendationsController < ApplicationController
             event['topics'] = topics
             event['categories'] = ""
 
-            response = HTTParty.post("http://staging.wripl.com/events.json", :body => { :event => event }.to_json, :headers => { 'Content-Type' => 'application/json' } )
-        
+            response = HTTParty.post("http://#{Rails.application.secrets.recsys}/events.json",
+                                     :body => { :event => event }.to_json,
+                                     :headers => { 'Content-Type' => 'application/json' } )
+
         elsif request_count != "0"
             status = "Only Processes Request Once"
         else
@@ -59,7 +61,7 @@ class RecommendationsController < ApplicationController
 
     end
 
-    def event 
+    def event
         if validate_event(params)
             event = Hash.new
             event['wripl_object_id'] = params['event']['wripl_object_id']
@@ -69,10 +71,10 @@ class RecommendationsController < ApplicationController
             event['topics'] = params['event']['topics']
             event['categories'] = params['event']['categories']
 
-            response = HTTParty.post("http://staging.wripl.com/events.json", 
+            response = HTTParty.post("http://#{Rails.application.secrets.recsys}/events.json",
                     :body => { :event => event }.to_json,
                     :headers => { 'Content-Type' => 'application/json' } )
-            
+
             render json: event, status: :created
         else
           render json: "{'Errors' : 'Invlaid Event Attributes'}".to_json, status: :bad_request
@@ -81,7 +83,8 @@ class RecommendationsController < ApplicationController
 
     def status
         if validate_params(params)
-            response = HTTParty.get("http://staging.wripl.com/recommendations/status/" + params['id'] + ".json?last_sign_in_at=" + params['last_sign_in_at'], 
+            response = HTTParty.get("http://#{Rails.application.secrets.recsys}/recommendations/status/" +
+                                    params['id'] + ".json?last_sign_in_at=" + params['last_sign_in_at'],
                             :options => { :headers => { 'Content-Type' => 'application/json' }})
             render json: response.to_json
         else
@@ -92,7 +95,7 @@ class RecommendationsController < ApplicationController
 	def index
         recommended_stories = Array.new
         type = "CONTENT"
-        page = 0 
+        page = 0
         user_id = current_user
 
         if current_user
@@ -100,17 +103,18 @@ class RecommendationsController < ApplicationController
         else
             user_id = 0
         end
-        
+
         if params[:type] != nil
             type = params[:type].upcase
-        end 
-        
-        if params[:page].to_i != nil 
+        end
+
+        if params[:page].to_i != nil
          page = params[:page].to_i
         end
 
         begin
-            response = HTTParty.get("http://staging.wripl.com/recommendations/#{user_id}.json", :options => { :headers => { 'Content-Type' => 'application/json' }})
+            response = HTTParty.get("http://#{Rails.application.secrets.recsys}/recommendations/#{user_id}.json",
+                                    :options => { :headers => { 'Content-Type' => 'application/json' }})
             json_recommendation_ids = JSON.parse(response.body)
         rescue Net::ReadTimeout
             logger.info "Operation Timedout"
@@ -120,11 +124,11 @@ class RecommendationsController < ApplicationController
 
         case response.code
           when 200
-            logger.info "Request proceesed" 
+            logger.info "Request proceesed"
           when 404
-            logger.info "Resource Not Found" 
+            logger.info "Resource Not Found"
           when 500...600
-            logger.info "Server Rrror" 
+            logger.info "Server Rrror"
         end
 
         #Pagination is conducted here
@@ -139,7 +143,7 @@ class RecommendationsController < ApplicationController
             end
             recommended_stories = stories(page, recommended_ids.each_slice(15).to_a)
         end
-        
+
 		render json:  recommended_stories
 	end
 
@@ -195,13 +199,16 @@ class RecommendationsController < ApplicationController
             emails = Hash.new
             pages[page].each{|current_page|
                 id = current_page[:id].to_s
-                references[id] = { "reference" => current_page[:reference], "recommendation_type" => current_page[:recommendation_type], "email" => current_page[:email] }
+                references[id] = { "reference" => current_page[:reference],
+                                   "recommendation_type" => current_page[:recommendation_type],
+                                   "email" => current_page[:email] }
                 params = params + "ids[]=#{id}&"
             }
             params = params = params + "per_page=100"
             url = base_url + params
 
-            auth = {:username => Rails.application.secrets.robin_api_user, :password => Rails.application.secrets.robin_api_pass}
+            auth = {:username => Rails.application.secrets.robin_api_user,
+                    :password => Rails.application.secrets.robin_api_pass}
             stories = JSON.parse(HTTParty.get(url, :basic_auth => auth).body)
             recommended_stories = []
 
@@ -212,7 +219,7 @@ class RecommendationsController < ApplicationController
                 story['email'] = references[id]['email']
                 story['reference'] = references[id]['reference']
                 story['recommendationType'] = references[id]['recommendation_type']
-                story['shares_count'].each{ |key, value| 
+                story['shares_count'].each{ |key, value|
                     share_count = share_count + value
                 }
                 story['shares_count'] = share_count
@@ -223,6 +230,6 @@ class RecommendationsController < ApplicationController
         recommended_stories
     end
 
-    
+
 
 end
