@@ -43,6 +43,9 @@ gem 'redis-rails'
 # To accessing HTTP and REST resources
 gem 'rest-client'
 
+# Send notification when error occur
+gem 'exception_notification'
+
 # Character encoding detecting library
 gem 'charlock_holmes'
 
