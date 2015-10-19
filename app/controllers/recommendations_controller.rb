@@ -47,7 +47,9 @@ class RecommendationsController < ApplicationController
             event['topics'] = topics
             event['categories'] = ""
 
-            response = HTTParty.post("http://staging.wripl.com/events.json", :body => { :event => event }.to_json, :headers => { 'Content-Type' => 'application/json' } )
+            response = HTTParty.post("http://staging.wripl.com/events.json",
+                                     :body => { :event => event }.to_json,
+                                     :headers => { 'Content-Type' => 'application/json' } )
 
         elsif request_count != "0"
             status = "Only Processes Request Once"
@@ -81,7 +83,8 @@ class RecommendationsController < ApplicationController
 
     def status
         if validate_params(params)
-            response = HTTParty.get("http://staging.wripl.com/recommendations/status/" + params['id'] + ".json?last_sign_in_at=" + params['last_sign_in_at'],
+            response = HTTParty.get("http://staging.wripl.com/recommendations/status/" +
+                                    params['id'] + ".json?last_sign_in_at=" + params['last_sign_in_at'],
                             :options => { :headers => { 'Content-Type' => 'application/json' }})
             render json: response.to_json
         else
@@ -110,7 +113,8 @@ class RecommendationsController < ApplicationController
         end
 
         begin
-            response = HTTParty.get("http://staging.wripl.com/recommendations/#{user_id}.json", :options => { :headers => { 'Content-Type' => 'application/json' }})
+            response = HTTParty.get("http://staging.wripl.com/recommendations/#{user_id}.json",
+                                    :options => { :headers => { 'Content-Type' => 'application/json' }})
             json_recommendation_ids = JSON.parse(response.body)
         rescue Net::ReadTimeout
             logger.info "Operation Timedout"
@@ -195,13 +199,16 @@ class RecommendationsController < ApplicationController
             emails = Hash.new
             pages[page].each{|current_page|
                 id = current_page[:id].to_s
-                references[id] = { "reference" => current_page[:reference], "recommendation_type" => current_page[:recommendation_type], "email" => current_page[:email] }
+                references[id] = { "reference" => current_page[:reference],
+                                   "recommendation_type" => current_page[:recommendation_type],
+                                   "email" => current_page[:email] }
                 params = params + "ids[]=#{id}&"
             }
             params = params = params + "per_page=100"
             url = base_url + params
 
-            auth = {:username => Rails.application.secrets.robin_api_user, :password => Rails.application.secrets.robin_api_pass}
+            auth = {:username => Rails.application.secrets.robin_api_user,
+                    :password => Rails.application.secrets.robin_api_pass}
             stories = JSON.parse(HTTParty.get(url, :basic_auth => auth).body)
             recommended_stories = []
 
