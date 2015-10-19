@@ -47,7 +47,7 @@ class RecommendationsController < ApplicationController
             event['topics'] = topics
             event['categories'] = ""
 
-            response = HTTParty.post("http://staging.wripl.com/events.json",
+            response = HTTParty.post("http://#{Rails.application.secrets.recsys}/events.json",
                                      :body => { :event => event }.to_json,
                                      :headers => { 'Content-Type' => 'application/json' } )
 
@@ -71,7 +71,7 @@ class RecommendationsController < ApplicationController
             event['topics'] = params['event']['topics']
             event['categories'] = params['event']['categories']
 
-            response = HTTParty.post("http://staging.wripl.com/events.json",
+            response = HTTParty.post("http://#{Rails.application.secrets.recsys}/events.json",
                     :body => { :event => event }.to_json,
                     :headers => { 'Content-Type' => 'application/json' } )
 
@@ -83,7 +83,7 @@ class RecommendationsController < ApplicationController
 
     def status
         if validate_params(params)
-            response = HTTParty.get("http://staging.wripl.com/recommendations/status/" +
+            response = HTTParty.get("http://#{Rails.application.secrets.recsys}/recommendations/status/" +
                                     params['id'] + ".json?last_sign_in_at=" + params['last_sign_in_at'],
                             :options => { :headers => { 'Content-Type' => 'application/json' }})
             render json: response.to_json
@@ -113,7 +113,7 @@ class RecommendationsController < ApplicationController
         end
 
         begin
-            response = HTTParty.get("http://staging.wripl.com/recommendations/#{user_id}.json",
+            response = HTTParty.get("http://#{Rails.application.secrets.recsys}/recommendations/#{user_id}.json",
                                     :options => { :headers => { 'Content-Type' => 'application/json' }})
             json_recommendation_ids = JSON.parse(response.body)
         rescue Net::ReadTimeout
