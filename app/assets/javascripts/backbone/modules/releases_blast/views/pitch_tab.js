@@ -24,20 +24,16 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     initialize: function(options){
       var emails_count = 0;
       var isShow = true;
-      if (this.model.collection.models.length > 1) {
-        this.model.collection.models.forEach(function(item, i, arr) {
-          if (item.email != undefined && item.email != null) {
-            emails_count = emails_count + 1;
-          }
-        });
-      }
-      else {
-        this.model.collection.models.forEach(function(item, i, arr) {
+      this.model.collection.models.forEach(function(item, i, arr) {
+        if (item.email != undefined && item.email != null) {
+          emails_count = emails_count + 1;
+        }
+        if (item.attributes != undefined) {
           if (item.attributes.email != undefined && item.attributes.email != null) {
             emails_count = emails_count + 1;
           }
-        });
-      }
+        }
+      });
       if (emails_count == this.model.collection.models.length) {
         isShow = false;
       }
