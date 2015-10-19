@@ -62,7 +62,7 @@ ActiveAdmin.register_page "Bounced emails" do
 
 
     else
-      div :class => 'bounced_emails_content' do
+      div :class => 'bounced_emails_no_content' do
         div :class => 'blank_div' do
           span :class => 'blank_slate' do
             "No results"
