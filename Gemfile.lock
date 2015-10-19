@@ -751,6 +751,7 @@ DEPENDENCIES
   rails-assets-x-editable!
   redis-objects
   redis-rails
+  rest-client
   roadie (~> 3.0.5)
   rspec-activemodel-mocks
   rspec-mocks

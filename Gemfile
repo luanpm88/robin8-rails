@@ -40,6 +40,9 @@ gem 'sitemap_generator'
 gem 'redis-objects'
 gem 'redis-rails'
 
+# To accessing HTTP and REST resources
+gem 'rest-client'
+
 # Character encoding detecting library
 gem 'charlock_holmes'
 
