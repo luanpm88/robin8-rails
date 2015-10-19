@@ -383,6 +383,7 @@ en:
         confirm_password: Confirm new password
         country: Country
         current_password: Current password
+        current_password_invalid: Current password is incorrect
         east: East
         fans_number: Fans Number
         female: Female
