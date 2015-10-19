@@ -31,6 +31,11 @@
     width: 85%;
     -ms-flex: 1;
   }
+  .bounced_emails_no_content {
+    width: 100%;
+    -ms-flex: 1;
+    display: flex;
+  }
   .button_to {
     display: inline;
   }
