@@ -65,6 +65,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     onRender: ->
       @model_binder.bind @model, @el
+      $("#password").val("")
+      $("#current_password").val("")
+      $("#password_confirmation").val("")
       @social_view = new Show.ProfileSocialView
         model: @model
       @showChildView 'social', @social_view
@@ -106,7 +109,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         framework: 'bootstrap'
         excluded: [
           ':hidden'
-          ':not(.required)'
+          ':disabled'
         ]
         icon:
           valid: 'glyphicon glyphicon-ok'
@@ -138,31 +141,52 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               notEmpty:
                 message: polyglot.t('dashboard_kol.validation.city')
           current_password:
+            enabled: false,
             validators:
               notEmpty:
                 message: polyglot.t('profile.current_password_req')
+              serverError:
+                message: polyglot.t('profile.something_wrong')
           password:
+            enabled: false,
             validators:
               notEmpty:
                 message: polyglot.t('profile.password_required')
+              serverError:
+                message: polyglot.t('profile.something_wrong')
           password_confirmation:
+            enabled: false,
             validators:
               notEmpty:
                 message: polyglot.t('profile.password_confirmation_req')
               identical:
                 field: 'password'
                 message: polyglot.t('profile.password_confirmation_must_same')
+              serverError:
+                message: polyglot.t('profile.something_wrong')
 
       ).on('err.field.fv', (e, data) ->
           data.element.parents('.cell').addClass 'has-error'
       ).on('success.field.fv', (e, data) ->
           data.element.parents('.cell').removeClass 'has-error'
-      ).on 'keyup', '[name="password"]', (e, data) ->
-          isEmpty = $(this).val() == ''
-          $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
-          # Revalidate the field when user starts typing in the password field
-          if $(this).val().length == 1
-            $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+      ).on 'keyup', 'input[name="password"]', ->
+        isEmpty = $(@).val() == ''
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        # Revalidate the field when user starts typing in the password field
+        if $(@).val().length == 1
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+      .on 'keyup', 'input[name="current_password"]', ->
+        isEmpty = $(@).val() == ''
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        # Revalidate the field when user starts typing in the password field
+        if $(@).val().length == 1
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+      .on 'keyup', 'input[name="password_confirmation"]', ->
+        isEmpty = $(@).val() == ''
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        # Revalidate the field when user starts typing in the password field
+        if $(@).val().length == 1
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
 
 
     showDatepicker: ->
@@ -258,10 +282,25 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           success: (m, r) =>
             @initial_attrs = m.toJSON()
             App.currentKOL.set m.attributes
+            App.currentKOL.attributes.current_password = "";
+            App.currentKOL.attributes.password = "";
+            App.currentKOL.attributes.password_confirmation = "";
             $.growl "You profile was saved successfully", {type: "success"}
+            $("#password").val("")
+            $("#current_password").val("")
+            $("#password_confirmation").val("")
             @parent_view?.score()
           error: (m, r) =>
             console.log "Error saving KOL profile. Response is:"
             console.log r
-            $.growl "Can't save profile info", {type: "danger"}
+            errors = JSON.parse(r.responseText).errors
+            _.each errors, ((value, key) ->
+              @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
+              val = value.join(',')
+              if val == 'is invalid'
+                val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
+              @ui.form.data('formValidation').updateMessage key, 'serverError', val
+            ), this
+            element = document.getElementById("current_password")
+            element.scrollIntoView(false)
 
