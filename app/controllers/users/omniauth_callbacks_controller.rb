@@ -60,6 +60,10 @@ module Users
                 @identity.kol = current_kol
                 @identity.user_id = nil
                 @identity.save
+
+                # tell data engine a new uid inserted via api
+                kol_auth_info = { provider: auth.provider, uid: auth.uid }
+                IntegrationWithDataEngineWorker.perform_async 'insert_kol', kol_auth_info
               end
             end
           end
