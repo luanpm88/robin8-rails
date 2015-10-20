@@ -15,14 +15,14 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     },
 
     onRender: function() {
+      var $this = this;
       this.modelBinder.bind(this.model, this.el);
       $('.signup-tag').text(polyglot.t('login.title'));
       $('.nav.fixed a').removeClass('active');
       $('#login-link').addClass('active');
-    },
-
-    onShow:function() {
-      $('#email').focus();
+      _.defer(function(){
+        $this.$('#email').focus();
+      });
     },
 
     login: function(e) {
