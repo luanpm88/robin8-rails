@@ -7,7 +7,7 @@ GIT
       sort_alphabetical (~> 1.0)
 
 GEM
-  remote: http://ruby.taobao.org/
+  remote: https://ruby.taobao.org/
   remote: https://rails-assets.org/
   specs:
     actionmailer (4.2.0)
@@ -544,6 +544,9 @@ GEM
       rspec-expectations (~> 3.2.0)
       rspec-mocks (~> 3.2.0)
       rspec-support (~> 3.2.0)
+    rspec-sidekiq (2.1.0)
+      rspec (~> 3.0, >= 3.0.0)
+      sidekiq (>= 2.4.0)
     rspec-support (3.2.2)
     rubyzip (1.1.7)
     sass (3.4.14)
@@ -760,6 +763,7 @@ DEPENDENCIES
   rspec-activemodel-mocks
   rspec-mocks
   rspec-rails
+  rspec-sidekiq
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq
