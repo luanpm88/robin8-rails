@@ -7,7 +7,7 @@ GIT
       sort_alphabetical (~> 1.0)
 
 GEM
-  remote: http://ruby.taobao.org/
+  remote: https://ruby.taobao.org/
   remote: https://rails-assets.org/
   specs:
     actionmailer (4.2.0)
