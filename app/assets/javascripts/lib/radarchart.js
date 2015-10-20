@@ -36,7 +36,7 @@ var RadarChart = {
       }
     }
     cfg.maxValue = Math.max(cfg.maxValue, d3.max(d, function(i){return d3.max(i.map(function(o){return o.value;}))}));
-    var allAxis = (d[0].map(function(i, j){return i.axis}));
+    var allAxis = (d[0].map(function(i, j){return {name: i.axis, xOffset: (i.xOffset)?i.xOffset:0, yOffset: (i.yOffset)?i.yOffset:0};}));
     var total = allAxis.length;
     var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
     var Format = d3.format('');
@@ -106,14 +106,14 @@ var RadarChart = {
 
     axis.append("text")
       .attr("class", "legend")
-      .text(function(d){return d})
+      .text(function(d){return d.name})
       .style("font-family", "sans-serif")
       .style("font-size", "10px")
       .attr("text-anchor", "middle")
       .attr("dy", "1.5em")
       .attr("transform", function(d, i){return "translate(0, -10)"})
-      .attr("x", function(d, i){return cfg.w/2*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total);})
-      .attr("y", function(d, i){return cfg.h/2*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total);});
+      .attr("x", function(d, i){return d.xOffset+ cfg.w/2*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total);})
+      .attr("y", function(d, i){return d.yOffset+ cfg.h/2*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total);});
 
     series = 0
     d.forEach(function(y, x){
