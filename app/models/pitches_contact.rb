@@ -22,8 +22,6 @@ class PitchesContact < ActiveRecord::Base
     link = self.pitch.release.permalink
 
     host = Rails.application.secrets[:host]
-    register_text = @l.t('smart_release.pitch_step.email_panel.kols_register_href_text')
-    print register_text
 
     if [0, 2, 3].include? self.contact.origin # pressr or pressr_weibo or media_list
       first_name = self.contact.first_name
@@ -44,7 +42,7 @@ class PitchesContact < ActiveRecord::Base
       pitch_text.gsub!('@[Link]', "<a href='#{link}'>#{link}</a>")
       pitch_text.gsub!('@[Title]', title)
       pitch_text.gsub!('@[Text]', text)
-      pitch_text.gsub!('@[KolReghref]', "<a href='http://#{Rails.application.secrets[:host]}/kols/new'>#{register_text}</a>")
+      pitch_text.gsub!('@[KolReghref]', "<a href='http://#{Rails.application.secrets[:host]}/kols/new'>register</a>")
 #      pitch_text.gsub!("\n", "<br />")
       pitch_text
     elsif self.contact.origin == 1 # twtrland

@@ -279,7 +279,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     emailAddressInputChanged: function(e){
       this.model.set('email_address', this.ui.emailAddressInput.val());
       var kolLink = '<a href="' + window.location.origin + '/kols/new">register</a>';
-      renderedText = renderedText.replace(/\@\[KolReghref\]/g, kolLink);
     }
   });
 
