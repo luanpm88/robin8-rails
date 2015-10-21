@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
 
   before_action :set_translations
   before_action :china_redirect
-  before_action :display_miniprofiler_for_admin
 
   def china_redirect
     if Rails.env.production? and china_client? and not china_instance?
@@ -15,10 +14,6 @@ class ApplicationController < ActionController::Base
                      end
       # return redirect_to "#{china_domain}#{request.fullpath}", :status => :moved_permanently
     end
-  end
-
-  def display_miniprofiler_for_admin
-    Rack::MiniProfiler.authorize_request if current_admin_user
   end
 
   def is_china_request?
