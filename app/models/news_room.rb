@@ -98,6 +98,8 @@ class NewsRoom < ActiveRecord::Base
     end
 
     def create_campaign
+      # 这个暂时 注释掉, 否则 没有办法创建用户
+      return
       mg_client = Mailgun::Client.new Rails.application.secrets.mailgun[:api_key]
       domain = Rails.application.secrets.mailgun[:domain]
       mg_client.post("#{domain}/campaigns", { id: self.campaign_name, name: self.campaign_name })

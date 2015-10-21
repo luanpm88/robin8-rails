@@ -35,3 +35,4 @@ config/initializers/app_instance.rb
 public/assets/*
 erd.pdf
 app/assets/stylesheets/kol_dev/reload.css
+public/assets

@@ -10,7 +10,6 @@
       <!-- Right Nav Section -->
       <ul class="right">
         <li><a href="/home"><%= @l.t('header.advertisers') %></a></li>
-
         <%if user_signed_in?%>
           <%if current_user.first_name.blank? || current_user.last_name.blank?%>
             <li><a href="/"><%=current_user.name.humanize%></a></li>
