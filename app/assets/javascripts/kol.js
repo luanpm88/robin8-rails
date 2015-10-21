@@ -20,6 +20,7 @@
 //= require progressjs
 //= require blueimp-gallery
 // require bootstrap3-wysihtml5-bower
+//= require bootstrap-sweetalert
 //= require bootstrap.growl
 //= require underscore
 //= require underscore.string
@@ -35,8 +36,11 @@
 //= require backbone.marionette
 //= require highcharts
 //= require select2
+//= require ./lib/wysihtml5x-toolbar.min
+//= require_directory ./lib
 //= require bootstrap-tagsinput
-
+//= require ./lib/formValidation/formValidation.min
+//= require ./lib/formValidation/js/bootstrap.min
 // require bootstrap-wysihtml5
 //= require jquery.dotdotdot
 //= require jquery.caret/dist/jquery.caret-1.5.2
@@ -49,21 +53,16 @@
 //= require spinjs
 //= require spinjs/jquery.spin.js
 //= require jquery-highlighttextarea
+//= require ./lib/icheck
+//= require ./lib/crs.min
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
 //= require datejs
 //= require d3
 //= require jquery-knob
 //= require bootstrap-validator
-
-//= require_directory ./lib
-//= require ./lib/wysihtml5x-toolbar.min
-//= require ./lib/formValidation/formValidation.min
-//= require ./lib/formValidation/js/bootstrap.min
 //= require ./lib/radarchart
 //= require ./lib/bootstrap-checkbox
-//= require ./lib/icheck
-//= require ./lib/crs.min
 
 //= require_tree ./backbone/config
 //= require backbone/init-kol
@@ -138,9 +137,9 @@ ready = function() {
    * @param {Object} string
    */
   String.prototype.startsWith = function(string){
-      if (!string)
-          return false;
-      return this.indexOf(string) == 0;
+    if (!string)
+      return false;
+    return this.indexOf(string) == 0;
   }
 
   Marionette.Behaviors.behaviorsLookup = function() {
@@ -151,9 +150,9 @@ ready = function() {
 $(window).on('scroll', function() {
   scrollPosition = $(this).scrollTop();
   if (scrollPosition >= 1) {
-      $('.nav').addClass('fixedscroll');
+    $('.nav').addClass('fixedscroll');
   }else{
-      $('.nav').removeClass('fixedscroll');
+    $('.nav').removeClass('fixedscroll');
   }
 });
 
