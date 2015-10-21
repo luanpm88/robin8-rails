@@ -33,6 +33,9 @@ gem 'roadie', '~> 3.0.5'
 # Displays page rendering performance
 gem 'rack-mini-profiler'
 
+# create multiple log files
+gem 'multi_logger'
+
 gem 'htmlentities'
 gem 'truncate_html'
 gem 'email_validator'

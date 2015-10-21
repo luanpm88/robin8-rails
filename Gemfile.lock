@@ -277,6 +277,8 @@ GEM
     mini_portile (0.6.2)
     minitest (5.7.0)
     multi_json (1.11.1)
+    multi_logger (0.1.0)
+      railties
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mysql2 (0.3.18)
@@ -694,6 +696,7 @@ DEPENDENCIES
   koala (~> 1.11.0rc)
   legato
   mailgun-ruby
+  multi_logger
   mysql2
   newrelic_rpm
   oauth2
