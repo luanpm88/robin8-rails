@@ -1,10 +1,9 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="viewport" content="width=device-width" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Robin8</title>
+  <title>Robin8 Newswire Notification</title>
   <%= stylesheet_link_tag  'mail-template' %>
 </head>
 
@@ -20,64 +19,38 @@
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    Hello Robin8 support,
+                    This Email is to notify you that following new newswire distribution has arrived for processing,
                   </td>
                 </tr>
                 <tr>
-                  <td class="content-block">
-                    <b>Newswire release with distributing options:</b>
-                    <ul>
-                      <% if @myprgenie %>
-                        <li>From <%= @myprgenie_published_at %> - Financial Content Distribution</li>
-                      <% end %>
-                      <% if @accesswire %>
-                        <li>From <%= @accesswire_published_at %> - Accesswire</li>
-                      <% end %>
-                      <% if @prnewswire %>
-                        <li>From <%= @prnewswire_published_at %> - PR Newswire</li>
-                      <% end %>
-                    </ul>
-                    <b>Content URL:</b> <br>
-                    <%= @publicLink %>
+                  <td>
+                    <b>Publisher Name:</b> <%= @user.first_name + ' ' + @user.last_name %>
                   </td>
                 </tr>
                 <tr>
-                  <td class="content-block">
-                    <table class="invoice">
-                      <tr>
-                        <td>
-                          <b>Title:</b> <br>
-                          <%= @title %>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <b>Text:</b> <br>
-                          <%
-                            if @text.length > 250
-                              @text = @text.mb_chars[0, 1000] + "...<br><a href='" + @publicLink + "'>Read more...</a>"
-                            end
-                          %>
-                          <%= @text.html_safe %>
-                        </td>
-                      </tr>
-                    </table>
+                  <td>
+                    <b>Release Title:</b> <%= @release_title %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Newswire Type:</b> <%= @selected_newswire %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Newswire Publish date:</b> <%= @newswire_publish_date %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Link to Release:</b> <a href="<%= @link_to_release %>"><%= @link_to_release %></a>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
         </table>
-        <div class="footer">
-          <table width="100%">
-            <tr>
-              <td class="aligncenter content-block">Robin8 Inc. 1745 Broadyway, 17th Floot, New York 10019</td>
-            </tr>
-            <tr>
-              <td class="aligncenter content-block">Questions? Email <a href="mailto:">support@robin8.com</a></td>
-            </tr>
-          </table>
-        </div>
       </div>
     </td>
     <td></td>
@@ -86,7 +59,3 @@
 
 </body>
 </html>
-
-
-
-

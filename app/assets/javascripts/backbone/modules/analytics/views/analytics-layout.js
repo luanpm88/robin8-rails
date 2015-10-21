@@ -9,15 +9,16 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       webAnalyticsRegion: '#analytics-region',
       emailsAnalyticsRegion: '#emails-analytics-region',
       emailsListRegion: '#emails-list-region',
-      emailsDroppedListRegion: '#emails-dropped-list-region',
       weChatAnalyticsRegion: '#wechat-analytics-region',
       weiboAnalyticsRegion: '#weibo-analytics-region',
-      campaignAnalyticsRegion: '#campaign-analytics-region'
+      campaignAnalyticsRegion: '#campaign-analytics-region',
+      emailsDroppedListRegion: '#emails-dropped-list-region'
     },
 
     events: {
       'change .change-web-news-room': 'changeWebNewsRoom',
       'change .change-emails-news-room': 'changeEmailsData',
+      'click #apply-date': 'changeDateRange',
       'change .change-emails-release' : 'changeEmailsData',
       'click #apply-date': 'changeDateRange',
       'click #apply-email-date': 'changeEmailsData',
@@ -98,6 +99,8 @@ Robin.module('Analytics', function(Analytics, App, Backbone, Marionette, $, _){
       var start = new Date($('#start-email-date-input').val());
       var end = new Date($('#end-email-date-input').val());
 
+
+      var collectionEmails = new Robin.Collections.EmailAnalytics();
       collectionEmails.fetch({
         url: '/news_rooms/' + itemId +'/email_analytics' + '?start_date=' + start + '&end_date=' + end + params,
 

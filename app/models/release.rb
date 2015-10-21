@@ -17,11 +17,10 @@ class Release < ActiveRecord::Base
   scope :by_news_room, ->(id) {where(news_room_id: id)}
   scope :published, -> { where(is_private: false) }
 
-  before_save :pos_tagger, :entities_counter, :set_published_at
+  before_save :pos_tagger, :entities_counter
   after_create :decrease_feature_number, :set_campaign_name, :create_campaign
-
   after_destroy :increase_feature_number, :delete_campaign
-  after_save :update_images_links
+  after_save :update_images_links, :decrease_newswire_features, :set_published_at
 
   def plain_text
     coder = HTMLEntities.new
@@ -126,7 +125,6 @@ class Release < ActiveRecord::Base
     uf.save
   end
 
-
   def increase_feature_number
     af = needed_user.current_user_features.press_release.used.joins(:product).where(products: {is_package: false}).first
     uf = af.nil? ? needed_user.current_user_features.press_release.used.first : af
@@ -161,19 +159,18 @@ class Release < ActiveRecord::Base
     accesswire_ = accesswire_changed? && accesswire
     prnewswire_ = prnewswire_changed? && prnewswire
 
-    decrease_newswire_myprgenie if myprgenie_
-    decrease_newswire_accesswire if accesswire_
-    decrease_newswire_prnewswire if prnewswire_
+    if (news_room.id && news_room.publish_on_website) && ((myprgenie_) || (accesswire_) || (prnewswire_))
+      selected_newswire = []
+      selected_newswire << ["Financial Content Distribution", myprgenie_published_at.strftime("%Y-%m-%d %H:%M:%S")] if myprgenie_
+      selected_newswire << ["Accesswire", accesswire_published_at.strftime("%Y-%m-%d %H:%M:%S")] if accesswire_
+      selected_newswire << ["PR Newswire", prnewswire_published_at.strftime("%Y-%m-%d %H:%M:%S")] if prnewswire_
 
-    publicSuffix = (news_room.id && news_room.publish_on_website && !is_private) ? "" : "-preview"
-    publicLink = "http://" + news_room.subdomain_name + publicSuffix + "." + Rails.application.secrets.host + "/releases/" + slug
+      link_to_release = "http://" + news_room.subdomain_name + "." + Rails.application.secrets.host + "/release/" + slug
 
-    myprgenie_publish = myprgenie_published_at.strftime('%m/%d/%Y') if myprgenie_published_at
-    accesswire_publish = accesswire_published_at.strftime('%m/%d/%Y') if accesswire_published_at
-    prnewswire_publish = prnewswire_published_at.strftime('%m/%d/%Y') if prnewswire_published_at
-
-    if (myprgenie_) || (accesswire_) || (prnewswire_)
-      UserMailer.newswire_support(myprgenie_, accesswire_, prnewswire_, title, text, myprgenie_publish, accesswire_publish, prnewswire_publish, publicLink).deliver
+      selected_newswire.each do |newswire|
+        selected_newswire_name, selected_newswire_start_date = newswire
+        UserMailer.newswire_support(needed_user, title, selected_newswire_name, selected_newswire_start_date, link_to_release).deliver
+      end
     end
   end
 
@@ -195,6 +192,7 @@ class Release < ActiveRecord::Base
       mg_client.delete("#{domain}/campaigns/#{campaign_name}")
     rescue StandardError => e
     end
+
   end
 
 end

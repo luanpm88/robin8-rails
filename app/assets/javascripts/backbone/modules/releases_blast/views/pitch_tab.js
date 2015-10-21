@@ -21,6 +21,24 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       this.deleteTarget();
     },
+    initialize: function(options){
+      var emails_count = 0;
+      var isShow = true;
+      this.model.collection.models.forEach(function(item, i, arr) {
+        if (item.email != undefined && item.email != null) {
+          emails_count = emails_count + 1;
+        }
+        if (item.attributes != undefined) {
+          if (item.attributes.email != undefined && item.attributes.email != null) {
+            emails_count = emails_count + 1;
+          }
+        }
+      });
+      if (emails_count == this.model.collection.models.length) {
+        isShow = false;
+      }
+      this.model.attributes["isShow"] = isShow;
+    },
     deleteTarget: function() {
       this.triggerMethod('email:target:removed', this.model);
       this.options.parentCollection.remove(this.model);
@@ -59,11 +77,25 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     modelAdded: function(model){
       this.model.get('media_contacts').add(model);
     },
-    templateHelpers: function() {
-      return {
-        size: this.collection.length
+    templateHelpers: {
+      size: function() {
+        return this.media_contacts.length;
+      },
+      isEmailColumnShow: function() {
+        var emails_count = 0;
+        var isShow = true;
+        this.media_contacts.forEach(function(item, i, arr) {
+          if (item.email != undefined && item.email != null) {
+            emails_count = emails_count + 1;
+          }
+        });
+        if (emails_count == this.media_contacts.length) {
+          isShow = false;
+        }
+        return isShow;
       }
     },
+
     initialize: function(options){
       this.model.get('media_contacts').add(this.collection.models);
     },
@@ -278,7 +310,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     emailAddressInputChanged: function(e){
       this.model.set('email_address', this.ui.emailAddressInput.val());
-      var kolLink = '<a href="' + window.location.origin + '/kols/new">register</a>';
     }
   });
 

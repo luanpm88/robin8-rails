@@ -52,7 +52,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 10 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 5 )
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 5 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 1 )
 
 
   p = Package.create(slug: "business-annual", is_active: true, price: 1800.00,
@@ -62,7 +62,7 @@ if Rails.env == 'development'
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 10 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 5 )
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 5 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 1 )
 
 
   p = Package.create(slug: "enterprise-monthly", is_active: true, price: 399.00,
@@ -183,7 +183,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 10 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 5 )
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 5 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 1 )
 
   p = Package.create(slug: "business-annual", is_active: true, price: 1800.00,
                  interval: 365, name: "Business Annual", description: "business annual subscription", sku_id:3262152,is_package: true)
@@ -192,7 +192,7 @@ if Rails.env.production?
   p.product_features.create!(feature_id:Feature.find_by_slug("press_release").id,validity: 30,count: 10 )
   p.product_features.create!(feature_id:Feature.find_by_slug("smart_release").id,validity: 30,count: 5 )
   p.product_features.create!(feature_id:Feature.find_by_slug("media_monitoring").id,validity: 0,count: 5 )
-  p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 5 )
+  p.product_features.create!(feature_id:Feature.find_by_slug("personal_media_list").id,validity: 0,count: 1 )
 
 
   p = Package.create(slug: "enterprise-monthly", is_active: true, price: 399.00,

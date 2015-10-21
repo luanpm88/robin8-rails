@@ -1,0 +1,169 @@
+// Place all the styles related to the recommendations controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.recommendations-content {
+  border: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #434A54;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  margin-top: 200px;
+}
+
+.get-more-recommendation-row{
+	height:100px;
+	width: 400px;
+	margin:0 auto;
+	text-align: center;
+}
+
+.get-more-recommendations{
+    display:none;
+    padding-top: 40px;
+    display: block;
+    height: 100px;
+    wdith: 200px;
+    background-color: #fff;
+    color: #006481;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border: 2px solid #006481;
+    font-size: 17px;
+}
+
+.recommendations-loading-container{
+	margin-top: 150px;
+	position:relative;
+	height: 200px;
+	width:100%;
+}
+
+#loading-recommendation{
+	text-align: center;
+}
+
+#new-recommendation{
+	text-align: center;
+}
+
+
+#recommendations-nav{
+	margin: 0px 20px 20px 20px;
+}
+
+
+.recommendation{
+	width: 350px;
+	height: 300px;
+	border: 2px solid #006481;
+	float: left;
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
+
+.recommendation-body{
+	padding: 20px;
+	width: 100%;
+    height: 296px;
+	position: relative;
+}
+
+.influence{
+    background-color: #B7CBAF;
+}
+
+.recommendation-body-overlay{
+	position:absolute; top: -1px; left: -1px; 
+	z-index:10; 
+	background:rgba(0,0,0,.75); 
+	height:299px; 
+	width: 347px; 
+	display: none;
+}
+
+.recommendation-heading{
+	text-align: center;
+	font-size: 25x;
+	height: 45px;
+ 	font-weight: bold;
+}
+
+.influence .recommendation-authored-shares{
+    color: #434A54;
+    font-weight: bold;
+}
+
+.recommendation-authored-shares{
+	color: #CBC0B7;
+}
+
+.recommendation-authored{
+	text-align: left;
+	float: left;
+}
+
+.recommendation-shares{
+	text-align: right;
+	float: right;
+}
+
+.redcommendation-instructions{
+	width: 30%; 
+	margin: 0 auto;
+	padding-top: 20px;
+	line-height: 24px;
+	font-size: 14px;
+}
+
+.redcommendation-explanation{
+	margin: 20px 0 20px 0;
+	color: #333333;
+	line-height:30px;
+	font-size:16px;
+}
+
+.redcommendation-explanatory-text{
+	color: #333333;
+}
+
+.recommendation-button{
+    text-align: center;
+    height: 75px;
+    width: 100%;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    padding: 30px;
+}
+
+.influence .recommendation-button{
+    text-align: center;
+    height: 60px;
+    width: 100%;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    padding:18px;
+}
+
+
+.recommendation-button:hover{
+	background:rgba(18, 59, 68, .75); 
+	 -webkit-transition: background-color 100ms linear;
+    -moz-transition: background-color 100ms linear;
+    -o-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
+}
+
+.recommendation-glyphicon-size{
+	font-size: 20px;
+	color: #fff;
+}
+
+

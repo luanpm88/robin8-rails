@@ -6,9 +6,16 @@ class RobinApiController < ApplicationController
     params["per_page"] = 200
     params["included_email"] = false
     response = @client.suggested_authors params
+    authors_list = response[:authors]
 
-    authors = unless response[:authors].blank?
-      authors_response = uniq_authors(response[:authors])
+    if response[:authors].length == 200
+      params["page"] = 2
+      response_next = @client.suggested_authors params
+      authors_list += response_next[:authors]
+    end
+
+    authors = unless authors_list.blank?
+      authors_response = uniq_authors(authors_list)
       ids = authors_response.map{|a| a[:id]}
       @max_score = authors_response.first[:score]
       @min_score = authors_response.last[:score]
@@ -99,9 +106,37 @@ class RobinApiController < ApplicationController
 
   def authors
     params["per_page"] = 200
-    response = @client.authors params
+    params["included_email"] = false
+    if params["blog_name"].nil?
+      authors_key =  "authors_search_#{Digest::SHA1.hexdigest params.to_s}"
+      authors_response = Rails.cache.read authors_key
+      if authors_response.nil?
+        response = @client.authors params
+        authors_list = response[:authors]
 
-    authors_response = uniq_authors(response[:authors])
+        if response[:authors].length == 200
+          params["cursor"] = response[:next_page_cursor]
+          response_next = @client.authors params
+          authors_list += response_next[:authors]
+        end
+
+        authors_response = uniq_authors(authors_list)
+        Rails.cache.write authors_key, authors_response, :expires_in => 24.hours
+      end
+    else
+      authors_response = params["blog_name"].inject([]) do |memo, outlet|
+        params["blog_name"] = [outlet]
+        authors_key =  "authors_search_#{Digest::SHA1.hexdigest params.to_s}"
+        redis_response = Rails.cache.read authors_key
+        if redis_response.nil?
+          response = @client.authors params
+          redis_response = uniq_authors(response[:authors])
+          Rails.cache.write authors_key, redis_response, :expires_in => 24.hours
+        end
+        memo.concat(redis_response)
+        memo
+      end
+    end
 
     authors = authors_response.map do |author|
       author[:full_name] = full_name(author[:first_name], author[:last_name])
@@ -112,8 +147,7 @@ class RobinApiController < ApplicationController
   end
 
   def author_stats
-    type = params[:type] || 'default'
-    response = @client.author_stats id: params[:id], type: type
+    response = @client.author_stats id: params[:id]
 
     render json: response
   end
@@ -162,6 +196,9 @@ class RobinApiController < ApplicationController
 
   def uniq_authors(authors)
 
+    unsubscribed_emails = UnsubscribeEmail.where(user_id: current_user.id).map(&:email)
+    authors.reject! { |author| unsubscribed_emails.include?(author[:email])}
+
     uniq_authors = authors.each_with_index.inject({}) do |memo, item|
       # group authors by email or by 'first_name+last_name' when email is empty
       value, index = item
@@ -187,9 +224,10 @@ class RobinApiController < ApplicationController
           avatar_url: value[:avatar_url],
           score: value[:score],
           index: index,
-          level_of_interest: value[:level_of_interest],
+          followers_count: value[:followers_count],
           verified: value[:verified],
-          profile_url: value[:profile_url]
+          profile_url: value[:profile_url],
+          level_of_interest: value[:level_of_interest]
         }
         memo[k] = new_author
       end

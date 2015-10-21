@@ -402,6 +402,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "ordering": false,
         "pageLength": 25,
         "bAutoWidth" :false,
+        "deferRender": true,
         "columns": [
           null,
           { "width": "30%" },
@@ -429,8 +430,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
-                  $.growl('Only Enterprise and Ultra users can have this feature.', {
-                    type: "danger",
+                  $.growl(polyglot.t("smart_release.targets_step.influencers_tab.buttons.only_enterprise"), {
+                    type: "danger"
                   });
                 }
               }
@@ -473,7 +474,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
       var csvObject = [];
       var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){
-        return item.get('origin') === ReleasesBlast.originPressrContact
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
@@ -651,6 +651,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "ordering": false,
         "pageLength": 25,
         "bAutoWidth" :false,
+        "deferRender": true,
         "columns": [
           { "width": "30%" },
           null,
@@ -686,8 +687,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
-                  $.growl('Only Enterprise and Ultra users can have this feature.', {
-                    type: "danger",
+                  $.growl(polyglot.t("smart_release.targets_step.influencers_tab.buttons.only_enterprise"), {
+                    type: "danger"
                   });
                 }
               }
@@ -731,7 +732,6 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       var self = this;
 
       var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){
-        return (item.get('origin') === ReleasesBlast.originPressrContact);
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){

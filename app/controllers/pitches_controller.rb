@@ -25,7 +25,10 @@ class PitchesController < ApplicationController
     respond_to do |format|
       if @pitch.valid?
         unless params['contacts'].blank?
+          unsubscribed_emails = UnsubscribeEmail.where(user_id: current_user.id).map(&:email)
+
           @pitch.contacts = Contact.bulk_find_or_create(params['contacts'],current_user.id)
+          @pitch.contacts = @pitch.contacts.reject { |contact| unsubscribed_emails.include?(contact['email']) }
         end
 
         if @pitch.save

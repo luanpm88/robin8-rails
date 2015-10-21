@@ -328,6 +328,7 @@ en:
       new_newsroom_button: Create a Brand Gallery
       new_release_button: Publish New Content
       new_smartrelease_button: SmartContent
+      no_available_content: You don't have available content!
       not_invited: You are not invited to any campaigns yet.
       not_invited_yet: Welcome to Robin8! You are not invited to any campaigns yet.
         Please <a href="#profile">update</a> your profile.
@@ -573,6 +574,8 @@ en:
       title: Signup
     landing_page:
       brand: Brand
+      chinese_locale: Switch to Chinese locale
+      english_locale: Switch to English locale
       here: here.
       inf_signup: 'Are you an Influencer? Sign up '
       influencer: Influencer
@@ -695,13 +698,13 @@ en:
       new_updates: new updates
       no_news: There is no news
       number_of_stories: Number of stories
+      outlets: Outlets
       please_save: Please save stream first
       popularity: Popularity
       recency: Recency
       rss_link: Rss Link
       save: Save
       sort_by: Sort by
-      sources: Sources
       time_range: Time range
       tooltips:
         delete_stream: Delete Stream
@@ -719,7 +722,7 @@ en:
       newsrooms: Brand Gallery
       profile: Profile
       recommendations: Recommendations
-      releases: Releases
+      releases: Content
       smart_campaign: SmartCampaign
       smart_release: SmartContent
       social: Social
@@ -746,6 +749,7 @@ en:
     newsrooms:
       buttons:
         new: New Brand Gallery
+      delete_brand_gallery: Delete this Brand Gallery?
       item:
         buttons:
           edit: Edit
@@ -856,6 +860,8 @@ en:
         last_name_blank: Last name can't be blank
         phone_blank: Phone can't be blank
         state_blank: State can't be blank
+        tax_error: Oops...Something went wrong when trying to get tax for order. Please,
+          try again later.
       mr_title: Mr
       mrs_title: Mrs
       ms_title: Ms
@@ -877,7 +883,9 @@ en:
         plan: Plan
         price: Price
         remove: remove
+        tax: Tax*
         total: TOTAL
+      tax_description: "*VAT amount for your order in your country or state"
       title: Payment
       your_title: Title
     payment_update_page:
@@ -929,14 +937,15 @@ en:
           intelligence engine.  <br />Take the guesswork out of social and content
           marketing and get better results.
         hours_of_customization: Hours of Customization
-        media_lists: Personal Influencers List
+        media_list: Personal Influencers List
+        media_lists: Personal Influencers Lists
         month_to_month: month-to-month
         newsroom: Brand Gallery
         newsrooms: Brand Galleries
         per_month: mo
         plans: Subscription Plans
         press_release: Content/month
-        seat: Seats
+        seat: Seat
         seats: Seats
         select: Select
         selected: Selected
@@ -1014,12 +1023,14 @@ en:
       username: Username
     public_newsroom:
       about: About
+      brand_gallery: Brand Gallery
       follow: Follow
       latest_tweets: Latest Tweets
       location: Location
+      no_content: No content published yet
       no_releases: No Releases published yet
-      notification: You are in a preview mode. You need to make this newsroom public
-        and/or save the changes in order to show it on your page
+      notification: You are in a preview mode. You need to make this brand gallery
+        public and/or save the changes in order to show it on your page
       press_kit: Press kit
       pressroom: Pressroom
       read_more: Read more
@@ -1027,7 +1038,7 @@ en:
       spokeperson: Spokesperson
       what_is: What is
     public_release:
-      notification: You are in a preview mode. You need to make this release and newsroom
+      notification: You are in a preview mode. You need to make this content and brand gallery 
         public in order to show it on your page
     register:
       agree_terms: By signing up you agree to Robin8's Terms of Service
@@ -1052,6 +1063,7 @@ en:
       wechat_signup: Sign up using WeChat
       weibo_signup: Sign up using Weibo
     releases:
+      all_brand_gallery: All Brand Gallery
       all_newsrooms: All Newsrooms
       edit_title: Edit
       item:
@@ -1059,8 +1071,10 @@ en:
           edit: Edit
           preview: Preview
           smart: SmartRelease
+          smart_content_btn: SmartContent
       modal:
         basic_tab:
+          brand_gallery: Brand Gallery
           characteristics_view:
             adjectives: Adjectives
             adverbs: Adverbs
@@ -1076,32 +1090,39 @@ en:
             sentences: Sentences
             too_short: Too short
             words: Words
+          content_text: Content text
+          content_title: Content title
           newsroom: Newsroom
           paragraph_notification: "*The editor uses paragraphs by default for copied
             text. To place a normal line break press Shift+Enter (Shift+Return)"
           published_date: Published date
           release_text: Release text
           release_title: Release title
+          text_content_placeholder: Paste your content here...
           text_placeholder: Paste your press release here...
           title: Basic
           title_placeholder: Enter title...
         buttons:
           delete: Delete Release
+          delete_content: Delete Content
           next: Next
           save: Save draft
         content_title: Create Content
         dropdown:
           select: Select...
         media_tab:
+          select_content_logo: Please, select a logo for your content
           select_logo: Please, select a logo for your release
           title: Media
           upload_files: Here you can upload additional media files
         messages:
           buy_addon: Please, buy corresponding addon in Billing settings
+          select_brand_gallery: You should select a Brand Gallery
           select_newsroom: You should select a newsroom
           title_required: The Title is required
         newswire_tab:
           accesswire: Accesswire
+          content_option: Please, select options for distributing content
           distribution: Financial Content Distribution
           newswire: PR Newswire
           release_option: Please, select options for distributing release
@@ -1111,6 +1132,7 @@ en:
         warning: This release won't be publicly displayed while the parent Newsroom
           remains unpublished.
         website_tab:
+          make_content_private: Make this content private
           make_private: Make this release private
           title: Website
       model:
@@ -1243,6 +1265,8 @@ en:
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
           email_placeholder: Enter an email address...
+          kols_register_alias: in our system as an Influencer.
+          kols_register_text: P.S. We kindly recommend you to
           length: Summary length
           pitch_text: Pitch text
           preview: Preview
@@ -1437,6 +1461,7 @@ en:
             me know your thoughts.
           text_text: Content Text
           title: Email pitch
+          unsubscribe_text: You can unsubscribe by following link below
         see: See list
         targets: Targets will be contacted via Email
         targets_table:
@@ -1489,6 +1514,7 @@ en:
             export: Export as CSV
             inspect: Inspect
             no_but: 'No'
+            only_enterprise: Only Enterprise users can have this feature.
             remove_all: Remove all
             yes_but: 'Yes'
           contact: Contact
@@ -1609,38 +1635,81 @@ en:
         marketing, and tech. Miranda has a BS from Cornell University and a JD from
         St. John’s University School of Law.
       ceo_name: Miranda Tan
-      ceo_pos: CEO
+      ceo_pos: Co-CEO and Founder
       chairman_desc: Hassan has nearly three decades of experience in the finance
         and technology. Previously, Hassan was the CEO of Xing Technology which sold
         to Real Networks for $75 Million. Hassan was also the head of digital media
         at CAA and a managing director of Intel Capital. He has a BBA from the University
         of Michigan and a MBA from Stanford University Graduate School of Business.
       chairman_name: Hassan Miah
-      chairman_pos: Chairman
+      chairman_pos: Co-CEO and Founder
       developer_desc: Razee has extensive experience in coding, testing, implementation
         and overall technical support of Robin8. Razee earned a BS from the National
         University of Computer and Emerging Sciences in Pakistan.
       developer_name: Razee Khan
       developer_pos: Engineer and Developer
-      elsa_desc: Elsa is a strategic marketer with an eye for consumer insights and
-        a passion for digital marketing (Social Media, Content Marketing, SEO/SEM,
-        Web analytics). She has Google certified Partner Certificates for Google Analytics
-        and Google Adwords. Most recently, she worked for prestige food brands in
-        China such as Nescafe and Pringles chips. Elsa has a Masters from NYU in Integrated
-        Marketing.
+      elsa_desc: Account Director, Ms. Elsa Wang is a strategic marketer with an eye for consumer insights 
+        and a passion for digital marketing (Social Media, Content Marketing, SEO/SEM, Web analytics). 
+        She has Google certified Partner Certificates for Google Analytics and Google Adwords. 
+        Most recently, she worked for prestige food brands in China such as Nescafe and Pringles
+        chips. Elsa has a Masters from NYU in Integrated Marketing.
       elsa_name: Elsa Wang
       elsa_pos: Marketing Specialist / Director
+      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more 
+        than 15 years in Shanghai. A native of Central New York State, Francis’ work 
+        experience in China includes stints in media, advertising and consulting. 
+        Francis received his bachelor’s degree from the University of Pennsylvania 
+        and has a master’s degree in International Relations from The Johns Hopkins University - 
+        School of Advanced International Studies. Prior to joining Robin8, Francis was 
+        the Director of Operations at Forestry Innovation Investment (Shanghai), 
+        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee 
+        the completion of 15 wood-frame construction projects in China, 
+        including the Vancouver Pavilion at the 2010 Shanghai EXPO.
+      francis_name: Francis Huang
+      francis_pos: General Manager, China
+      jenny_desc: Robin8’s Product Manager and Senior Developer, China Jenny Qian is an experienced
+        computer developer who spent six years at Huawei Technologies Co. She received her bachelor’s
+        degree in Electronic Engineering from Shanghai University and a master’s degree in Computer Science
+        from the Royal Melbourne Institute of Technology. She was previously Chief Technology Officer at
+        wizDigital, a boutique agency based in Shanghai.
+      jenny_name: Jenny Qian
+      jenny_pos: Head Product Manager and Senior Developer, China
+      joey_desc: Robin8’s VP of Marketing Engineer, Joey Jiao has more than fifteen years experience 
+        working in China’s social media and public relations landscape. Joey earned her master’s degree 
+        in Marketing from the Royal Melbourne Institute of Technology. She began her career working 
+        for the Poly Group, one of China’s largest State Owned Enterprises, as an investment manager
+        in their cultural division which includes media and movies. She served as Marketing Director
+        and Strategy Director at a number of research and digital media companies before opening her
+        own agency, wizDigital, in 2014.
+      joey_name: Joey Jiao
+      joey_pos: Vice President, Marketing Engineer, China
+      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU, 
+        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from 
+        Nanjing Agricultural University and Georgia Southwestern State University.
+      jun_name: Jun Yang
+      jun_pos: Sales and Marketing Specialist
       operations_desc: Cynthia heads overall operations and administration for Robin8.
         She has an MBA from Adelphi University and a BS in Accounting from Nanjing
         University of Science and Technology.
       operations_name: Cynthia Chen
       operations_pos: VP, Operations
+      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups 
+        in terms of marketing, business development and fundraising. Peter has a BA from 
+        George Washington University.
+      peter_name: Peter Chernin
+      peter_pos: Director of Sales and Business Development
       sales_desc: Alex is a passionate marketer with extensive experience in sales
         and media outreach. He is an aggressive pitcher who loves connecting with
         his clients and their audience. Alex graduated from the University of Michigan,
         College of LS&amp;A with a BS in Neuroscience.
       sales_name: Alex Stefanov
       sales_pos: VP, Sales and Marketing
+      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team. 
+        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices 
+        and other human resource policies. Sally has helped a number of foreign companies 
+        establish a presence in China and assists with the day-to-day operation of the company. 
+      sally_name: Sally Zheng
+      sally_pos: Administrative Manager, China
       scientist_desc: Edison has over 5 years experience in machine learning and data
         mining in China working with Tencent and Quo360. He has published multiple
         articles on his work in the Journal of Applied Mathematics and other international
@@ -1650,11 +1719,11 @@ en:
         Science at the Polytechnic School of Engineering at New York University.
       scientist_name: Edison Xu Zhao
       scientist_pos: Data Scientist and Engineer
-      simon_desc: Simon specializes in data and technology. Previously, Simon was
-        at eBay, VF Corporation and Anheuser-Busch InBev. Simon has a BS in computer
-        science and MS in data mining from East China Normal University.
+      simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS 
+        from East China Normal University.
       simon_name: Simon Deng
-      simon_pos: VP, Tech Leader for China
+      simon_pos: Tech Lead China
       support_desc: Olivia joined Robin8 in October 2010. At Robin8, she heads Customer
         Support and oversees the research team. Olivia has extensive experience in
         PR and marketing and has helped hundreds of companies with their PR campaign.
@@ -2538,6 +2607,10 @@ en:
       Yakutsk: "(+9:00) Yakutsk"
       Yerevan: "(+4:00) Yerevan"
       Zagreb: "(+1:00) Zagreb"
+    unsubscribe:
+      invalid_token: Invalid Token
+      success: You've successfully unsubscribed
+      title: Unsubscribe
     uploading:
       choose_image: Choose an image!!!
       different_photo: Upload a different photo...

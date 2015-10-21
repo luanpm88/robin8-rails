@@ -334,6 +334,7 @@ zh:
       new_newsroom_button: "新建内容库"
       new_release_button: "发布新的文章"
       new_smartrelease_button: "智能发布"
+      no_available_content: You don't have available content!
       not_invited: You are not invited to any campaigns yet.
       not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
       status: "状态"
@@ -577,6 +578,8 @@ zh:
       title: "注册"
     landing_page:
       brand: "品牌"
+      chinese_locale: Switch to Chinese locale
+      english_locale: Switch to English locale
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
       influencer: "社交达人"
@@ -679,13 +682,13 @@ zh:
       new_updates: "新上传的"
       no_news: "没有新闻"
       number_of_stories: "故事数量"
+      outlets: Outlets
       please_save: "请先保存频道信息"
       popularity: "最受关注的"
       recency: "最新的"
       rss_link: RSS链接
       save: "保存"
       sort_by: "排序方式"
-      sources: "来源"
       time_range: "时间范围"
       tooltips:
         delete_stream: "删除新闻频道"
@@ -729,6 +732,7 @@ zh:
     newsrooms:
       buttons:
         new: "新的内容库"
+      delete_brand_gallery: Delete this Brand Gallery?
       item:
         buttons:
           edit: "编辑"
@@ -834,6 +838,8 @@ zh:
         last_name_blank: "姓氏不能为空"
         phone_blank: "电话号码不能为空"
         state_blank: "州不能为空"
+        tax_error: Oops...Something went wrong when trying to get tax for order. Please,
+          try again later.
       mr_title: "先生"
       mrs_title: "女士"
       ms_title: "小姐"
@@ -852,7 +858,9 @@ zh:
         plan: "计划"
         price: "价格"
         remove: "移除"
+        tax: Tax*
         total: "总计"
+      tax_description: "*VAT amount for your order in your country or state"
       title: "付款"
       your_title: "题目"
     payment_update_page:
@@ -890,14 +898,15 @@ zh:
         empower: "授权与Robin8您的业务 <br />智能的社交和内容营销，带来更好的效果。"
         exceed: "使用Robin8革命性智能引擎轻松超越客户的需求。  <br />授权与Robin8您的业务。智能的社交和内容营销，带来更好的效果。"
         hours_of_customization: Hours of Customization
-        media_lists: "个私人媒体清单"
+        media_list: "个私人媒体清单"
+        media_lists: Personal Influencers Lists
         month_to_month: "按月付费"
         newsroom: "个新闻中心"
         newsrooms: ''
         per_month: "月"
         plans: "订阅计划"
         press_release: "篇新闻稿/月"
-        seat: "席"
+        seat: Seat
         seats: "席"
         select: "选择"
         selected: "选择"
@@ -968,9 +977,11 @@ zh:
       username: "用户名"
     public_newsroom:
       about: About
+      brand_gallery: Brand Gallery
       follow: "关注"
       latest_tweets: "新鲜事"
       location: "地点"
+      no_content: No content published yet
       no_releases: "尚未发布文章"
       notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
       press_kit: Press kit
@@ -980,7 +991,8 @@ zh:
       spokeperson: "演讲人"
       what_is: "什么是"
     public_release:
-      notification: "您在预览模式。你需要向公众发布新闻，才能在你的页面中显示"
+      notification: You are in a preview mode. You need to make this content and brand gallery 
+        public in order to show it on your page
     register:
       agree_terms: "通过注册，你已同意Robin8的服务条款。"
       email_already_taken: "该邮箱已被注册"
@@ -1004,6 +1016,7 @@ zh:
       wechat_signup: "使用微信账号登录"
       weibo_signup: "使用Weibo账号登陆"
     releases:
+      all_brand_gallery: All Brand Gallery
       all_newsrooms: "所有内容库"
       edit_title: "编辑"
       item:
@@ -1011,8 +1024,10 @@ zh:
           edit: "编辑"
           preview: "预览"
           smart: "智能发布"
+          smart_content_btn: SmartContent
       modal:
         basic_tab:
+          brand_gallery: Brand Gallery
           characteristics_view:
             adjectives: "形容词"
             adverbs: "副词"
@@ -1028,31 +1043,38 @@ zh:
             sentences: "句子"
             too_short: "过段"
             words: "字数"
+          content_text: Content text
+          content_title: Content title
           newsroom: "内容库"
           paragraph_notification: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
           published_date: "发布日期"
           release_text: "文章内容"
           release_title: "文章标题"
+          text_content_placeholder: Paste your content here...
           text_placeholder: "在这里粘贴文章..."
           title: "基本信息"
           title_placeholder: "输入标题..."
         buttons:
           delete: "删除文章"
+          delete_content: Delete Content
           next: "下一步"
           save: "保存草稿"
         content_title: Create Content
         dropdown:
           select: "选择..."
         media_tab:
+          select_content_logo: Please, select a logo for your content
           select_logo: "请为你的文章加一个图标"
           title: "媒体"
           upload_files: "这里上传其他的多媒体文件"
         messages:
           buy_addon: "请在结算设置中购买相应的插件！"
+          select_brand_gallery: You should select a Brand Gallery
           select_newsroom: "你应该选择一个"
           title_required: "标题是必需的"
         newswire_tab:
           accesswire: Accesswire
+          content_option: Please, select options for distributing content
           distribution: "财务内容分发"
           newswire: "美通社"
           release_option: "请选择投递选项"
@@ -1061,6 +1083,7 @@ zh:
         title: "新建文章"
         warning: "在内容库还没有发布之前这篇文章不会被公众看到"
         website_tab:
+          make_content_private: Make this content private
           make_private: "仅对自己可见"
           title: "网址"
       model:
@@ -1189,6 +1212,8 @@ zh:
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
           email_placeholder: "输入电子邮件地址"
+          kols_register_alias: in our system as an Influencer.
+          kols_register_text: P.S. We kindly recommend you to
           length: "文章小结长度"
           pitch_text: "投递内容"
           preview: "预览"
@@ -1374,6 +1399,7 @@ zh:
           text_here: "这里有一个你可能会感兴趣的"
           text_text: Content Text
           title: "投递邮件"
+          unsubscribe_text: You can unsubscribe by following link below
         see: "查看名单"
         targets: "通过电子邮件联系目标人"
         targets_table:
@@ -1421,6 +1447,7 @@ zh:
             export: "导出为CSV"
             inspect: "检查"
             no_but: "不是"
+            only_enterprise: Only Enterprise users can have this feature.
             remove_all: "移除所有"
             yes_but: "是的"
           contact: "联络"
@@ -1527,40 +1554,83 @@ zh:
         title: Robin8<span>顾问</span>
       ceo_desc: Miranda Tan在公共关系，市场营销，技术方面拥有10年以上的经验。Miranda拥有康奈尔大学的学士学位，并取得圣约翰大学法学博士学位。
       ceo_name: Miranda Tan
-      ceo_pos: "首席执行官"
+      ceo_pos: Co-CEO and Founder
       chairman_desc: Hassan拥有近三十年的财政和技术经验。在此之前，Hassan是Xing科技的CEO，并将其以7500万美元出售给Real
         Networks公司。Hassan也是数字媒体CAA的负责人和管理者。
       chairman_name: Hassan Miah
-      chairman_pos: "主席"
+      chairman_pos: Co-CEO and Founder
       developer_desc: Razee在编码，测试，实施和以全面的技术支持MyPRGenie方面拥有丰富的经验。 Razee获得了巴基斯坦国立大学的计算机和新兴科学学士学位。
       developer_name: Razee Khan
       developer_pos: "工程师和开发人员"
-      elsa_desc: Elsa is a strategic marketer with an eye for consumer insights and
-        a passion for digital marketing (Social Media, Content Marketing, SEO/SEM,
-        Web analytics). She has Google certified Partner Certificates for Google Analytics
-        and Google Adwords. Most recently, she worked for prestige food brands in
-        China such as Nescafe and Pringles chips. Elsa has a Masters from NYU in Integrated
-        Marketing.
+      elsa_desc: Account Director, Ms. Elsa Wang is a strategic marketer with an eye for consumer insights 
+        and a passion for digital marketing (Social Media, Content Marketing, SEO/SEM, Web analytics). 
+        She has Google certified Partner Certificates for Google Analytics and Google Adwords. 
+        Most recently, she worked for prestige food brands in China such as Nescafe and Pringles
+        chips. Elsa has a Masters from NYU in Integrated Marketing.
       elsa_name: Elsa Wang
       elsa_pos: Marketing Specialist / Director
+      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more 
+        than 15 years in Shanghai. A native of Central New York State, Francis’ work 
+        experience in China includes stints in media, advertising and consulting. 
+        Francis received his bachelor’s degree from the University of Pennsylvania 
+        and has a master’s degree in International Relations from The Johns Hopkins University - 
+        School of Advanced International Studies. Prior to joining Robin8, Francis was 
+        the Director of Operations at Forestry Innovation Investment (Shanghai), 
+        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee 
+        the completion of 15 wood-frame construction projects in China, 
+        including the Vancouver Pavilion at the 2010 Shanghai EXPO.
+      francis_name: Francis Huang
+      francis_pos: General Manager, China
+      jenny_desc: Robin8’s Product Manager and Senior Developer, China Jenny Qian is an experienced
+        computer developer who spent six years at Huawei Technologies Co. She received her bachelor’s
+        degree in Electronic Engineering from Shanghai University and a master’s degree in Computer Science
+        from the Royal Melbourne Institute of Technology. She was previously Chief Technology Officer at
+        wizDigital, a boutique agency based in Shanghai.
+      jenny_name: Jenny Qian
+      jenny_pos: Head Product Manager and Senior Developer, China
+      joey_desc: Robin8’s VP of Marketing Engineer, Joey Jiao has more than fifteen years experience 
+        working in China’s social media and public relations landscape. Joey earned her master’s degree 
+        in Marketing from the Royal Melbourne Institute of Technology. She began her career working 
+        for the Poly Group, one of China’s largest State Owned Enterprises, as an investment manager
+        in their cultural division which includes media and movies. She served as Marketing Director
+        and Strategy Director at a number of research and digital media companies before opening her
+        own agency, wizDigital, in 2014.
+      joey_name: Joey Jiao
+      joey_pos: Vice President, Marketing Engineer, China
+      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU, 
+        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from 
+        Nanjing Agricultural University and Georgia Southwestern State University.
+      jun_name: Jun Yang
+      jun_pos: Sales and Marketing Specialist
       operations_desc: Cynthia负责整体运营和MyPRGenied的管理。她拥有Adelphi大学的MBA学位和南京理工大学会计学学士学位。
       operations_name: Cynthia Chen
       operations_pos: "副总裁，运营"
+      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups 
+        in terms of marketing, business development and fundraising. Peter has a BA from 
+        George Washington University.
+      peter_name: Peter Chernin
+      peter_pos: Director of Sales and Business Development
       sales_desc: Alex is a passionate marketer with extensive experience in sales
         and media outreach. He is an aggressive pitcher who loves connecting with
         his clients and their audience. Alex graduated from the University of Michigan,
         College of LS&amp;A with a BS in Neuroscience.
       sales_name: Alex Stefanov
       sales_pos: VP, Sales and Marketing
+      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team. 
+        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices 
+        and other human resource policies. Sally has helped a number of foreign companies 
+        establish a presence in China and assists with the day-to-day operation of the company. 
+      sally_name: Sally Zheng
+      sally_pos: Administrative Manager, China
       scientist_desc: Edison在机器学习和在中国数据搜索拥有超过5年的经验，并曾为腾讯和Quo360工作。他已于应用数学和其他国际直销杂志上发表了多篇文章。毕业于数学Technologyís学院北京大学，获得数学学士学位，2006年与计算机科学学院与工程CS硕士学位，2009年他目前赢得他的硕士学位计算机科学在
         纽约大学工程理工学校。
       scientist_name: Edison Xu Zhao
       scientist_pos: "数据专家和工程师"
-      simon_desc: Simon specializes in data and technology. Previously, Simon was
-        at eBay, VF Corporation and Anheuser-Busch InBev. Simon has a BS in computer
-        science and MS in data mining from East China Normal University.
+      simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS 
+        from East China Normal University.
       simon_name: Simon Deng
-      simon_pos: VP, Tech Leader for China
+      simon_pos: Tech Lead China
       support_desc: Olivia于2010年10月加入MyPRGenie，她负责客户支持和监督的科研队伍。Olivia在公关和营销方面具有丰富经验，已经帮助数百家企业策划公关活动。此外，她领导媒体数据库的研究小组。
       support_name: Olivia Quizon
       support_pos: "副总裁，技术支持和研究"
@@ -1888,6 +1958,10 @@ zh:
       Yakutsk: "(+9:00) 雅库茨克"
       Yerevan: "(+4:00) 埃里温"
       Zagreb: "(+1:00) 萨格勒布"
+    unsubscribe:
+      invalid_token: Invalid Token
+      success: You've successfully unsubscribed
+      title: Unsubscribe
     uploading:
       choose_image: "选择图片!!!"
       different_photo: "上传个人资料图片"

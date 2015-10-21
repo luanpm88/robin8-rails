@@ -56,12 +56,12 @@
 //= require ./lib/icheck
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
+//= require ./lib/wripl
 //= require datejs
 //= require underscore.inflection
 //= require bootstrap-validator
 //= require d3
 //= require jquery-knob
-
 //= require_tree ./backbone/config
 //= require backbone/init
 //= require_tree ./backbone/routers
@@ -71,6 +71,7 @@
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/components
 //= require_tree ./backbone/modules
+
 
 var ready;
 ready = function() {

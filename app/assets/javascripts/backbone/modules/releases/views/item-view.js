@@ -49,7 +49,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         $.growl({message: "You don't have available smart-content!"},
           {
             type: 'info'
-          });
+          }); 
       } else {
         Robin.releaseForBlast = this.model.get('id');
         Backbone.history.navigate('robin8', {trigger: true});

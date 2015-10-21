@@ -1794,6 +1794,7 @@ input.form-control[type="file"] {
   padding: 8px 0;
   margin: 0 10px;
 }
+
 #emails-analytics {
   .old_content {
     text-align: center;
@@ -1801,18 +1802,9 @@ input.form-control[type="file"] {
     line-height: 250px;
   }
 }
+
 .change-emails-release {
   max-width: 250px;
-}
-
-#invite_kols {
-  min-width: 0px;
-  background-color: #8CC152;
-}
-
-#add_kol {
-  float: right;
-  margin-right: 20px;
 }
 
 .kols-errors {

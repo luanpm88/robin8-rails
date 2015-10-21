@@ -83,11 +83,11 @@ module AylienPressrApi
     end
 
     def author_types_autocompletes!(value=nil, params={})
-      endpoint, params, config = common_endpoint(value, params, 
+      endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:author_types_autocompletes])
       Connection.new(endpoint, params, config).request!
     end
-    
+
     def stories!(value=nil, params={})
       endpoint, params, config = common_endpoint(value, params,
         Configuration::ENDPOINTS[:stories])
@@ -149,13 +149,11 @@ module AylienPressrApi
     end
 
     def author_update(value=nil, params={})
-      begin
-        puts params
-        author_update!(params, params)
-      rescue => e
-        puts e
-        nil
-      end
+     begin
+       author_update!(params, params)
+     rescue => e
+       nil
+     end
     end
 
     def locations_autocompletes(value=nil, params={})
@@ -181,7 +179,7 @@ module AylienPressrApi
         nil
       end
     end
-    
+
     def stories(value=nil, params={})
       begin
         stories!(value, params)
@@ -226,7 +224,7 @@ module AylienPressrApi
           if params.key?("iptc_categories")
             params["iptc_categories[]"] = params.delete("iptc_categories")
           end
-          
+
           if params.key?("author_type_ids")
             params["author_type_ids[]"] = params.delete("author_type_ids")
           end
@@ -251,7 +249,7 @@ module AylienPressrApi
           end
         when Configuration::ENDPOINTS[:authors]
           params["keywords[]"] = params.delete("keywords") if params.key?("keywords")
-          
+
           if params.key?("author_type_ids")
             params["author_type_ids[]"] = params.delete("author_type_ids")
           end

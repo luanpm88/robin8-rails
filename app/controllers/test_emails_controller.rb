@@ -12,6 +12,7 @@ class TestEmailsController < ApplicationController
     email_pitch.gsub!('@[Title]', '<a href="' + release.permalink + '">' + release.title + '</a>')
     email_pitch.gsub!('@[Text]', release.text)
     email_pitch.gsub!('@[Link]', release.permalink)
+    email_pitch = email_pitch.sub('@[Unsubscribe Link]', "http://#{Rails.application.secrets[:host]}/unsubscribe/?token=****************************************")
     register_text = @l.t('smart_release.pitch_step.email_panel.kols_register_href_text')
     email_pitch.gsub!('@[KolReghref]', "<a href='http://#{Rails.application.secrets[:host]}/kols/new'>#{register_text}</a>")
     @draft_pitch.email_pitch = email_pitch

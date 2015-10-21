@@ -171,6 +171,10 @@ form#createPost {
   }
 }
 
+#say-something-field {
+  background: white !important;
+}
+
 .modal-footer {
   #stats {
     display: block;
@@ -409,6 +413,73 @@ span.social-networks {
   padding: 0;
   color: #000;
 }
+.swal-title {
+  font-size: 37px;
+}
+
+#select-start-date-web-region, #select-start-date-email-region {
+  vertical-align: bottom;
+  display: inline-block;
+  padding-right: 15px;
+}
+
+#select-end-date-web-region, #select-end-date-email-region {
+  vertical-align: bottom;
+  display: inline-block;
+  padding-right: 5px;
+}
+
+#apply-date, #apply-email-date {
+  vertical-align: bottom;
+  margin-right: 30px;
+}
+
+
+// CSS checkbox
+input[type=checkbox].css-checkbox {
+  position:absolute;
+  z-index:-1000;
+  left:-1000px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height:1px;
+  width:1px;
+  margin:-1px;
+  padding:0;
+  border:0;
+}
+
+input[type=checkbox].css-checkbox + label.css-label {
+  padding-left:34px;
+  height:29px;
+  display:inline-block;
+  line-height:29px;
+  background-repeat:no-repeat;
+  background-position: 0 0;
+  font-size:29px;
+  vertical-align:middle;
+  cursor:pointer;
+}
+
+input[type=checkbox].css-checkbox:checked + label.css-label {
+  background-position: 0 -29px;
+}
+
+label.css-label {
+  background-image: asset-url("csscheckbox_style.png");
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+// END of CSS checkbox
+
+iframe.wysihtml5-sandbox {
+  width: 100% !important;
+}
+
 .hide, .hide + label + label ~ div {
     display: none;
 }
@@ -537,67 +608,6 @@ span.social-networks {
   left: 108px;
 }
 
-.swal-title {
-  font-size: 37px;
-}
-
-#select-start-date-web-region, #select-start-date-email-region {
-  vertical-align: bottom;
-  display: inline-block;
-  padding-right: 15px;
-}
-
-#select-end-date-web-region, #select-end-date-email-region {
-  vertical-align: bottom;
-  display: inline-block;
-  padding-right: 5px;
-}
-
-#apply-date, #apply-email-date {
-  vertical-align: bottom;
-  margin-right: 30px;
-}
-
-// CSS checkbox
-input[type=checkbox].css-checkbox {
-  position:absolute;
-  z-index:-1000;
-  left:-1000px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  height:1px;
-  width:1px;
-  margin:-1px;
-  padding:0;
-  border:0;
-}
-
-input[type=checkbox].css-checkbox + label.css-label {
-  padding-left:34px;
-  height:29px;
-  display:inline-block;
-  line-height:29px;
-  background-repeat:no-repeat;
-  background-position: 0 0;
-  font-size:29px;
-  vertical-align:middle;
-  cursor:pointer;
-}
-
-input[type=checkbox].css-checkbox:checked + label.css-label {
-  background-position: 0 -29px;
-}
-
-label.css-label {
-  background-image: asset-url("csscheckbox_style.png");
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-// END of CSS checkbox
 iframe.wysihtml5-sandbox {
   width: 100% !important;
 }

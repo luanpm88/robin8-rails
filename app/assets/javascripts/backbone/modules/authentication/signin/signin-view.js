@@ -7,8 +7,13 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       'click #login' : 'login',
       'click .btn-facebook' : 'socialSignIn',
       'click .btn-google-plus' : 'socialSignIn',
+      'click .btn-weibo' : 'socialSignIn',
+      'click .btn-wechat' : 'socialSignIn',
     },
-
+    ui: {
+      world: 'world',
+      china: 'china'
+    },
     initialize: function() {
       this.model = new Robin.Models.UserSession();
       this.kolModel = new Robin.Models.KOLSession();
@@ -17,11 +22,30 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
     },
 
     onRender: function() {
+      var $this = this;
       this.modelBinder.bind(this.model, this.el);
       this.kolBinder.bind(this.kolModel, this.el);
       $('.signup-tag').text(polyglot.t('login.title'));
       $('.nav.fixed a').removeClass('active');
       $('#login-link').addClass('active');
+      _.defer(function(){
+        $this.$('#email').focus();
+      });
+
+      $.ajax({
+        dataType: 'json',
+        method: 'GET',
+        url: '/geocode/country',
+        success: function(response){
+          if(response == "China")
+          {
+            $('#world').hide()
+          }
+          else{
+            $('#china').hide()
+          }
+        }
+      });
     },
 
     login: function(e) {

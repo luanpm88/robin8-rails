@@ -19,10 +19,14 @@
       <div class="row business-plans" id="business-plans" data-equalizer>
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-basic" data-plan="basic" data-equalizer-watch>
-            <h2><%= @products[0].name.split(' ')[0] %></h2>
+            <h2><%= @l.t('products.first.' + @products[0].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[0].price).to_i %><span class="permonth">/mo</span>
+                <% unless current_user.locale == 'zh' %>
+                  $<%=(@products[0].price).to_i %><span class="permonth">/mo</span>
+                <% else  %>
+                  ¥<%=(@products[0].china_price).to_i %><span class="permonth">/mo</span>
+                <% end %>
               </div>
             </div>
             <div class="plan-inclusions">
@@ -30,7 +34,7 @@
                 <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
                 <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
                 <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.seat') %></span></li>
-                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
+                <li><strong>1</strong> <span><%= @l.t('pricing.select_plan.media_list') %></span></li>
                 <li><strong>3</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
                 <li><strong>&nbsp;</strong> <span></span></li>
               </ul>
@@ -42,16 +46,20 @@
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-business" data-plan="business" data-equalizer-watch>
-            <h2><%= @products[1].name.split(' ')[0] %></h2>
+            <h2><%= @l.t('products.first.' + @products[1].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[1].price).to_i %><span class="permonth">/mo</span>
+                <% unless current_user.locale == 'zh' %>
+                  $<%=(@products[1].price).to_i %><span class="permonth">/mo</span>
+                <% else  %>
+                  ¥<%=(@products[1].china_price).to_i %><span class="permonth">/mo</span>
+                <% end %>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
                 <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
-                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.newsrooms') %></span></li>
                 <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.seats') %></span></li>
                 <li><strong>5</strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
                 <li><strong>10</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>
@@ -65,16 +73,20 @@
         </div><!--end plan type column -->
         <div class="small-12 medium-6 large-4 columns">
           <div class="subscription-type" id="plantype-enterprise" data-plan="enterprise" data-equalizer-watch >
-            <h2><%= @products[2].name.split(' ')[0] %></h2>
+            <h2><%= @l.t('products.first.' + @products[2].slug) %></h2>
             <div class="price-bubble">
               <div class="price-amount">
-                $<%=(@products[2].price).to_i %><span class="permonth">/mo</span>
+                <% unless current_user.locale == 'zh' %>
+                  $<%=(@products[2].price).to_i %><span class="permonth">/mo</span>
+                <% else  %>
+                  ¥<%=(@products[2].china_price).to_i %><span class="permonth">/mo</span>
+                <% end %>
               </div>
             </div>
             <div class="plan-inclusions">
               <ul>
                 <li><strong>200</strong> <span><%= @l.t('pricing.select_plan.smart_release') %></span></li>
-                <li><strong>75</strong> <span><%= @l.t('pricing.select_plan.newsroom') %></span></li>
+                <li><strong>75</strong> <span><%= @l.t('pricing.select_plan.newsrooms') %></span></li>
                 <li style="padding-left: 23px;"><strong style="width: auto;"><%= @l.t('pricing.select_plan.unlimited') %></strong> <span><%= @l.t('pricing.select_plan.seats') %></span></li>
                 <li style="padding-left: 23px;"><strong style="width: auto;"><%= @l.t('pricing.select_plan.unlimited') %></strong> <span><%= @l.t('pricing.select_plan.media_lists') %></span></li>
                 <li><strong>20</strong> <span><%= @l.t('pricing.select_plan.stream') %></span></li>

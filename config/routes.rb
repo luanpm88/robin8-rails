@@ -16,6 +16,11 @@ Rails.application.routes.draw do
     confirmations: "users/confirmations"
   }
 
+  get 'recommendations/analyse_tweets' => 'recommendations#analyse_tweets'
+  get 'recommendations/index' => 'recommendations#index'
+  match "recommendations/status/:id" => "recommendations#status", :via => :get
+  post 'recommendations/event' => 'recommendations#event'
+
   get 'pricing' => 'pages#pricing'
   get 'set_locale' => 'pages#set_locale'
   get 'subscribe/:slug' => 'payments#new'
@@ -35,6 +40,7 @@ Rails.application.routes.draw do
   post 'users/import_kols' => 'kols_lists#create'
   post 'users/import_kol' => 'users#import_kol'
   get 'payments/apply_discount' => 'payments#apply_discount'
+  get 'payments/check_tax_rate' => 'payments#check_tax_rate'
   delete '/users/disconnect_social' => 'users#disconnect_social'
   # resources :blue_snap
   # resources :payments do
@@ -155,6 +161,7 @@ Rails.application.routes.draw do
   get '/terms', to: 'pages#terms'
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
+  get '/unsubscribe', to: 'pages#unsubscribe'
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
   get '/contact_us', to: "pages#contact_us"
@@ -179,6 +186,7 @@ Rails.application.routes.draw do
   post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
   resources :kols_lists, only: [:index, :create, :show, :update]
 
+  get '/geocode/country', to: 'geocode#get_country'
   post 'campaign_invite/reject', to: 'interested_campaigns#update'
   post 'campaign_invite/invite', to: 'interested_campaigns#update'
   post 'campaign_invite/ask_for_invite', to: 'interested_campaigns#ask_for_invite'

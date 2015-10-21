@@ -918,7 +918,7 @@ body.login {
     margin-top: 25px !important;
     overflow: hidden;
     text-indent: -55555px;
-    width: 158px;
+    width: 175px;
   }
   .homeheader .nav .title-area a.logo {
     visibility: hidden;
@@ -1215,20 +1215,23 @@ body.login {
     }
   .btn-google-plus {
       background-color: #df4a32;
-    }
+  }
   .btn-wechat {
-      background-color: #36df70;
-    }
+    background-color: #36df70;
+  }
+
 
   .btn-facebook i.fa,
-  .btn-wechat i.fa,
-  .btn-google-plus i.fa{
+  .btn-google-plus i.fa,
+  .btn-weibo i.fa,
+  .btn-wechat i.fa{
     display: none;
   }
 
   .btn-facebook span,
-  .btn-wechat span,
-  .btn-google-plus span{
+  .btn-google-plus span,
+  .btn-weibo span,
+  .btn-wechat span{
       display: inline-block;
       height: 60px;
       padding-left: 50px;
@@ -1236,13 +1239,15 @@ body.login {
 
   .btn-facebook span{
       background: image-url("Login_Facebook_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
-
   }
   .btn-google-plus span{
       background: image-url("Login_GooglePlus_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
   }
+  .btn-weibo span{
+    background: image-url("Login_Weibo_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+  }
   .btn-wechat span{
-      background: image-url("Login_WeChat_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    background: image-url("Login_WeChat_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
   }
 
   .btn-google-plus:hover {
@@ -1260,8 +1265,15 @@ body.login {
     transition-duration: 0.5s;
     transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
   }
+  .btn-weibo:hover {
+    background-color: #3a579a;
+    opacity: 0.8;
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+  }
   .btn-wechat:hover {
-      background-color: #36df70;
+    background-color: #36df70;
     opacity: 0.8;
     transition-property: all;
     transition-duration: 0.5s;
@@ -1836,4 +1848,21 @@ body.login {
 }
 .whatwedo_brand p .icon-img-wrap img{
   margin-top: -22px;
+}
+.createPostForm {
+  z-index: 100;
+}
+#say-counter {
+  position: absolute;
+  top: 100px;
+  right: 13px;
+}
+#submit-post {
+  margin-left: 4px;
+}
+.cancel-schedule {
+  margin-left: 4px;
+}
+ .social_identities {
+  min-height: 69px;
 }

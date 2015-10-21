@@ -20,140 +20,140 @@ require 'rails_helper'
 
 RSpec.describe MediaListsController, type: :controller do
 
-  # This should return the minimal set of attributes required to create a valid
-  # MediaList. As you add validations to MediaList, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  # # This should return the minimal set of attributes required to create a valid
+  # # MediaList. As you add validations to MediaList, be sure to
+  # # adjust the attributes here as well.
+  # let(:valid_attributes) {
+  #   skip("Add a hash of attributes valid for your model")
+  # }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  # let(:invalid_attributes) {
+  #   skip("Add a hash of attributes invalid for your model")
+  # }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # MediaListsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  # # This should return the minimal set of values that should be in the session
+  # # in order to pass any filters (e.g. authentication) defined in
+  # # MediaListsController. Be sure to keep this updated too.
+  # let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all media_lists as @media_lists" do
-      media_list = MediaList.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:media_lists)).to eq([media_list])
-    end
-  end
+  # describe "GET #index" do
+  #   it "assigns all media_lists as @media_lists" do
+  #     media_list = MediaList.create! valid_attributes
+  #     get :index, {}, valid_session
+  #     expect(assigns(:media_lists)).to eq([media_list])
+  #   end
+  # end
 
-  describe "GET #show" do
-    it "assigns the requested media_list as @media_list" do
-      media_list = MediaList.create! valid_attributes
-      get :show, {:id => media_list.to_param}, valid_session
-      expect(assigns(:media_list)).to eq(media_list)
-    end
-  end
+  # describe "GET #show" do
+  #   it "assigns the requested media_list as @media_list" do
+  #     media_list = MediaList.create! valid_attributes
+  #     get :show, {:id => media_list.to_param}, valid_session
+  #     expect(assigns(:media_list)).to eq(media_list)
+  #   end
+  # end
 
-  describe "GET #new" do
-    it "assigns a new media_list as @media_list" do
-      get :new, {}, valid_session
-      expect(assigns(:media_list)).to be_a_new(MediaList)
-    end
-  end
+  # describe "GET #new" do
+  #   it "assigns a new media_list as @media_list" do
+  #     get :new, {}, valid_session
+  #     expect(assigns(:media_list)).to be_a_new(MediaList)
+  #   end
+  # end
 
-  describe "GET #edit" do
-    it "assigns the requested media_list as @media_list" do
-      media_list = MediaList.create! valid_attributes
-      get :edit, {:id => media_list.to_param}, valid_session
-      expect(assigns(:media_list)).to eq(media_list)
-    end
-  end
+  # describe "GET #edit" do
+  #   it "assigns the requested media_list as @media_list" do
+  #     media_list = MediaList.create! valid_attributes
+  #     get :edit, {:id => media_list.to_param}, valid_session
+  #     expect(assigns(:media_list)).to eq(media_list)
+  #   end
+  # end
 
-  describe "POST #create" do
-    context "with valid params" do
-      it "creates a new MediaList" do
-        expect {
-          post :create, {:media_list => valid_attributes}, valid_session
-        }.to change(MediaList, :count).by(1)
-      end
+  # describe "POST #create" do
+  #   context "with valid params" do
+  #     it "creates a new MediaList" do
+  #       expect {
+  #         post :create, {:media_list => valid_attributes}, valid_session
+  #       }.to change(MediaList, :count).by(1)
+  #     end
 
-      it "assigns a newly created media_list as @media_list" do
-        post :create, {:media_list => valid_attributes}, valid_session
-        expect(assigns(:media_list)).to be_a(MediaList)
-        expect(assigns(:media_list)).to be_persisted
-      end
+  #     it "assigns a newly created media_list as @media_list" do
+  #       post :create, {:media_list => valid_attributes}, valid_session
+  #       expect(assigns(:media_list)).to be_a(MediaList)
+  #       expect(assigns(:media_list)).to be_persisted
+  #     end
 
-      it "redirects to the created media_list" do
-        post :create, {:media_list => valid_attributes}, valid_session
-        expect(response).to redirect_to(MediaList.last)
-      end
-    end
+  #     it "redirects to the created media_list" do
+  #       post :create, {:media_list => valid_attributes}, valid_session
+  #       expect(response).to redirect_to(MediaList.last)
+  #     end
+  #   end
 
-    context "with invalid params" do
-      it "assigns a newly created but unsaved media_list as @media_list" do
-        post :create, {:media_list => invalid_attributes}, valid_session
-        expect(assigns(:media_list)).to be_a_new(MediaList)
-      end
+  #   context "with invalid params" do
+  #     it "assigns a newly created but unsaved media_list as @media_list" do
+  #       post :create, {:media_list => invalid_attributes}, valid_session
+  #       expect(assigns(:media_list)).to be_a_new(MediaList)
+  #     end
 
-      it "re-renders the 'new' template" do
-        post :create, {:media_list => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
-      end
-    end
-  end
+  #     it "re-renders the 'new' template" do
+  #       post :create, {:media_list => invalid_attributes}, valid_session
+  #       expect(response).to render_template("new")
+  #     end
+  #   end
+  # end
 
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+  # describe "PUT #update" do
+  #   context "with valid params" do
+  #     let(:new_attributes) {
+  #       skip("Add a hash of attributes valid for your model")
+  #     }
 
-      it "updates the requested media_list" do
-        media_list = MediaList.create! valid_attributes
-        put :update, {:id => media_list.to_param, :media_list => new_attributes}, valid_session
-        media_list.reload
-        skip("Add assertions for updated state")
-      end
+  #     it "updates the requested media_list" do
+  #       media_list = MediaList.create! valid_attributes
+  #       put :update, {:id => media_list.to_param, :media_list => new_attributes}, valid_session
+  #       media_list.reload
+  #       skip("Add assertions for updated state")
+  #     end
 
-      it "assigns the requested media_list as @media_list" do
-        media_list = MediaList.create! valid_attributes
-        put :update, {:id => media_list.to_param, :media_list => valid_attributes}, valid_session
-        expect(assigns(:media_list)).to eq(media_list)
-      end
+  #     it "assigns the requested media_list as @media_list" do
+  #       media_list = MediaList.create! valid_attributes
+  #       put :update, {:id => media_list.to_param, :media_list => valid_attributes}, valid_session
+  #       expect(assigns(:media_list)).to eq(media_list)
+  #     end
 
-      it "redirects to the media_list" do
-        media_list = MediaList.create! valid_attributes
-        put :update, {:id => media_list.to_param, :media_list => valid_attributes}, valid_session
-        expect(response).to redirect_to(media_list)
-      end
-    end
+  #     it "redirects to the media_list" do
+  #       media_list = MediaList.create! valid_attributes
+  #       put :update, {:id => media_list.to_param, :media_list => valid_attributes}, valid_session
+  #       expect(response).to redirect_to(media_list)
+  #     end
+  #   end
 
-    context "with invalid params" do
-      it "assigns the media_list as @media_list" do
-        media_list = MediaList.create! valid_attributes
-        put :update, {:id => media_list.to_param, :media_list => invalid_attributes}, valid_session
-        expect(assigns(:media_list)).to eq(media_list)
-      end
+  #   context "with invalid params" do
+  #     it "assigns the media_list as @media_list" do
+  #       media_list = MediaList.create! valid_attributes
+  #       put :update, {:id => media_list.to_param, :media_list => invalid_attributes}, valid_session
+  #       expect(assigns(:media_list)).to eq(media_list)
+  #     end
 
-      it "re-renders the 'edit' template" do
-        media_list = MediaList.create! valid_attributes
-        put :update, {:id => media_list.to_param, :media_list => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
-      end
-    end
-  end
+  #     it "re-renders the 'edit' template" do
+  #       media_list = MediaList.create! valid_attributes
+  #       put :update, {:id => media_list.to_param, :media_list => invalid_attributes}, valid_session
+  #       expect(response).to render_template("edit")
+  #     end
+  #   end
+  # end
 
-  describe "DELETE #destroy" do
-    it "destroys the requested media_list" do
-      media_list = MediaList.create! valid_attributes
-      expect {
-        delete :destroy, {:id => media_list.to_param}, valid_session
-      }.to change(MediaList, :count).by(-1)
-    end
+  # describe "DELETE #destroy" do
+  #   it "destroys the requested media_list" do
+  #     media_list = MediaList.create! valid_attributes
+  #     expect {
+  #       delete :destroy, {:id => media_list.to_param}, valid_session
+  #     }.to change(MediaList, :count).by(-1)
+  #   end
 
-    it "redirects to the media_lists list" do
-      media_list = MediaList.create! valid_attributes
-      delete :destroy, {:id => media_list.to_param}, valid_session
-      expect(response).to redirect_to(media_lists_url)
-    end
-  end
+  #   it "redirects to the media_lists list" do
+  #     media_list = MediaList.create! valid_attributes
+  #     delete :destroy, {:id => media_list.to_param}, valid_session
+  #     expect(response).to redirect_to(media_lists_url)
+  #   end
+  # end
 
 end

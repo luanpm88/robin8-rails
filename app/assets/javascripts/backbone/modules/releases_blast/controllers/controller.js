@@ -93,6 +93,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       this.module.releaseModel = params.releaseModel;
 
+      ////////////// Submit event to Wripl for recommendations //
+      var keywords ="", 
+      topics = this.module.releaseModel.attributes['concepts'].slice(0, 6).join(), 
+      category = this.module.releaseModel.attributes['iptc_categories'].slice(0, 6).join(); 
+      wripl._track(Robin.currentUser.attributes['id'], 0, "VIEW", keywords, topics, category);
+      //////////// End of Wripl event capture ///////////////// 
+      
       var analysisTabView = new this.module.AnalysisTabView({
         model: this.module.releaseModel,
         reanalyze: params.reanalyze

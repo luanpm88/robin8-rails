@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
+  has_many :unsubscribe_emails, dependent: :destroy
 
   has_many :user_products , dependent: :destroy
   has_many :payments ,through: :user_products
@@ -207,6 +208,11 @@ class User < ActiveRecord::Base
     manageable_users.count + 1 # +1 - himself
   end
 
+  def media_lists_count
+    lists = current_user_features.personal_media_list
+    lists.count == 0 ? 0 : lists.map(&:available_count).inject{|sum,x| sum + x }
+  end
+
   # def can_create_seat
   #   seat_available_count.nil? ? false : seat_available_count > 1
   # end
@@ -218,11 +224,6 @@ class User < ActiveRecord::Base
   # def seat_count
   #   manageable_users.count + 1 # +1 - himself
   # end
-
-  def media_lists_count
-    lists = current_user_features.personal_media_list
-    lists.count == 0 ? 0 : lists.map(&:available_count).inject{|sum,x| sum + x }
-  end
 
   def active_subscription
     @subscriptions = is_primary? ? subscriptions : invited_by.subscriptions
@@ -244,11 +245,10 @@ class User < ActiveRecord::Base
   end
 
   def current_active_add_ons
-    add_ons_products = user_products.joins(:product).where("products.type ='AddOn'")
-
+    add_ons_products = needed_user.user_products.joins(:product).where("products.type ='AddOn'")
     if add_ons_products.present?
-      user_addons_features = user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
-      user_addons_features.map(&:product)
+      user_addons_features = needed_user.user_features.where.not(available_count: 0).where(product_id: add_ons_products.map(&:product_id))
+      add_ons_products.where(product_id: user_addons_features.map(&:product_id))
     else
       []
     end
@@ -341,9 +341,9 @@ class User < ActiveRecord::Base
   end
 
   def can_export
-    user_product = user_products.first
+    user_product = self.active_subscription
     return false if user_product.blank?
-    ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual"].include? user_product.product.slug
+    ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual", "newenterprise-monthly"].include? user_product.product.slug
   end
 
   private
@@ -364,7 +364,7 @@ class User < ActiveRecord::Base
 
     def decrease_feature_number
       af = current_user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-      uf = af.nil? ? needed_user.user_features.seat.available.used.first : af
+      uf = af.nil? ? needed_user.user_features.seat.available.first : af
       return false if uf.blank?
       uf.available_count -= 1
       uf.save
@@ -372,10 +372,9 @@ class User < ActiveRecord::Base
 
     def increase_feature_number
       af = current_user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-      uf = af.nil? ? needed_user.user_features.seat.first : af
+      uf = af.nil? ? needed_user.user_features.seat.used.first : af
       return false if uf.blank?
       uf.available_count += 1
       uf.save
     end
 end
-

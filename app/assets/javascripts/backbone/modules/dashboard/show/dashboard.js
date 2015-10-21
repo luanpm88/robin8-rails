@@ -66,7 +66,7 @@ Robin.module('Dashboard.Show', function(Show, App, Backbone, Marionette, $, _){
 
     addRelease: function(){
       if (Robin.user.get('can_create_release') != true) {
-        $.growl({message: "You don't have available releases!"},
+        $.growl({message: polyglot.t("dashboard.no_available_content")},
           {
             type: 'info'
           });

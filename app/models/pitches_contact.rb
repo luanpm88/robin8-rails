@@ -14,7 +14,7 @@ class PitchesContact < ActiveRecord::Base
 
   # Email pitch tags are:
   # ["@[First Name]", "@[Last Name]", "@[Summary]",
-  # "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"]
+  # "@[Outlet]", "@[Link]", "@[Title]", "@[Text]"], "@[Unsubscribe Link]"]
   #
   # Twitter pitch tags are:
   # [ "@[Handle]", "@[Name]", "@[Random Greeting]", "@[Link]" ]
@@ -23,7 +23,9 @@ class PitchesContact < ActiveRecord::Base
 
     host = Rails.application.secrets[:host]
 
-    if [0, 2, 3].include? self.contact.origin # pressr or pressr_weibo or media_list
+    unsub_link = "http://#{host}/unsubscribe/?token=#{self.unsubscribe_token}"
+
+    if [0, 2, 3].include? self.contact.origin # pressr or media_list
       first_name = self.contact.first_name
       last_name = self.contact.last_name
       outlet = self.contact.outlet
@@ -42,6 +44,7 @@ class PitchesContact < ActiveRecord::Base
       pitch_text.gsub!('@[Link]', "<a href='#{link}'>#{link}</a>")
       pitch_text.gsub!('@[Title]', title)
       pitch_text.gsub!('@[Text]', text)
+      pitch_text.gsub!('@[Unsubscribe Link]', unsub_link)
       pitch_text.gsub!('@[KolReghref]', "<a href='http://#{Rails.application.secrets[:host]}/kols/new'>register</a>")
 #      pitch_text.gsub!("\n", "<br />")
       pitch_text

@@ -17,11 +17,8 @@ config/secrets.yml
 config/database.yml
 /.capistrano
 public/system
-/doc
-
-*.sublime-project
-*.sublime-workspace
 .DS_Store
+/doc
 
 *.sublime-project
 *.sublime-workspace

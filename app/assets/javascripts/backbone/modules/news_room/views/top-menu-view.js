@@ -363,7 +363,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         });
       }else{
         swal({
-          title: "Delete this newsroom?",
+          title: polyglot.t("newsrooms.delete_brand_gallery"),
           text: "You will not be able to recover it!",
           type: "error",
           showCancelButton: true,

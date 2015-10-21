@@ -257,6 +257,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         
         if (endpoint == 'textapi/classify' && Robin.currentUser.get('locale') == 'zh'){
           params.type = "weibo";
+          that.reanalyze = true;
         }
     
         $.ajax({
@@ -320,19 +321,20 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                 
                 break;
               case 'textapi/classify':
-                if (that.reanalyze || s.isBlank(that.model.get('iptc_categories'))){
+                if ((Robin.currentUser.get('locale') == 'zh') || that.reanalyze || 
+                  s.isBlank(that.model.get('iptc_categories'))){
                   that.textapiResult["classify"] = _(that.transformLabel(response[0].label, 
                     response[0].code)
                     .split(" - ")).map(function(p) {
                     return p.charAt(0).toUpperCase() + p.slice(1);
                   }).join(' - ');
                   
-                var categories = _.chain(response).pluck('code').uniq().value();
-                if (Robin.currentUser.get('locale') == 'zh') {
-                  that.model.set('boson_categories', categories);
-                } else {
-                  that.model.set('iptc_categories', categories);
-                }
+                  var categories = _.chain(response).pluck('code').uniq().value();
+                  if (Robin.currentUser.get('locale') == 'zh') {
+                    that.model.set('boson_categories', categories);
+                  } else {
+                    that.model.set('iptc_categories', categories);
+                  }
                   
                   resultReady();
                 } else {

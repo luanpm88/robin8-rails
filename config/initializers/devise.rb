@@ -257,15 +257,15 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.omniauth :twitter, Rails.application.secrets.twitter[:api_key],
-    Rails.application.secrets.twitter[:api_secret]
+                  Rails.application.secrets.twitter[:api_secret]
   config.omniauth :linkedin, Rails.application.secrets.linkedin[:api_key],
-    Rails.application.secrets.linkedin[:api_secret], :scope => 'r_basicprofile r_emailaddress rw_company_admin w_share'
+                  Rails.application.secrets.linkedin[:api_secret], :scope => 'r_basicprofile r_emailaddress rw_company_admin w_share'
   config.omniauth :facebook, Rails.application.secrets.facebook[:app_id],
-    Rails.application.secrets.facebook[:app_secret], :scope => 'email,publish_actions'
+                  Rails.application.secrets.facebook[:app_secret], :scope => 'email,publish_actions'
   config.omniauth :google_oauth2, Rails.application.secrets.google[:client_id],
-    Rails.application.secrets.google[:client_secret]
+                  Rails.application.secrets.google[:client_secret]
   config.omniauth :weibo, Rails.application.secrets.weibo[:app_key],
-    Rails.application.secrets.weibo[:app_secret]
+                  Rails.application.secrets.weibo[:app_secret]
   config.omniauth :wechat, Rails.application.secrets.wechat[:app_id],
-    Rails.application.secrets.wechat[:app_secret]
+                  Rails.application.secrets.wechat[:app_secret]
 end

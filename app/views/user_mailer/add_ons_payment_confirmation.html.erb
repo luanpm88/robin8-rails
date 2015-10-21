@@ -1,13 +1,12 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="viewport" content="width=device-width" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Robin8</title>
-  <%= stylesheet_link_tag  'mail-template' %>
+  <%= stylesheet_link_tag 'mail-template' %>
 </head>
-
+<% currency_sign = unless @user.locale == 'zh' then '$' else '¥' end %>
 <body>
 <table class="body-wrap">
   <tr>
@@ -20,7 +19,7 @@
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    Hello <%=@user.name.humanize%>,
+                    Hello <%=@user.name%>,
                   </td>
                 </tr>
                 <tr>
@@ -33,26 +32,32 @@
                   <td class="content-block">
                     <table class="invoice">
                       <tr>
-                        <td>Payment Detail  - <%=Time.now.utc.strftime("%d-%m-%Y %I:%M%p")%></td>
+                        <td>Payment Detail - <%=Time.now.utc.strftime("%d-%m-%Y %I:%M%p")%></td>
                       </tr>
                       <tr>
                         <td>
                           <table class="invoice-items" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td width="40%" align="left">Product name</td>
+                              <td width="15%" align="center">Amount</td>
+                              <td width="15%" align="center">Price</td>
+                              <td width="15%" align="center">Tax</td>
+                              <td width="15%" align="right">Sum</td>
+                            </tr>
                             <%total = 0.0%>
                             <%@add_ons.each do |a|%>
                                 <tr>
-                                  <td width="40%"><%=a.name%></td>
-                                  <td width="5%"><%=@add_on_hash["#{a.id}"]%> </td>
-                                  <td width="20%">$<%=a.price%>  </td>
-                                  <td width="35%">$ <%= price = a.price *  (@add_on_hash["#{a.id}"]).to_i%></td>
+                                  <td width="40%" align="left"><%=a.name%></td>
+                                  <td width="15%" align="center"><%=@add_on_hash["#{a.id}"]%></td>
+                                  <% addon_price = @prices[a.id] if  @prices.has_key?(a.id)%>
+                                  <td width="15%" align="center"><%=currency_sign%><%=addon_price%></td>
+                                  <td width="15%" align="center"><%=currency_sign%> <%=tax = (addon_price / 100 * @tax_rate).round(2)%></td>
+                                  <td width="15%" align="right"><%=currency_sign%> <%= price = (addon_price + tax) * (@add_on_hash["#{a.id}"]).to_i%></td>
                                   <%total += price%>
                                 </tr>
                             <%end%>
                             <tr class="total">
-                              <td></td>
-                              <td></td>
-                              <td class="alignright" width="40%">Total</td>
-                              <td class="alignright" width="40%">$ <%=total%></td>
+                              <td class="alignright" colspan="5" align="right">Total <%=currency_sign%> <%=total.round(2)%></td>
                             </tr>
                           </table>
                         </td>
@@ -70,7 +75,7 @@
               <td class="aligncenter content-block">Robin8 Inc. 1745 Broadyway, 17th Floot, New York 10019</td>
             </tr>
             <tr>
-              <td class="aligncenter content-block">Questions? Email <a href="mailto:">support@robin8.com</a></td>
+              <td class="aligncenter content-block">Questions? Email <a href="mailto:support@robin8.com">support@robin8.com</a></td>
             </tr>
           </table>
         </div>
@@ -82,7 +87,3 @@
 
 </body>
 </html>
-
-
-
-

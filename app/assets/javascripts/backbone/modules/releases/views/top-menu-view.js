@@ -23,11 +23,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       'click #highlight_textarea': 'highlightReleaseText',
       'click #smart_release': 'startSmartRelease',
       'change #upload': 'uploadWord',
+      'change #news_room_id': 'verifyPublic',
       'ifChanged .private-checkbox': 'changePrivate',
       'ifChanged .myprgenie-checkbox': 'switchMyprgenie',
       'ifChanged .accesswire-checkbox': 'switchAccesswire',
       'ifChanged .prnewswire-checkbox': 'switchPrnewswire',
-      'change #news_room_id': 'newsRoomSelected',
       'click #make-public': 'makeNewsRoomPublic',
       'click #direct-image-upload': 'uploadDirectImage',
       'click #url-image-upload': 'uploadUrlImage',
@@ -152,11 +152,11 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       }
     },
     changePrivate: function(e) {
-      if ($(e.target).is(":checked")) {
-        this.$el.find('.smart-release-button').addClass('disabled');
-      } else {
-        this.$el.find('.smart-release-button').removeClass('disabled');
-      }
+      // if ($(e.target).is(":checked")) {
+      //   this.$el.find('.smart-release-button').addClass('disabled');
+      // } else {
+      //   this.$el.find('.smart-release-button').removeClass('disabled');
+      // }
     },
     highlightReleaseText: function(e) {
       e.preventDefault();
@@ -229,22 +229,22 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.modelBinder.bind(this.model, this.el);
       this.initFormValidation();
 
-      var date = moment(this.model.get('published_at')).toDate();
-      var datedate = moment(date).format('MM/DD/YYYY');
+      var date = moment(this.model.get('formamtted_published_at')).toDate();
+      var datedate = moment(date).format('MM/DD/YYYY hh:mm A');
       this.$el.find('#release-date-input').val(datedate).change();
-      this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#release-date-input').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
 
-      this.$el.find('#myprgenie_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#myprgenie_date_input').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
       this.$el.find('#myprgenie_date_input').on('dp.change', function(e) {
         $('#releaseForm').formValidation('revalidateField', 'myprgenie_published_at');
       });
 
-      this.$el.find('#accesswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#accesswire_date_input').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
       this.$el.find('#accesswire_date_input').on('dp.change', function(e) {
         $('#releaseForm').formValidation('revalidateField', 'accesswire_published_at');
       });
 
-      this.$el.find('#prnewswire_date_input').datetimepicker({format: 'MM/DD/YYYY'});
+      this.$el.find('#prnewswire_date_input').datetimepicker({format: 'MM/DD/YYYY hh:mm A'});
       this.$el.find('#prnewswire_date_input').on('dp.change', function(e) {
         $('#releaseForm').formValidation('revalidateField', 'prnewswire_published_at');
       });
@@ -396,7 +396,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     },
     openModalDialog: function(){
       if(Robin.user.get('can_create_release') != true) {
-        $.growl({message: "You don't have available releases!"},
+        $.growl({message: polyglot.t("dashboard.no_available_content")},
           {
             type: 'info'
           });
@@ -406,7 +406,6 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.render();
         this.$el.find('#release_form').modal({ keyboard: false });
       }
-
     },
     openModalDialogEdit: function(data){
       this.model.set(data.toJSON().release);
@@ -414,17 +413,15 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
       this.$el.find('#release_form').modal({ keyboard: false });
       this.verifyPublic(this.model.attributes.news_room.publish_on_website);
     },
-    newsRoomSelected: function() {
-      var newsRoomId = $('#news_room_id').val();
-      if (newsRoomId != ""){
-        selectedNewsroom = this.newsrooms.get(newsRoomId);
-        this.verifyPublic(selectedNewsroom.attributes.publish_on_website);
-      } else {
-        this.verifyPublic(true);
-      }
-    },
     verifyPublic: function(publish) {
-      if (publish) {
+      var newsRoomId = $('#news_room_id').val();
+      if (!!newsRoomId){
+        selectedNewsroom = this.newsrooms.get(newsRoomId);
+        publicNewsRoom = selectedNewsroom.attributes.publish_on_website;
+      } else {
+        publicNewsRoom = this.model.attributes.news_room_public;
+      }
+      if (publicNewsRoom) {
         this.$el.find('#public-alert').hide();
       } else {
         this.$el.find('#public-alert').show();
@@ -597,7 +594,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           news_room_id: {
             validators: {
               notEmpty: {
-                message: polyglot.t("releases.modal.messages.select_newsroom")
+                message: polyglot.t("releases.modal.messages.select_brand_gallery")
               },
               serverError: {
                 message: 'something went wrong'
@@ -614,9 +611,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                   }
 
                   if( $('.myprgenie-checkbox').is(':checked') ) {
-                    var now = moment().format("MM/DD/YYYY");
+                    var now = moment().format("MM/DD/YYYY hh:mm A");
                     var myDate = new Date($('#myprgenie_date_input').val());
-                    var myDate = moment($('#myprgenie_date_input').val(), 'MM/DD/YYYY')._i;
+                    var myDate = moment($('#myprgenie_date_input').val(), 'MM/DD/YYYY hh:mm A')._i;
                     if(myDate < now){
                       return false;
                     }
@@ -640,9 +637,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                   }
 
                   if( $('.accesswire-checkbox').is(':checked') ) {
-                    var now = moment().format("MM/DD/YYYY");
+                    var now = moment().format("MM/DD/YYYY hh:mm A");
                     var myDate = new Date($('#accesswire_date_input').val());
-                    var myDate = moment($('#accesswire_date_input').val(), 'MM/DD/YYYY')._i;
+                    var myDate = moment($('#accesswire_date_input').val(), 'MM/DD/YYYY hh:mm A')._i;
                     if(myDate < now){
                       return false;
                     }
@@ -666,9 +663,9 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
                   }
 
                   if( $('.prnewswire-checkbox').is(':checked') ) {
-                    var now = moment().format("MM/DD/YYYY");
+                    var now = moment().format("MM/DD/YYYY hh:mm A");
                     var myDate = new Date($('#prnewswire_date_input').val());
-                    var myDate = moment($('#prnewswire_date_input').val(), 'MM/DD/YYYY')._i;
+                    var myDate = moment($('#prnewswire_date_input').val(), 'MM/DD/YYYY hh:mm A')._i;
                     if(myDate < now){
                       return false;
                     }
@@ -733,10 +730,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
           this.$el.find('#save_release').prop("disabled",true);
           this.$el.find('#smart_release').prop("disabled",true);
 
-          this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
-          this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
-          this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
-          this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY').format('LL');
+          this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+          this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+          this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+          this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
 
           this.model.save(viewObj.model.attributes, {
             success: function(model, data, response){
@@ -779,10 +776,10 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
         this.$el.find('#save_release').prop("disabled",true);
         this.$el.find('#smart_release').prop("disabled",true);
 
-        this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY').format('LL');
-        this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY').format('LL');
-        this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY').format('LL');
-        this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY').format('LL');
+        this.model.attributes.published_at = moment(this.model.attributes.published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+        this.model.attributes.myprgenie_published_at = moment(this.model.attributes.myprgenie_published_at, 'MM/DD/YYYY hh:mm A ').format('LLL');
+        this.model.attributes.accesswire_published_at = moment(this.model.attributes.accesswire_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
+        this.model.attributes.prnewswire_published_at = moment(this.model.attributes.prnewswire_published_at, 'MM/DD/YYYY hh:mm A').format('LLL');
         if (this.model.attributes.id) {
           this.model.save(this.model.attributes, {
             success: function(model, data, response){
@@ -849,7 +846,7 @@ Robin.module('Releases', function(Releases, App, Backbone, Marionette, $, _){
     deleteRelease: function(){
       var viewObj = this;
       swal({
-        title: "Remove this release?",
+        title: "Remove this content?",
         text: "You will not be able to recover this content.",
         type: "error",
         showCancelButton: true,
