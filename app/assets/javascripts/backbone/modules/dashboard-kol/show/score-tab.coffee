@@ -87,14 +87,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       d = [
         [
-          {axis: "Your influence channel", value: 100},
-          {axis: "Social engagement", value: 100},
-          {axis: "Content generation", value: 100},
-          {axis: "Weibo fans", value: 100},
-          {axis: "Validity of social profile", value: 100},
+          {axis: "Your influence channels", value: 100, yOffset: 10},
+          {axis: "Social engagement", value: 100, xOffset: -10},
+          {axis: "Content generation", value: 100, yOffset: -10},
+          {axis: "Weibo fans", value: 100, yOffset: -10},
+          {axis: "Validity of social profile", value: 100, xOffset: 15},
         ],
         [
-          {axis: "Your influence channel", value: normalize(30, @model.attributes.stats.channels)},
+          {axis: "Your influence channels", value: normalize(30, @model.attributes.stats.channels)},
           {axis: "Social engagement", value: normalize(10, @model.attributes.stats.engagement)},
           {axis: "Content generation", value: normalize(10, @model.attributes.stats.content)},
           {axis: "Weibo fans", value: normalize(10, @model.attributes.stats.fans)},
@@ -104,9 +104,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       mycfg = {
         w: 160,
         h: 150,
+        factor: 0.75,
         maxValue: 100,
         levels: 0,
-        ExtraWidthX: 230
+        ExtraWidthX: 260,
+        ExtraWidthY: 100,
+        TranslateX: 120,
+        TranslateY: 25
       }
 
 

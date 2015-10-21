@@ -288,9 +288,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         renderedText = renderedText.replace(/\@\[Summary\]/g, summaries)
 
 
-      #kolLink = '<a href="' + window.location.origin + '/kols/new">register</a>'
-
-      #renderedText = renderedText.replace(/\@\[KolReghref\]/g, kolLink)
+      kolLink = '<a href="' + window.location.origin + '/kols/new">register</a>'
+      renderedText = renderedText.replace(/\@\[KolReghref\]/g, kolLink)
       renderedText = renderedText.replace(/\@\[Campaign Title\]/g, title)
       renderedText = renderedText.replace(/\@\[Text\]/g, html_text)
       renderedText = renderedText.replace(/\@\[User Name\]/g, userName)

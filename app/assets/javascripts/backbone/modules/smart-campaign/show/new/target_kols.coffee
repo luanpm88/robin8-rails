@@ -189,7 +189,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       @model.model.set "kols", _(@kols).filter (k) ->
         k.invited? and k.invited == true
       @validate()
-      if @model.model.get("kols").length > 0
+      if @model.model.get("kols").length > 0 || @initial_kols.length != 0
         document.getElementById("next-step").disabled = false
       else
         document.getElementById("next-step").disabled = true
@@ -204,7 +204,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       target = $ e.currentTarget
 
     validate: () ->
-      is_valid = _(@kols).any (k) -> k.invited? and k.invited == true
+      if @initial_kols.length != 0
+        is_valid = true
+      else
+        is_valid = _(@kols).any (k) -> k.invited? and k.invited == true
       if not is_valid
         $(".kol-header").addClass "error"
         $(".kol-errors").show()

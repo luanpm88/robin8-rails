@@ -537,6 +537,27 @@ span.social-networks {
   left: 108px;
 }
 
+.swal-title {
+  font-size: 37px;
+}
+
+#select-start-date-web-region, #select-start-date-email-region {
+  vertical-align: bottom;
+  display: inline-block;
+  padding-right: 15px;
+}
+
+#select-end-date-web-region, #select-end-date-email-region {
+  vertical-align: bottom;
+  display: inline-block;
+  padding-right: 5px;
+}
+
+#apply-date, #apply-email-date {
+  vertical-align: bottom;
+  margin-right: 30px;
+}
+
 // CSS checkbox
 input[type=checkbox].css-checkbox {
   position:absolute;

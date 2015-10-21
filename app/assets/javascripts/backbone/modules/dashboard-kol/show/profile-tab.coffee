@@ -26,14 +26,22 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     ui:
       birthdate: "#birthdate"
+      calendar_button: ".calendar_button"
       next: '#back_to_score_btn'
+      test: '.test'
       industry: '#interests'
+      country_select: "#country"
+      region_select: "#province"
+      city_input: "#city"
+      form: "#profile-form"
 
     regions:
       social: ".social-content"
 
     events:
       'click @ui.next': 'save'
+      'click @ui.calendar_button' : 'showDatepicker'
+      'change @ui.country_select' : 'checkCountry'
 
     templateHelpers:
       checked: (key, index, kol) ->
@@ -57,6 +65,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     onRender: ->
       @model_binder.bind @model, @el
+      $("#password").val("")
+      $("#current_password").val("")
+      $("#password_confirmation").val("")
       @social_view = new Show.ProfileSocialView
         model: @model
       @showChildView 'social', @social_view
@@ -66,6 +77,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         crs.init()
       _.defer =>
         @initSelect2()
+      _.defer =>
+        @checkCountry()
+      _.defer =>
+        @initFormValidation()
 
     initDatepicker: ->
       monthes = []
@@ -88,6 +103,103 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         dateFormat: "D, d M y"
       if @model.get('date_of_birthday')?
         @ui.birthdate.datepicker("setDate", new Date(@model.get('date_of_birthday')))
+
+    initFormValidation: ->
+      @ui.form.formValidation(
+        framework: 'bootstrap'
+        excluded: [
+          ':hidden'
+          ':disabled'
+        ]
+        icon:
+          valid: 'glyphicon glyphicon-ok'
+          invalid: 'glyphicon glyphicon-remove'
+          validating: 'glyphicon glyphicon-refresh'
+        fields:
+          first_name:
+            validators:
+              notEmpty:
+                message: polyglot.t('dashboard_kol.validation.first_name')
+          last_name:
+            validators:
+              notEmpty:
+                message: polyglot.t('dashboard_kol.validation.last_name')
+          mobile_number:
+            validators:
+              notEmpty:
+                message: polyglot.t('dashboard_kol.validation.mobile')
+          country:
+            validators:
+              notEmpty:
+                message: polyglot.t('dashboard_kol.validation.country')
+          province:
+            validators:
+              notEmpty:
+                message: polyglot.t('dashboard_kol.validation.region')
+          city:
+            validators:
+              notEmpty:
+                message: polyglot.t('dashboard_kol.validation.city')
+          current_password:
+            enabled: false,
+            validators:
+              notEmpty:
+                message: polyglot.t('profile.current_password_req')
+              serverError:
+                message: polyglot.t('profile.something_wrong')
+          password:
+            enabled: false,
+            validators:
+              notEmpty:
+                message: polyglot.t('profile.password_required')
+              serverError:
+                message: polyglot.t('profile.something_wrong')
+          password_confirmation:
+            enabled: false,
+            validators:
+              notEmpty:
+                message: polyglot.t('profile.password_confirmation_req')
+              identical:
+                field: 'password'
+                message: polyglot.t('profile.password_confirmation_must_same')
+              serverError:
+                message: polyglot.t('profile.something_wrong')
+
+      ).on('err.field.fv', (e, data) ->
+          data.element.parents('.cell').addClass 'has-error'
+      ).on('success.field.fv', (e, data) ->
+          data.element.parents('.cell').removeClass 'has-error'
+      ).on 'keyup', 'input[name="password"]', ->
+        isEmpty = $(@).val() == ''
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        # Revalidate the field when user starts typing in the password field
+        if $(@).val().length == 1
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+      .on 'keyup', 'input[name="current_password"]', ->
+        isEmpty = $(@).val() == ''
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        # Revalidate the field when user starts typing in the password field
+        if $(@).val().length == 1
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+      .on 'keyup', 'input[name="password_confirmation"]', ->
+        isEmpty = $(@).val() == ''
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        # Revalidate the field when user starts typing in the password field
+        if $(@).val().length == 1
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+
+
+    showDatepicker: ->
+      @ui.birthdate.datepicker('show')
+
+    checkCountry: ->
+      if @ui.country_select.val() == ''
+        @ui.region_select.attr('disabled', 'disabled')
+        @ui.city_input.val ''
+        @ui.city_input.attr('disabled', 'disabled')
+      else
+        @ui.region_select.removeAttr('disabled')
+        @ui.city_input.removeAttr('disabled')
 
     initSelect2: ->
       $('#interests').val("Industries")  # need to put something there for initSelection to be called
@@ -144,7 +256,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         k: @model.toJSON()
 
     validate: ->
-      return true
+      @ui.form.data('formValidation').validate()
 
     pickFields: ->
       set_multi_value = (field) =>
@@ -161,18 +273,34 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @model.set kol_fields_mapping['mf'], v
 
     save: ->
-      return if not @validate()
-      @pickFields()
-      @model_binder.copyViewValuesToModel()
-      return if @model.toJSON() == @initial_attrs
-      @model.save @model.attributes,
-        success: (m, r) =>
-          @initial_attrs = m.toJSON()
-          App.currentKOL.set m.attributes
-          $.growl "You profile was saved successfully", {type: "success"}
-          @parent_view?.score()
-        error: (m, r) =>
-          console.log "Error saving KOL profile. Response is:"
-          console.log r
-          $.growl "Can't save profile info", {type: "danger"}
+      @validate()
+      if @ui.form.data('formValidation').isValid()
+        @pickFields()
+        @model_binder.copyViewValuesToModel()
+        return if @model.toJSON() == @initial_attrs
+        @model.save @model.attributes,
+          success: (m, r) =>
+            @initial_attrs = m.toJSON()
+            App.currentKOL.set m.attributes
+            App.currentKOL.attributes.current_password = "";
+            App.currentKOL.attributes.password = "";
+            App.currentKOL.attributes.password_confirmation = "";
+            $.growl "You profile was saved successfully", {type: "success"}
+            $("#password").val("")
+            $("#current_password").val("")
+            $("#password_confirmation").val("")
+            @parent_view?.score()
+          error: (m, r) =>
+            console.log "Error saving KOL profile. Response is:"
+            console.log r
+            errors = JSON.parse(r.responseText).errors
+            _.each errors, ((value, key) ->
+              @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
+              val = value.join(',')
+              if val == 'is invalid'
+                val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
+              @ui.form.data('formValidation').updateMessage key, 'serverError', val
+            ), this
+            element = document.getElementById("current_password")
+            element.scrollIntoView(false)
 

@@ -202,16 +202,21 @@ zh:
         qty: "数量"
       title: "附加服务"
     analytics:
+      apply: Apply
       author: "作者"
+      date_range: Date Range
       delivered: "送达"
       dropped: "下降"
       email: "电子邮件"
+      email_old_content: Sorry, no tracking for this release available
       emails: "电子邮件"
       filter_by: "筛选"
       newsrooms_views: "新闻中心访问量"
       opened: "开放"
       outlet: "媒体"
       page_views: "页面访问量"
+      select_all: All
+      select_content: Select Content
       sent: "发送"
       statisitcs: "智能发布邮件数据统计"
       values: "值"
@@ -374,13 +379,16 @@ zh:
           status.
         you_dont_have_history: You don't have expired campaigns.
       profile_tab:
-        age_group: Age group
+        age_group: Age Group
         audience_subtitle: self-assessed, optional
         audience_title: My Influence Circle
-        birthdate: Birth date
+        birthdate: Birth Date
         central: Central
         city: City
+        confirm_password: Confirm new password
         country: Country
+        current_password: Current password
+        current_password_invalid: Current password is incorrect
         east: East
         fans_number: Fans Number
         female: Female
@@ -398,6 +406,7 @@ zh:
         male_female: Male:Female
         mobile: Mobile
         name: Name
+        new_password: New password
         north: North
         northeast: Northeast
         personal: Personal
@@ -405,8 +414,9 @@ zh:
         public: Public
         regions: Regions
         secrecy: Secrecy
+        select_region: Select region
         social_subtitle: monetize your influence on those channels
-        social_title: My social
+        social_title: My Social
         south: South
         title: My Profile
         weibo: Weibo
@@ -437,6 +447,13 @@ zh:
         title: My Value
         vsmonth: "%{per} vs last month"
         youbeat: You beat %{per} people!
+      validation:
+        city: The City is required
+        country: The Country is required
+        first_name: The First Name is required
+        last_name: The Last Name is required
+        mobile: The Mobile is required
+        region: The Region is required
     date:
       datepicker_days:
         d1: "星期天"
@@ -1335,6 +1352,9 @@ zh:
         email_panel:
           email: "你的电子邮件地址"
           email_placeholder: "输入电子邮件地址"
+          kols_register_alias: in our system as an Influencer.
+          kols_register_href_text: P.S. We kindly recommend you to
+          kols_register_text: P.S. We kindly recommend you to
           length: "文章小结长度"
           merge_tags:
             first_name: "名"
@@ -1414,10 +1434,15 @@ zh:
           title: "媒体记者"
         media_tab:
           add_list: "添加过去保存过的名单"
+          cancel: Cancel
           delete: "删除"
+          delete_from_pitch: Delete from pitch
+          delete_this_list: Delete this list
           formats: "支持文件格式"
           ignored_contacts: All contacts in incorrect format will be ignored.
           not_available: You don't have available media list in your subscription!
+          recover_unabled: You will not be able to recover this content.
+          remove_media_list: Remove this media list?
           select_placeholder: "选择一个媒体名单或者上传一个新的名单"
           successfully_uploaded: "您的列表已经成功上传。"
           table:
@@ -1482,7 +1507,7 @@ zh:
         connected_to: "已关联的"
         description: "使用Robin8来管理你的社交网络信息。请先关联你的社交账号，然后你就可以轻松的直接发布到或者计划发布到所关联的社交网络中"
         disconnect: "未关联的"
-        facebook: Facebbok
+        facebook: Facebook
         google: Google+
         linkedin: LinkedIn／领英
         no_accounts: "这个账户不存在"

@@ -188,16 +188,21 @@ en:
         qty: Qty
       title: ADD ON SERVICES
     analytics:
+      apply: Apply
       author: Author
+      date_range: Date Range
       delivered: Delivered
       dropped: Dropped
       email: Email
+      email_old_content: Sorry, no tracking for this release available
       emails: Emails
       filter_by: Filter by
       newsrooms_views: Brand Gallery Views
       opened: Opened
       outlet: Outlet
       page_views: Page Views
+      select_all: All
+      select_content: Select Content
       sent: Sent
       statisitcs: SmartContent Email Statistics
       values: Values
@@ -369,13 +374,16 @@ en:
           status.
         you_dont_have_history: You don't have expired campaigns.
       profile_tab:
-        age_group: Age group
+        age_group: Age Group
         audience_subtitle: self-assessed, optional
         audience_title: My Influence Circle
-        birthdate: Birth date
+        birthdate: Birth Date
         central: Central
         city: City
+        confirm_password: Confirm new password
         country: Country
+        current_password: Current password
+        current_password_invalid: Current password is incorrect
         east: East
         fans_number: Fans Number
         female: Female
@@ -393,6 +401,7 @@ en:
         male_female: Male:Female
         mobile: Mobile
         name: Name
+        new_password: New password
         north: North
         northeast: Northeast
         personal: Personal
@@ -400,8 +409,9 @@ en:
         public: Public
         regions: Regions
         secrecy: Secrecy
+        select_region: Select region
         social_subtitle: monetize your influence on those channels
-        social_title: My social
+        social_title: My Social
         south: South
         title: My Profile
         weibo: Weibo
@@ -432,6 +442,13 @@ en:
         title: My Value
         vsmonth: "%{per} vs last month"
         youbeat: You beat %{per} people!
+      validation:
+        city: The City is required
+        country: The Country is required
+        first_name: The First Name is required
+        last_name: The Last Name is required
+        mobile: The Mobile is required
+        region: The Region is required
     date:
       datepicker_days:
         d1: Su
@@ -1007,7 +1024,7 @@ en:
       pressroom: Pressroom
       read_more: Read more
       social_media: Social Media
-      spokeperson: Spokeperson
+      spokeperson: Spokesperson
       what_is: What is
     public_release:
       notification: You are in a preview mode. You need to make this release and newsroom
@@ -1397,6 +1414,9 @@ en:
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
+          kols_register_alias: in our system as an Influencer.
+          kols_register_href_text: register
+          kols_register_text: P.S. We kindly recommend you to
           length: Summary length
           merge_tags:
             first_name: First Name
@@ -1482,10 +1502,15 @@ en:
           title: Influencers
         media_tab:
           add_list: Add a previously saved list
+          cancel: Cancel
           delete: Delete
+          delete_from_pitch: Delete from pitch
+          delete_this_list: Delete this list
           formats: Supported formats
           ignored_contacts: All contacts in incorrect format will be ignored.
           not_available: You don't have available media list in your subscription!
+          recover_unabled: You will not be able to recover this content.
+          remove_media_list: Remove this media list?
           select_placeholder: Select a Influencers List or upload an new one...
           successfully_uploaded: Your list has been successfully uploaded.
           table:
@@ -1556,10 +1581,10 @@ en:
           Robin8 account to your social profiles so you can easily post or schedule
           your post (s) directly to your profiles with one click.
         disconnect: Disconnect
-        facebook: Facebbok
+        facebook: Facebook
         google: Google+
         linkedin: Linkedin
-        no_accounts: There is no accounts
+        no_accounts: There are no accounts
         note: "* for adding multiple accounts for one social network you should be
           signed out from this network in your browser"
         title: Manage Connected Social Profiles

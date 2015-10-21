@@ -36,11 +36,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         ]
       ]
       mycfg = {
-        w: 130,
+        w: 150,
         h: 120,
         maxValue: 100,
         levels: 0,
-        ExtraWidthX: 220
+        ExtraWidthX: 240,
+        factor: 0.75,
+        factorLegend: .85
       }
       el = @$el.find('#graph_score2')
       RadarChart.draw(el[0], d, mycfg)

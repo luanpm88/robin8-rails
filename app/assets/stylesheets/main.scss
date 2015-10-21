@@ -1790,6 +1790,21 @@ input.form-control[type="file"] {
   overflow-y: auto;
 }
 
+.content-filter {
+  padding: 8px 0;
+  margin: 0 10px;
+}
+#emails-analytics {
+  .old_content {
+    text-align: center;
+    font-size: 24px;
+    line-height: 250px;
+  }
+}
+.change-emails-release {
+  max-width: 250px;
+}
+
 #invite_kols {
   min-width: 0px;
   background-color: #8CC152;
@@ -1825,7 +1840,6 @@ input.form-control[type="file"] {
   display: table-cell;
   vertical-align: top;
 }
-
 .btn-primary-green, .btn-primary-green:active, .btn-primary-green.active, .btn-primary-green.disabled, .btn-primary-green[disabled] {
   background-color: #6aa84f;
   border-color: #6aa84f;
@@ -1965,16 +1979,7 @@ input.form-control[type="file"] {
   color: #fff;
 }
 .dashboard-kol-tab-footer {
-  padding-left: 200px;
-  padding-bottom: 20px;
-  padding-right: 20px;
-  vertical-align: bottom;
-  background-color: #ffffff;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
+  margin-top: 20px;
 }
 .campaigns-tab-back {
   padding-top: 65px;
@@ -2606,4 +2611,22 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
   .media-heading {
     margin-right: 5px;
   }
+}
+#graph_score2 .axis text {
+  font-size: 13px !important;
+  font-family: "ProximaNova" !important;
+  fill: #007183 !important;
+}
+#graph_score2 .axis line {
+  stroke-width: 1.5px !important;
+}
+circle.radar-chart-serie1 {
+  display: none;
+}
+.social {
+  margin-top: 40px;
+}
+.kol-ages-group {
+  width: 100px;
+  margin-right: -4px;
 }
