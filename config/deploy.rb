@@ -1,11 +1,13 @@
 # config valid only for Capistrano 3.1
 lock '3.4.0'
-
 set :application, 'robin8'
-# set :repo_url, "git@code.robin8.net:andy/robin8.git"
-set :repo_url, "git@github.com:AYLIEN/robin8.git"
 
-
+# chinese developer shell execute :  echo "export china_instance='Y'" >> ~/.bashrc
+if ENV['china_instance'] == 'Y'
+  set :repo_url, "git@code.robin8.net:andy/robin8.git"
+else
+  set :repo_url, "git@github.com:AYLIEN/robin8.git"
+end
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
@@ -63,7 +65,8 @@ namespace :deploy do
     end
   end
 
-  after :publishing, :restart
+  #after :publishing, :restart
+  after :publishing, 'unicorn:restart'
   after :publishing, :upload_localization
 
   after :restart, :clear_cache do
