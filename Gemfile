@@ -30,6 +30,9 @@ gem 'aws-sdk-v1'
 # To send HTML mails
 gem 'roadie', '~> 3.0.5'
 
+# Displays page rendering performance
+gem 'rack-mini-profiler'
+
 gem 'htmlentities'
 gem 'truncate_html'
 gem 'email_validator'
