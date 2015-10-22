@@ -33,7 +33,8 @@ module Robin8
     config.i18n.available_locales = ['en', 'zh']
     # I18n.enforce_available_locales = false
 
-    config.china_instance = true
+    #echo "export china_instance='Y'" >> ~/.bashrc
+    config.china_instance = (ENV['china_instance'] == 'Y' ? true : false)
 
     config.cache_store = :redis_store, { :host => "localhost",
                                          :port => 6379,
