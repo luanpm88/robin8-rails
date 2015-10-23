@@ -1154,6 +1154,11 @@ nav{text-align: center;}
 #wrapper.active {
     padding-left: 180px;
 }
+
+#wrapper.kol {
+  padding-left: 200px;
+  padding-right: 20px;
+}
 #wrapper.active #sidebar-wrapper {
     left: 180px;
 }
@@ -1442,12 +1447,17 @@ input.form-control[type="file"] {
   }
   .uploadcare-widget-button-open:hover {
     color: #43C2E9;
+    cursor: hand;
     background-color: #FFF;
   }
   .uploadcare-widget-button {
     margin: 0px;
     color: #3BAFDA;
   }
+}
+
+.uploadcare-widget-button-open {
+  cursor: hand !important;
 }
 
 .uploadcare-widget-button-cancel{
@@ -1526,6 +1536,9 @@ input.form-control[type="file"] {
     color: #8cc152;
   }
   th.name {
+    min-width: 230px;
+  }
+  th.email{
     min-width: 230px;
   }
 }
@@ -1771,14 +1784,27 @@ input.form-control[type="file"] {
   }
 }
 
-#invite_kols {
-  min-width: 0px;
-  background-color: #8CC152;
+#email-pitch-textarea {
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
 }
 
-#add_kol {
-  float: right;
-  margin-right: 20px;
+.content-filter {
+  padding: 8px 0;
+  margin: 0 10px;
+}
+
+#emails-analytics {
+  .old_content {
+    text-align: center;
+    font-size: 24px;
+    line-height: 250px;
+  }
+}
+
+.change-emails-release {
+  max-width: 250px;
 }
 
 .kols-errors {
@@ -1806,7 +1832,6 @@ input.form-control[type="file"] {
   display: table-cell;
   vertical-align: top;
 }
-
 .btn-primary-green, .btn-primary-green:active, .btn-primary-green.active, .btn-primary-green.disabled, .btn-primary-green[disabled] {
   background-color: #6aa84f;
   border-color: #6aa84f;
@@ -1872,4 +1897,728 @@ input.form-control[type="file"] {
 }
 #wechat-perf-table .rejected_status{
   color: red;
+}
+.campaigns-tables-title {
+  text-align: left;
+  color: #007183;
+  margin: 20px 0px 30px 0px;
+  border-bottom: 2px solid #007183;
+}
+
+
+.campaigns-tables-title span {
+  font-family: 'ProximaNovaBold';
+  font-size: 20px;
+  color: #007183;
+  margin-left: 25px;
+}
+#campaigns-list .nav-tabs > li.active > a,
+#campaigns-list .nav-tabs > li.active > a:focus,
+#campaigns-list .nav-tabs > li.active > a:hover {
+  background-color: #3c9eb6 !important;
+  color: #fff;
+}
+#campaigns-list .nav-tabs > li > a{
+  color: #000;
+}
+#campaigns-list .nav-tabs {
+  background-color: #fff;
+}
+#campaigns-list .nav-tabs > li {
+  background-color: #E6E9ED;
+  border-left: none;
+  text-align: center;
+}
+
+#campaigns-list .nav-tabs>li:first-child {
+  border-left: none;
+}
+#campaigns-list .nav-tabs>li {
+  margin-bottom: 0;
+  border-left: 1px solid #CCD1D9;
+}
+
+#campaigns-list {
+  #campaigns-table, #kol-dashboard {
+    color: #000;
+    text-align: center;
+  }
+}
+#campaigns-list {
+  #campaigns-table th, #kol-dashboard th {
+    text-align: center;
+  }
+}
+.dashboard-kol-tab-btn {
+  background: #a5cc63;
+  height: 40px;
+  width: 205px;
+  border-radius: 25px;
+  font-family: 'ProximaNova';
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 40px;
+  margin: auto;
+  padding: 0;
+  text-align: center;
+}
+.dashboard-kol-tab-btn > a,
+.dashboard-kol-tab-btn > a:focus,
+.dashboard-kol-tab-btn > a:hover {
+  color: #fff;
+}
+.dashboard-kol-tab-btn > li > a {
+  color: #fff;
+}
+.dashboard-kol-tab-footer {
+  margin-top: 20px;
+}
+.campaigns-tab-back {
+  padding-top: 65px;
+}
+.camp-interested,
+.camp-interested > button:focus,
+.camp-interested > button:hover {
+  border-color: #93C832 !important;
+  background-color: #93C832 !important;
+}
+.camp-not-interested,
+.camp-not-interested > button:focus,
+.camp-not-interested > button:hover {
+  border-color: #007183 !important;
+  background-color: #007183 !important;
+}
+.btn-decline,
+.btn-decline > button:focus,
+.btn-decline > button:hover{
+  border-color: #ff0000 !important;
+  background-color: #ff0000 !important;
+}
+#campaigns-table, #all {
+  .campaign-cell {
+    vertical-align: top;
+    height: 51px;
+  }
+  .invite-cell {
+    vertical-align: top;
+    height: 51px;
+  }
+  .invite-accepted {
+    color: #8CC152;
+  }
+  .invite-declined {
+    color: #DA4453;
+  }
+}
+.top-btn {
+  display: block;
+  margin-bottom: 10px;
+}
+.camp-default-btn,
+.camp-default-btn > button:focus,
+.camp-default-btn > button:hover {
+  border-color: #33B5C5 !important;
+  background-color: #33B5C5 !important;
+}
+#campaigns-table button {
+  width: 85px;
+}
+
+#negotiate-campaign-modal {
+  .negotiate-content, .wysihtml5-sandbox {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 150px;
+  }
+}
+#score_form{
+  .kol-avatar,
+  .uploadcare-widget-button{
+    background: #b2b2b2;
+    height: 40px;
+    width: 150px;
+    font-family: 'ProximaNova';
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 40px;
+    margin: 0;
+    margin-right: 0ex;
+    border-radius: 0em;
+    padding: 0;
+    text-align: center;
+  }
+}
+
+.score-tables span {
+  font-family: 'ProximaNovaBold';
+  font-size: 20px;
+  color: #007183;
+}
+
+.score-tables .cell {
+  height: 35px;
+  color: #007183;
+  border-bottom: 1px solid #d8d8d8;
+  font-family: 'ProximaNova';
+  font-size: 14px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+
+
+.score-tables .cell .social {
+  color: #007183;
+  font-family: 'ProximaNova';
+  font-size: 11px;
+}
+
+
+.radar-chart .level {
+  stroke: grey;
+  stroke-width: 0.5;
+}
+
+.radar-chart .axis line {
+  stroke: grey;
+  stroke-width: 1;
+}
+.radar-chart .axis .legend {
+  font-family: sans-serif;
+  font-size: 10px;
+}
+.radar-chart .axis .legend.top {
+  dy:1em;
+}
+.radar-chart .axis .legend.left {
+  text-anchor: start;
+}
+.radar-chart .axis .legend.middle {
+  text-anchor: middle;
+}
+.radar-chart .axis .legend.right {
+  text-anchor: end;
+}
+
+.radar-chart .tooltip {
+  font-family: sans-serif;
+  font-size: 13px;
+  transition: opacity 200ms;
+  opacity: 0;
+}
+.radar-chart .tooltip.visible {
+  opacity: 1;
+}
+
+/* area transition when hovering */
+.radar-chart .area {
+  stroke-width: 2;
+  fill-opacity: 0.5;
+}
+.radar-chart.focus .area {
+  fill-opacity: 0.1;
+}
+.radar-chart.focus .area.focused {
+  fill-opacity: 0.7;
+}
+
+.radar-chart .circle {
+  fill-opacity: 0.9;
+}
+
+/* transitions */
+.radar-chart .area, .radar-chart .circle {
+  transition: opacity 300ms, fill-opacity 200ms;
+  opacity: 1;
+}
+.radar-chart .d3-enter, .radar-chart .d3-exit {
+  opacity: 0;
+}
+
+.chart-color1 {
+  fill: #edac0a;
+}
+
+.chart-color2 {
+  fill: #AAAAAA;
+}
+
+.chart-center {
+  fill: #edac0a;
+}
+
+.chart-text {
+  font-family: sans-serif;
+  font-size: 40px;
+  fill: #FFFFFF
+}
+
+#kols .nav-tabs > li.active > a,
+#kols .nav-tabs > li.active > a:focus,
+#kols .nav-tabs > li.active > a:hover,
+.smart-campaign .campaign_details_tables > li.active > a,
+.smart-campaign .campaign_details_tables > li.active > a:focus,
+.smart-campaign .campaign_details_tables > li.active > a:hover {
+  background-color: #3c9eb6 !important;
+  color: #fff;
+}
+#kols .nav-tabs > li > a,
+#kols .nav-tabs > li > a:focus,
+#kols .nav-tabs > li > a:hover,
+.smart-campaign .campaign_details_tables > li > a,
+.smart-campaign .campaign_details_tables > li > a:focus,
+.smart-campaign .campaign_details_tables > li > a:hover {
+  background-color: #E6E9ED !important;
+  color: #000;
+}
+.smart-campaign .campaign_details_tables {
+  margin-top: 25px;
+}
+.filter-btn {
+  margin-right: 7px;
+  border-radius: 0;
+  width: 90px;
+  text-align: center;
+}
+.filter-group {
+  margin-bottom: 20px;
+}
+.filter-label {
+  min-width: 140px;
+  color: #007183;
+}
+.age-group {
+  display: inline;
+}
+.age-group label {
+  cursor: pointer;
+  position: relative;
+  padding-left: 25px;
+  margin-right: 35px;
+}
+.age-group input[name=male],
+.age-group input[name=gender],
+.age-group input[name=mf] {
+  display: none;
+}
+.age-group label:before {
+  content: "";
+  display: inline-block;
+
+  width: 16px;
+  height: 16px;
+
+  margin-right: 10px;
+  position: absolute;
+  left: 0;
+  bottom: 1px;
+  background-color: #fff;
+  box-shadow: 0px 0px 5px 0px grey;
+}
+.age-group label:before {
+    border-radius: 8px;
+}
+.age-group input[name=male]:checked + label:before,
+.age-group input[name=gender]:checked + label:before,
+.age-group input[name=mf]:checked + label:before {
+    background-color:#DDDDDD;
+}
+.location-input {
+  width: 550px;
+  display: inline;
+}
+.channels-label {
+  margin: 0 15px 0 5px;
+}
+.campaign_author .inspect {
+  margin-top: 7px;
+}
+.age-group label {
+  height: 18px;
+}
+#interested-kols .interested-btn{
+  display: inline;
+}
+#interested-kols td{
+  vertical-align: middle;
+}
+.non_cash_description {
+  width: 450px;
+}
+.content_type {
+  margin-top: 5px;
+}
+.campaign_details_form {
+  display: flex;
+}
+#short_description {
+  width: 100%;
+  padding-right: 20px;
+}
+#details_form{
+  .glyphicon {
+    margin-top: 30px;
+  }
+  #deadline {
+    padding-right: 20px;
+  }
+  #budget {
+    padding-right: 20px;
+  }
+}
+#campaigns-table {
+  .camp-ask-invite {
+    width: 105px;
+  }
+}
+#filter-kols .filter-group .filter-btn,
+.regions-row .filter-group .filter-btn,
+.ages-row .filter-group .filter-btn {
+  color: #B2B2B2;
+  background-color: white;
+  border-color: #B2B2B2;
+}
+#filter-kols .filter-group .active,
+.regions-row .filter-group .active,
+.ages-row .filter-group .active {
+  color: white;
+  background-color: #DDDDDD;
+  border-color: #B2B2B2;
+}
+#kols-lists .left-btn {
+  margin-right: 15px;
+}
+#kol-stats {
+  background-color: #F4F4F4;
+  left: 0;
+  right: 0;
+  margin-left: -15px;
+  margin-right: -15px;
+  height: 215px;
+}
+#kol_avatar {
+  border-bottom: 4px solid #B2B2B2;
+}
+.validate_input {
+  .glyphicon-remove {
+    margin-right: 10px;
+  }
+  .glyphicon-ok {
+    margin-right: 10px;
+  }
+}
+tr.campaign-tabs {
+  cursor: pointer;
+}
+td.campaign {
+  cursor: pointer;
+}
+.edit-btn {
+  width: 110px;
+  height: 34px;
+}
+.campaign-details-column {
+  min-width: 100px;
+}
+.detailed-table td, .detailed-table th {
+  text-align: center;
+}
+
+.camp-invite-btn {
+  background-color: #3c9eb6 !important
+}
+
+
+/*!
+ * @copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
+ * @version 1.5.4
+ *
+ * An extended checkbox plugin for Bootstrap 3 that allows three states and additional styles.
+ *
+ * For more JQuery/Bootstrap plugins and demos visit http://plugins.krajee.com
+ * For more Yii related demos visit http://demos.krajee.com
+ */
+
+.cbx, .cbx-container {
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+.cbx span {
+  color: #aab2bd;
+}
+
+
+
+.cbx {
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 3px;
+  position: relative;
+}
+
+.cbx, .cbx-container, .cbx-label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.cbx-label {
+  cursor: pointer;
+  font-weight: 400;
+  margin: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.cbx-label.disabled {
+  cursor: not-allowed;
+  opacity: .65;
+}
+
+.cbx-native input {
+  position: absolute;
+  margin: 5px;
+}
+
+label + .cbx-container, .cbx-container + label, .cbx-container + .cbx-container {
+  margin-left: 5px;
+}
+
+label .cbx {
+  margin: 0 5px;
+}
+
+label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-block {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.cbx-xs {
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+}
+
+.cbx-sm {
+  width: 20px;
+  height: 20px;
+  font-size: 13px;
+}
+
+.cbx-md {
+  width: 24px;
+  height: 24px;
+  font-size: 15px;
+}
+
+.cbx-lg {
+  border-radius: 4px;
+  width: 34px;
+  height: 34px;
+  font-size: 20px;
+}
+
+.cbx-xl {
+  border-radius: 5px;
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+}
+
+.cbx-icon {
+  position: absolute;
+  margin: 1px;;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.cbx-icon-null {
+  background-color: #333;
+}
+
+.has-error .cbx-icon-null {
+  background-color: #843534;
+}
+
+.has-success .cbx-icon-null {
+  background-color: #2b542c;
+}
+
+.has-warning .cbx-icon-null {
+  background-color: #66512c;
+}
+
+.cbx-xs .cbx-icon-null {
+  padding: 4px;
+  margin: 2px;
+}
+
+.cbx-sm .cbx-icon-null {
+  padding: 5px;
+  margin: 3px;
+}
+
+.cbx-md .cbx-icon-null {
+  padding: 6px;
+  margin: 4px;
+}
+
+.cbx-lg .cbx-icon-null {
+  padding: 8px;
+  margin: 5px;
+}
+
+.cbx-xl .cbx-icon-null {
+  padding: 10px;
+  margin: 6px;
+}
+
+.cbx-disabled .cbx-icon-null {
+  background-color: #aaa;
+}
+
+.cbx-active {
+  border: 1px solid #aab2bd;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  color: #333;
+}
+
+.cbx-active:hover, .cbx-active:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.cbx-disabled {
+  color: #ddd;
+  background: #fcfcfc;
+  border: 1px solid #ddd;
+  cursor: not-allowed;
+}
+
+.has-success .cbx-active {
+  border-color: #3c763d;
+  color: #2b542c;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.has-success .cbx-active:hover, .has-success .cbx-active:focus {
+  border-color: #2b542c;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;
+}
+
+.has-warning .cbx-active {
+  border-color: #8a6d3b;
+  color: #66512c;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.has-warning .cbx-active:hover, .has-warning .cbx-active:focus {
+  border-color: #66512c;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #c0a16b;
+}
+
+.has-error .cbx-active {
+  border-color: #a94442;
+  color: #843534;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.has-error .cbx-active:hover, .has-error .cbx-active:focus {
+  border-color: #843534;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;
+}
+
+.has-success .cbx-label {
+  color: #2b542c;
+}
+
+.has-warning .cbx-label {
+  color: #66512c;
+}
+
+.has-error .cbx-label {
+  color: #843534;
+}
+
+.cbx-block {
+  display: block;
+  text-align: left;
+}
+
+.cbx-block + .cbx-block {
+  margin: 5px 0 0 0;
+}
+.tab-content {
+  margin-bottom: 50px;
+}
+.negotiating-actions {
+  display: inline-block;
+}
+.monetize-btn{
+  display: inline-block;
+}
+.campaigns-list-table {
+  margin-bottom: 50px;
+}
+.label-profile {
+ color: #434A54;
+}
+.label-profile {
+  color: #434A54;
+}
+.label-influence-circle {
+  margin-right: 10px;
+  font-weight: bold;
+}
+.profile-labels {
+  font-weight: bold;
+}
+.kol-profile {
+  margin-top: 7px;
+}
+#search-result {
+  .media-left {
+    display: table-row;
+  }
+  .media-heading {
+    margin-right: 5px;
+  }
+}
+#graph_score2 .axis text {
+  font-size: 13px !important;
+  font-family: "ProximaNova" !important;
+  fill: #007183 !important;
+}
+#graph_score2 .axis line {
+  stroke-width: 1.5px !important;
+}
+circle.radar-chart-serie1 {
+  display: none;
+}
+.social {
+  margin-top: 40px;
+}
+.kol-ages-group {
+  width: 100px;
+  margin-right: -4px;
 }

@@ -7,7 +7,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       searchResultRegion: "#search-result"
     }
   });
-  
+
   ReleasesBlast.SearchCriteriaView = Marionette.ItemView.extend({
     template: 'modules/releases_blast/templates/search-targets/search-criteria',
     tagName: "div",
@@ -52,9 +52,40 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initSelect2: function(){
       this.ui.authorsKeywordsInput.select2({
-        tags: [],
+        tags: []
       });
-      
+      this.ui.authorsOutletInput.select2({
+        placeholder: polyglot.t("smart_release.targets_step.search_tab.search_authors.outlet_names"),
+        multiple: true,
+        formatResult: function (object, container, query) {
+          return object.text;
+        },
+        formatSelection: function (object, container) {
+          return object.text;
+        },
+        id: function (object) {
+          return object.text;
+        },
+        ajax: {
+          url: '/autocompletes/blogs',
+          dataType: "JSON",
+          data: function (term, page) {
+            return {
+              term: term
+            };
+          },
+          results: function (data, page) {
+            return {
+              results: _(data).map(function(item) {
+                return { id: item['id'], text: item['text'] };
+              })
+            };
+          }
+        },
+        minimumInputLength: 1,
+        createSearchChoice: function () { return null }
+      });
+
       this.ui.influencersTopicsInput.select2({
         placeholder: "Topics",
         multiple: true,
@@ -76,9 +107,9 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             };
           },
           results: function (data, page) {
-            return { 
+            return {
               results: _(data.skills).map(function(item) {
-                return { id: item['id'], text: item['name'] }; 
+                return { id: item['id'], text: item['name'] };
               })
             };
           }
@@ -86,7 +117,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         minimumInputLength: 1,
         createSearchChoice: function () { return null }
       });
-      
+
       this.ui.influencersLocationInput.select2({
         placeholder: "Locations",
         multiple: false,
@@ -143,23 +174,23 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     searchAuthors: function(event){
       event.preventDefault();
-      
+
       var params = {};
       params['keywords'] = this.ui.authorsKeywordsInput.select2('val');
       params['contactName'] = this.ui.authorsContactNameInput.val();
-      params['outlet'] = this.ui.authorsOutletInput.val();
+      params['outlet'] = this.ui.authorsOutletInput.select2('val');
       params['location'] = this.ui.authorsLocationInput.val();
-      
+
       Robin.vent.trigger("search:authors:clicked", params);
     },
     searchInfluencers: function(event){
       event.preventDefault();
-      
+
       var params = {};
       params['topics'] = this.ui.influencersTopicsInput.select2('val');
       params['location'] = this.ui.influencersLocationInput.select2('val');
       params['typecast'] = this.ui.influencersForm.find('[type=radio]:checked').val();
-      
+
       Robin.vent.trigger("search:influencers:clicked", params);
     }
   });

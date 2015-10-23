@@ -7,7 +7,7 @@ class Payment < ActiveRecord::Base
   after_create :set_features,:notify_user
 
   def notify_user
-    UserMailer.payment_confirmation(self).deliver if product.is_package?
+    UserMailer.payment_confirmation(self.user_product.user, self).deliver if product.is_package?
   end
 
   def user
@@ -18,7 +18,7 @@ class Payment < ActiveRecord::Base
     product.features.each do |f|
       product_quota = product.product_features.where(feature_id: f.id).first.quota
       if product.slug == 'smart_release'
-        available_count = product_quota 
+        available_count = product_quota
       else
         available_count = product.is_package ? product_quota - user.used_count_by_slug(f.slug) : product_quota
       end

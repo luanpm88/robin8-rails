@@ -7,7 +7,7 @@ GIT
       sort_alphabetical (~> 1.0)
 
 GEM
-  remote: https://rubygems.org/
+  remote: https://ruby.taobao.org/
   remote: https://rails-assets.org/
   specs:
     actionmailer (4.2.0)
@@ -104,6 +104,8 @@ GEM
       sidekiq
     capistrano-ssh-doctor (1.0.0)
       capistrano (>= 3.1)
+    capistrano3-unicorn (0.2.1)
+      capistrano (~> 3.1, >= 3.1.0)
     capybara (2.4.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -142,7 +144,6 @@ GEM
     css_parser (1.3.6)
       addressable
     currencies (0.4.2)
-    daemons (1.2.3)
     database_cleaner (1.4.1)
     debug_inspector (0.0.2)
     devise (3.5.1)
@@ -166,7 +167,6 @@ GEM
       activemodel
     equalizer (0.0.11)
     erubis (2.7.0)
-    eventmachine (1.0.7)
     execjs (2.5.2)
     extlib (0.9.16)
     factory_girl (4.5.0)
@@ -249,6 +249,7 @@ GEM
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    kgio (2.10.0)
     koala (1.11.1)
       addressable
       faraday
@@ -285,6 +286,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
+    newrelic_rpm (3.11.2.286)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     notiffany (0.0.6)
@@ -347,8 +349,14 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-nav (0.2.4)
+      pry (>= 0.9.10, < 0.11.0)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    pry-stack_explorer (0.4.9.1)
+      binding_of_caller (>= 0.7)
+      pry (>= 0.9.11)
+    puma (2.13.4)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
@@ -373,8 +381,8 @@ GEM
     rails-assets-backbone-relational (0.9.0)
       rails-assets-backbone (>= 1.1.2)
       rails-assets-underscore (>= 1.5.0)
-    rails-assets-backbone.babysitter (0.1.8)
-      rails-assets-backbone (>= 0.9.9, <= 1.2.1)
+    rails-assets-backbone.babysitter (0.1.10)
+      rails-assets-backbone (>= 0.9.9, <= 1.2.3)
       rails-assets-underscore (>= 1.4.0, <= 1.8.3)
     rails-assets-backbone.marionette (2.4.1)
       rails-assets-backbone (>= 1.0.0, < 1.1.3)
@@ -386,8 +394,8 @@ GEM
       rails-assets-backbone (>= 0.9.0)
       rails-assets-jquery (>= 1.7.1)
       rails-assets-underscore (>= 1.3.1)
-    rails-assets-backbone.wreqr (1.3.3)
-      rails-assets-backbone (>= 0.9.9, <= 1.2.1)
+    rails-assets-backbone.wreqr (1.3.5)
+      rails-assets-backbone (>= 0.9.9, <= 1.2.3)
       rails-assets-underscore (>= 1.3.3, <= 1.8.3)
     rails-assets-blueimp-gallery (2.16.0)
     rails-assets-bootstrap (3.3.5)
@@ -403,12 +411,14 @@ GEM
       rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-tagsinput (0.5.0)
       rails-assets-jquery (~> 2.1.1)
-    rails-assets-bootstrap-validator (0.8.1)
+    rails-assets-bootstrap-validator (0.9.0)
+      rails-assets-jquery (>= 1.8.3)
     rails-assets-bootstrap.growl (2.0.1)
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
-    rails-assets-chance (0.7.6)
-    rails-assets-datatables (1.10.7)
+    rails-assets-chance (0.8.0)
+    rails-assets-d3 (3.5.6)
+    rails-assets-datatables (1.10.9)
       rails-assets-jquery (>= 1.7.0)
     rails-assets-datatables-tabletools (2.2.4)
       rails-assets-datatables (>= 1.9.0)
@@ -422,8 +432,10 @@ GEM
     rails-assets-jquery (2.1.4)
     rails-assets-jquery-geocomplete (1.6.5)
       rails-assets-jquery (>= 1.9.0)
-    rails-assets-jquery-highlighttextarea (3.1.0)
+    rails-assets-jquery-highlighttextarea (3.1.1)
       rails-assets-jquery (> 1.9)
+    rails-assets-jquery-knob (1.2.11)
+      rails-assets-jquery (>= 1.7.0)
     rails-assets-jquery.caret (1.5.2)
     rails-assets-jquery.dotdotdot (1.7.4)
       rails-assets-jquery (>= 1.4.3)
@@ -437,13 +449,13 @@ GEM
     rails-assets-select2-bootstrap-css (1.4.6)
       rails-assets-select2 (>= 3.3.2, < 4)
     rails-assets-spinjs (2.3.2)
-    rails-assets-spinkit (1.2.1)
-    rails-assets-timeago (1.4.1)
+    rails-assets-spinkit (1.2.2)
+    rails-assets-timeago (1.4.3)
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.inflection (1.1.1)
       rails-assets-underscore (~> 1.6.0)
-    rails-assets-underscore.string (3.1.1)
+    rails-assets-underscore.string (3.2.2)
     rails-assets-uploadcare (2.0.4)
       rails-assets-jquery (>= 1.10.2)
     rails-assets-x-editable (1.5.1)
@@ -463,6 +475,7 @@ GEM
       activesupport (= 4.2.0)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
+    raindrops (0.15.0)
     rake (10.4.2)
     ransack (1.6.6)
       actionpack (>= 3.0)
@@ -475,10 +488,26 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.2.0)
     redis (3.2.1)
+    redis-actionpack (4.0.1)
+      actionpack (~> 4)
+      redis-rack (~> 1.5.0)
+      redis-store (~> 1.1.0)
+    redis-activesupport (4.1.1)
+      activesupport (~> 4)
+      redis-store (~> 1.1.0)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
     redis-objects (1.2.0)
       redis (>= 3.0.2)
+    redis-rack (1.5.0)
+      rack (~> 1.5)
+      redis-store (~> 1.1.0)
+    redis-rails (4.0.0)
+      redis-actionpack (~> 4)
+      redis-activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.6)
+      redis (>= 2.2)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rest-client (1.8.0)
@@ -565,10 +594,6 @@ GEM
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    thin (1.6.3)
-      daemons (~> 1.0, >= 1.0.9)
-      eventmachine (~> 1.0)
-      rack (~> 1.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
@@ -602,6 +627,10 @@ GEM
       unf_ext
     unf_ext (0.0.7.1)
     unicode_utils (1.4.0)
+    unicorn (4.8.3)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
     warden (1.2.3)
       rack (>= 1.0)
     web-console (2.1.2)
@@ -633,6 +662,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.0.3)
   capistrano-sidekiq (~> 0.4.0)
   capistrano-ssh-doctor (~> 1.0.0)
+  capistrano3-unicorn (~> 0.2.0)
   capybara
   caracal-rails
   charlock_holmes
@@ -663,6 +693,7 @@ DEPENDENCIES
   legato
   mailgun-ruby
   mysql2
+  newrelic_rpm
   oauth2
   omniauth
   omniauth-facebook
@@ -675,7 +706,10 @@ DEPENDENCIES
   paperclip (~> 4.2.1)
   prawn
   premailer-rails
+  pry-nav (= 0.2.4)
   pry-rails
+  pry-stack_explorer (= 0.4.9.1)
+  puma
   quiet_assets
   railroady
   rails (= 4.2.0)
@@ -692,6 +726,7 @@ DEPENDENCIES
   rails-assets-bootstrap-validator!
   rails-assets-bootstrap.growl (= 2.0.1)!
   rails-assets-chance!
+  rails-assets-d3!
   rails-assets-datatables!
   rails-assets-datatables-tabletools!
   rails-assets-datejs!
@@ -700,13 +735,14 @@ DEPENDENCIES
   rails-assets-highcharts (= 4.1.1)!
   rails-assets-jquery-geocomplete!
   rails-assets-jquery-highlighttextarea!
+  rails-assets-jquery-knob!
   rails-assets-jquery.caret!
   rails-assets-jquery.dotdotdot!
   rails-assets-momentjs!
   rails-assets-please-wait!
   rails-assets-progressjs!
   rails-assets-sass-bootstrap-glyphicons!
-  rails-assets-select2!
+  rails-assets-select2 (= 3.5.2)!
   rails-assets-select2-bootstrap-css!
   rails-assets-spinjs!
   rails-assets-spinkit!
@@ -716,6 +752,7 @@ DEPENDENCIES
   rails-assets-uploadcare (= 2.0.4)!
   rails-assets-x-editable!
   redis-objects
+  redis-rails
   roadie (~> 3.0.5)
   rspec-activemodel-mocks
   rspec-mocks
@@ -728,12 +765,12 @@ DEPENDENCIES
   sitemap_generator
   spring
   spring-commands-rspec
-  thin
   truncate_html
   turbolinks
   twilio-ruby (~> 4.2.1)
   twitter
   uglifier (>= 1.3.0)
+  unicorn (= 4.8.3)
   web-console (~> 2.0)
   whenever
   will_paginate (~> 3.0.6)

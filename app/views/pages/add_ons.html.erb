@@ -38,10 +38,14 @@
                     </div>
                   </td>
                   <td class="addon">
-                    <%=a.name%>
+                    <%= @l.t('products.' + a.slug) %>
                   </td>
                   <td class="price">
-                    $<%=a.price%>
+                    <% unless current_user.locale == 'zh' %>
+                      $<%=a.price%>
+                    <% else  %>
+                      ¥<%=a.china_price%>
+                    <% end %>
                   </td>
                 </tr>
             <%end%>

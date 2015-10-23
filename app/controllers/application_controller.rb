@@ -3,12 +3,30 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
 
   before_action :set_translations
+  before_action :china_redirect
+  helper_method :china_instance?
+
+  def china_redirect
+    if Rails.env.production? and china_client? and not china_instance?
+      china_domain = if not Rails.application.secrets.china_domain.nil?
+                       Rails.application.secrets.china_domain
+                     else
+                       "http://robin8.cn"
+                     end
+      # return redirect_to "#{china_domain}#{request.fullpath}", :status => :moved_permanently
+    end
+  end
+
+  def is_china_request?
+    request.location && request.location.country.to_s == "China"
+  end
 
   def set_translations
+    default_locale = china_instance? ? 'zh' : 'en'
     unless current_user.blank? and current_kol.blank?
       someone = current_user
       someone = current_kol if current_user.nil?
-      locale = someone.locale.nil? ? 'en' : someone.locale
+      locale = someone.locale.nil? ? default_locale : someone.locale
     else
       if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
         cookies['locale'] = { value: params[:locale], expires: 1.year.from_now }
@@ -16,7 +34,7 @@ class ApplicationController < ActionController::Base
       elsif cookies['locale'] && [:en, :zh].include?(cookies['locale'].to_sym)
         I18n.locale = cookies['locale'].to_sym
       else
-        I18n.locale = request.location && request.location.country.to_s == "China" ? 'zh' : 'en'
+        I18n.locale = default_locale
         cookies['locale'] = { value: I18n.locale, expires: 1.year.from_now }
       end
       locale = I18n.locale
@@ -24,6 +42,7 @@ class ApplicationController < ActionController::Base
     @l ||= Localization.new
     @l.locale = locale
     @phrases = JSON.parse(@l.store.get(locale))['application']
+    @en_phrases = JSON.parse(@l.store.get("en"))['application']
   end
 
   protect_from_forgery with: :exception
@@ -60,7 +79,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up).push(:first_name, :last_name)
     devise_parameter_sanitizer.for(:account_update).push(:first_name,
                                                          :last_name, :company, :time_zone, :name, :avatar_url,
-                                                         :location, :is_public, :date_of_birthday, :industry, :title, :mobile_number)
+                                                         :location, :is_public, :date_of_birthday, :industry, :title, :mobile_number,
+                                                         :gender, :country, :province, :city, :audience_gender_ratio, :audience_age_groups,
+                                                         :wechat_personal_fans, :wechat_public_name, :wechat_public_id, :wechat_public_fans,
+                                                         :audience_regions)
     devise_parameter_sanitizer.for(:invite).push(:is_primary)
   end
 
@@ -94,5 +116,13 @@ class ApplicationController < ActionController::Base
 
   def ssl_configured?
     false
+  end
+
+  def china_instance?
+    Rails.application.config.china_instance
+  end
+
+  def china_client?
+    request.location && request.location.country.to_s == "China"
   end
 end

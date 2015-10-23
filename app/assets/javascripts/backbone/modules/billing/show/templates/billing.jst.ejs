@@ -1,4 +1,5 @@
 <% var currentPlan = Robin.currentUser.attributes.active_subscription.product %>
+<% var currency_sign = Robin.currentUser.attributes.locale != 'zh' ? '$' : '¥' %>
 <div class="row">
   <div class="col-xs-12">
     <div class="row">
@@ -12,6 +13,7 @@
               <th><%= polyglot.t("billing.card_last") %></th>
               <th><%= polyglot.t("billing.card_type") %></th>
               <th><%= polyglot.t("billing.amount") %></th>
+              <th><%= polyglot.t("billing.tax") %></th>
             </tr>
           </thead>
           <tbody>
@@ -22,7 +24,8 @@
               <td><%= moment(date).format('MM/DD/YYYY hh:mm A') %></td>
               <td><%= item.payment.card_last_four_digits %></td>
               <td><%= item.payment.card_type %></td>
-              <td><%= item.payment.amount %></td>
+              <td><%= item.payment.currency ? item.payment.currency : '$'%><%= item.payment.amount %></td>
+              <td><%= item.payment.currency ? item.payment.currency : '$'%><%= item.payment.tax %></td>
             </tr>
           <% }); %>
           </tbody>
@@ -41,8 +44,12 @@
           <tbody>
           <% _.each(Robin.currentUser.get('current_active_add_ons'), function(item, index) { %>
             <tr class='payment' id="<%= item.id %>">
-              <td><%= item.product.name %></td>
-              <td><%= item.product.price %></td>
+              <td><%= polyglot.t("products." + item.product.slug) %></td>
+              <% if (Robin.currentUser.attributes.locale != 'zh') { %>
+                <td><%=currency_sign%><%= item.product.price %></td>
+              <% } else { %>
+                <td><%=currency_sign%><%= item.product.china_price %></td>
+              <% } %>
               <td><%= item.status %></td>
               <td ><a class="<%= item.status == 'C' ? 'hidden' : ''%> cancel-addon"><%= polyglot.t("billing.cancel_action") %></a></td>
             </tr>
@@ -55,10 +62,14 @@
           <h4 class="billing-title"><%= polyglot.t("billing.current_plan") %></h4>
             <% if (currentPlan != undefined && currentPlan != null) { %>
             <div class="subscription-type active" id="plantype-ultra" data-plan="ultra" data-equalizer-watch="">
-              <h2><%= currentPlan.name %></h2>
+              <h2><%= polyglot.t('products.' + currentPlan.slug) %></h2>
               <div class="price-bubble">
                 <div class="<%= priceClass(currentPlan.slug) %>">
-                  $<%= currentPlan.properties.price %><span class="permonth"><%= polyglot.t("billing.per_month") %></span>
+                  <% if (Robin.currentUser.attributes.locale != 'zh') { %>
+                    $<%= currentPlan.properties.price %><span class="permonth"><%= polyglot.t("billing.per_month") %></span>
+                  <% } else { %>
+                    ¥<%= currentPlan.china_price %><span class="permonth"><%= polyglot.t("billing.per_month") %></span>
+                  <% } %>
                   <% if (!s(currentPlan.slug).startsWith("new")) { %>
                     <em><%= polyglot.t("billing.annually") %><br>$<%= currentPlan.properties.annually_price %> <%= polyglot.t("billing.month") %></em>
                   <% } %>

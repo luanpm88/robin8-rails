@@ -1,0 +1,147 @@
+<header class="homeheader sizeheader brand_page">
+  <div class="nav fixed">
+    <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li><a class="logo" href="/"><%= @l.t('header.title') %></a></li>
+        <li class="toggle-topbar menu-icon">
+          <a href="#"><span><%= @l.t('header.menu') %></span></a>
+        </li>
+      </ul>
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li><%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
+            <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: @l.t('landing_page.english_locale') %>
+          <% end %></li>
+          <li><%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
+            <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: @l.t('landing_page.chinese_locale') %>
+          <% end %></li>
+          <li><a href="http://try.robin8.com/robin/" target="_blank"><%=@l.t('header.contact_us')%></a></li>
+          <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
+        </ul>
+      </section>
+    </nav>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <h1 class="logo" style="margin-top: 194px;">
+        <a href="/"><%= @l.t('header.title') %></a>
+      </h1>
+      <h2 class="brand_page_title"><%= @l.t('landing_page.title') %></h2>
+      <a class="button button-signup" href="http://try.robin8.com/robin/"><%=@l.t('header.contact_us')%></a>
+    </div>
+  </div>
+  <a class="learn-more"><%= @l.t('landing_page.learn_more') %></a>
+</header>
+
+<div class="screenpane_brand">
+  <div class="row">
+
+    <div class="small-12 medium-5 large-6  columns left">
+      <h2><%= @l.t('landing_page.text1') %></h2>
+      <p><%= @l.t('landing_page.text2') %></p>
+      <p><a class="button button-signup" href="http://try.robin8.com/robin/"><%=@l.t('header.contact_us')%></a></p>
+    </div>
+    <div class="small-12 medium-7  large-6  columns videoembedsection right">
+      <style>.embed-container { position: relative; padding-bottom: 56.25% !important; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
+      <%=raw @video%>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="prsteps_brand">
+  <div class="row ">
+    <div class="small-12 columns">
+      <h2><%= @l.t('landing_page.text3') %></h2>
+      <p><%= @l.t('landing_page.text4') %> </p>
+    </div>
+  </div>
+  <div class="row ">
+    <div class="medium-3 columns pr-types">
+      <div class="icon-wrap">
+        <div class="icon-img">
+          <%= image_tag "icon-upload.png" %>
+        </div>
+      </div>
+      <div class="pr-content">
+        <h3><%= @l.t('landing_page.upload') %></h3>
+        <p><%= @l.t('landing_page.upload_text') %></p>
+      </div>
+    </div>
+    <div class="medium-3 columns pr-types">
+      <div class="icon-wrap">
+        <div class="icon-img">
+          <%= image_tag "icon-target.png" %>
+        </div>
+      </div>
+      <div class="pr-content">
+        <h3><%= @l.t('landing_page.target') %></h3>
+        <p><%= @l.t('landing_page.target_text') %></p>
+      </div>
+    </div>
+    <div class="medium-3 columns pr-types">
+      <div class="icon-wrap">
+        <div class="icon-img">
+          <%= image_tag "icon-track.png" %>
+        </div>
+      </div>
+      <div class="pr-content">
+        <h3><%= @l.t('landing_page.track') %></h3>
+        <p><%= @l.t('landing_page.track_text') %></p>
+      </div>
+    </div>
+    <div class="medium-3 columns pr-types">
+      <div class="icon-wrap">
+        <div class="icon-img">
+          <%= image_tag "icon-recommend.png" %>
+        </div>
+      </div>
+      <div class="pr-content">
+        <h3><%= @l.t('landing_page.recommend') %></h3>
+        <p><%= @l.t('landing_page.recommend_text') %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sizeheader bgpane_brand">
+
+</div>
+
+<div class="whatwedo_brand">
+  <div class="row">
+    <div class="large-12 columns">
+      <h2><%= @l.t('landing_page.text5') %></h2>
+      <p><span class="icon-img-wrap left">
+      <%= image_tag 'icon-time.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text6') %></p>
+      <p><span class="icon-img-wrap left">
+      <%= image_tag 'icon-machine.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text7') %></p>
+      <p><span class="icon-img-wrap left">
+      <%= image_tag 'icon-return.png', class: 'icon-left' %></span> <%= @l.t('landing_page.text8') %></p>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="ft-lead">
+  <div class="row">
+    <div class="large-12 columns">
+      <h2><%= @l.t('landing_page.text9') %></h2>
+      <a class="button button-signup" href="http://try.robin8.com/robin/"><%=@l.t('header.contact_us')%></a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="row">
+    <div class="small-12 medium-3 columns ft-logo right">
+      <%= image_tag 'ROBIN8-logo.png' %>
+    </div>
+    <div class="small-12 medium-12 columns left">
+      &copy;<%= @l.t('footer.right_reserved') %> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/terms" class="ft-link privacy"><%= @l.t('footer.privacy_and_terms') %> </a>
+    </div>
+  </div>
+</footer>

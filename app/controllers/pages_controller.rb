@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
-  before_action :set_video,:only => :home
+  before_action :set_video,:only => [:home,:landing_page_brand]
 
   def set_locale
     unless params[:locale].blank?
@@ -19,12 +19,16 @@ class PagesController < ApplicationController
       redirect_to pricing_path
     elsif kol_signed_in?
       if current_kol.confirmed_at == nil
-        flash[:confirmation_alert] = "Please, check your email to activate your account!"
+        flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
       end
       render "home", :layout => 'kol'
     else
       render "landing_page", :layout => 'landing'
     end
+  end
+
+  def landing_page_brand
+    render "landing_page_brand", :layout => 'landing'
   end
 
   def singup
@@ -36,7 +40,9 @@ class PagesController < ApplicationController
   end
 
   def pricing
-    @products = Package.active.where "slug like 'new%'"
+    # 暂时注释掉
+    #@products = Package.active.where "slug like 'new%'"
+    @products = Package.all
     render :layout => "website"
   end
 
@@ -68,6 +74,30 @@ class PagesController < ApplicationController
 
   def about
     render :layout => "website"
+  end
+
+  def contact_us
+    if is_china_request?
+      render :file => "public/robin_cn.htm"
+    else
+      render :file => "public/robin.htm"
+    end
+  end
+
+  def unsubscribe
+    if self.request.params["token"]
+      pitch_contact = PitchesContact.find_by unsubscribe_token: self.request.params["token"]
+      if !pitch_contact.nil?
+        email = pitch_contact.contact.email
+        user_id = pitch_contact.pitch.user_id
+        UnsubscribeEmail.find_or_create_by email: email, user_id: user_id
+        render :layout => "website", :locals => {:action => "unsub"}
+      else
+        render :layout => "website"
+      end
+    else
+      render :layout => "website"
+    end
   end
 
   def authenticate_user!

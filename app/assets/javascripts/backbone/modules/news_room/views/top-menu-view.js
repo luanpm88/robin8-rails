@@ -354,7 +354,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
       var viewObj = this;
       if (this.model.get('default_news_room')){
         swal({
-          title: "This is default newsroom",
+          title: "This is default brand gallery",
           text: "You are not able to delete it!",
           type: "error",
           showCancelButton: false,
@@ -363,7 +363,7 @@ Robin.module('Newsroom', function(Newsroom, App, Backbone, Marionette, $, _){
         });
       }else{
         swal({
-          title: "Delete this newsroom?",
+          title: polyglot.t("newsrooms.delete_brand_gallery"),
           text: "You will not be able to recover it!",
           type: "error",
           showCancelButton: true,

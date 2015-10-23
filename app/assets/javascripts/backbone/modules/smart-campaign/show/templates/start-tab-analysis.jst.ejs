@@ -7,11 +7,11 @@
 
   <p>
     <i style="color: #A0D468;" class="fa fa-check"></i> <%= polyglot.t("smart_release.analysis_step.is_about", {name: title }) %> <strong class="editable-parent">
-    "<a data-type="select2" data-value="<%= textapiResult['classify'] %>" data-title="Select a category" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> and the following topics are mentioned in it: <strong class="editable-parent"><a data-type="select2" id="release-topics" data-title="Select topics" href="#" class="editable editable-click"><%= textapiResult["concepts"] %></a></strong>.
+    "<a data-type="select2" data-value="<%= textapiResult['classify'] %>" data-title="Select a category" id="release-category" href="#" class="editable editable-click"><%= textapiResult['classify'] %></a>"</strong> <%=polyglot.t('smart_campaign.start_step.following_topics')%>: <strong class="editable-parent"><a data-type="select2" id="release-topics" data-title="Select topics" href="#" class="editable editable-click"><%= textapiResult["concepts"] %></a></strong>.
   </p>
 
    <% if (!s.isBlank(textapiResult["summarize"])) { %>
-    <p><i style="color: #A0D468;" class="fa fa-check"></i> Here's a summary of what <strong>"<%= title %>"</strong> is all about:</p>
+    <p><i style="color: #A0D468;" class="fa fa-check"></i> <%= polyglot.t("smart_release.analysis_step.summary", {name: title }) %>:</p>
     <ul id="summaries" style="margin-left: 38px; margin-bottom: 10px;">
       <% _.each(textapiResult["summarize"], function(item, index){ %>
         <li id="summary-<%= index%>" pk="<%= index%>" style="margin-bottom: 7px;"><%= item %></li>

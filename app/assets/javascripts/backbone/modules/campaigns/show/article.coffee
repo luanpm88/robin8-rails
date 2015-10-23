@@ -9,6 +9,14 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       timestamp: (d) ->
         date = new Date d
         date.getTime()
+      getCampaignDetails: (item) ->
+        if item.text != null and item.text != '' && item.text != undefined
+          item.text
+        else
+          if item.campaign_model.attributes.campaign?
+            item.campaign_model.attributes.campaign.description
+          else
+            item.campaign_model.attributes.description
     regions:
       comments: "#comments-list"
       weChat: "#wechat-performance"
@@ -34,13 +42,25 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
       item: @model.toJSON()
       title: @options.title
       disabled: @options.disabled
+      no_tabs: if @options.no_tabs then @options.no_tabs else false
+      negotiating: @options.negotiating
+      accepted: @options.accepted
+      notShowBtns: @options.notShowBtns
 
     onRender: () ->
+      no_comments = if @options.no_comments then @options.no_comments else false
       @ui.wysihtml5.wysihtml5()
       @editor = @ui.wysihtml5.data('wysihtml5').editor
       @editor.focus()
-      @editor.disable() if @options.disabled
       setTimeout(()=>
+        if @options.accepted == false and @options.negotiating == false
+          document.getElementById('comment').style.display = "none"
+        if @options.accepted == false
+          document.getElementById('wechat_perf').style.display = "none"
+        if @options.disabled || @options.no_tabs || (@options.accepted == false and @options.negotiating == false)
+          @editor.disable()
+        if no_comments
+          @ui.commentInput.prop("disabled",true)
         @fileWidget = uploadcare.MultipleWidget('[role=uploadcare-uploader][data-multiple][data-file]')
         @.$el.find(".comments-title .image-preview-multiple-plus .uploadcare-widget-button-open").text("").addClass("btn glyphicon glyphicon-plus")
         @fileWidget.onChange (fileGroup) =>
@@ -78,6 +98,13 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
            ,
             type: "success"
           @options.onApprove? data.code
+          $("#modal").modal("hide")
+          campaign = new Robin.Models.Campaign { id: @model.attributes.campaign_model.attributes.id }
+          campaign.fetch
+            success: (m, r, o) ->
+              campaign_accepted = new Robin.SmartCampaign.Show.CampaignAccepted
+                model: m
+              Robin.layouts.main.content.currentView.campaignAcceptedRegion.show campaign_accepted
       else
         @model.set
           text: @editor.getValue()
@@ -101,6 +128,18 @@ Robin.module 'Campaigns.Show', (Show, App, Backbone, Marionette, $, _)->
            ,
             type: "success"
         $("#modal").modal("hide")
+        campaignsAccepted = new Robin.Collections.Campaigns
+        campaignsAcceptedTab = new Show.CampaignsTab
+          declined: false
+          accepted: true
+          history: false
+          negotiating: false
+          collection: campaignsAccepted
+        campaignsAccepted.accepted
+          success: ()->
+            Robin.layouts.main.content.currentView.content.currentView.campaigns.currentView.accepted.show campaignsAcceptedTab
+          error: (e)->
+            console.log e
 
     save_comment: ()->
       text = @ui.commentInput.val()

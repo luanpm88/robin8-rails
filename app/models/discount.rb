@@ -25,8 +25,20 @@ class Discount < ActiveRecord::Base
     (user_discounts.where(user_id: user_id).exists?  && (product_discounts.blank? || product_discounts.where(product_id: product_id).exists? ) )  ? true : false
   end
 
+  def only_on_addon?(addon_id)
+    (product_discounts.where(:product_id => addon_id).exists? && user_discounts.blank?) ? true : false
+  end
+
+  def on_user_and_addon?(user_id,addon_id)
+    (user_discounts.where(user_id: user_id).exists?  && (product_discounts.blank? || product_discounts.where(:product_id => addon_id).exists? ) )  ? true : false
+  end
+
   def calculate(user,product)
-    product.price - (product.price * ((100-percentage)/100)).round(2)
+    unless user.locale == 'zh'
+      product.price - (product.price * ((100-percentage)/100)).round(2)
+    else
+      product.china_price - (product.china_price * ((100-percentage)/100)).round(2)
+    end
   end
 
   # def is_user_only_discount?

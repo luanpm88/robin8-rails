@@ -15,3 +15,100 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+.filter_emails {
+  height: 145px;
+  width: 270px;
+  margin-left: 25px;
+}
+.filter_emails .sidebar_section {
+  height: 100px;
+}
+.filter_emails #q_email {
+  width: 56% !important;
+}
+.admin_bounced_emails {
+  .bounced_emails_content {
+    width: 85%;
+    -ms-flex: 1;
+  }
+  .bounced_emails_no_content {
+    width: 100%;
+    -ms-flex: 1;
+    display: flex;
+  }
+  .button_to {
+    display: inline;
+  }
+  .filter_emails {
+    .button_to input {
+      border-top-color: #d3d3d3;
+      border-right-color: #c7c7c7;
+      border-bottom-color: #c2c2c2;
+      border-left-color: #c7c7c7;
+      text-shadow: #fff 0 1px 0;
+      color: #5E6469;
+      background-image: linear-gradient(180deg, #fff, #E7E7E7);
+    }
+    .button_to input:hover {
+      border-top-color: #d3d3d3;
+      border-right-color: #c7c7c7;
+      border-bottom-color: #c2c2c2;
+      border-left-color: #c7c7c7;
+      text-shadow: #fff 0 1px 0;
+      color: #5E6469;
+      background-image: linear-gradient(180deg, #fff, #f3f3f3);
+    }
+    .sidebar_section {
+      box-shadow: none;
+      margin-left: -15px;
+    }
+    .buttons {
+      width: 200px;
+    }
+  }
+  .col-error_code {
+    width: 65px;
+  }
+  .blank_slate {
+    border-radius: 3px;
+    border: 1px dashed #DADADA;
+    color: #AAA;
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 14px 25px;
+    text-align: center;
+    clear: both;
+    height: 17px;
+  }
+  .bounced_emails_content > .blank_slate {
+    clear: both;
+    text-align: center;
+  }
+  .blank_div {
+    width: 85%;
+    clear: both;
+    text-align: center;
+    margin-top: 80px;
+  }
+  #main_content {
+    display: flex;
+    width: 100%;
+  }
+}
+.admin_bounced_btns {
+  display: inline-block;
+  width: 60px;
+  background-color: #62676c;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 15px;
+  text-align: center;
+  text-color: #fff;
+  color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 0px rgba(255, 255, 255, 0.2) inset;
+  background-image: linear-gradient(180deg, #838a90, #414549);
+}
+.admin_bounced_btns a, .admin_bounced_btns a:link{
+  color: #fff;
+}

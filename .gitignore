@@ -28,3 +28,8 @@ perf - robin.sublime-project
 perf - robin.sublime-workspace
 .idea/
 config/locales_backup
+config/initializers/app_instance.rb
+public/assets/*
+erd.pdf
+app/assets/stylesheets/kol_dev/reload.css
+public/assets

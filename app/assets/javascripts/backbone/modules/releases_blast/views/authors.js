@@ -21,6 +21,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "summary": this.summary(),
         "release": this.model,
         "currentUser": Robin.currentUser,
+        "china_instance": Robin.chinaInstance,
         "kolSignUpUrl": window.location.protocol + window.location.host + "/kols/new"
       }
     },
@@ -46,7 +47,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       summarizeSlider: "#slider",
       formMessage: "#form-message",
       subjectInput: "[name=subject]",
-      emailInput: "[name=email]"
+      emailInput: "[name=email]",
+      targetInput: "[name=author_email]"
     },
     templateHelpers: function(){
       return {
@@ -93,11 +95,18 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     sendEmail: function(){
       var self = this;
+
+      targetEmail = this.model.get('email')
+      if(this.ui.targetInput.length )
+      {
+        targetEmail = this.ui.targetInput.val()
+      }
+
       this.contactModel.set({
         subject: this.ui.subjectInput.val(),
         body: this.ui.formMessage.find('textarea').val(),
         sender: this.ui.emailInput.val(),
-        reciever: this.model.get('email')
+        reciever: targetEmail
       });
 
       this.contactModel.save({}, {
@@ -152,7 +161,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     checkboxChanged: function(e){
       e.preventDefault();
-      
+
       if (this.ui.pitchCheckbox.val() == "YES")
         this.removeAuthor();
       else
@@ -393,6 +402,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "ordering": false,
         "pageLength": 25,
         "bAutoWidth" :false,
+        "deferRender": true,
         "columns": [
           null,
           { "width": "30%" },
@@ -420,8 +430,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
-                  $.growl('Only Enterprise and Ultra users can have this feature.', {
-                    type: "danger",
+                  $.growl(polyglot.t("smart_release.targets_step.influencers_tab.buttons.only_enterprise"), {
+                    type: "danger"
                   });
                 }
               }
@@ -445,7 +455,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           ]
         }
       };
-      
+
       if (Robin.currentUser.get('locale') == 'zh'){
         options["columns"] = [
           null,
@@ -457,14 +467,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         ];
         options["ordering"] = true;
       }
-      
+
       var table = this.$el.find('table').DataTable(options);
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
       var csvObject = [];
       var pitchContactsArray = this.pitchContactsCollection.chain().filter(function(item){
-        return item.get('origin') === ReleasesBlast.originPressrContact
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
@@ -519,8 +528,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         placeholder: "Author type",
         multiple: false,
         formatInputTooShort: function (input, min) {
-          var n = min - input.length; 
-          return polyglot.t("select2.too_short", { count: n }); 
+          var n = min - input.length;
+          return polyglot.t("select2.too_short", { count: n });
         },
         formatNoMatches: function () { return polyglot.t("select2.not_found"); },
         formatSearching: function () { return polyglot.t("select2.searching"); },
@@ -540,11 +549,11 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
             var params = {
               term: term
             };
-            
+
             if (Robin.currentUser.get('locale') == 'zh'){
               params.type = "weibo";
             }
-            
+
             return params;
           },
           results: function (data, page) {
@@ -564,7 +573,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
 
       var location = this.ui.locationInput.val();
       var author_type_id = this.ui.authorTypeInput.select2('val');
-      
+
       if (s.isBlank(location) && s.isBlank(author_type_id)){
         $.growl({
           message: "Location or Author type should be present, both can't be blank."
@@ -574,7 +583,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       } else {
         this.releaseModel.set('location', location);
         this.releaseModel.set('author_type_id', author_type_id);
-        
+
         Robin.commands.execute("reloadTargetsTab");
       }
     },
@@ -634,7 +643,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
     },
     initDataTable: function(){
       var self = this;
-      
+
       var options = {
         "info": false,
         "searching": false,
@@ -642,6 +651,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         "ordering": false,
         "pageLength": 25,
         "bAutoWidth" :false,
+        "deferRender": true,
         "columns": [
           { "width": "30%" },
           null,
@@ -677,8 +687,8 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
                   openWindow('POST', '/export_influencers.csv',
                     {items: csvContent});
                 } else {
-                  $.growl('Only Enterprise and Ultra users can have this feature.', {
-                    type: "danger",
+                  $.growl(polyglot.t("smart_release.targets_step.influencers_tab.buttons.only_enterprise"), {
+                    type: "danger"
                   });
                 }
               }
@@ -702,7 +712,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
           ]
         }
       };
-      
+
       if (Robin.currentUser.get('locale') == 'zh'){
         options["columns"] = [
           { "width": "30%" },
@@ -715,14 +725,13 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
         options["ordering"] = true;
         options["order"] = [[ 2, 'desc' ]];
       }
-      
+
       var table = this.$el.find('table').DataTable(options);
     },
     makeCsvData: function(order_column, order_direction){
       var self = this;
 
       var pitchContacts = this.pitchContactsCollection.chain().filter(function(item){
-        return (item.get('origin') === ReleasesBlast.originPressrContact);
       }).map(function(item){
         return self.collection.findWhere({id: item.get('author_id')});
       }).reject(function(item){
@@ -730,7 +739,7 @@ Robin.module('ReleasesBlast', function(ReleasesBlast, App, Backbone, Marionette,
       }).value();
 
       var csvObject = [];
-      csvObject.push(["First name", "Last name", "Outlet", 
+      csvObject.push(["First name", "Last name", "Outlet",
         "Relevance", "Contact"]); // CSV Headers
 
       _(pitchContacts).each(function(item){

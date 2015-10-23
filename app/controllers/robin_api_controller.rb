@@ -2,17 +2,26 @@ class RobinApiController < ApplicationController
   before_action :authenticate_user!, :set_client
 
   def suggested_authors
-    params["per_page"] = 200
-    response = @client.suggested_authors params
 
-    authors = unless response[:authors].blank?
-      authors_response = uniq_authors(response[:authors])
+    params["per_page"] = 200
+    params["included_email"] = false
+    response = @client.suggested_authors params
+    authors_list = response[:authors]
+
+    if response[:authors].length == 200
+      params["page"] = 2
+      response_next = @client.suggested_authors params
+      authors_list += response_next[:authors]
+    end
+
+    authors = unless authors_list.blank?
+      authors_response = uniq_authors(authors_list)
       ids = authors_response.map{|a| a[:id]}
       @max_score = authors_response.first[:score]
       @min_score = authors_response.last[:score]
       authors_response.map do |author|
         level_of_interest = calculate_level_of_interest(author[:score],
-          full_name(author[:first_name], author[:last_name]))
+                                                        full_name(author[:first_name], author[:last_name]))
         author[:level_of_interest] = level_of_interest
         author[:full_name] = full_name(author[:first_name], author[:last_name])
         author
@@ -20,7 +29,53 @@ class RobinApiController < ApplicationController
     else
       []
     end
+    authors = authors.sort_by { |v| v[:level_of_interest]}.reverse
 
+    authors = authors.each_with_index.inject([]) do |memo, item|
+      # this is used to merge adjacent authors when
+      # one of them has email and the other one has not
+      author, index = item
+      if index != 0 && author[:first_name] == memo.last[:first_name] &&
+          author[:last_name] == memo.last[:last_name]
+        email = author[:email].blank? ? memo.last[:email] : author[:email]
+        memo.last[:blog_names] << author[:blog_names]
+        memo.last[:blog_names].flatten!.uniq!
+        memo.last[:email] = email
+      else
+        memo << author
+      end
+      memo
+    end
+
+    render json: authors
+  end
+
+  def filtered_authors
+    params["per_page"] = 200
+    params["included_email"] = false
+    params["keywords[]"] = params["keywords"]
+    params.delete("keywords")
+    response = @client.authors params
+    if response.blank?
+      authors = []
+    else
+      authors = unless response[:authors].blank?
+        authors_response = uniq_authors(response[:authors])
+        ids = authors_response.map{|a| a[:id]}
+        @max_score = authors_response.first[:score]
+        @min_score = authors_response.last[:score]
+        authors_response.map do |author|
+          level_of_interest = calculate_level_of_interest(author[:score],
+                                                          full_name(author[:first_name], author[:last_name]))
+          author[:level_of_interest] = level_of_interest
+          author[:full_name] = full_name(author[:first_name], author[:last_name])
+          author
+        end
+      else
+        []
+      end
+    end
+    authors = authors.sort_by { |v| v[:level_of_interest]}.reverse
     render json: authors
   end
 
@@ -31,7 +86,10 @@ class RobinApiController < ApplicationController
   end
 
   def stories
-    response = @client.stories! params.merge({"group_fields[]": "signature", group_limit: 1, })
+    response = @client.stories! params.merge({
+      "group_fields[]" => "signature",
+      group_limit: 1,
+    })
 
     uniq_stories = response[:grouped][:signature][:groups].map do |group|
       group[:stories].first
@@ -48,9 +106,37 @@ class RobinApiController < ApplicationController
 
   def authors
     params["per_page"] = 200
-    response = @client.authors params
+    params["included_email"] = false
+    if params["blog_name"].nil?
+      authors_key =  "authors_search_#{Digest::SHA1.hexdigest params.to_s}"
+      authors_response = Rails.cache.read authors_key
+      if authors_response.nil?
+        response = @client.authors params
+        authors_list = response[:authors]
 
-    authors_response = uniq_authors(response[:authors])
+        if response[:authors].length == 200
+          params["cursor"] = response[:next_page_cursor]
+          response_next = @client.authors params
+          authors_list += response_next[:authors]
+        end
+
+        authors_response = uniq_authors(authors_list)
+        Rails.cache.write authors_key, authors_response, :expires_in => 24.hours
+      end
+    else
+      authors_response = params["blog_name"].inject([]) do |memo, outlet|
+        params["blog_name"] = [outlet]
+        authors_key =  "authors_search_#{Digest::SHA1.hexdigest params.to_s}"
+        redis_response = Rails.cache.read authors_key
+        if redis_response.nil?
+          response = @client.authors params
+          redis_response = uniq_authors(response[:authors])
+          Rails.cache.write authors_key, redis_response, :expires_in => 24.hours
+        end
+        memo.concat(redis_response)
+        memo
+      end
+    end
 
     authors = authors_response.map do |author|
       author[:full_name] = full_name(author[:first_name], author[:last_name])
@@ -61,8 +147,7 @@ class RobinApiController < ApplicationController
   end
 
   def author_stats
-    type = params[:type] || 'default'
-    response = @client.author_stats id: params[:id], type: type
+    response = @client.author_stats id: params[:id]
 
     render json: response
   end
@@ -110,14 +195,24 @@ class RobinApiController < ApplicationController
   end
 
   def uniq_authors(authors)
+
+    unsubscribed_emails = UnsubscribeEmail.where(user_id: current_user.id).map(&:email)
+    authors.reject! { |author| unsubscribed_emails.include?(author[:email])}
+
     uniq_authors = authors.each_with_index.inject({}) do |memo, item|
+      # group authors by email or by 'first_name+last_name' when email is empty
       value, index = item
 
-      if memo[value[:email]]
-        previous_author = memo[value[:email]]
+      k = if value[:email].blank? then
+            "#{value[:first_name]}_#{value[:last_name]}"
+          else
+            value[:email]
+          end
 
-        memo[value[:email]][:blog_names] << value[:blog_name]
-        memo[value[:email]][:blog_names].uniq!
+      if memo[k]
+        previous_author = memo[k]
+        memo[k][:blog_names] << value[:blog_name]
+        memo[k][:blog_names].uniq!
       else
         new_author = {
           id: value[:id],
@@ -131,16 +226,14 @@ class RobinApiController < ApplicationController
           index: index,
           followers_count: value[:followers_count],
           verified: value[:verified],
-          profile_url: value[:profile_url]
+          profile_url: value[:profile_url],
+          level_of_interest: value[:level_of_interest]
         }
-
-        memo[value[:email]] = new_author
+        memo[k] = new_author
       end
-
       memo
     end
-
-    uniq_authors.values.sort{ |x, y| x[:index] <=> y[:index] }[0...100]
+    uniq_authors.values.sort{ |x, y| x[:index] <=> y[:index] }#[0...100]
   end
 
   def calculate_max_min(author_name)

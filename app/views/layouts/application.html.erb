@@ -9,7 +9,6 @@
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
     <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   <% end %>
-
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -39,6 +38,7 @@
     Robin.start();
   });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
+  en_polyglot = new Polyglot({phrases: <%= raw @en_phrases.to_json %>, locale: "en"});
   <% if flash[:success_confirmation] -%>
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
@@ -59,8 +59,19 @@
     Robin.showLoading = true;
   <% end -%>
 
-</script>
+  <% if not Rails.env.production? || Rails.application.config.china_instance %>
+    Robin.showLangPanel = true;
+  <% else %>
+    Robin.showLangPanel = false;
+  <% end %>
 
+  <% if Rails.application.config.china_instance %>
+    Robin.chinaInstance = true;
+  <% else %>
+    Robin.chinaInstance = false;
+  <% end %>
+
+</script>
 <!-- load bitly javascript sdk -->
 <% unless request.location && request.location.country.to_s == "China" %>
   <script type="text/javascript" src="//bit.ly/javascript-api.js?version=latest&login=o_1kj2k3og6&apiKey=R_f9edc1bfe86f3ed758207c0a3e948e86">

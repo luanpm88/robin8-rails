@@ -15,16 +15,23 @@
       </tr>
       </thead>
       <tbody>
-      <% _.each(items, function(c) {
+      <% _.each(items[0].kols, function(c) {
       if (c.invited == true)
       {
       %>
         <tr>
-          <td class="middle"><%= c.first_name %> <%= c.last_name %></td>
+          <td class="middle"></td>
           <td class="middle"><%= c.email %></td>
-          <td><a class="btn btn-danger btn-xs" href="#" data-kol-id="<%= c.id %>"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
+          <td><a class="btn btn-danger btn-xs" id="kol_item" href="#" data-kol-id="<%= c.id %>"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
         </tr>
       <% }}); %>
+      <% _.each(items[0].kols_list, function(c) { %>
+        <tr>
+          <td class="middle"><%= c.name.split(' ')[0] %></td>
+          <td class="middle"><%= c.email %></td>
+          <td><a class="btn btn-danger btn-xs" id="list_item" href="#" data-kol-email="<%= c.id %>"><i class="fa fa-close"></i> <%= polyglot.t("smart_campaign.pitch_step.delete_button") %></a></td>
+        </tr>
+      <% }); %>
       </tbody>
     </table>
   </div>

@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :news_rooms, dependent: :destroy
   has_many :releases, dependent: :destroy
   has_many :streams, dependent: :destroy
+  has_many :unsubscribe_emails, dependent: :destroy
 
   has_many :user_products , dependent: :destroy
   has_many :payments ,through: :user_products
@@ -19,6 +20,7 @@ class User < ActiveRecord::Base
   has_many :features,:through => :user_features
 
   has_many :media_lists, dependent: :destroy
+  has_many :kols_lists, dependent: :destroy
   has_many :contacts, through: :media_lists
   has_many :pitches
   has_many :pitches_contacts, through: :pitches
@@ -41,7 +43,7 @@ class User < ActiveRecord::Base
   class EmailValidator < ActiveModel::Validator
     def validate(record)
       if record.new_record? and Kol.exists?(:email=>record.email)
-        record.errors[:email] << "Email has already been taken"
+        record.errors[:email] << @l.t('register.email_already_taken')
       end
     end
   end
@@ -339,16 +341,16 @@ class User < ActiveRecord::Base
   end
 
   def can_export
-    user_product = user_products.first
+    user_product = self.active_subscription
     return false if user_product.blank?
-    ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual"].include? user_product.product.slug
+    ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual", "newenterprise-monthly"].include? user_product.product.slug
   end
 
   private
     def create_default_news_room
       if is_primary?
         news_room = self.news_rooms.new(
-            company_name: "#{self.email}'s Default Newsroom",
+            company_name: "#{self.email}'s Default Brand Gallery",
             subdomain_name: self.slug,
             default_news_room: true
         )

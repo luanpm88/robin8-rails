@@ -27,50 +27,30 @@
   <div class="row">
     <form accept-charset="UTF-8" class="form-horizontal" role="form" autocomplete="off" id="campaign-form" onsubmit="return false;">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div class="form-group">
-            <label for="name" class="control-label start-form">Campaign title</label>
+            <label for="name" class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_title')%></label>
             <div class="help-block with-errors campaign-errors"></div>
             <div>
-              <input id="name" required class="form-control" placeholder="Enter title..." name="name" type="text" value="">
+              <input id="name" required class="form-control" placeholder="<%=polyglot.t('smart_campaign.start_step.enter_title')%>" name="name" type="text" value="">
             </div>
           </div>
         </div>
-
-          <div class="form-group col-md-3">
-            <label class="control-label start-form">Campaign budget</label>
-            <div class="help-block with-errors campaign-errors"></div>
-            <div>
-              <input class="form-control" placeholder="$1000" name="budget" type="number" value="" required>
-            </div>
-          </div>
-
-
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="control-label start-form">Campaign deadline</label>
-              <div class="help-block with-errors campaign-errors"></div>
-              <div>
-                <input class="form-control" placeholder="Pick a deadline!" id="deadline" name="deadline" type="text" value="" required>
-              </div>
-            </div>
-          </div>
-
           <div class="col-md-12">
             <div class="form-group">
-              <label class="control-label">Campaign content</label>
-              <span class="help-block with-errors campaign-errors error-field" id = "campaign-release-error" >Paste the press release!</span>
+              <label class="control-label"><%=polyglot.t('smart_campaign.start_step.campaign_content')%></label>
+              <span class="help-block with-errors campaign-errors error-field" id = "campaign-release-error" ><%=polyglot.t('smart_campaign.start_step.paste_content')%></span>
               <div>
-                <textarea class="wysihtml5 form-control widearea" rows="10" id="release-form" placeholder="Paste the press release for your campaign here..." name="description" data-widearea="enable" data-widearea-id="1"></textarea>
+                <textarea class="wysihtml5 form-control widearea" rows="10" id="release-form" placeholder="<%=polyglot.t('smart_campaign.start_step.paste_content_here')%>" name="description" data-widearea="enable" data-widearea-id="1"></textarea>
               </div>
             </div>
             <div class="linebreak-notification" style="margin-bottom: 10px;">
-              <center>*The editor uses paragraphs by default for copied text. To place a normal line break press Shift+Enter (Shift+Return)</center>
+              <center><%=polyglot.t('smart_campaign.start_step.editor_uses_paragraphs')%></center>
             </div>
             <div id="release-characteristics"></div>
           </div>
 
-          <button id="analyze" class="btn btn-primary pull-right smart-release-btn" type="submit"><i class="fa fa-cogs"></i> Analyze </button>
+          <button id="analyze" class="btn btn-primary pull-right smart-release-btn" type="submit"><i class="fa fa-cogs"></i> <%=polyglot.t('smart_campaign.start_step.analyze')%> </button>
           <div id="analytics-campaign-text"></div>
 
       </div>

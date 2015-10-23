@@ -66,7 +66,7 @@ Robin.setIdentities = function(data){
 Robin.stopOtherModules = function(){
   _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'DashboardKol', 'SmartCampaign',
       'Releases', 'ReleasesBlast', 'Analytics', 'Authentication',
-      'Billing', 'Recommendations', 'Campaigns'], function(module){
+      'Billing', 'Recommendations', 'Campaigns', 'CampaignsList'], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
@@ -79,8 +79,9 @@ Robin.stopMainModules = function(){
 };
 
 Robin.on('start', function(){
+
   if (Backbone.history && !Backbone.History.started){
-    Robin.addInitializer();
+    //Robin.addInitializer();
     Backbone.history.start();
     if (Robin.currentUser || Robin.currentKOL) {
       Robin.loadPleaseWait();
@@ -125,6 +126,7 @@ Robin.vent.on("authentication:logged_out", function() {
 });
 
 Robin.bind("before:start", function() {
+  Robin.KOL = Robin.currentKOL != null;
   UPLOADCARE_LOCALE_TRANSLATIONS = {
     buttons: {
       cancel: 'Cancel',
@@ -135,7 +137,7 @@ Robin.bind("before:start", function() {
           other: 'Choose files'
         },
         images: {
-          one: polyglot.t("uploading.choose_image"),
+          one: polyglot.t("uploading.kol.choose_image"),
           other: 'Choose images'
         }
       }
@@ -147,7 +149,7 @@ Robin.bind("before:start", function() {
     },
     // messages for dialog's error page
     dialog: { tabs: { preview: { error: {
-      'fileType': {  
+      'fileType': {
         title: 'Title.',
         text: 'Text.',
         back: 'Back'
@@ -159,7 +161,6 @@ Robin.bind("before:start", function() {
       }
     } } } }
   };
-  Robin.KOL = Robin.currentKOL != null;
   if(Robin.currentUser || Robin.currentKOL) {
     Robin.vent.trigger("authentication:logged_in");
   }

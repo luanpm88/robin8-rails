@@ -6,7 +6,7 @@ class PitchesController < ApplicationController
   # GET /pitches.json
   def index
     @pitches = current_user.pitches.all
-    
+
     respond_to do |format|
       format.json
     end
@@ -25,9 +25,12 @@ class PitchesController < ApplicationController
     respond_to do |format|
       if @pitch.valid?
         unless params['contacts'].blank?
-          @pitch.contacts = Contact.bulk_find_or_create(params['contacts'])
+          unsubscribed_emails = UnsubscribeEmail.where(user_id: current_user.id).map(&:email)
+
+          @pitch.contacts = Contact.bulk_find_or_create(params['contacts'],current_user.id)
+          @pitch.contacts = @pitch.contacts.reject { |contact| unsubscribed_emails.include?(contact['email']) }
         end
-        
+
         if @pitch.save
           PitchWorker.perform_async(@pitch.id)
           format.json { render :show, status: :created, location: @pitch }
@@ -50,6 +53,26 @@ class PitchesController < ApplicationController
     end
   end
 
+  # PUT /pitches/1
+  # PUT /pitches/1.json
+  def update
+    respond_to do |format|
+      if @pitch.update(pitch_params)
+        if @pitch.valid?
+          unless params['contacts'].blank?
+            @pitch.contacts = Contact.bulk_find_or_create(params['contacts'],current_user.id)
+          end
+          PitchWorker.perform_async(@pitch.id)
+          format.json { render :show, status: :created, location: @pitch }
+        else
+          format.json { render json: @pitch.errors, status: :unprocessable_entity }
+        end
+      else
+        format.json { render json: @pitch.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pitch
@@ -58,7 +81,7 @@ class PitchesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def pitch_params
-      params.require(:pitch).permit(:twitter_pitch, :email_pitch, 
+      params.require(:pitch).permit(:twitter_pitch, :email_pitch,
         :summary_length, :email_address, :email_subject, :release_id,
         :email_targets, :twitter_targets)
     end

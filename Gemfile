@@ -1,4 +1,5 @@
-source 'https://rubygems.org'
+#source 'https://rubygems.org'
+source 'https://ruby.taobao.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 gem 'bundler', '>= 1.7.0'
@@ -37,11 +38,15 @@ gem 'legato'
 gem 'google-api-client'
 gem 'sitemap_generator'
 gem 'redis-objects'
+gem 'redis-rails'
 
 # Character encoding detecting library
 gem 'charlock_holmes'
 
 gem 'twilio-ruby', '~> 4.2.1'
+
+#monitor server
+gem 'newrelic_rpm'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
@@ -59,7 +64,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-underscore.string'
   gem 'rails-assets-chance'
   gem 'rails-assets-highcharts', '4.1.1'
-  gem 'rails-assets-select2'
+  gem 'rails-assets-select2', '3.5.2'
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
@@ -77,9 +82,11 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-spinjs'
   gem 'rails-assets-jquery-highlighttextarea'
   gem 'rails-assets-jquery-geocomplete'
-  gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-datejs'
+  gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-bootstrap-validator'
+  gem 'rails-assets-jquery-knob'
+  gem 'rails-assets-d3'
 end
 
 gem 'devise'
@@ -147,7 +154,10 @@ group :development, :test do
   gem 'capistrano-bundler', '~> 1.1.4'
   gem 'capistrano-sidekiq', '~> 0.4.0'
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
+  gem 'capistrano3-unicorn', '~> 0.2.0'
   gem 'pry-rails'
+  gem 'pry-nav',    '0.2.4'
+  gem 'pry-stack_explorer', '0.4.9.1'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -168,5 +178,12 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'thin'
+  gem 'puma'
+
+
+
+end
+
+group :production do
+  gem 'unicorn', '4.8.3'
 end

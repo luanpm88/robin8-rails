@@ -1,16 +1,11 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
-  Show.Controller =
+  Show.Controller = Marionette.Controller.extend
     showDashboardPage: ()->
-      invites = new Robin.Collections.CampaignInvitations()
-      invites.fetch
-        success: ()->
-          dashboardPageView.render()
-        error: (e)->
-          console.log e
+      @dashboardPageView = new Show.DashboardKOLPage
+      Robin.layouts.main.content.show @dashboardPageView
 
-      dashboardPageView = new Show.DashboardKOLPage
-        collection: invites
-
-      Robin.layouts.main.content.show dashboardPageView
+    showProfile: -> @dashboardPageView.profile()
+    showScore: -> @dashboardPageView.score()
+    showCampaigns: -> @dashboardPageView.campaigns()
 

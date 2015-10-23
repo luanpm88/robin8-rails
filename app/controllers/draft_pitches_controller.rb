@@ -1,15 +1,15 @@
 class DraftPitchesController < InheritedResources::Base
   before_action :authenticate_user!
   before_action :set_draft_pitch, only: [:show, :edit, :update, :destroy]
-  
+
   def index
     @draft_pitches = current_user.releases.find(params[:release_id]).draft_pitches
-    
+
     respond_to do |format|
       format.json
     end
   end
-  
+
   def create
     @draft_pitch = DraftPitch.new(draft_pitch_params)
 
@@ -21,7 +21,7 @@ class DraftPitchesController < InheritedResources::Base
       end
     end
   end
-  
+
   def update
     respond_to do |format|
       if @draft_pitch.update(draft_pitch_params)
@@ -31,22 +31,22 @@ class DraftPitchesController < InheritedResources::Base
       end
     end
   end
-  
+
   def destroy
     @draft_pitch.destroy
-    
+
     respond_to do |format|
       format.json { head :no_content }
     end
   end
-  
+
   private
 
     def draft_pitch_params
-      params.require(:draft_pitch).permit(:twitter_pitch, :email_pitch, 
-        :summary_length, :email_address, :release_id, :email_subject)
+      params.require(:draft_pitch).permit(:twitter_pitch, :email_pitch,
+        :summary_length, :email_address, :release_id, :email_subject, :id)
     end
-    
+
     def set_draft_pitch
       @draft_pitch = current_user.releases.find(params[:release_id])
         .draft_pitches.find(params[:id])

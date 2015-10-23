@@ -54,19 +54,28 @@
 //= require spinjs/jquery.spin.js
 //= require jquery-highlighttextarea
 //= require ./lib/icheck
+//= require ./lib/crs.min
 //= require jquery-geocomplete
 //= require bootstrap-daterangepicker
 //= require datejs
+//= require d3
+//= require jquery-knob
+//= require bootstrap-validator
+//= require ./lib/radarchart
+//= require ./lib/bootstrap-checkbox
 
 //= require_tree ./backbone/config
-//= require backbone/init
+//= require backbone/init-kol
 //= require_tree ./backbone/routers
 //= require_tree ./backbone/controllers
 //= require_tree ./backbone/models
 //= require_tree ./backbone/collections
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/components
-//= require_tree ./backbone/modules
+//= require_tree ./backbone/modules/navigation
+//= require_tree ./backbone/modules/dashboard-kol
+//= require_tree ./backbone/modules/campaigns
+//= require_tree ./backbone/modules/upload/
 
 var ready;
 ready = function() {
@@ -128,9 +137,9 @@ ready = function() {
    * @param {Object} string
    */
   String.prototype.startsWith = function(string){
-      if (!string)
-          return false;
-      return this.indexOf(string) == 0;
+    if (!string)
+      return false;
+    return this.indexOf(string) == 0;
   }
 
   Marionette.Behaviors.behaviorsLookup = function() {
@@ -141,9 +150,9 @@ ready = function() {
 $(window).on('scroll', function() {
   scrollPosition = $(this).scrollTop();
   if (scrollPosition >= 1) {
-      $('.nav').addClass('fixedscroll');
+    $('.nav').addClass('fixedscroll');
   }else{
-      $('.nav').removeClass('fixedscroll');
+    $('.nav').removeClass('fixedscroll');
   }
 });
 

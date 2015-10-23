@@ -6,5 +6,13 @@ Robin.Models.KolProfile = Backbone.Model.extend({
     "email": "",
     "password": "",
     "password_confirmation": ""
-  }
+  },
+
+  monetize: function(data, options){
+
+    this.save(data, _.extend(options, {
+      url: '/kols/monetize',
+    }));
+
+  },
 });

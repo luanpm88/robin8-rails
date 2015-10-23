@@ -47,7 +47,7 @@
     Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
   <% end -%>
   <% if kol_signed_in? -%>
-    Robin.currentKOL = new Robin.Models.KOL(<%= current_kol.to_json(:methods => [:screens]).html_safe %>);
+    Robin.currentKOL = new Robin.Models.KOL(<%= current_kol.to_json(:methods => [:screens, :identities, :stats]).html_safe %>);
   <% else -%>
     if (Robin) {
       Robin.currentKOL = null;
@@ -60,6 +60,11 @@
     Robin.showLoading = true;
   <% end -%>
 
+  <% if Rails.application.config.china_instance %>
+    Robin.chinaInstance = true;
+  <% else %>
+    Robin.chinaInstance = false;
+  <% end %>
 
 </script>
 

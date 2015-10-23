@@ -52,11 +52,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       else if @model? and s == 'target' and @model.get("iptc_categories")?
         if @model.get("iptc_categories").length == 0
           return false
-      else if @model? and s == 'pitch' and not @model.get("kols")?
+      else if @model? and s == 'pitch' and not @model.get("kols")? and not @model.get("kols_list_contacts")?
         return false
-      else if @model? and s == 'pitch' and @model.get("kols")?
-        if @model.get("kols").length == 0
-          return false
+      else if @model? and s == 'pitch' and (@model.get("kols")? or @model.get("kols_list_contacts")?)
+        if @model.get("kols_list_contacts")?
+          if @model.get("kols_list_contacts").length == 0
+            return false
+        if @model.get("kols")?
+          if @model.get("kols").length == 0
+            return false
       s in @_states
 
     onRender: () ->

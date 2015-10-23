@@ -19,28 +19,17 @@
             <i class="fa fa-user"></i> <span class='text'> Anonymous</span> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/#profile"><i class="fa fa-smile-o"></i> Profile</a></li>
-            <li class="divider"></li>
             <li><a href='/kols/sign_out'><i class="fa fa-sign-out"></i> Log Out</a></li>
           </ul>
         </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li class='locales'>
-          <a href="/set_locale?locale=en">
-            <img src="<%= AppAssets.path('us-flag-icon.png') %>" height="13" title='Switch to US local'>
-          </a>
-          <a href="/set_locale?locale=zh">
-            <img src="<%= AppAssets.path('china-flag-icon.png') %>" height="13" title='Switch to Chinese local'>
-          </a>
-        </li>
-      </ul>
+
     </div>
   </div>
 </nav>
 
 
-<div id="wrapper" class="active">
+<div id="wrapper" class="active kol">
   <!-- Sidebar -->
   <div id="sidebar-wrapper"></div>
   <!-- Page content -->

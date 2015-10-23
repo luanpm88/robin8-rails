@@ -32,6 +32,16 @@ module Robin8
     config.action_dispatch.perform_deep_munge = false
     config.i18n.available_locales = ['en', 'zh']
     # I18n.enforce_available_locales = false
+
+    #echo "export china_instance='Y'" >> ~/.bashrc
+    config.china_instance = (ENV['china_instance'] == 'Y' ? true : false)
+
+    config.cache_store = :redis_store, { :host => "localhost",
+                                         :port => 6379,
+                                         :db => 0,
+                                         :namespace => "robcache",
+                                         :expires_in => 90.minutes }
   end
+
   require Rails.root.to_s + '/lib/blue_snap.rb'
 end

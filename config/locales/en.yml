@@ -188,16 +188,21 @@ en:
         qty: Qty
       title: ADD ON SERVICES
     analytics:
+      apply: Apply
       author: Author
+      date_range: Date Range
       delivered: Delivered
       dropped: Dropped
       email: Email
+      email_old_content: Sorry, no tracking for this release available
       emails: Emails
       filter_by: Filter by
       newsrooms_views: Brand Gallery Views
       opened: Opened
       outlet: Outlet
       page_views: Page Views
+      select_all: All
+      select_content: Select Content
       sent: Sent
       statisitcs: SmartContent Email Statistics
       values: Values
@@ -210,15 +215,25 @@ en:
       annually: billed annually or
       buttons:
         addons: Add ons
+        campaign_details: Campaign payment details
         cancel: Cancel Subscription
         change: Change plan
         new_plan: Subscribe to new plan
         update: Update payment details
+      cancel:
+        'no': 'No'
+        'yes': 'Yes'
       cancel_action: Cancel
       card_last: Card last four
       card_type: Card type
       created_at: Created at
       current_plan: Current Pricing Plan
+      messages:
+        cancel_addon: Cancel this add-on?
+        cancel_subscription: Cancel current subscription?
+        cancel_subscription_success: Your current plan is canceled!
+        cant_cancel_addon: You can't cancel this add-on. Contact support for more
+          details.
       month: month-to-month
       name: Name
       newsroom: Brand Gallery
@@ -232,6 +247,41 @@ en:
       smart_release: SmartContent
       status: Status
       streams: Streams for Media Monitoring
+    campaign_payment_update:
+      enter_info: Enter new Credit Card Information below
+      error:
+        address: Address can't be blank
+        card_number: Card number can't be blank
+        city: City can't be blank
+        cvv: CVV must be greater then 2 characters
+        exp_month: Expiry Month can't be blank
+        exp_year: Expiry Year can't be blank and must be in YYYY format
+        first_name: First name can't be blank
+        last_name: Last name can't be blank
+        phone: Phone can't be blank
+        postal_code: Postal Code/Zip can't be blank
+        state: State can't be blank
+      form:
+        address: Address
+        button_back: Back
+        button_submit: Submit
+        city: City
+        country: Country
+        credit_card_number: Credit Card Number
+        credit_card_type: Credit Card Type
+        cvv: CVV
+        exp_month: Exp. Month
+        exp_year: Exp. Year
+        first_name: First Name
+        last_name: Last Name
+        mr: Mr
+        mrs: Mrs
+        ms: Ms
+        phone: Phone
+        postal_code: Postal Code
+        state: State
+        title: Title
+      title: Campaign Payment Information
     contact_page:
       address: Robin8 Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019
       address_title: Main Office Address
@@ -256,6 +306,7 @@ en:
       accept: Accept
       accepted: Accepted
       brand: Brand
+      brief: Briefing Digest
       budget: Budget
       check_to_activate: Please, check your email to activate your account!
       creation_date: Creation Date
@@ -277,10 +328,173 @@ en:
       new_newsroom_button: Create a Brand Gallery
       new_release_button: Publish New Content
       new_smartrelease_button: SmartContent
+      no_available_content: You don't have available content!
+      not_invited: You are not invited to any campaigns yet.
       not_invited_yet: Welcome to Robin8! You are not invited to any campaigns yet.
         Please <a href="#profile">update</a> your profile.
       status: Status
       title: Dashboard
+    dashboard_kol:
+      buttons:
+        back: Back
+        next: Next
+      campaigns_tab:
+        accepted: To Execute
+        action: Action
+        all: You May Like
+        ask_for_invite: Ask for invite
+        categories: Categories
+        close: Close
+        declined: Just Rejected
+        error: Please fill the field
+        executed: Executed
+        expired: Expired
+        history: History
+        interest: Interest
+        interested: You May Like
+        invitation: Invitation
+        last_update: Last update
+        latest: Latest
+        negotiate: Negotiate
+        negotiate_error: Something went wrong. Please, try again.
+        negotiate_success: Message was sent successfully.
+        negotiate_text: Negotiate campaign
+        negotiating: Negotiating
+        not_expired: Not Expired
+        pending: Pending
+        reject: Reject
+        rejected: Rejected
+        request_rejected: Request rejected
+        running: Running
+        send_negotiate: Send negotiate
+        tables_title: Monetize influence in campaigns
+        title: Monetize!
+        view: View
+        waiting_for_invitation: Waiting for invitation
+        you_dont_have_any_negotiating: You don't have any campaign with negotiating
+          status.
+        you_dont_have_history: You don't have expired campaigns.
+      profile_tab:
+        age_group: Age Group
+        audience_subtitle: self-assessed, optional
+        audience_title: My Influence Circle
+        birthdate: Birth Date
+        central: Central
+        city: City
+        confirm_password: Confirm new password
+        country: Country
+        current_password: Current password
+        current_password_invalid: Current password is incorrect
+        east: East
+        fans_number: Fans Number
+        female: Female
+        first_name: First Name
+        gender: Gender
+        general_title: My Profile
+        id: ID
+        industry: Industry
+        industry_placeholder: Select or input up to 5, separated by blanks
+        last_name: Last Name
+        linkedin: LinkedIn
+        location: Location
+        login: Login
+        male: Male
+        male_female: Male:Female
+        mobile: Mobile
+        name: Name
+        new_password: New password
+        north: North
+        northeast: Northeast
+        personal: Personal
+        province: Province
+        public: Public
+        regions: Regions
+        secrecy: Secrecy
+        select_region: Select region
+        social_subtitle: monetize your influence on those channels
+        social_title: My Social
+        south: South
+        title: My Profile
+        weibo: Weibo
+        west: West
+      score_tab:
+        attend: Attend event (and post commentary)
+        calculated: Complete your profile to improve your score.
+        change_avatar: Change Avatar
+        create_content: Create original content
+        endorsements: Endorsements
+        expected_price: Expected price for labor
+        focus: Focus group
+        header: Your Score
+        host: Host party (or event)
+        interested: Interested
+        interested_all: Interested All
+        offline: Offline
+        online: Online
+        post_content: Post pre-packaged content with personal comment
+        review: Post product review
+        set_price: Set price separately (overrides 'Expected price')
+        share: Re-share (pictures, articles, short post, videos)
+        social_score: Your Score
+        speech: Speech on presentation
+        tables_title: My Score
+        tables_title2: My Value
+        tables_title3: and ways I'm open to monetize it
+        title: My Value
+        vsmonth: "%{per} vs last month"
+        youbeat: You beat %{per} people!
+      validation:
+        city: The City is required
+        country: The Country is required
+        first_name: The First Name is required
+        last_name: The Last Name is required
+        mobile: The Mobile is required
+        region: The Region is required
+    date:
+      datepicker_days:
+        d1: Su
+        d2: Mo
+        d3: Tu
+        d4: We
+        d5: Th
+        d6: Fr
+        d7: Sa
+      datepicker_next: Next
+      datepicker_prev: Prev
+      days_full:
+        d1: Sunday
+        d2: Monday
+        d3: Tuesday
+        d4: Wednesday
+        d5: Thursday
+        d6: Friday
+        d7: Saturday
+      monthes_abbr:
+        m1: Jan
+        m10: Oct
+        m11: Nov
+        m12: Dec
+        m2: Feb
+        m3: Mar
+        m4: Apr
+        m5: May
+        m6: Jun
+        m7: Jul
+        m8: Aug
+        m9: Sep
+      monthes_full:
+        m1: January
+        m10: October
+        m11: November
+        m12: December
+        m2: February
+        m3: March
+        m4: April
+        m5: May
+        m6: June
+        m7: July
+        m8: August
+        m9: September
     footer:
       about: About
       contact: Contact
@@ -296,10 +510,12 @@ en:
       submit_btn: Submit
       user_not_found: The user with this email does not exist!
     header:
+      advertisers: Advertisers
       contact_us: Contact Us
       contactus: Contact Us
       demo: Demo
       log_in: Log in
+      logout: Logout
       menu: Menu
       pricing: Pricing
       sign_up: Sign up
@@ -311,8 +527,9 @@ en:
       download_svg: Download SVG vector image
       print_chart: Print chart
     kol_campaign:
-      approved: Approve
+      approved: Approved
       article:
+        approve: Approve
         close: Close
         have_submit_wechat: You have to submit your WeChat report on each 7th day
           after approval of your article, since WeChat only stores data during 7 days
@@ -332,11 +549,14 @@ en:
       deadline: Deadline
       in_progress: In Progress
       name: Name
+      no_campaign: There are not any active campaigns.
+      no_latest_campaign: There are no campaigns created within last 2 weeks.
       not_approved_yet: Not approved yet
-      you_dont_have_any_accepted: 'You don''t have any accepted campaigns. '
+      status: Status
+      you_dont_have_any_accepted: You don't have any accepted campaigns.
       you_dont_have_any_declined: You don't have any declined campaigns.
     kols:
-      agree: By signing up you agree to MyPRGenie's <a href="/terms">Terms of Service
+      agree: By signing up you agree to Robin8's <a href="/terms">Terms of Service
       email: Email
       email_error: Email can't be blank
       first_name: First Name
@@ -346,27 +566,55 @@ en:
       lname_error: Last name can't be blank
       location: Location
       location_error: Location can't be blank
+      mobile_number: Mobile Number
       mobile_number_error: Digits only
       password: Password
       password_error: Password must be greater then 7 characters
+      signup_btn: SIGN UP
       title: Signup
     landing_page:
+      brand: Brand
+      chinese_locale: Switch to Chinese locale
+      english_locale: Switch to English locale
       here: here.
       inf_signup: 'Are you an Influencer? Sign up '
+      influencer: Influencer
       kol_signup: Are you a KOL? Sign up
       learn_more: Learn More
+      monetize: Monetize
       recommend: Recommend
       recommend_text: Influencers are curated and content is personalized to you.
         The Robin8 recommendation engine gets smarter every time you use it.
+      register: Register
+      register_text: Register now
+      score: My Score
       sign_up: Sign Up
+      social: My Social
       target: Target
       target_text: Select from the list of influencers Robin8 intelligently recommends
         in one click.
       text1: ROBIN8 makes reaching out to reporters and influencers effortless and
         effective.
+      text10: We are changing the face of media and technology that's been years in
+        the making. Sign up and immediately see your score and value as an influencer.
+        Help us help you unleash your influence!
+      text11: Robin8 is constantly tracking and analyzing data from millions of articles
+        and posts every second and every day. By understanding the nuances behind
+        every influencer, we can match you with the best brands and campaigns.
+      text12: Calculate your influence and value
+      text13: Showcase your relevance
+      text14: Uses Algorithm and machine-learning technology to adapt campaign recommendations
+        for you
+      text15: Monetize your influence and make money
+      text16: Do you know you are an influencer?
+      text17: ROBIN8 believes every person is an influencer and a media company.
+      text18: Welcome to the internet for everyone. With the rise of social media,
+        everyone has a voice and influence.
+      text19: Robin8 calculates your influence and estimates the value of your REACH.
       text2: We’re changing the face of PR with technology that’s been years in the
         making. Predict the success of every pitch you make to a reporter by knowing
         with confidence they will share your content. It’s simply intelligent.
+      text20: Recommends relevant campaigns for you
       text3: Take the guesswork out of social and content marketing
       text4: ROBIN8 is constantly tracking and analyzing data from the billions of
         articles that are released every day to create the ultimate curated database
@@ -382,11 +630,14 @@ en:
       text9: Ready to see the world acording to ROBIN8?
       title: Next generation social and content marketing platform powered by artificial
         intelligence
+      title_landing: Calling all KOLs!!!  Join the world's first global marketplace
+        for paid influence!
       track: Track
       track_text: Track your results through our robust analytic dashboard and use
         our media intelligence to keep abreast of the latest news.
       upload: Upload
       upload_text: Upload your content and watch it get analyzed in seconds.
+      welcome: Welcome to the Internet of everyone!
     login:
       email: Email
       fb_login: Login using Facebook
@@ -447,13 +698,13 @@ en:
       new_updates: new updates
       no_news: There is no news
       number_of_stories: Number of stories
+      outlets: Outlets
       please_save: Please save stream first
       popularity: Popularity
       recency: Recency
       rss_link: Rss Link
       save: Save
       sort_by: Sort by
-      sources: Sources
       time_range: Time range
       tooltips:
         delete_stream: Delete Stream
@@ -465,12 +716,13 @@ en:
       untitled: Untitled Stream
     navigation:
       analytics: Analytics
+      campaigns: Campaigns
       dashboard: Dashboard
       monitoring: Monitoring
       newsrooms: Brand Gallery
       profile: Profile
       recommendations: Recommendations
-      releases: Releases
+      releases: Content
       smart_campaign: SmartCampaign
       smart_release: SmartContent
       social: Social
@@ -483,8 +735,12 @@ en:
         adjusted automatically in your next billing cycle, starting
       confirm: CONFIRM PACKAGE CHANGE
       current: Current
+      discount:
+        invalid: Discount code is not valid or expired
+        success: Discount successfully applied to your account
       information: New Package Information
       new: New Package
+      pay_monthly: Pay Monthly
       plan: Plan
       price: Price
       promo: Promo Code
@@ -493,6 +749,7 @@ en:
     newsrooms:
       buttons:
         new: New Brand Gallery
+      delete_brand_gallery: Delete this Brand Gallery?
       item:
         buttons:
           edit: Edit
@@ -580,6 +837,9 @@ en:
       code: Postal Code
       country: Country
       cvv: CVV
+      discount:
+        invalid: Discount code is not valid or expired
+        success: Discount successfully applied to your account
       exp_month: Exp. Month
       exp_year: Exp. Year
       first_name: First Name
@@ -600,6 +860,8 @@ en:
         last_name_blank: Last name can't be blank
         phone_blank: Phone can't be blank
         state_blank: State can't be blank
+        tax_error: Oops...Something went wrong when trying to get tax for order. Please,
+          try again later.
       mr_title: Mr
       mrs_title: Mrs
       ms_title: Ms
@@ -611,21 +873,31 @@ en:
           back (within 30 days).
         second_part: By joining Robin8 you are agreeing to the
         third_part: Terms of Use
+      pay_monthly: Pay Monthly
       phone: Phone
+      satisfaction_guaranteed: Satisfaction guaranteed or your money back (within
+        30 days).
       state: State
       submit_btn: Submit
       table:
         plan: Plan
         price: Price
         remove: remove
+        tax: Tax*
         total: TOTAL
+      tax_description: "*VAT amount for your order in your country or state"
       title: Payment
       your_title: Title
     payment_update_page:
       back_btn: "<<< BACK"
       enter_info: Enter new Credit Card Information below
+      messages:
+        success: The Credit Card information has been successfully updated
       submit_btn: SUBMIT
+      thank_you: THANK YOU!
       title: UPDATE PAYMENT INFORMATION
+      title_confirmation: Update Confirmation
+      to_robin: Go to Robin8
     pricing:
       accesswire_distribution: Accesswire Distribution
       accesswire_distribution_description: Distribute to thousands of websites including
@@ -665,14 +937,15 @@ en:
           intelligence engine.  <br />Take the guesswork out of social and content
           marketing and get better results.
         hours_of_customization: Hours of Customization
-        media_lists: Personal Influencers List
+        media_list: Personal Influencers List
+        media_lists: Personal Influencers Lists
         month_to_month: month-to-month
         newsroom: Brand Gallery
         newsrooms: Brand Galleries
         per_month: mo
         plans: Subscription Plans
         press_release: Content/month
-        seat: Seats
+        seat: Seat
         seats: Seats
         select: Select
         selected: Selected
@@ -691,6 +964,25 @@ en:
         placement on hundreds of top news websites including Boston Globe and Miami
         Herald. Each distribution comes with a report showing a sampling of the sites
         that posted your content.
+    products:
+      10_smart_releases: 10 Smart Content Distribution (per 10 content)
+      20_smart_releases: 20 Smart Content Distribution (per 20 content)
+      5_smart_releases: 5 Smart Content Distribution (per 5 content)
+      accesswire_distribution: Accesswire Distribution (per content)
+      first:
+        newbasic-monthly: Basic
+        newbusiness-monthly: Business
+        newenterprise-monthly: Entereprise
+      media_moitoring: Media Monitoring Stream (per month)
+      myprgenie_web_distribution: FinancialContent Web Distribution (per content)
+      newbasic-monthly: Basic Monthly
+      newbusiness-monthly: Business Monthly
+      newenterprise-monthly: Entereprise Monthly
+      newsroom: Brand Gallery (per month)
+      pr_newswire_distribution: PR Newswire Distribution (per content)
+      press_release: Content Distribution (per content)
+      seat: Seat (per month)
+      smart_release: Smart Content Distribution (per content)
     profile:
       account_changed: Your account data has been successfully changed
       account_successfully_changed: Your account data has been successfully changed
@@ -711,6 +1003,7 @@ en:
       last_name: Last name
       location: Location
       messages:
+        invalid_email: The data you have entered is not a valid email
         required_email: The email address is required
       mobile_number: Mobile number
       new_password: New password
@@ -730,20 +1023,22 @@ en:
       username: Username
     public_newsroom:
       about: About
+      brand_gallery: Brand Gallery
       follow: Follow
       latest_tweets: Latest Tweets
       location: Location
+      no_content: No content published yet
       no_releases: No Releases published yet
-      notification: You are in a preview mode. You need to make this newsroom public
-        and/or save the changes in order to show it on your page
+      notification: You are in a preview mode. You need to make this brand gallery
+        public and/or save the changes in order to show it on your page
       press_kit: Press kit
       pressroom: Pressroom
       read_more: Read more
       social_media: Social Media
-      spokeperson: Spokeperson
+      spokeperson: Spokesperson
       what_is: What is
     public_release:
-      notification: You are in a preview mode. You need to make this release and newsroom
+      notification: You are in a preview mode. You need to make this content and brand gallery 
         public in order to show it on your page
     register:
       agree_terms: By signing up you agree to Robin8's Terms of Service
@@ -768,6 +1063,7 @@ en:
       wechat_signup: Sign up using WeChat
       weibo_signup: Sign up using Weibo
     releases:
+      all_brand_gallery: All Brand Gallery
       all_newsrooms: All Newsrooms
       edit_title: Edit
       item:
@@ -775,8 +1071,10 @@ en:
           edit: Edit
           preview: Preview
           smart: SmartRelease
+          smart_content_btn: SmartContent
       modal:
         basic_tab:
+          brand_gallery: Brand Gallery
           characteristics_view:
             adjectives: Adjectives
             adverbs: Adverbs
@@ -792,31 +1090,39 @@ en:
             sentences: Sentences
             too_short: Too short
             words: Words
+          content_text: Content text
+          content_title: Content title
           newsroom: Newsroom
           paragraph_notification: "*The editor uses paragraphs by default for copied
             text. To place a normal line break press Shift+Enter (Shift+Return)"
           published_date: Published date
           release_text: Release text
           release_title: Release title
+          text_content_placeholder: Paste your content here...
           text_placeholder: Paste your press release here...
           title: Basic
           title_placeholder: Enter title...
         buttons:
           delete: Delete Release
+          delete_content: Delete Content
           next: Next
           save: Save draft
+        content_title: Create Content
         dropdown:
           select: Select...
         media_tab:
+          select_content_logo: Please, select a logo for your content
           select_logo: Please, select a logo for your release
           title: Media
           upload_files: Here you can upload additional media files
         messages:
           buy_addon: Please, buy corresponding addon in Billing settings
+          select_brand_gallery: You should select a Brand Gallery
           select_newsroom: You should select a newsroom
           title_required: The Title is required
         newswire_tab:
           accesswire: Accesswire
+          content_option: Please, select options for distributing content
           distribution: Financial Content Distribution
           newswire: PR Newswire
           release_option: Please, select options for distributing release
@@ -826,11 +1132,13 @@ en:
         warning: This release won't be publicly displayed while the parent Newsroom
           remains unpublished.
         website_tab:
+          make_content_private: Make this content private
           make_private: Make this release private
           title: Website
       model:
         newswire_tab:
           newswire: Newswire
+      new_content: New content
       new_release: New release
     say_something_box:
       fb_accounts: Facebook's account(s)
@@ -853,52 +1161,103 @@ en:
       too_short: Please enter %{count} or more characters
     smart_campaign:
       accepted: Accepted
+      action: Action
       active: Active
       add: Add
       add_influencer: Add Influencer
       add_money: Add money
       approved: Approved
       back: Back
-      budget: Budged
+      budget: Budget
       budget_must_number: The budget must be a number and contains only digits
       budget_required: The budget is required
       campaigns: Campaigns
       categories: Categories
       close: Close
+      contact_form:
+        close: Close
+        email: Email
+        message: Message
+        send: Send
+        send_to: Send your content to
+        subject: Subject
+        title: Contact
+        your_email: Your Email
+      content_type: Content Type
       created: Created
       deadline: Deadline
+      decline_date: Decline date
       declined: Declined
       declined_unknown: Declined/Unknown
+      edit: Edit
       edit_campaign: Edit campaign
+      editor:
+        adjectives: Adjectives
+        adverbs: Adverbs
+        characters: Characters
+        nouns: Nouns
+        paragraphs: Paragraphs
+        readability_score: Readability score
+        sentences: Sentences
+        words: Words
       email: Email
       enter_email: Enter email…
       enter_first name: Enter first name...
       enter_last_name: Enter last name...
+      expired: Expired
       first_name: First Name
+      history: History
       in_progress: In Progress
+      interested: Interested
+      invite: Invite
       invite_influencers: Invite Influencers
+      invited: Invited
       kol:
         alredy_in_list: " already in your list"
         attach_invalid: Attachment content type is invalid
+        empty_list: Your list is empty!
+        error: Error
         incorrect_ignored: All contacts in incorrect format will be ignored.
         list_uploaded: Your list has been successfully uploaded.
         select_categories: Select influencer categories
+      last_login_date: Last login date
       last_name: Last Name
       last_update: Last Update
       name: Name
+      negotiating: Negotiating
+      new:
+        pitch: Pitch
+        start: Start
+        targets: Targets
       new_campaign: New Campaign
+      next: Next
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
+      no_history: You don't have expired campaigns.
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
+      no_negotiate: You don't have any campaign with negotiating status.
       no_one_accepted: No one accepted your invitation yet.
+      no_one_declined: No one declined your invitation.
+      no_one_interested: Nobody was interested in this campaign.
+      no_uploaded: You haven't any uploaded lists.
+      non_cash: Non-cash
+      not_approved_yet: Not approved yet
+      pending: Pending
       pending_approval: Pending Approval
       pitch_step:
+        attend_event: Attend event
+        budget_required: The budget is required
+        button: Pitch!
+        created_success: Your campaign has been successfully created!
+        deadline_required: The deadline is required
         delete_button: Delete
         description: Now that you know exactly which journalists and influencers to
           contact for your compaign, you need to prepare the note to these contacts.
           You can use the Robin8 default note or prepare your own personal note. If
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
+        description_field: Description
+        description_required: The description is required
         emailTargets: Targets will be contacted via Email
         email_panel:
           email: Your email address
@@ -906,6 +1265,8 @@ en:
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
           email_placeholder: Enter an email address...
+          kols_register_alias: in our system as an Influencer.
+          kols_register_text: P.S. We kindly recommend you to
           length: Summary length
           pitch_text: Pitch text
           preview: Preview
@@ -916,7 +1277,18 @@ en:
           title: Email pitch
         email_required: The email adress is required
         emailtext_required: The email text is required
+        endorsements: Endorsements
+        execute: Execute campaign!
+        focus_event: Focus event
+        focus_group: Focus group
+        host_event: Host event
+        non_cash_reward: Non cash reward
+        original: Original
+        post_product_review: Post-product review
+        pre_packaged: Pre-packaged
+        re_share: Re-share
         see: See list
+        speech_or_presentation: Speech or presentation
         subject_required: The subject is required
         targets_table:
           actions: Actions
@@ -927,6 +1299,7 @@ en:
           save: Save as a list
         test_button: Send a Test Email
         title: Pitch
+        updated_success: Your campaign has been successfully updated!
         wechatTargets: Targets will be contacted via WeChat
         weiboTargets: Targets will be contacted via Weibo
         weibo_panel:
@@ -935,11 +1308,15 @@ en:
           weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
+      prev: Previous
       private_influencers: Private Influencers
+      reject: Reject
+      rejected: Rejected
       smart_campaign:
         pitch_step:
           button: Pitch!
       smartcampaign: SmartCampaign
+      something_wrong: Something went wrong. Please, try again.
       start_step:
         analyze: Analyze
         campaign_budged: Campaign budget
@@ -950,23 +1327,68 @@ en:
           text. To place a normal line break press Shift+Enter (Shift+Return)"
         enter_title: Enter title...
         following_topics: and the following topics are mentioned in it
-        paste_press_here: Paste the press release!
+        paste_content: Paste the content!
+        paste_content_here: Paste the content for your campaign here...
+        paste_press: Paste the press release!
+        paste_press_here: Paste the press release for your campaign here...
         pick_deadline: Pick a deadline!
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
       status: Status
+      success_ask_invite: Your request has been sent
+      success_invite: Invitation has been sent
+      success_reject: Request has been rejected
       supported_formats: Supported formats
       targets_step:
+        age_group: Age Group
+        available_channels: Available Channels
+        categories: Categories
+        central: Central
+        choose_category: Please choose at least one category
         city_state: City or State/Province or Country
+        comma_separate: Enter comma separated keywords which authors mentioned in
+          their stories
         contact_first_last: Contact's first and last name
+        content: Content
         couldnt_match_influencers: Couldn't match any influencers for you. Provivde
           more categories.
+        delete_contacts_from_campaign: Delete from campaign
+        delete_contacts_list: Delete this list
+        delete_list: Remove this influencers list?
+        east: East
         email: Email
+        enter_available_channels: Enters available channels
         enter_categories: Enters categories
+        enter_industry: Enters industry
+        female: Female
+        influencers: Influencers
         invite: Invite
+        linkedin: Linkedin
         location: Location
+        male: Male
         name: Name
         need_invite: You need to invite at least someone to this campaign!
+        north: North
+        northeast: Northeast
+        offline: Offline
+        online: Online
         private: Private
+        regions: Regions
+        search: Search
+        select_placeholder: Select a Influencers List
+        south: South
+        topic: Topic
+        wechat_personal: WeChat personal
+        wechat_public: WeChat public
+        weibo:
+          contact_form:
+            message:
+              hi: Hi
+              invited_msg: 'You were invited to participate in a new campaign:'
+              ps: P.S. We kindly recommend you to <a href="%{kols_signup_url}">register</a>
+                in our system as an Influencer.
+              regards: Regards
+            send_error: Message can not be sent!
+        weibo_channel: Weibo
         weibo_tab:
           author: Author
           contact: Contact
@@ -975,6 +1397,7 @@ en:
           invite: Invite
           outlet: Outlet
           relevance: Relevance
+        west: West
       total_influencers_invited: Total influencers invited
       unknown: Unknown
       uploaded_file: Uploaded file must have exactly <strong>three</strong> columns,
@@ -997,6 +1420,7 @@ en:
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
         title: Analysis
         topics: and the following topics are mentioned in it
+      cancel: Cancel
       pitch_step:
         button: Pitch!
         delete_button: Delete
@@ -1005,9 +1429,18 @@ en:
           You can use the Robin8 default note or prepare your own personal note. If
           you are preparing your own personal note, we recommend you keep it short
           and no more than 3 paragraphs.
+        email_missing: Email(s) Missing
+        email_missing_add: Add Email(s)
+        email_missing_pitch: Pitch anyway!
+        email_missing_text: There are no email addresses for some authors you've selected.<br/>You
+          may ignore authors without an email and send the pitch to rest.<br/>You
+          may also add the missing emails manually.
         email_panel:
           email: Your email address
           email_placeholder: Enter an email address...
+          kols_register_alias: in our system as an Influencer.
+          kols_register_href_text: register
+          kols_register_text: P.S. We kindly recommend you to
           length: Summary length
           merge_tags:
             first_name: First Name
@@ -1026,14 +1459,16 @@ en:
           text_dear: Dear
           text_here: Here's a press release you might find interesting. Please let
             me know your thoughts.
-          text_text: Press Release Text
+          text_text: Content Text
           title: Email pitch
+          unsubscribe_text: You can unsubscribe by following link below
         see: See list
         targets: Targets will be contacted via Email
         targets_table:
           actions: Actions
           button: Save
           delete: Delete
+          email: Email
           name: Name
           outlet: Outlet
           save: Save as a list
@@ -1079,11 +1514,13 @@ en:
             export: Export as CSV
             inspect: Inspect
             no_but: 'No'
+            only_enterprise: Only Enterprise users can have this feature.
             remove_all: Remove all
             yes_but: 'Yes'
           contact: Contact
           followers_count: Followers count
           length: Average length
+          no_email: There's no email address for this author. Please enter one.
           outlet: Outlet
           pitch: Pitch?
           relevance: Relevance
@@ -1091,10 +1528,15 @@ en:
           title: Influencers
         media_tab:
           add_list: Add a previously saved list
+          cancel: Cancel
           delete: Delete
+          delete_from_pitch: Delete from pitch
+          delete_this_list: Delete this list
           formats: Supported formats
           ignored_contacts: All contacts in incorrect format will be ignored.
           not_available: You don't have available media list in your subscription!
+          recover_unabled: You will not be able to recover this content.
+          remove_media_list: Remove this media list?
           select_placeholder: Select a Influencers List or upload an new one...
           successfully_uploaded: Your list has been successfully uploaded.
           table:
@@ -1165,10 +1607,10 @@ en:
           Robin8 account to your social profiles so you can easily post or schedule
           your post (s) directly to your profiles with one click.
         disconnect: Disconnect
-        facebook: Facebbok
+        facebook: Facebook
         google: Google+
         linkedin: Linkedin
-        no_accounts: There is no accounts
+        no_accounts: There are no accounts
         note: "* for adding multiple accounts for one social network you should be
           signed out from this network in your browser"
         title: Manage Connected Social Profiles
@@ -1193,30 +1635,81 @@ en:
         marketing, and tech. Miranda has a BS from Cornell University and a JD from
         St. John’s University School of Law.
       ceo_name: Miranda Tan
-      ceo_pos: CEO
+      ceo_pos: Co-CEO and Founder
       chairman_desc: Hassan has nearly three decades of experience in the finance
         and technology. Previously, Hassan was the CEO of Xing Technology which sold
         to Real Networks for $75 Million. Hassan was also the head of digital media
         at CAA and a managing director of Intel Capital. He has a BBA from the University
         of Michigan and a MBA from Stanford University Graduate School of Business.
       chairman_name: Hassan Miah
-      chairman_pos: Chairman
+      chairman_pos: Co-CEO and Founder
       developer_desc: Razee has extensive experience in coding, testing, implementation
         and overall technical support of Robin8. Razee earned a BS from the National
         University of Computer and Emerging Sciences in Pakistan.
       developer_name: Razee Khan
       developer_pos: Engineer and Developer
+      elsa_desc: Account Director, Ms. Elsa Wang is a strategic marketer with an eye for consumer insights 
+        and a passion for digital marketing (Social Media, Content Marketing, SEO/SEM, Web analytics). 
+        She has Google certified Partner Certificates for Google Analytics and Google Adwords. 
+        Most recently, she worked for prestige food brands in China such as Nescafe and Pringles
+        chips. Elsa has a Masters from NYU in Integrated Marketing.
+      elsa_name: Elsa Wang
+      elsa_pos: Marketing Specialist / Director
+      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more 
+        than 15 years in Shanghai. A native of Central New York State, Francis’ work 
+        experience in China includes stints in media, advertising and consulting. 
+        Francis received his bachelor’s degree from the University of Pennsylvania 
+        and has a master’s degree in International Relations from The Johns Hopkins University - 
+        School of Advanced International Studies. Prior to joining Robin8, Francis was 
+        the Director of Operations at Forestry Innovation Investment (Shanghai), 
+        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee 
+        the completion of 15 wood-frame construction projects in China, 
+        including the Vancouver Pavilion at the 2010 Shanghai EXPO.
+      francis_name: Francis Huang
+      francis_pos: General Manager, China
+      jenny_desc: Robin8’s Product Manager and Senior Developer, China Jenny Qian is an experienced
+        computer developer who spent six years at Huawei Technologies Co. She received her bachelor’s
+        degree in Electronic Engineering from Shanghai University and a master’s degree in Computer Science
+        from the Royal Melbourne Institute of Technology. She was previously Chief Technology Officer at
+        wizDigital, a boutique agency based in Shanghai.
+      jenny_name: Jenny Qian
+      jenny_pos: Head Product Manager and Senior Developer, China
+      joey_desc: Robin8’s VP of Marketing Engineer, Joey Jiao has more than fifteen years experience 
+        working in China’s social media and public relations landscape. Joey earned her master’s degree 
+        in Marketing from the Royal Melbourne Institute of Technology. She began her career working 
+        for the Poly Group, one of China’s largest State Owned Enterprises, as an investment manager
+        in their cultural division which includes media and movies. She served as Marketing Director
+        and Strategy Director at a number of research and digital media companies before opening her
+        own agency, wizDigital, in 2014.
+      joey_name: Joey Jiao
+      joey_pos: Vice President, Marketing Engineer, China
+      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU, 
+        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from 
+        Nanjing Agricultural University and Georgia Southwestern State University.
+      jun_name: Jun Yang
+      jun_pos: Sales and Marketing Specialist
       operations_desc: Cynthia heads overall operations and administration for Robin8.
         She has an MBA from Adelphi University and a BS in Accounting from Nanjing
         University of Science and Technology.
       operations_name: Cynthia Chen
       operations_pos: VP, Operations
+      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups 
+        in terms of marketing, business development and fundraising. Peter has a BA from 
+        George Washington University.
+      peter_name: Peter Chernin
+      peter_pos: Director of Sales and Business Development
       sales_desc: Alex is a passionate marketer with extensive experience in sales
         and media outreach. He is an aggressive pitcher who loves connecting with
         his clients and their audience. Alex graduated from the University of Michigan,
         College of LS&amp;A with a BS in Neuroscience.
       sales_name: Alex Stefanov
       sales_pos: VP, Sales and Marketing
+      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team. 
+        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices 
+        and other human resource policies. Sally has helped a number of foreign companies 
+        establish a presence in China and assists with the day-to-day operation of the company. 
+      sally_name: Sally Zheng
+      sally_pos: Administrative Manager, China
       scientist_desc: Edison has over 5 years experience in machine learning and data
         mining in China working with Tencent and Quo360. He has published multiple
         articles on his work in the Journal of Applied Mathematics and other international
@@ -1226,6 +1719,11 @@ en:
         Science at the Polytechnic School of Engineering at New York University.
       scientist_name: Edison Xu Zhao
       scientist_pos: Data Scientist and Engineer
+      simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS 
+        from East China Normal University.
+      simon_name: Simon Deng
+      simon_pos: Tech Lead China
       support_desc: Olivia joined Robin8 in October 2010. At Robin8, she heads Customer
         Support and oversees the research team. Olivia has extensive experience in
         PR and marketing and has helped hundreds of companies with their PR campaign.
@@ -2109,10 +2607,16 @@ en:
       Yakutsk: "(+9:00) Yakutsk"
       Yerevan: "(+4:00) Yerevan"
       Zagreb: "(+1:00) Zagreb"
+    unsubscribe:
+      invalid_token: Invalid Token
+      success: You've successfully unsubscribed
+      title: Unsubscribe
     uploading:
       choose_image: Choose an image!!!
       different_photo: Upload a different photo...
       files_label: Filed
+      kol:
+        choose_image: Change Avatar
       photos_label: Photos
       videos_label: Videos
     user_menu:

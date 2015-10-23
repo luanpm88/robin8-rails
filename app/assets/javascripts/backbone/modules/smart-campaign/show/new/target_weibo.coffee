@@ -110,7 +110,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (model, response, options) ->
           Robin.modal.empty()
         error: (model, response, options) ->
-          $.growl("Message can not be sent!", {type: "danger"})
+          $.growl(polyglot.t('smart_campaign.targets_step.weibo.contact_form.send_error'), {type: "danger"})
 
   Show.TargetWeibo = Backbone.Marionette.ItemView.extend
     template: 'modules/smart-campaign/show/templates/targets-tab-weibo'
@@ -240,6 +240,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         searching: false
         lengthChange: false
         pageLength: 25
+        language:
+          paginate:
+            previous: polyglot.t('smart_campaign.prev'),
+            next: polyglot.t('smart_campaign.next')
       if @model.model.get("weibo")?
         $(".weibo-header").removeClass "error"
         $(".weibo-errors").hide()

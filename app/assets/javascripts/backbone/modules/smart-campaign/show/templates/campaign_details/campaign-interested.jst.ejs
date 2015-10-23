@@ -1,0 +1,27 @@
+<div class="row">
+  <% if (interested.length == 0) { %>
+    <i><%=polyglot.t('smart_campaign.no_one_interested')%></i>
+  <% } else { %>
+    <table class="table table-striped detailed-table" id="interested-kols">
+      <thead style="cursor:pointer;"><tr>
+        <th class='campaign-details-column  col-md-4'><%=polyglot.t('smart_campaign.name')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.deadline')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.categories')%></th>
+        <th class='campaign-details-column'><%=polyglot.t('smart_campaign.action')%></th>
+      </tr></thead>
+      <tbody>
+        <% _.each(interested, function(k) { %>
+          <tr data-id="<%= k.id %>" data-article-id="<%= k.article.id %>">
+            <td class="preview"><%= k.first_name %></td>
+            <td class="preview"><%= formatDate(campaign.deadline) %></td>
+            <td class="preview"><%= k.categories_labels %></td>
+            <td>
+              <button type="button" class="btn top-btn camp-invite-btn interested-btn" id='invite' data-campaign-id="<%= k.interested_id %>"><%=polyglot.t('smart_campaign.invite')%></button>
+              <button type="button" class="btn top-btn btn-decline invitation-decline interested-btn" id='reject' data-campaign-id="<%= k.interested_id %>"><%=polyglot.t('smart_campaign.reject')%></button>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

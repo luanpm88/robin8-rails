@@ -10,6 +10,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       wechatTargets: '#wechat-targets',
       weiboPitch: '#weibo-pitch',
       weiboTargets: '#weibo-targets'
+      campaignDetails: '#campaign-details'
 
     ui:
       pitchButton: "#save-pitch"
@@ -24,6 +25,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @kols.splice(index, 1)
         @model.set('kols', @kols)
         if @kols.length == 0
+          this.renderTab()
+
+      'email_list_item:target:removed': (childView, id) ->
+        kol = _(@kols_list).find (k) -> k.id == id
+        index = _.indexOf(@kols_list, kol)
+        @kols_list.splice(index, 1)
+        @model.set('kols_list', @kols_list)
+        if @kols_list.length == 0
           this.renderTab()
 
       'weibo:target:removed': (childView, id) ->
@@ -44,10 +53,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @model.set('weibo_pitch' , polyglot.t("smart_campaign.pitch_step.weibo_panel.weibo_pitch"))
       @model.set('wechat_pitch' , polyglot.t("smart_campaign.pitch_step.weibo_panel.weibo_pitch"))
 
-      if @model.get('kols')
-        @kols = @model.get('kols')
-        kols = new Backbone.Collection(@model.get('kols'))
-        if @model.get('kols').length > 0
+      if @model.get('kols') or @model.get('kols_list_contacts')
+        @kols = if @model.get('kols') then @model.get('kols') else []
+        @kols_list = if @model.get('kols_list_contacts') then @model.get('kols_list_contacts') else []
+
+        if @kols.length > 0 or @kols_list.length > 0
+          all_kols = {}
+          if @kols.length > 0
+            all_kols['kols'] = @kols
+          if @kols_list.length > 0
+            all_kols['kols_list'] = @kols_list
+          kols = new Backbone.Collection(all_kols)
           @emailTargetsView = new Show.EmailTargets
             collection: kols
           @showChildView 'emailTargets', @emailTargetsView
@@ -95,6 +111,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: @model
       @showChildView 'wechatPitch', @wechatView
 
+      @campaignDetails = new Show.PitchCampaignDetails
+        model: @model
+      @showChildView 'campaignDetails', @campaignDetails
+
 
       #if wechat.length > 0
       #  wechatTargetsView = new Show.WeChatTargets
@@ -108,14 +128,23 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     pitchButtonClicked: (e) ->
       e.preventDefault()
       form = @emailView.$el.find('#email_pitch_form')
-      if form != undefined
+      details_form = @campaignDetails.$el.find('#details_form')
+      if form != undefined and details_form != undefined
         form.data('formValidation').validate()
-        if form.data('formValidation').isValid()
+        details_form.data('formValidation').validate()
+        if form.data('formValidation').isValid() && details_form.data('formValidation').isValid()
+          @model.set('budget', @campaignDetails.$el.find('#budget').val())
+          @model.set('content_type', @campaignDetails.$el.find('#content_type').val())
           @model.save {},
             success: (m) ->
+              if m.attributes.created_at != null and m.attributes.created_at != undefined
+                $.growl(polyglot.t('smart_campaign.pitch_step.updated_success'), {type: "success"})
+              else
+                $.growl(polyglot.t('smart_campaign.pitch_step.created_success'), {type: "success"})
               location.href = '/#smart_campaign'
             error: (m) ->
               if @model.get('id')
                 $.growl("Campaign can not be updated!", {type: "danger"})
               else
                 $.growl("Campaign can not be created!", {type: "danger"})
+

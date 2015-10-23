@@ -1,11 +1,18 @@
 <div id="blast-targets" class="tab-pane active" role="tabpanel">
   <h5><i class="fa fa-bullseye"></i>  <%= polyglot.t("smart_release.targets_step.title") %></h5>
   <p><%= polyglot.t("smart_release.targets_step.description") %></p>
+  <form id="selectForm" method="post">
+    <div class="form-group">
+      <label><%= polyglot.t("smart_campaign.targets_step.categories") %>:</label>
+      <input type="text" name="categories" id="categories" autocomplete="off" placeholder="<%=polyglot.t('smart_campaign.targets_step.enter_categories')%>" class="typeahead form-control" required>
+    </div>
+  </form>
   <ul class="nav nav-tabs nav-justified">
     <!--<li class="active"><a data-toggle="tab" href="#targets-wechat" aria-expanded="true"><i class="fa fa-wechat"></i> Wechat</a></li>-->
-    <li><a data-toggle="tab" href="#targets-weibo" aria-expanded="true" id="targets-weibo-tab"><i class="fa fa-weibo"></i> Weibo</a></li>
-    <li><a data-toggle="tab" href="#targets-blogs" aria-expanded="true"><i class="fa fa-rss"></i> Influencers</a></li>
-    <li><a data-toggle="tab" href="#targets-search" aria-expanded="true"><i class="fa fa-search"></i> Search</a></li>
+    <li class="active"><a data-toggle="tab" href="#targets-weibo" aria-expanded="true" id="targets-weibo-tab"><i class="fa fa-weibo"></i> Weibo</a></li>
+    <li><a data-toggle="tab" href="#targets-blogs" aria-expanded="true"><i class="fa fa-rss"></i> <%= polyglot.t('smart_campaign.targets_step.influencers') %></a></li>
+    <li><a data-toggle="tab" href="#targets-search" aria-expanded="true"><i class="fa fa-search"></i> <%= polyglot.t('smart_campaign.targets_step.search') %></a></li>
+    <li><a data-toggle="tab" href="#kolslist-upload" aria-expanded="true"><i class="fa fa-list"></i> <%= polyglot.t("smart_release.targets_step.media_tab.title") %></a></li>
   </ul>
   <div class="tab-content">
     <!--<div id="targets-wechat" class="tab-pane active" role="tabpanel">
@@ -18,6 +25,9 @@
 
     </div>
     <div id="targets-search" class="tab-pane" role="tabpanel">
+
+    </div>
+    <div id="kolslist-upload" class="tab-pane" role="tabpanel">
 
     </div>
   </div>

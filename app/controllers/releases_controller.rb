@@ -5,14 +5,19 @@ class ReleasesController < ApplicationController
   def index
     limit = current_user.current_user_features.press_release.map(&:max_count).inject{|sum,x| sum + x }
     limit = limit.nil? ? current_user.releases.count : limit
-    releases = params[:public] ? Release.where(news_room_id: params[:id]).limit(limit) : apply_scopes(current_user.releases).limit(limit)
-    unless params[:for_blast].blank?
-      releases = releases#.published
-    end
-    set_paginate_headers Release, releases.count
-    per_page = (limit < params[:per_page].to_i || params[:per_page].nil?) ? limit : params[:per_page].to_i
 
-    render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: per_page), each_serializer: ReleaseSerializer
+    if params[:brand_gallery_id]
+      releases = Release.where({user_id: current_user.id, news_room_id: params[:brand_gallery_id]})
+      render json: releases.order('created_at DESC'), each_serializer: ReleaseSerializer
+    else
+      releases = params[:public] ? Release.where(news_room_id: params[:id]).limit(limit) : apply_scopes(current_user.releases).limit(limit)
+      unless params[:for_blast].blank?
+        releases = releases#.published
+      end
+      set_paginate_headers Release, releases.count
+      per_page = (limit < params[:per_page].to_i || params[:per_page].nil?) ? limit : params[:per_page].to_i
+      render json: releases.order('created_at DESC').paginate(page: params[:page], per_page: per_page), each_serializer: ReleaseSerializer
+    end
   end
 
   def create
@@ -104,7 +109,7 @@ class ReleasesController < ApplicationController
 
   def release_params
     params.require(:release).permit(:title, :text, :news_room_id, :is_private,
-      :logo_url, :thumbnail, :concepts, :published_at, :iptc_categories,
+      :logo_url, :thumbnail, :concepts, :published_at, :iptc_categories, 
       :summaries, :hashtags, :boson_categories,
       :characters_count, :words_count, :sentences_count,
       :paragraphs_count, :adverbs_count, :adjectives_count,

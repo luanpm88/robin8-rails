@@ -32,12 +32,15 @@ Rails.application.routes.draw do
   post 'change_campaign_card_info' => 'blue_snap#update_campaign_card_info'
   get '/users/manageable_users' => 'users#manageable_users'
   delete '/users/delete_user' => 'users#delete_user'
+  delete '/users/delete_kols_list' => 'kols_lists#delete_kols_list'
   get 'users/get_current_user' => 'users#get_current_user'
   get 'users/get_active_subscription' => 'users#get_active_subscription'
   get 'users/private_kol' => 'users#get_private_kols'
-  post 'users/import_kols' => 'users#import_kols'
+  get 'users/kols_lists' => 'kols_lists#get_contacts_list'
+  post 'users/import_kols' => 'kols_lists#create'
   post 'users/import_kol' => 'users#import_kol'
   get 'payments/apply_discount' => 'payments#apply_discount'
+  get 'payments/check_tax_rate' => 'payments#check_tax_rate'
   delete '/users/disconnect_social' => 'users#disconnect_social'
   # resources :blue_snap
   # resources :payments do
@@ -47,6 +50,7 @@ Rails.application.routes.draw do
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
   get '/kols/new' => 'kols#create'
+  put '/kols/monetize' => 'kols#update_monetize'
 
   # kols
   devise_for :kols, controllers: {
@@ -58,6 +62,7 @@ Rails.application.routes.draw do
   get '/kols/suggest_categories' => 'kols#suggest_categories'
   get '/kols/suggest' => 'kols#suggest_kols'
   get '/kols/get_attachments' => 'kols#get_attachments'
+  get '/kols/get_categories_labels' => 'kols#categories_labels'
 
   resources :posts do
     put 'update_social', on: :member
@@ -105,9 +110,9 @@ Rails.application.routes.draw do
   resources :alerts, only: [:create, :show, :update]
   resources :media_lists, only: [:index, :create, :show, :destroy]
   resources :contacts, only: [:index, :create, :show]
-  resources :pitches, only: [:index, :create, :show]
+  resources :pitches, only: [:index, :create, :update, :show]
   resources :draft_pitches
-  resources :pitches_contacts, only: [:index, :create, :show, :destroy]
+  resources :pitches_contacts, only: [:index, :create, :update, :show, :destroy]
   resources :test_emails, only: [:create, :show]
   resources :iptc_categories, only: [:index, :show]
   resources :export_influencers, only: [:create]
@@ -127,11 +132,13 @@ Rails.application.routes.draw do
   get 'autocompletes/topics', to: 'robin_api#proxy'
   get 'autocompletes/blogs',  to: 'robin_api#proxy'
   post 'robin8_api/suggested_authors', to: 'robin_api#suggested_authors'
+  post 'robin8_api/filter_authors', to: 'robin_api#filtered_authors'
   post 'robin8_api/related_stories', to: 'robin_api#related_stories'
   get 'robin8_api/influencers', to: 'robin_api#influencers'
   get 'robin8_api/authors', to: 'robin_api#authors'
   get 'robin8_api/authors/:id/stats', to: 'robin_api#author_stats'
   get 'robin8_api/stories', to: 'robin_api#stories'
+  get '/home', to: 'pages#landing_page_brand'
 
   post 'textapi/classify'
   post 'textapi/concepts'
@@ -140,7 +147,7 @@ Rails.application.routes.draw do
   post 'textapi/hashtags'
 
   get 'image_proxy' => 'image_proxy#get', as: 'image_proxy'
-  
+
   constraints(Subdomain) do
     get '/' => 'public_news_rooms#show', as: :subdomain_root
   end
@@ -154,8 +161,10 @@ Rails.application.routes.draw do
   get '/terms', to: 'pages#terms'
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
+  get '/unsubscribe', to: 'pages#unsubscribe'
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
+  get '/contact_us', to: "pages#contact_us"
 
   resources :campaign, only: [:index, :create, :update, :show]
   get 'campaign/:id/article', to: 'campaign#article'
@@ -167,11 +176,18 @@ Rails.application.routes.draw do
   post 'campaign/:id/article/:article_id/comments', to: 'campaign#create_article_comment'
   post 'campaign/:id/article/:article_id/wechat_performance', to: 'campaign#create_wechat_performance'
   post 'campaign/wechat_report/claim', to: 'campaign#claim_article_wechat_performance'
+  post 'campaign/negotiate_campaign/negotiate', to: 'campaign#negotiate_campaign'
   post 'campaign/:id/article/:article_id/approve', to: 'campaign#approve_article'
   post 'campaign/add_budget', to: 'campaign#add_budget'
   post 'campaign/get_counter', to: 'campaign#get_counter'
   post 'campaign/:id/article/:article_id/approve_request', to: 'campaign#approve_request'
   post 'campaign/test_email', to: 'campaign#test_email'
   resources :campaign_invite, only: [:index, :create, :show, :update]
+  post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
+  resources :kols_lists, only: [:index, :create, :show, :update]
 
+  get '/geocode/country', to: 'geocode#get_country'
+  post 'campaign_invite/reject', to: 'interested_campaigns#update'
+  post 'campaign_invite/invite', to: 'interested_campaigns#update'
+  post 'campaign_invite/ask_for_invite', to: 'interested_campaigns#ask_for_invite'
 end

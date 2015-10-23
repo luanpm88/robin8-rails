@@ -52,19 +52,24 @@
 }
 
 
-.invites {
+.invites, #campaigns-table {
+  button {
+    width: 85px;
+  }
   .table-head {
     cursor: pointer;
   }
+  .head-cell {
+    vertical-align: middle !important;
+  }
 
   .invite-cell {
-    text-align: center;
-    vertical-align: middle;
+    vertical-align: top;
     height: 51px;
 
     &.invite-status {
-      width: 12%;
-      min-width: 180px;
+      width: 10%;
+      min-width: 100px;
     }
 
     &.invite-status.invite-declined {
@@ -78,7 +83,7 @@
     &.invite-deadline,
     &.invite-date {
       width: 10%;
-      min-width: 100px;
+      min-width: 130px;
     }
 
     &.invite-budget {
@@ -99,7 +104,273 @@
     &.alignleft {
       text-align: left;
     }
+  }
+}
 
+html {
+  height: 100%;
+}
 
+body {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 80px;
+}
+
+.profile-content {
+  .row {
+    padding: 5px 0px;
+    max-width: 1000px;
+  }
+  select {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+  }
+  .full-width {
+    width: 100%;
+  }
+  .audience {
+    .row {
+      padding-top: 8px;
+    }
+  }
+  .social-content {
+    .row {
+      padding: 10px 0px;
+
+      .cell.social-label {
+        line-height: 35px;
+      }
+    }
+  }
+  .score-tables {
+    padding-left: 20px;
+    .mf-label {
+      margin-right: 35px;
+    }
+    .cell {
+      input[type=text], input[type=number], input[type=tel] {
+        width: 100%;
+        padding-left: 5px;
+      }
+      border: none;
+    }
+    .region-btn {
+      width: 90px;
+      margin-right: 2px;
+    }
+    .switch-button {
+      padding: 6px 5px !important;
+      background-color: #ffffff !important;
+      color: #434A54;
+      &.active:focus {
+        background-color: #CCD1D9 !important;
+      }
+      &.active {
+        background-color: #CCD1D9 !important;
+      }
+    }
+  }
+  .calendar_button {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+  .social {
+    .cell {
+      height: auto;
+    }
+    .social_img {
+      margin-top: -10px;
+    }
+  }
+  .age-group .cell {
+    width: auto;
+    margin-right: 20px;
+  }
+  .profile_info > .row {
+    margin-bottom: 10px;
+  }
+  .profile_info {
+    .glyphicon {
+      top: 5px;
+    }
+    .select_wrapper .glyphicon {
+      right: 12px;
+    }
+    .glyphicon-calendar {
+      top: 2px;
+    }
+  }
+}
+
+#tab-content {
+  .campaigns-tables-title span {
+    margin-right: 12px;
+  }
+  #score_form {
+    .kol-avatar {
+      height: auto;
+    }
+    .uploadcare-widget-button {
+      font-size: 15px;
+    }
+    #score-data {
+      background-color: #f4f4f4;
+    }
+    #top-row {
+      padding: 10px;
+
+      .graph_column {
+        padding: 0;
+      }
+    }
+    #graph_score2 {
+      height: 190px;
+      overflow: hidden;
+    }
+    .score_tables_header {
+      color: #007183;
+      font-size: 15px;
+      background-color: #f4f4f4;
+    }
+    .score_tables_header > div {
+      padding: 7px 0;
+    }
+    .interested_column {
+      width: 12%;
+    }
+    .expected_price_column {
+      width: 21%;
+    }
+    .my_value_title {
+      margin-top: 40px;
+    }
+    .cbx-active {
+      border: 2px solid #47b4b7;
+
+      .cbx-icon {
+        margin: 0;
+        font-size: 15px;
+        color: #47b4b7;
+        line-height: 34px;
+        text-align: center;
+      }
+    }
+    .cbx-active:hover,
+    .cbx-active:focus {
+      border-color: #47b4b7;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+    #value.score-tables {
+      .cell {
+        height: 45px;
+        padding: 5px;
+      }
+      .tab_online {
+        line-height: 35px;
+
+        .social {
+          font-size: 14px;
+        }
+        .interested_column {
+          line-height: 31px;
+        }
+        .social_column .fa {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+      .tab_offline {
+        line-height: 35px;
+      }
+      .set_price_column {
+        padding-right: 0;
+        padding-left: 0;
+      }
+      .set_price_column > .col-md-3{
+        padding: 0 5px;
+      }
+      .label_column {
+        padding-left: 25px;
+      }
+      .label_column .label_wrapper{
+        display: table-cell;
+        height: 35px;
+        vertical-align: middle;
+        font-family: 'ProximaNova';
+        font-size: 14px;
+        line-height: 1.2;
+        font-weight: normal;
+      }
+    }
+  }
+  .chart_column {
+    padding: 0;
+    margin-left: 10px;
+
+    .chart_info {
+      padding-left: 22px;
+      font-family: 'ProximaNova';
+      font-size: 15px;
+      color: #007183;
+    }
+  }
+  .chart_wrapper {
+    height: 168px;
+  }
+  .chart-gauge {
+    float: left;
+  }
+  .scores_block {
+    float: left;
+    padding-top: 20px;
+    padding-left: 20px;
+
+    .score_badge {
+      padding: 5px 10px;
+      margin-top: 15px;
+      font-family: 'ProximaNova'; 
+      font-size: 13px;
+      line-height: 1.2;
+      color: #fff;
+      background-color: #edac0a;
+      text-align: center;
+    }
+  }
+  .scores_block_title {
+    font-family: 'ProximaNovaBold';
+    font-size: 20px;
+    color: #007183;
+  }
+  #campaigns-list tr.selected {
+    background: #e6e9ed;
+  }
+}
+
+@media (max-width: 1240px) {
+  .graph_column {
+    width: 100%;
+    margin-top: 20px;
+
+    #graph_score2 {
+      text-align: center;
+    }
+    #graph_score2 > svg {
+      display: inline-block;
+    }
+  }
+  #tab-content #score_form #value.score-tables .tab_online .cell {
+    height: 62px;
+    line-height: 1.3;
+  }
+  #tab-content #score_form #value.score-tables .tab_online .cell:first-child{
+    line-height: 52px;
+  }
+  #tab-content #score_form #value.score-tables .social_column .col-md-3 {
+    padding: 5px 5px 0;
+  }
+  #tab-content #score_form #value.score-tables .tab_online .social {
+    font-size: 13px;
   }
 }

@@ -177,7 +177,23 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: @releaseCharacteristicsModel
       }))
       @modelBinder.bind(@model, @el)
+      monthes = []
+      monthesShort = []
+      daysMin = []
+      days = []
+      for i in [0..11]
+        monthes[i] = polyglot.t('date.monthes_full.m' + (i + 1))
+        monthesShort[i] = polyglot.t('date.monthes_abbr.m' + (i + 1))
+      for i in [0..6]
+        days[i] = polyglot.t('date.days_full.d' + (i + 1))
+        daysMin[i] = polyglot.t('date.datepicker_days.d' + (i + 1))
       @$el.find("#deadline").datepicker
+        monthNames: monthes
+        monthNamesShort: monthesShort
+        dayNames: days
+        dayNamesMin: daysMin
+        nextText: polyglot.t('date.datepicker_next')
+        prevText: polyglot.t('date.datepicker_prev')
         dateFormat: "D, d M y"
       if @model.get('deadline')?
         @$el.find("#deadline").datepicker("setDate", new Date(@model.get('deadline')))
@@ -210,8 +226,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         tabs: 'file'
         multiple: false
         imagesOnly: true
-        }).done((file) ->
-            file.done((fileInfo) ->
+        }).done((file) =>
+            file.done((fileInfo) =>
               @editor.composer.selection.setBookmark(bookmark)
               @editor.focus()
               @editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl})

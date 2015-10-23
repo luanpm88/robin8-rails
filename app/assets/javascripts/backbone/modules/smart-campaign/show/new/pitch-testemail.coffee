@@ -56,7 +56,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         $.post "/campaign/test_email/", data, (data) =>
           if data.status == "ok"
             Robin.modal.empty()
-            $.growl({message: "Bon voyage, test email! Your test email is on its way to the test recipients."},{type: 'success'})
+            $.growl({message: polyglot.t('smart_release.send_test.bon_voyage')},{type: 'success'})
           else
             self.ui.sendButton.prop('disabled', false);
             $.growl {message: data.status}, {type: 'danger'}

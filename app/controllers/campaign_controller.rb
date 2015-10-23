@@ -1,9 +1,36 @@
 class CampaignController < ApplicationController
 
   def index
-    status = params[:status] == "declined" ? "D" : "A"
-    campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}) : current_user.campaigns
-    render json: campaigns, each_serializer: CampaignsSerializer, scope: current_kol
+    if params[:status] == "declined" || params[:status] == "accepted"
+      status = params[:status] == "declined" ? "D" : "A"
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    elsif params[:status] == "latest"
+      if kol_signed_in?
+        campaigns_invited = current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC').map { |c| c.id }
+        campaigns_latest = Campaign.where("created_at > ? and deadline > ?",Date.today - 14, Time.zone.now.beginning_of_day).order('deadline DESC').map { |c| c.id }
+        campaigns_latest-=campaigns_invited
+        campaigns = Campaign.where(:id => campaigns_latest).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
+      else
+        campaigns = current_user.campaigns
+      end
+    elsif params[:status] == "history"
+      campaigns = kol_signed_in? ? Campaign.joins(:interested_campaigns).where("interested_campaigns.kol_id = ? and campaigns.deadline <= ?", current_kol.id, Time.zone.now.beginning_of_day) | current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline <= ?", current_kol.id, Time.zone.now.beginning_of_day) : current_user.campaigns
+    elsif params[:status] == "all"
+      if kol_signed_in?
+        categories = KolCategory.where(:kol_id => current_kol.id).map { |c| c.iptc_category_id }
+        campaigns_all = CampaignCategory.where(:iptc_category_id => categories).map { |c| c.campaign_id }
+        campaigns_invites = CampaignInvite.where(:kol_id => current_kol.id).map { |c| c.campaign_id }
+        campaigns_all-=campaigns_invites
+        campaigns = Campaign.where(:id => campaigns_all).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
+      else
+        campaigns = current_user.campaigns
+      end
+    elsif params[:status] == "negotiating"
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'N'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
+    else
+      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'A'}) : current_user.campaigns
+    end
+    render json: campaigns, each_serializer: CampaignsSerializer, campaign_status: params[:status], scope: current_kol
   end
 
   def show
@@ -12,7 +39,7 @@ class CampaignController < ApplicationController
     if user.blank? or c.user_id != user.id
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles])
+    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles, :kol_categories, :iptc_categories, :interested_campaigns])
   end
 
   def article
@@ -34,9 +61,11 @@ class CampaignController < ApplicationController
     else
       article = Article.find(params[:article_id])
     end
-    params[:attachments_attributes].each do |element|
-      if element[:attachment_type] == "file"
-        Attachment.create(imageable: article, url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
+    unless params[:attachments_attributes].blank?
+      params[:attachments_attributes].each do |element|
+        if element[:attachment_type] == "file"
+          Attachment.create(imageable: article, url: element[:url], attachment_type: element[:attachment_type], name: element[:name], thumbnail: element[:thumbnail])
+        end
       end
     end
     render json: article, serializer: ArticleSerializer
@@ -106,15 +135,34 @@ class CampaignController < ApplicationController
     render json: wechat_report, serializer: WechatArticlePerformanceSerializer
   end
 
+  def negotiate_campaign
+    campaign = Campaign.find(params[:id])
+    campaign_invite = CampaignInvite.where(:campaign_id=>campaign.id, :kol_id=>current_kol.id).first
+    campaign_invite.status = 'N'
+    campaign_invite.save
+    article = campaign.articles.where(kol_id: current_kol.id).first
+    if article.blank?
+      article = Article.new(kol_id: current_kol.id, campaign_id: params[:id], tracking_code: 'Negotiating')
+      article.save
+    else
+      article.tracking_code = 'Negotiating'
+      article.save
+    end
+    someone = current_user
+    someone = current_kol if someone.nil?
+    comment = ArticleComment.create(article_id: article.id, sender: someone, text: params[:text], comment_type: "comment")
+    render json: comment, serializer: ArticleCommentSerializer
+  end
+
   def create
+
     if current_user.blank?
       return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
     category_ids = params[:iptc_categories].split ','
-    kol_ids = params[:kols].map { |k| k[:id] }
-    categories = IptcCategory.where :id => category_ids
-    kols = Kol.where :id => kol_ids
-    weibos = params[:weibo]
+    categories_list = IptcCategory.where :id => category_ids
+    weibos = if params[:weibo].nil? then [] else params[:weibo] end
+    weibos = [] if weibos.blank?
     if params[:id]
       c = Campaign.find(params[:id])
       if c.user_id != current_user.id
@@ -129,14 +177,60 @@ class CampaignController < ApplicationController
     c.budget = params[:budget]
     c.release_id = params[:release]
     c.deadline = Date.parse params[:deadline]
-    c.iptc_categories = categories
+    c.iptc_categories = categories_list
     c.concepts = params[:concepts]
     c.summaries = params[:summaries]
     c.hashtags = params[:hashtags]
+    c.non_cash = params[:non_cash]
+    c.content_type = params[:content_type]
+    c.short_description = params[:short_description]
+
     c.save!
 
+    kols_list = []
+
+    unless params[:kols].blank?
+      kol_ids = params[:kols].map { |k| k[:id] }
+      kols = Kol.where :id => kol_ids
+      kols_list = kols
+    end
+
+    unless params[:kols_list_contacts].blank?
+      params[:kols_list_contacts].each do |contact|
+        kol = Kol.where(email: contact["email"]).first
+        if kol.nil?
+          user = User.where(email: contact["email"]).first
+          if user
+            kols_list.push(user)
+          else
+            pass = SecureRandom.hex
+            categories = categories_list
+            name = contact["name"].split(" ")
+            new_kol = Kol.new(
+              first_name: name[0],
+              last_name: name[1],
+              email: contact["email"],
+              password: pass,
+              password_confirmation: pass,
+              is_public: false,
+              iptc_categories: categories
+            )
+            new_kol.save!
+            PrivateKol.create(kol_id: new_kol.id, user_id: current_user.id)
+            kols_list.push(new_kol)
+          end
+        else
+          new_private_kol = PrivateKol.where(kol_id: kol.id, user_id: current_user.id).first
+          kols_list.push(kol)
+          if new_private_kol.nil?
+            PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
+          end
+        end
+      end
+    end
+
     #private kol
-    kols.each do |k|
+    kols_list.each do |k|
       i = c.campaign_invites.where(kol_id: k.id).first
       if !i
         i = CampaignInvite.new

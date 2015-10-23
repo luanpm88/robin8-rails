@@ -21,6 +21,24 @@ module BlueSnap
 
     URL = "#{Rails.application.secrets[:bluesnap][:base_url]}/batch/order-placement"
 
+    def self.get_tax_rate(product_sku, shopper_country, shopper_state)
+      state = ''
+      if shopper_country == 'US' || shopper_country == 'CA'
+        state += '&state=' + shopper_state
+      end
+      url = "#{Rails.application.secrets[:bluesnap][:base_url]}/skus/#{product_sku}/merchant-price/resolve?country=#{shopper_country}#{state}"
+      begin
+        error, response = Request.get(url)
+        if error.blank?
+          return response == 0 ? 0 : response[:item_price][:tax_rate].to_f
+        else
+          return nil
+        end
+      rescue Exception => ex
+        return nil
+      end
+    end
+
     def self.new(request, user, params, product, add_ons=nil,add_ons_hash=nil)
       begin
         errors = BlueSnap::Shopper.validate_params(params, user)
@@ -28,7 +46,7 @@ module BlueSnap
           shopper = {
               "shopper" => {"web-info" => BlueSnap::Shopper.web_info(request),
                             "shopper-info" => BlueSnap::Shopper.shopper_info(params, user)},
-              "order" => BlueSnap::Shopper.order_info(request, product, add_ons,add_ons_hash,params[:code],user)
+              "order" => BlueSnap::Shopper.order_info(request, product, add_ons,add_ons_hash,params[:code],user, params[:tax_rate])
           }
           placeholder = cart_items(product, add_ons,add_ons_hash,params[:code],user)
           Request.post(URL, shopper.to_xml(root: "batch-order", builder: BlueSnapXmlMarkup.new,:skip_types => true, :skip_instruct => true),placeholder)
@@ -63,6 +81,7 @@ module BlueSnap
           Request.put(update_subscription_url, subscription.to_xml(root: "subscription", builder: BlueSnapXmlMarkup.new,
                                                   :skip_types => true, :skip_instruct => true))
         else
+          Rails.logger.error errors
           return errors, nil
         end
       rescue Exception => ex
@@ -101,23 +120,50 @@ module BlueSnap
       {"web-info" => {"ip" => request.ip, "remote-host" => remote_host, "user-agent" => request.user_agent}} #change to 127.0.0.1 to local
     end
 
-    def self.order_info(request, product, add_ons,add_ons_hash,code,user)
+    def self.order_info(request, product, add_ons,add_ons_hash,code,user,tax_rate)
       {"ordering-shopper" => ordering_shopper(request),
        "cart" => "PLACEHOLDER",
        "expected-total-price" =>
-           {"amount" => get_expected_total(product,add_ons,add_ons_hash,code,user),
+           {"amount" => get_expected_total(product,add_ons,add_ons_hash,code,user,tax_rate),
             "currency" => "USD"}}
     end
 
-    def self.get_expected_total(product,add_ons,add_ons_hash,code,user)
+    def self.get_expected_total(product,add_ons,add_ons_hash,code,user,tax_rate)
       discount = Discount.active.where(code: code).last if code.present?
       discount_amount = 0.0
-      if discount.present? && product.present?
-        discount_amount =  discount.calculate(user,product) if discount.is_global?
-        discount_amount =  discount.calculate(user,product) if discount.on_user_and_product?(user.id,product.slug)
-        discount_amount =  discount.calculate(user,product) if discount.only_on_product?(product.slug)
+      if discount.present?
+        if product.present?
+          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+            discount_amount =  discount.calculate(user,product)
+          end
+        end
+        if add_ons.present?
+          add_ons.each do |addon|
+            if discount.is_global? || discount.on_user_and_addon?(user.id,addon.id) || discount.only_on_addon?(addon.id)
+              discount_amount += discount.calculate(user,addon) * (add_ons_hash["#{addon.id}"].to_i)
+            end
+          end
+        end
       end
-      return (product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
+      total = 0
+      if user.locale == 'zh'
+        total = (product.try(:china_price).to_i + (add_ons || []).collect{|a| (a.china_price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
+        total = (total + (total / 100 * tax_rate.to_f)).round(2)
+        url = "#{Rails.application.secrets[:bluesnap][:base_url]}/tools/merchant-currency-convertor?from=CNY&to=USD&amount=#{total}"
+        begin
+          error, response = Request.get(url)
+          if error.blank?
+            return total == 0 ? 0 : response[:price][:value].to_f
+          else
+            return nil
+          end
+        rescue Exception => ex
+          return nil
+        end
+      else
+        total = (product.try(:price).to_i + (add_ons || []).collect{|a| (a.price*(add_ons_hash["#{a.id}"].to_i))}.sum) - discount_amount
+      end
+      return (total + (total / 100 * tax_rate.to_f)).round(2)
     end
 
     def self.cart_items(product, add_ons,add_ons_hash,code,user)
@@ -125,15 +171,15 @@ module BlueSnap
       if product.present?
         items <<  {"sku" => {
             "sku_id" => product.sku_id,
-            "amount" => product.price},
+            "amount" => unless user.locale == 'zh' then product.price else product.china_price end},
                    "quantity" => "1"}
       end
 
 
       discount = Discount.active.where(code: code).last if code.present?
       disc_code = ""
-      if discount.present? && product.present?
-        if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+      if discount.present?
+        if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug) || discount.on_user_and_addon?(user.id,add_ons.first) || discount.only_on_addon?(add_ons.first)
           disc_code = {"coupons"=>{"coupon"=> discount.code}}.to_xml(root: false,:skip_types => true, :skip_instruct => true).gsub("<objects>\n","").gsub("\n</objects>\n","").gsub("<hash>\n","").gsub("\n</hash>\n","")
         end
       end
@@ -142,7 +188,7 @@ module BlueSnap
         items << {
             "sku" => {
                 "sku_id" => a.sku_id,
-                "amount" => a.price
+                "amount" => unless user.locale == 'zh' then a.price else a.china_price end
             },
             "quantity" => add_ons_hash["#{a.id}"] || 1
         }
@@ -165,7 +211,7 @@ module BlueSnap
       {
           "shopper-contact-info" => shopper_contact_info(user, params),
           "store-id" => Rails.application.secrets[:bluesnap][:store_id],
-          "shopper-currency" => "USD",
+          "shopper-currency" => unless user.locale == 'zh' then 'USD' else 'CNY' end,
           "locale" => 'en',
           "payment-info" => credit_cards(user, params)
       }
@@ -245,8 +291,8 @@ module BlueSnap
         shopper = {"subscription-id" => subscription_id.to_s, "underlying-sku-id" => new_sku_id.to_s, "status" => "A", "shopper-id" => shopper_id.to_s}
 
         discount,product = Discount.active.where(code: code).last,Package.where(sku_id: new_sku_id).first if code.present?
-        if discount.present? && product.present?
-          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug)
+        if discount.present?
+          if discount.is_global? || discount.on_user_and_product?(user.id,product.slug) || discount.only_on_product?(product.slug) || discount.on_user_and_addon?(user.id,add_ons.first) || discount.only_on_addon?(add_ons.first)
             shopper.merge({"coupon"=>discount.code})
           end
         end
@@ -305,6 +351,9 @@ module BlueSnap
       request["Content-Type"] ='application/xml'
       response = http.request(request)
       Rails.logger.info "response is #{response} AND #{response.body}***************************"
+      if not response.code.to_i == 200
+        ::SupportMailer.delay.payment_failure(Hash.from_xml(request.body).to_yaml, "#{response} body: #{Hash.from_xml(response.body).to_yaml}")
+      end
       return "Something is not right with the transaction, Please try again." if [400,401,402,403,404,500,501].include?(response.code.to_i)
       response.body
     end
@@ -324,41 +373,18 @@ module BlueSnap
   class Response
     def self.parse(response)
       resp = Hash.from_xml(response.body).deep_symbolize_keys
+      return nil, 0 if resp[:messages].present? && (resp[:messages][:message][:error_name] == 'UNKNOWN_STATE_CODE' ||
+                    resp[:messages][:message][:error_name] == 'UNKNOWN_COUNTRY_CODE')
       return get_errors(resp), nil if [400,401,402,403,404,500,501].include?(response.code.to_i)
       return nil, resp
     end
 
     def self.get_errors(resp)
       errors = []
-      fields_errors = {}
-
-      error_codes = {
-        "UNKNOWN_STATE_CODE"   => :state,
-        "INVALID_BANK_COUNTRY" => :country,
-        "UNKNOWN_COUNTRY_CODE" => :country,
-        "INVALID_CARD_NUMBER"  => :credit_card_number,
-        "PICKUP_CARD"          => :credit_card_number,
-        "RESTRICTED_CARD"      => :credit_card_number,
-        "INVALID_CARD_TYPE"    => :credit_card_type,
-        "CVV_ERROR"            => :verification_code
-      }
-
       response = resp[:messages][:message]
+      response.class == Hash ? errors << response[:description] : response.collect{ |e| errors << e[:description] }
 
-      if response.class == Hash
-        error_codes.key?(response[:error_name]) ? fields_errors = { error_codes[response[:error_name]] => response[:description] } :
-                                                  errors << resp[:messages][:message][:description]
-      else
-        response.collect{ |e|
-          if error_codes.key?(e[:error_name])
-            fields_errors.merge!( error_codes[e[:error_name]] => e[:description] )
-          else
-            errors << e[:description]
-          end
-        }
-      end
-
-      return errors, fields_errors
+      return errors
     end
   end
 

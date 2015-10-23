@@ -1,8 +1,13 @@
 # config valid only for Capistrano 3.1
 lock '3.4.0'
-
 set :application, 'robin8'
-set :repo_url, "git@github.com:AYLIEN/#{fetch(:application)}.git"
+
+# chinese developer shell execute :  echo "export china_instance='Y'" >> ~/.bashrc
+if ENV['china_instance'] == 'Y'
+  set :repo_url, "git@code.robin8.net:andy/robin8.git"
+else
+  set :repo_url, "git@github.com:AYLIEN/robin8.git"
+end
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
@@ -43,6 +48,15 @@ set :ssh_options, {:forward_agent => true}
 set :keep_releases, 5
 
 namespace :deploy do
+  task :upload_localization do
+    on roles(:app)  do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, 'localization:upload'
+        end
+      end
+    end
+  end
 
   desc 'Restart application'
   task :restart do
@@ -51,7 +65,9 @@ namespace :deploy do
     end
   end
 
-  after :publishing, :restart
+  #after :publishing, :restart
+  after :publishing, 'unicorn:restart'
+  after :publishing, :upload_localization
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do

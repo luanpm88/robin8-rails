@@ -36,7 +36,7 @@
                                   "data-validation-error-msg"=> @l.t('kols.password_error')%>
             </label>
             <label>
-              <%=f.text_field :mobile_number,:placeholder=>"Mobile Number", "data-validation"=>"required",
+              <%=f.text_field :mobile_number,:placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"required",
                                   "data-validation-error-msg"=> @l.t('kols.mobile_number_error'), "data-validation"=>"number"%>
             </label>
             <label>
@@ -52,7 +52,7 @@
               <p>Please fill out all required fields</p>
             </div>
             <div class="submit-wrap">
-              <%= f.submit "Sign Up", :class=>"button button-signup" %>
+              <%= f.submit @l.t('kols.signup_btn'), :class=>"button button-signup" %>
             </div>
         <%end%>
       </div>
