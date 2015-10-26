@@ -24,20 +24,20 @@
                                "data-validation-error-msg"=> @l.t('kols.email_error'),"data-validation"=>"email"%>
             </label>
             <label>
-              <%=f.text_field :first_name,:placeholder=>@l.t('kols.first_name'),"data-validation"=>"required",
-                              "data-validation-error-msg"=> @l.t('kols.fname_error')%>
-            </label>
-            <label>
-              <%=f.text_field :last_name,:placeholder=>@l.t('kols.last_name'),"data-validation"=>"required",
-                              "data-validation-error-msg"=> @l.t('kols.lname_error')%>
+              <%=f.text_field :mobile_number,:placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"required",
+                                  "data-validation-error-msg"=> @l.t('kols.mobile_number_error'), "data-validation"=>"number"%>
             </label>
             <label>
               <%=f.password_field :password,:placeholder=>@l.t('kols.password'),"data-validation"=>"length", "data-validation-length"=>"min8",
                                   "data-validation-error-msg"=> @l.t('kols.password_error')%>
             </label>
             <label>
-              <%=f.text_field :mobile_number,:placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"required",
-                                  "data-validation-error-msg"=> @l.t('kols.mobile_number_error'), "data-validation"=>"number"%>
+              <%=f.text_field :first_name,:placeholder=>@l.t('kols.first_name'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('kols.fname_error')%>
+            </label>
+            <label>
+              <%=f.text_field :last_name,:placeholder=>@l.t('kols.last_name'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('kols.lname_error')%>
             </label>
             <label>
               <%=f.text_field :location,:placeholder=>@l.t('kols.location'),"data-validation"=>"required",
