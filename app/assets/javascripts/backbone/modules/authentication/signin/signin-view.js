@@ -31,21 +31,6 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       _.defer(function(){
         $this.$('#email').focus();
       });
-
-      $.ajax({
-        dataType: 'json',
-        method: 'GET',
-        url: '/geocode/country',
-        success: function(response){
-          if(response == "China")
-          {
-            $('#world').hide()
-          }
-          else{
-            $('#china').hide()
-          }
-        }
-      });
     },
 
     login: function(e) {

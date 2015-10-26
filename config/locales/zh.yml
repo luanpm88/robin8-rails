@@ -637,7 +637,7 @@ zh:
       remember_me: "记住我"
       title: "登录"
       wechat_login: "使用微信账号登录"
-      weibo_login: Login using Weibo
+      weibo_login: "使用微博帐号登录"
     manage_users:
       buttons:
         back: "返回内容库"

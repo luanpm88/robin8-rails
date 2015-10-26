@@ -1193,6 +1193,7 @@ body.login {
   /* LOGIN PAGE */
   .btn-google-plus,
   .btn-wechat,
+  .btn-weibo,
   .btn-facebook  {
     max-width: 560px;
     width: 100%;
@@ -1205,6 +1206,7 @@ body.login {
   }
   a.btn-google-plus,
   a.btn-wechat,
+  a.btn-weibo,
   a.btn-facebook  {
     color: white;
     display: block;
@@ -1213,7 +1215,7 @@ body.login {
   .btn-facebook {
       background-color: #3a579a;
     }
-  .btn-google-plus {
+  .btn-google-plus, .btn-weibo {
       background-color: #df4a32;
   }
   .btn-wechat {
@@ -1250,9 +1252,8 @@ body.login {
     background: image-url("Login_WeChat_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
   }
 
-  .btn-google-plus:hover {
-      background-color: #df4a32;
-
+  .btn-google-plus:hover, .btn-weibo:hover {
+    background-color: #df4a32;
     opacity: 0.8;
     transition-property: all;
     transition-duration: 0.5s;
@@ -1265,13 +1266,7 @@ body.login {
     transition-duration: 0.5s;
     transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
   }
-  .btn-weibo:hover {
-    background-color: #3a579a;
-    opacity: 0.8;
-    transition-property: all;
-    transition-duration: 0.5s;
-    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-  }
+
   .btn-wechat:hover {
     background-color: #36df70;
     opacity: 0.8;
@@ -1302,7 +1297,6 @@ body.login {
   .signup .form-login form{
     margin:0 auto;
     max-width: 560px;
-
   }
 
   .signup .form-login form .submit-wrap{
