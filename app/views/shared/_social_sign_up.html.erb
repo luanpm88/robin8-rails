@@ -5,7 +5,7 @@
     </div>
   </div>
 </div>
-<% Rails.application.config.china_instance %>
+<% if Rails.application.config.china_instance %>
 <div class="row" style="color:#fff!important;">
   <div class="small-12 columns social-login">
     <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t('register.weibo_signup') %></span></a><br /><br /><br />
