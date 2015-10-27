@@ -26,6 +26,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     ui:
       birthdate:  "#birthdate"
+      datetimepicker: "#datetimepicker"
       calendar_button: ".calendar_button"
       next: '#back_to_score_btn'
       test: '.test'
@@ -92,12 +93,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         locale: 'en-gb'
       }
       if Robin.china
-        @ui.birthdate.datetimepicker(chinaBirthdateOptions);
+        @ui.datetimepicker.datetimepicker(chinaBirthdateOptions);
       else
-        @ui.birthdate.datetimepicker(usBirthdateOptions);
+        @ui.datetimepicker.datetimepicker(usBirthdateOptions);
       if @model.get('date_of_birthday')?
-        console.log("has value")
-        @ui.birthdate.datetimepicker(new Date(@model.get('date_of_birthday')))
+        @ui.datetimepicker.datetimepicker(new Date(@model.get('date_of_birthday')))
 
     initFormValidation: ->
       @ui.form.formValidation(
