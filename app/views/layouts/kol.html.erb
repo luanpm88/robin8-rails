@@ -2,10 +2,10 @@
 <html>
 <head>
   <title>Robin8</title>
-  <% if request.location && request.location.country.to_s == "China" %>
+  <% if !Rails.env.development? && request.location && request.location.country.to_s == "China" %>
     <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
     <script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
-  <% else %>
+  <% elsif !Rails.env.development? %>
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
     <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   <% end %>
@@ -37,9 +37,8 @@
     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 
 <script type="text/javascript">
-
   $(document).ready(function() {
-    Robin.china = <%= !request.location.nil? and request.location.country.to_s == "China" %>;
+    Robin.china = <%= (!request.location.nil? and request.location.country.to_s == "China") || (Rails.application.config.china_instance == true && request.location.ip == '127.0.0.1'  rescue false) %>;
     Robin.start();
   });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});

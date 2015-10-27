@@ -25,6 +25,7 @@
 //= require underscore
 //= require underscore.string
 //= require momentjs
+//= require momentjs/locale/zh-cn.js
 //= require eonasdan-bootstrap-datetimepicker
 //= require chance
 //= require please-wait
@@ -82,6 +83,7 @@ ready = function() {
   //default options for Bootstrap Growl
   $.growl(false, {
     element: 'body',
+
     placement: {
       from: "top",
       align: "right"

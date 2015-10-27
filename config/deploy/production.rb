@@ -17,7 +17,7 @@
 
 if ENV['china_instance'] == 'Y'
   server '139.196.14.144', user: 'deployer', roles: %w{web app db}
-  set :branch, 'merge_branch_master_cn_and_development_chinese_marketplace'
+  set :branch, 'development_cn'
 else
   server '139.196.36.27', user: 'deployer', roles: %w{web app db}
   set :branch, 'development_chinese_marketplace'

@@ -34,13 +34,18 @@
             <input class="form-control required" type="text" id="city" name="city" placeholder="<%= polyglot.t('dashboard_kol.profile_tab.city') %>" />
           </div>
         </div>
-        <div class="row" style="margin-bottom: 10px;">
-          <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %></div>
-          <div class="col-md-4 cell input-group">
-            <input type="text" class="full-width form-control" name="date_of_birthday" id="birthdate"/>
-            <span class="input-group-addon calendar_button"><i class="glyphicon-calendar glyphicon"></i></span>
+
+        <div class="row form-group" style="margin-bottom: 10px;">
+          <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %><sup>*</sup></div>
+          <div class="col-md-4 cell date input-group" id="datetimepicker">
+            <input type="text" class="form-control" name="date_of_birthday" id="birthdate">
+             <span class="input-group-addon calendar_button">
+               <span class="glyphicon glyphicon-calendar"></span>
+             </span>
           </div>
         </div>
+
+
         <div class="row">
           <div class="col-md-2 cell profile-labels"><%= polyglot.t('dashboard_kol.profile_tab.gender') %><sup>*</sup></div>
           <div class="age-group">

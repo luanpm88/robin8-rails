@@ -25,7 +25,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/dashboard-kol/show/templates/profile-tab'
 
     ui:
-      birthdate: "#birthdate"
+      birthdate:  "#birthdate"
       calendar_button: ".calendar_button"
       next: '#back_to_score_btn'
       test: '.test'
@@ -40,7 +40,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     events:
       'click @ui.next': 'save'
-      'click @ui.calendar_button' : 'showDatepicker'
+      'click @ui.calendar_button' : 'showDateTimePicker'
       'change @ui.country_select' : 'checkCountry'
 
     templateHelpers:
@@ -83,26 +83,21 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @initFormValidation()
 
     initDatepicker: ->
-      monthes = []
-      monthesShort = []
-      daysMin = []
-      days = []
-      for i in [0..11]
-        monthes[i] = polyglot.t('date.monthes_full.m' + (i + 1))
-        monthesShort[i] = polyglot.t('date.monthes_abbr.m' + (i + 1))
-      for i in [0..6]
-        days[i] = polyglot.t('date.days_full.d' + (i + 1))
-        daysMin[i] = polyglot.t('date.datepicker_days.d' + (i + 1))
-      @ui.birthdate.datepicker
-        monthNames: monthes
-        monthNamesShort: monthesShort
-        dayNames: days
-        dayNamesMin: daysMin
-        nextText: polyglot.t('date.datepicker_next')
-        prevText: polyglot.t('date.datepicker_prev')
-        dateFormat: "D, d M y"
+      chinaBirthdateOptions = {
+        format: 'YYYY-MM-DD',
+        locale: 'zh-cn'
+      }
+      usBirthdateOptions = {
+        format: 'MM/DD/YYYY',
+        locale: 'en-gb'
+      }
+      if Robin.china
+        @ui.birthdate.datetimepicker(chinaBirthdateOptions);
+      else
+        @ui.birthdate.datetimepicker(usBirthdateOptions);
       if @model.get('date_of_birthday')?
-        @ui.birthdate.datepicker("setDate", new Date(@model.get('date_of_birthday')))
+        console.log("has value")
+        @ui.birthdate.datetimepicker(new Date(@model.get('date_of_birthday')))
 
     initFormValidation: ->
       @ui.form.formValidation(
@@ -189,8 +184,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
 
 
-    showDatepicker: ->
-      @ui.birthdate.datepicker('show')
+    showDateTimePicker: ->
+      @ui.birthdate.click()
 
     checkCountry: ->
       if @ui.country_select.val() == ''

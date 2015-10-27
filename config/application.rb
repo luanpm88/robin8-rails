@@ -35,6 +35,7 @@ module Robin8
 
     #echo "export china_instance='Y'" >> ~/.bashrc
     config.china_instance = (ENV['china_instance'] == 'Y' ? true : false)
+    puts "Start China Instance .... "
 
     config.cache_store = :redis_store, { :host => "localhost",
                                          :port => 6379,

@@ -2,7 +2,7 @@
 lock '3.4.0'
 set :application, 'robin8'
 
-# chinese developer shell execute :  echo "export china_instance='Y'" >> ~/.bashrc
+# chinese developer shell execute :  echo "export china_instance='Y'" >> ~/.bash_profile
 if ENV['china_instance'] == 'Y'
   set :repo_url, "git@code.robin8.net:andy/robin8.git"
 else
