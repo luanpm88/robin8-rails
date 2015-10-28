@@ -85,10 +85,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     initDatepicker: ->
       chinaBirthdateOptions = {
+        ignoreReadonly: true,
         format: 'YYYY-MM-DD',
         locale: 'zh-cn'
       }
       usBirthdateOptions = {
+        ignoreReadonly: true,
         format: 'MM/DD/YYYY',
         locale: 'en-gb'
       }

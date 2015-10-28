@@ -63,7 +63,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-sass-bootstrap-glyphicons'
   gem 'rails-assets-font-awsome', '4.3'
   gem 'rails-assets-momentjs'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.0.0'
+  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.17.37'
   gem 'rails-assets-backbone.marionette', '2.4.1'
   gem 'rails-assets-bootstrap-daterangepicker', '1.3.21'
   gem 'rails-assets-backbone.modelbinder'
