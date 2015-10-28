@@ -560,7 +560,7 @@ zh:
       you_dont_have_any_accepted: "您没有已接受的推广活动"
       you_dont_have_any_declined: "您没有被拒绝的推广活动"
     kols:
-      agree: 通过注册，你已同意Robin8的<a href="/terms">服务条款</a>
+      agree: 通过注册，你已同意Robin8的<a href="/terms">服务条款。</a>
       email: "电子邮件"
       email_error: "电子邮件不能为空"
       first_name: "名"
