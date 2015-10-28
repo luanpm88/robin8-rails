@@ -24,28 +24,30 @@
                                "data-validation-error-msg"=> @l.t('kols.email_error'),"data-validation"=>"email"%>
             </label>
             <label>
-              <%=f.text_field :mobile_number,:placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"required",
-                                  "data-validation-error-msg"=> @l.t('kols.mobile_number_error'), "data-validation"=>"number"%>
-            </label>
-            <label>
               <%=f.password_field :password,:placeholder=>@l.t('kols.password'),"data-validation"=>"length", "data-validation-length"=>"min8",
                                   "data-validation-error-msg"=> @l.t('kols.password_error')%>
-            </label>
-            <label>
-              <%=f.text_field :first_name,:placeholder=>@l.t('kols.first_name'),"data-validation"=>"required",
-                              "data-validation-error-msg"=> @l.t('kols.fname_error')%>
             </label>
             <label>
               <%=f.text_field :last_name,:placeholder=>@l.t('kols.last_name'),"data-validation"=>"required",
                               "data-validation-error-msg"=> @l.t('kols.lname_error')%>
             </label>
             <label>
-              <%=f.text_field :location,:placeholder=>@l.t('kols.location'),"data-validation"=>"required",
-                                  "data-validation-error-msg"=> @l.t('kols.location_error')%>
+              <%=f.text_field :first_name,:placeholder=>@l.t('kols.first_name'),"data-validation"=>"required",
+                              "data-validation-error-msg"=> @l.t('kols.fname_error')%>
             </label>
-            <label>
-              <input type="hidden" id="interests" name="interests" placeholder="<%= @l.t('kols.interests')%>" style="width:100%;" />
-            </label>
+            <div class='row collapse'>
+              <div class='small-2 large-1 columns'>
+                <% if Rails.application.config.china_instance %>
+                  <span class='prefix'>+86</span>
+                <% else %>
+                  <span class='prefix'>+1</span>
+                <% end %>
+              </div>
+              <div class='small-10 large-11 columns'>
+                <%=f.text_field :mobile_number,:placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"required",
+                                  "data-validation-error-msg"=> @l.t('kols.mobile_number_error'), "data-validation"=>"number"%>
+              </div>
+            </div>
             <p class="agree"><%= @l.t('kols.agree').html_safe %></a>
 
             <div class="errorwarning">
