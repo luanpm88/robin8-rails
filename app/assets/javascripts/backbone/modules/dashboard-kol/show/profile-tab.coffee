@@ -94,7 +94,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         format: 'MM/DD/YYYY',
         locale: 'en-gb'
       }
-      if Robin.china
+      if Robin.chinaLocale
         @ui.datetimepicker.datetimepicker(chinaBirthdateOptions);
       else
         @ui.datetimepicker.datetimepicker(usBirthdateOptions);

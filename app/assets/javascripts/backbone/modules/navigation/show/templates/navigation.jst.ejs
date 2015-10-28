@@ -6,42 +6,37 @@
     <li>
       <a href="/#robin8" id="nav-robin8"><%= polyglot.t("navigation.smart_release") %><span class="sub_icon fa fa-rocket"></span></a>
     </li>
+    <li>
+        <a href="/#monitoring" id="nav-monitoring"><%= polyglot.t("navigation.monitoring") %><span class="sub_icon glyphicon glyphicon-eye-open"></span></a>
+     </li>
+    <li>
+      <a href="/#news_rooms" id="nav-newsrooms"><%= polyglot.t("navigation.newsrooms") %><span class="sub_icon fa fa-building"></span></a>
+    </li>
+    <li>
+      <a href="/#releases" id="nav-releases"><%= polyglot.t("navigation.releases") %><span class="sub_icon glyphicon glyphicon-list-alt"></span></a>
+    </li>
+    <li>
+      <a href="/#social" id="nav-social"><%= polyglot.t("navigation.social") %><span class="sub_icon fa fa-users"></span></a>
+    </li>
+    <li>
+      <a href="/#analytics" id="nav-analytics"><%= polyglot.t("navigation.analytics") %><span class="sub_icon fa fa-line-chart"></span></a>
+    </li>
+    <li>
+      <a href="/#recommendations" id="nav-recommendations"><%= polyglot.t("navigation.recommendations") %><span class="sub_icon fa fa-leanpub"></span></a>
+    </li>
+    <li id="new-recommendations" style="display:none">
+      <a href="/#recommendations" id="nav-recommendations">Recommendations <span id="new-recommendations-badge" class="badge"></span></a></span>
+    </li>
+  <!-- End of recommendations —>
   <% } %>
+
   <% if (Robin.chinaInstance) { %>
     <li>
       <a href="/#smart_campaign" id="nav-smart-campaign"><%= polyglot.t("navigation.smart_campaign") %><span class="sub_icon fa fa-bullhorn"></span></a>
     </li>
-  <% } %>
-  <% if (Robin.chinaInstance == false) { %>
-  <li>
-    <a href="/#monitoring" id="nav-monitoring"><%= polyglot.t("navigation.monitoring") %><span class="sub_icon glyphicon glyphicon-eye-open"></span></a>
-  </li>
-  <% } %>
-  <% if (Robin.chinaInstance) { %>
-  <li>
-    <a href="/#campaigns_list" id="nav-campaignslist"><%= polyglot.t("navigation.campaigns") %><span class="sub_icon fa fa-list"></span></a>
-  </li>
-  <% } %>
-  <% if (Robin.chinaInstance == false) { %>
-  <li>
-    <a href="/#news_rooms" id="nav-newsrooms"><%= polyglot.t("navigation.newsrooms") %><span class="sub_icon fa fa-building"></span></a>
-  </li>
-  <li>
-    <a href="/#releases" id="nav-releases"><%= polyglot.t("navigation.releases") %><span class="sub_icon glyphicon glyphicon-list-alt"></span></a>
-  </li>
-  <li>
-    <a href="/#social" id="nav-social"><%= polyglot.t("navigation.social") %><span class="sub_icon fa fa-users"></span></a>
-  </li>
-  <li>
-    <a href="/#analytics" id="nav-analytics"><%= polyglot.t("navigation.analytics") %><span class="sub_icon fa fa-line-chart"></span></a>
-  </li>
-  <li>
-    <a href="/#recommendations" id="nav-recommendations"><%= polyglot.t("navigation.recommendations") %><span class="sub_icon fa fa-leanpub"></span></a>
-  </li>
-  <li id="new-recommendations" style="display:none">
-    <a href="/#recommendations" id="nav-recommendations">Recommendations <span id="new-recommendations-badge" class="badge"></span></a></span>
-  </li>
-  <!-- End of recommendations —>
+    <li>
+       <a href="/#campaigns_list" id="nav-campaignslist"><%= polyglot.t("navigation.campaigns") %><span class="sub_icon fa fa-list"></span></a>
+     </li>
   <% } %>
   <!-- <li>
     <a id="nav-opportunities">Opportunities<span class="sub_icon glyphicon glyphicon-bullhorn"></span></a>

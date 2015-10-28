@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   before_action :set_translations
   before_action :china_redirect
   helper_method :china_instance?
+  helper_method :china_request?
+  helper_method :china_locale?
 
   def china_redirect
     if Rails.env.production? and china_client? and not china_instance?
@@ -18,8 +20,9 @@ class ApplicationController < ActionController::Base
   end
 
   def is_china_request?
-    request.location && request.location.country.to_s == "China"
+    (request.location && request.location.country.to_s == "China") || (china_instance? && request.location.ip == '127.0.0.1'  rescue false)
   end
+  alias_method :china_request?, :is_china_request?
 
   def set_translations
     default_locale = china_instance? ? 'zh' : 'en'
@@ -43,6 +46,10 @@ class ApplicationController < ActionController::Base
     @l.locale = locale
     @phrases = JSON.parse(@l.store.get(locale))['application']
     @en_phrases = JSON.parse(@l.store.get("en"))['application']
+  end
+
+  def china_locale?
+    @l.locale == 'zh' ? true : false
   end
 
   protect_from_forgery with: :exception

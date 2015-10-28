@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Robin8</title>
-  <% if request.location && request.location.country.to_s == "China" %>
+  <% if china_request? %>
     <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
     <script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
   <% else %>
@@ -34,7 +34,9 @@
 <script type="text/javascript">
 
   $(document).ready(function() {
-    Robin.china = <%= !request.location.nil? and request.location.country.to_s == "China" %>;
+    Robin.chinaInstance = <%= china_instance?  %>;
+    Robin.chinaLocale = <%= china_locale? %>;
+    Robin.chinaRequest = <%= china_request? %>
     Robin.start();
   });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
@@ -64,13 +66,6 @@
   <% else %>
     Robin.showLangPanel = false;
   <% end %>
-
-  <% if Rails.application.config.china_instance %>
-    Robin.chinaInstance = true;
-  <% else %>
-    Robin.chinaInstance = false;
-  <% end %>
-
 </script>
 <!-- load bitly javascript sdk -->
 <% unless request.location && request.location.country.to_s == "China" %>
