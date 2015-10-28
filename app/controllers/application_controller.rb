@@ -26,10 +26,12 @@ class ApplicationController < ActionController::Base
 
   def set_translations
     default_locale = china_instance? ? 'zh' : 'en'
-    unless current_user.blank? and current_kol.blank?
-      someone = current_user
-      someone = current_kol if current_user.nil?
-      locale = someone.locale.nil? ? default_locale : someone.locale
+    if  current_user.present? ||  current_kol.present?
+      someone = current_user  ||  current_kol
+      if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
+        someone.update_column(:locale, params[:locale])
+      end
+      locale = someone.locale || cookies['locale']  || default_locale
     else
       if params[:locale] && [:en, :zh].include?(params[:locale].to_sym)
         cookies['locale'] = { value: params[:locale], expires: 1.year.from_now }
