@@ -31,25 +31,6 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       _.defer(function(){
         $this.$('#email').focus();
       });
-      $('.toggle-topbar').on('click', function(){
-        if($('.top-bar-section').is(':visible')) {
-          $('.top-bar-section').animate({
-            height: '0px'
-          }, function(){
-            $('.top-bar-section').css({
-              display: 'none'
-            });
-          });
-        } else {
-          $('.top-bar-section').css({
-            display: 'block',
-            height: '0px'
-          });
-          $('.top-bar-section').animate({
-            height: '140px'
-          });
-        }
-      });
     },
 
     login: function(e) {
