@@ -10,11 +10,11 @@
       <!-- Right Nav Section -->
       <ul class="right">
         <% if china_instance? %>
-          <li><a href="<%= Rails.application.secrets.instance[:us_domain] %>">
+          <li><a href="<%= Rails.application.secrets.instance_host[:us] %>">
             <%= image_tag asset_path('us-flag-icon.png'), height: 13 %>
           </a></li>
         <% else %>
-          <li><a href="<%= Rails.application.secrets.instance[:china_domain] %>">
+          <li><a href="<%= Rails.application.secrets.instance_host[:cn] %>">
             <%= image_tag asset_path('china-flag-icon.png'), height: 13 %>
           </a></li>
         <% end %>

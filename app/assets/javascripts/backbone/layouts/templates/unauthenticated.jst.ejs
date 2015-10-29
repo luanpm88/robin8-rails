@@ -12,9 +12,9 @@
           <!-- Right Nav Section -->
           <ul class="right">
             <% if(Robin.chinaInstance) { %>
-              <li><a href="<%= Robin.us_domain %>"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
+              <li><a href="<%= Robin.us_host %>"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
             <% } else { %>
-              <li><a href="<%= Robin.cn_domain %>"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
+              <li><a href="<%= Robin.cn_host %>"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
             <% } %>
 
             <% if(Robin.chinaLocale) { %>
