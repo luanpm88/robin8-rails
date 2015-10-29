@@ -56,6 +56,9 @@
     }
   <% end -%>
 
+  Robin.us_domain = "<%= Rails.application.secrets.instance[:us_domain] %>";
+  Robin.cn_domain = "<%= Rails.application.secrets.instance[:china_domain] %>";
+
   <% if Rails.env == 'development' -%>
     Robin.showLoading = false;
   <% else -%>
