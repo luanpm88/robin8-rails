@@ -10,13 +10,20 @@
       <section class="top-bar-section">
         <!-- Right Nav Section -->
         <ul class="right">
-          <% if not Rails.env.production? || Rails.application.config.china_instance %>
-            <li><%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
-              <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: 'landing_page.english_locale' %>
-            <% end %></li>
-            <li><%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
-              <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: 'landing_page.chinese_locale' %>
-            <% end %></li>
+          <% if china_instance? %>
+            <li><a href="<%= Rails.application.secrets.instance[:us_domain] %>">
+              <%= image_tag asset_path('us-flag-icon.png'), height: 13 %>
+            </a></li>
+          <% else %>
+            <li><a href="<%= Rails.application.secrets.instance[:china_domain] %>">
+              <%= image_tag asset_path('china-flag-icon.png'), height: 13 %>
+            </a></li>
+          <% end %>
+
+          <% if china_locale? %>
+            <li><%= link_to 'EN', root_path(locale: :en) %></li>
+          <% else %>
+            <li><%= link_to 'ZH', root_path(locale: :zh) %></li>
           <% end %>
           <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
           <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
