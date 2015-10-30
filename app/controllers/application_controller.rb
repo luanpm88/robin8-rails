@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
   end
 
   def china_locale?
-    @l.locale == 'zh' ? true : false
+    @l.locale.to_sym  == :'zh' ? true : false        rescue false
   end
 
   protect_from_forgery with: :exception
