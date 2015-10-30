@@ -10,8 +10,15 @@
     <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   <% end %>
 
-  <%= stylesheet_link_tag    'kol', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'kol', 'data-turbolinks-track' => true %>
+  <% if Rails.env.development? &&  Rails.application.config.china_instance %>
+    <%= javascript_include_tag    "/assets/dev_base_compact", "kol/dev_reload.js", media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag 'kol', 'data-turbolinks-track' => true %>
+  <% else %>
+    <%= stylesheet_link_tag    'kol', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'kol/application', 'data-turbolinks-track' => true %>
+  <% end %>
+
+
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
   <script type="text/javascript">
