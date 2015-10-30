@@ -11,12 +11,20 @@
         <section class="top-bar-section">
           <!-- Right Nav Section -->
           <ul class="right">
-            <li><a href="/home"><%= polyglot.t('header.advertisers') %></a></li>
-            <% if(Robin.showLangPanel) { %>
-            <li><a href="/?locale=en"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
-            <li><a href="/?locale=zh"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
+            <% if(Robin.chinaInstance) { %>
+              <li><a href="<%= Robin.us_host %>"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
+            <% } else { %>
+              <li><a href="<%= Robin.cn_host %>"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
             <% } %>
-            <li><a href="/signin" id='login-link' ><%=polyglot.t('header.log_in')%></a></li>
+
+            <% if(Robin.chinaLocale) { %>
+              <li><a href="?locale=en">EN</a></li>
+            <% } else { %>
+              <li><a href="?locale=zh">ZH</a></li>
+            <% } %>
+
+            <li><a href="/home"><%= polyglot.t('header.advertisers') %></a></li>
+            <li><a href="/kols/new"><%=polyglot.t('header.sign_up')%></a></li>
           </ul>
         </section>
       </nav>

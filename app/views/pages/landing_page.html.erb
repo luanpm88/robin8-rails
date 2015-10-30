@@ -1,29 +1,5 @@
 <header class="homeheader sizeheader">
-  <div class="nav fixed">
-    <nav class="top-bar" data-topbar role="navigation">
-      <ul class="title-area">
-        <li><a class="logo" href="/"><%= @l.t('header.title') %></a></li>
-        <li class="toggle-topbar menu-icon">
-          <a href="#"><span><%= @l.t('header.menu') %></span></a>
-        </li>
-      </ul>
-      <section class="top-bar-section">
-        <!-- Right Nav Section -->
-        <ul class="right">
-          <% if not Rails.env.production? || Rails.application.config.china_instance %>
-            <li><%= link_to root_path(locale: :en), class: 'ft-link privacy' do %>
-              <%= image_tag asset_path('us-flag-icon.png'), height: 13, title: 'landing_page.english_locale' %>
-            <% end %></li>
-            <li><%= link_to root_path(locale: :zh), class: 'ft-link privacy' do %>
-              <%= image_tag asset_path('china-flag-icon.png'), height: 13, title: 'landing_page.chinese_locale' %>
-            <% end %></li>
-          <% end %>
-          <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
-          <li><a href="/signin"><%= @l.t('header.log_in') %></a></li>
-        </ul>
-      </section>
-    </nav>
-  </div>
+  <%= render :partial => 'pages/partials/menu' %>
   <div class="row">
     <div class="large-12 columns">
       <h1 class="logo" style="margin-top: 194px;">

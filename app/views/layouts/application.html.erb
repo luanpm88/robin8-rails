@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Robin8</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <% if china_request? %>
     <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
     <script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
@@ -54,6 +55,9 @@
       Robin.currentUser = null;
     }
   <% end -%>
+
+  Robin.us_host = "<%= Rails.application.secrets.instance_host[:us] %>";
+  Robin.cn_host = "<%= Rails.application.secrets.instance_host[:cn] %>";
 
   <% if Rails.env == 'development' -%>
     Robin.showLoading = false;
