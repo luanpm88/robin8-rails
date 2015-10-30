@@ -34,3 +34,5 @@ erd.pdf
 app/assets/stylesheets/kol_dev/reload.css
 public/assets
 app/assets/javascripts/kol/dev_base.js
+app/assets/stylesheets/kol/dev_base.scss
+public/dev_base_compact.css
