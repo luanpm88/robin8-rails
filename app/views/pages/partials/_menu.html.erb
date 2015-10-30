@@ -20,9 +20,9 @@
         <% end %>
 
         <% if china_locale? %>
-          <li><%= link_to 'EN', root_path(locale: :en) %></li>
+          <li><a href='?locale=en'>EN</a></li>
         <% else %>
-          <li><%= link_to 'ZH', root_path(locale: :zh) %></li>
+          <li><a href='?locale=zh'>ZH</a></li>
         <% end %>
 
         <% if current_page?(home_path) %>
