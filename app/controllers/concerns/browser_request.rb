@@ -27,7 +27,11 @@ module Concerns
     end
 
     def mobile_request?
-      is_android_request? || is_ios_request? || is_weixin_request?
+      if is_android_request? || is_ios_request? || is_weixin_request?
+        return true
+      else
+        return false
+      end
     end
 
   end
