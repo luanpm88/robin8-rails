@@ -1,0 +1,42 @@
+<% _.each(items, function(item) { %>
+  <div class="weibo social-item col-md-4">
+    <div class="item-header">
+      <div class="left-avatar">
+        <img src=""/>
+      </div>
+      <div class="right-info">
+        <div class="nick-name">
+          <%= item.nickname %>
+        </div>
+        <div class="desc">
+          <%= item.desc %>
+        </div>
+        <div class="ttt">
+          <%= test %>
+        </div>
+      </div>
+    </div>
+    <div class="task-items">
+      <div class="item">
+        <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.total_tasks') %></div>
+        <div class="item-value"></div>
+      </div>
+      <div class="item">
+        <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.completed_tasks') %></div>
+        <div class="item-value"></div>
+      </div>
+      <div class="item">
+        <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.last30_posts') %></div>
+        <div class="item-value"></div>
+      </div>
+      <div class="item">
+        <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.status') %></div>
+        <div class="item-value"></div>
+      </div>
+      <div class="item">
+        <div class="item-name"></div>
+        <div class="item-value"><%= polyglot.t('dashboard_kol.profile_tab.edit') %></div>
+      </div>
+    </div>
+  </div>
+<% }) %>

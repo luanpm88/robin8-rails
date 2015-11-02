@@ -9,7 +9,7 @@
  *= require progressjs
  *= require font-awsome
  *= require select2
- *= require kol/profile
+ *= require kol/profile_content
  *= require_self
  *= require bootflat/bootflat
  *= require_directory ./../lib
@@ -26,6 +26,7 @@
  *= require bootstrap-daterangepicker
  *= require custom
  *= require campaign
+ *= require kol/profile_mobile
  */
 
 @import "bootstrap";

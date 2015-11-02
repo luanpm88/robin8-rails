@@ -75,3 +75,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: ->
       k: @model.toJSON()
 
+  Show.ProfileSocialListView = Backbone.Marionette.ItemView.extend
+    template: 'modules/dashboard-kol/show/templates/profile-social-list'
+
+    events:
+      "click .delete-item": "deleteItem"
+      "click .edit-item": "editItem"
+
+    serializeData: () ->
+      items: @collection.toJSON()
+      test: @options.test
