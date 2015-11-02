@@ -1,0 +1,25 @@
+@media (max-width:480px) {
+  #wrapper.active {
+    padding-left: 10px;
+    padding-right: 10px;
+    #sidebar-wrapper{
+      left: 0;
+    }
+    .campaigns-tables-title, .password-title{
+      margin: 20px 0 5px 0;
+      span {
+        margin-left: 15px;
+      }
+    }
+
+    .profile-content .score-tables{
+      padding-left: 10px;
+      .cell{
+        height: auto;
+      }
+      > .row {
+        margin-bottom: 0px;
+      }
+    }
+  }
+}

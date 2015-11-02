@@ -63,28 +63,40 @@
             </div>
           </div>
         </div>
-        <div class="row form-group" >
-          <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.current_password') %>:</div>
-          <div class="col-md-6 cell"><input class="form-control" type="password" id='current_password' name="current_password" value="" /></div>
-        </div>
-        <div class="row form-group">
-          <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.new_password') %>:</div>
-          <div class="col-md-6 cell"><input class="form-control" type="password" id='password' name="password" value="" minlength="8" data-fv-stringlength-message="<%= polyglot.t("profile.password_must_be_8") %>"/></div>
-        </div>
-        <div class="row form-group">
-          <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.confirm_password') %>:</div>
-          <div class="col-md-6 cell"><input class="form-control" type="password" id='password_confirmation' name="password_confirmation" value=""/></div>
-        </div>
       </div>
     </div>
-    <div class="social">
+
+    <div class="row password">
+      <div class="password-title">
+        <span><%= polyglot.t('dashboard_kol.profile_tab.password') %></span>
+      </div>
+      <div class="score-tables set-password">
+         <div class="row form-group" >
+           <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.current_password') %>:</div>
+           <div class="col-md-6 cell"><input class="form-control" type="password" id='current_password' name="current_password" value="" /></div>
+         </div>
+         <div class="row form-group">
+           <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.new_password') %>:</div>
+           <div class="col-md-6 cell"><input class="form-control" type="password" id='password' name="password" value="" minlength="8" data-fv-stringlength-message="<%= polyglot.t("profile.password_must_be_8") %>"/></div>
+         </div>
+         <div class="row form-group">
+           <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.confirm_password') %>:</div>
+           <div class="col-md-6 cell"><input class="form-control" type="password" id='password_confirmation' name="password_confirmation" value=""/></div>
+         </div>
+      </div>
+    </div>
+
+    <div class="social" >
       <div class="campaigns-tables-title">
         <span><%= polyglot.t('dashboard_kol.profile_tab.social_title') %></span>
         <%= polyglot.t('dashboard_kol.profile_tab.social_subtitle') %>
       </div>
-      <div class="score-tables social-content"></div>
+      <div class="score-tables social-content">
+
+      </div>
     </div>
-    <div class="audience">
+
+    <div class="audience hide">
       <div class="campaigns-tables-title">
         <span><%= polyglot.t('dashboard_kol.profile_tab.audience_title') %></span>
         <%= polyglot.t('dashboard_kol.profile_tab.audience_subtitle') %>
