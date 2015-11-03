@@ -572,6 +572,7 @@ en:
       password_error: Password must be greater then 7 characters
       signup_btn: SIGN UP
       title: Signup
+      verify_code: Code
     landing_page:
       brand: Brand
       chinese_locale: Switch to Chinese locale

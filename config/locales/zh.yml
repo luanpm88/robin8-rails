@@ -576,6 +576,8 @@ zh:
       password_error: "密码必须大于7个字符"
       signup_btn: "注册"
       title: "注册"
+      verify_code: "验证码"
+
     landing_page:
       brand: "品牌"
       chinese_locale: Switch to Chinese locale
