@@ -41,7 +41,7 @@ def compile_dev_file
 end
 
 def monitor_reload_file
-  listener = Listen.to(KolJsPath,KolCssPath) do |modified, added, removed|
+  listener = Listen.to("#{KolJsPath}/dev_reload.js","#{KolCssPath}/dev_reload.scss") do |modified, added, removed|
     next if !modified[0].include?("dev_reload")
     puts "recompile generate dev base then compile it"
     generate_kol_js_dev_base
@@ -52,12 +52,13 @@ def monitor_reload_file
   puts "start monitor dev_reload"
 end
 
-if Rails.env == "development" and Robin8::Application.config.china_instance  && $0.include?("rails")  ## 避免 rake 启动
-  require 'listen'
-  require 'rake'
-  Robin8::Application.load_tasks
-
-  generate_kol_js_dev_base
-  generate_kol_css_dev_base
-  monitor_reload_file
-end
+#rake compile_dev_assets
+# if Rails.env == "development" and Robin8::Application.config.china_instance  && $0.include?("rails")  ## 避免 rake 启动
+#   require 'listen'
+#   require 'rake'
+#   Robin8::Application.load_tasks
+#
+#   generate_kol_js_dev_base
+#   generate_kol_css_dev_base
+#   monitor_reload_file
+# end

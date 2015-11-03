@@ -109,17 +109,29 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       region_select: "#province"
       city_input: "#city"
       form: "#profile-form"
+<<<<<<< HEAD
       modal_social_account: ".modal-social-account"
 
     regions:
       social: ".social-content"
       myModal: "#myModal"
+=======
+      add_social: ".add-social"
+
+    regions:
+      social: ".social-content"
+      social_list: ".social-list"
+>>>>>>> bb348875eac4a80bfa43c5197dc73f7fe858d047
 
     events:
       'click @ui.next': 'save'
       'click @ui.calendar_button' : 'showDateTimePicker'
       'change @ui.country_select' : 'checkCountry'
+<<<<<<< HEAD
       'click @ui.modal_social_account' : "modalSocailAccount"
+=======
+      'click @ui.add_social'      : 'addSocial'
+>>>>>>> bb348875eac4a80bfa43c5197dc73f7fe858d047
 
     templateHelpers:
       checked: (key, index, kol) ->
@@ -147,9 +159,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       $("#password").val("")
       $("#current_password").val("")
       $("#password_confirmation").val("")
-      @social_view = new Show.ProfileSocialView
-        model: @model
-      @showChildView 'social', @social_view
+      @initSocialList()
       @initDatepicker()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')
       @view2 = new Show.ProfileModalSocialAccount model: @model
@@ -162,6 +172,22 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @checkCountry()
       _.defer =>
         @initFormValidation()
+
+
+    addSocial: ->
+      @social_view = new Show.ProfileSocialView
+        model: @model
+      @showChildView 'social', @social_view
+
+    initSocialList: ->
+      socialList = new Robin.Collections.KolSocialList()
+      console.log socialList
+      @social_list_view = new Show.ProfileSocialListView
+        collection: socialList
+        test: "TTT"
+      socialList.fetch
+        success: (c, r, o) =>
+          @showChildView 'social_list', @social_list_view
 
     initDatepicker: ->
       chinaBirthdateOptions = {
@@ -339,4 +365,3 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             ), this
             element = document.getElementById("current_password")
             element.scrollIntoView(false)
-

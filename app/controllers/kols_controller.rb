@@ -123,6 +123,12 @@ class KolsController < ApplicationController
     render :json => kols.to_json(:methods => [:categories, :stats])
   end
 
+  def get_social_list
+    # current_kol.social_list
+    render :json => [{:nickname => 'heelo', :desc => 'desc', :social_type => 'weibo', :total_tasks => 30, :complete_tasks => 10, :last30_post => 30}]
+  end
+
+
   private
 
   def kol_params
