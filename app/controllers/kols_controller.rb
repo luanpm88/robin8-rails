@@ -6,19 +6,22 @@ class KolsController < ApplicationController
 
   def create
     if request.post?
-      @kol = Kol.new(kol_params)
-      categories = params[:interests]
-      categories = '' if categories == nil
-      categories = categories.strip.split(',').map {|s| s.strip}.uniq
-      @categories = IptcCategory.where :id => categories
-      if @kol.valid?
-        @kol.iptc_categories = @categories
-        @kol.save
-        sign_in @kol
-        return redirect_to :root
-      else
-        flash.now[:errors] = @kol.errors.full_messages
-        render :new, :layout => "website"
+      verify_code = Rails.cache.fetch(kol_params[:mobile_number])
+      if verify_code == params["kol"]["verify_code"]
+        @kol = Kol.new(kol_params)
+        categories = params[:interests]
+        categories = '' if categories == nil
+        categories = categories.strip.split(',').map {|s| s.strip}.uniq
+        @categories = IptcCategory.where :id => categories
+        if @kol.valid?
+          @kol.iptc_categories = @categories
+          @kol.save
+          sign_in @kol
+          return redirect_to :root
+        else
+          flash.now[:errors] = @kol.errors.full_messages
+          render :new, :layout => "website"
+        end
       end
     else
       @kol = Kol.new
@@ -125,13 +128,9 @@ class KolsController < ApplicationController
 
   def send_sms
     phone_number = params[:phone_number]
-    code = (1..9).to_a.sample(4).join
-    unless phone_number.blank?
-      ChinaSMS.use :yunpian, password: "250b960f00ba9c461fc7559cb7740da2"
-      tpl_params = {code: code, company: "罗宾科技"}
-      ChinaSMS.to phone_number, tpl_params, tpl_id: 1
-    end
-    render json: {status: "success"}
+    sms_client = Yunpian::SmsClient.new(phone_number)
+    res = sms_client.send_sms
+    render json: res
   end
 
   private
