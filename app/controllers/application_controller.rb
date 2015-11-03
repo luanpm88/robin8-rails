@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
     @l.locale.to_sym  == :'zh' ? true : false        rescue false
   end
 
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
   rescue_from Exception, with: :handle_exception
   force_ssl if: :ssl_configured?
 
