@@ -123,6 +123,17 @@ class KolsController < ApplicationController
     render :json => kols.to_json(:methods => [:categories, :stats])
   end
 
+  def send_sms
+    phone_number = params[:phone_number]
+    code = (1..9).to_a.sample(4).join
+    unless phone_number.blank?
+      ChinaSMS.use :yunpian, password: "250b960f00ba9c461fc7559cb7740da2"
+      tpl_params = {code: code, company: "罗宾科技"}
+      ChinaSMS.to phone_number, tpl_params, tpl_id: 1
+    end
+    render json: {status: "success"}
+  end
+
   private
 
   def kol_params
@@ -144,5 +155,3 @@ class KolsController < ApplicationController
   end
 
 end
-
-

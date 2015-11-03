@@ -47,6 +47,7 @@
                 <%=f.text_field :mobile_number,:placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"required",
                                   "data-validation-error-msg"=> @l.t('kols.mobile_number_error'), "data-validation"=>"number"%>
               </div>
+              <button class="btn btn-default send_sms">send</button>
             </div>
             <p class="agree"><%= @l.t('kols.agree').html_safe %></a>
 

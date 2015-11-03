@@ -19,3 +19,14 @@
 //= require website/app
 //= require website/foundation.min
 //= require select2
+
+$(function(){
+  $(".send_sms").click(function(){
+    var $phone_number = $("#kol_mobile_number").val();
+    $.ajax({
+      method: "POST",
+      url: "/kols/send_sms",
+      data: {"phone_number": $phone_number}
+    });
+  });
+});
