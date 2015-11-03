@@ -4,6 +4,9 @@
       <div class="campaigns-tables-title">
         <span><%= polyglot.t('dashboard_kol.profile_tab.general_title') %></span>
       </div>
+      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+      <div id="myModal" class="modal fade" role="dialog">
+      </div>
       <div class="score-tables profile_info">
         <div class="row">
           <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.first_name') %><sup>*</sup></div>
@@ -93,62 +96,6 @@
       </div>
       <div class="score-tables social-content">
 
-      </div>
-    </div>
-
-    <div class="audience hide">
-      <div class="campaigns-tables-title">
-        <span><%= polyglot.t('dashboard_kol.profile_tab.audience_title') %></span>
-        <%= polyglot.t('dashboard_kol.profile_tab.audience_subtitle') %>
-      </div>
-      <div class="score-tables">
-        <div class="row">
-          <div class="col-md-1 cell label-influence-circle kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.industry') %></div>
-          <div class="col-md-10 cell">
-            <input type="hidden" name="interests" id="interests" value="Interests" data-placeholder="<%= polyglot.t('dashboard_kol.profile_tab.industry_placeholder') %>" />
-          </div>
-        </div>
-        <div class="row industry-row">
-          <div class="col-md-1 cell label-influence-circle">&nbsp;</div>
-          <% _(industries).each(function(ind, i) { %>
-            <div class="col-md-2 cell">
-              <button type="button" class="btn full-width" filter-btn name="industry_<%= i %>" data-toggle="button">
-                <%= ind %>
-              </button>
-            </div>
-          <% }); %>
-        </div>
-        <div class="row ages-row">
-          <div class="col-md-1 cell label-influence-circle kol-profile" style="white-space: nowrap;"><%= polyglot.t('dashboard_kol.profile_tab.age_group') %></div>
-          <div class="filter-group">
-          <% _(ages).each(function(g, i) { %>
-            <div class="col-md-1 cell label-influence-circle kol-ages-group">
-              <button type="button" class="btn switch-button form-control full-width filter-btn <%= active('ages', i, k) %>" name="agegroup_<%= i %>" data-toggle="button">
-                <%= g %>
-              </button>
-            </div>
-          <% }); %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-1 cell label-influence-circle"><%= polyglot.t('dashboard_kol.profile_tab.male_female') %></div>
-            <div class="col-md-10 cell age-group">
-              <% _(mf).each(function(v, i) { %>
-                <input type="radio" name="mf" value="mf_<%= i %>" id="mf_<%= i %>" <%= checked('mf', i, k) %> />
-                <label class="mf-label radio-inline radio-btns label-profile" for="mf_<%= i %>"><%= v %></label>
-              <% }); %>
-            </div>
-        </div>
-        <div class="row regions-row">
-          <div class="col-md-1 cell label-influence-circle kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.regions') %></div>
-          <div class="col-md-10 cell filter-group">
-            <% _(regions).each(function(r, i) { %>
-              <button type="button" class="btn switch-button form-control region-btn filter-btn <%= active('regions', i, k) %>" name="region_<%= i %>" data-toggle="button">
-                <%= polyglot.t('dashboard_kol.profile_tab.' + r) %>
-              </button>
-            <% }); %>
-
-        </div>
       </div>
     </div>
     <div class="dashboard-kol-tab-footer clearfix">
