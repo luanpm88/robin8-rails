@@ -22,26 +22,27 @@
 
 $(function(){
   $(".send_sms").click(function(){
-    var $phone_number = $("#kol_mobile_number").val();
-    $.ajax({
-      method: "POST",
-      url: "/kols/send_sms",
-      data: {"phone_number": $phone_number}
-    });
+    var phone_number = $("#kol_mobile_number").val();
 
-    var count = 60;
-    var countdown = setInterval(CountDown, 1000);
-
-		function CountDown(){
-	    $(".send_sms").attr('disabled', 'true');
-	    $(".send_sms").text(count + " s");
-	    if (count === 0){
-	   		$(".send_sms").text("send").removeAttr('disabled');
-	    	console.log("d");
-	    	clearInterval(countdown);
-	    }
-	    count--;
+    function CountDown(){
+      $(".send_sms").attr('disabled', 'true');
+      $(".send_sms").text(count + " s");
+      if (count === 0){
+        $(".send_sms").text("send").removeAttr('disabled');
+        clearInterval(countdown);
+      }
+      count--;
     }
 
+    if (phone_number.match(/^0?1[3578]\d{9}$/)){
+	    $.ajax({
+	      method: "POST",
+	      url: "/kols/send_sms",
+	      data: {"phone_number": phone_number}
+	    });
+
+	    var count = 60;
+	    var countdown = setInterval(CountDown, 1000);
+		}
   });
 });

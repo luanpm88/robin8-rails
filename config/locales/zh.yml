@@ -571,13 +571,14 @@ zh:
       location: "地点"
       location_error: "地点不能为空"
       mobile_number: "手机号码"
-      mobile_number_error: "只可填数字"
+      mobile_number_error: "手机号码不能为空"
       password: "密码"
       password_error: "密码必须大于7个字符"
       signup_btn: "注册"
       title: "注册"
-      verify_code: "验证码"
-
+      verify_code: "短信验证码"
+      verify_code_error: "短信验证码不能为空"
+      mobile_format_error: "请输入正确的手机号码"
     landing_page:
       brand: "品牌"
       chinese_locale: Switch to Chinese locale

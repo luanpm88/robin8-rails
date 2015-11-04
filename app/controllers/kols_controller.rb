@@ -22,6 +22,10 @@ class KolsController < ApplicationController
           flash.now[:errors] = @kol.errors.full_messages
           render :new, :layout => "website"
         end
+      else
+        flash.now[:errors] = ["Phone number and verification code does not match"]
+        @kol = Kol.new
+        render :new, :layout => "website"
       end
     else
       @kol = Kol.new

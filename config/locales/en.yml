@@ -567,12 +567,14 @@ en:
       location: Location
       location_error: Location can't be blank
       mobile_number: Mobile Number
-      mobile_number_error: Digits only
+      mobile_number_error: Mobile number can't be blank
       password: Password
       password_error: Password must be greater then 7 characters
       signup_btn: SIGN UP
       title: Signup
-      verify_code: Code
+      verify_code: Verification code
+      verify_code_error: Verification code can't be blank
+      mobile_format_error: Please input correct mobile number
     landing_page:
       brand: Brand
       chinese_locale: Switch to Chinese locale
