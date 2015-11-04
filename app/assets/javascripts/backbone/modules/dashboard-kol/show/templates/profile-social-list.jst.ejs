@@ -1,41 +1,42 @@
 <% _.each(items, function(item) { %>
-  <div class="weibo social-item col-md-4">
-    <div class="item-header">
+  <div class="social-item col-md-4 cell">
+    <div class="item-header <%= item.social_type %>">
       <div class="left-avatar">
-        <img src=""/>
+        <img src="/assets/loading.gif"/>
       </div>
       <div class="right-info">
-        <div class="nick-name">
+        <div class="nickname">
           <%= item.nickname %>
         </div>
         <div class="desc">
           <%= item.desc %>
         </div>
-        <div class="ttt">
-          <%= test %>
-        </div>
       </div>
     </div>
-    <div class="task-items">
-      <div class="item">
+    <div class="item-body">
+      <div class="item total-tasks">
         <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.total_tasks') %></div>
-        <div class="item-value"></div>
+        <div class="item-value"><span class="badge">12</span></div>
       </div>
-      <div class="item">
+      <div class="item complete-tasks">
         <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.completed_tasks') %></div>
-        <div class="item-value"></div>
+        <div class="item-value"><span class="badge">12</span></div>
       </div>
-      <div class="item">
+      <div class="item posts">
         <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.last30_posts') %></div>
-        <div class="item-value"></div>
+        <div class="item-value"><span class="badge">12</span></div>
       </div>
-      <div class="item">
+      <div class="item status">
         <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.status') %></div>
-        <div class="item-value"></div>
+        <div class="item-value"><span class="glyphicon glyphicon-ok"></span> </div>
       </div>
-      <div class="item">
-        <div class="item-name"></div>
-        <div class="item-value"><%= polyglot.t('dashboard_kol.profile_tab.edit') %></div>
+      <div class="item operate">
+        <div class="item-name">
+          <a href="" class="delete"><span class="glyphicon glyphicon-trash"></span></a>
+        </div>
+        <div class="item-value">
+          <a href="" class="edit btn btn-primary btn-sm"><%= polyglot.t('dashboard_kol.profile_tab.edit') %></a>
+        </div>
       </div>
     </div>
   </div>

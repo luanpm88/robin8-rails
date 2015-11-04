@@ -1,0 +1,185 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title"><%= polyglot.t("dashboard_kol.profile_tab." + title) %></h4>
+    </div>
+    <div class="modal-body audience">
+      <div class="influence-circle  toggle-box">
+        <div class="campaigns-tables-title">
+          <span><%= polyglot.t('dashboard_kol.profile_tab.audience_title') %></span>
+          <span class="toggle-button glyphicon glyphicon-minus"></span>
+        </div>
+        <div class="score-tables toggle-list">
+          <div class="row">
+            <div class="cell label-influence-circle kol-profile">
+              <%= polyglot.t('dashboard_kol.profile_tab.industry') %>
+            </div>
+            <div class="cell">
+              <input name="interests" id="interests" value="Interests"
+                     data-placeholder="<%= polyglot.t('dashboard_kol.profile_tab.industry_placeholder') %>"/>
+            </div>
+          </div>
+          <div class="industry-row">
+            <% _(industries).each(function(ind, i) { %>
+            <div class="col-md-2 cell label-influence-circle">
+              <button type="button" class="btn full-width" filter-btn name="industry_<%= i %>" data-toggle="button">
+                <%= ind %>
+              </button>
+            </div>
+            <% }); %>
+          </div>
+
+          <!--年龄组-->
+          <div class="row">
+            <div class="col-md-2 cell label-influence-circle kol-profile" style="white-space: nowrap;">
+              <%= polyglot.t('dashboard_kol.profile_tab.age_group') %>
+            </div>
+          </div>
+          <div class="ages-row">
+            <div class="filter-group">
+              <% _(ages).each(function(g, i) { %>
+              <div class="col-md-2 cell label-age-circle">
+                <button type="button"
+                        class="btn switch-button form-control full-width filter-btn <%= active('ages', i, k) %>"
+                        name="agegroup_<%= i %>" data-toggle="button">
+                  <%= g %>
+                </button>
+              </div>
+              <% }); %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2 cell label-influence-circle">
+              <%= polyglot.t('dashboard_kol.profile_tab.male_female') %>
+            </div>
+          </div>
+          <div class="age-group">
+            <div class="col-md-10 cell ">
+              <% _(mf).each(function(v, i) { %>
+              <input type="radio" name="mf" value="mf_<%= i %>" id="mf_<%= i %>" <%= checked('mf', i, k) %> />
+              <label class="mf-label radio-inline radio-btns label-profile" for="mf_<%= i %>"><%= v %></label>
+              <% }); %>
+            </div>
+          </div>
+
+          <div class="row ">
+            <div class="col-md-2 cell label-influence-circle kol-profile">
+              <%= polyglot.t('dashboard_kol.profile_tab.regions') %>
+            </div>
+          </div>
+          <div class="regions-row">
+            <div class="col-md-10 cell filter-group">
+              <% _(regions).each(function(r, i) { %>
+              <button type="button"
+                      class="btn switch-button form-control region-btn filter-btn <%= active('regions', i, k) %>"
+                      name="region_<%= i %>" data-toggle="button">
+                <%= polyglot.t('dashboard_kol.profile_tab.' + r) %>
+              </button>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--定价-->
+      <div class="fixed-price toggle-box">
+        <div class="campaigns-tables-title">
+          <span><%= polyglot.t('dashboard_kol.profile_tab.price_fixing') %></span>
+          <span class="toggle-button glyphicon glyphicon-minus"></span>
+        </div>
+        <div class="score-tables toggle-list">
+          <div class="online-price section">
+            <div class="row">
+              <div class="col-md-3 cell">
+                全部<input type="checkbox" class="check_all" id="check_all">线上任务
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3  cell">
+                <input type="checkbox" class="price-item"><%= polyglot.t('dashboard_kol.profile_tab.edit_forward') %>
+              </div>
+              <div class="col-md-7  cell">
+                <input type="number" name="edit_forward" class="form-control"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3  cell">
+                <input type="checkbox" class="price-item"><%= polyglot.t('dashboard_kol.profile_tab.origin_publish') %>
+              </div>
+              <div class="col-md-7  cell">
+                <input type="number" name="origin_publish" class="form-control"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3  cell">
+                <input type="checkbox" class="price-item"><%= polyglot.t('dashboard_kol.profile_tab.forward') %>
+              </div>
+              <div class="col-md-7  cell">
+                <input type="number" name="forward" class="form-control"/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3  cell">
+                <input type="checkbox" class="price-item"><%= polyglot.t('dashboard_kol.profile_tab.origin_comment') %>
+              </div>
+              <div class="col-md-7  cell">
+                <input type="number" name="origin_comment" class="form-control"/>
+              </div>
+            </div>
+          </div>
+
+          <!--offline-price-->
+          <div class="offline-price section">
+            <div class="row">
+              <div class="col-md-3 cell">
+                全部<input type="checkbox" class="check_all">线下任务
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3  cell">
+                <input type="checkbox" class="price-item"><%= polyglot.t('dashboard_kol.profile_tab.edit_forward') %>
+              </div>
+              <div class="col-md-7  cell">
+                <input type="number" name="edit_forward" class="form-control"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3  cell">
+                <input type="checkbox" class="price-item"><%= polyglot.t('dashboard_kol.profile_tab.origin_publish') %>
+              </div>
+              <div class="col-md-7  cell">
+                <input type="number" name="origin_publish" class="form-control"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3  cell">
+                <input type="checkbox" class="price-item"><%= polyglot.t('dashboard_kol.profile_tab.forward') %>
+              </div>
+              <div class="col-md-7  cell">
+                <input type="number" name="forward" class="form-control"/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3  cell">
+                <input type="checkbox" class="price-item"><%= polyglot.t('dashboard_kol.profile_tab.origin_comment') %>
+              </div>
+              <div class="col-md-7  cell">
+                <input type="number" name="origin_comment" class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+    </div>
+  </div>
+</div>
+

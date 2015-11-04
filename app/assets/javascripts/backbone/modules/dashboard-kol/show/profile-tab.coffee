@@ -21,81 +21,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     ages: 'audience_age_groups'
     regions: 'audience_regions'
 
-  Show.ProfileModalSocialAccount = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/profile-modal-social-account'
-    
-    initialize: (opts) ->
-      @target = target
-      @model = new Robin.Models.KolProfile App.currentKOL.attributes
-      console.log(@model)
-      @industries = target["industries"]
-      @model_binder = new Backbone.ModelBinder()
-      @initial_attrs = @model.toJSON()
-      @parent_view = opts.parent
-
-    ui:
-      industry: '#interests'
-
-
-    onRender: ->
-      @model_binder.bind @model, @el
-      _.defer =>
-        @initSelect2()
-
-    initSelect2: ->
-      $('#interests').val("Industries")  # need to put something there for initSelection to be called
-      @ui.industry.select2
-        maximumSelectionSize: 5
-        multiple: true
-        minimumInputLength: 1
-        width: '100%'
-        placeholder: polyglot.t('dashboard_kol.profile_tab.industry_placeholder')
-        ajax:
-          url: '/kols/suggest_categories'
-          dataType: 'json'
-          quietMillis: 250,
-          data: (term, page) ->
-            return { f: term }
-          results:  (data, page) ->
-            return { results: data }
-          cache:true
-        escapeMarkup: _.identity
-        initSelection: (el, callback) =>
-          v = $("#interests").val()
-          if v == "Industries"
-            $("#interests").val('')
-            $.get "/kols/current_categories", (data) ->
-              callback data
-          else
-            old_data = $("#interests").select2 'data'
-            new_ids = _.compact v.split(',')
-            new_data = _(new_ids).map (i) ->
-              obj = _(old_data).find (x) -> x.id == i
-              if typeof obj == "undefined"
-                {
-                  id: i
-                  text: target.industries[i]
-                }
-              else
-                obj
-            $("#interests").select2 'data', new_data
-
-      @$el.find('.industry-row button').click (e) =>
-        _.defer -> $(e.target).removeClass('active').blur()
-        e.preventDefault()
-        id = e.target.name.split('_')[1]
-        old_val = _.compact @ui.industry.val().split(',')
-        if old_val.length == 5
-          return
-        if not (id in old_val)
-          old_val.push id
-          $("#interests").val old_val
-          $("#interests").trigger 'change'
-          
-    serializeData: ->
-      _.extend @target,
-        k: @model.toJSON()
-
   Show.ProfileTab = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/profile-tab'
     ui:
@@ -109,29 +34,19 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       region_select: "#province"
       city_input: "#city"
       form: "#profile-form"
-<<<<<<< HEAD
-      modal_social_account: ".modal-social-account"
-
-    regions:
-      social: ".social-content"
-      myModal: "#myModal"
-=======
+      modal_account: "#modal-account"
       add_social: ".add-social"
 
     regions:
       social: ".social-content"
+      modal_account: "#modal-account"
       social_list: ".social-list"
->>>>>>> bb348875eac4a80bfa43c5197dc73f7fe858d047
 
     events:
       'click @ui.next': 'save'
       'click @ui.calendar_button' : 'showDateTimePicker'
       'change @ui.country_select' : 'checkCountry'
-<<<<<<< HEAD
-      'click @ui.modal_social_account' : "modalSocailAccount"
-=======
       'click @ui.add_social'      : 'addSocial'
->>>>>>> bb348875eac4a80bfa43c5197dc73f7fe858d047
 
     templateHelpers:
       checked: (key, index, kol) ->
@@ -145,7 +60,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         .compact().value()
         return "active" if target[key][index] in v
         return ""
-       modalSocailTpl: '_.template($("#cloudtag_tempalte").html())'
+      modalSocailTpl: '_.template($("#cloudtag_tempalte").html())'
 
     initialize: (opts) ->
       @target = target
@@ -162,8 +77,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @initSocialList()
       @initDatepicker()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')
-      @view2 = new Show.ProfileModalSocialAccount model: @model
-      @showChildView "myModal", @view2
 
        # I❤js
       _.defer =>
@@ -175,9 +88,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
 
     addSocial: ->
-      @social_view = new Show.ProfileSocialView
+      @modal_account_view = new Show.ProfileSocialModalAccount
         model: @model
-      @showChildView 'social', @social_view
+        title: "add_social"
+      @showChildView 'modal_account', @modal_account_view
+      @ui.modal_account.modal('show')
 
     initSocialList: ->
       socialList = new Robin.Collections.KolSocialList()
@@ -304,7 +219,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @ui.region_select.removeAttr('disabled')
         @ui.city_input.removeAttr('disabled')
 
-    
+
 
     serializeData: ->
       _.extend @target,
@@ -326,13 +241,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       gender_ratio_i = _.find($("input[type=radio][name=mf]"), (el) -> el.checked).value.split('_')[1]
       v = @target['mf'][gender_ratio_i]
       @model.set kol_fields_mapping['mf'], v
-
-    modalSocailAccount: ->
-      # myModal = document.getElementById("myModal")
-      # span = document.createElement('span')
-      # span.innerHTML = _.template($('#answerTmpl').html())
-      # myModal.appendChild(span)
-      # $("#myModal").modal("show")
 
     save: ->
       @validate()
@@ -365,3 +273,106 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             ), this
             element = document.getElementById("current_password")
             element.scrollIntoView(false)
+
+  Show.ProfileSocialModalAccount = Backbone.Marionette.ItemView.extend
+    template: 'modules/dashboard-kol/show/templates/profile-social-modal-account'
+
+    initialize: (opts) ->
+      @target = target
+      @model = new Robin.Models.KolProfile App.currentKOL.attributes
+      console.log(@model)
+      @industries = target["industries"]
+      @model_binder = new Backbone.ModelBinder()
+      @initial_attrs = @model.toJSON()
+      @parent_view = opts.parent
+
+    ui:
+      industry: '#interests'
+      check_all: "#check_all"
+
+
+    check_all: () ->
+      console.log 'check_all'
+      if @ui.check_all.is(':checked')
+        @$el.closest(".section").find('input[type=checkbox]').prop('checked', 'checked')
+        @.$el.closest(".section").find("input:checkbox").prop('value', '1')
+      else
+        @$el.closest(".section").find('input[type=checkbox]').prop('checked', '')
+        @.$el.closest(".section").find("input:checkbox").prop('value', '0')
+        @$el.closest(".section").find("input[type='number']").val('')
+      @.$el.find("input:checkbox").checkboxX('refresh');
+
+    onRender: ->
+      @model_binder.bind @model, @el
+      this.$el.find("input[type='checkbox']").on 'ifChanged', ->
+        checked = $(this).is(":checked")
+        check_all = $(this).closest("div").find(".check_all").length > 0
+        if check_all
+          if checked
+            $(this).closest(".section").find('.price-item').iCheck('check');
+          else
+            $(this).closest(".section").find('.price-item').iCheck('uncheck');
+            $(this).closest(".section").find('input[type="number"]').val()
+        # 如果是某个
+        else
+          if !checked
+            $(this).closest(".row").find("input[type='number']").val('')
+      .iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      })
+      _.defer =>
+        @initSelect2()
+
+    initSelect2: ->
+      $('#interests').val("Industries")  # need to put something there for initSelection to be called
+      @ui.industry.select2
+        maximumSelectionSize: 5
+        multiple: true
+        minimumInputLength: 1
+        width: '100%'
+        placeholder: polyglot.t('dashboard_kol.profile_tab.industry_placeholder')
+        ajax:
+          url: '/kols/suggest_categories'
+          dataType: 'json'
+          quietMillis: 250,
+          data: (term, page) ->
+            return { f: term }
+          results:  (data, page) ->
+            return { results: data }
+          cache:true
+        escapeMarkup: _.identity
+        initSelection: (el, callback) =>
+          v = $("#interests").val()
+          if v == "Industries"
+            $("#interests").val('')
+            $.get "/kols/current_categories", (data) ->
+              callback data
+          else
+            old_data = $("#interests").select2 'data'
+            new_ids = _.compact v.split(',')
+            new_data = _(new_ids).map (i) ->
+              obj = _(old_data).find (x) -> x.id == i
+              if typeof obj == "undefined"
+                id: i
+                text: target.industries[i]
+              else
+                obj
+            $("#interests").select2 'data', new_data
+
+      @$el.find('.industry-row button').click (e) =>
+        _.defer -> $(e.target).removeClass('active').blur()
+        e.preventDefault()
+        id = e.target.name.split('_')[1]
+        old_val = _.compact @ui.industry.val().split(',')
+        if old_val.length == 5
+          return
+        if not (id in old_val)
+          old_val.push id
+          $("#interests").val old_val
+          $("#interests").trigger 'change'
+
+    serializeData: ->
+      _.extend @target,
+        k: @model.toJSON()
+        title: @options.title

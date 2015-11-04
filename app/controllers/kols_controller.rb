@@ -125,7 +125,8 @@ class KolsController < ApplicationController
 
   def get_social_list
     # current_kol.social_list
-    render :json => [{:nickname => 'heelo', :desc => 'desc', :social_type => 'weibo', :total_tasks => 30, :complete_tasks => 10, :last30_post => 30}]
+    render :json => [{:nickname => 'heelo', :desc => 'desc', :social_type => 'weibo', :total_tasks => 30, :complete_tasks => 10, :last30_post => 30},
+                     {:nickname => 'heelo', :desc => 'desc', :social_type => 'weixin', :total_tasks => 30, :complete_tasks => 10, :last30_post => 30}]
   end
 
 

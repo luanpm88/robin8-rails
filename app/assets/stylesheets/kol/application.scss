@@ -1,33 +1,33 @@
 /*
- *= require bootstrap-sass
- *= require bootstrap-sweetalert
- *= require sass-bootstrap-glyphicons
- *= require blueimp-gallery
- * require bootstrap3-wysihtml5-bower
- *= require eonasdan-bootstrap-datetimepicker
- *= require please-wait
- *= require progressjs
- *= require font-awsome
- *= require select2
- *= require kol/profile_content
- *= require_self
- *= require bootflat/bootflat
- *= require_directory ./../lib
- *= require main
- *= require app
- *= require bootstrap-tagsinput
- *= require x-editable/dist/bootstrap3-editable/css/bootstrap-editable
- *= require datatables
- *= require datatables-tabletools
- *= require bootstrap-switch
- * require dataTables.bootstrap
- *= require select2-bootstrap-css
- *= require jquery-highlighttextarea
- *= require bootstrap-daterangepicker
- *= require custom
- *= require campaign
- *= require kol/profile_mobile
- */
+*= require bootstrap-sass
+*= require bootstrap-sweetalert
+*= require sass-bootstrap-glyphicons
+*= require blueimp-gallery
+* require bootstrap3-wysihtml5-bower
+*= require eonasdan-bootstrap-datetimepicker
+*= require please-wait
+*= require progressjs
+*= require font-awsome
+*= require select2
+*= require kol/profile_content
+*= require_self
+*= require bootflat/bootflat
+*= require_directory ./../lib
+*= require main
+*= require app
+*= require bootstrap-tagsinput
+*= require x-editable/dist/bootstrap3-editable/css/bootstrap-editable
+*= require datatables
+*= require datatables-tabletools
+*= require bootstrap-switch
+* require dataTables.bootstrap
+*= require select2-bootstrap-css
+*= require jquery-highlighttextarea
+*= require bootstrap-daterangepicker
+*= require custom
+*= require campaign
+*= require kol/profile_mobile
+*/
 
 @import "bootstrap";
 .confirmation {

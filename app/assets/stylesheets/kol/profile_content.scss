@@ -14,6 +14,12 @@
     .row {
       padding-top: 8px;
     }
+    .industry-row,.ages-row{
+      overflow: auto;
+      .label-influence-circle, .label-age-circle{
+        float: left;
+      }
+    }
   }
   .social-content {
     .row {
@@ -25,6 +31,8 @@
     }
   }
   .score-tables {
+    overflow: auto;
+    width: 100%;
     padding-left: 20px;
     .mf-label {
       margin-right: 35px;
@@ -41,7 +49,9 @@
       margin-right: 2px;
     }
     .switch-button {
-      padding: 6px 5px !important;
+      width: 70px;
+      height: 30px;
+      margin-bottom: 5px;
       background-color: #ffffff !important;
       color: #434A54;
       &.active:focus {
@@ -56,12 +66,108 @@
     padding: 0 10px;
     cursor: pointer;
   }
+
+
   .social {
+    margin-bottom: 10px;
+    overflow: auto;
     .cell {
       height: auto;
     }
     .social_img {
       margin-top: -10px;
+    }
+    .add-social{
+      background: #edac07 ;
+      font-size: 15px;
+      font-weight: normal;
+      padding: 2px 8px;
+      cursor: pointer;
+      color: #fff;
+      border-radius: 2px;
+      vertical-align: top;
+      margin-left: 0;
+    }
+    .social-list{
+      .social-item{
+        border-radius: 5px;
+        margin: 10px 0px;
+        .item-header.weibo{
+          background: #FD8149;
+        }
+        .item-header.weixin{
+          background: #49B44F;
+        }
+        .item-header{
+          height: 98px;
+          width: 100%;
+          .left-avatar{
+            line-height: 98px;
+            float: left;
+            margin-left: 22px;
+            img{
+              width: 58px;
+              height: 58px;
+              border-radius: 50%;
+            }
+          }
+          .right-info{
+            float: left;
+            margin-left: 15px;
+            margin-top: 20px;
+            color: #fff;
+            .nickname{
+              font-size: 18px;
+            }
+            .desc{
+              margin-top: 3px;
+              font-size: 12px;
+            }
+          }
+        }
+        .item-body{
+          background: #F5F5F5;
+          .item{
+            border-bottom: 1px solid #E2DFDF;
+            height:  50px;
+            line-height: 50px;
+            padding: 0 20px;
+            font-size: 14px;
+            color: #6A6767;
+            .item-name{
+              float:left;
+            }
+            .item-value{
+              float:right;
+            }
+            .badge{
+              font-size: 13px;
+              padding: 3px 9px;
+              border-radius: 6px;
+              color: #fff;
+            }
+            &last-child{
+              border-bottom: 0;
+            }
+          }
+          .total-tasks .badge{
+            background: #D0021B;
+          }
+          .complete-tasks .badge{
+            background: #159815;
+          }
+          .post .badge{
+            background: #419FB5;
+          }
+          .status .item-value .span{
+            color: #F4C600;
+          }
+          .operate .item-name span{
+            vertical-align: middle;
+            color: #A59F9F;
+          }
+        }
+      }
     }
   }
   .age-group .cell {
@@ -83,8 +189,8 @@
     }
   }
   .password .password-title{
-    padding: 8px 0 8px 6px;
-    max-width: 650px;
+    padding: 8px 0 8px 16px;
+    max-width: 618px;
     background: #F5F5F5;
     text-align: left;
     color: #007183;
@@ -94,6 +200,53 @@
     border-radius: 4px;
   }
 }
+
+.toggle-button{
+  float: right;
+  margin-right: 15px;
+  padding: 4px 5px;
+  font-size: 15px;
+  color: #007183;
+  cursor: pointer;
+}
+
+// modal css
+#modal-account .modal-content{
+  background: #F5F5F5;
+  .modal-header{
+    background: #419FB5;
+    padding: 10px 15px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: normal;
+    .close{
+      color: #fff;
+      font-size: 33px;
+    }
+  }
+  .modal-body.audience{
+    padding: 0;
+    .campaigns-tables-title{
+      padding: 10px;
+      border-bottom: 2px solid #fff;
+      border-top: 2px solid #0e7182;
+      margin: 0;
+      span{
+        margin-left: 10px;
+        font-size: 14px;
+        font-weight: normal;
+      }
+    }
+    .score-tables{
+      padding: 0px 10px;
+    }
+
+  }
+
+}
+
+
+
 
 #tab-content {
   .campaigns-tables-title span {
