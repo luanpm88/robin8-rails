@@ -60,7 +60,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         .compact().value()
         return "active" if target[key][index] in v
         return ""
-      modalSocailTpl: '_.template($("#cloudtag_tempalte").html())'
+#      modalSocailTpl: '_.template($("#cloudtag_tempalte").html())'
 
     initialize: (opts) ->
       @target = target
@@ -288,38 +288,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     ui:
       industry: '#interests'
-      check_all: "#check_all"
-
-
-    check_all: () ->
-      console.log 'check_all'
-      if @ui.check_all.is(':checked')
-        @$el.closest(".section").find('input[type=checkbox]').prop('checked', 'checked')
-        @.$el.closest(".section").find("input:checkbox").prop('value', '1')
-      else
-        @$el.closest(".section").find('input[type=checkbox]').prop('checked', '')
-        @.$el.closest(".section").find("input:checkbox").prop('value', '0')
-        @$el.closest(".section").find("input[type='number']").val('')
-      @.$el.find("input:checkbox").checkboxX('refresh');
 
     onRender: ->
       @model_binder.bind @model, @el
-      this.$el.find("input[type='checkbox']").on 'ifChanged', ->
-        checked = $(this).is(":checked")
-        check_all = $(this).closest("div").find(".check_all").length > 0
-        if check_all
-          if checked
-            $(this).closest(".section").find('.price-item').iCheck('check');
-          else
-            $(this).closest(".section").find('.price-item').iCheck('uncheck');
-            $(this).closest(".section").find('input[type="number"]').val()
-        # 如果是某个
-        else
-          if !checked
-            $(this).closest(".row").find("input[type='number']").val('')
-      .iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        increaseArea: '20%'
+      @.$el.find('input[type="checkbox"]').checkboxX({
+        threeState: false, size:'md'
       })
       _.defer =>
         @initSelect2()

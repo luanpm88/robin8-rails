@@ -11,29 +11,28 @@ $(document).ready ->
       $(this).removeClass("glyphicon-minus")
       $(this).addClass("glyphicon-plus")
 
+  $('body').on 'change', '.check_all', (e) ->
+    checked = $(this).is(':checked')
+    console.log checked
+    if checked
+      $(this).closest(".section").find('input[type="checkbox"]').attr("value",1);
+    else
+      $(this).closest(".section").find('input[type="checkbox"]').attr("value",0);
+      $(this).closest(".section").find('input[type="number"]').val('')
+    $(this).closest(".section").find('input[type="checkbox"]').checkboxX('refresh')
 
-#  $('body').on 'click', '.iCheck-helper', (e) ->
-#    checked = $(this).closest("div").hasClass("checked")
-#    check_all = $(this).closest("div").find(".check_all").length > 0
-#    if check_all
-#      if checked
-#        $(this).closest(".section").find('input[type="checkbox"]').iCheck('check');
-#      else
-#        $(this).closest(".section").find('input[type="checkbox"]').iCheck('uncheck');
-#        $(this).closest(".section").find('input[type="number"]').val()
+# 关闭某项 输入
+  $("body").on "change", ".row .price-item", (e) ->
+    console.log "row checkbox"
+    checked = $(this).is(':checked')
+    if !checked
+      $(this).closest(".row").find("input[type='number']").val('')
 
-# 关闭某项
-#  $("body").on "change", ".row input[type='checkbox']", (e) ->
-#    checked = $(this).closest("div").hasClass("checked")
-#    if !checked
-#      $(this).closest(".row").find("input[type='number']").val()
-
-# 输入某项 ，自动check
-#  $("body").on "blur", ".row input[type='number']", (e) ->
-#    console.log("blur");
-#    val = $(this).val()
-#    if val
-#      $(this).closest(".row").find("input[type='checkbox']").closest("div").addClass("checked")
-#
+# 输入某项价格 ，自动check
+  $("body").on "blur", ".row input[type='number']", (e) ->
+    val = $(this).val()
+    if val
+      $(this).closest(".row").find("input[type='checkbox']").attr("value",1)
+      $(this).closest(".row").find("input[type='checkbox']").checkboxX('refresh')
 
 
