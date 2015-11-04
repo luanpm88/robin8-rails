@@ -13,3 +13,30 @@
 .select2-container-multi .select2-choices .select2-search-field input {
     padding-left: 16px !important;
 }
+
+.send_sms {
+	display: inline-block;
+	height: 2.3125rem;
+	float: left;
+  padding: 0 1em;
+}
+
+@media (max-width: 700px) {
+  .verify-code {
+    width: 60%
+  }
+  .send_sms{
+  	width: 35%;
+  	margin-left: 5%;
+  }
+}
+
+@media (min-width: 700px) {
+  .verify-code {
+    width: 75%
+  }
+  .send_sms{
+  	width: 20%;
+  	margin-left: 5%;
+  }
+}

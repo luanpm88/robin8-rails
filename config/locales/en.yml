@@ -574,6 +574,7 @@ en:
       title: Signup
       verify_code: Verification code
       verify_code_error: Verification code can't be blank
+      receive_verify_code: Verify
       mobile_format_error: Please input correct mobile number
     landing_page:
       brand: Brand

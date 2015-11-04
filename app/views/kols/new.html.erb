@@ -48,11 +48,12 @@
                                   "data-validation-error-msg"=> @l.t('kols.mobile_number_error'), pattern: "(0|86|17951)?(13[0-9]|15[012356789]|17[0678]|18[0-9]|14[57])[0-9]{8}", title: @l.t('kols.mobile_format_error')%>
               </div> 
 
-              <div class="small-12 large-12 columns">
+              <div class="small-9 large-9 columns verify-code">
                 <%= text_field_tag "kol[verify_code]", nil, :placeholder => @l.t('kols.verify_code'), "data-validation" => "required", "data-validation-error-msg" => @l.t('kols.verify_code_error')%>
               </div>
 
-              <button class="btn btn-default send_sms">send</button>
+              <button type="button" class="btn send_sms"><%= @l.t("kols.receive_verify_code") %></button>
+
             </div>
 
             <p class="agree"><%= @l.t('kols.agree').html_safe %></a>
