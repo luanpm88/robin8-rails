@@ -23,12 +23,13 @@
 $(function(){
   $(".send_sms").click(function(){
     var phone_number = $("#kol_mobile_number").val();
+    var old_button_text = $(".send_sms").text();
 
     function CountDown(){
       $(".send_sms").attr('disabled', 'true');
       $(".send_sms").text(count + " s");
       if (count === 0){
-        $(".send_sms").text("send").removeAttr('disabled');
+        $(".send_sms").text(old_button_text).removeAttr('disabled');
         clearInterval(countdown);
       }
       count--;
