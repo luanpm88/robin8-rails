@@ -38,8 +38,16 @@ $(function(){
 	    $.ajax({
 	      method: "POST",
 	      url: "/kols/send_sms",
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
 	      data: {"phone_number": phone_number}
-	    });
+	    })
+        .done(function(data){
+          if (console && console.log){
+            console.log(data);
+          }
+        });
 
 	    var count = 60;
 	    var countdown = setInterval(CountDown, 1000);
