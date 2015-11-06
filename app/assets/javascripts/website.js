@@ -24,6 +24,7 @@ $(function(){
   $(".send_sms").click(function(){
     var phone_number = $("#kol_mobile_number").val();
     var old_button_text = $(".send_sms").text();
+    var count = 60;
 
     function CountDown(){
       $(".send_sms").attr('disabled', 'true');
@@ -36,22 +37,28 @@ $(function(){
     }
 
     if (phone_number.match(/^0?1[3578]\d{9}$/)){
-	    $.ajax({
-	      method: "POST",
-	      url: "/kols/send_sms",
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-        },
-	      data: {"phone_number": phone_number}
-	    })
+      $.ajax({
+        method: "POST",
+        url: "/kols/send_sms",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+         data: {"phone_number": phone_number}
+      })
         .done(function(data){
-          if (console && console.log){
-            console.log(data);
+          if (data["code"]){
+            $(".send_sms_failed").show();
+            $(".send_sms_failed").siblings().hide();
+          }
+          else {
+            var countdown = setInterval(CountDown, 1000);
+            $(".send_sms_success").show();
+            $(".send_sms_success").siblings().hide();
           }
         });
 
-	    var count = 60;
-	    var countdown = setInterval(CountDown, 1000);
-		}
+      // var count = 60;
+      // var countdown = setInterval(CountDown, 1000);
+    }
   });
 });

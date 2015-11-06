@@ -15,10 +15,23 @@
 }
 
 .send_sms {
-	display: inline-block;
-	height: 2.3125rem;
-	float: left;
+  display: inline-block;
+  height: 2.3125rem;
+  float: left;
+  color: white;
   padding: 0 1em;
+}
+
+.tips .send_sms_failed {
+  color: red;
+  margin-bottom: 2px;
+  display: none
+}
+
+.tips .send_sms_success {
+  color: black;
+  margin-bottom: 2px;
+  display: none
 }
 
 @media (max-width: 700px) {
@@ -26,8 +39,8 @@
     width: 60%
   }
   .send_sms{
-  	width: 35%;
-  	margin-left: 5%;
+  width: 35%;
+  margin-left: 5%;
   }
 }
 
@@ -36,7 +49,7 @@
     width: 75%
   }
   .send_sms{
-  	width: 20%;
-  	margin-left: 5%;
+  width: 20%;
+  margin-left: 5%;
   }
 }
