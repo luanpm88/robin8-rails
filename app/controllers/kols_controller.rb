@@ -12,7 +12,7 @@ class KolsController < ApplicationController
           create_kol(kol_params)
         else
           @kol = Kol.new
-          flash.now[:errors] = ["Phone number and verification code does not match"]
+          flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
           render :new, :layout => "website"
         end
       else
@@ -23,6 +23,9 @@ class KolsController < ApplicationController
       render :new, :layout => "website"
     end
   end
+
+  extend Models::Oauth
+  include Models::Identities
 
   def update_monetize
     @kol = current_kol
