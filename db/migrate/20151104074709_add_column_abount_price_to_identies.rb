@@ -3,7 +3,7 @@ class AddColumnAbountPriceToIdenties < ActiveRecord::Migration
     add_column :identities, :avatar_url, :string
     add_column :identities, :desc, :string
 
-    add_column :identities, :audience_age_group, :string
+    add_column :identities, :audience_age_groups, :string
     add_column :identities, :audience_gender_ratio, :string
     add_column :identities, :audience_regions, :string
 

@@ -56,13 +56,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         return 'checked="checked"' if target[key][index] == v
         return 'checked="checked"' if key == 'genders' and "#{index}" == "#{v}"
         return ""
-      active: (key, index, kol) ->
-        if kol && kol.size > 0
-          v = _.chain(kol[kol_fields_mapping[key]].split '|').map (x) ->
-            x.trim()
-          .compact().value()
-          return "active" if target[key][index] in v
-          return ""
 
     initialize: (opts) ->
       @target = target
@@ -105,15 +98,23 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     editSocialAccount: (e) ->
       e.preventDefault()
       identity_id = e.target.id
-      @identity = _(@model.get('identities')).find (x) ->
-        "#{x.id}" == "#{identity_id}"
-      model = new Robin.Models.Identity  @identity
-      @modal_account_view = new Show.ProfileSocialModalAccount
-        model: model
-        title: "edit_social"
-      @showChildView 'modal_account', @modal_account_view
-      @ui.modal_account.modal('show')
-
+#      @identity = _(@model.get('identities')).find (x) ->
+#        "#{x.id}" == "#{identity_id}"
+#      model = new Robin.Models.Identity  @identity
+#      @modal_account_view = new Show.ProfileSocialModalAccount
+#        model: m
+#        title: "edit_social"
+#      @showChildView 'modal_account', @modal_account_view
+#      @ui.modal_account.modal('show')
+      identity = new Robin.Models.Identity {id: identity_id}
+      identity.fetch
+        success: (c, r, o) =>
+          console.log c.toJSON()
+          @modal_account_view = new Show.ProfileSocialModalAccount
+            model: c
+            title: "edit_social"
+          @showChildView 'modal_account', @modal_account_view
+          @ui.modal_account.modal('show')
     initSocialList: ->
       socialList = new Robin.Collections.KolSocialList()
       @social_list_view = new Show.ProfileSocialListView
@@ -246,6 +247,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     validate: ->
       @ui.form.data('formValidation').validate()
 
+    pickFields: ->
+#      gender_ratio_i = _.find($("input[type=radio][name=mf]"), (el) -> el.checked).value.split('_')[1]
+#      v = @target['mf'][gender_ratio_i]
+#      @model.set kol_fields_mapping['mf'], v
+
     save: ->
       @validate()
       if @ui.form.data('formValidation').isValid()
@@ -281,6 +287,21 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.ProfileSocialModalAccount = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/profile-social-modal-account'
 
+    templateHelpers:
+      checked: (key, index, kol) ->
+        v = kol[kol_fields_mapping[key]]
+        console.log v
+        console.log "#{target[key][index]}" == "#{v}"
+        return 'checked="checked"' if target[key][index] == v
+        return 'checked="checked"' if key == 'genders' and "#{index}" == "#{v}"
+        return ""
+      active: (key, index, kol) ->
+        v = _.chain(kol[kol_fields_mapping[key]].split '|').map (x) ->
+          x.trim()
+        .compact().value()
+        return "active" if target[key][index] in v
+        return ""
+
     initialize: (opts) ->
       @target = target
       @industries = target["industries"]
@@ -290,6 +311,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     ui:
       industry: '#interests'
+      save_change: ".save_change"
+
+    events:
+      'click @ui.save_change': 'saveChange'
 
     onRender: ->
       @model_binder.bind @model, @el
@@ -298,32 +323,41 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       })
       _.defer =>
         @initSelect2()
+      @$el.find('input[type=radio][checked]').prop('checked', 'checked')
+      @initPriceItemCheck()
 
-    save: ->
-      @validate()
-      if @ui.form.data('formValidation').isValid()
-        @pickFields()
-        @model_binder.copyViewValuesToModel()
-        return if @model.toJSON() == @initial_attrs
-        @model.save @model.attributes,
-          success: (m, r) =>
-            @initial_attrs = m.toJSON()
-            App.currentKOL.set m.attributes
-            $.growl "You profile was saved successfully", {type: "success"}
-            @parent_view?.score()
-          error: (m, r) =>
-            console.log "Error saving KOL profile. Response is:"
-            console.log r
-            errors = JSON.parse(r.responseText).errors
-            _.each errors, ((value, key) ->
-              @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
-              val = value.join(',')
-              if val == 'is invalid'
-                val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
-              @ui.form.data('formValidation').updateMessage key, 'serverError', val
-            ), this
-            element = document.getElementById("current_password")
-            element.scrollIntoView(false)
+    initPriceItemCheck: ->
+      @.$el.find('.fixed-price input[type=number]').each ->
+        if $(this).val()
+          $(this).closest(".row").find('input[type=checkbox]').val("1")
+          $(this).closest(".row").find('input[type=checkbox]').checkboxX('refresh')
+
+
+    saveChange: ->
+      console.log "save change"
+#      @validate()
+#      if @ui.form.data('formValidation').isValid()
+      @pickFields()
+      @model_binder.copyViewValuesToModel()
+      return if @model.toJSON() == @initial_attrs
+      @model.save @model.attributes,
+        success: (m, r) =>
+          @initial_attrs = m.toJSON()
+          $.growl "You profile was saved successfully", {type: "success"}
+          #TODO close modal (not refresh social-list beause not show any)
+        error: (m, r) =>
+          console.log "Error saving KOL profile. Response is:"
+          console.log r
+          errors = JSON.parse(r.responseText).errors
+          _.each errors, ((value, key) ->
+            @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
+            val = value.join(',')
+            if val == 'is invalid'
+              val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
+            @ui.form.data('formValidation').updateMessage key, 'serverError', val
+          ), this
+          element = document.getElementById("current_password")
+          element.scrollIntoView(false)
 
 
     pickFields: ->
@@ -331,11 +365,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         v = _.chain(@$el.find(".#{field}-row button.active")).map (el) ->
           el.name.split('_')[1]
         .map (x) ->
+          console.log x
           target[field][x]
         .compact().value().join('|')
         @model.set kol_fields_mapping[field], v
       set_multi_value 'ages'
       set_multi_value 'regions'
+      # 设置男女比例
       gender_ratio_i = _.find($("input[type=radio][name=mf]"), (el) -> el.checked).value.split('_')[1]
       v = @target['mf'][gender_ratio_i]
       @model.set kol_fields_mapping['mf'], v

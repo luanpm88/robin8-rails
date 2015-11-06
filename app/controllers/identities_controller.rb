@@ -8,9 +8,10 @@ class IdentitiesController < ApplicationController
     render :json => categories
   end
 
-  def udpate
+  def update
     @idientity = Identity.find params[:id]
-    categories = params[:interests]
+    @idientity.attributes = identity_params
+    categories = params[:identity][:interests]
     categories = '' if categories == nil
     categories = categories.strip.split(',').map {|s| s.strip}.uniq
     @categories = IptcCategory.where :id => categories
@@ -23,9 +24,16 @@ class IdentitiesController < ApplicationController
     end
   end
 
+  def show
+    @identity = Identity.find params[:id]
+    render :json => @identity
+  end
+
   private
   def identity_params
-    params!
+    params.require(:identity).permit(:audience_age_groups, :audience_gender_ratio, :audience_regions,
+      :edit_forward, :origin_publish, :forward, :origin_comment, :partake_activity, :panel_discussion,
+      :undertake_activity, :undertake_activity, :image_speak, :give_speech)
   end
 
 
