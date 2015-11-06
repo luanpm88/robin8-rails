@@ -19,6 +19,8 @@ module Users
           params[:token_secret] = auth.credentials.secret
           params[:name] = auth.provider == 'twitter' ? auth.info.nickname : auth.info.name
           params[:email] = auth.info.email
+          params[:avatar_url] = auth.info.image rescue nil
+          params[:desc] = auth.info.description rescue nil
 
           params[:url] = case auth.provider
           when 'facebook'
@@ -48,7 +50,7 @@ module Users
               end
             end
           else
-            @identity = Identity.find_for_oauth(params)
+            @identity, @exist = Identity.find_oauth_with_status(params)
             if current_kol.nil?
               if @identity.user != current_user
                 @identity.user = current_user
@@ -56,6 +58,7 @@ module Users
                 @identity.save
               end
             else
+              current_kol.record_provide_error(@identity)       if @exist
               if @identity.kol != current_kol
                 @identity.kol = current_kol
                 @identity.user_id = nil

@@ -415,9 +415,28 @@ en:
         social_title: My Social
         south: South
         title: My Profile
-        weibo: Weibo
+        weibo: Weibo                                      
         west: West
         price_fixing: My Price Fixing
+        password: Password
+        add_social: Add Social
+        total_tasks: Total Tasks 
+        completed_tasks: Completed Tasks
+        last30_posts: Last 30 Posts
+        status: Status
+        edit: Edit
+        all: All                                       
+        online_tasks: Online Tasks
+        edit_forward: Edit Forward
+        origin_publish: Origin Publish
+        forward: Forward
+        origin_comment: Origin Comment
+        offline_tasks: Offline Tasks
+        partake_activity: Partake Activity
+        panel_discussion: Panel Discussion
+        undertake_activity: Undertake Activity
+        image_speak: Image Speak
+        give_speech: Give A Speech
       score_tab:
         attend: Attend event (and post commentary)
         calculated: Complete your profile to improve your score.

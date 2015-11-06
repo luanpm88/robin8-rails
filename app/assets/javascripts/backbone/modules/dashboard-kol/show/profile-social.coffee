@@ -2,7 +2,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
   login_template = _.template """
     <div class="col-md-2 cell">
-      <button class="btn full-width social-login" id="<%= provider %>"><%= polyglot.t('dashboard_kol.profile_tab.login') %></button>
+      <button class="btn full-width social-login" id="<%= provider %>"><%= polyglot.t('dashboard_kol.profile_tab.add_account') %></button>
     </div>
   """
   logged_in_template = _.template """
@@ -68,9 +68,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         if @connect_window.closed
           clearInterval @interval
           $.get "/kols/get_current_kol", (data) =>
-            @model.set "identities", data.identities
-            App.currentKOL.set "identities", data.identities
-            @render()
+            #  有错误返回，表示添加没有成功
+            if data.provide_error
+              @model.set "identities", data.identities
+              App.currentKOL.set "identities", data.identities
+              @render()
+              swal(data.provide_error);
+
 
     serializeData: ->
       k: @model.toJSON()
@@ -85,19 +89,4 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     serializeData: () ->
       items: @collection.toJSON()
       test: @options.test
-#  target =
-#    ages: ['<12', '12-18', '18-25', '25-35', '35-45', '45-55', '>55']
-#    regions: ['east', 'north', 'northeast', 'south', 'west', 'central']
-#    mf: ['80:20', '60:40', '50:50', '40:60', '20:80']
-#    industries:
-#      "01021000": "entertainment"
-#      "01022000": "culture"
-#      "04017000": "economy"
-#      "04018000": "business"
-#      "13010000": "technology"
-#    genders:
-#      0: 'secrecy'
-#      1: 'male'
-#      2: 'female'
-#
 

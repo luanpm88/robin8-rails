@@ -24,7 +24,6 @@
   .social-content {
     .row {
       padding: 10px 0px;
-
       .cell.social-label {
         line-height: 35px;
       }
@@ -44,12 +43,8 @@
       }
       border: none;
     }
-    .region-btn {
-      width: 90px;
-      margin-right: 2px;
-    }
     .switch-button {
-      width: 70px;
+      width: 75px;
       height: 30px;
       margin-bottom: 5px;
       background-color: #ffffff !important;
@@ -78,7 +73,7 @@
       margin-top: -10px;
     }
     .add-social{
-      background: #edac07 ;
+      background: #edac07;
       font-size: 15px;
       font-weight: normal;
       padding: 2px 8px;
@@ -88,6 +83,32 @@
       vertical-align: top;
       margin-left: 0;
     }
+//    add account
+//    .add-account{
+//      .account-column {
+//        width: 70%;
+//        background: #edac07;
+//        font-weight: normal;
+//        padding: 2px 8px;
+//        cursor: pointer;
+//        color: #fff;
+//        border-radius: 5px;
+//        text-align: center;
+//        span.social {
+//          color: #fff;
+//          font-size: 14px;
+//        }
+//        .fa-2x {
+//          vertical-align: middle;
+//        }
+//      }
+//      .weibo-column{
+//        background: #FD8149;
+//      }
+//      .weixin-column{
+//        background: #49B44F;
+//      }
+//    }
     .social-list{
       .social-item{
         border-radius: 5px;
@@ -228,8 +249,8 @@
     padding: 0;
     .campaigns-tables-title{
       padding: 10px;
-      border-bottom: 2px solid #fff;
       border-top: 2px solid #0e7182;
+      border-bottom: 0;
       margin: 0;
       span{
         margin-left: 10px;
@@ -238,14 +259,27 @@
       }
     }
     .score-tables{
-      padding: 0px 10px;
+      padding: 10px 20px;
+      border-top: 2px solid #fff;
     }
 
+    .online-price , .offline-price{
+      .col-md-4{
+        margin-left: 25px;
+        .cbx-container{
+          padding-right: 8px;
+        }
+      }
+      .check_all_cell{
+        margin-left: 5px;
+        .check_all_label{
+          font-family: '';
+          font-size: 15px;
+        }
+      }
+    }
   }
-
 }
-
-
 
 
 #tab-content {

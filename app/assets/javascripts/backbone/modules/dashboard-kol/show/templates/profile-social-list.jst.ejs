@@ -1,12 +1,12 @@
 <% _.each(items, function(item) { %>
   <div class="social-item col-md-4 cell">
-    <div class="item-header <%= item.social_type %>">
+    <div class="item-header <%= item.provider %>">
       <div class="left-avatar">
-        <img src="/assets/loading.gif"/>
+        <img src="<%= item.avatar_url %>"/>
       </div>
       <div class="right-info">
         <div class="nickname">
-          <%= item.nickname %>
+          <%= item.name %>
         </div>
         <div class="desc">
           <%= item.desc %>
@@ -16,7 +16,7 @@
     <div class="item-body">
       <div class="item total-tasks">
         <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.total_tasks') %></div>
-        <div class="item-value"><span class="badge">12</span></div>
+        <div class="item-value"><span class="badge"> <%= item.total_tasks %></span></div>
       </div>
       <div class="item complete-tasks">
         <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.completed_tasks') %></div>
@@ -35,7 +35,7 @@
           <a href="" class="delete"><span class="glyphicon glyphicon-trash"></span></a>
         </div>
         <div class="item-value">
-          <a href="" class="edit btn btn-primary btn-sm"><%= polyglot.t('dashboard_kol.profile_tab.edit') %></a>
+          <a href="javascript:void(0)" class="edit-account btn btn-primary btn-sm" name="test" identity="<%= item.id %>" id="<%= item.id %>"><%= polyglot.t('dashboard_kol.profile_tab.edit') %></a>
         </div>
       </div>
     </div>

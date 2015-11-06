@@ -4,6 +4,9 @@ require 'sidetiq/web'
 
 Rails.application.routes.draw do
 
+  get 'identities/:id/current_categories' => "identities#current_categories"
+  post 'identities/:id/update' => "identities#update"
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   mount Sidekiq::Web => '/sidekiq'

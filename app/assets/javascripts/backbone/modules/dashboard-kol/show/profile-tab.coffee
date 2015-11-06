@@ -1,5 +1,5 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
-
+  flip = (f) -> (x, y) -> f y, x
   target =
     ages: ['<12', '12-18', '18-25', '25-35', '35-45', '45-55', '>55']
     regions: ['east', 'north', 'northeast', 'south', 'west', 'central']
@@ -41,12 +41,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       social: ".social-content"
       modal_account: "#modal-account"
       social_list: ".social-list"
+      add_account: ".add-account"
 
     events:
       'click @ui.next': 'save'
       'click @ui.calendar_button' : 'showDateTimePicker'
       'change @ui.country_select' : 'checkCountry'
       'click @ui.add_social'      : 'addSocial'
+      "click .edit-account"       : "editSocialAccount"
 
     templateHelpers:
       checked: (key, index, kol) ->
@@ -55,12 +57,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         return 'checked="checked"' if key == 'genders' and "#{index}" == "#{v}"
         return ""
       active: (key, index, kol) ->
-        v = _.chain(kol[kol_fields_mapping[key]].split '|').map (x) ->
-          x.trim()
-        .compact().value()
-        return "active" if target[key][index] in v
-        return ""
-#      modalSocailTpl: '_.template($("#cloudtag_tempalte").html())'
+        if kol && kol.size > 0
+          v = _.chain(kol[kol_fields_mapping[key]].split '|').map (x) ->
+            x.trim()
+          .compact().value()
+          return "active" if target[key][index] in v
+          return ""
 
     initialize: (opts) ->
       @target = target
@@ -74,9 +76,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       $("#password").val("")
       $("#current_password").val("")
       $("#password_confirmation").val("")
+      _.defer =>
+        @initAddSocialAccount()
       @initSocialList()
       @initDatepicker()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')
+
 
        # I❤js
       _.defer =>
@@ -86,20 +91,33 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       _.defer =>
         @initFormValidation()
 
+    initAddSocialAccount: ->
+      @social_view = new Show.ProfileSocialView
+        model: @model
+      @showChildView 'add_account', @social_view
 
     addSocial: ->
       @modal_account_view = new Show.ProfileSocialModalAccount
-        model: @model
         title: "add_social"
+      @showChildView 'modal_account', @modal_account_view
+      @ui.modal_account.modal('show')
+
+    editSocialAccount: (e) ->
+      e.preventDefault()
+      identity_id = e.target.id
+      @identity = _(@model.get('identities')).find (x) ->
+        "#{x.id}" == "#{identity_id}"
+      model = new Robin.Models.Identity  @identity
+      @modal_account_view = new Show.ProfileSocialModalAccount
+        model: model
+        title: "edit_social"
       @showChildView 'modal_account', @modal_account_view
       @ui.modal_account.modal('show')
 
     initSocialList: ->
       socialList = new Robin.Collections.KolSocialList()
-      console.log socialList
       @social_list_view = new Show.ProfileSocialListView
         collection: socialList
-        test: "TTT"
       socialList.fetch
         success: (c, r, o) =>
           @showChildView 'social_list', @social_list_view
@@ -228,20 +246,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     validate: ->
       @ui.form.data('formValidation').validate()
 
-    pickFields: ->
-      set_multi_value = (field) =>
-        v = _.chain(@$el.find(".#{field}-row button.active")).map (el) ->
-          el.name.split('_')[1]
-        .map (x) ->
-          target[field][x]
-        .compact().value().join('|')
-        @model.set kol_fields_mapping[field], v
-      set_multi_value 'ages'
-      set_multi_value 'regions'
-      gender_ratio_i = _.find($("input[type=radio][name=mf]"), (el) -> el.checked).value.split('_')[1]
-      v = @target['mf'][gender_ratio_i]
-      @model.set kol_fields_mapping['mf'], v
-
     save: ->
       @validate()
       if @ui.form.data('formValidation').isValid()
@@ -279,11 +283,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     initialize: (opts) ->
       @target = target
-      @model = new Robin.Models.KolProfile App.currentKOL.attributes
-      console.log(@model)
       @industries = target["industries"]
+      @model_attrs = @model.toJSON()
       @model_binder = new Backbone.ModelBinder()
-      @initial_attrs = @model.toJSON()
       @parent_view = opts.parent
 
     ui:
@@ -296,6 +298,47 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       })
       _.defer =>
         @initSelect2()
+
+    save: ->
+      @validate()
+      if @ui.form.data('formValidation').isValid()
+        @pickFields()
+        @model_binder.copyViewValuesToModel()
+        return if @model.toJSON() == @initial_attrs
+        @model.save @model.attributes,
+          success: (m, r) =>
+            @initial_attrs = m.toJSON()
+            App.currentKOL.set m.attributes
+            $.growl "You profile was saved successfully", {type: "success"}
+            @parent_view?.score()
+          error: (m, r) =>
+            console.log "Error saving KOL profile. Response is:"
+            console.log r
+            errors = JSON.parse(r.responseText).errors
+            _.each errors, ((value, key) ->
+              @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
+              val = value.join(',')
+              if val == 'is invalid'
+                val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
+              @ui.form.data('formValidation').updateMessage key, 'serverError', val
+            ), this
+            element = document.getElementById("current_password")
+            element.scrollIntoView(false)
+
+
+    pickFields: ->
+      set_multi_value = (field) =>
+        v = _.chain(@$el.find(".#{field}-row button.active")).map (el) ->
+          el.name.split('_')[1]
+        .map (x) ->
+          target[field][x]
+        .compact().value().join('|')
+        @model.set kol_fields_mapping[field], v
+      set_multi_value 'ages'
+      set_multi_value 'regions'
+      gender_ratio_i = _.find($("input[type=radio][name=mf]"), (el) -> el.checked).value.split('_')[1]
+      v = @target['mf'][gender_ratio_i]
+      @model.set kol_fields_mapping['mf'], v
 
     initSelect2: ->
       $('#interests').val("Industries")  # need to put something there for initSelection to be called
@@ -317,11 +360,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         escapeMarkup: _.identity
         initSelection: (el, callback) =>
           v = $("#interests").val()
+          # 加载后初始化
           if v == "Industries"
             $("#interests").val('')
-            $.get "/kols/current_categories", (data) ->
+            $.get "/identities/#{@model.id}/current_categories", (data) ->
               callback data
-          else
+          else        # 每次更改后初始化
             old_data = $("#interests").select2 'data'
             new_ids = _.compact v.split(',')
             new_data = _(new_ids).map (i) ->

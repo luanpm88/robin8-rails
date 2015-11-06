@@ -1,19 +1,13 @@
 class KolsController < ApplicationController
 
   def get_current_kol
-    render json: current_kol, :methods => [:identities, :stats]
+    render json: current_kol, :methods => [:identities, :stats, :provide_error]
   end
 
   def create
     if request.post?
       @kol = Kol.new(kol_params)
-      categories = params[:interests]
-      categories = '' if categories == nil
-      categories = categories.strip.split(',').map {|s| s.strip}.uniq
-      @categories = IptcCategory.where :id => categories
-      if @kol.valid?
-        @kol.iptc_categories = @categories
-        @kol.save
+      if @kol.save
         sign_in @kol
         return redirect_to :root
       else
@@ -124,14 +118,11 @@ class KolsController < ApplicationController
   end
 
   def get_social_list
-    # current_kol.social_list
-    render :json => [{:nickname => 'heelo', :desc => 'desc', :social_type => 'weibo', :total_tasks => 30, :complete_tasks => 10, :last30_post => 30},
-                     {:nickname => 'heelo', :desc => 'desc', :social_type => 'weixin', :total_tasks => 30, :complete_tasks => 10, :last30_post => 30}]
+    render :json => current_kol.identities, :methods => [:total_tasks, :last30_posts]
   end
 
 
   private
-
   def kol_params
     params.require(:kol).permit(:first_name,:last_name,:email,:password,:location,:is_public,:bank_account,:interests, :mobile_number)
   end

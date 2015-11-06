@@ -17,6 +17,7 @@ class Kol < ActiveRecord::Base
   has_many :kol_profile_screens
   has_many :interested_campaigns
 
+
   GENDERS = {
     :NONE => 0,
     :MALE => 1,
@@ -25,6 +26,17 @@ class Kol < ActiveRecord::Base
 
   include Models::Identities
   extend Models::Oauth
+
+  def record_provide_error(identity)
+    Rails.cache.write("provide_error_#{self.id}","Sorry! You had created  #{identity.provider} account")
+  end
+
+  #get
+  def provide_error
+    error  = Rails.cache.read("provide_error_#{self.id}")
+    Rails.cache.delete("provide_error_#{self.id}")
+    error
+  end
 
   class EmailValidator < ActiveModel::Validator
     def validate(record)
