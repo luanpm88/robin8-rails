@@ -57,8 +57,6 @@ $(function(){
           }
         });
 
-      // var count = 60;
-      // var countdown = setInterval(CountDown, 1000);
     }
   });
 });

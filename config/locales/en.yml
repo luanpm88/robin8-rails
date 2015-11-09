@@ -2749,7 +2749,7 @@ en:
         in a few minutes.
     failure:
       already_authenticated: You are already signed in.
-      inective: Your account is not activated yet.
+      inactive: Your account is not activated yet.
       invalid: Invalid %{authentication_keys} or password.
       invited: You have a pending invitation, accept it to finish creating your account.
       last_attempt: You have one more attempt before your account is locked.
