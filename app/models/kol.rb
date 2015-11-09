@@ -17,24 +17,13 @@ class Kol < ActiveRecord::Base
   has_many :kol_profile_screens
   has_many :interested_campaigns
 
+  validates :mobile_number, uniqueness: true
+
   GENDERS = {
     :NONE => 0,
     :MALE => 1,
     :FEMALE => 2
   }
-
-  include Models::Identities
-  extend Models::Oauth
-
-  class EmailValidator < ActiveModel::Validator
-    def validate(record)
-      if record.new_record? and User.exists?(:email=>record.email)
-        record.errors[:email] << "has already been taken"
-      end
-    end
-  end
-
-  validates_with EmailValidator
 
   def active
     not confirmed_at.nil?

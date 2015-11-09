@@ -6,25 +6,26 @@ class KolsController < ApplicationController
 
   def create
     if request.post?
-      @kol = Kol.new(kol_params)
-      categories = params[:interests]
-      categories = '' if categories == nil
-      categories = categories.strip.split(',').map {|s| s.strip}.uniq
-      @categories = IptcCategory.where :id => categories
-      if @kol.valid?
-        @kol.iptc_categories = @categories
-        @kol.save
-        sign_in @kol
-        return redirect_to :root
+      if china_instance?
+        verify_code = Rails.cache.fetch(kol_params[:mobile_number])
+        if verify_code == params["kol"]["verify_code"]
+          create_kol(kol_params)
+        else
+          @kol = Kol.new
+          flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
+          render :new, :layout => "website"
+        end
       else
-        flash.now[:errors] = @kol.errors.full_messages
-        render :new, :layout => "website"
+        create_kol(kol_params)
       end
     else
       @kol = Kol.new
       render :new, :layout => "website"
     end
   end
+
+  extend Models::Oauth
+  include Models::Identities
 
   def update_monetize
     @kol = current_kol
@@ -123,6 +124,13 @@ class KolsController < ApplicationController
     render :json => kols.to_json(:methods => [:categories, :stats])
   end
 
+  def send_sms
+    phone_number = params[:phone_number]
+    sms_client = Yunpian::SmsClient.new(phone_number)
+    res = sms_client.send_sms
+    render json: res
+  end
+
   private
 
   def kol_params
@@ -143,6 +151,21 @@ class KolsController < ApplicationController
                                 :monetize_party, :monetize_endorsements)
   end
 
+  def create_kol(kol_params)
+    @kol = Kol.new(kol_params)
+    categories = params[:interests]
+    categories = '' if categories == nil
+    categories = categories.strip.split(',').map {|s| s.strip}.uniq
+    @categories = IptcCategory.where :id => categories
+    if @kol.valid?
+      @kol.iptc_categories = @categories
+      @kol.save
+      sign_in @kol
+      return redirect_to :root
+    else
+      flash.now[:errors] = @kol.errors.full_messages
+      render :new, :layout => "website"
+    end
+  end
+
 end
-
-

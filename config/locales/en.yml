@@ -133,6 +133,10 @@ en:
         off "Compatibility View"</a>.
     view: View
   activerecord:
+    attributes:
+      kol:
+        email: Email
+        mobile_number: Mobile number
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
@@ -152,6 +156,12 @@ en:
           attributes:
             email:
               blank: Email can't be blank
+        kol:
+          attributes:
+            email:
+              taken: has already been taken
+            mobile_number:
+              taken: has already been taken
   application:
     about:
       text: "<p>Miranda Tan, Founder and CEO of Robin8, founded her first PR firm,
@@ -559,6 +569,7 @@ en:
       agree: By signing up you agree to Robin8's <a href="/terms">Terms of Service
       email: Email
       email_error: Email can't be blank
+      email_already_been_taken: Email has already been taken
       first_name: First Name
       fname_error: First name can't be blank
       interests: Interests
@@ -567,11 +578,19 @@ en:
       location: Location
       location_error: Location can't be blank
       mobile_number: Mobile Number
-      mobile_number_error: Digits only
+      mobile_number_error: Mobile number can't be blank
+      mobile_number_already_token:  "Mobile number has already been token"
+      mobile_format_error: Please input correct mobile number
+      number_and_code_unmatch: Mobile number and vertification code does not match
       password: Password
       password_error: Password must be greater then 7 characters
       signup_btn: SIGN UP
       title: Signup
+      verify_code: Verification code
+      verify_code_error: Verification code can't be blank
+      receive_verify_code: Verify
+      send_sms_error: Send vertification failed, please try again.
+      send_sms_success: Send vertification code successfully
     landing_page:
       brand: Brand
       chinese_locale: Switch to Chinese locale
@@ -1038,7 +1057,7 @@ en:
       spokeperson: Spokesperson
       what_is: What is
     public_release:
-      notification: You are in a preview mode. You need to make this content and brand gallery 
+      notification: You are in a preview mode. You need to make this content and brand gallery
         public in order to show it on your page
     register:
       agree_terms: By signing up you agree to Robin8's Terms of Service
@@ -1648,22 +1667,22 @@ en:
         University of Computer and Emerging Sciences in Pakistan.
       developer_name: Razee Khan
       developer_pos: Engineer and Developer
-      elsa_desc: Account Director, Ms. Elsa Wang is a strategic marketer with an eye for consumer insights 
-        and a passion for digital marketing (Social Media, Content Marketing, SEO/SEM, Web analytics). 
-        She has Google certified Partner Certificates for Google Analytics and Google Adwords. 
+      elsa_desc: Account Director, Ms. Elsa Wang is a strategic marketer with an eye for consumer insights
+        and a passion for digital marketing (Social Media, Content Marketing, SEO/SEM, Web analytics).
+        She has Google certified Partner Certificates for Google Analytics and Google Adwords.
         Most recently, she worked for prestige food brands in China such as Nescafe and Pringles
         chips. Elsa has a Masters from NYU in Integrated Marketing.
       elsa_name: Elsa Wang
       elsa_pos: Marketing Specialist / Director
-      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more 
-        than 15 years in Shanghai. A native of Central New York State, Francis’ work 
-        experience in China includes stints in media, advertising and consulting. 
-        Francis received his bachelor’s degree from the University of Pennsylvania 
-        and has a master’s degree in International Relations from The Johns Hopkins University - 
-        School of Advanced International Studies. Prior to joining Robin8, Francis was 
-        the Director of Operations at Forestry Innovation Investment (Shanghai), 
-        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee 
-        the completion of 15 wood-frame construction projects in China, 
+      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more
+        than 15 years in Shanghai. A native of Central New York State, Francis’ work
+        experience in China includes stints in media, advertising and consulting.
+        Francis received his bachelor’s degree from the University of Pennsylvania
+        and has a master’s degree in International Relations from The Johns Hopkins University -
+        School of Advanced International Studies. Prior to joining Robin8, Francis was
+        the Director of Operations at Forestry Innovation Investment (Shanghai),
+        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee
+        the completion of 15 wood-frame construction projects in China,
         including the Vancouver Pavilion at the 2010 Shanghai EXPO.
       francis_name: Francis Huang
       francis_pos: General Manager, China
@@ -1674,17 +1693,17 @@ en:
         wizDigital, a boutique agency based in Shanghai.
       jenny_name: Jenny Qian
       jenny_pos: Head Product Manager and Senior Developer, China
-      joey_desc: Robin8’s VP of Marketing Engineer, Joey Jiao has more than fifteen years experience 
-        working in China’s social media and public relations landscape. Joey earned her master’s degree 
-        in Marketing from the Royal Melbourne Institute of Technology. She began her career working 
+      joey_desc: Robin8’s VP of Marketing Engineer, Joey Jiao has more than fifteen years experience
+        working in China’s social media and public relations landscape. Joey earned her master’s degree
+        in Marketing from the Royal Melbourne Institute of Technology. She began her career working
         for the Poly Group, one of China’s largest State Owned Enterprises, as an investment manager
         in their cultural division which includes media and movies. She served as Marketing Director
         and Strategy Director at a number of research and digital media companies before opening her
         own agency, wizDigital, in 2014.
       joey_name: Joey Jiao
       joey_pos: Vice President, Marketing Engineer, China
-      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU, 
-        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from 
+      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU,
+        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from
         Nanjing Agricultural University and Georgia Southwestern State University.
       jun_name: Jun Yang
       jun_pos: Sales and Marketing Specialist
@@ -1693,8 +1712,8 @@ en:
         University of Science and Technology.
       operations_name: Cynthia Chen
       operations_pos: VP, Operations
-      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups 
-        in terms of marketing, business development and fundraising. Peter has a BA from 
+      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups
+        in terms of marketing, business development and fundraising. Peter has a BA from
         George Washington University.
       peter_name: Peter Chernin
       peter_pos: Director of Sales and Business Development
@@ -1704,10 +1723,10 @@ en:
         College of LS&amp;A with a BS in Neuroscience.
       sales_name: Alex Stefanov
       sales_pos: VP, Sales and Marketing
-      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team. 
-        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices 
-        and other human resource policies. Sally has helped a number of foreign companies 
-        establish a presence in China and assists with the day-to-day operation of the company. 
+      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team.
+        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices
+        and other human resource policies. Sally has helped a number of foreign companies
+        establish a presence in China and assists with the day-to-day operation of the company.
       sally_name: Sally Zheng
       sally_pos: Administrative Manager, China
       scientist_desc: Edison has over 5 years experience in machine learning and data
@@ -1720,7 +1739,7 @@ en:
       scientist_name: Edison Xu Zhao
       scientist_pos: Data Scientist and Engineer
       simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
-        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS 
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS
         from East China Normal University.
       simon_name: Simon Deng
       simon_pos: Tech Lead China
@@ -2634,7 +2653,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -2660,7 +2679,7 @@ en:
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-    - 
+    -
     - January
     - February
     - March
