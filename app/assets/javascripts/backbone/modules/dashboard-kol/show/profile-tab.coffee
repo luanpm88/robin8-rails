@@ -34,12 +34,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       region_select: "#province"
       city_input: "#city"
       form: "#profile-form"
-      modal_account: "#modal-account"
       add_social: ".add-social"
 
     regions:
       social: ".social-content"
-      modal_account: "#modal-account"
       social_list: ".social-list"
       add_account: ".add-account"
 
@@ -48,7 +46,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       'click @ui.calendar_button' : 'showDateTimePicker'
       'change @ui.country_select' : 'checkCountry'
       'click @ui.add_social'      : 'addSocial'
-      "click .edit-account"       : "editSocialAccount"
+
 
     templateHelpers:
       checked: (key, index, kol) ->
@@ -87,41 +85,23 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     initAddSocialAccount: ->
       @social_view = new Show.ProfileSocialView
         model: @model
+        parent: this
       @showChildView 'add_account', @social_view
 
-    addSocial: ->
-      @modal_account_view = new Show.ProfileSocialModalAccount
-        title: "add_social"
-      @showChildView 'modal_account', @modal_account_view
-      @ui.modal_account.modal('show')
-
-    editSocialAccount: (e) ->
-      e.preventDefault()
-      identity_id = e.target.id
-#      @identity = _(@model.get('identities')).find (x) ->
-#        "#{x.id}" == "#{identity_id}"
-#      model = new Robin.Models.Identity  @identity
-#      @modal_account_view = new Show.ProfileSocialModalAccount
-#        model: m
-#        title: "edit_social"
-#      @showChildView 'modal_account', @modal_account_view
-#      @ui.modal_account.modal('show')
-      identity = new Robin.Models.Identity {id: identity_id}
-      identity.fetch
-        success: (c, r, o) =>
-          console.log c.toJSON()
-          @modal_account_view = new Show.ProfileSocialModalAccount
-            model: c
-            title: "edit_social"
-          @showChildView 'modal_account', @modal_account_view
-          @ui.modal_account.modal('show')
-    initSocialList: ->
-      socialList = new Robin.Collections.KolSocialList()
+    initSocialList: (collection) ->
+      socialList = new Robin.Collections.KolSocialList(collection)
       @social_list_view = new Show.ProfileSocialListView
         collection: socialList
-      socialList.fetch
-        success: (c, r, o) =>
-          @showChildView 'social_list', @social_list_view
+        parent: this
+      if collection && collection.size > 0
+        @showChildView 'social_list', @social_list_view
+      else
+        socialList.fetch
+          success: (c, r, o) =>
+            @showChildView 'social_list', @social_list_view
+
+    refreshSocialList: (collection)->
+      @initSocialList(collection)
 
     initDatepicker: ->
       chinaBirthdateOptions = {
@@ -290,12 +270,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     templateHelpers:
       checked: (key, index, kol) ->
         v = kol[kol_fields_mapping[key]]
-        console.log v
-        console.log "#{target[key][index]}" == "#{v}"
         return 'checked="checked"' if target[key][index] == v
         return 'checked="checked"' if key == 'genders' and "#{index}" == "#{v}"
         return ""
       active: (key, index, kol) ->
+        return "" if !kol[kol_fields_mapping[key]]
         v = _.chain(kol[kol_fields_mapping[key]].split '|').map (x) ->
           x.trim()
         .compact().value()
@@ -344,6 +323,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (m, r) =>
           @initial_attrs = m.toJSON()
           $.growl "You profile was saved successfully", {type: "success"}
+          @parent_view.ui.modal_account.modal('hide')
           #TODO close modal (not refresh social-list beause not show any)
         error: (m, r) =>
           console.log "Error saving KOL profile. Response is:"
@@ -372,9 +352,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       set_multi_value 'ages'
       set_multi_value 'regions'
       # 设置男女比例
-      gender_ratio_i = _.find($("input[type=radio][name=mf]"), (el) -> el.checked).value.split('_')[1]
-      v = @target['mf'][gender_ratio_i]
-      @model.set kol_fields_mapping['mf'], v
+      gener_checked = _.find($("input[type=radio][name=mf]"), (el) -> el.checked)
+      if gener_checked && gener_checked.compact && gener_checked.compact.length > 1
+        gender_ratio_i = gener_checked.value.split('_')[1]
+        v = @target['mf'][gender_ratio_i]
+        @model.set kol_fields_mapping['mf'], v
 
     initSelect2: ->
       $('#interests').val("Industries")  # need to put something there for initSelection to be called

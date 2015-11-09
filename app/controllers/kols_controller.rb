@@ -1,7 +1,7 @@
 class KolsController < ApplicationController
 
   def get_current_kol
-    render json: current_kol, :methods => [:identities, :stats, :provide_error]
+    render json: current_kol, :methods => [:identities, :stats, :provide_error, :newest_identity]
   end
 
   def create

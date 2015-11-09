@@ -70,7 +70,7 @@
             </div>
           </div>
           <div class="regions-row">
-            <div class="col-md-12 cell filter-group">
+            <div class="col-md-11 cell filter-group">
               <% _(regions).each(function(r, i) { %>
               <button type="button"
                       class="btn switch-button form-control region-btn filter-btn <%= active('regions', i, k) %>"
@@ -86,7 +86,7 @@
       <!--定价-->
       <div class="fixed-price toggle-box">
         <div class="campaigns-tables-title">
-          <span><%= polyglot.t('dashboard_kol.profile_tab.price_fixing') %></span>
+          <span><%= polyglot.t('dashboard_kol.profile_tab.price_fixing') %><%= polyglot.t('dashboard_kol.profile_tab.price_unit') %> </span>
           <span class="toggle-button glyphicon glyphicon-minus"></span>
         </div>
         <div class="toggle-list">
@@ -192,8 +192,12 @@
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-primary save_change" data-dismiss="">Save Change</button>
+      <div class="left-cancel">
+        <button type="button" class="btn btn-default btn-gray" data-dismiss="modal"><%= polyglot.t('common.cancel') %></button>
+      </div>
+      <div class="right-save">
+        <button type="button" class="btn btn-primary save_change" data-dismiss=""><%= polyglot.t('common.save') %></button>
+      </div>
     </div>
   </div>
 </div>

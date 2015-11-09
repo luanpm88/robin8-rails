@@ -36,6 +36,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initialize: (opts) ->
       @model_binder = new Backbone.ModelBinder()
+      @parent = opts.parent
 
     onRender: ->
       @model_binder.bind @model, @el
@@ -64,27 +65,90 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       url = "/users/auth/#{provider}"
       params = 'location=0,status=0,width=800,height=600'
       @connect_window = window.open url, "connect_window", params
+      parent = @parent
       @interval = flip(setInterval) 500, =>
         if @connect_window.closed
           clearInterval @interval
           $.get "/kols/get_current_kol", (data) =>
             #  有错误返回，表示添加没有成功
             if data.provide_error
+              swal(data.provide_error);
+            else
               @model.set "identities", data.identities
               App.currentKOL.set "identities", data.identities
-              @render()
-              swal(data.provide_error);
+              $.growl "#{polyglot.t('common.add_success')}", type: "success",
+#              Backbone.trigger('showSocialAccount',new Robin.Models.Identity(data.identities[0]));
+              parent.refreshSocialList()
+              setTimeout ->
+                identity_id = data.identities[0].id
+                console.log ".identity-#{identity_id} .edit-account"
+                $(".identity-" + identity_id + " .edit-account").trigger("click")
+              , 200
 
 
     serializeData: ->
       k: @model.toJSON()
 
-  Show.ProfileSocialListView = Backbone.Marionette.ItemView.extend
+  Show.ProfileSocialListView = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/profile-social-list'
+    ui:
+      modal_account: "#modal-account"
 
     events:
-      "click .delete-item": "deleteItem"
-      "click .edit-item": "editItem"
+      "click .delete-account": "deleteSocialAccount"
+      "click .edit-account"  : "editSocialAccount"
+
+    regions:
+      modal_account: "#modal-account"
+
+    initialize:(opts) ->
+      Backbone.on('showSocialAccount', this.showSocialAccount, this);
+      @parent = opts.parent
+
+    onRender: ->
+      console.log "on render"
+
+    editSocialAccount: (e) ->
+      e.preventDefault()
+      identity_id = e.target.id
+      identity = new Robin.Models.Identity {id: identity_id}
+      identity.fetch
+        success: (c, r, o) =>
+          this.showSocialAccount(c)
+
+    showSocialAccount: (identity) ->
+      console.log "modal_account"
+      if this.getRegion('modal_account')
+        console.log identity
+        @modal_account_view = new Show.ProfileSocialModalAccount
+          model: identity
+          title: "edit_social"
+          parent: this
+        console.log @modal_account_view
+        @showChildView 'modal_account', @modal_account_view
+        @ui.modal_account.modal('show')
+
+    deleteSocialAccount: (e) ->
+      e.preventDefault()
+      identity_id = e.currentTarget.id
+#      identity = new Robin.Models.Identity {id: identity_id}
+#      identity.fetch
+#        success: (c, r, o) =>
+#          c.destroy
+      parent =  @parent
+      $.ajax
+        type: "DELETE"
+        url: '/identities/' + identity_id,
+        dataType: 'json',
+        success: (data) ->
+          @collection =  data.newest_identities
+          @render
+          parent.initSocialList()
+          $.growl "#{polyglot.t('common.delete_success')}", {type: "success"}
+        error: (xhr, textStatus) ->
+          $.growl textStatus,
+            type: "#{polyglot.t('common.delete_fail')}",
+
 
     serializeData: () ->
       items: @collection.toJSON()

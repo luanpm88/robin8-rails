@@ -23,6 +23,21 @@ zh:
       to each user's digital profile.  Each time you use Robin8, it learns your preferences,
       gets smarter and generates the best results for your campaign.</p>"
     title: ABOUT ROBIN8
+  common:
+    cancel: Cancel
+    submit: Submit
+    new: New
+    edit: Edit
+    destroy: Destroy
+    save: Save  
+    delete_success: Delete Successful
+    delete_fail: Delete Fail
+    save_success: Save Successful
+    save_fail: Save Fail
+    update_success:  Update Successful
+    update_fail:    Update Fail
+    create_success:  Create Successful
+    create_fail:     Create Fail
   active_admin:
     access_denied:
       message: You are not authorized to perform this action.

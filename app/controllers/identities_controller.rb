@@ -29,6 +29,15 @@ class IdentitiesController < ApplicationController
     render :json => @identity
   end
 
+  def destroy
+    @identity = Identity.find params[:id]       rescue nil
+    if @identity && @identity.destroy
+      render :json => {:result => 'ok', :newest_identities => current_kol.identities }
+    else
+      render :json => {:result => "fail", :error_message => "not found!"}
+    end
+  end
+
   private
   def identity_params
     params.require(:identity).permit(:audience_age_groups, :audience_gender_ratio, :audience_regions,

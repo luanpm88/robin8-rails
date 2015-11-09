@@ -44,7 +44,7 @@
       border: none;
     }
     .switch-button {
-      width: 75px;
+      width: 80px;
       height: 30px;
       margin-bottom: 5px;
       background-color: #ffffff !important;
@@ -187,6 +187,11 @@
             vertical-align: middle;
             color: #A59F9F;
           }
+          .delete-account{
+            display: inline-block;
+            cursor: pointer;
+            touch-action:manipulation;
+          }
         }
       }
     }
@@ -264,7 +269,7 @@
     }
 
     .online-price , .offline-price{
-      .col-md-4{
+      .col-md-4, .col-md-6 {
         margin-left: 25px;
         .cbx-container{
           padding-right: 8px;
@@ -277,6 +282,20 @@
           font-size: 15px;
         }
       }
+    }
+  }
+  .modal-footer{
+    background: rgb(222,222,222);
+    padding: 20px 40px;
+    overflow: auto;
+    .left-cancel{
+      float: left;
+    }
+    .right-save{
+      float: right;
+    }
+    button{
+      margin-top: 0;
     }
   }
 }

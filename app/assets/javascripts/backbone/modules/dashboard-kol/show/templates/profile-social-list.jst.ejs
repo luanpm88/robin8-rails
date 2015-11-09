@@ -1,5 +1,5 @@
 <% _.each(items, function(item) { %>
-  <div class="social-item col-md-4 cell">
+  <div class="social-item col-md-4 cell identity-<%= item.id %>">
     <div class="item-header <%= item.provider %>">
       <div class="left-avatar">
         <img src="<%= item.avatar_url %>"/>
@@ -32,12 +32,22 @@
       </div>
       <div class="item operate">
         <div class="item-name">
-          <a href="" class="delete"><span class="glyphicon glyphicon-trash"></span></a>
+          <a href="javascript:void(0)" class="delete-account" id='<%= item.id %>'><span class="glyphicon glyphicon-trash"></span></a>
         </div>
         <div class="item-value">
-          <a href="javascript:void(0)" class="edit-account btn btn-primary btn-sm" name="test" identity="<%= item.id %>" id="<%= item.id %>"><%= polyglot.t('dashboard_kol.profile_tab.edit') %></a>
+          <a href="javascript:void(0)" class="edit-account btn btn-primary btn-sm"  id='<%= item.id %>'><%= polyglot.t('dashboard_kol.profile_tab.edit') %></a>
         </div>
       </div>
     </div>
   </div>
 <% }) %>
+
+
+<!--social modal-->
+<div class="modal fade modal-account" id='modal-account' role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>

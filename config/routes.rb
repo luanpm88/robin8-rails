@@ -4,9 +4,12 @@ require 'sidetiq/web'
 
 Rails.application.routes.draw do
 
-  get 'identities/:id/current_categories' => "identities#current_categories"
-  put 'identities/:id' => "identities#update"#, :via => [:patch, :put]
-  get 'identities/:id' => 'identities#show'
+  resources :identities do
+    member do
+      get 'current_categories'
+    end
+  end
+  put 'identities/:id' => "identities#update"
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
