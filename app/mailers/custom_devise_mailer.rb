@@ -16,8 +16,4 @@ class CustomDeviseMailer < Devise::Mailer
     }
     ConfirmationMailWorker.perform_async data
   end
-
-  def reset_password_instructions record, token, opts={}
-
-  end
 end
