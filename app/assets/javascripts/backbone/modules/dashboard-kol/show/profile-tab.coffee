@@ -89,7 +89,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @showChildView 'add_account', @social_view
 
     initSocialList: (collection) ->
-      socialList = new Robin.Collections.KolSocialList(collection)
+      socialList = new Robin.Collections.Identities(collection)
       @social_list_view = new Show.ProfileSocialListView
         collection: socialList
         parent: this

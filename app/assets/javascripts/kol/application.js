@@ -76,7 +76,7 @@
 //= require_tree ./../backbone/modules/navigation
 //= require_tree ./../backbone/modules/dashboard-kol
 //= require_tree ./../backbone/modules/campaigns
-//= require_tree ./../backbone/modules/upload/
+//= require_tree ./../backbone/modules/upload
 
 var ready;
 ready = function() {

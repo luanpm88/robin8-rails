@@ -1,4 +1,4 @@
 Robin.Models.Identity = Backbone.Model.extend({
-  urlRoot: '/identities',
+  urlRoot: '/identities/',
   paramRoot: 'identity'
 });
