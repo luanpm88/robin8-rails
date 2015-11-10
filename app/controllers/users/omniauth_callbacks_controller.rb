@@ -50,7 +50,7 @@ module Users
               end
             end
           else
-            @identity, @exist = Identity.find_oauth_with_status(params)
+            @identity = Identity.find_for_oauth(params,current_kol)
             if current_kol.nil?
               if @identity.user != current_user
                 @identity.user = current_user
@@ -58,7 +58,6 @@ module Users
                 @identity.save
               end
             else
-              current_kol.record_provide_error(@identity)       if @exist
               if @identity.kol != current_kol
                 @identity.kol = current_kol
                 @identity.user_id = nil
