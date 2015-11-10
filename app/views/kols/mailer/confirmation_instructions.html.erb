@@ -23,7 +23,7 @@
                                   <tr>
                                     <td align="center" colspan="2" valign="top">
                                       <div style="margin-top:115px;color:#1271be;line-height:1.5;">
-                                        <%= @email %>，欢迎加入我们!
+                                        <%= @email %><%= I18n.t('devise.mailer.confirmation_instructions.welcome')  %>
                                         <br />
                                         为了保证您正常使用我们的功能，请激活账号。
                                       </div>

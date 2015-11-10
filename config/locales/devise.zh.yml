@@ -19,6 +19,7 @@ zh:
     mailer:
       confirmation_instructions:
         subject: "Robin8 confirmation instructions"
+        welcome: '，欢迎加入我们！'
       reset_password_instructions:
         subject: "Robin8 password reset instructions"
       unlock_instructions:
