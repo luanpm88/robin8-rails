@@ -11,7 +11,8 @@ module Yunpian
     def send_sms
       return if @phone_number.blank?
 
-      update_or_create_cache_for @phone_number
+      code = security_code
+      write_cache_for @phone_number, code
 
       return if Rails.env.development? || Rails.env.test?
 
@@ -34,9 +35,12 @@ module Yunpian
 
     end
 
-    def update_or_create_cache_for phone_number
-      code = Rails.cache.fetch(phone_number) || generate_security_code
+    def write_cache_for phone_number, code
       Rails.cache.write(phone_number, code, expires_in: 3.minute)
+    end
+
+    def security_code
+      code = Rails.cache.fetch(phone_number) || generate_security_code
     end
 
     def generate_security_code
