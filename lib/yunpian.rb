@@ -40,7 +40,7 @@ module Yunpian
     end
 
     def security_code
-      code = Rails.cache.fetch(phone_number) || generate_security_code
+      code = Rails.cache.fetch(@phone_number) || generate_security_code
     end
 
     def generate_security_code
