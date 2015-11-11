@@ -13,3 +13,43 @@
 .select2-container-multi .select2-choices .select2-search-field input {
     padding-left: 16px !important;
 }
+
+.send_sms {
+  display: inline-block;
+  height: 2.3125rem;
+  float: left;
+  color: white;
+  padding: 0 1em;
+}
+
+.tips .send_sms_failed {
+  color: red;
+  margin-bottom: 2px;
+  display: none
+}
+
+.tips .send_sms_success {
+  color: black;
+  margin-bottom: 2px;
+  display: none
+}
+
+@media (max-width: 700px) {
+  .verify-code {
+    width: 60%
+  }
+  .send_sms{
+  width: 35%;
+  margin-left: 5%;
+  }
+}
+
+@media (min-width: 700px) {
+  .verify-code {
+    width: 75%
+  }
+  .send_sms{
+  width: 20%;
+  margin-left: 5%;
+  }
+}

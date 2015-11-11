@@ -17,6 +17,7 @@ class Kol < ActiveRecord::Base
   has_many :kol_profile_screens
   has_many :interested_campaigns
 
+  validates :mobile_number, uniqueness: true
 
   GENDERS = {
     :NONE => 0,

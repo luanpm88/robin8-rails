@@ -171,6 +171,11 @@ zh:
         off "Compatibility View"</a>.
     view: View
   activerecord:
+    attributes:
+      kol:
+        email: "邮箱"
+        mobile_number: "电话号码"
+
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
@@ -190,6 +195,12 @@ zh:
           attributes:
             email:
               blank: "电子邮件不能为空"
+        kol:
+          attributes:
+            email:
+              taken: "已经存在"
+            mobile_number:
+              taken: "已经存在"
   addons:
     continue: CONTINUE
     go_back: GO BACK
@@ -598,6 +609,7 @@ zh:
       agree: 通过注册，你已同意Robin8的<a href="/terms">服务条款。</a>
       email: "电子邮件"
       email_error: "电子邮件不能为空"
+      email_already_been_taken: "邮箱已存在"
       first_name: "名"
       fname_error: "名字不能为空"
       interests: "兴趣爱好"
@@ -606,11 +618,19 @@ zh:
       location: "地点"
       location_error: "地点不能为空"
       mobile_number: "手机号码"
-      mobile_number_error: "只可填数字"
+      mobile_number_error: "手机号码不能为空"
+      mobile_number_already_token:  "手机号已存在"
+      mobile_format_error: "请输入正确的手机号码"
+      number_and_code_unmatch: "手机号码和验证码不匹配"
       password: "密码"
       password_error: "密码必须大于7个字符"
       signup_btn: "注册"
       title: "注册"
+      verify_code: "短信验证码"
+      verify_code_error: "短信验证码不能为空"
+      receive_verify_code: "获取验证码"
+      send_sms_error: "验证码发送失败, 请稍后再试"
+      send_sms_success: "验证码发送成功"
     landing_page:
       brand: "品牌"
       chinese_locale: Switch to Chinese locale
@@ -1026,7 +1046,7 @@ zh:
       spokeperson: "演讲人"
       what_is: "什么是"
     public_release:
-      notification: You are in a preview mode. You need to make this content and brand gallery 
+      notification: You are in a preview mode. You need to make this content and brand gallery
         public in order to show it on your page
     register:
       agree_terms: "通过注册，你已同意Robin8的服务条款。"
@@ -1597,22 +1617,22 @@ zh:
       developer_desc: Razee在编码，测试，实施和以全面的技术支持MyPRGenie方面拥有丰富的经验。 Razee获得了巴基斯坦国立大学的计算机和新兴科学学士学位。
       developer_name: Razee Khan
       developer_pos: "工程师和开发人员"
-      elsa_desc: Account Director, Ms. Elsa Wang is a strategic marketer with an eye for consumer insights 
-        and a passion for digital marketing (Social Media, Content Marketing, SEO/SEM, Web analytics). 
-        She has Google certified Partner Certificates for Google Analytics and Google Adwords. 
+      elsa_desc: Account Director, Ms. Elsa Wang is a strategic marketer with an eye for consumer insights
+        and a passion for digital marketing (Social Media, Content Marketing, SEO/SEM, Web analytics).
+        She has Google certified Partner Certificates for Google Analytics and Google Adwords.
         Most recently, she worked for prestige food brands in China such as Nescafe and Pringles
         chips. Elsa has a Masters from NYU in Integrated Marketing.
       elsa_name: Elsa Wang
       elsa_pos: Marketing Specialist / Director
-      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more 
-        than 15 years in Shanghai. A native of Central New York State, Francis’ work 
-        experience in China includes stints in media, advertising and consulting. 
-        Francis received his bachelor’s degree from the University of Pennsylvania 
-        and has a master’s degree in International Relations from The Johns Hopkins University - 
-        School of Advanced International Studies. Prior to joining Robin8, Francis was 
-        the Director of Operations at Forestry Innovation Investment (Shanghai), 
-        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee 
-        the completion of 15 wood-frame construction projects in China, 
+      francis_desc: The General Manager Robin8’s China office, Francis Huang has spent more
+        than 15 years in Shanghai. A native of Central New York State, Francis’ work
+        experience in China includes stints in media, advertising and consulting.
+        Francis received his bachelor’s degree from the University of Pennsylvania
+        and has a master’s degree in International Relations from The Johns Hopkins University -
+        School of Advanced International Studies. Prior to joining Robin8, Francis was
+        the Director of Operations at Forestry Innovation Investment (Shanghai),
+        a Crown Corporation of the Government of British Columbia (Canada) where he helped oversee
+        the completion of 15 wood-frame construction projects in China,
         including the Vancouver Pavilion at the 2010 Shanghai EXPO.
       francis_name: Francis Huang
       francis_pos: General Manager, China
@@ -1623,25 +1643,25 @@ zh:
         wizDigital, a boutique agency based in Shanghai.
       jenny_name: Jenny Qian
       jenny_pos: Head Product Manager and Senior Developer, China
-      joey_desc: Robin8’s VP of Marketing Engineer, Joey Jiao has more than fifteen years experience 
-        working in China’s social media and public relations landscape. Joey earned her master’s degree 
-        in Marketing from the Royal Melbourne Institute of Technology. She began her career working 
+      joey_desc: Robin8’s VP of Marketing Engineer, Joey Jiao has more than fifteen years experience
+        working in China’s social media and public relations landscape. Joey earned her master’s degree
+        in Marketing from the Royal Melbourne Institute of Technology. She began her career working
         for the Poly Group, one of China’s largest State Owned Enterprises, as an investment manager
         in their cultural division which includes media and movies. She served as Marketing Director
         and Strategy Director at a number of research and digital media companies before opening her
         own agency, wizDigital, in 2014.
       joey_name: Joey Jiao
       joey_pos: Vice President, Marketing Engineer, China
-      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU, 
-        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from 
+      jun_desc: Jun is a digital marketing and data analytic specialist. Previously, Jun worked at NYU,
+        OpenX and Free Agent Media. Jun has MS in Marketing from New York University and a BBA from
         Nanjing Agricultural University and Georgia Southwestern State University.
       jun_name: Jun Yang
       jun_pos: Sales and Marketing Specialist
       operations_desc: Cynthia负责整体运营和MyPRGenied的管理。她拥有Adelphi大学的MBA学位和南京理工大学会计学学士学位。
       operations_name: Cynthia Chen
       operations_pos: "副总裁，运营"
-      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups 
-        in terms of marketing, business development and fundraising. Peter has a BA from 
+      peter_desc: Previously, Peter had his own consulting firm and worked with a number of startups
+        in terms of marketing, business development and fundraising. Peter has a BA from
         George Washington University.
       peter_name: Peter Chernin
       peter_pos: Director of Sales and Business Development
@@ -1651,10 +1671,10 @@ zh:
         College of LS&amp;A with a BS in Neuroscience.
       sales_name: Alex Stefanov
       sales_pos: VP, Sales and Marketing
-      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team. 
-        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices 
-        and other human resource policies. Sally has helped a number of foreign companies 
-        establish a presence in China and assists with the day-to-day operation of the company. 
+      sally_desc: Administrative Manager, Sally Zheng acts as the “Mother Hen” to the Robin8 China team.
+        She is experienced in setting up companies in China, ensuing tax compliance, hiring practices
+        and other human resource policies. Sally has helped a number of foreign companies
+        establish a presence in China and assists with the day-to-day operation of the company.
       sally_name: Sally Zheng
       sally_pos: Administrative Manager, China
       scientist_desc: Edison在机器学习和在中国数据搜索拥有超过5年的经验，并曾为腾讯和Quo360工作。他已于应用数学和其他国际直销杂志上发表了多篇文章。毕业于数学Technologyís学院北京大学，获得数学学士学位，2006年与计算机科学学院与工程CS硕士学位，2009年他目前赢得他的硕士学位计算机科学在
@@ -1662,7 +1682,7 @@ zh:
       scientist_name: Edison Xu Zhao
       scientist_pos: "数据专家和工程师"
       simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
-        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS 
+        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS
         from East China Normal University.
       simon_name: Simon Deng
       simon_pos: Tech Lead China
@@ -2038,7 +2058,7 @@ zh:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -2064,7 +2084,7 @@ zh:
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-    - 
+    -
     - January
     - February
     - March
