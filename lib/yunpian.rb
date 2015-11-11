@@ -9,27 +9,38 @@ module Yunpian
     end
 
     def send_sms
-      code = Rails.cache.fetch(@phone_number) || (1..9).to_a.sample(4).join
-      Rails.cache.write(@phone_number, code, expires_in: 3.minute)
-      unless @phone_number.blank?
-        ChinaSMS.use :yunpian, password: @api_key
-        tpl_params = {code: code, company: @company_sign}
-        begin
-          res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1
-        rescue Exception => ex
-          Rails.logger.error ex
-          return nil
-        end
+      return if @phone_number.blank?
 
-        if res["code"] == 0
-          Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
-        else
-          Rails.logger.info "Failed to send sms to #{@phone_number}, the return code is #{res["code"]}, please look up https://www.yunpian.com/api/recode.html"
-        end
+      update_or_create_cache_for @phone_number
 
-        return res
+      return if Rails.env.development? || Rails.env.test?
 
+      ChinaSMS.use :yunpian, password: @api_key
+      tpl_params = {code: code, company: @company_sign}
+      begin
+        res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1
+      rescue Exception => ex
+        Rails.logger.error ex
+        return nil
       end
+
+      if res["code"] == 0
+        Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
+      else
+        Rails.logger.info "Failed to send sms to #{@phone_number}, the return code is #{res["code"]}, please look up https://www.yunpian.com/api/recode.html"
+      end
+
+      return res
+
+    end
+
+    def update_or_create_cache_for phone_number
+      code = Rails.cache.fetch(phone_number) || generate_security_code
+      Rails.cache.wirte(phone_number, code, expires_in: 3.minute)
+    end
+
+    def generate_security_code
+      (Rails.env.development? || Rails.env.test?) ? '1234' : (1..9).to_a.sample(4).join
     end
   end
 end
