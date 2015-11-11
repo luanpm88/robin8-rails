@@ -40,7 +40,7 @@ module Yunpian
     end
 
     def generate_security_code
-      Rails.env.development? ? '1234' : (1..9).to_a.sample(4).join
+      (Rails.env.development? || Rails.env.test?) ? '1234' : (1..9).to_a.sample(4).join
     end
   end
 end
