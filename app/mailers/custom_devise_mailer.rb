@@ -12,8 +12,10 @@ class CustomDeviseMailer < Devise::Mailer
 
     data = {
       :to => @resource.email,
+      :token => @token,
       :html => html
     }
+
     ConfirmationMailWorker.perform_async data
   end
 end

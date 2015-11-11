@@ -9,16 +9,45 @@ module Sendcloud
       @auth = { :api_user => api_user, :api_key => api_key }
     end
 
-    def send_message data
-      post_data = data.merge @auth
-      res = @http_client['/mail.send.json'].post(post_data)
-      res_body_obj = JSON.parse res.body
+    # send_template data example
+    # {
+    #   :api_user => '',
+    #   :api_key => '',
+    #   :from => '',
+    #   :fromname => '',
+    #   :substitution_vars => JSON.dump({"to" => ['address1@g.cn'], "sub" => {"%code%" => "code"}}),
+    #   :template_invoke_name => '',
+    #   :subject => ''
+    # }
 
-      unless res_body_obj['message'].eql?('success')
-        raise res.body
+    # send data example (via common method)
+    # {
+    #   :api_user => '',
+    #   :api_key => '',
+    #   :from => '',
+    #   :fromname => '',
+    #   :to => '',
+    #   :subject => '',
+    #   :html => ''
+    # }
+
+    def send data, type=:common
+
+      urls = {
+        :common => '/mail.send.json',
+        :template => '/mail.send_template.json'
+      }
+
+      data.merge! @auth
+
+      res_body = JSON.parse @http_client[urls[type]].post(data).body
+
+      unless res_body['message'].eql? 'success'
+        raise res_body
       end
 
       true
+
     end
 
   end
