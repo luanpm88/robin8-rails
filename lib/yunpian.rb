@@ -36,7 +36,7 @@ module Yunpian
 
     def update_or_create_cache_for phone_number
       code = Rails.cache.fetch(phone_number) || generate_security_code
-      Rails.cache.wirte(phone_number, code, expires_in: 3.minute)
+      Rails.cache.write(phone_number, code, expires_in: 3.minute)
     end
 
     def generate_security_code
