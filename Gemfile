@@ -45,6 +45,7 @@ gem 'google-api-client'
 gem 'sitemap_generator'
 gem 'redis-objects'
 gem 'redis-rails'
+gem 'rest-client'
 
 # Character encoding detecting library
 gem 'charlock_holmes'

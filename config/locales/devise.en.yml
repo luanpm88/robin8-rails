@@ -19,6 +19,7 @@ en:
     mailer:
       confirmation_instructions:
         subject: "Robin8 confirmation instructions"
+        welcome: ', Welcome to join us!'
       reset_password_instructions:
         subject: "Robin8 password reset instructions"
       unlock_instructions:
