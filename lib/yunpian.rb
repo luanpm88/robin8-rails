@@ -9,9 +9,9 @@ module Yunpian
     end
 
     def send_sms
-      code = Rails.cache.fetch(@phone_number) || (1..9).to_a.sample(4).join
+      code = Rails.cache.fetch(@phone_number) || generate_security_code
       Rails.cache.write(@phone_number, code, expires_in: 3.minute)
-      unless @phone_number.blank?
+      if !Rails.env.development? and @phone_number.present?
         ChinaSMS.use :yunpian, password: @api_key
         tpl_params = {code: code, company: @company_sign}
         begin
@@ -29,6 +29,14 @@ module Yunpian
 
         return res
 
+      end
+    end
+
+    def generate_security_code
+      if Rails.env.development?
+        '1234'
+      else
+        (1..9).to_a.sample(4).join
       end
     end
   end
