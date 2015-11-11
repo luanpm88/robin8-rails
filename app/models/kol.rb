@@ -25,6 +25,10 @@ class Kol < ActiveRecord::Base
     :FEMALE => 2
   }
 
+  def self.check_mobile_number mobile_number
+    return Kol.where("mobile_number" => mobile_number).present?
+  end
+
   def active
     not confirmed_at.nil?
   end

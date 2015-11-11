@@ -126,9 +126,13 @@ class KolsController < ApplicationController
 
   def send_sms
     phone_number = params[:phone_number]
-    sms_client = Yunpian::SmsClient.new(phone_number)
-    res = sms_client.send_sms
-    render json: res
+    if Kol.check_mobile_number phone_number
+      render json: {not_unique: true}
+    else
+      sms_client = Yunpian::SmsClient.new(phone_number)
+      res = sms_client.send_sms
+      render json: res
+    end
   end
 
   private
