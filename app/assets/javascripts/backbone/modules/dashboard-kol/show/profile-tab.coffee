@@ -107,12 +107,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       chinaBirthdateOptions = {
         ignoreReadonly: true,
         format: 'YYYY-MM-DD',
-        locale: 'zh-cn'
+        locale: 'zh-cn',
+        maxDate: new Date()
       }
       usBirthdateOptions = {
         ignoreReadonly: true,
         format: 'MM/DD/YYYY',
-        locale: 'en-gb'
+        locale: 'en-gb',
+        maxDate: new Date()
       }
       if Robin.chinaLocale
         @ui.datetimepicker.datetimepicker(chinaBirthdateOptions);
@@ -240,6 +242,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         return if @model.toJSON() == @initial_attrs
         @model.save @model.attributes,
           success: (m, r) =>
+            if m.attributes.first_name != @initial_attrs.first_name  || m.attributes.last_name != @initial_attrs.last_name
+              Robin.vent.trigger("nameChanged", m.attributes.first_name + ' ' + m.attributes.last_name );
             @initial_attrs = m.toJSON()
             App.currentKOL.set m.attributes
             App.currentKOL.attributes.current_password = "";

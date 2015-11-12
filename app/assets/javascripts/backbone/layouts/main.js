@@ -23,6 +23,9 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
     } else if (email.length > 0) {
       nameHolder.text(email);
     }
+    Robin.vent.on("nameChanged", function(newName){
+      nameHolder.text(newName);
+    });
   },
 
   signOut: function(e) {

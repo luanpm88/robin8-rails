@@ -2,6 +2,10 @@
   .row {
     padding: 2px 0px;
     max-width: 1000px;
+    overflow: auto;
+  }
+  .birdate-row{
+    overflow: visible;
   }
   select {
     padding-left: 2px !important;
