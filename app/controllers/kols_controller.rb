@@ -9,14 +9,14 @@ class KolsController < ApplicationController
       if china_instance?
         verify_code = Rails.cache.fetch(kol_params[:mobile_number])
         if verify_code == params["kol"]["verify_code"]
-          create_kol(kol_params)
+          create_kol_and_sign_in(kol_params)
         else
           @kol = Kol.new
           flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
           render :new, :layout => "website"
         end
       else
-        create_kol(kol_params)
+        create_kol_and_sign_in(kol_params)
       end
     else
       @kol = Kol.new
@@ -151,10 +151,10 @@ class KolsController < ApplicationController
                                 :monetize_party, :monetize_endorsements)
   end
 
-  def create_kol(kol_params)
+  def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
     if params[:auth_params]
-      @identity = @kol.identities.new(JSON.parse(params["auth_params"]))
+      @identity = @kol.identities.build(JSON.parse(params["auth_params"]))
     end
     categories = params[:interests]
     categories = '' if categories == nil
