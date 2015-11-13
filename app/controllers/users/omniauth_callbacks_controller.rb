@@ -17,9 +17,9 @@ module Users
           params[:provider] = auth.provider
           params[:token] = auth.credentials.token
           params[:token_secret] = auth.credentials.secret
-          params[:name] = auth.provider == 'twitter' ? auth.info.nickname : auth.info.name
+          params[:name] = (auth.provider == 'twitter' || auth.provider == 'wechat') ? auth.info.nickname : auth.info.name
           params[:email] = auth.info.email
-          params[:avatar_url] = auth.info.image rescue nil
+          params[:avatar_url] = (auth.provider == 'wechat') ? auth.info.headimgurl : auth.info.image rescue nil
           params[:desc] = auth.info.description rescue nil
 
           params[:url] = case auth.provider
