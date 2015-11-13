@@ -153,6 +153,9 @@ class KolsController < ApplicationController
 
   def create_kol(kol_params)
     @kol = Kol.new(kol_params)
+    if params[:auth_params]
+      @identity = @kol.identities.new(JSON.parse(params["auth_params"]))
+    end
     categories = params[:interests]
     categories = '' if categories == nil
     categories = categories.strip.split(',').map {|s| s.strip}.uniq

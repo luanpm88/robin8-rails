@@ -211,4 +211,13 @@ class Kol < ActiveRecord::Base
     res
   end
 
+  def self.find_for_oauth(auth)
+    identity = Identity.find_by(provider: auth[:provider], uid: auth[:uid])
+    if identity
+      return identity.kol
+    else
+      return nil
+    end
+  end
+
 end
