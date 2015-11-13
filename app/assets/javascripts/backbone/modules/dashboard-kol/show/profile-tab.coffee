@@ -93,7 +93,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @social_list_view = new Show.ProfileSocialListView
         collection: socialList
         parent: this
-      if collection && collection.size > 0
+      if collection && collection.length > 0
+        console.log "passed collection"
         @showChildView 'social_list', @social_list_view
       else
         socialList.fetch
@@ -212,6 +213,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @ui.birthdate.click()
 
     checkCountry: ->
+      console.log @ui.country_select
       if @ui.country_select.val() == ''
         @ui.region_select.attr('disabled', 'disabled')
         @ui.city_input.val ''
