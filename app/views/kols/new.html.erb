@@ -51,6 +51,7 @@
                 </div>
 
                 <section class='tips'>
+                  <p class=not_unique_number><%= @l.t("kols.mobile_number_already_token") %></p>
                   <p class=send_sms_failed><%= @l.t("kols.send_sms_error") %></p>
                   <p class=send_sms_success><%= @l.t("kols.send_sms_success") %></p>
                 </section>
@@ -59,6 +60,9 @@
                 </div>
 
                 <button type="button" class="btn send_sms"><%= @l.t("kols.receive_verify_code") %></button>
+                <% if params["auth_params"] %>
+                  <%= hidden_field_tag(:auth_params, params["auth_params"].to_json) %>
+                <% end %>
               <!-- American -->
               <% else %>
                 <div class='small-10 large-11 columns'>
@@ -80,7 +84,9 @@
       </div>
     </div>
   </div>
-  <%= render :partial => "shared/social_sign_up" %>
+  <% unless params["auth_params"] %>
+    <%= render :partial => "shared/social_sign_up" %>
+  <% end %>
 </div>
 
 
