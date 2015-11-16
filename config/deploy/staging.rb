@@ -15,8 +15,13 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server '45.56.104.81', user: 'deployer', roles: %w{web app db}
-set :branch, 'development'
+if ENV['china_instance'] == 'Y'
+  server '139.196.36.27', user: 'deployer', roles: %w{web app db}
+  set :branch, 'staging_cn'
+else
+
+end
+
 set :rails_env, "staging"
 
 set :rbenv_ruby, '2.2.0'
