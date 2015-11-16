@@ -4,7 +4,7 @@ class Kol < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, allow_unconfirmed_access_for: 1.days
 
-  has_many :identities, -> {order('created_at desc')}, :dependent => :destroy
+  has_many :identities, -> {order('created_at desc')}, :dependent => :destroy, autosave: true
 
   has_many :kol_categories
   has_many :iptc_categories, :through => :kol_categories
@@ -52,6 +52,10 @@ class Kol < ActiveRecord::Base
   end
 
   validates_with EmailValidator
+
+  def self.check_mobile_number mobile_number
+    return Kol.where("mobile_number" => mobile_number).present?
+  end
 
   def active
     not confirmed_at.nil?
@@ -237,6 +241,15 @@ class Kol < ActiveRecord::Base
     }
     res["sign_in_info"] = sign_in_info
     res
+  end
+
+  def self.find_for_oauth(auth)
+    identity = Identity.find_by(provider: auth[:provider], uid: auth[:uid])
+    if identity
+      return identity.kol
+    else
+      return nil
+    end
   end
 
 end

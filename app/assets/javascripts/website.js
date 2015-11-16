@@ -45,15 +45,22 @@ $(function(){
           },
          data: {"phone_number": phone_number}
       })
-        .done(function(data){
-          if (data["code"]){
-            $(".send_sms_failed").show();
-            $(".send_sms_failed").siblings().hide();
+        .done(function(data) {
+          if (data["not_unique"]) {
+            $(".not_unique_number").show();
+            $(".not_unique_number").siblings().hide();
           }
+
           else {
-            var countdown = setInterval(CountDown, 1000);
-            $(".send_sms_success").show();
-            $(".send_sms_success").siblings().hide();
+            if (data["code"]) {
+              $(".send_sms_failed").show();
+              $(".send_sms_failed").siblings().hide();
+            }
+            else {
+              var countdown = setInterval(CountDown, 1000);
+              $(".send_sms_success").show();
+              $(".send_sms_success").siblings().hide();
+            }
           }
         });
 

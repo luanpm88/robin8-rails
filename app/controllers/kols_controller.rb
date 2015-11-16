@@ -9,14 +9,14 @@ class KolsController < ApplicationController
       if china_instance?
         verify_code = Rails.cache.fetch(kol_params[:mobile_number])
         if verify_code == params["kol"]["verify_code"]
-          create_kol(kol_params)
+          create_kol_and_sign_in(kol_params)
         else
           @kol = Kol.new
           flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
           render :new, :layout => "website"
         end
       else
-        create_kol(kol_params)
+        create_kol_and_sign_in(kol_params)
       end
     else
       @kol = Kol.new
@@ -130,9 +130,13 @@ class KolsController < ApplicationController
 
   def send_sms
     phone_number = params[:phone_number]
-    sms_client = Yunpian::SmsClient.new(phone_number)
-    res = sms_client.send_sms
-    render json: res
+    if Kol.check_mobile_number phone_number
+      render json: {not_unique: true}
+    else
+      sms_client = Yunpian::SmsClient.new(phone_number)
+      res = sms_client.send_sms
+      render json: res
+    end
   end
 
   private
@@ -154,8 +158,11 @@ class KolsController < ApplicationController
                                 :monetize_party, :monetize_endorsements)
   end
 
-  def create_kol(kol_params)
+  def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
+    if params[:auth_params]
+      @identity = @kol.identities.build(JSON.parse(params["auth_params"]))
+    end
     categories = params[:interests]
     categories = '' if categories == nil
     categories = categories.strip.split(',').map {|s| s.strip}.uniq
