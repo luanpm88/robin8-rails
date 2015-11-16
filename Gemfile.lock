@@ -6,6 +6,14 @@ GIT
       countries (~> 0.11.0)
       sort_alphabetical (~> 1.0)
 
+GIT
+  remote: https://github.com/yangsr/omniauth-wechat-oauth2.git
+  revision: 63e9ca5bd51d84bb554b3f22098b39347a710970
+  specs:
+    omniauth-wechat-oauth2 (0.1.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
+
 GEM
   remote: https://ruby.taobao.org/
   remote: https://rails-assets.org/
