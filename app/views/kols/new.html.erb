@@ -60,6 +60,9 @@
                 </div>
 
                 <button type="button" class="btn send_sms"><%= @l.t("kols.receive_verify_code") %></button>
+                <% if params["auth_params"] %>
+                  <%= hidden_field_tag(:auth_params, params["auth_params"].to_json) %>
+                <% end %>
               <!-- American -->
               <% else %>
                 <div class='small-10 large-11 columns'>
@@ -81,7 +84,9 @@
       </div>
     </div>
   </div>
-  <%= render :partial => "shared/social_sign_up" %>
+  <% unless params["auth_params"] %>
+    <%= render :partial => "shared/social_sign_up" %>
+  <% end %>
 </div>
 
 

@@ -40,13 +40,18 @@ module Users
               cookies[:kol_social] = "no"
             end
             @someone = someone.find_for_oauth(params)
-            if @someone.persisted?
+            if @someone
               cookies[:kol_signin] = "no"
               sign_in @someone
               if @someone.class == Kol
                 cookies[:kol_signin] = "yeah"
               end
+
+            else
+              redirect_to kols_new_path(auth_params: params)
+              return
             end
+
           else
             @identity = Identity.find_for_oauth(params)
             if current_kol.nil?
