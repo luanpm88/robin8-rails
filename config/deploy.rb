@@ -51,7 +51,7 @@ namespace :deploy do
   task :upload_localization do
     on roles(:app)  do
       within "#{current_path}" do
-        with rails_env: :production do
+        with rails_env: fetch(:rails_env) do
           execute :rake, 'localization:upload'
         end
       end

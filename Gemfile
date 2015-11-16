@@ -105,7 +105,7 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'omniauth-weibo-oauth2'
 # gem 'omniauth-wechat-oauth2'
-gem "omniauth-wechat-oauth2", git: 'git@github.com:yangsr/omniauth-wechat-oauth2.git'
+gem "omniauth-wechat-oauth2", git: 'https://github.com/yangsr/omniauth-wechat-oauth2.git'
 gem 'active_model_serializers', "~> 0.8.0"
 
 gem 'sinatra', require: nil
