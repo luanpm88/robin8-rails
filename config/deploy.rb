@@ -63,9 +63,7 @@ namespace :deploy do
   task :update_crontab do
     on roles :app do
       within current_path do
-        execute :bundle, "exec", "whenever",
-          '--set', "environment=#{fetch(:rails_env)}",
-          "--update-crontab", fetch(:application)
+        execute :bundle, :exec, "whenever --update-crontab #{fetch(:application)} --set environment=#{fetch(:rails_env)}"
       end
     end
   end

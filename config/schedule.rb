@@ -11,6 +11,10 @@
 #   runner "Subscription.process_initial_invoice"
 # end
 
+env :PATH, ENV['PATH']
+
+set :environment, "staging"
+
 set :output, {
   :error => File.join(path, "log", "cron_error.log"),
   :standard => File.join(path, "log", "cron.log")
