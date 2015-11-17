@@ -40,16 +40,16 @@ class User < ActiveRecord::Base
 
   include Models::Identities
 
-  class EmailValidator < ActiveModel::Validator
-    def validate(record)
-      if record.new_record? and Kol.exists?(:email=>record.email)
-        record.errors[:email] << @l.t('register.email_already_taken')
-      end
-    end
-  end
-
-  validates_with EmailValidator
-
+  # class EmailValidator < ActiveModel::Validator
+  #   def validate(record)
+  #     if record.new_record? and Kol.exists?(:email=>record.email)
+  #       record.errors[:email] << @l.t('register.email_already_taken')
+  #     end
+  #   end
+  # end
+  #
+  # validates_with EmailValidator
+  #
   extend FriendlyId
   friendly_id :email, use: :slugged
 

@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   post '/users/follow' => 'users#follow'
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
+  post '/kols/send_sms/' => 'kols#send_sms'
   get '/kols/new' => 'kols#create'
   put '/kols/monetize' => 'kols#update_monetize'
 

@@ -43,14 +43,20 @@
     </div>
   </div>
   <% if (Robin.chinaInstance) { %>
-  <div id="china">
-    <div class="row">
-      <div class="small-12 columns social-login">
-        <button class="btn btn-weibo" id="weibo"><i class="fa fa-weibo"></i>
-          <span><%= polyglot.t("login.weibo_login") %></span></button>
+    <div id="china">
+      <div class="row" style="margin-bottom: 40px">
+        <div class="small-12 columns social-login">
+          <a href="#"><img src="/assets/public_webchat_login.png"></a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="small-12 columns social-login">
+          <button class="btn btn-weibo" id="weibo"><i class="fa fa-weibo"></i>
+            <span><%= polyglot.t("login.weibo_login") %></span></button>
+        </div>
       </div>
     </div>
-  </div>
   <% } else { %>
   <div id="world">
     <div class="row">
@@ -67,6 +73,6 @@
     </div>
   </div>
   <% } %>
-  
+
 
 </div>

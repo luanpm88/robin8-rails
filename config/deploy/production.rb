@@ -17,10 +17,9 @@
 
 if ENV['china_instance'] == 'Y'
   server '139.196.14.144', user: 'deployer', roles: %w{web app db}
-  set :branch, 'development_cn'
+  set :branch, 'master_cn'
 else
-  server '139.196.36.27', user: 'deployer', roles: %w{web app db}
-  set :branch, 'development_chinese_marketplace'
+
 end
 
 set :rails_env, "production"

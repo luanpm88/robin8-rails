@@ -55,8 +55,8 @@
               <%= polyglot.t('dashboard_kol.profile_tab.male_female') %>
             </div>
           </div>
-          <div class="age-group">
-            <div class="col-md-10 cell ">
+          <div class="mf-row">
+            <div class="col-md-11 cell ">
               <% _(mf).each(function(v, i) { %>
               <input type="radio" name="mf" value="mf_<%= i %>" id="mf_<%= i %>" <%= checked('mf', i, k) %> />
               <label class="mf-label radio-inline radio-btns label-profile" for="mf_<%= i %>"><%= v %></label>

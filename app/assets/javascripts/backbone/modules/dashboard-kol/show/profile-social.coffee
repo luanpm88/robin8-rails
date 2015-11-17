@@ -2,7 +2,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
   login_template = _.template """
     <div class="col-md-2 cell">
-      <button class="btn full-width social-login" id="<%= provider %>"><%= polyglot.t('dashboard_kol.profile_tab.add_account') %></button>
+      <button class="btn full-width social-login" id="<%= provider %>"><%= polyglot.t('dashboard_kol.profile_tab.login_social') %></button>
     </div>
   """
   logged_in_template = _.template """
@@ -70,7 +70,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         if @connect_window.closed
           clearInterval @interval
           $.get "/kols/get_current_kol", (data) =>
-            console.log data.provide_info
             #  有错误返回，表示添加没有成功
             if data.provide_info.error
               swal(data.provide_info.error);
@@ -79,10 +78,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
               App.currentKOL.set "identities", data.identities
               $.growl "#{polyglot.t('common.add_success')}", type: "success",
 #              Backbone.trigger('showSocialAccount',new Robin.Models.Identity(data.identities[0]));
-              parent.refreshSocialList()
+              parent.refreshSocialList(data.identities)
               setTimeout ->
                 identity_id = data.provide_info.identity.id
-                console.log ".identity-#{identity_id} .edit-account"
                 $(".identity-" + identity_id + " .edit-account").trigger("click")
               , 200
 
@@ -118,14 +116,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
           this.showSocialAccount(c)
 
     showSocialAccount: (identity) ->
-      console.log "modal_account"
       if this.getRegion('modal_account')
-        console.log identity
         @modal_account_view = new Show.ProfileSocialModalAccount
           model: identity
           title: "edit_social"
           parent: this
-        console.log @modal_account_view
         @showChildView 'modal_account', @modal_account_view
         @ui.modal_account.modal('show')
 

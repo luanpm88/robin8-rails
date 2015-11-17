@@ -93,7 +93,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @social_list_view = new Show.ProfileSocialListView
         collection: socialList
         parent: this
-      if collection && collection.size > 0
+      if collection && collection.length > 0
+        console.log "passed collection"
         @showChildView 'social_list', @social_list_view
       else
         socialList.fetch
@@ -107,12 +108,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       chinaBirthdateOptions = {
         ignoreReadonly: true,
         format: 'YYYY-MM-DD',
-        locale: 'zh-cn'
+        locale: 'zh-cn',
+        maxDate: new Date()
       }
       usBirthdateOptions = {
         ignoreReadonly: true,
         format: 'MM/DD/YYYY',
-        locale: 'en-gb'
+        locale: 'en-gb',
+        maxDate: new Date()
       }
       if Robin.chinaLocale
         @ui.datetimepicker.datetimepicker(chinaBirthdateOptions);
@@ -210,6 +213,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @ui.birthdate.click()
 
     checkCountry: ->
+      console.log @ui.country_select
       if @ui.country_select.val() == ''
         @ui.region_select.attr('disabled', 'disabled')
         @ui.city_input.val ''
@@ -240,6 +244,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         return if @model.toJSON() == @initial_attrs
         @model.save @model.attributes,
           success: (m, r) =>
+            if m.attributes.first_name != @initial_attrs.first_name  || m.attributes.last_name != @initial_attrs.last_name
+              Robin.vent.trigger("nameChanged", m.attributes.first_name + ' ' + m.attributes.last_name );
             @initial_attrs = m.toJSON()
             App.currentKOL.set m.attributes
             App.currentKOL.attributes.current_password = "";
