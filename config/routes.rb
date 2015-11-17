@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   end
   put 'identities/:id' => "identities#update"
 
+  get 'wechat_third/callback'
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   mount Sidekiq::Web => '/sidekiq'
@@ -22,6 +24,11 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks",
     confirmations: "users/confirmations"
   }
+
+  devise_scope :user do
+    get 'auth/wechat_third', :to  => "omniauth_callbacks#wechat_third"
+  end
+
 
   get 'recommendations/analyse_tweets' => 'recommendations#analyse_tweets'
   get 'recommendations/index' => 'recommendations#index'

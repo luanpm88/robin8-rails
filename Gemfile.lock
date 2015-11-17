@@ -717,7 +717,7 @@ DEPENDENCIES
   omniauth-linkedin
   omniauth-linkedin-oauth2
   omniauth-twitter
-  omniauth-wechat-oauth2
+  omniauth-wechat-oauth2!
   omniauth-weibo-oauth2
   paperclip (~> 4.2.1)
   prawn
