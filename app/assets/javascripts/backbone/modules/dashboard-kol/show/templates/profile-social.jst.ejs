@@ -16,3 +16,10 @@
   <!--</div>-->
 </div>
 
+<div class="row">
+  <div class="col-md-1 cell">
+    <img src="<%= AppAssets.images['wechat-logo.png'] %>" width="50" class="social_img" />
+  </div>
+  <div class="col-md-1 cell social-label"><%= polyglot.t('dashboard_kol.profile_tab.public') %></div>
+  <%= social_login('wechat_third', {}) %>
+</div>

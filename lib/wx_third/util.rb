@@ -34,7 +34,7 @@ module WxThird
         component_access_token = Rails.cache.read(component_access_token_key(AppId))
         return component_access_token     if component_access_token.present?
         postData = {"component_appid" => AppId, "component_appsecret" => AppSecret,
-                    "component_verify_ticket" => Rails.cache.get(component_verify_ticket_key(AppId))}
+                    "component_verify_ticket" => Rails.cache.read(component_verify_ticket_key(AppId))}
         res = RestClient::post(ComponentTokenUrl, postData.to_json)
         # 解析返回的数据
         retData = JSON.parse(res.body)

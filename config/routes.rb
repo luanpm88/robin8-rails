@@ -25,8 +25,12 @@ Rails.application.routes.draw do
     confirmations: "users/confirmations"
   }
 
+
   devise_scope :user do
-    get 'auth/wechat_third', :to  => "omniauth_callbacks#wechat_third"
+    match "users/auth/wechat_third" => "users/omniauth_callbacks#wechat_third", :via => [:get, :post]
+    match "users/auth/wechat_third_callback" => "users/omniauth_callbacks#wechat_third_callback", :via => [:get, :post]
+    # get '/auth/wechat_third', :to  => "omniauth_callbacks#wechat_third"
+    # get '/auth/wechat_third_callback', :to  => "omniauth_callbacks#wechat_third_callback"
   end
 
 
