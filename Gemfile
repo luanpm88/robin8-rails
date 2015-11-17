@@ -109,6 +109,8 @@ gem 'omniauth-weibo-oauth2'
 gem "omniauth-wechat-oauth2", git: 'https://github.com/yangsr/omniauth-wechat-oauth2.git'
 gem 'active_model_serializers', "~> 0.8.0"
 
+gem 'qy_wechat', '~> 1.0.1'
+
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'

@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   end
   put 'identities/:id' => "identities#update"
 
-  get 'wechat_third/callback'
+  get '/wechat_third/notify'
+  get '/wechat_third/:app_id/callback' => "webchat_third#callback"
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -29,8 +30,6 @@ Rails.application.routes.draw do
   devise_scope :user do
     match "users/auth/wechat_third" => "users/omniauth_callbacks#wechat_third", :via => [:get, :post]
     match "users/auth/wechat_third_callback" => "users/omniauth_callbacks#wechat_third_callback", :via => [:get, :post]
-    # get '/auth/wechat_third', :to  => "omniauth_callbacks#wechat_third"
-    # get '/auth/wechat_third_callback', :to  => "omniauth_callbacks#wechat_third_callback"
   end
 
 

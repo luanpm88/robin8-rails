@@ -17,7 +17,7 @@
 
 if ENV['china_instance'] == 'Y'
   server '139.196.36.27', user: 'deployer', roles: %w{web app db}
-  set :branch, 'staging_cn'
+  set :branch, 'ROBIN8CN-55_wechat_login'
 else
 
 end

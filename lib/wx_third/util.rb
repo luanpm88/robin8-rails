@@ -4,11 +4,14 @@ module WxThird
     State = '11223312abcdfefewf'
     AppId = Rails.application.secrets[:wechat_third][:app_id]
     AppSecret = Rails.application.secrets[:wechat_third][:app_secret]
+    AesKey = Rails.application.secrets[:wechat_third][:aes_key]
     ComponentTokenUrl =  'https://api.weixin.qq.com/cgi-bin/component/api_component_token'
+
     class << self
       preuth_code_url = lambda{|access_token|"https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token=#{access_token}"}
       query_auth_url = lambda{|access_token| "https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token=#{access_token}"}
       get_authorizer_info = lambda{|access_token|"https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token=#{access_token}" }
+
       # 保存 component_verify_ticket 的key
       def component_verify_ticket_key(appid)
         appid + "_component_verify_ticket"
@@ -39,6 +42,7 @@ module WxThird
         # 解析返回的数据
         retData = JSON.parse(res.body)
         p "get_component_access_token:retData->"+retData.to_s
+        return nil if retData['errorcode']
         component_access_token = retData["component_access_token"]
         expiresIn = retData["expires_in"]
         Rails.cache.write(component_access_token_key(AppId), component_access_token, expires_in: expiresIn.to_i - 60 )
