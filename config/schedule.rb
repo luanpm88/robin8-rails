@@ -35,7 +35,7 @@ every 1.day, :at => '5:00 am' do
   rake "-s sitemap:refresh"
 end
 
-every 5.minutes do
+every 2.minutes do
   command "backup perform --trigger robin8_development"
 end
 

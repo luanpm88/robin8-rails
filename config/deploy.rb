@@ -47,6 +47,8 @@ set :ssh_options, {:forward_agent => true}
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
 namespace :deploy do
   task :upload_localization do
     on roles(:app)  do
