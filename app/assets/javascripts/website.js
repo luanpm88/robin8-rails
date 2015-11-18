@@ -36,7 +36,7 @@ $(function(){
       count--;
     }
 
-    if (phone_number.match(/^0?1[3578]\d{9}$/)){
+    if (!production || (production && phone_number.match(/^0?1[3578]\d{9}$/))){
       $.ajax({
         method: "POST",
         url: "/kols/send_sms",
@@ -44,8 +44,7 @@ $(function(){
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
           },
          data: {"phone_number": phone_number}
-      })
-        .done(function(data) {
+      }).done(function(data) {
           if (data["not_unique"]) {
             $(".not_unique_number").show();
             $(".not_unique_number").siblings().hide();
