@@ -18,7 +18,7 @@ class Identity < ActiveRecord::Base
 
   # 查找 微信第三方平台账号
   def self.find_by_third_authorize(authorizer_info, current_kol = nil)
-    identity =  find_by(:provider => WxThirdProvider, :uid => authorizer_infoe["appid"])
+    identity =  find_by(:provider => WxThirdProvider, :uid => authorizer_info["appid"])
     if !identity
       auth = {}
       auth[:uid] = authorizer_info["appid"]

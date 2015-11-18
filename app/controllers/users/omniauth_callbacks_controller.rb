@@ -101,7 +101,7 @@ module Users
         authorization_info = auth_info["authorization_info"]
         #授权成功
         if authorization_info && authorization_info.has_key?("authorizer_access_token")
-          # authorizer_appid = authorization_info["authorizer_appid"]
+          authorizer_appid = authorization_info["authorizer_appid"]
           # authorizer_refresh_token = authorization_info["authorizer_refresh_token"]
           # expires_in = authorization_info["expires_in"]
           # 获取授权公众账号的信息

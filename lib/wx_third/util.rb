@@ -16,7 +16,7 @@ module WxThird
       def query_auth_url(access_token)
         "https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token=#{access_token}"
       end
-      def get_authorizer_info(access_token)
+      def get_authorizer_info_url(access_token)
         "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token=#{access_token}"
       end
 
@@ -42,9 +42,7 @@ module WxThird
 
       # 获取第三方平台令牌（component_access_token）
       def get_component_access_token
-        $util_logger.info("-------enter--get_component_access_token")
         component_access_token = Rails.cache.read(component_access_token_key(AppId))
-        $util_logger.info("-------enter--component_access_token--#{component_access_token}")
         return component_access_token     if component_access_token.present?
         postData = {"component_appid" => AppId, "component_appsecret" => AppSecret,
                     "component_verify_ticket" => Rails.cache.read(component_verify_ticket_key(AppId))}
@@ -71,7 +69,7 @@ module WxThird
         component_access_token = get_component_access_token
         return nil if component_access_token.blank?
         postData = {"component_appid" => AppId}
-        res = RestClient::post(preauth_code_url.call(component_access_token), postData.to_json)
+        res = RestClient::post(preauth_code_url(component_access_token), postData.to_json)
         retData = JSON.parse(res.body)
         $util_logger.info("----------get_pre_auth_code-----retData #{retData}--")
         p "get_pre_auth_code:retData -->"+retData.to_s
@@ -90,19 +88,19 @@ module WxThird
         $util_logger.info("----------query_auth_info-------")
         component_access_token = get_component_access_token
         post_data = {"component_appid" => AppId, "authorization_code" => auth_code}
-        ret = RestClient::post(query_auth_url.call(component_access_token), post_data.to_json)
+        ret = RestClient::post(query_auth_url(component_access_token), post_data.to_json)
         $util_logger.info("----------query_auth_info--body--#{JSON.parse(ret.body)}---")
         return JSON.parse(ret.body)
       end
 
       # 查询已授权公众账号的详细信息
       def get_authorizer_info(authorizer_appid)
-        $util_logger.info("----------get_authorizer_info-------")
         component_access_token = get_component_access_token
+        Rails.logger.info("----------get_authorizer_info---component_access_token:#{component_access_token}----")
         return nil if   component_access_token.blank?
         post_data = {"component_appid"=> AppId, "authorizer_appid"=> authorizer_appid}
-        res = RestClient::post(get_authorizer_info.call(post_data),post_data.to_json)
-        $util_logger.info("----------get_authorizer_info------JSON.parse(res.body)-#{JSON.parse(res.body)}-----")
+        res = RestClient::post(get_authorizer_info_url(component_access_token),post_data.to_json)
+        Rails.logger.info("----------get_authorizer_info------JSON.parse(res.body)-#{JSON.parse(res.body)}-----")
         JSON.parse(res.body)
       end
 
