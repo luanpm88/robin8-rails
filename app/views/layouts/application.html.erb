@@ -37,7 +37,8 @@
   $(document).ready(function() {
     Robin.chinaInstance = <%= china_instance?  %>;
     Robin.chinaLocale = <%= china_locale? %>;
-    Robin.chinaRequest = <%= china_request? %>
+    Robin.chinaRequest = <%= china_request? %>;
+    Robin.production = <%= production? %>;
     Robin.start();
   });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});

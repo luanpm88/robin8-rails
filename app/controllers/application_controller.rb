@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :china_request?
   helper_method :china_locale?
   helper_method :mobile_request?
+  helper_method :production?
 
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
@@ -33,6 +34,10 @@ class ApplicationController < ActionController::Base
     (request.location && request.location.country.to_s == "China") || (china_instance? && request.location.ip == '127.0.0.1'  rescue false)
   end
   alias_method :china_request?, :is_china_request?
+
+  def production?
+    Rails.env.production?
+  end
 
   def set_translations
     default_locale = china_instance? ? 'zh' : 'en'
