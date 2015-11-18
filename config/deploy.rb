@@ -78,6 +78,7 @@ namespace :deploy do
   #after :publishing, :restart
   after :publishing, 'unicorn:restart'
   after :publishing, :upload_localization
+  after :publishing, :update_crontab
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
