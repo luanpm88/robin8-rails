@@ -4,7 +4,7 @@
 <form id="score_form">
 <div id="score-data">
   <div id="top-row" class="row">
-    <div class="col-md-2 text-center kol-avatar">
+    <div class="col-sm-2 col-md-2 text-center kol-avatar">
       <div class="text-center" id="image-uploader-custom">
         <img src="<%= AppAssets.path('noavatar.png') %>" id="avatar-image" class="avatar" alt="avatar" width="150" height="150" />
       </div>
@@ -13,19 +13,20 @@
              data-max-size="3145728"
              data-images-only="true"/>
     </div>
-    <div class="col-sm-8 col-lg-5 chart_column">
+    <div class='col-xs-12 col-sm-9 profile_completion'>
 
     </div>
-    <div class="col-md-5 graph_column">
 
-    </div>
   </div>
 
 </div>
 
 <div class="campaigns-tables-title my_value_title">
   <span><%= polyglot.t('dashboard_kol.score_tab.tables_title2') %></span>
-  <%= polyglot.t('dashboard_kol.score_tab.tables_title3') %>
+</div>
+
+<div class="panel-group" id="value-data" role="tablist" aria-multiselectable="true">
+
 </div>
 
 </form>

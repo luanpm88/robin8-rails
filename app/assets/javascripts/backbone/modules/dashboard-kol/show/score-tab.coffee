@@ -14,6 +14,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       'click @ui.back': 'back'
       'change @ui.check_all': 'check_all'
 
+    regions:
+      value_data: '#value-data'
+      profile_completion: '.profile_completion'
 
     serializeData: () ->
       k: @model.toJSON()
@@ -64,9 +67,31 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       @model_binder.bind @model, @el
       @$el.find('input[type=checkbox][checked]').prop('checked', 'checked')  # I❤js
       self = this
+      @initCompletionList()
+      @initValueList()
       @ui.form.validator()
       @ui.form.ready(self.init(self))
 
+    initCompletionList: ->
+      socialList = new Robin.Collections.Identities
+      @completion_view = new Show.ProfileCompletionView
+        collection: socialList
+      socialList.fetch
+        success: (c, r, o) =>
+          this.getRegion('profile_completion').show(@completion_view)
+
+    initValueList: ->
+      socialList = new Robin.Collections.Identities
+      @value_view = new Show.ProfileValueListView
+        collection: socialList
+        parent: this
+      socialList.fetch
+        success: (c, r, o) =>
+          @showChildView 'value_data', @value_view
+
+    childEvents:
+      'rerender:socialValue': (childView) ->
+        @initValueList()
 
     init: (self) ->
       self.initFormValidation()
@@ -76,7 +101,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
       @.$el.find("input:checkbox:checked").prop('value', '1')
 
-      @.$('input[type="checkbox"]').checkboxX({threeState: false, size:'lg'})
+      @.$('input[type="checkbox"]').checkboxX({threeState: false, size:'sm'})
 
     onShow: () ->
       if @model.attributes.avatar_url
@@ -228,6 +253,3 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         .data('fv.messages')
         .find('.help-block[data-fv-for="' + data.field + '"]').hide()
       )
-
-
-
