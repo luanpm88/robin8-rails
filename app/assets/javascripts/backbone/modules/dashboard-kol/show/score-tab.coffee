@@ -77,7 +77,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       @completion_view = new Show.ProfileCompletionView
         collection: socialList
       socialList.fetch
-        success: (c, r, o) =>
+        success: (collection, res, opts) =>
           this.getRegion('profile_completion').show(@completion_view)
 
     initValueList: ->
@@ -86,7 +86,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         collection: socialList
         parent: this
       socialList.fetch
-        success: (c, r, o) =>
+        success: (collection, res, opts) =>
           @showChildView 'value_data', @value_view
 
     childEvents:

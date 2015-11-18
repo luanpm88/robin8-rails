@@ -23,8 +23,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       identity_id = e.target.id
       identity = new Robin.Models.Identity {id: identity_id}
       identity.fetch
-        success: (c, r, o) =>
-          this.showSocialAccount c
+        success: (collection, res, opts) =>
+          this.showSocialAccount collection
 
     showSocialAccount: (identity) ->
       if this.getRegion 'modal_account'
