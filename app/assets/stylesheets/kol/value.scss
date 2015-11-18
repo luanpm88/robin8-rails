@@ -30,6 +30,10 @@
     padding: 5px 0;
   }
 
+  .my_value_title {
+    margin-bottom: 10px;
+  }
+
   .profile_completion {
     margin-left: 0 !important;
   }
@@ -38,6 +42,14 @@
     .panel-body {
       .social_task_table_default {
         width: 100% !important;
+        tr{
+          .fixed-table-td {
+            display: none;
+          }
+        }
+      }
+      .social_task_table_l {
+        border-right: 1px solid #ddd !important;
       }
     }
   }
@@ -80,11 +92,16 @@
 }
 
 .value_social_account {
-  margin-bottom: 20px !important;
+  margin-bottom: 10px !important;
   .panel-heading {
     background-color: #f4f4f4;
     padding: 5px 15px;
     border: 1px solid #ddd;
+  }
+
+  .value-collapsed-header {
+    font-size: 16px;
+    color: #007183;
   }
 
   .panel-body {
@@ -92,26 +109,37 @@
     border-top: 0 !important;
     .social_task_table_default {
       width: 50%;float: left;margin-bottom: 0;border-top: 0 !important;
+      .value-table-header-tr th {
+        font-size: 15px;
+        height: 45px;
+        line-height: 25px;
+        padding-left: 30px;
+      }
       th {
         border-bottom: 0;
         font-weight: normal;
       }
-      td {
-        label {
-          font-weight: normal;
-          margin-bottom: 0;
-          width: 100%;
-          .cbx-container {
-            display: block;float: left;
-          }
-          p {
-            display: block;float: left;width: 75%;margin-bottom: 0;
-          }
-          span {
-            display: block;float: left;width: 15%;text-align: right;
-          }
-          input {
-            display: block;float: left;margin-right: 10px;
+      tr {
+        .fixed-table-td {
+          height: 43px;
+        }
+        td {
+          label {
+            font-weight: normal;
+            margin-bottom: 0;
+            width: 100%;
+            .cbx-container {
+              display: block;float: left;
+            }
+            p {
+              display: block;float: left;width: 75%;margin-bottom: 0;
+            }
+            span {
+              display: block;float: left;width: 15%;text-align: right;
+            }
+            input {
+              display: block;float: left;margin-right: 10px;
+            }
           }
         }
       }

@@ -2,16 +2,16 @@
   <div class="panel panel-default value_social_account">
     <div class="panel-heading" role="tab" id="social-<%= item.provider %>-<%= item.id %>-header">
       <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#social-<%= item.provider %>-<%= item.id %>" aria-expanded="true" aria-controls="social-<%= item.provider %>-<%= item.id %>">
-          <%= item.name %>
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#social-<%= item.provider %>-<%= item.id %>" aria-expanded="true" aria-controls="social-<%= item.provider %>-<%= item.id %>" class='value-collapsed-header'>
+          Account: <%= item.provider %> <%= item.name %>
         </a>
       </h4>
     </div>
-    <div id="social-<%= item.provider %>-<%= item.id %>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="socialweibooneheader">
+    <div id="social-<%= item.provider %>-<%= item.id %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="socialweibooneheader">
       <div class="panel-body">
         <table class='table table-bordered social_task_table_default social_task_table_l'>
           <thead>
-            <tr>
+            <tr class='value-table-header-tr'>
               <th><%= polyglot.t('dashboard_kol.profile_tab.online_tasks') %></th>
             </tr>
           </thead>
@@ -44,11 +44,15 @@
                 </label>
               </td>
             </tr>
+            <tr>
+              <td class='fixed-table-td'>
+              </td>
+            </tr>
           </tbody>
         </table>
         <table class='table table-bordered social_task_table_default social_task_table_r'>
           <thead>
-            <tr>
+            <tr class='value-table-header-tr'>
               <th><%= polyglot.t('dashboard_kol.profile_tab.offline_tasks') %></th>
             </tr>
           </thead>
