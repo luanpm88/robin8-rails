@@ -84,6 +84,9 @@ GEM
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     aylien_text_api (0.2.0)
+    backup (3.4.0)
+      open4 (~> 1.3.0)
+      thor (>= 0.15.4, < 2)
     bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -335,6 +338,7 @@ GEM
     omniauth-weibo-oauth2 (0.4.0)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
+    open4 (1.3.4)
     orm_adapter (0.5.0)
     paperclip (4.2.2)
       activemodel (>= 3.0.0)
@@ -668,6 +672,7 @@ DEPENDENCIES
   activeresource
   aws-sdk-v1
   aylien_text_api
+  backup
   bundler (>= 1.7.0)
   byebug
   capistrano-bundler (~> 1.1.4)
