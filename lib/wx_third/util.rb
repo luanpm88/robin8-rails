@@ -5,6 +5,7 @@ module WxThird
     AppId = Rails.application.secrets[:wechat_third][:app_id]
     AppSecret = Rails.application.secrets[:wechat_third][:app_secret]
     AesKey = Rails.application.secrets[:wechat_third][:aes_key]
+    DescryToken = Rails.application.secrets[:wechat_third][:descry_token]
     ComponentTokenUrl =  'https://api.weixin.qq.com/cgi-bin/component/api_component_token'
 
     class << self

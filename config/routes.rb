@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   end
   put 'identities/:id' => "identities#update"
 
-  get '/wechat_third/notify'
-  get '/wechat_third/:app_id/callback' => "webchat_third#callback"
+  match '/wechat_third/notify', :via => [:get, :post]
+  match '/wechat_third/:app_id/callback' => "webchat_third#callback", :via => [:get, :post]
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
