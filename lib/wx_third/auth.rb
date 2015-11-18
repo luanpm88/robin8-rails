@@ -11,7 +11,7 @@ module WxThird
       #通过code换取access_token 等等信息
       def get_app_auth_info(appid, code)
         component_access_token = Util.get_component_access_token
-        url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=#{appid}&code=#{code}&grant_type=authorization_code&component_appid=#{SHAKE_APPID}&component_access_token=#{component_access_token}"
+        url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=#{appid}&code=#{code}&grant_type=authorization_code&component_appid=#{AppId}&component_access_token=#{component_access_token}"
         res = RestClient::get(url)
         JSON.parse(res.body)
       end
@@ -20,7 +20,7 @@ module WxThird
       #刷新access_token
       def refresh_app_auth_access_token(appid, refresh_token)
         return if appid.nil? || refresh_token.nil?
-        url = "https://api.weixin.qq.com/sns/oauth2/component/refresh_token?appid=#{appid}&grant_type=refresh_token&component_appid=#{SHAKE_APPID}&component_access_token=#{WxUtil.get_component_access_token}&refresh_token=#{refresh_token}"
+        url = "https://api.weixin.qq.com/sns/oauth2/component/refresh_token?appid=#{appid}&grant_type=refresh_token&component_appid=#{AppId}&component_access_token=#{WxUtil.get_component_access_token}&refresh_token=#{refresh_token}"
         res = RestClient::get(url)
         ret = JSON.parse(res.body)
         p "refresh_app_auth_access_token = #{ret.to_s}"

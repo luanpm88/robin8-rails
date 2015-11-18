@@ -14,11 +14,14 @@ class WechatThirdController < ApplicationController
     content = QyWechat::Prpcrypt.decrypt(aes_key, @encrypt_msg, WxThird::Util::AppId)[0]
     # 解密后的数据
     decrypt_msg = MultiXml.parse(content)["xml"]
+    Rails.logger.error("--------decrypt_msg - #{decrypt_msg.inspect} --")
+    $webchat_logger.info("--------decrypt_msg - #{decrypt_msg.inspect} --")
     if decrypt_msg
       # ticket 事件
       if decrypt_msg["InfoType"] == "component_verify_ticket"
-        $webchat_logger.info("-------component_verify_ticket---#{decrypt_msg['ComponentVerifyTicket']}")
-        Rails.cache.write(WxThird::Util.component_verify_ticket_key(WxThird::Util::AppId), decrypt_msg["ComponentVerifyTicket"])
+        ticket = decrypt_msg['ComponentVerifyTicket']
+        $webchat_logger.info("-------component_verify_ticket---#{ticket}")
+        Rails.cache.write(WxThird::Util.component_verify_ticket_key(WxThird::Util::AppId), ticket)
       end
       # 最终返回成功就行
       render :text => "success"
@@ -40,9 +43,11 @@ class WechatThirdController < ApplicationController
       nonce = params["nonce"]
       msg_signature = params["msg_signature"]
       xml = MultiXml.parse(request.raw_post)["xml"]   rescue {}
+      $webchat_logger.info("--------xml - #{xml.inspect} --")
       @encrypt_msg = xml["Encrypt"]
       @request_app_id = xml["AppId"]
-      sort_params = [WxThird::Util::DescryToken, timestamp, nonce, encrypt_msg].sort.join
+      $webchat_logger.info("-------- @encrypt_msg - #{ @encrypt_msg} ---@request_app_id-#{@request_app_id}-")
+      sort_params = [WxThird::Util::DescryToken, timestamp, nonce, @encrypt_msg].sort.join
       current_signature = Digest::SHA1.hexdigest(sort_params)
       $webchat_logger.info("--------params[xml] - #{WxThird::Util::AppId == @request_app_id} --")
       $webchat_logger.info("--------params[xml] - #{current_signature == msg_signature} --")

@@ -7,11 +7,18 @@ module WxThird
     AesKey = Rails.application.secrets[:wechat_third][:aes_key]
     DescryToken = Rails.application.secrets[:wechat_third][:descry_token]
     ComponentTokenUrl =  'https://api.weixin.qq.com/cgi-bin/component/api_component_token'
+    $util_logger = Logger.new("#{Rails.root}/log/util.log")
 
     class << self
-      preuth_code_url = lambda{|access_token|"https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token=#{access_token}"}
-      query_auth_url = lambda{|access_token| "https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token=#{access_token}"}
-      get_authorizer_info = lambda{|access_token|"https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token=#{access_token}" }
+      def preauth_code_url(access_token)
+        "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token=#{access_token}"
+      end
+      def query_auth_url(access_token)
+        "https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token=#{access_token}"
+      end
+      def get_authorizer_info(access_token)
+        "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token=#{access_token}"
+      end
 
       # 保存 component_verify_ticket 的key
       def component_verify_ticket_key(appid)
@@ -35,55 +42,67 @@ module WxThird
 
       # 获取第三方平台令牌（component_access_token）
       def get_component_access_token
+        $util_logger.info("-------enter--get_component_access_token")
         component_access_token = Rails.cache.read(component_access_token_key(AppId))
+        $util_logger.info("-------enter--component_access_token--#{component_access_token}")
         return component_access_token     if component_access_token.present?
         postData = {"component_appid" => AppId, "component_appsecret" => AppSecret,
                     "component_verify_ticket" => Rails.cache.read(component_verify_ticket_key(AppId))}
         res = RestClient::post(ComponentTokenUrl, postData.to_json)
         # 解析返回的数据
         retData = JSON.parse(res.body)
+        $util_logger.info("----------#{retData.to_s}")
         p "get_component_access_token:retData->"+retData.to_s
         return nil if retData['errorcode']
         component_access_token = retData["component_access_token"]
         expiresIn = retData["expires_in"]
         Rails.cache.write(component_access_token_key(AppId), component_access_token, expires_in: expiresIn.to_i - 60 )
+        $util_logger.info("----------component_access_token#{component_access_token}")
         component_access_token
       end
 
 
       # 获取预授权码
       def get_pre_auth_code
+        $util_logger.info("----------get_pre_auth_code----")
         pre_auth_code = Rails.cache.read(pre_auth_code_key(AppId))
+        $util_logger.info("-------enter--pre_auth_code--pre_auth_code:#{pre_auth_code}")
         return pre_auth_code if pre_auth_code.present?
         component_access_token = get_component_access_token
         return nil if component_access_token.blank?
-        postData = {"component_appid" => SHAKE_APPID}
-        res = RestClient::post(preuth_code_url.call(component_access_token), postData.to_json)
+        postData = {"component_appid" => AppId}
+        res = RestClient::post(preauth_code_url.call(component_access_token), postData.to_json)
         retData = JSON.parse(res.body)
+        $util_logger.info("----------get_pre_auth_code-----retData #{retData}--")
         p "get_pre_auth_code:retData -->"+retData.to_s
         pre_auth_code = retData["pre_auth_code"]
         pre_auth_code_expiresIn = retData["expires_in"]
         p "get_pre_auth_code ->pre_auth_code:#{pre_auth_code}  preAuthCodeExpiresIn:#{pre_auth_code_expiresIn}"
         #保存新的 pre_auth_code
-        Rails.cache.write(pre_auth_code_key(SHAKE_APPID), pre_auth_code, :expires_in => pre_auth_code_expiresIn.to_i - 60)
+        Rails.cache.write(pre_auth_code_key(AppId), pre_auth_code, :expires_in => pre_auth_code_expiresIn.to_i - 60)
+        $util_logger.info("----------get_pre_auth_code-----pre_auth_code #{pre_auth_code}--")
         pre_auth_code
       end
 
 
       # 使用授权码换取公众号的授权信息
       def query_auth_info(auth_code)
+        $util_logger.info("----------query_auth_info-------")
         component_access_token = get_component_access_token
         post_data = {"component_appid" => AppId, "authorization_code" => auth_code}
         ret = RestClient::post(query_auth_url.call(component_access_token), post_data.to_json)
+        $util_logger.info("----------query_auth_info--body--#{JSON.parse(ret.body)}---")
         return JSON.parse(ret.body)
       end
 
       # 查询已授权公众账号的详细信息
       def get_authorizer_info(authorizer_appid)
+        $util_logger.info("----------get_authorizer_info-------")
         component_access_token = get_component_access_token
         return nil if   component_access_token.blank?
         post_data = {"component_appid"=> AppId, "authorizer_appid"=> authorizer_appid}
         res = RestClient::post(get_authorizer_info.call(post_data),post_data.to_json)
+        $util_logger.info("----------get_authorizer_info------JSON.parse(res.body)-#{JSON.parse(res.body)}-----")
         JSON.parse(res.body)
       end
 
