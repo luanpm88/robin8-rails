@@ -25,6 +25,8 @@ end
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
 
+set :stage, "staging"
+
 set :rails_env, "staging"
 
 set :rbenv_ruby, '2.2.0'
