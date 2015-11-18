@@ -1,5 +1,13 @@
 module Yunpian
   class SmsClient
+    FAKE_PHONE = {
+      '88688' => '18621667659', '0006' => '13817164642'
+    }
+
+    def self.fake_phone(phone)
+      FAKE_PHONE[phone[0, 4]] || phone
+    end
+
     def initialize(phone_number,
                    api_key = Rails.application.secrets.yunpian[:api_key],
                    company_sign = Rails.application.secrets.yunpian[:company_sign])
@@ -8,8 +16,10 @@ module Yunpian
       @company_sign = company_sign
     end
 
+
     def send_sms
       return if @phone_number.blank?
+      @phone_number = SmsClient.fake_phone(@phone_number)     rescue   @phone_number
 
       code = security_code
       write_cache_for @phone_number, code
