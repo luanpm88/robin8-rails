@@ -36,7 +36,7 @@ $(function(){
       count--;
     }
 
-    if (!production || (production && phone_number.match(/^0?1[3578]\d{9}$/))){
+    if (!production || (production && phone_number.match(/^1[34578][0-9]{9}$/))){
       $.ajax({
         method: "POST",
         url: "/kols/send_sms",
@@ -44,14 +44,17 @@ $(function(){
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
           },
          data: {"phone_number": phone_number}
-      }).done(function(data) {
+      })
+        .done(function(data) {
+          $(".tips").children().hide();
           if (data["not_unique"]) {
+            $("#kol_mobile_number").css({"border-color": "red"})
             $(".not_unique_number").show();
             $(".not_unique_number").siblings().hide();
           }
-
           else {
             if (data["code"]) {
+              $("#kol_mobile_number").css({"border-color": "red"})
               $(".send_sms_failed").show();
               $(".send_sms_failed").siblings().hide();
             }
@@ -62,7 +65,9 @@ $(function(){
             }
           }
         });
-
+    }
+    else {
+      $("#kol_mobile_number").focus().blur();
     }
   });
 });

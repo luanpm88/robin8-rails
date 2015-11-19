@@ -200,6 +200,7 @@ zh:
           attributes:
             email:
               taken: "已经存在"
+              invalid: 格式错误
             mobile_number:
               taken: "已经存在"
   addons:
@@ -612,7 +613,8 @@ zh:
     kols:
       agree: 通过注册，你已同意Robin8的<a href="/terms">服务条款。</a>
       email: "电子邮件"
-      email_error: "电子邮件不能为空"
+      email_is_blank: "电子邮件不能为空"
+      email_error: "请输入正确格式的电子邮箱"
       email_already_been_taken: "邮箱已存在"
       first_name: "名"
       fname_error: "名字不能为空"
@@ -623,8 +625,8 @@ zh:
       location_error: "地点不能为空"
       mobile_number: "手机号码"
       mobile_number_error: "手机号码不能为空"
-      mobile_number_already_token:  "手机号已存在"
-      mobile_format_error: "请输入正确的手机号码"
+      mobile_number_already_token:  "手机号码已存在"
+      mobile_format_error: "请输入正确格式的手机号码"
       number_and_code_unmatch: "手机号码和验证码不匹配"
       password: "密码"
       password_error: "密码必须大于7个字符"
