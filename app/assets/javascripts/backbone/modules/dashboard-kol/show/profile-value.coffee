@@ -1,39 +1,46 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
-  Show.ProfileValueListView = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/score-social-value-list'
+  Show.ProfileSocialValueContainer = Backbone.Marionette.LayoutView.extend
+    template: 'modules/dashboard-kol/show/templates/social-value-layout'
 
     ui:
       modal_account: '#modal-account'
 
+    regions:
+      modal_account: '#modal-account'
+      container: '#value-data-group'
+
+    initialize: () ->
+      @social_values = new Show.ProfileSocialValueList
+        collection: @collection
+      parentThis = this
+      @social_values.on 'childview:edit:account', (childView, model) ->
+        parentThis.showModal model
+
+    showModal: (model) ->
+      if @getRegion 'modal_account'
+        @modal_account_view = new Show.ProfileSocialModalAccount
+          model: model
+          parent: this
+          title: 'edit_social'
+        @getRegion('modal_account').show @modal_account_view
+        @ui.modal_account.modal 'show'
+
+    onRender: () ->
+      @getRegion('container').show @social_values
+
+  Show.ProfileSocialValueItem = Backbone.Marionette.ItemView.extend
+    template: 'modules/dashboard-kol/show/templates/social-value-item'
+
     events:
       'click .edit-account': 'editSocialAccount'
 
-    childEvents:
-      'save:edit': (childView) ->
-        this.triggerMethod 'rerender:socialValue'
-
-    regions:
-      modal_account: '#modal-account'
-
-    initialize: (opt) ->
-      @parent = opt.parent
+    initialize: () ->
+      _.bindAll(this, 'render')
+      @model.on('change', @render, this);
 
     editSocialAccount: (e) ->
       e.preventDefault()
-      identity_id = e.target.id
-      identity = new Robin.Models.Identity {id: identity_id}
-      identity.fetch
-        success: (collection, res, opts) =>
-          this.showSocialAccount collection
+      @trigger 'edit:account', @model
 
-    showSocialAccount: (identity) ->
-      if this.getRegion 'modal_account'
-        @modal_account_view = new Show.ProfileSocialModalAccount
-          model: identity
-          title: 'edit_social'
-          parent: this
-        @showChildView 'modal_account', @modal_account_view
-        @ui.modal_account.modal('show')
-
-    serializeData: ->
-      items: @collection.toJSON()
+  Show.ProfileSocialValueList = Backbone.Marionette.CollectionView.extend
+    childView: Show.ProfileSocialValueItem

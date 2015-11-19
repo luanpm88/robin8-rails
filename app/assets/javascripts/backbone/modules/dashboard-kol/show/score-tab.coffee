@@ -78,20 +78,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         collection: socialList
       socialList.fetch
         success: (collection, res, opts) =>
-          this.getRegion('profile_completion').show(@completion_view)
+          @getRegion('profile_completion').show(@completion_view)
 
     initValueList: ->
       socialList = new Robin.Collections.Identities
-      @value_view = new Show.ProfileValueListView
+      @value_view = new Show.ProfileSocialValueContainer
         collection: socialList
-        parent: this
       socialList.fetch
         success: (collection, res, opts) =>
-          @showChildView 'value_data', @value_view
-
-    childEvents:
-      'rerender:socialValue': (childView) ->
-        @initValueList()
+          @getRegion('value_data').show(@value_view)
 
     init: (self) ->
       self.initFormValidation()

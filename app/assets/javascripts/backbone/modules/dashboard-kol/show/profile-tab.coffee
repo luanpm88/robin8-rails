@@ -330,7 +330,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           @initial_attrs = m.toJSON()
           $.growl "You profile was saved successfully", {type: "success"}
           @parent_view.ui.modal_account.modal('hide')
-          this.triggerMethod 'save:edit'
           #TODO close modal (not refresh social-list beause not show any)
         error: (m, r) =>
           console.log "Error saving KOL profile. Response is:"
