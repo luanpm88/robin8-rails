@@ -1,7 +1,8 @@
 class KolsController < ApplicationController
 
   def get_current_kol
-    render json: current_kol, :methods => [:identities, :stats, :provide_info, :newest_identity]
+    render :json => current_kol.to_json({:include => {:identities =>  {:except => [:serial_params], :methods => [:total_tasks, :complete_tasks, :last30_posts]}} ,
+                                          :methods => [:provide_info, :newest_identity]})
   end
 
   def create
@@ -125,7 +126,7 @@ class KolsController < ApplicationController
   end
 
   def get_social_list
-    render :json => current_kol.identities, :methods => [:total_tasks, :last30_posts]
+    render :json => current_kol.identities, :methods => [:total_tasks, :complete_tasks, :last30_posts]
   end
 
   def send_sms

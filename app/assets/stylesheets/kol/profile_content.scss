@@ -120,7 +120,7 @@
         .item-header.weibo{
           background: #FD8149;
         }
-        .item-header.wechat{
+        .item-header.wechat, .item-header.wx_third{
           background: #49B44F;
         }
         .item-header{
@@ -129,7 +129,8 @@
           .left-avatar{
             line-height: 98px;
             float: left;
-            margin-left: 22px;
+            width: 25%;
+            text-align: right;
             img{
               width: 58px;
               height: 58px;
@@ -138,15 +139,19 @@
           }
           .right-info{
             float: left;
-            margin-left: 15px;
-            margin-top: 20px;
+            padding-left: 6%;
+            padding-right: 4%;
+            padding-top: 20px;
             color: #fff;
+            width: 75%;
             .nickname{
               font-size: 18px;
             }
             .desc{
               margin-top: 3px;
               font-size: 12px;
+              height: 30px;
+              overflow: hidden;
             }
           }
         }

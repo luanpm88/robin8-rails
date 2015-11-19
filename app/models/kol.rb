@@ -43,6 +43,10 @@ class Kol < ActiveRecord::Base
     error
   end
 
+  def newest_identity
+    identities.first
+  end
+
   class EmailValidator < ActiveModel::Validator
     def validate(record)
       if record.new_record? and User.exists?(:email=>record.email)

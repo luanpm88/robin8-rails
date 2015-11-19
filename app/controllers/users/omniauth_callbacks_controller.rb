@@ -35,46 +35,7 @@ module Users
             auth.info.urls[:Weibo]
           end
 
-          if current_user.nil? and current_kol.nil?
-            someone = User
-            if cookies[:kol_social] == "yeah"
-              someone = Kol
-              cookies[:kol_social] = "no"
-            end
-            @someone = someone.find_for_oauth(params)
-            if @someone
-              cookies[:kol_signin] = "no"
-              sign_in @someone
-              if @someone.class == Kol
-                cookies[:kol_signin] = "yeah"
-              end
-
-            else
-              redirect_to kols_new_path(auth_params: params)
-              return
-            end
-
-          else
-            @identity = Identity.find_for_oauth(params,current_kol)
-            if current_kol.nil?
-              if @identity.user != current_user
-                @identity.user = current_user
-                @identity.kol_id = nil
-                @identity.save
-              end
-            else
-              if @identity.kol != current_kol
-                @identity.kol = current_kol
-                @identity.user_id = nil
-                @identity.save
-              end
-            end
-          end
-          if request.env['omniauth.params']['provider'].nil?
-            render 'twitter_popup_close', :layout => false
-          else
-            redirect_to root_path
-          end
+          save_callback_info(params,auth)
         end
       }
     end
@@ -102,19 +63,57 @@ module Users
         #授权成功
         if authorization_info && authorization_info.has_key?("authorizer_access_token")
           authorizer_appid = authorization_info["authorizer_appid"]
-          # authorizer_refresh_token = authorization_info["authorizer_refresh_token"]
-          # expires_in = authorization_info["expires_in"]
           # 获取授权公众账号的信息
           authorizer_info_package = WxThird::Util.get_authorizer_info(authorizer_appid)
-          p "authorizer_info = #{authorizer_info_package.to_s}"
-          identity = Identity.find_by_third_authorize(authorizer_info_package)
-          render :json => {"result"=> "success"}.to_json
+          p "authorizer_info ==== #{authorizer_info_package.to_json}"
+          params = Identity.switch_package_to_params(authorizer_info_package)
+          save_callback_info(params, authorizer_info_package)
         end
-
       else
         render :json => {"result" => "failure"}.to_json
       end
+    end
 
+
+    private
+    def save_callback_info(params, origin_auth)
+      if current_user.nil? and current_kol.nil?
+        someone = User
+        if cookies[:kol_social] == "yeah"
+          someone = Kol
+          cookies[:kol_social] = "no"
+        end
+        @someone = someone.find_for_oauth(params)
+        if @someone
+          cookies[:kol_signin] = "no"
+          sign_in @someone
+          if @someone.class == Kol
+            cookies[:kol_signin] = "yeah"
+          end
+        else
+          return redirect_to kols_new_path(auth_params: params)
+        end
+      else
+        @identity = Identity.find_for_oauth(params, origin_auth, current_kol)
+        if current_kol.nil?
+          if @identity.user != current_user
+            @identity.user = current_user
+            @identity.kol_id = nil
+            @identity.save
+          end
+        else
+          if @identity.kol != current_kol
+            @identity.kol = current_kol
+            @identity.user_id = nil
+            @identity.save
+          end
+        end
+      end
+      if params[:provider].nil?  ||  params[:provider] == 'wx_third'
+        render 'twitter_popup_close', :layout => false
+      else
+        redirect_to root_path
+      end
     end
   end
 end

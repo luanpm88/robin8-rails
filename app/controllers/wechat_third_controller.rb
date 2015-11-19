@@ -4,8 +4,6 @@ class WechatThirdController < ApplicationController
   before_filter :valid_msg_signature, :only => :notify
 
   # 微信服务器发送给服务自身的事件推送（如取消授权通知，Ticket推送等）。
-  # 此时，消息XML体中没有ToUserName字段，而是AppId字段，
-  # 即公众号服务的AppId。
   # 这种系统事件推送通知（现在包括推送component_verify_ticket协议和推送取消授权通知），
   # 服务开发者收到后也需进行解密，接收到后只需直接返回字符串“success”
   def notify
@@ -14,7 +12,6 @@ class WechatThirdController < ApplicationController
     content = QyWechat::Prpcrypt.decrypt(aes_key, @encrypt_msg, WxThird::Util::AppId)[0]
     # 解密后的数据
     decrypt_msg = MultiXml.parse(content)["xml"]
-    Rails.logger.error("--------decrypt_msg - #{decrypt_msg.inspect} --")
     $webchat_logger.info("--------decrypt_msg - #{decrypt_msg.inspect} --")
     if decrypt_msg
       # ticket 事件
@@ -23,11 +20,8 @@ class WechatThirdController < ApplicationController
         $webchat_logger.info("-------component_verify_ticket---#{ticket}")
         Rails.cache.write(WxThird::Util.component_verify_ticket_key(WxThird::Util::AppId), ticket)
       end
-      # 最终返回成功就行
-      render :text => "success"
-    else
-      render :text => "success"
     end
+    render :text => "success"
   end
 
   def callback
@@ -49,7 +43,6 @@ class WechatThirdController < ApplicationController
       $webchat_logger.info("-------- @encrypt_msg - #{ @encrypt_msg} ---@request_app_id-#{@request_app_id}-")
       sort_params = [WxThird::Util::DescryToken, timestamp, nonce, @encrypt_msg].sort.join
       current_signature = Digest::SHA1.hexdigest(sort_params)
-      $webchat_logger.info("--------params[xml] - #{WxThird::Util::AppId == @request_app_id} --")
       $webchat_logger.info("--------params[xml] - #{current_signature == msg_signature} --")
       return true
     rescue

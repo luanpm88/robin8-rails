@@ -62,7 +62,6 @@ module WxThird
 
       # 获取预授权码
       def get_pre_auth_code
-        $util_logger.info("----------get_pre_auth_code----")
         pre_auth_code = Rails.cache.read(pre_auth_code_key(AppId))
         $util_logger.info("-------enter--pre_auth_code--pre_auth_code:#{pre_auth_code}")
         return pre_auth_code if pre_auth_code.present?
@@ -85,7 +84,6 @@ module WxThird
 
       # 使用授权码换取公众号的授权信息
       def query_auth_info(auth_code)
-        $util_logger.info("----------query_auth_info-------")
         component_access_token = get_component_access_token
         post_data = {"component_appid" => AppId, "authorization_code" => auth_code}
         ret = RestClient::post(query_auth_url(component_access_token), post_data.to_json)
@@ -96,7 +94,6 @@ module WxThird
       # 查询已授权公众账号的详细信息
       def get_authorizer_info(authorizer_appid)
         component_access_token = get_component_access_token
-        Rails.logger.info("----------get_authorizer_info---component_access_token:#{component_access_token}----")
         return nil if   component_access_token.blank?
         post_data = {"component_appid"=> AppId, "authorizer_appid"=> authorizer_appid}
         res = RestClient::post(get_authorizer_info_url(component_access_token),post_data.to_json)
