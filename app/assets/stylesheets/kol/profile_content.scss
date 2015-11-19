@@ -342,40 +342,23 @@
       height: 190px;
       overflow: hidden;
     }
-    .score_tables_header {
-      color: #007183;
-      font-size: 15px;
-      background-color: #f4f4f4;
-    }
-    .score_tables_header > div {
-      padding: 7px 0;
-    }
-    .interested_column {
-      width: 12%;
-    }
-    .expected_price_column {
-      width: 21%;
-    }
-    .my_value_title {
-      margin-top: 40px;
-    }
-    .cbx-active {
-      border: 2px solid #47b4b7;
-
-      .cbx-icon {
-        margin: 0;
-        font-size: 15px;
-        color: #47b4b7;
-        line-height: 34px;
-        text-align: center;
-      }
-    }
-    .cbx-active:hover,
-    .cbx-active:focus {
-      border-color: #47b4b7;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-    }
+    // .cbx-active {
+    //   border: 2px solid #47b4b7;
+    //
+    //   .cbx-icon {
+    //     margin: 0;
+    //     font-size: 15px;
+    //     color: #47b4b7;
+    //     line-height: 34px;
+    //     text-align: center;
+    //   }
+    // }
+    // .cbx-active:hover,
+    // .cbx-active:focus {
+    //   border-color: #47b4b7;
+    //   -webkit-box-shadow: none;
+    //   box-shadow: none;
+    // }
     #value.score-tables {
       .cell {
         height: 45px;
@@ -419,61 +402,13 @@
       }
     }
   }
-  .chart_column {
-    padding: 0;
-    margin-left: 10px;
-
-    .chart_info {
-      padding-left: 22px;
-      font-family: 'ProximaNova';
-      font-size: 15px;
-      color: #007183;
-    }
-  }
-  .chart_wrapper {
-    height: 168px;
-  }
-  .chart-gauge {
-    float: left;
-  }
-  .scores_block {
-    float: left;
-    padding-top: 20px;
-    padding-left: 20px;
-
-    .score_badge {
-      padding: 5px 10px;
-      margin-top: 15px;
-      font-family: 'ProximaNova';
-      font-size: 13px;
-      line-height: 1.2;
-      color: #fff;
-      background-color: #edac0a;
-      text-align: center;
-    }
-  }
-  .scores_block_title {
-    font-family: 'ProximaNovaBold';
-    font-size: 20px;
-    color: #007183;
-  }
   #campaigns-list tr.selected {
     background: #e6e9ed;
   }
 }
 
 @media (max-width: 1240px) {
-  .graph_column {
-    width: 100%;
-    margin-top: 20px;
 
-    #graph_score2 {
-      text-align: center;
-    }
-    #graph_score2 > svg {
-      display: inline-block;
-    }
-  }
   #tab-content #score_form #value.score-tables .tab_online .cell {
     height: 62px;
     line-height: 1.3;

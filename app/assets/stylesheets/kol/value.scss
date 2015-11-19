@@ -1,0 +1,169 @@
+@media (max-width: 768px) {
+  #top-row {
+    .kol-avatar {
+      margin: 0 auto 20px;
+    }
+  }
+
+  .campaigns-tables-title {
+    position: relative;
+    .collapse-score-data {
+      display: block;
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      top: 16px;
+      right: 6px;
+      // span {
+      //   margin: 0 auto;
+      //   display: block;
+      //   width: 10px;
+      //   height: 3px;
+      //   background: #1B5F74;
+      // }
+    }
+    background-color: #f4f4f4;
+    border-top: 3px solid #007183;
+    border-bottom: 0;
+    border-radius: 3px 3px 0 0;
+    margin-bottom: 0px;
+    padding: 5px 0;
+  }
+
+  .my_value_title {
+    margin-bottom: 10px;
+  }
+
+  .profile_completion {
+    margin-left: 0 !important;
+  }
+
+  .value_social_account {
+    .panel-body {
+      .social_task_table_default {
+        width: 100% !important;
+        tr{
+          .fixed-table-td {
+            display: none;
+          }
+        }
+      }
+      .social_task_table_l {
+        border-right: 1px solid #ddd !important;
+      }
+    }
+  }
+}
+
+.campaigns-tables-title {
+  .collapse-score-data {
+    // display: none;
+  }
+}
+
+.profile_completion {
+  margin-left: 165px;
+  float: none;
+  width: auto;
+  h4 {
+    margin-top: 0;
+  }
+  p {
+    margin: 0;color: #7A7F90;
+  }
+  .progress {
+    margin-bottom: 10px;
+    height: 12px;
+    border-radius: 0;
+
+    .progress-bar {
+      line-height: 12px;
+    }
+    .progress-bar-info {
+      background-color: #45A0B6;
+    }
+    .progress-bar-success {
+      background-color: #4FB555;
+    }
+    .progress-bar-warning {
+      background-color: #F7834F
+    }
+  }
+}
+
+.value_social_account {
+  margin-bottom: 10px !important;
+  .panel-heading {
+    background-color: #f4f4f4;
+    padding: 5px 15px;
+    border: 1px solid #ddd;
+  }
+
+  .value-collapsed-header {
+    font-size: 16px;
+    color: #007183;
+  }
+
+  .panel-body {
+    padding: 0 !important;
+    border-top: 0 !important;
+    .social_task_table_default {
+      width: 50%;float: left;margin-bottom: 0;border-top: 0 !important;
+      .value-table-header-tr th {
+        font-size: 15px;
+        height: 45px;
+        line-height: 25px;
+        padding-left: 30px;
+      }
+      th {
+        border-bottom: 0;
+        font-weight: normal;
+      }
+      tr {
+        .fixed-table-td {
+          height: 43px;
+        }
+        td {
+          label {
+            font-weight: normal;
+            margin-bottom: 0;
+            width: 100%;
+            .cbx-container {
+              display: block;float: left;
+            }
+            p {
+              display: block;float: left;width: 75%;margin-bottom: 0;
+            }
+            span {
+              display: block;float: left;width: 15%;text-align: right;
+            }
+            input {
+              display: block;float: left;margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+    .social_task_table_l {
+      border: 1px solid #ddd;
+      border-right: 0;
+      th, td {
+        border-right: 0;
+      }
+    }
+    .social_task_table_r {
+      border: 1px solid #ddd;
+      border-left: 0;
+    }
+  }
+  .panel-footer {
+    border: 1px solid #ddd;
+    border-top: 0;
+    background-color: #f4f4f4;
+    text-align: right;
+    a {
+      background-color: #419fb5;
+      border: 0;
+    }
+  }
+}
