@@ -17,7 +17,6 @@ stdout_path "log/unicorn.stdout.log"
 worker_processes 2
 
 # To save some memory and improve performance
-preload_app true
 GC.respond_to?(:copy_on_write_friendly=) and
   GC.copy_on_write_friendly = true
 
@@ -56,14 +55,5 @@ after_fork do |server, worker|
 
   if defined?(ActiveRecord::Base)
     ActiveRecord::Base.establish_connection
-  end
-  Rails.logger = ActiveRecord::Base.logger = ActionController::Base.logger = begin
-    path = Rails.configuration.paths["log"].first
-    f = File.open(path.sub(".log", "-#{worker.nr}.log"), "a")
-    f.binmode
-    f.sync = true
-    logger = ActiveSupport::TaggedLogging.new(ActiveSupport::Logger.new(f))
-    logger.level = Logger::DEBUG
-    logger
   end
 end
