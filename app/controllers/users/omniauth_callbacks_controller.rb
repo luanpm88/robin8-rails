@@ -109,7 +109,7 @@ module Users
           end
         end
       end
-      if origin_auth['provider'].nil?
+      if request.env['omniauth.params'].nil?   rescue true
         render 'twitter_popup_close', :layout => false
       else
         redirect_to root_path
