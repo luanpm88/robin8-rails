@@ -34,36 +34,14 @@
     margin-left: 5%;
   }
 
-  .tips .not_unique_number {
-    margin-left: 15%;
-    font-size: 15px;
-    color: red;
-    margin-bottom: 2px;
-    display: none
-  }
-
-  .tips .mobile_numer_is_blank {
-    margin-left: 15%;
-    font-size: 15px;
-    color: red;
-    margin-bottom: 2px;
-    display: none
-  } 
-
-  .tips .send_sms_failed {
-    margin-left: 15%;
-    font-size: 15px;
-    color: red;
-    margin-bottom: 2px;
-    display: none
-  } 
-
-  .tips .send_sms_success {
-    margin-left: 15%;
-    font-size: 15px;
-    color: black;
-    margin-bottom: 2px;
-    display: none
+  .tips { 
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed, .send_sms_success{
+      margin-left: 15%;
+      font-size: 15px;
+      color: red;
+      margin-bottom: 2px;
+      display: none
+    }
   }
 }
 
@@ -77,35 +55,13 @@
     margin-left: 5%;
   }
 
-  .tips .not_unique_number {
-    margin-left: 8%;
-    font-size: 15px;
-    color: red;
-    margin-bottom: 0px;
-    display: none
-  } 
-
-  .tips .mobile_numer_is_blank {
-    margin-left: 8%;
-    font-size: 15px;
-    color: red;
-    margin-bottom: 2px;
-    display: none
-  } 
-
-  .tips .send_sms_failed {
-    margin-left: 8%;
-    font-size: 15px;
-    color: red;
-    margin-bottom: 2px;
-    display: none
-  } 
-
-  .tips .send_sms_success {
-    margin-left: 8%;
-    font-size: 15px;
-    color: black;
-    margin-bottom: 2px;
-    display: none
+  .tips { 
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed, .send_sms_success{
+      margin-left: 8%;
+      font-size: 15px;
+      color: red;
+      margin-bottom: 2px;
+      display: none
+    }
   }
 }

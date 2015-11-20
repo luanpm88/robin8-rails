@@ -71,3 +71,10 @@ $(function(){
     }
   });
 });
+
+
+$(function(){
+  $('#kol_mobile_number').on('input',function(){
+    $(".tips").children().hide();
+  });
+});
