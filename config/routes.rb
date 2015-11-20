@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     confirmations: "users/confirmations"
   }
 
+  resources :cn_recommendations
   get 'recommendations/analyse_tweets' => 'recommendations#analyse_tweets'
   get 'recommendations/index' => 'recommendations#index'
   match "recommendations/status/:id" => "recommendations#status", :via => :get

@@ -125,6 +125,12 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
     }
   },
 
+  showCnRecommendations: function(){
+    this.stopAll();
+    console.log("show cn recommendtaions....")
+    Robin.module('CnRecommendations').start();
+  },
+
   showCampaigns: function(){
     this.stopAll();
     Robin.module('Campaigns').start();

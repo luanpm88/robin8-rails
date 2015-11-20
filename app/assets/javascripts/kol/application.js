@@ -77,6 +77,8 @@
 //= require_tree ./../backbone/modules/dashboard-kol
 //= require_tree ./../backbone/modules/campaigns
 //= require_tree ./../backbone/modules/upload
+//= require_tree ./../backbone/modules/cn_recommendations
+
 
 var ready;
 ready = function() {
