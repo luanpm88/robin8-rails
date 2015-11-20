@@ -1,8 +1,10 @@
 .profile-content {
+  .glyphicon.form-control-feedback {
+    top: 5px;
+  }
   .row {
     padding: 2px 0px;
     max-width: 1000px;
-    overflow: auto;
   }
   .birdate-row{
     overflow: visible;
@@ -21,6 +23,7 @@
     .industry-row,.ages-row{
       overflow: auto;
       .label-influence-circle, .label-age-circle{
+        margin-right: 5px;
         float: left;
       }
     }
@@ -34,7 +37,6 @@
     }
   }
   .score-tables {
-    overflow: auto;
     width: 100%;
     padding-left: 20px;
     .mf-label {
@@ -213,9 +215,6 @@
     margin-bottom: 10px;
   }
   .profile_info {
-    .glyphicon {
-      top: 5px;
-    }
     .select_wrapper .glyphicon {
       right: 12px;
     }

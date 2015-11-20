@@ -51,7 +51,7 @@ module WxThird
         retData = JSON.parse(res.body)
         $util_logger.info("----------#{retData.to_s}")
         p "get_component_access_token:retData->"+retData.to_s
-        return nil if retData['errorcode']
+        return nil if retData['errorcode'].present?    ||   retData["component_access_token"].blank?
         component_access_token = retData["component_access_token"]
         expiresIn = retData["expires_in"]
         Rails.cache.write(component_access_token_key(AppId), component_access_token, expires_in: expiresIn.to_i - 60 )
