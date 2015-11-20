@@ -407,6 +407,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         id = e.target.name.split('_')[1]
         old_val = _.compact @ui.industry.val().split(',')
         if old_val.length == 5
+          $.growl polyglot.t('dashboard_kol.profile_tab.industry_placeholder') , {type: "danger"}
           return
         if not (id in old_val)
           old_val.push id
