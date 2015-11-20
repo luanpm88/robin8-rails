@@ -109,7 +109,7 @@ module Users
           end
         end
       end
-      if params[:provider].nil?  ||  params[:provider] == 'wx_third'
+      if origin_auth['provider'].nil?
         render 'twitter_popup_close', :layout => false
       else
         redirect_to root_path

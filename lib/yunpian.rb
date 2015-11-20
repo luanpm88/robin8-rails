@@ -19,10 +19,10 @@ module Yunpian
 
     def send_sms
       return if @phone_number.blank?
-      @phone_number = SmsClient.fake_phone(@phone_number)     rescue   @phone_number
-
       code = security_code
       write_cache_for @phone_number, code
+
+      @phone_number = SmsClient.fake_phone(@phone_number)     rescue   @phone_number
 
       return if Rails.env.development? || Rails.env.test?
 

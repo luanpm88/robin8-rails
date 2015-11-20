@@ -58,7 +58,6 @@ namespace :deploy do
     end
   end
 
-
   desc "Update the crontab file"
   task :update_crontab do
     on roles :app do
@@ -76,9 +75,9 @@ namespace :deploy do
   # end
 
   #after :publishing, :restart
-  after :publishing, 'unicorn:restart'
   after :publishing, :upload_localization
   after :publishing, :update_crontab
+  after :publishing, 'unicorn:restart'
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
