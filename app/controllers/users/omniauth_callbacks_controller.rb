@@ -90,6 +90,11 @@ module Users
           if @someone.class == Kol
             cookies[:kol_signin] = "yeah"
           end
+          if params[:provider] == "weibo"
+            redirect_to root_path
+            return
+          end
+
         else
           return redirect_to kols_new_path(auth_params: params)
         end
@@ -109,7 +114,7 @@ module Users
           end
         end
       end
-      if request.env['omniauth.params'].nil?   rescue true
+      if request.env['omniauth.params'].nil?   
         render 'twitter_popup_close', :layout => false
       else
         redirect_to root_path

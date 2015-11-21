@@ -67,30 +67,49 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       e.preventDefault();
       var currentView = this;
 
+      var fiveMins = new Date();
+      fiveMins.setMinutes(fiveMins.getMinutes() + 5);
+      $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
+      
       if ($(e.target).children().length != 0) {
         var provider = $(e.target).attr('id');
       } else {
         var provider = $(e.target).parent().attr('id');
       };
 
-      var url = '/users/auth/' + provider,
-      params = 'location=0,status=0,width=800,height=600';
-      currentView.connect_window = window.open(url, "connect_window", params);
-      currentView.interval = window.setInterval((function() {
-        if (currentView.connect_window.closed) {
-          if ($.cookie('kol_signin') == 'no') {
-            current_entity_path = "/users/get_current_user";
-          } else {
-            current_entity_path = "/kols/get_current_kol";
-          }
-          $.get( current_entity_path, function( data ) {
-            window.clearInterval(currentView.interval);
-            if (data != undefined) {
-              Robin.finishSignIn(data);
-            }
-          });
+      var url = '/users/auth/' + provider;
+
+      if (provider == 'weibo') {
+        window.location.href = url;
+        if ($.cookie('kol_signin') == 'no') {
+          current_entity_path = "/users/get_current_user";
+        } else {
+          current_entity_path = "/kols/get_current_kol";
         }
-      }), 500);
+        $.get( current_entity_path, function( data ) {
+          if (data != undefined) {
+            Robin.finishSignIn(data);
+          }
+        });
+      } else {
+        params = 'location=0,status=0,width=800,height=600';
+        currentView.connect_window = window.open(url, "connect_window", params);
+        currentView.interval = window.setInterval((function() {
+          if (currentView.connect_window.closed) {
+            if ($.cookie('kol_signin') == 'no') {
+              current_entity_path = "/users/get_current_user";
+            } else {
+              current_entity_path = "/kols/get_current_kol";
+            }
+            $.get( current_entity_path, function( data ) {
+              window.clearInterval(currentView.interval);
+              if (data != undefined) {
+                Robin.finishSignIn(data);
+              }
+            });
+          }
+        }), 500);
+      }
     }
 
   });
