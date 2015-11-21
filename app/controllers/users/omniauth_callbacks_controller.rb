@@ -96,7 +96,8 @@ module Users
           end
 
         else
-          return redirect_to kols_new_path(auth_params: params)
+          Rails.cache.write("auth_params", params, expires_in: 30.minute)
+          return redirect_to kols_new_path(auth_params: true)
         end
       else
         @identity = Identity.find_for_oauth(params, origin_auth, current_kol)

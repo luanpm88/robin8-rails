@@ -61,7 +61,7 @@
 
                 <button type="button" class="btn send_sms"><%= @l.t("kols.receive_verify_code") %></button>
                 <% if params["auth_params"] %>
-                  <%= hidden_field_tag(:auth_params, params["auth_params"].to_json) %>
+                  <%= hidden_field_tag(:auth_params, params["auth_params"]) %>
                 <% end %>
               <!-- American -->
               <% else %>
