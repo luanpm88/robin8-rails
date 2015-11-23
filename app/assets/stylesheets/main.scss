@@ -2621,3 +2621,20 @@ circle.radar-chart-serie1 {
 .kol-ages-group {
   margin-right: -4px;
 }
+
+.feedback{
+  .button-feedback {
+    width: 120px;
+    height: 30px;
+    background-color: rgb(67,67,67);
+    color: white;
+    position: fixed;
+    bottom: 0; right: 10px;
+    text-align:center;
+    padding-top: 3px;
+    border-radius:6px;
+    &:hover {
+      color:white;
+    }
+  }
+}
