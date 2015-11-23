@@ -177,7 +177,12 @@ class KolsController < ApplicationController
       @kol.iptc_categories = @categories
       @kol.save
       sign_in @kol
-      return redirect_to :root
+      if cookies[:kol_weibo_signin]
+        cookies[:kol_weibo_signin] = nil
+        render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
+      else
+        return redirect_to :root
+      end
     else
       flash.now[:errors] = @kol.errors.full_messages
       render :new, :layout => "website"
