@@ -10,8 +10,15 @@
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
     <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   <% end %>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+  <% if Rails.env.development? %>
+    <%= stylesheet_link_tag    '/assets/app/dev_base_compact', 'app/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag '/assets/app/dev_base_compact', 'app/dev_reload','app/dev_reload', 'data-turbolinks-track' => true %>
+  <% else %>
+    <%= stylesheet_link_tag    'app/application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'app/application', 'data-turbolinks-track' => true %>
+  <% end %>
+
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
   <script type="text/javascript">

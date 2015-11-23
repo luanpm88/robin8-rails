@@ -16,4 +16,5 @@ end
 Rails.application.config.assets.precompile += %w( landing.js landing.css
   email.css mail-template.css export_stories.css kol.css )
 Rails.application.config.assets.precompile += %w( public_pages.js
-  public_pages.css  website.css website.js export_stories.js kol.js kol/*.js kol/*.css)
+  public_pages.css  website.css website.js export_stories.js kol.js kol/*.js kol/*.css
+  app/*.js app/*.css)

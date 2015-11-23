@@ -15,8 +15,8 @@
   <% end %>
 
   <% if Rails.env.development? &&  Rails.application.config.china_instance %>
-    <%= stylesheet_link_tag    '/assets/dev_base_compact', 'kol/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag '/assets/dev_base_compact', 'kol/dev_reload', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    '/assets/kol/dev_base_compact', 'kol/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag '/assets/kol/dev_base_compact', 'kol/dev_reload', 'data-turbolinks-track' => true %>
   <% else %>
     <%= stylesheet_link_tag    'kol/application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'kol/application', 'data-turbolinks-track' => true %>

@@ -1,64 +1,71 @@
-#TODO : 扩展到其他文件
-
-KolJsPath = "#{Rails.root}/app/assets/javascripts/kol"
-KolCssPath = "#{Rails.root}/app/assets/stylesheets/kol"
 PublicPath = "#{Rails.root}/public/assets"
 Asset = "dev_base"
 AssetCompact = "dev_base_compact"
+AssetMoudles = %w{kol app}
 
-def generate_kol_js_dev_base
-  kol_line_arr = File.read("#{KolJsPath}/application.js").split("\n")
-  kol_reload_arr = File.read("#{KolJsPath}/dev_reload.js").split("\n")
-  kol_other_content = kol_line_arr.map do |line|
-    unless kol_reload_arr.include?(line) && line.start_with?("//=")
+# 获取某个asset 模块 目录路径
+def get_compile_path(asset_module, asset_type = 'js')
+  if asset_type == 'js'
+    "#{Rails.root}/app/assets/javascripts/#{asset_module}"
+  else
+    "#{Rails.root}/app/assets/stylesheets/#{asset_module}"
+  end
+end
+
+
+def generate_js_dev_base(asset_module)
+  asset_module_path = get_compile_path(asset_module, 'js')
+  full_arr = File.read("#{asset_module_path}/application.js").split("\n")
+  reload_arr = File.read("#{asset_module_path}/dev_reload.js").split("\n")
+  other_content = full_arr.map do |line|
+    unless reload_arr.include?(line) && line.start_with?("//=")
       line
     end
   end.compact.join("\n")
-  File.open("#{KolJsPath}/#{Asset}.js","w"){|f| f.write(kol_other_content)}
+  File.open("#{asset_module_path}/#{Asset}.js","w"){|f| f.write(other_content)}
 end
 
-def generate_kol_css_dev_base
-  kol_line_arr = File.read("#{KolCssPath}/application.scss").split("\n")
-  kol_reload_arr = File.read("#{KolCssPath}/dev_reload.scss").split("\n")
-  kol_other_content = kol_line_arr.map do |line|
-    unless kol_reload_arr.include?(line) && line.start_with?("*=")
+def generate_css_dev_base(asset_module)
+  asset_module_path = get_compile_path(asset_module, 'css')
+  full_arr = File.read("#{asset_module_path}/application.scss").split("\n")
+  reload_arr = File.read("#{asset_module_path}/dev_reload.scss").split("\n")
+  other_content = full_arr.map do |line|
+    unless reload_arr.include?(line) && line.start_with?("*=")
       line
     end
   end.compact.join("\n")
-  File.open("#{KolCssPath}/#{Asset}.scss","w"){|f| f.write(kol_other_content)}
+  File.open("#{asset_module_path}/#{Asset}.scss","w"){|f| f.write(other_content)}
 end
 
-def compile_dev_file
+def generate_dev_base
+  AssetMoudles.each do |m|
+    generate_js_dev_base(m)
+    generate_css_dev_base(m)
+  end
+end
+
+def delete_origin_file
+  AssetMoudles.each do |m|
+    system("rm #{PublicPath}/#{m}/#{Asset}**.js")
+    system("rm #{PublicPath}/#{m}/#{Asset}**.css")
+  end
+end
+
+def copy_compact_file
+  AssetMoudles.each do |m|
+    system("cp #{PublicPath}/#{m}/#{Asset}**.js #{PublicPath}/#{m}/#{AssetCompact}.js")
+    system("cp #{PublicPath}/#{m}/#{Asset}**.css #{PublicPath}/#{m}/#{AssetCompact}.css")
+  end
+end
+
+
+# start here
+def compile_dev_assets
   puts "--------start ---compile"
-  system("rm #{PublicPath}/kol/#{Asset}**.js")
-  system("rm #{PublicPath}/kol/#{Asset}**.css")
+  delete_origin_file
   Rake::Task['assets:clean'].invoke
   system("RAILS_ENV=development rake assets:precompile")
   # Rake::Task['assets:precompile'].invoke
-  system("cp #{PublicPath}/kol/#{Asset}**.js #{PublicPath}/#{AssetCompact}.js")
-  system("cp #{PublicPath}/kol/#{Asset}**.css #{PublicPath}/#{AssetCompact}.css")
+  copy_compact_file
   puts "--------end ---compile"
 end
-
-def monitor_reload_file
-  listener = Listen.to("#{KolJsPath}/dev_reload.js","#{KolCssPath}/dev_reload.scss") do |modified, added, removed|
-    next if !modified[0].include?("dev_reload")
-    puts "recompile generate dev base then compile it"
-    generate_kol_js_dev_base
-    generate_kol_css_dev_base
-    compile_dev_file
-  end
-  listener.start
-  puts "start monitor dev_reload"
-end
-
-#rake compile_dev_assets
-# if Rails.env == "development" and Robin8::Application.config.china_instance  && $0.include?("rails")  ## 避免 rake 启动
-#   require 'listen'
-#   require 'rake'
-#   Robin8::Application.load_tasks
-#
-#   generate_kol_js_dev_base
-#   generate_kol_css_dev_base
-#   monitor_reload_file
-# end
