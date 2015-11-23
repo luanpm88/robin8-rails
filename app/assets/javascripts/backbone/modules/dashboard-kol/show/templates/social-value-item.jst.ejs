@@ -1,0 +1,101 @@
+<div class="panel panel-default value_social_account">
+  <div class="panel-heading" role="tab" id="social-<%= provider %>-<%= id %>-header">
+    <h4 class="panel-title">
+      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#social-<%= provider %>-<%= id %>" aria-expanded="true" aria-controls="social-<%= provider %>-<%= id %>" class='value-collapsed-header'>
+        Account: <%= provider %> <%= name %>
+      </a>
+    </h4>
+  </div>
+  <div id="social-<%= provider %>-<%= id %>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="socialweibooneheader">
+    <div class="panel-body">
+      <table class='table table-bordered social_task_table_default social_task_table_l'>
+        <thead>
+          <tr class='value-table-header-tr'>
+            <th><%= polyglot.t('dashboard_kol.profile_tab.online_tasks') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= edit_forward ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.edit_forward') %></p><span><%= edit_forward %></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= origin_publish ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.origin_publish') %></p><span><%= origin_publish %></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= forward ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.forward') %></p><span><%= forward %></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= origin_comment ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.origin_comment') %></p><span><%= origin_comment %></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td class='fixed-table-td'>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class='table table-bordered social_task_table_default social_task_table_r'>
+        <thead>
+          <tr class='value-table-header-tr'>
+            <th><%= polyglot.t('dashboard_kol.profile_tab.offline_tasks') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= partake_activity ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.partake_activity') %></p><span><%= partake_activity %></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= panel_discussion ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.panel_discussion') %></p><span><%= panel_discussion %></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= undertake_activity ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.undertake_activity') %></p><span><%= undertake_activity %></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= image_speak ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.image_speak') %></p><span><%= image_speak %></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input type='checkbox' <%= give_speech ? 'checked' : null %> class='disabled' disabled><p><%= polyglot.t('dashboard_kol.profile_tab.give_speech') %></p><span><%= give_speech %></span>
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel-footer">
+      <a class='btn btn-primary edit-account' id="<%= id %>" href='#' role='button'>edit</a>
+    </div>
+  </div>
+</div>

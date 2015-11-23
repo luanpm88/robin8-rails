@@ -1,0 +1,13 @@
+<% if(provider === 'weibo'){ %>
+<p>Social Account: <%= provider %> <%= name %></p>
+<div class='progress'>
+  <div class='progress-bar progress-bar-warning' role='progressbar' aria-valuenow='40' aria-valuemin='0' aira-valuemax='100' style='width: 40%'>
+  </div>
+</div>
+<% } else if(provider === 'wechat') { %>
+  <p>Social Account: Wechat </p>
+  <div class='progress'>
+    <div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='40' aria-valuemin='0' aira-valuemax='100' style='width: 40%'>
+    </div>
+  </div>
+<% } %>

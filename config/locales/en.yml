@@ -176,6 +176,7 @@ en:
           attributes:
             email:
               taken: has already been taken
+              invalid: format is invalid
             mobile_number:
               taken: has already been taken
   application:
@@ -607,7 +608,8 @@ en:
     kols:
       agree: By signing up you agree to Robin8's <a href="/terms">Terms of Service
       email: Email
-      email_error: Email can't be blank
+      email_is_blank: Email can't be blank
+      email_error: "Please input valid email"
       email_already_been_taken: Email has already been taken
       first_name: First Name
       fname_error: First name can't be blank
@@ -619,7 +621,7 @@ en:
       mobile_number: Mobile Number
       mobile_number_error: Mobile number can't be blank
       mobile_number_already_token:  "Mobile number has already been token"
-      mobile_format_error: Please input correct mobile number
+      mobile_format_error: Please input valid mobile number
       number_and_code_unmatch: Mobile number and vertification code does not match
       password: Password
       password_error: Password must be greater then 7 characters

@@ -11,6 +11,10 @@
 #   runner "Subscription.process_initial_invoice"
 # end
 
+env :PATH, ENV['PATH']
+
+set :environment, "staging"
+
 set :output, {
   :error => File.join(path, "log", "cron_error.log"),
   :standard => File.join(path, "log", "cron.log")
@@ -35,6 +39,10 @@ every 1.day, :at => '5:00 am' do
   rake "-s sitemap:refresh"
 end
 
+every 1.day, :at => '12:00 am' do
+  command "backup perform --trigger robin8_development"
+end
+
 every 5.minutes do
   rake 'alert:notify_users_via_email'
 end
@@ -49,4 +57,9 @@ end
 
 every 1.day, :at => "1:00 am" do
   rake 'alert:notify_kols_via_email'
+end
+
+
+every 1.day, :at => '12:00 pm' do
+  command "backup perform --trigger robin8_development"
 end

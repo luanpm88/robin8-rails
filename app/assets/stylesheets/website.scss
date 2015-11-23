@@ -22,31 +22,46 @@
   padding: 0 1em;
 }
 
-.tips .not_unique_number {
-  color: red;
-  margin-bottom: 2px;
-  display: none
+
+
+// override weibo login-btn for apply webchat
+.btn-weibo, .btn-wechat{
+  width: 260px;
+  height: 50px;
+  line-height: 50px;
+  span{
+    height: 50px;
+    padding-left: 40px;
+  }
 }
 
-.tips .send_sms_failed {
-  color: red;
-  margin-bottom: 2px;
-  display: none
-}
-
-.tips .send_sms_success {
-  color: black;
-  margin-bottom: 2px;
-  display: none
-}
 
 @media (max-width: 700px) {
   .verify-code {
     width: 60%
   }
+
   .send_sms{
-  width: 35%;
-  margin-left: 5%;
+    width: 35%;
+    margin-left: 5%;
+  }
+
+  .tips { 
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
+      margin-left: 15%;
+      font-size: 15px;
+      color: red;
+      margin-bottom: 2px;
+      display: none
+    }
+
+    .send_sms_success {
+      margin-left: 15%;
+      font-size: 15px;
+      color: black;
+      margin-bottom: 2px;
+      display: none
+    }
   }
 }
 
@@ -54,8 +69,27 @@
   .verify-code {
     width: 75%
   }
+
   .send_sms{
-  width: 20%;
-  margin-left: 5%;
+    width: 20%;
+    margin-left: 5%;
+  }
+
+  .tips { 
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
+      margin-left: 8%;
+      font-size: 15px;
+      color: red;
+      margin-bottom: 2px;
+      display: none
+    }
+
+    .send_sms_success {
+      margin-left: 8%;
+      font-size: 15px;
+      color: black;
+      margin-bottom: 2px;
+      display: none
+    }
   }
 }
