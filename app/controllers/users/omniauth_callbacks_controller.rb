@@ -90,8 +90,14 @@ module Users
           if @someone.class == Kol
             cookies[:kol_signin] = "yeah"
           end
+          if params[:provider] == "weibo"
+            redirect_to root_path
+            return
+          end
+
         else
-          return redirect_to kols_new_path(auth_params: params)
+          Rails.cache.write("auth_params", params, expires_in: 30.minute)
+          return redirect_to kols_new_path(auth_params: true)
         end
       else
         @identity = Identity.find_for_oauth(params, origin_auth, current_kol)
@@ -109,7 +115,7 @@ module Users
           end
         end
       end
-      if request.env['omniauth.params'].nil?   rescue true
+      if request.env['omniauth.params'].nil?   
         render 'twitter_popup_close', :layout => false
       else
         redirect_to root_path
