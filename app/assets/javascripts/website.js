@@ -47,12 +47,17 @@ $(function(){
       })
         .done(function(data) {
           $(".tips").children().hide();
+
+          if (data["mobile_number_is_blank"]) {
+            $("#kol_mobile_number").focus().blur();
+            return nil;
+          }
+
           if (data["not_unique"]) {
             $("#kol_mobile_number").css({"border-color": "red"})
             $(".not_unique_number").show();
             $(".not_unique_number").siblings().hide();
-          }
-          else {
+          } else {
             if (data["code"]) {
               $("#kol_mobile_number").css({"border-color": "red"})
               $(".send_sms_failed").show();
@@ -64,6 +69,7 @@ $(function(){
               $(".send_sms_success").siblings().hide();
             }
           }
+
         });
     }
     else {
