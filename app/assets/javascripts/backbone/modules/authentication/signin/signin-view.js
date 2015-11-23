@@ -67,13 +67,19 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       e.preventDefault();
       var currentView = this;
 
+      var fiveMins = new Date();
+      fiveMins.setMinutes(fiveMins.getMinutes() + 5);
+      $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
+      $.cookie("kol_weibo_signin", "yeah", {expires: fiveMins, path: "/"});
+      
       if ($(e.target).children().length != 0) {
         var provider = $(e.target).attr('id');
       } else {
         var provider = $(e.target).parent().attr('id');
       };
 
-      var url = '/users/auth/' + provider,
+      var url = '/users/auth/' + provider;
+
       params = 'location=0,status=0,width=800,height=600';
       currentView.connect_window = window.open(url, "connect_window", params);
       currentView.interval = window.setInterval((function() {

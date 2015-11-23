@@ -131,12 +131,16 @@ class KolsController < ApplicationController
 
   def send_sms
     phone_number = params[:phone_number]
-    if Kol.check_mobile_number phone_number
-      render json: {not_unique: true}
+    if phone_number.blank?
+      render json: {mobile_number_is_blank: true}
     else
-      sms_client = Yunpian::SmsClient.new(phone_number)
-      res = sms_client.send_sms
-      render json: res
+      if Kol.check_mobile_number phone_number
+        render json: {not_unique: true}
+      else
+        sms_client = Yunpian::SmsClient.new(phone_number)
+        res = sms_client.send_sms
+        render json: res
+      end
     end
   end
 
@@ -162,7 +166,8 @@ class KolsController < ApplicationController
   def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
     if params[:auth_params]
-      @identity = @kol.identities.build(JSON.parse(params["auth_params"]))
+      auth_params = Rails.cache.fetch("auth_params")
+      @identity = @kol.identities.build(auth_params)
     end
     categories = params[:interests]
     categories = '' if categories == nil
@@ -172,7 +177,12 @@ class KolsController < ApplicationController
       @kol.iptc_categories = @categories
       @kol.save
       sign_in @kol
-      return redirect_to :root
+      if cookies[:kol_weibo_signin]
+        cookies[:kol_weibo_signin] = nil
+        render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
+      else
+        return redirect_to :root
+      end
     else
       flash.now[:errors] = @kol.errors.full_messages
       render :new, :layout => "website"
