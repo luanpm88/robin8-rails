@@ -22,20 +22,6 @@
   padding: 0 1em;
 }
 
-
-
-// override weibo login-btn for apply webchat
-.btn-weibo, .btn-wechat{
-  width: 260px;
-  height: 50px;
-  line-height: 50px;
-  span{
-    height: 50px;
-    padding-left: 40px;
-  }
-}
-
-
 @media (max-width: 700px) {
   .verify-code {
     width: 60%
@@ -46,7 +32,7 @@
     margin-left: 5%;
   }
 
-  .tips { 
+  .tips {
     .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
       margin-left: 15%;
       font-size: 15px;
@@ -75,7 +61,7 @@
     margin-left: 5%;
   }
 
-  .tips { 
+  .tips {
     .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
       margin-left: 8%;
       font-size: 15px;

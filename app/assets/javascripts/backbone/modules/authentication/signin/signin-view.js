@@ -8,7 +8,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       'click .btn-facebook' : 'socialSignIn',
       'click .btn-google-plus' : 'socialSignIn',
       'click .btn-weibo' : 'socialSignIn',
-      'click .btn-wechat' : 'socialSignIn',
+      'click #wechat' : 'socialSignIn',
+      'click #wechat_third' : 'socialSignIn',
     },
     ui: {
       world: 'world',
@@ -71,7 +72,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       fiveMins.setMinutes(fiveMins.getMinutes() + 5);
       $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
       $.cookie("kol_weibo_signin", "yeah", {expires: fiveMins, path: "/"});
-      
+
       if ($(e.target).children().length != 0) {
         var provider = $(e.target).attr('id');
       } else {

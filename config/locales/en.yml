@@ -713,6 +713,7 @@ en:
       title: login
       wechat_login: Login using WeChat
       weibo_login: Login using Weibo
+      wechat_third_login: Login using WeChat(public)
     manage_users:
       buttons:
         back: Back to Brand Gallery
@@ -1122,6 +1123,7 @@ en:
       title: Signup
       wechat_signup: Sign up using WeChat
       weibo_signup: Sign up using Weibo
+      wechat_third_signup: Sign up using WeChat(Public)
     releases:
       all_brand_gallery: All Brand Gallery
       all_newsrooms: All Newsrooms

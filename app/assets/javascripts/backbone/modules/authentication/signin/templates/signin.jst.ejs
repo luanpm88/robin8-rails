@@ -44,9 +44,17 @@
   </div>
   <% if (Robin.chinaInstance) { %>
     <div id="china">
-      <div class="row" style="margin-bottom: 40px">
+      <div class="row">
         <div class="small-12 columns social-login">
-          <a href="/users/auth/wechat_third"><img src="<%= AppAssets.path('public_webchat_login.png') %>"></a>
+          <button class="btn btn-wechat" id="wechat"><i class="fa btn-wechat"></i>
+            <span><%= polyglot.t("login.wechat_login") %></span></button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="small-12 columns social-login">
+          <button class="btn btn-wechat" id="wechat_third"><i class="fa btn-wechat"></i>
+            <span><%= polyglot.t("login.wechat_third_login") %></span></button>
         </div>
       </div>
 
@@ -58,20 +66,20 @@
       </div>
     </div>
   <% } else { %>
-  <div id="world">
-    <div class="row">
-      <div class="small-12 columns social-login">
-        <button class="btn btn-google-plus" id="google_oauth2"><i class="fa fa-google-plus"></i>
-          <span><%= polyglot.t("login.google_login") %></span></button>
+    <div id="world">
+      <div class="row">
+        <div class="small-12 columns social-login">
+          <button class="btn btn-google-plus" id="google_oauth2"><i class="fa fa-google-plus"></i>
+            <span><%= polyglot.t("login.google_login") %></span></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-12 columns social-login">
+          <button class="btn btn-facebook" id="facebook"><i class="fa fa-facebook"></i>
+            <span><%= polyglot.t("login.fb_login") %></span></button>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="small-12 columns social-login">
-        <button class="btn btn-facebook" id="facebook"><i class="fa fa-facebook"></i>
-          <span><%= polyglot.t("login.fb_login") %></span></button>
-      </div>
-    </div>
-  </div>
   <% } %>
 
 

@@ -1203,7 +1203,7 @@ a.btn-wechat  {
 }
 
 .btn-wechat {
-  background-color: #3a579a;
+  background-color: #49B44F;
 }
 
 .btn-facebook i.fa,
@@ -1234,6 +1234,10 @@ a.btn-wechat  {
   background: image-url("Login_Weibo_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0)!important;
 }
 
+.btn-wechat span{
+  background: image-url("Login_WeChat_1x.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+}
+
 .btn-google-plus:hover, .btn-weibo:hover {
   background-color: #df4a32;
 
@@ -1251,7 +1255,7 @@ a.btn-wechat  {
 }
 
 .btn-wechat:hover {
-  background-color: #3a579a;
+  background-color: #49B44F;
   opacity: 0.8;
   transition-property: all;
   transition-duration: 0.5s;

@@ -17,18 +17,18 @@
   <% else %>
     <%= stylesheet_link_tag    'app/application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'app/application', 'data-turbolinks-track' => true %>
+    <script type="text/javascript">
+      window.doorbellOptions = {
+        appKey: 'cnLho0pzQQjaENVjgmqrw9xI1H8Ljwn3BuFIg1t2MVRt530fIJbSbar2bcfyYb5u'
+      };
+      (function(d, t) {
+        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://embed.doorbell.io/button/1121?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
+      }(document, 'script'));
+    </script>
   <% end %>
 
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
-  <script type="text/javascript">
-    window.doorbellOptions = {
-        appKey: 'cnLho0pzQQjaENVjgmqrw9xI1H8Ljwn3BuFIg1t2MVRt530fIJbSbar2bcfyYb5u'
-    };
-    (function(d, t) {
-        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://embed.doorbell.io/button/1121?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
-    }(document, 'script'));
-  </script>
 </head>
 <body>
   <div id="main">
