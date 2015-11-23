@@ -9,7 +9,8 @@ Robin.module("CnRecommendations", function(CnRecommendations, Robin, Backbone, M
   });
 
   CnRecommendations.on("stop", function(){
-
+    this.layout.destroy();
+    this.controller.destroy();
   });
 
 });

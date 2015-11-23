@@ -25,7 +25,8 @@ class CnRecommendationsController < ApplicationController
                      :published_at => "2015-10-10",
                      :email => "andy@qq.com",
                      :reference => "test",
-                     :recommendationType => "CONTENT"
+                     :recommendationType => "CONTENT",
+                     :page => 1,
                      }]*10
   end
 end
