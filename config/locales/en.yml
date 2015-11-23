@@ -310,6 +310,7 @@ en:
         title: Title
       title: Campaign Payment Information
     contact_page:
+      feedback: "feedback"
       address: Robin8 Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019
       address_title: Main Office Address
       form:
