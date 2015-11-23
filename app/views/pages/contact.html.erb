@@ -55,17 +55,18 @@
                   <label>
                     <select class="form-control columns small-12" id="subject" name="user[subject]" required>
                       <option selected="" value=""><%= @l.t('contact_page.form.subject_select_placeholder') %>:</option>
-                      <option value="service"><%= @l.t('contact_page.form.subject_select_placeholder') %></option>
                       <option value="suggestions"><%= @l.t('contact_page.form.suggestions') %></option>
                       <option value="product"><%= @l.t('contact_page.form.product_support') %></option>
-                    </select></label>
+                    </select>
+                  </label>
                 </div>
               </div>
               <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
               <div class="row">
                 <div class="columns small-12 form-group">
                   <label>
-                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="<%= @l.t('contact_page.form.message_placeholder') %>"></textarea></label>
+                    <textarea rows="8" class="form-control" id="message"  name="user[message]" required placeholder="<%= @l.t('contact_page.form.message_placeholder') %>"></textarea>
+                  </label>
                 </div>
               </div>
               <div class="errorwarning">

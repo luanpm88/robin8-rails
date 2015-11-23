@@ -335,7 +335,7 @@ zh:
         message_placeholder: "信息"
         product_support: "产品支持"
         send_button: "发送"
-        subject_select_placeholder: "选择一个主题："
+        subject_select_placeholder: "选择一个主题"
         suggestions: "建议"
       inquires_title: "一般查询"
       phone: "(212) 807-8300 Extension 3"
