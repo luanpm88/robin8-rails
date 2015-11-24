@@ -9,8 +9,17 @@ Robin.module('CnRecommendations', function(CnRecommendations, App, Backbone, Mar
       this.listenTo(this.model, "change", this.render);
     },
 
+    events: {
+      'click #view-content': "viewContent"
+    },
+
     onRender: function(){
     },
+
+    viewContent: function(e){
+      e.preventDefault();
+      window.open(this.model.attributes.link);
+    }
   });
 
   CnRecommendations.CollectionView = Marionette.CollectionView.extend({
@@ -26,7 +35,7 @@ Robin.module('CnRecommendations', function(CnRecommendations, App, Backbone, Mar
           $(window).unbind("scroll");
           var nextPage = page + 1;
           if($('#more-recommendations').not(':visible')){$('#more-recommendations').show();}
-          $("#more-recommendation-row").before("<div id='more-recommendations-container-" + nextPage + "' class='more-recommendations'></div>");  
+          $(".get-more-recommendation-row").before("<div id='more-recommendations-container-" + nextPage + "' class='more-recommendations'></div>");  
           Robin.vent.trigger("getNextPage", nextPage);
         } 
       })

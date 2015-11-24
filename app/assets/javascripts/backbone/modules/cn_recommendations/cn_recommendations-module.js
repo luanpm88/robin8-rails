@@ -12,5 +12,4 @@ Robin.module("CnRecommendations", function(CnRecommendations, Robin, Backbone, M
     this.layout.destroy();
     this.controller.destroy();
   });
-
 });

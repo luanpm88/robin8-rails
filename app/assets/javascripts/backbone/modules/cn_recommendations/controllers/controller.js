@@ -35,6 +35,7 @@ Robin.module("CnRecommendations", function(CnRecommendations, App, Backbone, Mar
             var recommendationsView = new CnRecommendations.CollectionView({collection: recommendations});
             module.layout.main.show(recommendationsView);
           }
+          $('#more-recommendations').hide();
         },
         data: {page: 0},
         processData: true
@@ -55,6 +56,7 @@ Robin.module("CnRecommendations", function(CnRecommendations, App, Backbone, Mar
             module.layout.addRegion("more", "#more-recommendations-container-" + page);
             module.layout.more.show(recommendationsView);
           }
+          $('#more-recommendations').hide();
         },
         data: {page: page},
         processData: true

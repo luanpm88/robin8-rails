@@ -4,7 +4,7 @@ class CnRecommendationsController < ApplicationController
                      :title => "just test", 
                      :author_name => "andy",
                      :timeago => "one year ago", :shares_count => 111, :recommendationType => "test",
-                     :link => "111",
+                     :link => "http://baidu.com",
                      :description => "description",
                      :blog_name => "blog_name",
                      :characters_count => 1,
