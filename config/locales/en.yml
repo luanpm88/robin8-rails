@@ -8,7 +8,7 @@ en:
     destroy: Destroy
     save: Save
     delete_success: Delete Successful
-    delete_fail: Delete Fail                   
+    delete_fail: Delete Fail
     save_success: Save Successful
     save_fail: Save Fail
     update_success:  Update Successful
@@ -443,18 +443,18 @@ en:
         social_title: My Social
         south: South
         title: My Profile
-        weibo: Weibo                                      
+        weibo: Weibo
         west: West
         price_fixing: My Price Fixing
         price_unit: (yuan/time)
         password: Password
         add_social: Add Social
-        total_tasks: Total Tasks 
+        total_tasks: Total Tasks
         completed_tasks: Completed Tasks
         last30_posts: Last 30 Posts
         status: Status
         edit: Edit
-        all: All                                       
+        all: All
         online_tasks: Online Tasks
         edit_forward: Edit Forward
         origin_publish: Origin Publish

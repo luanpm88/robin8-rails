@@ -8,4 +8,4 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     showProfile: -> @dashboardPageView.profile()
     showScore: -> @dashboardPageView.score()
     showCampaigns: -> @dashboardPageView.campaigns()
-
+    showDefaultDashboard: -> @dashboardPageView.defaultDashboard()

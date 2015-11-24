@@ -1,5 +1,33 @@
 ---
 zh:
+  dashboard:
+    auto: 汽车
+    digit: 数码
+    education: 教育
+    health: 健康
+    sport: 体育
+    markup: 美妆
+    furniture: 家具
+    travel: 旅游
+    dish: 美食
+    clothing: 服饰
+    finance: 财经
+    music: 音乐
+    military: 军事
+    baby: 母婴
+    lottery: 彩票
+    phone: 手机
+    computer: 计算机
+    digitcamera: 数码相机
+    game: 游戏
+    house: 房地产
+    ent: 娱乐
+    carton: 卡通
+    pet: 宠物
+    jd: 家电
+    luxury: 奢侈品
+    career: 找工作
+    law: 法律
   about:
     text: "<p>Miranda Tan, Founder and CEO of Robin8, founded her first PR firm, ExcitePR,
       in 1999. She realized that businesses offering amazing products were constantly
@@ -29,7 +57,7 @@ zh:
     new: 新建
     edit: 编辑
     destroy: 删除
-    save: 保存  
+    save: 保存
     delete_success: 删除成功！
     delete_fail: 删除失败！
     save_success: 保存成功！
@@ -455,12 +483,12 @@ zh:
         price_unit: (元/次)
         password: 密码
         add_social: 新增社交资料
-        total_tasks: 总任务数量 
+        total_tasks: 总任务数量
         completed_tasks: 完成任务数量
         last30_posts: 近30天发表博文数量
         status: 状态
         edit: 编辑
-        all: 全部                                       
+        all: 全部
         online_tasks: 线上任务
         edit_forward: 编辑转发
         origin_publish: 原创转发
