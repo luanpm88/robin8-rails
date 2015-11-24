@@ -46,7 +46,8 @@
               <!-- China -->
               <% if china_instance? %>
                 <div class='small-10 large-11 columns'>
-                  <%=f.text_field :mobile_number, :placeholder => @l.t('kols.mobile_number'), "data-validation" => "custom", "data-validation-regexp"=>"^1[34578][0-9]{9}$","data-validation-error-msg"=> @l.t('kols.mobile_format_error') %>
+                  <%=f.text_field :mobile_number, :placeholder => @l.t('kols.mobile_number'), "data-validation" => "custom", "data-validation-regexp"=> production? ? "^1[34578][0-9]{9}$" : "*",
+                                  "data-validation-error-msg"=> @l.t('kols.mobile_format_error') %>
                 </div>
 
                 <section class='tips'>

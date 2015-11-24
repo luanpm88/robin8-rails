@@ -9,7 +9,7 @@ class KolsController < ApplicationController
     if request.post?
       if china_instance?
         verify_code = Rails.cache.fetch(kol_params[:mobile_number])
-        if verify_code == params["kol"]["verify_code"]
+        if verify_code == params["kol"]["verify_code"]  || (!Rails.env.production? && params["kol"]["verify_code"] == "1111")
           create_kol_and_sign_in(kol_params)
         else
           @kol = Kol.new
