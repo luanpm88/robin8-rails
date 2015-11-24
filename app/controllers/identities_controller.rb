@@ -35,10 +35,22 @@ class IdentitiesController < ApplicationController
     if @identity.provider.eql? 'weibo'
       url = base_url + 'weibo/' + '1028013932'
     elsif @identity.provider.eql? 'wechat'
-      url = base_url + 'code/' + 'qyx5miao' + '/name/' + '5秒轻游戏'
+      code = JSON.parse(@identity.serial_params)['alias']
+      name = @identity.name
+      url = base_url + 'code/' + code + '/name/' + name
     end
-    res = RestClient.get url
-    render :json => JSON.parse(res)
+    res = RestClient::Request.execute(method: :get, url: url, timeout: 10)
+    case res.code
+    when 200
+      json_res = JSON.parse res
+      if(json_res['return_code'] == 0)
+        render :json => json_res
+      else
+        render :json => {:result => 'fail', :error_message => 'not found'}
+      end
+    else
+      render :json => {:result => 'fail', :error_message => 'something was wrong.'}
+    end
   end
 
   def destroy

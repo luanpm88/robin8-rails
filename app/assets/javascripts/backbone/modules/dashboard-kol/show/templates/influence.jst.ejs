@@ -5,7 +5,9 @@
       <i class='glyphicon glyphicon-align-justify'></i>&nbsp;Switch Social Account <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-      <li><a href="#">Account 1</a></li>
+      <% _.each(items, function(item) { %>
+        <li><a href="#" id="<%= item.id %>"><%= item.provider %>: <%= item.name %></a></li>
+      <% }) %>
     </ul>
 </div>
 </div>

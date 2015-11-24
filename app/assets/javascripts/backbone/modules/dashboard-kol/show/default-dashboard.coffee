@@ -25,23 +25,51 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     regions:
       item: '.influence-item'
 
+    events:
+      'click .dropdown-menu li a': 'switchAccount'
+
     onRender: () ->
       @initInfluenceItem()
 
-    initInfluenceItem: () ->
-      item = new Robin.Models.SocialInfluence
+    serializeData: () ->
+      items: @collection.toJSON();
+
+    initInfluenceItem: (influence) ->
+      item = influence || new Robin.Models.SocialInfluence({id: @collection.models[0].get('id')})
       @view = new Show.InfluenceItem
         model: item
       fetchingItem = item.fetch()
       parentThis = @
       $.when(fetchingItem).done(->
-        console.log item
         parentThis.getRegion('item').show parentThis.view
+      ).fail(->
+        parentThis.getRegion('item').show parentThis.view
+      )
+
+    switchAccount: (e) ->
+      e.preventDefault()
+      identity_id = e.target.id
+      influence = new Robin.Models.SocialInfluence({id: identity_id})
+      fetchingInfluence = influence.fetch();
+      parentThis = @
+      $.when(fetchingInfluence).done(->
+        parentThis.initInfluenceItem(influence)
+      ).fail(->
+        parentThis.initInfluenceItem(influence)
       )
 
   Show.InfluenceItem = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/influence-item'
     tagName: 'div'
+
+    initialize: ()->
+      if !@model.get('user_id')
+        @isFail = true
+      else
+        @isFail = false
+
+    serializeData: () ->
+      isFail: @isFail
 
 
   # Show.Discovers = Backbone.Marionette.CompositeView.extend
