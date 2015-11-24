@@ -10,10 +10,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       profile: '#profile-link'
       score: '#score-link'
       campaigns: '#campaigns-link'
+      default: '#default-link'
 
     initialize: (options) ->
       @options = options
-      @_states = ['profile', 'score', 'campaigns']
+      @_states = ['profile', 'score', 'campaigns', 'default']
       @empty = false
       @state = @options.state or 'CRASH AND BURN'
       if not @model?
@@ -29,6 +30,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         when 'profile' then Show.ProfileTab
         when 'score' then Show.ScoreTab
         when 'campaigns' then Show.CampaignsTab
+        when 'default' then Show.DefaultDashboard
       @view = new viewClass
         model: @model
         data: @data
@@ -44,10 +46,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
           $('#nav-campaigns').parent().addClass('active')
         if s == "profile"
           $('#nav-sidebar-profile').parent().addClass('active')
+        if s == 'default'
+          $('li#score-link, li#profile-link').remove()
         state_url = ({
           profile: "dashboard/profile"
           score: "dashboard/score"
           campaigns: "dashboard/campaigns"
+          default: 'dashboard/default'
         })[s]
         if location.hash != state_url
           history.pushState({}, "", "#/#{state_url}")
@@ -70,3 +75,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
     campaigns: (e) ->
       e?.preventDefault()
       @setState 'campaigns'
+
+    defaultDashboard: (e) ->
+      e?.preventDefault()
+      @setState 'default'

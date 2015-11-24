@@ -29,6 +29,18 @@ class IdentitiesController < ApplicationController
     render :json => @identity
   end
 
+  def influence
+    base_url = 'http://engine-api.robin8.net/api/v1/kols/'
+    @identity = Identity.find params[:id]
+    if @identity.provider.eql? 'weibo'
+      url = base_url + 'weibo/' + '1028013932'
+    elsif @identity.provider.eql? 'wechat'
+      url = base_url + 'code/' + 'qyx5miao' + '/name/' + '5秒轻游戏'
+    end
+    res = RestClient.get url
+    render :json => JSON.parse(res)
+  end
+
   def destroy
     @identity = Identity.find params[:id]       rescue nil
     if @identity && @identity.destroy

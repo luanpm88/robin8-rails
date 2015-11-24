@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     end
   end
   put 'identities/:id' => "identities#update"
+  get 'identities/influence/:id' => 'identities#influence'
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
