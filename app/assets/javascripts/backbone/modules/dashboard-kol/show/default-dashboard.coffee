@@ -35,34 +35,41 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       items: @collection.toJSON();
 
     initInfluenceItem: (influence) ->
-      item = influence || new Robin.Models.SocialInfluence({id: @collection.models[0].get('id')})
+      if influence
+        item = influence
+      else
+        item = new Robin.Models.SocialInfluence({id: @collection.models[0].get('id')})
       @view = new Show.InfluenceItem
         model: item
       fetchingItem = item.fetch()
       parentThis = @
-      $.when(fetchingItem).done(->
-        parentThis.getRegion('item').show parentThis.view
+      $.when(fetchingItem).done((data, textStatus, jqXHR)->
+        if data.result != 'fail'
+          parentThis.getRegion('item').show parentThis.view
+        else
+          @notExistedView = new Show.SocialNotExisted
+          parentThis.getRegion('item').show @notExistedView
       ).fail(->
         parentThis.getRegion('item').show parentThis.view
       )
 
     switchAccount: (e) ->
       e.preventDefault()
+      console.log 'e'
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
-      fetchingInfluence = influence.fetch();
-      parentThis = @
-      $.when(fetchingInfluence).done(->
-        parentThis.initInfluenceItem(influence)
-      ).fail(->
-        parentThis.initInfluenceItem(influence)
-      )
+      @initInfluenceItem influence
+      # fetchingInfluence = influence.fetch();
+      # parentThis = @
+      # $.when(fetchingInfluence).done(->
+      #   parentThis.initInfluenceItem(influence)
+      # ).fail(->
+      #   parentThis.initInfluenceItem(influence)
+      # )
 
   Show.InfluenceItem = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/influence-item'
     tagName: 'div'
-
-
 
     onRender: ()->
       parentThis = @
@@ -76,6 +83,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         for label in parentThis.model.get('labels')
           legend_data.push label.name
           t={}
+          # t.text = polyglot.t 'dashboard.' + label.name
           t.text = label.name
           t.value = 100
           indicator_data.push t
@@ -86,10 +94,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           t.name = keyword
           t.value = Math.random() * 100
           t.itemStyle = createRandomItemStyle()
-          console.log t
           cloud_data.push t
-
-        console.log cloud_data
 
         optionRight =
           series:[
@@ -127,12 +132,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         myChartLeft.setOption optionLeft
         myChartRight.setOption optionRight
 
-    initialize: ()->
-      if !@model.get('user_id')
-        @isFail = true
-      else
-        @isFail = false
-
     serializeData: () ->
       isFail: @isFail
       item: @model.toJSON()
@@ -143,6 +142,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         Math.round(Math.random() * 160)
         Math.round(Math.random() * 160)
       ].join(',') + ')' }
+
+  Show.SocialNotExisted = Backbone.Marionette.ItemView.extend
+    template: 'modules/dashboard-kol/show/templates/social_not_existed'
 
   # Show.Discovers = Backbone.Marionette.CompositeView.extend
   #   template: ''

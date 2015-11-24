@@ -33,9 +33,14 @@ class IdentitiesController < ApplicationController
     base_url = 'http://engine-api.robin8.net/api/v1/kols/'
     @identity = Identity.find params[:id]
     if @identity.provider.eql? 'weibo'
-      url = base_url + 'weibo/' + '1028013932'
+      weibo = @identity.uid
+      url = base_url + 'weibo/' + weibo
     elsif @identity.provider.eql? 'wechat'
-      code = JSON.parse(@identity.serial_params)['alias']
+      #TODO return not found if wechat personal account, just request for wechat public account
+      code = JSON.parse(@identity.serial_params)['alias'] rescue nil
+      if !code
+        render :json => {:result => 'fail', :error_message => 'not found'}
+      end
       name = @identity.name
       url = base_url + 'code/' + code + '/name/' + name
     end
