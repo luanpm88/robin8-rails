@@ -130,6 +130,31 @@
     .influence-item-header {
       margin: 0 10px;
       border-bottom: 1px solid #ddd;
+      position: relative;
+      .today {
+        padding-left: 10px;
+        position: absolute;
+        span {
+          font-size: 30px;
+          font-weight: bold;
+          color: #227f99;
+        }
+      }
+      .influence-charts {
+        float: left;
+        width: 350px;
+        height: 350px;
+        margin-top: 25px;
+        margin-bottom: 20px;
+      }
+      #influence-charts-right {
+        float: right;
+        margin-right: 30px;
+      }
+      #influence-charts-left {
+        float: left;
+        margin-left: 100px;
+      }
     }
     .influence-item-bottom {
       padding-top: 20px;
@@ -220,11 +245,21 @@
       border: 0;
       .influence-item-header {
         border-bottom: 0;
+        .today {
+          display: none;
+        }
+        #influence-charts-right {
+          display: none;
+        }
+        #influence-charts-left {
+          width: 300px;
+          margin: 0 auto;
+        }
       }
       .influence-item-bottom {
         border: 1px solid #f7f7f7;
         background-color: #f7f7f7;
-        border-radius: 4px;c
+        border-radius: 4px;
         .influence-item-bottom-list-first {
 
         }

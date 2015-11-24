@@ -62,6 +62,71 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/dashboard-kol/show/templates/influence-item'
     tagName: 'div'
 
+
+
+    onRender: ()->
+      parentThis = @
+      _.defer ->
+        myChartLeft = echarts.init(document.getElementById('influence-charts-left'))
+        myChartRight = echarts.init(document.getElementById('influence-charts-right'))
+        legend_data = []
+        conf_data = []
+        indicator_data = []
+        cloud_data = []
+        for label in parentThis.model.get('labels')
+          legend_data.push label.name
+          t={}
+          t.text = label.name
+          t.value = 100
+          indicator_data.push t
+          conf_data.push label.conf*100
+
+        for keyword in parentThis.model.get('keywords')
+          t={}
+          t.name = keyword
+          t.value = Math.random() * 100
+          t.itemStyle = createRandomItemStyle()
+          console.log t
+          cloud_data.push t
+
+        console.log cloud_data
+
+        optionRight =
+          series:[
+            {
+              type: 'wordCloud'
+              size: ['80%', '80%']
+              textRotation: [0,0]
+              textPadding: 0
+              autoSize: {
+                enable: true
+                minSize: 14
+              }
+              data: cloud_data
+            }
+          ]
+
+        optionLeft =
+          legend:
+            x: 'center'
+            data: legend_data
+          calculable: true
+          polar: [ {
+            indicator: indicator_data
+            radius: 100
+          }]
+          series: [
+            type: 'radar'
+            data: [
+              {
+                value: conf_data
+              }
+            ]
+          ]
+
+        myChartLeft.setOption optionLeft
+        myChartRight.setOption optionRight
+
     initialize: ()->
       if !@model.get('user_id')
         @isFail = true
@@ -70,7 +135,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     serializeData: () ->
       isFail: @isFail
+      item: @model.toJSON()
 
+    createRandomItemStyle = ->
+      { normal: color: 'rgb(' + [
+        Math.round(Math.random() * 160)
+        Math.round(Math.random() * 160)
+        Math.round(Math.random() * 160)
+      ].join(',') + ')' }
 
   # Show.Discovers = Backbone.Marionette.CompositeView.extend
   #   template: ''
