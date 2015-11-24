@@ -30,7 +30,11 @@
       </div>
       <!-- SIDEBAR -->
       <div class="small-8 columns contact-form">
-        <%=flash[:success]%>
+        <% if flash[:success].present? %>
+          <div class="alert-success">
+            <%=flash[:success]%>
+          </div>
+        <% end %>
         <form  action="/contact"  method="POST"  data-abide>
           <div class="row">
             <div class="columns small-12">
