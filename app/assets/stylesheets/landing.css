@@ -2,3 +2,20 @@
  *= require foundation
  *= require app
 */ 
+
+.feedback .button-feedback {
+	width: 130px;
+	height: 30px;
+	background-color: rgb(67,67,67);
+	color: white;
+  position: fixed;
+  bottom: 0; right: 10px;
+  text-align:center;
+  padding-top: 3px;
+  border-radius:6px;
+}
+
+.feedback .button-feedback:hover {
+  color:white;
+}
+
