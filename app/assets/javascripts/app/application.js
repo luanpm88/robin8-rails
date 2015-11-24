@@ -76,6 +76,7 @@
 //= require_tree ./../backbone/modules/billing
 //= require_tree ./../backbone/modules/campaigns
 //= require_tree ./../backbone/modules/campaigns-list
+//= require_tree ./../backbone/modules/smart-campaign
 //= require_tree ./../backbone/modules/dashboard
 //= require_tree ./../backbone/modules/manage-users
 //= require_tree ./../backbone/modules/monitoring

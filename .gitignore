@@ -34,12 +34,12 @@ erd.pdf
 public/assets
 app/assets/javascripts/kol/dev_base.js
 app/assets/javascripts/app/dev_base.js
-app/assets/javascripts/app/dev_reload.js
+#app/assets/javascripts/app/dev_reload.js
 public/dev_base_compact.css
 .tags
 .tags1
 app/assets/stylesheets/kol/dev_base.scss
 app/assets/stylesheets/app/dev_base.scss
-app/assets/stylesheets/app/dev_reload.scss
+#app/assets/stylesheets/app/dev_reload.scss
 
 public/dev_base_compact.css
