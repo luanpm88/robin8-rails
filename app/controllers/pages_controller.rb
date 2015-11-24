@@ -61,7 +61,7 @@ class PagesController < ApplicationController
 
   def contact
     if request.post?
-      UserMailer.contact_support(params[:user]).deliver if params[:user].present?
+      ContactMailWorker.perform_async params[:user]
       flash.now[:success] = @l.t('contact_page.thank_you')
     end
 
