@@ -20,22 +20,22 @@
   </div>
   <div class="recommendation-heading-image">
     <div class="recommendation-image">
-      <% if(recommendation.image) {%>
-        <img height=200 width=300  src="<%= recommendation.image %>" />
+      <% if(recommendation.first_img != "null") {%>
+        <img height=200 width=300  src="<%= recommendation.first_img %>" />
       <%} else {%>
         <img height=200 width=300  src="<%= AppAssets.path('newsroom-btn.png') %>">
       <%}%>
     </div>
     <div class="recommendation-heading"><%= recommendation.title %></div>
   </div>
-  <div class="recommendation-authored-shares">
+  <!-- <div class="recommendation-authored-shares">
     <div class="recommendation-authored">
       <%= recommendation.timeago %> by <%= recommendation.author_name %>
     </div>
     
     <div class="recommendation-shares">
        <%= recommendation.shares_count %> shares
-    </div>
+    </div> -->
     <div style="clear:both;"></div>
   </div>
 </div>

@@ -18,7 +18,7 @@ Robin.module('CnRecommendations', function(CnRecommendations, App, Backbone, Mar
 
     viewContent: function(e){
       e.preventDefault();
-      window.open(this.model.attributes.link);
+      window.open(this.model.attributes.url);
     }
   });
 

@@ -30,14 +30,14 @@ Robin.module("CnRecommendations", function(CnRecommendations, App, Backbone, Mar
         // 添加 失败的 callback
         success: function(recommendations){
           console.log("获取到recommendations 数据");
-          recommendations.page = 0;
+          recommendations.page = 1;
           if(recommendations.length > 0){
             var recommendationsView = new CnRecommendations.CollectionView({collection: recommendations});
             module.layout.main.show(recommendationsView);
           }
           $('#more-recommendations').hide();
         },
-        data: {page: 0},
+        data: {page: 1},
         processData: true
       });
     },

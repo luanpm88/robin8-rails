@@ -4,9 +4,7 @@ Robin.Models.CnRecommendation = Backbone.Model.extend(
     var attrs = this.attributes;
 
     var recommendation = _.extend(attrs, { 
-      timeago: ($.timeago(attrs.published_at)).replace('about',''), 
-      image: _.first(attrs.images),
-      title: attrs.title.replace(/^(.{80}[^\s]*).*/, "$1")
+      //timeago: ($.timeago(attrs.published_at)).replace('about',''), 
      });
     return { recommendation: recommendation };
   }
