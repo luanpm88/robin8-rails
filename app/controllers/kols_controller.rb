@@ -177,7 +177,7 @@ class KolsController < ApplicationController
       @kol.iptc_categories = @categories
       @kol.save
       sign_in @kol
-      if cookies[:kol_weibo_signin]
+      if cookies[:kol_weibo_signin].present?
         cookies[:kol_weibo_signin] = nil
         render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
       else
