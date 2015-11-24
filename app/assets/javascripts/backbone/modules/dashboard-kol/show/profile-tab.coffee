@@ -189,24 +189,24 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           data.element.parents('.cell').addClass 'has-error'
       ).on('success.field.fv', (e, data) ->
           data.element.parents('.cell').removeClass 'has-error'
-      ).on 'keyup', 'input[name="password"]', ->
+      ).on 'keyup', 'input[name="_password"]', ->
         isEmpty = $(@).val() == ''
-        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', '_password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
         # Revalidate the field when user starts typing in the password field
         if $(@).val().length == 1
-          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', '_password').formValidation 'validateField', 'password_confirmation'
       .on 'keyup', 'input[name="current_password"]', ->
         isEmpty = $(@).val() == ''
-        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', '_password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
         # Revalidate the field when user starts typing in the password field
         if $(@).val().length == 1
-          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', '_password').formValidation 'validateField', 'password_confirmation'
       .on 'keyup', 'input[name="password_confirmation"]', ->
         isEmpty = $(@).val() == ''
-        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', 'password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
+        $('#profile-form').formValidation('enableFieldValidators', 'current_password', !isEmpty).formValidation('enableFieldValidators', '_password', !isEmpty).formValidation 'enableFieldValidators', 'password_confirmation', !isEmpty
         # Revalidate the field when user starts typing in the password field
         if $(@).val().length == 1
-          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', 'password').formValidation 'validateField', 'password_confirmation'
+          $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', '_password').formValidation 'validateField', 'password_confirmation'
 
 
     showDateTimePicker: ->
@@ -241,6 +241,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       if @ui.form.data('formValidation').isValid()
         @pickFields()
         @model_binder.copyViewValuesToModel()
+        @model.attributes.password = @model.attributes._password
+        delete @model.attributes._password
         return if @model.toJSON() == @initial_attrs
         @model.save @model.attributes,
           success: (m, r) =>
