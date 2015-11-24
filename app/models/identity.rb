@@ -23,8 +23,9 @@ class Identity < ActiveRecord::Base
     params[:name] =  package["authorizer_info"]["nick_name"]         rescue nil
     params[:avatar_url] = package["authorizer_info"]["head_img"]     rescue nil
     params[:service_type_info] = package["authorizer_info"]["service_type_info"]["id"]    rescue nil
-    params[:verify_type_info] = package["authorizer_info"]["verify_type_info"]["id"]     rescue nil
+    params[:verify_type_info] = package["authorizer_info"]["verify_type_info"]["id"]      rescue nil
     params[:wx_user_name] = package["authorizer_info"]["user_name"]                       rescue nil
+    params[:alias] = package["authorizer_info"]["alias"]                                  rescue nil
     return params
   end
 
@@ -34,7 +35,7 @@ class Identity < ActiveRecord::Base
            token_secret: auth[:token_secret], name: auth[:name], avatar_url: auth[:avatar_url],
            desc: auth[:desc], service_type_info: auth[:service_type_info],
            verify_type_info: auth[:verify_type_info], wx_user_name: auth[:wx_user_name],
-           serial_params: origin_auth.to_json
+           alias: auth[:alias], unionid:auth[:unionid], serial_params: origin_auth.to_json
     )
   end
 

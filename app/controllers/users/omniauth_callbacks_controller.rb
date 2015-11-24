@@ -21,6 +21,7 @@ module Users
           params[:email] = auth.info.email
           params[:avatar_url] = (auth.provider == 'wechat') ? auth.info.headimgurl : auth.info.image rescue nil
           params[:desc] = auth.info.description rescue nil
+          params[:unionid] = auth.extra.unionid rescue nil
 
           params[:url] = case auth.provider
           when 'facebook'
@@ -110,7 +111,7 @@ module Users
           end
         end
       end
-      if request.env['omniauth.params'].blank?   
+      if request.env['omniauth.params'].blank?
         render 'twitter_popup_close', :layout => false
       else
         redirect_to root_path
