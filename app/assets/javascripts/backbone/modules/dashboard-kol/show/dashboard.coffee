@@ -44,8 +44,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active')
         if s == "campaigns"
           $('#nav-campaigns').parent().addClass('active')
+          $('li#default-link').remove()
         if s == "profile"
           $('#nav-sidebar-profile').parent().addClass('active')
+          $('li#default-link').remove()
         if s == 'default'
           $('li#score-link, li#profile-link').remove()
         state_url = ({
