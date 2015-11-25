@@ -2626,16 +2626,14 @@ circle.radar-chart-serie1 {
   .button-feedback {
     width: 120px;
     height: 30px;
+    line-height: 30px;
+    font-size: 14px;
     background-color: rgb(67,67,67);
     color: white;
     position: fixed;
     bottom: 0; right: 10px;
     text-align:center;
-    padding-top: 3px;
-    border-radius:6px;
-    &:hover {
-      color:white;
-    }
+    border-radius:6px 6px 0 0;
   }
 }
 
