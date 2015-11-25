@@ -21,7 +21,7 @@ module Users
           params[:email] = auth.info.email
           params[:avatar_url] = (auth.provider == 'wechat') ? auth.info.headimgurl : auth.info.image rescue nil
           params[:desc] = auth.info.description rescue nil
-          params[:unionid] = auth.extra.unionid rescue nil
+          params[:unionid] = auth.extra.raw_info.unionid rescue nil
 
           params[:url] = case auth.provider
           when 'facebook'
