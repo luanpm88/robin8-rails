@@ -25,6 +25,7 @@ $(function(){
     var phone_number = $("#kol_mobile_number").val();
     var old_button_text = $(".send_sms").text();
     var count = 60;
+    var countdown;
 
     function CountDown(){
       $(".send_sms").attr('disabled', 'true');
@@ -64,7 +65,7 @@ $(function(){
               $(".send_sms_failed").siblings().hide();
             }
             else {
-              var countdown = setInterval(CountDown, 1000);
+              countdown = setInterval(CountDown, 1000);
               $(".send_sms_success").show();
               $(".send_sms_success").siblings().hide();
             }
