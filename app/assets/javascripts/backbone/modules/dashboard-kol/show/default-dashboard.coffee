@@ -71,13 +71,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
       @initInfluenceItem influence
-      # fetchingInfluence = influence.fetch();
-      # parentThis = @
-      # $.when(fetchingInfluence).done(->
-      #   parentThis.initInfluenceItem(influence)
-      # ).fail(->
-      #   parentThis.initInfluenceItem(influence)
-      # )
 
   Show.InfluenceItem = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/influence-item'
@@ -95,7 +88,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         for label in parentThis.model.get('labels')
           legend_data.push polyglot.t 'dashboard.' + label.name
           t={}
-          t.text = polyglot.t 'dashboard.' + label.name
+          t.text = polyglot.t 'dashboard_kol.influence_charts.' + label.name
           t.value = 100
           indicator_data.push t
           conf_data.push label.conf*100
