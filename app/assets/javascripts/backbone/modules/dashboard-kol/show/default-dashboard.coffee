@@ -37,20 +37,32 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     initInfluenceItem: (influence) ->
       if influence
         item = influence
-      else
+        console.log 'influence existed'
+      else if @collection.models[0]
+        console.log @collection.models[0]
         item = new Robin.Models.SocialInfluence({id: @collection.models[0].get('id')})
+        console.log 'new influence'
+      else
+        @notE = new Show.SocialNotExisted
+        @getRegion('item').show @notE
+        console.log 'not existed'
+        return
       @view = new Show.InfluenceItem
         model: item
       fetchingItem = item.fetch()
       parentThis = @
       $.when(fetchingItem).done((data, textStatus, jqXHR)->
         if data.result != 'fail'
+          console.log 'success'
           parentThis.getRegion('item').show parentThis.view
         else
+          console.log 'not found'
           @notExistedView = new Show.SocialNotExisted
           parentThis.getRegion('item').show @notExistedView
       ).fail(->
-        parentThis.getRegion('item').show parentThis.view
+        console.log 'fetch fail'
+        @notExisted = new Show.SocialNotExisted
+        parentThis.getRegion('item').show @notExisted
       )
 
     switchAccount: (e) ->
@@ -81,10 +93,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         indicator_data = []
         cloud_data = []
         for label in parentThis.model.get('labels')
-          legend_data.push label.name
+          legend_data.push polyglot.t 'dashboard.' + label.name
           t={}
-          # t.text = polyglot.t 'dashboard.' + label.name
-          t.text = label.name
+          t.text = polyglot.t 'dashboard.' + label.name
           t.value = 100
           indicator_data.push t
           conf_data.push label.conf*100
