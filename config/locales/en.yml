@@ -331,6 +331,33 @@ en:
         shortly
       title: Contact Robin8
     dashboard:
+      auto: auto
+      digit: digit
+      education: education
+      health: health
+      sport: sport
+      makeup: makeup
+      furniture: furniture
+      travel: travel
+      dish: dish
+      clothing: clothing
+      finance: finance
+      music: music
+      military: military
+      baby: baby
+      lottery: lottery
+      phone: phone
+      computer: computer
+      digitcamera: digitcamera
+      game: game
+      house: house
+      ent: ent
+      carton: carton
+      pet: pet
+      jd: jd
+      luxury: luxury
+      career: career
+      law: law
       accept: Accept
       accepted: Accepted
       brand: Brand
