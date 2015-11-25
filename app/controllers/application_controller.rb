@@ -10,6 +10,16 @@ class ApplicationController < ActionController::Base
   helper_method :mobile_request?
   helper_method :production?
 
+  before_filter :basic_authenticate
+  Username = 'robin8'
+  Password = 'robin8123'
+
+  def basic_authenticate(options = {})
+      authenticate_or_request_with_http_basic(options[:realm] || "Application") do |name, password|
+        name == Username && password == Password
+      end
+  end
+
   protect_from_forgery with: :exception
   rescue_from Exception, with: :handle_exception
   force_ssl if: :ssl_configured?
