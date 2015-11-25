@@ -1,21 +1,5 @@
 ---
 en:
-  common:
-    cancel: Cancel
-    submit: Submit
-    new: New
-    edit: Edit
-    destroy: Destroy
-    save: Save
-    delete_success: Delete Successful
-    delete_fail: Delete Fail
-    save_success: Save Successful
-    save_fail: Save Fail
-    update_success:  Update Successful
-    update_fail:    Update Fail
-    create_success:  Create Successful
-    create_fail:     Create Fail
-    next: Next
   active_admin:
     access_denied:
       message: You are not authorized to perform this action.
@@ -180,6 +164,22 @@ en:
             mobile_number:
               taken: has already been taken
   application:
+    common:
+      cancel: Cancel
+      submit: Submit
+      new: New
+      edit: Edit
+      destroy: Destroy
+      save: Save
+      delete_success: Delete Successful
+      delete_fail: Delete Fail
+      save_success: Save Successful
+      save_fail: Save Fail
+      update_success:  Update Successful
+      update_fail:    Update Fail
+      create_success:  Create Successful
+      create_fail:     Create Fail
+      next: Next
     about:
       text: "<p>Miranda Tan, Founder and CEO of Robin8, founded her first PR firm,
         ExcitePR, in 1999. She realized that businesses offering amazing products
