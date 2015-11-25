@@ -58,6 +58,16 @@ namespace :deploy do
     end
   end
 
+  task :convert_to_utf8mb4 do
+    on roles(:db)  do
+      within "#{current_path}" do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'database:convert_to_utf8mb4'
+        end
+      end
+    end
+  end
+
   desc "Update the crontab file"
   task :update_crontab do
     on roles :app do
