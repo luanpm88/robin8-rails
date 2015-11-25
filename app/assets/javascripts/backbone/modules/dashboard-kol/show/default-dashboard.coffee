@@ -37,8 +37,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     initInfluenceItem: (influence) ->
       if influence
         item = influence
-      else
+      else if @collection.models[0]
         item = new Robin.Models.SocialInfluence({id: @collection.models[0].get('id')})
+      else
+        @notE = new Show.SocialNotExisted
+        @getRegion('item').show @notE
+        return
       @view = new Show.InfluenceItem
         model: item
       fetchingItem = item.fetch()
