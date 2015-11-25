@@ -43,12 +43,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       _.defer =>
         $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active')
         if s == "campaigns"
-          $('.dashboard-tabs').remove()
+          $('.dashboard-tabs').hide()
         if s == "profile"
+          $('.dashboard-tabs').show()
           $('li#score-link, li#profile-link').show()
           $('#nav-sidebar-profile').parent().addClass('active')
           $('li#default-link').hide()
         if s == 'default'
+          $('.dashboard-tabs').show()
           $('li#default-link').show()
           $('li#default-link a').css({'border-radius': '4px'})
           $('li#score-link, li#profile-link').hide()
