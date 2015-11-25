@@ -51,7 +51,7 @@ $(function(){
 
           if (data["mobile_number_is_blank"]) {
             $("#kol_mobile_number").focus().blur();
-            return nil;
+            return null;
           }
 
           if (data["not_unique"]) {
