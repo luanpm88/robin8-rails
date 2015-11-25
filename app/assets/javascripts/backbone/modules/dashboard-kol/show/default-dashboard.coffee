@@ -71,13 +71,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
       @initInfluenceItem influence
-      # fetchingInfluence = influence.fetch();
-      # parentThis = @
-      # $.when(fetchingInfluence).done(->
-      #   parentThis.initInfluenceItem(influence)
-      # ).fail(->
-      #   parentThis.initInfluenceItem(influence)
-      # )
 
   Show.InfluenceItem = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/influence-item'
