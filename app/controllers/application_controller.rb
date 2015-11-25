@@ -71,8 +71,8 @@ class ApplicationController < ActionController::Base
     end
     @l ||= Localization.new
     @l.locale = locale
-    @phrases = JSON.parse(@l.store.get(locale))['application']
-    @en_phrases = JSON.parse(@l.store.get("en"))['application']
+    @phrases = JSON.parse(@l.store.get(locale))['application'].merge(JSON.parse(@l.store.get(locale))['common'])
+    @en_phrases = JSON.parse(@l.store.get("en"))['application'].merge(JSON.parse(@l.store.get(locale))['common'])
   end
 
   def china_locale?
