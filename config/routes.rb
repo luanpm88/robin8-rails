@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     match "users/auth/wechat_third_callback" => "users/omniauth_callbacks#wechat_third_callback", :via => [:get, :post]
   end
 
-
+  resources :cn_recommendations
   get 'recommendations/analyse_tweets' => 'recommendations#analyse_tweets'
   get 'recommendations/index' => 'recommendations#index'
   match "recommendations/status/:id" => "recommendations#status", :via => :get
