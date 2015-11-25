@@ -35,14 +35,15 @@ class IdentitiesController < ApplicationController
     if @identity.provider.eql? 'weibo'
       weibo = @identity.uid
       url = base_url + 'weibo/' + weibo
-    elsif @identity.provider.eql? 'wechat'
-      #TODO return not found if wechat personal account, just request for wechat public account
-      code = JSON.parse(@identity.serial_params)['alias'] rescue nil
+    elsif @identity.provider.eql? 'wechat_third'
+      code = @identity.alias
       if !code
         render :json => {:result => 'fail', :error_message => 'not found'}
       end
       name = @identity.name
       url = base_url + 'code/' + code + '/name/' + name
+    else
+      render :json => {:result => 'fail', :error_message => 'not found'}
     end
     res = RestClient::Request.execute(method: :get, url: url, timeout: 10)
     case res.code
