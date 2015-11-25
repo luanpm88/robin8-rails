@@ -44,6 +44,7 @@ class IdentitiesController < ApplicationController
       url = base_url + 'code/' + code + '/name/' + name
     else
       render :json => {:result => 'fail', :error_message => 'not found'}
+      return
     end
     res = RestClient::Request.execute(method: :get, url: url, timeout: 10)
     case res.code
