@@ -340,7 +340,7 @@ zh:
         suggestions: "建议"
       inquires_title: "一般查询"
       phone: "(212) 807-8300 Extension 3"
-      phone_title: "电话（客户服务）："
+      phone_title: "电话（客户服务）"
       thank_you: "感谢您与我们联系。我们团队将尽快与您联系"
       title: "联系Robin8"
     dashboard:
@@ -584,7 +584,7 @@ zh:
       about: "关于Robin8"
       contact: "联系人"
       privacy_and_terms: "隐私权和条款"
-      right_reserved: 2015 © Robin8 保留所有权利。
+      right_reserved: 2015 Robin8 保留所有权利。
       team: "团队"
     forgot:
       enter_title: "请输入您的电子邮件以重置密码。"
