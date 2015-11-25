@@ -181,7 +181,7 @@ class KolsController < ApplicationController
         cookies[:kol_weibo_signin] = nil
         render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
       else
-        return redirect_to :root
+        return redirect_to '/#/dashboard/profile'
       end
     else
       flash.now[:errors] = @kol.errors.full_messages
