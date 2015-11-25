@@ -23,22 +23,6 @@ zh:
       to each user's digital profile.  Each time you use Robin8, it learns your preferences,
       gets smarter and generates the best results for your campaign.</p>"
     title: ABOUT ROBIN8
-  common:
-    cancel: 取消
-    submit: 提交
-    new: 新建
-    edit: 编辑
-    destroy: 删除
-    save: 保存
-    delete_success: 删除成功！
-    delete_fail: 删除失败！
-    save_success: 保存成功！
-    save_fail: 保存失败！
-    update_success:  更新成功！
-    update_fail:     更新失败！
-    create_success:  创建成功！
-    create_fail:     创建失败！
-    next: 下一步
   active_admin:
     access_denied:
       message: You are not authorized to perform this action.
@@ -213,12 +197,28 @@ zh:
       qty: Qty
     title: ADD ON SERVICES
   application:
+    common:
+      cancel: 取消
+      submit: 提交
+      new: 新建
+      edit: 编辑
+      destroy: 删除
+      save: 保存
+      delete_success: 删除成功！
+      delete_fail: 删除失败！
+      save_success: 保存成功！
+      save_fail: 保存失败！
+      update_success:  更新成功！
+      update_fail:     更新失败！
+      create_success:  创建成功！
+      create_fail:     创建失败！
+      next: 下一步
     about:
       text: "<p>Miranda Tan，Robin8创办人及首席执行官，在1999年创立了第一个PR公司，ExcitePR。她意识到企业提供令人惊叹的产品，同时不断产生了同样的问题：他们如何能够接触正确的意见领袖为实现他们的信息效益最大化。</p>
         \     <p>Miranda的答案是直观的，易于使用的，她于2007年与合作伙伴，数字媒体专家Hassan Miah成立自主化的PR软件平台。到2010年，这个PR软件平台已被评为百强OnDemand的软件公司，100强中大西洋私人公司，并且被AlwaysOn评为100强OnMedia企业。</p>
         \     <p>2014年，随着大数据和机器学习技术的快速进步，Miranda和Hassan开始和一些世界级的思想领袖合作，并得以重建该平台下一代人工智能。经过数月的艰苦努力和协作，Robin8诞生了。</p>
-        \     <p>如何让你知道每一次活动应该准确联系谁，如何成功通过数据驱动的预测递送消息？ Robin8可以做到这一切甚至更多。</p>      <p>Robin8采用人工智能，机器学习和大数据采取推测社交和内容营销。凭借其专有的智能预测引擎，Robin8帮助您通过智能最大化您的需求分析和了解记者和意见领袖将是您的团队的最佳选择。</p>
-        \     <p>Robin8是个性化到每个用户的数字信息。当您每次使用Robin8时候，它能了解您的喜好，变得更加智能，从而为您带来更好的效果。</p>"
+        \     <p>如何让你知道每一次活动应该准确联系谁，如何成功通过数据驱动的预测递送消息？ Robin8可以做到这一切甚至更多。</p>      <p>Robin8采用人工智能，机器学习和大数据采集推测社交和内容营销。凭借其专有的智能预测引擎，Robin8帮助您通过智能最大化您的需求分析和了解记者和意见领袖将是您的团队的最佳选择。</p>
+        \     <p>Robin8是个性化到每个用户的数字信息。当您每次使用Robin8的时候，它能了解您的喜好，变得更加智能，从而为您带来更好的效果。</p>"
       title: "关于Robin8"
     addons:
       continue: "继续"
@@ -391,7 +391,7 @@ zh:
       new_release_button: "发布新的文章"
       new_smartrelease_button: "智能发布"
       no_available_content: You don't have available content!
-      not_invited: You are not invited to any campaigns yet.
+      not_invited: You are not invited to any campaign yet.
       not_invited_yet: 欢迎来到Robin8！您还没有收到任何推广活动的邀请，请 <a href="#profile">更新</a> 您的个人资料。
       status: "状态"
       title: "主界面"
@@ -458,7 +458,7 @@ zh:
         last_name: 名字
         linkedin: LinkedIn
         location: 地区
-        login: 登陆
+        login: 登录
         male: 男
         male_female: 男：女
         mobile: 手机号码
@@ -713,9 +713,9 @@ zh:
       welcome: "欢迎来到人人共享的网络世界。"
     login:
       email: "电子邮件"
-      fb_login: "使用Facebook账号登陆"
+      fb_login: "使用Facebook账号登录"
       forgot: "忘记密码？"
-      google_login: "使用Google Plus账号登陆"
+      google_login: "使用Google Plus账号登录"
       intro: "请输入您的电子邮件和密码，或者使用社交账号登录"
       login_label: "登录"
       or: "或"
@@ -1086,9 +1086,9 @@ zh:
       agree_terms: "通过注册，你已同意Robin8的服务条款。"
       email_already_taken: "该邮箱已被注册"
       email_placeholder: "电子邮件"
-      fb_signup: "使用Facebook账号登陆"
+      fb_signup: "使用Facebook账号登录"
       first_name_placeholder: "名"
-      google_signup: "使用Google Plus账号登陆"
+      google_signup: "使用Google Plus账号登录"
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
       kol_signup: Are you a KOL? Sign up
@@ -1104,7 +1104,7 @@ zh:
       title: "注册"
       wechat_signup: "使用微信账号登录"
       wechat_third_signup: "使用微信公众号号登录"
-      weibo_signup: "使用微博账号登陆"
+      weibo_signup: "使用微博账号登录"
     releases:
       all_brand_gallery: All Brand Gallery
       all_newsrooms: "所有内容库"
@@ -1743,7 +1743,7 @@ zh:
         general_info: Robin8可能使用“cookies” - 存储在您的计算机连接到您的信息的数据块。这些信息将在一个cookie或类似文件的形式，将帮助我们提高通过节省时间在网站上您的网络体验。
           Cookies不包含或储存任何个人信息，但可能会依赖于你故意选择提供给我们的个人信息。 Cookie可以存储​​非个人身份信息，如哪些网站，网页，或广告您的浏览器访问。
         title: COOKIES
-        types: Robin8同时使用永久和缓存cookies。缓存cookies保存仅在您正在使用的浏览器资料。当关闭浏览器后，缓存cookies即被删除。我们使用缓存cookies来保证您的使用需求，例如，在我们的网络商店购物。在这种情况下，您的浏览器保留您的购物车的Cookies。如果没有这些缓存Cookies，你不能将商品添加到购物车，并且进行支付。相比之下，永久性Cookies会保存您每一次登陆信息。永久性Cookies保存在计算机的浏览器上，当你的退出浏览器时不会被删除。这使我们能够给您一个更个性化的体验，并帮助您更有效地浏览我们的网站。但是，您可以选择在使用我们的网站时，不保存永久性Cookies。
+        types: Robin8同时使用永久和缓存cookies。缓存cookies保存仅在您正在使用的浏览器资料。当关闭浏览器后，缓存cookies即被删除。我们使用缓存cookies来保证您的使用需求，例如，在我们的网络商店购物。在这种情况下，您的浏览器保留您的购物车的Cookies。如果没有这些缓存Cookies，你不能将商品添加到购物车，并且进行支付。相比之下，永久性Cookies会保存您每一次登录信息。永久性Cookies保存在计算机的浏览器上，当你的退出浏览器时不会被删除。这使我们能够给您一个更个性化的体验，并帮助您更有效地浏览我们的网站。但是，您可以选择在使用我们的网站时，不保存永久性Cookies。
           Robin8使用这两种类型的Cookies，帮助我们收集我们网站的使用信息，比如最常访问的网站内容汇总信息，因此我们可以了解用户的喜好。这意味着，当您使用您的用户名和密码登录后，您的使用情况，将和您的个人信息链接起来。如果您选择不登录访问网站，那么我们只在匿名，统计的基础上收集您的访问信息，并且不关联您的个人信息。
       email:
         text: "如果您向我们发送电子邮件提出问题或意见，我们可能会使用您的个人信息回复您的问题或意见，我们也可能参考您的问题或意见。您有机会收到订阅电子邮件和我们网站的最新消息。但是，您可以选择来订阅偏好或者拒绝接收这些讯息。您可以在任何时候，通过点击电子邮件底部的“退订”链接取消订阅，或者发送邮件至info@

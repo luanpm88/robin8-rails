@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   Password = 'robin8123'
 
   def basic_authenticate(options = {})
-    return if Rails.env == "development"
+    return if Rails.env == "development" || params[:controller] == "omniauth_callbacks"  ||  params[:controller] == "wechat_third"
     authenticate_or_request_with_http_basic(options[:realm] || "Application") do |name, password|
       name == Username && password == Password
     end
@@ -72,8 +72,8 @@ class ApplicationController < ActionController::Base
     end
     @l ||= Localization.new
     @l.locale = locale
-    @phrases = JSON.parse(@l.store.get(locale))['application'].merge(JSON.parse(@l.store.get(locale))['common'])
-    @en_phrases = JSON.parse(@l.store.get("en"))['application'].merge(JSON.parse(@l.store.get(locale))['common'])
+    @phrases ||=  JSON.parse(@l.store.get(locale))['application']
+    @en_phrases ||=  JSON.parse(@l.store.get("en"))['application']
   end
 
   def china_locale?

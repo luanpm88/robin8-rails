@@ -22,10 +22,12 @@
         <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.completed_tasks') %></div>
         <div class="item-value"><span class="badge"><%= item.complete_tasks %></span></div>
       </div>
-      <div class="item posts">
-        <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.last30_posts') %></div>
-        <div class="item-value"><span class="badge"><%= item.total_tasks %></span></div>
-      </div>
+      <% if(item.provider != 'wechat'){%>
+        <div class="item posts">
+          <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.last30_posts') %></div>
+          <div class="item-value"><span class="badge"><%= item.total_tasks %></span></div>
+        </div>
+      <% } %>
       <div class="item status">
         <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.status') %></div>
         <div class="item-value"><span class="glyphicon glyphicon-ok"></span> </div>

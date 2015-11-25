@@ -1,4 +1,4 @@
-desc "Database related tasks"
+desc "Database related tasks(remember : update database connect encoding)"
 namespace :database do
   desc "Convert to utf8mb4"
   task convert_to_utf8mb4: :environment do
