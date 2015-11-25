@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     end
   end
   put 'identities/:id' => "identities#update"
+  get 'identities/influence/:id' => 'identities#influence'
 
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]

@@ -29,6 +29,35 @@ class IdentitiesController < ApplicationController
     render :json => @identity
   end
 
+  def influence
+    base_url = 'http://engine-api.robin8.net/api/v1/kols/'
+    @identity = Identity.find params[:id]
+    if @identity.provider.eql? 'weibo'
+      weibo = @identity.uid
+      url = base_url + 'weibo/' + weibo
+    elsif @identity.provider.eql? 'wechat'
+      #TODO return not found if wechat personal account, just request for wechat public account
+      code = JSON.parse(@identity.serial_params)['alias'] rescue nil
+      if !code
+        render :json => {:result => 'fail', :error_message => 'not found'}
+      end
+      name = @identity.name
+      url = base_url + 'code/' + code + '/name/' + name
+    end
+    res = RestClient::Request.execute(method: :get, url: url, timeout: 10)
+    case res.code
+    when 200
+      json_res = JSON.parse res
+      if(json_res['return_code'] == 0)
+        render :json => json_res
+      else
+        render :json => {:result => 'fail', :error_message => 'not found'}
+      end
+    else
+      render :json => {:result => 'fail', :error_message => 'something was wrong.'}
+    end
+  end
+
   def destroy
     @identity = Identity.find params[:id]       rescue nil
     if @identity && @identity.destroy
