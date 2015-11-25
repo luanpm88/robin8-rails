@@ -15,9 +15,10 @@ class ApplicationController < ActionController::Base
   Password = 'robin8123'
 
   def basic_authenticate(options = {})
-      authenticate_or_request_with_http_basic(options[:realm] || "Application") do |name, password|
-        name == Username && password == Password
-      end
+    return if Rails.env == "development"
+    authenticate_or_request_with_http_basic(options[:realm] || "Application") do |name, password|
+      name == Username && password == Password
+    end
   end
 
   protect_from_forgery with: :exception

@@ -788,6 +788,7 @@ en:
       smart_campaign: SmartCampaign
       smart_release: SmartContent
       social: Social
+      discover: Discover
     new_package:
       amount_info: You will be charged
       apply: Apply Code

@@ -2,6 +2,7 @@ Robin.module("CnRecommendations", function(CnRecommendations, Robin, Backbone, M
   this.startWithParent = false;
   
   CnRecommendations.on("start", function(){
+    $('#nav-discover').parent().addClass('active');
     this.layout = new CnRecommendations.Layout();
     this.controller = new CnRecommendations.Controller()
     this.controller.index();

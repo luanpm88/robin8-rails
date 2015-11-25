@@ -799,6 +799,7 @@ zh:
       smart_campaign: "智能推广"
       smart_release: "智能发布"
       social: "社交网络"
+      discover: "微信推荐"
     new_package:
       amount_info: "你会被收取..."
       apply: "应用代码"
