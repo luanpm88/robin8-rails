@@ -83,62 +83,62 @@
         </div>
       </div>
     </div>
-
-    <div class="row password toggle-box">
-      <div style="overflow: auto">
-        <div class="password-title col-md-8">
-          <span><%= polyglot.t('dashboard_kol.profile_tab.password') %></span>
-          <span class="toggle-button glyphicon glyphicon-plus"></span>
-        </div>
-      </div>
-      <div class="score-tables set-password toggle-list" style="display: none">
-        <div class="row form-group">
-          <div class="col-md-2 cell profile-labels kol-profile">
-            <%= polyglot.t('dashboard_kol.profile_tab.current_password') %>:
-          </div>
-          <div class="col-md-6 cell">
-            <input class="form-control" type="password" id='current_password' name="current_password" value=""/>
-          </div>
-        </div>
-        <div class="row form-group">
-          <div class="col-md-2 cell profile-labels kol-profile">
-            <%= polyglot.t('dashboard_kol.profile_tab.new_password') %>:
-          </div>
-          <div class="col-md-6 cell">
-            <input class="form-control" type="password" id='password' name="_password" value="" minlength="8"
-                   data-fv-stringlength-message="<%= polyglot.t("profile.password_must_be_8") %>"/>
-          </div>
-        </div>
-        <div class="row form-group">
-          <div class="col-md-2 cell profile-labels kol-profile">
-            <%= polyglot.t('dashboard_kol.profile_tab.confirm_password') %>:
-          </div>
-          <div class="col-md-6 cell">
-            <input class="form-control" type="password" id='password_confirmation' name="password_confirmation"
-                   value=""/>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!--社交-->
-    <div class="social">
-      <div class="campaigns-tables-title">
-        <span><%= polyglot.t('dashboard_kol.profile_tab.social_title') %></span>
-        <!--<span class="add-social glyphicon glyphicon-plus">&nbsp;&nbsp;-->
-         <!-- <%= polyglot.t('dashboard_kol.profile_tab.add_social') %> -->
-        </span>
-      </div>
-      <div class="score-tables social-content add-account">
-
-      </div>
-      <div class="score-tables social-content social-list">
-      </div>
-    </div>
-
-    <div class="dashboard-kol-tab-footer clearfix">
-      <button id="back_to_score_btn" class="btn btn-primary pull-right" type="submit"><i
-            class="fa fa-chevron-right"></i><%= polyglot.t('common.next') %></button>
-    </div>
   </form>
+
+  <div class="row password toggle-box">
+    <div style="overflow: auto">
+      <div class="password-title col-md-8">
+        <span><%= polyglot.t('dashboard_kol.profile_tab.password') %></span>
+        <span class="toggle-button glyphicon glyphicon-plus"></span>
+      </div>
+    </div>
+    <div class="score-tables set-password toggle-list" style="display: none">
+      <div class="row form-group">
+        <div class="col-md-2 cell profile-labels kol-profile">
+          <%= polyglot.t('dashboard_kol.profile_tab.current_password') %>:
+        </div>
+        <div class="col-md-6 cell">
+          <input class="form-control" type="password" id='current_password' name="current_password" value=""/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2 cell profile-labels kol-profile">
+          <%= polyglot.t('dashboard_kol.profile_tab.new_password') %>:
+        </div>
+        <div class="col-md-6 cell">
+          <input class="form-control" type="password" id='password' name="_password" value="" minlength="8"
+                 data-fv-stringlength-message="<%= polyglot.t("profile.password_must_be_8") %>"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2 cell profile-labels kol-profile">
+          <%= polyglot.t('dashboard_kol.profile_tab.confirm_password') %>:
+        </div>
+        <div class="col-md-6 cell">
+          <input class="form-control" type="password" id='password_confirmation' name="password_confirmation"
+                 value=""/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--社交-->
+  <div class="social">
+    <div class="campaigns-tables-title">
+      <span><%= polyglot.t('dashboard_kol.profile_tab.social_title') %></span>
+      <!--<span class="add-social glyphicon glyphicon-plus">&nbsp;&nbsp;-->
+       <!-- <%= polyglot.t('dashboard_kol.profile_tab.add_social') %> -->
+      </span>
+    </div>
+    <div class="score-tables social-content add-account">
+
+    </div>
+    <div class="score-tables social-content social-list">
+    </div>
+  </div>
+
+  <div class="dashboard-kol-tab-footer clearfix">
+    <button id="back_to_score_btn" class="btn btn-primary pull-right" type="submit"><i
+          class="fa fa-chevron-right"></i><%= polyglot.t('common.next') %></button>
+  </div>
 </div>

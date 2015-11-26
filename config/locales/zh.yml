@@ -440,7 +440,8 @@ zh:
       profile_tab:
         age_group: 年龄组
         audience_subtitle: self-assessed, optional
-        audience_title: 我的社交圈
+        audience_wechat_title: 微信朋友圈影响力
+        audience_title: 我的影响圈
         birthdate: 出生年月
         central: 中部
         city: 城市
@@ -455,7 +456,7 @@ zh:
         gender: 性别
         general_title: 我的个人信息
         id: ID
-        industry: 兴趣爱好
+        industry: 关注的话题
         industry_placeholder: 选择或者输入（最多5个，空白隔开）
         last_name: 名字
         linkedin: LinkedIn
@@ -503,6 +504,11 @@ zh:
         give_speech: 发表演讲
         login_social: 登录
         edit_social: 完善社交资料
+        
+        audience_likes: 朋友圈发言后点赞+评论数范围
+        audience_friends: 朋友圈好友数量范围
+        audience_groups: 经常发言群的数量范围
+        audience_publish: 每天朋友圈发布频次
       score_tab:
         attend: Attend event (and post commentary)
         calculated: Complete your profile to improve your score.

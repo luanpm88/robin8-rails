@@ -39,7 +39,7 @@
   .score-tables {
     width: 100%;
     padding-left: 20px;
-    .mf-label {
+    .mf-label, .item-label {
       margin-right: 35px;
     }
     .cell {
@@ -271,6 +271,9 @@
         font-weight: normal;
       }
     }
+    #social-form .row {
+      padding: 0 0px 10px 0;
+    }
     .score-tables{
       padding: 10px 20px;
       border-top: 2px solid #fff;
@@ -295,7 +298,7 @@
         }
       }
     }
-    .mf-row {
+    .mf-row, .likes-row, .friends-row, .groups-row, .publish-row {
       overflow: auto;
       .radio-inline{
         padding-left: 5px;
