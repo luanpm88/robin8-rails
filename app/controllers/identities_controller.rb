@@ -41,7 +41,7 @@ class IdentitiesController < ApplicationController
         render :json => {:result => 'fail', :error_message => 'not found'}
       end
       name = @identity.name
-      url = base_url + 'code/' + code + '/name/' + name
+      url = URI.encode(base_url + 'wx_public/code/' + code + '/name/' + name)
     else
       render :json => {:result => 'fail', :error_message => 'not found'}
       return
