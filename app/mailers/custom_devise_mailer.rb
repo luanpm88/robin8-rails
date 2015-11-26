@@ -13,9 +13,26 @@ class CustomDeviseMailer < Devise::Mailer
     data = {
       :to => @resource.email,
       :token => @token,
-      :html => html
+      :html => html,
+      :resource_type => @resource.model_name.human.downcase
     }
 
-    ConfirmationMailWorker.perform_async data
+    ConfirmationMailWorker.perform_async data, 'confirmation_instructions'
+  end
+
+  def reset_password_instructions record, token, opts={}
+    @resource = record
+    @token = token
+    template = 'kols/mailer/reset_password_instructions'
+    html = render(template: template)
+
+    data = {
+      :to => @resource.email,
+      :token => token,
+      :html => html,
+      :resource_type => @resource.model_name.human.downcase
+    }
+
+    ConfirmationMailWorker.perform_async data, 'reset_password_instructions'
   end
 end
