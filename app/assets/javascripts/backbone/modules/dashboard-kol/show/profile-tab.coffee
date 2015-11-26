@@ -43,12 +43,37 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       0: 'secrecy'
       1: 'male'
       2: 'female'
+    likes:
+      0: '<5'
+      1: '5-10'
+      2: '11-20'
+      3: '>20'
+    friends:
+      0: '<200'
+      1: '201-500'
+      2: '501-800'
+      3: '>800'
+    groups:
+      0: '<3'
+      1: '3-8'
+      2: '9-12'
+      3: '>12'
+    publish:
+      0: '<1'
+      1: '1-2'
+      2: '3-5'
+      3: '>5'
+
 
   kol_fields_mapping =
     genders: 'gender'
     mf: 'audience_gender_ratio'
     ages: 'audience_age_groups'
     regions: 'audience_regions'
+    likes :'audience_likes'
+    friends: 'audience_friends'
+    groups: 'audience_talk_groups'
+    publish: 'audience_pulish_fres'
 
   Show.ProfileTab = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/profile-tab'
@@ -379,7 +404,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     saveChange: ->
       console.log "save change"
-#      @validate()
 #      if @ui.form.data('formValidation').isValid()
       @pickFields()
       @model_binder.copyViewValuesToModel()
@@ -416,12 +440,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @model.set kol_fields_mapping[field], v
       set_multi_value 'ages'
       set_multi_value 'regions'
-      # 设置男女比例
-      gener_checked = _.find($("input[type=radio][name=mf]"), (el) -> el.checked)
-      if gener_checked && gener_checked.compact && gener_checked.compact.length > 1
-        gender_ratio_i = gener_checked.value.split('_')[1]
-        v = @target['mf'][gender_ratio_i]
-        @model.set kol_fields_mapping['mf'], v
+
+      _target = @target
+      _model = @model
+      _(['mf','likes', 'friends', 'groups', 'publish']).map (item) ->
+        item_checked = _.find($("input[type=radio][name=#{item}]"), (el) -> el.checked)
+        if item_checked && item_checked.value
+          item_ratio_i = item_checked.value.split('_')[1]
+          v = _target[item][item_ratio_i]
+          _model.set kol_fields_mapping[item], v
 
     initSelect2: ->
       _industries = @industries

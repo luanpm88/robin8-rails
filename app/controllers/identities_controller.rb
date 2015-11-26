@@ -72,7 +72,9 @@ class IdentitiesController < ApplicationController
   def identity_params
     params.require(:identity).permit(:audience_age_groups, :audience_gender_ratio, :audience_regions,
       :edit_forward, :origin_publish, :forward, :origin_comment, :partake_activity, :panel_discussion,
-      :undertake_activity, :undertake_activity, :image_speak, :give_speech)
+      :undertake_activity, :undertake_activity, :image_speak, :give_speech, :audience_likes, :audience_friends,
+      :audience_groups, :audience_publish_fres
+    )
   end
 
 
