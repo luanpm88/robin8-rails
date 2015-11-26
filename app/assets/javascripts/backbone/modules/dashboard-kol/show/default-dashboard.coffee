@@ -58,7 +58,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         else
           console.log 'not found'
           @notExistedView = new Show.SocialNotExisted
-          # parentThis.getRegion('item').show @notExistedView
+          parentThis.getRegion('item').show @notExistedView
       ).fail(->
         console.log 'fetch fail'
         @notExisted = new Show.SocialNotExisted
