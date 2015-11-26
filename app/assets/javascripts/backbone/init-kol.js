@@ -43,7 +43,7 @@ Robin.finishSignIn = function(data){
 Robin.loadPleaseWait = function(){
   if (Robin.showLoading) {
     window.loading_screen = window.pleaseWait({
-      logo: AppAssets.path('logo.png'),
+      logo: AppAssets.path('robin8-beta-logo-tm.png'),
       backgroundColor: '#3c9eb6',
       loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
     });
