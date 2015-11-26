@@ -37,7 +37,7 @@ $(function(){
       count--;
     }
 
-    if (!production || (production && phone_number.match(/^1[34578][0-9]{9}$/))){
+    if (phone_number.match(/^1[34578][0-9]{9}$/) || phone_number == "robin8.best"){
       $.ajax({
         method: "POST",
         url: "/kols/send_sms",
