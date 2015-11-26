@@ -178,7 +178,7 @@ class KolsController < ApplicationController
       @kol.save
       sign_in @kol
       if cookies[:kol_weibo_signin].present?
-        cookies[:kol_weibo_signin] = nil
+        cookies[:kol_weibo_signin] = "no"
         render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
       else
         return redirect_to '/#/dashboard/profile'
