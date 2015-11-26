@@ -8,9 +8,15 @@ class KolsController < ApplicationController
   def create
     if request.post?
       if china_instance?
-        verify_code = Rails.cache.fetch(kol_params[:mobile_number])
-        if verify_code == params["kol"]["verify_code"]  || (!Rails.env.production? && params["kol"]["verify_code"] == "1111")
-          create_kol_and_sign_in(kol_params)
+        mobile_number = kol_params[:mobile_number]
+
+        kol_p = kol_params
+
+        kol_p[:mobile_number] = (1..9).to_a.sample(8).join if mobile_number == "robin8.best"
+        
+        verify_code = Rails.cache.fetch(mobile_number)
+        if verify_code == params["kol"]["verify_code"]
+          create_kol_and_sign_in(kol_p)
         else
           @kol = Kol.new
           flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
@@ -177,7 +183,7 @@ class KolsController < ApplicationController
       @kol.iptc_categories = @categories
       @kol.save
       sign_in @kol
-      if cookies[:kol_weibo_signin].present?
+      if cookies[:kol_weibo_signin] == "yeah"
         cookies[:kol_weibo_signin] = nil
         render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
       else
