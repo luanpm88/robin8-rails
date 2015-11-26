@@ -71,7 +71,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       var fiveMins = new Date();
       fiveMins.setMinutes(fiveMins.getMinutes() + 5);
       $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
-      $.cookie("kol_weibo_signin", "yeah", {expires: fiveMins, path: "/"});
+      $.cookie("kol_social_signin", "yeah", {expires: fiveMins, path: "/"});
 
       if ($(e.target).children().length != 0) {
         var provider = $(e.target).attr('id');
@@ -85,6 +85,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       currentView.connect_window = window.open(url, "connect_window", params);
       currentView.interval = window.setInterval((function() {
         if (currentView.connect_window.closed) {
+          $.cookie("kol_social_signin", '');
           if ($.cookie('kol_signin') == 'no') {
             current_entity_path = "/users/get_current_user";
           } else {

@@ -13,7 +13,7 @@ class KolsController < ApplicationController
         kol_p = kol_params
 
         kol_p[:mobile_number] = (1..9).to_a.sample(8).join if mobile_number == "robin8.best"
-        
+
         verify_code = Rails.cache.fetch(mobile_number)
         if verify_code == params["kol"]["verify_code"]
           create_kol_and_sign_in(kol_p)
@@ -175,6 +175,7 @@ class KolsController < ApplicationController
 
   def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
+    @kol.country = 'China' if china_instance?
     if params[:auth_params]
       auth_params = Rails.cache.fetch("auth_params")
       @identity = @kol.identities.build(auth_params)
@@ -187,8 +188,8 @@ class KolsController < ApplicationController
       @kol.iptc_categories = @categories
       @kol.save
       sign_in @kol
-      if cookies[:kol_weibo_signin] == "yeah"
-        cookies[:kol_weibo_signin] = nil
+      if cookies[:kol_social_signin].present?
+        cookies[:kol_social_signin] = nil
         render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
       else
         return redirect_to '/#/dashboard/profile'

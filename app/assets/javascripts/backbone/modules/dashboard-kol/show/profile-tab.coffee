@@ -73,7 +73,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     likes :'audience_likes'
     friends: 'audience_friends'
     groups: 'audience_talk_groups'
-    publish: 'audience_pulish_fres'
+    publish: 'audience_publish_fres'
 
   Show.ProfileTab = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/profile-tab'
