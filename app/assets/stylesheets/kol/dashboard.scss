@@ -128,6 +128,26 @@
   .influence-item-container {
     border: 1px solid #ddd;
     border-top: 0;
+    position: relative;
+    .influence-item .trick_for_no_data{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 395px;
+      opacity: 0.4;
+      background-color: #fff;
+      z-index: 3;
+      p {
+          text-align: center;
+          position: absolute;
+          top: 40%;
+          left: 0;
+          font-size: 30px;
+          width: 100%;
+          color: #000;
+        }
+    }
     .influence-item-header {
       margin: 0 10px;
       border-bottom: 1px solid #ddd;
@@ -140,6 +160,18 @@
           font-weight: bold;
           color: #227f99;
         }
+      }
+      .mock_charts_common {
+        -webkit-filter: blur(3px);
+        -moz-filter: blur(3px);
+        -ms-filter: blur(3px);
+        filter: blur(3px);
+      }
+      .mock_charts_1 {
+        background: image_url('mock_charts_02.png');
+      }
+      .mock_charts_2 {
+        background: image_url('mock_charts_01.png');
       }
       .influence-charts {
         float: left;

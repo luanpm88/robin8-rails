@@ -363,6 +363,7 @@ en:
       status: Status
       title: Dashboard
     dashboard_kol:
+      no_data: Fetching data, please wait...
       influence_charts:
         auto: auto
         digit: digit

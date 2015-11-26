@@ -369,6 +369,7 @@ zh:
       status: "状态"
       title: "主界面"
     dashboard_kol:
+      no_data: '数据正在抓取，敬请期待'
       influence_charts:
         auto: '汽车'
         digit: '数码'
