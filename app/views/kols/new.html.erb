@@ -12,6 +12,12 @@
   <div class="form-step step-one">
     <div class="row">
       <div class="small-12 columns">
+        <% if  cookies[:kol_social_signin].present? %>
+          <div data-alert class="alert-box success radius">
+            <%= @l.t('register.auth_success') %>
+            <a href="#" class="close">&times;</a>
+          </div>
+        <% end %>
         <div class="errorwarning">
           <%flash[:errors].each do |e|%>
               <p><%=e%></p>
@@ -120,9 +126,6 @@
       escapeMarkup: function (m) { return m; }
     });
     $(function(){
-      if($.cookie("kol_social_signin") == 'yeah'){
-        swal('授权登陆成功，请继续完善资料');
-      }
       $(".btn.social").click(function(){
         var fiveMins = new Date();
         fiveMins.setMinutes(fiveMins.getMinutes() + 5);

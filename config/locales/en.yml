@@ -1158,6 +1158,7 @@ en:
       wechat_signup: Sign up using WeChat
       weibo_signup: Sign up using Weibo
       wechat_third_signup: Sign up using WeChat(Public)
+      auth_success: 授权登陆成功，请继续完善资料
     releases:
       all_brand_gallery: All Brand Gallery
       all_newsrooms: All Newsrooms

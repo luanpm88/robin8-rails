@@ -169,6 +169,7 @@ class KolsController < ApplicationController
 
   def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
+    @kol.country = 'China' if china_instance?
     if params[:auth_params]
       auth_params = Rails.cache.fetch("auth_params")
       @identity = @kol.identities.build(auth_params)

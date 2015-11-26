@@ -1111,6 +1111,7 @@ zh:
       wechat_signup: "使用微信账号登录"
       wechat_third_signup: "使用微信公众号号登录"
       weibo_signup: "使用微博账号登录"
+      auth_success: 授权登陆成功，请继续完善资料
     releases:
       all_brand_gallery: All Brand Gallery
       all_newsrooms: "所有内容库"
