@@ -18,7 +18,7 @@ $(document).ready ->
       $(this).closest(".section").find('input[type="checkbox"]').attr("value",1);
     else
       $(this).closest(".section").find('input[type="checkbox"]').attr("value",0);
-      $(this).closest(".section").find('input[type="number"]').val('')
+      $(this).closest(".section").find('input[type="text"]').val('')
     $(this).closest(".section").find('input[type="checkbox"]').checkboxX('refresh')
 
 # 关闭某项 输入
@@ -26,7 +26,7 @@ $(document).ready ->
     console.log "row checkbox"
     checked = $(this).is(':checked')
     if !checked
-      $(this).closest(".row").find("input[type='number']").val('')
+      $(this).closest(".row").find("input[type='text']").val('')
 
 # 输入某项价格 ，自动check
   $("body").on "blur", ".row input[type='number']", (e) ->

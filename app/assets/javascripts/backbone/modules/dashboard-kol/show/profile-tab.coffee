@@ -299,6 +299,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     ui:
       industry: '#interests'
       save_change: ".save_change"
+      form: "#social-form"
 
     events:
       'click @ui.save_change': 'saveChange'
@@ -312,6 +313,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @initSelect2()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')
       @initPriceItemCheck()
+      _.defer =>
+        @initFormValidation()
 
     initPriceItemCheck: ->
       @.$el.find('.fixed-price input[type=number]').each ->
@@ -319,6 +322,31 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           $(this).closest(".row").find('input[type=checkbox]').val("1")
           $(this).closest(".row").find('input[type=checkbox]').checkboxX('refresh')
 
+    initFormValidation: ->
+      @ui.form.formValidation(
+        framework: 'bootstrap'
+        excluded: [
+          ':hidden'
+          ':disabled'
+        ]
+        icon:
+          valid: 'glyphicon glyphicon-ok'
+          invalid: 'glyphicon glyphicon-remove'
+          validating: 'glyphicon glyphicon-refresh'
+        locale:  Robin.chinaLocale ? 'zh_CN' : 'en_US'
+        fields:
+          item:
+            selector: '.item'
+            trigger: 'keyup'
+            validators:
+              between:
+                min: 0,
+                max: 100000,
+      ).on('err.field.fv', (e, data) ->
+        data.element.parents('.cell').addClass 'has-error'
+      ).on('success.field.fv', (e, data) ->
+        data.element.parents('.cell').removeClass 'has-error'
+      )
 
     saveChange: ->
       console.log "save change"
