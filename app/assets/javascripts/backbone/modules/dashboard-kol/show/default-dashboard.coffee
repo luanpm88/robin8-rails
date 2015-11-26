@@ -86,7 +86,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         indicator_data = []
         cloud_data = []
         for label in parentThis.model.get('labels')
-          legend_data.push polyglot.t 'dashboard.' + label.name
+          legend_data.push polyglot.t 'dashboard_kol.influence_charts.' + label.name
           t={}
           t.text = polyglot.t 'dashboard_kol.influence_charts.' + label.name
           t.value = 100

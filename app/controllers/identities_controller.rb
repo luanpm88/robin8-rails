@@ -14,7 +14,7 @@ class IdentitiesController < ApplicationController
     categories = params[:identity][:interests]
     categories = '' if categories == nil
     categories = categories.strip.split(',').map {|s| s.strip}.uniq
-    @categories = IptcCategory.where :id => categories
+    @categories = IptcCategory.unscoped.where :id => categories
     if @idientity.valid?
       @idientity.iptc_categories = @categories
       @idientity.save
@@ -41,7 +41,7 @@ class IdentitiesController < ApplicationController
         render :json => {:result => 'fail', :error_message => 'not found'}
       end
       name = @identity.name
-      url = base_url + 'code/' + code + '/name/' + name
+      url = URI.encode(base_url + 'wx_public/code/' + code + '/name/' + name)
     else
       render :json => {:result => 'fail', :error_message => 'not found'}
       return
@@ -73,7 +73,9 @@ class IdentitiesController < ApplicationController
   def identity_params
     params.require(:identity).permit(:audience_age_groups, :audience_gender_ratio, :audience_regions,
       :edit_forward, :origin_publish, :forward, :origin_comment, :partake_activity, :panel_discussion,
-      :undertake_activity, :undertake_activity, :image_speak, :give_speech)
+      :undertake_activity, :undertake_activity, :image_speak, :give_speech, :audience_likes, :audience_friends,
+      :audience_groups, :audience_publish_fres
+    )
   end
 
 

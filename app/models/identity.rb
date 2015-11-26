@@ -1,8 +1,8 @@
 class Identity < ActiveRecord::Base
   belongs_to :user
   belongs_to :kol  # should have used polymorphic association here
-  has_many :kol_categories
-  has_many :iptc_categories, :through => :kol_categories
+  has_many :kol_categories#, -> { unscope(where: :scene)}
+  has_many :iptc_categories, -> { unscope(where: :scene)}, :through => :kol_categories
   WxThirdProvider = 'wx_third'
 
   def self.find_for_oauth(auth, origin_auth, current_kol = nil)

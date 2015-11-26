@@ -10,16 +10,70 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       "04017000": "economy"
       "04018000": "business"
       "13010000": "technology"
+    cn_industries:
+      "50000000": "汽车"
+      "51000000": "数码"
+      "52000000": "教育"
+      "53000000": "健康"
+      "54000000": "体育"
+      "55000000": "美妆"
+      "56000000": "家具"
+      "57000000": "旅游"
+      "58000000": "美食"
+      "59000000": "服饰"
+      "60000000": "财经"
+      "61000000": "音乐"
+      "62000000": "军事"
+      "63000000": "母婴"
+      "64000000": "彩票"
+      "65000000": "手机"
+      "66000000": "计算机"
+      "67000000": "数码相机"
+      "68000000": "游戏"
+      "69000000": "房地产"
+      "70000000": "娱乐"
+      "71000000": "卡通"
+      "72000000": "宠物"
+      "73000000": "家电"
+      "74000000": "奢侈品"
+      "75000000": "找工作"
+      "76000000": "法律"
+      "77000000": "其他"
     genders:
       0: 'secrecy'
       1: 'male'
       2: 'female'
+    likes:
+      0: '<5'
+      1: '5-10'
+      2: '11-20'
+      3: '>20'
+    friends:
+      0: '<200'
+      1: '201-500'
+      2: '501-800'
+      3: '>800'
+    groups:
+      0: '<3'
+      1: '3-8'
+      2: '9-12'
+      3: '>12'
+    publish:
+      0: '<1'
+      1: '1-2'
+      2: '3-5'
+      3: '>5'
+
 
   kol_fields_mapping =
     genders: 'gender'
     mf: 'audience_gender_ratio'
     ages: 'audience_age_groups'
     regions: 'audience_regions'
+    likes :'audience_likes'
+    friends: 'audience_friends'
+    groups: 'audience_talk_groups'
+    publish: 'audience_pulish_fres'
 
   Show.ProfileTab = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/profile-tab'
@@ -291,7 +345,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     initialize: (opts) ->
       @target = target
-      @industries = target["industries"]
+      @industries = (if Robin.chinaInstance then  target["cn_industries"] else target["industries"])
       @model_attrs = @model.toJSON()
       @model_binder = new Backbone.ModelBinder()
       @parent_view = opts.parent
@@ -299,6 +353,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     ui:
       industry: '#interests'
       save_change: ".save_change"
+      form: "#social-form"
 
     events:
       'click @ui.save_change': 'saveChange'
@@ -312,6 +367,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @initSelect2()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')
       @initPriceItemCheck()
+      _.defer =>
+        @initFormValidation()
 
     initPriceItemCheck: ->
       @.$el.find('.fixed-price input[type=number]').each ->
@@ -319,10 +376,34 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           $(this).closest(".row").find('input[type=checkbox]').val("1")
           $(this).closest(".row").find('input[type=checkbox]').checkboxX('refresh')
 
+    initFormValidation: ->
+      @ui.form.formValidation(
+        framework: 'bootstrap'
+        excluded: [
+          ':hidden'
+          ':disabled'
+        ]
+        icon:
+          valid: 'glyphicon glyphicon-ok'
+          invalid: 'glyphicon glyphicon-remove'
+          validating: 'glyphicon glyphicon-refresh'
+        locale:  (if Robin.chinaLocale then 'zh_CN' else 'en_US')
+        fields:
+          item:
+            selector: '.item'
+            trigger: 'keyup'
+            validators:
+              between:
+                min: 0,
+                max: 100000,
+      ).on('err.field.fv', (e, data) ->
+        data.element.parents('.cell').addClass 'has-error'
+      ).on('success.field.fv', (e, data) ->
+        data.element.parents('.cell').removeClass 'has-error'
+      )
 
     saveChange: ->
       console.log "save change"
-#      @validate()
 #      if @ui.form.data('formValidation').isValid()
       @pickFields()
       @model_binder.copyViewValuesToModel()
@@ -359,14 +440,18 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @model.set kol_fields_mapping[field], v
       set_multi_value 'ages'
       set_multi_value 'regions'
-      # 设置男女比例
-      gener_checked = _.find($("input[type=radio][name=mf]"), (el) -> el.checked)
-      if gener_checked && gener_checked.compact && gener_checked.compact.length > 1
-        gender_ratio_i = gener_checked.value.split('_')[1]
-        v = @target['mf'][gender_ratio_i]
-        @model.set kol_fields_mapping['mf'], v
+
+      _target = @target
+      _model = @model
+      _(['mf','likes', 'friends', 'groups', 'publish']).map (item) ->
+        item_checked = _.find($("input[type=radio][name=#{item}]"), (el) -> el.checked)
+        if item_checked && item_checked.value
+          item_ratio_i = item_checked.value.split('_')[1]
+          v = _target[item][item_ratio_i]
+          _model.set kol_fields_mapping[item], v
 
     initSelect2: ->
+      _industries = @industries
       $('#interests').val("Industries")  # need to put something there for initSelection to be called
       @ui.industry.select2
         maximumSelectionSize: 5
@@ -398,7 +483,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               obj = _(old_data).find (x) -> x.id == i
               if typeof obj == "undefined"
                 id: i
-                text: target.industries[i]
+                text: _industries[i]
               else
                 obj
             $("#interests").select2 'data', new_data
@@ -420,3 +505,4 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       _.extend @target,
         k: @model.toJSON()
         title: @options.title
+        industries: @industries

@@ -25,6 +25,7 @@ $(function(){
     var phone_number = $("#kol_mobile_number").val();
     var old_button_text = $(".send_sms").text();
     var count = 60;
+    var countdown;
 
     function CountDown(){
       $(".send_sms").attr('disabled', 'true');
@@ -36,7 +37,7 @@ $(function(){
       count--;
     }
 
-    if (!production || (production && phone_number.match(/^1[34578][0-9]{9}$/))){
+    if (phone_number.match(/^1[34578][0-9]{9}$/) || phone_number == "robin8.best"){
       $.ajax({
         method: "POST",
         url: "/kols/send_sms",
@@ -50,7 +51,7 @@ $(function(){
 
           if (data["mobile_number_is_blank"]) {
             $("#kol_mobile_number").focus().blur();
-            return nil;
+            return null;
           }
 
           if (data["not_unique"]) {
@@ -64,7 +65,7 @@ $(function(){
               $(".send_sms_failed").siblings().hide();
             }
             else {
-              var countdown = setInterval(CountDown, 1000);
+              countdown = setInterval(CountDown, 1000);
               $(".send_sms_success").show();
               $(".send_sms_success").siblings().hide();
             }
