@@ -1,14 +1,26 @@
 <header class="homeheader sizeheader">
   <%= render :partial => 'pages/partials/menu' %>
   <div class="row">
-    <div class="large-12 columns">
+    <div class="large-12 columns" style='position: relative;'>
       <h1 class="logo" style="margin-top: 194px;">
         <a href="/"><%= @l.t('header.title') %></a>
       </h1>
-      <h2><%= @l.t('landing_page.title_landing') %></h2>
-      <div class="small-12 medium-12 large-12 columns">
-        <a class="button button-signup kols_register_button" href="/kols/new"><%= @l.t('landing_page.register_text') %></a>
+      <h2 class="title_landing"><%= @l.t('landing_page.title_landing') %></h2>
+
+      <div class="small-12 columns social-login">
+        <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span>使用微博账号登录</span></a>
       </div>
+
+      <div class="small-12 columns social-login">
+        <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span>使用微信账号登录</span></a>
+      </div>
+
+      <div class="small-12 columns social-login">
+        <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span>使用微信公众号号登录</span></a>
+      </div>
+
+      <a href="/kols/new" class="sign_up_with_email">或者用电子邮箱注册</a>
+
     </div>
   </div>
 </header>
@@ -19,13 +31,11 @@
     <div>
       <h2><%= @l.t('landing_page.text17') %></h2>
       <div class="small-12 medium-7 large-6 center">
-        <style>.embed-container { position: relative; padding-bottom: 56.25% !important; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'>
-        <%=raw @video%>
+        <div class='embed-container'>
+          <%= image_tag "landingpage_kol.png" %>
       </div>
     </div>
-      <p class="register" ><%= @l.t('landing_page.text18') %> <a href="/kols/new"><%= @l.t('landing_page.text16') %></a></p>
-      <p><%= @l.t('landing_page.text10') %></p>
-      <p class="btn"><a class="button button-signup" href="/kols/new"><%= @l.t('landing_page.register_text') %></a></p>
+      
     </div>
   </div>
 </div>
@@ -83,32 +93,37 @@
       <p><%= @l.t('landing_page.text11') %></p>
     </div>
   </div>
+
 </div>
-<div class="bgpane-image"></div>
-<div class="bgpane-title">
-  <h2><%= @l.t('landing_page.welcome') %></h2>
+
+<div class="partner">
+<div class="container">
+  <ul class='clearfix'>
+    <li class='first_line li1'>
+      <div class="img_containier"></div>
+      <p><%= @l.t('landing_page.chinaccelerator') %></p>    </li>
+    <li class='first_line li2'>
+      <div class="img_containier"></div>
+      <p><%= @l.t('landing_page.smg') %></p>   
+    </li>
+    <li class='first_line li3'>
+      <div class="img_containier"></div>
+      <p><%= @l.t('landing_page.mwc') %></p>
+    </li>
+    <li class='second_line li4'>
+      <div class="img_containier"></div>
+      <p><%= @l.t('landing_page.technode') %></p>
+    </li>
+    <li class='second_line li5'>
+      <div class="img_containier"></div>
+      <p><%= @l.t('landing_page.techinasia') %></p>
+    </li>
+    <li class='second_line li6'>
+      <div class="img_containier"></div>
+      <p><%= @l.t('landing_page.omd') %></p>
+    </li>
+  </ul>
 </div>
-<div class="sizeheader bgpane"></div>
-<div class="row whatwedo-title">
-  <h2><%= @l.t('landing_page.text5') %></h2>
-</div>
-<div class="whatwedo">
-  <div class="row">
-    <div class="large-12 columns">
-      <div class="row">
-        <p><span class="icon-img-wrap left"><%= image_tag 'icon-calculate.png', class: 'icon-left' %></span><%= @l.t('landing_page.text12') %></p>
-      </div>
-      <div class="row">
-        <p><span class="icon-img-wrap left"><%= image_tag 'icon-increase_influence.png', class: 'icon-left' %></span><%= @l.t('landing_page.text13') %></p>
-      </div>
-      <div class="row">
-        <p><span class="icon-img-wrap left"><%= image_tag 'icon-machine_learning.png', class: 'icon-left' %></span><%= @l.t('landing_page.text20') %></p>
-      </div>
-      <div class="row">
-        <p><span class="icon-img-wrap left"><%= image_tag 'icon-monetize.png', class: 'icon-left' %></span><%= @l.t('landing_page.text15') %></p>
-      </div>
-    </div>
-  </div>
 </div>
 
 

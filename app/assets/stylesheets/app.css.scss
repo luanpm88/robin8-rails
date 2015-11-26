@@ -22,8 +22,27 @@ body.login {
 
   /* GLOBAL */
 
+
+
   ul.list-unstyled {
     margin-left: 0px;
+  }
+
+
+
+  .btn-wechat, .btn-weibo {
+    width: 500px !important;
+  }
+ 
+  .btn-weibo {
+    background-color: #f26c3a !important;
+  }
+
+  .sign_up_with_email {
+    position: absolute;
+    right: 250px;
+    bottom: -17px;
+    color: #fff;
   }
 
   .button{
@@ -88,7 +107,6 @@ body.login {
     font-weight: normal;
     color: #ffffff;
     text-align: center;
-    max-width: 515px;
     margin: 0 auto 40px;
     line-height: 30px;
   }
@@ -168,7 +186,6 @@ body.login {
     margin: 20px auto 30px;
     text-align: center;
     color: #FFFFFF;
-    max-width: 520px;
   }
 
   .prsteps p{
