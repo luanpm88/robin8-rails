@@ -10,6 +10,35 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       "04017000": "economy"
       "04018000": "business"
       "13010000": "technology"
+    cn_industries:
+      "50000000": "汽车"
+      "51000000": "数码"
+      "52000000": "教育"
+      "53000000": "健康"
+      "54000000": "体育"
+      "55000000": "美妆"
+      "56000000": "家具"
+      "57000000": "旅游"
+      "58000000": "美食"
+      "59000000": "服饰"
+      "60000000": "财经"
+      "61000000": "音乐"
+      "62000000": "军事"
+      "63000000": "母婴"
+      "64000000": "彩票"
+      "65000000": "手机"
+      "66000000": "计算机"
+      "67000000": "数码相机"
+      "68000000": "游戏"
+      "69000000": "房地产"
+      "70000000": "娱乐"
+      "71000000": "卡通"
+      "72000000": "宠物"
+      "73000000": "家电"
+      "74000000": "奢侈品"
+      "75000000": "找工作"
+      "76000000": "法律"
+      "77000000": "其他"
     genders:
       0: 'secrecy'
       1: 'male'
@@ -291,7 +320,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     initialize: (opts) ->
       @target = target
-      @industries = target["industries"]
+      @industries = (if Robin.chinaInstance then  target["cn_industries"] else target["industries"])
       @model_attrs = @model.toJSON()
       @model_binder = new Backbone.ModelBinder()
       @parent_view = opts.parent
@@ -333,7 +362,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           valid: 'glyphicon glyphicon-ok'
           invalid: 'glyphicon glyphicon-remove'
           validating: 'glyphicon glyphicon-refresh'
-        locale:  Robin.chinaLocale ? 'zh_CN' : 'en_US'
+        locale:  (if Robin.chinaLocale then 'zh_CN' else 'en_US')
         fields:
           item:
             selector: '.item'
@@ -395,6 +424,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @model.set kol_fields_mapping['mf'], v
 
     initSelect2: ->
+      _industries = @industries
       $('#interests').val("Industries")  # need to put something there for initSelection to be called
       @ui.industry.select2
         maximumSelectionSize: 5
@@ -426,7 +456,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               obj = _(old_data).find (x) -> x.id == i
               if typeof obj == "undefined"
                 id: i
-                text: target.industries[i]
+                text: _industries[i]
               else
                 obj
             $("#interests").select2 'data', new_data
@@ -448,3 +478,4 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       _.extend @target,
         k: @model.toJSON()
         title: @options.title
+        industries: @industries

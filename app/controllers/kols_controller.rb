@@ -43,7 +43,11 @@ class KolsController < ApplicationController
   def suggest_categories
     filter = params[:f]
     filter = "" if filter == nil
-    categories = IptcCategory.starts_with(filter).limit(10).map { |c| {:id => c.id, :text => c.label} }
+    if china_instance?
+      categories = IptcCategory.unscoped.cn.starts_with(filter).limit(10).map { |c| {:id => c.id, :text => c.label} }
+    else
+      categories = IptcCategory.unscoped.us.starts_with(filter).limit(10).map { |c| {:id => c.id, :text => c.label} }
+    end
     render :json => categories
   end
 

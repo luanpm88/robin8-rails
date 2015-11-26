@@ -14,7 +14,7 @@ class IdentitiesController < ApplicationController
     categories = params[:identity][:interests]
     categories = '' if categories == nil
     categories = categories.strip.split(',').map {|s| s.strip}.uniq
-    @categories = IptcCategory.where :id => categories
+    @categories = IptcCategory.unscoped.where :id => categories
     if @idientity.valid?
       @idientity.iptc_categories = @categories
       @idientity.save
