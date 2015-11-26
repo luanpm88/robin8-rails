@@ -1,25 +1,47 @@
-<h2>Change your password</h2>
+<div class="signup">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || @l.t('kols.title') )}%>
+  </header>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
+  <div class="form-step step-one">
+    <div class="row">
+      <div class="small-12 columns">
+        <div class="errorwarning">
+          <%flash[:errors].each do |e|%>
+              <p><%=e%></p>
+          <%end if flash[:errors].present?%>
+        </div>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
+        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+          <%= devise_error_messages! %>
+          <%= f.hidden_field :reset_password_token %>
+
+          <label>
+            <h2>Change your password</h2>
+          </label>
+
+          <label>
+            <%= f.password_field :password, autofocus: true, autocomplete: "off",:placeholder=> @l.t('kols.password') %>
+          </label>
+
+          <label for="">
+            <%= f.password_field :password_confirmation, autocomplete: "off", :placeholder => @l.t('kols.password') %>
+          </label>
+
+          <div class="actions">
+            <%= f.submit "Change my password", :class=>"button button-signup" %>
+          </div>
+        <% end %>
+
+        <label style='padding-left: 206px;'>
+          <%= render "kols/shared/links" %>
+        </label>
+        
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
 
-<%= render "kols/shared/links" %>
