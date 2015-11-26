@@ -12,7 +12,7 @@ class ConfirmationMailWorker
         vars = JSON.dump({"to" => [data['to']], "sub" => {"%email%" => [data['to']], "%url%" => ["http://#{Rails.application.secrets.host}/#{resource_type}/confirmation?confirmation_token=#{data['token']}"]}})
         template = 'test_template_active'
       else
-        vars = JSON.dump({"to" => [data['to']], "sub" => {"%email%" => [data['to']], "%url%" => ["http://#{Rails.application.secrets.host}/#{resource_type}/confirmation?confirmation_token=#{data['token']}"]}})
+        vars = JSON.dump({"to" => [data['to']], "sub" => {"%email%" => [data['to']], "%url%" => ["http://#{Rails.application.secrets.host}/#{resource_type}/password/edit?reset_password_token=#{data['token']}"]}})
         template = 'reset_password'
       end
 
