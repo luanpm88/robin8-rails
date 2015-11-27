@@ -460,7 +460,7 @@ zh:
         general_title: 我的个人信息
         id: ID
         industry: 关注的话题
-        industry_placeholder: 选择或者输入（最多5个，空白隔开）
+        industry_placeholder: 点击选择（最多5个）
         last_name: 名字
         linkedin: LinkedIn
         location: 地区
@@ -496,7 +496,7 @@ zh:
         all: 全部
         online_tasks: 线上任务
         edit_forward: 编辑转发
-        origin_publish: 原创转发
+        origin_publish: 原创内容
         forward: 转发
         origin_comment: 原创评论
         offline_tasks: 线下任务
@@ -539,12 +539,12 @@ zh:
         vsmonth: "%{per} vs last month"
         youbeat: You beat %{per} people!
       validation:
-        city: The City is required
-        country: The Country is required
-        first_name: The First Name is required
-        last_name: The Last Name is required
-        mobile: The Mobile is required
-        region: The Region is required
+        city: 城市不能为空
+        country: 国家不能为空
+        first_name: 姓不能为空
+        last_name: 名字不能为空
+        mobile: 手机号码不能为空
+        region: 省份区不能为空
     date:
       datepicker_days:
         d1: "星期天"
@@ -1724,13 +1724,10 @@ zh:
       sally_desc: "行政主管，Sally 郑在Robin8中国团队扮演“大管家”的角色。她在设立公司及申报纳税方面很有经验，对于雇佣关系和其他人事资源方面的政策也很熟悉。Sally已经帮助设立了多家外国企业，并协助这些公司的日常运作。"
       sally_name: Sally Zheng
       sally_pos: 行政主管
-      scientist_desc: Edison在机器学习和在中国数据搜索拥有超过5年的经验，并曾为腾讯和Quo360工作。他已于应用数学和其他国际直销杂志上发表了多篇文章。毕业于数学Technologyís学院北京大学，获得数学学士学位，2006年与计算机科学学院与工程CS硕士学位，2009年他目前赢得他的硕士学位计算机科学在
-        纽约大学工程理工学校。
+      scientist_desc: Edison在机器学习和在数据搜索方面拥有超过5年的经验，并曾为腾讯和Quo360工作。他已在应用数学和其他国际杂志上发表了多篇文章。2006年毕业于北京理工大学并获得数学学士学位，2009年取得计算机科学与工程硕士学位，目前在纽约大学学习计算机科学专业。
       scientist_name: Edison Xu Zhao
       scientist_pos: "数据专家和工程师"
-      simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
-        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS
-        from East China Normal University.
+      simon_desc: Simon有多年面对数据技术和消费者的经验。他曾在微软和eBay参与Web开发和电商数据仓库工作，其后在百威英博和VF集团推进业务洞察和互联网创新项目，侧重于洞察市场和消费者，提升集团的数字体验。Simon毕业于华东师范大学，拥有计算机科学学士和数据挖掘硕士学位。
       simon_name: Simon Deng
       simon_pos: Tech Lead China
       support_desc: Olivia于2010年10月加入MyPRGenie，她负责客户支持和监督的科研队伍。Olivia在公关和营销方面具有丰富经验，已经帮助数百家企业策划公关活动。此外，她领导媒体数据库的研究小组。

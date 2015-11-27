@@ -12,16 +12,16 @@
   <div class="form-step step-one">
     <div class="row">
       <div class="small-12 columns">
-        <% if  params[:auth_params].present? %>
-          <div data-alert class="alert-box success radius" style="margin-top: 15px">
+        <% if params[:auth_params].present? %>
+          <div data-alert class="alert-box warning radius" style="margin-top: 15px">
             <%= @l.t('register.auth_success') %>
             <a href="#" class="close">&times;</a>
           </div>
         <% end %>
         <div class="errorwarning">
-          <%flash[:errors].each do |e|%>
+          <% flash[:errors].each do |e|%>
               <p><%=e%></p>
-          <%end if flash[:errors].present?%>
+          <% end if flash[:errors].present?%>
         </div>
 
         <%= form_for @kol,:url=>"/kols/new" do |f|  %>
@@ -126,6 +126,7 @@
       escapeMarkup: function (m) { return m; }
     });
     $(function(){
+      $(document).foundation();
       $(".btn.social").click(function(){
         var fiveMins = new Date();
         fiveMins.setMinutes(fiveMins.getMinutes() + 5);

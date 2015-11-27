@@ -7,19 +7,21 @@
       </h1>
       <h2 class="title_landing"><%= @l.t('landing_page.title_landing') %></h2>
 
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %></span></a>
-      </div>
+      <div class="social-list">
 
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %></span></a>
+        <div class="small-12 columns social-login">
+          <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %></span></a>
+        </div>
+    
+        <div class="small-12 columns social-login">
+          <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %></span></a>
+        </div>
+    
+        <div class="small-12 columns social-login">
+          <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %></span></a>
+        </div>
+        <a href="/kols/new" class="sign_up_with_email"><%= @l.t("login.use_email") %></a>
       </div>
-
-      <div class="small-12 columns social-login">
-        <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %></span></a>
-      </div>
-
-      <a href="/kols/new" class="sign_up_with_email"><%= @l.t("login.use_email") %></a>
 
     </div>
   </div>

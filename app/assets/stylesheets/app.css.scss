@@ -22,31 +22,38 @@ body.login {
 
   /* GLOBAL */
 
-
-
   ul.list-unstyled {
     margin-left: 0px;
   }
 
+  .social-list {
+    max-width: 470px;
+    margin: 0 auto;
+    .btn-wechat, .btn-weibo {
+      height: 40px;
+      line-height: 45px;
 
-
-  .btn-wechat, .btn-weibo {
-    width: 500px !important;
-  }
+      span {
+        display: inline-block;
+        height: 40px;
+        padding-left: 50px;
+      }
+    }
  
-  .btn-weibo {
-    background-color: #f26c3a !important;
-  }
+    .btn-weibo {
+      background-color: #f26c3a !important;
+    }
 
-  .sign_up_with_email {
-    position: absolute;
-    right: 250px;
-    bottom: -17px;
-    color: #fff;
-    &:hover {
+    .sign_up_with_email {
+      float: right;  
+      margin-right: 15px;
       color: #fff;
+      &:hover {
+        color: #fff;
+      }
     }
   }
+
 
   .button{
     height: 50px;
