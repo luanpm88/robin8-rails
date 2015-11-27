@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   devise_for :kols, controllers: {
     registrations: "kols/registrations",
     sessions: "users/sessions",
+    passwords: "kols/passwords"
   }
   get '/kols/get_current_kol' => 'kols#get_current_kol'
   get '/kols/current_categories' => 'kols#current_categories'

@@ -1,18 +1,27 @@
 class ConfirmationMailWorker
   include Sidekiq::Worker
 
-  def perform data
-    Rails.logger.sidekiq.info "Started perform #{self.class.to_s} with args: #{data['to']}"
+  def perform data, mail_type
+    Rails.logger.sidekiq.info "Started perform #{self.class.to_s} with args: #{data['to']}, #{mail_type}"
 
     if Rails.application.config.china_instance
       # use sendcloud for china instance
-      vars = JSON.dump({"to" => [data['to']], "sub" => {"%email%" => [data['to']], "%url%" => ["http://#{Rails.application.secrets.host}/kols/confirmation?confirmation_token=#{data['token']}"]}})
+      resource_type = data['resource_type'] + 's'
+
+      if mail_type.eql? 'confirmation_instructions'
+        vars = JSON.dump({"to" => [data['to']], "sub" => {"%email%" => [data['to']], "%url%" => ["http://#{Rails.application.secrets.host}/#{resource_type}/confirmation?confirmation_token=#{data['token']}"]}})
+        template = 'test_template_active'
+      else
+        vars = JSON.dump({"to" => [data['to']], "sub" => {"%email%" => [data['to']], "%url%" => ["http://#{Rails.application.secrets.host}/#{resource_type}/password/edit?reset_password_token=#{data['token']}"]}})
+        template = 'reset_password'
+      end
+
       send_data = {
         :from => Rails.application.secrets.sendcloud[:from_address],
-        :fromname => Rails.application.secrets.sendcloud[:form_name],
-        :subject => I18n.t('devise.mailer.confirmation_instructions.subject'),
+        :fromname => Rails.application.secrets.sendcloud[:from_name],
+        :subject => I18n.t('devise.mailer.' + mail_type + '.subject'),
         :use_maillist => false,
-        :template_invoke_name => 'test_template_active',
+        :template_invoke_name => template,
         :substitution_vars => vars
       }
 
@@ -20,7 +29,7 @@ class ConfirmationMailWorker
       begin
         sendcloud_client.send(send_data, type=:template)
       rescue => e
-        Rails.logger.sidekiq.error "Perform #{self.class.to_s} failed with args: #{data['to']}, error msg: #{e.message}"
+        Rails.logger.sidekiq.error "Perform #{self.class.to_s} failed with args: #{data['to']} & #{mail_type}, error msg: #{e.message}"
         return
       end
     else
