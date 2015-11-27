@@ -17,14 +17,14 @@
 }
 
 .partner .container {
-	max-width: 800px;
-	height: 428px;
+	max-width: 960px;
 	margin: 0 auto;
-	ul>li{display:block;float:left;width: 240px;margin-left:10px;}
-	ul>li.first_line{height:165;margin-bottom: 10px;}
+	ul>li{display:block;float:left;width: 240px;margin-left:40px;}
+	ul>li.first_line{height: 200px; margin-bottom: 10px;}
 	ul>li.second_line{height:200px;}
 	ul>li>.img_container{width:100%;}
 	ul>li.first_line>.img_containier{height: 139px;}
+		ul>li.second_line>.img_containier{height: 59px;}
 	li.li1>.img_containier{background: image-url("chinaccelerator-logo.png") center center no-repeat;}
 	li.li2>.img_containier{background:image-url("smg-logo.png") center center no-repeat;}
 	li.li3>.img_containier{background:image-url("mwc-logo.png") center 35px no-repeat;}	
@@ -32,7 +32,6 @@
 	li.li4>.img_containier{background: image-url("technode-logo.png") center center no-repeat;}
 	li.li5>.img_containier{background:image-url("techinasia-logo.png") center center no-repeat;}
 	li.li6>.img_containier{background:image-url("omd-logo.png") center center no-repeat;}
-	ul>li.second_line>.img_containier{height: 59px;}
 	ul>li>p{text-align:center; margin-top: 10px;}
 
 	.read_more .label {
