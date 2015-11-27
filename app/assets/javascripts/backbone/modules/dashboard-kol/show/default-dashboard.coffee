@@ -8,8 +8,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       discover: '#default-dashboard-discover'
 
     onRender: () ->
-      console.log 'on render'
       @initInfluence()
+      @showDiscover()
 
     initInfluence: () ->
       socialList = new Robin.Collections.Identities
@@ -18,6 +18,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       socialList.fetch
         success: (collection, res, opts) =>
           @getRegion('socialInfluencePower').show @influence_view
+
+    showDiscover: ()->
+      discovers = new Robin.Collections.Discovers
+      @discovers_view = new Show.DiscoversLayout
+        collection: discovers
+      discovers.fetch
+        success: (collection, res, opts) =>
+          @getRegion('discover').show @discovers_view
 
   Show.Influence = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/influence'
@@ -39,7 +47,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         item = influence
         console.log 'influence existed'
       else if @collection.models[0]
-        console.log @collection.models[0]
         item = new Robin.Models.SocialInfluence({id: @collection.models[0].get('id')})
         console.log 'new influence'
       else
@@ -150,10 +157,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.SocialNotExisted = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/social_not_existed'
 
-  # Show.Discovers = Backbone.Marionette.CompositeView.extend
-  #   template: ''
-  #
-  #   childView: DiscoverItem
-  #
-  # Show.DiscoverItem = Backbone.Marionette.ItemView.extend
-  #   template: ''
+  Show.DiscoverItem = Backbone.Marionette.ItemView.extend
+    template: 'modules/dashboard-kol/show/templates/discover_item'
+    tagName: 'li'
+    className: 'discover-item'
+
+  Show.DiscoversLayout = Backbone.Marionette.CompositeView.extend
+    template: 'modules/dashboard-kol/show/templates/discovers_layout'
+    childView: Show.DiscoverItem
+    childViewContainer: 'ul'

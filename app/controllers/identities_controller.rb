@@ -60,6 +60,38 @@ class IdentitiesController < ApplicationController
     end
   end
 
+  def discover
+    base_url = 'http://engine-api.robin8.net/api/v1/articles/page/1'
+
+    p = if params[:labels].eql? 'all'
+          ''
+        else
+          '?labels=' + params[:labels]
+        end
+
+    url = base_url + p
+
+    res = RestClient::Request.execute(method: :get, url: url, timeout: 10)
+    case res.code
+    when 200
+      json_res = JSON.parse res
+      if json_res['return_code'] == 0
+
+        articles = json_res['articles']
+        returns_array = []
+        10.times do
+          returns_array << articles.delete(articles.sample)
+        end
+
+        render :json => returns_array
+      else
+        render :json => {:result => 'fail', :error_message => 'something was wrong.'}
+      end
+    else
+      render :json => {:result => 'fail', :error_message => 'something was wrong.'}
+    end
+  end
+
   def destroy
     @identity = Identity.find params[:id]       rescue nil
     if @identity && @identity.destroy

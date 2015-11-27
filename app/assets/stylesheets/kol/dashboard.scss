@@ -3,7 +3,6 @@
 }
 
 #default-dashboard-discover {
-  display: none;
   .discover-header {
     padding-left: 20px;
     color: #808080;
@@ -30,7 +29,7 @@
         list-style-type: none;
       }
       li.discover-item {
-        padding-top: 10px;
+        padding-top: 16px;
         margin: 0 10px;
         border-top: 2px solid #f1f1f1;
         .discover-item-header {
@@ -50,7 +49,7 @@
             }
             .discover-item-header-left-pr {
               float: left;
-              margin-left: 6px;
+              // margin-left: 6px;
               h5 {
                 margin: 0 0 6px 0;
                 color: #3c9eb6;
@@ -58,6 +57,7 @@
             }
           }
           .discover-item-header-right {
+            display: none;
             .move2BottomContainer {
               display: inline;
             }
@@ -67,9 +67,9 @@
               font-size: 16px;
               margin-left: 10px;
             }
-            a:hover {
-              color: #3c9eb6;
-            }
+            // a:hover {
+            //   color: #3c9eb6;
+            // }
           }
         }
         .discover-item-body {
@@ -241,25 +241,25 @@
     .discover-body-container {
       border-top: 1px solid #ddd;
       border-radius: 4px 4px 0 0;
-      ul {
-        li.discover-item {
-          position: relative;
-          .discover-item-header {
-            .discover-item-header-right {
-              .move2BottomContainer {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 50%;
-                font-size: 20px;
-              }
-            }
-          }
-          .discover-item-body {
-            padding-bottom: 28px;
-          }
-        }
-      }
+      // ul {
+      //   li.discover-item {
+      //     position: relative;
+      //     .discover-item-header {
+      //       .discover-item-header-right {
+      //         .move2BottomContainer {
+      //           position: absolute;
+      //           bottom: 0;
+      //           left: 0;
+      //           width: 50%;
+      //           font-size: 20px;
+      //         }
+      //       }
+      //     }
+      //     .discover-item-body {
+      //       padding-bottom: 28px;
+      //     }
+      //   }
+      // }
     }
   }
 
