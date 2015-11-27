@@ -46,6 +46,7 @@ gem 'sitemap_generator'
 gem 'redis-objects'
 gem 'redis-rails'
 gem 'rest-client'
+gem "typhoeus"
 
 # Send notification when error occur
 gem 'exception_notification'
