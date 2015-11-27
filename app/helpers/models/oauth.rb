@@ -34,6 +34,11 @@ module Models::Oauth
         identity.kol = resource
         identity.user_id = nil
         identity.save!
+
+        # TODO this appear in multi place, should placed one place
+        # tell data engine a new uid inserted via api
+        kol_auth_info = { provider: auth.provider, uid: auth.uid }
+        IntegrationWithDataEngineWorker.perform_async 'insert_kol', kol_auth_info
       end
     end
     resource

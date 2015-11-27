@@ -176,6 +176,9 @@ GEM
       activemodel
     equalizer (0.0.11)
     erubis (2.7.0)
+    exception_notification (4.1.1)
+      actionmailer (>= 3.0.4)
+      activesupport (>= 3.0.4)
     execjs (2.5.2)
     extlib (0.9.16)
     factory_girl (4.5.0)
@@ -564,6 +567,9 @@ GEM
       rspec-expectations (~> 3.2.0)
       rspec-mocks (~> 3.2.0)
       rspec-support (~> 3.2.0)
+    rspec-sidekiq (2.1.0)
+      rspec (~> 3.0, >= 3.0.0)
+      sidekiq (>= 2.4.0)
     rspec-support (3.2.2)
     rubyzip (1.1.7)
     sass (3.4.14)
@@ -698,6 +704,7 @@ DEPENDENCIES
   docx
   ejs
   email_validator
+  exception_notification
   factory_girl_rails
   ffaker
   friendly_id (~> 5.1.0)
@@ -784,6 +791,7 @@ DEPENDENCIES
   rspec-activemodel-mocks
   rspec-mocks
   rspec-rails
+  rspec-sidekiq
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq

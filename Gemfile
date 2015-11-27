@@ -47,6 +47,9 @@ gem 'redis-objects'
 gem 'redis-rails'
 gem 'rest-client'
 
+# Send notification when error occur
+gem 'exception_notification'
+
 # Character encoding detecting library
 gem 'charlock_holmes'
 
@@ -193,6 +196,10 @@ group :development, :test do
 
 
 
+end
+
+group :test do
+  gem 'rspec-sidekiq'
 end
 
 group :production do
