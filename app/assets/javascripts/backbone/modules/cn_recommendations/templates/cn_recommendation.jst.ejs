@@ -21,7 +21,7 @@
   <div class="recommendation-heading-image">
     <div class="recommendation-image">
       <% if(recommendation.first_img != "null") {%>
-        <img height=200 width=300  src="<%= AppAssets.path('recommendation.image_name') %>" />
+        <img height=200 width=300  src="<%= AppAssets.path(recommendation.image_name) %>" />
       <%} else {%>
         <img height=200 width=300  src="<%= AppAssets.path('newsroom-btn.png') %>">
       <%}%>
