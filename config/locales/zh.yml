@@ -460,7 +460,7 @@ zh:
         general_title: 我的个人信息
         id: ID
         industry: 关注的话题
-        industry_placeholder: 选择或者输入（最多5个，空白隔开）
+        industry_placeholder: 点击选择（最多5个）
         last_name: 名字
         linkedin: LinkedIn
         location: 地区
@@ -496,7 +496,7 @@ zh:
         all: 全部
         online_tasks: 线上任务
         edit_forward: 编辑转发
-        origin_publish: 原创转发
+        origin_publish: 原创内容
         forward: 转发
         origin_comment: 原创评论
         offline_tasks: 线下任务
@@ -539,12 +539,12 @@ zh:
         vsmonth: "%{per} vs last month"
         youbeat: You beat %{per} people!
       validation:
-        city: The City is required
-        country: The Country is required
-        first_name: The First Name is required
-        last_name: The Last Name is required
-        mobile: The Mobile is required
-        region: The Region is required
+        city: 城市不能为空
+        country: 国家不能为空
+        first_name: 姓不能为空
+        last_name: 名字不能为空
+        mobile: 手机号码不能为空
+        region: 省份区不能为空
     date:
       datepicker_days:
         d1: "星期天"
