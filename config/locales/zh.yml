@@ -539,12 +539,12 @@ zh:
         vsmonth: "%{per} vs last month"
         youbeat: You beat %{per} people!
       validation:
-        city: The City is required
-        country: The Country is required
-        first_name: The First Name is required
-        last_name: The Last Name is required
-        mobile: The Mobile is required
-        region: The Region is required
+        city: 城市不能为空
+        country: 国家不能为空
+        first_name: 姓不能为空
+        last_name: 名字不能为空
+        mobile: 手机号码不能为空
+        region: 省份区不能为空
     date:
       datepicker_days:
         d1: "星期天"
