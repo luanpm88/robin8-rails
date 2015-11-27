@@ -277,6 +277,12 @@
     .influence-item-container {
       border: 0;
       .influence-item-header {
+        .mock_charts_1 {
+          margin: 25px auto 20px !important;
+        }
+        .mock_charts_2 {
+          display: none;
+        }
         border-bottom: 0;
         .today {
           display: none;
