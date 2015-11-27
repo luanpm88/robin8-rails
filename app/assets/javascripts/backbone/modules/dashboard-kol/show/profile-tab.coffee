@@ -393,13 +393,35 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             selector: '.item'
             trigger: 'keyup'
             validators:
+              callback:
+                message: 'Please input value, or not check this item'
+                callback: (value, validator, $field) ->
+                  console.log  $field.closest(".row").find(".price-item").val()
+                  console.log value
+                  if $field.closest(".row").find(".price-item").val() == "1"  && value.length == 0
+                    return false;
+                  else
+                    return true
               between:
                 min: 0,
                 max: 100000,
+#          'price-item':
+#            selector: '.price-item'
+#            trigger: 'change'
+#            validators:
+#              message : ""
+#              callback: (value, validator, $field) ->
+#                console.log "change"
+#                $("#social-form").formValidation('validateField', $field.closest(".row").find('.item'))
+#                return true
       ).on('err.field.fv', (e, data) ->
         data.element.parents('.cell').addClass 'has-error'
       ).on('success.field.fv', (e, data) ->
         data.element.parents('.cell').removeClass 'has-error'
+      ).on('change', '.price-item', (e) ->
+        console.log("ccccchange")
+        console.log $(this).closest(".row").find('.item')
+        $('#social-form').formValidation('revalidateField', $(this).closest(".row").find('.item'));
       )
 
     saveChange: ->
