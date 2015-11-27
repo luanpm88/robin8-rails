@@ -1,7 +1,7 @@
 <div class="signup">
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
-    <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || @l.t('kols.title') )}%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => "#{@l.t('common.reset_password')}"}%>
   </header>
 
   <div class="form-step step-one">
@@ -18,24 +18,20 @@
           <%= f.hidden_field :reset_password_token %>
 
           <label>
-            <h2>Change your password</h2>
-          </label>
-
-          <label>
-            <%= f.password_field :password, autofocus: true, autocomplete: "off",:placeholder=> @l.t('kols.password') %>
+            <%= f.password_field :password, autofocus: true, autocomplete: "off",:placeholder=> @l.t('common.new_password') %>
           </label>
 
           <label for="">
-            <%= f.password_field :password_confirmation, autocomplete: "off", :placeholder => @l.t('kols.password') %>
+            <%= f.password_field :password_confirmation, autocomplete: "off", :placeholder => @l.t('common.new_password_confirmation') %>
           </label>
 
           <div class="actions">
-            <%= f.submit "Change my password", :class=>"button button-signup" %>
+            <%= f.submit "#{@l.t('common.submit')}", :class=>"button button-signup" %>
           </div>
         <% end %>
 
         <label style='padding-left: 206px;'>
-          <%= render "kols/shared/links" %>
+          <%# <%= render "kols/shared/links" %1> %>
         </label>
         
       </div>
