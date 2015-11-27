@@ -12,8 +12,8 @@
   <div class="form-step step-one">
     <div class="row">
       <div class="small-12 columns">
-        <% if  cookies[:kol_social_signin].present? %>
-          <div data-alert class="alert-box success radius">
+        <% if  params[:auth_params].present? %>
+          <div data-alert class="alert-box success radius" style="margin-top: 15px">
             <%= @l.t('register.auth_success') %>
             <a href="#" class="close">&times;</a>
           </div>
