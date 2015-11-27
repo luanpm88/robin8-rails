@@ -4,6 +4,7 @@ class Identity < ActiveRecord::Base
   has_many :kol_categories#, -> { unscope(where: :scene)}
   has_many :iptc_categories, -> { unscope(where: :scene)}, :through => :kol_categories
   WxThirdProvider = 'wx_third'
+  after_save :spider_weibo_data
 
   def self.find_for_oauth(auth, origin_auth, current_kol = nil)
     identity = find_by(provider: auth[:provider], uid: auth[:uid])
@@ -50,6 +51,14 @@ class Identity < ActiveRecord::Base
 
   def last30_posts
     0
+  end
+
+  private
+  def spider_weibo_data
+    if self.provider == "weibo" and self.kol_id.present? and self.has_grabed == false
+      self.update(:has_grabed => true)
+      IntegrationWithDataEngineWorker.perform_async 'spider_weibo', self.id
+    end
   end
 end
 

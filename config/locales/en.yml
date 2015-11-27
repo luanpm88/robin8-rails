@@ -180,6 +180,9 @@ en:
       create_success:  Create Successful
       create_fail:     Create Fail
       next: Next
+      reset_password: Reset Password
+      new_password: New Password
+      new_password: New Password Confirmation
     about:
       text: "<p>Miranda Tan, Founder and CEO of Robin8, founded her first PR firm,
         ExcitePR, in 1999. She realized that businesses offering amazing products
@@ -738,6 +741,7 @@ en:
       technode: Chinaccelerator shows off a diverse batch of 10 new startups at demo day
       techinasia: 中国加速展示多样化最佳初创公司
       omd: 浩腾创新基金2015获胜团队揭晓，颠覆者从这里出发
+      read_more: Read More
     login:
       email: Email
       fb_login: Login using Facebook
@@ -754,6 +758,10 @@ en:
       wechat_login: Login using WeChat
       weibo_login: Login using Weibo
       wechat_third_login: Login using WeChat(public)
+      use_weibo: Sign up using Weibo
+      use_weichat: Sign up using WeChat
+      use_weichat_third: Sign up using WeChat(public)
+      use_email: Or sign up using email
     manage_users:
       buttons:
         back: Back to Brand Gallery

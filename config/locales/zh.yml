@@ -213,6 +213,9 @@ zh:
       create_success:  创建成功！
       create_fail:     创建失败！
       next: 下一步
+      reset_password:  重置密码
+      new_password: 请输入新的密码
+      new_password_confirmation: 请重复新的密码
     about:
       text: "<p>Miranda Tan，Robin8创办人及首席执行官，在1999年创立了第一个PR公司，ExcitePR。她意识到企业提供令人惊叹的产品，同时不断产生了同样的问题：他们如何能够接触正确的意见领袖为实现他们的信息效益最大化。</p>
         \     <p>Miranda的答案是直观的，易于使用的，她于2007年与合作伙伴，数字媒体专家Hassan Miah成立自主化的PR软件平台。到2010年，这个PR软件平台已被评为百强OnDemand的软件公司，100强中大西洋私人公司，并且被AlwaysOn评为100强OnMedia企业。</p>
@@ -724,6 +727,7 @@ zh:
       technode: 女中豪杰引领中国加速展览
       techinasia: 中国加速展示多样化最佳初创公司
       omd: 浩腾创新基金2015获胜团队揭晓，颠覆者从这里出发
+      read_more: 查看更多
     login:
       email: "电子邮件"
       fb_login: "使用Facebook账号登录"
@@ -739,6 +743,10 @@ zh:
       wechat_login: "使用微信账号登录"
       weibo_login: "使用微博帐号登录"
       wechat_third_login: "使用微信公众号授权登录"
+      use_weibo: "使用微博帐号"
+      use_weichat: "使用微信帐号"
+      use_weichat_third: "使用微信公众号"
+      use_email: "或者用电子邮箱注册"
     manage_users:
       buttons:
         back: "返回内容库"
@@ -1716,13 +1724,10 @@ zh:
       sally_desc: "行政主管，Sally 郑在Robin8中国团队扮演“大管家”的角色。她在设立公司及申报纳税方面很有经验，对于雇佣关系和其他人事资源方面的政策也很熟悉。Sally已经帮助设立了多家外国企业，并协助这些公司的日常运作。"
       sally_name: Sally Zheng
       sally_pos: 行政主管
-      scientist_desc: Edison在机器学习和在中国数据搜索拥有超过5年的经验，并曾为腾讯和Quo360工作。他已于应用数学和其他国际直销杂志上发表了多篇文章。毕业于数学Technologyís学院北京大学，获得数学学士学位，2006年与计算机科学学院与工程CS硕士学位，2009年他目前赢得他的硕士学位计算机科学在
-        纽约大学工程理工学校。
+      scientist_desc: Edison在机器学习和在数据搜索方面拥有超过5年的经验，并曾为腾讯和Quo360工作。他已在应用数学和其他国际杂志上发表了多篇文章。2006年毕业于北京理工大学并获得数学学士学位，2009年取得计算机科学与工程硕士学位，目前在纽约大学学习计算机科学专业。
       scientist_name: Edison Xu Zhao
       scientist_pos: "数据专家和工程师"
-      simon_desc: Simon has extensive experience in data and technology. Previously, Simon was
-        at eBay, VF Corporation and Anheuser-Busch InBev. Simon received his BS and MS
-        from East China Normal University.
+      simon_desc: Simon有多年面对数据技术和消费者的经验。他曾在微软和eBay参与Web开发和电商数据仓库工作，其后在百威英博和VF集团推进业务洞察和互联网创新项目，侧重于洞察市场和消费者，提升集团的数字体验。Simon毕业于华东师范大学，拥有计算机科学学士和数据挖掘硕士学位。
       simon_name: Simon Deng
       simon_pos: Tech Lead China
       support_desc: Olivia于2010年10月加入MyPRGenie，她负责客户支持和监督的科研队伍。Olivia在公关和营销方面具有丰富经验，已经帮助数百家企业策划公关活动。此外，她领导媒体数据库的研究小组。

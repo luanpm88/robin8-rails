@@ -43,7 +43,7 @@ module Sendcloud
       res_body = JSON.parse @http_client[urls[type]].post(data).body
 
       unless res_body['message'].eql? 'success'
-        raise res_body
+        raise res_body['errors'].first
       end
 
       true
