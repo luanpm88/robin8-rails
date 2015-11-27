@@ -8,18 +8,18 @@
       <h2 class="title_landing"><%= @l.t('landing_page.title_landing') %></h2>
 
       <div class="small-12 columns social-login">
-        <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span>使用微博账号登录</span></a>
+        <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %></span></a>
       </div>
 
       <div class="small-12 columns social-login">
-        <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span>使用微信账号登录</span></a>
+        <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %></span></a>
       </div>
 
       <div class="small-12 columns social-login">
-        <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span>使用微信公众号号登录</span></a>
+        <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %></span></a>
       </div>
 
-      <a href="/kols/new" class="sign_up_with_email">或者用电子邮箱注册</a>
+      <a href="/kols/new" class="sign_up_with_email"><%= @l.t("login.use_email") %></a>
 
     </div>
   </div>
@@ -97,33 +97,36 @@
 </div>
 
 <div class="partner">
-<div class="container">
-  <ul class='clearfix'>
-    <li class='first_line li1'>
-      <div class="img_containier"></div>
-      <p><%= @l.t('landing_page.chinaccelerator') %></p>    </li>
-    <li class='first_line li2'>
-      <div class="img_containier"></div>
-      <p><%= @l.t('landing_page.smg') %></p>   
-    </li>
-    <li class='first_line li3'>
-      <div class="img_containier"></div>
-      <p><%= @l.t('landing_page.mwc') %></p>
-    </li>
-    <li class='second_line li4'>
-      <div class="img_containier"></div>
-      <p><%= @l.t('landing_page.technode') %></p>
-    </li>
-    <li class='second_line li5'>
-      <div class="img_containier"></div>
-      <p><%= @l.t('landing_page.techinasia') %></p>
-    </li>
-    <li class='second_line li6'>
-      <div class="img_containier"></div>
-      <p><%= @l.t('landing_page.omd') %></p>
-    </li>
-  </ul>
-</div>
+  <div class="container">
+    <ul class='clearfix'>
+      <li class='first_line li1'>
+        <div class="img_containier"></div>
+        <p><%= @l.t('landing_page.chinaccelerator') %></p>    </li>
+      <li class='first_line li2'>
+        <div class="img_containier"></div>
+        <p><%= @l.t('landing_page.smg') %></p>   
+      </li>
+      <li class='first_line li3'>
+        <div class="img_containier"></div>
+        <p><%= @l.t('landing_page.mwc') %></p>
+      </li>
+      <li class='second_line li4'>
+        <div class="img_containier"></div>
+        <p><%= @l.t('landing_page.technode') %></p>
+        <a class="read_more" href="http://technode.com/2015/06/05/female-founders-takes-the-lead-at-chinaccelerator-demo-day/#.VXX5i1HKgjw.facebook" target="_blank"><span class="label"><%= @l.t("landing_page.read_more") %></span></a>
+      </li>
+      <li class='second_line li5'>
+        <div class="img_containier"></div>
+        <p><%= @l.t('landing_page.techinasia') %></p>
+        <a class="read_more" href="https://www.techinasia.com/chinaccelerator-7th-batch-startups/" target="_blank"><span class="label"><%= @l.t("landing_page.read_more") %></span></a>
+      </li>
+      <li class='second_line li6'>
+        <div class="img_containier"></div>
+        <p><%= @l.t('landing_page.omd') %></p>
+        <a class="read_more_3" href="http://mp.weixin.qq.com/s?__biz=MzAwMDM5ODM1MQ==&mid=207052870&idx=1&sn=ffa67196a951f0cf82d10a18efeab4ee&scene=1&srcid=1013ZG5ZCHyvA8h7rqVVtXjn&key=b410d3164f5f798e0ef03c9f9834310f510e0ef5cdb78350c655910c26b86f0dc79ad43d61b0875ad6effd889ca5e974&ascene=1&uin=MTU3MjQwNDcyMA%3D%3D&devicetype=Windows+8&version=61050016&pass_ticket=5epe4WzCev7X6VAiPsg63mNE7a2jejgDtpLrxMNIFvJUEMsP47qmlF%2FzIlGxjR7v" target="_blank"><span class="label"><%= @l.t("landing_page.read_more") %></span></a>
+      </li>
+    </ul>
+  </div>
 </div>
 
 

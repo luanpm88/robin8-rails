@@ -16,6 +16,17 @@
 //= require jquery-ui
 //= require ./lib/foundation.min
 //= require ./lib/modernizr
+//= require website/vendor/jquery.cookie
+
+$(function(){
+  $(".social").click(function(){
+    var fiveMins = new Date();
+    fiveMins.setMinutes(fiveMins.getMinutes() + 5);
+    $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
+    return true;
+  });
+});
+
 
 function setSizes(){
   $('.sizeheader').css('height',$(window).height()); 
