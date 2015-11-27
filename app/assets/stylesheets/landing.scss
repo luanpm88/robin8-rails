@@ -19,9 +19,9 @@
 .partner .container {
 	max-width: 960px;
 	margin: 0 auto;
-	ul>li{display:block;float:left;width: 240px;margin-left:40px;}
+	ul>li{display:block;float:left;width: 274px;margin-left:26px;}
 	ul>li.first_line{height: 200px; margin-bottom: 10px;}
-	ul>li.second_line{height:200px;}
+	ul>li.second_line{height:214px; }
 	ul>li>.img_container{width:100%;}
 	ul>li.first_line>.img_containier{height: 139px;}
 		ul>li.second_line>.img_containier{height: 59px;}
@@ -41,7 +41,7 @@
 		text-align: center;
 		line-height: 30px;
 		font-size: 16px;
-		margin-left: 48px;
+		margin-left: 68px;
 	}
 
 	.read_more_3 .label {
@@ -51,7 +51,7 @@
 		text-align: center;
 		line-height: 30px;
 		font-size: 16px;
-		margin-left: 48px;
+		margin-left: 68px;
 	}
 }
 
