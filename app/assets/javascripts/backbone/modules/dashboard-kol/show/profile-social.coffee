@@ -80,7 +80,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 #              Backbone.trigger('showSocialAccount',new Robin.Models.Identity(data.identities[0]));
             parent.refreshSocialList(data.identities)
             setTimeout ->
-              identity_id = data.provide_info.identity.id
+              identity_id = data.newest_identity.id
               $(".identity-" + identity_id + " .edit-account").trigger("click")
             , 200
 

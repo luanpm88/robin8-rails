@@ -28,20 +28,20 @@ class Kol < ActiveRecord::Base
   include Models::Identities
   extend Models::Oauth
 
-  def record_provide_info(identity,exist = nil)
-    if exist
-      Rails.cache.write("provide_info_#{self.id}", {:error => "Sorry! You had created  #{identity.provider} account"})
-    else
-      Rails.cache.write("provide_info_#{self.id}", {:identity => identity})
-    end
-  end
-
-  #get
-  def provide_info
-    error  = Rails.cache.read("provide_info_#{self.id}")
-    Rails.cache.delete("provide_info_#{self.id}")
-    error
-  end
+  # def record_provide_info(identity,exist = nil)
+  #   if exist
+  #     Rails.cache.write("provide_info_#{self.id}", {:error => "Sorry! You had created  #{identity.provider} account"})
+  #   else
+  #     Rails.cache.write("provide_info_#{self.id}", {:identity => identity})
+  #   end
+  # end
+  #
+  # #get
+  # def provide_info
+  #   error  = Rails.cache.read("provide_info_#{self.id}")
+  #   Rails.cache.delete("provide_info_#{self.id}")
+  #   error
+  # end
 
   def newest_identity
     identities.first

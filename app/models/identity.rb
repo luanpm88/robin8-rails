@@ -7,14 +7,13 @@ class Identity < ActiveRecord::Base
   after_save :spider_weibo_data
 
   def self.find_for_oauth(auth, origin_auth, current_kol = nil)
-    identity = find_by(provider: auth[:provider], uid: auth[:uid])
-    if identity
-      current_kol.record_provide_info(identity, 'exist')         if current_kol
-    else
-      identity = create_identity(auth, origin_auth)
-      current_kol.record_provide_info(identity)                  if current_kol
-    end
-    identity
+    find_by(provider: auth[:provider], uid: auth[:uid]) || create_identity(auth, origin_auth)
+    # if identity
+    #   current_kol.record_provide_info(identity, 'exist')         if current_kol
+    # else
+    #   identity = create_identity(auth, origin_auth)
+    #   current_kol.record_provide_info(identity)                  if current_kol
+    # end
   end
 
   def self.switch_package_to_params(package)

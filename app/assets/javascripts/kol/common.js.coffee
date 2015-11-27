@@ -19,7 +19,7 @@ $(document).ready ->
     else
       $(this).closest(".section").find('input[type="checkbox"]').attr("value",0);
       $(this).closest(".section").find('input[type="text"]').val('')
-#      $(this).closest(".section").find("i").css("display","none")
+      $(this).closest(".section").find("i").css("display","none")
     $(this).closest(".section").find('input[type="checkbox"]').checkboxX('refresh')
 
 # 关闭某项 输入
@@ -28,7 +28,7 @@ $(document).ready ->
     if !checked
       $(this).closest(".row").find("input[type='text']").val('')
 #      #校验的符号 也要去掉
-#      $(this).closest(".row").find("i").css("display","none")
+      $(this).closest(".row").find("i").css("display","none")
 
 # 输入某项价格 ，自动check
   $("body").on "blur", ".row input[type='text']", (e) ->
