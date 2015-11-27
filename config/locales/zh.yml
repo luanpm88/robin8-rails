@@ -727,6 +727,7 @@ zh:
       technode: 女中豪杰引领中国加速展览
       techinasia: 中国加速展示多样化最佳初创公司
       omd: 浩腾创新基金2015获胜团队揭晓，颠覆者从这里出发
+      read_more: 查看更多
     login:
       email: "电子邮件"
       fb_login: "使用Facebook账号登录"
@@ -742,6 +743,10 @@ zh:
       wechat_login: "使用微信账号登录"
       weibo_login: "使用微博帐号登录"
       wechat_third_login: "使用微信公众号授权登录"
+      use_weibo: "使用微博帐号"
+      use_weichat: "使用微信帐号"
+      use_weichat_third: "使用微信公众号"
+      use_email: "或者用电子邮箱注册"
     manage_users:
       buttons:
         back: "返回内容库"
