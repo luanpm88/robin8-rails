@@ -76,11 +76,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 #            else if data.provide_info.identity
             @model.set "identities", data.identities
             App.currentKOL.set "identities", data.identities
-            $.growl "#{polyglot.t('common.add_success')}", type: "success",
+            $.growl "#{polyglot.t('common.update_success')}", type: "success",
 #              Backbone.trigger('showSocialAccount',new Robin.Models.Identity(data.identities[0]));
             parent.refreshSocialList(data.identities)
             setTimeout ->
-              identity_id = data.provide_info.identity.id
+              identity_id = data.newest_identity.id
               $(".identity-" + identity_id + " .edit-account").trigger("click")
             , 200
 
