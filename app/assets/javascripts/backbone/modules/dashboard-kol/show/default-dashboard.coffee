@@ -8,8 +8,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       discover: '#default-dashboard-discover'
 
     onRender: () ->
-      Show.CustomController.showInfluences @getRegion('socialInfluencePower')
-      Show.CustomController.showDiscover @getRegion('discover')
+      Show.CustomController.showInfluencesAndDiscovers @getRegion('socialInfluencePower'), @getRegion('discover')
 
 
   Show.Influence = Backbone.Marionette.LayoutView.extend
@@ -29,7 +28,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     switchAccount: (e) ->
       e.preventDefault()
-      console.log 'e'
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
       Show.CustomController.showInfluenceItem(influence, @collection, @getRegion('item'))
