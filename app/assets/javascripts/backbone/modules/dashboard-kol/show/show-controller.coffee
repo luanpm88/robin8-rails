@@ -9,3 +9,40 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     showScore: -> @dashboardPageView.score()
     showCampaigns: -> @dashboardPageView.campaigns()
     showDefaultDashboard: -> @dashboardPageView.defaultDashboard()
+
+
+  Show.CustomController = {
+    showInfluences: (region) ->
+      socialList = new Robin.Collections.Identities
+      influences_view = new Show.Influence
+        collection: socialList
+      socialList.fetch
+        success: (collection, res, opts) =>
+          region.show influences_view
+
+    showInfluenceItem: (influence, influences, region) ->
+      if influence
+        item = influence
+      else if influences.models[0]
+        item = new Robin.Models.SocialInfluence {id: influences.models[0].get('id')}
+      else
+        parentThis.missingView = new Show.SocialNotExisted
+        region.show missingView
+        return
+
+      missingView = new Show.SocialNotExisted
+      influenceView = new Show.InfluenceItem
+        model: item
+
+      fetchingItem = item.fetch()
+      $.when(fetchingItem).done((data, textStatus, jqXHR)->
+        if data.result != 'fail'
+          region.show influenceView
+        else
+          region.show missingView
+      ).fail(->
+        region.show missingView
+      ) 
+  }
+
+
