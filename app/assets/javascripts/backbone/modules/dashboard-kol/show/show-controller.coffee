@@ -43,6 +43,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       ).fail(->
         region.show missingView
       ) 
+
+    showDiscover: (region)->
+      discovers = new Robin.Collections.Discovers
+      discovers_view = new Show.DiscoversLayout
+        collection: discovers
+      discovers.fetch
+        success: (collection, res, opts) =>
+          region.show discovers_view
   }
 
 

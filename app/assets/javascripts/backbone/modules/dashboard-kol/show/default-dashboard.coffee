@@ -9,15 +9,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     onRender: () ->
       Show.CustomController.showInfluences @getRegion('socialInfluencePower')
-      @showDiscover()
+      Show.CustomController.showDiscover @getRegion('discover')
 
-    showDiscover: ()->
-      discovers = new Robin.Collections.Discovers
-      @discovers_view = new Show.DiscoversLayout
-        collection: discovers
-      discovers.fetch
-        success: (collection, res, opts) =>
-          @getRegion('discover').show @discovers_view
 
   Show.Influence = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/influence'
