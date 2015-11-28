@@ -26,7 +26,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       else if influences.models[0]
         item = new Robin.Models.SocialInfluence {id: influences.models[0].get('id')}
       else
-        parentThis.missingView = new Show.SocialNotExisted
+        missingView = new Show.SocialNotExisted
         region.show missingView
         return
 
