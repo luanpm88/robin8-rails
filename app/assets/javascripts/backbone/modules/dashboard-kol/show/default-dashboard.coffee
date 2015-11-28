@@ -31,6 +31,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
       Show.CustomController.showInfluenceItem(influence, @collection, @getRegion('item'))
+      # todo: reload discover after social account switched.
 
   Show.InfluenceItem = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/influence-item'

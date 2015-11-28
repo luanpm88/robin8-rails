@@ -70,7 +70,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @showDiscoverFor 'all', region
 
     showDiscoverFor: (labels, region) ->
-      console.log 'comme with: ', labels
       discovers = new Robin.Collections.Discovers [], {labels: labels}
       discoversView = new Show.DiscoversLayout
         collection: discovers
