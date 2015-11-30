@@ -29,7 +29,7 @@ $(function(){
 
 
 function setSizes(){
-  $('.sizeheader').css('height',$(window).height()); 
+  $('.sizeheader').css('min-height',$(window).height()); 
 
   var signuplogomargin = $(window).height()/2 - 80;
   $('.sizeheader .logo').css('margin-top',signuplogomargin + 'px');
