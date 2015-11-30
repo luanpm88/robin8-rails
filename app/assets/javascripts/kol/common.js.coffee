@@ -40,7 +40,6 @@ $(document).ready ->
   # resend confirmation mail
   $('#resend-confirmation-mail').on 'click', (e) ->
     e.preventDefault()
-    console.log 'exec resend-confirmation-mail'
     $.ajax
       url: '/kols/resend_confirmation_mail'
       type: 'GET'

@@ -46,6 +46,7 @@ class KolsController < ApplicationController
       return render :json => {message: 'slow down'}
     end
 
+    @kol.send_confirmation_instructions
     Rails.cache.write @kol.email, 'send', expires_in: 10.minute
     return render :json => {message: 'success'}
   end
