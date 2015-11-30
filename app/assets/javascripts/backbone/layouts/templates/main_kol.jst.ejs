@@ -29,16 +29,16 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-          <% if(Robin.chinaLocale) { %>
-            <li><a href="<%= Robin.us_host %>"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
+          <% if(Robin.chinaInstance) { %>
+            <li><a href="http://robin8.com"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
           <% } else { %>
-            <li><a href="<%= Robin.cn_host %>"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
+            <li><a href="http://robin8.net"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
           <% } %>
 
           <% if(Robin.chinaLocale) { %>
             <li><a href="?locale=en">EN</a></li>
           <% } else { %>
-            <li><a href="?locale=zh">ZH</a></li>
+            <li><a href="?locale=zh">CN</a></li>
           <% } %>
       </ul>      
 
