@@ -9,3 +9,76 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     showScore: -> @dashboardPageView.score()
     showCampaigns: -> @dashboardPageView.campaigns()
     showDefaultDashboard: -> @dashboardPageView.defaultDashboard()
+
+
+  Show.CustomController = {
+    showInfluencesAndDiscovers: (influenceRegion, discoverRegion) ->
+      socialList = new Robin.Collections.Identities
+      influences_view = new Show.Influence
+        collection: socialList
+      socialList.fetch
+        success: (collection, res, opts) =>
+          influenceRegion.show influences_view
+
+          if collection.models[0]
+            @showDiscover collection.models[0].get('id'), discoverRegion
+          else
+            @showDiscover null, discoverRegion
+
+    showInfluenceItem: (influence, influences, region) ->
+      if influence
+        item = influence
+      else if influences.models[0]
+        item = new Robin.Models.SocialInfluence {id: influences.models[0].get('id')}
+      else
+        missingView = new Show.SocialNotExisted
+        region.show missingView
+        return
+
+      missingView = new Show.SocialNotExisted
+      influenceView = new Show.InfluenceItem
+        model: item
+
+      fetchingItem = item.fetch()
+      $.when(fetchingItem).done((data, textStatus, jqXHR)->
+        if data.result != 'fail'
+          region.show influenceView
+        else
+          region.show missingView
+      ).fail(->
+        region.show missingView
+      ) 
+
+    showDiscover: (socialAccountId, region)->
+      if socialAccountId
+        socialAccount = new Robin.Models.SocialInfluence {id: socialAccountId}
+        socialAccount.fetch
+          success: (model, res, opts) =>
+            if res.result != 'fail'
+              temp_labels = ''
+              for label in model.get('labels')
+                temp_labels = temp_labels + label.name + ','
+              labels = temp_labels[0...-1]
+              @showDiscoverFor labels, region
+            else
+              labels = 'all'
+              @showDiscoverFor labels, region
+          error: =>
+            labels = 'all'
+            @showDiscoverFor 'all', region
+      else
+        @showDiscoverFor 'all', region
+
+    showDiscoverFor: (labels, region) ->
+      discovers = new Robin.Collections.Discovers [], {labels: labels}
+      discoversView = new Show.DiscoversLayout
+        collection: discovers
+      discovers.fetch
+        success: (collection, res, opts) =>
+          region.show discoversView
+        error: =>
+          console.log 'fetch discover error'
+
+  }
+
+

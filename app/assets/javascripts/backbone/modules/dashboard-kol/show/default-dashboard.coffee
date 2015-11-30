@@ -8,24 +8,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       discover: '#default-dashboard-discover'
 
     onRender: () ->
-      @initInfluence()
-      @showDiscover()
+      Show.CustomController.showInfluencesAndDiscovers @getRegion('socialInfluencePower'), @getRegion('discover')
 
-    initInfluence: () ->
-      socialList = new Robin.Collections.Identities
-      @influence_view = new Show.Influence
-        collection: socialList
-      socialList.fetch
-        success: (collection, res, opts) =>
-          @getRegion('socialInfluencePower').show @influence_view
-
-    showDiscover: ()->
-      discovers = new Robin.Collections.Discovers
-      @discovers_view = new Show.DiscoversLayout
-        collection: discovers
-      discovers.fetch
-        success: (collection, res, opts) =>
-          @getRegion('discover').show @discovers_view
 
   Show.Influence = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/influence'
@@ -37,47 +21,17 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       'click .dropdown-menu li a': 'switchAccount'
 
     onRender: () ->
-      @initInfluenceItem()
+      Show.CustomController.showInfluenceItem(null, @collection, @getRegion('item'))
 
     serializeData: () ->
       items: @collection.toJSON();
 
-    initInfluenceItem: (influence) ->
-      if influence
-        item = influence
-        console.log 'influence existed'
-      else if @collection.models[0]
-        item = new Robin.Models.SocialInfluence({id: @collection.models[0].get('id')})
-        console.log 'new influence'
-      else
-        @notE = new Show.SocialNotExisted
-        @getRegion('item').show @notE
-        console.log 'not existed'
-        return
-      @view = new Show.InfluenceItem
-        model: item
-      fetchingItem = item.fetch()
-      parentThis = @
-      $.when(fetchingItem).done((data, textStatus, jqXHR)->
-        if data.result != 'fail'
-          console.log 'success'
-          parentThis.getRegion('item').show parentThis.view
-        else
-          console.log 'not found'
-          @notExistedView = new Show.SocialNotExisted
-          parentThis.getRegion('item').show @notExistedView
-      ).fail(->
-        console.log 'fetch fail'
-        @notExisted = new Show.SocialNotExisted
-        parentThis.getRegion('item').show @notExisted
-      )
-
     switchAccount: (e) ->
       e.preventDefault()
-      console.log 'e'
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
-      @initInfluenceItem influence
+      Show.CustomController.showInfluenceItem(influence, @collection, @getRegion('item'))
+      # todo: reload discover after social account switched.
 
   Show.InfluenceItem = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/influence-item'
