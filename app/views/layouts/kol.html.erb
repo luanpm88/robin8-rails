@@ -27,7 +27,7 @@
 </head>
 <body>
   <% if flash[:confirmation_alert] %>
-    <div class="activation-alert alert-warning" role="alert"><p class="confirmation"><%= flash[:confirmation_alert] %></p></div>
+    <div class="activation-alert alert-warning" role="alert"><p class="confirmation"><%= flash[:confirmation_alert] %> <a id='resend-confirmation-mail' href='#'>Resend Confirmation Mail</a></p></div>
   <% end %>
 
   <div id="main">
