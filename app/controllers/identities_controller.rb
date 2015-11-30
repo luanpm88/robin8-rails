@@ -82,7 +82,7 @@ class IdentitiesController < ApplicationController
         articles = json_res['articles']
         returns_array = articles.first 10
         returns_array.each do |article|
-          article['img_url'] = '/assets/recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png'
+          article['img_url'] = ActionController::Base.helpers.asset_path('recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png')
         end
 
         render :json => returns_array
