@@ -7,7 +7,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       'click #login' : 'login',
       'click .btn-facebook' : 'socialSignIn',
       'click .btn-google-plus' : 'socialSignIn',
-      'click .btn-weibo' : 'socialSignIn',
+      'click #weibo' : 'socialSignIn',
       'click #wechat' : 'socialSignIn',
       'click #wechat_third' : 'socialSignIn',
     },
@@ -31,6 +31,8 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       $('#login-link').addClass('active');
       _.defer(function(){
         $this.$('#email').focus();
+        $.cookie("kol_social", "yeah", { path: "/"});
+        console.log( $.cookie("kol_social"));
       });
     },
 
@@ -70,7 +72,6 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
       var fiveMins = new Date();
       fiveMins.setMinutes(fiveMins.getMinutes() + 5);
-      $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
       $.cookie("popup_signin", "yeah", {expires: fiveMins, path: "/"});
 
       if ($(e.target).children().length != 0) {
