@@ -86,7 +86,7 @@ class IdentitiesController < ApplicationController
         end
 
         returns_array.each do |article|
-          article['img_url'] = 'assets/recommendations/' + article['label'] + [1, 2, 3].sample.to_s + '.png'
+          article['img_url'] = '/assets/recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png'
         end
 
         render :json => returns_array
