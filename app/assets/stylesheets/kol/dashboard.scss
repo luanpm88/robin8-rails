@@ -36,13 +36,13 @@
         .discover-item-img {
           display: block;
           float: left;
-          width: 16%;
+          width: 12%;
           margin-right: 2%;
         }
         .discover-w {
           display: block;
           float: left;
-          width: 82%;
+          width: 86%;
           .discover-item-header {
 
 
@@ -249,6 +249,41 @@
   .influence-charts {
     margin: 0 auto;
     float: none !important;
+  }
+
+  .discover-body-container {
+    border: 1px solid #ddd;
+    border-top: 0;
+    ul {
+      li:first-child {
+        border-top: 0 !important;
+      }
+      li {
+        list-style-type: none;
+      }
+      li.discover-item {
+        padding-top: 16px;
+        padding-bottom: 10px;
+        margin: 0 10px;
+        border-top: 2px solid #f1f1f1;
+        .discover-item-img {
+          width: 16%;
+        }
+        .discover-w {
+          display: block;
+          float: left;
+          width: 82%;
+          .discover-item-header {
+
+
+          }
+          .discover-item-body {
+
+          }
+        }
+
+      }
+    }
   }
 }
 

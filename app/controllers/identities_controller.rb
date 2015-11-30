@@ -80,11 +80,7 @@ class IdentitiesController < ApplicationController
       if json_res['return_code'] == 0
 
         articles = json_res['articles']
-        returns_array = []
-        10.times do
-          returns_array << articles.delete(articles.sample)
-        end
-
+        returns_array = articles.first 10
         returns_array.each do |article|
           article['img_url'] = '/assets/recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png'
         end
