@@ -22,7 +22,7 @@
 
 $(function(){
   $(".send_sms").click(function(){
-    var phone_number = $("#kol_mobile_number").val();
+    var phone_number = $("#kol_mobile_number").val().trim();
     var old_button_text = $(".send_sms").text();
     var count = 60;
     var countdown;
