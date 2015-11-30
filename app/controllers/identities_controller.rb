@@ -53,7 +53,7 @@ class IdentitiesController < ApplicationController
       if(json_res['return_code'] == 0)
         render :json => json_res
       else
-        render :json => {:result => 'fail', :error_message => 'not found'}
+        render :json => {:result => 'fail', :error_message => 'not found', :provider => @identity.provider}
       end
     else
       render :json => {:result => 'fail', :error_message => 'something was wrong.'}
@@ -82,7 +82,7 @@ class IdentitiesController < ApplicationController
         articles = json_res['articles']
         returns_array = articles.first 10
         returns_array.each do |article|
-          article['img_url'] = '/assets/recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png'
+          article['img_url'] = ActionController::Base.helpers.asset_path('recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png')
         end
 
         render :json => returns_array

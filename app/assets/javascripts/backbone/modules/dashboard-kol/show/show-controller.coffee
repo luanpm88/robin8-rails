@@ -13,6 +13,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
   Show.CustomController = {
     showInfluencesAndDiscovers: (influenceRegion, discoverRegion) ->
+      parentThis = @
       $.ajax
         type: "get"
         url: '/kols/get_score',
@@ -27,9 +28,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               influenceRegion.show influences_view
 
               if collection.models[0]
-                @showDiscover collection.models[0].get('id'), discoverRegion
+                parentThis.showDiscover collection.models[0].get('id'), discoverRegion
               else
-                @showDiscover null, discoverRegion
+                parentThis.showDiscover null, discoverRegion
         error: (xhr, textStatus) ->
 
 
@@ -48,6 +49,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         item = new Robin.Models.SocialInfluence {id: influences.models[0].get('id')}
       else
         missingView = new Show.SocialNotExisted
+          type: 'nothing'
         region.show missingView
         return
 
@@ -60,7 +62,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         if data.result != 'fail'
           region.show influenceView
         else
-          region.show missingView
+          mView = new Show.SocialNotExisted
+            type: data.provider
+          region.show mView
       ).fail(->
         region.show missingView
       )

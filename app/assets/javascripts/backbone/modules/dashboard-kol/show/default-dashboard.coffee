@@ -113,6 +113,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.SocialNotExisted = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/social_not_existed'
 
+    initialize: (opts) ->
+      @type = opts.type || null
+
+    serializeData: () ->
+      type: @type
+
   Show.DiscoverItem = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/show/templates/discover_item'
     tagName: 'li'
