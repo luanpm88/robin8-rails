@@ -13,6 +13,7 @@
       <div class="collapse navbar-collapse" id='say-something' style='float: right;'></div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
+
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" id="userDropdown" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -26,6 +27,20 @@
           </ul>
         </li>
       </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+          <% if(Robin.chinaLocale) { %>
+            <li><a href="<%= Robin.us_host %>"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
+          <% } else { %>
+            <li><a href="<%= Robin.cn_host %>"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
+          <% } %>
+
+          <% if(Robin.chinaLocale) { %>
+            <li><a href="?locale=en">EN</a></li>
+          <% } else { %>
+            <li><a href="?locale=zh">ZH</a></li>
+          <% } %>
+      </ul>      
 
     </div>
   </div>
