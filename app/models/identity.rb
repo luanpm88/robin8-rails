@@ -6,6 +6,8 @@ class Identity < ActiveRecord::Base
   WxThirdProvider = 'wx_third'
   after_save :spider_weibo_data
 
+  scope :provider , -> (provider) {where(:provider => provider)}
+
   def self.find_for_oauth(auth, origin_auth, current_kol = nil)
     find_by(provider: auth[:provider], uid: auth[:uid]) || create_identity(auth, origin_auth)
     # if identity
@@ -50,6 +52,14 @@ class Identity < ActiveRecord::Base
 
   def last30_posts
     0
+  end
+
+  def score
+    value = 5
+    value += 10 if  [audience_age_groups, audience_gender_ratio, audience_regions, self.iptc_categories.size].compact.size > 0
+    value += 5  if  [edit_forward, origin_publish, forward, origin_comment, partake_activity, panel_discussion,
+                    undertake_activity, image_speak,  give_speech].compact.size > 0
+    value
   end
 
   private
