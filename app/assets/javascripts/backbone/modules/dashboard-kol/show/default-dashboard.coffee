@@ -83,6 +83,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
         optionLeft =
           legend:
+            show: false
             x: 'center'
             data: legend_data
           calculable: true

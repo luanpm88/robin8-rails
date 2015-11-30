@@ -22,9 +22,9 @@
     border: 1px solid #ddd;
     border-top: 0;
     ul {
-      li:first-child {
-        border-top: 0 !important;
-      }
+      // li:first-child {
+      //   border-top: 0 !important;
+      // }
       li {
         list-style-type: none;
       }
@@ -96,20 +96,99 @@
 }
 
 #social-influence-power {
+  .personalInfo {
+    width: 50%;margin-right: 1%;
+    .personalBody {
+      .personalData {
+        width: 34%;
+        margin-left: 4%;
+        margin-top: 20px;
+        float: left;
+        ul {
+          li {
+            list-style: none;
+            margin-bottom: 20px;
+            img {
+              width: 60px;height: 60px;float: left;margin-right: 10px;
+            }
+            span {
+              float: left;display: block;line-height: 60px;font-size: 40px;font-weight: bold;
+            }
+            p {
+              float: left;
+              margin-left: 10px;
+              width: 80px;
+              padding: 10px 0;
+              line-height: 20px;
+            }
+          }
+        }
+      }
+      .personalCompletion {
+        float: left;
+        margin-top: 20px;
+        margin-right: 3%;
+        width: 59%;
+        h4 {
+          margin-top: 0;
+        }
+        p {
+          margin: 0;color: #7A7F90;
+        }
+        .progress {
+          margin-bottom: 10px;
+          height: 12px;
+          border-radius: 0;
+
+          .progress-bar {
+            line-height: 12px;
+          }
+          .progress-bar-info {
+            background-color: #45A0B6;
+          }
+          .progress-bar-success {
+            background-color: #4FB555;
+          }
+          .progress-bar-warning {
+            background-color: #F7834F
+          }
+        }
+      }
+    }
+  }
+
+  .influenceContainer {
+    width: 49%;
+  }
+
+  .commonPanel {
+    float: left;
+  }
+
+  .owoPanel {
+    .owoPanelHeader {
+      padding-left: 20px;
+      color: #808080;
+      background-color: #f7f7f7;
+      border-radius: 6px 6px 0 0;
+      height: 40px;
+      border: 1px solid #dddddd;
+      h3 {
+        font-size: 18px;
+        margin-top: 0;
+        margin-bottom: 0;
+        line-height: 40px;
+      }
+    }
+    .owoPanelBody {
+      border: 1px solid #ddd;
+      border-top: 0;
+    }
+  }
   .influence-header {
     position: relative;
     padding-left: 20px;
-    color: #808080;
-    background-color: #f7f7f7;
-    border-radius: 6px 6px 0 0;
-    height: 40px;
-    border: 1px solid #dddddd;
-    h3 {
-      font-size: 18px;
-      margin-top: 0;
-      margin-bottom: 0;
-      line-height: 40px;
-    }
+
     .influence-dropdown {
       position: absolute;
       right: 10px;
@@ -157,17 +236,7 @@
     }
     .influence-item-header {
       margin: 0 10px;
-      border-bottom: 1px solid #ddd;
       position: relative;
-      .today {
-        padding-left: 10px;
-        position: absolute;
-        span {
-          font-size: 30px;
-          font-weight: bold;
-          color: #227f99;
-        }
-      }
       .mock_charts_common {
         -webkit-filter: blur(3px);
         -moz-filter: blur(3px);
@@ -182,59 +251,70 @@
       }
       .influence-charts {
         float: left;
-        width: 350px;
-        height: 350px;
-        margin-top: 25px;
-        margin-bottom: 20px;
+        width: 300px;
+        height: 300px;
       }
       #influence-charts-right {
         float: right;
-        margin-right: 30px;
       }
       #influence-charts-left {
         float: left;
-        margin-left: 100px;
       }
     }
-    .influence-item-bottom {
-      padding-top: 20px;
-      .influence-item-bottom-list-first {
-        border-left: 0!important;
+  }
+}
+
+@media (max-width: 1365px) {
+  .personalInfo {
+    width: 60% !important;margin-right: 1%;
+    .personalBody {
+      .personalData {
+        width: 59% !important;
+        margin: 20px auto 0 !important;
+        float: none !important;
       }
-      .influence-item-bottom-list {
-        float: left;
-        width: 33%;
-        margin-bottom: 10px;
-        border-left: 1px solid #ddd;
-        .influence-item-bottom-list-c {
-          width: 180px;
-          margin: 0 auto;
-          .influence-item-bottom-list-img {
-            float: left;
-            width: 60px;
-            height: 60px;
-          }
-          .influence-item-bottom-list-p {
-            margin-left: 10px;
-            float: left;
-            width: 110px;
-            p {
-              font-size: 50px;
-              font-weight: bold;
-              height: 60px;
-            }
-            span {
-              color: #898998;
-              font-weight: bold;
-            }
-          }
-        }
+      .personalCompletion {
+        margin: 0 auto !important;
+        float: none !important;
+      }
+    }
+  }
+
+  .influenceContainer {
+    width: 39% !important;
+  }
+
+  .influence-charts {
+    margin: 0 auto;
+    float: none !important;
+  }
+}
+
+@media (max-width: 978px) {
+  .personalInfo {
+    .personalBody {
+      .personalData {
+        width: 59% !important;
       }
     }
   }
 }
 
 @media (max-width: 768px) {
+  #wrapper.active {
+    padding-left: 20px !important;
+  }
+
+  .personalInfo {
+    width: 100% !important;
+    float: none !important;
+    margin-bottom: 20px;
+  }
+  .influenceContainer {
+    width: 100% !important;
+    float: none !important;
+  }
+
   #default-dashboard-discover {
     .discover-header {
       background: #fff !important;
@@ -248,6 +328,26 @@
     .discover-body-container {
       border-top: 1px solid #ddd;
       border-radius: 4px 4px 0 0;
+      ul {
+        li {
+          padding: 0 !important;
+          img.discover-item-img {
+            width: 100% !important;
+            height: 150px !important;
+
+          }
+          .discover-w {
+            width: 100%;
+            margin-top: 150px;
+            .discover-item-header {
+              p {display: none;}
+            }
+            .discover-item-body {
+              display: none;
+            }
+          }
+        }
+      }
       // ul {
       //   li.discover-item {
       //     position: relative;
@@ -282,7 +382,7 @@
       }
     }
     .influence-item-container {
-      border: 0;
+
       .influence-item-header {
         .mock_charts_1 {
           margin: 25px auto 20px !important;
@@ -291,51 +391,6 @@
           display: none;
         }
         border-bottom: 0;
-        .today {
-          display: none;
-        }
-        #influence-charts-right {
-          display: none;
-        }
-        #influence-charts-left {
-          width: 300px;
-          margin: 0 auto;
-        }
-      }
-      .influence-item-bottom {
-        border: 1px solid #f7f7f7;
-        background-color: #f7f7f7;
-        border-radius: 4px;
-        .influence-item-bottom-list-first {
-
-        }
-        .influence-item-bottom-list {
-          width: 100%;
-          border-left: 0;
-          .influence-item-bottom-list-c {
-            width: 100%;
-            margin: 10px;
-            .influence-item-bottom-list-img {
-
-            }
-            .influence-item-bottom-list-p {
-              width: 145px;
-              height: 60px;
-              p {
-                font-size: 30px;
-                height: 30px;
-                line-height: 30px;
-              }
-              span {
-                height: 20px;
-
-              }
-              .display-none-br {
-                display: none;
-              }
-            }
-          }
-        }
       }
     }
   }
