@@ -10,12 +10,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     onRender: () ->
       Show.CustomController.showInfluencesAndDiscovers @getRegion('socialInfluencePower'), @getRegion('discover')
 
-    onShow: () ->
-      parentThis = @
-      $(window).scroll ->
-        if $(window).scrollTop() + $(window).height() == $(document).height()
-          Show.CustomController.appendMoreDiscovers parentThis.getRegion('discover')
-
   Show.Influence = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/influence'
 
@@ -128,3 +122,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/dashboard-kol/show/templates/discovers_layout'
     childView: Show.DiscoverItem
     childViewContainer: 'ul'
+
+    initialize: (opts) ->
+      @parentRegion = opts.parentRegion
+
+    onShow: () ->
+      parentThis = @
+      $(window).scroll ->
+        if $(window).scrollTop() + $(window).height() == $(document).height()
+          $('#loadingDiscover').show()
+          Show.CustomController.appendMoreDiscovers parentThis.parentRegion

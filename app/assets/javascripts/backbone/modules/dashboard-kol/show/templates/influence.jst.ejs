@@ -34,9 +34,9 @@
       <div class="personalCompletion">
         <h4>Profile Completion</h4>
         <% _.each(score_data, function(value, key) { %>
-          <p><%= polyglot.t("dashboard_kol." + key + "_score") %> </p>
+          <p><%= polyglot.t("dashboard_kol.default." + key + "_score") %> </p>
           <div class='progress'>
-            <div class='progress-bar progress-bar-info <%= key %>' role='progressbar' aria-valuenow='' aria-valuemin='0' aira-valuemax='100' style='width: <%= value %>%'>
+            <div class='progress-bar progress-bar-<%= key %>' role='progressbar' aria-valuenow='' aria-valuemin='0' aira-valuemax='100' style='width: <%= value %>%'>
             </div>
           </div>
         <% }) %>

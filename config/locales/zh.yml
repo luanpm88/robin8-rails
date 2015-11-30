@@ -382,10 +382,10 @@ zh:
         completed_campaigns:
         total_income:
         profile_completion:
-        data_score:
-        wechat_score:
-        weibo_score:
-        wechat_score:
+        data_score: 个人资料
+        wechat_score: 微信
+        weibo_score: 微博
+        wechat_third_score: 微信公众号 
         more_people_to_see:
         complete_data:
         complete_wechat:

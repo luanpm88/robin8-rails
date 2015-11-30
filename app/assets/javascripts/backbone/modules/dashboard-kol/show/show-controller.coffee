@@ -35,7 +35,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     appendMoreDiscovers: (region) ->
       el = region.$el
-      currentPage = el.find('ul').children().length / 10
+      currentPage = el.find('ul').children('li').length / 10
       return if currentPage == 0
       nextPage = currentPage + 1
       labels = region.currentView.collection.labels
@@ -91,11 +91,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       discovers = new Robin.Collections.Discovers [], {labels: labels, page: page}
       discoversView = new Show.DiscoversLayout
         collection: discovers
+        parentRegion: region
       discovers.fetch
         success: (collection, res, opts) =>
           if region.$el.find('ul').children().length == 0
             region.show discoversView
           else
+            $('#loadingDiscover').hide()
             region.currentView.$el.find('ul').append discoversView.render().$el.find('ul').children()
         error: =>
           console.log 'fetch discover error'
