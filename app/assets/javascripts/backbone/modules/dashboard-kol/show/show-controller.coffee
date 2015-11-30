@@ -28,6 +28,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     appendMoreDiscovers: (region) ->
       el = region.$el
       currentPage = el.find('ul').children().length / 10
+      return if currentPage == 0
       nextPage = currentPage + 1
       labels = region.currentView.collection.labels
       Show.CustomController.showDiscoverFor labels, region, nextPage
