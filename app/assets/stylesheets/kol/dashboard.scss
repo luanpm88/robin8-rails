@@ -2,6 +2,13 @@
   margin-top: 20px;
 }
 
+#loadingDiscover {
+  width: 100%;
+  line-height: 20px;
+  text-align: center;
+  font-size: 18px;
+}
+
 #default-dashboard-discover {
   .discover-header {
     padding-left: 20px;
@@ -22,74 +29,36 @@
     border: 1px solid #ddd;
     border-top: 0;
     ul {
-      // li:first-child {
-      //   border-top: 0 !important;
-      // }
+      li:first-child {
+        border-top: 0 !important;
+      }
       li {
         list-style-type: none;
       }
       li.discover-item {
         padding-top: 16px;
+        padding-bottom: 10px;
         margin: 0 10px;
-        padding-left: 180px;
         border-top: 2px solid #f1f1f1;
-        position: relative;
         .discover-item-img {
-          position: absolute;
-          top: 0;left: 0;
-          width: 180px;min-height: 100px;height: 104%;padding: 10px;padding-left:3px!important;
+          display: block;
+          float: left;
+          width: 12%;
+          margin-right: 2%;
         }
-        .discover-item-header {
-          padding: 0 10px;
-          .discover-item-header-left {
-            .discover-item-header-left-icon {
-              float: left;
-              width: 45px;
-              height: 45px;
-              border: 5px solid #ddd;
-              border-radius: 50%;
-              img {
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-              }
-            }
-            .discover-item-header-left-pr {
-              float: left;
-              // margin-left: 6px;
-              h5 {
-                margin: 0 0 6px 0;
-                color: #3c9eb6;
-              }
-            }
+        .discover-w {
+          display: block;
+          float: left;
+          width: 86%;
+          .discover-item-header {
+
+
           }
-          .discover-item-header-right {
-            display: none;
-            .move2BottomContainer {
-              display: inline;
-            }
-            float: right;
-            a {
-              color: #666;
-              font-size: 16px;
-              margin-left: 10px;
-            }
-            // a:hover {
-            //   color: #3c9eb6;
-            // }
+          .discover-item-body {
+
           }
         }
-        .discover-item-body {
-          p {
-            padding: 0 10px;
-            a {
-              color: #666;
-            }
-            a:hover {
-              color: #3c9eb6;
-            }
-          }
-        }
+
       }
     }
   }
@@ -101,6 +70,7 @@
     .personalBody {
       .personalData {
         width: 34%;
+        min-height: 280px;
         margin-left: 4%;
         margin-top: 20px;
         float: left;
@@ -220,9 +190,9 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 395px;
+      height: 100%;
       opacity: 0.4;
-      background-color: #fff;
+      background-color: #000;
       z-index: 3;
       p {
           text-align: center;
@@ -231,7 +201,7 @@
           left: 0;
           font-size: 30px;
           width: 100%;
-          color: #000;
+          color: #fff;
         }
     }
     .influence-item-header {
@@ -253,12 +223,6 @@
         float: left;
         width: 300px;
         height: 300px;
-      }
-      #influence-charts-right {
-        float: right;
-      }
-      #influence-charts-left {
-        float: left;
       }
     }
   }
@@ -287,6 +251,41 @@
   .influence-charts {
     margin: 0 auto;
     float: none !important;
+  }
+
+  .discover-body-container {
+    border: 1px solid #ddd;
+    border-top: 0;
+    ul {
+      li:first-child {
+        border-top: 0 !important;
+      }
+      li {
+        list-style-type: none;
+      }
+      li.discover-item {
+        padding-top: 16px;
+        padding-bottom: 10px;
+        margin: 0 10px;
+        border-top: 2px solid #f1f1f1;
+        .discover-item-img {
+          width: 16%;
+        }
+        .discover-w {
+          display: block;
+          float: left;
+          width: 82%;
+          .discover-item-header {
+
+
+          }
+          .discover-item-body {
+
+          }
+        }
+
+      }
+    }
   }
 }
 
@@ -317,56 +316,32 @@
 
   #default-dashboard-discover {
     .discover-header {
-      background: #fff !important;
-      border: 0 !important;
-      color: #3c9eb6;
-      padding-left: 0 !important;
-      h3 {
-        font-size: 24px;
-      }
+
+
     }
     .discover-body-container {
-      border-top: 1px solid #ddd;
-      border-radius: 4px 4px 0 0;
-      ul {
-        li {
-          padding: 0 !important;
-          img.discover-item-img {
-            width: 100% !important;
-            height: 150px !important;
 
+      ul {
+
+        li.discover-item {
+          .discover-item-img {
+            float: none;
+            width: 100%;
           }
           .discover-w {
+            float: none;
             width: 100%;
-            margin-top: 150px;
             .discover-item-header {
-              p {display: none;}
+
+
             }
             .discover-item-body {
-              display: none;
+
             }
           }
+
         }
       }
-      // ul {
-      //   li.discover-item {
-      //     position: relative;
-      //     .discover-item-header {
-      //       .discover-item-header-right {
-      //         .move2BottomContainer {
-      //           position: absolute;
-      //           bottom: 0;
-      //           left: 0;
-      //           width: 50%;
-      //           font-size: 20px;
-      //         }
-      //       }
-      //     }
-      //     .discover-item-body {
-      //       padding-bottom: 28px;
-      //     }
-      //   }
-      // }
     }
   }
 
@@ -381,17 +356,6 @@
 
       }
     }
-    .influence-item-container {
 
-      .influence-item-header {
-        .mock_charts_1 {
-          margin: 25px auto 20px !important;
-        }
-        .mock_charts_2 {
-          display: none;
-        }
-        border-bottom: 0;
-      }
-    }
   }
 }
