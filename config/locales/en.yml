@@ -758,9 +758,9 @@ en:
       wechat_login: Login using WeChat
       weibo_login: Login using Weibo
       wechat_third_login: Login using WeChat(public)
-      use_weibo: Sign up using Weibo
-      use_weichat: Sign up using WeChat
-      use_weichat_third: Sign up using WeChat(public)
+      use_weibo: Use Weibo
+      use_weichat: Use WeChat
+      use_weichat_third: Use WeChat(public)
       use_email: Or sign up using email
     manage_users:
       buttons:
