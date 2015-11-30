@@ -83,6 +83,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       discovers = new Robin.Collections.Discovers [], {labels: labels, page: page}
       discoversView = new Show.DiscoversLayout
         collection: discovers
+        parentRegion: region
       discovers.fetch
         success: (collection, res, opts) =>
           if region.$el.find('ul').children().length == 0
