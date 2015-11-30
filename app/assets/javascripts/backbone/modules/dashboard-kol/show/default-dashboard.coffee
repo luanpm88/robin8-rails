@@ -10,6 +10,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     onRender: () ->
       Show.CustomController.showInfluencesAndDiscovers @getRegion('socialInfluencePower'), @getRegion('discover')
 
+    onShow: () ->
+      parentThis = @
+      $(window).scroll ->
+        if $(window).scrollTop() + $(window).height() == $(document).height()
+          Show.CustomController.appendMoreDiscovers parentThis.getRegion('discover')
 
   Show.Influence = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/influence'
@@ -78,6 +83,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
         optionLeft =
           legend:
+            show: false
             x: 'center'
             data: legend_data
           calculable: true

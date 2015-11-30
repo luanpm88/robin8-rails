@@ -25,6 +25,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           else
             @showDiscover null, discoverRegion
 
+    appendMoreDiscovers: (region) ->
+      el = region.$el
+      currentPage = el.find('ul').children().length / 10
+      return if currentPage == 0
+      nextPage = currentPage + 1
+      labels = region.currentView.collection.labels
+      @showDiscoverFor labels, region, nextPage
+
     showInfluenceItem: (influence, influences, region) ->
       if influence
         item = influence
@@ -47,7 +55,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           region.show missingView
       ).fail(->
         region.show missingView
-      ) 
+      )
 
     showDiscover: (socialAccountId, region)->
       if socialAccountId
@@ -69,16 +77,19 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       else
         @showDiscoverFor 'all', region
 
-    showDiscoverFor: (labels, region) ->
-      discovers = new Robin.Collections.Discovers [], {labels: labels}
+    showDiscoverFor: (labels, region, page) ->
+      console.log 'exec showDiscoverFor: ', labels, region, page
+      page = page || 1
+      discovers = new Robin.Collections.Discovers [], {labels: labels, page: page}
       discoversView = new Show.DiscoversLayout
         collection: discovers
       discovers.fetch
         success: (collection, res, opts) =>
-          region.show discoversView
+          if region.$el.find('ul').children().length == 0
+            region.show discoversView
+          else
+            region.currentView.$el.find('ul').append discoversView.render().$el.find('ul').children()
         error: =>
           console.log 'fetch discover error'
 
   }
-
-

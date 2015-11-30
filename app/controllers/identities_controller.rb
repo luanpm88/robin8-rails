@@ -61,7 +61,9 @@ class IdentitiesController < ApplicationController
   end
 
   def discover
-    base_url = 'http://engine-api.robin8.net/api/v1/articles/page/1'
+    base_url = 'http://engine-api.robin8.net/api/v1/articles/page/'
+
+    page = params[:page] || '1'
 
     p = if params[:labels].eql? 'all'
           ''
@@ -69,7 +71,7 @@ class IdentitiesController < ApplicationController
           '?labels=' + params[:labels]
         end
 
-    url = base_url + p
+    url = base_url + page +  p
 
     res = RestClient::Request.execute(method: :get, url: url, timeout: 10, user: 'robin8', password: 'influencer8')
     case res.code
@@ -81,6 +83,10 @@ class IdentitiesController < ApplicationController
         returns_array = []
         10.times do
           returns_array << articles.delete(articles.sample)
+        end
+
+        returns_array.each do |article|
+          article['img_url'] = 'assets/recommendations/' + article['label'] + [1, 2, 3].sample.to_s + '.png'
         end
 
         render :json => returns_array

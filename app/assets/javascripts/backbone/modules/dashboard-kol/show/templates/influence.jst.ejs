@@ -1,20 +1,74 @@
-<div class="influence-header">
-  <h3>Social Influence Power</h3>
-  <% if(items.length > 0){ %>
-    <div class="btn-group influence-dropdown">
-      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class='glyphicon glyphicon-align-justify'></i>&nbsp;Switch Social Account <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <% _.each(items, function(item) { %>
-        <li><a href="#" id="<%= item.id %>"><%= item.provider %>: <%= item.name %></a></li>
-        <% }) %>
-      </ul>
+<div class="clearfix">
+  <div class="personalInfo owoPanel commonPanel">
+    <div class="owoPanelHeader">
+      <h3>Personal Info</h3>
     </div>
-  <% } %>
-</div>
-<div class="influence-item-container">
-  <div class="influence-item">
+    <div class="personalBody owoPanelBody clearfix">
+      <div class="personalData">
+        <ul>
+          <li class='clearfix'>
+            <img src="<%= AppAssets.path('dashboard-icon1.png') %>" alt="" />
+            <span>0</span>
+            <p>
+              Upcoming Campaigns
+            </p>
+          </li>
+          <li class='clearfix'>
+            <img src="<%= AppAssets.path('dashboard-icon2.png') %>" alt="" />
+            <span>0</span>
+            <p>
+              Completed Campaigns
+            </p>
+          </li>
+          <li class='clearfix'>
+            <img src="<%= AppAssets.path('dashboard-icon3.png') %>" alt="" />
+            <span>0</span>
+            <p>
+              Total <br>
+              Income
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="personalCompletion">
+        <h4>Profile Completion</h4>
+        <p>Personal Information </p>
+        <div class='progress'>
+          <div class='progress-bar progress-bar-info' role='progressbar' aria-valuenow='40' aria-valuemin='0' aira-valuemax='100' style='width: 40%'>
+          </div>
+        </div>
+        <p>Social Account: None</p>
+        <div class='progress'>
+          <div class='progress-bar progress-bar-warning' role='progressbar' aria-valuenow='40' aria-valuemin='0' aira-valuemax='100' style='width: 40%'>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
+
+  <div class="influenceContainer owoPanel commonPanel">
+    <div class="influence-header owoPanelHeader">
+      <h3>Social Influence Power</h3>
+      <% if(items.length > 0){ %>
+        <div class="btn-group influence-dropdown">
+          <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class='glyphicon glyphicon-align-justify'></i>&nbsp;Switch Social Account <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <% _.each(items, function(item) { %>
+            <li><a href="#" id="<%= item.id %>"><%= item.provider %>: <%= item.name %></a></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+    </div>
+    <div class="influence-item-container">
+      <div class="influence-item">
+
+      </div>
+    </div>
+  </div>
+
 </div>
