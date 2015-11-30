@@ -112,6 +112,7 @@ module Users
         end
       end
       if request.env['omniauth.params'].blank?
+        cookies[:popup_signin] = nil
         render 'twitter_popup_close', :layout => false
       else
         redirect_to root_path

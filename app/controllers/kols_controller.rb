@@ -208,8 +208,8 @@ class KolsController < ApplicationController
       @kol.iptc_categories = @categories
       @kol.save
       sign_in @kol
-      if cookies[:kol_social_signin].present?
-        cookies[:kol_social_signin] = nil
+      if cookies[:popup_signin].present?
+        cookies[:popup_signin] = nil
         render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
       else
         return redirect_to '/#/dashboard/profile'

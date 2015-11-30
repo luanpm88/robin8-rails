@@ -1,8 +1,8 @@
 <div class="signup">
 <% if request.location && request.location.country.to_s == "China" %>
-  <script type="text/javascript" src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
+  <!--<script type="text/javascript" src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>-->
 <% else %>
-  <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>
+  <!--<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>-->
 <% end %>
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
@@ -101,7 +101,7 @@
 
   <script> $.validate(); </script>
   <script>
-    var autocomplete = new google.maps.places.Autocomplete($("#kol_location")[0], {});
+//    var autocomplete = new google.maps.places.Autocomplete($("#kol_location")[0], {});
 
     $('#interests').select2({
       multiple: true,
@@ -127,12 +127,10 @@
     });
     $(function(){
       $(document).foundation();
-      $(".btn.social").click(function(){
-        var fiveMins = new Date();
-        fiveMins.setMinutes(fiveMins.getMinutes() + 5);
-        $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
-        return true;
-      });
+      var fiveMins = new Date();
+      fiveMins.setMinutes(fiveMins.getMinutes() + 5);
+      $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
+      console.log($.cookie("kol_social"));
     });
   </script>
 
