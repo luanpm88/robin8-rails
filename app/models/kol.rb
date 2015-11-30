@@ -17,6 +17,7 @@ class Kol < ActiveRecord::Base
   has_many :kol_profile_screens
   has_many :interested_campaigns
 
+
   validates :mobile_number, uniqueness: true
 
   GENDERS = {
@@ -255,6 +256,19 @@ class Kol < ActiveRecord::Base
     else
       return nil
     end
+  end
+
+  def all_score
+    {:data => data_score, :wechat => identity_score('wechat'), :weibo=> identity_score('weibo'),
+     :wechat_third =>  identity_score('wehat-third') }
+  end
+
+  def data_score
+    (10 + [self.first_name, self.last_name, self.mobile_number, self.city, self.date_of_birthday, self.gender].compact.size * 5) * 100 / 40
+  end
+
+  def identity_score(provider)
+    (self.identities.provider(provider).collect{|t| t.score}.max  || 0  ) * 100 / 20
   end
 
 end

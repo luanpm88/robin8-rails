@@ -21,9 +21,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     onRender: () ->
       Show.CustomController.showInfluenceItem(null, @collection, @getRegion('item'))
+      console.log @options.score_data
 
     serializeData: () ->
       items: @collection.toJSON();
+      score_data: @options.score_data
 
     switchAccount: (e) ->
       e.preventDefault()

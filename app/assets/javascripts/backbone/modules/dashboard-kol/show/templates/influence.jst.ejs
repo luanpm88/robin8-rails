@@ -33,14 +33,28 @@
 
       <div class="personalCompletion">
         <h4>Profile Completion</h4>
-        <p>Personal Information </p>
-        <div class='progress'>
-          <div class='progress-bar progress-bar-info' role='progressbar' aria-valuenow='40' aria-valuemin='0' aira-valuemax='100' style='width: 40%'>
+        <% _.each(score_data, function(value, key) { %>
+          <p><%= polyglot.t("dashboard_kol.default." + key + "_score") %> </p>
+          <div class='progress'>
+            <div class='progress-bar progress-bar-<%= key %>' role='progressbar' aria-valuenow='' aria-valuemin='0' aira-valuemax='100' style='width: <%= value %>%'>
+            </div>
           </div>
-        </div>
-        <p>Social Account: None</p>
-        <div class='progress'>
-          <div class='progress-bar progress-bar-warning' role='progressbar' aria-valuenow='40' aria-valuemin='0' aira-valuemax='100' style='width: 40%'>
+        <% }) %>
+        <div>
+          <div style="margin-top: 30px">
+            <h5>如何让更多人看到您?</h5>
+            <% if(score_data.data < 40){ %>
+              <a href="#/dashboard/profile">完善个人信息</a>  </br>
+            <% } %>
+            <% if(score_data.wechat < 20){ %>
+              <a href="#/dashboard/profile">绑定微信个人账号，并编辑受众和价格</a>   </br>
+            <% } %>
+            <% if(score_data.weibo < 20){ %>
+              <a href="#/dashboard/profile">绑定微博账号，并编辑受众和价格</a>   </br>
+            <% } %>
+            <% if(score_data.wechat_third < 20){ %>
+              <a href="#/dashboard/profile">绑定微信公众账号，并编辑受众和价格</a>   </br>
+            <% } %>
           </div>
         </div>
       </div>

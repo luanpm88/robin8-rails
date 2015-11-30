@@ -14,7 +14,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initialize: (options) ->
       @options = options
-      @_states = ['profile', 'score', 'campaigns', 'default']
+      # @_states = ['profile', 'score', 'campaigns', 'default']
+      @_states = ['profile', 'campaigns', 'default']
       @empty = false
       @state = @options.state or 'CRASH AND BURN'
       if not @model?
@@ -28,7 +29,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       @state = s
       viewClass = switch s
         when 'profile' then Show.ProfileTab
-        when 'score' then Show.ScoreTab
+        # when 'score' then Show.ScoreTab
         when 'campaigns' then Show.CampaignsTab
         when 'default' then Show.DefaultDashboard
       @view = new viewClass

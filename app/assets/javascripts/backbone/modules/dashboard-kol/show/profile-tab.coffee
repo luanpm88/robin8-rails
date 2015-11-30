@@ -311,7 +311,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             $("#password").val("")
             $("#current_password").val("")
             $("#password_confirmation").val("")
-            @parent_view?.score()
+            # @parent_view?.score()
+            @parent_view?.defaultDashboard()
           error: (m, r) =>
             console.log "Error saving KOL profile. Response is:"
             console.log r

@@ -9,7 +9,7 @@
     <section class="top-bar-section">
       <!-- Right Nav Section -->
       <ul class="right">
-        <% if china_locale? %>
+        <% if china_instance? %>
           <li><a href="<%= Rails.application.secrets.instance_host[:us] %>">
             <%= image_tag asset_path('us-flag-icon.png'), height: 13 %>
           </a></li>
@@ -22,7 +22,7 @@
         <% if china_locale? %>
           <li><a href='?locale=en'>EN</a></li>
         <% else %>
-          <li><a href='?locale=zh'>ZH</a></li>
+          <li><a href='?locale=zh'>CN</a></li>
         <% end %>
 
         <% if current_page?(home_path) %>

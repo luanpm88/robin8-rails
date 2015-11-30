@@ -38,6 +38,7 @@
     Robin.chinaLocale = <%= china_locale? %>;
     Robin.chinaRequest = <%= china_request? %>;
     Robin.production = <%= production? %>;
+    Robin.mobileRequest = <%= mobile_request? %>;
     Robin.start();
   });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});

@@ -79,13 +79,13 @@
     .progress-bar {
       line-height: 12px;
     }
-    .progress-bar-info {
+    .progress-bar-info, .progress-bar-data {
       background-color: #45A0B6;
     }
-    .progress-bar-success {
+    .progress-bar-success, .progress-bar-wechat, .progress-bar-wechat_third {
       background-color: #4FB555;
     }
-    .progress-bar-warning {
+    .progress-bar-warning, .progress-bar-weibo {
       background-color: #F7834F
     }
   }
