@@ -810,10 +810,10 @@ zh:
     navigation:
       analytics: "分析"
       campaigns: "活动"
-      dashboard: "主界面"
+      dashboard: " 主界面"
       monitoring: "观察"
       newsrooms: "内容库"
-      profile: "个人资料"
+      profile: " 个人资料"
       recommendations: "推荐"
       releases: "发布"
       smart_campaign: "智能推广"
@@ -2072,7 +2072,7 @@ zh:
     user_menu:
       anonymous: Anonymous
       billing_settings: "结算设置"
-      log_out: "登出"
+      log_out: " 登出"
       profile: "资料"
   contact_page:
     address: MyPRGenie Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019

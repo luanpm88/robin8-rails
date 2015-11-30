@@ -826,10 +826,10 @@ en:
     navigation:
       analytics: Analytics
       campaigns: Campaigns
-      dashboard: Dashboard
+      dashboard: " Dashboard"
       monitoring: Monitoring
       newsrooms: Brand Gallery
-      profile: Profile
+      profile: " Profile"
       recommendations: Recommendations
       releases: Content
       smart_campaign: SmartCampaign
@@ -2734,7 +2734,7 @@ en:
     user_menu:
       anonymous: Anonymous
       billing_settings: Billing Settings
-      log_out: Log Out
+      log_out: " Log Out"
       profile: Profile
   date:
     abbr_day_names:

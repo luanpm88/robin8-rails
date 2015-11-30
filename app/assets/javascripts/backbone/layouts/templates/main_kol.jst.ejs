@@ -18,8 +18,11 @@
           <a href="#" id="userDropdown" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             <i class="fa fa-user"></i> <span class='text'> Anonymous</span> <span class="caret"></span>
           </a>
+
           <ul class="dropdown-menu" role="menu">
-            <li><a href='/kols/sign_out'><i class="fa fa-sign-out"></i> Log Out</a></li>
+            <li><a href="/#/dashboard/default"><i class="fa fa-tachometer"></i><%= polyglot.t("navigation.dashboard") %></a></li>
+            <li><a href="/#/dashboard/profile"><i class="fa fa-user"></i><%= polyglot.t("navigation.profile") %></a></li>
+            <li><a href='/kols/sign_out'><i class="fa fa-sign-out"></i><%= polyglot.t("user_menu.log_out") %></a></li>
           </ul>
         </li>
       </ul>
