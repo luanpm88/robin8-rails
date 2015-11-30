@@ -53,7 +53,7 @@ class IdentitiesController < ApplicationController
       if(json_res['return_code'] == 0)
         render :json => json_res
       else
-        render :json => {:result => 'fail', :error_message => 'not found'}
+        render :json => {:result => 'fail', :error_message => 'not found', :provider => @identity.provider}
       end
     else
       render :json => {:result => 'fail', :error_message => 'something was wrong.'}
