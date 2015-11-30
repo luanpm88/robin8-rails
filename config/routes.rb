@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   post '/kols/send_sms/' => 'kols#send_sms'
   get '/kols/new' => 'kols#create'
   put '/kols/monetize' => 'kols#update_monetize'
+  get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail'
 
   # kols
   devise_for :kols, controllers: {
