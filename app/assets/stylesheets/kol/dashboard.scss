@@ -31,7 +31,14 @@
       li.discover-item {
         padding-top: 16px;
         margin: 0 10px;
+        padding-left: 180px;
         border-top: 2px solid #f1f1f1;
+        position: relative;
+        .discover-item-img {
+          position: absolute;
+          top: 0;left: 0;
+          width: 180px;min-height: 100px;height: 104%;padding: 10px;padding-left:3px!important;
+        }
         .discover-item-header {
           padding: 0 10px;
           .discover-item-header-left {

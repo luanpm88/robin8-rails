@@ -85,6 +85,10 @@ class IdentitiesController < ApplicationController
           returns_array << articles.delete(articles.sample)
         end
 
+        returns_array.each do |article|
+          article['img_url'] = 'assets/recommendations/' + article['label'] + [1, 2, 3].sample.to_s + '.png'
+        end
+
         render :json => returns_array
       else
         render :json => {:result => 'fail', :error_message => 'something was wrong.'}
