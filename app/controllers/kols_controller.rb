@@ -5,6 +5,10 @@ class KolsController < ApplicationController
                                           :methods => [:newest_identity]})
   end
 
+  def get_score
+    render :json => current_kol.all_score
+  end
+
   def create
     if request.post?
       if china_instance?

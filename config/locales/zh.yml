@@ -216,6 +216,9 @@ zh:
       reset_password:  重置密码
       new_password: 请输入新的密码
       new_password_confirmation: 请重复新的密码
+      personal_wechat: 个人微信
+      public_wechat: 公众微信
+      weibo: 微博
     about:
       text: "<p>Miranda Tan，Robin8创办人及首席执行官，在1999年创立了第一个PR公司，ExcitePR。她意识到企业提供令人惊叹的产品，同时不断产生了同样的问题：他们如何能够接触正确的意见领袖为实现他们的信息效益最大化。</p>
         \     <p>Miranda的答案是直观的，易于使用的，她于2007年与合作伙伴，数字媒体专家Hassan Miah成立自主化的PR软件平台。到2010年，这个PR软件平台已被评为百强OnDemand的软件公司，100强中大西洋私人公司，并且被AlwaysOn评为100强OnMedia企业。</p>
@@ -373,6 +376,24 @@ zh:
       title: "主界面"
     dashboard_kol:
       no_data: '我们正在努力计算，敬请期待！'
+      default:
+        personal_info:
+        upcoming_campaigns:
+        completed_campaigns:
+        total_income:
+        profile_completion:
+        data_score: 个人资料
+        wechat_score: 微信
+        weibo_score: 微博
+        wechat_third_score: 微信公众号 
+        more_people_to_see:
+        complete_data:
+        complete_wechat:
+        complete_weibo:
+        complete_wechat_third:
+        social_influence_power:
+        switch_social_account:
+        influence_charts:
       influence_charts:
         auto: '汽车'
         digit: '数码'
