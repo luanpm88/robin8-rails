@@ -13,6 +13,9 @@ class KolsController < ApplicationController
         kol_p = kol_params
 
         kol_p[:mobile_number] = (1..9).to_a.sample(8).join if mobile_number == "robin8.best"
+        kol_p[:first_name].lstrip!.rstrip!
+        kol_p[:last_name].lstrip!.rstrip!
+        kol_p[:mobile_number].lstrip!.rstrip!
 
         verify_code = Rails.cache.fetch(mobile_number)
         if verify_code == params["kol"]["verify_code"]
