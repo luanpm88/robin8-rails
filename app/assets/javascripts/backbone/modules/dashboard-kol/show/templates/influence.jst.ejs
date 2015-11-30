@@ -73,7 +73,7 @@
           <ul class="dropdown-menu">
             <% _.each(items, function(item) { %>
               <% if(item.provider != 'wechat'){ %>
-                <li><a href="#" id="<%= item.id %>"><%= polyglot.t('application.common.' + item.provider)%>: <%= item.name %></a></li>
+                <li><a href="#" id="<%= item.id %>"><%= polyglot.t('common.' + item.provider)%>: <%= item.name %></a></li>
               <% } %>
             <% }) %>
           </ul>
