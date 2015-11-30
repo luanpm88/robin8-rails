@@ -31,7 +31,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       return if currentPage == 0
       nextPage = currentPage + 1
       labels = region.currentView.collection.labels
-      Show.CustomController.showDiscoverFor labels, region, nextPage
+      @showDiscoverFor labels, region, nextPage
 
     showInfluenceItem: (influence, influences, region) ->
       if influence
@@ -55,7 +55,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           region.show missingView
       ).fail(->
         region.show missingView
-      ) 
+      )
 
     showDiscover: (socialAccountId, region)->
       if socialAccountId
@@ -94,5 +94,3 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           console.log 'fetch discover error'
 
   }
-
-
