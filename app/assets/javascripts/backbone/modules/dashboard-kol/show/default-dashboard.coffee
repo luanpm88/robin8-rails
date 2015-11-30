@@ -128,5 +128,5 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       parentThis = @
       $(window).scroll ->
         if $(window).scrollTop() + $(window).height() == $(document).height()
-          console.log 'yoo'
+          $('#loadingDiscover').show()
           Show.CustomController.appendMoreDiscovers parentThis.parentRegion
