@@ -3,6 +3,7 @@ Robin.Collections.Discovers = Backbone.Collection.extend
 
   initialize: (models, opts)->
     @labels = opts.labels
+    @page = opts.page
 
   url: ()->
-    return 'identities/discover/' + @labels
+    return 'identities/discover/' + @labels + '?page=' + @page
