@@ -27,7 +27,7 @@
 </head>
 <body>
   <% if flash[:confirmation_alert] %>
-    <div class="activation-alert alert-warning" role="alert"><p class="confirmation"><%= flash[:confirmation_alert] %></p></div>
+    <div class="activation-alert alert-warning" role="alert"><p class="confirmation"><%= flash[:confirmation_alert] %> 没有收到邮件？ <a id='resend-confirmation-mail' href='#'>点击重发验证邮件</a></p></div>
   <% end %>
 
   <div id="main">

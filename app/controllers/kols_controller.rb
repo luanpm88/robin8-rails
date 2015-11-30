@@ -31,6 +31,26 @@ class KolsController < ApplicationController
     end
   end
 
+  def resend_confirmation_mail
+    @kol = current_kol
+
+    if @kol.blank?
+      return render :json => {error: 'Something went wrong!'}, status: 422
+    end
+
+    if @kol.confirmed_at
+      return render :json => {message: 'already confirmed'}
+    end
+
+    if Rails.cache.fetch @kol.email
+      return render :json => {message: 'slow down'}
+    end
+
+    @kol.send_confirmation_instructions
+    Rails.cache.write @kol.email, 'send', expires_in: 10.minute
+    return render :json => {message: 'success'}
+  end
+
   extend Models::Oauth
   include Models::Identities
 
@@ -188,8 +208,8 @@ class KolsController < ApplicationController
       @kol.iptc_categories = @categories
       @kol.save
       sign_in @kol
-      if cookies[:kol_social_signin].present?
-        cookies[:kol_social_signin] = nil
+      if cookies[:popup_signin].present?
+        cookies[:popup_signin] = nil
         render '/users/omniauth_callbacks/twitter_popup_close', :layout => false
       else
         return redirect_to '/#/dashboard/profile'

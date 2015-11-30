@@ -46,7 +46,7 @@ class IdentitiesController < ApplicationController
       render :json => {:result => 'fail', :error_message => 'not found'}
       return
     end
-    res = RestClient::Request.execute(method: :get, url: url, timeout: 10)
+    res = RestClient::Request.execute(method: :get, url: url, timeout: 10, user: 'robin8', password: 'influencer8')
     case res.code
     when 200
       json_res = JSON.parse res
@@ -71,7 +71,7 @@ class IdentitiesController < ApplicationController
 
     url = base_url + p
 
-    res = RestClient::Request.execute(method: :get, url: url, timeout: 10)
+    res = RestClient::Request.execute(method: :get, url: url, timeout: 10, user: 'robin8', password: 'influencer8')
     case res.code
     when 200
       json_res = JSON.parse res

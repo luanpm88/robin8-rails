@@ -37,4 +37,21 @@ $(document).ready ->
       $(this).closest(".row").find("input[type='checkbox']").attr("value",1)
       $(this).closest(".row").find("input[type='checkbox']").checkboxX('refresh')
 
+  # resend confirmation mail
+  $('#resend-confirmation-mail').on 'click', (e) ->
+    e.preventDefault()
+    $.ajax
+      url: '/kols/resend_confirmation_mail'
+      type: 'GET'
+      dataType: 'json'
+      success: (data, textStatus, jqXHR) ->
+        if data.message == 'success'
+          $.growl 'Send confirmation success', {type: 'success'}
+        else if data.message == 'already confirmed'
+          $.growl 'Already confirmed', {type: 'danger'}
+        else if data.message == 'slow down'
+          $.growl 'Too fequently, slow down', {type: 'danger'}
+
+      error: (jqXHR, textStatus, errorThrown) ->
+        $.growl 'Something went wrong', {type: 'danger'}
 

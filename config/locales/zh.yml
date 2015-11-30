@@ -372,7 +372,7 @@ zh:
       status: "状态"
       title: "主界面"
     dashboard_kol:
-      no_data: '数据正在抓取，敬请期待'
+      no_data: '我们正在努力计算，敬请期待！'
       influence_charts:
         auto: '汽车'
         digit: '数码'
@@ -592,7 +592,7 @@ zh:
         m9: "九月"
     footer:
       about: "关于Robin8"
-      contact: "联系人"
+      contact: "联系我们"
       privacy_and_terms: "隐私权和条款"
       right_reserved: 2015 Robin8 保留所有权利。
       team: "团队"
@@ -716,7 +716,7 @@ zh:
       text8: "让你的营销费用获得更高的回报。"
       text9: "准备好通过ROBIN8看世界了吗？"
       title: "下一代人工智能驱动的社交和内容营销平台"
-      title_landing: 号召所有的意见领袖，加入全球第一个智能影响者的市场
+      title_landing: "号召所有的KOL，快加入第一个为影响力付费的国际平台吧！"
       track: "监测"
       track_text: "通过我们强大的分析系统追踪结果，利用我们的智能媒体，及时了解最新的新闻。"
       upload: "上传"

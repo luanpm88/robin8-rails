@@ -1441,6 +1441,7 @@ body.login {
     .nav a.logo ,
     .nav.fixedscroll a.logo{
       background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+      margin: 0 auto;
     }
     .top-bar .toggle-topbar.menu-icon a {
         color: #000000;
@@ -1465,6 +1466,20 @@ body.login {
     .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button), .top-bar-section li:not(.has-form) a:hover:not(.button) {
 
       border-bottom: 1px solid #006481;
+    }
+
+    .social-login {
+      height: 50px;
+    }
+
+    .social-list .sign_up_with_email{
+      height: 42px;
+      float: right;
+      margin-right: 15px;
+      color: #fff;
+      &:hover {
+        color: #fff;
+      }
     }
 
     header h2 {
