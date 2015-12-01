@@ -64,13 +64,13 @@
 
   <div class="influenceContainer owoPanel commonPanel">
     <div class="influence-header owoPanelHeader">
-      <h3>Social Influence Power</h3>
+      <h3>Social Influence</h3>
       <% if(items.length > 0){ %>
         <div class="btn-group influence-dropdown">
           <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class='glyphicon glyphicon-align-justify'></i>&nbsp;Switch Social Account <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu dropdown-menu-right">
             <% _.each(items, function(item) { %>
               <% if(item.provider != 'wechat'){ %>
                 <li><a href="#" id="<%= item.id %>"><%= polyglot.t('common.' + item.provider)%>: <%= item.name %></a></li>
