@@ -35,7 +35,7 @@ class IdentitiesController < ApplicationController
     if @identity.provider.eql? 'weibo'
       weibo = @identity.uid
       url = base_url + 'weibo/' + weibo
-    elsif @identity.provider.eql? 'wechat_third'
+    elsif @identity.provider.eql? 'wechat-third'
       code = @identity.alias
       if !code
         render :json => {:result => 'fail', :error_message => 'not found'}
