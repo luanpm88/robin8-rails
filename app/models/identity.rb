@@ -56,7 +56,7 @@ class Identity < ActiveRecord::Base
 
   def score
     value = 5
-    value += 10 if  [audience_age_groups, audience_gender_ratio, audience_regions, self.iptc_categories.size].compact.size > 0
+    value += 10 if  [audience_age_groups, audience_gender_ratio, audience_regions, (self.iptc_categories.size > 0 ? '1' : nil)].compact.size > 0
     value += 5  if  [edit_forward, origin_publish, forward, origin_comment, partake_activity, panel_discussion,
                     undertake_activity, image_speak,  give_speech].compact.size > 0
     value

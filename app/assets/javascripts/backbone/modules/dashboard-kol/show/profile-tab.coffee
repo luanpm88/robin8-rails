@@ -372,7 +372,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @initFormValidation()
 
     initPriceItemCheck: ->
-      @.$el.find('.fixed-price input[type=number]').each ->
+      @.$el.find('.fixed-price input[type=text]').each ->
         if $(this).val()
           $(this).closest(".row").find('input[type=checkbox]').val("1")
           $(this).closest(".row").find('input[type=checkbox]').checkboxX('refresh')
