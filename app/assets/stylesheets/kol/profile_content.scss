@@ -8,6 +8,22 @@
   }
   .birdate-row{
     overflow: visible;
+    .has-success {
+      .form-control-feedback {
+        color: #007183;
+      }
+      .form-control{
+        border-color: #AAB2BD;
+      }
+      .input-group-addon {
+        color: #007183;
+        background-color: #AAB2BD;
+        border-color:  #AAB2BD;
+      }
+    }
+    .form-control-feedback{
+      right: 45px
+    }
   }
   select {
     padding-left: 2px !important;
@@ -123,7 +139,7 @@
         .item-header.weibo{
           background: #FD8149;
         }
-        .item-header.wechat, .item-header.wx_third{
+        .item-header.wechat, .item-header.wechat-third{
           background: #49B44F;
         }
         .item-header{

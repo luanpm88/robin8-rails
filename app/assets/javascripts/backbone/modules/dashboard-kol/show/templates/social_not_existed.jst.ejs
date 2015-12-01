@@ -1,5 +1,13 @@
   <div class='trick_for_no_data'>
-    <p><%- polyglot.t('dashboard_kol.no_data') %></p>
+    <% if(type=='nothing'){ %>
+      <p>关联微信公众号或微博，了解更精彩的你！ </p>
+    <% }else if(type=='wechat-third'){ %>
+      <p>系统正在努力地抓取您的数据，敬请期待！</p>
+    <% }else if(type=='weibo'){ %>
+      <p>系统正在努力地计算你的社交图谱，明天就好！</p>
+    <% }else{ %>
+      <p>Something went wrong...</p>
+    <% } %>
   </div>
   <div class="influence-item-header  clearfix">
 

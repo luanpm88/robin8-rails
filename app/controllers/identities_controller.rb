@@ -29,16 +29,29 @@ class IdentitiesController < ApplicationController
     render :json => @identity
   end
 
+  def labels
+    @kol = Kol.find params[:user_id]
+    labels = []
+    @kol.identities.each do |identity|
+      iptc_categories = identity.iptc_categories
+      iptc_categories.each do |category|
+        labels << category.name
+      end
+    end
+
+    return render :json => {:labels_string => labels.uniq.join(',')}
+  end
+
   def influence
     base_url = 'http://engine-api.robin8.net/api/v1/kols/'
     @identity = Identity.find params[:id]
     if @identity.provider.eql? 'weibo'
       weibo = @identity.uid
       url = base_url + 'weibo/' + weibo
-    elsif @identity.provider.eql? 'wechat_third'
+    elsif @identity.provider.eql? 'wechat-third'
       code = @identity.alias
       if !code
-        render :json => {:result => 'fail', :error_message => 'not found'}
+        return render :json => {:result => 'fail', :error_message => 'not found', :provider => 'wechat-third'}
       end
       name = @identity.name
       url = URI.encode(base_url + 'wx_public/code/' + code + '/name/' + name)
@@ -51,12 +64,12 @@ class IdentitiesController < ApplicationController
     when 200
       json_res = JSON.parse res
       if(json_res['return_code'] == 0)
-        render :json => json_res
+        return render :json => json_res
       else
-        render :json => {:result => 'fail', :error_message => 'not found'}
+        return render :json => {:result => 'fail', :error_message => 'not found', :provider => @identity.provider}
       end
     else
-      render :json => {:result => 'fail', :error_message => 'something was wrong.'}
+      return render :json => {:result => 'fail', :error_message => 'something was wrong.', :provider => @identity.provider}
     end
   end
 
@@ -82,7 +95,7 @@ class IdentitiesController < ApplicationController
         articles = json_res['articles']
         returns_array = articles.first 10
         returns_array.each do |article|
-          article['img_url'] = '/assets/recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png'
+          article['img_url'] = ActionController::Base.helpers.asset_path('recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png')
         end
 
         render :json => returns_array

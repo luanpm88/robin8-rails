@@ -15,13 +15,18 @@ class KolsController < ApplicationController
         mobile_number = kol_params[:mobile_number]
 
         kol_p = kol_params
-
         kol_p[:mobile_number] = (1..9).to_a.sample(8).join if mobile_number == "robin8.best"
-        kol_p[:first_name].lstrip!.rstrip!
-        kol_p[:last_name].lstrip!.rstrip!
-        kol_p[:mobile_number].lstrip!.rstrip!
 
-        verify_code = Rails.cache.fetch(mobile_number)
+        kol_p[:first_name].strip!         rescue nil
+        kol_p[:last_name].strip!          rescue nil
+        kol_p[:mobile_number].strip!      rescue nil
+
+        if mobile_number == "robin8.best"
+          verify_code = Rails.cache.fetch(mobile_number)
+        else
+          verify_code = Rails.cache.fetch(kol_p[:mobile_number])
+        end
+
         if verify_code == params["kol"]["verify_code"]
           create_kol_and_sign_in(kol_p)
         else
@@ -178,6 +183,15 @@ class KolsController < ApplicationController
         res = sms_client.send_sms
         render json: res
       end
+    end
+  end
+
+  def valid_phone_number
+    phone_kol = Kol.where(:mobile_number => params[:mobile_number]).first   rescue nil
+    if phone_kol.nil? || phone_kol.id.to_s == params[:kol_id]
+      return render :json => {'valid' => true}
+    else
+      return render :json => {'valid' => false}
     end
   end
 

@@ -12,7 +12,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
 
   Show.CustomController = {
-    showInfluencesAndDiscovers: (influenceRegion, discoverRegion) ->
+    showInfluencesAndDiscovers: (influenceRegion, discoverRegion, userId) ->
+      parentThis = @
       $.ajax
         type: "get"
         url: '/kols/get_score',
@@ -27,9 +28,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               influenceRegion.show influences_view
 
               if collection.models[0]
-                @showDiscover collection.models[0].get('id'), discoverRegion
+                parentThis.showDiscover collection.models[0].get('id'), discoverRegion, userId
               else
-                @showDiscover null, discoverRegion
+                parentThis.showDiscover null, discoverRegion, userId
         error: (xhr, textStatus) ->
 
 
@@ -44,10 +45,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     showInfluenceItem: (influence, influences, region) ->
       if influence
         item = influence
-      else if influences.models[0]
+      else if influences.models[0] and influences.models[0].get('provider') != 'wechat'
         item = new Robin.Models.SocialInfluence {id: influences.models[0].get('id')}
       else
         missingView = new Show.SocialNotExisted
+          type: 'nothing'
         region.show missingView
         return
 
@@ -60,30 +62,42 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         if data.result != 'fail'
           region.show influenceView
         else
-          region.show missingView
+          mView = new Show.SocialNotExisted
+            type: data.provider
+          region.show mView
       ).fail(->
         region.show missingView
       )
 
-    showDiscover: (socialAccountId, region)->
-      if socialAccountId
-        socialAccount = new Robin.Models.SocialInfluence {id: socialAccountId}
-        socialAccount.fetch
-          success: (model, res, opts) =>
-            if res.result != 'fail'
-              temp_labels = ''
-              for label in model.get('labels')
-                temp_labels = temp_labels + label.name + ','
-              labels = temp_labels[0...-1]
-              @showDiscoverFor labels, region
-            else
-              labels = 'all'
-              @showDiscoverFor labels, region
-          error: =>
-            labels = 'all'
-            @showDiscoverFor 'all', region
-      else
-        @showDiscoverFor 'all', region
+    showDiscover: (socialAccountId, region, userId)->
+      labels = new Robin.Models.UserLabels {id: userId}
+      labels.fetch
+        success: (model, res, opts) =>
+          if model.get('labels_string') == ''
+            model.set('labels_string', 'all')
+          @showDiscoverFor model.get('labels_string'), region
+        error: =>
+          @showDiscoverFor 'all', region
+
+      # if socialAccountId
+      #   socialAccount = new Robin.Models.SocialInfluence {id: socialAccountId}
+      #   socialAccount.fetch
+      #     success: (model, res, opts) =>
+      #       if res.result != 'fail'
+      #         temp_labels = ''
+      #         for label in model.get('labels')
+      #           temp_labels = temp_labels + label.name + ','
+      #         labels = temp_labels[0...-1]
+      #       else
+      #         labels = 'all'
+      #       @showDiscoverFor labels, region
+      #     error: =>
+      #       labels = 'all'
+      #       @showDiscoverFor labels, region
+      # else if userId
+
+      # else
+      #   @showDiscoverFor 'all', region
 
     showDiscoverFor: (labels, region, page) ->
       console.log 'exec showDiscoverFor: ', labels, region, page

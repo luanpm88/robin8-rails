@@ -39,13 +39,13 @@ body.login {
         padding-left: 50px;
       }
     }
- 
+
     .btn-weibo {
       background-color: #f26c3a !important;
     }
 
     .sign_up_with_email {
-      float: right;  
+      float: right;
       margin-right: 15px;
       color: #fff;
       &:hover {
@@ -54,6 +54,12 @@ body.login {
     }
   }
 
+  .wechat_tip{
+    float: right;
+    margin-top: 8px;
+    margin-right: 15px;
+    color: #fff;
+  }
 
   .button{
     height: 50px;
@@ -351,6 +357,11 @@ body.login {
 
   .ft-logo{
     text-align: right;
+  }
+
+  .country_flag{
+    float: right;
+    margin-right: 40px;
   }
 
   /* FORM STEP 1 */
@@ -1318,8 +1329,17 @@ body.login {
       font-family: "ProximaNova";
       font-size: 22px;
       font-weight: normal;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       text-align: center;
+  }
+
+  .flash-info{
+    font-family: "ProximaNova";
+    font-size: 17px;
+    font-weight: normal;
+    margin-bottom: 20px;
+    text-align: center;
+    color: red;
   }
   p.loginintro strong{
     font-family: "ProximaNovaSemibold";
@@ -1443,6 +1463,16 @@ body.login {
       background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
       margin: 0 auto;
     }
+
+    .homeheader .nav .title-area a.logo {
+      visibility: visible;
+    }
+
+    .nav.fixed a.logo{
+      background: image-url("robin8-fixedlogo.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+      margin: 0 auto;
+    }
+
     .top-bar .toggle-topbar.menu-icon a {
         color: #000000;
         font-family: "ProximaNova";
@@ -1477,9 +1507,17 @@ body.login {
       float: right;
       margin-right: 15px;
       color: #fff;
+      text-decoration:underline;
       &:hover {
         color: #fff;
       }
+    }
+
+    .wechat_tip{
+      float: right;
+      margin-top: -14px;
+      margin-right: 15px;
+      color: #fff;
     }
 
     header h2 {
@@ -1527,11 +1565,21 @@ body.login {
     footer{
       text-align: center;
     }
+
+    ft-copyright{
+      display: block;
+      margin: 0 auto;
+    }
+
     footer a {
         color: #666666;
-        display: inline-block;
-        margin-right: 40px;
-        margin-left: 0px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .country_flag{
+      margin: 0 auto;
+      float: none;
     }
 
     .ft-logo{

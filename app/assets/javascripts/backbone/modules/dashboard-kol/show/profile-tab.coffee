@@ -148,7 +148,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         collection: socialList
         parent: this
       if collection && collection.length > 0
-        console.log "passed collection"
         @showChildView 'social_list', @social_list_view
       else
         socialList.fetch
@@ -172,9 +171,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         maxDate: new Date()
       }
       if Robin.chinaLocale
-        @ui.datetimepicker.datetimepicker(chinaBirthdateOptions);
+        @ui.datetimepicker.datetimepicker(chinaBirthdateOptions)
       else
-        @ui.datetimepicker.datetimepicker(usBirthdateOptions);
+        @ui.datetimepicker.datetimepicker(usBirthdateOptions)
       if @model.get('date_of_birthday')?
         @ui.datetimepicker.datetimepicker(new Date(@model.get('date_of_birthday')))
 
@@ -199,9 +198,21 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               notEmpty:
                 message: polyglot.t('dashboard_kol.validation.last_name')
           mobile_number:
+            trigger: 'blur'
             validators:
               notEmpty:
                 message: polyglot.t('dashboard_kol.validation.mobile')
+              remote:
+                message: 'phone number already exist'
+                url: '/kols/valid_phone_number'
+                data:
+                  kol_id:  @model.id
+                type: 'get'
+          date_of_birthday:
+            row: '.cell'
+            validators:
+              notEmpty:
+                message: ' '
           country:
             validators:
               notEmpty:
@@ -261,7 +272,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         # Revalidate the field when user starts typing in the password field
         if $(@).val().length == 1
           $('#profile-form').formValidation('validateField', 'current_password').formValidation('validateField', '_password').formValidation 'validateField', 'password_confirmation'
-
+      .on 'blur', 'input[name="date_of_birthday"]', ->
+        $('#profile-form').formValidation('revalidateField', 'date_of_birthday');
 
     showDateTimePicker: ->
       @ui.birthdate.click()
@@ -316,6 +328,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           error: (m, r) =>
             console.log "Error saving KOL profile. Response is:"
             console.log r
+            if JSON.parse(r.responseText).error
+              $.growl JSON.parse(r.responseText).error, {type: "error"}
             errors = JSON.parse(r.responseText).errors
             _.each errors, ((value, key) ->
               @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
@@ -323,6 +337,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               if val == 'is invalid'
                 val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
               @ui.form.data('formValidation').updateMessage key, 'serverError', val
+
             ), this
             element = document.getElementById("current_password")
             element.scrollIntoView(false)
@@ -372,7 +387,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @initFormValidation()
 
     initPriceItemCheck: ->
-      @.$el.find('.fixed-price input[type=number]').each ->
+      @.$el.find('.fixed-price input[type=text]').each ->
         if $(this).val()
           $(this).closest(".row").find('input[type=checkbox]').val("1")
           $(this).closest(".row").find('input[type=checkbox]').checkboxX('refresh')
