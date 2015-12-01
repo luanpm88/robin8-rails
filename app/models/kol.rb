@@ -259,16 +259,20 @@ class Kol < ActiveRecord::Base
   end
 
   def all_score
-    {:data => data_score, :wechat => identity_score('wechat'), :weibo=> identity_score('weibo'),
-     :wechat_third =>  identity_score('wechat-third') }
+    wechat_score  = identity_score('wechat')
+    wechat_third_score = identity_score('wechat-third')
+    weibo_score = identity_score('weibo')
+    total_score =  data_score +  wechat_score +   wechat_third_score +   weibo_score
+    {:total => total_score , :data => data_score * 100 / 40, :wechat => wechat_score * 100 / 20,
+     :weibo=> weibo_score * 100 / 20, :wechat_third => wechat_third_score * 100 / 20 }
   end
 
   def data_score
-    (10 + [self.first_name, self.last_name, self.mobile_number, self.city, self.date_of_birthday, self.gender].compact.size * 5) * 100 / 40
+    (10 + [self.first_name, self.last_name, self.mobile_number, self.city, self.date_of_birthday, self.gender].compact.size * 5)
   end
 
   def identity_score(provider)
-    (self.identities.provider(provider).collect{|t| t.score}.max  || 0  ) * 100 / 20
+    (self.identities.provider(provider).collect{|t| t.score}.max  || 0  )
   end
 
 end
