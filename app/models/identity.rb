@@ -3,7 +3,7 @@ class Identity < ActiveRecord::Base
   belongs_to :kol  # should have used polymorphic association here
   has_many :kol_categories#, -> { unscope(where: :scene)}
   has_many :iptc_categories, -> { unscope(where: :scene)}, :through => :kol_categories
-  WxThirdProvider = 'wx_third'
+  WxThirdProvider = 'wechat-third'
   after_save :spider_weibo_data
 
   scope :provider , -> (provider) {where(:provider => provider)}

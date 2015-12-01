@@ -260,7 +260,7 @@ class Kol < ActiveRecord::Base
 
   def all_score
     {:data => data_score, :wechat => identity_score('wechat'), :weibo=> identity_score('weibo'),
-     :wechat_third =>  identity_score('wehat-third') }
+     :wechat_third =>  identity_score('wechat-third') }
   end
 
   def data_score

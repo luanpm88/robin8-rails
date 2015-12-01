@@ -16,9 +16,10 @@ class KolsController < ApplicationController
 
         kol_p = kol_params
         kol_p[:mobile_number] = (1..9).to_a.sample(8).join if mobile_number == "robin8.best"
-        kol_p[:first_name] = kol_p[:first_name].lstrip.rstrip
-        kol_p[:last_name] = kol_p[:last_name].lstrip.rstrip
-        kol_p[:mobile_number] = kol_p[:mobile_number].lstrip.rstrip
+
+        kol_p[:first_name].strip!         rescue nil
+        kol_p[:last_name].strip!          rescue nil
+        kol_p[:mobile_number].strip!      rescue nil
 
         if mobile_number == "robin8.best"
           verify_code = Rails.cache.fetch(mobile_number)
@@ -26,7 +27,6 @@ class KolsController < ApplicationController
           verify_code = Rails.cache.fetch(kol_p[:mobile_number])
         end
 
-        
         if verify_code == params["kol"]["verify_code"]
           create_kol_and_sign_in(kol_p)
         else
