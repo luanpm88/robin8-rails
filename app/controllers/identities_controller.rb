@@ -29,6 +29,19 @@ class IdentitiesController < ApplicationController
     render :json => @identity
   end
 
+  def labels
+    @kol = Kol.find params[:user_id]
+    labels = []
+    @kol.identities.each do |identity|
+      iptc_categories = identity.iptc_categories
+      iptc_categories.each do |category|
+        labels << category.name
+      end
+    end
+
+    return render :json => {:labels_string => labels.uniq.join(',')}
+  end
+
   def influence
     base_url = 'http://engine-api.robin8.net/api/v1/kols/'
     @identity = Identity.find params[:id]
@@ -38,7 +51,7 @@ class IdentitiesController < ApplicationController
     elsif @identity.provider.eql? 'wechat-third'
       code = @identity.alias
       if !code
-        return render :json => {:result => 'fail', :error_message => 'not found'}
+        return render :json => {:result => 'fail', :error_message => 'not found', :provider => 'wechat-third'}
       end
       name = @identity.name
       url = URI.encode(base_url + 'wx_public/code/' + code + '/name/' + name)
@@ -56,7 +69,7 @@ class IdentitiesController < ApplicationController
         return render :json => {:result => 'fail', :error_message => 'not found', :provider => @identity.provider}
       end
     else
-      return render :json => {:result => 'fail', :error_message => 'something was wrong.'}
+      return render :json => {:result => 'fail', :error_message => 'something was wrong.', :provider => @identity.provider}
     end
   end
 

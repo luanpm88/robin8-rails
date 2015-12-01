@@ -186,6 +186,15 @@ class KolsController < ApplicationController
     end
   end
 
+  def valid_phone_number
+    phone_kol = Kol.where(:mobile_number => params[:mobile_number]).first   rescue nil
+    if phone_kol.nil? || phone_kol.id.to_s == params[:kol_id]
+      return render :json => {'valid' => true}
+    else
+      return render :json => {'valid' => false}
+    end
+  end
+
   private
   def kol_params
     params.require(:kol).permit(:first_name,:last_name,:email,:password,:location,:is_public,:bank_account,:interests, :mobile_number)

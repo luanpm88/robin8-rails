@@ -32,27 +32,35 @@
       </div>
 
       <div class="personalCompletion">
-        <h4>Profile Completion</h4>
+        <div class="completion-title">
+          <span style="font-size: 18px ">Profile Completeness</span>
+          <span style="font-size: 22px;margin-left: 10px "><%= score_data.total %></span>
+        </div>
         <% _.each(score_data, function(value, key) { %>
-          <p><%= polyglot.t("dashboard_kol.default." + key + "_score") %> </p>
-          <div class='progress'>
-            <div class='progress-bar progress-bar-<%= key %>' role='progressbar' aria-valuenow='' aria-valuemin='0' aira-valuemax='100' style='width: <%= value %>%'>
+          <% if(key != 'total') {%>
+            <p><%= polyglot.t("dashboard_kol.default." + key + "_score") %> </p>
+            <div class='progress'>
+              <div class='progress-bar progress-bar-<%= key %>' role='progressbar' aria-valuenow='' aria-valuemin='0' aira-valuemax='100' style='width: <%= value %>%'>
+              </div>
             </div>
-          </div>
-        <% }) %>
+        <%  }
+          })
+        %>
         <div>
-          <div style="margin-top: 30px">
-            <h5>如何让更多人看到您?</h5>
-            <% if(score_data.data < 40){ %>
+          <div style="margin-top: 30px;margin-bottom: 15px">
+            <% if(score_data.total < 100){ %>
+              <div style="margin-bottom: 10px;font-size: 17px">如何让更多人看到您?</div>
+            <% } %>
+            <% if(score_data.data < 100){ %>
               <a href="#/dashboard/profile">完善个人信息</a>  </br>
             <% } %>
-            <% if(score_data.wechat < 20){ %>
+            <% if(score_data.wechat < 100){ %>
               <a href="#/dashboard/profile">绑定微信个人账号，并编辑受众和价格</a>   </br>
             <% } %>
-            <% if(score_data.weibo < 20){ %>
+            <% if(score_data.weibo < 100){ %>
               <a href="#/dashboard/profile">绑定微博账号，并编辑受众和价格</a>   </br>
             <% } %>
-            <% if(score_data.wechat_third < 20){ %>
+            <% if(score_data.wechat_third < 100){ %>
               <a href="#/dashboard/profile">绑定微信公众账号，并编辑受众和价格</a>   </br>
             <% } %>
           </div>

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   put 'identities/:id' => "identities#update"
   get 'identities/influence/:id' => 'identities#influence'
   get 'identities/discover/:labels' => 'identities#discover'
+  get 'identities/labels/:user_id' => 'identities#labels'
 
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
@@ -69,6 +70,7 @@ Rails.application.routes.draw do
   get '/kols/new' => 'kols#create'
   put '/kols/monetize' => 'kols#update_monetize'
   get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail'
+  get '/kols/valid_phone_number'
 
   # kols
   devise_for :kols, controllers: {
