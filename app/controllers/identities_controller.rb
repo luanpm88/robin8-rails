@@ -29,6 +29,19 @@ class IdentitiesController < ApplicationController
     render :json => @identity
   end
 
+  def labels
+    @kol = Kol.find params[:user_id]
+    labels = []
+    @kol.identities.each do |identity|
+      iptc_categories = identity.iptc_categories
+      iptc_categories.each do |category|
+        labels << category.name
+      end
+    end
+
+    return render :json => {:labels_string => labels.uniq.join(',')}
+  end
+
   def influence
     base_url = 'http://engine-api.robin8.net/api/v1/kols/'
     @identity = Identity.find params[:id]
