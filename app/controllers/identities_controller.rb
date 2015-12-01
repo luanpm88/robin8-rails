@@ -38,7 +38,7 @@ class IdentitiesController < ApplicationController
     elsif @identity.provider.eql? 'wechat-third'
       code = @identity.alias
       if !code
-        render :json => {:result => 'fail', :error_message => 'not found'}
+        return render :json => {:result => 'fail', :error_message => 'not found'}
       end
       name = @identity.name
       url = URI.encode(base_url + 'wx_public/code/' + code + '/name/' + name)
@@ -51,12 +51,12 @@ class IdentitiesController < ApplicationController
     when 200
       json_res = JSON.parse res
       if(json_res['return_code'] == 0)
-        render :json => json_res
+        return render :json => json_res
       else
-        render :json => {:result => 'fail', :error_message => 'not found', :provider => @identity.provider}
+        return render :json => {:result => 'fail', :error_message => 'not found', :provider => @identity.provider}
       end
     else
-      render :json => {:result => 'fail', :error_message => 'something was wrong.'}
+      return render :json => {:result => 'fail', :error_message => 'something was wrong.'}
     end
   end
 
