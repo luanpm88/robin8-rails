@@ -41,6 +41,7 @@
     Robin.mobileRequest = <%= mobile_request? %>;
     Robin.start();
   });
+  var flashInfo = '<%= flash[:alert] || flash[:notice] %>';
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
   en_polyglot = new Polyglot({phrases: <%= raw @en_phrases.to_json %>, locale: "en"});
   <% if flash[:success_confirmation] -%>
