@@ -694,8 +694,8 @@ en:
       send_sms_success: Send vertification code successfully
     landing_page:
       brand: Brand
-      chinese_locale: "Switch to CN product"
-      english_locale: "Switch to US product" 
+      chinese_locale: "Switch to CN instance"
+      english_locale: "Switch to US instance" 
       here: here.
       inf_signup: 'Are you an Influencer? Sign up '
       influencer: Influencer

@@ -700,8 +700,8 @@ zh:
       send_sms_success: "验证码发送成功"
     landing_page:
       brand: "品牌"
-      chinese_locale: "切换到中国产品"
-      english_locale: "切换到美国版本"
+      chinese_locale: "Switch to CN instance"
+      english_locale: "Switch to US instance" 
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
       influencer: "社交达人"
