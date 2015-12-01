@@ -43,7 +43,7 @@ class IdentitiesController < ApplicationController
       name = @identity.name
       url = URI.encode(base_url + 'wx_public/code/' + code + '/name/' + name)
     else
-      return render :json => {:result => 'fail', :error_message => 'not found'}
+      render :json => {:result => 'fail', :error_message => 'not found'}
       return
     end
     res = RestClient::Request.execute(method: :get, url: url, timeout: 10, user: 'robin8', password: 'influencer8')
