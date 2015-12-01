@@ -359,6 +359,11 @@ body.login {
     text-align: right;
   }
 
+  .country_flag{
+    float: right;
+    margin-right: 40px;
+  }
+
   /* FORM STEP 1 */
 
   .signup header {
@@ -1556,6 +1561,11 @@ body.login {
         display: inline-block;
         margin-right: 40px;
         margin-left: 0px;
+    }
+
+    .country_flag{
+      margin: 0 auto;
+      float: none;
     }
 
     .ft-logo{

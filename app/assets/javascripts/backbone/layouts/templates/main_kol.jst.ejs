@@ -24,24 +24,17 @@
             <li><a href="/#/dashboard/default"><i class="fa fa-tachometer"></i><%= polyglot.t("navigation.dashboard") %></a></li>
             <li><a href="/#/dashboard/profile"><i class="fa fa-user"></i><%= polyglot.t("navigation.profile") %></a></li>
 
-            <% if(Robin.chinaInstance) { %>
-              <li><a href="http://robin8.com"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
+            <% if(Robin.chinaLocale) { %>
+              <li><a href="?locale=en">EN</a></li>
             <% } else { %>
-              <li><a href="http://robin8.net"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
+              <li><a href="?locale=zh">CN</a></li>
             <% } %>
-
-          <% if(Robin.chinaLocale) { %>
-            <li><a href="?locale=en">EN</a></li>
-          <% } else { %>
-            <li><a href="?locale=zh">CN</a></li>
-          <% } %>
 
             <li><a href='/kols/sign_out'><i class="fa fa-sign-out"></i><%= polyglot.t("user_menu.log_out") %></a></li>
           </ul>
         </li>
       </ul>
-
-
+      
     </div>
   </div>
 </nav>

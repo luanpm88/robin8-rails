@@ -11,11 +11,6 @@
         <section class="top-bar-section">
           <!-- Right Nav Section -->
           <ul class="right">
-            <% if(Robin.chinaInstance) { %>
-              <li><a href="<%= Robin.us_host %>"><img src="<%= AppAssets.path('us-flag-icon.png') %>" title="<%= polyglot.t('landing_page.english_locale') %>" height="13" /></a></li>
-            <% } else { %>
-              <li><a href="<%= Robin.cn_host %>"><img src="<%= AppAssets.path('china-flag-icon.png') %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" height="13" /></a></li>
-            <% } %>
 
             <% if(Robin.chinaLocale) { %>
               <li><a href="?locale=en">EN</a></li>
@@ -41,9 +36,22 @@
 
   <footer>
     <div class="row">
+
+      <% if(Robin.chinaInstance) { %>
+        <a href="<%= Robin.us_host %>" title="<%= polyglot.t('landing_page.english_locale') %>" class="country_flag" > 
+          <img src="<%= AppAssets.path('us-flag-icon.png') %>" height="13" />
+        </a>
+        
+      <% } else { %>
+        <a href="<%= Robin.cn_host %>" title="<%= polyglot.t('landing_page.chinese_locale') %>" class="country_flag" >
+          <img src="<%= AppAssets.path('china-flag-icon.png') %>"  height="13" />
+        </a>
+      <% } %>
+
       <div class="small-12 medium-3 columns ft-logo right">
         <img src="<%= AppAssets.path('ROBIN8-logo.png') %>" />
       </div>
+
       <div class="small-12 medium-9 columns left">
         <%= polyglot.t('footer.right_reserved') %> <br class="show-for-medium-only"> <a href="about.html" class="ft-link privacy"><%= polyglot.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= polyglot.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= polyglot.t('footer.contact') %></a> <a href="/terms" class="ft-link privacy"><%= polyglot.t('footer.privacy_and_terms') %></a>
       </div>
