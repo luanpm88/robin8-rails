@@ -39,13 +39,13 @@ body.login {
         padding-left: 50px;
       }
     }
- 
+
     .btn-weibo {
       background-color: #f26c3a !important;
     }
 
     .sign_up_with_email {
-      float: right;  
+      float: right;
       margin-right: 15px;
       color: #fff;
       &:hover {
@@ -1329,8 +1329,17 @@ body.login {
       font-family: "ProximaNova";
       font-size: 22px;
       font-weight: normal;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       text-align: center;
+  }
+
+  .flash-info{
+    font-family: "ProximaNova";
+    font-size: 17px;
+    font-weight: normal;
+    margin-bottom: 20px;
+    text-align: center;
+    color: red;
   }
   p.loginintro strong{
     font-family: "ProximaNovaSemibold";
