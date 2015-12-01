@@ -45,7 +45,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     showInfluenceItem: (influence, influences, region) ->
       if influence
         item = influence
-      else if influences.models[0]
+      else if influences.models[0] and influences.models[0].get('provider') != 'wechat'
         item = new Robin.Models.SocialInfluence {id: influences.models[0].get('id')}
       else
         missingView = new Show.SocialNotExisted
@@ -73,6 +73,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       labels = new Robin.Models.UserLabels {id: userId}
       labels.fetch
         success: (model, res, opts) =>
+          if model.get('labels_string') == ''
+            model.set('labels_string', 'all')
           @showDiscoverFor model.get('labels_string'), region
         error: =>
           @showDiscoverFor 'all', region
