@@ -50,13 +50,15 @@
 
         <div class="row form-group birdate-row" style="margin-bottom: 10px;">
           <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.birthdate') %>
-            <sup>*</sup></div>
+            <sup>*</sup>
+          </div>
+
           <div class="col-md-4 cell date input-group" id="datetimepicker">
-            <input type="text" class="form-control" name="date_of_birthday" id="birthdate" autocomplete="off"
-                   readonly="readonly">
-             <span class="input-group-addon calendar_button">
+            <input type="text" class="form-control required" name="date_of_birthday" id="birthdate" autocomplete="off"
+                   readonly="readonly"/>
+            <span class="input-group-addon calendar_button">
                <span class="glyphicon glyphicon-calendar"></span>
-             </span>
+            </span>
           </div>
         </div>
 

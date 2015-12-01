@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   get '/kols/new' => 'kols#create'
   put '/kols/monetize' => 'kols#update_monetize'
   get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail'
+  get '/kols/valid_phone_number'
 
   # kols
   devise_for :kols, controllers: {
