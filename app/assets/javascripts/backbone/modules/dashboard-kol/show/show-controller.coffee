@@ -73,6 +73,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       labels = new Robin.Models.UserLabels {id: userId}
       labels.fetch
         success: (model, res, opts) =>
+          if model.get('labels_string') == ''
+            model.set('labels_string', 'all')
           @showDiscoverFor model.get('labels_string'), region
         error: =>
           @showDiscoverFor 'all', region
