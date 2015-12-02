@@ -19,17 +19,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         url: '/kols/get_score',
         dataType: 'json',
         success: (data) ->
-          parentThis.showDiscover null, discoverRegion, userId
+          parentThis.showDiscover(discoverRegion, userId)
           socialList = new Robin.Collections.Identities
           influences_view = new Show.Influence
             collection: socialList
             score_data: data
           socialList.fetch
             success: (collection, res, opts) =>
-              influenceRegion.show influences_view
-
+              influenceRegion.show(influences_view)
         error: (xhr, textStatus) ->
-
 
     appendMoreDiscovers: (region) ->
       el = region.$el
@@ -37,7 +35,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       return if currentPage == 0
       nextPage = currentPage + 1
       labels = region.currentView.collection.labels
-      @showDiscoverFor labels, region, nextPage
+      @showDiscoverFor(labels, region, nextPage)
 
     showInfluenceItem: (influence, influences, region) ->
       influences.remove influences.where({provider: 'wechat'})
@@ -48,7 +46,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       else
         missingView = new Show.SocialNotExisted
           type: 'nothing'
-        region.show missingView
+        region.show(missingView)
         return
 
       missingView = new Show.SocialNotExisted
@@ -58,25 +56,25 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       fetchingItem = item.fetch()
       $.when(fetchingItem).done((data, textStatus, jqXHR)->
         if data.result != 'fail'
-          region.show influenceView
+          region.show(influenceView)
         else
           mView = new Show.SocialNotExisted
             type: data.provider
-          region.show mView
+          region.show(mView)
       ).fail(->
-        region.show missingView
+        region.show(missingView)
       )
 
-    showDiscover: (socialAccountId, region, userId)->
+    showDiscover: (region, userId)->
       labels = new Robin.Models.UserLabels {id: userId}
       labels.fetch
         success: (model, res, opts) =>
           if model.get('labels_string') == ''
             model.set('labels_string', 'all')
-          @showDiscoverFor model.get('labels_string'), region
+          @showDiscoverFor(model.get('labels_string'), region)
         error: =>
           console.log 'fire showDiscover: fetch labels error'
-          @showDiscoverFor 'all', region
+          @showDiscoverFor('all', region)
 
     getAccountLabelsBy: (id) ->
       labels = ''
@@ -97,16 +95,16 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     showDiscoverFor: (labels, region, page) ->
       console.log 'exec showDiscoverFor: ', labels, region, page
       page = page || 1
-      discovers = new Robin.Collections.Discovers [], {labels: labels, page: page}
+      discovers = new Robin.Collections.Discovers([], {labels: labels, page: page})
       discoversView = new Show.DiscoversLayout
         collection: discovers
         parentRegion: region
       if region.$el.find('ul').children().length == 0
-        region.show discoversView
+        region.show(discoversView)
       else
         discovers.fetch
           success: (collection, res, opts) =>
-            region.currentView.$el.find('ul').append discoversView.render().$el.find('ul').children()
+            region.currentView.$el.find('ul').append(discoversView.render().$el.find('ul').children())
           error: =>
             console.log 'fire showDiscoverFor: fetch discover error'
 

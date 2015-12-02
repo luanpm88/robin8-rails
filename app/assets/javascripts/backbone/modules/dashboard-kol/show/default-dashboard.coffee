@@ -11,7 +11,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       kol = new Robin.Models.KOL
       kol.fetch
         success: (model, res, opts) =>
-          Show.CustomController.showInfluencesAndDiscovers @getRegion('socialInfluencePower'), @getRegion('discover'), kol.get('id')
+          Show.CustomController.showInfluencesAndDiscovers(@getRegion('socialInfluencePower'), @getRegion('discover'), kol.get('id'))
 
   Show.Influence = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/show/templates/influence'
@@ -146,4 +146,4 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       $(window).scroll ->
         if $(window).scrollTop() + $(window).height() == $(document).height()
           $('#loadingSvg').show()
-          Show.CustomController.appendMoreDiscovers parentThis.parentRegion
+          Show.CustomController.appendMoreDiscovers(parentThis.parentRegion)
