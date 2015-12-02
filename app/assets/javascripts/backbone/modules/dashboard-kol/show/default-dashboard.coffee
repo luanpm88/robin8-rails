@@ -134,6 +134,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     initialize: (opts) ->
       @parentRegion = opts.parentRegion
+      @collection.fetch
+        success: (collection, res, opts) =>
+          if @parentRegion.$el.find('ul').children('li').length == 0
+            @.render()
+        error: =>
+          console.log 'fire Show.DiscoversLayout.initalize: fetch collection error'
 
     onShow: () ->
       parentThis = @
