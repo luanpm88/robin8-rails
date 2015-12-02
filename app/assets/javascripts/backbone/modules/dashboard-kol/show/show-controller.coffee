@@ -111,7 +111,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           if region.$el.find('ul').children().length == 0
             region.show discoversView
           else
-            $('#loadingDiscover').hide()
+            $('#loadingSvg').hide()
             region.currentView.$el.find('ul').append discoversView.render().$el.find('ul').children()
         error: =>
           console.log 'fetch discover error'
