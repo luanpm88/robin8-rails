@@ -42,6 +42,12 @@
   <% if (Robin.chinaInstance) { %>
     <div id="china">
 
+      <div class="row" style="color:#fff!important;">
+        <div class="small-12 columns social-login">
+          <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= polyglot.t('register.weibo_signup') %></span></a>
+        </div>
+      </div>
+
       <% if (!(Robin.mobileRequest)) { %>
         <div class="row" style="color:#fff!important;">
           <div class="small-12 columns social-login">
@@ -52,14 +58,8 @@
           <div class="small-12 columns social-login">
             <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= polyglot.t('register.wechat_third_signup') %></span></a>
           </div>
-        </div>
+        </div><br /><br /><br />
       <% } %>
-
-      <div class="row" style="color:#fff!important;">
-        <div class="small-12 columns social-login">
-          <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= polyglot.t('register.weibo_signup') %></span></a><br /><br /><br />
-        </div>
-      </div>
 
       <!--<div class="row">-->
         <!--<div class="small-12 columns social-login">-->
