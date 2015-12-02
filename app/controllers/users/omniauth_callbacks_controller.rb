@@ -111,7 +111,7 @@ module Users
           end
         end
       end
-      if request.env['omniauth.params'].blank?
+      if !china_instance? && request.env['omniauth.params'].blank?
         cookies[:popup_signin] = nil
         render 'twitter_popup_close', :layout => false
       else
