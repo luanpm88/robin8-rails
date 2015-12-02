@@ -9,7 +9,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     genders: 'gender'
 
   Show.ProfileTab = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/profile-tab'
+    template: 'modules/dashboard-kol/templates/profile-tab'
     ui:
       birthdate:  "#birthdate"
       datetimepicker: "#datetimepicker"

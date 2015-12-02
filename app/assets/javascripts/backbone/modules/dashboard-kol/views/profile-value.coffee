@@ -1,6 +1,6 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.ProfileSocialValueContainer = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/social-value-layout'
+    template: 'modules/dashboard-kol/templates/social-value-layout'
 
     ui:
       modal_account: '#modal-account'
@@ -29,7 +29,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @getRegion('container').show @social_values
 
   Show.ProfileSocialValueItem = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/social-value-item'
+    template: 'modules/dashboard-kol/templates/social-value-item'
 
     events:
       'click .edit-account': 'editSocialAccount'

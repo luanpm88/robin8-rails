@@ -1,6 +1,6 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.DefaultDashboard = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/default-dashboard/default-dashboard'
+    template: 'modules/dashboard-kol/templates/default-dashboard/default-dashboard'
 
     regions:
       socialInfluencePower: '#social-influence-power'
@@ -15,7 +15,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
 
   Show.SocialNotExisted = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/common/social_not_existed'
+    template: 'modules/dashboard-kol/templates/common/social_not_existed'
 
     initialize: (opts) ->
       @type = opts.type || null

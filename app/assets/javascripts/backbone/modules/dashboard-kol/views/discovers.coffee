@@ -1,12 +1,12 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.DiscoverItem = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/default-dashboard/discover-item'
+    template: 'modules/dashboard-kol/templates/default-dashboard/discover-item'
     tagName: 'li'
     className: 'discover-item'
 
 
   Show.DiscoversLayout = Backbone.Marionette.CompositeView.extend
-    template: 'modules/dashboard-kol/show/templates/default-dashboard/discovers-layout'
+    template: 'modules/dashboard-kol/templates/default-dashboard/discovers-layout'
     childView: Show.DiscoverItem
     childViewContainer: 'ul'
 

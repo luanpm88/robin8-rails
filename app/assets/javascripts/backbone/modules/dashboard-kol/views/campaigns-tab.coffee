@@ -1,7 +1,7 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
   Show.CampaignsTab = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/campaigns-tab'
+    template: 'modules/dashboard-kol/templates/campaigns-tab'
 
     regions:
       campaigns: "#campaigns-list"

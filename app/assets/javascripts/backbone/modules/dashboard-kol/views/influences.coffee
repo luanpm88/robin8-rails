@@ -1,6 +1,6 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.Influence = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/default-dashboard/influence'
+    template: 'modules/dashboard-kol/templates/default-dashboard/influence'
 
     regions:
       item: '.influence-item'
@@ -21,10 +21,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
       Show.CustomController.showInfluenceItem(influence, @collection, @getRegion('item'))
-      
+
 
   Show.InfluenceItem = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/default-dashboard/influence-item'
+    template: 'modules/dashboard-kol/templates/default-dashboard/influence-item'
     tagName: 'div'
 
     onRender: ()->

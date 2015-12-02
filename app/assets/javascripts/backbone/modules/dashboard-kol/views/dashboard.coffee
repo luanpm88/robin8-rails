@@ -1,7 +1,7 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
   Show.DashboardKOLPage = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/dashboard'
+    template: 'modules/dashboard-kol/templates/dashboard'
 
     regions:
       content: "#tab-content"

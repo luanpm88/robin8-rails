@@ -23,7 +23,6 @@ $(function(){
     var fiveMins = new Date();
     fiveMins.setMinutes(fiveMins.getMinutes() + 5);
     $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
-    $.cookie("popup_signin", "no", { path: "/"});
     return true;
   });
 });

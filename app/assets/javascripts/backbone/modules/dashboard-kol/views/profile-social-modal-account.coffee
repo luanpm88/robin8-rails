@@ -74,7 +74,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
 
   Show.ProfileSocialModalAccount = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/profile-social-modal-account'
+    template: 'modules/dashboard-kol/templates/profile-social-modal-account'
 
     templateHelpers:
       checked: (key, index, kol) ->

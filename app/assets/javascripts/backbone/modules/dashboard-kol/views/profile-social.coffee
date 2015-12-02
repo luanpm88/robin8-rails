@@ -15,7 +15,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
   flip = (f) -> (x, y) -> f y, x
 
   Show.ProfileSocialView = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/profile-social'
+    template: 'modules/dashboard-kol/templates/profile-social'
 
     events:
       "click .social-login": "social_login"
@@ -66,6 +66,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       params = 'location=0,status=0,width=800,height=600'
       @connect_window = window.open url, "connect_window", params
       parent = @parent
+      $.cookie("popup_signin", "yeah", { path: "/"});
       @interval = flip(setInterval) 500, =>
         if @connect_window.closed
           clearInterval @interval
@@ -88,7 +89,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       k: @model.toJSON()
 
   Show.ProfileSocialListView = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/profile-social-list'
+    template: 'modules/dashboard-kol/templates/profile-social-list'
     ui:
       modal_account: "#modal-account"
 
