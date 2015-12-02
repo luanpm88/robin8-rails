@@ -43,9 +43,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @showDiscoverFor labels, region, nextPage
 
     showInfluenceItem: (influence, influences, region) ->
+      influences.remove influences.where({provider: 'wechat'})
       if influence
         item = influence
-      else if influences.models[0] and influences.models[0].get('provider') != 'wechat'
+      else if influences.models[0]
         item = new Robin.Models.SocialInfluence {id: influences.models[0].get('id')}
       else
         missingView = new Show.SocialNotExisted
