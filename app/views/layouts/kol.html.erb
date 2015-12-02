@@ -29,7 +29,7 @@
   <% if flash[:confirmation_alert] %>
     <div class="activation-alert alert-warning" role="alert"><p class="confirmation"><%= flash[:confirmation_alert] %> 没有收到邮件？ <a id='resend-confirmation-mail' href='#'>点击重发验证邮件</a></p></div>
   <% end %>
-  <div class="alert alert-success alert-dismissible fade in" role="alert" style="width: 50%;margin: 0 auto;">
+  <div class="alert alert-success alert-dismissible fade in" role="alert" style="width: 60%; min-width:320px;margin: 0 auto;">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
