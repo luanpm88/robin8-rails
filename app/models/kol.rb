@@ -263,8 +263,8 @@ class Kol < ActiveRecord::Base
     wechat_third_score = identity_score('wechat_third')
     weibo_score = identity_score('weibo')
     total_score =  data_score +  wechat_score +   wechat_third_score +   weibo_score
-    {:total => total_score , :data => data_score * 100 / 40, :wechat => wechat_score * 100 / 20,
-     :weibo=> weibo_score * 100 / 20, :wechat_third => wechat_third_score * 100 / 20 }
+    {:total => total_score , :data => data_score * 100 / 40, :weibo=> weibo_score * 100 / 20,
+     :wechat => wechat_score * 100 / 20,  :wechat_third => wechat_third_score * 100 / 20 }
   end
 
   def data_score
