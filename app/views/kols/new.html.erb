@@ -130,7 +130,7 @@
       var fiveMins = new Date();
       fiveMins.setMinutes(fiveMins.getMinutes() + 5);
       $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
-      console.log($.cookie("kol_social"));
+      $.cookie("popup_signin", "no", {expires: fiveMins, path: "/"});
     });
   </script>
 

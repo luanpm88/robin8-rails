@@ -2,7 +2,7 @@ class KolsController < ApplicationController
 
   def get_current_kol
     render :json => current_kol.to_json({:include => {:identities =>  {:except => [:serial_params], :methods => [:total_tasks, :complete_tasks, :last30_posts]}} ,
-                                          :methods => [:newest_identity]})
+                                          :methods => [:get_identity]})
   end
 
   def get_score

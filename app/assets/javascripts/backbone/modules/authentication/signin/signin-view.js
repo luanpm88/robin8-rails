@@ -32,7 +32,7 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       _.defer(function(){
         $this.$('#email').focus();
         $.cookie("kol_social", "yeah", { path: "/"});
-        console.log( $.cookie("kol_social"));
+        $.cookie("popup_signin", "no", { path: "/"});
       });
     },
 

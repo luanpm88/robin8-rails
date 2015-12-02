@@ -70,19 +70,18 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
         if @connect_window.closed
           clearInterval @interval
           $.get "/kols/get_current_kol", (data) =>
-            #  有错误返回，表示添加没有成功
-#            if data.provide_info.error
-#              swal(data.provide_info.error);
-#            else if data.provide_info.identity
-            @model.set "identities", data.identities
-            App.currentKOL.set "identities", data.identities
-            $.growl "#{polyglot.t('common.update_success')}", type: "success",
-#              Backbone.trigger('showSocialAccount',new Robin.Models.Identity(data.identities[0]));
-            parent.refreshSocialList(data.identities)
-            setTimeout ->
-              identity_id = data.newest_identity.id
-              $(".identity-" + identity_id + " .edit-account").trigger("click")
-            , 200
+            console.log data.get_identity
+            #  有表示添加没有成功
+            if data.get_identity
+              @model.set "identities", data.identities
+              App.currentKOL.set "identities", data.identities
+              $.growl "#{polyglot.t('common.update_success')}", type: "success",
+  #              Backbone.trigger('showSocialAccount',new Robin.Models.Identity(data.identities[0]));
+              parent.refreshSocialList(data.identities)
+              setTimeout ->
+                identity_id = data.get_identity.id
+                $(".identity-" + identity_id + " .edit-account").trigger("click")
+              , 200
 
 
     serializeData: ->
