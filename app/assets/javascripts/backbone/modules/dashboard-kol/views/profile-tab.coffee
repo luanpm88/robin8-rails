@@ -137,11 +137,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
                 data:
                   kol_id:  @model.id
                 type: 'get'
-          date_of_birthday:
-            row: '.cell'
-            validators:
-              notEmpty:
-                message: ' '
+#          date_of_birthday:
+#            row: '.cell'
+#            validators:
+#              notEmpty:
+#                message: ' '
           country:
             validators:
               notEmpty:
