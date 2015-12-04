@@ -701,7 +701,7 @@ zh:
     landing_page:
       brand: "品牌"
       chinese_locale: "Switch to CN instance"
-      english_locale: "Switch to US instance" 
+      english_locale: "Switch to US instance"
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
       influencer: "社交达人"
@@ -755,7 +755,8 @@ zh:
       fb_login: "使用Facebook账号登录"
       forgot: "忘记密码？"
       google_login: "使用Google Plus账号登录"
-      intro: "请输入您的电子邮件和密码，或者使用社交账号登录"
+      kol_intro: "请输入您的电子邮件和密码，或者使用社交账号登录"
+      user_intro: "请输入您的电子邮件和密码"
       login_label: "登录"
       or: "或"
       password: "密码"

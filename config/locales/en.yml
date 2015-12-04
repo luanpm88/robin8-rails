@@ -695,7 +695,7 @@ en:
     landing_page:
       brand: Brand
       chinese_locale: "Switch to CN instance"
-      english_locale: "Switch to US instance" 
+      english_locale: "Switch to US instance"
       here: here.
       inf_signup: 'Are you an Influencer? Sign up '
       influencer: Influencer
@@ -769,8 +769,9 @@ en:
       fb_login: Login using Facebook
       forgot: Forgot Password?
       google_login: Login using Google Plus
-      intro: Please enter your <strong>Email</strong> and <strong>Password</strong>
+      kol_intro: Please enter your <strong>Email</strong> and <strong>Password</strong>
         or use <strong>Social Sign-in</strong>
+      user_intro: Please enter your <strong>Email</strong> and <strong>Password</strong>
       login_label: Login
       or: OR
       password: Password
