@@ -1257,7 +1257,8 @@ zh:
       add_money: "添加"
       approved: "批准"
       back: "背部"
-      budget: "预算"
+      budget: "已扣/预算"
+      replicate: "重启活动"
       budget_must_number: "预算必须是数字，并且只包含数字"
       budget_required: The budget is required
       campaigns: "宣传活动"
@@ -1318,7 +1319,7 @@ zh:
         pitch: "投递"
         start: "开始"
         targets: "目标"
-      new_campaign: New Campaign
+      new_campaign: "新建活动"
       next: "下一步"
       'no': "不是"
       no_campaigns: You don't have any campaigns. It's time to create one!

@@ -342,7 +342,8 @@ en:
       accepted: Accepted
       brand: Brand
       brief: Briefing Digest
-      budget: Budget
+      budget: Spent/Budget
+      replicate: Replicate
       check_to_activate: Please, check your email to activate your account!
       creation_date: Creation Date
       deadline: Deadline
