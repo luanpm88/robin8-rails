@@ -4,4 +4,7 @@
 production:
   :concurrency: 10
 :queues:
-  - default
+  - [default, 10]
+  - [campaign_show, 5]
+:limits:
+  campaign_show: 1

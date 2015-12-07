@@ -66,7 +66,7 @@ Robin.setIdentities = function(data){
 Robin.stopOtherModules = function(){
   _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'DashboardKol', 'SmartCampaign',
       'Releases', 'ReleasesBlast', 'Analytics', 'Authentication',
-      'Billing', 'Recommendations', 'Campaigns', 'CampaignsList'], function(module){
+      'Billing', 'Recommendations', 'Campaigns', 'CampaignsList', "Transactions"], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
