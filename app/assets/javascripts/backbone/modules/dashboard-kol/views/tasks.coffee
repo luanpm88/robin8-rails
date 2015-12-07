@@ -4,7 +4,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     regions:
       currentTab: '.currentTab'
-      loading: '.loading'
 
     events:
       'click .tasks-nav li': 'switchTab'
