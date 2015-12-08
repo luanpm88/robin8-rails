@@ -5,7 +5,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     regions:
       content: "#campaign-content"
-      characteristicsRegion: '#release-characteristics'
       analyticsRegion: '#analytics-campaign-text'
 
     ui:
@@ -45,158 +44,54 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initialize: (options) ->
       @options = options
-      @releaseCharacteristicsModel = new Robin.Models.ReleaseCharacteristics
       @model = if @options.model? then @options.model else new Robin.Models.Campaign()
       @modelBinder = new Backbone.ModelBinder()
 
     onRender: () ->
-      insertLinkButton = @$el.find('#wyihtml5-insert-link').html()
-      unLinkButton = @$el.find('#wyihtml5-unlink').html()
-      extractButtonTemplate = @$el.find('#wyihtml5-extract-button').html()
-      extractWordTemplate = @$el.find('#wyihtml5-word-button').html()
-      extractDirectImageTemplate = @$el.find('#wyihtml5-direct-image-button').html()
-      extractDirectVideoTemplate = @$el.find('#wyihtml5-direct-video-button').html()
-      customTemplates =
-        insert: (context) ->
-          return insertLinkButton
-        unlink: (context) ->
-          return unLinkButton
-        extract: (context) ->
-          return extractButtonTemplate
-        word: (context) ->
-          return extractWordTemplate
-        directImage: (context) ->
-          return extractDirectImageTemplate
-        directVideo: (context) ->
-          return extractDirectVideoTemplate
+      # insertLinkButton = @$el.find('#wyihtml5-insert-link').html()
+      # unLinkButton = @$el.find('#wyihtml5-unlink').html()
+      # extractButtonTemplate = @$el.find('#wyihtml5-extract-button').html()
+      # extractWordTemplate = @$el.find('#wyihtml5-word-button').html()
+      # extractDirectImageTemplate = @$el.find('#wyihtml5-direct-image-button').html()
+      # extractDirectVideoTemplate = @$el.find('#wyihtml5-direct-video-button').html()
+      # customTemplates =
+      #   insert: (context) ->
+      #     return insertLinkButton
+      #   unlink: (context) ->
+      #     return unLinkButton
+      #   extract: (context) ->
+      #     return extractButtonTemplate
+      #   word: (context) ->
+      #     return extractWordTemplate
+      #   directImage: (context) ->
+      #     return extractDirectImageTemplate
+      #   directVideo: (context) ->
+      #     return extractDirectVideoTemplate
 
-      @ui.wysihtml5.wysihtml5(
-        toolbar:
-          insert: customTemplates.insert
-          unlink: customTemplates.unlink
-          extract: customTemplates.extract
-          word: customTemplates.word
-          directImage: customTemplates.directImage
-          directVideo: customTemplates.directVideo
-        ,
-        parserRules: {
-          tags: {
-                "b":  {},
-                "i":  {},
-                "br": {},
-                "ol": {},
-                "ul": {},
-                "li": {},
-                "h1": {},
-                "h2": {},
-                "h3": {},
-                "h4": {},
-                "h5": {},
-                "h6": {},
-                "video": {
-                    "check_attributes": {
-                        "controls": "any",
-                        "preload": "any",
-                        "class": "any",
-                        "width": "any",
-                    }},
-                "source": {
-                    "check_attributes": {
-                        "src": "any",
-                    }},
-                "blockquote": {},
-                "u": 1,
-                "img": {
-                    "check_attributes": {
-                        "width": "numbers",
-                        "alt": "alt",
-                        "src": "any",
-                        "height": "numbers",
-                        "title": "alt"
-                    }
-                },
-                "a":  {
-                    check_attributes: {
-                        'href': "href",
-                        'target': 'any',
-                        'rel': 'alt'
-                    }
-                },
-                "iframe": {
-                    "check_attributes": {
-                        "src":"any",
-                        "width":"numbers",
-                        "height":"numbers"
-                    },
-                    "set_attributes": {
-                        "frameborder":"0"
-                    }
-                },
-                "p": 1,
-                "span": 1,
-                "div": 1,
-                "table": 1,
-                "tbody": 1,
-                "thead": 1,
-                "tfoot": 1,
-                "tr": 1,
-                "th": 1,
-                "td": 1,
-                "code": 1,
-                "pre": 1,
-                "style": 1
-            }
-        },
-        'image': false,
-        'video': false,
-        'html': true,
-        "blockquote": true,
-        "table": false,
-        "link": false,
-        "textAlign": false
-      )
-      @editor = @ui.wysihtml5.data('wysihtml5').editor
-      @editor.focus()
-      self = this
-      @editor.on('load', () ->
-        self.updateStats()
-        if self.model.get('description')?
-          analyze_button = document.getElementById("analyze")
-          analyze_button.style.display = "none"
-          child = new Show.StartAnalytics ({
-            model: self.model
-            reanalyze: true
-            parent: self.options.parent
-          })
-          Robin.layouts.main.content.currentView.content.currentView.analyticsRegion.show child
-        $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', (e) ->
-          self.updateStats()
-        )
-      )
-      @characteristicsRegion.show(new Show.CharacteristicsView({
-        model: @releaseCharacteristicsModel
-      }))
-      @modelBinder.bind(@model, @el)
-      monthes = []
-      monthesShort = []
-      daysMin = []
-      days = []
-      for i in [0..11]
-        monthes[i] = polyglot.t('date.monthes_full.m' + (i + 1))
-        monthesShort[i] = polyglot.t('date.monthes_abbr.m' + (i + 1))
-      for i in [0..6]
-        days[i] = polyglot.t('date.days_full.d' + (i + 1))
-        daysMin[i] = polyglot.t('date.datepicker_days.d' + (i + 1))
-      @$el.find("#deadline").datepicker
-        monthNames: monthes
-        monthNamesShort: monthesShort
-        dayNames: days
-        dayNamesMin: daysMin
-        nextText: polyglot.t('date.datepicker_next')
-        prevText: polyglot.t('date.datepicker_prev')
-        dateFormat: "D, d M y"
-      if @model.get('deadline')?
-        @$el.find("#deadline").datepicker("setDate", new Date(@model.get('deadline')))
+     
+      # self = this
+      
+      # @modelBinder.bind(@model, @el)
+      # monthes = []
+      # monthesShort = []
+      # daysMin = []
+      # days = []
+      # for i in [0..11]
+      #   monthes[i] = polyglot.t('date.monthes_full.m' + (i + 1))
+      #   monthesShort[i] = polyglot.t('date.monthes_abbr.m' + (i + 1))
+      # for i in [0..6]
+      #   days[i] = polyglot.t('date.days_full.d' + (i + 1))
+      #   daysMin[i] = polyglot.t('date.datepicker_days.d' + (i + 1))
+      # @$el.find("#deadline").datepicker
+      #   monthNames: monthes
+      #   monthNamesShort: monthesShort
+      #   dayNames: days
+      #   dayNamesMin: daysMin
+      #   nextText: polyglot.t('date.datepicker_next')
+      #   prevText: polyglot.t('date.datepicker_prev')
+      #   dateFormat: "D, d M y"
+      # if @model.get('deadline')?
+      #   @$el.find("#deadline").datepicker("setDate", new Date(@model.get('deadline')))
 
 
 
