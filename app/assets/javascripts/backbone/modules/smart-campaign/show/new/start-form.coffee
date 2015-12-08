@@ -11,6 +11,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       wysihtml5: 'textarea.wysihtml5'
       analyzeButton: '#analyze'
       form: "#campaign-form"
+      startDatePicker: "#datetimepicker6"
+      endDatePicker: "#datetimepicker7"
 
     events:
       "click @ui.save": "save"
@@ -48,6 +50,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @modelBinder = new Backbone.ModelBinder()
 
     onRender: () ->
+      @initDatepicker()
+      console.log("12345")
+
       # insertLinkButton = @$el.find('#wyihtml5-insert-link').html()
       # unLinkButton = @$el.find('#wyihtml5-unlink').html()
       # extractButtonTemplate = @$el.find('#wyihtml5-extract-button').html()
@@ -93,7 +98,25 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       # if @model.get('deadline')?
       #   @$el.find("#deadline").datepicker("setDate", new Date(@model.get('deadline')))
 
-
+    initDatepicker: ->
+      chinaBirthdateOptions = {
+        ignoreReadonly: true,
+        format: 'YYYY-MM-DD HH:mm',
+        locale: 'zh-cn',
+        minDate: new Date()
+      }
+      usBirthdateOptions = {
+        ignoreReadonly: true,
+        format: 'YYYY-MM-DD HH:mm',
+        locale: 'en-gb',
+        minDate: new Date()
+      }
+      if Robin.chinaLocale
+        @ui.startDatePicker.datetimepicker(chinaBirthdateOptions)
+        @ui.endDatePicker.datetimepicker(chinaBirthdateOptions)
+      else
+        @ui.startDatePicker.datetimepicker(usBirthdateOptions)
+        @ui.endDatePicker.datetimepicker(usBirthdateOptions)
 
     insertLink: (e) ->
       bookmark = @editor.composer.selection.getBookmark()

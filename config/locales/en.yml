@@ -1457,6 +1457,17 @@ en:
         campaign_content: Campaign content
         campaign_deadline: Campaign deadline
         campaign_title: Campaign title
+        enter_title: Enter Title
+        campaign_url: Campaign url
+        enter_url: Enter url
+        campaign_description: Campaign description
+        enter_description: Enter description
+        campaign_budget: Campaign budget
+        enter_budget: 50
+        enter_per_click_budget: 0.1
+        campaign_time: Camaigin time
+        campaign_start_time: Campaign start time
+        campaign_end_time: Campaign end time
         editor_uses_paragraphs: "*The editor uses paragraphs by default for copied
           text. To place a normal line break press Shift+Enter (Shift+Return)"
         enter_title: Enter title...

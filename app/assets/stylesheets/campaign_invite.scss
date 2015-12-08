@@ -19,3 +19,30 @@
 .per-budget-operate-icon {
     margin-left: 60px;
 }
+
+.campaign_execute_times {
+    display: inline-table;
+    margin-left: -78px;
+    margin-top: 30px;
+}
+div#datetimepicker6, div#datetimepicker7{
+  display: inline-table;
+}
+
+.campaign_end_time{
+  margin-left: 20px;
+  top: -10px;
+  position: relative;
+  margin-right: 5px;
+}
+.campaign_start_time{
+  top: -10px;
+  position: relative;
+  margin-right: 5px;
+  margin-left: 7px;
+}
+
+.campain_time{
+  display: block;
+  float: left; 
+}
