@@ -77,4 +77,3 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     pitch: (e) ->
       e?.preventDefault()
       @setState 'pitch'
-
