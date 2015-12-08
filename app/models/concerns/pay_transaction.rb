@@ -1,5 +1,5 @@
 module Concerns
-  module PayTrasaction
+  module PayTransaction
     extend ActiveSupport::Concern
     included do
       has_many :transactions, :as => :account
@@ -23,7 +23,7 @@ module Concerns
     def frozen(credits,  subject, item = nil, opposite = nil)
       if can_pay?(credits)
         ActiveRecord::Base.transaction do
-          self.decrement!(:frozen_amount, credits)
+          self.increment!(:frozen_amount, credits)
           transaction = build_transaction(credits, subject, 'frozen', item , opposite)
           transaction.save
         end
@@ -33,14 +33,11 @@ module Concerns
     #解冻结资金
     #credits: 金额， subject: 事项主题 ， item :事项对象， opposite: 关联方对象
     def unfrozen(credits,  subject, item = nil, opposite = nil)
-      if frozen_amount > credits
-        ActiveRecord::Base.transaction do
-          self.increment!(:frozen_amount, credits)
-          transaction = build_transaction(credits, subject, 'unfrozen', item , opposite)
-          transaction.save
-        end
-      else
-        raise '解冻金额超过冻结金额'
+      return raise '解冻的金额超过冻结金额 credits:#{credits}  frozen_amount:#{frozen_amount}' if credits.to_f  > frozen_amount.to_f
+      ActiveRecord::Base.transaction do
+        self.decrement!(:frozen_amount, credits)
+        transaction = build_transaction(credits, subject, 'unfrozen', item , opposite)
+        transaction.save
       end
     end
 
@@ -61,8 +58,8 @@ module Concerns
     end
 
     def build_transaction(credits,  subject, direct, item = nil, opposite = nil)
-      self.tansactions.build(:credits => credits, :account => self, :subject => subject, :direct => direct,
-                      :item => item, :opposite => opposite, :amount => self.amount, :fronzen_amount => self.frozen_amount,
+      self.transactions.build(:credits => credits, :account => self, :subject => subject, :direct => direct,
+                      :item => item, :opposite => opposite, :amount => self.amount, :frozen_amount => self.frozen_amount,
                       :avail_amount => self.avail_amount)
     end
   end

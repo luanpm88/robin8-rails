@@ -1,5 +1,5 @@
 class Kol < ActiveRecord::Base
-  include Concerns::PayTrasaction
+  include Concerns::PayTransaction
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

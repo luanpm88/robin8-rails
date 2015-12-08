@@ -1,8 +1,8 @@
 class CreateCampaignShows < ActiveRecord::Migration
   def change
     create_table :campaign_shows do |t|
-      t.string :campagin_id
-      t.string :kol_id
+      t.integer :campaign_id
+      t.integer :kol_id
       t.text :visitor_cookie
       t.string :visitor_ip
       t.datetime :visit_time

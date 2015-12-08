@@ -14,13 +14,19 @@ class CampaignInvite < ActiveRecord::Base
   belongs_to :campaign
   belongs_to :kol
 
+  def get_avail_click
+    status == 'F' ? self.avail_click : self.redis_avail_click
+  end
+
   def self.generate_share_url(uuid)
-    "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"
+    url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"
+    ShortUrl.convert url
   end
 
   def add_click(valid)
     self.redis_avail_click.increment if valid
     self.redis_total_click.increment
+    return true
   end
 
 end
