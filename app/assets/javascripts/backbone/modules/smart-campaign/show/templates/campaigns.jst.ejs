@@ -1,11 +1,13 @@
 <% if (items.length == 0) { %>
   <div class="row"><%=polyglot.t('smart_campaign.no_campaigns')%></div>
 <% } else { %>
-  <div class="row">
-    <table class="table table-striped" id="campaigns-table">
+  <div class="row campaigns-list-table">
+    <table class="table table-striped table-bordered dataTable" cellspacing="0" width="100%" id="campaigns-table">
       <thead style="cursor:pointer;"><tr>
-        <th><%=polyglot.t('smart_campaign.name')%></th>
-        <th width="150px"><%=polyglot.t('smart_campaign.budget')%></th>
+        <th>name</th>
+        <th>Shared by</th>
+        <th>Clicks</th>
+        <th>Spent/Bucket</th>
         <th class="no-sort" width="120px"></th>
         <th width="100px"><%=polyglot.t('smart_campaign.created')%></th>
         <th width="100px"><%=polyglot.t('smart_campaign.deadline')%></th>
@@ -13,53 +15,18 @@
       <tbody>
         <% _.each(items, function(c) { %>
           <tr data-id="<%= c.id %>">
-            <td  class="middle">
-              <a href="#/smart_campaign/details/<%= c.id %>">
-                <%= c.name %>
-              </a>
-            </td>
-            <td class="middle" data-order="<%= c.budget %>">
-              <span style="width: 100px; display: inline-block;"><%= budget(c) %></span>
-            </td>
+            <td class="middle col-md-3"><%= c.name %></td>
+            <td class="middle"><%= c.shared_times %></td>
+            <td class="middle"><%= c.clicks %></td>
+            <td class="middle"><%= c.bucket %></td>
             <td class="middle" align="center">
-              <% if (Robin.chinaInstance) { %>
-                <a class="btn btn-success vcenter" id="replicate_campaign" campaign="<%= c.id %>"> <%= polyglot.t("smart_campaign.replicate")</a>
-              <% } else { %>
-                <a class="btn btn-success vcenter" id="add_budget" campaign="<%= c.id %>"><i id="add_budget_icon" campaign="<%= c.id %>" class="fa fa-plus"></i>  <%= polyglot.t("smart_campaign.add_money") %></a>
-              <% } %>
+              <a class="btn btn-success vcenter edit-btn" id="copy_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.copy") %></a>
             </td>
-            <td class="middle" data-order="<%= timestamp(c.created_at)%>"><%= formatDate(c.created_at) %></td>
-            <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
+            <td class="middle" data-order="<%= timestamp(c.start_time) %>"><%= c.start_time %></td>
+            <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= c.deadline %></td>
           </tr>
         <% }); %>
       </tbody>
     </table>
-  </div>
-
-  <div class="modal fade add-budget" id='add-budget-modal' role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"> <%= polyglot.t("smart_campaign.add_money") %></h4>
-            </div>
-            <div class="modal-body">
-                <form role="form" id="add-budget-form" method="post" action="/campaign/add_budget/">
-                    <div class="form-group">
-                        <div id='budget--block'>
-                            <input class="form-control" id="campaign-input" type="hidden" name="campaign"  value="">
-                            <input class="form-control" id="budget-input" name="budget" value="" placeholder="100$" required>
-                        </div>
-                    </div>
-                </form>
-                <div class="modal-footer">
-                    <div id="add_kol-buttons">
-                        <button type="button" class="btn btn-success" id="add-budget-confirm"><i class="fa fa-plus"></i> <%=polyglot.t('smart_campaign.add')%></button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><%=polyglot.t('smart_campaign.close')%></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
   </div>
 <% } %>

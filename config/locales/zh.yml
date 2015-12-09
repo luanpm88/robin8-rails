@@ -1320,7 +1320,8 @@ zh:
         start: "开始"
         targets: "目标"
       new_campaign: "新建活动"
-      next: "下一步"
+      next: "下一页"
+      copy: "Copy"
       'no': "不是"
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_history: You don't have expired campaigns.
@@ -1394,7 +1395,7 @@ zh:
           weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
-      prev: "上一步"
+      prev: "上一页"
       private_influencers: "自有的意见领袖"
       reject: Reject
       rejected: Rejected

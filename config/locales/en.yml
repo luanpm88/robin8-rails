@@ -1370,6 +1370,7 @@ en:
         targets: Targets
       new_campaign: New Campaign
       next: Next
+      copy: "copy"
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_history: You don't have expired campaigns.
