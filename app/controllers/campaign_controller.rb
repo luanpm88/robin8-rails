@@ -155,121 +155,14 @@ class CampaignController < ApplicationController
   end
 
   def create
-
     if current_user.blank?
       return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    category_ids = params[:iptc_categories].split ','
-    categories_list = IptcCategory.where :id => category_ids
-    weibos = if params[:weibo].nil? then [] else params[:weibo] end
-    weibos = [] if weibos.blank?
-    if params[:id]
-      c = Campaign.find(params[:id])
-      if c.user_id != current_user.id
-        return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
-      end
-    else
-      c = Campaign.new
-    end
-    c.user = current_user
-    c.name = params[:name]
-    c.description = (params[:description]).gsub( %r{</?[^>]+?>}, '' )
-    c.budget = params[:budget]
-    c.release_id = params[:release]
-    c.deadline = Date.parse params[:deadline]
-    c.iptc_categories = categories_list
-    c.concepts = params[:concepts]
-    c.summaries = params[:summaries]
-    c.hashtags = params[:hashtags]
-    c.non_cash = params[:non_cash]
-    c.content_type = params[:content_type]
-    c.short_description = params[:short_description]
+    campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :start_time, :deadline, :message))
+    campaign.user = current_user
 
-    c.save!
-
-    kols_list = []
-
-    unless params[:kols].blank?
-      kol_ids = params[:kols].map { |k| k[:id] }
-      kols = Kol.where :id => kol_ids
-      kols_list = kols
-    end
-
-    unless params[:kols_list_contacts].blank?
-      params[:kols_list_contacts].each do |contact|
-        kol = Kol.where(email: contact["email"]).first
-        if kol.nil?
-          user = User.where(email: contact["email"]).first
-          if user
-            kols_list.push(user)
-          else
-            pass = SecureRandom.hex
-            categories = categories_list
-            name = contact["name"].split(" ")
-            new_kol = Kol.new(
-              first_name: name[0],
-              last_name: name[1],
-              email: contact["email"],
-              password: pass,
-              password_confirmation: pass,
-              is_public: false,
-              iptc_categories: categories
-            )
-            new_kol.save!
-            PrivateKol.create(kol_id: new_kol.id, user_id: current_user.id)
-            kols_list.push(new_kol)
-          end
-        else
-          new_private_kol = PrivateKol.where(kol_id: kol.id, user_id: current_user.id).first
-          kols_list.push(kol)
-          if new_private_kol.nil?
-            PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
-          end
-        end
-      end
-    end
-
-    #private kol
-    kols_list.each do |k|
-      i = c.campaign_invites.where(kol_id: k.id).first
-      if !i
-        i = CampaignInvite.new
-        i.kol = k
-        i.status = ''
-        i.campaign = c
-        i.save
-        text = params[:email_pitch]
-        text = text.sub('@[First Name]', k.first_name)
-        text = text.sub('@[Last Name]', k.last_name)
-
-        KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
-      end
-    end
-
-    #weibo
-    weibos.each do |w|
-      stored_weibo = Weibo.where(pressr_id: w[:id]).first
-      if !stored_weibo
-        weibo = Weibo.new
-        weibo.pressr_id = w[:id]
-        weibo.first_name = w[:first_name]
-        weibo.last_name = w[:last_name]
-        weibo.full_name = w[:full_name]
-        weibo.email = w[:email]
-        weibo.save
-        stored_weibo = weibo
-      end
-
-      i = c.weibo_invites.where(weibo_id: stored_weibo.id).first
-      if !i
-        i = WeiboInvite.new
-        i.weibo = stored_weibo
-        i.campaign = c
-        i.save
-      end
-    end
-
-    render json: {:status => :ok}
+    campaign.save!
+    render :json => {:status => :ok }
   end
 
   def update
