@@ -376,13 +376,14 @@ zh:
       status: "状态"
       title: "主界面"
     dashboard_kol:
+      dashboard: 主界面
       no_data: '我们正在努力计算，敬请期待！'
       default:
-        personal_info:
-        upcoming_campaigns:
-        completed_campaigns:
-        total_income:
-        profile_completion:
+        personal_info: 个人资料
+        upcoming_campaigns: 线上活动
+        completed_campaigns: 已完成活动
+        total_income: 总收入
+        profile_completion: 个人资料完成度
         data_score: 个人资料
         wechat_score: 微信
         weibo_score: 微博
@@ -392,9 +393,11 @@ zh:
         complete_wechat:
         complete_weibo:
         complete_wechat_third:
-        social_influence_power:
-        switch_social_account:
+        social_influence: 社交影响力
+        switch_social_account: 查看其他账户
         influence_charts:
+        discover: 发现
+        coming_soon: 智能交易市场即将到来，敬请期待
       influence_charts:
         auto: '汽车'
         digit: '数码'

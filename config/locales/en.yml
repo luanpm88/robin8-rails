@@ -370,13 +370,14 @@ en:
       status: Status
       title: Dashboard
     dashboard_kol:
+      dashboard: Dashboard
       no_data: Fetching data, please wait...
       default:
-        personal_info:
-        upcoming_campaigns:
-        completed_campaigns:
-        total_income:
-        profile_completion:
+        personal_info: Personal Info
+        upcoming_campaigns: Upcoming Campaigns
+        completed_campaigns: Completed Campaigns
+        total_income: Toal <br /> Income
+        profile_completion: Profile Compiletion
         data_score:
         wechat_score:
         weibo_score:
@@ -386,9 +387,11 @@ en:
         complete_wechat:
         complete_weibo:
         complete_wechat_third:
-        social_influence_power:
-        switch_social_account:
+        social_influence: Social Influence
+        switch_social_account: Switch Social Account
         influence_charts:
+        discover: Discover
+        coming_soon: Marketplace coming soon, Please checkout in a month!
       influence_charts:
         auto: auto
         digit: digit
