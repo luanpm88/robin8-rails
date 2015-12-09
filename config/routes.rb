@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'campaign_show' => "campaign_show#show"
 
   resources :identities do
     member do

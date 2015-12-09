@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  include Concerns::PayTransaction
+  has_many :transactions, :as => :account
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
