@@ -5,16 +5,22 @@
       <h3><%= polyglot.t("profile.title") %></h3>
       <hr>
       <!-- left column -->
-      <div class="col-md-3">
-        <div class="text-center" id="image-uploader-custom">
-          <img src="//placehold.it/200" id="avatar-image" class="avatar img-circle" alt="avatar">
-          <h6><%= polyglot.t("uploading.different_photo") %></h6>
-          <input type="hidden" id="avatar-upload" role="uploadcare-uploader"
-          data-crop="200x200 upscale"
-          data-max-size="3145728"
-          data-images-only="true"/>
+      <% if (Robin.chinaInstance) { %>
+        <div class="container">
+          <input type="button" id="pickfiles" class="btn btn-primary" value="选择图片">
         </div>
-      </div>
+      <% } else { %>
+        <div class="col-md-3">
+          <div class="text-center" id="image-uploader-custom">
+            <img src="//placehold.it/200" id="avatar-image" class="avatar img-circle" alt="avatar">
+            <h6><%= polyglot.t("uploading.different_photo") %></h6>
+            <input type="hidden" id="avatar-upload" role="uploadcare-uploader"
+            data-crop="200x200 upscale"
+            data-max-size="3145728"
+            data-images-only="true"/>
+          </div>
+        </div>
+      <% } %>
       <!-- edit form column -->
       <div class="col-md-9 personal-info">
         <h3><%= polyglot.t("profile.personal_info") %></h3>
