@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'campaign_show' => "campaign_show#show"
 
   resources :identities do
     member do
@@ -11,6 +12,8 @@ Rails.application.routes.draw do
   get 'identities/influence/:id' => 'identities#influence'
   get 'identities/discover/:labels' => 'identities#discover'
   get 'identities/labels/:user_id' => 'identities#labels'
+
+  get 'campaign_invite/:type' => 'campaign_invite#interface'
 
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]

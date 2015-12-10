@@ -51,7 +51,7 @@ describe ReleasesController do
   end
 
   describe "#show" do
-    subject { get :show, ({id: 1}).merge(params) }
+    subject { get :views, ({id: 1}).merge(params) }
 
     let!(:news_room) { create :news_room, user: user, id: 1, subdomain_name: 'test' }
     let!(:release) { create :release, user: user, title: 'Test release!!!', news_room_id: 1, id: 1 }
@@ -91,7 +91,7 @@ describe ReleasesController do
 
     it "shouldn't update the release title when empty" do
       params.merge!({ release: {title: ''} })
-      expect { subject }.not_to change { release.reload.title } 
+      expect { subject }.not_to change { release.reload.title }
     end
   end
 

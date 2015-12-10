@@ -1,3 +1,3 @@
-Robin.Models.Campaign = Backbone.Model.extend
-  urlRoot: '/campaign/'
+Robin.Models.Transaction = Backbone.Model.extend
+  urlRoot: '/transaction/'
 

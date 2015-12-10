@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   include Concerns::BrowserRequest
+  before_filter :set_cookies
   before_action :set_translations
   before_action :china_redirect
   helper_method :china_instance?
@@ -18,6 +19,10 @@ class ApplicationController < ActionController::Base
   # before_filter :validate_subscription, unless: :devise_controller?
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+
+  def set_cookies
+    cookies[:_robin8_visitor] ||= SecureRandom.hex
+  end
 
   def china_redirect
     if Rails.env.production? and china_client? and not china_instance?

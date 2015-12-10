@@ -16,7 +16,7 @@ class PagesController < ApplicationController
     if user_signed_in? && !current_user.active_subscription.blank?
       render "home", :layout => 'application'
     elsif user_signed_in?
-      redirect_to pricing_path
+      render "home"
     elsif kol_signed_in?
       if current_kol.confirmed_at == nil
         flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
