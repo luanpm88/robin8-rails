@@ -66,8 +66,20 @@ class CampaignInviteController < ApplicationController
 
     campaigns_by_status = @kol.campaign_invites.where(status: status)
 
-    campaigns_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).map { |x| x.avail_click=x.get_avail_click;x.campaign }
+    # campaigns_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).map { |x| x.avail_click=x.get_avail_click;x.campaign }
 
-    return render :json => campaigns_by_limit_and_offset
+    # !!! Refactor later
+
+    new_array = []
+    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0)
+    campaign_invites_by_limit_and_offset.each do |x|
+      obj = x.campaign
+      obj.status = x.status
+      new_array << obj
+    end
+
+
+
+    return render :json => new_array
   end
 end
