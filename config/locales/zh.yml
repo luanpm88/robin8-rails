@@ -1453,6 +1453,8 @@ zh:
         paste_press_here: "在这里粘贴推广活动的新闻稿"
         pick_deadline: "选择一个期限"
         summary: 如下是<strong> "%{name}" </strong>的小结
+        campaign_budget_label: 总预算
+        campaign_per_click_budget_label: 点击预算
 
       status: "状态"
       success_ask_invite: Your request has been sent
