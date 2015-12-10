@@ -13,6 +13,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     events:
       'click .tasks-nav li': 'switchTab'
       'click .loadMore': 'loadMore'
+      'click .cam-item': 'viewOrShareItem'
 
     onRender: () ->
       @tasks = new Robin.Collections.CampaignDiscovers([], {type:'upcoming', limit: 3, offset: 0})
@@ -23,6 +24,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           console.log 'get tasks: ', collection
           @ui.loading.hide()
           @getRegion('currentTab').show @tasksView
+
+    viewOrShareItem: (e) ->
+      e.preventDefault()
+      model_id = e.target.id
+      collection = @getRegion('currentTab').currentView.collection
+      model = collection.get(model_id)
 
     loadMore: (e) ->
       e.preventDefault()
