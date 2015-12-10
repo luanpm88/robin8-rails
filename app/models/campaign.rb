@@ -29,7 +29,12 @@ class Campaign < ActiveRecord::Base
   # end
 
   def get_avail_click
-    status == 'executed' ? self.avail_click : self.redis_avail_click.value
+    status == 'executed' ? self.avail_click : self.redis_avail_click.value      rescue 0
+  end
+
+  def get_fee_info
+    take_fee = get_avail_click * self.per_click_budget                rescue 0
+    "#{take_fee} / #{budget}"
   end
 
   # 开始时候就发送邀请 但是状态为pending
