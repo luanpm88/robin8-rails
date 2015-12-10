@@ -90,6 +90,7 @@ Robin.on('start', function(){
         $.growl(Robin.afterConfirmationMessage,{
           type: 'success'
         });
+        $('#sidebar-wrapper').show();
         Robin.afterConfirmationMessage = undefined
       }
     };
