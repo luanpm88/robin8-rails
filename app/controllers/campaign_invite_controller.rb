@@ -44,7 +44,7 @@ class CampaignInviteController < ApplicationController
              when 'running'
                'approved'
              when 'complete'
-               'completed'
+               'finished'
              else
                return render :json => {error: 'error type!'}
              end
