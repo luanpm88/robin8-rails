@@ -4,8 +4,8 @@
     <div class="discover-item-header clearfix">
       <h5><a href='<%- url %>' target='_blank'><%= name %></a></h5>
       <p>
-        <%- start_time %>
-        5$/click, income: 20$ <a href="#" class='cam-item' id='<%= id %>'>View/Share</a>
+        <%= start_time %>
+        <%= per_click_budget %>￥/click, <%= avail_click %> click, income: <%= per_click_budget * avail_click %> <a href="#" class='cam-item' id='<%= id %>'>View/Share</a>
       </p>
     </div>
     <div class="discover-item-body">

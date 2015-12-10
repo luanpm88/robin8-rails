@@ -33,6 +33,20 @@ class CampaignInviteController < ApplicationController
     end
   end
 
+  def mark_as_running
+    @kol = current_kol
+    return render :json => {error: 'no available kol!'} if @kol.blank?
+
+    @campaign_invite = @kol.campaigns.where(id: params[:campaign_id]).first.campaign_invites.first
+
+    if @campaign_invite.status.eql? 'running'
+      @campaign_invite.update_attributes({status: 'approved'})
+    end
+
+    return render :json => {status: @campaign_invite}
+
+  end
+
   def interface
     @kol = current_kol
 
@@ -40,19 +54,32 @@ class CampaignInviteController < ApplicationController
 
     status = case params[:type]
              when 'upcoming'
-               'pending'
+               'running'
              when 'running'
                'approved'
              when 'complete'
-               'completed'
+               'finished'
              else
                return render :json => {error: 'error type!'}
              end
 
+
     campaigns_by_status = @kol.campaign_invites.where(status: status)
 
-    campaigns_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).map { |x| x.campaign }
-    
-    return render :json => campaigns_by_limit_and_offset
+    # campaigns_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).map { |x| x.avail_click=x.get_avail_click;x.campaign }
+
+    # !!! Refactor later
+
+    new_array = []
+    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0)
+    campaign_invites_by_limit_and_offset.each do |x|
+      obj = x.campaign
+      obj.status = x.status
+      new_array << obj
+    end
+
+
+
+    return render :json => new_array
   end
 end
