@@ -4,6 +4,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     regions:
       currentTab: '.currentTab'
+      modal: '.task-modal'
 
     ui:
       loading: '.loadingOfTasks'
@@ -30,6 +31,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       model_id = e.target.id
       collection = @getRegion('currentTab').currentView.collection
       model = collection.get(model_id)
+      modalView = new Show.TaskModal
+      @getRegion('modal').show modalView
 
     loadMore: (e) ->
       e.preventDefault()
@@ -83,3 +86,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
   Show.Tasks = Backbone.Marionette.CollectionView.extend
     childView: Show.Task
     childViewContainer: 'ul'
+
+  Show.TaskModal = Backbone.Marionette.ItemView.extend
+    template: 'modules/dashboard-kol/templates/default-dashboard/task-modal'
+    onShow: () ->
+      $('#taskModal').modal()
