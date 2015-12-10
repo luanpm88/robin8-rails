@@ -6,7 +6,7 @@
         <a href="/"><%= @l.t('header.title') %></a>
       </h1>
       <h2 class="brand_page_title"><%= @l.t('landing_page.title') %></h2>
-      <a class="button button-signup" href="http://try.robin8.com/robin/"><%=@l.t('header.contact_us')%></a>
+      <a class="button button-signup" href= "<%= new_user_path %>"><%=@l.t('header.sign_up')%></a>
     </div>
   </div>
   <a class="learn-more"><%= @l.t('landing_page.learn_more') %></a>

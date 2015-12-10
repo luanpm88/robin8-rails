@@ -18,8 +18,11 @@
               <li><a href="?locale=zh">CN</a></li>
             <% } %>
 
-            <!-- <li><a href="/home"><%= polyglot.t('header.advertisers') %></a></li> -->
-            <li><a href="/kols/new"><%=polyglot.t('header.sign_up')%></a></li>
+            <% if (location.search === "?is_user=true") { %>
+              <li><a href="/users/new"><%=polyglot.t('header.sign_up')%></a></li>
+            <% } else { %>
+              <li><a href="/kols/new"><%=polyglot.t('header.sign_up')%></a></li>
+            <% } %>
           </ul>
         </section>
       </nav>

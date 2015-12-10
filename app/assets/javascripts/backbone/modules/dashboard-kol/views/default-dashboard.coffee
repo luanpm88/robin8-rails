@@ -4,10 +4,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     regions:
       socialInfluencePower: '#social-influence-power'
-      campaign: '#default-dashboard-campaign'
+      taskRegion: '#default-dashboard-task'
       discover: '#default-dashboard-discover'
 
     onRender: () ->
+      @tasks = new Show.Tasks
+      @getRegion('taskRegion').show @tasks
       kol = new Robin.Models.KOL
       kol.fetch
         success: (model, res, opts) =>

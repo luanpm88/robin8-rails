@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
   post '/kols/send_sms/' => 'kols#send_sms'
+  get '/users/new' => 'users#new'
   get '/kols/new' => 'kols#create'
   put '/kols/monetize' => 'kols#update_monetize'
   get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail'

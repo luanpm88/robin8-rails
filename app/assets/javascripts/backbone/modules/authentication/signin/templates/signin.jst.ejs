@@ -1,7 +1,11 @@
 <div class="form-login">
   <div class="row">
     <div class="small-12 columns">
-      <p class="loginintro"><%= polyglot.t("login.intro") %></p>
+      <% if (location.search === "?is_user=true") { %>
+        <p class="loginintro"><%= polyglot.t("login.user_intro") %></p>
+      <% } else { %>
+        <p class="loginintro"><%= polyglot.t("login.kol_intro") %></p>
+      <% } %>
       <div class="flash-info"><%= flashInfo %></div>
       <form accept-charset="UTF-8" class="form-signup" id="formSignin" data-toggle="validator" role="form">
 
@@ -32,6 +36,8 @@
       </form>
     </div>
   </div>
+
+  <% if (location.search !== "?is_user=true") { %>
   <div class="row">
     <div class="small-12 columns">
       <div class="or-line">
@@ -40,45 +46,46 @@
     </div>
   </div>
   <% if (Robin.chinaInstance) { %>
+
     <div id="china">
 
+    <div class="row" style="color:#fff!important;">
+      <div class="small-12 columns social-login">
+        <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= polyglot.t('register.weibo_signup') %></span></a>
+      </div>
+    </div>
+
+    <% if (!(Robin.mobileRequest)) { %>
       <div class="row" style="color:#fff!important;">
         <div class="small-12 columns social-login">
-          <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= polyglot.t('register.weibo_signup') %></span></a>
+          <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= polyglot.t('register.wechat_signup') %></span></a>
         </div>
       </div>
-
-      <% if (!(Robin.mobileRequest)) { %>
-        <div class="row" style="color:#fff!important;">
-          <div class="small-12 columns social-login">
-            <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= polyglot.t('register.wechat_signup') %></span></a>
-          </div>
+      <div class="row" style="color:#fff!important;">
+        <div class="small-12 columns social-login">
+          <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= polyglot.t('register.wechat_third_signup') %></span></a>
         </div>
-        <div class="row" style="color:#fff!important;">
-          <div class="small-12 columns social-login">
-            <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= polyglot.t('register.wechat_third_signup') %></span></a>
-          </div>
-        </div><br /><br /><br />
-      <% } %>
+      </div><br /><br /><br />
+    <% } %>
+
+    <!--<div class="row">-->
+      <!--<div class="small-12 columns social-login">-->
+        <!--<button class="btn btn-wechat" id="wechat"><i class="fa btn-wechat"></i>-->
+          <!--<span><%= polyglot.t("login.wechat_login") %></span></button>-->
+          <!--</div>-->
+          <!--</div>-->
 
       <!--<div class="row">-->
-        <!--<div class="small-12 columns social-login">-->
-          <!--<button class="btn btn-wechat" id="wechat"><i class="fa btn-wechat"></i>-->
-            <!--<span><%= polyglot.t("login.wechat_login") %></span></button>-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<div class="row">-->
-        <!--<div class="small-12 columns social-login">-->
+          <!--<div class="small-12 columns social-login">-->
           <!--<button class="btn btn-wechat" id="wechat_third"><i class="fa btn-wechat"></i>-->
-            <!--<span><%= polyglot.t("login.wechat_third_login") %></span></button>-->
-        <!--</div>-->
-      <!--</div>-->
+          <!--<span><%= polyglot.t("login.wechat_third_login") %></span></button>-->
+          <!--</div>-->
+          <!--</div>-->
 
       <!--<div class="row">-->
-        <!--<div class="small-12 columns social-login">-->
+          <!--<div class="small-12 columns social-login">-->
           <!--<button class="btn btn-weibo" id="weibo"><i class="fa fa-weibo"></i>-->
-            <!--<span><%= polyglot.t("login.weibo_login") %></span></button>-->
+          <!--<span><%= polyglot.t("login.weibo_login") %></span></button>-->
         <!--</div>-->
       <!--</div>-->
     </div>
@@ -98,6 +105,6 @@
       </div>
     </div>
   <% } %>
-
+<% } %>
 
 </div>
