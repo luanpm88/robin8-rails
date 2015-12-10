@@ -28,6 +28,7 @@ class Campaign < ActiveRecord::Base
   #   }
   # end
 
+
   def get_avail_click
     status == 'executed' ? self.avail_click : self.redis_avail_click.value      rescue 0
   end
@@ -35,6 +36,11 @@ class Campaign < ActiveRecord::Base
   def get_fee_info
     take_fee = get_avail_click * self.per_click_budget                rescue 0
     "#{take_fee} / #{budget}"
+  end
+
+  def get_share_time
+    return 0 if status == 'unexecute'
+    status == 'executed' ? self.finished_invites.size : self.approved_invites.size
   end
 
   # 开始时候就发送邀请 但是状态为pending
@@ -114,8 +120,8 @@ class Campaign < ActiveRecord::Base
         self.update_attribute(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
         self.send_invites
-        CampaignWorker.perform_at(self.start_time, self.id, 'start')
-        CampaignWorker.perform_at(self.deadline,self.id, 'end')
+        CampaignWorker.perform_at(self.start_time - 8.hours, self.id, 'start')
+        CampaignWorker.perform_at(self.deadline - 8.hours,self.id, 'end')
       else
         Rails.logger.error('品牌商余额不足--campaign_id: #{self.id}')
       end
