@@ -1305,6 +1305,17 @@ zh:
         incorrect_ignored: "所有格式不正确的联系人都将被忽略。"
         list_uploaded: "您的列表已经成功上传。"
         select_categories: "选择意见领袖的分类"
+      validation:
+        name: 活动标题不能为空
+        description: 活动描述不能为空
+        url: 活动链接不能为空
+        budget: 活动预算不能为空
+        per_click_budget: 活动点击预算不能为空
+        budget_should_be_digit: 活动预算只能包含数字
+        per_click_budget_should_be_digit: 只能包含数字
+        per_click_budget_should_greater_than_zero: 点击预算应该大于零
+        per_click_budget_should_less_than_budget: 点击预算应该小于总预算
+        budget_should_greater_than_zero: 预算应该大于零
       last_login_date: Last login date
       last_name: "姓氏"
       last_update: "最後更新"

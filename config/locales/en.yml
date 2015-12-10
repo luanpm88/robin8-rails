@@ -1446,6 +1446,17 @@ en:
       private_influencers: Private Influencers
       reject: Reject
       rejected: Rejected
+      validation:
+        name: Campaign title not empty
+        description: Campaign description not empty
+        url: Campaign url not empty
+        budget: Campaign budget not empty
+        per_click_budget: Campaign per click budget not empty
+        budget_should_be_digit: Campaign budget must be digit
+        per_click_budget_should_be_digit: Campaign per click budget must be digit
+        per_click_budget_should_greater_than_zero: Campaign per click budget must greater than zero
+        per_click_budget_should_less_than_budget: Campaign per click budget must less than budget
+        budget_should_greater_than_zero: Campaign budget must greater than zero
       smart_campaign:
         pitch_step:
           button: Pitch!

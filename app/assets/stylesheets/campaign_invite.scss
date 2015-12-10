@@ -5,6 +5,7 @@
 
 .operate-money-icon{
   vertical-align: middle;
+  display: table-cell;
 }
 
 .input-money-icon{
@@ -45,4 +46,8 @@ div#datetimepicker6, div#datetimepicker7{
 .campain_time{
   display: block;
   float: left; 
+}
+
+.campaign_time_group{
+  display: inline-table;
 }
