@@ -1498,6 +1498,8 @@ en:
         campaign_end_time: Campaign end time
         editor_uses_paragraphs: "*The editor uses paragraphs by default for copied
           text. To place a normal line break press Shift+Enter (Shift+Return)"
+        campaign_budget_label: Campaign budget
+        campaign_per_click_budget_label: Campaign per click budget
         enter_title: Enter title...
         following_topics: and the following topics are mentioned in it
         paste_content: Paste the content!

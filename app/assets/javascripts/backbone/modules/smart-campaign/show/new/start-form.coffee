@@ -44,7 +44,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         ]
         icon:
           valid: 'glyphicon glyphicon-ok'
-          invalid: 'glyphicon glyphicon-remove'
+          #invalid: 'glyphicon glyphicon-remove'
           validating: 'glyphicon glyphicon-refresh'
         fields:
           name:
@@ -74,19 +74,15 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                 message: polyglot.t('smart_campaign.validation.per_click_budget')
               numeric:
                 message: polyglot.t('smart_campaign.validation.per_click_budget_should_be_digit')
-              lessThan:
-                value: 100
-                message: polyglot.t('smart_campaign.validation.per_click_budget_should_less_than_budget')
               greaterThan:
                 value: 0
                 message:  polyglot.t('smart_campaign.validation.per_click_budget_should_greater_than_zero')
               callback: 
-                message: "yes",
+                message: polyglot.t('smart_campaign.validation.per_click_budget_should_less_than_budget')
                 callback: (value, validator, $field) ->
-                  console.log("yes, I'm here baby")
+                  if Number(value) > Number($(".budget_input").val())
+                    return false
                   return true
-                
-              
         )
 
     initDatepicker: ->

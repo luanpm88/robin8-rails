@@ -58,21 +58,23 @@
           </div>
         </div>
 
-        <div class='row col-md-6'>
+        <div class='row col-md-8'>
           <label for="name" class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_budget')%></label>
 
           <div class="form-group">
             <div class="help-block with-errors campaign-errors"></div>
-            <div class="col-xs-3 cell campaign_time_group">
+            <div class="col-md-4 cell campaign_time_group">
               <div class="input-group money-input-group">
+                <label for="name" class="control-label start-form campaign_budget_label"><%=polyglot.t('smart_campaign.start_step.campaign_budget_label')%></label>
                 <i class="glyphicon glyphicon-minus operate-money-icon subtraction_budget_icon"></i>
                 <input id="name" required class="form-control budget_input" placeholder="<%=polyglot.t('smart_campaign.start_step.enter_budget')%>" name="budget" type="text" value="" style="width: 120px;display: inline">
                 <span class="input-group-addon input-money-icon " id="basic-addon2">RMB</span>
                 <i class="glyphicon glyphicon-plus operate-money-icon plus_budget_icon"></i>
               </div>
             </div>
-            <div class="col-xs-3 cell campaign_time_group">
+            <div class="col-md-4 cell campaign_time_group">
               <div class="input-group money-input-group">
+                <label for="name" class="control-label start-form campaign_budget_label"><%=polyglot.t('smart_campaign.start_step.campaign_per_click_budget_label')%></label>
                 <i class="glyphicon glyphicon-minus operate-money-icon per-budget-operate-icon subtraction_per_budget_icon"></i>
                 <input id="name" required class="form-control per_budget_input" placeholder="<%=polyglot.t('smart_campaign.start_step.enter_per_click_budget')%>" name="per_click_budget" type="text" value="" style="width: 120px;display: inline">
                 <span class="input-group-addon input-money-icon " id="basic-addon2">RMB</span>
@@ -80,20 +82,24 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class='row col-md-8'>
           <label for="name" class="control-label start-form campain_time"><%=polyglot.t('smart_campaign.start_step.campaign_time')%></label>
           <div class="form-group">
             <div class="help-block with-errors campaign-errors"></div>
-            <div class="campaign_execute_times">
-              <label for="name" class="control-label start-form  campaign_start_time"><%=polyglot.t('smart_campaign.start_step.campaign_start_time')%></label>
-              <div class='input-group date' id='datetimepicker6'>
+            <div class=' col-md-4 cell'>
+              <div class="date input-group"  id='datetimepicker6'>
+                 <label for="name" class="control-label start-form  campaign_start_time"><%=polyglot.t('smart_campaign.start_step.campaign_start_time')%></label>
                  <input type='text' class="form-control campaign_start_time_input" name="start_time"  readonly="readonly" autocomplete="off"/>
                  <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                  </span>
-              </div>
+               </div>
+            </div>
 
-              <label for="name" class="control-label start-form campaign_end_time"><%=polyglot.t('smart_campaign.start_step.campaign_end_time')%></label>
-              <div class='input-group date' id='datetimepicker7'>
+            <div class='col-md-4 cell'>
+              <div class="date input-group" id='datetimepicker7'>
+                <label for="name" class="control-label start-form campaign_end_time"><%=polyglot.t('smart_campaign.start_step.campaign_end_time')%></label>
                 <input type='text' class="form-control campaign_deadline_input" name="deadline" readonly="readonly"  autocomplete="off" />
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
@@ -102,7 +108,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-group messeage_to_kol">
             <label for="name" class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_message')%></label>
             <div class="help-block with-errors campaign-errors"></div>
