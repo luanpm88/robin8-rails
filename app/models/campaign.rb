@@ -29,7 +29,7 @@ class Campaign < ActiveRecord::Base
   # end
 
   def get_avail_click
-    status == 'executed' ? self.avail_click : self.redis_avail_click
+    status == 'executed' ? self.avail_click : self.redis_avail_click.value
   end
 
   # 开始时候就发送邀请 但是状态为pending
@@ -84,10 +84,10 @@ class Campaign < ActiveRecord::Base
   def end_invites
     campaign_invites.each do |invite|
       if invite.status == 'approved'
-        invite.status = 'rejected'
-      else
         invite.status = 'finished'
-        invite.avail_click = invite.redis_avail_click
+        invite.avail_click = invite.redis_avail_click.value
+      else
+        invite.status = 'rejected'
       end
       invite.save!
     end
@@ -99,7 +99,7 @@ class Campaign < ActiveRecord::Base
     self.user.income((budget - avail_click * per_click_budget) , 'campaign-remain', self )
     campaign = self
     self.finished_invites.each do |invite|
-      invite.kol.income(avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
+      invite.kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
     end
   end
 

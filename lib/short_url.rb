@@ -1,4 +1,3 @@
-require 'mechanize'
 require 'json'
 
 class ShortUrl
