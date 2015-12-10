@@ -49,10 +49,11 @@ class CampaignInviteController < ApplicationController
                return render :json => {error: 'error type!'}
              end
 
+
     campaigns_by_status = @kol.campaign_invites.where(status: status)
 
-    campaigns_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).map { |x| x.campaign }
-    
+    campaigns_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).map { |x| x.avail_click=x.get_avail_click;x.campaign }
+
     return render :json => campaigns_by_limit_and_offset
   end
 end
