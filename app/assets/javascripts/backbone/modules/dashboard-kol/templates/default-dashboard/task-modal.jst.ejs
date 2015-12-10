@@ -12,9 +12,7 @@
 
         <p>
           $ <%= per_click_budget %> / Click, Start: <%= start_time %> - End: <%= deadline %><br />
-          <textarea id='descAndUrl'>
-            <%= description %> <%= url %>
-          </textarea>
+          <textarea class="form-control"  id='descAndUrl'><%= description %> <%= url %></textarea>
           <br />
           <button class='task-modal-btn' data-clipboard-action="copy" data-clipboard-target="#descAndUrl">Copy to clipboard</button>
 
