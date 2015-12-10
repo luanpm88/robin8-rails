@@ -393,6 +393,16 @@ en:
         influence_charts:
         discover: Discover
         coming_soon: Marketplace coming soon, Please checkout in a month!
+        campaigns: Campaigns
+        upcoming: Upcoming
+        running: Running
+        complete: Complete
+        click: click
+        income: income
+        view: View
+        share: Share
+        copy_to_clipboard: Copy to clipboard
+        date_range: Campaign Data Range
       influence_charts:
         auto: auto
         digit: digit

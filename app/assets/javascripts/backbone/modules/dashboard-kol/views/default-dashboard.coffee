@@ -8,12 +8,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       discover: '#default-dashboard-discover'
 
     onRender: () ->
-      @tasks = new Show.Tasks
+      @tasks = new Show.TaskContainer
       @getRegion('taskRegion').show @tasks
       kol = new Robin.Models.KOL
       kol.fetch
         success: (model, res, opts) =>
           Show.CustomController.showInfluencesAndDiscovers(@getRegion('socialInfluencePower'), @getRegion('discover'), kol.get('id'))
+
+
 
 
   Show.SocialNotExisted = Backbone.Marionette.ItemView.extend

@@ -399,6 +399,16 @@ zh:
         influence_charts:
         discover: 发现
         coming_soon: 智能交易市场即将到来，敬请期待
+        campaigns: 活动
+        upcoming: 线上
+        running: 正在进行
+        complete: 已完成
+        click: 点击
+        income: 收入
+        view: 查看
+        share: 分享
+        copy_to_clipboard: 复制到剪切板
+        date_range: 活动区间
       influence_charts:
         auto: '汽车'
         digit: '数码'
