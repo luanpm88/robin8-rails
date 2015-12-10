@@ -3,14 +3,14 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_avail_click
   counter :redis_total_click
 
-  STATUSES = ['pending', 'running', 'approved', 'finished','rejected']
+  STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected']
   validates_inclusion_of :status, :in => STATUSES
 
   belongs_to :campaign
   belongs_to :kol
 
   def get_avail_click
-    status == 'F' ? self.avail_click : self.redis_avail_click
+    status == 'finished' ? self.avail_click : self.redis_avail_click.value
   end
 
   def self.generate_share_url(uuid)
