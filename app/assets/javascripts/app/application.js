@@ -38,6 +38,7 @@
 //= require highcharts
 //= require select2
 //= require ./../lib/wysihtml5x-toolbar.min
+//= require ./../lib/clipboard.min
 //= require_directory ./../lib
 //= require bootstrap-tagsinput
 //= require ./../lib/formValidation/formValidation.min

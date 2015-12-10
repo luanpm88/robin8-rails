@@ -32,6 +32,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       collection = @getRegion('currentTab').currentView.collection
       model = collection.get(model_id)
       modalView = new Show.TaskModal
+        model: model
       @getRegion('modal').show modalView
 
     loadMore: (e) ->
@@ -91,3 +92,4 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/dashboard-kol/templates/default-dashboard/task-modal'
     onShow: () ->
       $('#taskModal').modal()
+      new Clipboard('.task-modal-btn');
