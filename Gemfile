@@ -118,6 +118,7 @@ gem 'qy_wechat', '~> 1.0.1'
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
+gem 'sidekiq-limit_fetch'
 gem 'will_paginate', '~> 3.0.6'
 gem 'will_paginate-bootstrap'
 gem 'has_scope'

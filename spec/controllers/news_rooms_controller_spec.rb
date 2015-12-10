@@ -3,7 +3,7 @@ require 'rails_helper'
 describe NewsRoomsController do
   let!(:user) { stub_model(User, email: 'test@test.com', id: 1) }
   let!(:params) { {} }
- 
+
   before do
     allow(user).to receive(:can_create_newsroom).and_return(true)
     allow(controller).to receive(:current_user).and_return user
@@ -55,10 +55,10 @@ describe NewsRoomsController do
   end
 
   describe "#show" do
-    subject { get :show, ({id: 1}).merge(params) }
+    subject { get :views, ({id: 1}).merge(params) }
 
     let!(:news_room) { create :news_room, user: user, id: 1, subdomain_name: 'test' }
-    
+
     it "should be success" do
       subject
       expect(assigns(:news_room)).to eq(news_room)
