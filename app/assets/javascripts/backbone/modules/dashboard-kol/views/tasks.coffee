@@ -40,9 +40,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           if collection.models.length == 0
             @ui.noMore.show()
           else
-            currentView.$el.append appendTasksView.render().$el
-            console.log 'currentview el: ', currentView.$el.find('ul')
-            console.log 'new dom: ', appendTasksView.render().$el.find('ul')
+            currentView.collection.add appendTasks.toJSON()
             @ui.loadMore.show()
         error: =>
           console.log 'fire loadingMore: fetch append tasks error'
