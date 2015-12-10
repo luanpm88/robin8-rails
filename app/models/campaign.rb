@@ -5,6 +5,10 @@ class Campaign < ActiveRecord::Base
 
   belongs_to :user
   has_many :campaign_invites
+  has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
+  has_many :approved_invites, -> {where(:status => 'approved')}, :class_name => 'CampaignInvite'
+  has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
+  has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
   has_many :kols, through: :campaign_invites
   has_many :weibo_invites
   has_many :weibo, through: :weibo_invites
@@ -28,11 +32,12 @@ class Campaign < ActiveRecord::Base
     status == 'executed' ? self.avail_click : self.redis_avail_click
   end
 
+  # 开始时候就发送邀请 但是状态为pending
   def send_invites()
     ActiveRecord::Base.transaction do
       Kol.all.each do |kol|
         invite = CampaignInvite.new
-        invite.status = ''
+        invite.status = 'pending'
         invite.campaign_id = self.id
         invite.kol_id = kol.id
         uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json)
@@ -40,6 +45,14 @@ class Campaign < ActiveRecord::Base
         invite.share_url = CampaignInvite.generate_share_url(uuid)
         invite.save!
       end
+    end
+  end
+
+  # 开始进行  此时需要更改invite状态
+  def go_start
+    ActiveRecord::Base.transaction do
+      self.update_attribute(:status, 'executing')
+      self.pending_invites.update_all(:status => 'running')
     end
   end
 
@@ -54,7 +67,7 @@ class Campaign < ActiveRecord::Base
     if Rails.application.config.china_instance
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
-        update_invites
+        end_invites
         settle_accounts
       end
     end
@@ -68,10 +81,14 @@ class Campaign < ActiveRecord::Base
   end
 
   # 更新invite 状态和点击数
-  def update_invites
+  def end_invites
     campaign_invites.each do |invite|
-      invite.status = 'F'
-      invite.avail_click = invite.redis_avail_click
+      if invite.status == 'approved'
+        invite.status = 'rejected'
+      else
+        invite.status = 'finished'
+        invite.avail_click = invite.redis_avail_click
+      end
       invite.save!
     end
   end
@@ -81,7 +98,7 @@ class Campaign < ActiveRecord::Base
     self.user.unfrozen(budget, 'campaign')
     self.user.income((budget - avail_click * per_click_budget) , 'campaign-remain', self )
     campaign = self
-    self.campaign_invites.each do |invite|
+    self.finished_invites.each do |invite|
       invite.kol.income(avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
     end
   end
@@ -91,6 +108,7 @@ class Campaign < ActiveRecord::Base
       if self.user.avail_amount > self.budget
         self.update_attribute(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
+        self.send_invites
         CampaignWorker.perform_at(self.start_time, self.id, 'start')
         CampaignWorker.perform_at(self.deadline,self.id, 'end')
       else

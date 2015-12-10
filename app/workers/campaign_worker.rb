@@ -8,8 +8,7 @@ class CampaignWorker
     campaign = Campaign.find(campaign_id)   rescue nil
     return false if campaign.nil?
     if job_type == 'start'
-      campaign.update_attribute(:status, 'executing')
-      campaign.send_invites
+      campaign.go_start
     else
       campaign.finish('expired') if campaign.status != 'executed'
     end

@@ -3,12 +3,7 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_avail_click
   counter :redis_total_click
 
-  # A approved
-  # D declined
-  # N
-  # F finish
-  STATUSES = ['', 'A', 'D', 'N', 'F']
-
+  STATUSES = ['pending', 'running', 'approved', 'finished','rejected']
   validates_inclusion_of :status, :in => STATUSES
 
   belongs_to :campaign
