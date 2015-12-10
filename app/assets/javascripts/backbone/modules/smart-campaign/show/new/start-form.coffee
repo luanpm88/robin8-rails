@@ -31,7 +31,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onRender: () ->
       @modelBinder.bind @model, @el
-      # @initDatepicker()
+      @initDatepicker()
       _.defer =>
         @initFormValidation()
 
