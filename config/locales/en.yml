@@ -343,7 +343,8 @@ en:
       accepted: Accepted
       brand: Brand
       brief: Briefing Digest
-      budget: Budget
+      budget: Spent/Budget
+      replicate: Replicate
       check_to_activate: Please, check your email to activate your account!
       creation_date: Creation Date
       deadline: Deadline
@@ -393,6 +394,16 @@ en:
         influence_charts:
         discover: Discover
         coming_soon: Marketplace coming soon, Please checkout in a month!
+        campaigns: Campaigns
+        upcoming: Upcoming
+        running: Running
+        complete: Complete
+        click: click
+        income: income
+        view: View
+        share: Share
+        copy_to_clipboard: Copy to clipboard
+        date_range: Campaign Data Range
       influence_charts:
         auto: auto
         digit: digit
@@ -1370,6 +1381,7 @@ en:
         targets: Targets
       new_campaign: New Campaign
       next: Next
+      copy: "copy"
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_history: You don't have expired campaigns.

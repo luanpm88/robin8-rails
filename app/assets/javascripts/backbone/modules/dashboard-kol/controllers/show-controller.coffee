@@ -108,4 +108,16 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           error: =>
             console.log 'fire showDiscoverFor: fetch discover error'
 
+    switchCampaignsTabTo: (target, region, loading) ->
+      targetTasks = new Robin.Collections.CampaignDiscovers([], {type: target})
+      targetTasksView = new Show.Tasks
+        collection: targetTasks
+      targetTasks.fetch
+        success: (collection, res, opts) =>
+          loading.hide()
+          region.show targetTasksView
+        error: =>
+          console.log 'fire switchCampaignsTabTo: fetch targetTasks error'
+
+
   }

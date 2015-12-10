@@ -5,5 +5,3 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     regions:
       campaigns: '#campaigns'
-      kols: '#kols'
-

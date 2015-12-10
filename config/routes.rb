@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get 'identities/discover/:labels' => 'identities#discover'
   get 'identities/labels/:user_id' => 'identities#labels'
 
+  get 'campaign_invite/:type' => 'campaign_invite#interface'
+
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
 
