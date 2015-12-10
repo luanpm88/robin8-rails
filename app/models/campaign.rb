@@ -119,8 +119,8 @@ class Campaign < ActiveRecord::Base
       if self.user.avail_amount > self.budget
         self.update_attribute(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
-        self.send_invites
-        # CampaignWorker.perform_async(self.id, 'send_invites')
+        # self.send_invites
+        CampaignWorker.perform_async(self.id, 'send_invites')
         CampaignWorker.perform_at(self.start_time - 8.hours, self.id, 'start')
         CampaignWorker.perform_at(self.deadline - 8.hours,self.id, 'end')
       else
