@@ -23,7 +23,7 @@ class CampaignController < ApplicationController
         campaigns_all-=campaigns_invites
         campaigns = Campaign.where(:id => campaigns_all).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
       else
-        campaigns = current_user.campaigns.to_json({:methods => [:get_avail_click, :get_fee_info, :get_share_time]})
+        render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_fee_info, :get_share_time]})
       end
     elsif params[:status] == "negotiating"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'N'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns

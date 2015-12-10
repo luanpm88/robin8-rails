@@ -33,7 +33,7 @@ module Concerns
     #解冻结资金
     #credits: 金额， subject: 事项主题 ， item :事项对象， opposite: 关联方对象
     def unfrozen(credits,  subject, item = nil, opposite = nil)
-      return raise '解冻的金额超过冻结金额 credits:#{credits}  frozen_amount:#{frozen_amount}' if credits.to_f  > frozen_amount.to_f
+      return raise "解冻的金额超过冻结金额 credits:#{credits}  frozen_amount:#{frozen_amount}" if credits.to_f  > frozen_amount.to_f
       ActiveRecord::Base.transaction do
         self.decrement!(:frozen_amount, credits)
         transaction = build_transaction(credits, subject, 'unfrozen', item , opposite)

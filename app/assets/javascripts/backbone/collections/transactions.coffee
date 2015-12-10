@@ -1,6 +1,6 @@
-Robin.Collections.Transactions = Backbone.Collection.extend
-  model: Robin.Models.Transaction
-  url: "/transaction"
+#Robin.Collections.Transactions = Backbone.Collection.extend
+#  model: Robin.Models.Transaction
+#  url: "/transaction"
 
 #  accepted: (params)->
 #    params['data'] = $.param({ status: "accepted"})
