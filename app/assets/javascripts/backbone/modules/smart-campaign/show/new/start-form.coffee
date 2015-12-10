@@ -75,11 +75,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               numeric:
                 message: polyglot.t('smart_campaign.validation.per_click_budget_should_be_digit')
               lessThan:
-                value: Number($(".budget_input").val())
+                value: 100
                 message: polyglot.t('smart_campaign.validation.per_click_budget_should_less_than_budget')
               greaterThan:
                 value: 0
                 message:  polyglot.t('smart_campaign.validation.per_click_budget_should_greater_than_zero')
+              callback: 
+                message: "yes",
+                callback: (value, validator, $field) ->
+                  console.log("yes, I'm here baby")
+                  return true
+                
+              
         )
 
     initDatepicker: ->
