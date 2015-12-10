@@ -40,11 +40,11 @@ class CampaignInviteController < ApplicationController
 
     status = case params[:type]
              when 'upcoming'
-               ''
+               'pending'
              when 'running'
-               'A'
+               'approved'
              when 'complete'
-               'F'
+               'completed'
              else
                return render :json => {error: 'error type!'}
              end
