@@ -16,9 +16,9 @@
         <% _.each(items, function(c) { %>
           <tr data-id="<%= c.id %>">
             <td class="middle col-md-3"><%= c.name %></td>
-            <td class="middle"><%= c.shared_times %></td>
-            <td class="middle"><%= c.clicks %></td>
-            <td class="middle"><%= c.bucket %></td>
+            <td class="middle"><%= c.get_share_time %></td>
+            <td class="middle"><%= c.get_avail_click %></td>
+            <td class="middle"><%= c.get_fee_info %></td>
             <td class="middle" align="center">
               <a class="btn btn-success vcenter edit-btn" id="copy_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.copy") %></a>
             </td>

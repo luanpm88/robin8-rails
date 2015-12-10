@@ -21,6 +21,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <% if(status=='running') { %>
+          <a class='triggerMark btn btn-primary'>Accept</a>
+        <% } %>
       </div>
     </div>
   </div>

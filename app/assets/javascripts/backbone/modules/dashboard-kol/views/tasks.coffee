@@ -90,6 +90,20 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
   Show.TaskModal = Backbone.Marionette.ItemView.extend
     template: 'modules/dashboard-kol/templates/default-dashboard/task-modal'
+
+    events:
+      'click .triggerMark': 'markAsRunning'
+
+    markAsRunning: (e) ->
+      e.preventDefault()
+      $.ajax
+          type: 'get'
+          url: '/mark_as_running/' + @model.get('id')
+          dataType: 'json'
+          success: (data) ->
+            console.log data
+            $(e.target).hide()
+
     onShow: () ->
       $('#taskModal').modal()
-      new Clipboard('.task-modal-btn');
+      clipboard = new Clipboard('.task-modal-btn');

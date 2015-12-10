@@ -1,3 +1,2 @@
 Robin.Models.Transaction = Backbone.Model.extend
-  urlRoot: '/transaction/'
-
+  urlRoot: '/campaign/'
