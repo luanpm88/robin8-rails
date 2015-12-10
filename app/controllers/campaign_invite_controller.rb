@@ -33,6 +33,20 @@ class CampaignInviteController < ApplicationController
     end
   end
 
+  def mark_as_running
+    @kol = current_kol
+    return render :json => {error: 'no available kol!'} if @kol.blank?
+
+    @campaign_invite = @kol.campaigns.where(id: params[:campaign_id]).first.campaign_invites.first
+
+    if @campaign_invite.status.eql? 'running'
+      @campaign_invite.update_attributes({status: 'approved'})
+    end
+
+    return render :json => {status: @campaign_invite}
+
+  end
+
   def interface
     @kol = current_kol
 
@@ -40,7 +54,7 @@ class CampaignInviteController < ApplicationController
 
     status = case params[:type]
              when 'upcoming'
-               'pending'
+               'running'
              when 'running'
                'approved'
              when 'complete'
