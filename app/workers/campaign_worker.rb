@@ -9,8 +9,10 @@ class CampaignWorker
     return false if campaign.nil?
     if job_type == 'start'
       campaign.go_start
-    else
+    elsif job_type == 'end'
       campaign.finish('expired') if campaign.status != 'executed'
+    elsif job_type == 'send_invites'
+      campaign.send_invites
     end
   end
 
