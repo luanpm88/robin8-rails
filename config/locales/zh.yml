@@ -1305,6 +1305,17 @@ zh:
         incorrect_ignored: "所有格式不正确的联系人都将被忽略。"
         list_uploaded: "您的列表已经成功上传。"
         select_categories: "选择意见领袖的分类"
+      validation:
+        name: 活动标题不能为空
+        description: 活动描述不能为空
+        url: 活动链接不能为空
+        budget: 活动预算不能为空
+        per_click_budget: 活动点击预算不能为空
+        budget_should_be_digit: 活动预算只能包含数字
+        per_click_budget_should_be_digit: 只能包含数字
+        per_click_budget_should_greater_than_zero: 点击预算应该大于零
+        per_click_budget_should_less_than_budget: 点击预算应该小于总预算
+        budget_should_greater_than_zero: 预算应该大于零
       last_login_date: Last login date
       last_name: "姓氏"
       last_update: "最後更新"
@@ -1404,7 +1415,18 @@ zh:
         campaign_budged: "推广活动预算"
         campaign_content: "推广活动内容"
         campaign_deadline: "推广活动期限"
-        campaign_title: "推广活动名称"
+        campaign_title: "活动名称"
+        campaign_enter_title: 输入活动名称
+        campaign_url: 活动链接
+        campaign_enter_url: 输入活动链接
+        campaign_description: 活动介绍
+        campaign_enter_description: 输入活动介绍
+        campaign_budget: 活动预算
+        campaign_enter_budget: 1000
+        campaign_enter_per_click_budget: 0.1
+        campaign_start_time: 开始时间
+        campaign_end_time: 结束时间
+        campaign_time: 起止时间
         editor_uses_paragraphs: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
         enter_title: "填写名称"
         following_topics: "将会提到如下的话题"
@@ -1414,6 +1436,7 @@ zh:
         paste_press_here: "在这里粘贴推广活动的新闻稿"
         pick_deadline: "选择一个期限"
         summary: 如下是<strong> "%{name}" </strong>的小结
+
       status: "状态"
       success_ask_invite: Your request has been sent
       success_invite: Invitation has been sent
