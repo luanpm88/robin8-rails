@@ -4,9 +4,16 @@ class CampaignWorker
   def perform(*args)
     campaign_id = args[0]
     job_type = args[1]
-    logger.info "--------#{campaign_id}--job_type:#{job_type}---"
+    logger.info "---enter-----#{campaign_id}--job_type:#{job_type}---"
     campaign = Campaign.find(campaign_id)   rescue nil
+    counter = 0
+    while campaign.nil? && counter < 10
+      sleep 0.3
+      counter += 1
+      campaign = Campaign.find(campaign_id)   rescue nil
+    end
     return false if campaign.nil?
+    logger.info '------execute'
     if job_type == 'start'
       campaign.go_start
     elsif job_type == 'end'
@@ -14,6 +21,7 @@ class CampaignWorker
     elsif job_type == 'send_invites'
       campaign.send_invites
     end
+
   end
 
 end

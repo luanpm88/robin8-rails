@@ -3,9 +3,9 @@ require 'json'
 class ShortUrl
   cattr_accessor :request
   SinaServerUrl = 'http://api.t.sina.com.cn/short_url/shorten.json'
-  def self.get_request
-    self.request ||= Mechanize.new
-  end
+  # def self.get_request
+  #   self.request ||= Mechanize.new
+  # end
 
   #生成 短地址
   def self.convert(long_url)
