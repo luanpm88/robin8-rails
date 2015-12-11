@@ -130,6 +130,13 @@ class UsersController < ApplicationController
     end
   end
 
+  def avail_amount
+    if current_user.avail_amount >= params[:amount].to_i
+      render :json => {valid: true} and return
+    end
+    render :json => {valid: false} and return
+  end
+
   private
 
   def user_params

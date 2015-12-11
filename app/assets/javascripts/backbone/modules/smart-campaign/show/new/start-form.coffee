@@ -77,6 +77,26 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               greaterThan:
                 value: 0
                 message:  polyglot.t('smart_campaign.validation.budget_should_greater_than_zero')
+              remote:
+                url: "/users/avail_amount"
+                type: "get"
+                delay: 300
+                message: polyglot.t('smart_campaign.validation.budget_is_not_ample')
+                data: (value, validators, $field) ->
+                  v = 
+                    amount: $('.budget_input').val()
+                  return v
+
+              # callback:
+              #   callback: (value, validators, $field) ->
+              #     $.ajax 
+              #       url: "/users/avail_amount"
+              #       success: (data) ->
+              #         if Number(data["data"]) > Number(value)
+              #           return true
+              #         return false
+              #       error: ->
+              #         return false
           per_click_budget:
             validators:
               notEmpty:
@@ -109,7 +129,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         ignoreReadonly: true,
         format: 'YYYY-MM-DD HH:mm',
         locale: 'zh-cn',
-        minDate: new Date()
+        defaultDate: new Date()
       }
       usDateOptions = {
         ignoreReadonly: true,
@@ -125,11 +145,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @ui.endDatePicker.datetimepicker(usDateOptions)
 
       @ui.startDatePicker.on "dp.change", (e) =>
-        console.log("1111")
         @ui.endDatePicker.data("DateTimePicker").minDate(e.date);
 
       @ui.endDatePicker.on "dp.change", (e) =>
-        console.log('222')
         @ui.startDatePicker.data("DateTimePicker").maxDate(e.date);
 
     createCampagin: ->
