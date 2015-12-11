@@ -1334,6 +1334,10 @@ en:
         title: Contact
         your_email: Your Email
       content_type: Content Type
+      name: Campain name
+      status: Status
+      share: Shared by
+      click: Clicks
       created: Created
       deadline: Deadline
       decline_date: Decline date

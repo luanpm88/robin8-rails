@@ -1285,8 +1285,12 @@ zh:
         title: "联系人"
         your_email: "你的邮箱"
       content_type: Content Type
-      created: "创建 "
-      deadline: "期限"
+      name: "活动名称"
+      status: "状态"
+      share: "分享次数"
+      click: "点击次数"
+      created: "创建日期 "
+      deadline: "结束日期"
       decline_date: Decline date
       declined: "已拒绝"
       declined_unknown: "拒绝/未知"
@@ -1335,7 +1339,6 @@ zh:
       last_login_date: Last login date
       last_name: "姓氏"
       last_update: "最後更新"
-      name: "姓名"
       negotiating: Negotiating
       new:
         pitch: "投递"
