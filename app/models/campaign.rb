@@ -115,6 +115,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
+    puts "----callack job"
     if Rails.application.config.china_instance
       if self.user.avail_amount > self.budget
         self.update_attribute(:max_click, self.budget / per_click_budget)
@@ -130,7 +131,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def self.add_test_data
-    if Rails.env.development?
+    if !Rails.env.production?
       CampaignInvite.delete_all
       Transaction.delete_all
       CampaignShow.delete_all
