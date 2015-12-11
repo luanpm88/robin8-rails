@@ -1474,6 +1474,8 @@ en:
         per_click_budget_should_greater_than_zero: Campaign per click budget must greater than zero
         per_click_budget_should_less_than_budget: Campaign per click budget must less than budget
         budget_should_greater_than_zero: Campaign budget must greater than zero
+        url_invalid: Campaign url is invalid
+        campaign_end_time_should_greather_than_start_time: Campaign end time should laster than start time
       smart_campaign:
         pitch_step:
           button: Pitch!
@@ -1508,6 +1510,10 @@ en:
         paste_press_here: Paste the press release for your campaign here...
         pick_deadline: Pick a deadline!
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
+        enter_description: Enter description
+        enter_message: Enter message
+        campaign_message: Campaign message
+
       status: Status
       success_ask_invite: Your request has been sent
       success_invite: Invitation has been sent

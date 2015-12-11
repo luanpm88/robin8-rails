@@ -1332,6 +1332,9 @@ zh:
         per_click_budget_should_greater_than_zero: 点击预算应该大于零
         per_click_budget_should_less_than_budget: 点击预算应该小于总预算
         budget_should_greater_than_zero: 预算应该大于零
+        campaign_end_time_should_greather_than_start_time: 结束时间应该大于开始时间
+        
+        url_invalid:   链接不合法
       last_login_date: Last login date
       last_name: "姓氏"
       last_update: "最後更新"
@@ -1455,6 +1458,9 @@ zh:
         summary: 如下是<strong> "%{name}" </strong>的小结
         campaign_budget_label: 总预算
         campaign_per_click_budget_label: 点击预算
+        enter_description: 活动介绍
+        enter_message: 给Kol 留言
+        campaign_message: 留言
 
       status: "状态"
       success_ask_invite: Your request has been sent

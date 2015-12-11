@@ -16,6 +16,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       plusBudgetIcon: ".plus_budget_icon"
       subtractionPerBudgetIcon: ".subtraction_per_budget_icon"
       plusPerBudgetIcon: ".plus_per_budget_icon"
+      deadlineIcon: ".deadline_icon"
 
     events:
       "click @ui.createCampagin": "createCampagin"
@@ -23,6 +24,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       "click @ui.plusBudgetIcon": "plusBudgetIcon"
       "click @ui.subtractionPerBudgetIcon": "subtractionPerBudgetIcon"
       "click @ui.plusPerBudgetIcon": "plusPerBudgetIcon"
+      "click @ui.deadlineIcon": "deadlineIcon"
 
     initialize: (options) ->
       @options = options
@@ -59,6 +61,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             validators:
               notEmpty:
                 message: polyglot.t('smart_campaign.validation.url')
+              callback:
+                message: polyglot.t('smart_campaign.validation.url_invalid')
+                callback: (value, validator, $field) ->
+                  RegExp = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                  if RegExp.test(value)
+                    return true
+                  return false
           budget:
             validators:
               notEmpty:
@@ -83,6 +92,16 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                   if Number(value) > Number($(".budget_input").val())
                     return false
                   return true
+          deadline:
+            validators:
+              callback: 
+                selector: ".test"
+                message: polyglot.t('smart_campaign.validation.campaign_end_time_should_greather_than_start_time')
+                callback: (value, validator, $field) ->
+                  if (new Date($(".campaign_start_time_input").val()).getTime()) > (new Date($(".campaign_deadline_input").val()).getTime()) 
+                    return false
+                  return true
+
         )
 
     initDatepicker: ->
@@ -104,6 +123,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       else
         @ui.startDatePicker.datetimepicker(usDateOptions)
         @ui.endDatePicker.datetimepicker(usDateOptions)
+
+      @ui.startDatePicker.on "dp.change", (e) =>
+        console.log("1111")
+        @ui.endDatePicker.data("DateTimePicker").minDate(e.date);
+
+      @ui.endDatePicker.on "dp.change", (e) =>
+        console.log('222')
+        @ui.startDatePicker.data("DateTimePicker").maxDate(e.date);
 
     createCampagin: ->
       this.model.attributes.deadline = $(".campaign_deadline_input").val()

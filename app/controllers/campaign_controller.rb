@@ -160,6 +160,7 @@ class CampaignController < ApplicationController
     end
     campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :start_time, :deadline, :message))
     campaign.user = current_user
+    campaign.status = "unexecute"
 
     campaign.save!
     render :json => {:status => :ok }
