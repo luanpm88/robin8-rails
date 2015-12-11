@@ -15,7 +15,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         monthNum = parseInt(date.getMonth()) + 1
         d = date.getDate()
         y = date.getFullYear()
-        month = polyglot.t('date.monthes_abbr.m' + monthNum)
+        month =  monthNum
         "#{d}-#{month}-#{y}"
       timestamp: (d) ->
         date = new Date d
@@ -31,7 +31,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         lengthChange: false
         pageLength: 10
         autoWidth: false
-        columnDefs: [sortable: false, targets: ["no-sort"]]
+        columnDefs: [sortable: false, targets: [0]]
+        order: [[ 6, "desc" ]]
         language:
           paginate:
             previous: polyglot.t('smart_campaign.prev'),
