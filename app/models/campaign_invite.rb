@@ -16,6 +16,7 @@ class CampaignInvite < ActiveRecord::Base
   def self.generate_share_url(uuid)
     url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"
     ShortUrl.convert url
+    # http://robin8-staging.cn/campaign_show?uuid=eyJjYW1wYWlnbl9pZCI6MTE3LCJrb2xfaWQiOjU5fQ==
   end
 
   def add_click(valid)
