@@ -131,13 +131,18 @@ class UsersController < ApplicationController
   end
 
   def qiniu_uptoken
-    binding.pry
     put_policy = Qiniu::Auth::PutPolicy.new(
       "robin8",     # 存储空间
     )
 
     uptoken = Qiniu::Auth.generate_uptoken(put_policy)
     render :json => {uptoken: uptoken}
+  end
+
+  def set_avatar_url
+    current_user.avatar_url = params[:avatar_url]
+    current_user.save
+    render json: {"result": "ok"}
   end
 
   private

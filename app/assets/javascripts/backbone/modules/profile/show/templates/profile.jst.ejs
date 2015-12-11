@@ -6,8 +6,17 @@
       <hr>
       <!-- left column -->
       <% if (Robin.chinaInstance) { %>
-        <div class="container">
-          <input type="button" id="pickfiles" class="btn btn-primary" value="选择图片">
+
+        <div class="col-md-3">
+          <div class="text-center" id="container">
+            <% if (Robin.currentUser.attributes.avatar_url) { %>
+              <img src="<%= Robin.currentUser.attributes.avatar_url %>" id="avatar-image" alt="avatar" style="width: 200px; height: 200px">
+            <% } else {%>
+              <img src="<%= AppAssets.path('noavatar.jpg') %>" id="avatar-image" alt="avatar" style="width: 200px; height: 200px">
+            <% } %>
+            <h6><%= polyglot.t("uploading.different_photo") %></h6>
+            <input type="button" id="pickfiles" class="btn btn-primary" value="选择图片">
+          </div>
         </div>
       <% } else { %>
         <div class="col-md-3">
