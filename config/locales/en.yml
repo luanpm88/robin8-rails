@@ -1338,7 +1338,7 @@ en:
       status: Status
       share: Shared by
       click: Clicks
-      cost: "Spent/Bucket"
+      cost: Spent/Bucket
       created: Created
       deadline: Deadline
       decline_date: Decline date
@@ -1386,7 +1386,7 @@ en:
         targets: Targets
       new_campaign: New Campaign
       next: Next
-      copy: "copy"
+      replicate: Replicate
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_history: You don't have expired campaigns.

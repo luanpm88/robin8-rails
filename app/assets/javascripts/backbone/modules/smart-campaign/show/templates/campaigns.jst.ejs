@@ -24,7 +24,7 @@
             <td class="middle col-md-1"><%= c.get_avail_click %></td>
             <td class="middle"><%= c.get_fee_info %></td>
             <td class="middle" align="center">
-              <a class="btn btn-success vcenter edit-btn" id="copy_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.copy") %></a>
+              <a class="btn btn-success vcenter edit-btn" id="copy_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.replicate") %></a>
             </td>
             <td class="middle" data-order="<%= timestamp(c.start_time) %>"><%= formatDate(c.start_time) %></td>
             <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>

@@ -1289,7 +1289,7 @@ zh:
       status: "状态"
       share: "分享次数"
       click: "点击次数"
-      cost: "余额/总额"
+      cost: "已扣/预算"
       created: "创建日期 "
       deadline: "结束日期"
       decline_date: Decline date
@@ -1347,7 +1347,7 @@ zh:
         targets: "目标"
       new_campaign: "新建活动"
       next: "下一页"
-      copy: "Copy"
+      replicate: 重启活动
       'no': "不是"
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_history: You don't have expired campaigns.
