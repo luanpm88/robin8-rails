@@ -287,7 +287,7 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.8.2)
-    mime-types (2.6.1)
+    mime-types (1.25.1)
     mini_portile (0.6.2)
     minitest (5.7.0)
     multi_json (1.11.1)
@@ -370,6 +370,11 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     puma (2.13.4)
+    qiniu (6.2.4)
+      json (~> 1.7)
+      mime-types (~> 1.19)
+      rest-client (~> 1.6)
+      ruby-hmac (~> 0.4)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     qy_wechat (1.0.1)
@@ -573,6 +578,7 @@ GEM
       rspec (~> 3.0, >= 3.0.0)
       sidekiq (>= 2.4.0)
     rspec-support (3.2.2)
+    ruby-hmac (0.4.0)
     rubyzip (1.1.7)
     sass (3.4.14)
     sass-rails (5.0.3)
@@ -747,6 +753,7 @@ DEPENDENCIES
   pry-rails
   pry-stack_explorer (= 0.4.9.1)
   puma
+  qiniu (~> 6.2.1)
   quiet_assets
   qy_wechat (~> 1.0.1)
   rack-mini-profiler

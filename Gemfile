@@ -163,6 +163,7 @@ gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 gem 'china_sms'
+gem 'qiniu', '~> 6.2.1'
 group :development, :test do
   # Deploy with Capistrano
   gem 'capistrano-rails', '~> 1.1.3'

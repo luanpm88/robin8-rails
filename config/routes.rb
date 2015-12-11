@@ -58,6 +58,8 @@ Rails.application.routes.draw do
   get 'users/get_active_subscription' => 'users#get_active_subscription'
   get 'users/private_kol' => 'users#get_private_kols'
   get 'users/kols_lists' => 'kols_lists#get_contacts_list'
+  get 'users/qiniu_uptoken' => 'users#qiniu_uptoken'
+  post "users/set_avatar_url" => 'users#set_avatar_url'
   post 'users/import_kols' => 'kols_lists#create'
   post 'users/import_kol' => 'users#import_kol'
   get 'payments/apply_discount' => 'payments#apply_discount'
