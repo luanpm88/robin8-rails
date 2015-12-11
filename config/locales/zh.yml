@@ -1289,6 +1289,7 @@ zh:
       status: "状态"
       share: "分享次数"
       click: "点击次数"
+      cost: "余额/总额"
       created: "创建日期 "
       deadline: "结束日期"
       decline_date: Decline date

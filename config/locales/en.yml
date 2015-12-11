@@ -1338,6 +1338,7 @@ en:
       status: Status
       share: Shared by
       click: Clicks
+      cost: "Spent/Bucket"
       created: Created
       deadline: Deadline
       decline_date: Decline date
