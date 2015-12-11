@@ -135,7 +135,7 @@ class Campaign < ActiveRecord::Base
       # Transaction.delete_all
       # CampaignShow.delete_all
       u = User.find 81
-      Campaign.create(:user => u, :budget => 1, :per_click_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 10.minutes,
+      Campaign.create(:user => u, :budget => 1, :per_click_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
       :url => "http://www.baidu.com", :name => 'test')
     end
   end
