@@ -39,7 +39,7 @@ class CampaignInviteController < ApplicationController
 
     # @campaign_invite = @kol.campaigns.where(id: params[:campaign_id]).first.campaign_invites.first
 
-    @campaign_invite = CampaignInvite.where(kol_id: @kol.id, campaign_id: params[:campaign_id])
+    @campaign_invite = CampaignInvite.where(kol_id: @kol.id, campaign_id: params[:campaign_id]).first
 
     if @campaign_invite.status.eql? 'running'
       @campaign_invite.update_attributes({status: 'approved'})
