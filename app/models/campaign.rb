@@ -57,6 +57,9 @@ class Campaign < ActiveRecord::Base
         invite.save!
       end
     end
+    # make sure those execute late (after invite create)
+    CampaignWorker.perform_at(self.start_time, self.id, 'start')
+    CampaignWorker.perform_at(self.deadline ,self.id, 'end')
   end
 
   # 开始进行  此时需要更改invite状态
@@ -106,8 +109,8 @@ class Campaign < ActiveRecord::Base
 
   # 结算
   def settle_accounts
-    self.user.unfrozen(budget, 'campaign')
-    self.user.income((budget - avail_click * per_click_budget) , 'campaign-remain', self )
+    self.user.unfrozen(budget, 'campaign', self)
+    self.user.payout((avail_click * per_click_budget) , 'campaign', self )
     campaign = self
     self.finished_invites.each do |invite|
       invite.kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
@@ -115,15 +118,11 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
-    puts "----callack job"
     if Rails.application.config.china_instance
       if self.user.avail_amount > self.budget
         self.update_attribute(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
-        # self.send_invites
         CampaignWorker.perform_async(self.id, 'send_invites')
-        CampaignWorker.perform_at(self.start_time - 8.hours, self.id, 'start')
-        CampaignWorker.perform_at(self.deadline - 8.hours,self.id, 'end')
       else
         Rails.logger.error('品牌商余额不足--campaign_id: #{self.id}')
       end
@@ -132,11 +131,11 @@ class Campaign < ActiveRecord::Base
 
   def self.add_test_data
     if !Rails.env.production?
-      CampaignInvite.delete_all
-      Transaction.delete_all
-      CampaignShow.delete_all
+      # CampaignInvite.delete_all
+      # Transaction.delete_all
+      # CampaignShow.delete_all
       u = User.find 81
-      Campaign.create(:user => u, :budget => 1, :per_click_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 10.minutes,
+      Campaign.create(:user => u, :budget => 1, :per_click_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
       :url => "http://www.baidu.com", :name => 'test')
     end
   end
