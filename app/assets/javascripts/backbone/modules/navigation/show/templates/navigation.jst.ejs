@@ -1,6 +1,6 @@
 <ul class="sidebar-nav" id="sidebar">
   <li>
-    <a href="/#dashboard" id="nav-dashboard"> <%= polyglot.t("navigation.dashboard") %><span class="sub_icon glyphicon glyphicon-home"></span></a>
+    <a href="/#dashboard" id="user-nav-dashboard"> <%= polyglot.t("navigation.dashboard") %><span class="sub_icon glyphicon glyphicon-home"></span></a>
   </li>
   <% if (Robin.chinaInstance == false) { %>
     <li>
@@ -32,7 +32,7 @@
 
   <% if (Robin.chinaInstance) { %>
     <li>
-      <a href="/#smart_campaign" id="nav-smart-campaign"><%= polyglot.t("navigation.smart_campaign") %><span class="sub_icon fa fa-bullhorn"></span></a>
+      <a href="/#smart_campaign" id="user-nav-smart-campaign"><%= polyglot.t("navigation.smart_campaign") %><span class="sub_icon fa fa-bullhorn"></span></a>
     </li>
   <% } %>
   <!-- <li>

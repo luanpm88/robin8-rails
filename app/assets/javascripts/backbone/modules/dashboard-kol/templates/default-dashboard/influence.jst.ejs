@@ -1,98 +1,23 @@
-<div class="clearfix">
-  <div class="personalInfo owoPanel commonPanel">
-    <div class="owoPanelHeader">
-      <h3><%= polyglot.t('dashboard_kol.default.personal_info') %></h3>
+<div class="influence-header owoPanelHeader">
+  <h3><%= polyglot.t('dashboard_kol.default.social_influence') %></h3>
+  <% if(items.length > 0){ %>
+    <div class="btn-group influence-dropdown">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class='glyphicon glyphicon-align-justify'></i>&nbsp;<%= polyglot.t('dashboard_kol.default.switch_social_account') %><span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <% _.each(items, function(item) { %>
+          <% if(item.provider != 'wechat'){ %>
+            <li><a href="#" id="<%= item.id %>"><%= polyglot.t('common.' + item.provider)%>: <%= item.name %></a></li>
+          <% } %>
+        <% }) %>
+      </ul>
     </div>
-    <div class="personalBody owoPanelBody clearfix">
-      <div class="personalData">
-        <ul>
-          <li class='clearfix'>
-            <img src="<%= AppAssets.path('dashboard-icon1.png') %>" alt="" />
-            <span>0</span>
-            <p>
-              <%= polyglot.t('dashboard_kol.default.upcoming_campaigns') %>
-            </p>
-          </li>
-          <li class='clearfix'>
-            <img src="<%= AppAssets.path('dashboard-icon2.png') %>" alt="" />
-            <span>0</span>
-            <p>
-              <%= polyglot.t('dashboard_kol.default.completed_campaigns') %>
-            </p>
-          </li>
-          <li class='clearfix'>
-            <img src="<%= AppAssets.path('yuan.png') %>" alt="" />
-            <span>0</span>
-            <p>
-              <%= polyglot.t('dashboard_kol.default.total_income') %>
-            </p>
-          </li>
-        </ul>
-      </div>
+  <% } %>
+</div>
+<div class="influence-item-container">
+  <div class="influence-item">
 
-      <div class="personalCompletion">
-        <div class="completion-title">
-          <span style="font-size: 18px "><%= polyglot.t('dashboard_kol.default.profile_completion') %></span>
-          <span style="font-size: 22px;margin-left: 10px "><%= score_data.total %></span>
-        </div>
-        <% _.each(score_data, function(value, key) { %>
-          <% if(key != 'total') {%>
-            <p><%= polyglot.t("dashboard_kol.default." + key + "_score") %> </p>
-            <div class='progress'>
-              <div class='progress-bar progress-bar-<%= key %>' role='progressbar' aria-valuenow='' aria-valuemin='0' aira-valuemax='100' style='width: <%= value %>%'>
-              </div>
-            </div>
-        <%  }
-          })
-        %>
-        <div>
-          <div style="margin-top: 30px;margin-bottom: 15px">
-            <% if(score_data.total < 100){ %>
-              <div style="margin-bottom: 10px;font-size: 17px">如何让更多人看到您?</div>
-            <% } %>
-            <% if(score_data.data < 100){ %>
-              <a href="#/dashboard/profile">完善个人信息</a>  </br>
-            <% } %>
-            <% if(score_data.wechat < 100){ %>
-              <a href="#/dashboard/profile">绑定微信个人账号，并编辑受众和价格</a>   </br>
-            <% } %>
-            <% if(score_data.weibo < 100){ %>
-              <a href="#/dashboard/profile">绑定微博账号，并编辑受众和价格</a>   </br>
-            <% } %>
-            <% if(score_data.wechat_third < 100){ %>
-              <a href="#/dashboard/profile">绑定微信公众账号，并编辑受众和价格</a>   </br>
-            <% } %>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <img src="<%= AppAssets.path('loaders/puff.svg') %>" style='display: block;margin: 0 auto;'>
   </div>
-
-  <div class="influenceContainer owoPanel commonPanel">
-    <div class="influence-header owoPanelHeader">
-      <h3><%= polyglot.t('dashboard_kol.default.social_influence') %></h3>
-      <% if(items.length > 0){ %>
-        <div class="btn-group influence-dropdown">
-          <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class='glyphicon glyphicon-align-justify'></i>&nbsp;<%= polyglot.t('dashboard_kol.default.switch_social_account') %><span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <% _.each(items, function(item) { %>
-              <% if(item.provider != 'wechat'){ %>
-                <li><a href="#" id="<%= item.id %>"><%= polyglot.t('common.' + item.provider)%>: <%= item.name %></a></li>
-              <% } %>
-            <% }) %>
-          </ul>
-        </div>
-      <% } %>
-    </div>
-    <div class="influence-item-container">
-      <div class="influence-item">
-
-        <img src="<%= AppAssets.path('loaders/puff.svg') %>" style='display: block;margin: 0 auto;'>
-      </div>
-    </div>
-  </div>
-
 </div>
