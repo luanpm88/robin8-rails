@@ -6,7 +6,7 @@
         <h4 class="modal-title" id="myModalLabel"><%= name %></h4>
       </div>
       <div class="modal-body">
-        <h5>Campaign Status: </h5>
+        <h5>活动详情: </h5>
 
 
         <p>
@@ -19,13 +19,13 @@
             已完成
           <% } %>
         </p>
-
+        <% var start = new Date(start_time);var end = new Date(deadline); %>
         <p>
-          <i class='glyphicon glyphicon-time'></i> 开始时间： <%= start_time %>
+          <i class='glyphicon glyphicon-time'></i> 开始时间： <%= start.getFullYear() %>/<%= start.getMonth() %>/<%= start.getDate() %>
         </p>
 
         <p>
-          <i class='glyphicon glyphicon-time'></i> 结束时间： <%= deadline %>
+          <i class='glyphicon glyphicon-time'></i> 结束时间： <%= end.getFullYear() %>/<%= end.getMonth() %>/<%= end.getDate() %>
         </p>
 
         <p>
