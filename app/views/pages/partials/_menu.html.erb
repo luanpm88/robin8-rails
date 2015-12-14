@@ -15,9 +15,7 @@
           <li><a href='?locale=zh'>CN</a></li>
         <% end %>
 
-        <% if current_page?(home_path) %>
-          <!-- <li><a href='http://try.robin8.com/robin/' target='_blank'><%= @l.t('header.contact_us') %></a></li> -->
-        <% else %>
+        <% if !Rails.env.production? %>
           <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
         <% end %>
 
