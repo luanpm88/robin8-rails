@@ -6,23 +6,62 @@
         <h4 class="modal-title" id="myModalLabel"><%= name %></h4>
       </div>
       <div class="modal-body">
+        <h5>Campaign Status: </h5>
+
+
         <p>
-          <h5>Campaign Status: </h5>
+          <i class='glyphicon glyphicon-exclamation-sign'></i> 接受状态：
+          <% if(status=='running'){ %>
+            未接受
+          <% }else if(status=='approved'){ %>
+            已接受
+          <% }else{ %>
+            已完成
+          <% } %>
         </p>
 
         <p>
-          $ <%= per_click_budget %> / Click, Start: <%= start_time %> - End: <%= deadline %><br />
-          <textarea class="form-control disabled"  id='descAndUrl'><%= description %> <%= url %></textarea>
-          <br />
-          <button class='task-modal-btn' data-clipboard-action="copy" data-clipboard-target="#descAndUrl">Copy to clipboard</button>
+          <i class='glyphicon glyphicon-time'></i> 开始时间： <%= start_time %>
+        </p>
 
+        <p>
+          <i class='glyphicon glyphicon-time'></i> 结束时间： <%= deadline %>
+        </p>
+
+        <p>
+          <i class='glyphicon glyphicon-hand-up'></i> 当前有效点击： <%= avail_click %>
+        </p>
+
+        <p>
+          <i class='glyphicon glyphicon-info-sign'></i> 有效点击单价： <%= per_click_budget %>
+        </p>
+
+        <p>
+          <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： <%= avail_click * per_click_budget %>
+        </p>
+
+        <textarea class="form-control disabled"  id='descAndUrl'><%= description %> <%= url %></textarea>
+        <br />
+        <button class='task-modal-btn' data-clipboard-action="copy" data-clipboard-target="#descAndUrl">Copy to clipboard</button>
+
+        <h6>来自品牌的消息：</h6>
+        <p>
+          <%= message %>
+        </p>
+
+        <hr>
+
+        <p>
+          <% if(status=='running'){ %>
+            注意：请点击「接受」按钮接受这次活动
+          <% } %>
         </p>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <% if(status=='running') { %>
-          <a class='triggerMark btn btn-primary'>Accept</a>
+          <a class='triggerMark btn btn-primary'>接受</a>
         <% } %>
       </div>
     </div>
