@@ -16,7 +16,7 @@
     </li>
     <li class='clearfix'>
       <img src="<%= AppAssets.path('yuan.png') %>" alt="" />
-      <span><%= score_data.total %></span>
+      <span><%= score_data.total_income %></span>
       <p>
         <%= polyglot.t('dashboard_kol.default.total_income') %>
       </p>
@@ -30,7 +30,7 @@
     <span style="font-size: 22px;margin-left: 10px "><%= score_data.total %></span>
   </div>
   <% _.each(score_data, function(value, key) { %>
-    <% if(key != 'total') {%>
+    <% if(key != 'total' && key != 'total_income' && key != 'upcoming' && key != 'completed') {%>
       <p><%= polyglot.t("dashboard_kol.default." + key + "_score") %> </p>
       <div class='progress'>
         <div class='progress-bar progress-bar-<%= key %>' role='progressbar' aria-valuenow='' aria-valuemin='0' aira-valuemax='100' style='width: <%= value %>%'>
