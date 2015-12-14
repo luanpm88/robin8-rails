@@ -378,7 +378,7 @@ en:
         personal_info: Personal Info
         upcoming_campaigns: Upcoming Campaigns
         completed_campaigns: Completed Campaigns
-        total_income: Toal <br /> Income
+        total_income: Total <br /> Income
         profile_completion: Profile Compiletion
         data_score:
         wechat_score:
@@ -1384,6 +1384,8 @@ en:
         pitch: Pitch
         start: Start
         targets: Targets
+        back: Back
+        new: New
       new_campaign: New Campaign
       next: Next
       replicate: Replicate
@@ -1521,6 +1523,7 @@ en:
         enter_message: Enter message
         campaign_message: Campaign message
         save: Save
+        create_campaign: You have create one campaign successfully.
 
       status: Status
       success_ask_invite: Your request has been sent

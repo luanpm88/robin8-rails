@@ -96,13 +96,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     markAsRunning: (e) ->
       e.preventDefault()
+      parentThis = @
       $.ajax
           type: 'get'
           url: '/mark_as_running/' + @model.get('id')
           dataType: 'json'
           success: (data) ->
             console.log data
-            $(e.target).hide()
+            parentThis.model.collection.remove parentThis.model
+            $('#taskModal').modal('hide')
 
     onShow: () ->
       $('#taskModal').modal()

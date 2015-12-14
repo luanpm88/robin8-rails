@@ -23,12 +23,18 @@
 
 div#datetimepicker6{
   display: inline-table;
-  margin-left: -20px
+  //margin-left: -20px
 }
 
 .campaign_start_time, .campaign_end_time{
   display: table-cell;
   vertical-align: middle;
+  width: 100px;
+}
+
+.new_campaign_label{
+  width: 70px;
+  text-align: left;
 }
 
 

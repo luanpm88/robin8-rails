@@ -9,7 +9,7 @@ class CampaignShowController < ApplicationController
       CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip)
       redirect_to campaign.url
     elsif  campaign
-      render :text => "你访问的Campaign 还没开始"
+      redirect_to campaign.url
     else
       render :text => "你访问的Campaign 不存在"
     end

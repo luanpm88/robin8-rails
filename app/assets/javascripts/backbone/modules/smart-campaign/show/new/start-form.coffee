@@ -157,7 +157,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
       this.model.save this.model.attributes,
         success: (m, r) ->
-          console.log("成功了");
+          $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
+          location.href = "/#smart_campaign"
         error: (m, r) ->
           console.log("失败了");
 

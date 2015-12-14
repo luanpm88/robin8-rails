@@ -3,19 +3,17 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/dashboard-kol/templates/default-dashboard/default-dashboard'
 
     regions:
-      socialInfluencePower: '#social-influence-power'
+      socialInfluencePower: '.influenceContainer'
+      personalInfoRegion: '.personalBody'
       taskRegion: '#default-dashboard-task'
       discover: '#default-dashboard-discover'
 
     onRender: () ->
+      Show.CustomController.showPersonalInfo @getRegion('personalInfoRegion')
+      Show.CustomController.showInfluences @getRegion('socialInfluencePower')
       @tasks = new Show.TaskContainer
       @getRegion('taskRegion').show @tasks
-      kol = new Robin.Models.KOL
-      kol.fetch
-        success: (model, res, opts) =>
-          Show.CustomController.showInfluencesAndDiscovers(@getRegion('socialInfluencePower'), @getRegion('discover'), kol.get('id'))
-
-
+      Show.CustomController.showDiscovers @getRegion('discover'), Robin.currentKOL.get('id')
 
 
   Show.SocialNotExisted = Backbone.Marionette.ItemView.extend
