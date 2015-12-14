@@ -2,21 +2,21 @@
   <ul>
     <li class='clearfix'>
       <img src="<%= AppAssets.path('dashboard-icon1.png') %>" alt="" />
-      <span>0</span>
+      <span><%= score_data.upcoming %></span>
       <p>
         <%= polyglot.t('dashboard_kol.default.upcoming_campaigns') %>
       </p>
     </li>
     <li class='clearfix'>
       <img src="<%= AppAssets.path('dashboard-icon2.png') %>" alt="" />
-      <span>0</span>
+      <span><%= score_data.completed %></span>
       <p>
         <%= polyglot.t('dashboard_kol.default.completed_campaigns') %>
       </p>
     </li>
     <li class='clearfix'>
       <img src="<%= AppAssets.path('yuan.png') %>" alt="" />
-      <span>0</span>
+      <span><%= score_data.total %></span>
       <p>
         <%= polyglot.t('dashboard_kol.default.total_income') %>
       </p>
