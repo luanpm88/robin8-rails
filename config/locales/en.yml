@@ -1479,6 +1479,9 @@ en:
         per_click_budget_should_greater_than_zero: Campaign per click budget must greater than zero
         per_click_budget_should_less_than_budget: Campaign per click budget must less than budget
         budget_should_greater_than_zero: Campaign budget must greater than zero
+        url_invalid: Campaign url is invalid
+        campaign_end_time_should_greather_than_start_time: Campaign end time should laster than start time
+        budget_is_not_ample: Your budget is not enough, please recharge
       smart_campaign:
         pitch_step:
           button: Pitch!
@@ -1501,6 +1504,7 @@ en:
         campaign_time: Camaigin time
         campaign_start_time: Campaign start time
         campaign_end_time: Campaign end time
+        enter_url: Enter campaign url
         editor_uses_paragraphs: "*The editor uses paragraphs by default for copied
           text. To place a normal line break press Shift+Enter (Shift+Return)"
         campaign_budget_label: Campaign budget
@@ -1513,6 +1517,11 @@ en:
         paste_press_here: Paste the press release for your campaign here...
         pick_deadline: Pick a deadline!
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
+        enter_description: Enter description
+        enter_message: Enter message
+        campaign_message: Campaign message
+        save: Save
+
       status: Status
       success_ask_invite: Your request has been sent
       success_invite: Invitation has been sent

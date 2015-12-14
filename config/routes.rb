@@ -119,6 +119,7 @@ Rails.application.routes.draw do
       get 'identities'
       get 'get_identities'
       get 'info'
+      get :avail_amount
     end
   end
 

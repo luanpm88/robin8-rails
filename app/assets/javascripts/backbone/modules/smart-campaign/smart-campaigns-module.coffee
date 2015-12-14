@@ -3,6 +3,7 @@ Robin.module "SmartCampaign", (SmartCampaign, Robin, Backbone, Marionette, $, _)
 
   SmartCampaign.on 'start', () ->
     $('#nav-smart-campaign').parent().addClass('active')
+    $('#sidebar-wrapper').show();
     @controller = new SmartCampaign.Show.Controller()
     @router = new SmartCampaign.Router
       controller: @controller
