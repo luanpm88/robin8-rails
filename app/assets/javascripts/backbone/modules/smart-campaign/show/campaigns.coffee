@@ -16,7 +16,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         d = date.getDate()
         y = date.getFullYear()
         month =  monthNum
-        "#{d}-#{month}-#{y}"
+        h = date.getHours();
+        m = date.getMinutes();
+        "#{y}-#{month}-#{d} #{h}:#{m}"
       timestamp: (d) ->
         date = new Date d
         date.getTime()
