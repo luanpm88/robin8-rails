@@ -6,7 +6,18 @@ class KolsController < ApplicationController
   end
 
   def get_score
-    render :json => current_kol.all_score
+    total = 0
+    CampaignInvite.where(kol_id: current_kol.id, status: 'finished').each do |x|
+      click = x.avail_click
+      per_click = x.campaign.per_click_budget
+      total += per_click * click
+    end
+
+    render :json => current_kol.all_score.merge({
+      :upcoming => CampaignInvite.where(kol_id: current_kol.id, status: 'running').count,
+      :completed => CampaignInvite.where(kol_id: current_kol.id, status: 'finished').count,
+      :total_income => total
+    })
   end
 
   def create

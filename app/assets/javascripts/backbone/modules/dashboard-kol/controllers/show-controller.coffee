@@ -12,22 +12,27 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
 
   Show.CustomController = {
-    showInfluencesAndDiscovers: (influenceRegion, discoverRegion, userId) ->
-      parentThis = @
+    showInfluences: (influenceRegion)->
+
+      socialList = new Robin.Collections.Identities
+      influences_view = new Show.Influence
+        collection: socialList
+      socialList.fetch
+        success: (collection, res, opts) =>
+          influenceRegion.show(influences_view)
+
+    showPersonalInfo: (personalRegion) ->
       $.ajax
-        type: "get"
-        url: '/kols/get_score',
-        dataType: 'json',
+        type: 'get'
+        url: '/kols/get_score'
+        dataType: 'json'
         success: (data) ->
-          parentThis.showDiscover(discoverRegion, userId)
-          socialList = new Robin.Collections.Identities
-          influences_view = new Show.Influence
-            collection: socialList
+          personalInfo = new Show.PersonalInfo
             score_data: data
-          socialList.fetch
-            success: (collection, res, opts) =>
-              influenceRegion.show(influences_view)
-        error: (xhr, textStatus) ->
+          personalRegion.show personalInfo
+
+    showDiscovers: (discoverRegion, userId)->
+      @showDiscover discoverRegion, userId
 
     appendMoreDiscovers: (region) ->
       el = region.$el
