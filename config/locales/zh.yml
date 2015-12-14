@@ -1348,6 +1348,8 @@ zh:
         pitch: "投递"
         start: "开始"
         targets: "目标"
+        back: 返回
+        new: 新建
       new_campaign: "新建活动"
       next: "下一页"
       replicate: 重启活动
@@ -1467,6 +1469,7 @@ zh:
         campaign_message: 留言
         enter_url: 活动链接
         save: 保存
+        create_campaign: 您已成功创建一个活动
 
       status: "状态"
       success_ask_invite: Your request has been sent
