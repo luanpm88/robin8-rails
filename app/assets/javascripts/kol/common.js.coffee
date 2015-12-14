@@ -21,6 +21,7 @@ $(document).ready ->
       $(this).closest(".section").find('input[type="text"]').val('')
       $(this).closest(".section").find("i").css("display","none")
     $(this).closest(".section").find('input[type="checkbox"]').checkboxX('refresh')
+    $(this).closest(".section").find("input[type='checkbox']").trigger('change')
 
 # 关闭某项 输入
   $("body").on "change", ".row .price-item", (e) ->
@@ -36,6 +37,7 @@ $(document).ready ->
     if val
       $(this).closest(".row").find("input[type='checkbox']").attr("value",1)
       $(this).closest(".row").find("input[type='checkbox']").checkboxX('refresh')
+      $(this).closest(".row").find("input[type='checkbox']").trigger('change')
 
   # resend confirmation mail
   $('#resend-confirmation-mail').on 'click', (e) ->
