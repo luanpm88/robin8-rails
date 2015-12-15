@@ -58,8 +58,8 @@
 
         <% if(status=='approved' && !Robin.mobileRequest){ %>
           <div>
-            微信分享： 请打开微信扫一扫即可分享
-            <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + id  %>'/>
+            打开微信扫一扫即可分享
+            <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + campaign_invite_id  %>'/>
           </div>
         <% } %>
 

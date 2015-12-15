@@ -1,5 +1,6 @@
 class CampaignShowController < ApplicationController
   skip_before_action  :only => [:show, :share]
+  layout 'website'
 
   def show
     campaign_id = JSON.parse(Base64.decode64(params[:uuid]))['campaign_id']     rescue nil

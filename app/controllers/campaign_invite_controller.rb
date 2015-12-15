@@ -73,14 +73,15 @@ class CampaignInviteController < ApplicationController
     # !!! Refactor later
 
     new_array = []
-    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0)
+    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).order('created_at desc')
     campaign_invites_by_limit_and_offset.each do |x|
       obj = x.campaign.attributes
+      obj['campaign_invite_id'] = x.id
       obj['status'] = x.status
       obj['url'] = x.share_url
       obj['avail_click'] = x.get_avail_click
-      avatar_url = x.campaign.user.avatar_url
-      obj['avatar_url'] = avatar_url ? avatar_url : ActionController::Base.helpers.asset_path('noavatar.jpg')
+      img_url = x.campaign.img_url
+      obj['avatar_url'] = img_url ? img_url : ActionController::Base.helpers.asset_path('noavatar.jpg')
       new_array << obj
     end
 
