@@ -1268,7 +1268,7 @@ zh:
       add_money: "添加"
       approved: "批准"
       back: "背部"
-      budget: "已扣/预算"
+      budget: "预算"
       replicate: "重启活动"
       budget_must_number: "预算必须是数字，并且只包含数字"
       budget_required: The budget is required
@@ -1290,6 +1290,8 @@ zh:
       share: "分享次数"
       click: "点击次数"
       cost: "已扣/预算"
+      balance: "余额: ￥"
+      recharge: "充值"
       created: "创建日期 "
       deadline: "结束日期"
       decline_date: Decline date

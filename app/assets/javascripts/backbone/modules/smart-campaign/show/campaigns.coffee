@@ -43,7 +43,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     showEditCampaign: (e) ->
       id = e.target.attributes["campaign"].value
       campaign = new Robin.Models.Campaign { id: id }
-      console.log(campaign)
       campaign.fetch
         success: (m, r, o) ->
           page = new Robin.SmartCampaign.Show.NewCampaign
