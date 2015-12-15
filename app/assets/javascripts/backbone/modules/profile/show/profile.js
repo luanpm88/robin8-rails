@@ -324,7 +324,6 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
               Robin.currentKOL.attributes.current_password = "";
             }
 
-            Robin.layouts.main.onShow();
             $.growl({message: polyglot.t('profile.account_changed')
             },{
               element: '#growler-alert',
@@ -336,6 +335,8 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
                 align: "right"
               },
             });
+            Backbone.history.navigate('#smart_campaign')
+            Robin.module("SmartCampaign").start();
           },
           error: function(userSession, response) {
             viewObj.processErrors(response);

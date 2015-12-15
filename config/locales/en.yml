@@ -1339,6 +1339,8 @@ en:
       share: Shared by
       click: Clicks
       cost: Spent/Bucket
+      balance: "Balance: ￥"
+      recharge: "Recharge"
       created: Created
       deadline: Deadline
       decline_date: Decline date
