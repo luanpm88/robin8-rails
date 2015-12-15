@@ -36,6 +36,52 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @initDatepicker()
       _.defer =>
         @initFormValidation()
+        uploader = Qiniu.uploader(
+          runtimes: 'html5,flash,html4'
+          browse_button: 'img-url-pick'
+          uptoken_url: '/users/qiniu_uptoken'
+          unique_names: true
+          domain: '7xozqe.com1.z0.glb.clouddn.com'
+          container: 'img-url-container'
+          max_file_size: '100mb'
+          flash_swf_url: 'js/plupload/Moxie.swf'
+          max_retries: 3
+          dragdrop: true
+          drop_element: 'img-url-container'
+          chunk_size: '4mb'
+          auto_start: true
+          filters: mime_types: [ {
+            title: 'Image files'
+            extensions: 'jpg,jpeg,gif,png'
+          } ]
+          init:
+            'FilesAdded': (up, files) ->
+              plupload.each files, (file) ->
+                # 文件添加进队列后,处理相关的事情
+                return
+              return
+            'BeforeUpload': (up, file) ->
+              # 每个文件上传前,处理相关的事情
+              return
+            'UploadProgress': (up, file) ->
+              # 每个文件上传时,处理相关的事情
+              return
+            'FileUploaded': (up, file, info) ->
+              domain = up.getOption('domain')
+              res = jQuery.parseJSON(info)
+              imageView2 = '?imageView2/0/w/200/h/200/interlace/1'
+              sourceLink = 'http://' + domain + '/' + res.key + imageView2
+              $('#campaign-image').attr 'src', sourceLink
+              $('input[name=img_url]').val sourceLink
+              #获取上传成功后的文件的Url
+              return
+            'Error': (up, err, errTip) ->
+              #上传出错时,处理相关的事情
+              return
+            'UploadComplete': ->
+              #队列文件处理完毕后,处理相关的事情
+              return
+        )
 
     initFormValidation: ->
       @ui.form.formValidation(
@@ -153,6 +199,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     createCampagin: ->
       this.model.attributes.deadline = $(".campaign_deadline_input").val()
       this.model.attributes.start_time = $(".campaign_start_time_input").val()
+      this.model.attributes.img_url = $('input[name=img_url]').val()
       @ui.form.data("formValidation").validate()
 
       this.model.save this.model.attributes,

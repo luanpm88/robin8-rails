@@ -160,7 +160,7 @@ class CampaignController < ApplicationController
       return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
 
-    campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :start_time, :deadline, :message))
+    campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :start_time, :deadline, :message, :img_url))
     campaign.user = current_user
     campaign.status = "unexecute"
     campaign.deadline = params[:campaign][:deadline].to_datetime - 8.hours
