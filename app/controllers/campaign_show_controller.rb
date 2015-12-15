@@ -1,5 +1,5 @@
 class CampaignShowController < ApplicationController
-  skip_before_action :show
+  skip_before_action  :only => [:show, :share]
 
   def show
     campaign_id = JSON.parse(Base64.decode64(params[:uuid]))['campaign_id']     rescue nil
@@ -14,6 +14,12 @@ class CampaignShowController < ApplicationController
       render :text => "你访问的Campaign 不存在"
     end
 
+  end
+
+  def share
+    @campaign_invite = CampaignInvite.find_by :id => params[:id]   rescue nil
+    @campaign = @campaign_invite.campaign  rescue nil     if @campaign_invite
+    render :text => '你访问的Campaign 不存在'          if @campaign.blank?
   end
 
 

@@ -1,0 +1,29 @@
+<%= javascript_include_tag "http://res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
+<% sign_package = $weixin_client.get_jssign_package(request.url) rescue {} %>
+<script type="text/javascript">
+  wx.config({
+    debug: false,
+    appId: "<%= sign_package['appId'] %>",
+    timestamp: "<%= sign_package['timestamp'] %>",
+    nonceStr: "<%= sign_package['nonceStr'] %>",
+    signature: "<%= sign_package['signature'] %>",
+    jsApiList: [
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage',
+      'onMenuShareQQ',
+      'onMenuShareWeibo'
+    ]
+  }) ;
+  wx.ready(function () {
+    var info = {
+      title: "<%= raw @campaign.name %>",
+      desc: "<%= raw @campaign.description %>",
+      link: "<%= raw @campaign_invite.share_url %>",
+      imgUrl: "<%= @campaign.user.avatar_url %>"
+    };
+
+    wx.onMenuShareAppMessage(info);
+    wx.onMenuShareTimeline(info);
+    wx.onMenuShareQQ(info);
+  });
+</script>
