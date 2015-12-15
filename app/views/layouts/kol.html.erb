@@ -49,6 +49,7 @@
       Robin.chinaLocale = <%= china_locale? %>;
       Robin.chinaRequest = <%= china_request? %>;
       Robin.mobileRequest = <%= mobile_request? %>;
+      Robin.domain = '<%= Rails.application.secrets.domain %>';
       Robin.start();
     });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
