@@ -200,6 +200,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       this.model.attributes.deadline = $(".campaign_deadline_input").val()
       this.model.attributes.start_time = $(".campaign_start_time_input").val()
       this.model.attributes.img_url = $('input[name=img_url]').val()
+      this.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
+      this.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
 
       this.model.save this.model.attributes,
