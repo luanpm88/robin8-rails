@@ -3,70 +3,69 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><%= name %></h4>
+        <h4 class="modal-title" id="myModalLabel"><%= item.name %></h4>
       </div>
       <div class="modal-body">
         <h5>活动详情: </h5>
 
         <p>
           <i class='glyphicon glyphicon-exclamation-sign'></i> 接受状态：
-          <% if(status=='running'){ %>
+          <% if(item.status=='running'){ %>
             未接受
-          <% }else if(status=='approved'){ %>
+          <% }else if(item.status=='approved'){ %>
             已接受
           <% }else{ %>
             已完成
           <% } %>
         </p>
-        <% var start = new Date(start_time);var end = new Date(deadline); %>
         <p>
-          <i class='glyphicon glyphicon-time'></i> 开始时间： <%= start.getFullYear() %>/<%= start.getMonth() %>/<%= start.getDate() %>
+          <i class='glyphicon glyphicon-time'></i> 开始时间：  <%= start_at %>
         </p>
 
         <p>
-          <i class='glyphicon glyphicon-time'></i> 结束时间： <%= end.getFullYear() %>/<%= end.getMonth() %>/<%= end.getDate() %>
+          <i class='glyphicon glyphicon-time'></i> 结束时间： <%= end_at %>
         </p>
 
         <p>
-          <i class='glyphicon glyphicon-hand-up'></i> 当前有效点击： <%= avail_click %>
+          <i class='glyphicon glyphicon-hand-up'></i> 当前有效点击： <%= item.avail_click %>
         </p>
 
         <p>
-          <i class='glyphicon glyphicon-info-sign'></i> 有效点击单价： <%= per_click_budget %>
+          <i class='glyphicon glyphicon-info-sign'></i> 有效点击单价： <%= item.per_click_budget %>
         </p>
 
         <p>
-          <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： <%= avail_click * per_click_budget %>
+          <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： <%= item.avail_click * item.per_click_budget %>
         </p>
 
-        <textarea class="form-control disabled"  id='descAndUrl'><%= description %> <%= url %></textarea>
+        <textarea class="form-control disabled"  id='descAndUrl'><%= item.description %> <%= item.url %></textarea>
         <br />
         <button class='task-modal-btn' data-clipboard-action="copy" data-clipboard-target="#descAndUrl">复制到剪切板</button>
 
         <h6>来自品牌的消息：</h6>
         <p>
-          <%= message %>
+          <%= item.message %>
         </p>
 
         <hr>
 
         <p>
-          <% if(status=='running'){ %>
+          <% if(item.status=='running'){ %>
             注意：请点击「接受」按钮接受这次活动
           <% } %>
         </p>
 
-        <% if(status=='approved' && !Robin.mobileRequest){ %>
+        <% if(item.status=='approved' && !Robin.mobileRequest){ %>
           <div>
             打开微信扫一扫即可分享
-            <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + campaign_invite_id  %>'/>
+            <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + item.campaign_invite_id  %>'/>
           </div>
         <% } %>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <% if(status=='running') { %>
+        <% if(item.status=='running') { %>
           <a class='triggerMark btn btn-primary'><i class='glyphicon glyphicon-ok'></i>&nbsp;接受</a>
         <% } %>
       </div>
