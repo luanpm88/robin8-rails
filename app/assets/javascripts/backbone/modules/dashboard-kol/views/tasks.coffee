@@ -85,6 +85,21 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/dashboard-kol/templates/default-dashboard/task-item'
     tagName: 'li'
 
+    initialize: (opts) ->
+      console.log 'from model: ', @model
+
+    serializeData: () ->
+      item: @model.toJSON()
+      start_at: @format_date(@model.get('start_time'))
+      end_at: @format_date(@model.get('deadline'))
+
+    format_date: (date) ->
+      dateObj = new Date date
+      year = dateObj.getFullYear()
+      month = dateObj.getMonth() + 1
+      day = dateObj.getDate()
+      formated_date = year + '年' + month + '月' + day + '日'
+
   Show.Tasks = Backbone.Marionette.CollectionView.extend
     childView: Show.Task
     childViewContainer: 'ul'
@@ -94,6 +109,22 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     events:
       'click .triggerMark': 'markAsRunning'
+
+    initialize: (opts) ->
+      @model = opts.model
+
+    serializeData: () ->
+      item: @model.toJSON()
+      start_at: @format_date(@model.get('start_time'))
+      end_at: @format_date(@model.get('deadline'))
+
+    format_date: (date) ->
+      dateObj = new Date date
+      year = dateObj.getFullYear()
+      month = dateObj.getMonth() + 1
+      day = dateObj.getDate()
+
+      formated_date = year + '年' + month + '月' + day + '日'
 
     markAsRunning: (e) ->
       e.preventDefault()
