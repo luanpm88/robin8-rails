@@ -1,5 +1,11 @@
 ActiveAdmin.register Campaign do
 
+  controller do
+    def scoped_collection
+      Campaign.includes(:user)
+    end
+  end
+
   permit_params :name, :budget, :start_time, :deadline
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -44,4 +50,8 @@ ActiveAdmin.register Campaign do
     end
     f.actions
   end
+
+  filter :name
+  filter :user_name_cont, :as => :string,  label: 'advertiser name'
+  filter :user_email_cont, :as => :string,  label: 'advertiser email'
 end
