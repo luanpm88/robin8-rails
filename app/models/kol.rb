@@ -18,8 +18,13 @@ class Kol < ActiveRecord::Base
   has_many :kol_profile_screens
   has_many :interested_campaigns
 
+  def email_required?
+    false if self.provider != "signup"
+  end
 
-  validates :mobile_number, uniqueness: true
+  def password_required?
+    false if self.provider != "signup"
+  end
 
   GENDERS = {
     :NONE => 0,
@@ -53,7 +58,7 @@ class Kol < ActiveRecord::Base
   validates_with EmailValidator
 
   def self.check_mobile_number mobile_number
-    return Kol.where("mobile_number" => mobile_number).present?
+    return Kol.where("mobile_number" => mobile_number).present? if self.provider == "signup"
   end
 
   def active

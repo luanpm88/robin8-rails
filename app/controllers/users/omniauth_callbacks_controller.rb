@@ -92,8 +92,7 @@ module Users
             cookies[:kol_signin] = "yeah"
           end
         else
-          Rails.cache.write("auth_params", params, expires_in: 30.minute)
-          return redirect_to kols_new_path(auth_params: true)
+          return redirect_to create_kol_path(auth_params: params)
         end
       else
         @identity = Identity.find_for_oauth(params, origin_auth, current_kol)

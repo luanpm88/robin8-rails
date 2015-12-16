@@ -52,6 +52,17 @@ class KolsController < ApplicationController
     end
   end
 
+  def create_kol
+    auth_params = params[:auth_params]
+    @kol = Kol.new({provider: auth_params[:provider], uid: auth_params[:uid]})
+    @kol.country = 'China' if china_instance?
+    @kol.identities.build(auth_params.to_hash)
+    @kol.save
+    sign_in @kol
+    return redirect_to root_path
+  end
+
+
   def resend_confirmation_mail
     @kol = current_kol
 
