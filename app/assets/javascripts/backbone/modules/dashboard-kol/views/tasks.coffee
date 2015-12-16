@@ -64,6 +64,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @ui.loading.show()
       @ui.noMore.hide()
       @ui.loadMore.show()
+      $('span.badge').remove()
       Show.CustomController.switchCampaignsTabTo target, @getRegion('currentTab'), @ui.loading
 
     showTabFor: (target) ->
@@ -105,6 +106,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             console.log data
             parentThis.model.collection.remove parentThis.model
             $('#taskModal').modal('hide')
+            $('a#running').append('<span class="badge">1</span>')
 
     onShow: () ->
       $('#taskModal').modal()
