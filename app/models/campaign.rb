@@ -51,7 +51,7 @@ class Campaign < ActiveRecord::Base
         invite.status = 'pending'
         invite.campaign_id = self.id
         invite.kol_id = kol.id
-        uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json)
+        uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json).gsub("\n","")
         invite.uuid = uuid
         invite.share_url = CampaignInvite.generate_share_url(uuid)
         invite.save!
