@@ -10,35 +10,23 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         collection: campaigns
       campaigns.fetch
         success: (c, r, o) ->
-          console.log "----success"
-          page.showChildView 'campaigns', campaigns_view
         error: (e)->
-          console.log "----erorr"
           console.log e
 
-
-#      kols = new Robin.Collections.PrivateKols()
-#      kols_view = new Show.KolsView
-#        collection: kols
-#      kols.fetch
-#        success: (c, r, o) ->
-#          kolsPage.showChildView 'influencersRegion', kols_view
-#
-#      kols_list = new Robin.Collections.KolsLists()
-#      kols_list_view = new Show.KolsList
-#        collection: kols_list
-#      kols_list.fetch
-#        success: (c, r, o) ->
-#          kolsPage.showChildView 'influencersListRegion', kols_list_view
-#
-#      kolsPage = new Show.Kols
-#      page.showChildView 'kols', kolsPage
 
     showNewCampaign: (tab) ->
       s = if tab? then tab else 'start'
       page = new Show.NewCampaign
         state: s
       Robin.layouts.main.content.show page
+
+    statsCampaign: (id) ->
+      campaign = new Robin.Models.Campaign { id: id }
+      campaign.fetch
+        success: (m, r, o) ->
+          page = new Show.StatsCampaign
+            model: m
+          Robin.layouts.main.content.show page
 
     showCampaign: (id) ->
       campaign = new Robin.Models.Campaign { id: id }

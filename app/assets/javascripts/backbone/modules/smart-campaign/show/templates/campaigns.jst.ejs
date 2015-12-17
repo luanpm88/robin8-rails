@@ -18,7 +18,7 @@
       <tbody>
         <% _.each(items, function(c) { %>
           <tr data-id="<%= c.id %>">
-            <td class="middle col-md-3"><%= c.name %></td>
+            <td class="middle col-md-3 stats"><a href="/#smart_campaign/stats/<%= c.id %>"><%= c.name %></a></td>
             <td class="middle col-md-1"><%= c.status %></td>
             <td class="middle col-md-1"><%= c.get_share_time %></td>
             <td class="middle col-md-1"><%= c.get_avail_click %></td>

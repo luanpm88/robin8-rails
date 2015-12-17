@@ -1,0 +1,73 @@
+<section class="content" style="margin-left: 10%">
+  <h5><%= name %> 详情</h5>
+  <!-- COLOR PALETTE -->
+  <div class="box box-default color-palette-box">
+    <div class="box-header with-border">
+      <h3 class="box-title"><i class="fa fa-tag"></i> Campaign基本信息</h3>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="name">开始日期</div>
+          <div class="value"><%= start_time %></div>
+        </div>
+        <div class="col-md-5">
+          <div class="name">结束日期</div>
+          <div class="value"><%= deadline %></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="name">总预算</div>
+          <div class="value"><%= budget %></div>
+        </div>
+        <div class="col-md-5">
+          <div class="name">有效点击数</div>
+          <div class="value"><%= avail_click %></div>
+        </div>
+      </div>
+      <div class="row">
+        </div> <div class="col-md-5">
+          <div class="name">总计点击数</div>
+          <div class="value"><%= total_click %></div>
+        </div>
+
+        <div class="col-md-5">
+          <div class="name">当前状态</div>
+          <div class="value"><%= status %></div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="name">推广链接</div>
+          <div class="value"><%= url %></div>
+        </div>
+        <div class="col-md-5">
+          <div class="name">活动头像</div>
+          <div class="value"><img src='<%= img_url %>'></div>
+        </div>
+      </div>
+    </div>
+    <!-- /.box-body -->
+  </div>
+
+  <div class="box box-default color-palette-box">
+    <div class="box-header with-border">
+      <h5 class="box-title"><i class="fa fa-tag"></i> 日点击统计</h5>
+    </div>
+    <div class="box-body day-stats">
+      <div id="day_stats" style="height: 300px;width: 600px"></div>
+    </div>
+    <!-- /.row -->
+  </div>
+
+  <div class="box box-default color-palette-box">
+    <div class="box-header with-border">
+      <h5 class="box-title"><i class="fa fa-tag"></i> KOL 推广详情</h5>
+    </div>
+    <div class="box-body" id="kol-list">
+
+    </div>
+  </div>
+</section>
