@@ -142,6 +142,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               model: parentThis.model
             updatedViewHtml = updatedView.render().$el
             parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+            $('.triggerMark').remove()
 
     onShow: () ->
       $('#taskModal').modal()
