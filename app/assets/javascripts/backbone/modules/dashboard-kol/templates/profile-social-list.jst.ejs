@@ -35,9 +35,11 @@
         <div class="item-value"><span class="glyphicon glyphicon-ok"></span> </div>
       </div>
       <div class="item operate">
-        <div class="item-name">
-          <a href="javascript:void(0)" class="delete-account" id='<%= item.id %>'><span class="glyphicon glyphicon-trash"></span></a>
-        </div>
+        <% if (item.can_delete) { %>
+          <div class="item-name">
+            <a href="javascript:void(0)" class="delete-account" id='<%= item.id %>'><span class="glyphicon glyphicon-trash"></span></a>
+          </div>
+        <% } %>
         <div class="item-value">
           <a href="javascript:void(0)" class="edit-account btn btn-primary btn-sm"  id='<%= item.id %>'><%= polyglot.t('dashboard_kol.profile_tab.edit') %></a>
         </div>

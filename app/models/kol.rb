@@ -18,8 +18,13 @@ class Kol < ActiveRecord::Base
   has_many :kol_profile_screens
   has_many :interested_campaigns
 
+  def email_required?
+    false if self.provider != "signup"
+  end
 
-  validates :mobile_number, uniqueness: true
+  def password_required?
+    false if self.provider != "signup"
+  end
 
   GENDERS = {
     :NONE => 0,
