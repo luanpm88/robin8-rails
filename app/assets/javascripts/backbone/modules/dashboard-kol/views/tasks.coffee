@@ -136,8 +136,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           success: (data) ->
             console.log data
             parentThis.model.collection.remove parentThis.model
-            $('#taskModal').modal('hide')
             $('a#running').append('<span class="badge">1</span>')
+            parentThis.model.set('status', 'approved')
+            updatedView = new Show.TaskModal
+              model: parentThis.model
+            updatedViewHtml = updatedView.render().$el
+            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
 
     onShow: () ->
       $('#taskModal').modal()
