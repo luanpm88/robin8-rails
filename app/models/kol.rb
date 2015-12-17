@@ -58,7 +58,7 @@ class Kol < ActiveRecord::Base
   validates_with EmailValidator
 
   def self.check_mobile_number mobile_number
-    return Kol.where("mobile_number" => mobile_number).present? if self.provider == "signup"
+    return Kol.where("mobile_number" => mobile_number).present?
   end
 
   def active
