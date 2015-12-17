@@ -1287,6 +1287,9 @@ zh:
       content_type: Content Type
       name: "活动名称"
       status: "状态"
+      unexecute: "未执行"
+      executing: "执行中"
+      executed: "已执行"
       share: "分享次数"
       click: "点击次数"
       cost: "已扣/预算"

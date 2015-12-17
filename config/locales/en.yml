@@ -1336,6 +1336,9 @@ en:
       content_type: Content Type
       name: Campain name
       status: Status
+      unexecute: "unexecute"
+      executing: "executing"
+      executed: "executed"
       share: Shared by
       click: Clicks
       cost: Spent/Bucket
