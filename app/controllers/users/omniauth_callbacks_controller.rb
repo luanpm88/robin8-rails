@@ -92,7 +92,7 @@ module Users
             cookies[:kol_signin] = "yeah"
           end
         else
-          return redirect_to create_kol_path(auth_params: params)
+          return redirect_to create_kol_from_social_account_path(auth_params: params)
         end
       else
         @identity = Identity.find_for_oauth(params, origin_auth, current_kol)

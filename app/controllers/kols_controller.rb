@@ -52,7 +52,7 @@ class KolsController < ApplicationController
     end
   end
 
-  def create_kol
+  def create_kol_from_social_account
     auth_params = params[:auth_params]
     @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider], uid: auth_params[:uid]})
     @kol.country = 'China' if china_instance?
