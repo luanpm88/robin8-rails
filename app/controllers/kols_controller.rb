@@ -54,7 +54,7 @@ class KolsController < ApplicationController
 
   def create_kol_from_social_account
     auth_params = params[:auth_params]
-    @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider], uid: auth_params[:uid]})
+    @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider]})
     @kol.country = 'China' if china_instance?
     @identity = @kol.identities.build(auth_params.to_hash)
     @identity.can_delete = false
