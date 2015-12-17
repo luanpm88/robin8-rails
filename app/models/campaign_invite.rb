@@ -17,13 +17,12 @@ class CampaignInvite < ActiveRecord::Base
     status == 'finished' ? self.avail_click : self.redis_avail_click.value
   end
 
+  def self.origin_share_url(uuid)
+    "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"          rescue nil
+  end
+
   def self.generate_share_url(uuid)
-    Rails.logger.error "-----enter generate share url"
-    origin_url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"
-    return origin_url
-    # url = ShortUrl.convert origin_url
-    # Rails.logger.error "-----end generate share url --- #{url}"
-    # return url
+    ShortUrl.convert origin_share_url(uuid)
   end
 
   def add_click(valid)

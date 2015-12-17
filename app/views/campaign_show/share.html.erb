@@ -23,7 +23,7 @@
     var info = {
       title: "<%= raw @campaign.name %>",
       desc: "<%= raw @campaign.description %>",
-      link: "<%= @campaign_invite.share_url %>",
+      link: "<%= CampaignInvite.origin_share_url(@campaign_invite.uuid) %>",
       imgUrl: "<%= @campaign.user.avatar_url %>"
     };
 
