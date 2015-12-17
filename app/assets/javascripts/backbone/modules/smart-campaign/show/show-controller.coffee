@@ -10,6 +10,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
         collection: campaigns
       campaigns.fetch
         success: (c, r, o) ->
+          page.showChildView 'campaigns', campaigns_view
         error: (e)->
           console.log e
 
