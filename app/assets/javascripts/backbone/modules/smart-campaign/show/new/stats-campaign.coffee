@@ -2,6 +2,20 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
   Show.StatsCampaign = Backbone.Marionette.LayoutView.extend
     template: 'modules/smart-campaign/show/templates/stats-campaign'
 
+    templateHelpers:
+      formatDate: (d) ->
+        date = new Date d
+        monthNum = parseInt(date.getMonth()) + 1
+        d = date.getDate()
+        y = date.getFullYear()
+        month =  monthNum
+        h = date.getHours();
+        m = date.getMinutes();
+        "#{y}-#{month}-#{d} #{h}:#{m}"
+      timestamp: (d) ->
+        date = new Date d
+        date.getTime()
+
     regions:
       content: "#campaign-content"
       analyticsRegion: '#analytics-campaign-text'
@@ -47,6 +61,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initStatsChat: (label, total_clicks, avail_clicks) ->
       option = {
+        title : {
+          text: '',
+          subtext: ''
+        },
         tooltip : {
           trigger: 'axis'
         },
@@ -66,22 +84,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         ],
         yAxis : [
           {
-            type : '次数'
+            type : '次数',
           }
         ],
         series : [
           {
             name:'总点击',
             type:'line',
-            stack: '点击',
             data: total_clicks
+
           },
           {
             name:'有效点击',
             type:'line',
-            stack: '点击',
-            data: avail_clicks
-          },
+            data:avail_clicks,
+          }
         ]
       };
       @statsChart.setOption(option)

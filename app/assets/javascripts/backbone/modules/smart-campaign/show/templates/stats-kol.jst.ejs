@@ -11,7 +11,7 @@
     <tbody>
     <% _.each(items, function(c) { %>
     <tr data-id="<%= c.id %>">
-      <td class="middle col-md-1"><%= c.kol.first_name + " " + c.kol.last_name %></td>
+      <td class="middle col-md-1"><%= c.kol.first_name %> &nbsp; &nbsp; <%= c.kol.last_name %></td>
       <td class="middle col-md-1"><%= c.get_avail_click %></td>
       <td class="middle col-md-1"><%= c.get_total_click %></td>
       <td class="middle col-md-1"><%= formatDate(c.approved_at) %></td>
