@@ -215,6 +215,8 @@ Rails.application.routes.draw do
   post 'campaign/get_counter', to: 'campaign#get_counter'
   post 'campaign/:id/article/:article_id/approve_request', to: 'campaign#approve_request'
   post 'campaign/test_email', to: 'campaign#test_email'
+  get  'campaign/:id/day_stats', to: 'campaign#day_stats'
+  get  'campaign/:id/kol_list', to: 'campaign#kol_list'
   resources :campaign_invite, only: [:index, :create, :show, :update]
   post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
   resources :kols_lists, only: [:index, :create, :show, :update]

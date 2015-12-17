@@ -207,6 +207,21 @@ class CampaignController < ApplicationController
     render json: {'characters_count' => characters_count, 'words_count' => words_count, 'sentences_count' => sentences_count, 'paragraphs_count' => paragraphs_count, 'nouns_count' => nouns_count, 'adjectives_count' => adjectives_count, 'adverbs_count' => adverbs_count, 'organizations_count' => organizations_count, 'places_count' => places_count, 'people_count' => people_count}
   end
 
+  def day_stats
+    campaign = Campaign.find params[:id]
+    return render :json => {:result => 'error', :msg => 'campaign not found'}     if !campaign
+    return render :json => {:result => 'error', :msg => 'campaign not start'}     if campaign.status == 'unexecue'
+    stats = campaign.get_stats
+    render :json => stats
+  end
+
+  def kol_list
+    campaign = Campaign.find params[:id]
+    return render :json => {:result => 'error', :msg => 'campaign not found'}     if !campaign
+    return render :json => {:result => 'error', :msg => 'campaign not start'}     if campaign.status == 'unexecue'
+    render :json => campaign.approved_invites.to_json({:methods => [:get_avail_click], :include => :kol  })
+  end
+
   def test_email
     KolMailer.delay.send_invite(params[:email_address], params[:emails], params[:email_subject], params[:email_pitch])
     render json: {:status => :ok}

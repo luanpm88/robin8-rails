@@ -1,5 +1,9 @@
 class CampaignShow < ActiveRecord::Base
   CookieTimeout = Rails.env.production? ? 30.minutes : 30.seconds
+
+  scope :valid, ->{ where(:status => 1) }
+  scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
+
   # 检查 campaign status
   def self.is_valid?(campaign_invite, uuid, visitor_cookies)
     #check status

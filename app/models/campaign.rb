@@ -9,6 +9,7 @@ class Campaign < ActiveRecord::Base
   has_many :approved_invites, -> {where(:status => 'approved')}, :class_name => 'CampaignInvite'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
+  has_many :campaign_shows
   has_many :kols, through: :campaign_invites
   has_many :weibo_invites
   has_many :weibo, through: :weibo_invites
@@ -22,11 +23,28 @@ class Campaign < ActiveRecord::Base
 
   after_create :create_job
 
-  # def self.get(id)
-  #   Rails.cache.fetch("campaign-#{id}"){
-  #     Campaign.where(:id => id).first
-  #   }
-  # end
+  def get_stats
+    end_time = status == 'executed' ? self.deadline : Time.now
+    shows = campaign_shows
+    labels = []
+    total_clicks = []
+    avail_clicks = []
+    (start_time.to_date..end_time.to_date).each do |date|
+      labels << date.to_s
+      total_clicks << shows.by_date(date.to_datetime).count
+      avail_clicks << shows.valid.by_date(date.to_datetime).count
+    end
+    [labels, total_clicks, avail_clicks]
+  end
+
+  #统计信息
+  def get_total_by_day
+    self.campaign_shows.group("date_format(created_at, 'YYYY-MM-DD') ").select(" date_format(created_at, 'YYYY-MM-DD') as created, count(*) as count ")
+  end
+
+  def get_valid_by_day
+    self.campaign_shows.valid.group("date_format(created_at, 'YYYY-MM-DD') ").select(" date_format(created_at, 'YYYY-MM-DD') as created, count(*) as count ")
+  end
 
 
   def get_avail_click

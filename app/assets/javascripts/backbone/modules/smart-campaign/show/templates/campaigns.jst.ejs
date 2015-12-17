@@ -18,7 +18,7 @@
       <tbody>
         <% _.each(items, function(c) { %>
           <tr data-id="<%= c.id %>">
-            <td class="middle col-md-3"><%= c.name %></td>
+            <td class="middle col-md-3 stats"><a href="/#smart_campaign/stats/<%= c.id %>"><%= c.name %></a></td>
             <% if (c.status == 'unexecute') { %>
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.unexecute') %></td>
             <% } else if (c.status == 'executing') { %>

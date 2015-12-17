@@ -6,6 +6,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     ui:
       table: "#campaigns-table"
 
+
     events:
       "click #copy_campaign": "showEditCampaign"
 
