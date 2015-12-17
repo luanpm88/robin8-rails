@@ -35,7 +35,7 @@
         <div class="item-value"><span class="glyphicon glyphicon-ok"></span> </div>
       </div>
       <div class="item operate">
-        <% if (item.can_delete) { %>
+        <% if (item.uid != Robin.currentKOL.attributes.social_uid) { %>
           <div class="item-name">
             <a href="javascript:void(0)" class="delete-account" id='<%= item.id %>'><span class="glyphicon glyphicon-trash"></span></a>
           </div>

@@ -57,7 +57,6 @@ class KolsController < ApplicationController
     @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider], social_uid: auth_params[:uid]})
     @kol.country = 'China' if china_instance?
     @identity = @kol.identities.build(auth_params.to_hash)
-    @identity.can_delete = false
     @kol.save
     sign_in @kol
     return redirect_to root_path
