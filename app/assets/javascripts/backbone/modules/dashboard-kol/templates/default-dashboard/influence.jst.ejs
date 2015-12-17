@@ -1,7 +1,7 @@
 <div class="clearfix">
   <div class="personalInfo owoPanel commonPanel">
     <div class="owoPanelHeader">
-      <h3>Personal Info</h3>
+      <h3><%= polyglot.t('dashboard_kol.default.personal_info') %></h3>
     </div>
     <div class="personalBody owoPanelBody clearfix">
       <div class="personalData">
@@ -10,22 +10,21 @@
             <img src="<%= AppAssets.path('dashboard-icon1.png') %>" alt="" />
             <span>0</span>
             <p>
-              Upcoming Campaigns
+              <%= polyglot.t('dashboard_kol.default.upcoming_campaigns') %>
             </p>
           </li>
           <li class='clearfix'>
             <img src="<%= AppAssets.path('dashboard-icon2.png') %>" alt="" />
             <span>0</span>
             <p>
-              Completed Campaigns
+              <%= polyglot.t('dashboard_kol.default.completed_campaigns') %>
             </p>
           </li>
           <li class='clearfix'>
-            <img src="<%= AppAssets.path('dashboard-icon3.png') %>" alt="" />
+            <img src="<%= AppAssets.path('yuan.png') %>" alt="" />
             <span>0</span>
             <p>
-              Total <br>
-              Income
+              <%= polyglot.t('dashboard_kol.default.total_income') %>
             </p>
           </li>
         </ul>
@@ -33,7 +32,7 @@
 
       <div class="personalCompletion">
         <div class="completion-title">
-          <span style="font-size: 18px ">Profile Completeness</span>
+          <span style="font-size: 18px "><%= polyglot.t('dashboard_kol.default.profile_completion') %></span>
           <span style="font-size: 22px;margin-left: 10px "><%= score_data.total %></span>
         </div>
         <% _.each(score_data, function(value, key) { %>
@@ -72,11 +71,11 @@
 
   <div class="influenceContainer owoPanel commonPanel">
     <div class="influence-header owoPanelHeader">
-      <h3>Social Influence</h3>
+      <h3><%= polyglot.t('dashboard_kol.default.social_influence') %></h3>
       <% if(items.length > 0){ %>
         <div class="btn-group influence-dropdown">
           <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class='glyphicon glyphicon-align-justify'></i>&nbsp;Switch Social Account <span class="caret"></span>
+            <i class='glyphicon glyphicon-align-justify'></i>&nbsp;<%= polyglot.t('dashboard_kol.default.switch_social_account') %><span class="caret"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
             <% _.each(items, function(item) { %>
@@ -91,6 +90,7 @@
     <div class="influence-item-container">
       <div class="influence-item">
 
+        <img src="<%= AppAssets.path('loaders/puff.svg') %>" style='display: block;margin: 0 auto;'>
       </div>
     </div>
   </div>

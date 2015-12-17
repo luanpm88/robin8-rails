@@ -219,7 +219,8 @@ zh:
       personal_wechat: 个人微信
       public_wechat: 公众微信
       weibo: 微博
-      wechat-third: 微信公众号
+      wechat_third: 微信公众号
+      new_feature_coming: 智能交易市场即将到来，敬请期待！
     about:
       text: "<p>Miranda Tan，Robin8创办人及首席执行官，在1999年创立了第一个PR公司，ExcitePR。她意识到企业提供令人惊叹的产品，同时不断产生了同样的问题：他们如何能够接触正确的意见领袖为实现他们的信息效益最大化。</p>
         \     <p>Miranda的答案是直观的，易于使用的，她于2007年与合作伙伴，数字媒体专家Hassan Miah成立自主化的PR软件平台。到2010年，这个PR软件平台已被评为百强OnDemand的软件公司，100强中大西洋私人公司，并且被AlwaysOn评为100强OnMedia企业。</p>
@@ -376,13 +377,14 @@ zh:
       status: "状态"
       title: "主界面"
     dashboard_kol:
+      dashboard: 主界面
       no_data: '我们正在努力计算，敬请期待！'
       default:
-        personal_info:
-        upcoming_campaigns:
-        completed_campaigns:
-        total_income:
-        profile_completion:
+        personal_info: 个人资料
+        upcoming_campaigns: 线上活动
+        completed_campaigns: 已完成活动
+        total_income: 总收入
+        profile_completion: 个人资料完成度
         data_score: 个人资料
         wechat_score: 微信
         weibo_score: 微博
@@ -392,9 +394,11 @@ zh:
         complete_wechat:
         complete_weibo:
         complete_wechat_third:
-        social_influence_power:
-        switch_social_account:
+        social_influence: 社交影响力
+        switch_social_account: 查看其他账户
         influence_charts:
+        discover: 发现
+        coming_soon: 智能交易市场即将到来，敬请期待
       influence_charts:
         auto: '汽车'
         digit: '数码'
@@ -616,7 +620,7 @@ zh:
       about: "关于Robin8"
       contact: "联系我们"
       privacy_and_terms: "隐私权和条款"
-      right_reserved: 2015 Robin8 保留所有权利。
+      right_reserved: 2015 Robin8 保留所有权利
       team: "团队"
     forgot:
       enter_title: "请输入您的电子邮件以重置密码。"
@@ -701,7 +705,7 @@ zh:
     landing_page:
       brand: "品牌"
       chinese_locale: "Switch to CN instance"
-      english_locale: "Switch to US instance" 
+      english_locale: "Switch to US instance"
       here: "在这里."
       inf_signup: "你是一个意见领袖吗? 注册"
       influencer: "社交达人"
@@ -755,7 +759,8 @@ zh:
       fb_login: "使用Facebook账号登录"
       forgot: "忘记密码？"
       google_login: "使用Google Plus账号登录"
-      intro: "请输入您的电子邮件和密码，或者使用社交账号登录"
+      kol_intro: "请输入您的电子邮件和密码，或者使用社交账号登录"
+      user_intro: "请输入您的电子邮件和密码"
       login_label: "登录"
       or: "或"
       password: "密码"
@@ -1146,7 +1151,7 @@ zh:
       signup_btn: "注册"
       title: "注册"
       wechat_signup: "使用微信账号登录"
-      wechat_third_signup: "使用微信公众号号登录"
+      wechat_third_signup: "使用微信公众号登录"
       weibo_signup: "使用微博账号登录"
       auth_success: 授权登陆成功，请继续完善资料
     releases:

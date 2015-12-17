@@ -33,14 +33,6 @@
               <%=f.password_field :password,:placeholder=>@l.t('kols.password'),"data-validation"=>"length", "data-validation-length"=>"min7",
                                   "data-validation-error-msg"=> @l.t('kols.password_error')%>
             </label>
-            <label>
-              <%=f.text_field :last_name,:placeholder=>@l.t('kols.last_name'),"data-validation"=>"required",
-                              "data-validation-error-msg"=> @l.t('kols.lname_error')%>
-            </label>
-            <label>
-              <%=f.text_field :first_name,:placeholder=>@l.t('kols.first_name'),"data-validation"=>"required",
-                              "data-validation-error-msg"=> @l.t('kols.fname_error')%>
-            </label>
             <div class='row collapse'>
               <div class='small-2 large-1 columns'>
                 <% if china_instance? %>
@@ -130,7 +122,6 @@
       var fiveMins = new Date();
       fiveMins.setMinutes(fiveMins.getMinutes() + 5);
       $.cookie("kol_social", "yeah", {expires: fiveMins, path: "/"});
-      console.log($.cookie("kol_social"));
     });
   </script>
 

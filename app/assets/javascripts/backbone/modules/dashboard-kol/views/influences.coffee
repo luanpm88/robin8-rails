@@ -1,20 +1,6 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
-  Show.DefaultDashboard = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/default-dashboard'
-
-    regions:
-      socialInfluencePower: '#social-influence-power'
-      campaign: '#default-dashboard-campaign'
-      discover: '#default-dashboard-discover'
-
-    onRender: () ->
-      kol = new Robin.Models.KOL
-      kol.fetch
-        success: (model, res, opts) =>
-          Show.CustomController.showInfluencesAndDiscovers @getRegion('socialInfluencePower'), @getRegion('discover'), kol.get('id')
-
   Show.Influence = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/influence'
+    template: 'modules/dashboard-kol/templates/default-dashboard/influence'
 
     regions:
       item: '.influence-item'
@@ -35,10 +21,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
       Show.CustomController.showInfluenceItem(influence, @collection, @getRegion('item'))
-      # todo: reload discover after social account switched.
+
 
   Show.InfluenceItem = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/influence-item'
+    template: 'modules/dashboard-kol/templates/default-dashboard/influence-item'
     tagName: 'div'
 
     onRender: ()->
@@ -103,7 +89,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         myChartRight.setOption optionRight
 
     serializeData: () ->
-      isFail: @isFail
       item: @model.toJSON()
 
     createRandomItemStyle = ->
@@ -112,32 +97,3 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         Math.round(Math.random() * 160)
         Math.round(Math.random() * 160)
       ].join(',') + ')' }
-
-  Show.SocialNotExisted = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/social_not_existed'
-
-    initialize: (opts) ->
-      @type = opts.type || null
-
-    serializeData: () ->
-      type: @type
-
-  Show.DiscoverItem = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/discover_item'
-    tagName: 'li'
-    className: 'discover-item'
-
-  Show.DiscoversLayout = Backbone.Marionette.CompositeView.extend
-    template: 'modules/dashboard-kol/show/templates/discovers_layout'
-    childView: Show.DiscoverItem
-    childViewContainer: 'ul'
-
-    initialize: (opts) ->
-      @parentRegion = opts.parentRegion
-
-    onShow: () ->
-      parentThis = @
-      $(window).scroll ->
-        if $(window).scrollTop() + $(window).height() == $(document).height()
-          $('#loadingDiscover').show()
-          Show.CustomController.appendMoreDiscovers parentThis.parentRegion

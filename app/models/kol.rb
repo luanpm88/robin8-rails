@@ -2,7 +2,7 @@ class Kol < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, allow_unconfirmed_access_for: 1.days
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable, allow_unconfirmed_access_for: 7.days
 
   has_many :identities, -> {order('updated_at desc')}, :dependent => :destroy, autosave: true
 
@@ -29,24 +29,17 @@ class Kol < ActiveRecord::Base
   include Models::Identities
   extend Models::Oauth
 
-  # def record_provide_info(identity,exist = nil)
-  #   if exist
-  #     Rails.cache.write("provide_info_#{self.id}", {:error => "Sorry! You had created  #{identity.provider} account"})
-  #   else
-  #     Rails.cache.write("provide_info_#{self.id}", {:identity => identity})
-  #   end
-  # end
-  #
-  # #get
-  # def provide_info
-  #   error  = Rails.cache.read("provide_info_#{self.id}")
-  #   Rails.cache.delete("provide_info_#{self.id}")
-  #   error
-  # end
-
-  def newest_identity
-    identities.first
+  def record_identity(identity)
+    Rails.cache.write("provide_info_#{self.id}", identity)
   end
+
+  #get
+  def get_identity
+    info  = Rails.cache.read("provide_info_#{self.id}")
+    Rails.cache.delete("provide_info_#{self.id}")
+    info
+  end
+
 
   class EmailValidator < ActiveModel::Validator
     def validate(record)
@@ -260,11 +253,11 @@ class Kol < ActiveRecord::Base
 
   def all_score
     wechat_score  = identity_score('wechat')
-    wechat_third_score = identity_score('wechat-third')
+    wechat_third_score = identity_score('wechat_third')
     weibo_score = identity_score('weibo')
     total_score =  data_score +  wechat_score +   wechat_third_score +   weibo_score
-    {:total => total_score , :data => data_score * 100 / 40, :wechat => wechat_score * 100 / 20,
-     :weibo=> weibo_score * 100 / 20, :wechat_third => wechat_third_score * 100 / 20 }
+    {:total => total_score , :data => data_score * 100 / 40, :weibo=> weibo_score * 100 / 20,
+     :wechat => wechat_score * 100 / 20,  :wechat_third => wechat_third_score * 100 / 20 }
   end
 
   def data_score

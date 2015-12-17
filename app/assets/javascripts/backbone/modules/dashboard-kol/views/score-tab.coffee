@@ -1,7 +1,7 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
 
   Show.ScoreTab = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/score-tab'
+    template: 'modules/dashboard-kol/templates/score-tab'
     ui:
       form: '#score_form'
       next: '#next_to_campaign_btn'

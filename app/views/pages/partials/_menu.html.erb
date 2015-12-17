@@ -15,10 +15,8 @@
           <li><a href='?locale=zh'>CN</a></li>
         <% end %>
 
-        <% if current_page?(home_path) %>
-          <li><a href='http://try.robin8.com/robin/' target='_blank'><%= @l.t('header.contact_us') %></a></li>
-        <% else %>
-          <!-- <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li> -->
+        <% if !Rails.env.production? %>
+          <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
         <% end %>
 
         <% if user_signed_in? %>
@@ -29,7 +27,11 @@
           <% end %>
           <li><%= link_to @l.t('header.logout'), destroy_user_session_path, :method => :delete %></li>
         <% else %>
-          <li><a href='/signin'><%= @l.t('header.log_in') %></a></li>
+          <% if current_page?(home_path) %>
+            <li><a href='/signin?is_user=true'><%= @l.t('header.log_in') %></a></li>
+          <% else %>
+            <li><a href='/signin'><%= @l.t('header.log_in') %></a></li>
+          <% end %>
         <% end %>
       </ul>
 

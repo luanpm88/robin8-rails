@@ -2,7 +2,7 @@ class KolsController < ApplicationController
 
   def get_current_kol
     render :json => current_kol.to_json({:include => {:identities =>  {:except => [:serial_params], :methods => [:total_tasks, :complete_tasks, :last30_posts]}} ,
-                                          :methods => [:newest_identity]})
+                                          :methods => [:get_identity]})
   end
 
   def get_score
@@ -17,8 +17,6 @@ class KolsController < ApplicationController
         kol_p = kol_params
         kol_p[:mobile_number] = (1..9).to_a.sample(8).join if mobile_number == "robin8.best"
 
-        kol_p[:first_name].strip!         rescue nil
-        kol_p[:last_name].strip!          rescue nil
         kol_p[:mobile_number].strip!      rescue nil
 
         if mobile_number == "robin8.best"
@@ -197,7 +195,7 @@ class KolsController < ApplicationController
 
   private
   def kol_params
-    params.require(:kol).permit(:first_name,:last_name,:email,:password,:location,:is_public,:bank_account,:interests, :mobile_number)
+    params.require(:kol).permit(:email, :password, :mobile_number)
   end
 
   def monetize_params

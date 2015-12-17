@@ -15,7 +15,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
   flip = (f) -> (x, y) -> f y, x
 
   Show.ProfileSocialView = Backbone.Marionette.ItemView.extend
-    template: 'modules/dashboard-kol/show/templates/profile-social'
+    template: 'modules/dashboard-kol/templates/profile-social'
 
     events:
       "click .social-login": "social_login"
@@ -66,30 +66,30 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _)->
       params = 'location=0,status=0,width=800,height=600'
       @connect_window = window.open url, "connect_window", params
       parent = @parent
+      $.cookie("popup_signin", "yeah", { path: "/"});
       @interval = flip(setInterval) 500, =>
         if @connect_window.closed
           clearInterval @interval
           $.get "/kols/get_current_kol", (data) =>
-            #  有错误返回，表示添加没有成功
-#            if data.provide_info.error
-#              swal(data.provide_info.error);
-#            else if data.provide_info.identity
-            @model.set "identities", data.identities
-            App.currentKOL.set "identities", data.identities
-            $.growl "#{polyglot.t('common.update_success')}", type: "success",
-#              Backbone.trigger('showSocialAccount',new Robin.Models.Identity(data.identities[0]));
-            parent.refreshSocialList(data.identities)
-            setTimeout ->
-              identity_id = data.newest_identity.id
-              $(".identity-" + identity_id + " .edit-account").trigger("click")
-            , 200
+            console.log data.get_identity
+            #  有表示添加没有成功
+            if data.get_identity
+              @model.set "identities", data.identities
+              App.currentKOL.set "identities", data.identities
+              $.growl "#{polyglot.t('common.update_success')}", type: "success",
+  #              Backbone.trigger('showSocialAccount',new Robin.Models.Identity(data.identities[0]));
+              parent.refreshSocialList(data.identities)
+              setTimeout ->
+                identity_id = data.get_identity.id
+                $(".identity-" + identity_id + " .edit-account").trigger("click")
+              , 200
 
 
     serializeData: ->
       k: @model.toJSON()
 
   Show.ProfileSocialListView = Backbone.Marionette.LayoutView.extend
-    template: 'modules/dashboard-kol/show/templates/profile-social-list'
+    template: 'modules/dashboard-kol/templates/profile-social-list'
     ui:
       modal_account: "#modal-account"
 
