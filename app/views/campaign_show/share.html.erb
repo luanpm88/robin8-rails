@@ -20,7 +20,7 @@
       </div>
       <div class="item">
         <div class="label">活动推广链接</div>
-        <div class="value"><%= @campaign.url %></div>
+        <div class="value"><%= link_to '查看原文', @campaign.url %></div>
       </div>
       <div class="item">
         <div class="label">活动描述</div>
@@ -124,7 +124,7 @@
       title: "<%= raw @campaign.name %>",
       desc: "<%= raw @campaign.description %>",
       link: "<%= CampaignInvite.origin_share_url(@campaign_invite.uuid) %>",
-      imgUrl: "<%= @campaign.user.avatar_url %>"
+      imgUrl: "<%=  @campaign.img_url || @campaign.user.avatar_url %>"
     };
 
     wx.onMenuShareAppMessage(info);
