@@ -2390,7 +2390,7 @@ zh:
       other_than: must be other than %{count}
       present: must be blank
       spoofed_media_type: has contents that are not what they are reported to be
-      taken: has already been taken
+      taken: 已存在
       too_long:
         one: is too long (maximum is 1 character)
         other: is too long (maximum is %{count} characters)
