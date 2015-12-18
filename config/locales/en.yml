@@ -159,7 +159,6 @@ en:
         kol:
           attributes:
             email:
-              taken: has already been taken
               invalid: format is invalid
             mobile_number:
               taken: has already been taken
