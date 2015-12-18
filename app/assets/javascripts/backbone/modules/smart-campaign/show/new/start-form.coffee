@@ -29,6 +29,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     initialize: (options) ->
       @options = options
       @model = if @options.model? then @options.model else new Robin.Models.Campaign()
+#      now = new Date
+#      console.log @model
+#      @model.attributes.start_time = now.setDate(now.getHours() + 2);
+#      @model.attributes.deadline = now.setDate(now.getDate() + 2);
+#      console.log @model
       @modelBinder = new Backbone.ModelBinder()
 
     onRender: () ->
@@ -181,21 +186,31 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
 
     initDatepicker: ->
-      chinaDateOptions = {
+      now = new Date
+      start_time = new Date(now.setHours(now.getHours() + 2));
+      deadline = new Date(now.setDate(now.getDate() + 2));
+      chinaStartDateOptions = {
         ignoreReadonly: true,
         format: 'YYYY-MM-DD HH:mm',
         locale: 'zh-cn',
-        defaultDate: new Date()
+        defaultDate: start_time
       }
+      chinaEndDateOptions = {
+        ignoreReadonly: true,
+        format: 'YYYY-MM-DD HH:mm',
+        locale: 'zh-cn',
+        defaultDate: deadline
+      }
+      console.log chinaEndDateOptions
       usDateOptions = {
         ignoreReadonly: true,
         format: 'YYYY-MM-DD HH:mm',
         locale: 'en-gb',
-        minDate: new Date()
+        minDate: new Date(start_time)
       }
       if Robin.chinaLocale
-        @ui.startDatePicker.datetimepicker(chinaDateOptions)
-        @ui.endDatePicker.datetimepicker(chinaDateOptions)
+        @ui.startDatePicker.datetimepicker(chinaStartDateOptions)
+        @ui.endDatePicker.datetimepicker(chinaEndDateOptions)
       else
         @ui.startDatePicker.datetimepicker(usDateOptions)
         @ui.endDatePicker.datetimepicker(usDateOptions)
@@ -213,13 +228,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       this.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
       this.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
-
-      this.model.save this.model.attributes,
-        success: (m, r) ->
-          $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
-          location.href = "/#smart_campaign"
-        error: (m, r) ->
-          console.log("失败了");
+      if @ui.form.data('formValidation').isValid()
+        this.model.save this.model.attributes,
+          success: (m, r) ->
+            $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
+            location.href = "/#smart_campaign"
+          error: (m, r) ->
+            console.log("失败了");
 
     subtractionBudgetIcon: ->
       number = Number($(".budget_input").val())
