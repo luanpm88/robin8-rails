@@ -137,7 +137,7 @@ class Campaign < ActiveRecord::Base
 
   def create_job
     if Rails.application.config.china_instance
-      if self.user.avail_amount > self.budget
+      if self.user.avail_amount >= self.budget
         self.update_attribute(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
         CampaignWorker.perform_async(self.id, 'send_invites')

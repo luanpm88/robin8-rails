@@ -4,14 +4,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     templateHelpers:
       formatDate: (d) ->
-        date = new Date d
-        monthNum = parseInt(date.getMonth()) + 1
-        d = date.getDate()
-        y = date.getFullYear()
-        month =  monthNum
-        h = date.getHours();
-        m = date.getMinutes();
-        "#{y}-#{month}-#{d} #{h}:#{m}"
+        datetime = new Date(d);
+        year = datetime.getFullYear();
+        month = if datetime.getMonth() + 1 < 10 then "0" + (datetime.getMonth() + 1) else datetime.getMonth() + 1;
+        date = if datetime.getDate() < 10 then "0" + datetime.getDate() else datetime.getDate();
+        hour = if datetime.getHours() < 10 then "0" + datetime.getHours() else datetime.getHours();
+        minute = if datetime.getMinutes() < 10 then "0" + datetime.getMinutes() else datetime.getMinutes();
+        second = if datetime.getSeconds() < 10 then "0" + datetime.getSeconds() else datetime.getSeconds();
+        return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
       timestamp: (d) ->
         date = new Date d
         date.getTime()
