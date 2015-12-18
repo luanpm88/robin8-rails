@@ -1,10 +1,110 @@
+<div class="campaign-share">
+  <div class="title">推广活动信息</div>
+  <div class="notice" style="text-align: center;margin: 0 auto;color: #008CBA; font-style: italic;"> 点击右上角按钮，分享出去即可</div>
+  <div class="share-content">
 
+    <div class="top">
+      <div class="left-logo"><%= image_tag @campaign.img_url %></div>
+      <div class="right-info">
+          <%= @campaign.name %>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="item">
+        <div class="label">活动开始时间</div>
+        <div class="value"><%= @campaign.start_time.to_s(:all_time) %></div>
+      </div>
+      <div class="item">
+        <div class="label">活动结束时间</div>
+        <div class="value"><%= @campaign.deadline.to_s(:all_time) %></div>
+      </div>
+      <div class="item">
+        <div class="label">活动推广链接</div>
+        <div class="value"><%= @campaign.url %></div>
+      </div>
+      <div class="item">
+        <div class="label">活动描述</div>
+        <div class="value"><%= @campaign.description %></div>
+      </div>
+    </div>
+  </div>
+</div>
 <!--<div style="text-align: center;padding-top: 80px;width: 100%">-->
-  <!--微信浏览器打开，然后点击右上角按钮 即可分享-->
+<!--微信浏览器打开，然后点击右上角按钮 即可分享-->
 <!--</div>-->
 
 <%= javascript_include_tag "http://res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
-<% sign_package = $weixin_client.get_jssign_package(request.url) rescue {} %>
+<% sign_package = ($weixin_client.get_jssign_package(request.url) rescue {}) %>
+
+<style type="text/css">
+  body {
+    background: #fff;
+  }
+
+  .title {
+    margin-top: 10px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+  }
+
+  .share-content {
+    margin: 15px;
+    margin-bottom: 40px;
+    border-radius: 3px;
+  }
+
+  .share-content .top {
+    background: rgb(71, 152, 172);
+    padding: 20px;
+    border-radius: 3px;
+    overflow: auto;
+  }
+
+  .share-content .left-logo {
+    float: left;
+    width: 30%;
+  }
+
+  .share-content img {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+  }
+
+  .share-content .right-info {
+    float: left;
+    margin-left: 4%;
+    width: 65%;
+    font-size: 18px;
+  }
+
+  .share-content .bottom {
+    background: #fff;
+  }
+
+  .share-content .bottom .item {
+    background-color: #ecf0f5;
+    border-bottom: 1px solid #d4d4d4;
+    padding: 12px 15px;
+    overflow: auto;
+  }
+
+  .share-content .bottom .item .label {
+    float: left;
+    width: 30%;
+    padding: 8px 3px;
+  }
+
+  .share-content .bottom .item .value {
+    float: left;
+    margin-left: 10px;
+  }
+
+
+</style>
 <script type="text/javascript">
   wx.config({
     debug: false,
@@ -18,7 +118,7 @@
       'onMenuShareQQ',
       'onMenuShareWeibo'
     ]
-  }) ;
+  });
   wx.ready(function () {
     var info = {
       title: "<%= raw @campaign.name %>",
