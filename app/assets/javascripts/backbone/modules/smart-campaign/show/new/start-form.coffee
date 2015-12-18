@@ -105,8 +105,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                 message: polyglot.t('smart_campaign.validation.description')
           url:
             validators:
-              notEmpty:
-                message: polyglot.t('smart_campaign.validation.url')
               callback:
                 message: polyglot.t('smart_campaign.validation.url_invalid')
                 callback: (value, validator, $field) ->
@@ -114,28 +112,33 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                   if RegExp.test(value)
                     return true
                   return false
+              notEmpty:
+                message: polyglot.t('smart_campaign.validation.url')
+
           budget:
             validators:
               notEmpty:
                 message: polyglot.t('smart_campaign.validation.budget')
-              integer:
-                message: polyglot.t('smart_campaign.validation.budget_should_be_digit')
               greaterThan:
+                inclusive: false
                 value: 0
                 message:  polyglot.t('smart_campaign.validation.budget_should_greater_than_zero')
+              integer:
+                message: polyglot.t('smart_campaign.validation.budget_should_be_digit')
+
               remote:
                 url: "/users/avail_amount"
                 type: "get"
                 delay: 300
                 message: polyglot.t('smart_campaign.validation.budget_is_not_ample')
                 data: (value, validators, $field) ->
-                  v = 
+                  v =
                     amount: $('.budget_input').val()
                   return v
 
               # callback:
               #   callback: (value, validators, $field) ->
-              #     $.ajax 
+              #     $.ajax
               #       url: "/users/avail_amount"
               #       success: (data) ->
               #         if Number(data["data"]) > Number(value)
@@ -147,12 +150,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             validators:
               notEmpty:
                 message: polyglot.t('smart_campaign.validation.per_click_budget')
-              numeric:
-                message: polyglot.t('smart_campaign.validation.per_click_budget_should_be_digit')
               greaterThan:
+                inclusive: false
                 value: 0
                 message:  polyglot.t('smart_campaign.validation.per_click_budget_should_greater_than_zero')
-              callback: 
+              numeric:
+                message: polyglot.t('smart_campaign.validation.per_click_budget_should_be_digit')
+              callback:
                 message: polyglot.t('smart_campaign.validation.per_click_budget_should_less_than_budget')
                 callback: (value, validator, $field) ->
                   if Number(value) > Number($(".budget_input").val())
@@ -160,15 +164,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                   return true
           deadline:
             validators:
-              callback: 
+              callback:
                 selector: ".test"
                 message: polyglot.t('smart_campaign.validation.campaign_end_time_should_greather_than_start_time')
                 callback: (value, validator, $field) ->
-                  if (new Date($(".campaign_start_time_input").val()).getTime()) > (new Date($(".campaign_deadline_input").val()).getTime()) 
+                  if (new Date($(".campaign_start_time_input").val()).getTime()) > (new Date($(".campaign_deadline_input").val()).getTime())
                     return false
                   return true
 
         )
+        .on 'err.validator.fv', (e, data) ->
+          data.element
+              .data('fv.messages')
+              .find('.help-block[data-fv-for="' + data.field + '"]').hide()
+              .filter('[data-fv-validator="' + data.validator + '"]').show();
+
 
     initDatepicker: ->
       chinaDateOptions = {
