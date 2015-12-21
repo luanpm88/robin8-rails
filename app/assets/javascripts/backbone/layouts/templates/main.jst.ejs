@@ -29,9 +29,12 @@
             <i class="fa fa-user"></i> <span class='text'> <%= polyglot.t("user_menu.anonymous") %></span> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" role="menu">
-            <!-- <li><a href="#"><i class="fa fa-cog"></i> Account Settings</a></li> -->
-            <li><a href="#billing"><i class="fa fa-dollar"></i> <%= polyglot.t("user_menu.billing_settings") %></a></li>
             <li><a href="/#profile"><i class="fa fa-smile-o"></i> <%= polyglot.t("user_menu.profile") %></a></li>
+            <% if(Robin.chinaLocale) { %>
+              <li><a href="?locale=en">EN</a></li>
+            <% } else { %>
+              <li><a href="?locale=zh">CN</a></li>
+            <% } %>
             <li class="divider"></li>
             <li><a href='/users/sign_out'><i class="fa fa-sign-out"></i> <%= polyglot.t("user_menu.log_out") %></a></li>
           </ul>
@@ -40,7 +43,7 @@
       <ul class="nav navbar-nav navbar-right">
         <% if(Robin.showLangPanel) { %>
         <li class='locales'>
-          <a href="/set_locale?locale=en"> 
+          <a href="/set_locale?locale=en">
             <img src="<%= AppAssets.path('us-flag-icon.png') %>" height="13" title='Switch to US local'>
           </a>
           <a href="/set_locale?locale=zh">

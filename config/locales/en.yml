@@ -1333,14 +1333,14 @@ en:
         title: Contact
         your_email: Your Email
       content_type: Content Type
-      name: Campain name
+      name: Campaign name
       status: Status
       unexecute: "unexecute"
       executing: "executing"
       executed: "executed"
-      share: Shared by
+      share: Kols
       click: Clicks
-      cost: Spent/Bucket
+      cost: "Spent/Bucket (￥)"
       balance: "Balance: ￥"
       recharge: "Recharge"
       created: Created

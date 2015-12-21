@@ -1291,7 +1291,7 @@ zh:
       executed: "已执行"
       share: "分享次数"
       click: "点击次数"
-      cost: "已扣/预算"
+      cost: "已扣/预算 (￥)"
       balance: "余额: ￥"
       recharge: "充值"
       created: "创建日期 "
