@@ -50,7 +50,7 @@ class Kol < ActiveRecord::Base
   class EmailValidator < ActiveModel::Validator
     def validate(record)
       if record.new_record? and User.exists?(:email=>record.email)
-        record.errors[:email] << "has already been taken"
+        record.errors[:email] << I18n.t('kols.email_already_been_taken')
       end
     end
   end

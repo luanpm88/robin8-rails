@@ -183,7 +183,6 @@ zh:
         kol:
           attributes:
             email:
-              taken: "已经存在"
               invalid: 格式错误
             mobile_number:
               taken: "已经存在"
