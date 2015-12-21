@@ -152,6 +152,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               between:
                 min: 0,
                 max: 100000,
+                message: '价格必须是 0 到 100000 之间'
       ).on('err.field.fv', (e, data) ->
         data.element.parents('.cell').addClass 'has-error'
       ).on('success.field.fv', (e, data) ->
