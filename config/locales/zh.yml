@@ -201,6 +201,7 @@ zh:
       submit: 提交
       new: 新建
       edit: 编辑
+      return: 返回
       destroy: 删除
       save: 保存
       delete_success: 删除成功！
@@ -1547,6 +1548,22 @@ zh:
         people_reached: "送达人数"
         read_more: "原文阅读人数"
       'yes': "是的"
+      stats:
+        detail_title:  推广详情
+        base_info: 基本信息
+        start_time: 开始时间
+        deadline: 结束时间
+        budget: 总预算
+        per_click_budget: 点击费用
+        avail_click: 有效点击
+        total_click: 总访问量
+        status: 当前状态
+        share_link: 推广链接
+        read_post: 查看原文
+        day_stats: 日点击一览
+        kol_list: KOL推广详情
+        kol_name: KOL名称
+        click_unit: 次数
     smart_release:
       analysis_step:
         buttons:

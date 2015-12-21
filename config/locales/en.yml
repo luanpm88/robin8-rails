@@ -170,6 +170,7 @@ en:
       edit: Edit
       destroy: Destroy
       save: Save
+      return: Return
       delete_success: Delete Successful
       delete_fail: Delete Fail
       save_success: Save Successful
@@ -1604,6 +1605,22 @@ en:
         people_reached: No of people reached
         read_more: No of "read more"
       'yes': 'Yes'
+      stats:
+        detail_title:  推广详情
+        base_info: 基本信息
+        start_time: 开始时间
+        deadline: 结束时间
+        budget: 总预算
+        per_click_budget: 点击费用
+        avail_click: 有效点击
+        total_click: 总访问量
+        status: 当前状态
+        share_link: 推广链接
+        read_post: 查看原文
+        day_stats: 日点击一览
+        kol_list: KOL推广详情
+        kol_name: KOL名称
+        click_unit: 次数
     smart_release:
       analysis_step:
         buttons:

@@ -3,7 +3,7 @@
     <div class="dashboard-btns">
       <div class="row smart-campaign">
         <div class="col-md-6">
-          <h4><i class="fa fa-home glyphicon glyphicon-bullhorn"></i> 推广详情</h4>
+          <h4><i class="fa fa-home glyphicon glyphicon-bullhorn"></i>&nbsp;&nbsp; <%= polyglot.t("smart_campaign.stats.detail_title") %></h4>
         </div>
       </div>
     </div>
@@ -12,44 +12,44 @@
     <!-- COLOR PALETTE -->
     <div class="box box-default color-palette-box base-info col-md-9">
       <div class="box-header with-border">
-        <div class="box-title"><i class="fa fa-tag"></i> 推广基本信息</div>
+        <div class="box-title"><i class="fa fa-tag"></i> <%= polyglot.t("smart_campaign.stats.base_info") %></div>
       </div>
       <div class="box-body">
         <div class="row">
           <div class="col-md-5">
-            <div class="name">开始日期</div>
+            <div class="name"><%= polyglot.t("smart_campaign.stats.start_time") %></div>
             <div class="value"><%= formatDate(start_time) %></div>
           </div>
           <div class="col-md-5">
-            <div class="name">结束日期</div>
+            <div class="name"><%= polyglot.t("smart_campaign.stats.deadline") %></div>
             <div class="value"><%= formatDate(deadline) %></div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-5">
-            <div class="name">总预算</div>
+            <div class="name"><%= polyglot.t("smart_campaign.stats.budget") %></div>
             <div class="value"><%= budget %></div>
           </div>
           <div class="col-md-5">
-            <div class="name">点击费用</div>
+            <div class="name"><%= polyglot.t("smart_campaign.stats.per_click_budget") %></div>
             <div class="value"><%= per_click_budget %></div>
           </div>
 
         </div>
         <div class="row">
           <div class="col-md-5">
-            <div class="name">有效点击数</div>
+            <div class="name"><%= polyglot.t("smart_campaign.stats.avail_click") %></div>
             <div class="value"><%= avail_click %></div>
           </div>
           <div class="col-md-5">
-            <div class="name">总计点击数</div>
+            <div class="name"><%= polyglot.t("smart_campaign.stats.total_click") %></div>
             <div class="value"><%= total_click %></div>
           </div>
 
         </div>
         <div class="row">
           <div class="col-md-5">
-            <div class="name">当前状态</div>
+            <div class="name"><%= polyglot.t("smart_campaign.stats.status") %></div>
             <div class="value">
               <% if (status == 'unexecute') { %>
                 <%= polyglot.t('smart_campaign.unexecute') %>
@@ -61,8 +61,8 @@
             </div>
           </div>
           <div class="col-md-5">
-            <div class="name">推广链接</div>
-            <div class="value"><a href='<%= url %>' target="_blank">查看原文</a></div>
+            <div class="name"><%= polyglot.t("smart_campaign.stats.share_link") %></div>
+            <div class="value"><a href='<%= url %>' target="_blank"><%= polyglot.t("smart_campaign.stats.read_post") %></a></div>
           </div>
         </div>
       </div>
@@ -70,24 +70,28 @@
     </div>
 
     <div class="row">
-      <div class="box box-default color-palette-box col-md-8 chart">
+      <div class="box box-default color-palette-box col-md-9 chart">
         <div class="box-header with-border">
-          <div class="box-title"><i class="fa fa-tag"></i> 日点击一览</div>
+          <div class="box-title"><i class="fa fa-tag"></i> <%= polyglot.t("smart_campaign.stats.day_stats") %></div>
         </div>
         <div class="box-body day-stats">
-          <div id="day_stats" style="height: 320px;width: 700px"></div>
+          <div id="day_stats" style="height: 320px;width: 96%;margin-left:2%"></div>
         </div>
         <!-- /.row -->
       </div>
 
-      <div class="box box-default color-palette-box col-md-8 list-table">
+      <div class="box box-default color-palette-box col-md-9 list-table">
         <div class="box-header with-border">
-          <div class="box-title"><i class="fa fa-tag"></i> KOL 推广详情</div>
+          <div class="box-title"><i class="fa fa-tag"></i><%= polyglot.t("smart_campaign.stats.kol_list") %> </div>
         </div>
         <div class="box-body" id="kol-list">
 
         </div>
       </div>
+    </div>
+
+    <div class="return" style="margin: 20px 0">
+      <a href="/#smart_campaign" class="btn btn-small btn-primary"><%= polyglot.t("common.return") %></a>
     </div>
   </div>
 </div>

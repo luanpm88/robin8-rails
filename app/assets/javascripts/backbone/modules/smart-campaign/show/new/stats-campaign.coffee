@@ -69,7 +69,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           trigger: 'axis'
         },
         legend: {
-          data:['总点击', '有效点击']
+          data:[ polyglot.t("smart_campaign.stats.total_click"), polyglot.t("smart_campaign.stats.avail_click")]
         },
         toolbox: {
           show : true,
@@ -84,18 +84,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         ],
         yAxis : [
           {
-            type : '次数',
+            type : polyglot.t("smart_campaign.stats.click_unit"),
           }
         ],
         series : [
           {
-            name:'总点击',
+            name: polyglot.t("smart_campaign.stats.total_click"),
             type:'line',
             data: total_clicks
 
           },
           {
-            name:'有效点击',
+            name: polyglot.t("smart_campaign.stats.avail_click"),
             type:'line',
             data:avail_clicks,
           }
