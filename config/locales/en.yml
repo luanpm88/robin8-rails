@@ -488,6 +488,7 @@ en:
         first_name: First Name
         gender: Gender
         general_title: My Profile
+        general_subtitle: '* 提供你的个人信息，让我们更加了解你，为你推荐感兴趣的分享活动。请放心，我们很注重保护你的个人隐私。'
         id: ID
         industry: Industry
         industry_placeholder: Select or input up to 5, separated by blanks
@@ -508,7 +509,7 @@ en:
         regions: Regions
         secrecy: Secrecy
         select_region: Select region
-        social_subtitle: monetize your influence on those channels
+        social_subtitle: 'monetize your influence on those channels'
         social_title: My Social
         south: South
         title: My Profile

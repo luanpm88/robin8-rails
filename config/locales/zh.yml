@@ -494,6 +494,7 @@ zh:
         first_name: 姓
         gender: 性别
         general_title: 我的个人信息
+        general_subtitle: '* 提供你的个人信息，让我们更加了解你，为你推荐感兴趣的分享活动。请放心，我们很注重保护你的个人隐私。'
         id: ID
         industry: 关注的话题
         industry_placeholder: 点击选择（最多5个）
@@ -514,7 +515,7 @@ zh:
         regions: 地区
         secrecy: 保密
         select_region: 选择区域
-        social_subtitle: monetize your influence on those channels
+        social_subtitle: '* 关联你的社交资料，让Robin8 全方位的衡量你的影响力。'
         social_title: 我的社交
         south: 南部
         title: 我的信息
