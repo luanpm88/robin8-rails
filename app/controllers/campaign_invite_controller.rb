@@ -79,6 +79,7 @@ class CampaignInviteController < ApplicationController
       obj['campaign_invite_id'] = x.id
       obj['status'] = x.status
       obj['url'] = x.share_url
+      obj['remain_budget'] = x.campaign.remain_budget
       obj['avail_click'] = x.get_avail_click
       img_url = x.campaign.img_url
       obj['avatar_url'] = img_url ? img_url : ActionController::Base.helpers.asset_path('noavatar.jpg')

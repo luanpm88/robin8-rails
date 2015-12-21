@@ -1,3 +1,23 @@
+.taskModal {
+  .displayForMobile {
+    display: none;
+  }
+  .displayForDesktop {
+    display: block;
+  }
+}
+
+@media (max-width:480px) {
+  .taskModal {
+    .displayForMobile {
+      display: block;
+    }
+    .displayForDesktop {
+      display: none;
+    }
+  }
+}
+
 .dashboard-module {
   margin-top: 20px;
 
