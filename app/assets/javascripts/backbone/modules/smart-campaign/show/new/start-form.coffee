@@ -126,6 +126,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                 message: polyglot.t('smart_campaign.validation.budget')
               greaterThan:
                 inclusive: false
+
                 value: 0
                 message:  polyglot.t('smart_campaign.validation.budget_should_greater_than_zero')
               integer:

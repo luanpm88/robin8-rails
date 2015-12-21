@@ -133,10 +133,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
                 message: polyglot.t('dashboard_kol.validation.mobile')
               remote:
                 message: 'phone number already exist'
+                type: 'get'
                 url: '/kols/valid_phone_number'
                 data:
                   kol_id:  @model.id
-                type: 'get'
 #          date_of_birthday:
 #            row: '.cell'
 #            validators:
