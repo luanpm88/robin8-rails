@@ -1,4 +1,4 @@
-<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade taskModal" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -38,9 +38,11 @@
           <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： <%= item.avail_click * item.per_click_budget %>
         </p>
 
-        <textarea class="form-control disabled"  id='descAndUrl'><%= item.description %> <%= item.url %></textarea>
+        <p class="form-control disabled"  id='descAndUrl'><%= item.description %> <%= item.url %></p>
         <br />
-        <button class='task-modal-btn' data-clipboard-action="copy" data-clipboard-target="#descAndUrl">复制到剪切板</button>
+        <button class='task-modal-btn displayForDesktop' data-clipboard-action="copy" data-clipboard-target="#descAndUrl">复制到剪切板</button>
+
+        <div class='alert alert-warning displayForMobile' role='alert'>复制链接分享给你的朋友吧</div>
 
         <h6>来自品牌的消息：</h6>
         <p>
