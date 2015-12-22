@@ -1,7 +1,7 @@
 class CampaignController < ApplicationController
 
   def index
-    return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_fee_info, :get_share_time]})
+    return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_total_click, :get_fee_info, :get_share_time]})
     if params[:status] == "declined" || params[:status] == "accepted"
       status = params[:status] == "declined" ? "D" : "A"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
@@ -40,7 +40,7 @@ class CampaignController < ApplicationController
     if user.blank? or c.user_id != user.id
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles, :kol_categories, :iptc_categories, :interested_campaigns])
+    render json: c.to_json({:methods => [:get_avail_click, :get_total_click, :get_fee_info, :get_share_time], :include => [:kols, :approved_invites]})
   end
 
   def article
@@ -219,7 +219,7 @@ class CampaignController < ApplicationController
     campaign = Campaign.find params[:id]
     return render :json => {:result => 'error', :msg => 'campaign not found'}     if !campaign
     return render :json => {:result => 'error', :msg => 'campaign not start'}     if campaign.status == 'unexecue'
-    render :json => campaign.approved_invites.to_json({:methods => [:get_avail_click], :include => :kol  })
+    render :json => campaign.approved_invites.to_json({:methods => [:get_avail_click, :get_total_click], :include => :kol })
   end
 
   def test_email

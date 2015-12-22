@@ -1292,7 +1292,7 @@ zh:
       rejected: "审核拒绝"
       agreed: "审核通过"
       executing: "执行中"
-      executed: "已执行"
+      executed: "执行完成"
       share: "分享次数"
       click: "点击次数"
       cost: "已扣/预算 (￥)"
@@ -1563,7 +1563,7 @@ zh:
         deadline: 结束时间
         budget: 总预算
         per_click_budget: 点击费用
-        avail_click: 有效点击
+        avail_click: 计费点击
         total_click: 总访问量
         status: 当前状态
         share_link: 推广链接

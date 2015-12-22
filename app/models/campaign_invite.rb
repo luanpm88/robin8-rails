@@ -10,7 +10,8 @@ class CampaignInvite < ActiveRecord::Base
   belongs_to :kol
 
   def get_total_click
-    status == 'finished' ? self.total_click : self.redis_total_click.value
+    self.redis_total_click.value   rescue self.total_click
+    # status == 'finished' ? self.total_click : self.redis_total_click.value
   end
 
   def get_avail_click

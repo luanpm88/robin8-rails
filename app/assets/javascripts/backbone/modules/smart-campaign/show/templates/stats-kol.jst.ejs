@@ -14,11 +14,11 @@
       <td class="middle col-md-1">
         <% if(c.kol.first_name != '' && c.kol.last_name != ''){ %>
           <%= c.kol.first_name %> &nbsp; &nbsp; <%= c.kol.last_name %>
-        <% } else if(c.kol.email != nil) { %>
+        <% } else if(c.kol.email != '') { %>
           <%= c.kol.email %>
         <% } else { %>
           <%= c.kol.social_name %>
-        <% } end  %>
+        <% } %>
       </td>
       <td class="middle col-md-1"><%= c.get_avail_click %></td>
       <td class="middle col-md-1"><%= c.get_total_click %></td>
