@@ -1532,10 +1532,10 @@ en:
         campaign_message: Campaign message
         save: Save
         create_campaign: You have create one campaign successfully.
-        create_campaign_title: Are you sure to create campaign
-        are_sure_to_create_campaign: Campaign could not be changed after created
+        create_campaign_title: Are you sure to save campaign
+        are_sure_to_create_campaign: Campaign could not be changed after saved
         close: Close
-        sure_to_create: Sure to create
+        sure_to_create: Sure to save
 
       status: Status
       success_ask_invite: Your request has been sent

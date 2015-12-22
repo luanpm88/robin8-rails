@@ -1303,7 +1303,7 @@ zh:
       decline_date: Decline date
       declined: "已拒绝"
       declined_unknown: "拒绝/未知"
-      edit: Edit
+      edit: "编辑"
       edit_campaign: "编辑推广活动"
       editor:
         adjectives: "形容词"
@@ -1477,11 +1477,11 @@ zh:
         campaign_message: 留言
         enter_url: 活动链接
         save: 保存
-        create_campaign: You have create one campaign successfully.
-        create_campaign_title: Are you sure to create campaign
-        are_sure_to_create_campaign: Campaign could not be changed after created
-        close: Close
-        sure_to_create: Sure to create
+        create_campaign: 您已成功保存了一个活动。
+        create_campaign_title: "您确定保存活动吗?"
+        are_sure_to_create_campaign: 活动一旦保存就无法修改
+        close: 取消
+        sure_to_create: 确定保存
         create_campaign: 您已成功创建一个活动
 
       status: "状态"

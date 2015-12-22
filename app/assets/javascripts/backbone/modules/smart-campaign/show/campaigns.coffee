@@ -35,7 +35,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         pageLength: 10
         autoWidth: false
         columnDefs: [sortable: false, targets: [0]]
-        order: [[ 6, "desc" ]]
+        order: [[ 5, "desc" ]]
         language:
           paginate:
             previous: polyglot.t('smart_campaign.prev'),
