@@ -44,6 +44,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: @model
         data: @data
         parent: @
+        isRenew: @options.isRenew
       _.each @_states, (tab) => @ui[tab].removeClass('active colored')
       _.all @_states, (tab) =>
         @ui[tab].addClass 'active colored'

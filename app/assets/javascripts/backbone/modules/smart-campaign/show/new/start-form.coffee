@@ -60,12 +60,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initFormValidation()
         @initQiniuUploader()
         @initCreateCampaignModal()
+        if @options.isRenew
+          $(".budget_input").val("0")
 
     initCreateCampaignModal: ->
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
         $("#create-campagin").prop("disabled", false)
         $("#create-campagin").removeClass("disabled")
-
 
     doubleCheckCreate: ->
       $(".create-campaign-modal").modal("hide")
