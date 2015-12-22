@@ -18,9 +18,12 @@
       <img src="<%= AppAssets.path('yuan.png') %>" alt="" />
       <span><%= score_data.total_income %></span>
       <p>
-      <%= polyglot.t('dashboard_kol.default.total_income') %>
-      <a href='/contact?from=kol' class="btn btn-default">提现</a><br />
-      收入满100元方可申请提现
+        <%= polyglot.t('dashboard_kol.default.total_income') %>
+        <% if((Robin.currentKOL.attributes.amount - Robin.currentKOL.attributes.frozen_amount) >= 100) { %>
+          <a href='/contact?from=kol' class="btn btn-default" target="_blank">提现</a><br />
+        <% } else { %>
+            (收入满100元方可提现)
+        <% }%>
       </p>
     </li>
   </ul>
