@@ -13,20 +13,20 @@
           <th width="100px"><%=polyglot.t('smart_campaign.created')%></th>
           <th width="100px"><%=polyglot.t('smart_campaign.deadline')%></th>
           <th width="100px">修改活动</th>
-          <th class="no-sort" width="240px"></th>
+          <th class="no-sort" width="100px"></th>
         </tr>
       </thead>
       <tbody>
         <% _.each(items, function(c) { %>
           <tr data-id="<%= c.id %>">
             <td class="middle col-md-2 stats"><a href="/#smart_campaign/stats/<%= c.id %>"><%= c.name %></a></td>
-            <% if (status == 'unexecute') { %>
+            <% if (c.status == 'unexecute') { %>
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.unexecute') %></td>
-            <% } else if (status == 'rejected') { %>
+            <% } else if (c.status == 'rejected') { %>
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.rejected') %></td>
-            <% } else if (status == 'agreed') { %>
+            <% } else if (c.status == 'agreed') { %>
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.agreed') %></td>
-            <% } else if (status == 'executing') { %>
+            <% } else if (c.status == 'executing') { %>
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.executing') %></td>
             <% } else { %>
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.executed') %></td>
@@ -37,12 +37,16 @@
             <td class="middle" data-order="<%= timestamp(c.start_time) %>"><%= formatDate(c.start_time) %></td>
             <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
             <td class="middle" align="center">
-              <a class="btn btn-success vcenter edit-btn" id="contact" href="/contact?from=change" target="_blank">联系客服</a>
+              <% if(c.status == 'unexecute'){ %>
+                <a href='/#smart_campaign/edit/<%= c.id %>' class="btn btn-success vcenter edit-btn" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.edit") %></a>
+              <% } else { %>
+                <a class="btn btn-success vcenter edit-btn" id="contact" href="/contact?from=change" target="_blank">联系客服</a>
+              <% } %>
             </td>
             <td class="middle" align="center">
               <a class="btn btn-success vcenter edit-btn" id="copy_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.replicate") %></a>
-              <a href='/#smart_campaign/edit/<%= c.id %>' class="btn btn-success vcenter edit-btn" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.edit") %></a>
             </td>
+
           </tr>
         <% }); %>
       </tbody>

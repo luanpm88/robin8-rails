@@ -20,12 +20,11 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
     var lName = user.attributes.last_name;
     var name = user.attributes.name;
     var email = user.attributes.email;
-    if (fName!= null && fName!=0 && lName!= null && lName!=0){
+    if (fName != null && lName != null){
       nameHolder.text(fName + ' ' + lName);
-    } else if (provider == 'signup' && email.length > 0) {
+    } else if (email != null) {
       nameHolder.text(email);
-    }
-    if (provider != 'signup') {
+    } else {
       nameHolder.text(social_name)
     }
     Robin.vent.on("nameChanged", function(newName){

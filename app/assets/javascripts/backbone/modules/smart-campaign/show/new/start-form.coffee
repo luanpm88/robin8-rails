@@ -18,6 +18,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       plusPerBudgetIcon: ".plus_per_budget_icon"
       deadlineIcon: ".deadline_icon"
       doubleCheckCreate: ".double_check_create_campaign"
+      campaignName: ".campaign_name_input"
+      campaignDesc: ".campaign_desc_input"
+      campaignUrl: ".campaign_url_input"
+      campaignPerBudgetInput: ".per_budget_input"
+      campaignBudgetInput: ".budget_input"
+      campaignStartTimeInput: ".campaign_start_time_input"
+      campaignEndTimeInput: ".campaign_deadline_input"
 
     events:
       "click @ui.createCampagin": "createCampagin"
@@ -27,6 +34,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       "click @ui.plusPerBudgetIcon": "plusPerBudgetIcon"
       "click @ui.deadlineIcon": "deadlineIcon"
       "click @ui.doubleCheckCreate": "doubleCheckCreate"
+      "change @ui.campaignName": "updateIsEdit"
+      "change @ui.campaignDesc": "updateIsEdit"
+      "change @ui.campaignUrl": "updateIsEdit"
+      "change @ui.campaignBudgetInput": "updateIsEdit"
+      "change @ui.campaignPerBudgetInput": "updateIsEdit"
+      "change @ui.campaignStartTimeInput": "updateIsEdit"
+      "change @ui.campaignEndTimeInput": "updateIsEdit"
 
     initialize: (options) ->
       @options = options
@@ -36,6 +50,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 #      @model.attributes.start_time = now.setDate(now.getHours() + 2);
 #      @model.attributes.deadline = now.setDate(now.getDate() + 2);
 #      console.log @model
+      @isEdit = false
       @modelBinder = new Backbone.ModelBinder()
 
     onRender: () ->
@@ -171,6 +186,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                 delay: 300
                 message: polyglot.t('smart_campaign.validation.budget_is_not_ample')
                 data: (value, validators, $field) ->
+                  @isEdit = true
                   if parentThis.model.id?
                     campaign_id = parentThis.model.id
                   else
@@ -260,10 +276,24 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @ui.endDatePicker.on "dp.change", (e) =>
         @ui.startDatePicker.data("DateTimePicker").maxDate(e.date);
 
+    updateIsEdit: ->
+      @isEdit = true
+
     createCampagin: ->
       @ui.form.data("formValidation").validate()
-      if @ui.form.data('formValidation').isValid()
-        $(".create-campaign-modal").modal("show");
+      if @model.id?
+        if @isEdit
+          if @ui.form.data('formValidation').isValid()
+            $(".create-campaign-modal").modal("show");
+          else
+            $("#create-campagin").removeClass("disabled");
+        else
+          $(".create-campaign-modal").modal("show");
+      else
+        if @ui.form.data('formValidation').isValid()
+          $(".create-campaign-modal").modal("show");
+        else
+          $("#create-campagin").removeClass("disabled");
 
     subtractionBudgetIcon: ->
       number = Number($(".budget_input").val())
