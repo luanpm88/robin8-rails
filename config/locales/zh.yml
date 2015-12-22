@@ -1289,6 +1289,8 @@ zh:
       name: "活动名称"
       status: "状态"
       unexecute: "未执行"
+      rejected: "审核拒绝"
+      agreed: "审核通过"
       executing: "执行中"
       executed: "已执行"
       share: "分享次数"

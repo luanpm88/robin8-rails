@@ -1338,6 +1338,8 @@ en:
       name: Campaign name
       status: Status
       unexecute: "unexecute"
+      rejected: "rejected"
+      agreed: "agreed"
       executing: "executing"
       executed: "executed"
       share: Kols
