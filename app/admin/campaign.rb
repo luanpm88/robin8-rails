@@ -38,7 +38,7 @@ ActiveAdmin.register Campaign do
     id_column
     column :name
     column :user_id
-    column "用户邮箱", :email
+    column "user email", :email
     column "Advertiser" do |my_resource|
       my_resource.user.name
     end
