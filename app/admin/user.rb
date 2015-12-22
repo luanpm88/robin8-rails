@@ -17,6 +17,33 @@ ActiveAdmin.register User do
     redirect_to "/"
   end
 
+  member_action :show_recharge, :method=>:get do
+
+  end
+
+  member_action :recharge, :method=>:post do
+
+  end
+
+
+
+  controller do
+
+    def show_recharge
+      @user = User.find(params[:id])
+    end
+
+    def recharge
+      @user = User.find(params[:id])
+      if params[:operate_type] == 'recharge'
+
+      end
+
+    end
+
+
+  end
+
   index do |user|
     id_column
     column :first_name
@@ -25,6 +52,7 @@ ActiveAdmin.register User do
     column :created_at
     actions do |user|
       link_to 'Open Dashboard ', login_to_dashboard_admin_user_path(user.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
+      link_to 'Recharge', show_recharge_admin_user_path(user.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
     end
   end
 

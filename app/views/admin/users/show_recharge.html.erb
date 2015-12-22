@@ -1,0 +1,77 @@
+<%= form_tag "/admin/users/#{@user.id}/recharge', :method => :post, :novalidate=>"novalidate" do %>
+  <fieldset class="inputs">
+    <legend><span>广告商充值、提现</span></legend>
+    <ol>
+      <li class="email input required stringish" id="user_email_input">
+        <label for="user_email" class="label">广告商名称</label><%= @user.first_name %> &nbsp:&nbsp;<%= @user.last_name %>
+      </li>
+
+      <li class="email input required stringish" id="user_email_input">
+        <label for="user_email" class="label">广告商Email</label><%= @user.email %>
+      </li>
+
+      <li class="email input required stringish" id="user_email_input">
+        <label for="user_email" class="label">可用余额</label>
+        <span id="avail_amount"><%= @user.avail_amount %></span>
+      </li>
+
+      <li class="email input required stringish" id="">
+        <label for="user_email" class="label">冻结余额</label><%= @user.frozen_amount %>
+      </li>
+
+      <li class="email input required stringish" id="">
+        <label for="user_email" class="label">充值/提现</label><%= select_tag :operate_type, options_for_select([['充值','recharge'],['提现','withdraw']]) %>
+      </li>
+
+      <li class="email input required stringish" >
+        <label for="user_email" class="label">操作金额</label><%= text_field_tag :credits, 0  %>
+      </li>
+
+      <li class="email input required stringish" >
+        <label for="user_email" class="label">操作后可用余额</label>
+        <span class="after_operate_amount" style="color: red"><%= @user.avail_amount %></span>
+      </li>
+
+    </ol>
+  </fieldset>
+  <fieldset class="actions">
+    <ol>
+      <li class="action input_action " id="submit_action">
+        <%= submit_tag "确定提交", :disable => true %>
+      </li>
+      <li class="cancel"><a href="/admin/users">取消</a></li>
+    </ol>
+  </fieldset>
+<% end %>
+
+
+<script type="text/javascript">
+  $(function(){
+    $("#operate_type").on("change",function(){
+      $("#credits").val(0);
+      $(".after_operate_amount").html($("#avail_amount").val());
+    });
+    $("#credits").on("keyup",function(){
+      var credits = parseFloat($("#credits").val());
+      var operate_type = $("#operate_type option:selected").val();
+      var avail_amount = parseFloat($("#avail_amount").html());
+      console.log(avail_amount);
+      console.log(operate_type);
+      console.log(avail_amount - credits);
+      console.log(avail_amount + credits);
+      if(credits >= 0 ) {
+        if (operate_type == 'withdraw' && avail_amount < credits) {
+          alert("提现金额金额不能大于可用金额");
+          $(".credits").val(0);
+        } else if(operate_type == 'withdraw') {
+          $(".after_operate_amount").html(avail_amount - credits);
+        } else {
+          $(".after_operate_amount").html(avail_amount + credits);
+        }
+      }else{
+        alert("输入金额必须是数字");
+        $(".credits").val(0);
+      }
+    });
+  });
+</script>
