@@ -17,6 +17,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       subtractionPerBudgetIcon: ".subtraction_per_budget_icon"
       plusPerBudgetIcon: ".plus_per_budget_icon"
       deadlineIcon: ".deadline_icon"
+      doubleCheckCreate: ".double_check_create_campaign"
 
     events:
       "click @ui.createCampagin": "createCampagin"
@@ -25,6 +26,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       "click @ui.subtractionPerBudgetIcon": "subtractionPerBudgetIcon"
       "click @ui.plusPerBudgetIcon": "plusPerBudgetIcon"
       "click @ui.deadlineIcon": "deadlineIcon"
+      "click @ui.doubleCheckCreate": "doubleCheckCreate"
 
     initialize: (options) ->
       @options = options
@@ -38,55 +40,85 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onRender: () ->
       @modelBinder.bind @model, @el
-      @initDatepicker()
       _.defer =>
+        @initDatepicker()
         @initFormValidation()
-        uploader = Qiniu.uploader(
-          runtimes: 'html5,flash,html4'
-          browse_button: 'img-url-pick'
-          uptoken_url: '/users/qiniu_uptoken'
-          unique_names: true
-          domain: '7xozqe.com1.z0.glb.clouddn.com'
-          container: 'img-url-container'
-          max_file_size: '100mb'
-          flash_swf_url: 'js/plupload/Moxie.swf'
-          max_retries: 3
-          dragdrop: true
-          drop_element: 'img-url-container'
-          chunk_size: '4mb'
-          auto_start: true
-          filters: mime_types: [ {
-            title: 'Image files'
-            extensions: 'jpg,jpeg,gif,png'
-          } ]
-          init:
-            'FilesAdded': (up, files) ->
-              plupload.each files, (file) ->
-                # 文件添加进队列后,处理相关的事情
-                return
+        @initQiniuUploader()
+        @initCreateCampaignModal()
+
+    initCreateCampaignModal: ->
+      $(".create-campaign-modal").on "hidden.bs.modal", (e)->
+        $("#create-campagin").prop("disabled", false)
+        $("#create-campagin").removeClass("disabled")
+
+
+    doubleCheckCreate: ->
+      $(".create-campaign-modal").modal("hide")
+      parentThis = this
+      parentThis.model.attributes.deadline = $(".campaign_deadline_input").val()
+      parentThis.model.attributes.start_time = $(".campaign_start_time_input").val()
+      parentThis.model.attributes.img_url = $('input[name=img_url]').val()
+      parentThis.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
+      parentThis.model.attributes.budget = $('input[name=budget]').val()
+      @ui.form.data("formValidation").validate()
+
+      if @ui.form.data('formValidation').isValid()
+        parentThis.model.save this.model.attributes,
+          success: (m, r) ->
+            $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
+            location.href = "/#smart_campaign"
+          error: (m, r) ->
+            console.log("失败了");
+
+
+    initQiniuUploader: ->
+      uploader = Qiniu.uploader(
+        runtimes: 'html5,flash,html4'
+        browse_button: 'img-url-pick'
+        uptoken_url: '/users/qiniu_uptoken'
+        unique_names: true
+        domain: '7xozqe.com1.z0.glb.clouddn.com'
+        container: 'img-url-container'
+        max_file_size: '100mb'
+        flash_swf_url: 'js/plupload/Moxie.swf'
+        max_retries: 3
+        dragdrop: true
+        drop_element: 'img-url-container'
+        chunk_size: '4mb'
+        auto_start: true
+        filters: mime_types: [ {
+          title: 'Image files'
+          extensions: 'jpg,jpeg,gif,png'
+        } ]
+        init:
+          'FilesAdded': (up, files) ->
+            plupload.each files, (file) ->
+              # 文件添加进队列后,处理相关的事情
               return
-            'BeforeUpload': (up, file) ->
-              # 每个文件上传前,处理相关的事情
-              return
-            'UploadProgress': (up, file) ->
-              # 每个文件上传时,处理相关的事情
-              return
-            'FileUploaded': (up, file, info) ->
-              domain = up.getOption('domain')
-              res = jQuery.parseJSON(info)
-              imageView2 = '?imageView2/0/w/200/h/200/interlace/1'
-              sourceLink = 'http://' + domain + '/' + res.key + imageView2
-              $('#campaign-image').attr 'src', sourceLink
-              $('input[name=img_url]').val sourceLink
-              #获取上传成功后的文件的Url
-              return
-            'Error': (up, err, errTip) ->
-              #上传出错时,处理相关的事情
-              return
-            'UploadComplete': ->
-              #队列文件处理完毕后,处理相关的事情
-              return
-        )
+            return
+          'BeforeUpload': (up, file) ->
+            # 每个文件上传前,处理相关的事情
+            return
+          'UploadProgress': (up, file) ->
+            # 每个文件上传时,处理相关的事情
+            return
+          'FileUploaded': (up, file, info) ->
+            domain = up.getOption('domain')
+            res = jQuery.parseJSON(info)
+            imageView2 = '?imageView2/0/w/200/h/200/interlace/1'
+            sourceLink = 'http://' + domain + '/' + res.key + imageView2
+            $('#campaign-image').attr 'src', sourceLink
+            $('input[name=img_url]').val sourceLink
+            #获取上传成功后的文件的Url
+            return
+          'Error': (up, err, errTip) ->
+            #上传出错时,处理相关的事情
+            return
+          'UploadComplete': ->
+            #队列文件处理完毕后,处理相关的事情
+            return
+      )
+      
 
     initFormValidation: ->
       @ui.form.formValidation(
@@ -223,19 +255,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @ui.startDatePicker.data("DateTimePicker").maxDate(e.date);
 
     createCampagin: ->
-      this.model.attributes.deadline = $(".campaign_deadline_input").val()
-      this.model.attributes.start_time = $(".campaign_start_time_input").val()
-      this.model.attributes.img_url = $('input[name=img_url]').val()
-      this.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
-      this.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
       if @ui.form.data('formValidation').isValid()
-        this.model.save this.model.attributes,
-          success: (m, r) ->
-            $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
-            location.href = "/#smart_campaign"
-          error: (m, r) ->
-            console.log("失败了");
+        $(".create-campaign-modal").modal("show");
 
     subtractionBudgetIcon: ->
       number = Number($(".budget_input").val())
