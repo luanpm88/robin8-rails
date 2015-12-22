@@ -121,6 +121,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       
 
     initFormValidation: ->
+      parentThis = @
       @ui.form.formValidation(
         framework: 'bootstrap'
         excluded: [
@@ -170,8 +171,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                 delay: 300
                 message: polyglot.t('smart_campaign.validation.budget_is_not_ample')
                 data: (value, validators, $field) ->
+                  if parentThis.model.id?
+                    campaign_id = parentThis.model.id
+                  else
+                    campaign_id = 'no'
                   v =
-                    amount: $('.budget_input').val()
+                    amount: $('.budget_input').val(),
+                    campaign_id: campaign_id
                   return v
 
               # callback:

@@ -13,7 +13,7 @@
           <th width="100px"><%=polyglot.t('smart_campaign.created')%></th>
           <th width="100px"><%=polyglot.t('smart_campaign.deadline')%></th>
           <th width="100px">修改活动</th>
-          <th class="no-sort" width="120px"></th>
+          <th class="no-sort" width="240px"></th>
         </tr>
       </thead>
       <tbody>
@@ -41,6 +41,7 @@
             </td>
             <td class="middle" align="center">
               <a class="btn btn-success vcenter edit-btn" id="copy_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.replicate") %></a>
+              <a href='/#smart_campaign/edit/<%= c.id %>' class="btn btn-success vcenter edit-btn" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.edit") %></a>
             </td>
           </tr>
         <% }); %>

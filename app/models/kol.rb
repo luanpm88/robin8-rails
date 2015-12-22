@@ -17,6 +17,7 @@ class Kol < ActiveRecord::Base
   has_many :article_comments, as: :sender
   has_many :kol_profile_screens
   has_many :interested_campaigns
+  after_create :create_campaign_invites_after_signup
 
   def email_required?
     false if self.provider != "signup"
@@ -274,4 +275,7 @@ class Kol < ActiveRecord::Base
     (self.identities.provider(provider).collect{|t| t.score}.max  || 0  )
   end
 
+  def create_campaign_invites_after_signup
+    CampaignSyncAfterSignup.perform_async(self.id)
+  end
 end

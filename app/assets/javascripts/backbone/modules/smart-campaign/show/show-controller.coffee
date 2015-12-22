@@ -87,9 +87,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       campaign = new Robin.Models.Campaign { id: id }
       campaign.fetch
         success: (m, r, o) ->
+          console.log 'get model: ', m
           page = new Show.NewCampaign
-            state: 'target'
+            state: 'start'
             model: m
+            isUpdate: true
           Robin.layouts.main.content.show page
 
     showAddKol: () ->

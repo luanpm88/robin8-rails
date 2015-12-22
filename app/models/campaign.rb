@@ -73,11 +73,13 @@ class Campaign < ActiveRecord::Base
   end
 
   # 开始时候就发送邀请 但是状态为pending
-  def send_invites()
+  def send_invites
     Sidekiq.logger.info "---send_invites--#{self.status}--#{self.status == 'agreed'}---"
     return if self.status != 'agreed'
     ActiveRecord::Base.transaction do
       Kol.all.each do |kol|
+        next if CampaignInvite.exists?(:kol_id => kol.id, :campaign_id => self.id)
+
         invite = CampaignInvite.new
         invite.status = 'pending'
         invite.campaign_id = self.id
@@ -92,6 +94,17 @@ class Campaign < ActiveRecord::Base
     # make sure those execute late (after invite create)
     CampaignWorker.perform_at(self.start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
+  end
+
+  def send_invite_to_kol kol, status
+    invite = CampaignInvite.new
+    invite.status = status
+    invite.campaign_id = self.id
+    invite.kol_id = kol.id
+    uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json).gsub("\n","")
+    invite.uuid = uuid
+    invite.share_url = CampaignInvite.generate_share_url(uuid)
+    invite.save!
   end
 
   # 开始进行  此时需要更改invite状态
