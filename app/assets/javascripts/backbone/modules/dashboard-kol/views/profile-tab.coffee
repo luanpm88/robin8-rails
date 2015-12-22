@@ -65,6 +65,16 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       _.defer =>
         @initFormValidation()
 
+    onShow: ->
+      if Robin.currentKOL.attributes.mobile_number != null
+        $("input#mobile").focus()
+        a = 1
+        $(window).scroll ->
+          if a == 1
+            a++
+            $("input#mobile").blur()
+          return
+
     initAddSocialAccount: ->
       @social_view = new Show.ProfileSocialView
         model: @model
@@ -119,10 +129,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           validating: 'glyphicon glyphicon-refresh'
         fields:
           first_name:
+            trigger: 'blur'
             validators:
               notEmpty:
                 message: polyglot.t('dashboard_kol.validation.first_name')
           last_name:
+            trigger: 'blur'
             validators:
               notEmpty:
                 message: polyglot.t('dashboard_kol.validation.last_name')
@@ -131,6 +143,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             validators:
               notEmpty:
                 message: polyglot.t('dashboard_kol.validation.mobile')
+              callback:
+                message: polyglot.t('kols.mobile_format_error')
+                callback: (value, validator, $field) ->
+                  RegExp = /^1[34578][0-9]{9}$/;
+                  if RegExp.test(value)
+                    return true
+                  return false
               remote:
                 message: 'phone number already exist'
                 type: 'get'
@@ -178,7 +197,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
                 message: polyglot.t('profile.password_confirmation_must_same')
               serverError:
                 message: polyglot.t('profile.something_wrong')
-
       ).on('err.field.fv', (e, data) ->
           data.element.parents('.cell').addClass 'has-error'
       ).on('success.field.fv', (e, data) ->
