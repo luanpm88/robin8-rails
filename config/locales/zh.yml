@@ -1473,6 +1473,11 @@ zh:
         campaign_message: 留言
         enter_url: 活动链接
         save: 保存
+        create_campaign: You have create one campaign successfully.
+        create_campaign_title: Are you sure to create campaign
+        are_sure_to_create_campaign: Campaign could not be changed after created
+        close: Close
+        sure_to_create: Sure to create
         create_campaign: 您已成功创建一个活动
 
       status: "状态"
