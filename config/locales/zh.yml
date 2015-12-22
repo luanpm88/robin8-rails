@@ -1303,11 +1303,7 @@ zh:
       decline_date: Decline date
       declined: "已拒绝"
       declined_unknown: "拒绝/未知"
-<<<<<<< HEAD
-      edit: "编辑"
-=======
       edit: 编辑
->>>>>>> 04e1737851723e495c33249f92693894f33cc8d3
       edit_campaign: "编辑推广活动"
       editor:
         adjectives: "形容词"
