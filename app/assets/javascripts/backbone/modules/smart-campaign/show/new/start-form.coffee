@@ -36,6 +36,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 #      @model.attributes.start_time = now.setDate(now.getHours() + 2);
 #      @model.attributes.deadline = now.setDate(now.getDate() + 2);
 #      console.log @model
+      @isEditBudget = false
       @modelBinder = new Backbone.ModelBinder()
 
     onRender: () ->
@@ -171,6 +172,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                 delay: 300
                 message: polyglot.t('smart_campaign.validation.budget_is_not_ample')
                 data: (value, validators, $field) ->
+                  @isEditBudget = true
                   if parentThis.model.id?
                     campaign_id = parentThis.model.id
                   else
@@ -262,8 +264,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     createCampagin: ->
       @ui.form.data("formValidation").validate()
-      if @ui.form.data('formValidation').isValid()
-        $(".create-campaign-modal").modal("show");
+      if @model.id?
+          $(".create-campaign-modal").modal("show");
+      else
+        if @ui.form.data('formValidation').isValid()
+          $(".create-campaign-modal").modal("show");
+        else
+          $("#create-campagin").removeClass("disabled");
 
     subtractionBudgetIcon: ->
       number = Number($(".budget_input").val())
