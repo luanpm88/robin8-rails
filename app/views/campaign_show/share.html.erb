@@ -1,6 +1,6 @@
 <div class="campaign-share">
   <div class="title">推广活动信息</div>
-  <div class="notice" style="text-align: center;margin: 0 auto;color: #008CBA; font-style: italic;"> 点击右上角按钮，分享出去即可</div>
+  <div class="notice" style="text-align: center;margin: 0 auto;color: #008CBA; font-style: italic;"> 请复制'转发内容'，然后发送到朋友圈</div>
   <div class="share-content">
 
     <div class="top">
@@ -18,13 +18,17 @@
         <div class="label">活动结束时间</div>
         <div class="value"><%= @campaign.deadline.to_s(:all_time) %></div>
       </div>
+      <!--<div class="item">-->
+        <!--<div class="label">活动推广链接</div>-->
+        <!--<div class="value"><%#= link_to '查看原文', @campaign.url %></div>-->
+      <!--</div>-->
+      <!--<div class="item">-->
+        <!--<div class="label">活动描述</div>-->
+        <!--<div class="value"><%#= @campaign.description %></div>-->
+      <!--</div>-->
       <div class="item">
-        <div class="label">活动推广链接</div>
-        <div class="value"><%= link_to '查看原文', @campaign.url %></div>
-      </div>
-      <div class="item">
-        <div class="label">活动描述</div>
-        <div class="value"><%= @campaign.description %></div>
+        <div class="label">转发内容（请复制后，发送到朋友圈）</div>
+        <div class="value"><%= @campaign.description %> <%= @campaign_invite.share_url %></div>
       </div>
     </div>
   </div>
@@ -120,15 +124,16 @@
     ]
   });
   wx.ready(function () {
-    var info = {
-      title: "<%= raw @campaign.name %>",
-      desc: "<%= raw @campaign.description %>",
-      link: "<%= CampaignInvite.origin_share_url(@campaign_invite.uuid) %>",
-      imgUrl: "<%=  @campaign.img_url || @campaign.user.avatar_url %>"
-    };
-
-    wx.onMenuShareAppMessage(info);
-    wx.onMenuShareTimeline(info);
-    wx.onMenuShareQQ(info);
+    wx.hideOptionMenu();
+//    var info = {
+//      title: "<%= raw @campaign.name %>",
+//      desc: "<%= raw @campaign.description %>",
+//      link: "<%= CampaignInvite.origin_share_url(@campaign_invite.uuid) %>",
+//      imgUrl: "<%=  @campaign.img_url || @campaign.user.avatar_url %>"
+//    };
+//
+//    wx.onMenuShareAppMessage(info);
+//    wx.onMenuShareTimeline(info);
+//    wx.onMenuShareQQ(info);
   });
 </script>
