@@ -48,8 +48,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         url: "/campaign/" + that.model.id + "/kol_list" ,
         dataType: 'json',
         success: (data) =>
-#          console.log data[0]
-#          console.log data[0].kol.first_name
           @stats_kol_view = new Robin.SmartCampaign.Show.StatsKol
             kol_list_data: data
           @showChildView 'kol_list', @stats_kol_view
@@ -138,8 +136,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         lengthChange: false
         pageLength: 10
         autoWidth: false
-#        columnDefs: [sortable: false, targets: [0]]
-#        order: [[ 1, "desc" ]]
+        order: [[ 1, "desc" ]]
         language:
           paginate:
             previous: polyglot.t('smart_campaign.prev'),

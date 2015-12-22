@@ -1626,7 +1626,7 @@ en:
         read_post: 查看原文
         day_stats: 日点击一览
         kol_list: KOL推广详情
-        kol_name: KOL名称
+        kol_name: KOL
         click_unit: 次数
     smart_release:
       analysis_step:
