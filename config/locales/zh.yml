@@ -333,7 +333,7 @@ zh:
       title: "推广活动付款信息"
     contact_page:
       feedback: "留言"
-      address: Robin8<br> 1745百老汇大街，17楼<br> 纽约市，纽约州 10019
+      address: Robin8<br> 上海市静安区愚园东路28号, 东海广场3号楼15F
       address_title: "主要办公地址"
       form:
         customer_service: "一般客户服务"
@@ -1292,7 +1292,7 @@ zh:
       rejected: "审核拒绝"
       agreed: "审核通过"
       executing: "执行中"
-      executed: "已执行"
+      executed: "执行完成"
       share: "分享次数"
       click: "点击次数"
       cost: "已扣/预算 (￥)"
@@ -1303,7 +1303,11 @@ zh:
       decline_date: Decline date
       declined: "已拒绝"
       declined_unknown: "拒绝/未知"
+<<<<<<< HEAD
       edit: "编辑"
+=======
+      edit: 编辑
+>>>>>>> 04e1737851723e495c33249f92693894f33cc8d3
       edit_campaign: "编辑推广活动"
       editor:
         adjectives: "形容词"
@@ -1353,6 +1357,7 @@ zh:
       last_update: "最後更新"
       negotiating: Negotiating
       new:
+        edit: 编辑
         pitch: "投递"
         start: "开始"
         targets: "目标"
@@ -1563,7 +1568,7 @@ zh:
         deadline: 结束时间
         budget: 总预算
         per_click_budget: 点击费用
-        avail_click: 有效点击
+        avail_click: 计费点击
         total_click: 总访问量
         status: 当前状态
         share_link: 推广链接

@@ -6,7 +6,7 @@ class Campaign < ActiveRecord::Base
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
-  has_many :approved_invites, -> {where(:status => 'approved')}, :class_name => 'CampaignInvite'
+  has_many :approved_invites, -> {where("status='approved' or status='finished'")}, :class_name => 'CampaignInvite'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
   has_many :campaign_shows
@@ -50,6 +50,11 @@ class Campaign < ActiveRecord::Base
 
   def get_avail_click
     status == 'executed' ? self.avail_click : self.redis_avail_click.value      rescue 0
+  end
+
+  def get_total_click
+    self.redis_total_click.value   rescue self.total_click
+    # status == 'executed' ? self.total_click : self.redis_total_click.value      rescue 0
   end
 
   def get_fee_info
@@ -113,7 +118,7 @@ class Campaign < ActiveRecord::Base
   def add_click(valid)
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    finish('fee_end') if self.redis_avail_click.value >= self.max_click
+    finish('fee_end') if self.redis_avail_click.value >= self.max_click && self.status == 'agreed'
   end
 
   #finish_remark:  expired or fee_end
@@ -129,6 +134,7 @@ class Campaign < ActiveRecord::Base
 
   def update_info(finish_remark)
     self.avail_click = self.redis_avail_click.value
+    self.total_click = self.redis_total_click.value
     self.status = 'executed'
     self.finish_remark = finish_remark
     self.save!
@@ -140,6 +146,7 @@ class Campaign < ActiveRecord::Base
       if invite.status == 'approved'
         invite.status = 'finished'
         invite.avail_click = invite.redis_avail_click.value
+        invite.total_click = invite.redis_total_click.value
       else
         invite.status = 'rejected'
       end
