@@ -41,7 +41,10 @@
             </td>
             <td class="middle" align="center">
               <a class="btn btn-success vcenter edit-btn" id="copy_campaign" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.replicate") %></a>
-              <a href='/#smart_campaign/edit/<%= c.id %>' class="btn btn-success vcenter edit-btn" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.edit") %></a>
+              <% if(c.status == 'unexecute'){ %>
+                <a href='/#smart_campaign/edit/<%= c.id %>' class="btn btn-success vcenter edit-btn" campaign="<%= c.id %>"><%= polyglot.t("smart_campaign.edit") %></a>
+              <% } %>
+
             </td>
           </tr>
         <% }); %>
