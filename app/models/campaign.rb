@@ -69,6 +69,8 @@ class Campaign < ActiveRecord::Base
 
   # 开始时候就发送邀请 但是状态为pending
   def send_invites()
+    Sidekiq.logger.info "---send_invites--#{self.status}--#{self.status == 'agreed'}---"
+    return if self.status != 'agreed'
     ActiveRecord::Base.transaction do
       Kol.all.each do |kol|
         invite = CampaignInvite.new
@@ -81,6 +83,7 @@ class Campaign < ActiveRecord::Base
         invite.save!
       end
     end
+    Sidekiq.logger.info "----send_invites:transaction-------"
     # make sure those execute late (after invite create)
     CampaignWorker.perform_at(self.start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
@@ -144,24 +147,25 @@ class Campaign < ActiveRecord::Base
 
   def reset_campaign(origin_budget,new_budget, new_per_click_budget)
     self.user.unfrozen(origin_budget, 'campaign', self)
-    if self.user.avail_amount >= new_budget
-      self.update_attribute(:max_click, new_budget / new_per_click_budget)
+    if self.user.avail_amount >= self.budget
+      self.update_column(:max_click, new_budget / new_per_click_budget)
       self.user.frozen(new_budget, 'campaign', self)
     else
-      Rails.logger.error('品牌商余额不足--campaign_id: #{self.id}')
+      Rails.logger.error('品牌商余额不足--reset_campaign - campaign_id: #{self.id}')
     end
   end
 
   def create_job
-    if (self.status_change? && status == 'agreed')
+    if self.status_changed? && self.status == 'unexecute'
       if self.user.avail_amount >= self.budget
-        self.update_attribute(:max_click, self.budget / per_click_budget)
+        self.update_column(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
-        CampaignWorker.perform_async(self.id, 'send_invites')
       else
         Rails.logger.error('品牌商余额不足--campaign_id: #{self.id}')
       end
-    elsif (self.status_change? && status == 'rejected')
+    elsif (self.status_changed? && status == 'agreed')
+      CampaignWorker.perform_async(self.id, 'send_invites')
+    elsif (self.status_changed? && status == 'rejected')
       self.user.unfrozen(budget, 'campaign', self)
     end
   end
