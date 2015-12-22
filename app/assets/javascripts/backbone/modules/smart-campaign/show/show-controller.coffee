@@ -6,6 +6,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _) ->
       Robin.layouts.main.content.show page
 
       campaigns = new Robin.Collections.Campaigns()
+
+      loading_view = new Robin.Components.Loading.LoadingView()
+      page.showChildView 'campaigns', loading_view
+
       campaigns_view = new Show.Campaigns
         collection: campaigns
       campaigns.fetch

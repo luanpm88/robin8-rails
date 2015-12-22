@@ -54,7 +54,12 @@ class Campaign < ActiveRecord::Base
   def get_fee_info
     take_fee = get_avail_click * self.per_click_budget                rescue 0
     "#{take_fee.to_f} / #{budget}"
-  end                                                                 rescue 0
+  end
+
+  def  remain_budget
+    return 0 if status == 'executed'
+    return self.budget - get_avail_click * self.per_click_budget
+  end
 
   def get_share_time
     return 0 if status == 'unexecute'

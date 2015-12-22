@@ -201,6 +201,7 @@ zh:
       submit: 提交
       new: 新建
       edit: 编辑
+      return: 返回
       destroy: 删除
       save: 保存
       delete_success: 删除成功！
@@ -493,6 +494,7 @@ zh:
         first_name: 姓
         gender: 性别
         general_title: 我的个人信息
+        general_subtitle: '* 提供你的个人信息，让我们更加了解你，为你推荐感兴趣的分享活动。请放心，我们很注重保护你的个人隐私。'
         id: ID
         industry: 关注的话题
         industry_placeholder: 点击选择（最多5个）
@@ -513,7 +515,7 @@ zh:
         regions: 地区
         secrecy: 保密
         select_region: 选择区域
-        social_subtitle: monetize your influence on those channels
+        social_subtitle: '* 关联你的社交资料，让Robin8 全方位的衡量你的影响力。'
         social_title: 我的社交
         south: 南部
         title: 我的信息
@@ -1291,7 +1293,7 @@ zh:
       executed: "已执行"
       share: "分享次数"
       click: "点击次数"
-      cost: "已扣/预算"
+      cost: "已扣/预算 (￥)"
       balance: "余额: ￥"
       recharge: "充值"
       created: "创建日期 "
@@ -1552,6 +1554,22 @@ zh:
         people_reached: "送达人数"
         read_more: "原文阅读人数"
       'yes': "是的"
+      stats:
+        detail_title:  推广详情
+        base_info: 基本信息
+        start_time: 开始时间
+        deadline: 结束时间
+        budget: 总预算
+        per_click_budget: 点击费用
+        avail_click: 有效点击
+        total_click: 总访问量
+        status: 当前状态
+        share_link: 推广链接
+        read_post: 查看原文
+        day_stats: 日点击一览
+        kol_list: KOL推广详情
+        kol_name: KOL名称
+        click_unit: 次数
     smart_release:
       analysis_step:
         buttons:

@@ -1,10 +1,14 @@
 <div class="profile-content">
+
   <form role="form" action="javascript:void(0);" id="profile-form">
     <div class="general">
       <div class="campaigns-tables-title">
         <span><%= polyglot.t('dashboard_kol.profile_tab.general_title') %></span>
       </div>
       <div class="score-tables profile_info">
+        <div class="row" style="color: #808080;margin-top: -15px">
+          <%= polyglot.t('dashboard_kol.profile_tab.general_subtitle') %>
+        </div>
         <div class="row">
           <div class="col-md-2 cell profile-labels kol-profile">
             <%= polyglot.t('dashboard_kol.profile_tab.first_name') %>
@@ -85,8 +89,11 @@
       </div>
     </div>
 
-    <% if (Robin.currentKOL.provider == 'signup') { %>
+    <% if (Robin.currentKOL.attributes.provider === 'signup') { %>
       <div class="row password toggle-box">
+    <% } else { %>
+      <div class="row password toggle-box" style="display: none">
+    <% } %>
         <div style="overflow: auto">
           <div class="password-title col-md-8">
             <span><%= polyglot.t('dashboard_kol.profile_tab.password') %></span>
@@ -122,7 +129,6 @@
           </div>
         </div>
       </div>
-    <% } %>
   </form>
 
   <!--社交-->
@@ -132,6 +138,9 @@
       <!--<span class="add-social glyphicon glyphicon-plus">&nbsp;&nbsp;-->
        <!-- <%= polyglot.t('dashboard_kol.profile_tab.add_social') %> -->
       </span>
+    </div>
+    <div class="row" style="color: #808080;margin-top: -15px">
+      <%= polyglot.t('dashboard_kol.profile_tab.social_subtitle') %>
     </div>
     <div class="score-tables social-content add-account">
 
