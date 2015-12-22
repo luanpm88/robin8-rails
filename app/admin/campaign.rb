@@ -1,5 +1,7 @@
 ActiveAdmin.register Campaign do
 
+  actions :all, :except => [:destroy]
+
   controller do
     def scoped_collection
       Campaign.includes(:user)
