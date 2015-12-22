@@ -20,8 +20,9 @@ class Campaign < ActiveRecord::Base
   has_many :iptc_categories, :through => :campaign_categories
   has_many :interested_campaigns
   belongs_to :release
+  delegate :email, to: :user
 
-  after_create :create_job
+  after_save :create_job
 
   def get_stats
     end_time = status == 'executed' ? self.deadline : Time.now
@@ -141,6 +142,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def create_job
+    return unless (self.status_change? && status == 'agreed')
     if Rails.application.config.china_instance
       if self.user.avail_amount >= self.budget
         self.update_attribute(:max_click, self.budget / per_click_budget)
@@ -154,9 +156,6 @@ class Campaign < ActiveRecord::Base
 
   def self.add_test_data
     if !Rails.env.production?
-      # CampaignInvite.delete_all
-      # Transaction.delete_all
-      # CampaignShow.delete_all
       u = User.find 81
       Campaign.create(:user => u, :budget => 1, :per_click_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
       :url => "http://www.baidu.com", :name => 'test')

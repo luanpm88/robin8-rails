@@ -53,8 +53,12 @@
             <div class="value">
               <% if (status == 'unexecute') { %>
                 <%= polyglot.t('smart_campaign.unexecute') %>
+              <% } else if (status == 'rejected') { %>
+                <%= polyglot.t('smart_campaign.rejected') %>
+              <% } else if (status == 'agreed') { %>
+                <%= polyglot.t('smart_campaign.agreed') %>
               <% } else if (status == 'executing') { %>
-                <td class="middle col-md-1"><%= polyglot.t('smart_campaign.executing') %>
+                <%= polyglot.t('smart_campaign.executing') %>
               <% } else { %>
                 <%= polyglot.t('smart_campaign.executed') %>
               <% } %>

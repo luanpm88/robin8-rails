@@ -2,9 +2,20 @@ ActiveAdmin.register Campaign do
 
   actions :all, :except => [:destroy]
 
+  member_action :unagree, :method => :put
+  member_action :agree, :method => :put
   controller do
     def scoped_collection
       Campaign.includes(:user)
+    end
+
+    def unagree
+    end
+
+    def agree
+      campaign = Campaign.find params[:id]
+      campaign.update(:status => :agreed)
+      redirect_to admin_campaigns_path
     end
   end
 
@@ -22,10 +33,14 @@ ActiveAdmin.register Campaign do
   #   permitted
   # end
 
+
+
   index do
     selectable_column
     id_column
     column :name
+    column :user_id
+    column "user email", :email
     column "Advertiser" do |my_resource|
       my_resource.user.name
     end
@@ -33,6 +48,7 @@ ActiveAdmin.register Campaign do
     column "Start time", :start_time
     column "End time", :deadline
     column :budget
+    column :status
     column "Spent" do |my_resource|
       my_resource.get_fee_info.split('/').first
     end
@@ -40,7 +56,9 @@ ActiveAdmin.register Campaign do
       my_resource.get_avail_click
     end
     column "CPC", :per_click_budget
-    actions
+    actions do |my_resource|
+      link_to 'agree ', agree_admin_campaign_path(my_resource.id), :method => :put if my_resource.status == "unexecute"
+    end
   end
 
   form do |f|
