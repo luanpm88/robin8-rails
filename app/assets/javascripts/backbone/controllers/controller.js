@@ -10,7 +10,7 @@ Robin.Controllers.AppController = Marionette.Controller.extend({
   showDashboard: function() {
     this.stopAll();
     if (!Robin.KOL) {
-      Robin.module('Dashboard').start();
+      window.location.href = '#smart_campaign';
     } else {
       Robin.module('DashboardKol').start();
     }

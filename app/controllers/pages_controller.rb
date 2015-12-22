@@ -65,6 +65,19 @@ class PagesController < ApplicationController
       flash.now[:success] = @l.t('contact_page.thank_you')
     end
 
+    params[:from] ||= 'empty'
+
+    flash.now[:from] = case params[:from]
+    when 'kol'
+      '抱歉，我们暂未提供自助取现功能，如需要取现请通过下方的表单联系我们'
+    when 'change'
+      '抱歉，活动一旦创建无法自助修改，如有问题请联系我们'
+    when 'recharge'
+      '抱歉，我们暂未提供自助充值功能，请通过下方的表单联系我们来充值'
+    else
+      ''
+    end
+    
     render :layout => "website"
   end
 
