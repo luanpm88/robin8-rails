@@ -55,7 +55,7 @@ ActiveAdmin.register Campaign do
     end
     column "CPC", :per_click_budget
     actions do |my_resource|
-      link_to '同意 ', agree_admin_campaign_path(my_resource.id), :method => :put if my_resource.status == "unexecute"
+      link_to 'agree ', agree_admin_campaign_path(my_resource.id), :method => :put if my_resource.status == "unexecute"
     end
   end
 
