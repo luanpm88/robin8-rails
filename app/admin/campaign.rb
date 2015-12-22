@@ -1,5 +1,7 @@
 ActiveAdmin.register Campaign do
 
+  actions :all, :except => [:destroy]
+
   member_action :unagree, :method => :put
   member_action :agree, :method => :put
   controller do

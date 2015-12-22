@@ -28,9 +28,9 @@ ActiveAdmin.register User do
     def recharge
       @user = User.find(params[:id])
       if params[:operate_type] == 'manual_recharge'
-        @user.payout(params[:credits].to_f, params[:operate_type])
-      else
         @user.income(params[:credits].to_f, params[:operate_type])
+      else
+        @user.payout(params[:credits].to_f, params[:operate_type])
       end
       redirect_to '/admin/users'
     end
