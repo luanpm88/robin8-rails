@@ -14,9 +14,15 @@ class CampaignSyncAfterSignup
 
     return unless kol.present?
 
-    Campaign.where(:status => [:agreed, :executing]).each do |campaign|
+    Campaign.where(:status => :agreed).each do |campaign|
       unless CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign.id)
-        campaign.send_invite_to_kol 
+        campaign.send_invite_to_kol kol, "pending"
+      end
+    end
+
+    Campaign.where(:status => :executing).each do |campaign|
+      unless CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign.id)
+        campaign.send_invite_to_kol kol, "running"
       end
     end
   end

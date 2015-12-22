@@ -88,9 +88,9 @@ class Campaign < ActiveRecord::Base
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
   end
 
-  def send_invite_to_kol kol
+  def send_invite_to_kol kol, status
     invite = CampaignInvite.new
-    invite.status = 'pending'
+    invite.status = status
     invite.campaign_id = self.id
     invite.kol_id = kol.id
     uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json).gsub("\n","")
