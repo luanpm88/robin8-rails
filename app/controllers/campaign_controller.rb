@@ -171,7 +171,17 @@ class CampaignController < ApplicationController
   end
 
   def update
-    create
+    # create
+    campaign = Campaign.find params[:id]
+    origin_budget = campaign.budget
+
+    campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :start_time, :deadline, :message, :img_url)
+
+    campaign.update_attributes campaign_params
+    campaign.reset_campaign origin_budget, params[:budget], params[:per_click_budget]
+    render json: {:status => :ok}
+  rescue
+    render json: {:status => 'something was wrong'}
   end
 
 

@@ -28,6 +28,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           @data = []
         @empty = true
         @state = 'start'
+      else
+        if not @options.isUpdate
+          @model.set('id', null)
+
 
     setState: (s) ->
       return if not @canSetState s
