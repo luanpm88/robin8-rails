@@ -131,7 +131,15 @@ class UsersController < ApplicationController
   end
 
   def avail_amount
-    if current_user.avail_amount >= params[:amount].to_i
+
+    avail = if params[:campaign_id].eql?('no')
+              current_user.avail_amount
+            else
+              campaign = Campaign.find params[:campaign_id]
+              current_user.avail_amount + campaign.budget
+            end
+
+    if avail >= params[:amount].to_i
       render :json => {valid: true} and return
     end
     render :json => {valid: false} and return

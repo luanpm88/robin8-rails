@@ -160,6 +160,10 @@ class CampaignController < ApplicationController
       return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
 
+    unless current_user.avail_amount >= params[:budget].to_i
+      render :json => {:status => 'no enough amount!'} and return
+    end
+
     campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :start_time, :deadline, :message, :img_url))
     campaign.user = current_user
     campaign.status = "unexecute"
