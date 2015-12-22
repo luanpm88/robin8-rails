@@ -20,9 +20,12 @@ class Campaign < ActiveRecord::Base
   has_many :iptc_categories, :through => :campaign_categories
   has_many :interested_campaigns
   belongs_to :release
-  delegate :email, to: :user
 
   after_save :create_job
+
+  def email
+    user.try :email
+  end
 
   def get_stats
     end_time = status == 'executed' ? self.deadline : Time.now
