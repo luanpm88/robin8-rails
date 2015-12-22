@@ -82,7 +82,7 @@ class CampaignInviteController < ApplicationController
       obj['remain_budget'] = x.campaign.remain_budget
       obj['avail_click'] = x.get_avail_click
       img_url = x.campaign.img_url
-      obj['avatar_url'] = img_url ? img_url : ActionController::Base.helpers.asset_path('noavatar.jpg')
+      obj['avatar_url'] = img_url.present? ? img_url : ActionController::Base.helpers.asset_path('noavatar.jpg')
       new_array << obj
     end
 
