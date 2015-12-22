@@ -1,4 +1,4 @@
-<%= form_tag "/admin/users/#{@user.id}/recharge', :method => :post, :novalidate=>"novalidate" do %>
+<%= form_tag "/admin/users/#{@user.id}/recharge", :method => :post, :novalidate=>"novalidate" do %>
   <fieldset class="inputs">
     <legend><span>广告商充值、提现</span></legend>
     <ol>
@@ -20,7 +20,7 @@
       </li>
 
       <li class="email input required stringish" id="">
-        <label for="user_email" class="label">充值/提现</label><%= select_tag :operate_type, options_for_select([['充值','recharge'],['提现','withdraw']]) %>
+        <label for="user_email" class="label">充值/提现</label><%= select_tag :operate_type, options_for_select([['充值','manual_recharge'],['提现','manual_withdraw']]) %>
       </li>
 
       <li class="email input required stringish" >
@@ -51,19 +51,16 @@
       $("#credits").val(0);
       $(".after_operate_amount").html($("#avail_amount").val());
     });
+
     $("#credits").on("keyup",function(){
       var credits = parseFloat($("#credits").val());
       var operate_type = $("#operate_type option:selected").val();
       var avail_amount = parseFloat($("#avail_amount").html());
-      console.log(avail_amount);
-      console.log(operate_type);
-      console.log(avail_amount - credits);
-      console.log(avail_amount + credits);
       if(credits >= 0 ) {
-        if (operate_type == 'withdraw' && avail_amount < credits) {
+        if (operate_type == 'manual_withdraw' && avail_amount < credits) {
           alert("提现金额金额不能大于可用金额");
           $(".credits").val(0);
-        } else if(operate_type == 'withdraw') {
+        } else if(operate_type == 'manual_withdraw') {
           $(".after_operate_amount").html(avail_amount - credits);
         } else {
           $(".after_operate_amount").html(avail_amount + credits);

@@ -17,42 +17,38 @@ ActiveAdmin.register User do
     redirect_to "/"
   end
 
-  member_action :show_recharge, :method=>:get do
-
-  end
-
-  member_action :recharge, :method=>:post do
-
-  end
-
-
+  member_action :show_recharge, :method=>:get
+  member_action :recharge, :method=>:post
 
   controller do
-
     def show_recharge
       @user = User.find(params[:id])
     end
 
     def recharge
       @user = User.find(params[:id])
-      if params[:operate_type] == 'recharge'
-
+      if params[:operate_type] == 'manual_recharge'
+        @user.payout(params[:credits].to_f, params[:operate_type])
+      else
+        @user.income(params[:credits].to_f, params[:operate_type])
       end
-
+      redirect_to '/admin/users'
     end
-
-
   end
 
   index do |user|
     id_column
-    column :first_name
-    column :last_name
+    column "name" do |resource|
+      "#{resource.first_name}  #{resource.last_name}"
+    end
     column :email
     column :created_at
+    column "avail amount" do |my_resource|
+      my_resource.avail_amount
+    end
     actions do |user|
       link_to 'Open Dashboard ', login_to_dashboard_admin_user_path(user.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
-      link_to 'Recharge', show_recharge_admin_user_path(user.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
+      link_to '充值/提现', show_recharge_admin_user_path(user.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
     end
   end
 
