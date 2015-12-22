@@ -141,9 +141,19 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+
+  def reset_campaign(origin_budget,new_budget, new_per_click_budget)
+    self.user.unfrozen(origin_budget, 'campaign', self)
+    if self.user.avail_amount >= new_budget
+      self.update_attribute(:max_click, new_budget / new_per_click_budget)
+      self.user.frozen(new_budget, 'campaign', self)
+    else
+      Rails.logger.error('品牌商余额不足--campaign_id: #{self.id}')
+    end
+  end
+
   def create_job
-    return unless (self.status_change? && status == 'agreed')
-    if Rails.application.config.china_instance
+    if (self.status_change? && status == 'agreed')
       if self.user.avail_amount >= self.budget
         self.update_attribute(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
@@ -151,8 +161,11 @@ class Campaign < ActiveRecord::Base
       else
         Rails.logger.error('品牌商余额不足--campaign_id: #{self.id}')
       end
+    elsif (self.status_change? && status == 'rejected')
+      self.user.unfrozen(budget, 'campaign', self)
     end
   end
+
 
   def self.add_test_data
     if !Rails.env.production?
