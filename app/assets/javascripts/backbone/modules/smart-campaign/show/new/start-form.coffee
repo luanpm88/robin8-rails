@@ -60,12 +60,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initFormValidation()
         @initQiniuUploader()
         @initCreateCampaignModal()
+        if @options.isRenew
+          $(".budget_input").val("0")
 
     initCreateCampaignModal: ->
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
         $("#create-campagin").prop("disabled", false)
         $("#create-campagin").removeClass("disabled")
-
 
     doubleCheckCreate: ->
       $(".create-campaign-modal").modal("hide")
@@ -81,8 +82,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         parentThis.model.save this.model.attributes,
           success: (m, r) ->
             $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
+            $(".create-campaign-modal").modal("hide")
             location.href = "/#smart_campaign"
           error: (m, r) ->
+            $(".create-campaign-modal").modal("hide")
             console.log("失败了");
 
 

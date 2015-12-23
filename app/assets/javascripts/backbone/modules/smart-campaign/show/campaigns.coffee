@@ -49,5 +49,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           page = new Robin.SmartCampaign.Show.NewCampaign
             state: 'start'
             model: m
+            isRenew: true
           Backbone.history.navigate("campaign/" + id);
           Robin.layouts.main.content.show page

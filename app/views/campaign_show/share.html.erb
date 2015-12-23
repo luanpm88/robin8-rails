@@ -1,23 +1,23 @@
-<div class="campaign-share">
-  <div class="title">推广活动信息</div>
-  <div class="notice" style="text-align: center;margin: 0 auto;color: #008CBA; font-style: italic;"> 请复制'转发内容'，然后发送到朋友圈</div>
-  <div class="share-content">
+<!--<div class="campaign-share">-->
+  <!--<div class="title">推广活动信息</div>-->
+  <!--<div class="notice" style="text-align: center;margin: 0 auto;color: #008CBA; font-style: italic;"> 请复制'转发内容'，然后发送到朋友圈</div>-->
+  <!--<div class="share-content">-->
 
-    <div class="top">
-      <div class="left-logo"><%= image_tag @campaign.img_url %></div>
-      <div class="right-info">
-          <%= @campaign.name %>
-      </div>
-    </div>
-    <div class="bottom">
-      <div class="item">
-        <div class="label">活动开始时间</div>
-        <div class="value"><%= @campaign.start_time.to_s(:all_time) %></div>
-      </div>
-      <div class="item">
-        <div class="label">活动结束时间</div>
-        <div class="value"><%= @campaign.deadline.to_s(:all_time) %></div>
-      </div>
+    <!--<div class="top">-->
+      <!--<div class="left-logo"><%#= image_tag @campaign.img_url %></div>-->
+      <!--<div class="right-info">-->
+          <!--<%#= @campaign.name %>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="bottom">-->
+      <!--<div class="item">-->
+        <!--<div class="label">活动开始时间</div>-->
+        <!--<div class="value"><%#= @campaign.start_time.to_s(:all_time) %></div>-->
+      <!--</div>-->
+      <!--<div class="item">-->
+        <!--<div class="label">活动结束时间</div>-->
+        <!--<div class="value"><%#= @campaign.deadline.to_s(:all_time) %></div>-->
+      <!--</div>-->
       <!--<div class="item">-->
         <!--<div class="label">活动推广链接</div>-->
         <!--<div class="value"><%#= link_to '查看原文', @campaign.url %></div>-->
@@ -26,16 +26,16 @@
         <!--<div class="label">活动描述</div>-->
         <!--<div class="value"><%#= @campaign.description %></div>-->
       <!--</div>-->
-      <div class="item">
-        <div class="label">转发内容（请复制后，发送到朋友圈）</div>
-        <div class="value"><%= @campaign.description %> <%= @campaign_invite.share_url %></div>
-      </div>
-    </div>
-  </div>
-</div>
-<!--<div style="text-align: center;padding-top: 80px;width: 100%">-->
-<!--微信浏览器打开，然后点击右上角按钮 即可分享-->
+      <!--<div class="item">-->
+        <!--<div class="label">转发内容（请复制后，发送到朋友圈）</div>-->
+        <!--<div class="value"><%#= @campaign.description %> <%#= @campaign_invite.share_url %></div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 <!--</div>-->
+<iframe src="<%= @campaign.url %>" width="100%" height="100%">
+
+</iframe>
 
 <%= javascript_include_tag "http://res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
 <% sign_package = ($weixin_client.get_jssign_package(request.url) rescue {}) %>
@@ -111,7 +111,7 @@
 </style>
 <script type="text/javascript">
   wx.config({
-    debug: false,
+    debug: true,
     appId: "<%= sign_package['appId'] %>",
     timestamp: "<%= sign_package['timestamp'] %>",
     nonceStr: "<%= sign_package['nonceStr'] %>",
@@ -124,16 +124,15 @@
     ]
   });
   wx.ready(function () {
-    wx.hideOptionMenu();
-//    var info = {
-//      title: "<%= raw @campaign.name %>",
-//      desc: "<%= raw @campaign.description %>",
-//      link: "<%= CampaignInvite.origin_share_url(@campaign_invite.uuid) %>",
-//      imgUrl: "<%=  @campaign.img_url || @campaign.user.avatar_url %>"
-//    };
-//
-//    wx.onMenuShareAppMessage(info);
-//    wx.onMenuShareTimeline(info);
-//    wx.onMenuShareQQ(info);
+    var info = {
+      title: "<%= raw @campaign.name %>",
+      desc: "<%= raw @campaign.description %>",
+      link: "<%= request.url %>",
+      imgUrl: "<%=  @campaign.img_url || @campaign.user.avatar_url %>"
+    };
+
+    wx.onMenuShareAppMessage(info);
+    wx.onMenuShareTimeline(info);
+    wx.onMenuShareQQ(info);
   });
 </script>
