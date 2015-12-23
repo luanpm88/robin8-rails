@@ -28,14 +28,17 @@
           <i class='glyphicon glyphicon-time'></i> 结束时间： <%= end_at %>
         </p>
 
+        <% if(item.status != 'running'){ %>
         <p>
           <i class='glyphicon glyphicon-hand-up'></i> 当前有效点击： <%= item.avail_click %>
         </p>
+        <% } %>
 
         <p>
           <i class='glyphicon glyphicon-info-sign'></i> 有效点击单价： <%= item.per_click_budget %>
         </p>
 
+        <% if(item.status != 'running'){ %>
         <p>
           <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： <%= item.avail_click * item.per_click_budget %>
         </p>
@@ -45,6 +48,8 @@
         <button class='task-modal-btn displayForDesktop' data-clipboard-action="copy" data-clipboard-target="#descAndUrl">复制到剪切板</button>
 
         <div class='alert alert-warning displayForMobile' role='alert'>请复制链接分享给你的朋友吧</div>
+
+        <% } %>
 
         <h6>来自品牌的消息：</h6>
         <p>
