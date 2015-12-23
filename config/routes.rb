@@ -74,7 +74,7 @@ Rails.application.routes.draw do
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
   post '/kols/send_sms/' => 'kols#send_sms'
-  get "kols/create_kol_from_social_account" => "kols#create_kol_from_social_account", as: "create_kol_from_social_account" 
+  get "kols/create_kol_from_social_account" => "kols#create_kol_from_social_account", as: "create_kol_from_social_account"
   get '/users/new' => 'users#new'
   get '/kols/new' => 'kols#create'
   put '/kols/monetize' => 'kols#update_monetize'
@@ -121,6 +121,7 @@ Rails.application.routes.draw do
       get 'identities'
       get 'get_identities'
       get 'info'
+      get 'get_avail_amount'
       get :avail_amount
     end
   end

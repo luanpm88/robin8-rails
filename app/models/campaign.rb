@@ -136,7 +136,7 @@ class Campaign < ActiveRecord::Base
   #finish_remark:  expired or fee_end
   def finish(finish_remark)
     Rails.logger.campaign_sidekiq.info "-----finish: #{finish_remark}----------"
-    if Rails.application.config.china_instance
+    if Rails.application.config.china_instance  && self.status == 'executing'
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
@@ -170,7 +170,7 @@ class Campaign < ActiveRecord::Base
   # 结算
   def settle_accounts
     self.user.unfrozen(budget, 'campaign', self)
-    Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
+    Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
     self.user.payout((avail_click * per_click_budget) , 'campaign', self )
     campaign = self
     self.finished_invites.each do |invite|
@@ -182,12 +182,12 @@ class Campaign < ActiveRecord::Base
 
   def reset_campaign(origin_budget,new_budget, new_per_click_budget)
     Rails.logger.campaign.info "--------reset_campaign:  ---#{self.id}-----#{self.inspect} -- #{origin_budget}"
-    self.user.unfrozen(origin_budget, 'campaign', self)
-    Rails.logger.transaction.info "-------- reset_campaign:  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
-    if self.user.avail_amount >= self.budget
-      self.update_column(:max_click, new_budget / new_per_click_budget)
-      self.user.frozen(new_budget, 'campaign', self)
-      Rails.logger.transaction.info "-------- reset_campaign:  after frozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
+    self.user.unfrozen(origin_budget.to_f, 'campaign', self)
+    Rails.logger.transaction.info "-------- reset_campaign:  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
+    if self.user.avail_amount >= self.budget.to_f
+      self.update_column(:max_click, new_budget.to_f / new_per_click_budget.to_f)
+      self.user.frozen(new_budget.to_f, 'campaign', self)
+      Rails.logger.transaction.info "-------- reset_campaign:  after frozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
     else
       Rails.logger.error("品牌商余额不足--reset_campaign - campaign_id: #{self.id}")
     end

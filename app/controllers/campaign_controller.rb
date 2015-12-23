@@ -160,7 +160,7 @@ class CampaignController < ApplicationController
       return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
 
-    unless current_user.avail_amount >= params[:budget].to_i
+    unless current_user.avail_amount.to_f >= params[:budget].to_f
       render :json => {:status => 'no enough amount!'} and return
     end
 
@@ -181,8 +181,14 @@ class CampaignController < ApplicationController
 
     campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :start_time, :deadline, :message, :img_url)
 
-    campaign.update_attributes campaign_params
-    campaign.reset_campaign origin_budget, params[:budget], params[:per_click_budget]
+    unless current_user.avail_amount.to_f >= params[:budget].to_f
+      render :json => {:status => 'no enough amount!'} and return
+    end
+
+    ActiveRecord::Base.transaction do
+      campaign.update_attributes campaign_params
+      campaign.reset_campaign origin_budget, params[:budget], params[:per_click_budget]
+    end
     render json: {:status => :ok}
   rescue
     render json: {:status => 'something was wrong'}
