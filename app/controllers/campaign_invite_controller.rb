@@ -60,8 +60,10 @@ class CampaignInviteController < ApplicationController
              when 'complete'
                'finished'
              else
-               return render :json => {error: 'error type!'}
+               'error'
              end
+
+    return render :json => {error: 'error type!'} if status.eql?('error')
 
     campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
 
@@ -71,6 +73,8 @@ class CampaignInviteController < ApplicationController
     campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset)
     result = campaign_invites_by_limit_and_offset.map do |x|
       obj = x.campaign.attributes
+      obj['budget'] = obj['budget'].round(2)
+      obj['per_click_budget'] = obj['per_click_budget'].round(2)
       obj['campaign_invite_id'] = x.id
       obj['status'] = x.status
       obj['share_url'] = x.share_url

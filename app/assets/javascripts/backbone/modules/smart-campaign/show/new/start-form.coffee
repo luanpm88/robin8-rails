@@ -57,6 +57,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       campaign: this.model.toJSON()
 
     onRender: () ->
+      if @model && @model.attributes["start_time"]
+        start_time = new Date(@model.attributes.start_time).getTime() + 8*60*60
+        end_time = new Date(@model.attributes.deadline).getTime() + 8*60*60
+        @model.attributes.start_time = (new Date(start_time)).toString('yyyy-MM-dd HH:mm')
+        @model.attributes.deadline = (new Date(end_time)).toString('yyyy-MM-dd HH:mm')
       @modelBinder.bind @model, @el
       _.defer =>
         @initDatepicker()
@@ -251,6 +256,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       now = new Date
       start_time = new Date(now.setHours(now.getHours() + 2));
       deadline = new Date(now.setDate(now.getDate() + 2));
+
       chinaStartDateOptions = {
         ignoreReadonly: true,
         format: 'YYYY-MM-DD HH:mm',
@@ -268,8 +274,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         ignoreReadonly: true,
         format: 'YYYY-MM-DD HH:mm',
         locale: 'en-gb',
-        minDate: new Date(start_time)
+        minDate: start_time
       }
+
       if Robin.chinaLocale
         @ui.startDatePicker.datetimepicker(chinaStartDateOptions)
         @ui.endDatePicker.datetimepicker(chinaEndDateOptions)

@@ -65,12 +65,12 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    (get_avail_click * self.per_click_budget).to_f       rescue 0
+    (get_avail_click * self.per_click_budget).round(2)       rescue 0
   end
 
   def remain_budget
     return 0 if status == 'executed'
-    return self.budget - self.take_budget
+    return (self.budget - self.take_budget).round(2)
   end
 
   def get_share_time
@@ -136,7 +136,7 @@ class Campaign < ActiveRecord::Base
   #finish_remark:  expired or fee_end
   def finish(finish_remark)
     Rails.logger.campaign_sidekiq.info "-----finish: #{finish_remark}----------"
-    if Rails.application.config.china_instance
+    if Rails.application.config.china_instance  && self.status == 'executing'
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
