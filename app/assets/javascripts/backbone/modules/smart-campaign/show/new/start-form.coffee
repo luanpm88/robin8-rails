@@ -150,6 +150,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           valid: 'glyphicon glyphicon-ok'
           #invalid: 'glyphicon glyphicon-remove'
           validating: 'glyphicon glyphicon-refresh'
+        trigger: "blur"
         fields:
           name:
             validators:
@@ -281,22 +282,26 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     updateIsEdit: ->
       @isEdit = true
+      this.trigger("change")
 
     createCampagin: ->
       @ui.form.data("formValidation").validate()
-      if @model.id?
-        if @isEdit
-          if @ui.form.data('formValidation').isValid()
-            $(".create-campaign-modal").modal("show");
-          else
-            $("#create-campagin").removeClass("disabled");
-        else
-          $(".create-campaign-modal").modal("show");
-      else
-        if @ui.form.data('formValidation').isValid()
-          $(".create-campaign-modal").modal("show");
-        else
-          $("#create-campagin").removeClass("disabled");
+      $(".create-campaign-modal").modal("show");
+      # if @model.id?
+      #   if @isEdit
+      #     if @ui.form.data('formValidation').isValid()
+      #       $(".create-campaign-modal").modal("show");
+      #     else
+      #       $("#create-campagin").removeClass("disabled");
+      #       $("#create-campagin").prop('disabled', false);
+      #   else
+      #     $(".create-campaign-modal").modal("show");
+      # else
+      #   if @ui.form.data('formValidation').isValid()
+      #     $(".create-campaign-modal").modal("show");
+      #   else
+      #     $("#create-campagin").removeClass("disabled");
+      #     $("#create-campagin").prop('disabled', false);
 
     subtractionBudgetIcon: ->
       number = Number($(".budget_input").val())
