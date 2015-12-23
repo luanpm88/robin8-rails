@@ -46,6 +46,10 @@ class UsersController < ApplicationController
     render json: current_user.identities
   end
 
+  def get_avail_amount
+    render json: { avail_amount: current_user.avail_amount }
+  end
+
   def get_identities
     if user_signed_in?
       render json: current_user.all_identities
