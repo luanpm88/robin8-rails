@@ -1,5 +1,5 @@
 Robin.Collections.CampaignDiscovers = Backbone.Collection.extend
-  modle: Robin.Models.Discover
+  model: Robin.Models.Discover
 
   initialize: (models, opts)->
     @type = opts.type || 'upcoming'
