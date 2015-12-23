@@ -137,6 +137,8 @@ en:
       kol:
         email: Email
         mobile_number: Mobile number
+      user:
+        email: Email
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
@@ -159,7 +161,6 @@ en:
         kol:
           attributes:
             email:
-              taken: has already been taken
               invalid: format is invalid
             mobile_number:
               taken: has already been taken
@@ -171,6 +172,7 @@ en:
       edit: Edit
       destroy: Destroy
       save: Save
+      return: Return
       delete_success: Delete Successful
       delete_fail: Delete Fail
       save_success: Save Successful
@@ -319,7 +321,7 @@ en:
       title: Campaign Payment Information
     contact_page:
       feedback: "feedback"
-      address: Robin8 Inc.<br> 1745 Broadway, 17th Floor <br> New York, NY 10019
+      address: Robin8 Inc.<br> 1745 Yuyuan East Rd No.28, 15th Floor <br> Shanghai Jingan
       address_title: Main Office Address
       form:
         customer_service: General Customer Service
@@ -343,7 +345,8 @@ en:
       accepted: Accepted
       brand: Brand
       brief: Briefing Digest
-      budget: Budget
+      budget: Spent/Budget
+      replicate: Replicate
       check_to_activate: Please, check your email to activate your account!
       creation_date: Creation Date
       deadline: Deadline
@@ -377,7 +380,7 @@ en:
         personal_info: Personal Info
         upcoming_campaigns: Upcoming Campaigns
         completed_campaigns: Completed Campaigns
-        total_income: Toal <br /> Income
+        total_income: Total <br /> Income
         profile_completion: Profile Compiletion
         data_score:
         wechat_score:
@@ -393,6 +396,16 @@ en:
         influence_charts:
         discover: Discover
         coming_soon: Marketplace coming soon, Please checkout in a month!
+        campaigns: Campaigns
+        upcoming: Upcoming
+        running: Running
+        complete: Complete
+        click: click
+        income: income
+        view: View
+        share: Share
+        copy_to_clipboard: Copy to clipboard
+        date_range: Campaign Data Range
       influence_charts:
         auto: auto
         digit: digit
@@ -477,6 +490,7 @@ en:
         first_name: First Name
         gender: Gender
         general_title: My Profile
+        general_subtitle: '* 提供你的个人信息，让我们更加了解你，为你推荐感兴趣的分享活动。请放心，我们很注重保护你的个人隐私。'
         id: ID
         industry: Industry
         industry_placeholder: Select or input up to 5, separated by blanks
@@ -497,7 +511,7 @@ en:
         regions: Regions
         secrecy: Secrecy
         select_region: Select region
-        social_subtitle: monetize your influence on those channels
+        social_subtitle: 'monetize your influence on those channels'
         social_title: My Social
         south: South
         title: My Profile
@@ -1323,7 +1337,19 @@ en:
         title: Contact
         your_email: Your Email
       content_type: Content Type
-      created: Created
+      name: Campaign name
+      status: Status
+      unexecute: "unexecute"
+      rejected: "rejected"
+      agreed: "unexecute"
+      executing: "executing"
+      executed: "executed"
+      share: Kols
+      click: Clicks
+      cost: "Spent/Bucket (￥)"
+      balance: "Balance: ￥"
+      recharge: "Recharge"
+      created: Start time
       deadline: Deadline
       decline_date: Decline date
       declined: Declined
@@ -1365,11 +1391,15 @@ en:
       name: Name
       negotiating: Negotiating
       new:
+        edit: Edit
         pitch: Pitch
         start: Start
         targets: Targets
+        back: Back
+        new: New
       new_campaign: New Campaign
       next: Next
+      replicate: Replicate
       'no': 'No'
       no_campaigns: You don't have any campaigns. It's time to create one!
       no_history: You don't have expired campaigns.
@@ -1451,6 +1481,20 @@ en:
       private_influencers: Private Influencers
       reject: Reject
       rejected: Rejected
+      validation:
+        name: Campaign title not empty
+        description: Campaign description not empty
+        url: Campaign url not empty
+        budget: Campaign budget not empty
+        per_click_budget: Campaign per click budget not empty
+        budget_should_be_digit: Campaign budget must be digit
+        per_click_budget_should_be_digit: Campaign per click budget must be digit
+        per_click_budget_should_greater_than_zero: Campaign per click budget must greater than zero
+        per_click_budget_should_less_than_budget: Campaign per click budget must less than budget
+        budget_should_greater_than_zero: Campaign budget must greater than zero
+        url_invalid: Campaign url is invalid
+        campaign_end_time_should_greather_than_start_time: Campaign end time should laster than start time
+        budget_is_not_ample: Your budget is not enough, please recharge
       smart_campaign:
         pitch_step:
           button: Pitch!
@@ -1462,8 +1506,22 @@ en:
         campaign_content: Campaign content
         campaign_deadline: Campaign deadline
         campaign_title: Campaign title
+        enter_title: Enter Title
+        campaign_url: Campaign url
+        enter_url: Enter url
+        campaign_description: Campaign description
+        enter_description: Enter description
+        campaign_budget: Campaign budget
+        enter_budget: 50
+        enter_per_click_budget: 0.1
+        campaign_time: Camaigin time
+        campaign_start_time: Campaign start time
+        campaign_end_time: Campaign end time
+        enter_url: Enter campaign url
         editor_uses_paragraphs: "*The editor uses paragraphs by default for copied
           text. To place a normal line break press Shift+Enter (Shift+Return)"
+        campaign_budget_label: Campaign budget
+        campaign_per_click_budget_label: Campaign per click budget
         enter_title: Enter title...
         following_topics: and the following topics are mentioned in it
         paste_content: Paste the content!
@@ -1472,6 +1530,16 @@ en:
         paste_press_here: Paste the press release for your campaign here...
         pick_deadline: Pick a deadline!
         summary: Here's a summary of what <strong> "%{name}" </strong> is all about
+        enter_description: Enter description
+        enter_message: Enter message
+        campaign_message: Campaign message
+        save: Save
+        create_campaign: You have create one campaign successfully.
+        create_campaign_title: Are you sure to save campaign
+        are_sure_to_create_campaign: Campaign could not be changed after saved, We will examine your campaign as soon as possible
+        close: Close
+        sure_to_create: Sure to save
+
       status: Status
       success_ask_invite: Your request has been sent
       success_invite: Invitation has been sent
@@ -1547,6 +1615,25 @@ en:
         people_reached: No of people reached
         read_more: No of "read more"
       'yes': 'Yes'
+      stats:
+        detail_title:  推广详情
+        base_info: 基本信息
+        start_time: 开始时间
+        deadline: 结束时间
+        budget: 总预算
+        per_click_budget: 点击费用
+        avail_click: 有效点击
+        total_click: 总访问量
+        status: 当前状态
+        share_link: 推广链接
+        read_post: 查看原文
+        day_stats: 日点击一览
+        kol_list: KOL推广详情
+        kol_name: KOL
+        click_unit: 次数
+        click: 点击
+        take_budget: 已花费
+        remain_budget: 活动余额
     smart_release:
       analysis_step:
         buttons:

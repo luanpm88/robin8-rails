@@ -7,11 +7,16 @@
       <div class="pull-right">
         <a type="button" class="save-campaign btn btn-success vcenter" id="new_campaign" href="/#smart_campaign/new"><%=polyglot.t('smart_campaign.new_campaign')%></a>
       </div>
+      <div class="recharge">
+        <a type="button" class="btn btn-success vcenter" href="/contact?from=recharge" target="_blank"><%=polyglot.t('smart_campaign.recharge')%></a>
+      </div>
+      <div class="balance">
+        <%=polyglot.t('smart_campaign.balance')%>
+      </div>
     </div>
     <div class="row">
-      <div id="campaigns"></div>
-      <hr/>
-      <div id="kols"></div>
+      <div id="campaigns">
+      </div>
     </div>
   </div>
 </div>

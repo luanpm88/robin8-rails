@@ -1,0 +1,53 @@
+.stats-campaign{
+  margin-bottom: 20px;
+  .title{
+    h4, .h4 {
+      font-size: 16px;
+      color: #fff;
+    }
+    background: #3c9eb6;
+    margin-left: 20px
+  }
+  .content{
+    padding-left: 60px;
+    margin-top: 15px;
+    .box{
+      padding-left: 0;
+      padding-right: 0;
+      margin-top: 30px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      .box-header{
+        background: #f7f7f7;
+        padding: 9px 12px;
+        font-size: 17px;
+        border-bottom: 1px solid #ddd;
+      }
+      .box-body{
+        padding: 15px
+      }
+    }
+
+    .base-info .box-body{
+      .row{
+        padding: 6px;
+      }
+      .name{
+        width: 30%;
+        font-weight: bold;
+        display: inline-block;
+        text-align: right;
+      }
+      .value{
+        text-align: left;
+        width: 60%;
+        padding-left: 10px;
+        display: inline-block;
+      }
+    }
+  }
+
+  .chart, .list-table{
+    min-width: 600px;
+  }
+}

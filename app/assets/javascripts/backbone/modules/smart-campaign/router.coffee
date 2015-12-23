@@ -7,5 +7,5 @@ Robin.module 'SmartCampaign', (SmartCampaign, App, Backbone, Marionette, $, _) -
       "smart_campaign/new_:tab": "showNewCampaign",
       "smart_campaign/edit/:id": "showEditCampaign",
       "smart_campaign/add_kol": "showAddKol",
-      "smart_campaign/details/:id": "showCampaign"
-      "smart_campaign/edit/:id": "showNewCampaign"
+      # "smart_campaign/details/:id": "showCampaign"
+      "smart_campaign/stats/:id": "statsCampaign"

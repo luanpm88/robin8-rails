@@ -9,11 +9,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       start: '#start-link'
       target: '#target-link'
       pitch: '#pitch-link'
+      return_back: '#campaign-home-link'
 
     events:
       "click @ui.start": "start"
       "click @ui.target": "target"
       "click @ui.pitch": "pitch"
+      "click @ui.return_back": "return_back"
 
     initialize: (options) ->
       @options = options
@@ -26,6 +28,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           @data = []
         @empty = true
         @state = 'start'
+      else
+        if not @options.isUpdate
+          @model.set('id', null)
+
 
     setState: (s) ->
       return if not @canSetState s
@@ -38,6 +44,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         model: @model
         data: @data
         parent: @
+        isRenew: @options.isRenew
       _.each @_states, (tab) => @ui[tab].removeClass('active colored')
       _.all @_states, (tab) =>
         @ui[tab].addClass 'active colored'
@@ -78,3 +85,5 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       e?.preventDefault()
       @setState 'pitch'
 
+    return_back: () ->
+      Backbone.history.navigate('#smart_campaign', {trigger:true})

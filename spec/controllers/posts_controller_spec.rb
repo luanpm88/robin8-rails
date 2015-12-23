@@ -62,7 +62,7 @@ describe PostsController do
       subject
       expect(Post.all.first).to be_nil
     end
-    
+
     it "shouldn't create the post (without scheduled_date)" do
       params.merge!({post: {text: 'Test title', scheduled_date: ''}})
       subject
@@ -76,7 +76,7 @@ describe PostsController do
     it "should destroy post" do
       post = create :post, text: "Test text", user: user, id: 1, scheduled_date: DateTime.now
       subject
-      expect(Post.exists? post.id).to eq false 
+      expect(Post.exists? post.id).to eq false
     end
   end
 
@@ -114,7 +114,7 @@ describe PostsController do
 
 
   describe "#show" do
-    subject { get :show, ({id: 1}).merge(params) }
+    subject { get :views, ({id: 1}).merge(params) }
 
     let!(:post) { create :post, user: user, id: 1 }
 

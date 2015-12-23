@@ -43,7 +43,7 @@ Robin.finishSignIn = function(data){
 Robin.loadPleaseWait = function(){
   if (Robin.showLoading) {
     window.loading_screen = window.pleaseWait({
-      logo: AppAssets.path('logo.png'),
+      logo: AppAssets.path('robin8-beta-logo-tm.png'),
       backgroundColor: '#3c9eb6',
       loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
     });
@@ -66,7 +66,7 @@ Robin.setIdentities = function(data){
 Robin.stopOtherModules = function(){
   _.each(['Newsroom', 'Social', 'Profile', 'Monitoring', 'Dashboard', 'DashboardKol', 'SmartCampaign',
       'Releases', 'ReleasesBlast', 'Analytics', 'Authentication',
-      'Billing', 'Recommendations', 'Campaigns', 'CampaignsList'], function(module){
+      'Billing', 'Recommendations', 'Campaigns', 'CampaignsList', "Transactions"], function(module){
     Robin.module(module).stop();
   });
   $('#sidebar li.active, #sidebar-bottom li.active').removeClass('active');
@@ -90,6 +90,7 @@ Robin.on('start', function(){
         $.growl(Robin.afterConfirmationMessage,{
           type: 'success'
         });
+        $('#sidebar-wrapper').show();
         Robin.afterConfirmationMessage = undefined
       }
     };

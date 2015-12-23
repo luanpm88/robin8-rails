@@ -1,3 +1,67 @@
 // Place all the styles related to the campaign_invite controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.operate-money-icon{
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.input-money-icon{
+  width: 50px;
+}
+
+.money-input-group{
+  vertical-align: middle;
+  display: inline-table;
+}
+
+.per-budget-operate-icon {
+    margin-left: 60px;
+}
+
+div#datetimepicker6{
+  display: inline-table;
+  //margin-left: -20px
+}
+
+.campaign_start_time, .campaign_end_time{
+  display: table-cell;
+  vertical-align: middle;
+  width: 100px;
+}
+
+.new_campaign_label{
+  width: 70px;
+  text-align: left;
+}
+
+
+.campaign_time_group{
+  display: inline-table;
+}
+
+.campaign_budget_label{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.form-group.messeage_to_kol {
+    margin-top: -76px;
+}
+
+button#create-campagin {
+    margin-left: 15px;
+    margin-bottom: 40px;
+}
+
+@media(min-width: 640px) {
+  .form-group.messeage_to_kol {
+      margin-top: 15px;
+  }
+
+  .start-form.campaign_end_time{
+    width: 70px;
+  }
+}

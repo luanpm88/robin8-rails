@@ -72,7 +72,6 @@
 //= require_tree ./backbone/components
 //= require_tree ./backbone/modules
 
-
 var ready;
 ready = function() {
   //default options for Bootstrap Growl

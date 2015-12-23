@@ -23,9 +23,9 @@ class UsersController < ApplicationController
     if @user.valid?
       @user.save
       sign_in @user
-      return redirect_to :pricing if current_user.active_subscription.blank?
-      return redirect_to session[:redirect_checkout_url] if session[:redirect_checkout_url].present?
-      return redirect_to :root
+      # return redirect_to :pricing if current_user.active_subscription.blank?
+      # return redirect_to session[:redirect_checkout_url] if session[:redirect_checkout_url].present?
+      return redirect_to root_path + "#profile"
     else
       flash.now[:errors] = @user.errors.full_messages
     end
@@ -44,6 +44,10 @@ class UsersController < ApplicationController
 
   def identities
     render json: current_user.identities
+  end
+
+  def get_avail_amount
+    render json: { avail_amount: current_user.avail_amount }
   end
 
   def get_identities
@@ -128,6 +132,36 @@ class UsersController < ApplicationController
     else
       true
     end
+  end
+
+  def avail_amount
+
+    avail = if params[:campaign_id].eql?('no')
+              current_user.avail_amount
+            else
+              campaign = Campaign.find params[:campaign_id]
+              current_user.avail_amount + campaign.budget
+            end
+
+    if avail >= params[:amount].to_i
+      render :json => {valid: true} and return
+    end
+    render :json => {valid: false} and return
+  end
+
+  def qiniu_uptoken
+    put_policy = Qiniu::Auth::PutPolicy.new(
+      "robin8",     # 存储空间
+    )
+
+    uptoken = Qiniu::Auth.generate_uptoken(put_policy)
+    render :json => {uptoken: uptoken}
+  end
+
+  def set_avatar_url
+    current_user.avatar_url = params[:avatar_url]
+    current_user.save
+    render json: {"result": "ok"}
   end
 
   private
