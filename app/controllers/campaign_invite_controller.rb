@@ -37,15 +37,13 @@ class CampaignInviteController < ApplicationController
     @kol = current_kol
     return render :json => {error: 'no available kol!'} if @kol.blank?
 
-    # @campaign_invite = @kol.campaigns.where(id: params[:campaign_id]).first.campaign_invites.first
-
     @campaign_invite = CampaignInvite.where(kol_id: @kol.id, campaign_id: params[:campaign_id]).first
 
     if @campaign_invite.status.eql? 'running'
       @campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
     end
 
-    return render :json => {status: @campaign_invite}
+    return render :json => {status: @campaign_invite.status}
 
   end
 
@@ -71,7 +69,7 @@ class CampaignInviteController < ApplicationController
     limit = params[:limit] || 3
     offset = params[:offset] || 0
     campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset).order('created_at desc')
-    new_array = campaign_invites_by_limit_and_offset.map do |x|
+    result = campaign_invites_by_limit_and_offset.map do |x|
       obj = x.campaign.attributes
       obj['campaign_invite_id'] = x.id
       obj['status'] = x.status
@@ -82,6 +80,6 @@ class CampaignInviteController < ApplicationController
       obj
     end
 
-    return render :json => new_array
+    return render :json => result
   end
 end
