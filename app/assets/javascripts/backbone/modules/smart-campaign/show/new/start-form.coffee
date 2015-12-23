@@ -53,6 +53,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @isEdit = false
       @modelBinder = new Backbone.ModelBinder()
 
+    serializeData: ->
+      campaign: this.model.toJSON()
+
     onRender: () ->
       @modelBinder.bind @model, @el
       _.defer =>
@@ -60,8 +63,9 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initFormValidation()
         @initQiniuUploader()
         @initCreateCampaignModal()
-        if @options.isRenew
-          $(".budget_input").val("0")
+        
+        $(".budget_input").focus()
+        $(".campaign_name_input").focus()
 
     initCreateCampaignModal: ->
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
@@ -78,15 +82,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       parentThis.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
 
-      if @ui.form.data('formValidation').isValid()
-        parentThis.model.save this.model.attributes,
-          success: (m, r) ->
-            $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
-            $(".create-campaign-modal").modal("hide")
-            location.href = "/#smart_campaign"
-          error: (m, r) ->
-            $(".create-campaign-modal").modal("hide")
-            console.log("失败了");
+      parentThis.model.save this.model.attributes,
+        success: (m, r) ->
+          $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
+          $(".create-campaign-modal").modal("hide")
+          location.href = "/#smart_campaign"
+        error: (m, r) ->
+          $(".create-campaign-modal").modal("hide")
+          console.log("失败了");
 
 
     initQiniuUploader: ->
@@ -282,26 +285,22 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     updateIsEdit: ->
       @isEdit = true
-      this.trigger("change")
 
     createCampagin: ->
+      debugger
       @ui.form.data("formValidation").validate()
-      $(".create-campaign-modal").modal("show");
-      # if @model.id?
-      #   if @isEdit
-      #     if @ui.form.data('formValidation').isValid()
-      #       $(".create-campaign-modal").modal("show");
-      #     else
-      #       $("#create-campagin").removeClass("disabled");
-      #       $("#create-campagin").prop('disabled', false);
-      #   else
-      #     $(".create-campaign-modal").modal("show");
-      # else
-      #   if @ui.form.data('formValidation').isValid()
-      #     $(".create-campaign-modal").modal("show");
-      #   else
-      #     $("#create-campagin").removeClass("disabled");
-      #     $("#create-campagin").prop('disabled', false);
+      if @model.id?
+        if @ui.form.data('formValidation').isValid()
+          $(".create-campaign-modal").modal("show");
+        else
+          $("#create-campagin").removeClass("disabled");
+          $("#create-campagin").prop('disabled', false);
+      else
+        if @ui.form.data('formValidation').isValid()
+          $(".create-campaign-modal").modal("show");
+        else
+          $("#create-campagin").removeClass("disabled");
+          $("#create-campagin").prop('disabled', false);
 
     subtractionBudgetIcon: ->
       number = Number($(".budget_input").val())
