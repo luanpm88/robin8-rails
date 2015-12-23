@@ -98,7 +98,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       year = dateObj.getFullYear()
       month = dateObj.getMonth() + 1
       day = dateObj.getDate()
-      formated_date = year + '年' + month + '月' + day + '日'
+      hour = dateObj.getHours()
+      minute = dateObj.getMinutes()
+      second = dateObj.getSeconds()
+      new_date = new Date
+      new_date.setUTCHours(hour)
+      new_date.setUTCHours(minute)
+      new_date.setUTCSeconds(second)
+      # formated_date = year + '年' + month + '月' + day + '日' + hour + '时' + minute + '分'
+      formated_data = new_date.getFullYear() + '年' + new_date.getMonth() + '月' + new_date.getDate() + '日' + new_date.getHours() + '时' + new_date.getMinutes() + '分'
 
   Show.Tasks = Backbone.Marionette.CollectionView.extend
     childView: Show.Task
@@ -123,8 +131,15 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       year = dateObj.getFullYear()
       month = dateObj.getMonth() + 1
       day = dateObj.getDate()
-
-      formated_date = year + '年' + month + '月' + day + '日'
+      hour = dateObj.getHours()
+      minute = dateObj.getMinutes()
+      second = dateObj.getSeconds()
+      new_date = new Date
+      new_date.setUTCHours(hour)
+      new_date.setUTCHours(minute)
+      new_date.setUTCSeconds(second)
+      # formated_date = year + '年' + month + '月' + day + '日' + hour + '时' + minute + '分'
+      formated_data = new_date.getFullYear() + '年' + new_date.getMonth() + '月' + new_date.getDate() + '日' + new_date.getHours() + '时' + new_date.getMinutes() + '分'
 
     markAsRunning: (e) ->
       e.preventDefault()
