@@ -65,12 +65,12 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    (get_avail_click * self.per_click_budget).to_f       rescue 0
+    (get_avail_click * self.per_click_budget).round(2)       rescue 0
   end
 
   def remain_budget
     return 0 if status == 'executed'
-    return self.budget - self.take_budget
+    return (self.budget - self.take_budget).round(2)
   end
 
   def get_share_time
