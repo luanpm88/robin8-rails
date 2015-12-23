@@ -63,12 +63,12 @@ class CampaignInviteController < ApplicationController
                return render :json => {error: 'error type!'}
              end
 
-    campaigns_by_status = @kol.campaign_invites.where(status: status)
+    campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
 
     #TODO refactor
     limit = params[:limit] || 3
     offset = params[:offset] || 0
-    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset).order('created_at desc')
+    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset)
     result = campaign_invites_by_limit_and_offset.map do |x|
       obj = x.campaign.attributes
       obj['campaign_invite_id'] = x.id

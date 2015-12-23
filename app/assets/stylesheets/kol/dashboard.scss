@@ -77,9 +77,7 @@
 
         }
         .discover-item-body {
-          p {
-            overflow: auto;
-          }
+
         }
       }
     }
@@ -123,7 +121,9 @@
 
           }
           .discover-item-body {
-
+            p {
+              overflow: auto;
+            }
           }
         }
 
