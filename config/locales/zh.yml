@@ -1477,7 +1477,6 @@ zh:
         campaign_message: 留言
         enter_url: 活动链接
         save: 保存
-        create_campaign: 您已成功保存了一个活动。
         create_campaign_title: "您确定保存活动吗?"
         are_sure_to_create_campaign: 感谢您提交了该活动, 我们将在24小时内审核后帮您发布。
         close: 取消
