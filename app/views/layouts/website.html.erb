@@ -47,7 +47,7 @@
 </div>
 </body>
 
- <%=render :partial => "shared/feedback"%>
+ <%=render :partial => "shared/feedback" if @comaign.blank? %>
  <script type="text/javascript">
    var production = <%= production? %>;
  </script>
