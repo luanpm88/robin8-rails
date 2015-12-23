@@ -35,12 +35,12 @@
         <% } %>
 
         <p>
-          <i class='glyphicon glyphicon-info-sign'></i> 有效点击单价： <%= item.per_click_budget %>
+          <i class='glyphicon glyphicon-info-sign'></i> 有效点击单价： ￥<%= item.per_click_budget %>
         </p>
 
         <% if(item.status != 'running'){ %>
         <p>
-          <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： <%= item.avail_click * item.per_click_budget %>
+          <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： ￥<%= item.avail_click * item.per_click_budget %>
         </p>
 
         <p class="form-control disabled"  id='descAndUrl'><%= item.description %> <%= item.share_url %></p>
