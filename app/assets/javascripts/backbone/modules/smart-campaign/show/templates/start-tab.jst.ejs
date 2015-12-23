@@ -83,7 +83,7 @@
           </div>
         </div>
 
-        <div class='row col-md-10'>
+        <div class='row col-md-12'>
           <label for="name" class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_budget')%></label>
 
           <div class="form-group">
@@ -108,7 +108,7 @@
             </div>
           </div>
         </div>
-        <div class='row col-md-10'>
+        <div class='row col-md-12'>
           <label for="name" class="control-label start-form campain_time"><%=polyglot.t('smart_campaign.start_step.campaign_time')%></label>
           <div class="form-group">
             <div class="help-block with-errors campaign-errors"></div>
@@ -133,15 +133,16 @@
             </div>
           </div>
         </div>
-        <div class="col-md-2">
-          <div class="form-group messeage_to_kol">
-            <label for="name" class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_message')%></label>
-            <div class="help-block with-errors campaign-errors"></div>
-            <div>
-              <textarea id="name" class="form-control" placeholder="<%=polyglot.t('smart_campaign.start_step.enter_message')%>" name="message" type="text" value="" rows="10" data-widearea="enable" data-widearea-id="1" name="message"/>
-            </div>
-          </div>
        </div>
+      
+      <div class="col-md-12">
+        <div class="form-group messeage_to_kol">
+          <label for="name" class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_message')%></label>
+          <div class="help-block with-errors campaign-errors"></div>
+          <div>
+            <textarea id="name" class="form-control" placeholder="<%=polyglot.t('smart_campaign.start_step.enter_message')%>" name="message" type="text" value="" rows="3" data-widearea="enable" data-widearea-id="1" name="message"/>
+          </div>
+        </div>
       
       <div class="modal create-campaign-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog">

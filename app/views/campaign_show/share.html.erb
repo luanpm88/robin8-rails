@@ -123,16 +123,16 @@
       'onMenuShareWeibo'
     ]
   });
-  wx.ready(function () {
-    var info = {
-      title: "<%= raw @campaign.name %>",
-      desc: "<%= raw @campaign.description %>",
-      link: "<%= request.url %>",
-      imgUrl: "<%=  @campaign.img_url || @campaign.user.avatar_url %>"
-    };
+  // wx.ready(function () {
+  //   var info = {
+  //     title: "<%= raw @campaign.name %>",
+  //     desc: "<%= raw @campaign.description %>",
+  //     link: "<%= request.url %>",
+  //     imgUrl: "<%=  @campaign.img_url || @campaign.user.avatar_url %>"
+  //   };
 
-    wx.onMenuShareAppMessage(info);
-    wx.onMenuShareTimeline(info);
-    wx.onMenuShareQQ(info);
-  });
+  //   wx.onMenuShareAppMessage(info);
+  //   wx.onMenuShareTimeline(info);
+  //   wx.onMenuShareQQ(info);
+  // });
 </script>

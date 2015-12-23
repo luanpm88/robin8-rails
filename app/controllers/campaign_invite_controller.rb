@@ -37,15 +37,13 @@ class CampaignInviteController < ApplicationController
     @kol = current_kol
     return render :json => {error: 'no available kol!'} if @kol.blank?
 
-    # @campaign_invite = @kol.campaigns.where(id: params[:campaign_id]).first.campaign_invites.first
-
     @campaign_invite = CampaignInvite.where(kol_id: @kol.id, campaign_id: params[:campaign_id]).first
 
     if @campaign_invite.status.eql? 'running'
       @campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
     end
 
-    return render :json => {status: @campaign_invite}
+    return render :json => {status: @campaign_invite.status}
 
   end
 
@@ -65,27 +63,23 @@ class CampaignInviteController < ApplicationController
                return render :json => {error: 'error type!'}
              end
 
-
     campaigns_by_status = @kol.campaign_invites.where(status: status)
 
-    # campaigns_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).map { |x| x.avail_click=x.get_avail_click;x.campaign }
-
-    # !!! Refactor later
-
-    new_array = []
-    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(params[:limit] ? params[:limit] : 3).offset(params[:offset] ? params[:offset] : 0).order('created_at desc')
-    campaign_invites_by_limit_and_offset.each do |x|
+    #TODO refactor
+    limit = params[:limit] || 3
+    offset = params[:offset] || 0
+    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset).order('created_at desc')
+    result = campaign_invites_by_limit_and_offset.map do |x|
       obj = x.campaign.attributes
       obj['campaign_invite_id'] = x.id
       obj['status'] = x.status
-      obj['url'] = x.share_url
+      obj['share_url'] = x.share_url
       obj['remain_budget'] = x.campaign.remain_budget
       obj['avail_click'] = x.get_avail_click
-      img_url = x.campaign.img_url
-      obj['avatar_url'] = img_url.present? ? img_url : ActionController::Base.helpers.asset_path('noavatar.jpg')
-      new_array << obj
+      obj['img_url'] = ActionController::Base.helpers.asset_path('noavatar.jpg') unless obj['img_url'].present?
+      obj
     end
 
-    return render :json => new_array
+    return render :json => result
   end
 end

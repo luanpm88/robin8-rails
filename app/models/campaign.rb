@@ -85,6 +85,7 @@ class Campaign < ActiveRecord::Base
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     ActiveRecord::Base.transaction do
       Kol.all.each do |kol|
+        Sidekiq.logger.info "---send_invites--  ==================start create invite=================--"
         next if CampaignInvite.exists?(:kol_id => kol.id, :campaign_id => self.id)
         invite = CampaignInvite.new
         invite.status = 'pending'
@@ -92,8 +93,11 @@ class Campaign < ActiveRecord::Base
         invite.kol_id = kol.id
         uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json).gsub("\n","")
         invite.uuid = uuid
+        Sidekiq.logger.info "---send_invites--  =============start share_url======================--"
         invite.share_url = CampaignInvite.generate_share_url(uuid)
+        Sidekiq.logger.info "---send_invites--  ==================end share_url=================--"
         invite.save!
+        Sidekiq.logger.info "---send_invites--  ==================end create invite=================--"
       end
     end
     Sidekiq.logger.info "----send_invites:transaction-------"

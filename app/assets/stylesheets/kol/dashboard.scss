@@ -5,6 +5,9 @@
   .displayForDesktop {
     display: block;
   }
+  #descAndUrl {
+    height: auto!important;
+  }
 }
 
 @media (max-width:480px) {
