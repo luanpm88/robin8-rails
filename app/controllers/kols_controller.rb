@@ -16,7 +16,7 @@ class KolsController < ApplicationController
     render :json => current_kol.all_score.merge({
       :upcoming => CampaignInvite.where(kol_id: current_kol.id, status: 'running').count,
       :completed => CampaignInvite.where(kol_id: current_kol.id, status: 'finished').count,
-      :total_income => total.to_f
+      :total_income => total.round(2)
     })
   end
 
