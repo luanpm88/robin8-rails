@@ -78,7 +78,7 @@ class CampaignInviteController < ApplicationController
       obj = x.campaign.attributes
       obj['campaign_invite_id'] = x.id
       obj['status'] = x.status
-      obj['url'] = x.share_url
+      obj['share_url'] = x.share_url
       obj['remain_budget'] = x.campaign.remain_budget
       obj['avail_click'] = x.get_avail_click
       obj['img_url'] = ActionController::Base.helpers.asset_path('noavatar.jpg') unless obj['img_url'].present?
