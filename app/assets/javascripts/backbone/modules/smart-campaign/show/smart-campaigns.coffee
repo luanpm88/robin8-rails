@@ -8,7 +8,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     onShow: () ->
       $.ajax(
-        type: "get"
+        type: "get",
         url: "/users/get_avail_amount" ,
         dataType: 'json')
         .done (data) ->
