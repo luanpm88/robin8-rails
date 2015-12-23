@@ -61,13 +61,16 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_fee_info
-    take_fee = get_avail_click * self.per_click_budget                rescue 0
-    "#{take_fee.to_f} / #{budget}"
+    "#{self.take_budget} / #{self.budget}"
   end
 
-  def  remain_budget
+  def take_budget
+    (get_avail_click * self.per_click_budget).to_f       rescue 0
+  end
+
+  def remain_budget
     return 0 if status == 'executed'
-    return self.budget - get_avail_click * self.per_click_budget
+    return self.budget - self.take_budget
   end
 
   def get_share_time
@@ -79,10 +82,10 @@ class Campaign < ActiveRecord::Base
   def send_invites
     Sidekiq.logger.info "---send_invites--#{self.status}--#{self.status == 'agreed'}---"
     return if self.status != 'agreed'
+    self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     ActiveRecord::Base.transaction do
       Kol.all.each do |kol|
         next if CampaignInvite.exists?(:kol_id => kol.id, :campaign_id => self.id)
-
         invite = CampaignInvite.new
         invite.status = 'pending'
         invite.campaign_id = self.id
@@ -95,7 +98,8 @@ class Campaign < ActiveRecord::Base
     end
     Sidekiq.logger.info "----send_invites:transaction-------"
     # make sure those execute late (after invite create)
-    CampaignWorker.perform_at(self.start_time, self.id, 'start')
+    _start_time = self.start_time < Time.now ? (Time.now + 15.seconds) : self.start_time
+    CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
   end
 
