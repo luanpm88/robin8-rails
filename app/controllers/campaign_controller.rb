@@ -40,7 +40,7 @@ class CampaignController < ApplicationController
     if user.blank? or c.user_id != user.id
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json({:methods => [:get_avail_click, :get_total_click, :get_fee_info, :get_share_time], :include => [:kols, :approved_invites]})
+    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget], :include => [:kols, :approved_invites]})
   end
 
   def article

@@ -1631,6 +1631,9 @@ en:
         kol_list: KOL推广详情
         kol_name: KOL
         click_unit: 次数
+        click: 点击
+        take_budget: 已花费
+        remain_budget: 活动余额
     smart_release:
       analysis_step:
         buttons:
