@@ -60,8 +60,10 @@ class CampaignInviteController < ApplicationController
              when 'complete'
                'finished'
              else
-               return render :json => {error: 'error type!'}
+               'error'
              end
+
+    return render :json => {error: 'error type!'} if status.eql?('error')
 
     campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
 

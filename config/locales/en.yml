@@ -1338,8 +1338,8 @@ en:
         your_email: Your Email
       content_type: Content Type
       name: Campaign name
-      status: Status
-      unexecute: "unexecute"
+      status: Campaign Status
+      unexecute: "Pending Approval"
       rejected: "rejected"
       agreed: "unexecute"
       executing: "executing"
