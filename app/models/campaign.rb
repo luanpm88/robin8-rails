@@ -98,7 +98,7 @@ class Campaign < ActiveRecord::Base
     end
     Sidekiq.logger.info "----send_invites:transaction-------"
     # make sure those execute late (after invite create)
-    _start_time = self.start_time < Time.now ? (Time.now + 1.minutes) : self.start_time
+    _start_time = self.start_time < Time.now ? (Time.now + 15.seconds) : self.start_time
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
   end
