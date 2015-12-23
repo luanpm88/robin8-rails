@@ -12,9 +12,9 @@
     <% _.each(items, function(c) { %>
     <tr data-id="<%= c.id %>">
       <td class="middle col-md-1">
-        <% if(c.kol.first_name != '' && c.kol.last_name != ''){ %>
+        <% if(c.kol.first_name != null && c.kol.last_name != null){ %>
           <%= c.kol.first_name %> &nbsp; &nbsp; <%= c.kol.last_name %>
-        <% } else if(c.kol.email != '') { %>
+        <% } else if(c.kol.email != null) { %>
           <%= c.kol.email %>
         <% } else { %>
           <%= c.kol.social_name %>

@@ -1341,7 +1341,7 @@ en:
       status: Status
       unexecute: "unexecute"
       rejected: "rejected"
-      agreed: "agreed"
+      agreed: "unexecute"
       executing: "executing"
       executed: "executed"
       share: Kols
@@ -1349,7 +1349,7 @@ en:
       cost: "Spent/Bucket (￥)"
       balance: "Balance: ￥"
       recharge: "Recharge"
-      created: Created
+      created: Start time
       deadline: Deadline
       decline_date: Decline date
       declined: Declined
