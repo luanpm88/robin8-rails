@@ -143,7 +143,7 @@ class UsersController < ApplicationController
               current_user.avail_amount + campaign.budget
             end
 
-    if avail >= params[:amount].to_i
+    if avail.to_f >= params[:amount].to_f
       render :json => {valid: true} and return
     end
     render :json => {valid: false} and return
