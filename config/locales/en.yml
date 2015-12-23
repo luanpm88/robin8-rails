@@ -137,6 +137,8 @@ en:
       kol:
         email: Email
         mobile_number: Mobile number
+      user:
+        email: Email
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
