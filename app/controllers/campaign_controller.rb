@@ -184,13 +184,14 @@ class CampaignController < ApplicationController
     unless current_user.avail_amount.to_f >= params[:budget].to_f
       render :json => {:status => 'no enough amount!'} and return
     end
-    
+
     campaign.deadline = params[:campaign][:deadline].to_datetime - 8.hours
     campaign.start_time = params[:campaign][:start_time].to_datetime - 8.hours
     ActiveRecord::Base.transaction do
       campaign.update_attributes campaign_params
       campaign.reset_campaign origin_budget, params[:budget], params[:per_click_budget]
     end
+
     render json: {:status => :ok}
   rescue
     render json: {:status => 'something was wrong'}
