@@ -160,9 +160,6 @@ zh:
       kol:
         email: "邮箱"
         mobile_number: "电话号码"
-      user:
-        email: "邮箱"
-
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
