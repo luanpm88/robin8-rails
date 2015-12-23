@@ -136,7 +136,7 @@ class Campaign < ActiveRecord::Base
   #finish_remark:  expired or fee_end
   def finish(finish_remark)
     Rails.logger.campaign_sidekiq.info "-----finish: #{finish_remark}----------"
-    if Rails.application.config.china_instance
+    if Rails.application.config.china_instance  && self.status == 'executing'
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
