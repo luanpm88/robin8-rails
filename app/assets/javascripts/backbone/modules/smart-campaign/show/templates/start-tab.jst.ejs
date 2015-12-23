@@ -73,7 +73,12 @@
             <div class="col-md-3">
               <div class="text-center" id="img-url-container">
 
-                <img src="<%= AppAssets.path('noavatar.jpg') %>" id="campaign-image" alt="avatar" style="width: 200px; height: 200px">
+              <% if (campaign && campaign.img_url)  {%>
+                <img src="<%= campaign.img_url%>" id="campaign-image" alt="avatar" style="width: 200px; height: 200px">
+              <% }else { %>
+                <img src="<%= AppAssets.path('campaign_default_img.png')%>" id="campaign-image" alt="avatar" style="width: 200px; height: 200px">
+              <%}%>
+
 
                 <input type="text" name="img_url" id="img_url" value='' hidden>
                 <p class="help-block">转发到朋友圈时显示的Logo</p>

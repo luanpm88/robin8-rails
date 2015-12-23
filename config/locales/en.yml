@@ -1536,7 +1536,7 @@ en:
         save: Save
         create_campaign: You have create one campaign successfully.
         create_campaign_title: Are you sure to save campaign
-        are_sure_to_create_campaign: Campaign could not be changed after saved, We will examine your campaign as soon as possible
+        are_sure_to_create_campaign: Campaign could not be changed after saved, We will approve your campaign in 24 hours
         close: Close
         sure_to_create: Sure to save
 
