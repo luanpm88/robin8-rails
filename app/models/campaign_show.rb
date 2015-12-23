@@ -34,7 +34,7 @@ class CampaignShow < ActiveRecord::Base
     status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
     CampaignShow.create!(:kol_id => info['kol_id'], :campaign_id => info['campaign_id'], :visitor_cookie => visitor_cookies,
                         :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip)
-    Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----#{remark}-cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
+    Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark#{remark}-cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
     add_result = campaign_invite.add_click(status)    rescue nil
     campaign.add_click(status)     if  add_result
   end

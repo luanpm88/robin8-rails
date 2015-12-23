@@ -28,7 +28,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_stats
-    end_time = status == 'executed' ? self.deadline : Time.now
+    end_time = (status == 'executed' ? self.deadline : Time.now)
     shows = campaign_shows
     labels = []
     total_clicks = []
@@ -130,7 +130,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}-----avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    finish('fee_end') if self.redis_avail_click.value >= self.max_click && self.status == 'agreed'
+    finish('fee_end') if self.redis_avail_click.value >= self.max_click && self.status == 'executing'
   end
 
   #finish_remark:  expired or fee_end
