@@ -1287,7 +1287,7 @@ zh:
       content_type: Content Type
       name: "活动名称"
       status: "活动状态"
-      unexecute: "即将执行"
+      unexecute: "待批准"
       rejected: "未通过"
       agreed: "即将执行"
       executing: "执行中"
@@ -1298,7 +1298,7 @@ zh:
       balance: "余额: ￥"
       recharge: "充值"
       created: "开始时间"
-      deadline: "结束日期"
+      deadline: "结束时间"
       decline_date: Decline date
       declined: "已拒绝"
       declined_unknown: "拒绝/未知"
