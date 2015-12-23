@@ -73,6 +73,8 @@ class CampaignInviteController < ApplicationController
     campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset)
     result = campaign_invites_by_limit_and_offset.map do |x|
       obj = x.campaign.attributes
+      obj['budget'] = obj['budget'].to_f
+      obj['per_click_budget'] = obj['per_click_budget'].to_f
       obj['campaign_invite_id'] = x.id
       obj['status'] = x.status
       obj['share_url'] = x.share_url
