@@ -28,7 +28,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_stats
-    end_time = status == 'executed' ? self.deadline : Time.now
+    end_time = (status == 'executed' ? self.deadline : Time.now)
     shows = campaign_shows
     labels = []
     total_clicks = []
@@ -80,12 +80,12 @@ class Campaign < ActiveRecord::Base
 
   # 开始时候就发送邀请 但是状态为pending
   def send_invites
-    Sidekiq.logger.info "---send_invites--#{self.status}--#{self.status == 'agreed'}---"
+    Rails.logger.campaign_sidekiq.info "---send_invites: --campaign status: #{self.status}---#{self.deadline}--"
     return if self.status != 'agreed'
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
+    Rails.logger.campaign_sidekiq.info "---send_invites: --start create--"
     ActiveRecord::Base.transaction do
       Kol.all.each do |kol|
-        Sidekiq.logger.info "---send_invites--  ==================start create invite=================--"
         next if CampaignInvite.exists?(:kol_id => kol.id, :campaign_id => self.id)
         invite = CampaignInvite.new
         invite.status = 'pending'
@@ -93,16 +93,14 @@ class Campaign < ActiveRecord::Base
         invite.kol_id = kol.id
         uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json).gsub("\n","")
         invite.uuid = uuid
-        Sidekiq.logger.info "---send_invites--  =============start share_url======================--"
         invite.share_url = CampaignInvite.generate_share_url(uuid)
-        Sidekiq.logger.info "---send_invites--  ==================end share_url=================--"
         invite.save!
-        Sidekiq.logger.info "---send_invites--  ==================end create invite=================--"
       end
     end
-    Sidekiq.logger.info "----send_invites:transaction-------"
+    Rails.logger.campaign_sidekiq.info "----send_invites:  start push to sidekiq-------"
     # make sure those execute late (after invite create)
     _start_time = self.start_time < Time.now ? (Time.now + 15.seconds) : self.start_time
+    Rails.logger.campaign_sidekiq.info "----send_invites:  _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
   end
@@ -120,20 +118,24 @@ class Campaign < ActiveRecord::Base
 
   # 开始进行  此时需要更改invite状态
   def go_start
+    Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
     ActiveRecord::Base.transaction do
-      self.update_attribute(:status, 'executing')
+      self.update_column(:status, 'executing')
       self.pending_invites.update_all(:status => 'running')
     end
+    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------"
   end
 
   def add_click(valid)
+    Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}-----avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    finish('fee_end') if self.redis_avail_click.value >= self.max_click && self.status == 'agreed'
+    finish('fee_end') if self.redis_avail_click.value >= self.max_click && self.status == 'executing'
   end
 
   #finish_remark:  expired or fee_end
   def finish(finish_remark)
+    Rails.logger.campaign_sidekiq.info "-----finish: #{finish_remark}----------"
     if Rails.application.config.china_instance
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
@@ -168,35 +170,44 @@ class Campaign < ActiveRecord::Base
   # 结算
   def settle_accounts
     self.user.unfrozen(budget, 'campaign', self)
+    Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
     self.user.payout((avail_click * per_click_budget) , 'campaign', self )
     campaign = self
     self.finished_invites.each do |invite|
       invite.kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
+      Rails.logger.transaction.info "-------- settle_accounts: kol  after income ---cid:#{campaign.id}--kol_id:#{invite.kol.id}---#{invite.kol.inspect}"
     end
   end
 
 
   def reset_campaign(origin_budget,new_budget, new_per_click_budget)
+    Rails.logger.campaign.info "--------reset_campaign:  ---#{self.id}-----#{self.inspect} -- #{origin_budget}"
     self.user.unfrozen(origin_budget, 'campaign', self)
+    Rails.logger.transaction.info "-------- reset_campaign:  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
     if self.user.avail_amount >= self.budget
       self.update_column(:max_click, new_budget / new_per_click_budget)
       self.user.frozen(new_budget, 'campaign', self)
+      Rails.logger.transaction.info "-------- reset_campaign:  after frozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
     else
-      Rails.logger.error('品牌商余额不足--reset_campaign - campaign_id: #{self.id}')
+      Rails.logger.error("品牌商余额不足--reset_campaign - campaign_id: #{self.id}")
     end
   end
 
   def create_job
     if self.status_changed? && self.status == 'unexecute'
+      Rails.logger.campaign.info "--------create_job:  ---#{self.id}-----#{self.inspect}"
       if self.user.avail_amount >= self.budget
         self.update_column(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
+        Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
       else
-        Rails.logger.error('品牌商余额不足--campaign_id: #{self.id}')
+        Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
       end
     elsif (self.status_changed? && status == 'agreed')
+      Rails.logger.campaign.info "--------agreed_job:  ---#{self.id}-----#{self.inspect}"
       CampaignWorker.perform_async(self.id, 'send_invites')
     elsif (self.status_changed? && status == 'rejected')
+      Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
       self.user.unfrozen(budget, 'campaign', self)
     end
   end

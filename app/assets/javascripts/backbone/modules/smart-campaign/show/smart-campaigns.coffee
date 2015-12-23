@@ -5,3 +5,11 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     regions:
       campaigns: '#campaigns'
+
+    onShow: () ->
+      $.ajax(
+        type: "get",
+        url: "/users/get_avail_amount" ,
+        dataType: 'json')
+        .done (data) ->
+          $("div.balance").append(data.avail_amount)

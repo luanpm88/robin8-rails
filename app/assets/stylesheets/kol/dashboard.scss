@@ -121,7 +121,9 @@
 
           }
           .discover-item-body {
-
+            p {
+              overflow: auto;
+            }
           }
         }
 
