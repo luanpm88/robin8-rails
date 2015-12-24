@@ -85,28 +85,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     template: 'modules/dashboard-kol/templates/default-dashboard/task-item'
     tagName: 'li'
 
-    initialize: (opts) ->
-      console.log 'from model: ', @model
-
     serializeData: () ->
       item: @model.toJSON()
       start_at: @format_date(@model.get('start_time'))
       end_at: @format_date(@model.get('deadline'))
 
     format_date: (date) ->
-      dateObj = new Date date
-      year = dateObj.getFullYear()
-      month = dateObj.getMonth() + 1
-      day = dateObj.getDate()
-      hour = dateObj.getHours()
-      minute = dateObj.getMinutes()
-      second = dateObj.getSeconds()
-      new_date = new Date
-      new_date.setUTCDate(day)
-      new_date.setUTCHours(hour)
-      new_date.setUTCHours(minute)
-      new_date.setUTCSeconds(second)
-      formated_data = new_date.getFullYear() + '年' + new_date.getMonth() + '月' + new_date.getDate() + '日' + new_date.getHours() + '时' + new_date.getMinutes() + '分'
+      localDate = new Date(date)
+      formatted_date = localDate.getFullYear() + '年' + (localDate.getMonth() + 1) + '月' + localDate.getDate() + '日' + localDate.getHours() + '时' + localDate.getMinutes() + '分'
 
   Show.Tasks = Backbone.Marionette.CollectionView.extend
     childView: Show.Task
@@ -127,19 +113,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       end_at: @format_date(@model.get('deadline'))
 
     format_date: (date) ->
-      dateObj = new Date date
-      year = dateObj.getFullYear()
-      month = dateObj.getMonth() + 1
-      day = dateObj.getDate()
-      hour = dateObj.getHours()
-      minute = dateObj.getMinutes()
-      second = dateObj.getSeconds()
-      new_date = new Date
-      new_date.setUTCDate(day)
-      new_date.setUTCHours(hour)
-      new_date.setUTCHours(minute)
-      new_date.setUTCSeconds(second)
-      formated_data = new_date.getFullYear() + '年' + new_date.getMonth() + '月' + new_date.getDate() + '日' + new_date.getHours() + '时' + new_date.getMinutes() + '分'
+      localDate = new Date(date)
+      formatted_date = localDate.getFullYear() + '年' + (localDate.getMonth() + 1) + '月' + localDate.getDate() + '日' + localDate.getHours() + '时' + localDate.getMinutes() + '分'
 
     markAsRunning: (e) ->
       e.preventDefault()
@@ -149,7 +124,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           url: '/mark_as_running/' + @model.get('id')
           dataType: 'json'
           success: (data) ->
-            console.log data
             parentThis.model.collection.remove parentThis.model
             $('a#running').append('<span class="badge">1</span>')
             parentThis.model.set('status', 'approved')
