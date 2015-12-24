@@ -31,6 +31,8 @@ $(document).ready ->
       $(this).closest(".row").find("input[type='text']").val('')
 #      #校验的符号 也要去掉
       $(this).closest(".row").find("i").css("display","none")
+      $(this).closest(".row").find(".help-block").css("display","none")
+      $(this).closest(".row").find(".cell").removeClass("has-error")
 
 # 输入某项价格 ，自动check
   $("body").on "blur", ".row input[type='text']", (e) ->
@@ -38,7 +40,7 @@ $(document).ready ->
     if val
       $(this).closest(".row").find("input[type='checkbox']").attr("value",1)
       $(this).closest(".row").find("input[type='checkbox']").checkboxX('refresh')
-      $(this).closest(".row").find("input[type='checkbox']").trigger('change')
+#      $(this).closest(".row").find("input[type='checkbox']").trigger('change')
 
   # resend confirmation mail
   $('#resend-confirmation-mail').on 'click', (e) ->

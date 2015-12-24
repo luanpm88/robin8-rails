@@ -14,10 +14,10 @@
       <td class="middle col-md-1">
         <% if(c.kol.first_name != null && c.kol.last_name != null){ %>
           <%= c.kol.first_name %> &nbsp; &nbsp; <%= c.kol.last_name %>
-        <% } else if(c.kol.email != null) { %>
-          <%= c.kol.email %>
-        <% } else { %>
+        <% } else if(c.kol.social_name != null) { %>
           <%= c.kol.social_name %>
+        <% } else { %>
+          该用户未设置昵称
         <% } %>
       </td>
       <td class="middle col-md-1"><%= c.get_avail_click %></td>
