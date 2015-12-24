@@ -2964,7 +2964,7 @@ en:
       not_found_in_database: Invalid %{authentication_keys} or password.
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: You need to sign in or sign up before continuing.
-      unconfirmed: You have to confirm your email address before continuing.
+      unconfirmed: "You have to confirm your email address before continuing. If you haven't received email, please contact us: support_cn@robin8.com"
     invitations:
       edit:
         header: Set your password
