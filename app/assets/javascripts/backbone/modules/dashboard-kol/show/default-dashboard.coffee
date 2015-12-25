@@ -28,6 +28,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       score_data: @options.score_data
 
     switchAccount: (e) ->
+      _gaq.push(['_trackPageview', '/some-page'])
       e.preventDefault()
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
