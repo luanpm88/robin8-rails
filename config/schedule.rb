@@ -13,7 +13,7 @@
 
 env :PATH, ENV['PATH']
 
-set :environment, "staging"
+# set :environment, "staging"
 
 set :output, {
   :error => File.join(path, "log", "cron_error.log"),
@@ -40,7 +40,7 @@ every 1.day, :at => '5:00 am' do
 end
 
 every 1.day, :at => '12:00 am' do
-  command "backup perform --trigger robin8_development"
+  command "backup perform --trigger robin8_production"
 end
 
 every 5.minutes do
@@ -61,5 +61,5 @@ end
 
 
 every 1.day, :at => '12:00 pm' do
-  command "backup perform --trigger robin8_development"
+  command "backup perform --trigger robin8_production"
 end

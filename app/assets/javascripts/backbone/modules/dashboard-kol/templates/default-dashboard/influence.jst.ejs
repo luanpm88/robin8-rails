@@ -1,0 +1,23 @@
+<div class="influence-header owoPanelHeader">
+  <h3><%= polyglot.t('dashboard_kol.default.social_influence') %></h3>
+  <% if(items.length > 0){ %>
+    <div class="btn-group influence-dropdown">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class='glyphicon glyphicon-align-justify'></i>&nbsp;<%= polyglot.t('dashboard_kol.default.switch_social_account') %><span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <% _.each(items, function(item) { %>
+          <% if(item.provider != 'wechat'){ %>
+            <li><a href="#" id="<%= item.id %>"><%= polyglot.t('common.' + item.provider)%>: <%= item.name %></a></li>
+          <% } %>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+</div>
+<div class="influence-item-container">
+  <div class="influence-item">
+
+    <img src="<%= AppAssets.path('loaders/puff.svg') %>" style='display: block;margin: 0 auto;'>
+  </div>
+</div>

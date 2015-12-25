@@ -1,0 +1,59 @@
+<% _.each(items, function(item) { %>
+  <div class="social-item col-md-4 cell identity-<%= item.id %>">
+    <div class="item-header <%= item.provider %>">
+      <div class="left-avatar">
+        <img src="<%= item.avatar_url %>"/>
+      </div>
+      <div class="right-info">
+        <div class="nickname">
+          <%= item.name %>
+        </div>
+        <div class="desc">
+          <%= item.desc %>
+        </div>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="item total-tasks">
+        <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.total_tasks') %></div>
+        <div class="item-value"><span class="badge"> <%= item.total_tasks %></span></div>
+      </div>
+      <div class="item complete-tasks">
+        <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.completed_tasks') %></div>
+        <div class="item-value"><span class="badge"><%= item.complete_tasks %></span></div>
+      </div>
+      <!--<div class="item posts">-->
+        <!--<% if(item.provider == 'weibo'){ %>-->
+          <!--<div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.last30_posts') %></div>-->
+          <!--<div class="item-value">-->
+              <!--&lt;!&ndash;<span class="badge"> <%= item.total_tasks %> </span>&ndash;&gt;-->
+          <!--</div>-->
+        <!--<% } %>-->
+      <!--</div>-->
+      <div class="item status">
+        <div class="item-name"><%= polyglot.t('dashboard_kol.profile_tab.status') %></div>
+        <div class="item-value"><span class="glyphicon glyphicon-ok"></span> </div>
+      </div>
+      <div class="item operate">
+        <% if (item.uid != Robin.currentKOL.attributes.social_uid) { %>
+          <div class="item-name">
+            <a href="javascript:void(0)" class="delete-account" id='<%= item.id %>'><span class="glyphicon glyphicon-trash"></span></a>
+          </div>
+        <% } %>
+        <div class="item-value">
+          <a href="javascript:void(0)" class="edit-account btn btn-primary btn-sm"  id='<%= item.id %>'><%= polyglot.t('dashboard_kol.profile_tab.edit') %></a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% }) %>
+
+
+<!--social modal-->
+<div class="modal fade modal-account" id='modal-account' role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>

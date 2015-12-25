@@ -32,7 +32,6 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
       _.defer(function(){
         $this.$('#email').focus();
         $.cookie("kol_social", "yeah", { path: "/"});
-        console.log( $.cookie("kol_social"));
       });
     },
 
@@ -44,13 +43,17 @@ Robin.module('Authentication.SignIn', function(SignIn, App, Backbone, Marionette
 
       this.modelBinder.copyViewValuesToModel();
       this.kolBinder.copyViewValuesToModel();
+      this.model.attributes.password = this.model.attributes._password;
+      delete this.model.attributes._password;
+      that.kolModel.attributes.password = that.kolModel.attributes._password;
+      delete that.kolModel.attributes._password;
       var loggedIn = function(data, response, jqXHR){
         var token = jqXHR.xhr.getResponseHeader('X-CSRF-Token');
         if (token) {
           $("meta[name='csrf-token']").attr('content', token);
           Robin.finishSignIn(response);
         }
-      }
+      };
       this.model.save(this.model.attributes, {
         success: loggedIn,
         error: function(userSession, response) {

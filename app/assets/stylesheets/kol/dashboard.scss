@@ -1,16 +1,30 @@
+.taskModal {
+  .displayForMobile {
+    display: none;
+  }
+  .displayForDesktop {
+    display: block;
+  }
+  #descAndUrl {
+    height: auto!important;
+  }
+}
+
+@media (max-width:480px) {
+  .taskModal {
+    .displayForMobile {
+      display: block;
+    }
+    .displayForDesktop {
+      display: none;
+    }
+  }
+}
+
 .dashboard-module {
   margin-top: 20px;
-}
 
-#loadingDiscover {
-  width: 100%;
-  line-height: 20px;
-  text-align: center;
-  font-size: 18px;
-}
-
-#default-dashboard-discover {
-  .discover-header {
+  .dashboard-module-header {
     padding-left: 20px;
     color: #808080;
     background-color: #f7f7f7;
@@ -25,9 +39,59 @@
     }
   }
 
-  .discover-body-container {
+  .dashboard-module-body {
     border: 1px solid #ddd;
     border-top: 0;
+  }
+}
+
+#loadingDiscover {
+  width: 100%;
+  line-height: 20px;
+  text-align: center;
+  font-size: 18px;
+}
+
+#default-dashboard-task {
+  .tasks-show-region {
+    li {
+      list-style: none;padding: 5px;border-bottom: 1px solid #f1f1f1;
+      padding-top: 16px;
+      padding-bottom: 10px;
+      margin: 0 10px;
+      border-top: 2px solid #f1f1f1;
+      .discover-item-img {
+        display: block;
+        float: left;
+        width: 12%;
+        margin-right: 2%;
+      }
+      .discover-w {
+        display: block;
+        float: left;
+        width: 86%;
+        .discover-item-header {
+          h5 {
+            margin-top: 5px;
+          }
+
+        }
+        .discover-item-body {
+
+        }
+      }
+    }
+
+  }
+  .loadMoreP, .noMore {
+    width: 100%;text-align: center;
+  }
+}
+
+#default-dashboard-discover {
+
+
+  .discover-body-container {
     ul {
       li:first-child {
         border-top: 0 !important;
@@ -57,7 +121,9 @@
 
           }
           .discover-item-body {
-
+            p {
+              overflow: auto;
+            }
           }
         }
 
@@ -314,6 +380,10 @@
   .influenceContainer {
     width: 100% !important;
     float: none !important;
+  }
+
+  .pg-loading-logo{
+    width: 75%;
   }
 
   #default-dashboard-discover {

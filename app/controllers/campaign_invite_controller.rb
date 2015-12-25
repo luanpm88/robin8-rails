@@ -32,4 +32,58 @@ class CampaignInviteController < ApplicationController
       render json: invite
     end
   end
+
+  def mark_as_running
+    @kol = current_kol
+    return render :json => {error: 'no available kol!'} if @kol.blank?
+
+    @campaign_invite = CampaignInvite.where(kol_id: @kol.id, campaign_id: params[:campaign_id]).first
+
+    if @campaign_invite.status.eql? 'running'
+      @campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
+    end
+
+    return render :json => {status: @campaign_invite.status}
+
+  end
+
+  def interface
+    @kol = current_kol
+
+    return render :json => {error: 'no available kol!'} if @kol.blank?
+
+    status = case params[:type]
+             when 'upcoming'
+               'running'
+             when 'running'
+               'approved'
+             when 'complete'
+               'finished'
+             else
+               'error'
+             end
+
+    return render :json => {error: 'error type!'} if status.eql?('error')
+
+    campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
+
+    #TODO refactor
+    limit = params[:limit] || 3
+    offset = params[:offset] || 0
+    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset)
+    result = campaign_invites_by_limit_and_offset.map do |x|
+      obj = x.campaign.attributes
+      obj['budget'] = obj['budget'].round(2)
+      obj['per_click_budget'] = obj['per_click_budget'].round(2)
+      obj['campaign_invite_id'] = x.id
+      obj['status'] = x.status
+      obj['share_url'] = x.share_url
+      obj['remain_budget'] = x.campaign.remain_budget
+      obj['avail_click'] = x.get_avail_click
+      obj['img_url'] = ActionController::Base.helpers.asset_path('noavatar.jpg') unless obj['img_url'].present?
+      obj
+    end
+
+    return render :json => result
+  end
 end

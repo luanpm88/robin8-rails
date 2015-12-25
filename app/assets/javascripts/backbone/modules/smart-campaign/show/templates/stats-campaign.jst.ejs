@@ -1,0 +1,111 @@
+<div class="stats-campaign">
+  <div class="title">
+    <div class="dashboard-btns">
+      <div class="row smart-campaign">
+        <div class="col-md-6">
+          <h4><i class="fa fa-home glyphicon glyphicon-bullhorn"></i>&nbsp;&nbsp; <%= polyglot.t("smart_campaign.stats.detail_title") %></h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content ">
+    <!-- COLOR PALETTE -->
+    <div class="box box-default color-palette-box base-info col-md-9">
+      <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-tag"></i> <%= polyglot.t("smart_campaign.stats.base_info") %></div>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.start_time") %></div>
+            <div class="value"><%= formatDate(start_time) %></div>
+          </div>
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.deadline") %></div>
+            <div class="value"><%= formatDate(deadline) %></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.budget") %></div>
+            <div class="value">￥<%= budget %></div>
+          </div>
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.per_click_budget") %></div>
+            <div class="value">￥<%= per_click_budget %>/<%= polyglot.t("smart_campaign.stats.click") %></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.avail_click") %></div>
+            <div class="value"><%= get_avail_click %></div>
+          </div>
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.total_click") %></div>
+            <div class="value"><%= get_total_click %></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.take_budget") %></div>
+            <div class="value">￥<%= take_budget %></div>
+          </div>
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.remain_budget") %></div>
+            <div class="value">￥<%= remain_budget %></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.status") %></div>
+            <div class="value">
+              <% if (status == 'unexecute') { %>
+                <%= polyglot.t('smart_campaign.unexecute') %>
+              <% } else if (status == 'rejected') { %>
+                <%= polyglot.t('smart_campaign.rejected') %>
+              <% } else if (status == 'agreed') { %>
+                <%= polyglot.t('smart_campaign.agreed') %>
+              <% } else if (status == 'executing') { %>
+                <%= polyglot.t('smart_campaign.executing') %>
+              <% } else { %>
+                <%= polyglot.t('smart_campaign.executed') %>
+              <% } %>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="name"><%= polyglot.t("smart_campaign.stats.share_link") %></div>
+            <div class="value"><a href='<%= url %>' target="_blank"><%= polyglot.t("smart_campaign.stats.read_post") %></a></div>
+          </div>
+        </div>
+      </div>
+      <!-- /.box-body -->
+    </div>
+
+    <div class="row">
+      <div class="box box-default color-palette-box col-md-9 chart">
+        <div class="box-header with-border">
+          <div class="box-title"><i class="fa fa-tag"></i> <%= polyglot.t("smart_campaign.stats.day_stats") %></div>
+        </div>
+        <div class="box-body day-stats">
+          <div id="day_stats" style="height: 320px;width: 96%;margin-left:2%"></div>
+        </div>
+        <!-- /.row -->
+      </div>
+
+      <div class="box box-default color-palette-box col-md-9 list-table">
+        <div class="box-header with-border">
+          <div class="box-title"><i class="fa fa-tag"></i><%= polyglot.t("smart_campaign.stats.kol_list") %> </div>
+        </div>
+        <div class="box-body" id="kol-list">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="return" style="margin: 20px 0">
+      <a href="/#smart_campaign" class="btn btn-small btn-primary"><%= polyglot.t("common.return") %></a>
+    </div>
+  </div>
+</div>

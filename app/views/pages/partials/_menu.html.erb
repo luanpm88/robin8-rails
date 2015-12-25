@@ -9,27 +9,13 @@
     <section class="top-bar-section">
       <!-- Right Nav Section -->
       <ul class="right">
-        <% if china_instance? %>
-          <li><a href="<%= Rails.application.secrets.instance_host[:us] %>">
-            <%= image_tag asset_path('us-flag-icon.png'), height: 13 %>
-          </a></li>
-        <% else %>
-          <li><a href="<%= Rails.application.secrets.instance_host[:cn] %>">
-            <%= image_tag asset_path('china-flag-icon.png'), height: 13 %>
-          </a></li>
-        <% end %>
-
         <% if china_locale? %>
           <li><a href='?locale=en'>EN</a></li>
         <% else %>
           <li><a href='?locale=zh'>CN</a></li>
         <% end %>
 
-        <% if current_page?(home_path) %>
-          <li><a href='http://try.robin8.com/robin/' target='_blank'><%= @l.t('header.contact_us') %></a></li>
-        <% else %>
-          <!-- <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li> -->
-        <% end %>
+        <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
 
         <% if user_signed_in? %>
           <% if current_user.first_name.blank? || current_user.last_name.blank? %>
@@ -39,7 +25,11 @@
           <% end %>
           <li><%= link_to @l.t('header.logout'), destroy_user_session_path, :method => :delete %></li>
         <% else %>
-          <li><a href='/signin'><%= @l.t('header.log_in') %></a></li>
+          <% if current_page?(home_path) %>
+            <li><a href='/signin?is_user=true'><%= @l.t('header.log_in') %></a></li>
+          <% else %>
+            <li><a href='/signin'><%= @l.t('header.log_in') %></a></li>
+          <% end %>
         <% end %>
       </ul>
 

@@ -29,7 +29,7 @@ $(function(){
 
 
 function setSizes(){
-  $('.sizeheader').css('min-height',$(window).height()); 
+  $('.sizeheader').css('min-height',$(window).height());
 
   var signuplogomargin = $(window).height()/2 - 80;
   $('.sizeheader .logo').css('margin-top',signuplogomargin + 'px');
@@ -75,30 +75,30 @@ ready = function() {
       $('.agency-plans').fadeOut();
       setTimeout(function(){ $('.business-plans').fadeIn();}, 500);
       $('.tab-nav a').removeClass('active');
-      $(this).addClass('active'); 
+      $(this).addClass('active');
     }
   });
   $( "#selected-agencies" ).click(function() {
     if(!$(this).is('active')){
-      $('.business-plans').fadeOut(); 
+      $('.business-plans').fadeOut();
       setTimeout(function(){ $('.agency-plans').fadeIn();}, 500);
       $('.tab-nav a').removeClass('active');
-      $(this).addClass('active'); 
+      $(this).addClass('active');
     }
   });
 
 
   $( ".subscription-type" ).click(function() {
 
-      var disableclass='n';         
+      var disableclass='n';
       if($(this).hasClass('active')){
       disableclass='y';
-    } 
+    }
     $('input#plan-selection').val($(this).data('plan'));
     $('.subscription-type').removeClass('active');
     $('.button-planselector').text('Select');
 
-    if(disableclass == 'y'){ 
+    if(disableclass == 'y'){
       $('.active .button-planselector').text('Select');
       $('input#plan-selection').val('');
     }else{
@@ -112,13 +112,13 @@ ready = function() {
 
   /* QUANTITY FUNCTIONS FOR STEP 3 */
 
-  $( ".qty-plus" ).click(function() { 
+  $( ".qty-plus" ).click(function() {
       var target="#"+$(this).data('qty');
       var oldvalue = $(target).val();
       var newvalue = parseFloat($(target).val()) + 1;
-      $(target).val(newvalue);  
+      $(target).val(newvalue);
   });
-  $( ".qty-minus" ).click(function() { 
+  $( ".qty-minus" ).click(function() {
       var target="#"+$(this).data('qty');
       var oldvalue = $(target).val();
       if (oldvalue > 0) {
@@ -126,13 +126,13 @@ ready = function() {
       } else {
         newVal = 0;
       }
-      $(target).val(newVal);  
+      $(target).val(newVal);
   });
 
 
   /* CHECKOUT REMOVE */
 
-  $( ".remove" ).click(function() { 
+  $( ".remove" ).click(function() {
       var removeid = "#"+ $(this).data('remove');
       $(removeid).remove();
   });
@@ -154,12 +154,12 @@ $( window ).resize(function() {
 
 $(window).on('scroll', function() {
   scrollPosition = $(this).scrollTop();
-  if (scrollPosition >= 1) { 
-      $('.nav').addClass('fixedscroll'); 
+  if (scrollPosition >= 1) {
+      $('.nav').addClass('fixedscroll');
   }else{
-      $('.nav').removeClass('fixedscroll'); 
+      $('.nav').removeClass('fixedscroll');
   }
-}); 
+});
 
 $(document).ready(ready);
 $(document).on('page:load', ready);

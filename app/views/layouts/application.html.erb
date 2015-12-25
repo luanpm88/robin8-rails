@@ -3,10 +3,10 @@
 <head>
   <title>ROBIN8 | Welcome</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <% if china_request? %>
+  <% if china_request? && !Rails.env.development? %>
     <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
     <script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
-  <% else %>
+  <% elsif !Rails.env.development? %>
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
     <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
   <% end %>
@@ -18,6 +18,7 @@
     <%= stylesheet_link_tag    'app/application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'app/application', 'data-turbolinks-track' => true %>
   <% end %>
+  <script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
@@ -25,7 +26,6 @@
 <body>
   <div id="main">
     <%= yield %>
-
   </div>
 
   <div class="modal fade" id="modal" tabindex="-1"
@@ -41,6 +41,7 @@
     Robin.mobileRequest = <%= mobile_request? %>;
     Robin.start();
   });
+  var flashInfo = '<%= flash.now[:alert] || flash.now[:notice]  %>';
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
   en_polyglot = new Polyglot({phrases: <%= raw @en_phrases.to_json %>, locale: "en"});
   <% if flash[:success_confirmation] -%>
@@ -78,7 +79,10 @@
   </script>
 <% end %>
 <!-- end load bitly javascript sdk -->
-<script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
+
+<% if !Rails.env.development? %>
+  <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
+<% end %>
 </body>
 <%=render :partial => "shared/feedback"%>
 </html>

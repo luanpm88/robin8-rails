@@ -13,15 +13,19 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
 
   onShow: function(options) {
     var user = Robin.KOL ? Robin.currentKOL : Robin.currentUser;
+    var provider = user.attributes.provider
+    var social_name = user.attributes.social_name
     var nameHolder = this.$el.find('#userDropdown span.text');
     var fName = user.attributes.first_name;
     var lName = user.attributes.last_name;
     var name = user.attributes.name;
     var email = user.attributes.email;
-    if (fName!= null && fName!=0 && lName!= null && lName!=0){
+    if (fName != null && lName != null){
       nameHolder.text(fName + ' ' + lName);
-    } else if (email.length > 0) {
+    } else if (email != null) {
       nameHolder.text(email);
+    } else {
+      nameHolder.text(social_name)
     }
     Robin.vent.on("nameChanged", function(newName){
       nameHolder.text(newName);

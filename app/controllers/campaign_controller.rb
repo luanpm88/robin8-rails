@@ -1,6 +1,7 @@
 class CampaignController < ApplicationController
 
   def index
+    return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_total_click, :get_fee_info, :get_share_time]})
     if params[:status] == "declined" || params[:status] == "accepted"
       status = params[:status] == "declined" ? "D" : "A"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
@@ -23,7 +24,7 @@ class CampaignController < ApplicationController
         campaigns_all-=campaigns_invites
         campaigns = Campaign.where(:id => campaigns_all).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
       else
-        campaigns = current_user.campaigns
+        return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_fee_info, :get_share_time]})
       end
     elsif params[:status] == "negotiating"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'N'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
@@ -39,7 +40,7 @@ class CampaignController < ApplicationController
     if user.blank? or c.user_id != user.id
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json(:include => [:kols, :campaign_invites, :weibo, :weibo_invites, :articles, :kol_categories, :iptc_categories, :interested_campaigns])
+    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget], :include => [:kols, :approved_invites]})
   end
 
   def article
@@ -155,125 +156,45 @@ class CampaignController < ApplicationController
   end
 
   def create
-
     if current_user.blank?
       return render :json => {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    category_ids = params[:iptc_categories].split ','
-    categories_list = IptcCategory.where :id => category_ids
-    weibos = if params[:weibo].nil? then [] else params[:weibo] end
-    weibos = [] if weibos.blank?
-    if params[:id]
-      c = Campaign.find(params[:id])
-      if c.user_id != current_user.id
-        return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
-      end
-    else
-      c = Campaign.new
-    end
-    c.user = current_user
-    c.name = params[:name]
-    c.description = (params[:description]).gsub( %r{</?[^>]+?>}, '' )
-    c.budget = params[:budget]
-    c.release_id = params[:release]
-    c.deadline = Date.parse params[:deadline]
-    c.iptc_categories = categories_list
-    c.concepts = params[:concepts]
-    c.summaries = params[:summaries]
-    c.hashtags = params[:hashtags]
-    c.non_cash = params[:non_cash]
-    c.content_type = params[:content_type]
-    c.short_description = params[:short_description]
 
-    c.save!
-
-    kols_list = []
-
-    unless params[:kols].blank?
-      kol_ids = params[:kols].map { |k| k[:id] }
-      kols = Kol.where :id => kol_ids
-      kols_list = kols
+    unless current_user.avail_amount.to_f >= params[:budget].to_f
+      render :json => {:status => 'no enough amount!'} and return
     end
 
-    unless params[:kols_list_contacts].blank?
-      params[:kols_list_contacts].each do |contact|
-        kol = Kol.where(email: contact["email"]).first
-        if kol.nil?
-          user = User.where(email: contact["email"]).first
-          if user
-            kols_list.push(user)
-          else
-            pass = SecureRandom.hex
-            categories = categories_list
-            name = contact["name"].split(" ")
-            new_kol = Kol.new(
-              first_name: name[0],
-              last_name: name[1],
-              email: contact["email"],
-              password: pass,
-              password_confirmation: pass,
-              is_public: false,
-              iptc_categories: categories
-            )
-            new_kol.save!
-            PrivateKol.create(kol_id: new_kol.id, user_id: current_user.id)
-            kols_list.push(new_kol)
-          end
-        else
-          new_private_kol = PrivateKol.where(kol_id: kol.id, user_id: current_user.id).first
-          kols_list.push(kol)
-          if new_private_kol.nil?
-            PrivateKol.create(kol_id: kol.id, user_id: current_user.id)
-          end
-        end
-      end
-    end
+    campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :message, :img_url))
+    campaign.user = current_user
+    campaign.status = "unexecute"
+    campaign.deadline = params[:campaign][:deadline].to_datetime - 8.hours
+    campaign.start_time = params[:campaign][:start_time].to_datetime - 8.hours
+    campaign.save!
 
-    #private kol
-    kols_list.each do |k|
-      i = c.campaign_invites.where(kol_id: k.id).first
-      if !i
-        i = CampaignInvite.new
-        i.kol = k
-        i.status = ''
-        i.campaign = c
-        i.save
-        text = params[:email_pitch]
-        text = text.sub('@[First Name]', k.first_name)
-        text = text.sub('@[Last Name]', k.last_name)
-
-        KolMailer.delay.send_invite(params[:email_address], k.email, params[:email_subject], text)
-      end
-    end
-
-    #weibo
-    weibos.each do |w|
-      stored_weibo = Weibo.where(pressr_id: w[:id]).first
-      if !stored_weibo
-        weibo = Weibo.new
-        weibo.pressr_id = w[:id]
-        weibo.first_name = w[:first_name]
-        weibo.last_name = w[:last_name]
-        weibo.full_name = w[:full_name]
-        weibo.email = w[:email]
-        weibo.save
-        stored_weibo = weibo
-      end
-
-      i = c.weibo_invites.where(weibo_id: stored_weibo.id).first
-      if !i
-        i = WeiboInvite.new
-        i.weibo = stored_weibo
-        i.campaign = c
-        i.save
-      end
-    end
-
-    render json: {:status => :ok}
+    render :json => {:status => :ok }
   end
 
   def update
-    create
+    # create
+    campaign = Campaign.find params[:id]
+    origin_budget = campaign.budget
+
+    campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :message, :img_url)
+
+    unless current_user.avail_amount.to_f >= params[:budget].to_f
+      render :json => {:status => 'no enough amount!'} and return
+    end
+
+    campaign.deadline = params[:campaign][:deadline].to_datetime - 8.hours
+    campaign.start_time = params[:campaign][:start_time].to_datetime - 8.hours
+    ActiveRecord::Base.transaction do
+      campaign.update_attributes campaign_params
+      campaign.reset_campaign origin_budget, params[:budget], params[:per_click_budget]
+    end
+
+    render json: {:status => :ok}
+  rescue
+    render json: {:status => 'something was wrong'}
   end
 
 
@@ -307,6 +228,21 @@ class CampaignController < ApplicationController
     people_count = (response[:entities][:person] || []).size
 
     render json: {'characters_count' => characters_count, 'words_count' => words_count, 'sentences_count' => sentences_count, 'paragraphs_count' => paragraphs_count, 'nouns_count' => nouns_count, 'adjectives_count' => adjectives_count, 'adverbs_count' => adverbs_count, 'organizations_count' => organizations_count, 'places_count' => places_count, 'people_count' => people_count}
+  end
+
+  def day_stats
+    campaign = Campaign.find params[:id]
+    return render :json => {:result => 'error', :msg => 'campaign not found'}     if !campaign
+    return render :json => {:result => 'error', :msg => 'campaign not start'}     if campaign.status == 'unexecue'
+    stats = campaign.get_stats
+    render :json => stats
+  end
+
+  def kol_list
+    campaign = Campaign.find params[:id]
+    return render :json => {:result => 'error', :msg => 'campaign not found'}     if !campaign
+    return render :json => {:result => 'error', :msg => 'campaign not start'}     if campaign.status == 'unexecue'
+    render :json => campaign.approved_invites.to_json({:methods => [:get_avail_click, :get_total_click], :include => :kol })
   end
 
   def test_email

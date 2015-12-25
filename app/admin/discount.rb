@@ -7,7 +7,7 @@ ActiveAdmin.register Discount do
     redirect_to :back, notice: "Discount Activated. Expiry at :#{d.expiry}"
   end
 
-  action_item only: :show do
+  action_item only: :views do
     link_to('Activate', activate_admin_discount_path(discount), method: :put) if !discount.is_active?
   end
 
@@ -17,7 +17,7 @@ ActiveAdmin.register Discount do
     redirect_to :back, notice: "Discount Deactivated."
   end
 
-  action_item only: :show do
+  action_item only: :views do
     link_to('Deactivate', deactivate_admin_discount_path(discount), method: :put) if discount.is_active?
   end
 

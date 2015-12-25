@@ -13,16 +13,19 @@
           <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %></span></a>
         </div>
 
-        <% unless mobile_request? %>  
+        <% unless mobile_request? %>
           <div class="small-12 columns social-login">
             <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %></span></a>
           </div>
-      
+
           <div class="small-12 columns social-login">
             <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %></span></a>
           </div>
         <% end %>
         <a href="/kols/new" class="sign_up_with_email"><%= @l.t("login.use_email") %></a>
+        <% if mobile_request? %>
+          <p class="wechat_tip">如果希望使用微信注册登录，请使用电脑操作</p>
+        <% end %>
       </div>
 
     </div>
@@ -39,7 +42,7 @@
           <%= image_tag "landingpage_kol.png" %>
       </div>
     </div>
-      
+
     </div>
   </div>
 </div>
@@ -108,7 +111,7 @@
         <p><%= @l.t('landing_page.chinaccelerator') %></p>    </li>
       <li class='first_line li2'>
         <div class="img_container"></div>
-        <p><%= @l.t('landing_page.smg') %></p>   
+        <p><%= @l.t('landing_page.smg') %></p>
       </li>
       <li class='first_line li3'>
         <div class="img_container"></div>
@@ -146,11 +149,22 @@
 
 <footer>
   <div class="row">
+
+    <% if china_instance? %>
+      <a href="<%= Rails.application.secrets.instance_host[:us] %>" title="<%= @l.t('landing_page.english_locale') %>" class="landing_country_flag">
+        <%= image_tag asset_path('us-flag-icon.png'), height: 13 %>
+      </a>
+    <% else %>
+      <a href="<%= Rails.application.secrets.instance_host[:cn] %>" title="<%= @l.t('landing_page.chinese_locale') %>" class="landing_country_flag" >
+        <%= image_tag asset_path('china-flag-icon.png'), height: 13 %>
+      </a>
+    <% end %>
+
     <div class="small-12 medium-3 columns ft-logo right">
-      <%= image_tag 'ROBIN8-logo.png' %>
+      <%= image_tag 'robin8-beta-logo-tm.png' %>
     </div>
     <div class="small-12 medium-12 columns left">
-      &copy;<%= @l.t('footer.right_reserved') %> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/terms" class="ft-link privacy"><%= @l.t('footer.privacy_and_terms') %> </a>
+      <span class="ft-copyright">&copy;<%= @l.t('footer.right_reserved') %></span> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/terms" class="ft-link privacy"><%= @l.t('footer.privacy_and_terms') %> </a>
     </div>
   </div>
 </footer>

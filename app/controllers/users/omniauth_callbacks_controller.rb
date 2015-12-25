@@ -92,8 +92,7 @@ module Users
             cookies[:kol_signin] = "yeah"
           end
         else
-          Rails.cache.write("auth_params", params, expires_in: 30.minute)
-          return redirect_to kols_new_path(auth_params: true)
+          return redirect_to create_kol_from_social_account_path(auth_params: params)
         end
       else
         @identity = Identity.find_for_oauth(params, origin_auth, current_kol)
@@ -111,7 +110,7 @@ module Users
           end
         end
       end
-      if request.env['omniauth.params'].blank?
+      if (!china_instance? && request.env['omniauth.params'].blank?) || (china_instance? && cookies[:popup_signin] == 'yeah')
         cookies[:popup_signin] = nil
         render 'twitter_popup_close', :layout => false
       else

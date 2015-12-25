@@ -13,7 +13,8 @@
     <%= favicon_link_tag 'favicon.ico' %>
 </head>
 <body id="main" class='login'>
-  <%= yield %>
+<% cookies[:robin8_test] ||= (rand(9999999) + 1000) %>
+   <%= yield %>
 </body>
 <%=render :partial => "shared/feedback"%>
 <script>

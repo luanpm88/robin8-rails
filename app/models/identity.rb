@@ -3,19 +3,15 @@ class Identity < ActiveRecord::Base
   belongs_to :kol  # should have used polymorphic association here
   has_many :kol_categories#, -> { unscope(where: :scene)}
   has_many :iptc_categories, -> { unscope(where: :scene)}, :through => :kol_categories
-  WxThirdProvider = 'wx_third'
+  WxThirdProvider = 'wechat_third'
   after_save :spider_weibo_data
 
   scope :provider , -> (provider) {where(:provider => provider)}
 
   def self.find_for_oauth(auth, origin_auth, current_kol = nil)
-    find_by(provider: auth[:provider], uid: auth[:uid]) || create_identity(auth, origin_auth)
-    # if identity
-    #   current_kol.record_provide_info(identity, 'exist')         if current_kol
-    # else
-    #   identity = create_identity(auth, origin_auth)
-    #   current_kol.record_provide_info(identity)                  if current_kol
-    # end
+    identity = find_by(provider: auth[:provider], uid: auth[:uid]) || create_identity(auth, origin_auth)
+    current_kol.record_identity(identity)           if current_kol
+    identity
   end
 
   def self.switch_package_to_params(package)
@@ -56,7 +52,7 @@ class Identity < ActiveRecord::Base
 
   def score
     value = 5
-    value += 10 if  [audience_age_groups, audience_gender_ratio, audience_regions, self.iptc_categories.size].compact.size > 0
+    value += 10 if  [audience_age_groups, audience_gender_ratio, audience_regions, (self.iptc_categories.size > 0 ? '1' : nil)].compact.size > 0
     value += 5  if  [edit_forward, origin_publish, forward, origin_comment, partake_activity, panel_discussion,
                     undertake_activity, image_speak,  give_speech].compact.size > 0
     value

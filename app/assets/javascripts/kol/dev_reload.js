@@ -1,4 +1,5 @@
 //= require_tree ./../backbone/modules/dashboard-kol
 //= require kol/common
+//= require ./../backbone/collections/campaign_discovers
 //= require backbone/layouts/main
-//= require ./../ga
+//= require_tree ./../backbone/modules/smart-campaign

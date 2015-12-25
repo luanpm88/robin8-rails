@@ -16,7 +16,6 @@
 //= require uploadcare
 //= require jquery-ui
 //= require bootstrap-sass
-//= require bootstrap-sweetalert
 //= require progressjs
 //= require blueimp-gallery
 // require bootstrap3-wysihtml5-bower
@@ -25,6 +24,7 @@
 //= require underscore
 //= require underscore.string
 //= require momentjs
+//= require momentjs/locale/zh-cn.js
 //= require eonasdan-bootstrap-datetimepicker
 //= require chance
 //= require please-wait
@@ -37,6 +37,7 @@
 //= require highcharts
 //= require select2
 //= require ./../lib/wysihtml5x-toolbar.min
+//= require ./../lib/clipboard.min
 //= require_directory ./../lib
 //= require bootstrap-tagsinput
 //= require ./../lib/formValidation/formValidation.min
