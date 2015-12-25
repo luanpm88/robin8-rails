@@ -309,11 +309,15 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
       currentAttributes = this.model.attributes;
       emailChanged = (initialAttributes.email != currentAttributes.email);
       formChanged = (JSON.stringify(initialAttributes) != JSON.stringify(currentAttributes));
-      if ((formChanged || Robin.KOL) && this.$el.find("#profileForm").data('formValidation').isValid()) {
+      if (!formChanged){
+        Backbone.history.navigate('#smart_campaign')
+        Robin.module("SmartCampaign").start();
+      }
+      if (this.$el.find("#profileForm").data('formValidation').isValid()) {
         this.modelBinder.copyViewValuesToModel();
-        if (Robin.KOL) {
-          this.model.set({"interests": $("#interests").val()});
-        }
+        // if (Robin.KOL) {
+        //   this.model.set({"interests": $("#interests").val()});
+        // }
         this.model.save(this.model.attributes, {
           success: function(userSession, response) {
             if (!Robin.KOL) {
