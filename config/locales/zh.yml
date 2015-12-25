@@ -2316,7 +2316,7 @@ zh:
       not_found_in_database: "无效的电子邮件或密码。"
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: "您需要登录或注册才能继续操作。"
-      unconfirmed: You have to confirm your email address before continuing.
+      unconfirmed: "您需要验证邮箱才能继续操作，如果没有收到验证邮件请联系我们: support_cn@robin8.com"
     invitations:
       edit:
         header: Set your password
