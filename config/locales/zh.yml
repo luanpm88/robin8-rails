@@ -1362,7 +1362,7 @@ zh:
       next: "下一页"
       replicate: 重启活动
       'no': "不是"
-      no_campaigns: You don't have any campaigns. It's time to create one!
+      no_campaigns: "您还未创建任何活动，赶快去创建一个吧！"
       no_history: You don't have expired campaigns.
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
       no_negotiate: You don't have any campaign with negotiating status.
@@ -2316,7 +2316,7 @@ zh:
       not_found_in_database: "无效的电子邮件或密码。"
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: "您需要登录或注册才能继续操作。"
-      unconfirmed: You have to confirm your email address before continuing.
+      unconfirmed: "您需要验证邮箱才能继续操作，如果没有收到验证邮件请联系我们: support_cn@robin8.com"
     invitations:
       edit:
         header: Set your password

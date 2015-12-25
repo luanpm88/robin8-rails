@@ -1,5 +1,6 @@
 module Users
   class PasswordsController < Devise::PasswordsController
+    layout 'website'
     respond_to :html, :json
 
     def create
