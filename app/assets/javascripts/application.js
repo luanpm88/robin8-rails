@@ -71,6 +71,7 @@
 //= require_tree ./backbone/layouts
 //= require_tree ./backbone/components
 //= require_tree ./backbone/modules
+//= require ./ga
 
 var ready;
 ready = function() {
