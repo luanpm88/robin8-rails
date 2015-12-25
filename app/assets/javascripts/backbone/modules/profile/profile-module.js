@@ -10,6 +10,7 @@ Robin.module("Profile", function(Profile, Robin, Backbone, Marionette, $, _){
 
   Profile.on('start', function(){
     API.showProfilePage();
+    $('#sidebar-wrapper').show();
     $('#nav-sidebar-profile').parent().addClass('active');
   })
 

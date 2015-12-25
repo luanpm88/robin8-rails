@@ -1362,7 +1362,7 @@ zh:
       next: "下一页"
       replicate: 重启活动
       'no': "不是"
-      no_campaigns: You don't have any campaigns. It's time to create one!
+      no_campaigns: "您还未创建任何活动，赶快去创建一个吧！"
       no_history: You don't have expired campaigns.
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
       no_negotiate: You don't have any campaign with negotiating status.
