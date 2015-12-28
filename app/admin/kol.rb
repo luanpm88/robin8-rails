@@ -51,6 +51,7 @@ ActiveAdmin.register Kol do
     column "avail amount" do |my_resource|
       my_resource.avail_amount
     end
+    column :from_which_campaign
     actions do |kol|
       link_to '充值/提现', show_recharge_admin_kol_path(kol.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
     end
