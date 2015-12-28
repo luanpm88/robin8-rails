@@ -36,6 +36,8 @@ gem 'rack-mini-profiler'
 # create multiple log files
 gem 'multi_logger'
 
+gem 'slackistrano', require: false
+
 gem 'htmlentities'
 gem 'truncate_html'
 gem 'email_validator'

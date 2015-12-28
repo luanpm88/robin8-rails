@@ -78,7 +78,7 @@
 //= require_tree ./../backbone/modules/campaigns
 //= require_tree ./../backbone/modules/upload
 //= require_tree ./../backbone/modules/cn_recommendations
-
+//= require ./../ga
 
 var ready;
 ready = function() {

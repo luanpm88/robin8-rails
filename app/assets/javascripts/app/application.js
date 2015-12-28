@@ -90,7 +90,7 @@
 //= require_tree ./../backbone/modules/releases_blast
 //= require_tree ./../backbone/modules/upload
 //= require_tree ./../backbone/modules/social
-
+//= require ./../ga
 
 
 var ready;

@@ -1,5 +1,7 @@
 class KolsController < ApplicationController
 
+  before_action :get_which_campaign, only: [:create]
+
   def get_current_kol
     render :json => current_kol.to_json({:include => {:identities =>  {:except => [:serial_params], :methods => [:total_tasks, :complete_tasks, :last30_posts]}} ,
                                           :methods => [:get_identity]})
@@ -18,6 +20,13 @@ class KolsController < ApplicationController
       :completed => CampaignInvite.where(kol_id: current_kol.id, status: 'finished').count,
       :total_income => total.round(2)
     })
+  end
+
+  def get_which_campaign
+    campaign_name = CGI::parse(request.env["QUERY_STRING"])["from_campaign"].first
+    if campaign_name
+      cookies[:campaign_name] = { value: campaign_name, expires: 30.minutes.from_now }
+    end
   end
 
   def create
@@ -236,6 +245,12 @@ class KolsController < ApplicationController
 
   def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
+
+    if cookies[:campaign_name]
+      @kol.from_which_campaign = cookies[:campaign_name]
+      cookies.delete :campaign_name
+    end
+
     @kol.country = 'China(中国)' if china_instance?
     if @kol.valid?
       @kol.save
