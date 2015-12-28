@@ -79,13 +79,14 @@ class Campaign < ActiveRecord::Base
   end
 
   # 开始时候就发送邀请 但是状态为pending
-  def send_invites
-    Rails.logger.campaign_sidekiq.info "---send_invites: --campaign status: #{self.status}---#{self.deadline}--"
+  def send_invites(kol_ids = nil)
+    Rails.logger.campaign_sidekiq.info "---send_invites: --campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
     return if self.status != 'agreed'
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: --start create--"
     ActiveRecord::Base.transaction do
-      Kol.all.each do |kol|
+      kols = Kol.where(:id => kol_ids)  if kol_ids.present?
+      (kols || Kol.all).each do |kol|
         next if CampaignInvite.exists?(:kol_id => kol.id, :campaign_id => self.id)
         invite = CampaignInvite.new
         invite.status = 'pending'
