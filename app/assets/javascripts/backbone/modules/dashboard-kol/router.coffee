@@ -7,3 +7,10 @@ Robin.module 'DashboardKol', (DashboardKol, App, Backbone, Marionette, $, _) ->
       "dashboard/score": "showScore",
       "dashboard/campaigns": "showCampaigns",
       'dashboard/default': 'showDefaultDashboard'
+  
+  initialize: ->
+    @bind 'all', @_trackPageview
+
+  _trackPageview: ->
+    url = Backbone.history.getFragment()
+    ga.push(['_trackPageview', "/#{url}"])
