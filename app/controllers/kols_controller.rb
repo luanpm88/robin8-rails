@@ -49,6 +49,7 @@ class KolsController < ApplicationController
           create_kol_and_sign_in(kol_p)
         else
           @kol = Kol.new
+          @kol.country = 'China(中国)' if china_instance?
           flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
           render :new, :layout => "website"
         end
@@ -251,7 +252,7 @@ class KolsController < ApplicationController
       cookies.delete :campaign_name
     end
 
-    @kol.country = 'China(中国)' if china_instance?
+   # @kol.country = 'China(中国)' if china_instance?
     if @kol.valid?
       @kol.save
       sign_in @kol
