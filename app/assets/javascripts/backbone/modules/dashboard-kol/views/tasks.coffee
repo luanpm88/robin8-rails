@@ -106,11 +106,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     initialize: (opts) ->
       @model = opts.model
+      @isDuplicated = opts.isDuplicated
 
     serializeData: () ->
       item: @model.toJSON()
       start_at: @format_date(@model.get('start_time'))
       end_at: @format_date(@model.get('deadline'))
+      isDuplicated: @isDuplicated
 
     format_date: (date) ->
       localDate = new Date(date)
@@ -124,14 +126,21 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           url: '/mark_as_running/' + @model.get('id')
           dataType: 'json'
           success: (data) ->
-            parentThis.model.collection.remove parentThis.model
-            $('a#running').append('<span class="badge">1</span>')
-            parentThis.model.set('status', 'approved')
-            updatedView = new Show.TaskModal
-              model: parentThis.model
-            updatedViewHtml = updatedView.render().$el
-            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
-            $('.triggerMark').remove()
+            if data.status == 'ok'
+              parentThis.model.collection.remove parentThis.model
+              $('a#running').append('<span class="badge">1</span>')
+              parentThis.model.set('status', 'approved')
+              updatedView = new Show.TaskModal
+                model: parentThis.model
+              updatedViewHtml = updatedView.render().$el
+              parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+              $('.triggerMark').remove()
+            else if data.status == 'error'
+              updatedView = new Show.TaskModal
+                model: parentThis.model
+                isDuplicated: true
+              updatedViewHtml = updatedView.render().$el
+              parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
 
     onShow: () ->
       $('#taskModal').modal()

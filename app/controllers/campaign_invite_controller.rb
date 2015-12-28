@@ -39,11 +39,14 @@ class CampaignInviteController < ApplicationController
 
     @campaign_invite = CampaignInvite.where(kol_id: @kol.id, campaign_id: params[:campaign_id]).first
 
+    existed_running_campaign = CampaignInvite.where(kol_id: @kol.id, status: 'approved').count>0
+    return render :json => {status: 'error'} if existed_running_campaign
+
     if @campaign_invite.status.eql? 'running'
       @campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
     end
 
-    return render :json => {status: @campaign_invite.status}
+    return render :json => {status: 'ok'}
 
   end
 
