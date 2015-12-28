@@ -15,7 +15,10 @@
           <li><a href='?locale=zh'>CN</a></li>
         <% end %>
 
-        <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
+
+        <% unless mobile_request? %>
+          <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
+        <% end %>
 
         <% if user_signed_in? %>
           <% if current_user.first_name.blank? || current_user.last_name.blank? %>
