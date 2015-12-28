@@ -24,6 +24,13 @@ set :bundle_binstubs, nil
 # Default value for :scm is :git
 # set :scm, :git
 
+set :slack_webhook, 'https://hooks.slack.com/services/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'
+set :slack_username, -> { '千反田 える' }
+set :slack_icon_url, -> { 'https://avatars3.githubusercontent.com/u/7478427?v=3&s=460' }
+set :slack_msg_updating, -> { "#{fetch :slack_deploy_user} 正在部署 `#{fetch :branch}` 到 `#{fetch :stage}`" }
+set :slack_msg_failed, -> { "#{fetch :slack_deploy_user} 部署 `#{fetch :branch}` 到 `#{fetch :stage}` 失败" }
+set :slack_msg_updated, -> { "#{fetch :slack_deploy_user} 部署 `#{fetch :branch}` 到 `#{fetch :stage}` 成功" }
+
 # Default value for :format is :pretty
 # set :format, :pretty
 
