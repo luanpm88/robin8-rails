@@ -27,6 +27,29 @@ $(function(){
   });
 });
 
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+$(function(){
+  var campaign_name = getUrlVars()["from_campaign"]
+  if (campaign_name){
+    debugger
+    var thirtyMins = new Date();
+    thirtyMins.setMinutes(thirtyMins.getMinutes() + 30);
+    $.cookie("campaign_name", campaign_name, {expires: thirtyMins, path: "/"});
+  }
+});
+
 
 function setSizes(){
   $('.sizeheader').css('min-height',$(window).height());
