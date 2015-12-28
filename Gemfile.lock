@@ -622,6 +622,9 @@ GEM
       tilt (>= 1.3, < 3)
     sitemap_generator (5.0.5)
       builder
+    slackistrano (1.0.0)
+      capistrano (>= 3.0.1)
+      json
     slop (3.6.0)
     sort_alphabetical (1.0.1)
       unicode_utils (>= 1.2.2)
@@ -825,6 +828,7 @@ DEPENDENCIES
   sidetiq
   sinatra
   sitemap_generator
+  slackistrano
   spring
   spring-commands-rspec
   truncate_html

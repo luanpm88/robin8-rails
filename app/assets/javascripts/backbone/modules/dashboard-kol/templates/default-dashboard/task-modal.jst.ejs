@@ -7,9 +7,10 @@
       </div>
       <div class="modal-body">
         <h5>活动详情: </h5>
-
         <p><a target='_blank' href="<%= item.url %>">查看原文</a></p>
-
+        <% if(isDuplicated){ %>
+          <div class='alert alert-warning'>您已经参与了一个 Campaign，暂时无法参与新的 Campaign</div>
+        <% } %>
         <p>
           <i class='glyphicon glyphicon-exclamation-sign'></i> 接受状态：
           <% if(item.status=='running'){ %>
@@ -20,6 +21,7 @@
             已完成
           <% } %>
         </p>
+
         <p>
           <i class='glyphicon glyphicon-time'></i> 开始时间：  <%= start_at %>
         </p>
