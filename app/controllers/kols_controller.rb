@@ -56,7 +56,7 @@ class KolsController < ApplicationController
   def create_kol_from_social_account
     auth_params = params[:auth_params]
     @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider], social_uid: auth_params[:uid]})
-    @kol.country = 'China' if china_instance?
+    @kol.country = 'China(中国)' if china_instance?
     if cookies[:campaign_name]
       @kol.from_which_campaign = cookies[:campaign_name]
       cookies.delete :campaign_name
@@ -247,7 +247,7 @@ class KolsController < ApplicationController
       cookies.delete :campaign_name
     end
 
-   # @kol.country = 'China(中国)' if china_instance?
+    @kol.country = 'China(中国)' if china_instance?
     if @kol.valid?
       @kol.save
       sign_in @kol
