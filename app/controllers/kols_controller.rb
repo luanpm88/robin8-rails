@@ -219,6 +219,16 @@ class KolsController < ApplicationController
     end
   end
 
+  def valid_verify_code
+    phone_number = params[:phone_number]
+    verify_code = params[:verify_code]
+    if verify_code == Rails.cache.read(phone_number)
+      return render json: {'valid' => true}
+    else
+      return render json: {'valid' => false}
+    end
+  end
+
   private
   def kol_params
     params.require(:kol).permit(:email, :password, :mobile_number)
