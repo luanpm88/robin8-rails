@@ -1,4 +1,4 @@
-<div class="modal fade taskModal" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal taskModal" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -10,6 +10,10 @@
         <p><a target='_blank' href="<%= item.url %>">查看原文</a></p>
         <% if(isDuplicated){ %>
           <div class='alert alert-warning'>您已经参与了一个 Campaign，暂时无法参与新的 Campaign</div>
+        <% } %>
+
+        <% if(needMobile){ %>
+          <div class='alert alert-warning'>您还未绑定手机号码，请：<a class='btn btn-primary fixup-profile' href='/#/dashboard/profile'>完善资料</a></div>
         <% } %>
         <p>
           <i class='glyphicon glyphicon-exclamation-sign'></i> 接受状态：

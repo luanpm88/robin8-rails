@@ -39,8 +39,10 @@ class CampaignInviteController < ApplicationController
 
     @campaign_invite = CampaignInvite.where(kol_id: @kol.id, campaign_id: params[:campaign_id]).first
 
+    return render :json => {status: 'needMobile'} unless @kol.mobile_number.present?
+
     existed_running_campaign = CampaignInvite.where(kol_id: @kol.id, status: 'approved').count>0
-    return render :json => {status: 'error'} if existed_running_campaign
+    return render :json => {status: 'isDuplicated'} if existed_running_campaign
 
     if @campaign_invite.status.eql? 'running'
       @campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
