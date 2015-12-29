@@ -254,6 +254,38 @@
     font-size: 18px;
     border-radius: 4px;
   }
+
+  .mobile-number .mobile-number-title{
+    padding: 8px 0 8px 16px;
+    background: #F5F5F5;
+    text-align: left;
+    color: #007183;
+    margin: 10px 0px 20px 0px;
+    border-top: 2px solid #007183;
+    font-size: 18px;
+    border-radius: 4px;
+  }
+
+  .send_sms {
+    height: 3.3125rem;
+    padding: 0 1em;
+  }
+
+  .tips {
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
+      font-size: 15px;
+      color: red;
+      margin-bottom: 2px;
+      display: none
+    }
+
+    .send_sms_success {
+      font-size: 15px;
+      color: black;
+      margin-bottom: 2px;
+      display: none
+    }
+  }
 }
 
 .toggle-button{
@@ -480,5 +512,3 @@
     display: none !important;
   }
 }
-
-
