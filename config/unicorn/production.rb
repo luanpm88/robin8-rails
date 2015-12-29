@@ -14,7 +14,7 @@ stderr_path "log/unicorn.stderr.log"
 stdout_path "log/unicorn.stdout.log"
 
 # workers
-worker_processes 2
+worker_processes 4
 
 # To save some memory and improve performance
 GC.respond_to?(:copy_on_write_friendly=) and

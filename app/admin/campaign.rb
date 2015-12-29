@@ -4,7 +4,24 @@ ActiveAdmin.register Campaign do
 
   member_action :unagree, :method => :put
   member_action :agree, :method => :put
+
   controller do
+    before_filter :my_filter, only: [:edit, :show]
+
+    private
+
+    def my_filter
+      Rails.logger.info "my post: '#{resource}'"
+    end
+  end
+
+  controller do
+    before_filter :set_admin_to_cookie, only: [:index]
+
+    def set_admin_to_cookie
+      cookies[:admin] = true
+    end
+
     def scoped_collection
       Campaign.includes(:user)
     end
@@ -58,6 +75,7 @@ ActiveAdmin.register Campaign do
     column "CPC", :per_click_budget
     actions do |my_resource|
       link_to 'agree ', agree_admin_campaign_path(my_resource.id), :method => :put if my_resource.status == "unexecute"
+      link_to '统计 ', "/#smart_campaign/stats/#{my_resource.id}?valid_tokend=#{my_resource.created_at.to_i}", :method => :get if my_resource.status != "unexecute"
     end
   end
 
