@@ -43,7 +43,9 @@ module Users
 
     def failure
       p params
-      render 'twitter_popup_close', :layout => false
+      flash[:error] = '出错了，请联系管理员'
+      redirect_to root_path
+      # render 'twitter_popup_close', :layout => false
     end
 
     [:twitter, :linkedin, :facebook, :google_oauth2, :weibo, :wechat].each do |provider|

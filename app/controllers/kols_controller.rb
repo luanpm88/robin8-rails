@@ -54,6 +54,9 @@ class KolsController < ApplicationController
   end
 
   def create_kol_from_social_account
+    key = "registration_account:#{auth_params[:uid]}"
+    return redirect_to root_path if Rails.cache.read(key)
+    Rails.cache.write(key, true, :expire_in => 600.seconds)
     auth_params = params[:auth_params]
     @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider], social_uid: auth_params[:uid]})
     @kol.country = 'China(中国)' if china_instance?
