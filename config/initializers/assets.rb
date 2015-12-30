@@ -18,3 +18,5 @@ Rails.application.config.assets.precompile += %w( landing.js landing.css
 Rails.application.config.assets.precompile += %w( public_pages.js
   public_pages.css  website.css website.js export_stories.js kol.js kol/*.js kol/*.css
   app/*.js app/*.css)
+
+Rails.application.config.assets.precompile << /.*.(?:eot|svg|ttf|woff)$/

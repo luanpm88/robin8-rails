@@ -13,12 +13,8 @@
 //= require assets
 //= require jquery
 //= require jquery_ujs
-//= require uploadcare
 //= require jquery-ui
 //= require bootstrap-sass
-//= require progressjs
-//= require blueimp-gallery
-// require bootstrap3-wysihtml5-bower
 //= require bootstrap-sweetalert
 //= require bootstrap.growl
 //= require underscore
@@ -26,7 +22,6 @@
 //= require momentjs
 //= require momentjs/locale/zh-cn.js
 //= require eonasdan-bootstrap-datetimepicker
-//= require chance
 //= require please-wait
 //= require backbone
 //= require backbone-relational
@@ -34,35 +29,21 @@
 //= require backbone.modelbinder
 //= require backbone.wreqr
 //= require backbone.marionette
-//= require highcharts
 //= require select2
-//= require ./../lib/wysihtml5x-toolbar.min
-//= require ./../lib/clipboard.min
-//= require_directory ./../lib
-//= require bootstrap-tagsinput
+//= require ./../lib/backbone_rails_sync
+//= require ./../lib/jquery.cookie
+//= require ./../lib/polyglot
+//= require ./../lib/bootstrap-checkbox
+//= require ./../lib/qiniu
 //= require ./../lib/formValidation/formValidation.min
 //= require ./../lib/formValidation/js/bootstrap.min
 // require bootstrap-wysihtml5
-//= require jquery.dotdotdot
-//= require jquery.caret/dist/jquery.caret-1.5.2
 //= require timeago
-//= require x-editable/dist/bootstrap3-editable/js/bootstrap-editable
 //= require datatables
 //= require datatables-tabletools
-//= require bootstrap-switch
-// require dataTables.bootstrap
 //= require spinjs
 //= require spinjs/jquery.spin.js
-//= require jquery-highlighttextarea
-//= require ./../lib/icheck
-//= require jquery-geocomplete
-//= require bootstrap-daterangepicker
-//= require ./../lib/wripl
-//= require datejs
 //= require underscore.inflection
-//= require bootstrap-validator
-//= require d3
-//= require jquery-knob
 //= require_tree ./../backbone/config
 //= require backbone/init
 //= require_tree ./../backbone/routers
@@ -72,24 +53,11 @@
 //= require_tree ./../backbone/layouts
 //= require_tree ./../backbone/components
 
-//= require_tree ./../backbone/modules/analytics
 //= require_tree ./../backbone/modules/authentication
-//= require_tree ./../backbone/modules/billing
 //= require_tree ./../backbone/modules/campaigns
-//= require_tree ./../backbone/modules/campaigns-list
 //= require_tree ./../backbone/modules/smart-campaign
-//= require_tree ./../backbone/modules/dashboard
-//= require_tree ./../backbone/modules/manage-users
-//= require_tree ./../backbone/modules/monitoring
 //= require_tree ./../backbone/modules/navigation
-//= require_tree ./../backbone/modules/news-room-public
-//= require_tree ./../backbone/modules/news_room
 //= require_tree ./../backbone/modules/profile
-//= require_tree ./../backbone/modules/recommendations
-//= require_tree ./../backbone/modules/releases
-//= require_tree ./../backbone/modules/releases_blast
-//= require_tree ./../backbone/modules/upload
-//= require_tree ./../backbone/modules/social
 //= require ./../ga
 
 
@@ -161,16 +129,6 @@ ready = function() {
   Marionette.Behaviors.behaviorsLookup = function() {
     return window.Behaviors;
   }
-
-  Highcharts.setOptions({
-    lang: {
-      printChart: polyglot.t("highcharts.print_chart"),
-      downloadPNG: polyglot.t("highcharts.download_png"),
-      downloadJPEG: polyglot.t("highcharts.download_jpeg"),
-      downloadPDF: polyglot.t("highcharts.download_pdf"),
-      downloadSVG: polyglot.t("highcharts.download_svg")
-    }
-  });
 };
 
 $(window).on('scroll', function() {

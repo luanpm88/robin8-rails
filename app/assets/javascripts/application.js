@@ -142,15 +142,6 @@ ready = function() {
     return window.Behaviors;
   }
 
-  Highcharts.setOptions({
-    lang: {
-      printChart: polyglot.t("highcharts.print_chart"),
-      downloadPNG: polyglot.t("highcharts.download_png"),
-      downloadJPEG: polyglot.t("highcharts.download_jpeg"),
-      downloadPDF: polyglot.t("highcharts.download_pdf"),
-      downloadSVG: polyglot.t("highcharts.download_svg")
-    }
-  });
 };
 
 $(window).on('scroll', function() {

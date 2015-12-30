@@ -5,16 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-  <% if !Rails.env.development? && china_request? %>
-    <!--<link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">-->
-    <!--<script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>-->
-  <% elsif !Rails.env.development? %>
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
-    <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
-  <% end %>
-
-  <% if Rails.env.development? &&  Rails.application.config.china_instance %>
+  <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+  <% if false && Rails.env.development? &&  Rails.application.config.china_instance %>
     <%= stylesheet_link_tag    '/assets/kol/dev_base_compact', 'kol/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag '/assets/kol/dev_base_compact', 'kol/dev_reload', 'data-turbolinks-track' => true %>
   <% else %>
@@ -41,7 +33,8 @@
   </div>
 
   <div class="modal fade" id="modal" tabindex="-1"
-    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  </div>
 
 <script type="text/javascript">
     $(document).ready(function() {
