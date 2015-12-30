@@ -74,6 +74,7 @@ Rails.application.routes.draw do
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
   post '/kols/send_sms/' => 'kols#send_sms'
+  post '/kols/valid_verify_code/' => 'kols#valid_verify_code'
   get "kols/create_kol_from_social_account" => "kols#create_kol_from_social_account", as: "create_kol_from_social_account"
   get '/users/new' => 'users#new'
   get '/kols/new' => 'kols#create'

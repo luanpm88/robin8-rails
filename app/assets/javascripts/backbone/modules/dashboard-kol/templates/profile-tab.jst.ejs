@@ -23,14 +23,7 @@
             <input required class="form-control required" type="text" id="name" name="last_name"/>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.mobile') %>
-            <sup>*</sup></div>
-          <div class="col-md-6 cell">
-            <input required class="form-control required" type="tel" id="mobile"
-                   name="mobile_number"/>
-          </div>
-        </div>
+
         <div class="row">
           <div class="col-md-2 cell profile-labels kol-profile"><%= polyglot.t('dashboard_kol.profile_tab.location') %>
             <sup>*</sup></div>
@@ -86,8 +79,69 @@
             </div>
           </div>
         </div>
+
+        <% if (!k.mobile_number) { %>
+          <div class="row set-mobile-number">
+            <div class="set-mobile">
+              <div class ="bind-mobile">
+                绑定手机
+              </div>
+              <div class="row form-group mobile-number-verify">
+                <div class="mobile-input">
+                  <input class="form-control" data-fv-notempty="true" data-fv-notempty-message=<%= polyglot.t('dashboard_kol.validation.mobile') %> data-fv-regexp="true" data-fv-regexp-regexp="^1[34578][0-9]{9}$" data-fv-regexp-message=<%= polyglot.t('kols.mobile_format_error') %> type="mobile" id='mobile' name="mobile_number" value="" placeholder=<%= polyglot.t('dashboard_kol.profile_tab.mobile') %>  />          <!-- </div> -->
+                </div>
+                <div class="tips">
+                  <p class=not_unique_number><%= polyglot.t("kols.mobile_number_already_token") %></p>
+                  <p class=mobile_numer_is_blank><%= polyglot.t("kols.mobile_format_error") %></p>
+                  <p class=send_sms_failed><%= polyglot.t("kols.send_sms_error") %></p>
+                  <p class=send_sms_success><%= polyglot.t("kols.send_sms_success") %></p>
+                </div>
+              </div>
+
+              <div class="verify-input">
+                <input class="form-control verify-code" type="text", placeholder=<%= polyglot.t('kols.verify_code') %> />
+              </div>
+              <div class="verify-button">
+                <button class="btn send_sms"><%= polyglot.t("kols.receive_verify_code") %></button>
+              </div>
+            </div>
+          </div>
+        <% } %>
+
       </div>
     </div>
+
+    <% if (k.mobile_number) { %>
+      <div class="row mobile-number toggle-box">
+        <div style="overflow: auto">
+          <div class="mobile-number-title col-md-8">
+            <span>修改手机</span>
+            <span class="toggle-button glyphicon glyphicon-plus"></span>
+          </div>
+        </div>
+        <div class="score-tables set-mobile toggle-list" style="display: none">
+          <div class="row form-group mobile-number-verify">
+            <div class="mobile-input">
+            <input class="form-control" data-fv-notempty="true" data-fv-notempty-message=<%= polyglot.t('dashboard_kol.validation.mobile') %> data-fv-regexp="true" data-fv-regexp-regexp="^1[34578][0-9]{9}$" data-fv-regexp-message=<%= polyglot.t('kols.mobile_format_error') %> type="mobile" id='mobile' name="mobile_number" value="" placeholder=<%= polyglot.t('dashboard_kol.profile_tab.mobile') %>  />
+              <div class="tips">
+                <p class=not_unique_number><%= polyglot.t("kols.mobile_number_already_token") %></p>
+                <p class=mobile_numer_is_blank><%= polyglot.t("kols.mobile_format_error") %></p>
+                <p class=send_sms_failed><%= polyglot.t("kols.send_sms_error") %></p>
+                <p class=send_sms_success><%= polyglot.t("kols.send_sms_success") %></p>
+              </div>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="verify-input ">
+              <input class="form-control verify-code" type="text", placeholder=<%= polyglot.t('kols.verify_code') %> />
+            </div>
+            <div class="verify-button">
+              <button class="btn send_sms"><%= polyglot.t("kols.receive_verify_code") %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
 
     <% if (Robin.currentKOL.attributes.provider === 'signup') { %>
       <div class="row password toggle-box">
