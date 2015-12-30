@@ -74,8 +74,11 @@ ActiveAdmin.register Campaign do
     end
     column "CPC", :per_click_budget
     actions do |my_resource|
-      link_to 'agree ', agree_admin_campaign_path(my_resource.id), :method => :put if my_resource.status == "unexecute"
-      link_to '统计 ', "/#smart_campaign/stats/#{my_resource.id}?valid_tokend=#{my_resource.created_at.to_i}", :method => :get if my_resource.status != "unexecute"
+      if my_resource.status == "unexecute"
+        (link_to 'agree ', agree_admin_campaign_path(my_resource.id), :method => :put )
+      else
+        (link_to '统计 ', "/#smart_campaign/stats/#{my_resource.id}", :method => :get )
+      end
     end
   end
 
