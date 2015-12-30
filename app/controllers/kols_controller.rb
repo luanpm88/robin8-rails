@@ -40,6 +40,7 @@ class KolsController < ApplicationController
           create_kol_and_sign_in(kol_p)
         else
           @kol = Kol.new
+          @kol.country = 'China(中国)' if china_instance?
           flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
           render :new, :layout => "website"
         end
@@ -54,8 +55,11 @@ class KolsController < ApplicationController
 
   def create_kol_from_social_account
     auth_params = params[:auth_params]
+    key = "registration_account:#{auth_params[:uid]}"
+    return redirect_to root_path if Rails.cache.read(key)
+    Rails.cache.write(key, true, :expire_in => 600.seconds)
     @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider], social_uid: auth_params[:uid]})
-    @kol.country = 'China' if china_instance?
+    @kol.country = 'China(中国)' if china_instance?
     if cookies[:campaign_name]
       @kol.from_which_campaign = cookies[:campaign_name]
       cookies.delete :campaign_name

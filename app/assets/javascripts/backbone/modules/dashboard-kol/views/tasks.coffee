@@ -103,16 +103,22 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     events:
       'click .triggerMark': 'markAsRunning'
+      'click .fixup-profile': 'fixupProfile'
+
+    fixupProfile: (e) ->
+      $('#taskModal').modal('hide')
 
     initialize: (opts) ->
       @model = opts.model
       @isDuplicated = opts.isDuplicated
+      @needMobile = opts.needMobile
 
     serializeData: () ->
       item: @model.toJSON()
       start_at: @format_date(@model.get('start_time'))
       end_at: @format_date(@model.get('deadline'))
       isDuplicated: @isDuplicated
+      needMobile: @needMobile
 
     format_date: (date) ->
       localDate = new Date(date)
@@ -135,10 +141,17 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               updatedViewHtml = updatedView.render().$el
               parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
               $('.triggerMark').remove()
-            else if data.status == 'error'
+            else if data.status == 'isDuplicated'
               updatedView = new Show.TaskModal
                 model: parentThis.model
                 isDuplicated: true
+              updatedViewHtml = updatedView.render().$el
+              parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+            else if data.status == 'needMobile'
+              console.log 'need mobile'
+              updatedView = new Show.TaskModal
+                model: parentThis.model
+                needMobile: true
               updatedViewHtml = updatedView.render().$el
               parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
 

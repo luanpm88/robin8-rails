@@ -79,6 +79,10 @@ class Campaign < ActiveRecord::Base
   end
 
   # 开始时候就发送邀请 但是状态为pending
+  # c = Campaign.find xx
+  # kol_ids = Kol.where("province like '%shanghai%'").collect{|t| t.id}
+  # c.update_column(:status,'agreed')
+  # c.send_invites(kol_ids)
   def send_invites(kol_ids = nil)
     Rails.logger.campaign_sidekiq.info "---send_invites: --campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
     return if self.status != 'agreed'
