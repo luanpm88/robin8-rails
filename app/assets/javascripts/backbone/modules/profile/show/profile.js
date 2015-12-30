@@ -121,7 +121,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
                   var domain = up.getOption('domain');
                   var res = jQuery.parseJSON(info);
-                  var imageView2 = '?imageView2/0/w/200/h/200/interlace/1'
+                  var imageView2 = '-400'
                   var sourceLink = 'http://' + domain + '/' + res.key + imageView2; //获取上传成功后的文件的Url
                   $.ajax({
                     method: "POST",
