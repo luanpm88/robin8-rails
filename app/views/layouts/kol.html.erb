@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
-  <% if false && Rails.env.development? &&  Rails.application.config.china_instance %>
+  <% if   Rails.env.development? &&  Rails.application.config.china_instance %>
     <%= stylesheet_link_tag    '/assets/kol/dev_base_compact', 'kol/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag '/assets/kol/dev_base_compact', 'kol/dev_reload', 'data-turbolinks-track' => true %>
   <% else %>

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
 
-  <% if false && Rails.env.development? %>
+  <% if  Rails.env.development? %>
     <%= stylesheet_link_tag    '/assets/app/dev_base_compact', 'app/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag '/assets/app/dev_base_compact', 'app/dev_reload','app/dev_reload', 'data-turbolinks-track' => true %>
   <% else %>
