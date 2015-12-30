@@ -68,7 +68,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initFormValidation()
         @initQiniuUploader()
         @initCreateCampaignModal()
-        
+
         $(".budget_input").focus()
         $(".campaign_name_input").focus()
 
@@ -131,7 +131,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           'FileUploaded': (up, file, info) ->
             domain = up.getOption('domain')
             res = jQuery.parseJSON(info)
-            imageView2 = '?imageView2/0/w/200/h/200/interlace/1'
+            imageView2 = '-400'
             sourceLink = 'http://' + domain + '/' + res.key + imageView2
             $('#campaign-image').attr 'src', sourceLink
             $('input[name=img_url]').val sourceLink
@@ -144,7 +144,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             #队列文件处理完毕后,处理相关的事情
             return
       )
-      
+
 
     initFormValidation: ->
       parentThis = @
