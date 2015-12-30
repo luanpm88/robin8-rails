@@ -19,6 +19,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       region_select: "#province"
       city_input: "#city"
       form: "#profile-form"
+      verify_code_button: ".send_sms"
 
     regions:
       social: ".social-content"
@@ -29,7 +30,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       'click @ui.next': 'save'
       'click @ui.calendar_button' : 'showDateTimePicker'
       'change @ui.country_select' : 'checkCountry'
-
+      'click @ui.verify_code_button' : 'send_sms'
 
     templateHelpers:
       checked: (key, index, kol) ->
@@ -138,24 +139,24 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             validators:
               notEmpty:
                 message: polyglot.t('dashboard_kol.validation.last_name')
-          mobile_number:
-            trigger: 'blur'
-            validators:
-              notEmpty:
-                message: polyglot.t('dashboard_kol.validation.mobile')
-              callback:
-                message: polyglot.t('kols.mobile_format_error')
-                callback: (value, validator, $field) ->
-                  RegExp = /^1[34578][0-9]{9}$/;
-                  if RegExp.test(value)
-                    return true
-                  return false
-              remote:
-                message: 'phone number already exist'
-                type: 'get'
-                url: '/kols/valid_phone_number'
-                data:
-                  kol_id:  @model.id
+          # mobile_number:
+          #   trigger: 'blur'
+          #   validators:
+          #     notEmpty:
+          #       message: polyglot.t('dashboard_kol.validation.mobile')
+          #     callback:
+          #       message: polyglot.t('kols.mobile_format_error')
+          #       callback: (value, validator, $field) ->
+          #         RegExp = /^1[34578][0-9]{9}$/;
+          #         if RegExp.test(value)
+          #           return true
+          #         return false
+          #     remote:
+          #       message: 'phone number already exist'
+          #       type: 'get'
+          #       url: '/kols/valid_phone_number'
+          #       data:
+          #         kol_id:  @model.id
 #          date_of_birthday:
 #            row: '.cell'
 #            validators:
@@ -242,40 +243,111 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @ui.form.data('formValidation').validate()
 
     save: ->
+      parentThis = this
       @validate()
       if @ui.form.data('formValidation').isValid()
-        @model_binder.copyViewValuesToModel()
-        @model.attributes.password = @model.attributes._password
-        delete @model.attributes._password
-        return if @model.toJSON() == @initial_attrs
-        @model.save @model.attributes,
-          success: (m, r) =>
-            if m.attributes.first_name != @initial_attrs.first_name  || m.attributes.last_name != @initial_attrs.last_name
-              Robin.vent.trigger("nameChanged", m.attributes.first_name + ' ' + m.attributes.last_name );
-            @initial_attrs = m.toJSON()
-            App.currentKOL.set m.attributes
-            App.currentKOL.attributes.current_password = "";
-            App.currentKOL.attributes.password = "";
-            App.currentKOL.attributes.password_confirmation = "";
-            $.growl "You profile was saved successfully", {type: "success"}
-            $("#password").val("")
-            $("#current_password").val("")
-            $("#password_confirmation").val("")
-            # @parent_view?.score()
-            @parent_view?.defaultDashboard()
-          error: (m, r) =>
-            console.log "Error saving KOL profile. Response is:"
-            console.log r
-            if JSON.parse(r.responseText).error
-              $.growl JSON.parse(r.responseText).error, {type: "error"}
-            errors = JSON.parse(r.responseText).errors
-            _.each errors, ((value, key) ->
-              @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
-              val = value.join(',')
-              if val == 'is invalid'
-                val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
-              @ui.form.data('formValidation').updateMessage key, 'serverError', val
 
-            ), this
-            element = document.getElementById("current_password")
-            element.scrollIntoView(false)
+        phone_number = $('#mobile').val().trim()
+        verify_code = $('.verify-code').val().trim()
+
+        if phone_number && verify_code
+          $.ajax(
+            method: 'POST'
+            url: '/kols/valid_verify_code'
+            beforeSend: (xhr) ->
+              xhr.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
+              return
+            data: 'phone_number': phone_number,'verify_code': verify_code).done (data) ->
+              if data['valid']
+                parentThis.save_kol()
+              else
+                $.growl "手机号码和验证码不匹配，请重新输入", {type: "danger"}
+        else if phone_number
+          if @initial_attrs.mobile_number != phone_number
+            $.growl "请输入手机验证码", {type: "danger"}
+          else
+            this.save_kol()
+        else
+          this.save_kol()
+
+    save_kol: ->
+      @model_binder.copyViewValuesToModel()
+      @model.attributes.password = @model.attributes._password
+      delete @model.attributes._password
+      return if @model.toJSON() == @initial_attrs
+
+      @model.save @model.attributes,
+        success: (m, r) =>
+          if m.attributes.first_name != @initial_attrs.first_name  || m.attributes.last_name != @initial_attrs.last_name
+            Robin.vent.trigger("nameChanged", m.attributes.first_name + ' ' + m.attributes.last_name );
+          @initial_attrs = m.toJSON()
+          App.currentKOL.set m.attributes
+          App.currentKOL.attributes.current_password = "";
+          App.currentKOL.attributes.password = "";
+          App.currentKOL.attributes.password_confirmation = "";
+          $.growl(polyglot.t('dashboard_kol.profile_tab.save_success'), {type: "success"})
+          $("#password").val("")
+          $("#current_password").val("")
+          $("#password_confirmation").val("")
+          # @parent_view?.score()
+          @parent_view?.defaultDashboard()
+        error: (m, r) =>
+          console.log "Error saving KOL profile. Response is:"
+          console.log r
+          if JSON.parse(r.responseText).error
+            $.growl JSON.parse(r.responseText).error, {type: "error"}
+          errors = JSON.parse(r.responseText).errors
+          _.each errors, ((value, key) ->
+            @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
+            val = value.join(',')
+            if val == 'is invalid'
+              val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
+            @ui.form.data('formValidation').updateMessage key, 'serverError', val
+
+          ), this
+          element = document.getElementById("current_password")
+          element.scrollIntoView(false)
+
+    send_sms: ->
+      phone_number = $('#mobile').val().trim()
+      old_button_text = $('.send_sms').text()
+      count = 60
+      countdown = undefined
+
+      CountDown = ->
+        $('.send_sms').attr 'disabled', 'true'
+        $('.send_sms').text count + ' s'
+        if count == 0
+          $('.send_sms').text(old_button_text).removeAttr 'disabled'
+          clearInterval countdown
+        count--
+        return
+
+      if phone_number.match(/^1[34578][0-9]{9}$/) or phone_number == 'robin8.best'
+        $.ajax(
+          method: 'POST'
+          url: '/kols/send_sms'
+          beforeSend: (xhr) ->
+            xhr.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
+            return
+          data: 'phone_number': phone_number).done (data) ->
+          $('.tips').children().hide()
+          if data['mobile_number_is_blank']
+            $('#mobile').focus().blur()
+            return null
+          if data['not_unique']
+            $('#mobile').css 'border-color': 'red'
+            $('.not_unique_number').show()
+            $('.not_unique_number').siblings().hide()
+          else
+            if data['code']
+              $('#mobile').css 'border-color': 'red'
+              $('.send_sms_failed').show()
+              $('.send_sms_failed').siblings().hide()
+            else
+              countdown = setInterval(CountDown, 1000)
+              $('.send_sms_success').show()
+              $('.send_sms_success').siblings().hide()
+          return
+      else
+        $('#mobile').focus().blur()
