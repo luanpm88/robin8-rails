@@ -261,10 +261,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               if data['valid']
                 parentThis.save_kol()
               else
-                $.growl "手机号码和验证码不匹配，请重新输入", {type: "error"}
+                $.growl "手机号码和验证码不匹配，请重新输入", {type: "danger"}
         else if phone_number
           if @initial_attrs.mobile_number != phone_number
-            $.growl "请输入手机验证码", {type: "error"}
+            $.growl "请输入手机验证码", {type: "danger"}
           else
             this.save_kol()
         else
@@ -285,7 +285,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           App.currentKOL.attributes.current_password = "";
           App.currentKOL.attributes.password = "";
           App.currentKOL.attributes.password_confirmation = "";
-          $.growl "You profile was saved successfully", {type: "success"}
+          $.growl(polyglot.t('dashboard_kol.profile_tab.save_success'), {type: "success"})
           $("#password").val("")
           $("#current_password").val("")
           $("#password_confirmation").val("")

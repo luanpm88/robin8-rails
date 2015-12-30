@@ -68,7 +68,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initFormValidation()
         @initQiniuUploader()
         @initCreateCampaignModal()
-        
+
         $(".budget_input").focus()
         $(".campaign_name_input").focus()
 
@@ -144,7 +144,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             #队列文件处理完毕后,处理相关的事情
             return
       )
-      
+
 
     initFormValidation: ->
       parentThis = @
