@@ -548,6 +548,7 @@ zh:
         audience_friends: 朋友圈好友数量范围
         audience_groups: 经常发言群的数量范围
         audience_publish: 每天朋友圈发布频次
+        save_success: 您的个人资料保存成功
       score_tab:
         attend: Attend event (and post commentary)
         calculated: Complete your profile to improve your score.
