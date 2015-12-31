@@ -133,7 +133,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def add_click(valid)
-    Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}-----avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
+    Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
     finish('fee_end') if self.redis_avail_click.value >= self.max_click && self.status == 'executing'
