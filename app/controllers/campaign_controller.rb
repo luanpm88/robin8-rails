@@ -37,7 +37,7 @@ class CampaignController < ApplicationController
   def show
     c = Campaign.find(params[:id])
     user = current_user
-    if (user.blank? or c.user_id != user.id)  and cookies[:admin] != "true"
+    if (user.blank? or c.user_id != user.id)#  and cookies[:admin] != "true"
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
     render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget], :include => [:kols, :approved_invites]})
