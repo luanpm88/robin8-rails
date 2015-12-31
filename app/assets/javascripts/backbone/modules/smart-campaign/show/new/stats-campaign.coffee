@@ -33,29 +33,29 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
     onRender: () ->
       console.log 'stats  on render'
       that = this
-#      _.defer =>
-#        this.statsChart = echarts.init(document.getElementById('day_stats'))
-#      $.ajax
-#        type: "get"
-#        url: "/campaign/" + that.model.id + "/day_stats" ,
-#        dataType: 'json',
-#        success: (data) =>
-#          that.initStatsChat(data[0], data[1], data[2])
-#        error: (xhr, textStatus) ->
-#          $.growl textStatus,
-#            type: "danger",
-#      $.ajax
-#        type: "get"
-#        url: "/campaign/" + that.model.id + "/kol_list" ,
-#        dataType: 'json',
-#        success: (data) =>
-#          @stats_kol_view = new Robin.SmartCampaign.Show.StatsKol
-#            kol_list_data: data
-#          @showChildView 'kol_list', @stats_kol_view
-#
-#        error: (xhr, textStatus) ->
-#          $.growl textStatus,
-#            type: "danger",
+      _.defer =>
+        this.statsChart = echarts.init(document.getElementById('day_stats'))
+      $.ajax
+        type: "get"
+        url: "/campaign/" + that.model.id + "/day_stats" ,
+        dataType: 'json',
+        success: (data) =>
+          that.initStatsChat(data[0], data[1], data[2])
+        error: (xhr, textStatus) ->
+          $.growl textStatus,
+            type: "danger",
+      $.ajax
+        type: "get"
+        url: "/campaign/" + that.model.id + "/kol_list" ,
+        dataType: 'json',
+        success: (data) =>
+          @stats_kol_view = new Robin.SmartCampaign.Show.StatsKol
+            kol_list_data: data
+          @showChildView 'kol_list', @stats_kol_view
+
+        error: (xhr, textStatus) ->
+          $.growl textStatus,
+            type: "danger",
 
 
     initStatsChat: (label, total_clicks, avail_clicks) ->

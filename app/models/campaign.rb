@@ -11,6 +11,7 @@ class Campaign < ActiveRecord::Base
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
   has_many :campaign_shows
   has_many :kols, through: :campaign_invites
+  has_many :approved_kols, through: :approved_invites
   has_many :weibo_invites
   has_many :weibo, through: :weibo_invites
   has_many :articles
