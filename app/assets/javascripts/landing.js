@@ -43,7 +43,6 @@ function getUrlVars()
 $(function(){
   var campaign_name = getUrlVars()["from_campaign"]
   if (campaign_name){
-    debugger
     var thirtyMins = new Date();
     thirtyMins.setMinutes(thirtyMins.getMinutes() + 30);
     $.cookie("campaign_name", campaign_name, {expires: thirtyMins, path: "/"});

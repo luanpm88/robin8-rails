@@ -294,7 +294,6 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @isEdit = true
 
     createCampagin: ->
-      debugger
       @ui.form.data("formValidation").validate()
       if @model.id?
         if @ui.form.data('formValidation').isValid()
