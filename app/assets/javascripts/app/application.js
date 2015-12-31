@@ -30,6 +30,7 @@
 //= require backbone.wreqr
 //= require backbone.marionette
 //= require select2
+//= require ./../lib/foundation.min
 //= require ./../lib/backbone_rails_sync
 //= require ./../lib/jquery.cookie
 //= require ./../lib/polyglot
