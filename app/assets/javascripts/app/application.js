@@ -54,7 +54,6 @@
 //= require_tree ./../backbone/components
 
 //= require_tree ./../backbone/modules/authentication
-//= require_tree ./../backbone/modules/campaigns
 //= require_tree ./../backbone/modules/smart-campaign
 //= require_tree ./../backbone/modules/navigation
 //= require_tree ./../backbone/modules/profile
