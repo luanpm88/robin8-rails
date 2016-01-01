@@ -5,6 +5,14 @@
     #sidebar-wrapper{
       left: 0;
     }
+    .subtitle{
+      color: #808080;
+      margin-top: 0px
+    }
+
+    .campaigns-tables-title{
+      border-bottom: 0px;
+    }
     .password-title{
       margin: 20px 0 5px 0;
       span {
@@ -21,5 +29,25 @@
         margin-bottom: 0px;
       }
     }
+
+    .set-mobile {
+      .row {
+        width: 280px;
+      }
+      .mobile-input {
+        width: 280px;
+      }
+      .verify-input {
+        width: 160px;
+        margin-right: 20px;
+        float: left;
+      }
+      .verify-button {
+        width: 100px;
+        font-size: 15px;
+        float: left;
+      }
+    }
+
   }
 }

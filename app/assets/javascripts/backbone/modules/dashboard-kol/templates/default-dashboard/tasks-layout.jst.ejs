@@ -1,17 +1,24 @@
 <div class='dashboard-module-header'>
-  <h3>Task</h3>
+  <h3><%= polyglot.t('dashboard_kol.default.campaigns') %></h3>
 </div>
 <div class="tasks-container row dashboard-module-body">
   <div class="tasks-nav">
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active"><a href="#">Current</a></li>
-      <li role="presentation"><a href="#">Done</a></li>
-      <li role="presentation"><a href="#">Upcoming</a></li>
+      <li role="presentation" class="active"><a id='upcoming' href="#"><%= polyglot.t('dashboard_kol.default.upcoming') %></a></li>
+      <li role="presentation"><a id='running' href="#"><%= polyglot.t('dashboard_kol.default.running') %></a></li>
+      <li role="presentation"><a id='complete' href="#"><%= polyglot.t('dashboard_kol.default.complete') %></a></li>
     </ul>
   </div>
-  <div class="tasks-show-region">
+  <div class="tasks-show-region currentTab">
 
   </div>
-  <img id='loadingSvg' src="<%= AppAssets.path('loaders/puff.svg') %>" style='display: block;margin: 0 auto;'>
+  <p class='loadMoreP'> <a class='loadMore btn btn-small btn-primary' style='margin-top:10px' href='#'><i class='glyphicon glyphicon-refresh'>&nbsp;加载更多</i></a> </p>
+  <div class="alert alert-warning noMore" style='display: none;' role="alert">
+    没有更多数据
+  </div>
+  <img class='loadingOfTasks' src="<%= AppAssets.path('loaders/puff.svg') %>" style='display: block;margin: 0 auto;'>
+  </div>
+  <div class="task-modal">
+
   </div>
 </div>

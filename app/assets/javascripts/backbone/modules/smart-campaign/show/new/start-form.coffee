@@ -5,415 +5,327 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     regions:
       content: "#campaign-content"
-      characteristicsRegion: '#release-characteristics'
       analyticsRegion: '#analytics-campaign-text'
 
     ui:
-      wysihtml5: 'textarea.wysihtml5'
-      analyzeButton: '#analyze'
+      startDatePicker: "#datetimepicker6"
+      endDatePicker: "#datetimepicker7"
+      createCampagin: "#create-campagin"
       form: "#campaign-form"
+      subtractionBudgetIcon: ".subtraction_budget_icon"
+      plusBudgetIcon: ".plus_budget_icon"
+      subtractionPerBudgetIcon: ".subtraction_per_budget_icon"
+      plusPerBudgetIcon: ".plus_per_budget_icon"
+      deadlineIcon: ".deadline_icon"
+      doubleCheckCreate: ".double_check_create_campaign"
+      campaignName: ".campaign_name_input"
+      campaignDesc: ".campaign_desc_input"
+      campaignUrl: ".campaign_url_input"
+      campaignPerBudgetInput: ".per_budget_input"
+      campaignBudgetInput: ".budget_input"
+      campaignStartTimeInput: ".campaign_start_time_input"
+      campaignEndTimeInput: ".campaign_deadline_input"
 
     events:
-      "click @ui.save": "save"
-      'click #direct-image-upload': 'uploadDirectImage'
-      'click #url-image-upload': 'uploadUrlImage'
-      'click #direct-video-upload': 'uploadDirectVideo'
-      'click #url-video-upload': 'uploadUrlVideo'
-      'click #insert_link': 'insertLink'
-      'change #upload': 'uploadWord'
-      'click #extract_url': 'extractURL'
-      'click #unlink': 'unLink'
-      'selectstart #insert_link': 'unselect'
-      'mousedown #insert_link': 'unselect'
-      'keydown #insert_link': 'unselect'
-      'selectstart #direct-image-upload': 'unselect'
-      'mousedown #direct-image-upload': 'unselect'
-      'keydown #direct-image-upload': 'unselect'
-      'selectstart #url-image-upload': 'unselect'
-      'mousedown #url-image-upload': 'unselect'
-      'keydown #url-image-upload': 'unselect'
-      'selectstart #unlink': 'unselect'
-      'mousedown #unlink': 'unselect'
-      'keydown #unlink': 'unselect'
-      'selectstart #direct-video-upload': 'unselect'
-      'mousedown #direct-video-upload': 'unselect'
-      'keydown #direct-video-upload': 'unselect'
-      'selectstart #url-video-upload': 'unselect'
-      'mousedown #url-video-upload': 'unselect'
-      'keydown #url-video-upload': 'unselect'
-      'click @ui.analyzeButton': 'analyzeCampaignRelease'
+      "click @ui.createCampagin": "createCampagin"
+      "click @ui.subtractionBudgetIcon": "subtractionBudgetIcon"
+      "click @ui.plusBudgetIcon": "plusBudgetIcon"
+      "click @ui.subtractionPerBudgetIcon": "subtractionPerBudgetIcon"
+      "click @ui.plusPerBudgetIcon": "plusPerBudgetIcon"
+      "click @ui.deadlineIcon": "deadlineIcon"
+      "click @ui.doubleCheckCreate": "doubleCheckCreate"
+      "change @ui.campaignName": "updateIsEdit"
+      "change @ui.campaignDesc": "updateIsEdit"
+      "change @ui.campaignUrl": "updateIsEdit"
+      "change @ui.campaignBudgetInput": "updateIsEdit"
+      "change @ui.campaignPerBudgetInput": "updateIsEdit"
+      "change @ui.campaignStartTimeInput": "updateIsEdit"
+      "change @ui.campaignEndTimeInput": "updateIsEdit"
 
     initialize: (options) ->
       @options = options
-      @releaseCharacteristicsModel = new Robin.Models.ReleaseCharacteristics
       @model = if @options.model? then @options.model else new Robin.Models.Campaign()
+#      now = new Date
+#      console.log @model
+#      @model.attributes.start_time = now.setDate(now.getHours() + 2);
+#      @model.attributes.deadline = now.setDate(now.getDate() + 2);
+#      console.log @model
+      @isEdit = false
       @modelBinder = new Backbone.ModelBinder()
 
+    serializeData: ->
+      campaign: this.model.toJSON()
+
     onRender: () ->
-      insertLinkButton = @$el.find('#wyihtml5-insert-link').html()
-      unLinkButton = @$el.find('#wyihtml5-unlink').html()
-      extractButtonTemplate = @$el.find('#wyihtml5-extract-button').html()
-      extractWordTemplate = @$el.find('#wyihtml5-word-button').html()
-      extractDirectImageTemplate = @$el.find('#wyihtml5-direct-image-button').html()
-      extractDirectVideoTemplate = @$el.find('#wyihtml5-direct-video-button').html()
-      customTemplates =
-        insert: (context) ->
-          return insertLinkButton
-        unlink: (context) ->
-          return unLinkButton
-        extract: (context) ->
-          return extractButtonTemplate
-        word: (context) ->
-          return extractWordTemplate
-        directImage: (context) ->
-          return extractDirectImageTemplate
-        directVideo: (context) ->
-          return extractDirectVideoTemplate
+      if @model && @model.attributes["start_time"]
+        start_time = new Date(@model.attributes.start_time).getTime() + 8*60*60
+        end_time = new Date(@model.attributes.deadline).getTime() + 8*60*60
+        @model.attributes.start_time = (new Date(start_time)).toString('yyyy-MM-dd HH:mm')
+        @model.attributes.deadline = (new Date(end_time)).toString('yyyy-MM-dd HH:mm')
+      @modelBinder.bind @model, @el
+      _.defer =>
+        @initDatepicker()
+        @initFormValidation()
+        @initQiniuUploader()
+        @initCreateCampaignModal()
 
-      @ui.wysihtml5.wysihtml5(
-        toolbar:
-          insert: customTemplates.insert
-          unlink: customTemplates.unlink
-          extract: customTemplates.extract
-          word: customTemplates.word
-          directImage: customTemplates.directImage
-          directVideo: customTemplates.directVideo
-        ,
-        parserRules: {
-          tags: {
-                "b":  {},
-                "i":  {},
-                "br": {},
-                "ol": {},
-                "ul": {},
-                "li": {},
-                "h1": {},
-                "h2": {},
-                "h3": {},
-                "h4": {},
-                "h5": {},
-                "h6": {},
-                "video": {
-                    "check_attributes": {
-                        "controls": "any",
-                        "preload": "any",
-                        "class": "any",
-                        "width": "any",
-                    }},
-                "source": {
-                    "check_attributes": {
-                        "src": "any",
-                    }},
-                "blockquote": {},
-                "u": 1,
-                "img": {
-                    "check_attributes": {
-                        "width": "numbers",
-                        "alt": "alt",
-                        "src": "any",
-                        "height": "numbers",
-                        "title": "alt"
-                    }
-                },
-                "a":  {
-                    check_attributes: {
-                        'href': "href",
-                        'target': 'any',
-                        'rel': 'alt'
-                    }
-                },
-                "iframe": {
-                    "check_attributes": {
-                        "src":"any",
-                        "width":"numbers",
-                        "height":"numbers"
-                    },
-                    "set_attributes": {
-                        "frameborder":"0"
-                    }
-                },
-                "p": 1,
-                "span": 1,
-                "div": 1,
-                "table": 1,
-                "tbody": 1,
-                "thead": 1,
-                "tfoot": 1,
-                "tr": 1,
-                "th": 1,
-                "td": 1,
-                "code": 1,
-                "pre": 1,
-                "style": 1
-            }
-        },
-        'image': false,
-        'video': false,
-        'html': true,
-        "blockquote": true,
-        "table": false,
-        "link": false,
-        "textAlign": false
+        $(".budget_input").focus()
+        $(".campaign_name_input").focus()
+
+    initCreateCampaignModal: ->
+      $(".create-campaign-modal").on "hidden.bs.modal", (e)->
+        $("#create-campagin").prop("disabled", false)
+        $("#create-campagin").removeClass("disabled")
+
+    doubleCheckCreate: ->
+      $(".create-campaign-modal").modal("hide")
+      parentThis = this
+      parentThis.model.attributes.deadline = $(".campaign_deadline_input").val()
+      parentThis.model.attributes.start_time = $(".campaign_start_time_input").val()
+      parentThis.model.attributes.img_url = $('input[name=img_url]').val()
+      parentThis.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
+      parentThis.model.attributes.budget = $('input[name=budget]').val()
+      @ui.form.data("formValidation").validate()
+
+      parentThis.model.save this.model.attributes,
+        success: (m, r) ->
+          $.growl polyglot.t("smart_campaign.start_step.create_campaign"), {type: "success"}
+          $(".create-campaign-modal").modal("hide")
+          location.href = "/#smart_campaign"
+        error: (m, r) ->
+          $(".create-campaign-modal").modal("hide")
+          console.log("失败了");
+
+
+    initQiniuUploader: ->
+      uploader = Qiniu.uploader(
+        runtimes: 'html5,flash,html4'
+        browse_button: 'img-url-pick'
+        uptoken_url: '/users/qiniu_uptoken'
+        unique_names: true
+        domain: '7xozqe.com1.z0.glb.clouddn.com'
+        container: 'img-url-container'
+        max_file_size: '100mb'
+        flash_swf_url: 'js/plupload/Moxie.swf'
+        max_retries: 3
+        dragdrop: true
+        drop_element: 'img-url-container'
+        chunk_size: '4mb'
+        auto_start: true
+        filters: mime_types: [ {
+          title: 'Image files'
+          extensions: 'jpg,jpeg,gif,png'
+        } ]
+        init:
+          'FilesAdded': (up, files) ->
+            plupload.each files, (file) ->
+              # 文件添加进队列后,处理相关的事情
+              return
+            return
+          'BeforeUpload': (up, file) ->
+            # 每个文件上传前,处理相关的事情
+            return
+          'UploadProgress': (up, file) ->
+            # 每个文件上传时,处理相关的事情
+            return
+          'FileUploaded': (up, file, info) ->
+            domain = up.getOption('domain')
+            res = jQuery.parseJSON(info)
+            imageView2 = '-400'
+            sourceLink = 'http://' + domain + '/' + res.key + imageView2
+            $('#campaign-image').attr 'src', sourceLink
+            $('input[name=img_url]').val sourceLink
+            #获取上传成功后的文件的Url
+            return
+          'Error': (up, err, errTip) ->
+            #上传出错时,处理相关的事情
+            return
+          'UploadComplete': ->
+            #队列文件处理完毕后,处理相关的事情
+            return
       )
-      @editor = @ui.wysihtml5.data('wysihtml5').editor
-      @editor.focus()
-      self = this
-      @editor.on('load', () ->
-        self.updateStats()
-        if self.model.get('description')?
-          analyze_button = document.getElementById("analyze")
-          analyze_button.style.display = "none"
-          child = new Show.StartAnalytics ({
-            model: self.model
-            reanalyze: true
-            parent: self.options.parent
-          })
-          Robin.layouts.main.content.currentView.content.currentView.analyticsRegion.show child
-        $('.wysihtml5-sandbox').contents().find('body').on('keyup keypress blur change focus', (e) ->
-          self.updateStats()
+
+
+    initFormValidation: ->
+      parentThis = @
+      @ui.form.formValidation(
+        framework: 'bootstrap'
+        excluded: [
+          ':hidden'
+          ':disabled'
+        ]
+        icon:
+          valid: 'glyphicon glyphicon-ok'
+          #invalid: 'glyphicon glyphicon-remove'
+          validating: 'glyphicon glyphicon-refresh'
+        trigger: "blur"
+        fields:
+          name:
+            validators:
+              notEmpty:
+                message: polyglot.t('smart_campaign.validation.name')
+          description:
+            validators:
+              notEmpty:
+                message: polyglot.t('smart_campaign.validation.description')
+          url:
+            validators:
+              callback:
+                message: polyglot.t('smart_campaign.validation.url_invalid')
+                callback: (value, validator, $field) ->
+                  RegExp = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                  if RegExp.test(value)
+                    return true
+                  return false
+              notEmpty:
+                message: polyglot.t('smart_campaign.validation.url')
+
+          budget:
+            validators:
+              notEmpty:
+                message: polyglot.t('smart_campaign.validation.budget')
+              greaterThan:
+                inclusive: false
+
+                value: 0
+                message:  polyglot.t('smart_campaign.validation.budget_should_greater_than_zero')
+              integer:
+                message: polyglot.t('smart_campaign.validation.budget_should_be_digit')
+
+              remote:
+                url: "/users/avail_amount"
+                type: "get"
+                delay: 300
+                message: polyglot.t('smart_campaign.validation.budget_is_not_ample')
+                data: (value, validators, $field) ->
+                  @isEdit = true
+                  if parentThis.model.id?
+                    campaign_id = parentThis.model.id
+                  else
+                    campaign_id = 'no'
+                  v =
+                    amount: $('.budget_input').val(),
+                    campaign_id: campaign_id
+                  return v
+
+              # callback:
+              #   callback: (value, validators, $field) ->
+              #     $.ajax
+              #       url: "/users/avail_amount"
+              #       success: (data) ->
+              #         if Number(data["data"]) > Number(value)
+              #           return true
+              #         return false
+              #       error: ->
+              #         return false
+          per_click_budget:
+            validators:
+              notEmpty:
+                message: polyglot.t('smart_campaign.validation.per_click_budget')
+              greaterThan:
+                inclusive: false
+                value: 0
+                message:  polyglot.t('smart_campaign.validation.per_click_budget_should_greater_than_zero')
+              numeric:
+                message: polyglot.t('smart_campaign.validation.per_click_budget_should_be_digit')
+              callback:
+                message: polyglot.t('smart_campaign.validation.per_click_budget_should_less_than_budget')
+                callback: (value, validator, $field) ->
+                  if Number(value) > Number($(".budget_input").val())
+                    return false
+                  return true
+          deadline:
+            validators:
+              callback:
+                selector: ".test"
+                message: polyglot.t('smart_campaign.validation.campaign_end_time_should_greather_than_start_time')
+                callback: (value, validator, $field) ->
+                  if (new Date($(".campaign_start_time_input").val()).getTime()) > (new Date($(".campaign_deadline_input").val()).getTime())
+                    return false
+                  return true
+
         )
-      )
-      @characteristicsRegion.show(new Show.CharacteristicsView({
-        model: @releaseCharacteristicsModel
-      }))
-      @modelBinder.bind(@model, @el)
-      monthes = []
-      monthesShort = []
-      daysMin = []
-      days = []
-      for i in [0..11]
-        monthes[i] = polyglot.t('date.monthes_full.m' + (i + 1))
-        monthesShort[i] = polyglot.t('date.monthes_abbr.m' + (i + 1))
-      for i in [0..6]
-        days[i] = polyglot.t('date.days_full.d' + (i + 1))
-        daysMin[i] = polyglot.t('date.datepicker_days.d' + (i + 1))
-      @$el.find("#deadline").datepicker
-        monthNames: monthes
-        monthNamesShort: monthesShort
-        dayNames: days
-        dayNamesMin: daysMin
-        nextText: polyglot.t('date.datepicker_next')
-        prevText: polyglot.t('date.datepicker_prev')
-        dateFormat: "D, d M y"
-      if @model.get('deadline')?
-        @$el.find("#deadline").datepicker("setDate", new Date(@model.get('deadline')))
+        .on 'err.validator.fv', (e, data) ->
+          data.element
+              .data('fv.messages')
+              .find('.help-block[data-fv-for="' + data.field + '"]').hide()
+              .filter('[data-fv-validator="' + data.validator + '"]').show();
 
 
+    initDatepicker: ->
+      now = new Date
+      start_time = new Date(now.setHours(now.getHours() + 2));
+      deadline = new Date(now.setDate(now.getDate() + 2));
 
-    insertLink: (e) ->
-      bookmark = @editor.composer.selection.getBookmark()
-      url = prompt("Please paste your url")
-      if url
-        window.setTimeout(() ->
-          @editor.composer.selection.setBookmark(bookmark)
-          @editor.focus()
-          if (!/^(f|ht)tps?:\/\//i.test(url) && !/^mailto?:/i.test(url))
-            url = "http://" + url
-          @editor.composer.commands.exec("createLink", {href: url, target: '_blank'})
-        , 200)
-
-    unLink: (e) ->
-      bookmark = @editor.composer.selection.getBookmark()
-      window.setTimeout(() ->
-        @editor.composer.selection.setBookmark(bookmark)
-        @editor.focus()
-        @editor.composer.commands.exec("unlink")
-      , 200)
-
-    uploadDirectImage: (e) ->
-      bookmark = @editor.composer.selection.getBookmark()
-      uploadcare.openDialog(null, {
-        tabs: 'file'
-        multiple: false
-        imagesOnly: true
-        }).done((file) =>
-            file.done((fileInfo) =>
-              @editor.composer.selection.setBookmark(bookmark)
-              @editor.focus()
-              @editor.composer.commands.exec("insertImage", {src: fileInfo.originalUrl})
-            )
-        ).fail((error, fileInfo) ->
-            console.log(error)
-        )
-      return false
-
-    uploadUrlImage: (e) ->
-      bookmark = @editor.composer.selection.getBookmark()
-      url = prompt("Please paste you image's url")
-      if url
-        $.get( "/releases/img_url_exist?url=" + url, ( data ) ->
-          if data
-            window.setTimeout(() ->
-              @editor.composer.selection.setBookmark(bookmark)
-              @editor.focus()
-              @editor.composer.commands.exec("insertImage", {src: url})
-            , 200)
-          else
-            $.growl
-              message: "Invalid url!"
-              type: "info"
-        )
-
-    uploadDirectVideo: (e) ->
-      bookmark = @editor.composer.selection.getBookmark()
-      uploadcare.openDialog(null, {
-        tabs: 'file'
-        inputAcceptTypes: 'video/*'
-        multiple: false
-        }).done((file) ->
-          file.done((fileInfo) ->
-            @editor.composer.selection.setBookmark(bookmark)
-            @editor.focus()
-            @editor.composer.commands.exec("insertHTML", "<video width="+550+" class='video-js vjs-default-skin' controls='auto' preload='auto' data-setup='{}'> <source src='" + fileInfo.originalUrl + "'></video>")
-          )
-        ).fail((error, fileInfo) ->
-          console.log(error);
-        )
-      return false;
-
-    uploadUrlVideo: (e) ->
-      bookmark = @editor.composer.selection.getBookmark()
-      url = prompt("Please paste you video's url")
-      if url
-        window.setTimeout(() ->
-          @editor.composer.selection.setBookmark(bookmark)
-          @editor.focus()
-          @editor.composer.commands.exec("insertVideo", url)
-        , 200)
-
-    extractURL: (e) ->
-      url = prompt("Enter a link to grab the press release from:", "")
-      editor = @editor
-      if url
-        $.ajax({
-          url: 'textapi/extract'
-          dataType: 'json'
-          method: 'POST'
-          data:
-            url: url
-          ,
-          success: (response) ->
-            if response.article.length == 0
-              swal {
-                title: "Invalid link!"
-                text: "The link you've provided is invalid or the site it leads to contains no usable information"
-                type: "error"
-                showCancelButton: false
-                confirmButtonClass: 'btn'
-                confirmButtonText: 'ok'
-              }
-            else if (response.article.length > 60000)
-              swal {
-                title: "Provided release is too long"
-                text:"Target page contains a text that exceeds the release length limit. The maximum is 60.000 characters (including spaces)"
-                type: "error"
-                showCancelButton: false
-                confirmButtonClass: 'btn'
-                confirmButtonText: 'ok'
-              }
-            else
-              editor.setValue(response.article.replace(/(\r\n|\n\r|\r|\n)/g, '<br>'))
-            if response.article.length > 0
-              editor.setValue(response.article.replace(/(\r\n|\n\r|\r|\n)/g, '<br>'))
-            else
-              swal {
-                title: "Invalid link!"
-                text: "The link you've provided is invalid or the site it leads to contains no usable information"
-                type: "error"
-                showCancelButton: false
-                confirmButtonClass: 'btn'
-                confirmButtonText: 'ok'
-              }
-        })
-
-    uploadWord: (changeEvent) ->
-      self = this
-
-      formData = new FormData()
-      $input = $('#upload')
-
-      if (_.last($input[0].files[0].name.split('.')) != 'docx')
-        alert("Not supported file! Supported is *.docx")
-        $input.replaceWith($input.val('').clone(true))
-        return false
-
-      formData.append('file', $input[0].files[0])
-
-      $.ajax({
-        url: "/releases/extract_from_word"
-        data: formData
-        cache: false
-        contentType: false
-        processData: false
-        dataType: 'json'
-        type: 'POST'
-        complete: (response) ->
-          $.ajax({
-            url: 'textapi/extract'
-            dataType: 'json'
-            method: 'POST'
-            data:
-              html: response.responseText
-            success: (text) ->
-              self.parseResponseFromApi(text)
-          })
-      })
-
-    parseResponseFromApi: (text) ->
-      if (text != null)
-        @editor.setValue( text.article.replace(/(\r\n|\n\r|\r|\n)/g, '</br>'))
-      else
-        alert("Something wrong with API")
-
-    updateStats: _.debounce((e) ->
-      html = @editor.getValue()
-      el = document.getElementById("campaign-release-error")
-      if html == ""
-        el.style.display = "inline"
-      else
-        el.style.display = "none"
-      div = document.createElement("div")
-      div.innerHTML = html
-      text = div.textContent || div.innerText || ""
-      words = new Lexer().lex(text)
-      taggedWords = new POSTagger().tag(words)
-      numberOfNonSpaceCharacters = text.replace(/\W*/mg, '').length
-      poses = _.chain(taggedWords).reject((w) ->
-        return w[1].match(/^[,.]$/)
-      ).countBy((w) -> return w[1].slice(0, 2) ).value()
-      sentences = _(text.match(/[^.!?]+(\.!\?)?/g) || []).filter((s) ->
-        return s.length > 5
-      )
-      @releaseCharacteristicsModel.set {
-        numberOfNouns: poses.NN || 0
-        numberOfAdverbs: poses.RB || 0
-        numberOfAdjectives: poses.JJ || 0
-        numberOfCharacters: text.length
-        numberOfWords: words.length
-        numberOfSentences: sentences.length
-        numberOfNonSpaceCharacters: numberOfNonSpaceCharacters
-        numberOfParagraphs: if words.length == 0 then 0 else text.split(/\n+/).length
+      chinaStartDateOptions = {
+        ignoreReadonly: true,
+        format: 'YYYY-MM-DD HH:mm',
+        locale: 'zh-cn',
+        defaultDate: start_time
       }
-      @releaseCharacteristicsModel.set {
-        readabilityScoreTitle: @releaseCharacteristicsModel.getReadabilityScoreTitle()
-        readabilityScore: @releaseCharacteristicsModel.getReadabilityScore()
+      chinaEndDateOptions = {
+        ignoreReadonly: true,
+        format: 'YYYY-MM-DD HH:mm',
+        locale: 'zh-cn',
+        defaultDate: deadline
       }
-    , 500)
+      console.log chinaEndDateOptions
+      usDateOptions = {
+        ignoreReadonly: true,
+        format: 'YYYY-MM-DD HH:mm',
+        locale: 'en-gb',
+        minDate: start_time
+      }
 
-    analyzeCampaignRelease: () ->
-      data = _.reduce @ui.form.serializeArray(), ((m, i) -> m[i.name] = i.value; m), {}
-      @ui.form.validator('validate')
-      el = document.getElementById("campaign-release-error")
-      if @editor.getValue() == ""
-        el.style.display = "inline"
-      form_valid = $(".form-group.has-error").length == 0
-      if form_valid && @editor.getValue() != ""
-        @model.set('description', data['description'])
-        el.style.display = "none"
-        analyze_button = document.getElementById("analyze")
-        analyze_button.style.display = "none"
-        analytics_view = new Show.StartAnalytics({
-          model: @model
-          parent: @options.parent
-        })
-        @showChildView 'analyticsRegion', analytics_view
+      if Robin.chinaLocale
+        @ui.startDatePicker.datetimepicker(chinaStartDateOptions)
+        @ui.endDatePicker.datetimepicker(chinaEndDateOptions)
+      else
+        @ui.startDatePicker.datetimepicker(usDateOptions)
+        @ui.endDatePicker.datetimepicker(usDateOptions)
+
+      @ui.startDatePicker.on "dp.change", (e) =>
+        @ui.endDatePicker.data("DateTimePicker").minDate(e.date);
+
+      @ui.endDatePicker.on "dp.change", (e) =>
+        @ui.startDatePicker.data("DateTimePicker").maxDate(e.date);
+
+    updateIsEdit: ->
+      @isEdit = true
+
+    createCampagin: ->
+      @ui.form.data("formValidation").validate()
+      if @model.id?
+        if @ui.form.data('formValidation').isValid()
+          $(".create-campaign-modal").modal("show");
+        else
+          $("#create-campagin").removeClass("disabled");
+          $("#create-campagin").prop('disabled', false);
+      else
+        if @ui.form.data('formValidation').isValid()
+          $(".create-campaign-modal").modal("show");
+        else
+          $("#create-campagin").removeClass("disabled");
+          $("#create-campagin").prop('disabled', false);
+
+    subtractionBudgetIcon: ->
+      number = Number($(".budget_input").val())
+      if number >= 1
+        number -= 1
+      $(".budget_input").val(number);
+
+    subtractionPerBudgetIcon: ->
+      number = Number($(".per_budget_input").val())
+      if number >= 1
+        number -= 1
+      $(".per_budget_input").val(number);
+
+    plusBudgetIcon: ->
+      number = Number($(".budget_input").val()) + 1
+      $(".budget_input").val(number);
+
+    plusPerBudgetIcon: ->
+      number = Number($(".per_budget_input").val()) + 1
+      if number > Number($(".budget_input").val())
+        number = Number($(".budget_input").val())
+      $(".per_budget_input").val(number);

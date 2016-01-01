@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  include Concerns::PayTransaction
+  has_many :transactions, :as => :account
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -40,16 +43,16 @@ class User < ActiveRecord::Base
 
   include Models::Identities
 
-  # class EmailValidator < ActiveModel::Validator
-  #   def validate(record)
-  #     if record.new_record? and Kol.exists?(:email=>record.email)
-  #       record.errors[:email] << @l.t('register.email_already_taken')
-  #     end
-  #   end
-  # end
-  #
-  # validates_with EmailValidator
-  #
+  class EmailValidator < ActiveModel::Validator
+    def validate(record)
+      if record.new_record? and Kol.exists?(:email=>record.email)
+        record.errors[:base] << "邮箱已存在"
+      end
+    end
+  end
+
+  validates_with EmailValidator
+
   extend FriendlyId
   friendly_id :email, use: :slugged
 

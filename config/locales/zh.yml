@@ -160,7 +160,6 @@ zh:
       kol:
         email: "邮箱"
         mobile_number: "电话号码"
-
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
@@ -183,7 +182,6 @@ zh:
         kol:
           attributes:
             email:
-              taken: "已经存在"
               invalid: 格式错误
             mobile_number:
               taken: "已经存在"
@@ -202,6 +200,7 @@ zh:
       submit: 提交
       new: 新建
       edit: 编辑
+      return: 返回
       destroy: 删除
       save: 保存
       delete_success: 删除成功！
@@ -333,7 +332,7 @@ zh:
       title: "推广活动付款信息"
     contact_page:
       feedback: "留言"
-      address: Robin8<br> 1745百老汇大街，17楼<br> 纽约市，纽约州 10019
+      address: Robin8<br> 上海市静安区江宁路77号7楼
       address_title: "主要办公地址"
       form:
         customer_service: "一般客户服务"
@@ -399,6 +398,16 @@ zh:
         influence_charts:
         discover: 发现
         coming_soon: 智能交易市场即将到来，敬请期待
+        campaigns: 活动
+        upcoming: 线上
+        running: 正在进行
+        complete: 已完成
+        click: 点击
+        income: 收入
+        view: 查看
+        share: 分享
+        copy_to_clipboard: 复制到剪切板
+        date_range: 活动区间
       influence_charts:
         auto: '汽车'
         digit: '数码'
@@ -484,6 +493,7 @@ zh:
         first_name: 姓
         gender: 性别
         general_title: 我的个人信息
+        general_subtitle: '* 提供你的个人信息，让我们更加了解你，为你推荐感兴趣的分享活动。请放心，我们很注重保护你的个人隐私。'
         id: ID
         industry: 关注的话题
         industry_placeholder: 点击选择（最多5个）
@@ -504,7 +514,7 @@ zh:
         regions: 地区
         secrecy: 保密
         select_region: 选择区域
-        social_subtitle: monetize your influence on those channels
+        social_subtitle: '* 关联你的社交资料，让Robin8 全方位的衡量你的影响力。'
         social_title: 我的社交
         south: 南部
         title: 我的信息
@@ -538,6 +548,7 @@ zh:
         audience_friends: 朋友圈好友数量范围
         audience_groups: 经常发言群的数量范围
         audience_publish: 每天朋友圈发布频次
+        save_success: 您的个人资料保存成功
       score_tab:
         attend: Attend event (and post commentary)
         calculated: Complete your profile to improve your score.
@@ -630,7 +641,7 @@ zh:
       submit_btn: "提交"
       user_not_found: "与此电子邮件用户不存在！"
     header:
-      advertisers: "广告主"
+      advertisers: "客户"
       contact_us: "联系我们"
       contactus: "联系我们"
       demo: "演示"
@@ -1259,6 +1270,7 @@ zh:
       approved: "批准"
       back: "背部"
       budget: "预算"
+      replicate: "重启活动"
       budget_must_number: "预算必须是数字，并且只包含数字"
       budget_required: The budget is required
       campaigns: "宣传活动"
@@ -1274,12 +1286,24 @@ zh:
         title: "联系人"
         your_email: "你的邮箱"
       content_type: Content Type
-      created: "创建 "
-      deadline: "期限"
+      name: "活动名称"
+      status: "活动状态"
+      unexecute: "待批准"
+      rejected: "未通过"
+      agreed: "即将执行"
+      executing: "执行中"
+      executed: "已完成"
+      share: "分享次数"
+      click: "点击次数"
+      cost: "已扣/预算 (￥)"
+      balance: "余额: ￥"
+      recharge: "充值"
+      created: "开始时间"
+      deadline: "结束时间"
       decline_date: Decline date
       declined: "已拒绝"
       declined_unknown: "拒绝/未知"
-      edit: Edit
+      edit: 编辑
       edit_campaign: "编辑推广活动"
       editor:
         adjectives: "形容词"
@@ -1310,19 +1334,36 @@ zh:
         incorrect_ignored: "所有格式不正确的联系人都将被忽略。"
         list_uploaded: "您的列表已经成功上传。"
         select_categories: "选择意见领袖的分类"
+      validation:
+        name: 活动标题不能为空
+        description: 活动描述不能为空
+        url: 活动链接不能为空
+        budget: 活动预算不能为空
+        per_click_budget: 活动点击预算不能为空
+        budget_should_be_digit: 活动预算只能包含数字
+        per_click_budget_should_be_digit: 只能包含数字
+        per_click_budget_should_greater_than_zero: 点击预算应该大于零
+        per_click_budget_should_less_than_budget: 点击预算应该小于总预算
+        budget_should_greater_than_zero: 预算应该大于零
+        campaign_end_time_should_greather_than_start_time: 结束时间应该大于开始时间
+        budget_is_not_ample: "您的预算不足, 请充值"
+        url_invalid:   链接不合法
       last_login_date: Last login date
       last_name: "姓氏"
       last_update: "最後更新"
-      name: "姓名"
       negotiating: Negotiating
       new:
+        edit: 编辑
         pitch: "投递"
         start: "开始"
         targets: "目标"
-      new_campaign: New Campaign
-      next: "下一步"
+        back: 返回
+        new: 新建
+      new_campaign: "新建活动"
+      next: "下一页"
+      replicate: 重启活动
       'no': "不是"
-      no_campaigns: You don't have any campaigns. It's time to create one!
+      no_campaigns: "您还未创建任何活动，赶快去创建一个吧！"
       no_history: You don't have expired campaigns.
       no_invited_yet: You haven't invited influencers yet. It's time to add some!
       no_negotiate: You don't have any campaign with negotiating status.
@@ -1394,7 +1435,7 @@ zh:
           weibo_pitch: Hi, @[First Name]!<br/>You were invited to participate in a
             new campaign @[Campaign Title] by @[User Name].  Please proceed to your
             dashboard to accept the invitation.
-      prev: "上一步"
+      prev: "上一页"
       private_influencers: "自有的意见领袖"
       reject: Reject
       rejected: Rejected
@@ -1409,7 +1450,18 @@ zh:
         campaign_budged: "推广活动预算"
         campaign_content: "推广活动内容"
         campaign_deadline: "推广活动期限"
-        campaign_title: "推广活动名称"
+        campaign_title: "活动名称"
+        campaign_enter_title: 输入活动名称
+        campaign_url: 活动链接
+        campaign_enter_url: 输入活动链接
+        campaign_description: 活动介绍
+        campaign_enter_description: 输入活动介绍
+        campaign_budget: 活动预算
+        campaign_enter_budget: 1000
+        campaign_enter_per_click_budget: 0.1
+        campaign_start_time: 开始时间
+        campaign_end_time: 结束时间
+        campaign_time: 起止时间
         editor_uses_paragraphs: "编辑器可以自动为复制的文本分段，如果要设置换行符按Shift + Enter键（Shift +回车）"
         enter_title: "填写名称"
         following_topics: "将会提到如下的话题"
@@ -1419,6 +1471,19 @@ zh:
         paste_press_here: "在这里粘贴推广活动的新闻稿"
         pick_deadline: "选择一个期限"
         summary: 如下是<strong> "%{name}" </strong>的小结
+        campaign_budget_label: 总预算
+        campaign_per_click_budget_label: 点击预算
+        enter_description: 活动介绍
+        enter_message: 给Kol 留言
+        campaign_message: 留言
+        enter_url: 活动链接
+        save: 保存
+        create_campaign_title: "您确定保存活动吗?"
+        are_sure_to_create_campaign: 感谢您提交了该活动, 我们将在24小时内审核后帮您发布。
+        close: 取消
+        sure_to_create: 确定保存
+        create_campaign: 您已成功创建一个活动
+
       status: "状态"
       success_ask_invite: Your request has been sent
       success_invite: Invitation has been sent
@@ -1491,6 +1556,25 @@ zh:
         people_reached: "送达人数"
         read_more: "原文阅读人数"
       'yes': "是的"
+      stats:
+        detail_title:  推广详情
+        base_info: 基本信息
+        start_time: 开始时间
+        deadline: 结束时间
+        budget: 总预算
+        per_click_budget: 点击费用
+        avail_click: 计费点击
+        total_click: 总访问量
+        status: 当前状态
+        share_link: 推广链接
+        read_post: 查看原文
+        day_stats: 日点击一览
+        kol_list: KOL推广详情
+        kol_name: KOL
+        click_unit: 次数
+        click: 点击
+        take_budget: 已花费
+        remain_budget: 活动余额
     smart_release:
       analysis_step:
         buttons:
@@ -2233,7 +2317,7 @@ zh:
       not_found_in_database: "无效的电子邮件或密码。"
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: "您需要登录或注册才能继续操作。"
-      unconfirmed: You have to confirm your email address before continuing.
+      unconfirmed: "您需要验证邮箱才能继续操作，如果没有收到验证邮件请联系我们: support_cn@robin8.com"
     invitations:
       edit:
         header: Set your password
@@ -2333,7 +2417,7 @@ zh:
       other_than: must be other than %{count}
       present: must be blank
       spoofed_media_type: has contents that are not what they are reported to be
-      taken: has already been taken
+      taken: 已存在
       too_long:
         one: is too long (maximum is 1 character)
         other: is too long (maximum is %{count} characters)

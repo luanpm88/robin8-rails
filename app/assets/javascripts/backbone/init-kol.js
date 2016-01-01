@@ -45,7 +45,7 @@ Robin.loadPleaseWait = function(){
     window.loading_screen = window.pleaseWait({
       logo: AppAssets.path('robin8-beta-logo-tm.png'),
       backgroundColor: '#3c9eb6',
-      loadingHtml: '<p class="loading-message">Just preparing the awesome!</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
+      loadingHtml: '<p class="loading-message">今天的你看起来闪闪发亮</p><div class="sk-spinner sk-spinner-wandering-cubes"><div class="sk-cube1"></div><div class="sk-cube2"></div></div>'
     });
     setTimeout(function(){
       loading_screen.finish();

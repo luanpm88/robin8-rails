@@ -1,0 +1,30 @@
+<div class="row campaigns-list-table">
+  <table class="table table-striped table-bordered dataTable" cellspacing="0" width="100%" id="campaigns-table22">
+      <thead style="cursor:pointer;">
+      <tr>
+        <th><%= polyglot.t("smart_campaign.stats.kol_name") %></th>
+        <th><%= polyglot.t("smart_campaign.stats.avail_click") %></th>
+        <th><%= polyglot.t("smart_campaign.stats.total_click") %></th>
+        <th><%= polyglot.t("smart_campaign.stats.start_time") %></th>
+      </tr>
+      </thead>
+    <tbody>
+    <% _.each(items, function(c) { %>
+    <tr data-id="<%= c.id %>">
+      <td class="middle col-md-1">
+        <% if(c.kol.first_name != null && c.kol.last_name != null){ %>
+          <%= c.kol.first_name %> &nbsp; &nbsp; <%= c.kol.last_name %>
+        <% } else if(c.kol.social_name != null) { %>
+          <%= c.kol.social_name %>
+        <% } else { %>
+          该用户未设置昵称
+        <% } %>
+      </td>
+      <td class="middle col-md-1"><%= c.get_avail_click %></td>
+      <td class="middle col-md-1"><%= c.get_total_click %></td>
+      <td class="middle col-md-1"><%= formatDate(c.approved_at) %></td>
+    </tr>
+    <% }); %>
+    </tbody>
+  </table>
+</div>

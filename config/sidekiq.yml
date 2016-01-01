@@ -1,7 +1,11 @@
 ---
-:concurrency: 10
+:concurrency: 16
 :pidfile: tmp/pids/sidekiq.pid
 production:
   :concurrency: 10
 :queues:
-  - default
+  - [default, 10]
+  - [campaign, 20]
+  - [campaign_show, 10]
+:limits:
+  campaign_show: 1

@@ -141,7 +141,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             trigger: 'keyup'
             validators:
               callback:
-                message: 'Please input value, or not check this item'
+                message: '请输入内容，否则请取消勾选'
                 callback: (value, validator, $field) ->
                   console.log  $field.closest(".row").find(".price-item").val()
                   console.log value
@@ -152,6 +152,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               between:
                 min: 0,
                 max: 100000,
+                message: '价格必须是 0 到 100000 之间'
       ).on('err.field.fv', (e, data) ->
         data.element.parents('.cell').addClass 'has-error'
       ).on('success.field.fv', (e, data) ->
@@ -171,7 +172,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @model.save @model.attributes,
         success: (m, r) =>
           @initial_attrs = m.toJSON()
-          $.growl "You profile was saved successfully", {type: "success"}
+          $.growl "您的个人资料已保存成功", {type: "success"}
           @parent_view.ui.modal_account.modal('hide')
           #TODO close modal (not refresh social-list beause not show any)
         error: (m, r) =>

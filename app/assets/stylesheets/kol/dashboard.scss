@@ -1,3 +1,26 @@
+.taskModal {
+  .displayForMobile {
+    display: none;
+  }
+  .displayForDesktop {
+    display: block;
+  }
+  #descAndUrl {
+    height: auto!important;
+  }
+}
+
+@media (max-width:480px) {
+  .taskModal {
+    .displayForMobile {
+      display: block;
+    }
+    .displayForDesktop {
+      display: none;
+    }
+  }
+}
+
 .dashboard-module {
   margin-top: 20px;
 
@@ -27,6 +50,42 @@
   line-height: 20px;
   text-align: center;
   font-size: 18px;
+}
+
+#default-dashboard-task {
+  .tasks-show-region {
+    li {
+      list-style: none;padding: 5px;border-bottom: 1px solid #f1f1f1;
+      padding-top: 16px;
+      padding-bottom: 10px;
+      margin: 0 10px;
+      border-top: 2px solid #f1f1f1;
+      .discover-item-img {
+        display: block;
+        float: left;
+        width: 12%;
+        margin-right: 2%;
+      }
+      .discover-w {
+        display: block;
+        float: left;
+        width: 86%;
+        .discover-item-header {
+          h5 {
+            margin-top: 5px;
+          }
+
+        }
+        .discover-item-body {
+
+        }
+      }
+    }
+
+  }
+  .loadMoreP, .noMore {
+    width: 100%;text-align: center;
+  }
 }
 
 #default-dashboard-discover {
@@ -62,7 +121,9 @@
 
           }
           .discover-item-body {
-
+            p {
+              overflow: auto;
+            }
           }
         }
 

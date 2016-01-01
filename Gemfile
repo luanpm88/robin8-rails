@@ -36,6 +36,8 @@ gem 'rack-mini-profiler'
 # create multiple log files
 gem 'multi_logger'
 
+gem 'slackistrano', require: false
+
 gem 'htmlentities'
 gem 'truncate_html'
 gem 'email_validator'
@@ -58,6 +60,9 @@ gem 'twilio-ruby', '~> 4.2.1'
 
 #monitor server
 gem 'newrelic_rpm'
+
+# 微信相关
+gem 'weixin_authorize'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
@@ -118,6 +123,7 @@ gem 'qy_wechat', '~> 1.0.1'
 gem 'sinatra', require: nil
 gem 'sidekiq'
 gem 'sidetiq'
+gem 'sidekiq-limit_fetch'
 gem 'will_paginate', '~> 3.0.6'
 gem 'will_paginate-bootstrap'
 gem 'has_scope'
@@ -162,6 +168,7 @@ gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 gem 'china_sms'
+gem 'qiniu', '~> 6.2.1'
 group :development, :test do
   # Deploy with Capistrano
   gem 'capistrano-rails', '~> 1.1.3'

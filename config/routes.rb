@@ -1,6 +1,8 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'campaign_show' => "campaign_show#show"
+  get 'campaign_share' => "campaign_show#share"
 
   resources :identities do
     member do
@@ -11,6 +13,9 @@ Rails.application.routes.draw do
   get 'identities/influence/:id' => 'identities#influence'
   get 'identities/discover/:labels' => 'identities#discover'
   get 'identities/labels/:user_id' => 'identities#labels'
+
+  get 'campaign_invite/:type' => 'campaign_invite#interface'
+  get 'mark_as_running/:campaign_id' => 'campaign_invite#mark_as_running'
 
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
@@ -54,6 +59,8 @@ Rails.application.routes.draw do
   get 'users/get_active_subscription' => 'users#get_active_subscription'
   get 'users/private_kol' => 'users#get_private_kols'
   get 'users/kols_lists' => 'kols_lists#get_contacts_list'
+  get 'users/qiniu_uptoken' => 'users#qiniu_uptoken'
+  post "users/set_avatar_url" => 'users#set_avatar_url'
   post 'users/import_kols' => 'kols_lists#create'
   post 'users/import_kol' => 'users#import_kol'
   get 'payments/apply_discount' => 'payments#apply_discount'
@@ -67,6 +74,8 @@ Rails.application.routes.draw do
   post '/users/new' => 'users#create'
   post '/kols/new' => 'kols#create'
   post '/kols/send_sms/' => 'kols#send_sms'
+  post '/kols/valid_verify_code/' => 'kols#valid_verify_code'
+  get "kols/create_kol_from_social_account" => "kols#create_kol_from_social_account", as: "create_kol_from_social_account"
   get '/users/new' => 'users#new'
   get '/kols/new' => 'kols#create'
   put '/kols/monetize' => 'kols#update_monetize'
@@ -113,6 +122,8 @@ Rails.application.routes.draw do
       get 'identities'
       get 'get_identities'
       get 'info'
+      get 'get_avail_amount'
+      get :avail_amount
     end
   end
 
@@ -206,6 +217,8 @@ Rails.application.routes.draw do
   post 'campaign/get_counter', to: 'campaign#get_counter'
   post 'campaign/:id/article/:article_id/approve_request', to: 'campaign#approve_request'
   post 'campaign/test_email', to: 'campaign#test_email'
+  get  'campaign/:id/day_stats', to: 'campaign#day_stats'
+  get  'campaign/:id/kol_list', to: 'campaign#kol_list'
   resources :campaign_invite, only: [:index, :create, :show, :update]
   post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
   resources :kols_lists, only: [:index, :create, :show, :update]

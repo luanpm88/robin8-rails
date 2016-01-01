@@ -1,7 +1,4 @@
 <ul class="sidebar-nav" id="sidebar">
-  <li>
-    <a href="/#dashboard" id="nav-dashboard"> <%= polyglot.t("navigation.dashboard") %><span class="sub_icon glyphicon glyphicon-home"></span></a>
-  </li>
   <% if (Robin.chinaInstance == false) { %>
     <li>
       <a href="/#robin8" id="nav-robin8"><%= polyglot.t("navigation.smart_release") %><span class="sub_icon fa fa-rocket"></span></a>
@@ -20,7 +17,7 @@
     </li>
     <li>
       <a href="/#analytics" id="nav-analytics"><%= polyglot.t("navigation.analytics") %><span class="sub_icon fa fa-line-chart"></span></a>
-      
+
     </li>
     <li>
       <a href="/#recommendations" id="nav-recommendations"><%= polyglot.t("navigation.recommendations") %><span class="sub_icon fa fa-leanpub"></span></a>
@@ -28,16 +25,12 @@
     <li id="new-recommendations" style="display:none">
       <a href="/#recommendations" id="nav-recommendations">Recommendations <span id="new-recommendations-badge" class="badge"></span></a></span>
     </li>
-  <!-- End of recommendations —>
   <% } %>
 
   <% if (Robin.chinaInstance) { %>
     <li>
-      <a href="/#smart_campaign" id="nav-smart-campaign"><%= polyglot.t("navigation.smart_campaign") %><span class="sub_icon fa fa-bullhorn"></span></a>
+      <a href="/#smart_campaign" id="user-nav-smart-campaign"><%= polyglot.t("navigation.smart_campaign") %><span class="sub_icon fa fa-bullhorn"></span></a>
     </li>
-    <li>
-       <a href="/#campaigns_list" id="nav-campaignslist"><%= polyglot.t("navigation.campaigns") %><span class="sub_icon fa fa-list"></span></a>
-     </li>
   <% } %>
   <!-- <li>
     <a id="nav-opportunities">Opportunities<span class="sub_icon glyphicon glyphicon-bullhorn"></span></a>
@@ -49,5 +42,3 @@
   </li>
 </ul>
 <span class='copyright-bottom'>&copy; Robin8, Inc.</span>
-
-

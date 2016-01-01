@@ -1,4 +1,10 @@
 Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
+  Show.PersonalInfo = Backbone.Marionette.ItemView.extend
+    template: 'modules/dashboard-kol/templates/default-dashboard/personal-info'
+
+    serializeData: () ->
+      score_data: @options.score_data
+
   Show.Influence = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/templates/default-dashboard/influence'
 
@@ -14,9 +20,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     serializeData: () ->
       items: @collection.toJSON();
-      score_data: @options.score_data
 
     switchAccount: (e) ->
+      _gaq.push(['_trackPageview', '/some-page'])
       e.preventDefault()
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})

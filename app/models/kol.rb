@@ -1,8 +1,9 @@
 class Kol < ActiveRecord::Base
+  include Concerns::PayTransaction
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, allow_unconfirmed_access_for: 7.days
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable, allow_unconfirmed_access_for: 1.years
 
   has_many :identities, -> {order('updated_at desc')}, :dependent => :destroy, autosave: true
 
@@ -16,9 +17,15 @@ class Kol < ActiveRecord::Base
   has_many :article_comments, as: :sender
   has_many :kol_profile_screens
   has_many :interested_campaigns
+  after_create :create_campaign_invites_after_signup
 
+  def email_required?
+    false if self.provider != "signup"
+  end
 
-  validates :mobile_number, uniqueness: true
+  def password_required?
+    false if self.provider != "signup"
+  end
 
   GENDERS = {
     :NONE => 0,
@@ -44,7 +51,7 @@ class Kol < ActiveRecord::Base
   class EmailValidator < ActiveModel::Validator
     def validate(record)
       if record.new_record? and User.exists?(:email=>record.email)
-        record.errors[:email] << "has already been taken"
+        record.errors[:email] << I18n.t('kols.email_already_been_taken')
       end
     end
   end
@@ -268,4 +275,7 @@ class Kol < ActiveRecord::Base
     (self.identities.provider(provider).collect{|t| t.score}.max  || 0  )
   end
 
+  def create_campaign_invites_after_signup
+    CampaignSyncAfterSignup.perform_async(self.id)
+  end
 end

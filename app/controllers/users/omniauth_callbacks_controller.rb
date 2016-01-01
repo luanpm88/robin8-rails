@@ -43,7 +43,9 @@ module Users
 
     def failure
       p params
-      render 'twitter_popup_close', :layout => false
+      flash[:error] = '出错了，请联系管理员'
+      redirect_to root_path
+      # render 'twitter_popup_close', :layout => false
     end
 
     [:twitter, :linkedin, :facebook, :google_oauth2, :weibo, :wechat].each do |provider|
@@ -92,8 +94,7 @@ module Users
             cookies[:kol_signin] = "yeah"
           end
         else
-          Rails.cache.write("auth_params", params, expires_in: 30.minute)
-          return redirect_to kols_new_path(auth_params: true)
+          return redirect_to create_kol_from_social_account_path(auth_params: params)
         end
       else
         @identity = Identity.find_for_oauth(params, origin_auth, current_kol)

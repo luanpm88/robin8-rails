@@ -6,7 +6,18 @@ class KolsController < ApplicationController
   end
 
   def get_score
-    render :json => current_kol.all_score
+    total = 0
+    CampaignInvite.where(kol_id: current_kol.id, status: 'finished').each do |x|
+      click = x.avail_click
+      per_click = x.campaign.per_click_budget
+      total += per_click * click
+    end
+
+    render :json => current_kol.all_score.merge({
+      :upcoming => CampaignInvite.where(kol_id: current_kol.id, status: 'running').count,
+      :completed => CampaignInvite.where(kol_id: current_kol.id, status: 'finished').count,
+      :total_income => total.round(2)
+    })
   end
 
   def create
@@ -29,6 +40,7 @@ class KolsController < ApplicationController
           create_kol_and_sign_in(kol_p)
         else
           @kol = Kol.new
+          @kol.country = 'China(中国)' if china_instance?
           flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
           render :new, :layout => "website"
         end
@@ -40,6 +52,24 @@ class KolsController < ApplicationController
       render :new, :layout => "website"
     end
   end
+
+  def create_kol_from_social_account
+    auth_params = params[:auth_params]
+    key = "registration_account:#{auth_params[:uid]}"
+    return redirect_to root_path if Rails.cache.read(key)
+    Rails.cache.write(key, true, :expire_in => 600.seconds)
+    @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider], social_uid: auth_params[:uid]})
+    @kol.country = 'China(中国)' if china_instance?
+    if cookies[:campaign_name]
+      @kol.from_which_campaign = cookies[:campaign_name]
+      cookies.delete :campaign_name
+    end
+    @identity = @kol.identities.build(auth_params.to_hash)
+    @kol.save
+    sign_in @kol
+    return redirect_to root_path
+  end
+
 
   def resend_confirmation_mail
     @kol = current_kol
@@ -193,6 +223,16 @@ class KolsController < ApplicationController
     end
   end
 
+  def valid_verify_code
+    phone_number = params[:phone_number]
+    verify_code = params[:verify_code]
+    if verify_code == Rails.cache.read(phone_number)
+      return render json: {'valid' => true}
+    else
+      return render json: {'valid' => false}
+    end
+  end
+
   private
   def kol_params
     params.require(:kol).permit(:email, :password, :mobile_number)
@@ -214,17 +254,14 @@ class KolsController < ApplicationController
 
   def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
-    @kol.country = 'China' if china_instance?
-    if params[:auth_params]
-      auth_params = Rails.cache.fetch("auth_params")
-      @identity = @kol.identities.build(auth_params)
+
+    if cookies[:campaign_name]
+      @kol.from_which_campaign = cookies[:campaign_name]
+      cookies.delete :campaign_name
     end
-    categories = params[:interests]
-    categories = '' if categories == nil
-    categories = categories.strip.split(',').map {|s| s.strip}.uniq
-    @categories = IptcCategory.where :id => categories
+
+    @kol.country = 'China(中国)' if china_instance?
     if @kol.valid?
-      @kol.iptc_categories = @categories
       @kol.save
       sign_in @kol
       if cookies[:popup_signin].present?

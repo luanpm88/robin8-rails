@@ -69,9 +69,10 @@ a {
     box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
 }
 .panel-body {
-    border: 0 none;
-    padding: 0;
-    box-shadow: 0 0 0;
+  margin-left: 15px;
+  border: 0 none;
+  padding: 0;
+  box-shadow: 0 0 0;
 }
 
 .tab-content .panel-body{
@@ -1762,8 +1763,9 @@ input.form-control[type="file"] {
 }
 
 .dashboard-btns {
-  p, h5{
-    padding-left: 15px;
+  margin-left: 15px;
+  #campaigns {
+    margin-left: 15px;
   }
 }
 
@@ -2180,6 +2182,20 @@ input.form-control[type="file"] {
 .smart-campaign .campaign_details_tables {
   margin-top: 25px;
 }
+
+.smart-campaign .balance{
+  float: right;
+  width: 130px;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+.smart-campaign .recharge{
+  float: right;
+  margin-top: 10px;
+  margin-right: 40px;
+}
+
 .filter-btn {
   margin-right: 7px;
   border-radius: 0;

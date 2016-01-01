@@ -1,0 +1,147 @@
+<div class="campaign-share">
+  <div class="title">推广活动信息</div>
+  <div class="notice" style="text-align: center;margin: 0 auto;color: #008CBA; font-style: italic;">
+    请按如下形式发送到朋友圈</div>
+  <div class="share-content">
+    <div class="top">
+      <div class="left-logo"><%= image_tag @campaign.img_url %></div>
+      <p class="right-info">
+        <%= "#{ @campaign.description} #{@campaign_invite.share_url}" %>
+        <%#= text_area_tag :content, "#{ @campaign.description}\n #{@campaign_invite.share_url}", :class => "info-content" %>
+      </p>
+    </div>
+  </div>
+  <div class="notice">
+    <div class="notice-title">操作提示：</div>
+    <div class="content">
+      <div class="item">1. 长按头像保存图片</div>
+      <div class="item">2. 长按文字复制到粘贴板</div>
+      <div class="item">3. 来到朋友圈点击‘相机’图标，再选择‘从手机相册选择’</div>
+      <div class="item">4. 选中刚才下载的图片，再到内容区域，长按粘贴内容</div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag "http://res.wx.qq.com/open/js/jweixin-1.0.0.js" %>
+<% sign_package = ($weixin_client.get_jssign_package(request.url) rescue {}) %>
+
+<style type="text/css">
+  body {
+    background: #fff;
+  }
+  .campaign-share{
+    margin-bottom: 40px;
+  }
+  .notice{
+    margin: 30px 15px 15px;
+  }
+  .notice .notice-title{
+    font-size: 16px;
+    color: red;
+    text-align: left;
+  }
+  .notice .content{
+    margin-top: 10px;
+  }
+  .notice .content .item{
+    font-size: 14px;
+    color: #808080;
+  }
+  .title {
+    margin-top: 10px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    width: 100%;
+    font-size: 18px;
+  }
+
+  .share-content {
+    margin: 15px;
+    border-radius: 3px;
+    width: 100%;
+    -webkit-touch-callout:all;
+    -webkit-user-select:all;
+    -khtml-user-select:all;
+    -moz-user-select:all;
+    -ms-user-select:all;
+    user-select:all;
+  }
+
+  .share-content .top {
+    background: #efefef;
+    padding: 10px 5px;
+    border-radius: 3px;
+    overflow: auto;
+    -webkit-touch-callout:all;
+    -webkit-user-select:all;
+    -khtml-user-select:all;
+    -moz-user-select:all;
+    -ms-user-select:all;
+    user-select:all;
+  }
+
+  .share-content .left-logo {
+    float: left;
+    width: 23%;
+    padding-left: 2%;
+    padding-right: 2%;
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -khtml-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+  }
+
+  .share-content .right-info{
+    width: 73%;
+    font-size: 15px;
+    min-height: 60px;
+    display: inline-block;
+    -webkit-touch-callout:text;
+    -webkit-user-select:text;
+    -khtml-user-select:text;
+    -moz-user-select:text;
+    -ms-user-select:text;
+    user-select:text;
+  }
+
+  .share-content .right-info textarea{
+    background-color: #e1e1e1;
+  }
+
+  .share-content img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+  }
+</style>
+<script type="text/javascript">
+  wx.config({
+    debug: false,
+    appId: "<%= sign_package['appId'] %>",
+    timestamp: "<%= sign_package['timestamp'] %>",
+    nonceStr: "<%= sign_package['nonceStr'] %>",
+    signature: "<%= sign_package['signature'] %>",
+    jsApiList: [
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage',
+      'onMenuShareQQ',
+      'onMenuShareWeibo'
+    ]
+  });
+  wx.ready(function () {
+    wx.hideOptionMenu();
+//    var info = {
+//      title: "<%#= raw @campaign.name %>",
+//      desc: "<%#= raw @campaign.description %>",
+//      link: "<%#= CampaignInvite.origin_share_url(@campaign_invite.uuid) %>",
+//      imgUrl: "<%#=  @campaign.img_url || @campaign.user.avatar_url %>"
+//    };
+//
+//    wx.onMenuShareAppMessage(info);
+//    wx.onMenuShareTimeline(info);
+//    wx.onMenuShareQQ(info);
+  });
+</script>
