@@ -8,7 +8,7 @@ class UserMailer < ActionMailer::Base
 
   def contact_support(user)
     @user = user
-    mail(:to => 'info@robin8.com', :subject => "Contact Us Request",:from => "Robin8 <no-reply@robin8.com>")
+    mail(:to => 'support_cn@robin8.com', :subject => "Contact Us Request",:from => "Robin8 <no-reply@robin8.com>")
   end
 
   def add_ons_payment_confirmation(add_ons,user,add_on_hash,tax_rate,prices)
