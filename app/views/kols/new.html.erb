@@ -1,9 +1,4 @@
 <div class="signup">
-<% if request.location && request.location.country.to_s == "China" %>
-  <!--<script type="text/javascript" src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>-->
-<% else %>
-  <!--<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&libraries=places"></script>-->
-<% end %>
   <header class="int-header">
     <%= render :partial => "pages/partials/menu"%>
     <%= render :partial => "pages/partials/page_banner", :locals => { :header => (flash[:info] || @l.t('kols.title') )}%>
