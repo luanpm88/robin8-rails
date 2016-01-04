@@ -25,10 +25,10 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
     onRender: function() {
       this.modelBinder.bind(this.model, this.el);
       this.$el.find('#date_of_birthday').datetimepicker({format: 'MM/DD/YYYY', minDate: '01/01/1915', maxDate: new Date()});
-      this.$el.find("input[type='checkbox']").iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        increaseArea: '20%'
-      });
+      //this.$el.find("input[type='checkbox']").iCheck({
+      //  checkboxClass: 'icheckbox_square-blue',
+      //  increaseArea: '20%'
+      //});
       if (Robin.KOL) {
         var currentView = this;
         $.get( "/users/get_identities", function( data ) {
