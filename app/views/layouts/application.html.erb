@@ -3,15 +3,9 @@
 <head>
   <title>ROBIN8 | Welcome</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <% if china_request? && !Rails.env.development? %>
     <link href="//fonts.useso.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
-    <script src="http://maps.google.cn/maps/api/js?libraries=places&sensor=false"></script>
-  <% elsif !Rails.env.development? %>
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
-    <script src="//maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
-  <% end %>
 
-  <% if Rails.env.development? %>
+  <% if  Rails.env.development? %>
     <%= stylesheet_link_tag    '/assets/app/dev_base_compact', 'app/dev_reload', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag '/assets/app/dev_base_compact', 'app/dev_reload','app/dev_reload', 'data-turbolinks-track' => true %>
   <% else %>
@@ -80,9 +74,6 @@
 <% end %>
 <!-- end load bitly javascript sdk -->
 
-<% if !Rails.env.development? %>
-  <script src="https://gateway.bluesnap.com/js/cse/v1.0.1/bluesnap.js"></script>
-<% end %>
 </body>
 <%=render :partial => "shared/ga"%>
 <%=render :partial => "shared/feedback"%>
