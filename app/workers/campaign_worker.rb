@@ -1,6 +1,9 @@
 class CampaignWorker
   include Sidekiq::Worker
-  sidekiq_options  :queue => :campaign
+  sidekiq_options :queue => :campaign, :retry => 3
+  sidekiq_retry_in do |count|
+    60 * (count + 1)
+  end
 
   def perform(*args)
     campaign_id = args[0]

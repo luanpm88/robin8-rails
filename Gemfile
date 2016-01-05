@@ -36,6 +36,7 @@ gem 'rack-mini-profiler'
 gem 'multi_logger'
 
 gem 'slackistrano', require: false
+gem 'slack-notifier', require: false
 
 gem 'htmlentities'
 gem 'truncate_html'

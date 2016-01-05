@@ -74,37 +74,56 @@ class IdentitiesController < ApplicationController
   end
 
   def discover
-    base_url = 'http://engine-api.robin8.net/api/v1/articles/page/'
+    kol = current_kol
 
-    page = params[:page] || '1'
+    is_cache_existed = Rails.cache.exist? "discover:kol_id_#{kol.id}"
 
-    p = if params[:labels].eql? 'all'
-          ''
+    if is_cache_existed
+      cache = Rails.cache.read "discover:kol_id_#{kol.id}"
+      page = params[:page] || 1
+      page_size = 10
+
+      timestamp = cache[:timestamp]
+
+      if DateTime.now >= timestamp.tomorrow
+        CacheDiscoverWorker.perform_async kol.id
+      end
+
+      returnd_array = cache[:discovers].drop(page_size*(page.to_i-1)).first(page_size)
+
+      return render :json => returnd_array
+    else
+      CacheDiscoverWorker.perform_async kol.id
+      base_url = 'http://engine-api.robin8.net/api/v1/articles/page/'
+      page = params[:page] || '1'
+      p = if params[:labels].eql? 'all'
+            ''
+          else
+            '?labels=' + params[:labels]
+          end
+      url = base_url + page +  p
+
+      res = RestClient::Request.execute(method: :get, url: url, timeout: 10, user: 'robin8', password: 'influencer8')
+      case res.code
+      when 200
+        json_res = JSON.parse res
+        if json_res['return_code'] == 0
+          articles = json_res['articles']
+          returns_array = articles.first 10
+          returns_array.each do |article|
+            article['img_url'] = ActionController::Base.helpers.asset_path('recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png')
+          end
+
+          render :json => returns_array
         else
-          '?labels=' + params[:labels]
+          render :json => {:result => 'fail', :error_message => 'something was wrong.'}
         end
-
-    url = base_url + page +  p
-
-    res = RestClient::Request.execute(method: :get, url: url, timeout: 10, user: 'robin8', password: 'influencer8')
-    case res.code
-    when 200
-      json_res = JSON.parse res
-      if json_res['return_code'] == 0
-
-        articles = json_res['articles']
-        returns_array = articles.first 10
-        returns_array.each do |article|
-          article['img_url'] = ActionController::Base.helpers.asset_path('recommendations/' + article['label'] + (1..6).to_a.sample.to_s + '.png')
-        end
-
-        render :json => returns_array
       else
         render :json => {:result => 'fail', :error_message => 'something was wrong.'}
       end
-    else
-      render :json => {:result => 'fail', :error_message => 'something was wrong.'}
     end
+
+ 
   end
 
   def destroy
