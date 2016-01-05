@@ -61,9 +61,15 @@ ActiveAdmin.register Campaign do
     column "Advertiser" do |my_resource|
       my_resource.user.name
     end
-    column "Created time", :created_at
-    column "Start time", :start_time
-    column "End time", :deadline
+
+    column "Start time" do |my_resource|
+      my_resource.start_time.to_s(:all_time)
+    end
+
+    column "End time" do |my_resource|
+      my_resource.deadline.to_s(:all_time)
+    end
+    
     column :budget
     column :status
     column "Spent" do |my_resource|
