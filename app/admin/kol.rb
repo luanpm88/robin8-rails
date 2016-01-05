@@ -48,6 +48,7 @@ ActiveAdmin.register Kol do
     column :first_name
     column :last_name
     column :mobile_number
+    column :province
     column "avail amount" do |my_resource|
       my_resource.avail_amount
     end
@@ -71,6 +72,7 @@ ActiveAdmin.register Kol do
   filter :email
   filter :mobile_number
   filter :social_name
+  filter :province
   filter :from_which_campaign, label: 'source', as: :select
 
 end

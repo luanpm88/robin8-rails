@@ -31,6 +31,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       @statsChart = null
 
     onRender: () ->
+      console.log 'stats  on render'
       that = this
       _.defer =>
         this.statsChart = echarts.init(document.getElementById('day_stats'))

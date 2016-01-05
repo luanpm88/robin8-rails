@@ -268,7 +268,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           else
             this.save_kol()
         else
-          this.save_kol()
+          if phone_number
+            this.save_kol()
+          else
+            $.growl "手机号码不能为空", {type: "danger"}
 
     save_kol: ->
       @model_binder.copyViewValuesToModel()
