@@ -45,6 +45,7 @@
 //= require datatables
 //= require datatables-tabletools
 //= require spinjs
+//= require datejs
 //= require spinjs/jquery.spin.js
 //= require underscore.inflection
 //= require_tree ./../backbone/config
