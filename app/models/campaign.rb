@@ -89,18 +89,17 @@ class Campaign < ActiveRecord::Base
     return if self.status != 'agreed'
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: --start create--"
+    campaign_id = self.id
     ActiveRecord::Base.transaction do
-      kols = Kol.where(:id => kol_ids)  if kol_ids.present?
-      (kols || Kol.all).each do |kol|
-        next if CampaignInvite.exists?(:kol_id => kol.id, :campaign_id => self.id)
-        invite = CampaignInvite.new
-        invite.status = 'pending'
-        invite.campaign_id = self.id
-        invite.kol_id = kol.id
-        uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json).gsub("\n","")
-        invite.uuid = uuid
-        invite.share_url = CampaignInvite.generate_share_url(uuid)
-        invite.save!
+      if kol_ids.present?
+        kols = Kol.where(:id => kol_ids)
+        kols.each do |kol|
+          CampaignInvite.create_invite(campaign_id, kol.id)
+        end
+      else
+        Kol.find_each do |kol|
+          CampaignInvite.create_invite(campaign_id, kol.id)
+        end
       end
     end
     Rails.logger.campaign_sidekiq.info "----send_invites:  start push to sidekiq-------"
@@ -210,7 +209,11 @@ class Campaign < ActiveRecord::Base
       end
     elsif (self.status_changed? && status == 'agreed')
       Rails.logger.campaign.info "--------agreed_job:  ---#{self.id}-----#{self.inspect}"
-      CampaignWorker.perform_async(self.id, 'send_invites')
+      if Rails.env.development?
+        CampaignWorker.new.perform(self.id, 'send_invites')
+      else
+        CampaignWorker.perform_async(self.id, 'send_invites')
+      end
     elsif (self.status_changed? && status == 'rejected')
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
       self.user.unfrozen(budget, 'campaign', self)
