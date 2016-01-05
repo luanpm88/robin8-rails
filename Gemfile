@@ -25,7 +25,6 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'quiet_assets', group: [:development, :staging]
-gem 'aws-sdk-v1'
 
 # To send HTML mails
 gem 'roadie', '~> 3.0.5'
@@ -43,8 +42,6 @@ gem 'truncate_html'
 gem 'email_validator'
 gem 'oauth2'
 gem 'legato'
-gem 'google-api-client'
-gem 'sitemap_generator'
 gem 'redis-objects'
 gem 'redis-rails'
 gem 'rest-client'
@@ -67,42 +64,26 @@ gem 'weixin_authorize'
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
   gem 'rails-assets-bootstrap.growl', '2.0.1'
-  gem 'rails-assets-uploadcare', '2.0.4'
-  gem 'rails-assets-progressjs'
-  gem 'rails-assets-blueimp-gallery'
   gem 'rails-assets-sass-bootstrap-glyphicons'
   gem 'rails-assets-font-awsome', '4.3'
   gem 'rails-assets-momentjs'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '4.17.37'
   gem 'rails-assets-backbone.marionette', '2.4.1'
-  gem 'rails-assets-bootstrap-daterangepicker', '1.3.21'
   gem 'rails-assets-backbone.modelbinder'
   gem 'rails-assets-underscore.string'
-  gem 'rails-assets-chance'
-  gem 'rails-assets-highcharts', '4.1.1'
   gem 'rails-assets-select2', '3.5.2'
   gem 'rails-assets-spinkit'
   gem 'rails-assets-bootstrap-sweetalert'
   gem 'rails-assets-backbone.babysitter'
   gem 'rails-assets-please-wait'
-  gem 'rails-assets-x-editable'
-  gem 'rails-assets-bootstrap-tagsinput'
-  gem 'rails-assets-jquery.dotdotdot'
   gem 'rails-assets-timeago'
   gem 'rails-assets-datatables'
   gem 'rails-assets-datatables-tabletools'
-  gem 'rails-assets-jquery.caret'
-  gem 'rails-assets-bootstrap-switch'
   gem 'rails-assets-select2-bootstrap-css'
   gem 'rails-assets-backbone-relational'
   gem 'rails-assets-spinjs'
-  gem 'rails-assets-jquery-highlighttextarea'
-  gem 'rails-assets-jquery-geocomplete'
-  gem 'rails-assets-datejs'
   gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-bootstrap-validator'
-  gem 'rails-assets-jquery-knob'
-  gem 'rails-assets-d3'
 end
 
 gem 'devise'
@@ -201,9 +182,6 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'puma'
-
-
-
 end
 
 group :test do
