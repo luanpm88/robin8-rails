@@ -126,6 +126,7 @@ class Campaign < ActiveRecord::Base
   def go_start
     Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
     ActiveRecord::Base.transaction do
+      self.update_column(:max_click, (budget.to_f / per_click_budget.to_f).to_i)
       self.update_column(:status, 'executing')
       self.pending_invites.update_all(:status => 'running')
     end
@@ -191,7 +192,6 @@ class Campaign < ActiveRecord::Base
     self.user.unfrozen(origin_budget.to_f, 'campaign', self)
     Rails.logger.transaction.info "-------- reset_campaign:  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
     if self.user.avail_amount >= self.budget.to_f
-      self.update_column(:max_click, new_budget.to_f / new_per_click_budget.to_f)
       self.user.frozen(new_budget.to_f, 'campaign', self)
       Rails.logger.transaction.info "-------- reset_campaign:  after frozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
     else
@@ -203,7 +203,6 @@ class Campaign < ActiveRecord::Base
     if self.status_changed? && self.status == 'unexecute'
       Rails.logger.campaign.info "--------create_job:  ---#{self.id}-----#{self.inspect}"
       if self.user.avail_amount >= self.budget
-        self.update_column(:max_click, self.budget / per_click_budget)
         self.user.frozen(budget, 'campaign', self)
         Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
       else
