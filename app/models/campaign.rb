@@ -109,6 +109,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_sidekiq.info "----send_invites:  _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
+    CampaignWorker.perform_at(self.deadline + 7.days ,self.id, 'settle_accounts')
   end
 
   def send_invite_to_kol kol, status
@@ -147,7 +148,7 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        settle_accounts
+        # settle_accounts
       end
     end
   end
@@ -176,13 +177,13 @@ class Campaign < ActiveRecord::Base
 
   # 结算
   def settle_accounts
-    self.user.unfrozen(budget, 'campaign', self)
-    Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-    self.user.payout((avail_click * per_click_budget) , 'campaign', self )
-    campaign = self
-    self.finished_invites.each do |invite|
-      invite.kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
-      Rails.logger.transaction.info "-------- settle_accounts: kol  after income ---cid:#{campaign.id}--kol_id:#{invite.kol.id}---#{invite.kol.inspect}"
+    return if self.campaign.status != 'finished'
+    ActiveRecord::Base.transaction do
+      self.campaign.update_column(:status, 'settled')
+      self.user.unfrozen(budget, 'campaign', self)
+      Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
+      pay_total_click = self.passed.sum(:total_click)
+      self.user.payout((pay_total_click * per_click_budget) , 'campaign', self )
     end
   end
 
