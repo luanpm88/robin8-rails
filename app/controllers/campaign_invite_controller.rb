@@ -88,4 +88,19 @@ class CampaignInviteController < ApplicationController
 
     return render :json => result
   end
+
+  def change_img_status
+    campaign_invite_id = params[:id]
+    @campaign_invite = CampaignInvite.find campaign_invite_id
+    if params[:status] == "agree"
+      @campaign_invite.share_url = "http://baidu.com"
+      @campaign_invite.save
+      return render json: { result: 'agree' }
+    end
+    if params[:status] == "reject"
+      @campaign_invite.share_url = "http://google.com"
+      @campaign_invite.save
+      return render json: { result: 'reject' }
+    end
+  end
 end

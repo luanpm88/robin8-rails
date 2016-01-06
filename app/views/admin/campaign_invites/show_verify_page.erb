@@ -1,0 +1,89 @@
+<div class="agree-flash" style="display:none; font-size: 35px; color: green">操作成功，审核通过</div>
+<div class="reject-flash" style="display:none; font-size: 35px; color: green">操作成功，拒绝通过此审核</div>
+<div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
+
+<div>
+  <div>
+    campaign_invite_id: <span class="id"><%= @campaign_invite.id %></span>
+  </div>
+  <div> 图片显示在这里 </div>
+
+  <button class="agree">通过</button>
+  <button class="reject">拒绝</button>
+
+</div>
+
+
+<style>
+  div {
+    margin-top: 10px;
+  }
+
+  button a {
+    color: white !important;
+  }
+
+  button.reject {
+    margin-left: 250px;
+  }
+</style>
+
+<script>
+$(function() {
+  campaign_invite_id = $(".id").text();
+  $(".agree").click(function() {
+    r = confirm("确定通过此审核吗");
+    if (r == true) {
+      $.ajax({
+        method: "POST",
+        url: "/campaign_invite/change_img_status",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+         data: {"status": "agree", "id": campaign_invite_id}
+      })
+        .done(function(data) {
+          if(data['result'] == 'agree'){
+            $(".agree-flash").css("display", "block");
+            $(".agree").css("display", "none");
+            $(".reject").css("display", "none");
+          }
+          else {
+            $(".error-flash").css("display", "block");
+          }
+        });
+    }
+    else {
+      return
+    }
+
+  });
+
+  $(".reject").click(function() {
+    r = confirm("确定拒绝此审核吗");
+    if (r == true) {
+      $.ajax({
+        method: "POST",
+        url: "/campaign_invite/change_img_status",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+         data: {"status": "reject", "id": campaign_invite_id}
+      })
+        .done(function(data) {
+          if(data['result'] == 'reject') {
+            $(".reject-flash").css("display", "block");
+            $(".agree").css("display", "none");
+            $(".reject").css("display", "none");
+          }
+          else {
+            $(".error-flash").css("display", "block");
+          }
+        });
+    }
+    else {
+      return
+    }
+  });
+});
+</script>
