@@ -1,5 +1,6 @@
 <div class="agree-flash" style="display:none; font-size: 35px; color: green">操作成功，审核通过</div>
 <div class="reject-flash" style="display:none; font-size: 35px; color: green">操作成功，拒绝通过此审核</div>
+<div class="sms-error-flash" style="display:none; font-size: 35px; color: red">短信发送失败，请重试</div>
 <div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
 
 <div>
@@ -71,10 +72,14 @@ $(function() {
          data: {"status": "reject", "id": campaign_invite_id}
       })
         .done(function(data) {
-          if(data['result'] == 'reject') {
+          debugger
+          if(data['result'] == 'reject' && !data['sms_res']['code']) {
             $(".reject-flash").css("display", "block");
             $(".agree").css("display", "none");
             $(".reject").css("display", "none");
+          }
+          else if (data['sms_res']['code']) {
+            $(".sms-error-flash").css("display", "block");
           }
           else {
             $(".error-flash").css("display", "block");

@@ -90,17 +90,20 @@ class CampaignInviteController < ApplicationController
   end
 
   def change_img_status
+    binding.pry
     campaign_invite_id = params[:id]
     @campaign_invite = CampaignInvite.find campaign_invite_id
+    mobile_number = @campaign_invite.kol.mobile_number
     if params[:status] == "agree"
-      @campaign_invite.share_url = "http://baidu.com"
-      @campaign_invite.save
+      @campaign_invite.screenshot_pass
       return render json: { result: 'agree' }
     end
     if params[:status] == "reject"
-      @campaign_invite.share_url = "http://google.com"
+      @campaign_invite.img_status = "rejected"
       @campaign_invite.save
-      return render json: { result: 'reject' }
+      sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
+      res = sms_client.send_reject_sms
+      return render json: { result: 'reject', sms_res: res }
     end
   end
 end
