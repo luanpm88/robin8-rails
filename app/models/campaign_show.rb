@@ -15,7 +15,7 @@ class CampaignShow < ActiveRecord::Base
     #   return [false, 'campaign_invite_not_approved']
     # end
 
-    store_key = uuid + visitor_cookies
+    store_key = visitor_cookies
     # check_cookie?
     if Rails.cache.read(store_key)
       return [false, 'cookies_visit_fre']
