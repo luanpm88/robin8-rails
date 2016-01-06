@@ -69,7 +69,7 @@ class CampaignInviteController < ApplicationController
 
     campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
 
-    #TODO refactor
+    # TODO refactor: use serializer simpify code
     limit = params[:limit] || 3
     offset = params[:offset] || 0
     campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset)
@@ -79,10 +79,13 @@ class CampaignInviteController < ApplicationController
       obj['per_click_budget'] = obj['per_click_budget'].round(2)
       obj['campaign_invite_id'] = x.id
       obj['status'] = x.status
+      unless x.share_url.present?
+        x.generate_uuid_and_share_url
+      end
       obj['share_url'] = x.share_url
       obj['remain_budget'] = x.campaign.remain_budget
       obj['avail_click'] = x.get_avail_click
-      obj['img_url'] = ActionController::Base.helpers.asset_path('noavatar.jpg') unless obj['img_url'].present?
+      obj['img_url'] = ActionController::Base.helpers.asset_path('campaign_default_img.png') unless obj['img_url'].present?
       obj
     end
 
