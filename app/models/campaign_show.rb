@@ -6,8 +6,8 @@ class CampaignShow < ActiveRecord::Base
 
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
-    if campaign.status == 'finished'
-      return [false, 'campaign_had_finished']
+    if campaign.status == 'executed'
+      return [false, 'campaign_had_executed']
     end
 
     #check status
