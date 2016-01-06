@@ -1,6 +1,9 @@
 class CampaignWorker
   include Sidekiq::Worker
-  sidekiq_options  :queue => :campaign
+  sidekiq_options :queue => :campaign, :retry => 3
+  sidekiq_retry_in do |count|
+    60 * (count + 1)
+  end
 
   def perform(*args)
     campaign_id = args[0]
@@ -21,8 +24,9 @@ class CampaignWorker
       campaign.finish('expired') if campaign.status != 'executed'
     elsif job_type == 'send_invites'
       campaign.send_invites
+    elsif job_type == 'settle_accounts'
+      campaign.settle_accounts
     end
-
   end
 
 end

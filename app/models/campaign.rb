@@ -24,6 +24,8 @@ class Campaign < ActiveRecord::Base
 
   after_save :create_job
 
+  SettleWaitTime = Rails.env.development? ? 2.minutes : 7.days
+
   def email
     user.try :email
   end
@@ -89,18 +91,17 @@ class Campaign < ActiveRecord::Base
     return if self.status != 'agreed'
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: --start create--"
+    campaign_id = self.id
     ActiveRecord::Base.transaction do
-      kols = Kol.where(:id => kol_ids)  if kol_ids.present?
-      (kols || Kol.all).each do |kol|
-        next if CampaignInvite.exists?(:kol_id => kol.id, :campaign_id => self.id)
-        invite = CampaignInvite.new
-        invite.status = 'pending'
-        invite.campaign_id = self.id
-        invite.kol_id = kol.id
-        uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json).gsub("\n","")
-        invite.uuid = uuid
-        invite.share_url = CampaignInvite.generate_share_url(uuid)
-        invite.save!
+      if kol_ids.present?
+        kols = Kol.where(:id => kol_ids)
+        kols.each do |kol|
+          CampaignInvite.create_invite(campaign_id, kol.id)
+        end
+      else
+        Kol.find_each do |kol|
+          CampaignInvite.create_invite(campaign_id, kol.id)
+        end
       end
     end
     Rails.logger.campaign_sidekiq.info "----send_invites:  start push to sidekiq-------"
@@ -109,6 +110,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_sidekiq.info "----send_invites:  _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
+    CampaignWorker.perform_at(self.deadline + SettleWaitTime ,self.id, 'settle_accounts')
   end
 
   def send_invite_to_kol kol, status
@@ -147,7 +149,6 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        settle_accounts
       end
     end
   end
@@ -176,13 +177,13 @@ class Campaign < ActiveRecord::Base
 
   # 结算
   def settle_accounts
-    self.user.unfrozen(budget, 'campaign', self)
-    Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-    self.user.payout((avail_click * per_click_budget) , 'campaign', self )
-    campaign = self
-    self.finished_invites.each do |invite|
-      invite.kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
-      Rails.logger.transaction.info "-------- settle_accounts: kol  after income ---cid:#{campaign.id}--kol_id:#{invite.kol.id}---#{invite.kol.inspect}"
+    return if self.campaign.status != 'finished'
+    ActiveRecord::Base.transaction do
+      self.campaign.update_column(:status, 'settled')
+      self.user.unfrozen(budget, 'campaign', self)
+      Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
+      pay_total_click = self.passed.sum(:total_click)
+      self.user.payout((pay_total_click * per_click_budget) , 'campaign', self )
     end
   end
 
@@ -210,7 +211,11 @@ class Campaign < ActiveRecord::Base
       end
     elsif (self.status_changed? && status == 'agreed')
       Rails.logger.campaign.info "--------agreed_job:  ---#{self.id}-----#{self.inspect}"
-      CampaignWorker.perform_async(self.id, 'send_invites')
+      if Rails.env.development?
+        CampaignWorker.new.perform(self.id, 'send_invites')
+      else
+        CampaignWorker.perform_async(self.id, 'send_invites')
+      end
     elsif (self.status_changed? && status == 'rejected')
       Rails.logger.campaign.info "--------rejected_job:  ---#{self.id}-----#{self.inspect}"
       self.user.unfrozen(budget, 'campaign', self)

@@ -200,6 +200,7 @@ Rails.application.routes.draw do
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
   get '/contact_us', to: "pages#contact_us"
+  match '/withdraw_apply', to: 'pages#withdraw_apply', :via => [:get, :post]
 
   resources :campaign, only: [:index, :create, :update, :show]
   get 'campaign/:id/article', to: 'campaign#article'

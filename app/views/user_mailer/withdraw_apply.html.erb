@@ -1,0 +1,31 @@
+<html>
+<body>
+Hello Support
+
+<p>
+  This is withdraw apply. pls check.
+  If you agree with apply,Don't forget subtract withdraw credits from applicant‘s account!
+  <br/>
+</p>
+
+Kol ID: <%= @kol.id %>
+Name: <%= @kol.first_name %>%= @kol.last_name%><br/>
+Phone: <%= @kol.mobile_number %><br/>
+avail amount: <%= @kol.avail_amount %><br/>
+
+#====== withdraw info =============
+real name: <%= @withdraw.real_name %><br/>
+credits: <%= @withdraw.cretids %><br/>
+<% if @withdraw.withdraw_type == 'alipay' %>
+  alipay no:  <%= @withdraw.alipay_no %>
+<% else %>
+  bank name:  <%= @withdraw.bank_name %>
+  bank no:  <%= @withdraw.bank_no %>
+<% end %>
+remark: <%= @withdraw.remark %><br/>
+<p>
+  Regards, <br/>
+  Team, Robin8
+</p>
+</body>
+</html>
