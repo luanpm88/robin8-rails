@@ -8,7 +8,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     ui:
       loading: '.loadingOfTasks'
-      loadMore: '.loadMore'
+      hasMore: '.loadMore'
       noMore: '.noMore'
 
     events:
@@ -23,8 +23,27 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @tasks.fetch
         success: (collection, res, opts) =>
           console.log 'get tasks: ', collection
-          @ui.loading.hide()
           @getRegion('currentTab').show @tasksView
+          @updateStatus 'hasMore'
+
+    # status in: hasMore, noMore, loading
+    # display status changed out
+    updateStatus: (status) ->
+      switch status
+        when 'hasMore'
+          @ui.hasMore.show()
+          @ui.loading.hide()
+          @ui.noMore.hide()
+
+        when 'noMore'
+          @ui.noMore.show()
+          @ui.loading.hide()
+          @ui.hasMore.hide()
+
+        when 'loading'
+          @ui.loading.show()
+          @ui.hasMore.hide()
+          @ui.noMore.hide()
 
     viewOrShareItem: (e) ->
       e.preventDefault()
@@ -37,8 +56,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     loadMore: (e) ->
       e.preventDefault()
-      @ui.loadMore.hide()
-      @ui.loading.show()
+      @updateStatus 'loading'
       currentView = @getRegion('currentTab').currentView
       offset = currentView.$el.find('li').length
       type = currentView.collection.type
@@ -47,12 +65,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         collection: appendTasks
       appendTasks.fetch
         success: (collection, res, opts) =>
-          @ui.loading.hide()
           if collection.models.length == 0
-            @ui.noMore.show()
+            @updateStatus 'noMore'
           else
             currentView.collection.add appendTasks.toJSON()
-            @ui.loadMore.show()
+            @updateStatus 'hasMore'
         error: =>
           console.log 'fire loadingMore: fetch append tasks error'
 
@@ -61,11 +78,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @activeNav e.target
       target = e.target.id
       @getRegion('currentTab').reset()
-      @ui.loading.show()
-      @ui.noMore.hide()
-      @ui.loadMore.show()
+      @updateStatus 'loading'
       $('span.badge').remove()
       Show.CustomController.switchCampaignsTabTo target, @getRegion('currentTab'), @ui.loading
+      @updateStatus 'hasMore'
 
     showTabFor: (target) ->
       task = new Show.Task
@@ -126,26 +142,26 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       e.preventDefault()
       parentThis = @
       $.ajax
-          type: 'get'
-          url: '/mark_as_running/' + @model.get('id')
-          dataType: 'json'
-          success: (data) ->
-            if data.status == 'ok'
-              parentThis.model.collection.remove parentThis.model
-              $('a#running').append('<span class="badge">1</span>')
-              parentThis.model.set('status', 'approved')
-              updatedView = new Show.TaskModal
-                model: parentThis.model
-              updatedViewHtml = updatedView.render().$el
-              parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
-              $('.triggerMark').remove()
-            else if data.status == 'needMobile'
-              console.log 'need mobile'
-              updatedView = new Show.TaskModal
-                model: parentThis.model
-                needMobile: true
-              updatedViewHtml = updatedView.render().$el
-              parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+        type: 'get'
+        url: '/mark_as_running/' + @model.get('id')
+        dataType: 'json'
+        success: (data) ->
+          if data.status == 'ok'
+            parentThis.model.collection.remove parentThis.model
+            $('a#running').append('<span class="badge">1</span>')
+            parentThis.model.set('status', 'approved')
+            updatedView = new Show.TaskModal
+              model: parentThis.model
+            updatedViewHtml = updatedView.render().$el
+            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+            $('.triggerMark').remove()
+          else if data.status == 'needMobile'
+            console.log 'need mobile'
+            updatedView = new Show.TaskModal
+              model: parentThis.model
+              needMobile: true
+            updatedViewHtml = updatedView.render().$el
+            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
 
     onShow: () ->
       $('#taskModal').modal()
