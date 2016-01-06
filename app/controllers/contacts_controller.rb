@@ -1,12 +1,12 @@
 class ContactsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_contact, only: [:show, :edit, :update, :destroy]
-  
+
   # GET /contacts
   # GET /contacts.json
   def index
     @contacts = Contact.all
-    
+
     respond_to do |format|
       format.json
     end
@@ -14,7 +14,7 @@ class ContactsController < ApplicationController
 
   def show
   end
-  
+
   # POST /contacts
   # POST /contacts.json
   def create
@@ -37,7 +37,7 @@ class ContactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contact_params
-      params.require(:contact).permit(:author_id, :first_name, 
+      params.require(:contact).permit(:author_id, :first_name,
         :last_name, :email, :twitter_screen_name)
     end
 end

@@ -6,16 +6,6 @@ ActiveAdmin.register Campaign do
   member_action :agree, :method => :put
 
   controller do
-    before_filter :my_filter, only: [:edit, :show]
-
-    private
-
-    def my_filter
-      Rails.logger.info "my post: '#{resource}'"
-    end
-  end
-
-  controller do
     before_filter :set_admin_to_cookie, only: [:index]
 
     def set_admin_to_cookie
@@ -69,7 +59,7 @@ ActiveAdmin.register Campaign do
     column "End time" do |my_resource|
       my_resource.deadline.to_s(:all_time)
     end
-    
+
     column :budget
     column :status
     column "Spent" do |my_resource|
