@@ -3,6 +3,8 @@ class Campaign < ActiveRecord::Base
   counter :redis_avail_click
   counter :redis_total_click
 
+  #Status : unexecute agreed rejected  executing executed
+
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'

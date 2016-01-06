@@ -14,11 +14,28 @@ class CampaignInvite < ActiveRecord::Base
   def screenshot_pass
     campaign = self.campaign
     kol = self.kol
-    if campaign.status == 'finished' && self.status != 'passed'
+    if campaign.status == 'executed' && self.img_status != 'passed'
       self.update_column(:img_status, 'passed')
       kol.income(self.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
-      Rails.logger.transaction.info "-------- screenshot_check_pass: kol  ---cid:#{campaign.id}--kol_id:#{kol.id}----credits:#{self.avail_click * campaign.per_click_budget}-- after avail_amount:#{kol.avail_amount}"
+      Rails.logger.info "-------- screenshot_check_pass:  ---cid:#{campaign.id}--kol_id:#{kol.id}----credits:#{self.avail_click * campaign.per_click_budget}-- after avail_amount:#{kol.avail_amount}"
     end
+  end
+
+  def screenshot_reject(reject_reason)
+    campaign = self.campaign
+    if campaign.status == 'executed' && self.img_status != 'passed'
+      self.img_status = 'rejected'
+      self.reject_reason = reject_reason
+      self.save
+      Rails.logger.info "-------- screenshot_check_rejected: ---cid:#{campaign.id}--"
+    end
+  end
+
+  def reupload_screenshot(img)
+    self.img_status = 'pending'
+    self.screenshot = img
+    self.save
+    Rails.logger.info "-------- reupload_screenshot: ---cid:#{campaign.id}--"
   end
 
   def get_total_click
