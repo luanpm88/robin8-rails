@@ -33,62 +33,48 @@
 $(function() {
   campaign_invite_id = $(".id").text();
   $(".agree").click(function() {
-    r = confirm("确定通过此审核吗");
-    if (r == true) {
-      $.ajax({
-        method: "POST",
-        url: "/campaign_invite/change_img_status",
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-          },
-         data: {"status": "agree", "id": campaign_invite_id}
-      })
-        .done(function(data) {
-          if(data['result'] == 'agree'){
-            $(".agree-flash").css("display", "block");
-            $(".agree").css("display", "none");
-            $(".reject").css("display", "none");
-          }
-          else {
-            $(".error-flash").css("display", "block");
-          }
-        });
-    }
-    else {
-      return
-    }
-
-  });
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_img_status",
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+       data: {"status": "agree", "id": campaign_invite_id}
+    })
+      .done(function(data) {
+        if(data['result'] == 'agree'){
+          $(".agree-flash").css("display", "block");
+          $(".agree").css("display", "none");
+          $(".reject").css("display", "none");
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+    });
 
   $(".reject").click(function() {
-    r = confirm("确定拒绝此审核吗");
-    if (r == true) {
-      $.ajax({
-        method: "POST",
-        url: "/campaign_invite/change_img_status",
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-          },
-         data: {"status": "reject", "id": campaign_invite_id}
-      })
-        .done(function(data) {
-          debugger
-          if(data['result'] == 'reject' && !data['sms_res']['code']) {
-            $(".reject-flash").css("display", "block");
-            $(".agree").css("display", "none");
-            $(".reject").css("display", "none");
-          }
-          else if (data['sms_res']['code']) {
-            $(".sms-error-flash").css("display", "block");
-          }
-          else {
-            $(".error-flash").css("display", "block");
-          }
-        });
-    }
-    else {
-      return
-    }
-  });
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_img_status",
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+       data: {"status": "reject", "id": campaign_invite_id}
+    })
+      .done(function(data) {
+        if(data['result'] == 'reject' && !data['sms_res']['code']) {
+          $(".reject-flash").css("display", "block");
+          $(".agree").css("display", "none");
+          $(".reject").css("display", "none");
+        }
+        else if (data['sms_res']['code']) {
+          $(".sms-error-flash").css("display", "block");
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+    });
 });
 </script>

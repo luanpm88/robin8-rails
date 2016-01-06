@@ -8,7 +8,6 @@ module YunPian
     end
 
     def send_reject_sms
-      binding.pry
       return if @phone_number.blank?
       ChinaSMS.use :yunpian, password: @api_key
       if @status == "reject"
