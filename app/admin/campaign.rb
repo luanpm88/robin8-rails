@@ -36,7 +36,7 @@ ActiveAdmin.register Campaign do
     end
   end
 
-  permit_params :name, :budget, :start_time, :deadline, :per_click_budget
+  permit_params :name, :start_time, :deadline, :per_click_budget, :description
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -69,7 +69,7 @@ ActiveAdmin.register Campaign do
     column "End time" do |my_resource|
       my_resource.deadline.to_s(:all_time)
     end
-    
+
     column :budget
     column :status
     column "Spent" do |my_resource|
@@ -91,7 +91,7 @@ ActiveAdmin.register Campaign do
   form do |f|
     f.inputs "Post" do
       f.input :name
-      f.input :budget
+      f.input :description
       f.input :per_click_budget
       f.input :start_time
       f.input :deadline
