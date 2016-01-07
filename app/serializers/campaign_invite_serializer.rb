@@ -60,6 +60,7 @@ class CampaignInviteSerializer < ActiveModel::Serializer
   end
 
   def img_url
-    ActionController::Base.helpers.asset_path('campaign_default_img.png') unless object.campaign.img_url.present?
+    object.campaign.img_url.present? ? object.campaign.img_url : ActionController::Base.helpers.asset_path('campaign_default_img.png')
+
   end
 end
