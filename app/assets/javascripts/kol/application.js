@@ -59,7 +59,7 @@
 //= require_tree ./../backbone/modules/navigation
 //= require_tree ./../backbone/modules/dashboard-kol
 //= require_tree ./../backbone/modules/cn_recommendations
-//= require ./../ga
+//= require ../tongji
 
 var ready;
 ready = function() {

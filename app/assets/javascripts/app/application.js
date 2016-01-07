@@ -45,6 +45,7 @@
 //= require datatables
 //= require datatables-tabletools
 //= require spinjs
+//= require datejs
 //= require spinjs/jquery.spin.js
 //= require underscore.inflection
 //= require_tree ./../backbone/config
@@ -60,6 +61,8 @@
 //= require_tree ./../backbone/modules/smart-campaign
 //= require_tree ./../backbone/modules/navigation
 //= require_tree ./../backbone/modules/profile
+//= require ../tongji
+
 
 
 var ready;

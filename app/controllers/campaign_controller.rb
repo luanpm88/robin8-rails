@@ -167,8 +167,8 @@ class CampaignController < ApplicationController
     campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :message, :img_url))
     campaign.user = current_user
     campaign.status = "unexecute"
-    campaign.deadline = params[:campaign][:deadline].to_datetime - 8.hours
-    campaign.start_time = params[:campaign][:start_time].to_datetime - 8.hours
+    campaign.deadline = params[:campaign][:deadline].to_time
+    campaign.start_time = params[:campaign][:start_time].to_time
     campaign.save!
 
     render :json => {:status => :ok }
@@ -185,8 +185,8 @@ class CampaignController < ApplicationController
       render :json => {:status => 'no enough amount!'} and return
     end
 
-    campaign.deadline = params[:campaign][:deadline].to_datetime - 8.hours
-    campaign.start_time = params[:campaign][:start_time].to_datetime - 8.hours
+    campaign.deadline = params[:campaign][:deadline].to_time
+    campaign.start_time = params[:campaign][:start_time].to_time
     ActiveRecord::Base.transaction do
       campaign.update_attributes campaign_params
       campaign.reset_campaign origin_budget, params[:budget], params[:per_click_budget]

@@ -233,4 +233,41 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  def self.generate_campaign_reports kol_id
+    invites = CampaignInvite.where(kol_id: kol_id, status: "finished")
+    cookies = {}
+    cookies_count = {}
+    ips_count = {}
+
+    CampaignShow.where(kol_id: kol_id).each do |show|
+      cookies[show.campaign_id] ||= []
+      cookies[show.campaign_id] << cookies
+
+      cookies_count[show.visitor_cookie] ||= 0
+      cookies_count[show.visitor_cookie] += 1
+      ips_count[show.visitor_ip] ||= 0
+      ips_count[show.visitor_ip] +=1 
+    end;nil
+    cookies.count
+
+    puts "该用户 已经完成 #{invites.count} 个campaigns"
+    puts "总共有#{CampaignShow.where(kol_id: kol_id).count}个cookies"
+    puts "-"*60
+    puts "贡献点击数的 前10名 visitor_cookie"
+    new_cookies_count = cookies_count.to_a.sort_by do |i|
+     -i[1]
+    end;nil
+    new_cookies_count[0..10].each do |cookie_count|
+      puts cookie_count
+    end;nil
+    puts "-"*60
+    puts "贡献点击数的 前10名 ips"
+    new_ips_count = ips_count.to_a.sort_by do |i|
+     -i[1]
+    end;nil
+    new_ips_count[0..10].each do |ip_count|
+      puts ip_count
+    end;nil
+    puts "-"*60
+  end
 end

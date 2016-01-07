@@ -15,4 +15,4 @@ Robin.module 'SmartCampaign', (SmartCampaign, App, Backbone, Marionette, $, _) -
 
     _trackPageview: ->
       url = Backbone.history.getFragment()
-      ga.push(['_trackPageview', "/#{url}"])
+      _hmt.push(['_trackPageview', url]);
