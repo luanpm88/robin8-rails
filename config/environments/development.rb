@@ -44,7 +44,7 @@ Rails.application.configure do
 
   # Configure to use with mailcatcher - for more information (http://mailcatcher.me/)
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+  # config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
 
   config.middleware.use ExceptionNotification::Rack,
     :email => {
@@ -56,6 +56,7 @@ Rails.application.configure do
   # uncomment to avoid caching during dev
   # config.cache_store = :null_store
 
+  ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
     :user_name => Rails.application.secrets[:smtp][:user_name],
     :password => Rails.application.secrets[:smtp][:password],

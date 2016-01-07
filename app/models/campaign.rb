@@ -26,7 +26,7 @@ class Campaign < ActiveRecord::Base
 
   after_save :create_job
 
-  SettleWaitTime = Rails.env.development? ? 2.minutes : 7.days
+  SettleWaitTime = Rails.env.production?  ? 7.days  : 5.minutes
 
   def email
     user.try :email
@@ -184,7 +184,7 @@ class Campaign < ActiveRecord::Base
       self.campaign.update_column(:status, 'settled')
       self.user.unfrozen(budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-      pay_total_click = self.passed.sum(:total_click)
+      pay_total_click = self.passed.sum(:avail_click)
       self.user.payout((pay_total_click * per_click_budget) , 'campaign', self )
     end
   end
@@ -246,7 +246,7 @@ class Campaign < ActiveRecord::Base
       cookies_count[show.visitor_cookie] ||= 0
       cookies_count[show.visitor_cookie] += 1
       ips_count[show.visitor_ip] ||= 0
-      ips_count[show.visitor_ip] +=1 
+      ips_count[show.visitor_ip] +=1
     end;nil
     cookies.count
 
