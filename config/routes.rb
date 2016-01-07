@@ -222,6 +222,7 @@ Rails.application.routes.draw do
   get  'campaign/:id/kol_list', to: 'campaign#kol_list'
   resources :campaign_invite, only: [:index, :create, :show, :update]
   post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
+  post 'campaign_invite/change_img_status', to: 'campaign_invite#change_img_status'
   resources :kols_lists, only: [:index, :create, :show, :update]
 
   get '/geocode/country', to: 'geocode#get_country'

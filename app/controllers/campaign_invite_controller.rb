@@ -72,4 +72,30 @@ class CampaignInviteController < ApplicationController
 
     render json: campaign_invites_by_limit_and_offset, each_serializer: CampaignInviteSerializer
   end
+
+  def change_img_status
+    campaign_invite_id = params[:id]
+    @campaign_invite = CampaignInvite.find campaign_invite_id
+    mobile_number = @campaign_invite.kol.mobile_number
+    if params[:status] == "agree"
+      @campaign_invite.screenshot_pass
+      if @campaign_invite.img_status == 'passed'
+        return render json: { result: 'agree' }
+      else
+        return render json: { result: 'error' }
+      end
+    end
+    if params[:status] == "reject"
+      @campaign_invite.img_status = "rejected"
+      @campaign_invite.save
+      if @campaign_invite.img_status == 'rejected'
+        sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
+        res = sms_client.send_reject_sms
+        return render json: { result: 'reject', sms_res: res }
+      else
+        return render json: { result: 'error' }
+      end
+    end
+    return render json: { result: 'error' }
+  end
 end
