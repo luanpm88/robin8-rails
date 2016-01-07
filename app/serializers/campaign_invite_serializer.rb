@@ -1,5 +1,6 @@
 class CampaignInviteSerializer < ActiveModel::Serializer
   attributes :id,
+    :name,
     :status,
     :start_time,
     :deadline,
@@ -14,6 +15,10 @@ class CampaignInviteSerializer < ActiveModel::Serializer
     :screenshot,
     :img_status,
     :reject_reason
+
+  def name
+    object.campaign.name
+  end
 
   def start_time
     object.campaign.start_time

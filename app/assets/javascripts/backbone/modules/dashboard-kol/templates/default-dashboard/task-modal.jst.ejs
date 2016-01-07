@@ -78,7 +78,9 @@
 
           <form action="">
             <div id='screenshot-container'>
-              <img src="<%= item.screenshot %>" id='show-screenshot' alt="">
+              <% if(item.screenshot) { %>
+                <img src="<%= item.screenshot + '-400' %>" id='show-screenshot' alt="">
+              <% } %>
               <% if(item.img_status != 'passed'){ %>
                 <input type='text' id='screenshot' name='screenshot' value='' hidden>
                 <input type='button' id='upload-screenshot' class='btn btn-primary' value='上传截图'>
