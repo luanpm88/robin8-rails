@@ -86,7 +86,9 @@ class CampaignInviteController < ApplicationController
       end
     end
     if params[:status] == "reject"
+      reject_reason = params[:reject_reason]
       @campaign_invite.img_status = "rejected"
+      @campaign_invite.reject_reason = reject_reason
       @campaign_invite.save
       if @campaign_invite.img_status == 'rejected'
         sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])

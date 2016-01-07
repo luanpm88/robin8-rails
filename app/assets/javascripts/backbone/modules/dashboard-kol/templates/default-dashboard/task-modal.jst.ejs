@@ -58,7 +58,7 @@
           <%= item.message %>
         </p>
         <hr>
-        <% if((item.status=='finished' || item.status=='approved') && item.img_status!='passed') { %>
+        <% if(item.status=='finished' || item.status=='approved') { %>
         <h5>提现审核</h5>
           <p>您需要上传截图，待我们审核通过后，您方可提现</p>
 

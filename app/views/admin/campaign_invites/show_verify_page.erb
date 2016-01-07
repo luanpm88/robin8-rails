@@ -1,7 +1,10 @@
-<div class="agree-flash" style="display:none; font-size: 35px; color: green">操作成功，审核通过</div>
-<div class="reject-flash" style="display:none; font-size: 35px; color: green">操作成功，拒绝通过此审核</div>
-<div class="sms-error-flash" style="display:none; font-size: 35px; color: red">短信发送失败，请重试</div>
-<div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
+<div>
+  <div class="agree-flash" style="display:none; font-size: 35px; color: green">操作成功，审核通过</div>
+  <div class="reject-flash" style="display:none; font-size: 35px; color: green">操作成功，拒绝通过此审核</div>
+  <div class="sms-error-flash" style="display:none; font-size: 35px; color: red">短信发送失败，请重试</div>
+  <div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
+  <div class="require-reject-reason" style="display:none; font-size: 35px; color: red">请输入拒绝原因</div>
+</div>
 
 <div>
   <div>
@@ -10,6 +13,10 @@
   <div>
     <div>截图</div>
     <img src="<%= @campaign_invite.screenshot %>">
+  </div>
+  <div>
+    <div>拒绝原因</div>
+    <textarea rows="10" cols="100" placeholder="请输入拒绝原因" class="reject-reason"></textarea>
   </div>
   <button class="agree">通过</button>
   <button class="reject">拒绝</button>
@@ -20,6 +27,10 @@
 <style>
   div {
     margin-top: 10px;
+  }
+
+  button {
+    margin-top: 20px;
   }
 
   button a {
@@ -56,25 +67,34 @@ $(function() {
     });
 
   $(".reject").click(function() {
+    reject_reason = $(".reject-reason").val();
+    if (reject_reason.length == 0) {
+      $(".require-reject-reason").css("display", "block");
+      $(".require-reject-reason").siblings().hide();
+      return
+    }
     $.ajax({
       method: "POST",
       url: "/campaign_invite/change_img_status",
         beforeSend: function(xhr) {
           xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
         },
-       data: {"status": "reject", "id": campaign_invite_id}
+       data: {"status": "reject", "id": campaign_invite_id, "reject_reason": reject_reason}
     })
       .done(function(data) {
         if(data['result'] == 'reject' && !data['sms_res']['code']) {
           $(".reject-flash").css("display", "block");
+          $(".reject-flash").siblings().hide();
           $(".agree").css("display", "none");
           $(".reject").css("display", "none");
         }
         else if (data['sms_res']['code']) {
           $(".sms-error-flash").css("display", "block");
+          $(".sms-error-flash").siblings().hide();
         }
         else {
           $(".error-flash").css("display", "block");
+          $(".error-flash").siblings().hide();
         }
       });
     });
