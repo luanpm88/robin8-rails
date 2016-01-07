@@ -3,6 +3,8 @@ class Campaign < ActiveRecord::Base
   counter :redis_avail_click
   counter :redis_total_click
 
+  #Status : unexecute agreed rejected  executing executed
+
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
@@ -23,6 +25,8 @@ class Campaign < ActiveRecord::Base
   belongs_to :release
 
   after_save :create_job
+
+  SettleWaitTime = Rails.env.development? ? 2.minutes : 7.days
 
   def email
     user.try :email
@@ -108,6 +112,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_sidekiq.info "----send_invites:  _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
+    CampaignWorker.perform_at(self.deadline + SettleWaitTime ,self.id, 'settle_accounts')
   end
 
   def send_invite_to_kol kol, status
@@ -146,7 +151,6 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        settle_accounts
       end
     end
   end
@@ -175,13 +179,13 @@ class Campaign < ActiveRecord::Base
 
   # 结算
   def settle_accounts
-    self.user.unfrozen(budget, 'campaign', self)
-    Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-    self.user.payout((avail_click * per_click_budget) , 'campaign', self )
-    campaign = self
-    self.finished_invites.each do |invite|
-      invite.kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
-      Rails.logger.transaction.info "-------- settle_accounts: kol  after income ---cid:#{campaign.id}--kol_id:#{invite.kol.id}---#{invite.kol.inspect}"
+    return if self.campaign.status != 'finished'
+    ActiveRecord::Base.transaction do
+      self.campaign.update_column(:status, 'settled')
+      self.user.unfrozen(budget, 'campaign', self)
+      Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
+      pay_total_click = self.passed.sum(:total_click)
+      self.user.payout((pay_total_click * per_click_budget) , 'campaign', self )
     end
   end
 
@@ -229,4 +233,41 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  def self.generate_campaign_reports kol_id
+    invites = CampaignInvite.where(kol_id: kol_id, status: "finished")
+    cookies = {}
+    cookies_count = {}
+    ips_count = {}
+
+    CampaignShow.where(kol_id: kol_id).each do |show|
+      cookies[show.campaign_id] ||= []
+      cookies[show.campaign_id] << cookies
+
+      cookies_count[show.visitor_cookie] ||= 0
+      cookies_count[show.visitor_cookie] += 1
+      ips_count[show.visitor_ip] ||= 0
+      ips_count[show.visitor_ip] +=1 
+    end;nil
+    cookies.count
+
+    puts "该用户 已经完成 #{invites.count} 个campaigns"
+    puts "总共有#{CampaignShow.where(kol_id: kol_id).count}个cookies"
+    puts "-"*60
+    puts "贡献点击数的 前10名 visitor_cookie"
+    new_cookies_count = cookies_count.to_a.sort_by do |i|
+     -i[1]
+    end;nil
+    new_cookies_count[0..10].each do |cookie_count|
+      puts cookie_count
+    end;nil
+    puts "-"*60
+    puts "贡献点击数的 前10名 ips"
+    new_ips_count = ips_count.to_a.sort_by do |i|
+     -i[1]
+    end;nil
+    new_ips_count[0..10].each do |ip_count|
+      puts ip_count
+    end;nil
+    puts "-"*60
+  end
 end

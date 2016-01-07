@@ -83,6 +83,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-select2-bootstrap-css'
   gem 'rails-assets-backbone-relational'
   gem 'rails-assets-spinjs'
+  gem 'rails-assets-datejs'
   gem 'rails-assets-underscore.inflection'
   gem 'rails-assets-bootstrap-validator'
 end

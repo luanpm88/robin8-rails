@@ -6,16 +6,6 @@ ActiveAdmin.register Campaign do
   member_action :agree, :method => :put
 
   controller do
-    before_filter :my_filter, only: [:edit, :show]
-
-    private
-
-    def my_filter
-      Rails.logger.info "my post: '#{resource}'"
-    end
-  end
-
-  controller do
     before_filter :set_admin_to_cookie, only: [:index]
 
     def set_admin_to_cookie
@@ -36,7 +26,7 @@ ActiveAdmin.register Campaign do
     end
   end
 
-  permit_params :name, :budget, :start_time, :deadline
+  permit_params :name, :budget, :start_time, :deadline, :per_click_budget
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -69,7 +59,7 @@ ActiveAdmin.register Campaign do
     column "End time" do |my_resource|
       my_resource.deadline.to_s(:all_time)
     end
-    
+
     column :budget
     column :status
     column "Spent" do |my_resource|
@@ -92,6 +82,7 @@ ActiveAdmin.register Campaign do
     f.inputs "Post" do
       f.input :name
       f.input :budget
+      f.input :per_click_budget
       f.input :start_time
       f.input :deadline
     end

@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
+  before_action :authenticate_kol!, only: [:withdraw_apply]
   before_action :set_video,:only => [:home,:landing_page_brand]
 
   def set_locale
@@ -77,8 +78,30 @@ class PagesController < ApplicationController
     else
       ''
     end
-    
+
     render :layout => "website"
+  end
+
+  def withdraw_apply
+    if request.get?
+      @withdraw = Withdraw.new
+      render :layout => "website"
+    else
+      params.permit!
+      @withdraw = Withdraw.new(params[:withdraw])
+      @withdraw.kol_id = current_kol.id
+      if @withdraw.save
+        flash[:notice] = "提交成功"
+        if Rails.env.development?
+          ContactMailWorker.new.perform @withdraw.id, true
+        else
+          ContactMailWorker.perform_async @withdraw.id, true
+        end
+        redirect_to :action => 'withdraw_apply'
+      else
+        return render :action => 'withdraw_apply', :layout => "website"
+      end
+    end
   end
 
   def team

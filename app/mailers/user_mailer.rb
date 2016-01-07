@@ -11,6 +11,12 @@ class UserMailer < ActionMailer::Base
     mail(:to => 'support_cn@robin8.com', :subject => "Contact Us Request",:from => "Robin8 <no-reply@robin8.com>")
   end
 
+  def withdraw_apply(withdraw_id)
+    @withdraw = Withdraw.find withdraw_id  rescue nil
+    @kol = @withdraw.kol  if @withdraw
+    mail(:to => 'support_cn@robin8.com', :subject => "Withdraw Apply", :from => "Robin8 <no-reply@robin8.com>")
+  end
+
   def add_ons_payment_confirmation(add_ons,user,add_on_hash,tax_rate,prices)
     @add_ons = add_ons
     @user = user

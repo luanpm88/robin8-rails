@@ -36,6 +36,7 @@
 //= require ./../lib/polyglot
 //= require ./../lib/bootstrap-checkbox
 //= require ./../lib/qiniu
+//= require ./../lib/plupload.full.min
 //= require ./../lib/formValidation/formValidation.min
 //= require ./../lib/formValidation/js/bootstrap.min
 //= require timeago
@@ -59,7 +60,7 @@
 //= require_tree ./../backbone/modules/navigation
 //= require_tree ./../backbone/modules/dashboard-kol
 //= require_tree ./../backbone/modules/cn_recommendations
-//= require ./../ga
+//= require ../tongji
 
 var ready;
 ready = function() {

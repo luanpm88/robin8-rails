@@ -160,6 +160,12 @@ zh:
       kol:
         email: "邮箱"
         mobile_number: "电话号码"
+      withdraw: 
+        real_name: 真实姓名
+        credits:   提现金额 
+        alipay_no: 支付宝账号
+        bank_name: 银行名称
+        bank_no:   银行账号
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
