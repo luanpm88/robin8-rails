@@ -1,5 +1,9 @@
 ActiveAdmin.register CampaignInvite do
 
+  before_filter :only => [:index] do
+    params['q'] = {:status_eq => 'finished'}
+  end
+
   actions :all, :except => [:destroy]
 
   permit_params :status, :total_click, :avail_click, :uuid, :share_url
@@ -48,14 +52,12 @@ ActiveAdmin.register CampaignInvite do
     column :approved_at
     column :status
     actions do |my_resource|
-      if my_resource.status.present? &&  my_resource.img_status == "passed"
+      if my_resource.img_status == "passed"
         (link_to '审核通过', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
-      elsif my_resource.status.present? && my_resource.img_status == "rejected"
-        (link_to '审核未通过', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
       else
-          if my_resource.status == "approved" && my_resource.img_status == "pending" && my_resource.screenshot.present?
-            (link_to '截图审核', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
-          end
+        if my_resource.status == "finished" && my_resource.img_status == "pending" && my_resource.screenshot.present?
+          (link_to '截图审核', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
+        end
       end
     end
   end
