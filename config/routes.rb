@@ -14,8 +14,8 @@ Rails.application.routes.draw do
   get 'identities/discover/:labels' => 'identities#discover'
   get 'identities/labels/:user_id' => 'identities#labels'
 
-  get 'campaign_invite/:type' => 'campaign_invite#interface'
-  get 'mark_as_running/:campaign_id' => 'campaign_invite#mark_as_running'
+  get 'campaign_invite/interface/:type' => 'campaign_invite#interface'
+  get 'mark_as_running/:id' => 'campaign_invite#mark_as_running'
 
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]

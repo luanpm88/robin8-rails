@@ -26,7 +26,7 @@ class Campaign < ActiveRecord::Base
 
   after_save :create_job
 
-  SettleWaitTime = Rails.env.development? ? 2.minutes : 7.days
+  SettleWaitTime = Rails.env.production?  ? 7.days  : 5.minutes
 
   def email
     user.try :email
@@ -112,7 +112,6 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_sidekiq.info "----send_invites:  _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-    CampaignWorker.perform_at(self.deadline + SettleWaitTime ,self.id, 'settle_accounts')
   end
 
   def send_invite_to_kol kol, status
@@ -134,7 +133,7 @@ class Campaign < ActiveRecord::Base
       self.update_column(:status, 'executing')
       self.pending_invites.update_all(:status => 'running')
     end
-    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------"
+    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
 
   def add_click(valid)
@@ -151,6 +150,7 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
+        CampaignWorker.perform_at(Time.now + SettleWaitTime ,self.id, 'settle_accounts')
       end
     end
   end
@@ -179,13 +179,15 @@ class Campaign < ActiveRecord::Base
 
   # 结算
   def settle_accounts
-    return if self.campaign.status != 'finished'
+    Rails.logger.transaction.info "-------- settle_accounts: cid:#{self.id}------status: #{self.status}"
+    return if self.status != 'executed'
     ActiveRecord::Base.transaction do
-      self.campaign.update_column(:status, 'settled')
-      self.user.unfrozen(budget, 'campaign', self)
+      self.update_column(:status, 'settled')
+      self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-      pay_total_click = self.passed.sum(:total_click)
-      self.user.payout((pay_total_click * per_click_budget) , 'campaign', self )
+      pay_total_click = self.passed.sum(:avail_click)
+      self.user.payout((pay_total_click * self.per_click_budget) , 'campaign', self )
+      Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_click_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
     end
   end
 
@@ -246,7 +248,7 @@ class Campaign < ActiveRecord::Base
       cookies_count[show.visitor_cookie] ||= 0
       cookies_count[show.visitor_cookie] += 1
       ips_count[show.visitor_ip] ||= 0
-      ips_count[show.visitor_ip] +=1 
+      ips_count[show.visitor_ip] +=1
     end;nil
     cookies.count
 

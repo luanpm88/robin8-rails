@@ -69,8 +69,10 @@
                 <%= polyglot.t('smart_campaign.agreed') %>
               <% } else if (status == 'executing') { %>
                 <%= polyglot.t('smart_campaign.executing') %>
-              <% } else { %>
+              <% } else if (status == 'executed') { %>
                 <%= polyglot.t('smart_campaign.executed') %>
+              <% } else { %>
+                <%= polyglot.t('smart_campaign.settled') %>
               <% } %>
             </div>
           </div>

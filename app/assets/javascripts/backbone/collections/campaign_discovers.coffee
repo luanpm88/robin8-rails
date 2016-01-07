@@ -1,5 +1,5 @@
 Robin.Collections.CampaignDiscovers = Backbone.Collection.extend
-  model: Robin.Models.Discover
+  model: Robin.Models.CampaignInvitation
 
   initialize: (models, opts)->
     @type = opts.type || 'upcoming'
@@ -7,4 +7,4 @@ Robin.Collections.CampaignDiscovers = Backbone.Collection.extend
     @offset = opts.offset || 0
 
   url: ()->
-    return 'campaign_invite/' + @type + '?limit=' + @limit + '&offset=' + @offset
+    return 'campaign_invite/interface/' + @type + '?limit=' + @limit + '&offset=' + @offset

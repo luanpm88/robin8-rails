@@ -8,19 +8,18 @@ Hello Support
   <br/>
 </p>
 
-Kol ID: <%= @kol.id %>
-Name: <%= @kol.first_name %>%= @kol.last_name%><br/>
+Kol ID: <%= @kol.id %> <br/>
+Name: <%= @kol.first_name %><%= @kol.last_name %><br/>
 Phone: <%= @kol.mobile_number %><br/>
 avail amount: <%= @kol.avail_amount %><br/>
 
-#====== withdraw info =============
 real name: <%= @withdraw.real_name %><br/>
-credits: <%= @withdraw.cretids %><br/>
+credits: <%= @withdraw.credits %><br/>
 <% if @withdraw.withdraw_type == 'alipay' %>
-  alipay no:  <%= @withdraw.alipay_no %>
+  alipay no:  <%= @withdraw.alipay_no %><br/>
 <% else %>
-  bank name:  <%= @withdraw.bank_name %>
-  bank no:  <%= @withdraw.bank_no %>
+  bank name:  <%= @withdraw.bank_name %><br/>
+  bank no:  <%= @withdraw.bank_no %><br/>
 <% end %>
 remark: <%= @withdraw.remark %><br/>
 <p>

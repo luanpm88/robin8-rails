@@ -36,7 +36,7 @@
             <div>
               <input id="name" required class="form-control campaign_name_input" placeholder="<%=polyglot.t('smart_campaign.start_step.enter_title')%>" name="name" type="text" value="">
             </div>
-            <p class="help-block">活动名称即转发到朋友圈时文章的标题</p>
+            <p class="help-block">请输入一个吸引人的活动名称或文章标题, 让KOL一目了然。/p>
           </div>
         </div>
 
@@ -48,7 +48,7 @@
             <div>
               <textarea id="name" required class="form-control campaign_desc_input" placeholder="<%=polyglot.t('smart_campaign.start_step.enter_description')%>" name="description" type="text" value="" rows="10" data-widearea="enable" data-widearea-id="1"/>
             </div>
-            <p class="help-block">活动介绍内可以填写更多活动信息，以便KOL了解活动和品牌，撰写更有用的转发语</p>
+            <p class="help-block">活动介绍可以是建议KOL使用的转发语</p>
           </div>
         </div>
 
@@ -81,7 +81,7 @@
 
 
                 <input type="text" name="img_url" id="img_url" value='' hidden>
-                <p class="help-block">转发到朋友圈时显示的Logo</p>
+                <p class="help-block">KOL转发到朋友圈时显示的配图</p>
                 <input type="button" id="img-url-pick" class="btn btn-primary" value="选择图片">
               </div>
             </div>
@@ -139,7 +139,7 @@
           </div>
         </div>
        </div>
-      
+
       <div class="col-md-12">
         <div class="form-group messeage_to_kol">
           <label for="name" class="control-label start-form"><%=polyglot.t('smart_campaign.start_step.campaign_message')%></label>
@@ -148,7 +148,7 @@
             <textarea id="name" class="form-control" placeholder="<%=polyglot.t('smart_campaign.start_step.enter_message')%>" name="message" type="text" value="" rows="3" data-widearea="enable" data-widearea-id="1" name="message"/>
           </div>
         </div>
-      
+
       <div class="modal create-campaign-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
