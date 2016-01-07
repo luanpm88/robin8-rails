@@ -52,8 +52,10 @@ ActiveAdmin.register CampaignInvite do
         (link_to '审核通过', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
       elsif my_resource.status.present? && my_resource.img_status == "rejected"
         (link_to '审核未通过', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
-      else my_resource.status.present?
-        (link_to '截图审核', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
+      else
+          if my_resource.status == "approved" && my_resource.img_status == "pending" && my_resource.screenshot.present?
+            (link_to '截图审核', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
+          end
       end
     end
   end

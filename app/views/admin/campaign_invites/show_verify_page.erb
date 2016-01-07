@@ -7,8 +7,10 @@
   <div>
     campaign_invite_id: <span class="id"><%= @campaign_invite.id %></span>
   </div>
-  <div> 图片显示在这里 </div>
-
+  <div>
+    <div>截图</div>
+    <img src="<%= @campaign_invite.screenshot %>">
+  </div>
   <button class="agree">通过</button>
   <button class="reject">拒绝</button>
 
