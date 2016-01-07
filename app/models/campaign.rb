@@ -150,7 +150,7 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        CampaignWorker.perform_at(self.deadline + SettleWaitTime ,self.id, 'settle_accounts')
+        CampaignWorker.perform_at(Time.now + SettleWaitTime ,self.id, 'settle_accounts')
       end
     end
   end
@@ -179,13 +179,15 @@ class Campaign < ActiveRecord::Base
 
   # 结算
   def settle_accounts
-    return if self.status != 'finished'
+    Rails.logger.transaction.info "-------- settle_accounts: cid:#{self.id}------status: #{self.status}"
+    return if self.status != 'executed'
     ActiveRecord::Base.transaction do
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
       pay_total_click = self.passed.sum(:avail_click)
       self.user.payout((pay_total_click * self.per_click_budget) , 'campaign', self )
+      Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_click_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
     end
   end
 
