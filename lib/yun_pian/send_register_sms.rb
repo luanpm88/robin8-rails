@@ -1,5 +1,5 @@
-module Yunpian
-  class SmsClient
+module YunPian
+  class SendRegisterSms
 
     def initialize(phone_number,
                    api_key = Rails.application.secrets.yunpian[:api_key],
@@ -29,7 +29,7 @@ module Yunpian
       if res["code"] == 0
         Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
       else
-        Rails.logger.info "Failed to send sms to #{@phone_number}, the return code is #{res["code"]}, please look up https://www.yunpian.com/api/recode.html"
+        Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res["code"]}, please look up https://www.yunpian.com/api/recode.html"
       end
 
       return res
@@ -45,7 +45,7 @@ module Yunpian
     end
 
     def generate_security_code
-      @phone_number == "robin8.best" ? "1234" : (1..9).to_a.sample(4).join        
+      @phone_number == "robin8.best" ? "1234" : (1..9).to_a.sample(4).join
     end
   end
 end

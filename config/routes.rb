@@ -14,8 +14,8 @@ Rails.application.routes.draw do
   get 'identities/discover/:labels' => 'identities#discover'
   get 'identities/labels/:user_id' => 'identities#labels'
 
-  get 'campaign_invite/:type' => 'campaign_invite#interface'
-  get 'mark_as_running/:campaign_id' => 'campaign_invite#mark_as_running'
+  get 'campaign_invite/interface/:type' => 'campaign_invite#interface'
+  get 'mark_as_running/:id' => 'campaign_invite#mark_as_running'
 
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
@@ -222,6 +222,7 @@ Rails.application.routes.draw do
   get  'campaign/:id/kol_list', to: 'campaign#kol_list'
   resources :campaign_invite, only: [:index, :create, :show, :update]
   post 'campaign_invite/change_invite_status', to: 'campaign_invite#update'
+  post 'campaign_invite/change_img_status', to: 'campaign_invite#change_img_status'
   resources :kols_lists, only: [:index, :create, :show, :update]
 
   get '/geocode/country', to: 'geocode#get_country'
