@@ -58,7 +58,7 @@
           <%= item.message %>
         </p>
         <hr>
-        <% if((item.status=='finished' || item.status=='approved') && item.img_status!='passed') { %>
+        <% if(item.status=='finished' || item.status=='approved') { %>
         <h5>提现审核</h5>
           <p>您需要上传截图，待我们审核通过后，您方可提现</p>
 
@@ -78,7 +78,9 @@
 
           <form action="">
             <div id='screenshot-container'>
-              <img src="<%= item.screenshot %>" id='show-screenshot' alt="">
+              <% if(item.screenshot) { %>
+                <img src="<%= item.screenshot + '-400' %>" id='show-screenshot' alt="">
+              <% } %>
               <% if(item.img_status != 'passed'){ %>
                 <input type='text' id='screenshot' name='screenshot' value='' hidden>
                 <input type='button' id='upload-screenshot' class='btn btn-primary' value='上传截图'>

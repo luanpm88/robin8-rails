@@ -206,8 +206,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           'FileUploaded': (up, file, info) ->
             domain = up.getOption('domain')
             res = jQuery.parseJSON(info)
-            imageView2 = '-400'
-            sourceLink = 'http://' + domain + '/' + res.key + imageView2
+            sourceLink = 'http://' + domain + '/' + res.key
             $('#show-screenshot').attr 'src', sourceLink
             $('input[name=screenshot]').val sourceLink
             console.log 'after upload success: ', up.getOption('parentThis').model
