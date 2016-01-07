@@ -36,6 +36,7 @@
 //= require ./../lib/polyglot
 //= require ./../lib/bootstrap-checkbox
 //= require ./../lib/qiniu
+//= require ./../lib/plupload.full.min
 //= require ./../lib/formValidation/formValidation.min
 //= require ./../lib/formValidation/js/bootstrap.min
 //= require timeago

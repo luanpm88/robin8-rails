@@ -67,6 +67,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (collection, res, opts) =>
           if collection.models.length == 0
             @updateStatus 'noMore'
+          else if res.error == 'error type!'
+            @updateStatus 'noMore'
           else
             currentView.collection.add appendTasks.toJSON()
             @updateStatus 'hasMore'
@@ -163,6 +165,79 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             updatedViewHtml = updatedView.render().$el
             parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
 
+    onRender: () ->
+
     onShow: () ->
+      @initQiniuUploader()
       $('#taskModal').modal()
       clipboard = new Clipboard('.task-modal-btn');
+
+    initQiniuUploader: ->
+      parentThis = @
+      uploader = Qiniu.uploader(
+        parentThis: parentThis
+        runtimes: 'html5,flash,html4'
+        browse_button: 'upload-screenshot'
+        uptoken_url: '/users/qiniu_uptoken'
+        unique_names: true
+        domain: '7xozqe.com1.z0.glb.clouddn.com'
+        container: 'screenshot-container'
+        max_file_size: '100mb'
+        flash_swf_url: 'js/plupload/Moxie.swf'
+        max_retries: 3
+        # dragdrop: true
+        # drop_element: 'screenshot-container'
+        chunk_size: '4mb'
+        auto_start: true
+        filters: mime_types: [ {
+          title: 'Image files'
+          extensions: 'jpg,jpeg,gif,png'
+        } ]
+        init:
+          'FilesAdded': (up, files) ->
+            plupload.each files, (file) ->
+              # 文件添加进队列后,处理相关的事情
+              return
+            return
+          'BeforeUpload': (up, file) ->
+            # 每个文件上传前,处理相关的事情
+            return
+          'UploadProgress': (up, file) ->
+            # 每个文件上传时,处理相关的事情
+            return
+          'FileUploaded': (up, file, info) ->
+            domain = up.getOption('domain')
+            res = jQuery.parseJSON(info)
+            imageView2 = '-400'
+            sourceLink = 'http://' + domain + '/' + res.key + imageView2
+            $('#show-screenshot').attr 'src', sourceLink
+            $('input[name=screenshot]').val sourceLink
+            console.log 'after upload success: ', up.getOption('parentThis').model
+            model = up.getOption('parentThis').model
+
+            console.log 'start save: '
+            model.save screenshot: sourceLink,
+              success: (m, r, o) =>
+                $.growl
+                  message: '上传截图成功，我们将在一个工作日内审核'
+                  type: 'success'
+                updatedView = new Show.TaskModal
+                  model: model
+                updatedViewHtml = updatedView.render().$el
+                up.getOption('parentThis').$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+                console.log 'success'
+              error: =>
+                $.growl
+                  message: '上传失败，请刷新页面重试'
+                  type: 'danger'
+                console.log 'error'
+
+            #获取上传成功后的文件的Url
+            return
+          'Error': (up, err, errTip) ->
+            #上传出错时,处理相关的事情
+            return
+          'UploadComplete': ->
+            #队列文件处理完毕后,处理相关的事情
+            return
+      )
