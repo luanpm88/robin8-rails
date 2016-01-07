@@ -133,7 +133,7 @@ class Campaign < ActiveRecord::Base
       self.update_column(:status, 'executing')
       self.pending_invites.update_all(:status => 'running')
     end
-    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------"
+    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
 
   def add_click(valid)
@@ -179,13 +179,13 @@ class Campaign < ActiveRecord::Base
 
   # 结算
   def settle_accounts
-    return if self.campaign.status != 'finished'
+    return if self.status != 'finished'
     ActiveRecord::Base.transaction do
-      self.campaign.update_column(:status, 'settled')
-      self.user.unfrozen(budget, 'campaign', self)
+      self.update_column(:status, 'settled')
+      self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
       pay_total_click = self.passed.sum(:avail_click)
-      self.user.payout((pay_total_click * per_click_budget) , 'campaign', self )
+      self.user.payout((pay_total_click * self.per_click_budget) , 'campaign', self )
     end
   end
 
