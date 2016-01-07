@@ -31,7 +31,9 @@ ActiveAdmin.register CampaignInvite do
     id_column
 
     column "Campaign name" do |my_resource|
-      my_resource.campaign.name
+      if my_resource.campaign
+        my_resource.campaign.name
+      end
     end
 
     column "kol name" do |my_resource|
