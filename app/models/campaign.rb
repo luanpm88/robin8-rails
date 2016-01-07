@@ -112,7 +112,6 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_sidekiq.info "----send_invites:  _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-    CampaignWorker.perform_at(self.deadline + SettleWaitTime ,self.id, 'settle_accounts')
   end
 
   def send_invite_to_kol kol, status
@@ -151,6 +150,7 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
+        CampaignWorker.perform_at(self.deadline + SettleWaitTime ,self.id, 'settle_accounts')
       end
     end
   end
