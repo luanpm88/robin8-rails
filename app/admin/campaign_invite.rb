@@ -60,6 +60,8 @@ ActiveAdmin.register CampaignInvite do
         '已通过'
       elsif my_resource.img_status == "rejected"
         '已拒绝'
+      else
+        '未上传'
       end
     end
   end

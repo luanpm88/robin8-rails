@@ -11,6 +11,7 @@ class Campaign < ActiveRecord::Base
   has_many :approved_invites, -> {where("status='approved' or status='finished'")}, :class_name => 'CampaignInvite'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
+  has_many :passed_invites, -> {where(:status => 'finished', :img_status => 'passed')}, :class_name => 'CampaignInvite'
   has_many :campaign_shows
   has_many :kols, through: :campaign_invites
   has_many :approved_kols, through: :approved_invites
@@ -70,7 +71,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    (get_avail_click * self.per_click_budget).round(2)       rescue 0
+    (self.passed_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
   end
 
   def remain_budget
@@ -185,7 +186,7 @@ class Campaign < ActiveRecord::Base
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-      pay_total_click = self.passed.sum(:avail_click)
+      pay_total_click = self.passed_invites.sum(:avail_click)
       self.user.payout((pay_total_click * self.per_click_budget) , 'campaign', self )
       Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_click_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
     end
