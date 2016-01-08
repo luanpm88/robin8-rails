@@ -1,7 +1,8 @@
 ActiveAdmin.register Kol do
   actions :all, :except => [:destroy]
 
-  permit_params :email, :first_name, :last_name, :mobile_number, :gender, :receive_campaign_time, :click_threshold
+  permit_params :email, :first_name, :last_name, :mobile_number, :gender, :receive_campaign_time, :five_click_threshold,
+                :total_click_threshold
 
   member_action :show_recharge, :method => :get
   member_action :recharge, :method => :post
@@ -40,6 +41,8 @@ ActiveAdmin.register Kol do
     column "forbid campaign time"   do |resource|
       resource.forbid_campaign_time.to_s(:all_time)  rescue nil
     end
+    column :five_click_threshold
+    column :total_click_threshold
     actions do |kol|
       link_to '充值/提现', show_recharge_admin_kol_path(kol.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
     end
@@ -53,7 +56,8 @@ ActiveAdmin.register Kol do
       f.input :mobile_number
       f.input :gender
       f.input :forbid_campaign_time
-      f.input :click_threshold
+      f.input :five_click_threshold
+      f.input :total_click_threshold
     end
     f.actions
   end
@@ -64,4 +68,6 @@ ActiveAdmin.register Kol do
   filter :province
   filter :from_which_campaign, label: 'source', as: :select
   filter :forbid_campaign_time
+  filter :five_click_threshold
+  filter :total_click_threshold
 end

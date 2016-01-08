@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
 
   def set_cookies
     cookies[:_robin8_visitor] ||= SecureRandom.hex
+    # cookies[:_robin8_visitor] = SecureRandom.hex
   end
 
   def china_redirect
