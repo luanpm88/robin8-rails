@@ -28,6 +28,12 @@
     <!--<div style="text-align: center"><%#= @l.t("common.new_feature_coming") %></div>-->
   <!--</div>-->
 
+  <% if flash[:verify_count] %>
+    <div class='alert alert-info' role='alert' style='width: 60%; min-width: 320px;margin: 0 auto;'>
+      <div style='text-align: center'>您还有 <%= flash[:verify_count][:to_verify_count]  %> 个活动需要上传截图审核， <%= flash[:verify_count][:verify_failed_count] %> 个活动上传截图审核未通过。</div>
+    </div>
+  <% end %>
+
   <div id="main">
     <%= yield %>
   </div>
