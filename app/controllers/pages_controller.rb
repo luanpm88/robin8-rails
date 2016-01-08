@@ -22,6 +22,17 @@ class PagesController < ApplicationController
       if current_kol.confirmed_at == nil && current_kol.provider == 'signup'
         flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
       end
+
+      to_verify_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'pending').where(screenshot: nil).count
+      verify_failed_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'rejected').count
+
+      if to_verify_count>0 or verify_failed_count>0
+        flash[:verify_count] = {
+          :to_verify_count => to_verify_count,
+          :verify_failed_count => verify_failed_count
+        }
+      end
+
       render "home", :layout => 'kol'
     else
       render "landing_page", :layout => 'landing'
