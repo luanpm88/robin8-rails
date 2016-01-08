@@ -54,8 +54,8 @@ ActiveAdmin.register CampaignInvite do
     column :approved_at
     column :status
     actions do |my_resource|
-      if my_resource.img_status == "pending"
-        (link_to '审核', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get )
+      if my_resource.img_status == "pending" && my_resource.screenshot.present?
+        (link_to '审核', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get, :target => "_blank" )
       elsif my_resource.img_status == "passed"
         '已通过'
       elsif my_resource.img_status == "rejected"
