@@ -40,7 +40,7 @@ class CampaignController < ApplicationController
     if (user.blank? or c.user_id != user.id)  and cookies[:admin] != "true"
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget], :include => [:approved_invites]})
+    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget], :include => [:valid_invites]})
   end
 
   def article
@@ -242,7 +242,7 @@ class CampaignController < ApplicationController
     campaign = Campaign.find params[:id]
     return render :json => {:result => 'error', :msg => 'campaign not found'}     if !campaign
     return render :json => {:result => 'error', :msg => 'campaign not start'}     if campaign.status == 'unexecue'
-    render :json => campaign.approved_invites.to_json({:methods => [:get_avail_click, :get_total_click], :include => :kol })
+    render :json => campaign.valid_invites.to_json({:methods => [:get_avail_click, :get_total_click], :include => :kol })
   end
 
   def test_email
