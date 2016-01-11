@@ -59,7 +59,9 @@ class CampaignInviteController < ApplicationController
 
     if status.eql? 'verify'
       # to verify task
-      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').order('created_at desc')
+      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').order('created_at desc').reject do |x|
+        x.campaign.deadline.next_week < Time.now or x.get_avail_click == 0
+      end
     elsif status.eql? 'finished'
       campaigns_by_status = @kol.campaign_invites.where(status: 'finished', img_status: 'passed').order('created_at desc')
     else
@@ -68,7 +70,7 @@ class CampaignInviteController < ApplicationController
 
     limit = params[:limit] || 3
     offset = params[:offset] || 0
-    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset)
+    campaign_invites_by_limit_and_offset = campaigns_by_status.drop(offset.to_i).first(limit.to_i)
 
     render json: campaign_invites_by_limit_and_offset, each_serializer: CampaignInviteSerializer
   end
@@ -86,18 +88,38 @@ class CampaignInviteController < ApplicationController
       end
     end
     if params[:status] == "reject"
-      reject_reason = params[:reject_reason]
-      @campaign_invite.img_status = "rejected"
-      @campaign_invite.reject_reason = reject_reason
-      @campaign_invite.save
+      @campaign_invite.screenshot_reject
       if @campaign_invite.img_status == 'rejected'
         sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
         res = sms_client.send_reject_sms
-        return render json: { result: 'reject', sms_res: res }
+        return render json: { result: 'reject' }
       else
         return render json: { result: 'error' }
       end
     end
     return render json: { result: 'error' }
+  end
+
+  def change_multi_img_status
+    ids = params[:ids]
+    @campaign_invites = CampaignInvite.find ids
+
+    if params[:status] == "agree"
+      @campaign_invites.each { |c| c.screenshot_pass }
+      return render json: { result: 'agree' }
+    end
+
+    if params[:status] == "reject"
+      mobile_numbers = []
+      @campaign_invites.each do |c|
+        c.screenshot_reject
+        mobile_numbers << c.kol.mobile_number
+      end
+
+      CampaignInviteSmsWorker.perform_async(mobile_numbers, params[:status])
+      return render json: { result: 'reject' }
+    end
+    return render json: { result: 'error' }
+
   end
 end

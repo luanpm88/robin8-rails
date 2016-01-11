@@ -14,10 +14,7 @@
     <div>截图</div>
     <img src="<%= @campaign_invite.screenshot %>">
   </div>
-  <div>
-    <div>拒绝原因</div>
-    <textarea rows="10" cols="100" placeholder="请输入拒绝原因" class="reject-reason"></textarea>
-  </div>
+
   <button class="agree">通过</button>
   <button class="reject">拒绝</button>
 
@@ -69,30 +66,20 @@ $(function() {
     });
 
   $(".reject").click(function() {
-    reject_reason = $(".reject-reason").val();
-    if (reject_reason.length == 0) {
-      $(".require-reject-reason").css("display", "block");
-      $(".require-reject-reason").siblings().hide();
-      return
-    }
     $.ajax({
       method: "POST",
       url: "/campaign_invite/change_img_status",
         beforeSend: function(xhr) {
           xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
         },
-       data: {"status": "reject", "id": campaign_invite_id, "reject_reason": reject_reason}
+       data: {"status": "reject", "id": campaign_invite_id}
     })
       .done(function(data) {
-        if(data['result'] == 'reject' && !data['sms_res']['code']) {
+        if(data['result'] == 'reject') {
           $(".reject-flash").css("display", "block");
           $(".reject-flash").siblings().hide();
           $(".agree").css("display", "none");
           $(".reject").css("display", "none");
-        }
-        else if (data['sms_res']['code']) {
-          $(".sms-error-flash").css("display", "block");
-          $(".sms-error-flash").siblings().hide();
         }
         else {
           $(".error-flash").css("display", "block");

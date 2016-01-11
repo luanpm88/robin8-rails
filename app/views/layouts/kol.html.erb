@@ -34,6 +34,12 @@
     </div>
   <% end %>
 
+  <% if flash[:forbid_campaign_time] %>
+    <div class="alert alert-danger" role='alert' style='width: 60%; min-width: 320px; margin: 0 auto;'>
+      <div>您的帐号可能存在欺诈行为已被暂停，管理员正在调查。账户将于<%= flash[:forbid_campaign_time].year %>年<%= flash[:forbid_campaign_time].month %>月<%= flash[:forbid_campaign_time].day %>日恢复，需要申诉请 <a href='/contact' style='color: white;'>联系我们</a></div>
+    </div>
+  <% end %>
+
   <div id="main">
     <%= yield %>
   </div>

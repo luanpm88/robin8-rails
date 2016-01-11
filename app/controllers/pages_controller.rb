@@ -33,6 +33,10 @@ class PagesController < ApplicationController
         }
       end
 
+      if current_kol.forbid_campaign_time and current_kol.forbid_campaign_time > Time.now
+        flash[:forbid_campaign_time] = current_kol.forbid_campaign_time
+      end
+
       render "home", :layout => 'kol'
     else
       render "landing_page", :layout => 'landing'
