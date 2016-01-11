@@ -8,13 +8,13 @@ class Campaign < ActiveRecord::Base
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
-  has_many :approved_invites, -> {where("status='approved' or status='finished'")}, :class_name => 'CampaignInvite'
+  has_many :valid_invites, -> {where("status='approved' or status='finished'")}, :class_name => 'CampaignInvite'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
   has_many :passed_invites, -> {where(:status => 'finished', :img_status => 'passed')}, :class_name => 'CampaignInvite'
   has_many :campaign_shows
   has_many :kols, through: :campaign_invites
-  has_many :approved_kols, through: :approved_invites
+  has_many :approved_kols, through: :valid_invites
   has_many :weibo_invites
   has_many :weibo, through: :weibo_invites
   has_many :articles
@@ -81,7 +81,7 @@ class Campaign < ActiveRecord::Base
 
   def get_share_time
     return 0 if status == 'unexecute'
-    status == 'executed' ? self.finished_invites.size : self.approved_invites.size
+    status == 'executed' ? self.finished_invites.size : self.valid_invites.size
   end
 
   # 开始时候就发送邀请 但是状态为pending
