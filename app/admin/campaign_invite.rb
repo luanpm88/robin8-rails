@@ -1,7 +1,7 @@
 ActiveAdmin.register CampaignInvite do
 
   before_filter :only => [:index] do
-    params['q'] = {:status_eq => 'finished'}
+    params['q'] = {:status_eq => 'finished', :img_status_eq => 'pending'}
   end
 
   actions :all, :except => [:destroy]
@@ -53,8 +53,9 @@ ActiveAdmin.register CampaignInvite do
     column :avail_click
     column :approved_at
     column :status
+    column :img_status
     actions do |my_resource|
-      if my_resource.img_status == "pending" && my_resource.screenshot.present?
+      if my_resource.img_status == "pending" && my_resource.screenshot.present? && (my_resource.campaign.deadline > Time.now - 7.days)
         (link_to '审核', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get, :target => "_blank" )
       elsif my_resource.img_status == "passed"
         '已通过'

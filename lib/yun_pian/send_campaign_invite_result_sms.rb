@@ -10,11 +10,8 @@ module YunPian
     def send_reject_sms
       return if @phone_number.blank?
       ChinaSMS.use :yunpian, password: @api_key
-      if @status == "reject"
-        tpl_params = {result: "未通过", to_do: "重新上传截图"}
-      end
       begin
-        res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1200383
+        res = ChinaSMS.to @phone_number, '【罗宾科技】您上传的任务截图未通过审核，请登入账号查看详情'
       rescue Exception => ex
         Rails.logger.error ex
         return nil
@@ -26,7 +23,7 @@ module YunPian
       ChinaSMS.use :yunpian, password: @api_key
       tpl_params = {count: '3'}
       begin
-        res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1199525
+        res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1200383
       rescue Exception => ex
         Rails.logger.error ex
         return nil

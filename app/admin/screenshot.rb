@@ -3,8 +3,8 @@ ActiveAdmin.register_page "Screenshot" do
   content do
     campaigns =[]
     kols = []
-    sum = CampaignInvite.joins(:campaign, :kol).where("screenshot != ? AND img_status = ? AND campaigns.status = ?", "", "pending", "executed" ).count
-    @campaign_invites = CampaignInvite.joins(:campaign, :kol).where("screenshot != ? AND img_status = ? AND campaigns.status = ?", "", "pending", "executed" ).limit(12)
+    sum = CampaignInvite.joins(:campaign, :kol).where("screenshot != ? AND img_status = ? AND campaigns.status = ? AND campaigns.deadline > ?", "", "pending", "executed", Time.now-7.days).count
+    @campaign_invites = CampaignInvite.joins(:campaign, :kol).where("screenshot != ? AND img_status = ? AND campaigns.status = ? AND campaigns.deadline > ?", "", "pending", "executed", Time.now-7.days).limit(12)
     count = @campaign_invites.count
     count.times do |i|
       campaigns << @campaign_invites[i].campaign
