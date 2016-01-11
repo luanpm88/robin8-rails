@@ -13,6 +13,7 @@
       <div>kol: <%= kols[i].email ? kols[i].email : kols[i].social_name %> </div>
       <div>活动名称: <%= campaigns[i].name %> </div>
       <div>有效点击次数: <%= campaign_invites[i].avail_click %></div>
+      <div>活动结束时间: <%= campaigns[i].deadline %></div>
       <div><%= check_box_tag "campaign_invites_ids[]", campaign_invites[i].id %> </div>
       <hr>
     </div>
