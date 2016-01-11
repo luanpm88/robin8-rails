@@ -86,18 +86,32 @@ class CampaignInviteController < ApplicationController
       end
     end
     if params[:status] == "reject"
-      reject_reason = params[:reject_reason]
-      @campaign_invite.img_status = "rejected"
-      @campaign_invite.reject_reason = reject_reason
-      @campaign_invite.save
+      @campaign_invite.screenshot_reject
       if @campaign_invite.img_status == 'rejected'
-        sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
-        res = sms_client.send_reject_sms
-        return render json: { result: 'reject', sms_res: res }
+        # sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
+        # res = sms_client.send_reject_sms
+        return render json: { result: 'reject' }
       else
         return render json: { result: 'error' }
       end
     end
     return render json: { result: 'error' }
+  end
+
+  def change_multi_img_status
+    ids = params[:ids]
+    @campaign_invites = CampaignInvite.find ids
+
+    if params[:status] == "agree"
+      @campaign_invites.each { |c| c.screenshot_pass }
+      return render json: { result: 'agree' }
+    end
+
+    if params[:status] == "reject"
+      @campaign_invites.each { |c| c.screenshot_reject }
+      return render json: { result: 'reject' }
+    end
+    return render json: { result: 'error' }
+
   end
 end

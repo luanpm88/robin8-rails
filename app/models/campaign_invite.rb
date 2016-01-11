@@ -21,11 +21,10 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def screenshot_reject(reject_reason)
+  def screenshot_reject
     campaign = self.campaign
     if campaign.status == 'executed' && self.img_status != 'passed'
       self.img_status = 'rejected'
-      self.reject_reason = reject_reason
       self.save
       Rails.logger.info "-------- screenshot_check_rejected: ---cid:#{campaign.id}--"
     end
