@@ -90,8 +90,8 @@ class CampaignInviteController < ApplicationController
     if params[:status] == "reject"
       @campaign_invite.screenshot_reject
       if @campaign_invite.img_status == 'rejected'
-        # sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
-        # res = sms_client.send_reject_sms
+        sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
+        res = sms_client.send_reject_sms
         return render json: { result: 'reject' }
       else
         return render json: { result: 'error' }
@@ -110,7 +110,13 @@ class CampaignInviteController < ApplicationController
     end
 
     if params[:status] == "reject"
-      @campaign_invites.each { |c| c.screenshot_reject }
+      mobile_numbers = []
+      @campaign_invites.each do |c|
+        c.screenshot_reject
+        mobile_numbers << c.kol.mobile_number
+      end
+
+      CampaignInviteSmsWorker.perform_async(mobile_numbers, params[:status])
       return render json: { result: 'reject' }
     end
     return render json: { result: 'error' }

@@ -14,10 +14,7 @@
     <div>截图</div>
     <img src="<%= @campaign_invite.screenshot %>">
   </div>
-  <div>
-    <div>拒绝原因</div>
-    <textarea rows="10" cols="100" placeholder="请输入拒绝原因" class="reject-reason"></textarea>
-  </div>
+
   <button class="agree">通过</button>
   <button class="reject">拒绝</button>
 
@@ -75,7 +72,7 @@ $(function() {
         beforeSend: function(xhr) {
           xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
         },
-       data: al{"status": "reject", "id": campaign_invite_id}
+       data: {"status": "reject", "id": campaign_invite_id}
     })
       .done(function(data) {
         if(data['result'] == 'reject') {
