@@ -1,27 +1,11 @@
 ActiveAdmin.register Kol do
+  actions :all, :except => [:destroy]
 
-  permit_params :email, :first_name, :last_name, :mobile_number, :gender
+  permit_params :email, :first_name, :last_name, :mobile_number, :gender, :receive_campaign_time, :five_click_threshold,
+                :total_click_threshold
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # permit_params :list, :of, :attributes, :on, :model
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:permitted, :attributes]
-  #   permitted << :other if resource.something?
-  #   permitted
-  # end
-
-  member_action :show_recharge, :method => :get do
-
-  end
-
-  member_action :recharge, :method => :post do
-
-  end
+  member_action :show_recharge, :method => :get
+  member_action :recharge, :method => :post
 
   controller do
     def show_recharge
@@ -45,14 +29,20 @@ ActiveAdmin.register Kol do
     id_column
     column :email
     column :social_name
-    column :first_name
-    column :last_name
+    column "name" do |resource|
+      "#{resource.first_name}  #{resource.last_name}"
+    end
     column :mobile_number
     column :province
     column "avail amount" do |my_resource|
       my_resource.avail_amount
     end
     column "Source", :from_which_campaign
+    column "forbid campaign time"   do |resource|
+      resource.forbid_campaign_time.to_s(:all_time)  rescue nil
+    end
+    column :five_click_threshold
+    column :total_click_threshold
     actions do |kol|
       link_to '充值/提现', show_recharge_admin_kol_path(kol.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
     end
@@ -65,6 +55,9 @@ ActiveAdmin.register Kol do
       f.input :last_name
       f.input :mobile_number
       f.input :gender
+      f.input :forbid_campaign_time
+      f.input :five_click_threshold
+      f.input :total_click_threshold
     end
     f.actions
   end
@@ -74,5 +67,7 @@ ActiveAdmin.register Kol do
   filter :social_name
   filter :province
   filter :from_which_campaign, label: 'source', as: :select
-
+  filter :forbid_campaign_time
+  filter :five_click_threshold
+  filter :total_click_threshold
 end

@@ -6,6 +6,8 @@ class CampaignShow < ActiveRecord::Base
 
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
+    now = Time.now
+    # check campaign status
     if campaign.status == 'finished'
       return [false, 'campaign_had_finished']
     end
@@ -15,13 +17,39 @@ class CampaignShow < ActiveRecord::Base
     #   return [false, 'campaign_invite_not_approved']
     # end
 
-    store_key = uuid + visitor_cookies
+
     # check_cookie?
+    store_key = visitor_cookies
     if Rails.cache.read(store_key)
       return [false, 'cookies_visit_fre']
+    else
+      Rails.cache.write(store_key, now, :expired_at => now + CookieTimeout)
     end
 
-    Rails.cache.write(store_key, Time.now, :expired_at => Time.now + CookieTimeout)
+    kol = Kol.fetch_kol(campaign_invite.kol_id)
+    # check kol's five_click_threshold
+    if kol && kol.five_click_threshold
+      store_key =  "five_click_threshold_#{campaign_invite.id}_#{now.min / 5}"
+      current_five_click = Rails.cache.read(store_key)  || 0
+      if current_five_click > kol.five_click_threshold
+        return [false, "exceed_five_click_threshold"]
+      else
+        Rails.cache.write(store_key, current_five_click + 1, :expires_in => 5.minutes)
+      end
+    end
+
+    # check kol's total_click_threshold
+    if kol && kol.total_click_threshold
+      store_key =  "total_click_threshold_#{campaign_invite.id}"
+      current_total_click = Rails.cache.read(store_key)  || 0
+      if current_total_click > kol.total_click_threshold
+        return [false, "exceed_total_click_threshold"]
+      else
+        Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
+      end
+    end
+
+
     return [true,nil]
   end
 

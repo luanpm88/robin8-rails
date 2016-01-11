@@ -87,7 +87,7 @@ class CacheDiscoverWorker
     end
 
     custom_labels = identities.map do |x|
-      x.iptc_categories.map { |x| x.label }
+      x.iptc_categories.map { |x| x.name }
     end
 
     labels.concat custom_labels.flatten

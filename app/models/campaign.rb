@@ -106,6 +106,10 @@ class Campaign < ActiveRecord::Base
           CampaignInvite.create_invite(campaign_id, kol.id)
         end
       end
+      # 删除黑名单campaign
+      block_kol_ids = Kol.where("forbid_campaign_time > '#{Time.now}'").collect{|t| t.id}
+      Rails.logger.campaign_sidekiq.info "---send_invites: --campaign block_kol_ids: ---#{block_kol_ids}-"
+      CampaignInvite.where(:kol_id => block_kol_ids, :campaign_id => campaign_id).delete_all
     end
     Rails.logger.campaign_sidekiq.info "----send_invites:  start push to sidekiq-------"
     # make sure those execute late (after invite create)

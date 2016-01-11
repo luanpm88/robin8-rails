@@ -68,8 +68,8 @@
             <% if(item.img_status == 'passed') { %>
               <span class='label label-success'>审核通过</span>
             <% } %>
-            <% if(item.img_status == 'rejected' && item.reject_reason) { %>
-              <span class='label label-danger'>审核未通过, 理由: <%= item.reject_reason %>. 请您重新上传截图供审核</span>
+            <% if(item.img_status == 'rejected') { %>
+              <span class='label label-danger'>审核未通过, 请您重新上传截图供审核</span>
             <% } %>
             <% if(item.img_status == 'pending') { %>
               <span class='label label-warning'>待审核</span>
@@ -81,10 +81,8 @@
               <% if(item.screenshot) { %>
                 <img src="<%= item.screenshot + '-400' %>" id='show-screenshot' alt="">
               <% } %>
-              <% if(item.img_status != 'passed'){ %>
-                <input type='text' id='screenshot' name='screenshot' value='' hidden>
-                <input type='button' id='upload-screenshot' class='btn btn-primary' value='上传截图'>
-              <% } %>
+              <input type='text' id='screenshot' name='screenshot' value='' hidden>
+              <input type='button' id='upload-screenshot' class='btn btn-primary' value='上传截图'>
             </div>
           </form>
         <hr>
@@ -98,7 +96,7 @@
         <% if(item.status=='approved' && !Robin.mobileRequest){ %>
           <div>
             打开微信扫一扫即可分享
-            <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + item.campaign_invite_id  %>'/>
+            <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + item.id  %>'/>
           </div>
         <% } %>
 
