@@ -1,7 +1,7 @@
 ActiveAdmin.register CampaignInvite do
 
   before_filter :only => [:index] do
-    params['q'] = {:status_eq => 'finished', :img_status_eq => 'pending'}
+    params['q'] = {:status_eq => 'finished', :img_status_eq => 'pending', :screenshot_present => '1'}
   end
 
   actions :all, :except => [:destroy]
