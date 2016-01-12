@@ -4,9 +4,39 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       0: 'secrecy'
       1: 'male'
       2: 'female'
+    cn_industries:
+      "50000000": "汽车"
+      "51000000": "数码"
+      "52000000": "教育"
+      "53000000": "健康"
+      "54000000": "体育"
+      "55000000": "美妆"
+      "56000000": "家具"
+      "57000000": "旅游"
+      "58000000": "美食"
+      "59000000": "服饰"
+      "60000000": "财经"
+      "61000000": "音乐"
+      "62000000": "军事"
+      "63000000": "母婴"
+      "64000000": "彩票"
+      "65000000": "手机"
+      "66000000": "计算机"
+      "67000000": "数码相机"
+      "68000000": "游戏"
+      "69000000": "房地产"
+      "70000000": "娱乐"
+      "71000000": "卡通"
+      "72000000": "宠物"
+      "73000000": "家电"
+      "74000000": "奢侈品"
+      "75000000": "找工作"
+      "76000000": "法律"
+      "77000000": "其他"
 
   kol_fields_mapping =
     genders: 'gender'
+
 
   Show.ProfileTab = Backbone.Marionette.LayoutView.extend
     template: 'modules/dashboard-kol/templates/profile-tab'
@@ -20,17 +50,26 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       city_input: "#city"
       form: "#profile-form"
       verify_code_button: ".send_sms"
+      kol_interests: "#kol_interests"
+      test: "#test"
 
     regions:
       social: ".social-content"
       social_list: ".social-list"
       add_account: ".add-account"
+      test_modal:
+
 
     events:
       'click @ui.next': 'save'
       'click @ui.calendar_button' : 'showDateTimePicker'
       'change @ui.country_select' : 'checkCountry'
       'click @ui.verify_code_button' : 'send_sms'
+      'click @ui.test': 'test'
+
+    test: ()->
+
+
 
     templateHelpers:
       checked: (key, index, kol) ->
@@ -41,6 +80,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     initialize: (opts) ->
       @target = target
+      @industries = @target["cn_industries"]
       @model = new Robin.Models.KolProfile App.currentKOL.attributes
       @model_binder = new Backbone.ModelBinder()
       @initial_attrs = @model.toJSON()
@@ -53,6 +93,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       $("#password_confirmation").val("")
       _.defer =>
         @initAddSocialAccount()
+        @initKolSelect2()
       @initSocialList()
       @initDatepicker()
       @$el.find('input[type=radio][checked]').prop('checked', 'checked')
@@ -75,6 +116,59 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             a++
             $("input#mobile").blur()
           return
+
+    initKolSelect2: ->
+      _industries = @industries
+      $('#kol_interests').val("Industries")  # need to put something there for initSelection to be called
+      @ui.kol_interests.select2
+        maximumSelectionSize: 5
+        multiple: true
+        minimumInputLength: 1
+        width: '100%'
+        placeholder: polyglot.t('dashboard_kol.profile_tab.industry_placeholder')
+        ajax:
+          url: '/kols/suggest_categories'
+          dataType: 'json'
+          quietMillis: 250,
+          data: (term, page) ->
+            return { f: term }
+          results:  (data, page) ->
+            return { results: data }
+          cache:true
+        escapeMarkup: _.identity
+        initSelection: (el, callback) =>
+          v = $("#kol_interests").val()
+          # 加载后初始化
+          if v == "Industries"
+            $("#kol_interests").val('')
+            $.get "/kols/current_categories", (data) ->
+              callback data
+          else        # 每次更改后初始化
+            old_data = $("#kol_interests").select2 'data'
+            console.log old_data
+            console.log v
+            new_ids = _.compact v.split(',')
+            new_data = _(new_ids).map (i) ->
+              obj = _(old_data).find (x) -> x.id == i
+              if typeof obj == "undefined"
+                id: i
+                text: _industries[i]
+              else
+                obj
+            $("#kol_interests").select2 'data', new_data
+
+      @$el.find('.industry-row button').click (e) =>
+        _.defer -> $(e.target).removeClass('active').blur()
+        e.preventDefault()
+        id = e.target.name.split('_')[1]
+        old_val = _.compact @ui.kol_interests.val().split(',')
+        if old_val.length == 5
+          $.growl polyglot.t('dashboard_kol.profile_tab.industry_placeholder') , {type: "danger"}
+          return
+        if not (id in old_val)
+          old_val.push id
+          $("#kol_interests").val old_val
+          $("#kol_interests").trigger 'change'
 
     initAddSocialAccount: ->
       @social_view = new Show.ProfileSocialView
@@ -238,6 +332,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     serializeData: ->
       _.extend @target,
         k: @model.toJSON()
+        industries: @industries
 
     validate: ->
       @ui.form.data('formValidation').validate()
@@ -333,7 +428,8 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           beforeSend: (xhr) ->
             xhr.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
             return
-          data: 'phone_number': phone_number).done (data) ->
+          data: 'phone_number': phone_number
+        ).done (data) ->
           $('.tips').children().hide()
           if data['mobile_number_is_blank']
             $('#mobile').focus().blur()
