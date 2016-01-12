@@ -13,11 +13,9 @@ class CampaignInvite < ActiveRecord::Base
 
   def screenshot_pass
     campaign = self.campaign
-    kol = self.kol
     if campaign.status == 'executed' && self.img_status != 'passed'
       self.update_column(:img_status, 'passed')
-      kol.income(self.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
-      Rails.logger.info "-------- screenshot_check_pass:  ---cid:#{campaign.id}--kol_id:#{kol.id}----credits:#{self.avail_click * campaign.per_click_budget}-- after avail_amount:#{kol.avail_amount}"
+      Rails.logger.info "-------- screenshot_check_pass:  ---cid:#{campaign.id}--"
     end
   end
 
