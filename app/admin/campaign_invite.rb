@@ -55,7 +55,7 @@ ActiveAdmin.register CampaignInvite do
     column :status
     column :img_status
     actions do |my_resource|
-      if my_resource.campaign.status != "settled" && my_resource.img_status == "pending" && my_resource.screenshot.present? && (my_resource.campaign.actual_deadline_time.nil? || (my_resource.campaign.actual_deadline_time > (Time.now - 1.days)))
+      if my_resource.campaign.status != "settled" && my_resource.img_status == "pending" && my_resource.screenshot.present? && (my_resource.campaign.deadline > (Time.now - 7.days))
         (link_to '审核', show_verify_page_admin_campaign_invite_path(my_resource.id), :method => :get, :target => "_blank" )
       elsif my_resource.img_status == "passed"
         '已通过'
