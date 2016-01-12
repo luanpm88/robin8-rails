@@ -160,9 +160,9 @@ zh:
       kol:
         email: "邮箱"
         mobile_number: "电话号码"
-      withdraw: 
+      withdraw:
         real_name: 真实姓名
-        credits:   提现金额 
+        credits:   提现金额
         alipay_no: 支付宝账号
         bank_name: 银行名称
         bank_no:   银行账号
@@ -1479,7 +1479,7 @@ zh:
         pick_deadline: "选择一个期限"
         summary: 如下是<strong> "%{name}" </strong>的小结
         campaign_budget_label: 总预算
-        campaign_per_click_budget_label: 点击预算
+        campaign_per_click_budget_label: 每次
         enter_description: 活动介绍
         enter_message: 给Kol 留言
         campaign_message: 留言

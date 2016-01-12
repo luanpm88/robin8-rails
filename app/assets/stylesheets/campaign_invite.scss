@@ -38,8 +38,22 @@ div#datetimepicker6{
 }
 
 
-.campaign_time_group{
-  display: inline-table;
+.action_type_radion {
+  float: left;
+  width: 50px;
+  margin-left: 20px;
+  margin-top: 28px;
+}
+
+.campaign_time_group {
+  float: none;
+  display: block;
+  width: 500px;
+  margin-top: 20px;
+}
+
+.campaign_time_group:nth-last-child(1), .campaign_time_group:nth-last-child(3){
+  margin-left: 100px;
 }
 
 .campaign_budget_label{
