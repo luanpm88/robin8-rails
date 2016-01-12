@@ -23,7 +23,7 @@ class PagesController < ApplicationController
         flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
       end
 
-      to_verify_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'pending', screenshot: nil).joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - 7.days).count
+      to_verify_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'pending', screenshot: nil).joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - 1.days).count
       verify_failed_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'rejected').count
 
       if to_verify_count>0 or verify_failed_count>0
