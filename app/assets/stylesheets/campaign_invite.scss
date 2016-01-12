@@ -42,6 +42,7 @@ div#datetimepicker6{
   float: left;
   width: 50px;
   margin-left: 20px;
+  margin-right: 40px;
   margin-top: 28px;
 }
 
@@ -50,10 +51,10 @@ div#datetimepicker6{
   display: block;
   width: 500px;
   margin-top: 20px;
-}
-
-.campaign_time_group:nth-last-child(1), .campaign_time_group:nth-last-child(3){
-  margin-left: 100px;
+  &:nth-last-child(1) {
+    margin-top: 68px;
+    margin-bottom: 20px;
+  }
 }
 
 .campaign_budget_label{
