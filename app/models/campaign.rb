@@ -12,6 +12,7 @@ class Campaign < ActiveRecord::Base
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
   has_many :passed_invites, -> {where(:status => 'finished', :img_status => 'passed')}, :class_name => 'CampaignInvite'
+  has_many :settled_invites, -> {where(:status => 'settled', :img_status => 'passed')}, :class_name => 'CampaignInvite'
   has_many :campaign_shows
   has_many :kols, through: :campaign_invites
   has_many :approved_kols, through: :valid_invites
@@ -27,8 +28,8 @@ class Campaign < ActiveRecord::Base
 
   after_save :create_job
 
-  SettleWaitTime = Rails.env.production?  ? 7.days  : 5.minutes
-
+  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
+  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
   def email
     user.try :email
   end
@@ -155,7 +156,8 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        CampaignWorker.perform_at(Time.now + SettleWaitTime ,self.id, 'settle_accounts')
+        CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+        CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
       end
     end
   end
@@ -165,6 +167,7 @@ class Campaign < ActiveRecord::Base
     self.total_click = self.redis_total_click.value
     self.status = 'executed'
     self.finish_remark = finish_remark
+    self.actual_deadline_time = Time.now
     self.save!
   end
 
@@ -182,15 +185,30 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  # 结算
-  def settle_accounts
-    Rails.logger.transaction.info "-------- settle_accounts: cid:#{self.id}------status: #{self.status}"
+  # 结算 for kol
+  def settle_accounts_for_kol
+    Rails.logger.transaction.info "-------- settle_accounts_for_kol: cid:#{self.id}------status: #{self.status}"
     return if self.status != 'executed'
+    ActiveRecord::Base.transaction do
+      self.passed_invites.each do |invite|
+        invite.update_column(:status, 'settled')
+        kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
+        Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{campaign.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * campaign.per_click_budget}-- after avail_amount:#{kol.avail_amount}"
+      end
+    end
+  end
+
+  # 结算 for brand
+  def settle_accounts_for_brand
+    Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
+    return if self.status != 'executed'
+    #首先先付款给期间审核的kol
+    settle_accounts_for_kol
     ActiveRecord::Base.transaction do
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-      pay_total_click = self.passed_invites.sum(:avail_click)
+      pay_total_click = self.settled_invites.sum(:avail_click)
       self.user.payout((pay_total_click * self.per_click_budget) , 'campaign', self )
       Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_click_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
     end
