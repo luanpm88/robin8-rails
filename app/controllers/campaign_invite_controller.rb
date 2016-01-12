@@ -67,7 +67,7 @@ class CampaignInviteController < ApplicationController
 
     limit = params[:limit] || 3
     offset = params[:offset] || 0
-    campaign_invites_by_limit_and_offset = campaigns_by_status.drop(offset.to_i).first(limit.to_i)
+    campaign_invites_by_limit_and_offset = campaigns_by_status.offset(offset.to_i).limit(limit.to_i)
 
     render json: campaign_invites_by_limit_and_offset, each_serializer: CampaignInviteSerializer
   end
