@@ -13,7 +13,7 @@ class CampaignInvite < ActiveRecord::Base
 
   def screenshot_pass
     campaign = self.campaign
-    if (campaign.status == 'executed' || campaign.status = "executing") && self.img_status != 'passed'
+    if (campaign.status == 'executed' || campaign.status == "executing") && self.img_status != 'passed'
       self.update_column(:img_status, 'passed')
       Rails.logger.info "-------- screenshot_check_pass:  ---cid:#{campaign.id}--"
     end
@@ -21,7 +21,7 @@ class CampaignInvite < ActiveRecord::Base
 
   def screenshot_reject
     campaign = self.campaign
-    if campaign.status == 'executed' && self.img_status != 'passed'
+    if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
       self.img_status = 'rejected'
       self.save
       Rails.logger.info "-------- screenshot_check_rejected: ---cid:#{campaign.id}--"
