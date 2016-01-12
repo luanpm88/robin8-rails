@@ -8,8 +8,8 @@ class CampaignShow < ActiveRecord::Base
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
     now = Time.now
     # check campaign status
-    if campaign.status == 'finished'
-      return [false, 'campaign_had_finished']
+    if campaign.status == 'executed'
+      return [false, 'campaign_had_executed']
     end
 
     #check status
@@ -17,7 +17,7 @@ class CampaignShow < ActiveRecord::Base
     #   return [false, 'campaign_invite_not_approved']
     # end
 
-
+    store_key =  visitor_cookies + campaign.id
     # check_cookie?
     store_key = visitor_cookies
     if Rails.cache.read(store_key)

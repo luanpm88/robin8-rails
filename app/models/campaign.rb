@@ -8,7 +8,7 @@ class Campaign < ActiveRecord::Base
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
-  has_many :valid_invites, -> {where("status='approved' or status='finished'")}, :class_name => 'CampaignInvite'
+  has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
   has_many :passed_invites, -> {where(:status => 'finished', :img_status => 'passed')}, :class_name => 'CampaignInvite'
@@ -35,7 +35,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def get_stats
-    end_time = (status == 'executed' ? self.deadline : Time.now)
+    end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows
     labels = []
     total_clicks = []
@@ -59,7 +59,8 @@ class Campaign < ActiveRecord::Base
 
 
   def get_avail_click
-    status == 'executed' ? self.avail_click : self.redis_avail_click.value      rescue 0
+    self.redis_avail_click.value      rescue self.avail_click
+    # status == 'executed' ? self.avail_click : self.redis_avail_click.value      rescue 0
   end
 
   def get_total_click
@@ -76,13 +77,13 @@ class Campaign < ActiveRecord::Base
   end
 
   def remain_budget
-    return 0 if status == 'executed'
+    return 0 if (status == 'executed' || status == 'settled')
     return (self.budget - self.take_budget).round(2)
   end
 
   def get_share_time
     return 0 if status == 'unexecute'
-    status == 'executed' ? self.finished_invites.size : self.valid_invites.size
+    (status == 'executed' || status == 'settled') ? self.finished_invites.size : self.valid_invites.size
   end
 
   # 开始时候就发送邀请 但是状态为pending
@@ -151,13 +152,18 @@ class Campaign < ActiveRecord::Base
 
   #finish_remark:  expired or fee_end
   def finish(finish_remark)
-    Rails.logger.campaign_sidekiq.info "-----finish: #{finish_remark}----------"
+    Rails.logger.campaign_sidekiq.info "-----executed: #{finish_remark}----------"
     if Rails.application.config.china_instance  && self.status == 'executing'
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-        CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+        if Rails.env.production?
+          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+        else
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+        end
       end
     end
   end
