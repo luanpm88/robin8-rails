@@ -1,70 +1,82 @@
-<div class="modal-dialog profile-content">
-  <div class="modal-content social-content social">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h4 class="modal-title"><%= polyglot.t("dashboard_kol.profile_tab." + title) %></h4>
-    </div>
-    <div class="modal-body audience">
-
-  <form role="form" action="javascript:void(0);" id="profile-base">
-    <div class="general">
-      <div class="campaigns-tables-title">
-        <span><%= polyglot.t('dashboard_kol.profile_tab.general_title') %></span>
+<!--social modal-->
+<div class="modal fade modal-account profile-content" id='profile-base-modal' role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog profile-content">
+    <div class="modal-content social-content social">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
       </div>
-      <div class="score-tables profile_info">
-
-        <!--兴趣爱好-->
-        <div class="row">
-          <div class="col-md-2 cell kol-profile">
-            <%= polyglot.t('dashboard_kol.profile_tab.industry') %>
-          </div>
-          <div class="cell col-md-6">
-            <input name="interests" id="kol_interests" value="Interests"  class="form-control required" required
-                   data-placeholder="<%= polyglot.t('dashboard_kol.profile_tab.industry_placeholder') %>"/>
-          </div>
-        </div>
-        <div class="row industry-row" style="">
-          <div class="col-md-2 cell kol-profile"></div>
-          <div class="col-md-6">
-            <% _(industries).each(function(ind, i) { %>
-            <div class="col-md-2 cell influence-circle">
-              <button type="button" class="btn full-width" filter-btn name="industry_<%= i %>" data-toggle="button">
-                <%= ind %>
-              </button>
+      <div class="modal-body audience">
+        <form role="form" action="javascript:void(0);" id="profile-base">
+          <div class="general">
+            <div class="campaigns-tables-title">
+              <span>完善资料</span>
             </div>
-            <% }); %>
-          </div>
-        </div>
+            <div class="score-tables profile_info">
 
-        <% if (!k.mobile_number) { %>
-          <div class="row set-mobile-number">
-            <div class="set-mobile">
-              <div class ="bind-mobile">
-                绑定手机
-              </div>
-              <div class="row form-group mobile-number-verify">
-                <div class="mobile-input">
-                  <input class="form-control" data-fv-notempty="true" data-fv-notempty-message=<%= polyglot.t('dashboard_kol.validation.mobile') %> data-fv-regexp="true" data-fv-regexp-regexp="^1[34578][0-9]{9}$" data-fv-regexp-message=<%= polyglot.t('kols.mobile_format_error') %> type="mobile" id='mobile' name="mobile_number" value="" placeholder=<%= polyglot.t('dashboard_kol.profile_tab.mobile') %>  />          <!-- </div> -->
+              <!--兴趣爱好-->
+              <div class="row">
+                <div class="cell kol-profile">
+                  <%= polyglot.t('dashboard_kol.profile_tab.industry') %>
                 </div>
-                <div class="tips">
-                  <p class=not_unique_number><%= polyglot.t("kols.mobile_number_already_token") %></p>
-                  <p class=mobile_numer_is_blank><%= polyglot.t("kols.mobile_format_error") %></p>
-                  <p class=send_sms_failed><%= polyglot.t("kols.send_sms_error") %></p>
-                  <p class=send_sms_success><%= polyglot.t("kols.send_sms_success") %></p>
+                <div class="cell">
+                  <input name="interests" id="kol_interests" value="Interests" class="form-control required" required
+                         data-placeholder="<%= polyglot.t('dashboard_kol.profile_tab.industry_placeholder') %>"/>
+                </div>
+                <div class="kol_interests_tips">
+                  <p class='not_is_null'><%= polyglot.t('dashboard_kol.profile_tab.industry_placeholder') %>不能为空</p>
+                </div>
+                <div class="cell industry-row">
+                  <% _(industries).each(function(ind, i) { %>
+                  <div class="col-md- cell influence-circle">
+                    <button type="button" class="btn full-width" filter-btn name="industry_<%= i %>"
+                            data-toggle="button">
+                      <%= ind %>
+                    </button>
+                  </div>
+                  <% }); %>
                 </div>
               </div>
 
-              <div class="verify-input">
-                <input class="form-control verify-code" type="text", placeholder=<%= polyglot.t('kols.verify_code') %> />
+              <div class="row ">
+                <div class="set-mobile">
+                  <div class="bind-mobile cell">
+                    绑定手机
+                  </div>
+                  <div class="form-group mobile-number-verify">
+                    <div class="mobile-input cell">
+                      <input class="form-control" data-fv-notempty="true"
+                             data-fv-notempty-message=<%= polyglot.t('dashboard_kol.validation.mobile') %> data-fv-regexp="true"
+                             data-fv-regexp-regexp="^1[34578][0-9]{9}$"
+                             data-fv-regexp-message=<%= polyglot.t('kols.mobile_format_error') %> type="mobile"
+                             id='mobile' name="mobile_number" value=""
+                             placeholder=<%= polyglot.t('dashboard_kol.profile_tab.mobile') %>/> <!-- </div> -->
+                    </div>
+                    <div class="tips">
+                      <p class=not_unique_number><%= polyglot.t("kols.mobile_number_already_token") %></p>
+                      <p class=mobile_numer_is_blank><%= polyglot.t("kols.mobile_format_error") %></p>
+                      <p class=send_sms_failed><%= polyglot.t("kols.send_sms_error") %></p>
+                      <p class=send_sms_success><%= polyglot.t("kols.send_sms_success") %></p>
+                    </div>
+                  </div>
+
+                  <div class="verify-input cell">
+                    <input class="form-control verify-code" type="text"
+                           placeholder=<%= polyglot.t('kols.verify_code') %>/>
+                  </div>
+                  <div class="verify-button">
+                    <button class="btn send_sms"><%= polyglot.t("kols.receive_verify_code") %></button>
+                  </div>
+                </div>
               </div>
-              <div class="verify-button">
-                <button class="btn send_sms"><%= polyglot.t("kols.receive_verify_code") %></button>
+              <div class="row">
+                <button  class="btn btn-primary pull-right save-base">保存</button>
               </div>
             </div>
           </div>
-        <% } %>
-
+        </form>
       </div>
     </div>
-  </form>
+  </div>
 </div>

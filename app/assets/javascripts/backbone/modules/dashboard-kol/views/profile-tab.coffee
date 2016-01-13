@@ -51,28 +51,17 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       form: "#profile-form"
       verify_code_button: ".send_sms"
       kol_interests: "#kol_interests"
-      test: "#test"
 
     regions:
-
       social: ".social-content"
       social_list: ".social-list"
       add_account: ".add-account"
-      test_modal: "#test-modal"
-
 
     events:
       'click @ui.next': 'save'
       'click @ui.calendar_button' : 'showDateTimePicker'
       'change @ui.country_select' : 'checkCountry'
       'click @ui.verify_code_button' : 'send_sms'
-      'click @ui.test': 'test'
-
-    test: ()->
-      @base_modal = new Show.ProfileBaseModal
-        model: @model
-        parent: this
-      @showChildView 'test_modal', @base_modal
 
     templateHelpers:
       checked: (key, index, kol) ->

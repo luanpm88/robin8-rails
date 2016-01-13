@@ -39,7 +39,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       kol_interests: "#kol_interests"
 
     events:
-      'click @ui.next': 'save'
+      'click .save-base': 'save'
       'click @ui.verify_code_button' : 'send_sms'
 
     initialize: (opts) ->
@@ -55,6 +55,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         @initFormValidation()
 
     initKolSelect2: ->
+      console.log "initKolSelect2"
       _industries = @industries
       $('#kol_interests').val("Industries")  # need to put something there for initSelection to be called
       @ui.kol_interests.select2
@@ -82,8 +83,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
               callback data
           else        # 每次更改后初始化
             old_data = $("#kol_interests").select2 'data'
-            console.log old_data
-            console.log v
             new_ids = _.compact v.split(',')
             new_data = _(new_ids).map (i) ->
               obj = _(old_data).find (x) -> x.id == i
@@ -164,29 +163,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             $.growl "手机号码不能为空", {type: "danger"}
 
     save_kol: ->
-
-      @model.save @model.attributes,
-        success: (m, r) =>
-          @initial_attrs = m.toJSON()
-          App.currentKOL.set m.attributes
-          $.growl(polyglot.t('dashboard_kol.profile_tab.save_success'), {type: "success"})
-          @parent_view?.defaultDashboard()
-        error: (m, r) =>
-          console.log "Error saving KOL profile. Response is:"
-          console.log r
-          if JSON.parse(r.responseText).error
-            $.growl JSON.parse(r.responseText).error, {type: "error"}
-          errors = JSON.parse(r.responseText).errors
-          _.each errors, ((value, key) ->
-            @ui.form.data('formValidation').updateStatus key, 'INVALID', 'serverError'
-            val = value.join(',')
-            if val == 'is invalid'
-              val = polyglot.t('dashboard_kol.profile_tab.current_password_invalid')
-            @ui.form.data('formValidation').updateMessage key, 'serverError', val
-
-          ), this
-          element = document.getElementById("current_password")
-          element.scrollIntoView(false)
+      element.scrollIntoView(false)
 
     send_sms: ->
       phone_number = $('#mobile').val().trim()

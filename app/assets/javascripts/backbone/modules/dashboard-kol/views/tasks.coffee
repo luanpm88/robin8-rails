@@ -5,16 +5,26 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     regions:
       currentTab: '.currentTab'
       modal: '.task-modal'
+      complete_modal: "#complete_modal"
 
     ui:
       loading: '.loadingOfTasks'
       loadMore: '.loadMore'
       noMore: '.noMore'
+      complete: "#complete"
 
     events:
       'click .tasks-nav li': 'switchTab'
       'click .loadMore': 'loadMore'
       'click .cam-item': 'viewOrShareItem'
+      'click @ui.complete': 'complete'
+
+    complete: ()->
+      @base_modal = new Show.ProfileBaseModal
+        model: new Robin.Models.KolProfile App.currentKOL.attributes
+        parent: this
+      @showChildView 'complete_modal', @base_modal
+      $("#profile-base-modal").modal('show')
 
     onRender: () ->
       @tasks = new Robin.Collections.CampaignDiscovers([], {type:'upcoming', limit: 3, offset: 0})
