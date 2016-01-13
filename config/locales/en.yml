@@ -1495,13 +1495,13 @@ en:
         description: Campaign description not empty
         url: Campaign url not empty
         budget: Campaign budget not empty
-        per_budget_type: 类型 
-        per_click_budget: Campaign per click budget not empty
-        budget_should_be_digit: Campaign budget must be digit
-        per_click_budget_should_be_digit: Campaign per click budget must be digit
-        per_click_budget_should_greater_than_zero: Campaign per click budget must greater than zero
-        per_click_budget_should_less_than_budget: Campaign per click budget must less than budget
-        budget_should_greater_than_zero: Campaign budget must greater than zero
+        per_budget_type: 类型
+        per_click_budget: Campaign per budget not empty
+        budget_should_be_digit: budget must be digit
+        per_click_budget_should_be_digit: Campaign per budget must be digit
+        per_click_budget_should_greater_than_zero: Campaign per budget must greater than zero
+        per_click_budget_should_less_than_budget: Campaign per budget must less than budget
+        budget_should_greater_than_zero: budget must greater than zero
         url_invalid: Campaign url is invalid
         campaign_end_time_should_greather_than_start_time: Campaign end time should laster than start time
         budget_is_not_ample: Your budget is not enough, please recharge

@@ -71,12 +71,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initDatepicker()
         @initFormValidation()
         @initQiniuUploader()
+        @initChoosePerBudgetType()
         @initCreateCampaignModal()
 
         $(".budget_input").focus()
         $(".campaign_name_input").focus()
 
-    initCreateCampaignModal: ->
+    initChoosePerBudgetType: ->
       if @model.attributes.per_budget_type == null
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
       else if @model.attributes.per_budget_type == 'click'
@@ -84,6 +85,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       else
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
 
+    initCreateCampaignModal: ->
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
         $("#create-campagin").prop("disabled", false)
         $("#create-campagin").removeClass("disabled")

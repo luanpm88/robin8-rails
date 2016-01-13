@@ -1346,12 +1346,12 @@ zh:
         description: 活动描述不能为空
         url: 活动链接不能为空
         budget: 活动预算不能为空
-        per_budget_type: 类型 
-        per_click_budget: 活动点击预算不能为空
-        budget_should_be_digit: 活动预算只能包含数字
+        per_budget_type: 类型
+        per_click_budget: 每次预算不能为空
+        budget_should_be_digit: 每次预算只能包含数字
         per_click_budget_should_be_digit: 只能包含数字
-        per_click_budget_should_greater_than_zero: 点击预算应该大于零
-        per_click_budget_should_less_than_budget: 点击预算应该小于总预算
+        per_click_budget_should_greater_than_zero: 每次预算应该大于零
+        per_click_budget_should_less_than_budget: 每次预算应该小于总预算
         budget_should_greater_than_zero: 预算应该大于零
         campaign_end_time_should_greather_than_start_time: 结束时间应该大于开始时间
         budget_is_not_ample: "您的预算不足, 请充值"
@@ -1480,7 +1480,7 @@ zh:
         pick_deadline: "选择一个期限"
         summary: 如下是<strong> "%{name}" </strong>的小结
         campaign_budget_label: 总预算
-        campaign_per_click_budget_label: 每次
+        campaign_per_click_budget_label: 每次预算
         enter_description: 活动介绍
         enter_message: 给Kol 留言
         campaign_message: 留言
