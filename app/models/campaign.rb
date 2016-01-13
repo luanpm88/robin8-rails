@@ -73,17 +73,21 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    (self.finished_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
+    if self.status == 'settled'
+      (self.settled_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
+    else
+      (self.finished_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
+    end
   end
 
   def remain_budget
-    return 0 if (status == 'executed' || status == 'settled')
+    # return 0 if (status == 'executed' || status == 'settled')
     return (self.budget - self.take_budget).round(2)
   end
 
   def get_share_time
     return 0 if status == 'unexecute'
-    (status == 'executed' || status == 'settled') ? self.finished_invites.size : self.valid_invites.size
+    self.valid_invites.size
   end
 
   # 开始时候就发送邀请 但是状态为pending
@@ -199,8 +203,8 @@ class Campaign < ActiveRecord::Base
       self.passed_invites.each do |invite|
         kol = invite.kol
         invite.update_column(:status, 'settled')
-        kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
-        Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{campaign.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * campaign.per_click_budget}-- after avail_amount:#{kol.avail_amount}"
+        kol.income(invite.avail_click * self.per_click_budget, 'campaign', self, self.user)
+        Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.per_click_budget}-- after avail_amount:#{kol.avail_amount}"
       end
     end
   end
