@@ -54,10 +54,11 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       test: "#test"
 
     regions:
+
       social: ".social-content"
       social_list: ".social-list"
       add_account: ".add-account"
-      test_modal:
+      test_modal: "#test-modal"
 
 
     events:
@@ -68,8 +69,10 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       'click @ui.test': 'test'
 
     test: ()->
-
-
+      @base_modal = new Show.ProfileBaseModal
+        model: @model
+        parent: this
+      @showChildView 'test_modal', @base_modal
 
     templateHelpers:
       checked: (key, index, kol) ->
