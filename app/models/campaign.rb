@@ -11,6 +11,7 @@ class Campaign < ActiveRecord::Base
   has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
+  has_many :finish_need_check_invites, -> {where(:status => 'finished', :img_status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :passed_invites, -> {where(:status => 'finished', :img_status => 'passed')}, :class_name => 'CampaignInvite'
   has_many :settled_invites, -> {where(:status => 'settled', :img_status => 'passed')}, :class_name => 'CampaignInvite'
   has_many :campaign_shows
@@ -215,6 +216,8 @@ class Campaign < ActiveRecord::Base
     return if self.status != 'executed'
     #首先先付款给期间审核的kol
     settle_accounts_for_kol
+    #没审核通过的设置为拒绝
+    self.finish_need_check_invites.update_all(:img_status => 'rejected')
     ActiveRecord::Base.transaction do
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)
