@@ -58,7 +58,7 @@ class CampaignInviteController < ApplicationController
     return render :json => {error: 'error type!'} if status.eql?('error')
 
     if status.eql? 'verify'
-      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - 1.days).order('updated_at desc')
+      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).order('updated_at desc')
     elsif status.eql? 'finished'
       campaigns_by_status = @kol.campaign_invites.where(img_status: 'passed', status: ['finished', 'settled']).order('created_at desc')
     else
