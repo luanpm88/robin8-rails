@@ -6,16 +6,6 @@ ActiveAdmin.register Campaign do
   member_action :agree, :method => :put
 
   controller do
-    before_filter :my_filter, only: [:edit, :show]
-
-    private
-
-    def my_filter
-      Rails.logger.info "my post: '#{resource}'"
-    end
-  end
-
-  controller do
     before_filter :set_admin_to_cookie, only: [:index]
 
     def set_admin_to_cookie
@@ -59,21 +49,21 @@ ActiveAdmin.register Campaign do
     column :user_id
     column "user email", :email
     column "Advertiser" do |my_resource|
-      my_resource.user.name
+      my_resource.user.name                   rescue nil
     end
 
     column "Start time" do |my_resource|
-      my_resource.start_time.to_s(:all_time)
+      my_resource.start_time.to_s(:all_time)     rescue my_resource.start_time
     end
 
     column "End time" do |my_resource|
-      my_resource.deadline.to_s(:all_time)
+      my_resource.deadline.to_s(:all_time)       rescue my_resource.deadline
     end
 
     column :budget
     column :status
     column "Spent" do |my_resource|
-      my_resource.get_fee_info.split('/').first
+      my_resource.take_budget
     end
     column "Actual Clicks" do |my_resource|
       my_resource.get_avail_click

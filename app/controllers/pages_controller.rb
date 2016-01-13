@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
+  before_action :authenticate_kol!, only: [:withdraw_apply]
   before_action :set_video,:only => [:home,:landing_page_brand]
 
   def set_locale
@@ -21,6 +22,21 @@ class PagesController < ApplicationController
       if current_kol.confirmed_at == nil && current_kol.provider == 'signup'
         flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
       end
+
+      to_verify_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'pending', screenshot: nil).joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - 1.days).count
+      verify_failed_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'rejected').count
+
+      if to_verify_count>0 or verify_failed_count>0
+        flash[:verify_count] = {
+          :to_verify_count => to_verify_count,
+          :verify_failed_count => verify_failed_count
+        }
+      end
+
+      if current_kol.forbid_campaign_time and current_kol.forbid_campaign_time > Time.now
+        flash[:forbid_campaign_time] = current_kol.forbid_campaign_time
+      end
+
       render "home", :layout => 'kol'
     else
       render "landing_page", :layout => 'landing'
@@ -77,8 +93,30 @@ class PagesController < ApplicationController
     else
       ''
     end
-    
+
     render :layout => "website"
+  end
+
+  def withdraw_apply
+    if request.get?
+      @withdraw = Withdraw.new
+      render :layout => "website"
+    else
+      params.permit!
+      @withdraw = Withdraw.new(params[:withdraw])
+      @withdraw.kol_id = current_kol.id
+      if @withdraw.save
+        flash[:notice] = "提交成功"
+        if Rails.env.development?
+          ContactMailWorker.new.perform @withdraw.id, true
+        else
+          ContactMailWorker.perform_async @withdraw.id, true
+        end
+        redirect_to :action => 'withdraw_apply'
+      else
+        return render :action => 'withdraw_apply', :layout => "website"
+      end
+    end
   end
 
   def team

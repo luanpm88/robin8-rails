@@ -108,6 +108,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     ui:
       table: "#campaigns-table22"
+      screenshotModal: "#screenshotModal"
+      screenshot: ".screenshot"
+      screenshot_detail: "#screenshot_detail"
+
+
+    events:
+      'click @ui.screenshot': 'showScreenshot'
 
     templateHelpers:
       formatDate: (d) ->
@@ -142,6 +149,14 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           paginate:
             previous: polyglot.t('smart_campaign.prev'),
             next: polyglot.t('smart_campaign.next')
+
+    showScreenshot: () ->
+      console.log(@$el.find("img"))
+      big_url = @$el.find("img").attr("data-big")
+      console.log(big_url)
+      @ui.screenshot_detail.attr("src",big_url)
+      @ui.screenshotModal.modal('show')
+
 
     serializeData: () ->
       items: @options.kol_list_data

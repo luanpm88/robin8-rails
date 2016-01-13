@@ -1,0 +1,118 @@
+<div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
+
+<div>
+  <div style="font-size: 45px">截图总数: <%= locals[:sum] %></div>
+  <% count = locals[:count] %>
+  <% kols = locals[:kols] %>
+  <% campaigns = locals[:campaigns] %>
+  <% campaign_invites = locals[:campaign_invites] %>
+  <% count.times do |i| %>
+    <div class="item">
+      <img src="<%= campaign_invites[i].screenshot %>" alt="screenshot" />
+
+      <div>kol: <%= kols[i].email ? kols[i].email : kols[i].social_name %> </div>
+      <div>活动名称: <%= campaigns[i].name %> </div>
+      <div>有效点击次数: <%= campaign_invites[i].avail_click %></div>
+      <div>活动结束时间: <%= campaigns[i].deadline %></div>
+      <div><%= check_box_tag "campaign_invites_ids[]", campaign_invites[i].id %> </div>
+      <hr>
+    </div>
+  <% end %>
+</div>
+
+<div class="clearfix">
+  <button class="agree">通过</button>
+  <button class="reject">拒绝</button>
+</div>
+<style>
+  .item {
+    float: left;
+    margin-left: 80px;
+    margin-top: 80px;
+  }
+
+  .item img {
+    width: 300px;
+    height: 400px;
+  }
+
+  .clearfix {
+    clear: both;
+    padding-top: 80px;
+    margin-left: 400px;
+  }
+
+  button {
+    width: 100px;
+    height: 50px;
+  }
+
+  button.reject {
+    margin-left: 550px;
+  }
+</style>
+
+
+<script>
+$(function(){
+  var ids = new Array();
+  $(".agree").click(function(){
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      ids.push($(this).val())
+    })
+
+    if(!ids.length) {
+      alert("请至少选择一张图片");
+      return
+    }
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "agree", "ids": ids }
+    })
+      .done(function(data) {
+        if(data['result'] == 'agree'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+
+  $(".reject").click(function(){
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      ids.push($(this).val())
+    })
+
+    if(!ids.length) {
+      alert("请至少选择一张图片");
+      return
+    }
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "reject", "ids": ids }
+    })
+      .done(function(data) {
+        if(data['result'] == 'reject'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+
+
+
+});
+
+
+</script>

@@ -160,6 +160,12 @@ zh:
       kol:
         email: "邮箱"
         mobile_number: "电话号码"
+      withdraw: 
+        real_name: 真实姓名
+        credits:   提现金额 
+        alipay_no: 支付宝账号
+        bank_name: 银行名称
+        bank_no:   银行账号
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
@@ -1292,7 +1298,8 @@ zh:
       rejected: "未通过"
       agreed: "即将执行"
       executing: "执行中"
-      executed: "已完成"
+      executed: "已完成未结算"
+      settled: "已结算"
       share: "分享次数"
       click: "点击次数"
       cost: "已扣/预算 (￥)"

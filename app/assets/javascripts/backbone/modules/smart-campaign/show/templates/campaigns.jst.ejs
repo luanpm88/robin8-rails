@@ -28,8 +28,10 @@
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.agreed') %></td>
             <% } else if (c.status == 'executing') { %>
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.executing') %></td>
-            <% } else { %>
+            <% } else if (c.status == 'executed') { %>
               <td class="middle col-md-1"><%= polyglot.t('smart_campaign.executed') %></td>
+            <% } else  { %>
+              <td class="middle col-md-1"><%= polyglot.t('smart_campaign.settled') %></td>
             <% } %>
             <td class="middle col-md-1"><%= c.get_share_time %></td>
             <td class="middle col-md-1"><%= c.get_avail_click %></td>

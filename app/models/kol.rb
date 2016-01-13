@@ -18,6 +18,7 @@ class Kol < ActiveRecord::Base
   has_many :kol_profile_screens
   has_many :interested_campaigns
   after_create :create_campaign_invites_after_signup
+  after_save :update_click_threshold
 
   def email_required?
     false if self.provider != "signup"
@@ -277,5 +278,18 @@ class Kol < ActiveRecord::Base
 
   def create_campaign_invites_after_signup
     CampaignSyncAfterSignup.perform_async(self.id)
+  end
+
+
+  def self.fetch_kol(kol_id)
+    Rails.cache.fetch("kol_#{kol_id}", :expires_in => 1.days) do
+      Kol.find(kol_id)
+    end    rescue nil
+  end
+
+  def update_click_threshold
+    if five_click_threshold_changed? || total_click_threshold_changed?
+      Rails.cache.delete("kol_#{self.id}")
+    end
   end
 end

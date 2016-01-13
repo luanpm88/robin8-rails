@@ -1,0 +1,123 @@
+
+<div class="contact">
+  <header class="int-header">
+    <%= render :partial => "pages/partials/menu"%>
+    <%= render :partial => "pages/partials/page_banner", :locals => { :header => '提现申请'}%>
+  </header>
+
+  <div class="int-content">
+    <div class="row">
+      <% if flash[:from].present? %>
+        <h3 style="text-align: center;"><%= flash[:from] %></h3><br>
+      <% end %>
+    </div>
+
+    <div class="row ">
+      <!-- SIDEBAR -->
+      <div class="small-12 columns contact-form">
+        <% if flash[:notice].present? %>
+          <div class="alert-success" style="text-align: center">
+            <%=flash[:notice]%>
+          </div>
+        <% end %>
+
+        <div class="alert-errlr">
+          <% @withdraw.errors.full_messages.each do |message| %>
+             <%= message %>
+          <% end %>
+        </div>
+
+        <%= form_tag '/withdraw_apply', :method => 'post' do %>
+          <div class="row">
+            <div class="columns small-12">
+              <div class="row" style="margin: 10px  0px">
+                <div class="columns small-12 form-group">
+                  <label>
+                    当前用户: <%= current_kol.first_name %><%= current_kol.last_name %>
+                  </label>
+                </div>
+              </div>
+              <div class="row" style="margin: 10px  0px">
+                <div class="columns small-12 form-group">
+                  <label>
+                    可用余额: <%= current_kol.avail_amount %>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="columns small-12 form-group">
+                  <label>
+                    <input type="text" placeholder="真实姓名" class="form-control col-sm-12" required="" name="withdraw[real_name]"></label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="columns small-12 form-group">
+                  <label>
+                    <input type="number" placeholder="提现金额" class="form-control col-sm-12" required="" name="withdraw[credits]"></label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="columns small-12 form-group">
+                  <label>
+                    <input id="checkbox1" type="radio" name="withdraw[withdraw_type]" value="alipay" checked="checked"><label for="checkbox1">提现到支付宝</label>
+                    <input id="checkbox1" type="radio" name="withdraw[withdraw_type]" value="bank"><label for="checkbox1">提现到银行</label>
+                  </label>
+                </div>
+              </div>
+              <div class="alipay-box account-box">
+                <div class="row">
+                  <div class="columns small-12 form-group">
+                    <label>
+                      <input type="text" placeholder="支付宝账号" class="form-control col-sm-12"  name="withdraw[alipay_no]">
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bank-box hide account-box">
+                <div class="row">
+                  <div class="columns small-12 form-group">
+                    <label>
+                      <input type="text" placeholder="银行名称" class="form-control col-sm-12"  name="withdraw[bank_no]">
+                    </label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="columns small-12 form-group">
+                    <label>
+                      <input type="text" placeholder="银行账号" class="form-control col-sm-12"  name="withdraw[bank_name]">
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="columns small-12 form-group">
+                  <label>
+                    <textarea rows="4" class="form-control" id="message"  name="withdraw[remark]" placeholder="其他备注"></textarea>
+                  </label>
+                </div>
+              </div>
+              <div class="errorwarning">
+                <p><%= @l.t('contact_page.form.fill_out') %></p>
+              </div>
+              <div class="submit-wrap">
+                <%= submit_tag "提交", :class => "button button-signup" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+     $("input[type='radio']").click(function(){
+       $(".account-box").addClass('hide');
+       var checked_value =  $(this).val();
+       $("." + checked_value + "-box").removeClass("hide");
+     })
+  })
+</script>
