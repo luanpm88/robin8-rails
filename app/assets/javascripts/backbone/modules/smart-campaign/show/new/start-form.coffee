@@ -78,6 +78,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         $(".campaign_name_input").focus()
 
     initCreateCampaignModal: ->
+      if @model.attributes.per_post_budget != null
+        $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
+      else if @model.attributes.per_click_budget != null
+        $('input:radio[name="action_type"]').filter('[value=click]').prop('checked', true)
+      else
+        $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
+
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
         $("#create-campagin").prop("disabled", false)
         $("#create-campagin").removeClass("disabled")
@@ -88,6 +95,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       parentThis.model.attributes.deadline = $(".campaign_deadline_input").val()
       parentThis.model.attributes.start_time = $(".campaign_start_time_input").val()
       parentThis.model.attributes.img_url = $('input[name=img_url]').val()
+      if $('input[name=per_click_budget]').val()
+        parentThis.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
+
+
       parentThis.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
       parentThis.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()

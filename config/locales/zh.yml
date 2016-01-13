@@ -1346,6 +1346,7 @@ zh:
         description: 活动描述不能为空
         url: 活动链接不能为空
         budget: 活动预算不能为空
+        per_budget_type: 类型 
         per_click_budget: 活动点击预算不能为空
         budget_should_be_digit: 活动预算只能包含数字
         per_click_budget_should_be_digit: 只能包含数字
