@@ -8,7 +8,7 @@ class CampaignShow < ActiveRecord::Base
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
     now = Time.now
     # check campaign status
-    if campaign.status == 'executed'
+    if campaign.status == 'executed'  ||  campaign.status == 'settled'
       return [false, 'campaign_had_executed']
     end
 
@@ -17,9 +17,8 @@ class CampaignShow < ActiveRecord::Base
     #   return [false, 'campaign_invite_not_approved']
     # end
 
-    store_key =  visitor_cookies + campaign.id
+    store_key = visitor_cookies.to_s + campaign.id.to_s
     # check_cookie?
-    store_key = visitor_cookies
     if Rails.cache.read(store_key)
       return [false, 'cookies_visit_fre']
     else
@@ -58,7 +57,11 @@ class CampaignShow < ActiveRecord::Base
     info = JSON.parse(Base64.decode64(uuid))   rescue {}
     campaign = Campaign.find info['campaign_id']  rescue nil
     campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil
-    return false if campaign_invite.nil?  ||  campaign.nil?   || campaign_invite.status == 'running'
+    if campaign_invite.nil?  ||  campaign.nil?   || campaign_invite.status == 'running'
+      Rails.logger.campaign_show_sidekiq.info "---------CampaignShow return: --uuid:#{uuid}---status:#{campaign_invite.status}---"
+      return false
+    end
+
     status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
     CampaignShow.create!(:kol_id => info['kol_id'], :campaign_id => info['campaign_id'], :visitor_cookie => visitor_cookies,
                         :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip,

@@ -73,7 +73,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    (self.passed_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
+    (self.finished_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
   end
 
   def remain_budget
@@ -197,6 +197,7 @@ class Campaign < ActiveRecord::Base
     return if self.status != 'executed'
     ActiveRecord::Base.transaction do
       self.passed_invites.each do |invite|
+        kol = invite.kol
         invite.update_column(:status, 'settled')
         kol.income(invite.avail_click * campaign.per_click_budget, 'campaign', campaign, campaign.user)
         Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{campaign.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * campaign.per_click_budget}-- after avail_amount:#{kol.avail_amount}"

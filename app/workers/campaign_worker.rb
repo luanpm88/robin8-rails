@@ -27,7 +27,7 @@ class CampaignWorker
     elsif job_type == 'settle_accounts_for_kol'
       campaign.settle_accounts_for_kol
     elsif job_type == 'settle_accounts_for_brand'
-      campaign.second_settle_accounts_for_brand
+      campaign.settle_accounts_for_brand
     end
   end
 
