@@ -26,7 +26,7 @@ ActiveAdmin.register Campaign do
     end
   end
 
-  permit_params :name, :budget, :start_time, :deadline, :per_click_budget
+  permit_params :name, :budget, :start_time, :deadline, :per_click_budget, :per_budget_type
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -63,7 +63,7 @@ ActiveAdmin.register Campaign do
     column :budget
     column :status
     column "mode" do |my_resource|
-      my_resource.per_budget_type == "click" ? 'Per click' : 'Per Post' 
+      my_resource.per_budget_type == "click" ? 'Per click' : 'Per Post'
     end
     column "Spent" do |my_resource|
       my_resource.take_budget
@@ -85,6 +85,7 @@ ActiveAdmin.register Campaign do
     f.inputs "Post" do
       f.input :name
       f.input :budget
+      f.input :per_budget_type, as: :select, collection: ['post', 'click']
       f.input :per_click_budget
       f.input :start_time
       f.input :deadline
