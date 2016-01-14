@@ -10,7 +10,7 @@ class CampaignShowController < ApplicationController
     if @campaign && @campaign.status == 'agreed'
       redirect_to @campaign.url
     elsif @campaign
-      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip)
+      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer)
       redirect_to @campaign.url
     end
   end

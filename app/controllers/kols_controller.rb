@@ -6,12 +6,7 @@ class KolsController < ApplicationController
   end
 
   def get_score
-    total = 0
-    CampaignInvite.where(kol_id: current_kol.id, status: 'finished').each do |x|
-      click = x.avail_click
-      per_click = x.campaign.per_click_budget
-      total += per_click * click
-    end
+    total = current_kol.avail_amount.to_f
 
     render :json => current_kol.all_score.merge({
       :upcoming => CampaignInvite.where(kol_id: current_kol.id, status: 'running').count,
@@ -207,7 +202,7 @@ class KolsController < ApplicationController
       if Kol.check_mobile_number phone_number
         render json: {not_unique: true}
       else
-        sms_client = Yunpian::SmsClient.new(phone_number)
+        sms_client = YunPian::SendRegisterSms.new(phone_number)
         res = sms_client.send_sms
         render json: res
       end

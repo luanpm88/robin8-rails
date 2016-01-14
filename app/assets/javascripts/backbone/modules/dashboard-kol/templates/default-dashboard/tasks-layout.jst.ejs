@@ -6,6 +6,7 @@
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a id='upcoming' href="#"><%= polyglot.t('dashboard_kol.default.upcoming') %></a></li>
       <li role="presentation"><a id='running' href="#"><%= polyglot.t('dashboard_kol.default.running') %></a></li>
+      <li role="presentation"><a id='verify' href="#">待审核</a></li>
       <li role="presentation"><a id='complete' href="#"><%= polyglot.t('dashboard_kol.default.complete') %></a></li>
     </ul>
   </div>
@@ -13,7 +14,7 @@
 
   </div>
   <p class='loadMoreP'> <a class='loadMore btn btn-small btn-primary' style='margin-top:10px' href='#'><i class='glyphicon glyphicon-refresh'>&nbsp;加载更多</i></a> </p>
-  <div class="alert alert-warning noMore" style='display: none;' role="alert">
+  <div class="alert alert-warning noMore" role="alert">
     没有更多数据
   </div>
   <img class='loadingOfTasks' src="<%= AppAssets.path('loaders/puff.svg') %>" style='display: block;margin: 0 auto;'>

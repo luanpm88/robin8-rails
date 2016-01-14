@@ -10,34 +10,23 @@ class CampaignInviteController < ApplicationController
   end
 
   def update
-    invite = []
-    unless params[:campaign_id].blank?
-      invite = CampaignInvite.where(:campaign_id => params[:campaign_id], :kol_id=>current_kol.id)
-      invite = invite.first
+    invite = CampaignInvite.find params[:id]
+    invite_params = params.require(:campaign_invite).permit(:screenshot)
+
+    if invite.screenshot.present?
+      invite.reupload_screenshot invite_params[:screenshot]
     else
-      invite = CampaignInvite.find(params[:id])
+      invite.update_attributes invite_params
     end
-    if invite.kol != current_kol
-      render json: {errors: {permission_denied: 'You must be authorized'}}, :status => :unauthorized
-    else
-      invite.status = params[:status]
-      if params[:status] == "D"
-        invite.decline_date = DateTime.now()
-      end
-      invite.save
-      if params[:status] == "A"
-        a = Article.new(kol_id: current_kol.id, campaign_id: invite.campaign.id)
-        a.save
-      end
-      render json: invite
-    end
+
+    render :json => invite
   end
 
   def mark_as_running
     @kol = current_kol
     return render :json => {error: 'no available kol!'} if @kol.blank?
 
-    @campaign_invite = CampaignInvite.where(kol_id: @kol.id, campaign_id: params[:campaign_id]).first
+    @campaign_invite = CampaignInvite.find params[:id]
 
     return render :json => {status: 'needMobile'} unless @kol.mobile_number.present?
 
@@ -46,7 +35,6 @@ class CampaignInviteController < ApplicationController
     end
 
     return render :json => {status: 'ok'}
-
   end
 
   def interface
@@ -61,31 +49,74 @@ class CampaignInviteController < ApplicationController
                'approved'
              when 'complete'
                'finished'
+             when 'verify'
+               'verify'
              else
                'error'
              end
 
     return render :json => {error: 'error type!'} if status.eql?('error')
 
-    campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
-
-    #TODO refactor
-    limit = params[:limit] || 3
-    offset = params[:offset] || 0
-    campaign_invites_by_limit_and_offset = campaigns_by_status.limit(limit).offset(offset)
-    result = campaign_invites_by_limit_and_offset.map do |x|
-      obj = x.campaign.attributes
-      obj['budget'] = obj['budget'].round(2)
-      obj['per_click_budget'] = obj['per_click_budget'].round(2)
-      obj['campaign_invite_id'] = x.id
-      obj['status'] = x.status
-      obj['share_url'] = x.share_url
-      obj['remain_budget'] = x.campaign.remain_budget
-      obj['avail_click'] = x.get_avail_click
-      obj['img_url'] = ActionController::Base.helpers.asset_path('noavatar.jpg') unless obj['img_url'].present?
-      obj
+    if status.eql? 'verify'
+      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).order('updated_at desc')
+    elsif status.eql? 'finished'
+      campaigns_by_status = @kol.campaign_invites.where(img_status: 'passed', status: ['finished', 'settled']).order('created_at desc')
+    else
+      campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
     end
 
-    return render :json => result
+    limit = params[:limit] || 3
+    offset = params[:offset] || 0
+    campaign_invites_by_limit_and_offset = campaigns_by_status.offset(offset.to_i).limit(limit.to_i)
+
+    render json: campaign_invites_by_limit_and_offset, each_serializer: CampaignInviteSerializer
+  end
+
+  def change_img_status
+    campaign_invite_id = params[:id]
+    @campaign_invite = CampaignInvite.find campaign_invite_id
+    mobile_number = @campaign_invite.kol.mobile_number
+    if params[:status] == "agree"
+      @campaign_invite.screenshot_pass
+      if @campaign_invite.img_status == 'passed'
+        return render json: { result: 'agree' }
+      else
+        return render json: { result: 'error' }
+      end
+    end
+    if params[:status] == "reject"
+      @campaign_invite.screenshot_reject
+      if @campaign_invite.img_status == 'rejected'
+        sms_client = YunPian::SendCampaignInviteResultSms.new(mobile_number, params[:status])
+        res = sms_client.send_reject_sms
+        return render json: { result: 'reject' }
+      else
+        return render json: { result: 'error' }
+      end
+    end
+    return render json: { result: 'error' }
+  end
+
+  def change_multi_img_status
+    ids = params[:ids]
+    @campaign_invites = CampaignInvite.find ids
+
+    if params[:status] == "agree"
+      @campaign_invites.each { |c| c.screenshot_pass }
+      return render json: { result: 'agree' }
+    end
+
+    if params[:status] == "reject"
+      mobile_numbers = []
+      @campaign_invites.each do |c|
+        c.screenshot_reject
+        mobile_numbers << c.kol.mobile_number
+      end
+
+      CampaignInviteSmsWorker.perform_async(mobile_numbers, params[:status])
+      return render json: { result: 'reject' }
+    end
+    return render json: { result: 'error' }
+
   end
 end

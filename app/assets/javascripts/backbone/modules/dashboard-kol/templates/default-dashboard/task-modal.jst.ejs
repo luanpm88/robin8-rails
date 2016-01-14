@@ -46,6 +46,8 @@
           <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： ￥<%= Number((item.avail_click * item.per_click_budget).toFixed(2)) %>
         </p>
 
+        <p><i class='glyphicon glyphicon-info-sign'></i>配图: <img src="<%= item.img_url %>" alt="" style='height: 50px;'></p>
+
         <p class="form-control disabled"  id='descAndUrl'><%= item.description %> <%= item.share_url %></p>
         <br />
         <button class='task-modal-btn displayForDesktop' data-clipboard-action="copy" data-clipboard-target="#descAndUrl">复制到剪切板</button>
@@ -53,14 +55,40 @@
         <div class='alert alert-warning displayForMobile' role='alert'>请复制链接分享给你的朋友吧</div>
 
         <% } %>
-
         <h6>来自品牌的消息：</h6>
         <p>
           <%= item.message %>
         </p>
-
         <hr>
+        <% if(item.status=='finished' || item.status=='approved') { %>
+        <h5>提现审核</h5>
+          <p>您需要上传截图，待我们审核通过后，您方可提现</p>
 
+
+          <% if(item.screenshot){ %>
+            <strong>审核状态:</strong>
+            <% if(item.img_status == 'passed') { %>
+              <span class='label label-success'>审核通过</span>
+            <% } %>
+            <% if(item.img_status == 'rejected') { %>
+              <span class='label label-danger'>审核未通过, 请您重新上传截图供审核</span>
+            <% } %>
+            <% if(item.img_status == 'pending') { %>
+              <span class='label label-warning'>待审核</span>
+            <% } %>
+          <% } %>
+
+          <form action="">
+            <div id='screenshot-container'>
+              <% if(item.screenshot) { %>
+                <img src="<%= item.screenshot + '-400' %>" id='show-screenshot' alt="">
+              <% } %>
+              <input type='text' id='screenshot' name='screenshot' value='' hidden>
+              <input type='button' id='upload-screenshot' class='btn btn-primary' value='上传截图'>
+            </div>
+          </form>
+        <hr>
+        <% } %>
         <p>
           <% if(item.status=='running'){ %>
             注意：请点击「接受」按钮接受这次活动
@@ -70,11 +98,12 @@
         <% if(item.status=='approved' && !Robin.mobileRequest){ %>
           <div>
             打开微信扫一扫即可分享
-            <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + item.campaign_invite_id  %>'/>
+            <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + item.id  %>'/>
           </div>
         <% } %>
 
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
         <% if(item.status=='running') { %>

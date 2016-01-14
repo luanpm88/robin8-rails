@@ -1,5 +1,6 @@
 class IntegrationWithDataEngineWorker
   include Sidekiq::Worker
+  sidekiq_options :retry => 3
 
   def perform spider_type, identity_id
     IntegrationWithDataEngineWorker.spider_weibo_data spider_type, identity_id
