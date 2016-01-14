@@ -1,7 +1,7 @@
 ActiveAdmin.register Kol do
   actions :all, :except => [:destroy]
 
-  permit_params :email, :first_name, :last_name, :mobile_number, :gender, :receive_campaign_time, :five_click_threshold,
+  permit_params :email, :first_name, :last_name, :mobile_number, :gender, :forbid_campaign_time, :five_click_threshold,
                 :total_click_threshold
 
   member_action :show_recharge, :method => :get

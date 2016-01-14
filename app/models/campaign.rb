@@ -77,7 +77,7 @@ class Campaign < ActiveRecord::Base
     if self.status == 'settled'
       (self.settled_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
     else
-      (self.finished_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
+      (get_avail_click * self.per_click_budget).round(2)       rescue 0
     end
   end
 

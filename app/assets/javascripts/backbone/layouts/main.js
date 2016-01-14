@@ -8,7 +8,8 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
   },
 
   events: {
-    'click #sign-out': 'signOut'
+    'click #sign-out': 'signOut',
+    'click .dropdown-menu li': 'hide_menu'
   },
 
   onShow: function(options) {
@@ -41,6 +42,10 @@ Robin.Views.Layouts.Main = Backbone.Marionette.LayoutView.extend({
         type: 'success'
       });
     });
+  },
+
+  hide_menu: function() {
+    $('.navbar-toggle').click();
   }
 
 });
