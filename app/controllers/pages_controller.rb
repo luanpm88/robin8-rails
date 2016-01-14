@@ -97,6 +97,10 @@ class PagesController < ApplicationController
     render :layout => "website"
   end
 
+  def screenshot_sample
+    render :layout => 'website'
+  end
+
   def withdraw_apply
     if request.get?
       @withdraw = Withdraw.new

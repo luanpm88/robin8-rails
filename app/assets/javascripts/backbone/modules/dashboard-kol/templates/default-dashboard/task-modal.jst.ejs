@@ -60,7 +60,7 @@
         <hr>
         <% if(item.status=='finished' || item.status=='approved') { %>
         <h5>提现审核</h5>
-          <p>您需要上传截图，待我们审核通过后，您方可提现</p>
+          <p>您需要上传任务截图，待审核通过后，您方可提现 <a href="/screenshot_sample">查看范例</a></p>
 
 
           <% if(item.screenshot){ %>
@@ -95,7 +95,7 @@
 
         <% if(item.status=='approved' && !Robin.mobileRequest){ %>
           <div>
-            打开微信扫一扫即可分享
+            打开微信扫一扫
             <img src='http://qr.liantu.com/api.php?w=200&text=<%= Robin.domain + "/campaign_share?id=" + item.id  %>'/>
           </div>
         <% } %>
