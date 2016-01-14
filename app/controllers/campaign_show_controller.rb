@@ -18,12 +18,12 @@ class CampaignShowController < ApplicationController
   def share
     @campaign_invite = CampaignInvite.find_by :id => params[:id]   rescue nil
     @campaign = @campaign_invite.campaign  rescue nil     if @campaign_invite
-    Rails.logger.info "-----show ---#{@campaign.status} --0000--- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-    if @campaign && @campaign.status != 'agreed'
-      CampaignShowWorker.perform_async(@campaign_invite.uuid, cookies[:_robin8_visitor], request.remote_ip)
-    else
-      # render :text => "你访问的Campaign 不存在"
-    end
+    #Rails.logger.info "-----show ---#{@campaign.status} --0000--- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
+    # if @campaign && @campaign.status != 'agreed'
+    #   CampaignShowWorker.perform_async(@campaign_invite.uuid, cookies[:_robin8_visitor], request.remote_ip)
+    # else
+    #   # render :text => "你访问的Campaign 不存在"
+    # end
   end
 
 
