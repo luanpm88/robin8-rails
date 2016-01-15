@@ -91,7 +91,7 @@ class CacheDiscoverWorker
     end
 
     labels.concat custom_labels.flatten
-    labels.uniq
+    labels.uniq.compact
   end
 
   def self.request_discovers_by labels

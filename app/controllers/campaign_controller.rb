@@ -181,7 +181,7 @@ class CampaignController < ApplicationController
 
     campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url)
 
-    unless current_user.avail_amount.to_f >= params[:budget].to_f
+    unless (current_user.avail_amount.to_f + origin_budget.to_f) >= params[:budget].to_f
       render :json => {:status => 'no enough amount!'} and return
     end
 

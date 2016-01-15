@@ -26,7 +26,7 @@ ActiveAdmin.register Campaign do
     end
   end
 
-  permit_params :name, :budget, :start_time, :deadline, :per_action_budget, :per_budget_type
+  permit_params :name, :start_time, :deadline, :per_action_budget, :description, :url, :message, :img_url
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -84,9 +84,17 @@ ActiveAdmin.register Campaign do
   form do |f|
     f.inputs "Post" do
       f.input :name
+<<<<<<< HEAD
       f.input :budget
       f.input :per_budget_type, as: :select, collection: ['post', 'click']
       f.input :per_action_budget
+=======
+      f.input :description
+      f.input :url
+      f.input :message
+      f.input :img_url
+      f.input :per_click_budget
+>>>>>>> master_cn
       f.input :start_time
       f.input :deadline
     end

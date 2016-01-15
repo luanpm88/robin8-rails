@@ -26,7 +26,7 @@ class IntegrationWithDataEngineWorker
       cache_key = "user_feed_ids:#{id}"
       unless Rails.cache.fetch(cache_key)
         new_data << item
-        Rails.cache.write(cache_key, 1, :expires_in => 10.days)
+        Rails.cache.write(cache_key, 1, :expires_in => 1.days)
       end
     end
 

@@ -58,19 +58,16 @@ class CampaignInviteController < ApplicationController
     return render :json => {error: 'error type!'} if status.eql?('error')
 
     if status.eql? 'verify'
-      # to verify task
-      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').order('created_at desc').reject do |x|
-        x.campaign.deadline.next_week < Time.now or x.get_avail_click == 0
-      end
+      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).order('updated_at desc')
     elsif status.eql? 'finished'
-      campaigns_by_status = @kol.campaign_invites.where(status: 'finished', img_status: 'passed').order('created_at desc')
+      campaigns_by_status = @kol.campaign_invites.where(img_status: 'passed', status: ['finished', 'settled']).order('created_at desc')
     else
       campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
     end
 
     limit = params[:limit] || 3
     offset = params[:offset] || 0
-    campaign_invites_by_limit_and_offset = campaigns_by_status.drop(offset.to_i).first(limit.to_i)
+    campaign_invites_by_limit_and_offset = campaigns_by_status.offset(offset.to_i).limit(limit.to_i)
 
     render json: campaign_invites_by_limit_and_offset, each_serializer: CampaignInviteSerializer
   end

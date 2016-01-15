@@ -8,10 +8,12 @@ class Campaign < ActiveRecord::Base
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
-  has_many :valid_invites, -> {where("status='approved' or status='finished'")}, :class_name => 'CampaignInvite'
+  has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
+  has_many :finish_need_check_invites, -> {where(:status => 'finished', :img_status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :passed_invites, -> {where(:status => 'finished', :img_status => 'passed')}, :class_name => 'CampaignInvite'
+  has_many :settled_invites, -> {where(:status => 'settled', :img_status => 'passed')}, :class_name => 'CampaignInvite'
   has_many :campaign_shows
   has_many :kols, through: :campaign_invites
   has_many :approved_kols, through: :valid_invites
@@ -27,14 +29,14 @@ class Campaign < ActiveRecord::Base
 
   after_save :create_job
 
-  SettleWaitTime = Rails.env.production?  ? 7.days  : 5.minutes
-
+  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
+  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
   def email
     user.try :email
   end
 
   def get_stats
-    end_time = (status == 'executed' ? self.deadline : Time.now)
+    end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows
     labels = []
     total_clicks = []
@@ -58,7 +60,8 @@ class Campaign < ActiveRecord::Base
 
 
   def get_avail_click
-    status == 'executed' ? self.avail_click : self.redis_avail_click.value      rescue 0
+    self.redis_avail_click.value      rescue self.avail_click
+    # status == 'executed' ? self.avail_click : self.redis_avail_click.value      rescue 0
   end
 
   def get_total_click
@@ -71,17 +74,21 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    (self.passed_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
+    if self.status == 'settled'
+      (self.settled_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
+    else
+      (get_avail_click * self.per_action_budget).round(2)       rescue 0
+    end
   end
 
   def remain_budget
-    return 0 if status == 'executed'
+    # return 0 if (status == 'executed' || status == 'settled')
     return (self.budget - self.take_budget).round(2)
   end
 
   def get_share_time
     return 0 if status == 'unexecute'
-    status == 'executed' ? self.finished_invites.size : self.valid_invites.size
+    self.valid_invites.size
   end
 
   # 开始时候就发送邀请 但是状态为pending
@@ -150,12 +157,18 @@ class Campaign < ActiveRecord::Base
 
   #finish_remark:  expired or fee_end
   def finish(finish_remark)
-    Rails.logger.campaign_sidekiq.info "-----finish: #{finish_remark}----------"
+    Rails.logger.campaign_sidekiq.info "-----executed: #{finish_remark}----------"
     if Rails.application.config.china_instance  && self.status == 'executing'
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        CampaignWorker.perform_at(Time.now + SettleWaitTime ,self.id, 'settle_accounts')
+        if Rails.env.production?
+          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+        else
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+        end
       end
     end
   end
@@ -165,6 +178,7 @@ class Campaign < ActiveRecord::Base
     self.total_click = self.redis_total_click.value
     self.status = 'executed'
     self.finish_remark = finish_remark
+    self.actual_deadline_time = Time.now
     self.save!
   end
 
@@ -182,20 +196,37 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-  # 结算
-  def settle_accounts
-    Rails.logger.transaction.info "-------- settle_accounts: cid:#{self.id}------status: #{self.status}"
+  # 结算 for kol
+  def settle_accounts_for_kol
+    Rails.logger.transaction.info "-------- settle_accounts_for_kol: cid:#{self.id}------status: #{self.status}"
     return if self.status != 'executed'
+    ActiveRecord::Base.transaction do
+      self.passed_invites.each do |invite|
+        kol = invite.kol
+        invite.update_column(:status, 'settled')
+        kol.income(invite.avail_click * self.per_click_budget, 'campaign', self, self.user)
+        Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.per_click_budget}-- after avail_amount:#{kol.avail_amount}"
+      end
+    end
+  end
+
+  # 结算 for brand
+  def settle_accounts_for_brand
+    Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
+    return if self.status != 'executed'
+    #首先先付款给期间审核的kol
+    settle_accounts_for_kol
+    #没审核通过的设置为拒绝
+    self.finish_need_check_invites.update_all(:img_status => 'rejected')
     ActiveRecord::Base.transaction do
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-      pay_total_click = self.passed_invites.sum(:avail_click)
+      pay_total_click = self.settled_invites.sum(:avail_click)
       self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
       Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
     end
   end
-
 
   def reset_campaign(origin_budget,new_budget, new_per_action_budget)
     Rails.logger.campaign.info "--------reset_campaign:  ---#{self.id}-----#{self.inspect} -- #{origin_budget}"
