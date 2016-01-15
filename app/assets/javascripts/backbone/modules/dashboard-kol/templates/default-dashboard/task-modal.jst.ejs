@@ -9,9 +9,6 @@
         <h5>活动详情: </h5>
         <p><a target='_blank' href="<%= item.url %>">查看原文</a></p>
 
-        <% if(needMobile){ %>
-          <div class='alert alert-warning'>您还未绑定手机号码，请：<a class='btn btn-primary fixup-profile' href='/#/dashboard/profile'>完善资料</a></div>
-        <% } %>
         <p>
           <i class='glyphicon glyphicon-exclamation-sign'></i> 接受状态：
           <% if(item.status=='running'){ %>
@@ -78,7 +75,12 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
         <% if(item.status=='running') { %>
-          <a class='triggerMark btn btn-primary'><i class='glyphicon glyphicon-ok'></i>&nbsp;接受</a>
+          <% if(needComplete){ %>
+            <a class='triggerMark btn disabled' disabled="disabled"><i class='glyphicon glyphicon-ok'></i>&nbsp;接受</a>
+            <a class='triggerComplete btn btn-primary'><i class='glyphicon glyphicon-ok'></i>&nbsp;完善资料</a>
+          <% }else{ %>
+            <a class='triggerMark btn btn-primary'><i class='glyphicon glyphicon-ok'></i>&nbsp;接受</a>
+          <% }%>
         <% } %>
       </div>
     </div>

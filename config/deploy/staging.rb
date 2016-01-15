@@ -17,7 +17,7 @@
 
 if ENV['china_instance'] == 'Y'
   server '139.196.36.27', user: 'deployer', roles: %w{web app db}
-  set :branch, 'ROBIN8CN-243_remove_useless_file'
+  set :branch, 'development_cn'
 else
 
 end

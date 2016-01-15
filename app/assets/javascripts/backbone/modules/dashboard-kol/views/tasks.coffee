@@ -11,18 +11,19 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       loading: '.loadingOfTasks'
       loadMore: '.loadMore'
       noMore: '.noMore'
-      complete: "#complete"
+      complete_modal: "#complete_modal"
 
     events:
       'click .tasks-nav li': 'switchTab'
       'click .loadMore': 'loadMore'
       'click .cam-item': 'viewOrShareItem'
-      'click @ui.complete': 'complete'
 
-    complete: ()->
+    triggerComplete: ()->
+      $('#taskModal').modal('hide')
       @base_modal = new Show.ProfileBaseModal
-        model: new Robin.Models.KolProfile App.currentKOL.attributes
+        model: @current_kol
         parent: this
+      this.getRegion('complete_modal')
       @showChildView 'complete_modal', @base_modal
       $("#profile-base-modal").modal('show')
 
@@ -43,6 +44,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       model = collection.get(model_id)
       modalView = new Show.TaskModal
         model: model
+        parent: this
       @getRegion('modal').show modalView
 
     loadMore: (e) ->
@@ -114,48 +116,59 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     events:
       'click .triggerMark': 'markAsRunning'
       'click .fixup-profile': 'fixupProfile'
+      'click .triggerComplete': 'triggerComplete'
 
     fixupProfile: (e) ->
       $('#taskModal').modal('hide')
 
     initialize: (opts) ->
       @model = opts.model
+      @parent = opts.parent
+      @current_kol = new Robin.Models.KolProfile App.currentKOL.attributes
       @needMobile = opts.needMobile
+      if @current_kol.attributes.category_size == 0 || @current_kol.attributes.mobile_number == ""
+        @needComplete = true
+      else
+        @needComplete = false
 
     serializeData: () ->
       item: @model.toJSON()
       start_at: @format_date(@model.get('start_time'))
       end_at: @format_date(@model.get('deadline'))
       needMobile: @needMobile
+      needComplete: @needComplete
 
     format_date: (date) ->
       localDate = new Date(date)
       formatted_date = localDate.getFullYear() + '年' + (localDate.getMonth() + 1) + '月' + localDate.getDate() + '日' + localDate.getHours() + '时' + localDate.getMinutes() + '分'
 
+    triggerComplete: (e) ->
+      @parent.triggerComplete()
+
     markAsRunning: (e) ->
       e.preventDefault()
       parentThis = @
       $.ajax
-          type: 'get'
-          url: '/mark_as_running/' + @model.get('id')
-          dataType: 'json'
-          success: (data) ->
-            if data.status == 'ok'
-              parentThis.model.collection.remove parentThis.model
-              $('a#running').append('<span class="badge">1</span>')
-              parentThis.model.set('status', 'approved')
-              updatedView = new Show.TaskModal
-                model: parentThis.model
-              updatedViewHtml = updatedView.render().$el
-              parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
-              $('.triggerMark').remove()
-            else if data.status == 'needMobile'
-              console.log 'need mobile'
-              updatedView = new Show.TaskModal
-                model: parentThis.model
-                needMobile: true
-              updatedViewHtml = updatedView.render().$el
-              parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+        type: 'get'
+        url: '/mark_as_running/' + @model.get('id')
+        dataType: 'json'
+        success: (data) ->
+          if data.status == 'ok'
+            parentThis.model.collection.remove parentThis.model
+            $('a#running').append('<span class="badge">1</span>')
+            parentThis.model.set('status', 'approved')
+            updatedView = new Show.TaskModal
+              model: parentThis.model
+            updatedViewHtml = updatedView.render().$el
+            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+            $('.triggerMark').remove()
+          else if data.status == 'needMobile'
+            console.log 'need mobile'
+            updatedView = new Show.TaskModal
+              model: parentThis.model
+              needMobile: true
+            updatedViewHtml = updatedView.render().$el
+            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
 
     onShow: () ->
       $('#taskModal').modal()

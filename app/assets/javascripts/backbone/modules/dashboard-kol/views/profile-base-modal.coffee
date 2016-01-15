@@ -46,13 +46,14 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @target = target
       @industries = @target["cn_industries"]
       @model = new Robin.Models.KolProfile App.currentKOL.attributes
+      @attrs = @model.attributes
+
 
     onRender: ->
+      console.log "ProfileBaseModal"
       _.defer =>
-        @initKolSelect2()
-       # I❤js
-      _.defer =>
-        @initFormValidation()
+        if @attrs.category_size == 0
+          @initKolSelect2()
 
     initKolSelect2: ->
       console.log "initKolSelect2"
@@ -107,63 +108,40 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           $("#kol_interests").trigger 'change'
 
 
-    initFormValidation: ->
-      @ui.form.formValidation(
-        framework: 'bootstrap'
-        excluded: [
-          ':hidden'
-          ':disabled'
-        ]
-        icon:
-          valid: 'glyphicon glyphicon-ok'
-          invalid: 'glyphicon glyphicon-remove'
-          validating: 'glyphicon glyphicon-refresh'
-      ).on('err.field.fv', (e, data) ->
-          data.element.parents('.cell').addClass 'has-error'
-      ).on('success.field.fv', (e, data) ->
-          data.element.parents('.cell').removeClass 'has-error'
-      )
-
     serializeData: ->
       _.extend @target,
         k: @model.toJSON()
         industries: @industries
 
-    validate: ->
-      @ui.form.data('formValidation').validate()
 
     save: ->
       parentThis = this
-      @validate()
-      if @ui.form.data('formValidation').isValid()
+      if @attrs.category_size == 0
+        if $("#kol_interests").val() == 'Interests' ||   $("#kol_interests").val() == ''
+          $('.select2-container .select2-choices').css 'border-color': 'red'
+          $('.not_unique_number').show()
+          $('.not_unique_number').siblings().hide()
+        else
+          parentThis.model.attributes.interests = $("#kol_interests").val()
+      if !@attrs.mobile_number
         phone_number = $('#mobile').val().trim()
         verify_code = $('.verify-code').val().trim()
-
         if phone_number && verify_code
-          $.ajax(
-            method: 'POST'
-            url: '/kols/valid_verify_code'
-            beforeSend: (xhr) ->
-              xhr.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
-              return
-            data: 'phone_number': phone_number,'verify_code': verify_code).done (data) ->
-              if data['valid']
-                parentThis.save_kol()
-              else
-                $.growl "手机号码和验证码不匹配，请重新输入", {type: "danger"}
+          parentThis.model.attributes.mobile_number = phone_number
+          parentThis.submit_kol()
         else if phone_number
-          if @initial_attrs.mobile_number != phone_number
-            $.growl "请输入手机验证码", {type: "danger"}
-          else
-            this.save_kol()
+          $.growl "请输入手机验证码", {type: "danger"}
         else
-          if phone_number
-            this.save_kol()
-          else
-            $.growl "手机号码不能为空", {type: "danger"}
+          $.growl "手机号码不能为空", {type: "danger"}
+      else
+        parentThis.submit_kol()
 
-    save_kol: ->
-      element.scrollIntoView(false)
+    submit_kol: ()->
+      console.log "submit_kol"
+      @model.save @model.attributes,
+        success: (m, r) =>
+          window.location.href= '/'
+          $.growl(polyglot.t('dashboard_kol.profile_tab.save_success'), {type: "success"})
 
     send_sms: ->
       phone_number = $('#mobile').val().trim()
