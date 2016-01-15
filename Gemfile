@@ -48,6 +48,8 @@ gem 'redis-rails'
 gem 'rest-client'
 gem "typhoeus"
 
+gem 'mongoid', '~> 5.0.0'
+
 # Send notification when error occur
 gem 'exception_notification'
 
@@ -168,6 +170,7 @@ group :development, :test do
   gem 'byebug'
 
   gem 'rspec-rails'
+  gem 'shoulda-matchers', '~> 3.0'
   gem 'rspec-activemodel-mocks'
   gem 'factory_girl_rails'
   gem 'database_cleaner'

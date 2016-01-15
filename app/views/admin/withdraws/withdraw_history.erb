@@ -1,0 +1,132 @@
+<div><% count =  @transactions.count %></div>
+<div><h1> 流水历史记录 </h1></div>
+<div>
+  <table border="1">
+  <tr>
+    <th>类型</th>
+    <th>品牌</th>
+    <th>名称</th>
+    <th>开始时间</th>
+    <th>结束时间</th>
+    <th>模式(cpc/ppp)</th>
+    <th>单价</th>
+
+    <th>有效点击</th>
+    <th>总点击</th>
+    <th>获取金额</th>
+
+    <th>余额</th>
+  </tr>
+  <% count.times do |i| %>
+    <% if @campaigns[i] &&  @campaign_invites[i] && @user_names[i] %>
+      <tr>
+        <td>
+          活动收入
+        </td>
+
+        <td>
+          <%= @user_names[i] %>
+        </td>
+
+        <td>
+          <%= @campaigns[i].name %>
+        </td>
+
+        <td>
+          <%= @campaigns[i].start_time %>
+        </td>
+
+        <td>
+          <%= @campaigns[i].deadline %>
+        </td>
+
+        <td>
+          模式
+        </td>
+
+        <td>
+          <%= @campaigns[i].per_click_budget %>
+        </td>
+
+        <td>
+          <%= @campaign_invites[i].avail_click %>
+        </td>
+
+        <td>
+          <%= @campaign_invites[i].total_click %>
+        </td>
+
+        <td>
+          <%= @campaigns[i].per_click_budget * @campaign_invites[i].avail_click %>
+        </td>
+
+
+        <td>
+          <% if @transactions[i].present? %>
+            <%= @transactions[i].avail_amount.to_s %>
+          <% end %>
+
+        </td>
+
+      </tr>
+    <% else %>
+      <tr style="background-color: #5DAC81">
+        <td>
+          提现
+        </td>
+
+        <td>
+          -
+        </td>
+
+        <td>
+          -
+        </td>
+
+        <td>
+          -
+        </td>
+
+        <td>
+          <%= @transactions[i].created_at %>
+        </td>
+
+        <td>
+          -
+        </td>
+
+        <td>
+          -
+        </td>
+
+        <td>
+          -
+        </td>
+
+        <td>
+          -
+        </td>
+
+        <td>
+          <%= @transactions[i].credits %>
+        </td>
+
+
+        <td>
+          <% if @transactions[i].present? %>
+            <%= @transactions[i].avail_amount.to_s %>
+          <% end %>
+
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+</div>
+
+
+<style>
+  table tr th {
+    font-size: 20px;
+  }
+</style>

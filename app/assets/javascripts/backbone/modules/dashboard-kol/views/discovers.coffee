@@ -4,6 +4,18 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
     tagName: 'li'
     className: 'discover-item'
 
+    events:
+      'click a': 'trackViewRecord'
+
+    trackViewRecord: (e) ->
+      discoverId = $(e.target).data('id')
+      kolId = Robin.currentKOL.get('id')
+      discoverRecord = new Robin.Models.DiscoverRecord {kol_id: kolId, discover_id: discoverId}
+      discoverRecord.save
+        success: (model, res, opts) =>
+          console.log 'track success'
+        error: =>
+          console.log 'tract error...'
 
   Show.DiscoversLayout = Backbone.Marionette.CompositeView.extend
     template: 'modules/dashboard-kol/templates/default-dashboard/discovers-layout'
