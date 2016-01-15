@@ -97,10 +97,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       parentThis.model.attributes.start_time = $(".campaign_start_time_input").val()
       parentThis.model.attributes.img_url = $('input[name=img_url]').val()
       if $('input:radio[name="action_type"]').filter('[value=post]').is(":checked")
-        parentThis.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
+        parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
         parentThis.model.attributes.per_budget_type = "post"
       if $('input:radio[name="action_type"]').filter('[value=click]').is(":checked")
-        parentThis.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
+        parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
         parentThis.model.attributes.per_budget_type = "click"
       parentThis.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
@@ -236,18 +236,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               #         return false
               #       error: ->
               #         return false
-          per_click_budget:
+          per_action_budget:
             validators:
               notEmpty:
-                message: polyglot.t('smart_campaign.validation.per_click_budget')
+                message: polyglot.t('smart_campaign.validation.per_action_budget')
               greaterThan:
                 inclusive: false
                 value: 0
-                message:  polyglot.t('smart_campaign.validation.per_click_budget_should_greater_than_zero')
+                message:  polyglot.t('smart_campaign.validation.per_action_budget_should_greater_than_zero')
               numeric:
-                message: polyglot.t('smart_campaign.validation.per_click_budget_should_be_digit')
+                message: polyglot.t('smart_campaign.validation.per_action_budget_should_be_digit')
               callback:
-                message: polyglot.t('smart_campaign.validation.per_click_budget_should_less_than_budget')
+                message: polyglot.t('smart_campaign.validation.per_action_budget_should_less_than_budget')
                 callback: (value, validator, $field) ->
                   if Number(value) > Number($(".budget_input").val())
                     return false

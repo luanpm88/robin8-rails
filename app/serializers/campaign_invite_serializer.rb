@@ -5,7 +5,7 @@ class CampaignInviteSerializer < ActiveModel::Serializer
     :start_time,
     :deadline,
     :avail_click,
-    :per_click_budget,
+    :per_action_budget,
     :remain_budget,
     :share_url,
     :description,
@@ -32,8 +32,8 @@ class CampaignInviteSerializer < ActiveModel::Serializer
     object.get_avail_click
   end
 
-  def per_click_budget
-    object.campaign.per_click_budget.round 2
+  def per_action_budget
+    object.campaign.per_action_budget.round 2
   end
 
   def remain_budget

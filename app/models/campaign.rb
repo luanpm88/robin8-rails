@@ -71,7 +71,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    (self.passed_invites.sum(:avail_click) * self.per_click_budget).round(2)       rescue 0
+    (self.passed_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
   end
 
   def remain_budget
@@ -134,7 +134,7 @@ class Campaign < ActiveRecord::Base
   def go_start
     Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
     ActiveRecord::Base.transaction do
-      self.update_column(:max_click, (budget.to_f / per_click_budget.to_f).to_i)
+      self.update_column(:max_click, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
       self.pending_invites.update_all(:status => 'running')
     end
@@ -191,13 +191,13 @@ class Campaign < ActiveRecord::Base
       self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
       pay_total_click = self.passed_invites.sum(:avail_click)
-      self.user.payout((pay_total_click * self.per_click_budget) , 'campaign', self )
-      Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_click_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+      self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
+      Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
     end
   end
 
 
-  def reset_campaign(origin_budget,new_budget, new_per_click_budget)
+  def reset_campaign(origin_budget,new_budget, new_per_action_budget)
     Rails.logger.campaign.info "--------reset_campaign:  ---#{self.id}-----#{self.inspect} -- #{origin_budget}"
     self.user.unfrozen(origin_budget.to_f, 'campaign', self)
     Rails.logger.transaction.info "-------- reset_campaign:  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
@@ -235,7 +235,7 @@ class Campaign < ActiveRecord::Base
   def self.add_test_data
     if !Rails.env.production?
       u = User.find 81
-      Campaign.create(:user => u, :budget => 1, :per_click_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
+      Campaign.create(:user => u, :budget => 1, :per_action_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
       :url => "http://www.baidu.com", :name => 'test')
     end
   end

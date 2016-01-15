@@ -9,7 +9,7 @@ class KolsController < ApplicationController
     total = 0
     CampaignInvite.where(kol_id: current_kol.id, status: 'finished').each do |x|
       click = x.avail_click
-      per_click = x.campaign.per_click_budget
+      per_click = x.campaign.per_action_budget
       total += per_click * click
     end
 

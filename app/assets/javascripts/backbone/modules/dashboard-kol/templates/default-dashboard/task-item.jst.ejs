@@ -5,7 +5,7 @@
       <h5><%= item.name %></h5>
       <p>
         <i class='glyphicon glyphicon-time'></i> <%= start_at %>  &nbsp;&nbsp;
-        <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： <%= Number((item.avail_click * item.per_click_budget).toFixed(2)) %> &nbsp;&nbsp;
+        <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： <%= Number((item.avail_click * item.per_action_budget).toFixed(2)) %> &nbsp;&nbsp;
         <i class='glyphicon glyphicon-piggy-bank'></i> 剩余预算： <%= item.remain_budget %> &nbsp;&nbsp;
         <% if(item.status=='finished' && item.img_status!='passed'){ %>
           <i class='glyphicon glyphicon-warning-sign'></i> 审核状态：

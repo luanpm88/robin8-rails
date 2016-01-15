@@ -1496,11 +1496,11 @@ en:
         url: Campaign url not empty
         budget: Campaign budget not empty
         per_budget_type: 类型
-        per_click_budget: Campaign per budget not empty
+        per_action_budget: Campaign per budget not empty
         budget_should_be_digit: budget must be digit
-        per_click_budget_should_be_digit: Campaign per budget must be digit
-        per_click_budget_should_greater_than_zero: Campaign per budget must greater than zero
-        per_click_budget_should_less_than_budget: Campaign per budget must less than budget
+        per_action_budget_should_be_digit: Campaign per budget must be digit
+        per_action_budget_should_greater_than_zero: Campaign per budget must greater than zero
+        per_action_budget_should_less_than_budget: Campaign per budget must less than budget
         budget_should_greater_than_zero: budget must greater than zero
         url_invalid: Campaign url is invalid
         campaign_end_time_should_greather_than_start_time: Campaign end time should laster than start time
@@ -1523,7 +1523,7 @@ en:
         enter_description: Enter description
         campaign_budget: Campaign budget
         enter_budget: 50
-        enter_per_click_budget: 0.1
+        enter_per_action_budget: 0.1
         campaign_time: Camaigin time
         campaign_start_time: Campaign start time
         campaign_end_time: Campaign end time
@@ -1531,7 +1531,7 @@ en:
         editor_uses_paragraphs: "*The editor uses paragraphs by default for copied
           text. To place a normal line break press Shift+Enter (Shift+Return)"
         campaign_budget_label: Campaign budget
-        campaign_per_click_budget_label: Campaign per click budget
+        campaign_per_action_budget_label: Campaign per click budget
         enter_title: Enter title...
         following_topics: and the following topics are mentioned in it
         paste_content: Paste the content!
@@ -1631,7 +1631,7 @@ en:
         start_time: 开始时间
         deadline: 结束时间
         budget: 总预算
-        per_click_budget: 点击费用
+        per_action_budget: 点击费用
         avail_click: 有效点击
         total_click: 总访问量
         status: 当前状态
