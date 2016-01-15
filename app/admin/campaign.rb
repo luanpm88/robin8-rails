@@ -71,7 +71,7 @@ ActiveAdmin.register Campaign do
     column "Actual Clicks" do |my_resource|
       my_resource.get_avail_click
     end
-    column "CPC", :per_action_budget
+    column "点击计费/post 计费", :per_action_budget
     actions do |my_resource|
       if my_resource.status == "unexecute"
         (link_to 'agree ', agree_admin_campaign_path(my_resource.id), :method => :put )
@@ -84,17 +84,12 @@ ActiveAdmin.register Campaign do
   form do |f|
     f.inputs "Post" do
       f.input :name
-<<<<<<< HEAD
-      f.input :budget
-      f.input :per_budget_type, as: :select, collection: ['post', 'click']
-      f.input :per_action_budget
-=======
       f.input :description
       f.input :url
       f.input :message
       f.input :img_url
-      f.input :per_click_budget
->>>>>>> master_cn
+      f.input :per_action_budget
+      f.input :per_action_budget
       f.input :start_time
       f.input :deadline
     end
