@@ -83,6 +83,7 @@ GEM
     bourbon (4.2.3)
       sass (~> 3.4)
       thor
+    bson (3.2.6)
     buftok (0.2.0)
     builder (3.2.2)
     byebug (5.0.0)
@@ -276,6 +277,13 @@ GEM
     mini_magick (4.3.6)
     mini_portile (0.6.2)
     minitest (5.7.0)
+    mongo (2.1.2)
+      bson (~> 3.0)
+    mongoid (5.0.1)
+      activemodel (~> 4.0)
+      mongo (~> 2.1)
+      origin (~> 2.1)
+      tzinfo (>= 0.3.37)
     multi_json (1.11.1)
     multi_logger (0.1.0)
       railties
@@ -326,6 +334,7 @@ GEM
     omniauth-weibo-oauth2 (0.4.0)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
+    origin (2.1.1)
     orm_adapter (0.5.0)
     paperclip (4.2.2)
       activemodel (>= 3.0.0)
@@ -550,6 +559,8 @@ GEM
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
     shellany (0.0.1)
+    shoulda-matchers (3.0.1)
+      activesupport (>= 4.0.0)
     sidekiq (3.3.4)
       celluloid (>= 0.16.0)
       connection_pool (>= 2.1.1)
@@ -694,6 +705,7 @@ DEPENDENCIES
   koala (~> 1.11.0rc)
   legato
   mailgun-ruby
+  mongoid (~> 5.0.0)
   multi_logger
   mysql2
   newrelic_rpm
@@ -752,6 +764,7 @@ DEPENDENCIES
   rspec-sidekiq
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  shoulda-matchers (~> 3.0)
   sidekiq
   sidekiq-limit_fetch
   sidetiq
