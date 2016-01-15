@@ -74,5 +74,4 @@ class CampaignInvite < ActiveRecord::Base
     invite.kol_id = kol_id
     invite.save!
   end
-
 end

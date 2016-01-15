@@ -4,7 +4,7 @@ class Campaign < ActiveRecord::Base
   counter :redis_total_click
 
   #Status : unexecute agreed rejected  executing executed
-
+  #Per_budget_type click post
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
@@ -74,10 +74,18 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    if self.status == 'settled'
-      (self.settled_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
+    if self.is_click_type?
+      if self.status == 'settled'
+        (self.settled_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
+      else
+        (get_avail_click * self.per_action_budget).round(2)       rescue 0
+      end
     else
-      (get_avail_click * self.per_action_budget).round(2)       rescue 0
+      if self.status == 'settled'
+        self.per_action_budget.round(2) rescue 0
+      else
+        self.per_action_budget.round(2) rescue 0
+      end
     end
   end
 
@@ -152,7 +160,9 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    finish('fee_end') if self.redis_avail_click.value >= self.max_action && self.status == 'executing'
+    if self.redis_avail_click.value >= self.max_action && self.status == 'executing' && self.per_budget_type == "click"
+      finish('fee_end') 
+    end
   end
 
   #finish_remark:  expired or fee_end
@@ -204,10 +214,19 @@ class Campaign < ActiveRecord::Base
       self.passed_invites.each do |invite|
         kol = invite.kol
         invite.update_column(:status, 'settled')
-        kol.income(invite.avail_click * self.per_click_budget, 'campaign', self, self.user)
-        Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.per_click_budget}-- after avail_amount:#{kol.avail_amount}"
+        if is_click_type?
+          kol.income(invite.avail_click * self.per_action_budget, 'campaign', self, self.user)
+          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.per_action_budget}-- after avail_amount:#{kol.avail_amount}"
+        else
+          kol.income(self.per_action_budget, 'campaign', self, self.user)
+          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{self.per_action_budget}-- after avail_amount:#{kol.avail_amount}"
+        end
       end
     end
+  end
+
+  def is_click_type?
+    self.per_budget_type == "click"
   end
 
   # 结算 for brand
@@ -222,9 +241,15 @@ class Campaign < ActiveRecord::Base
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-      pay_total_click = self.settled_invites.sum(:avail_click)
-      self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
-      Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+
+      if is_click_type?
+        pay_total_click = self.settled_invites.sum(:avail_click)
+        self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
+        Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+      else
+        self.user.payout((self.per_action_budget) , 'campaign', self )
+        Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{self.per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
+      end
     end
   end
 
