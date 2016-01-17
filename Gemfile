@@ -48,6 +48,8 @@ gem 'redis-rails'
 gem 'rest-client'
 gem "typhoeus"
 
+gem 'mongoid', '~> 5.0.0'
+
 # Send notification when error occur
 gem 'exception_notification'
 
@@ -147,6 +149,7 @@ gem 'mailgun-ruby'
 gem 'paperclip', '~> 4.2.1'
 gem 'premailer-rails'
 gem 'hpricot'
+gem "ransack", github: "activerecord-hackery/ransack", branch: "rails-4.2"
 gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
@@ -168,6 +171,7 @@ group :development, :test do
   gem 'byebug'
 
   gem 'rspec-rails'
+  gem 'shoulda-matchers', '~> 3.0'
   gem 'rspec-activemodel-mocks'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
