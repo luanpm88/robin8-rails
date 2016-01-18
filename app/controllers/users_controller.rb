@@ -19,19 +19,19 @@ class UsersController < ApplicationController
   end
 
   def create
+    verify_code = Rails.cache.fetch(user_params[:mobile_number])
     if user_params[:mobile_number] == "robin8.best"
-      user_params[:mobile_number] = (1..9).to_a.sample(8).join
+      params[:user][:mobile_number] = (1..9).to_a.sample(8).join
     else
-      verify_code = Rails.cache.fetch(user_params[:mobile_number])
       user_params[:mobile_number].strip!      rescue nil
     end
     @user = User.new(user_params)
-    if @user.valid?  && verify_code == params["user"]["verify_code"]
+    if verify_code != params["user"]["verify_code"]
+      flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
+    elsif @user.valid?
       @user.save
       sign_in @user
       return redirect_to root_path + "#profile"
-    elsif verify_code != params["user"]["verify_code"]
-      flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
     else
       flash.now[:errors] = @user.errors.full_messages
     end
