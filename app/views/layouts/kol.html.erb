@@ -29,7 +29,10 @@
   <!--</div>-->
 
   <% if flash[:verify_count] %>
-    <div class='alert alert-info' role='alert' style='width: 60%; min-width: 320px;margin: 0 auto;'>
+    <div class='alert alert-info alert-dismissible fade in' role='alert' style='width: 60%; min-width: 320px;margin: 0 auto;'>
+      <button class="close" type="button" data-dismiss='alert' aria-label='Close'>
+        <span aria-hidden="true">&times;</span>
+      </button>
       <div style='text-align: center'>您还有 <%= flash[:verify_count][:to_verify_count]  %> 个活动需要上传截图审核， <%= flash[:verify_count][:verify_failed_count] %> 个活动上传截图审核未通过。</div>
     </div>
   <% end %>
@@ -59,10 +62,10 @@
     });
   polyglot = new Polyglot({phrases: <%= raw @phrases.to_json %>});
   <% if flash[:success_confirmation] -%>
-    Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>'
+    Robin.afterConfirmationMessage = '<%= flash[:success_confirmation] %>';
   <% end -%>
   <% if kol_signed_in? -%>
-    Robin.currentKOL = new Robin.Models.KOL(<%= current_kol.to_json(:methods => [:screens, :identities, :stats]).html_safe %>);
+    Robin.currentKOL = new Robin.Models.KOL(<%= current_kol.to_json(:methods => [:category_size, :screens, :identities, :stats]).html_safe %>);
   <% else -%>
     if (Robin) {
       Robin.currentKOL = null;
@@ -79,5 +82,13 @@
 
 </body>
 <%=render :partial => "shared/tongji"%>
-<%=render :partial => "shared/feedback"%>
+<!--Start of Zopim Live Chat Script-->
+<script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+$.src="//v2.zopim.com/?3cFoTvqoZnEj8nMIvHQaHyvwBh5A6TkK";z.t=+new Date;$.
+type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+</script>
+<!--End of Zopim Live Chat Script-->
 </html>

@@ -8,7 +8,7 @@ class Kol < ActiveRecord::Base
   has_many :identities, -> {order('updated_at desc')}, :dependent => :destroy, autosave: true
 
   has_many :kol_categories
-  has_many :iptc_categories, :through => :kol_categories
+  has_many :iptc_categories, -> { unscope(where: :scene)} , :through => :kol_categories
 
   has_many :campaign_invites
   has_many :campaigns, :through => :campaign_invites
@@ -37,6 +37,7 @@ class Kol < ActiveRecord::Base
   include Models::Identities
   extend Models::Oauth
 
+
   def record_identity(identity)
     Rails.cache.write("provide_info_#{self.id}", identity)
   end
@@ -46,6 +47,10 @@ class Kol < ActiveRecord::Base
     info  = Rails.cache.read("provide_info_#{self.id}")
     Rails.cache.delete("provide_info_#{self.id}")
     info
+  end
+
+  def category_size
+    iptc_categories.size
   end
 
 

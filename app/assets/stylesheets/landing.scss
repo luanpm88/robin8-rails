@@ -3,19 +3,6 @@
  *= require app
 */
 
-.feedback .button-feedback {
-	width: 130px;
-	height: 30px;
-	font-size: 14px;
-	background-color: rgb(67,67,67);
-	color: white;
-  position: fixed;
-  bottom: 0; right: 10px;
-  text-align:center;
-	line-height: 30px;
-  border-radius:6px 6px 0 0;
-}
-
 @media(min-width: 960px) {
 	.partner .container {
 		max-width: 960px;
@@ -31,12 +18,12 @@
 			ul>li.second_line>.img_container{height: 59px;}
 		li.li1>.img_container{background: image-url("chinaccelerator-logo.png") center center no-repeat;}
 		li.li2>.img_container{background:image-url("smg-logo.png") center center no-repeat;}
-		li.li3>.img_container{background:image-url("mwc-logo.png") center 35px no-repeat;}		
+		li.li3>.img_container{background:image-url("mwc-logo.png") center 35px no-repeat;}
 
 		li.li4>.img_container{background: image-url("technode-logo.png") center center no-repeat;}
 		li.li5>.img_container{background:image-url("techinasia-logo.png") center center no-repeat;}
 		li.li6>.img_container{background:image-url("omd-logo.png") center center no-repeat;}
-		ul>li>p{text-align:center; margin-top: 10px;}	
+		ul>li>p{text-align:center; margin-top: 10px;}
 
 		.read_more .label {
 			margin-top: 18px;
@@ -46,7 +33,7 @@
 			line-height: 30px;
 			font-size: 16px;
 			margin-left: 68px;
-		}	
+		}
 
 		.read_more_3 .label {
 			margin-top: -17px;
@@ -82,12 +69,12 @@
 			ul>li.second_line>.img_container{height: 59px;}
 		li.li1>.img_container{background: image-url("chinaccelerator-logo.png") center center no-repeat;}
 		li.li2>.img_container{background:image-url("smg-logo.png") center center no-repeat;}
-		li.li3>.img_container{background:image-url("mwc-logo.png") center 35px no-repeat;}		
+		li.li3>.img_container{background:image-url("mwc-logo.png") center 35px no-repeat;}
 
 		li.li4>.img_container{background: image-url("technode-logo.png") center center no-repeat;}
 		li.li5>.img_container{background:image-url("techinasia-logo.png") center center no-repeat;}
 		li.li6>.img_container{background:image-url("omd-logo.png") center center no-repeat;}
-		ul>li>p{text-align:center; margin-top: 10px;}	
+		ul>li>p{text-align:center; margin-top: 10px;}
 
 		.read_more .label {
 			margin-top: 18px;
@@ -97,7 +84,7 @@
 			line-height: 30px;
 			font-size: 16px;
 			margin-left: 68px;
-		}	
+		}
 
 		.read_more_3 .label {
 			margin-top: -17px;
@@ -214,19 +201,11 @@
 				text-align: center;
 				line-height: 30px;
 				font-size: 16px;
-			}	
-		}		
+			}
+		}
 	}
 
 	.landing_country_flag{
 		margin: 0 auto !important;
 	}
 }
-
-
-
-
-
-
-
-

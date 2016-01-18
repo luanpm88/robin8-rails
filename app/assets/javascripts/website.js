@@ -44,11 +44,10 @@ $(function(){
           beforeSend: function(xhr) {
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
           },
-         data: {"phone_number": phone_number}
+         data: {"phone_number": phone_number, 'role': $("#kol_mobile_number").attr("data-role")}
       })
         .done(function(data) {
           $(".tips").children().hide();
-
           if (data["mobile_number_is_blank"]) {
             $("#kol_mobile_number").focus().blur();
             return null;
