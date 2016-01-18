@@ -1,5 +1,5 @@
 <div><% count =  @transactions.count %></div>
-<div><h1> 已结算活动历史记录 </h1></div>
+<div><h1> 流水历史记录 </h1></div>
 <div>
   <table border="1">
   <tr>
@@ -7,7 +7,7 @@
     <th>品牌</th>
     <th>名称</th>
     <th>开始时间</th>
-    <th>结束时间</th>
+    <th>结算时间</th>
     <th>模式(cpc/ppp)</th>
     <th>单价</th>
 
@@ -29,7 +29,7 @@
         </td>
 
         <td>
-          <%= @campaigns[i].name %>
+          <a href="/admin/campaigns/<%= @campaigns[i].id %>" target = "_blank"><%= @campaigns[i].name %>
         </td>
 
         <td>
@@ -37,7 +37,7 @@
         </td>
 
         <td>
-          <%= @campaigns[i].deadline %>
+          <%= @transactions[i].created_at %>
         </td>
 
         <td>
@@ -123,3 +123,10 @@
   <% end %>
 </table>
 </div>
+
+
+<style>
+  table tr th {
+    font-size: 20px;
+  }
+</style>

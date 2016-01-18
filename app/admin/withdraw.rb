@@ -28,7 +28,7 @@ ActiveAdmin.register Withdraw do
     def withdraw_history
       @withdraw = Withdraw.find params[:id]
       @kol = Kol.find @withdraw.kol_id
-      @transactions = Transaction.where("account_id = ? and account_type = ? and (subject = ? or subject = ?)", 179, 'Kol', "withdraw", "campaign").order("created_at desc")
+      @transactions = Transaction.where("account_id = ? and account_type = ? and (subject = ? or subject = ?)", @kol.id, 'Kol', "withdraw", "campaign").order("created_at desc")
       @user_names = []
       @campaigns = []
       @campaign_invites = []
@@ -50,7 +50,11 @@ ActiveAdmin.register Withdraw do
 
   index do
     id_column
-    column :kol_id
+    # column :kol_id
+    column "Kol" do |resource|
+      (link_to resource.kol.id, "/admin/kols/#{resource.kol.id}", :target => "_blank")
+    end
+
     column "avail amount" do |resource|
       resource.kol.avail_amount
     end

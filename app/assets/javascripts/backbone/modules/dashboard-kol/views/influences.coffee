@@ -22,7 +22,6 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       items: @collection.toJSON();
 
     switchAccount: (e) ->
-      _gaq.push(['_trackPageview', '/some-page'])
       e.preventDefault()
       identity_id = e.target.id
       influence = new Robin.Models.SocialInfluence({id: identity_id})
