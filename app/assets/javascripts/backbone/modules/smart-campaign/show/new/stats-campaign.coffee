@@ -150,9 +150,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             previous: polyglot.t('smart_campaign.prev'),
             next: polyglot.t('smart_campaign.next')
 
-    showScreenshot: () ->
-      console.log(@$el.find("img"))
-      big_url = @$el.find("img").attr("data-big")
+    showScreenshot: (e) ->
+      console.log $(e.currentTarget)
+      console.log $(e.currentTarget).find("img").attr("data-big")
+      big_url = $(e.currentTarget).find("img").attr("data-big")
       console.log(big_url)
       @ui.screenshot_detail.attr("src",big_url)
       @ui.screenshotModal.modal('show')

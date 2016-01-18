@@ -196,6 +196,7 @@ Rails.application.routes.draw do
   get '/terms', to: 'pages#terms'
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
+  get '/screenshot_sample', to: 'pages#screenshot_sample'
   get '/unsubscribe', to: 'pages#unsubscribe'
   get '/add-ons', to: 'pages#add_ons'
   get '/payment-confirmation', to: 'pages#payment_confirmation'
