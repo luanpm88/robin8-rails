@@ -22,7 +22,6 @@ class KolsController < ApplicationController
 
         kol_p = kol_params
         kol_p[:mobile_number] = (1..9).to_a.sample(8).join if mobile_number == "robin8.best"
-
         kol_p[:mobile_number].strip!      rescue nil
 
         if mobile_number == "robin8.best"
@@ -199,13 +198,14 @@ class KolsController < ApplicationController
     if phone_number.blank?
       render json: {mobile_number_is_blank: true}
     else
-      if Kol.check_mobile_number phone_number
-        render json: {not_unique: true}
+      if params[:role] == 'user'
+        return render json: {not_unique: true}  if User.check_mobile_number phone_number
       else
-        sms_client = YunPian::SendRegisterSms.new(phone_number)
-        res = sms_client.send_sms
-        render json: res
+        return render json: {not_unique: true}  if Kol.check_mobile_number phone_number
       end
+      sms_client = YunPian::SendRegisterSms.new(phone_number)
+      res = sms_client.send_sms  rescue {}
+      render json: res
     end
   end
 

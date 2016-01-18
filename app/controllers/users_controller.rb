@@ -19,13 +19,19 @@ class UsersController < ApplicationController
   end
 
   def create
+    if user_params[:mobile_number] == "robin8.best"
+      user_params[:mobile_number] = (1..9).to_a.sample(8).join
+    else
+      verify_code = Rails.cache.fetch(user_params[:mobile_number])
+      user_params[:mobile_number].strip!      rescue nil
+    end
     @user = User.new(user_params)
-    if @user.valid?
+    if @user.valid?  && verify_code == params["user"]["verify_code"]
       @user.save
       sign_in @user
-      # return redirect_to :pricing if current_user.active_subscription.blank?
-      # return redirect_to session[:redirect_checkout_url] if session[:redirect_checkout_url].present?
       return redirect_to root_path + "#profile"
+    elsif verify_code != params["user"]["verify_code"]
+      flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
     else
       flash.now[:errors] = @user.errors.full_messages
     end
@@ -167,7 +173,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name,:last_name,:email,:password)
+    params.require(:user).permit(:first_name,:last_name,:email,:password, :mobile_number)
   end
 
 end
