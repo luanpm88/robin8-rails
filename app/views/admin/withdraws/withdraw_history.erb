@@ -7,7 +7,7 @@
     <th>品牌</th>
     <th>名称</th>
     <th>开始时间</th>
-    <th>结束时间</th>
+    <th>结算时间</th>
     <th>模式(cpc/ppp)</th>
     <th>单价</th>
 
@@ -29,7 +29,7 @@
         </td>
 
         <td>
-          <%= @campaigns[i].name %>
+          <a href="/admin/campaigns/<%= @campaigns[i].id %>" target = "_blank"><%= @campaigns[i].name %>
         </td>
 
         <td>
@@ -37,7 +37,7 @@
         </td>
 
         <td>
-          <%= @campaigns[i].deadline %>
+          <%= @transactions[i].created_at %>
         </td>
 
         <td>

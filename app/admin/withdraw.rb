@@ -50,7 +50,11 @@ ActiveAdmin.register Withdraw do
 
   index do
     id_column
-    column :kol_id
+    # column :kol_id
+    column "Kol" do |resource|
+      (link_to resource.kol.id, "/admin/kols/#{resource.kol.id}", :target => "_blank")
+    end
+
     column "avail amount" do |resource|
       resource.kol.avail_amount
     end
