@@ -46,7 +46,7 @@ class Campaign < ActiveRecord::Base
       total_clicks << shows.by_date(date.to_datetime).count
       avail_clicks << shows.valid.by_date(date.to_datetime).count
     end
-    [labels, total_clicks, avail_clicks]
+    [self.per_budget_type, labels, total_clicks, avail_clicks]
   end
 
   #统计信息
@@ -82,9 +82,9 @@ class Campaign < ActiveRecord::Base
       end
     else
       if self.status == 'settled'
-        self.per_action_budget.round(2) rescue 0
+        (self.settled_invites.count * self.per_action_budget).round(2) rescue 0
       else
-        self.per_action_budget.round(2) rescue 0
+        (self.valid_invites.count * self.per_action_budget).round(2) rescue 0
       end
     end
   end
@@ -92,6 +92,13 @@ class Campaign < ActiveRecord::Base
   def remain_budget
     # return 0 if (status == 'executed' || status == 'settled')
     return (self.budget - self.take_budget).round(2)
+  end
+
+  def post_count
+    if self.per_budget_type == "click"
+      return -1
+    end
+    return valid_invites.count
   end
 
   def get_share_time

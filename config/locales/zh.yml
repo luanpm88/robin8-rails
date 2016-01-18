@@ -1571,6 +1571,9 @@ zh:
         deadline: 结束时间
         budget: 总预算
         per_action_budget: 点击费用
+        per_post_budget: 分享费用
+        post:        分享
+        post_count:  分享次数
         avail_click: 计费点击
         total_click: 总访问量
         status: 当前状态

@@ -3,7 +3,7 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_avail_click
   counter :redis_total_click
 
-  STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected']
+  STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
   validates_inclusion_of :status, :in => STATUSES
 
