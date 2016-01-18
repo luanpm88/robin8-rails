@@ -195,6 +195,9 @@ class KolsController < ApplicationController
 
   def send_sms
     phone_number = params[:phone_number]
+    if Rails.env.development?
+      return render json: {}
+    end
     if phone_number.blank?
       render json: {mobile_number_is_blank: true}
     else
