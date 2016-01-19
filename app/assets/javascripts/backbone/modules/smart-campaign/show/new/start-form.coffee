@@ -16,6 +16,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       plusBudgetIcon: ".plus_budget_icon"
       subtractionPerBudgetIcon: ".subtraction_per_budget_icon"
       plusPerBudgetIcon: ".plus_per_budget_icon"
+      subtractionPerPostIcon: ".subtraction_per_post_icon"
+      plusPerPostIcon: ".plus_per_post_icon"
       deadlineIcon: ".deadline_icon"
       doubleCheckCreate: ".double_check_create_campaign"
       campaignName: ".campaign_name_input"
@@ -32,6 +34,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       "click @ui.plusBudgetIcon": "plusBudgetIcon"
       "click @ui.subtractionPerBudgetIcon": "subtractionPerBudgetIcon"
       "click @ui.plusPerBudgetIcon": "plusPerBudgetIcon"
+      "click @ui.subtractionPerPostIcon": "subtractionPerPostIcon"
+      "click @ui.plusPerPostIcon": "plusPerPostIcon"
       "click @ui.deadlineIcon": "deadlineIcon"
       "click @ui.doubleCheckCreate": "doubleCheckCreate"
       "change @ui.campaignName": "updateIsEdit"
@@ -67,10 +71,19 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initDatepicker()
         @initFormValidation()
         @initQiniuUploader()
+        @initChoosePerBudgetType()
         @initCreateCampaignModal()
 
         $(".budget_input").focus()
         $(".campaign_name_input").focus()
+
+    initChoosePerBudgetType: ->
+      if @model.attributes.per_budget_type == null
+        $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
+      else if @model.attributes.per_budget_type == 'click'
+        $('input:radio[name="action_type"]').filter('[value=click]').prop('checked', true)
+      else
+        $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
 
     initCreateCampaignModal: ->
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
@@ -83,7 +96,12 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       parentThis.model.attributes.deadline = $(".campaign_deadline_input").val()
       parentThis.model.attributes.start_time = $(".campaign_start_time_input").val()
       parentThis.model.attributes.img_url = $('input[name=img_url]').val()
-      parentThis.model.attributes.per_click_budget = $('input[name=per_click_budget]').val()
+      if $('input:radio[name="action_type"]').filter('[value=post]').is(":checked")
+        parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
+        parentThis.model.attributes.per_budget_type = "post"
+      if $('input:radio[name="action_type"]').filter('[value=click]').is(":checked")
+        parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
+        parentThis.model.attributes.per_budget_type = "click"
       parentThis.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
 
@@ -218,18 +236,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               #         return false
               #       error: ->
               #         return false
-          per_click_budget:
+          per_action_budget:
             validators:
               notEmpty:
-                message: polyglot.t('smart_campaign.validation.per_click_budget')
+                message: polyglot.t('smart_campaign.validation.per_action_budget')
               greaterThan:
                 inclusive: false
                 value: 0
-                message:  polyglot.t('smart_campaign.validation.per_click_budget_should_greater_than_zero')
+                message:  polyglot.t('smart_campaign.validation.per_action_budget_should_greater_than_zero')
               numeric:
-                message: polyglot.t('smart_campaign.validation.per_click_budget_should_be_digit')
+                message: polyglot.t('smart_campaign.validation.per_action_budget_should_be_digit')
               callback:
-                message: polyglot.t('smart_campaign.validation.per_click_budget_should_less_than_budget')
+                message: polyglot.t('smart_campaign.validation.per_action_budget_should_less_than_budget')
                 callback: (value, validator, $field) ->
                   if Number(value) > Number($(".budget_input").val())
                     return false
@@ -329,3 +347,13 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       if number > Number($(".budget_input").val())
         number = Number($(".budget_input").val())
       $(".per_budget_input").val(number);
+
+    subtractionPerPostIcon: ->
+      number = Number($(".per_post_input").val())
+      if number >= 1
+        number -= 1
+      $(".per_post_input").val(number);
+
+    plusPerPostIcon: ->
+      number = Number($(".per_post_input").val()) + 1
+      $(".per_post_input").val(number);

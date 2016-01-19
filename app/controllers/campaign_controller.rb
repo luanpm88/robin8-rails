@@ -40,7 +40,7 @@ class CampaignController < ApplicationController
     if (user.blank? or c.user_id != user.id)  and cookies[:admin] != "true"
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget], :include => [:valid_invites]})
+    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget, :post_count], :include => [:valid_invites]})
   end
 
   def article
@@ -164,7 +164,7 @@ class CampaignController < ApplicationController
       render :json => {:status => 'no enough amount!'} and return
     end
 
-    campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :message, :img_url))
+    campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url))
     campaign.user = current_user
     campaign.status = "unexecute"
     campaign.deadline = params[:campaign][:deadline].to_time
@@ -179,7 +179,7 @@ class CampaignController < ApplicationController
     campaign = Campaign.find params[:id]
     origin_budget = campaign.budget
 
-    campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_click_budget, :message, :img_url)
+    campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url)
 
     unless (current_user.avail_amount.to_f + origin_budget.to_f) >= params[:budget].to_f
       render :json => {:status => 'no enough amount!'} and return
@@ -189,7 +189,7 @@ class CampaignController < ApplicationController
     campaign.start_time = params[:campaign][:start_time].to_time
     ActiveRecord::Base.transaction do
       campaign.update_attributes campaign_params
-      campaign.reset_campaign origin_budget, params[:budget], params[:per_click_budget]
+      campaign.reset_campaign origin_budget, params[:budget], params[:per_action_budget]
     end
 
     render json: {:status => :ok}

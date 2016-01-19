@@ -3,7 +3,7 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_avail_click
   counter :redis_total_click
 
-  STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected']
+  STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
   validates_inclusion_of :status, :in => STATUSES
 
@@ -15,6 +15,7 @@ class CampaignInvite < ActiveRecord::Base
     campaign = self.campaign
     if (campaign.status == 'executed' || campaign.status == "executing") && self.img_status != 'passed'
       self.update_column(:img_status, 'passed')
+      kol.income(self.avail_click * campaign.per_action_budget, 'campaign', campaign, campaign.user)
       Rails.logger.info "-------- screenshot_check_pass:  ---cid:#{campaign.id}--"
     end
   end
@@ -73,5 +74,4 @@ class CampaignInvite < ActiveRecord::Base
     invite.kol_id = kol_id
     invite.save!
   end
-
 end
