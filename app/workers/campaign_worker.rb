@@ -28,6 +28,8 @@ class CampaignWorker
       campaign.settle_accounts_for_kol
     elsif job_type == 'settle_accounts_for_brand'
       campaign.settle_accounts_for_brand
+    elsif job_type == 'fee_end'
+      campaign.finish('fee_end') if campaign.status != 'executed'
     end
   end
 

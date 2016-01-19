@@ -30,6 +30,13 @@ class CampaignInviteController < ApplicationController
 
     return render :json => {status: 'needMobile'} unless @kol.mobile_number.present?
 
+    @campaign = @campaign_invite.campaign
+
+    if @campaign.valid_invites.size >= @campaign.max_action  || @campaign.status != 'executing'
+      CampaignWorker.perform_async(@campaign.id, 'fee_end')
+      return render :json => {status: 'campaign finished'}
+    end
+
     if @campaign_invite.status.eql? 'running'
       @campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
     end
