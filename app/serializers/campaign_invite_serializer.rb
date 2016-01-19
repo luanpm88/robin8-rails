@@ -15,7 +15,8 @@ class CampaignInviteSerializer < ActiveModel::Serializer
     :url,
     :screenshot,
     :img_status,
-    :reject_reason
+    :reject_reason,
+    :has_img
 
   def name
     object.campaign.name
@@ -67,5 +68,9 @@ class CampaignInviteSerializer < ActiveModel::Serializer
   def img_url
     object.campaign.img_url.present? ? object.campaign.img_url : ActionController::Base.helpers.asset_path('campaign_default_img.png')
 
+  end
+
+  def has_img
+    object.campaign.img_url.present? ? true : false
   end
 end
