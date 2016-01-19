@@ -28,17 +28,19 @@ ActiveAdmin.register Withdraw do
     def withdraw_history
       @withdraw = Withdraw.find params[:id]
       @kol = Kol.find @withdraw.kol_id
-      @transactions = Transaction.where("account_id = ? and account_type = ? and (subject = ? or subject = ?)", @kol.id, 'Kol', "withdraw", "campaign").order("created_at desc")
+      @transactions = Transaction.where("account_id = ? and account_type = ? and (subject = ? or subject = ?)", @kol.id, 'Kol', "withdraw", "campaign").uniq.order("created_at desc")
       @user_names = []
       @campaigns = []
       @campaign_invites = []
       @transactions.each do |t|
-        if t.item
+        if (t.direct == "income")
           @user_names << t.item.user.name
           @campaigns << t.item
-          @campaign_invites << CampaignInvite.joins(:campaign, :kol).where("kols.id = ? AND campaigns.id = ?", @kol.id, t.item.id).first
+          @campaign_invites << CampaignInvite.joins(:campaign, :kol).where("kols.id = ? AND campaigns.id = ?", @kol.id, t.item_id).first
         else
-          @campaigns << nil
+          @campaigns << ""
+          @user_names << ""
+          @campaign_invites << ""
         end
 
       end
