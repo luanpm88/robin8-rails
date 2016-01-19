@@ -21,7 +21,7 @@ ActiveAdmin.register Withdraw do
         redirect_to admin_withdraws_path
       else
         flash[:error] = "提现金额超过可用余额"
-        redirect_to admin_withdraws_path, :notice => "提现金额超过可用余额"
+        redirect_to admin_withdraws_path#, :notice => "提现金额超过可用余额"
       end
     end
 
