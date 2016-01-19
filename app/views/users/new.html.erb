@@ -54,7 +54,7 @@
                   <p class='send_sms_success'><%= @l.t("kols.send_sms_success") %></p>
                 </section>
                 <div class="small-9 large-9 columns verify-code">
-                  <%= text_field_tag "kol[verify_code]", nil, :placeholder => @l.t('kols.verify_code'), "data-validation" => "required",
+                  <%= text_field_tag "user[verify_code]", nil, :placeholder => @l.t('kols.verify_code'), "data-validation" => "required",
                                      "data-validation-error-msg" => @l.t('kols.verify_code_error')%>
                 </div>
 

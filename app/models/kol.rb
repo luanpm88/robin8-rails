@@ -20,6 +20,8 @@ class Kol < ActiveRecord::Base
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold
 
+  has_many :withdraws
+
   def email_required?
     false if self.provider != "signup"
   end
@@ -296,5 +298,9 @@ class Kol < ActiveRecord::Base
     if five_click_threshold_changed? || total_click_threshold_changed?
       Rails.cache.delete("kol_#{self.id}")
     end
+  end
+
+  def has_pending_withdraw
+    withdraws.pending.size > 0
   end
 end
