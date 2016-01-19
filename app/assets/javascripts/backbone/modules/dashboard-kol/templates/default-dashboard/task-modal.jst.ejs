@@ -6,6 +6,9 @@
         <h4 class="modal-title" id="myModalLabel"><%= item.name %></h4>
       </div>
       <div class="modal-body">
+        <% if (finished) { %>
+          <div class="alert alert-danger">活动已结束 :(</div>
+        <% } %>
         <h5>活动详情: </h5>
         <p><a target='_blank' href="<%= item.url %>">查看原文</a></p>
 
