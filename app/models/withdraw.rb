@@ -7,6 +7,7 @@ class Withdraw < ActiveRecord::Base
   validate :check_avail_amount
 
   belongs_to :kol
+  scope :pending, -> {where(:status => 'pending')}
 
   def check_avail_amount
     avail_amount = Kol.find(kol_id).avail_amount rescue 0
