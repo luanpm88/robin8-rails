@@ -2,4 +2,3 @@
 //= require kol/common
 //= require ./../backbone/collections/campaign_discovers
 //= require backbone/layouts/main
-//= require_tree ./../backbone/modules/smart-campaign

@@ -80,6 +80,29 @@
           </div>
         </div>
 
+        <!--兴趣爱好-->
+        <div class="row">
+          <div class="col-md-2 cell kol-profile">
+            <%= polyglot.t('dashboard_kol.profile_tab.industry') %>  <sup>*</sup>
+          </div>
+          <div class="cell col-md-6">
+            <input name="interests" id="kol_interests" value="Interests"  class="form-control required" required
+                   data-placeholder="<%= polyglot.t('dashboard_kol.profile_tab.industry_placeholder') %>"/>
+          </div>
+        </div>
+        <div class="row industry-row" style="">
+          <div class="col-md-2 cell kol-profile"></div>
+          <div class="col-md-6">
+            <% _(industries).each(function(ind, i) { %>
+            <div class="col-md-2 cell influence-circle">
+              <button type="button" class="btn full-width" filter-btn name="industry_<%= i %>" data-toggle="button">
+                <%= ind %>
+              </button>
+            </div>
+            <% }); %>
+          </div>
+        </div>
+
         <% if (!k.mobile_number) { %>
           <div class="row set-mobile-number">
             <div class="set-mobile">
@@ -110,6 +133,7 @@
 
       </div>
     </div>
+
 
     <% if (k.mobile_number) { %>
       <div class="row mobile-number toggle-box">

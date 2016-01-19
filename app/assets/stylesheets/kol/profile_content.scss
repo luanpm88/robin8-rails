@@ -47,7 +47,14 @@
         margin-right: 5px;
         float: left;
       }
+
     }
+  }
+
+  .influence-circle{
+    margin-right: 4px;
+    margin-top:3px;
+    float: left;
   }
   .social-content {
     .row {
@@ -110,32 +117,6 @@
       vertical-align: top;
       margin-left: 0;
     }
-//    add account
-//    .add-account{
-//      .account-column {
-//        width: 70%;
-//        background: #edac07;
-//        font-weight: normal;
-//        padding: 2px 8px;
-//        cursor: pointer;
-//        color: #fff;
-//        border-radius: 5px;
-//        text-align: center;
-//        span.social {
-//          color: #fff;
-//          font-size: 14px;
-//        }
-//        .fa-2x {
-//          vertical-align: middle;
-//        }
-//      }
-//      .weibo-column{
-//        background: #FD8149;
-//      }
-//      .weixin-column{
-//        background: #49B44F;
-//      }
-//    }
     .social-list{
       .social-item{
         border-radius: 5px;
@@ -318,6 +299,15 @@
     }
   }
 }
+
+#profile-base-modal{
+  .campaigns-tables-title{
+    margin: 5px 0px 10px 0px;
+  }
+
+}
+
+
 
 .toggle-button{
   float: right;

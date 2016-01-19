@@ -6,7 +6,7 @@ module Kols
       categories = params[:kol][:interests]
       categories = '' if categories == nil
       categories = categories.strip.split(',').map {|s| s.strip}.uniq
-      categories = IptcCategory.where :id => categories
+      categories = IptcCategory.unscoped.cn.where :id => categories
       resource.iptc_categories = categories
       super
     end

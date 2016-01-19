@@ -24,11 +24,52 @@
                               "data-validation-error-msg"=> @l.t('register.messages.first_name_blank')%>
               <!-- <input type="text"  name="first_name" placeholder="First Name" required /> -->
             </label>
+
             <label>
               <!-- <input type="text"  name="last_name" placeholder="Last Name" required /> -->
               <%=f.text_field :last_name,:placeholder=>@l.t('register.last_name_placeholder'),"data-validation"=>"required",
                               "data-validation-error-msg"=> @l.t('register.messages.last_name_blank')%>
             </label>
+            <div class='row collapse'>
+              <div class='small-2 large-1 columns'>
+                <% if china_instance? %>
+                  <span class='prefix'>+86</span>
+                <% else %>
+                  <span class='prefix'>+1</span>
+                <% end %>
+              </div>
+              <!-- China -->
+              <% if china_instance? %>
+                <div class='small-10 large-11 columns'>
+                  <%=f.text_field :mobile_number, :placeholder => @l.t('kols.mobile_number'), "data-validation" => "custom",
+                                  "data-validation-regexp"=> "^robin8\.best|1[34578][0-9]{9}$",
+                                  "data-validation-error-msg"=> @l.t('kols.mobile_format_error'), :id => 'kol_mobile_number',
+                                  "data-role" => 'user' %>
+                </div>
+
+                <section class='tips'>
+                  <p class='not_unique_number'><%= @l.t("kols.mobile_number_already_token") %></p>
+                  <p class='mobile_numer_is_blank'><%= @l.t("kols.mobile_format_error") %></p>
+                  <p class='send_sms_failed'><%= @l.t("kols.send_sms_error") %></p>
+                  <p class='send_sms_success'><%= @l.t("kols.send_sms_success") %></p>
+                </section>
+                <div class="small-9 large-9 columns verify-code">
+                  <%= text_field_tag "user[verify_code]", nil, :placeholder => @l.t('kols.verify_code'), "data-validation" => "required",
+                                     "data-validation-error-msg" => @l.t('kols.verify_code_error')%>
+                </div>
+
+                <button type="button" class="btn send_sms"><%= @l.t("kols.receive_verify_code") %></button>
+                <% if params["auth_params"] %>
+                  <%= hidden_field_tag(:auth_params, params["auth_params"]) %>
+                <% end %>
+                <!-- American -->
+              <% else %>
+                <div class='small-10 large-11 columns'>
+                  <%=f.text_field :mobile_number, :placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"number","data-validation-error-msg"=> @l.t('kols.mobile_format_error') %>
+                </div>
+              <% end %>
+            </div>
+
             <label>
               <!-- <input type="password"  name="password" placeholder="Password" required /> -->
               <%=f.password_field :password,:placeholder=>@l.t('register.password_placeholder'),"data-validation"=>"length", "data-validation-length"=>"min8",

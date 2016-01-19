@@ -349,6 +349,10 @@ class User < ActiveRecord::Base
     ["enterprise-monthly", "enterprise-annual", "ultra-monthly", "ultra-annual", "newenterprise-monthly"].include? user_product.product.slug
   end
 
+  def self.check_mobile_number mobile_number
+    return self.where("mobile_number" => mobile_number).present?
+  end
+
   private
     def create_default_news_room
       if is_primary?
