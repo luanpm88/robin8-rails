@@ -3,7 +3,9 @@
       <thead style="cursor:pointer;">
       <tr>
         <th><%= polyglot.t("smart_campaign.stats.kol_name") %></th>
-        <th><%= polyglot.t("smart_campaign.stats.avail_click") %></th>
+        <% if (campaign.per_budget_type == "click") {%>
+          <th><%= polyglot.t("smart_campaign.stats.avail_click") %></th>
+        <% } %>
         <th><%= polyglot.t("smart_campaign.stats.total_click") %></th>
         <th><%= polyglot.t("smart_campaign.stats.start_time") %></th>
         <th>审核状态</th>
@@ -21,7 +23,9 @@
           该用户未设置昵称
         <% } %>
       </td>
-      <td class="middle col-md-1"><%= c.get_avail_click %></td>
+      <% if (campaign.per_budget_type == "click") {%>
+        <td class="middle col-md-1"><%= c.get_avail_click %></td>
+      <% } %>
       <td class="middle col-md-1"><%= c.get_total_click %></td>
       <td class="middle col-md-1"><%= formatDate(c.approved_at) %></td>
       <td class="middle col-md-1">

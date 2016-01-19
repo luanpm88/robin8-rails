@@ -26,7 +26,7 @@ ActiveAdmin.register Campaign do
     end
   end
 
-  permit_params :name, :start_time, :deadline, :per_click_budget, :description, :url, :message, :img_url
+  permit_params :name, :start_time, :deadline, :per_action_budget, :description, :url, :message, :img_url
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -62,13 +62,16 @@ ActiveAdmin.register Campaign do
 
     column :budget
     column :status
+    column "mode" do |my_resource|
+      my_resource.per_budget_type == "click" ? 'Per click' : 'Per Post'
+    end
     column "Spent" do |my_resource|
       my_resource.take_budget
     end
     column "Actual Clicks" do |my_resource|
       my_resource.get_avail_click
     end
-    column "CPC", :per_click_budget
+    column "点击计费/post 计费", :per_action_budget
     actions do |my_resource|
       if my_resource.status == "unexecute"
         (link_to 'agree ', agree_admin_campaign_path(my_resource.id), :method => :put )
@@ -85,7 +88,8 @@ ActiveAdmin.register Campaign do
       f.input :url
       f.input :message
       f.input :img_url
-      f.input :per_click_budget
+      f.input :per_action_budget
+      f.input :per_action_budget
       f.input :start_time
       f.input :deadline
     end

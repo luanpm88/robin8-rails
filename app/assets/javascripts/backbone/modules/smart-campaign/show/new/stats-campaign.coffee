@@ -37,10 +37,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         this.statsChart = echarts.init(document.getElementById('day_stats'))
       $.ajax
         type: "get"
-        url: "/campaign/" + that.model.id + "/day_stats" ,
+        url: "/campaign/" + that.model.id + "/day_stats",
         dataType: 'json',
         success: (data) =>
-          that.initStatsChat(data[0], data[1], data[2])
+          that.initStatsChat(data[0], data[1], data[2], data[3])
         error: (xhr, textStatus) ->
           $.growl textStatus,
             type: "danger",
@@ -50,7 +50,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         dataType: 'json',
         success: (data) =>
           @stats_kol_view = new Robin.SmartCampaign.Show.StatsKol
-            kol_list_data: data
+            kol_list_data: data, campaign: that.model
           @showChildView 'kol_list', @stats_kol_view
 
         error: (xhr, textStatus) ->
@@ -58,48 +58,86 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             type: "danger",
 
 
-    initStatsChat: (label, total_clicks, avail_clicks) ->
-      option = {
-        title : {
-          text: '',
-          subtext: ''
-        },
-        tooltip : {
-          trigger: 'axis'
-        },
-        legend: {
-          data:[ polyglot.t("smart_campaign.stats.total_click"), polyglot.t("smart_campaign.stats.avail_click")]
-        },
-        toolbox: {
-          show : true,
-        },
-        calculable : true,
-        xAxis : [
-          {
-            type : 'category',
-            boundaryGap : false,
-            data : label
-          }
-        ],
-        yAxis : [
-          {
-            type : polyglot.t("smart_campaign.stats.click_unit"),
-          }
-        ],
-        series : [
-          {
-            name: polyglot.t("smart_campaign.stats.total_click"),
-            type:'line',
-            data: total_clicks
-
+    initStatsChat: (per_budget_type, label, total_clicks, avail_clicks) ->
+      if per_budget_type == "click"
+        option = {
+          title : {
+            text: '',
+            subtext: ''
           },
-          {
-            name: polyglot.t("smart_campaign.stats.avail_click"),
-            type:'line',
-            data:avail_clicks,
-          }
-        ]
-      };
+          tooltip : {
+            trigger: 'axis'
+          },
+          legend: {
+            data:[ polyglot.t("smart_campaign.stats.total_click"), polyglot.t("smart_campaign.stats.avail_click")]
+          },
+          toolbox: {
+            show : true,
+          },
+          calculable : true,
+          xAxis : [
+            {
+              type : 'category',
+              boundaryGap : false,
+              data : label
+            }
+          ],
+          yAxis : [
+            {
+              type : polyglot.t("smart_campaign.stats.click_unit"),
+            }
+          ],
+          series : [
+            {
+              name: polyglot.t("smart_campaign.stats.total_click"),
+              type:'line',
+              data: total_clicks
+
+            },
+            {
+              name: polyglot.t("smart_campaign.stats.avail_click"),
+              type:'line',
+              data:avail_clicks,
+            }
+          ]
+        };
+      else
+        option = {
+          title : {
+            text: '',
+            subtext: ''
+          },
+          tooltip : {
+            trigger: 'axis'
+          },
+          legend: {
+            data:[ polyglot.t("smart_campaign.stats.total_click")]
+          },
+          toolbox: {
+            show : true,
+          },
+          calculable : true,
+          xAxis : [
+            {
+              type : 'category',
+              boundaryGap : false,
+              data : label
+            }
+          ],
+          yAxis : [
+            {
+              type : polyglot.t("smart_campaign.stats.click_unit"),
+            }
+          ],
+          series : [
+            {
+              name: polyglot.t("smart_campaign.stats.total_click"),
+              type:'line',
+              data: total_clicks
+
+            }
+          ]
+        };
       @statsChart.setOption(option)
 
 
@@ -161,3 +199,4 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     serializeData: () ->
       items: @options.kol_list_data
+      campaign: @options.campaign
