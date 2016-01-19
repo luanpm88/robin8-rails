@@ -144,6 +144,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @parent = opts.parent
       @current_kol = new Robin.Models.KolProfile App.currentKOL.attributes
       @needMobile = opts.needMobile
+      @finished = opts.finished
       if @current_kol.attributes.category_size == 0 || @current_kol.attributes.mobile_number == ""
         @needComplete = true
       else
@@ -154,6 +155,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       start_at: @format_date(@model.get('start_time'))
       end_at: @format_date(@model.get('deadline'))
       needMobile: @needMobile
+      finished: @finished
       needComplete: @needComplete
 
     format_date: (date) ->
@@ -186,6 +188,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             updatedView = new Show.TaskModal
               model: parentThis.model
               needMobile: true
+            updatedViewHtml = updatedView.render().$el
+            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+          else if data.status == 'campaign finished'
+            updatedView = new Show.TaskModal
+              model: parentThis.model
+              finished: true
             updatedViewHtml = updatedView.render().$el
             parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
 
