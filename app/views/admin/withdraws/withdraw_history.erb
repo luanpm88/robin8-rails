@@ -45,7 +45,7 @@
         </td>
 
         <td>
-          <%= @campaigns[i].per_click_budget %>
+          <%= @campaigns[i].per_action_budget %>
         </td>
 
         <td>
@@ -57,9 +57,8 @@
         </td>
 
         <td>
-          <%= @campaigns[i].per_click_budget * @campaign_invites[i].avail_click %>
+          <%= (@campaigns[i].per_action_budget * @campaign_invites[i].avail_click).round(2) %>
         </td>
-
 
         <td>
           <% if @transactions[i].present? %>
