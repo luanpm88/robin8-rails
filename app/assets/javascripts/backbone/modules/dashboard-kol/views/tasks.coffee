@@ -180,6 +180,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             updatedViewHtml = updatedView.render().$el
             parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
             $('.triggerMark').remove()
+            parentThis.initQiniuUploader()
           else if data.status == 'needMobile'
             console.log 'need mobile'
             updatedView = new Show.TaskModal
