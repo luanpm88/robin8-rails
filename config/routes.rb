@@ -1,6 +1,9 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
+  mount API::Application => '/api'
+
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
 
@@ -24,7 +27,6 @@ Rails.application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
