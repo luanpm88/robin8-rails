@@ -155,6 +155,8 @@ gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 gem 'china_sms'
 gem 'qiniu', '~> 6.2.1'
+
+
 group :development, :test do
   # Deploy with Capistrano
   gem 'capistrano-rails', '~> 1.1.3'
@@ -197,3 +199,13 @@ end
 group :production do
   gem 'unicorn', '4.8.3'
 end
+
+
+
+#------------------- 2.0 新增
+gem 'kaminari', :require => 'kaminari/grape'
+gem 'grape', '~> 0.9.0'
+gem 'grape-entity', '~> 0.4.3'
+gem 'grape-present_cache', :git => 'https://github.com/u2/grape-present_cache.git'
+
+gem 'jwt'
