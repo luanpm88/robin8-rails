@@ -1,51 +1,52 @@
 module API
   module V1
     class Sessions < Grape::API
-      resources "users" do
+      resources "kols" do
         # 用户注册
         post 'sign_up' do
-          required_attributes! [:phone, :code, :password, :role]
-          phone_number = PhoneNumber.find_by(phone: params[:phone], :identifying_code => params[:code])
-          # error = PhoneNumber.verify_code_and_return_error(params[:phone], params[:code])
-          if phone_number.blank?
-            error!({error: 1, detail: '错误的验证码'}, 403)
+          required_attributes! [:mobile_number, :code]
+          kol = Kol.find_by({:mobile_number => params[:mobile_number]})
+          return error!({error: 1, detail: '该手机号已经被注册'}, 403)  if kol.present?
+          code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
+          return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
+          kol = Kol.new(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
+                          app_version: params[:app_version]
+          )
+          if kol.save
+            kol.reload
+            present :error, 0
+            present :kol, kol, with: API::V1::Entities::KolEntities::Summary
           else
-            user = User.new(phone: params[:phone], password: params[:password],
-                            password_confirmation: params[:password], role: params[:role],
-                            app_platform: params[:app_platform],
-                            app_version: params[:app_version]
-            )
-            if user.save
-              if params[:invite_code]
-                user.handle_invite_code(params[:invite_code])
-              end
-              phone_number.destroy
-              user.reload
-              present :user, user, with: API::V1::Entities::UserEntities::Summary
-              present :secret, user, with: API::V1::Entities::UserEntities::Secret
-            else
-              error!({error: 2, detail: '手机号已被注册'}, 403)
-            end
+            error!({error: 3, detail: '保存用户出现错误'}, 403)
           end
-
         end
+
+        # # 用户登录
+        # post 'sign_in' do
+        #   required_attributes! [:mobile_number, :password]
+        #   kol = Kol.find_by(mobile_number: params[:mobile_number])
+        #   render error_403!({error: 1, detail: '手机号还没注册'}) if kol.blank?
+        #   if kol.valid_password?(params[:password])
+        #     kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version])
+        #     kol.reload
+        #     present :kol, kol, with: API::V1::Entities::KolSummary
+        #   else
+        #     error!({error: 1, detail: '账号或密码错误'}, 403)
+        #   end
+        # end
 
         # 用户登录
         post 'sign_in' do
-          required_attributes! [:phone, :password]
-          user = User.find_by(phone: params[:phone])
-          render error_403!({error: 1, detail: '手机号还没注册'}) if user.blank?
-          if user.valid_password?(params[:password])
-            user.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version])
-            user.reload
-            present :user, user, with: API::V1::Entities::UserEntities::Summary
-            present :secret, user, with: API::V1::Entities::UserEntities::Secret
-          else
-            error!({error: 1, detail: '账号或密码错误'}, 403)
-          end
+          required_attributes! [:mobile_number, :code, :app_platform, :app_version]
+          kol = Kol.find_by(mobile_number: params[:mobile_number])
+          render error_403!({error: 1, detail: '手机号还没注册'}) if kol.blank?
+          code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
+          return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
+          kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version])
+          kol.reload
+          present :error, 0
+          present :kol, kol, with: API::V1::Entities::KolEntities::Summary
         end
-
-
       end
     end
   end

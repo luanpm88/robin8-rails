@@ -151,6 +151,10 @@ class Kol < ActiveRecord::Base
     self.private_token
   end
 
+  def get_issue_token
+    AuthToken.issue_token(get_private_token)
+  end
+
   def self.app_auth(private_token)
     Kol.find_by :private_token => private_token    rescue nil
   end

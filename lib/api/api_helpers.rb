@@ -77,7 +77,7 @@ module API
     end
 
     def render_api_error!(message, status)
-      error!({'message' => message}, status)
+      error!({'detail' => message}, status)
     end
 
     def error_403!(message)
