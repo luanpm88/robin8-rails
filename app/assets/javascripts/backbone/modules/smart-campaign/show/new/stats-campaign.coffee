@@ -199,4 +199,4 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     serializeData: () ->
       items: @options.kol_list_data
-      campaign: @options.campaign
+      campaign: @options.campaign.attributes

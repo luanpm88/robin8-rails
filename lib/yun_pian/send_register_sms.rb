@@ -1,5 +1,7 @@
 module YunPian
   class SendRegisterSms
+    FakeNumber = 'robin8.best'
+    FakeCode = '1234'
 
     def initialize(phone_number,
                    api_key = Rails.application.secrets.yunpian[:api_key],
@@ -15,7 +17,7 @@ module YunPian
       code = security_code
       write_cache_for @phone_number, code
 
-      return if @phone_number == "robin8.best"
+      return {'code' => '0'} if @phone_number == "robin8.best"  || Rails.env.development?
 
       ChinaSMS.use :yunpian, password: @api_key
       tpl_params = {code: code, company: @company_sign}
@@ -23,13 +25,13 @@ module YunPian
         res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1
       rescue Exception => ex
         Rails.logger.error ex
-        return nil
+        return {:message => ex.message}
       end
 
       if res["code"] == 0
         Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
       else
-        Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res["code"]}, please look up https://www.yunpian.com/api/recode.html"
+        Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res['code']}, please look up https://www.yunpian.com/api/recode.html"
       end
 
       return res
@@ -45,7 +47,17 @@ module YunPian
     end
 
     def generate_security_code
-      @phone_number == "robin8.best" ? "1234" : (1..9).to_a.sample(4).join
+      @phone_number == FakeNumber ? FakeCode : (1..9).to_a.sample(4).join
+    end
+
+    def self.get_code(phone)
+      return FakeCode if phone ==  FakeNumber
+      Rails.cache.read(phone) rescue nil
+    end
+
+    def self.verify_code(phone, code)
+      return true if Rails.env.development?
+      Rails.cache.read(phone) == code
     end
   end
 end
