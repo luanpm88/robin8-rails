@@ -31,7 +31,7 @@ module YunPian
       if res["code"] == 0
         Rails.logger.info "Send sms to #{@phone_number} successfully when sign up"
       else
-        Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res["code"]}, please look up https://www.yunpian.com/api/recode.html"
+        Rails.logger.error "Failed to send sms to #{@phone_number}, the return code is #{res['code']}, please look up https://www.yunpian.com/api/recode.html"
       end
 
       return res
