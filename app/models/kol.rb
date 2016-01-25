@@ -20,6 +20,8 @@ class Kol < ActiveRecord::Base
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold
 
+  mount_uploader :avatar, :ImageUploader
+
   has_many :withdraws
 
   def email_required?

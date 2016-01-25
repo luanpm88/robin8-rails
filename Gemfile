@@ -201,7 +201,6 @@ group :production do
 end
 
 
-
 #------------------- 2.0 新增
 gem 'kaminari', :require => 'kaminari/grape'
 gem 'grape', '~> 0.9.0'
@@ -209,3 +208,6 @@ gem 'grape-entity', '~> 0.4.3'
 gem 'grape-present_cache', :git => 'https://github.com/u2/grape-present_cache.git'
 
 gem 'jwt'
+
+gem 'carrierwave'
+gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
