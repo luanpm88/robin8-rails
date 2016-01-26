@@ -9,7 +9,11 @@ class CampaignInvite < ActiveRecord::Base
 
   belongs_to :campaign
   belongs_to :kol
+  scope :running, -> {where(:status => 'running')}
+  scope :approved, -> {where(:status => 'approved')}
   scope :passed, -> {where(:img_status => 'passed')}
+  scope :verifying, -> {where(:status => 'finish').where.not(:img_status => 'passed')}
+  scope :settled, -> {where(:status => 'settled')}
 
   def screenshot_pass
     campaign = self.campaign
