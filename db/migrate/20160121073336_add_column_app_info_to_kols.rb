@@ -9,5 +9,8 @@ class AddColumnAppInfoToKols < ActiveRecord::Migration
     rename_column :kols, :avatar_url, :avatar
     add_column :kols, :alipay_account, :string
     add_column :kols, :name, :string
+    add_column :kols, :app_country, :string
+    add_column :kols, :app_province, :string
+    add_column :kols, :app_city, :string
   end
 end

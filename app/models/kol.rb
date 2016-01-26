@@ -20,6 +20,9 @@ class Kol < ActiveRecord::Base
 
   has_many :kol_tags
   has_many :tags, :through => :kol_tags
+  has_many :campaign_likes
+  has_many :like_campaigns, ->{where(:like => true)}, :through => :campaign_likes, :source => 'campaign'
+  has_many :hide_campaigns, -> {where(:hide => true)}, :through => :campaign_likes, :source => 'campaign'
 
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold

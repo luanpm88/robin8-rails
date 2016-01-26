@@ -1,7 +1,8 @@
 module API
   module V1
-    class Tags < Grape::API
+    class Campaigns < Grape::API
       resources :campaigns do
+
         get 'list' do
 
         end

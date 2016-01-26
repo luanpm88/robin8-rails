@@ -4,9 +4,18 @@ module API
       module KolEntities
         class Summary < Grape::Entity
           expose :email, :mobile_number, :name, :gender, :date_of_birthday,
-                 :avatar_url, :country, :province, :city, :alipay_account
-          expose :desc do |kol|
-            ''
+                 :alipay_account, :desc
+          expose :country do |kol|
+            kol.app_country
+          end
+          expose :province do |kol|
+            kol.app_province
+          end
+          expose :city do |kol|
+            kol.app_city
+          end
+          expose :avatar_url do |kol|
+            kol.avatar.url(200)  rescue ''
           end
           expose :tags do |kol|
             kol.tags.collect{|t| t.label }
@@ -14,6 +23,7 @@ module API
           expose :issue_token do |kol|
             kol.get_issue_token
           end
+
         end
 
         class Account < Grape::Entity
