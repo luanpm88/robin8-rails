@@ -37,7 +37,7 @@ module YunPian
     end
 
     def write_cache_for phone_number, code
-      Rails.cache.write(phone_number, code, expires_in: 3.minute)
+      Rails.cache.write(phone_number, code, expires_in: 30.minutes)
     end
 
     def security_code
