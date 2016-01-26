@@ -22,9 +22,7 @@ module API
 
         put 'update_profile' do
           authenticate!
-          # required_attributes! [:name, :gender, :date_of_birthday,
-          #                       :country, :province, :city, :desc, :tags, :alipay_account]
-          requires :gender, type: String, values: [0, 1, 2]   if params[:gender].present?
+          attribute_must_in(:gender, params[:gender].to_i, [0, 1, 2])     if params[:gender]
           attrs = attributes_for_keys [:name, :gender, :date_of_birthday,
                                        :country, :province, :city, :desc, :tags, :alipay_account]
           if current_kol.update_attributes(attrs)

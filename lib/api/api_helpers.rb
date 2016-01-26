@@ -33,6 +33,13 @@ module API
       end
     end
 
+    def attribute_must_in(key, value, enum_values = [])
+      if !enum_values.include?(value)
+        bad_params_values(key, value, enum_values)
+      end
+    end
+
+
     def attributes_for_keys(keys)
       attrs = {}
       keys.each do |key|
@@ -46,9 +53,17 @@ module API
       render_api_error!('403 Forbidden', 403)
     end
 
+    # 错误的属性
     def bad_request!(key)
       message = ["400 (Bad request)"]
       message << "\"" + key.inspect
+      render_api_error!(message.join(' '), 400)
+    end
+
+    # 错误的属性值
+    def bad_params_values(key, value, enum_values)
+      message = ["400 (Bad request)"]
+      message << "\" #{key} value: #{value} must in #{enum_values.inspect}"
       render_api_error!(message.join(' '), 400)
     end
 
