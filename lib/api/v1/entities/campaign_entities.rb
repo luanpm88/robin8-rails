@@ -1,6 +1,9 @@
 module API
   module V1
-    module
+    module KolEntities
+      class Summary
+
+      end
 
     end
   end

@@ -64,7 +64,7 @@ gem 'newrelic_rpm'
 # 微信相关
 gem 'weixin_authorize'
 
-source 'https://rails-assets.org' do
+source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
   gem 'rails-assets-bootstrap.growl', '2.0.1'
   gem 'rails-assets-sass-bootstrap-glyphicons'
@@ -154,7 +154,7 @@ gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'country_select', github: 'stefanpenner/country_select'
 gem 'geocoder'
 gem 'china_sms'
-gem 'qiniu', '~> 6.2.1'
+gem 'qiniu', '~> 6.5.1'
 
 
 group :development, :test do

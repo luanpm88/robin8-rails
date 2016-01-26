@@ -17,10 +17,14 @@ class Kol < ActiveRecord::Base
   has_many :article_comments, as: :sender
   has_many :kol_profile_screens
   has_many :interested_campaigns
+
+  has_many :kol_tags
+  has_many :tags, :through => :kol_tags
+
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold
 
-  mount_uploader :avatar, :ImageUploader
+  mount_uploader :avatar, ImageUploader
 
   has_many :withdraws
 

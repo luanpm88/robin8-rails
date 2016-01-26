@@ -21,7 +21,6 @@ class ImageUploader < CarrierWave::Uploader::Base
       Rails.logger.debug("(BaseUploader.filename) #{uploader_secure_token}")
       "#{uploader_secure_token}#{File.extname(file.path).downcase}" rescue "#{uploader_secure_token}#{File.extname(default_url).downcase}"
     end
-    # "#{secure_token(10)}.#{file.extension}" if original_filename.present?
   end
 
   include CarrierWave::MimeTypes

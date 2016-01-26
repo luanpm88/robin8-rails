@@ -18,7 +18,7 @@ module API
     end
 
     def authenticate!
-      unauthorized! unless current_user
+      unauthorized! unless current_kol
     end
 
     def user_avatar(user, style)
@@ -27,11 +27,6 @@ module API
       end
     end
 
-    # Checks the occurrences of required attributes, each attribute must be present in the params hash
-    # or a Bad Request error is invoked.
-    #
-    # Parameters:
-    #   keys (required) - A hash consisting of keys that must be present
     def required_attributes!(keys)
       keys.each do |key|
         bad_request!(key) if params[key].blank?

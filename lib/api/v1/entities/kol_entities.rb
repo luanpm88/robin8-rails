@@ -3,13 +3,13 @@ module API
     module Entities
       module KolEntities
         class Summary < Grape::Entity
-          expose :email, :mobile_number, :first_name, :last_name, :gender, :date_of_birthday,
+          expose :email, :mobile_number, :name, :gender, :date_of_birthday,
                  :avatar_url, :country, :province, :city, :alipay_account
           expose :desc do |kol|
             ''
           end
           expose :tags do |kol|
-            []
+            kol.tags.collect{|t| t.label }
           end
           expose :issue_token do |kol|
             kol.get_issue_token

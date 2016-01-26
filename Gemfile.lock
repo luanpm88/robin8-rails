@@ -11,6 +11,14 @@ GIT
       polyamorous (~> 1.1)
 
 GIT
+  remote: git://github.com/huobazi/carrierwave-qiniu.git
+  revision: abbf6083f629578cdb5bdd705d94cd1281c0c278
+  specs:
+    carrierwave-qiniu (0.2.1)
+      carrierwave
+      qiniu (~> 6.5.1)
+
+GIT
   remote: git://github.com/stefanpenner/country_select.git
   revision: 20f83bda911abd7c1d5cb96fd37f9ea22d892f0e
   specs:
@@ -36,7 +44,7 @@ GIT
 
 GEM
   remote: https://ruby.taobao.org/
-  remote: https://rails-assets.org/
+  remote: http://rails-assets.org/
   specs:
     actionmailer (4.2.0)
       actionpack (= 4.2.0)
@@ -150,9 +158,6 @@ GEM
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
-    carrierwave-qiniu (0.1.0)
-      carrierwave
-      qiniu-rs (~> 3.4.2)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     charlock_holmes (0.7.3)
@@ -199,8 +204,6 @@ GEM
     docx (0.2.07)
       nokogiri (~> 1.5)
       rubyzip (~> 1.1.6)
-    domain_name (0.5.24)
-      unf (>= 0.0.5, < 1.0.0)
     ejs (1.1.1)
     email_validator (1.6.0)
       activemodel
@@ -266,8 +269,6 @@ GEM
     htmlentities (4.3.3)
     http (0.6.4)
       http_parser.rb (~> 0.6.0)
-    http-cookie (1.0.2)
-      domain_name (~> 0.5)
     http_parser.rb (0.6.0)
     httparty (0.13.5)
       json (~> 1.8)
@@ -318,7 +319,7 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.8.2)
-    mime-types (1.25.1)
+    mime-types (2.4.3)
     mini_magick (4.3.6)
     mini_portile (0.6.2)
     minitest (5.7.0)
@@ -340,7 +341,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
-    netrc (0.10.3)
+    netrc (0.11.0)
     newrelic_rpm (3.11.2.286)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
@@ -410,15 +411,10 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     puma (2.13.4)
-    qiniu (6.2.4)
-      json (~> 1.7)
-      mime-types (~> 1.19)
-      rest-client (~> 1.6)
-      ruby-hmac (~> 0.4)
-    qiniu-rs (3.4.10)
-      json (~> 1.7)
-      mime-types (~> 1.19)
-      rest-client (~> 1.6)
+    qiniu (6.5.1)
+      json (~> 1.8)
+      mime-types (~> 2.4.3)
+      rest-client (~> 1.7.3)
       ruby-hmac (~> 0.4)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
@@ -506,7 +502,7 @@ GEM
       rails-assets-select2 (>= 3.3.2, < 4)
     rails-assets-spinjs (2.3.2)
     rails-assets-spinkit (1.2.5)
-    rails-assets-timeago (1.4.3)
+    rails-assets-timeago (1.5.0)
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.inflection (1.1.1)
@@ -556,8 +552,7 @@ GEM
       redis (>= 2.2)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
-    rest-client (1.8.0)
-      http-cookie (>= 1.0.2, < 2.0)
+    rest-client (1.7.3)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     roadie (3.0.5)
@@ -677,9 +672,6 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.7.1)
     unicode_utils (1.4.0)
     unicorn (4.8.3)
       kgio (~> 2.6)
@@ -731,7 +723,7 @@ DEPENDENCIES
   capybara
   caracal-rails
   carrierwave
-  carrierwave-qiniu
+  carrierwave-qiniu!
   charlock_holmes
   china_sms
   coffee-rails (~> 4.1.0)
@@ -785,7 +777,7 @@ DEPENDENCIES
   pry-rails
   pry-stack_explorer (= 0.4.9.1)
   puma
-  qiniu (~> 6.2.1)
+  qiniu (~> 6.5.1)
   quiet_assets
   qy_wechat (~> 1.0.1)
   rack-mini-profiler

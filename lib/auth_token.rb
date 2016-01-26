@@ -19,11 +19,11 @@ module AuthToken
     begin
       decoded_json_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
       decoded_data = JSON.parse(decoded_json_data)                                        rescue {}
-      if decoded_data['time'].blank? || decoded_data[key].blank?
+      if decoded_data['time'].blank? || decoded_data[Key].blank?
         return [false, '格式错误' ]
       end
       if decoded_data['time'].to_i > (Time.now - Expired).to_i && decoded_data['time'].to_i <= Time.now.to_i
-        return [true, decoded_data[key]]
+        return [true, decoded_data[Key]]
       else
         return [false, 'token已经过期' ]
       end
@@ -32,8 +32,9 @@ module AuthToken
     end
   end
 
-  def AuthToken.test_issue_token(private_token)
-    payload = {Key => private_token, :time => Time.now.to_i}.to_json
+  def AuthToken.test_issue_token
+    kol = Kol.find 84
+    payload = {Key => kol.get_private_token, :time => Time.now.to_i}.to_json
     token = JWT.encode(payload, Secret, Algorithm)
     puts token
     token
