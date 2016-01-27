@@ -11,14 +11,13 @@ module AuthToken
   end
 
   def AuthToken.issue_token(private_token)
-    payload = {Key => private_token}.to_json
+    payload = {Key => private_token}
     JWT.encode(payload, Secret, Algorithm)
   end
 
   def AuthToken.valid?(data)
     begin
-      decoded_json_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
-      decoded_data = JSON.parse(decoded_json_data)                                        rescue {}
+      decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
       if decoded_data['time'].blank? || decoded_data[Key].blank?
         return [false, '格式错误' ]
       end
@@ -34,7 +33,7 @@ module AuthToken
 
   def AuthToken.test_issue_token
     kol = Kol.find 84
-    payload = {Key => kol.get_private_token, :time => Time.now.to_i}.to_json
+    payload = {Key => kol.get_private_token, :time => Time.now.to_i}
     token = JWT.encode(payload, Secret, Algorithm)
     puts token
     token
