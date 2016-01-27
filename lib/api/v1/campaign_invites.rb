@@ -22,7 +22,7 @@ module API
         params do
           requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'liked']
         end
-        get 'list' do
+        get '/' do
           if params[:status] == 'like'
             like_campaign_ids = current_user.love_campaign_likes.collect{|t| t.campaign_id }
             @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids )
@@ -40,6 +40,8 @@ module API
           present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
         end
 
+
+        #活动邀请详情
         params do
           requires :id, type: Integer
         end
@@ -54,6 +56,7 @@ module API
           end
         end
 
+        #接收活动邀请
         params do
           requires :id, type: Integer
         end
@@ -63,7 +66,7 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           elsif campaign_invite.status != 'running'
-            return error_403!({error: 1, detail: '该活动已经结束或者您已经接收这次活动！' })
+            return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
           elsif campaign.need_finish
             CampaignWorker.perform_async(@campaign.id, 'fee_end')
             return error_403!({error: 1, detail: '该活动已经结束！' })
