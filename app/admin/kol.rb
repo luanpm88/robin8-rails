@@ -65,6 +65,8 @@ ActiveAdmin.register Kol do
   filter :email
   filter :mobile_number
   filter :social_name
+  filter :first_name
+  filter :last_name
   filter :province
   filter :from_which_campaign, label: 'source', as: :select
   filter :forbid_campaign_time
