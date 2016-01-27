@@ -1,7 +1,7 @@
 module API
   module V1
     class CampaignInvites < Grape::API
-      resources :campaigns do
+      resources :campaign_invites do
         before do
           authenticate!
         end
@@ -11,12 +11,12 @@ module API
         end
         get 'list' do
           if params[:status] == 'like'
-            like_campaign_ids = current_user.like_campaigns.collect{|t| t.campaign_id }
+            like_campaign_ids = current_user.love_campaign_likes.collect{|t| t.campaign_id }
             @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids )
           else
-            hide_campaign_ids = current_kol.hide_campaigns.collect{|t| t.campaign_id }
+            hide_campaign_ids = current_kol.hide_campaign_likes.collect{|t| t.campaign_id }
             if params[:status] == 'all'
-              @campaign_invites = current_kol.campaign_invites.where.not(:campaign_id => hide_campaign_ids)
+              @campaign_invites = current_kol.campaign_invites.where.not(:campaign_id => hide_campaign_ids).where.not(:status => 'rejected')
             else
               @campaign_invites = current_kol.campaign_invites.send(params[:status]).where.not(:campaign_id => hide_campaign_ids)
             # elsif params[:status] == 'verify'
@@ -27,12 +27,12 @@ module API
             end
             # @campaigns = Campaign.where(:id => campaign_ids - hide_campaign_ids ).order('created_at  desc')
           end
-
-
+          @campaign_invites = @campaign_invites.page(params[:page]).per_page(10)
+          to_paginate(@campaign_invites)
+          present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
         end
 
-        get ':id/receive_task'
-
+        get ':id/receive_task' do
 
         end
       end

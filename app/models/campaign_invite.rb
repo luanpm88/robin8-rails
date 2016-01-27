@@ -67,6 +67,16 @@ class CampaignInvite < ActiveRecord::Base
     ShortUrl.convert origin_share_url(uuid)
   end
 
+  def earn_money
+    campaign = self.campaign
+    return 0.0 if campaign.blank?
+    if campaign.is_click_type?
+      (get_avail_click * campaign.per_action_budget).round(2)       rescue 0
+    else
+      campaign.per_action_budget.round(2) rescue 0
+    end
+  end
+
   def add_click(valid)
     self.redis_avail_click.increment if valid
     self.redis_total_click.increment
