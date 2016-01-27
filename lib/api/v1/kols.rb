@@ -37,7 +37,7 @@ module API
           # attribute_must_in(:gender, params[:gender].to_i, [0, 1, 2])     if params[:gender]
           attrs = attributes_for_keys [:name, :gender, :date_of_birthday,
                                        :app_country, :app_province, :app_city, :desc, :alipay_account]
-          if params[:tags].size > 0
+          if params[:tags] && params[:tags].size > 0
             kol_tags = Tag.where(:name => params[:tags])
             current_kol.tags = kol_tags
           end
