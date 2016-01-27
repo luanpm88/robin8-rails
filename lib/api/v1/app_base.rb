@@ -6,6 +6,8 @@ module API
       mount API::V1::Sessions
       mount API::V1::Phones
       mount API::V1::Tags
+      mount API::V1::Campaigns
+      mount API::V1::CampaignInvites
     end
   end
 end

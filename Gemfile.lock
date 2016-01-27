@@ -753,7 +753,6 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   jwt
-  kaminari
   koala (~> 1.11.0rc)
   legato
   mailgun-ruby

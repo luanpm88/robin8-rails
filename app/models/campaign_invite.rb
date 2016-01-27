@@ -9,6 +9,7 @@ class CampaignInvite < ActiveRecord::Base
 
   belongs_to :campaign
   belongs_to :kol
+  scope :unrejected, -> {where("status != 'rejected'")}
   scope :running, -> {where(:status => 'running')}
   scope :approved, -> {where(:status => 'approved')}
   scope :passed, -> {where(:img_status => 'passed')}
@@ -65,6 +66,16 @@ class CampaignInvite < ActiveRecord::Base
 
   def self.generate_share_url(uuid)
     ShortUrl.convert origin_share_url(uuid)
+  end
+
+  def earn_money
+    campaign = self.campaign
+    return 0.0 if campaign.blank?
+    if campaign.is_click_type?
+      (get_avail_click * campaign.per_action_budget).round(2)       rescue 0
+    else
+      campaign.per_action_budget.round(2) rescue 0
+    end
   end
 
   def add_click(valid)
