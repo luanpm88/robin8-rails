@@ -3,7 +3,11 @@ module API
     module Entities
       module CampaignInviteEntities
         class Summary < Grape::Entity
-          expose :status, :img_status, :share_url, :campaign_id, :kol_id, :is_invited
+          format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
+          expose :id, :status, :img_status, :share_url, :is_invited, :screenshot, :reject_reason
+          with_options(format_with: :iso_timestamp) do
+            expose :approved_at
+          end
           expose :avail_click do |campaign_invite|
             campaign_invite.get_avail_click
           end

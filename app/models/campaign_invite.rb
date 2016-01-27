@@ -9,6 +9,7 @@ class CampaignInvite < ActiveRecord::Base
 
   belongs_to :campaign
   belongs_to :kol
+  scope :unrejected, -> {where("status != 'rejected'")}
   scope :running, -> {where(:status => 'running')}
   scope :approved, -> {where(:status => 'approved')}
   scope :passed, -> {where(:img_status => 'passed')}
