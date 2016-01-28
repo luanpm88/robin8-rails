@@ -112,10 +112,10 @@ class Campaign < ActiveRecord::Base
   # c.update_column(:status,'agreed')
   # c.send_invites(kol_ids)
   def send_invites(kol_ids = nil)
-    Rails.logger.campaign_sidekiq.info "---send_invites: --campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
+    Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
     return if self.status != 'agreed'
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
-    Rails.logger.campaign_sidekiq.info "---send_invites: --start create--"
+    Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
     campaign_id = self.id
     ActiveRecord::Base.transaction do
       if kol_ids.present?
@@ -130,13 +130,13 @@ class Campaign < ActiveRecord::Base
       end
       # 删除黑名单campaign
       block_kol_ids = Kol.where("forbid_campaign_time > '#{Time.now}'").collect{|t| t.id}
-      Rails.logger.campaign_sidekiq.info "---send_invites: --campaign block_kol_ids: ---#{block_kol_ids}-"
+      Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kol_ids}-"
       CampaignInvite.where(:kol_id => block_kol_ids, :campaign_id => campaign_id).delete_all
     end
-    Rails.logger.campaign_sidekiq.info "----send_invites:  start push to sidekiq-------"
+    Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
     _start_time = self.start_time < Time.now ? (Time.now + 15.seconds) : self.start_time
-    Rails.logger.campaign_sidekiq.info "----send_invites:  _start_time:#{_start_time}-------"
+    Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id} _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
   end
@@ -174,6 +174,7 @@ class Campaign < ActiveRecord::Base
 
   #finish_remark:  expired or fee_end
   def finish(finish_remark)
+    self.reload
     Rails.logger.campaign_sidekiq.info "-----executed: #{finish_remark}----------"
     if Rails.application.config.china_instance  && self.status == 'executing'
       ActiveRecord::Base.transaction do
@@ -202,6 +203,7 @@ class Campaign < ActiveRecord::Base
   # 更新invite 状态和点击数
   def end_invites
     campaign_invites.each do |invite|
+      next if invite.status == 'finished' || invite.status == 'settled'
       if invite.status == 'approved'
         invite.status = 'finished'
         invite.avail_click = invite.redis_avail_click.value

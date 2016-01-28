@@ -13,8 +13,6 @@
 
 env :PATH, ENV['PATH']
 
-# set :environment, "staging"
-
 set :output, {
   :error => File.join(path, "log", "cron_error.log"),
   :standard => File.join(path, "log", "cron.log")
@@ -33,6 +31,9 @@ end
 # end
 
 # Learn more: http://github.com/javan/whenever
+every 1.day, :at => '0:10 am' do
+  command "backup perform --trigger robin8_backup_qiniu"
+end
 
 # updating sitemap
 every 1.day, :at => '5:00 am' do
@@ -40,7 +41,7 @@ every 1.day, :at => '5:00 am' do
 end
 
 every 1.day, :at => '12:00 am' do
-  command "backup perform --trigger robin8_production"
+  command "backup perform --trigger robin8_backup_local"
 end
 
 every 5.minutes do
@@ -61,5 +62,5 @@ end
 
 
 every 1.day, :at => '12:00 pm' do
-  command "backup perform --trigger robin8_production"
+  command "backup perform --trigger robin8_backup_local"
 end
