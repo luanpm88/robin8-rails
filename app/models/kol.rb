@@ -26,6 +26,8 @@ class Kol < ActiveRecord::Base
   # has_many :like_campaigns, ->{where(:like => true)}, :through => :campaign_likes, :source => 'campaign'
   # has_many :hide_campaigns, -> {where(:hide => true)}, :through => :campaign_likes, :source => 'campaign'
 
+  has_many :transactions, ->{order('created_at desc')}, :as => :account
+
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold
 

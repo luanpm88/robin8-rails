@@ -8,6 +8,7 @@ module API
       mount API::V1::Tags
       mount API::V1::Campaigns
       mount API::V1::CampaignInvites
+      mount API::V1::Transactions
     end
   end
 end
