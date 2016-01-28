@@ -1348,7 +1348,7 @@ zh:
         budget: 活动预算不能为空
         per_budget_type: 类型
         per_action_budget: 每次预算不能为空
-        budget_should_be_digit: 每次预算只能包含数字
+        budget_should_be_digit: 预算只能包含整数
         per_action_budget_should_be_digit: 只能包含数字
         per_action_budget_should_greater_than_zero: 每次预算应该大于零
         per_action_budget_should_less_than_budget: 每次预算应该小于总预算
@@ -1491,6 +1491,7 @@ zh:
         close: 取消
         sure_to_create: 确定保存
         create_campaign: 您已成功创建一个活动
+        save_campaign: 您已成功保存活动
 
       status: "状态"
       success_ask_invite: Your request has been sent
