@@ -32,7 +32,7 @@ class CampaignInviteController < ApplicationController
 
     @campaign = @campaign_invite.campaign
 
-    if @campaign.valid_invites.size >= @campaign.max_action  || @campaign.status != 'executing'
+    if @campaign.need_finish
       CampaignWorker.perform_async(@campaign.id, 'fee_end')
       return render :json => {status: 'campaign finished'}
     end
