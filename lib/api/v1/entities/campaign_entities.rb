@@ -17,7 +17,7 @@ module API
           end
           expose :take_budget
           expose :remain_budget
-          expose :share_time
+          expose :share_times
           expose :interval_time do |campaign|
             interval_time(Time.now, campaign.deadline)
           end

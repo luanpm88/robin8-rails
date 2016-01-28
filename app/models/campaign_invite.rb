@@ -91,10 +91,10 @@ class CampaignInvite < ActiveRecord::Base
     self.save
   end
 
-  def self.create_invite(campaign_id, kol_id)
-    return if CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign_id)
+  def self.create_invite(campaign_id, kol_id, status = 'pending')
+    # return if CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign_id)
     invite = CampaignInvite.new
-    invite.status = 'pending'
+    invite.status = status
     invite.campaign_id = campaign_id
     invite.kol_id = kol_id
     invite.save(validate: false)

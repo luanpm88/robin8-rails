@@ -57,7 +57,7 @@ class CampaignShow < ActiveRecord::Base
     info = JSON.parse(Base64.decode64(uuid))   rescue {}
     campaign = Campaign.find info['campaign_id']  rescue nil
     campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil
-    if campaign_invite.nil?  ||  campaign.nil?   || campaign_invite.status == 'running' || campaign_invite.status == 'pending'
+    if campaign_invite.nil?  ||  campaign.nil?   || campaign_invite.status == 'running' || campaign_invite.status == 'pending' || campaign_invite.status == 'rejected'
       Rails.logger.campaign_show_sidekiq.info "---------CampaignShow return: --uuid:#{uuid}---status:#{campaign_invite.status}---"
       return false
     end

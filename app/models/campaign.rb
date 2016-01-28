@@ -109,7 +109,7 @@ class Campaign < ActiveRecord::Base
     return 0 if status == 'unexecute'
     self.valid_invites.size
   end
-  alias_method :share_time, :get_share_time
+  alias_method :share_times, :get_share_time
 
 
   # 开始时候就发送邀请 但是状态为pending
