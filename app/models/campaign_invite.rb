@@ -97,6 +97,6 @@ class CampaignInvite < ActiveRecord::Base
     invite.status = 'pending'
     invite.campaign_id = campaign_id
     invite.kol_id = kol_id
-    invite.save!
+    invite.save(validate: false)
   end
 end
