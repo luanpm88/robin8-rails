@@ -76,9 +76,9 @@ ActiveAdmin.register Kol do
     send_data csv, type: 'text/csv; charset=utf-8; header=present', disposition: "attachment; filename=report.csv"
   end
 
-  action_item only: :index do
-    link_to('导出kols.csv', params.merge(:action => :download_report))
-  end 
+  collection_action :stastic_data, :method => :get do
+    @stastic_data = StasticData.new
+  end
 
    ActiveAdmin.setup do |config|
     # Want PDF added to default download links
