@@ -32,7 +32,7 @@ class StasticDataHandler
       from_which_campaign_hash[kol.from_which_campaign.to_s] = from_which_campaign_hash[kol.from_which_campaign.to_s].to_i + 1 
     end
     
-    stastic_data.from_which_campaign = from_which_campaign_hash.to_a.map do |f| "#{f[0]}: #{f[1]}" end.join("\n")
+    stastic_data.from_which_campaign = from_which_campaign_hash.to_a.map do |f| "(#{f[0]}: #{f[1]})" end
     stastic_data.is_dealed = true
     stastic_data.save
   end
