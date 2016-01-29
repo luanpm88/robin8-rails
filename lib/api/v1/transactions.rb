@@ -6,6 +6,9 @@ module API
           authenticate!
         end
 
+        params do
+          optional :page, type: Integer
+        end
         get '/' do
           transactions = current_kol.transactions.page(params[:page]).per_page(10)
           present :error, 0

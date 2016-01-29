@@ -20,7 +20,7 @@ class CampaignInvite < ActiveRecord::Base
 
   def can_upload_screenshot
     return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > (approved_at + UploadScreenshotWait) &&
-      Time.now < self.campaign.upload_screenshot_deadline
+      Time.now < self.campaign.upload_screenshot_deadline)
   end
 
   def screenshot_pass
