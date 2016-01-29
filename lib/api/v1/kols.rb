@@ -31,7 +31,7 @@ module API
 
         params do
           optional :gender, type: Integer, values: [0, 1, 2]
-          optional :tags, type: Array
+          optional :tags, type: Array[String]
         end
         put 'update_profile' do
           # attribute_must_in(:gender, params[:gender].to_i, [0, 1, 2])     if params[:gender]
@@ -41,8 +41,8 @@ module API
             kol_tags = Tag.where(:name => params[:tags])
             current_kol.tags = kol_tags
           end
-          if current_kol.update_attributes(attrs)
-
+          current_kol.attributes = attrs
+          if current_kol.save
             present :error, 0
             present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
           else
