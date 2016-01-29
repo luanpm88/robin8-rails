@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 ActiveAdmin.register Kol do
   actions :all, :except => [:destroy]
 
@@ -24,6 +26,7 @@ ActiveAdmin.register Kol do
   end
 
 
+
   index do
     selectable_column
     id_column
@@ -47,6 +50,41 @@ ActiveAdmin.register Kol do
       link_to '充值/提现', show_recharge_admin_kol_path(kol.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
     end
   end
+
+  collection_action :download_report, :method => :get do
+    kols = Kol.all
+      csv = CSV.generate() do |csv|
+      # add headers
+      # add data
+      attributes = kols.first.attributes.keys()
+      csv << attributes
+      kols.each do |kol|
+        values = []
+        attributes.each do |key|
+          value = kol.send(key)
+          if value.is_a? String
+            [/[\u{1f300}-\u{1f5ff}]/,  /[\u{2500}-\u{2BEF}]/, /[\u{1f600}-\u{1f64f}]/, /[\u{2702}-\u{27b0}]/].each do |filter|
+              value = value.gsub(filter, "?")
+            end
+          end
+          values << value
+        end
+        csv << [kol.last_name]
+      end
+    end
+    # send file to user
+    send_data csv, type: 'text/csv; charset=utf-8; header=present', disposition: "attachment; filename=report.csv"
+  end
+
+  collection_action :stastic_data, :method => :get do
+    @stastic_data = StasticData.new
+  end
+
+   ActiveAdmin.setup do |config|
+    # Want PDF added to default download links
+      config.download_links = []
+   end
+
 
   form do |f|
     f.inputs "Post" do
