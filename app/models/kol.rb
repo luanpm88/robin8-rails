@@ -20,9 +20,9 @@ class Kol < ActiveRecord::Base
 
   has_many :kol_tags
   has_many :tags, :through => :kol_tags
-  has_many :campaign_likes
-  has_many :love_campaign_likes, ->{where(:like => true)} , :class => CampaignLike
-  has_many :hide_campaign_likes, -> {where(:hide => true)}, :class => CampaignLike
+  has_many :campaign_actions
+  has_many :like_campaigns, ->{where(:action => 'like')}, :class => CampaignAction
+  has_many :hide_campaigns, ->{where(:action => 'hide')}, :class => CampaignAction
   # has_many :like_campaigns, ->{where(:like => true)}, :through => :campaign_likes, :source => 'campaign'
   # has_many :hide_campaigns, -> {where(:hide => true)}, :through => :campaign_likes, :source => 'campaign'
 
