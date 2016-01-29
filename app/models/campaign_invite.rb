@@ -19,7 +19,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :settled, -> {where(:status => 'settled')}
 
   def can_upload_screenshot
-    return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > (approved_at + UploadScreenshotWait) &&
+    return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > (approved_at + UploadScreenshotWait) && \
       Time.now < self.campaign.upload_screenshot_deadline
   end
 
