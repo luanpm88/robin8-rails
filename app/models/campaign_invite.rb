@@ -5,6 +5,8 @@ class CampaignInvite < ActiveRecord::Base
 
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
+  UploadScreenshotWait = 30.minutes
+
   validates_inclusion_of :status, :in => STATUSES
 
   belongs_to :campaign
@@ -15,6 +17,11 @@ class CampaignInvite < ActiveRecord::Base
   scope :passed, -> {where(:img_status => 'passed')}
   scope :verifying, -> {where(:status => 'finish').where.not(:img_status => 'passed')}
   scope :settled, -> {where(:status => 'settled')}
+
+  def can_upload_screenshot
+    return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > (approved_at + UploadScreenshotWait) &&
+      Time.now < self.campaign.upload_screenshot_deadline
+  end
 
   def screenshot_pass
     campaign = self.campaign

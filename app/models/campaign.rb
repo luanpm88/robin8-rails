@@ -35,6 +35,10 @@ class Campaign < ActiveRecord::Base
     user.try :email
   end
 
+  def upload_screenshot_deadline
+    self.deadline +  SettleWaitTimeForKol
+  end
+
   def get_stats
     end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows

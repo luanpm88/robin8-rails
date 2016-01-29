@@ -8,6 +8,7 @@ module API
           with_options(format_with: :iso_timestamp) do
             expose :approved_at
           end
+          expose :can_upload_screenshot
           expose :avail_click do |campaign_invite|
             campaign_invite.get_avail_click
           end
