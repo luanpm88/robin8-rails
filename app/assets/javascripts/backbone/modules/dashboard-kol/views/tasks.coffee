@@ -60,12 +60,12 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       e.preventDefault()
       model_id = e.target.id
       collection = @getRegion('currentTab').currentView.collection
-      model = collection.get(model_id)
+      @model = collection.get(model_id)
       modalView = new Show.TaskModal
-        model: model
+        model: @model
         parent: this
       @getRegion('modal').show modalView
-      @upload_screenshot_count_down(model)
+      @upload_screenshot_count_down(@model)
       @initQiniuUploader()
 
     upload_screenshot_count_down: (model) ->
@@ -154,6 +154,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
                   model: model
                 updatedViewHtml = updatedView.render().$el
                 up.getOption('parentThis').$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+                parentThis.initQiniuUploader()
                 console.log 'success'
               error: =>
                 $.growl
@@ -309,6 +310,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       $('#taskModal').modal()
       clipboard = new Clipboard('.task-modal-btn');
 
+    onRender: ()->
+      @initQiniuUploader()
+
     initQiniuUploader: ->
       parentThis = @
       uploader = Qiniu.uploader(
@@ -361,6 +365,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
                   model: model
                 updatedViewHtml = updatedView.render().$el
                 up.getOption('parentThis').$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+                parentThis.initQiniuUploader()
                 console.log 'success'
               error: =>
                 $.growl
