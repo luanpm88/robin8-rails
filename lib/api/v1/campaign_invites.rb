@@ -78,6 +78,7 @@ module API
           end
         end
 
+        ## 上传截图
         params do
           requires :id, type: Integer
           requires :screenshot, type:File   if !Rails.env.development?
@@ -91,7 +92,7 @@ module API
           elsif campaign_invite.can_upload_screenshot
             uploader = AvatarUploader.new
             uploader.store!(params[:screenshot])
-            return {:error => 0, :detail => uploader.url }
+            return {:error => 0, :screenshot_url => uploader.url }
           else
             return error_403!({error: 1, detail: '该活动已经过了上传截图时间' })
           end
