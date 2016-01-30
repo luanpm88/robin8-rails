@@ -12,8 +12,10 @@ module API
           optional :page, type: Integer
         end
         get '/' do
-
-
+          withdraws = current_kol.withdraws.send(params[:status])
+          present :error, 0
+          to_paginate(withdraws)
+          present :withdraws, withdraws, with: API::V1::Entities::WithdrawEntities::Summary
         end
 
 
@@ -23,6 +25,8 @@ module API
         end
         post 'apply' do
           if current_kol.avail_amount > params[:credits] && params[:credits] > 0
+            # Withdraw.create(:)
+            # present :withdraws, withdraws, with: API::V1::Entities::WithdrawEntities::Summary
           else
             return {:error => 1, :detail => '提现金额超出可用余额或提现金额格式不对'}
           end

@@ -11,11 +11,11 @@ class CampaignInvite < ActiveRecord::Base
 
   belongs_to :campaign
   belongs_to :kol
-  scope :unrejected, -> {where("status != 'rejected'")}
+  scope :unrejected, -> {where("campaign_invites.status != 'rejected'")}
   scope :running, -> {where(:status => 'running')}
   scope :approved, -> {where(:status => 'approved')}
   scope :passed, -> {where(:img_status => 'passed')}
-  scope :verifying, -> {where(:status => 'finish').where.not(:img_status => 'passed')}
+  scope :verifying, -> {where(:status => 'finished').where.not(:img_status => 'passed')}
   scope :settled, -> {where(:status => 'settled')}
 
   def can_upload_screenshot

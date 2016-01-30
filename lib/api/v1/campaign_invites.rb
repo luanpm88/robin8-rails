@@ -21,17 +21,19 @@ module API
         params do
           requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'liked']
           optional :page, type: Integer
+          optional :title, type: String
         end
+        #TODO 使用搜索插件
         get '/' do
-          if params[:status] == 'like'
-            like_campaign_ids = current_user.like_campaigns.collect{|t| t.campaign_id }
-            @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids )
+          if params[:status] == 'liked'
+            like_campaign_ids = current_kol.like_campaigns.collect{|t| t.campaign_id }
+            @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids ).joins(:campaign).where("campaigns.name like '%#{params[:title]}%'")
           else
             hide_campaign_ids = current_kol.hide_campaigns.collect{|t| t.campaign_id }
             if params[:status] == 'all'
-              @campaign_invites = current_kol.campaign_invites.unrejected.where.not(:campaign_id => hide_campaign_ids)
+              @campaign_invites = current_kol.campaign_invites.unrejected.where.not(:campaign_id => hide_campaign_ids).joins(:campaign).where("campaigns.name like '%#{params[:title]}%'")
             else
-              @campaign_invites = current_kol.campaign_invites.send(params[:status]).where.not(:campaign_id => hide_campaign_ids)
+              @campaign_invites = current_kol.campaign_invites.send(params[:status]).where.not(:campaign_id => hide_campaign_ids).joins(:campaign).where("campaigns.name like '%#{params[:title]}%'")
             end
           end
           @campaign_invites = @campaign_invites.page(params[:page]).per_page(10)
@@ -92,6 +94,8 @@ module API
           elsif campaign_invite.can_upload_screenshot
             uploader = AvatarUploader.new
             uploader.store!(params[:screenshot])
+            campaign_invite.screenshot = uploader.url
+            campaign_invite.save
             return {:error => 0, :screenshot_url => uploader.url }
           else
             return error_403!({error: 1, detail: '该活动已经过了上传截图时间' })
@@ -170,7 +174,7 @@ module API
             return error_403!({error: 1, detail: '该营销活动不存在' })
           else
             campaign_invite.increase!(:share_count)
-            return {:error => 0, :detail => '已转发！'}
+            return {:error => 0, :detail => '转发成功！'}
           end
         end
       end
