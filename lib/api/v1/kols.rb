@@ -13,7 +13,7 @@ module API
           required_attributes! [:avatar]
           current_kol.avatar = params[:avatar]
           if current_kol.save
-            return {:error => 0, :avatar_url =>  (current_kol.avatar.url(200) rescue '') }
+            return {:error => 0, :avatar_url =>  (current_kol.avatar.url rescue '') }
           else
             error_403!({error: 1, detail: errors_message(current_kol)})
           end

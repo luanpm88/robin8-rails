@@ -20,6 +20,7 @@ module API
 
         params do
           requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'liked']
+          optional :page, type: Integer
         end
         get '/' do
           if params[:status] == 'like'
@@ -90,7 +91,7 @@ module API
           elsif campaign_invite.can_upload_screenshot
             uploader = AvatarUploader.new
             uploader.store!(params[:screenshot])
-            return {:error => 0, :detail => uploader.url}
+            return {:error => 0, :detail => uploader.url }
           else
             return error_403!({error: 1, detail: '该活动已经过了上传截图时间' })
           end
