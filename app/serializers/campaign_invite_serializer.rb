@@ -16,7 +16,8 @@ class CampaignInviteSerializer < ActiveModel::Serializer
     :screenshot,
     :img_status,
     :reject_reason,
-    :has_img
+    :has_img,
+    :approved_at
 
   def name
     object.campaign.name

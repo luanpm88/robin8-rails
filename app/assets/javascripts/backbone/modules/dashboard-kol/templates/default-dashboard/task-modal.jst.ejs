@@ -82,6 +82,7 @@
               <% show_upload = true %>
             <% } %>
             <% if(item.img_status == 'pending') { %>
+              <% show_upload = true %>
               <span class='label label-warning'>待审核</span>
             <% } %>
           <% }else{%>
@@ -100,6 +101,11 @@
               <% }%>
             </div>
           </form>
+
+          <div id="upload-tip" hidden>
+            <input type='button'  class="btn btn-primary" value=""  disabled="true" style="float: left">
+            <p style="line-height: 35px">请接受任务30分钟后再截图上传</p>
+          </div>
 
         <hr>
         <% } %>
