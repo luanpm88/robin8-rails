@@ -157,10 +157,12 @@ class Kol < ActiveRecord::Base
     withdraws.pending.size > 0
   end
 
+  def reset_private_token
+    self.update_column(:private_token, SecureRandom.hex)
+  end
+
   def get_private_token
-    if !self.private_token
-      self.update_column(:private_token, SecureRandom.hex)
-    end
+    self.reset_private_token  if !self.private_token
     self.private_token
   end
 

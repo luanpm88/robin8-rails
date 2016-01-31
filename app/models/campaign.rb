@@ -315,6 +315,18 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  def is_red
+    false
+  end
+
+  def is_new
+     self.status == 'executing' && self.start_time + 1.days > Time.now
+  end
+
+  def is_sprint
+    self.status == 'executeing' && ((self.deadline - 1.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
+  end
+
   def self.generate_campaign_reports kol_id
     invites = CampaignInvite.where(kol_id: kol_id, status: "finished")
     cookies = {}

@@ -56,7 +56,7 @@ module YunPian
     end
 
     def self.verify_code(phone, code)
-      return (code == '123456' || Rails.cache.read(phone) == code)  if Rails.env.development?  || Rails.env.staging?
+      return (code == '123456' || code == 123456 || Rails.cache.read(phone) == code)  if Rails.env.development?  || Rails.env.staging?
       Rails.cache.read(phone) == code
     end
   end

@@ -15,7 +15,7 @@ module API
           if current_kol.save
             return {:error => 0, :avatar_url =>  (current_kol.avatar.url rescue '') }
           else
-            error_403!({error: 1, detail: errors_message(current_kol)})
+            return error_403!({error: 1, detail: errors_message(current_kol)})
           end
         end
 
@@ -34,7 +34,6 @@ module API
           optional :tags, type: Array[String]
         end
         put 'update_profile' do
-          # attribute_must_in(:gender, params[:gender].to_i, [0, 1, 2])     if params[:gender]
           attrs = attributes_for_keys [:name, :gender, :date_of_birthday,
                                        :app_country, :app_province, :app_city, :desc, :alipay_account]
           if params[:tags] && params[:tags].size > 0
@@ -46,9 +45,34 @@ module API
             present :error, 0
             present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
           else
-            error_403!({error: 1, detail: errors_message(current_kol)})
+            return error_403!({error: 1, detail: errors_message(current_kol)})
           end
         end
+
+
+        #更换手机
+        #第三方登陆后绑定手机
+        params do
+          requires :mobile_number, type: Integer, regexp: /\d{11}/
+          requires :code, type: Integer, regexp: /\d{6}/
+        end
+        put 'update_mobile' do
+          kol = Kol.find_by :mobile_number => params[:mobile_number]
+          if kol
+            error_403!({error: 1, detail: '该手机已经绑定了其他账号！'})
+          else
+            if !YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
+              return error_403!({error: 1, detail: '验证码与手机号码不匹配!'})
+            else
+              current_kol.update_column(:mobile_number, params[:mobile_number])
+              current_kol.reset_private_token
+              present :error, 0
+              present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
+              # return {:error => 0, :detail => '更换成功'}
+            end
+          end
+        end
+
       end
     end
   end

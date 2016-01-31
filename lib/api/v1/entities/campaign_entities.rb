@@ -9,6 +9,9 @@ module API
             expose :deadline
             expose :start_time
           end
+          expose :brand_name do |campaign|
+            campaign.user.company   rescue nil
+          end
           expose :avail_click do |campaign|
             campaign.get_avail_click
           end

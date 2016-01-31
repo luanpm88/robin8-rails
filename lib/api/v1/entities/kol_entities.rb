@@ -17,8 +17,12 @@ module API
           expose :avatar_url do |kol|
             kol.avatar.url(200)  rescue ''
           end
+          #tags label #TODO 返回tag object
           expose :tags do |kol|
             kol.tags.collect{|t| t.label }
+          end
+          expose :tags_name do |kol|
+            kol.tags.collect{|t| t.name }
           end
           expose :issue_token do |kol|
             kol.get_issue_token

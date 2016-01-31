@@ -6,6 +6,7 @@ module API
           authenticate!
         end
 
+        #任务概要
         get 'stat_summary' do
           invites = current_kol.campaign_invites.unrejected
           all_count = invites.size

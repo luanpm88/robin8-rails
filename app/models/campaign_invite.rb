@@ -106,4 +106,19 @@ class CampaignInvite < ActiveRecord::Base
     invite.kol_id = kol_id
     invite.save(validate: false)
   end
+
+  def tag
+    campaign = self.campaign
+    if campaign.is_red
+      return 'red'
+    elsif is_invited
+      return 'invite'
+    elsif campaign.is_sprint
+      return 'sprint'
+    elsif campaign.is_new
+      return 'new'
+    else
+      nil
+    end
+  end
 end

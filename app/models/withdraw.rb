@@ -7,7 +7,7 @@ class Withdraw < ActiveRecord::Base
   validate :check_avail_amount
 
   belongs_to :kol
-  scope :all, ->{order('created_at desc')}
+  scope :whole, ->{order('created_at desc')}
   scope :pending, -> {where(:status => 'pending').order('created_at desc')}
   scope :approved, -> {where(:status => 'pending').order('created_at desc')}
   scope :rejected, -> {where(:status => 'rejected').order('created_at desc')}
