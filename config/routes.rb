@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'hello_world', to: 'hello_world#index'
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
