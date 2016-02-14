@@ -7,7 +7,6 @@
 //= require generated/vendor-bundle
 //= require generated/app-bundle
 
-
 // bootstrap-sprockets depends on generated/vendor-bundle for jQuery.
 //= require bootstrap-sprockets
 
