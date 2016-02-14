@@ -1,5 +1,5 @@
-#source 'https://rubygems.org'
-source 'https://ruby.taobao.org'
+source 'https://rubygems.org'
+# source 'https://ruby.taobao.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 gem 'bundler', '>= 1.7.0'
@@ -211,3 +211,6 @@ gem 'jwt'
 
 gem 'carrierwave'
 gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
+
+gem "react_on_rails"
+
