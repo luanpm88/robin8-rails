@@ -40,6 +40,9 @@ module API
           expose :avail_amount do |kol|
             (kol.amount - kol.frozen_amount).round(2)  rescue 0
           end
+          expose :total_income
+          expose :total_withdraw
+          expose :today_income
         end
       end
     end

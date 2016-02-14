@@ -27,6 +27,9 @@ class Campaign < ActiveRecord::Base
   has_many :interested_campaigns
   belongs_to :release
 
+  scope :click_campaigns, -> {where(:per_action_budget => 'click')}
+
+
   after_save :create_job
 
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
@@ -315,14 +318,17 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  #红包标签
   def is_red
     false
   end
 
+  #最新标签
   def is_new
      self.status == 'executing' && self.start_time + 1.days > Time.now
   end
 
+  #冲刺标签
   def is_sprint
     self.status == 'executeing' && ((self.deadline - 1.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
   end

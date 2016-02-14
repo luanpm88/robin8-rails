@@ -21,12 +21,15 @@ class Kol < ActiveRecord::Base
   has_many :kol_tags
   has_many :tags, :through => :kol_tags
   has_many :campaign_actions
+  has_many :campaign_shows
   has_many :like_campaigns, ->{where(:action => 'like')}, :class => CampaignAction
   has_many :hide_campaigns, ->{where(:action => 'hide')}, :class => CampaignAction
   # has_many :like_campaigns, ->{where(:like => true)}, :through => :campaign_likes, :source => 'campaign'
   # has_many :hide_campaigns, -> {where(:hide => true)}, :through => :campaign_likes, :source => 'campaign'
 
   has_many :transactions, ->{order('created_at desc')}, :as => :account
+  has_many :income_transactions, -> {where(:direct => 'income')}, :as => :account, :class => Transaction
+  has_many :withdraw_transactions, -> {where(:direct => 'payout')}, :as => :account, :class => Transaction
 
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold
@@ -172,5 +175,51 @@ class Kol < ActiveRecord::Base
 
   def self.app_auth(private_token)
     Kol.find_by :private_token => private_token    rescue nil
+  end
+
+  def total_income
+    self.income_transactions.sum(:credits)
+  end
+
+  def total_withdraw
+    self.withdraw_transactions.sum(:credits)
+  end
+
+  def today_income
+    today_post_campaign_income +  today_click_campaign_income
+  end
+
+  def today_post_campaign_income
+    income = 0
+    self.campaign_invites.today_approved.includes(:campaign).each do |invite|
+      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && !invite.campaign.is_click_type?  )
+    end
+    income
+  end
+
+  #TODO use sql
+#   select shows.campaign_id from
+#   （
+#   SELECT campaign_id,count(*) as count
+#   FROM `campaign_shows`
+#   WHERE `campaign_shows`.`kol_id` = 81
+# 	AND `campaign_shows`.`status` = '1'
+# 	GROUP BY campaign_id
+# ） as shows
+# left join campaigns
+# on campaigns.id=shows.campaign_id
+# where campaigns.per_action_budget='click'
+
+  def today_click_campaign_income
+    income = 0
+    today_show_hash = {}
+    self.campaign_shows.today.valid.group(:campaign_id).select("campaign_id, count(*) as count").each do |show|
+      today_show_hash["#{show.campaign_id}"] = show.count
+    end
+    puts today_show_hash
+    Campaign.click_campaigns.where(:id => today_show_hash.keys ).each do |campaign|
+      income += campaign.per_action_budget * today_show_hash["#{campaign.id}"]  rescue 0
+    end
+    income
   end
 end

@@ -3,6 +3,10 @@ class Transaction < ActiveRecord::Base
   belongs_to :opposite, :polymorphic => true
   belongs_to :item, :polymorphic => true
 
+  # kol 和braand 行为有差异  现落到各自model
+  # scope :income, -> {where(:direct => 'income')}
+  # scope :withdraw, -> {where(:direct => 'payout')}
+
   # subject
   # manual_recharge manual_withdraw
 

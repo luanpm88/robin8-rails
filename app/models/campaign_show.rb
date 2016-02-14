@@ -3,6 +3,7 @@ class CampaignShow < ActiveRecord::Base
 
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
+  scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
