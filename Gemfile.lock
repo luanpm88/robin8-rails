@@ -43,7 +43,7 @@ GIT
       omniauth-oauth2 (~> 1.0)
 
 GEM
-  remote: https://ruby.taobao.org/
+  remote: https://rubygems.org/
   remote: http://rails-assets.org/
   specs:
     actionmailer (4.2.0)
@@ -527,12 +527,18 @@ GEM
       activesupport (= 4.2.0)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
+    rainbow (2.1.0)
     raindrops (0.15.0)
     rake (10.4.2)
     rb-fsevent (0.9.5)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.0)
+    react_on_rails (2.3.0)
+      connection_pool
+      execjs (~> 2.5)
+      rails (>= 3.2)
+      rainbow (~> 2.1)
     redis (3.2.1)
     redis-actionpack (4.0.1)
       actionpack (~> 4)
@@ -814,6 +820,7 @@ DEPENDENCIES
   rails-assets-underscore.inflection!
   rails-assets-underscore.string!
   ransack!
+  react_on_rails
   redis-objects
   redis-rails
   rest-client
@@ -846,3 +853,6 @@ DEPENDENCIES
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
+
+BUNDLED WITH
+   1.10.6
