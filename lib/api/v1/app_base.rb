@@ -1,3 +1,5 @@
+
+Dir["#{Rails.root}/lib/api/v1/entities/*.rb"].each { |file| require file }
 module API
   module V1
     class AppBase < API::Application

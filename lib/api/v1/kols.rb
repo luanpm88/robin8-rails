@@ -73,6 +73,28 @@ module API
           end
         end
 
+        #第三方账号列表
+        get 'identities' do
+          present :error, 0
+          present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+        end
+
+        #第三方账号解除绑定
+        params do
+          requires :uid, type: String
+        end
+        put 'identity_unbind' do
+          identity = current_kol.identities.where(:uid => params[:uid]).first   rescue nil
+          if identity
+            identity.delete
+            current_kol.reload
+            present :error, 0
+            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          else
+            return error_403!({error: 1, detail: '未找到该第三方账号信息'})
+          end
+        end
+
       end
     end
   end
