@@ -43,3 +43,9 @@ app/assets/stylesheets/app/dev_base.scss
 #app/assets/stylesheets/app/dev_reload.scss
 
 public/dev_base_compact.css
+# React on Rails
+npm-debug.log
+node_modules
+
+# Generated js bundles
+/app/assets/javascripts/generated/*

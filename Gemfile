@@ -214,3 +214,4 @@ gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
 
 gem "react_on_rails"
 
+gem 'bootstrap-sass'
