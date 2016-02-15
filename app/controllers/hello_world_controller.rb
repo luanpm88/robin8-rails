@@ -1,5 +1,5 @@
 class HelloWorldController < ApplicationController
-  layout false
+  layout 'brand'
   def index
     @hello_world_props = { name: "Stranger" }
   end
