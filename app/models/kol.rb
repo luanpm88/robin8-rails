@@ -222,4 +222,24 @@ class Kol < ActiveRecord::Base
     end
     income
   end
+
+  # 最近7天的收入情况
+  def recent_income
+    _start = Date.today - 7.days
+    _end = Date.today - 1.days
+    transactions_stats_arr = transactions.created_desc.recent(_start,_end)
+      .select("date_format(created_at, '%Y-%m-%d') as created, count(*) as count_all, sum(amount) as total_amount ")
+      .group("date_format(created_at, '%Y-%m-%d')").to_a
+    recent_income = []
+    (_start.._end).to_a.each do |date|
+      date_stats = transactions_stats_arr.select{|t| t.created == date.to_s}.first
+      if date_stats
+        stats= {:date => date, :total_amount => date_stats.total_amount, :count => date_stats.count_all  }
+      else
+        stats = {:date => date, :total_amount => 0, :count => 0  }
+      end
+      recent_income <<  stats
+    end
+    recent_income
+  end
 end

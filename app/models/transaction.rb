@@ -3,6 +3,9 @@ class Transaction < ActiveRecord::Base
   belongs_to :opposite, :polymorphic => true
   belongs_to :item, :polymorphic => true
 
+  scope :recent, ->(_start,_end){ where(:created_at => _start.._end) }
+  scope :created_desc, -> {order('created_at desc')}
+
   # kol 和braand 行为有差异  现落到各自model
   # scope :income, -> {where(:direct => 'income')}
   # scope :withdraw, -> {where(:direct => 'payout')}
