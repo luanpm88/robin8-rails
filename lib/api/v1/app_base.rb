@@ -12,6 +12,7 @@ module API
       mount API::V1::CampaignInvites
       mount API::V1::Transactions
       mount API::V1::Cities
+      mount API::V1::Withdraws
     end
   end
 end
