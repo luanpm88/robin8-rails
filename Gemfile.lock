@@ -104,6 +104,9 @@ GEM
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (6.0.0)
+    autoprefixer-rails (6.1.2)
+      execjs
+      json
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -112,8 +115,9 @@ GEM
     bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (3.1.1.1)
-      sass (~> 3.2)
+    bootstrap-sass (3.3.6)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     bourbon (4.2.3)
       sass (~> 3.4)
       thor
@@ -538,9 +542,10 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.0)
-    react_on_rails (2.3.0)
+    react_on_rails (3.0.0.rc.2)
       connection_pool
       execjs (~> 2.5)
+      foreman
       rails (>= 3.2)
       rainbow (~> 2.1)
     redis (3.2.1)
@@ -729,7 +734,7 @@ DEPENDENCIES
   activeadmin (~> 1.0.0.pre1)
   activeresource
   aylien_text_api
-  bootstrap-sass
+  bootstrap-sass (~> 3.3.6)
   bundler (>= 1.7.0)
   byebug
   capistrano-bundler (~> 1.1.4)
@@ -826,7 +831,7 @@ DEPENDENCIES
   rails-assets-underscore.inflection!
   rails-assets-underscore.string!
   ransack!
-  react_on_rails
+  react_on_rails (~> 3.0.0.pre.rc.2)
   redis-objects
   redis-rails
   rest-client
