@@ -35,7 +35,7 @@ class CampaignInvite < ActiveRecord::Base
     if interval > 0
       return interval_time(upload_start_at, Time.now)
     else
-      return nil
+      return [0,0,0]
     end
   end
 

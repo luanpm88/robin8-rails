@@ -24,6 +24,11 @@ module API
           present :kol, current_kol, with: API::V1::Entities::KolEntities::Account
         end
 
+        get 'primary' do
+          present :error, 0
+          present :kol, current_kol, with: API::V1::Entities::KolEntities::Primary
+        end
+
         get 'profile'  do
           present :error, 0
           present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary

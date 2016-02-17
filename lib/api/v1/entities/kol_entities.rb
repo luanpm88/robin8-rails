@@ -44,6 +44,19 @@ module API
           expose :total_withdraw
           expose :today_income
         end
+
+        class Primary < Grape::Entity
+          expose :today_income
+          expose :unread_count do |kol|
+            kol.unread_messages.count
+          end
+          expose :verifying_count do |kol|
+            kol.campaign_invites.verifying.count
+          end
+          expose :settled_count do |kol|
+            kol.campaign_invites.settled.count
+          end
+        end
       end
     end
   end

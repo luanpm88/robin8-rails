@@ -31,6 +31,9 @@ class Kol < ActiveRecord::Base
   has_many :income_transactions, -> {where(:direct => 'income')}, :as => :account, :class => Transaction
   has_many :withdraw_transactions, -> {where(:direct => 'payout')}, :as => :account, :class => Transaction
 
+  has_many :messages, :as => :receiver
+  has_many :unread_messages, ->{where(:is_read => false)}, :as => :receiver, :class => Message
+
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold
 

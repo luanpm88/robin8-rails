@@ -6,18 +6,18 @@ module API
           authenticate!
         end
 
-        #任务概要
-        get 'stat_summary' do
-          invites = current_kol.campaign_invites.unrejected
-          all_count = invites.size
-          running_count = invites.running.size
-          approved_count = invites.approved.size
-          verifying_count = invites.verifying.size
-          settled_count = invites.settled.size
-          stat = {:all_count => all_count, :running_count => running_count, :approved_count => approved_count,
-                  :verifying_count => verifying_count, :settled_count => settled_count }
-          return {:error => 0, :stat => stat}
-        end
+        # #任务概要
+        # get 'stat_summary' do
+        #   invites = current_kol.campaign_invites.unrejected
+        #   all_count = invites.size
+        #   running_count = invites.running.size
+        #   approved_count = invites.approved.size
+        #   verifying_count = invites.verifying.size
+        #   settled_count = invites.settled.size
+        #   stat = {:all_count => all_count, :running_count => running_count, :approved_count => approved_count,
+        #           :verifying_count => verifying_count, :settled_count => settled_count }
+        #   return {:error => 0, :stat => stat}
+        # end
 
         params do
           requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'liked']
