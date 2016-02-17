@@ -23,7 +23,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
   def upload_start_at
-    approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
+     approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
   end
 
   def upload_end_at
@@ -31,7 +31,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def upload_interval_time
-    interval = upload_start_at - Time.now
+    interval = upload_start_at - Time.now      rescue 0
     if interval > 0
       return interval_time(upload_start_at, Time.now)
     else

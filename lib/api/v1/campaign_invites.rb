@@ -174,7 +174,7 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该营销活动不存在' })
           else
-            campaign_invite.increase!(:share_count)
+            campaign_invite.increment!(:share_count,1)
             return {:error => 0, :detail => '转发成功！'}
           end
         end
