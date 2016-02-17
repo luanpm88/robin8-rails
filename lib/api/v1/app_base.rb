@@ -13,6 +13,7 @@ module API
       mount API::V1::Transactions
       mount API::V1::Cities
       mount API::V1::Withdraws
+      mount API::V1::Messages
     end
   end
 end
