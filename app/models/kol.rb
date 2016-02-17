@@ -245,4 +245,9 @@ class Kol < ActiveRecord::Base
     end
     recent_income
   end
+
+  def app_city_label
+    City.find_by(:name_en => app_city).name rescue nil
+  end
+
 end

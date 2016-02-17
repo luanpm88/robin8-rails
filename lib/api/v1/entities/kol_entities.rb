@@ -8,12 +8,14 @@ module API
           expose :country do |kol|
             kol.app_country
           end
-          expose :province do |kol|
-            kol.app_province
-          end
-          expose :city do |kol|
-            kol.app_city
-          end
+          # expose :province do |kol|
+          #   kol.app_province
+          # end
+          # expose :city do |kol|
+          #   kol.app_city
+          # end
+          expose :app_city
+          expose :app_city_label
           expose :avatar_url do |kol|
             kol.avatar.url(200)  rescue ''
           end
