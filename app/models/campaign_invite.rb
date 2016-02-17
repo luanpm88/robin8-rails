@@ -2,6 +2,8 @@ class CampaignInvite < ActiveRecord::Base
   include Redis::Objects
   counter :redis_avail_click
   counter :redis_total_click
+  counter :redis_new_income      #unit is cent
+
 
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
@@ -20,9 +22,27 @@ class CampaignInvite < ActiveRecord::Base
 
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
+  def upload_start_at
+    approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
+  end
+
+  def upload_end_at
+    self.campaign.upload_screenshot_deadline
+  end
+
+  def upload_interval_time
+    interval = upload_start_at - Time.now
+    if interval > 0
+      return interval_time(upload_start_at, Time.now)
+    else
+      return nil
+    end
+  end
+
+
   def can_upload_screenshot
-    return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > (approved_at + UploadScreenshotWait) &&  \
-      Time.now < self.campaign.upload_screenshot_deadline)
+    return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  \
+      Time.now < self.upload_end_at)
   end
 
   def screenshot_pass
@@ -87,10 +107,23 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def add_click(valid)
+  def reset_new_income
+    self.redis_new_income.reset
+  end
+
+  def bring_income(campaign)
+    if  campaign.is_click_type?
+      #记录新收入
+      self.redis_new_income.incr(campaign.per_action_budget * 100)
+      #发送新收入消息
+      Message.udpate_income(self,campaign)
+    end
+  end
+
+  def add_click(valid, campaign = nil)
     self.redis_avail_click.increment if valid
     self.redis_total_click.increment
-    return true
+    bring_income(campaign) if valid &&  campaign
   end
 
   def generate_uuid_and_share_url

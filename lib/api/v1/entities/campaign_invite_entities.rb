@@ -17,6 +17,7 @@ module API
           end
           expose :earn_money
           expose :tag
+          expose :upload_interval_time
           expose :campaign, using: API::V1::Entities::CampaignEntities::Summary    if  lambda { |instance, options| instance.campaign.present? }
         end
       end
