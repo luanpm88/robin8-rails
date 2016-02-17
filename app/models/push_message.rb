@@ -22,8 +22,8 @@ class PushMessage < ActiveRecord::Base
 
   def self.create_message_push(message)
     if message.message_type == 'income'
-      receiver = message.owner
-      push_message = self.new(receiver_type => 'single', :template_type => 'transmission', :receiver_ids => [receiver.id], :receiver_cids => [receiver.device_token])
+      receiver = message.receiver
+      push_message = self.new(:receiver_type => 'single', :template_type => 'transmission', :receiver_ids => [receiver.id], :receiver_cids => [receiver.device_token])
       push_message.template_content = message_template_content
       push_message.save
     end

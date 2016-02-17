@@ -3,15 +3,22 @@ class Message < ActiveRecord::Base
   belongs_to :item, :polymorphic => true
   # belongs_to :sender, :polymorphic => true
 
-  # MessageTypes = ['income']
+  # MessageTypes = ['income', 'announcement']
 
-  after_save :generate_push_message
+  scope :unread, -> {where(:is_read => false)}
+  scope :read, -> {where(:is_read => true)}
+
+  after_create :generate_push_message
+
+  def item_name
+    self.item.name  rescue nil
+  end
 
   def read
     self.read_at = Time.now
     self.is_read = true
     self.save
-    self.item.reset_new_income if self.message_type == 'income'
+    self.item.reset_new_income  if self.message_type == 'income'  && self.item
   end
 
   def self.update_income(invite, campaign)

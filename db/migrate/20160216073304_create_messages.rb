@@ -2,7 +2,7 @@ class CreateMessages < ActiveRecord::Migration
   def change
     create_table :messages do |t|
       t.string :message_type
-      t.string :is_read, :default => false
+      t.boolean :is_read, :default => false
       t.datetime :read_at
       t.string :title
       t.string :desc
