@@ -36,19 +36,19 @@ module API
 
         params do
           optional :gender, type: Integer, values: [0, 1, 2]
-          optional :tags, type: Array[String]
+          # optional :tags, type: Array[String]
         end
         put 'update_profile' do
           attrs = attributes_for_keys [:name, :gender, :date_of_birthday,
                                        :app_country, :app_province, :app_city, :desc, :alipay_account]
-          if params[:tags] && params[:tags].size > 0
-            kol_tags = Tag.where(:name => params[:tags])
-            current_kol.tags = kol_tags
-          end
           current_kol.attributes = attrs
           if current_kol.save
+            if params[:tags].present?
+              kol_tags = Tag.where(:name => params[:tags].split(","))
+              current_kol.tags = kol_tags
+            end
             present :error, 0
-            present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
+            present :kol, current_kol.reload, with: API::V1::Entities::KolEntities::Summary
           else
             return error_403!({error: 1, detail: errors_message(current_kol)})
           end
