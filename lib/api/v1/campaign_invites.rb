@@ -168,7 +168,7 @@ module API
         params do
           requires :id, type: Integer
         end
-        put 'share' do
+        put ':id/share' do
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
           campaign = campaign_invite.campaign  rescue nil
           if campaign_invite.blank?  || campaign.blank?
