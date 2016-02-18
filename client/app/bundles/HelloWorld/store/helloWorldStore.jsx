@@ -13,6 +13,7 @@ import loggerMiddleware from 'lib/middlewares/loggerMiddleware';
 import reducers from '../reducers';
 import { initialStates } from '../reducers';
 
+
 export default props => {
   // This is how we get initial props Rails into redux.
   const { name } = props;
@@ -27,6 +28,7 @@ export default props => {
 
   const reducer = combineReducers(reducers);
   const composedStore = compose(
+    // 理解 thunk 这个 middleware 是做什么的。
     applyMiddleware(thunkMiddleware, loggerMiddleware)
   );
   const storeCreator = composedStore(createStore);
