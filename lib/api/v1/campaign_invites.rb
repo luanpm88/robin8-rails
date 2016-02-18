@@ -28,14 +28,12 @@ module API
         get '/' do
           if params[:status] == 'liked'
             like_campaign_ids = current_kol.like_campaigns.collect{|t| t.campaign_id }
-            @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids ).joins(:campaign).where("campaigns.name like '%#{params[:title]}%'")
+            @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids ).
+              joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
           else
             hide_campaign_ids = current_kol.hide_campaigns.collect{|t| t.campaign_id }
-            if params[:status] == 'all'
-              @campaign_invites = current_kol.campaign_invites.unrejected.where.not(:campaign_id => hide_campaign_ids).joins(:campaign).where("campaigns.name like '%#{params[:title]}%'")
-            else
-              @campaign_invites = current_kol.campaign_invites.send(params[:status]).where.not(:campaign_id => hide_campaign_ids).joins(:campaign).where("campaigns.name like '%#{params[:title]}%'")
-            end
+            @campaign_invites = current_kol.campaign_invites.send(params[:status]).where.not(:campaign_id => hide_campaign_ids).
+              joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
           end
           @campaign_invites = @campaign_invites.page(params[:page]).per_page(10)
           present :error, 0

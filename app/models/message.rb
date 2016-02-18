@@ -21,6 +21,13 @@ class Message < ActiveRecord::Base
     self.item.reset_new_income  if self.message_type == 'income'  && self.item
   end
 
+
+  # new campaign
+  def self.update_a
+  end
+
+
+  # create or update
   def self.update_income(invite, campaign)
     income_message = Message.find_or_initialize_by(:message_type => 'income', :owner => invite.kol, :item => invite)
     if income_message.new_record
