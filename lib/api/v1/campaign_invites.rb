@@ -44,7 +44,6 @@ module API
           present :campaign_invites, @campaign_invites.includes(:campaign), with: API::V1::Entities::CampaignInviteEntities::Summary
         end
 
-
         #活动邀请详情
         params do
           requires :id, type: Integer
@@ -75,7 +74,7 @@ module API
             CampaignWorker.perform_async(@campaign.id, 'fee_end')
             return error_403!({error: 1, detail: '该活动已经结束！' })
           else
-            campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
+            campaign_invite.approve
             campaign_invite.reload
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
