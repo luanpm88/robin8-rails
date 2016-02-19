@@ -48,9 +48,6 @@ class CampaignInviteSerializer < ActiveModel::Serializer
   end
 
   def share_url
-    unless object.share_url.present?
-      object.generate_uuid_and_share_url
-    end
     object.share_url
   end
 

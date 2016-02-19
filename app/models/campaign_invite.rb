@@ -121,8 +121,17 @@ class CampaignInvite < ActiveRecord::Base
     bring_income(campaign) if valid &&  campaign
   end
 
-  def generate_uuid_and_share_url
-    uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id=> self.kol_id}.to_json).gsub("\n","")
+  # def generate_uuid_and_share_url
+  #   uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id=> self.kol_id}.to_json).gsub("\n","")
+  #   self.uuid = uuid
+  #   self.share_url = CampaignInvite.generate_share_url(uuid)
+  #   self.save
+  # end
+
+  def approve
+    uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id => self.kol_id}.to_json).gsub("\n","")
+    self.approved_at = Time.now
+    self.status = 'approved'
     self.uuid = uuid
     self.share_url = CampaignInvite.generate_share_url(uuid)
     self.save
