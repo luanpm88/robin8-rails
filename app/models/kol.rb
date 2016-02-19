@@ -262,7 +262,7 @@ class Kol < ActiveRecord::Base
 
     # 记录到 read_meesage_ids
     if message.receiver_type == "All" || message.receiver_type == 'List'
-      self.read_meesage_ids << message_id if  self.read_meesage_ids.include? message_id
+      self.read_message_ids << message_id if  self.read_message_ids.include? message_id
     end
 
     # 重置 invite 收入

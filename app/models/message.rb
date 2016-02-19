@@ -16,17 +16,10 @@ class Message < ActiveRecord::Base
     self.item.name  rescue nil
   end
 
-  # def read
-  #   self.read_at = Time.now
-  #   self.is_read = true
-  #   self.save
-  #   self.item.reset_new_income  if self.message_type == 'income'  && self.item
-  # end
-
   # new campaign  to all  or list
   def self.new_campaign(campaign, kol_ids = [])
     message = Message.new(:message_type => 'campaign', :title => campaign.name, :logo_url => campaign.img_url,
-                          :sender => (campaign.user.campaign  rescue nil), :item => campaign  )
+                          :sender => (campaign.user.name  rescue nil), :item => campaign  )
     # to all
     if kol_ids.size == 0
       message.receiver_type = "All"

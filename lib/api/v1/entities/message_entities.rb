@@ -10,6 +10,7 @@ module API
           end
           with_options(format_with: :iso_timestamp) do
             expose :read_at
+            expose :created_at
           end
         end
       end
