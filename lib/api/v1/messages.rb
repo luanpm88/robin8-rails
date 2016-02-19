@@ -12,11 +12,11 @@ module API
         end
         get '/' do
           if params[:status] == 'all'
-            messages = current_kol.messages.page(params[:page]).per_page(10)
+            messages = current_kol.messages.paginate(:page => params[:page], :per_page => 10 )
           elsif params[:statys] == 'unread'
-            messages = current_kol.unread_messages.page(params[:page]).per_page(10)
+            messages = current_kol.unread_messages.paginate(:page => params[:page], :per_page => 10 )
           else
-            messages = current_kol.read_messages.page(params[:page]).per_page(10)
+            messages = current_kol.read_messages.paginate(:page => params[:page], :per_page => 10 )
           end
           present :error, 0
           to_paginate(messages)

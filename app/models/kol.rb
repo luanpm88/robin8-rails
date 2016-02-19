@@ -278,7 +278,7 @@ class Kol < ActiveRecord::Base
     sql = "select * from messages
            where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}')  or
                  (messages.receiver_type = 'All') or
-                 (messages.receiver_type = 'List' and messages.id in ('#{list_message_ids}')  "
+                 (messages.receiver_type = 'List' and messages.id in ('#{list_message_ids}') )"
     Message.find_by_sql sql
   end
 

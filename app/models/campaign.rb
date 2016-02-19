@@ -146,6 +146,8 @@ class Campaign < ActiveRecord::Base
       Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kol_ids}-"
       CampaignInvite.where(:kol_id => block_kol_ids, :campaign_id => campaign_id).delete_all
     end
+    # 新campaign   TODO to change to list
+    Message.new_campaign(self)
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
     _start_time = self.start_time < Time.now ? (Time.now + 15.seconds) : self.start_time
