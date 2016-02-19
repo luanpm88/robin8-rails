@@ -1,4 +1,8 @@
 class Kol < ActiveRecord::Base
+  include Redis::Objects
+  # counter :redis_new_income      #unit is cent
+  list :read_message_ids, :maxlength => 200             # 所有阅读过的
+  list :list_message_ids, :maxlength => 200        # 所有发送给部分人消息ids
   include Concerns::PayTransaction
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -31,8 +35,7 @@ class Kol < ActiveRecord::Base
   has_many :income_transactions, -> {where(:direct => 'income')}, :as => :account, :class => Transaction
   has_many :withdraw_transactions, -> {where(:direct => 'payout')}, :as => :account, :class => Transaction
 
-  has_many :messages, :as => :receiver
-  has_many :unread_messages, ->{where(:is_read => false)}, :as => :receiver, :class => Message
+  has_many :unread_income_messages, ->{where(:is_read => false, :message_type => 'income')}, :as => :receiver, :class => Message
 
   after_create :create_campaign_invites_after_signup
   after_save :update_click_threshold
@@ -249,5 +252,64 @@ class Kol < ActiveRecord::Base
   def app_city_label
     City.find_by(:name_en => app_city).name rescue nil
   end
+
+  def read_message(message_id)
+    message = Message.find message_id
+    return if message.blank?
+    message.read_at = Time.now
+    message.is_read = true
+    message.save
+
+    # 记录到 read_meesage_ids
+    if message.receiver_type == "All" || message.receiver_type == 'List'
+      self.read_meesage_ids << message_id if  self.read_meesage_ids.include? message_id
+    end
+
+    # 重置 invite 收入
+    if message.message_type == 'income'
+      message.item.reset_new_income  if message.item
+    end
+  end
+
+  #所有消息
+  def messages
+    kol_id = self.id
+    list_message_ids = self.list_message_ids.values.join(',')
+    sql = "select * from messages
+           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}')  or
+                 (messages.receiver_type = 'All') or
+                 (messages.receiver_type = 'List' and messages.id in ('#{list_message_ids}')  "
+    Message.find_by_sql sql
+  end
+
+  #所有未读消息
+  def unread_messages
+    kol_id = self.id
+    list_unread_message_ids = (self.list_message_ids.values - self.read_message_ids.values).join(",")
+    read_message_ids = self.read_message_ids.values.join(",")
+    sql = "select * from messages
+           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
+                 (messages.receiver_type = 'All' and messages.id not in ('#{read_message_ids}')) or
+                 (messages.receiver_type = 'List' and messages.id in ('#{list_unread_message_ids}'))"
+    Message.find_by_sql sql
+  end
+
+  #所有已读消息
+  def read_messages
+    kol_id = self.id
+    read_message_ids = self.read_message_ids.values.join(",")
+    sql = "select * from messages
+           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
+                 (messages.id in ('#{read_message_ids}'))"
+    Message.find_by_sql sql
+  end
+
+  #当前用户新收入总计
+  def new_income
+    income_campaign_invite_ids = unread_income_messages.collect{|message| message.item_id}
+    total_income = CampaignInvite.where(:id => income_campaign_invite_ids).inject(0){|sum,i| sum + i.redis_new_income }
+    total_income / 100
+  end
+
 
 end

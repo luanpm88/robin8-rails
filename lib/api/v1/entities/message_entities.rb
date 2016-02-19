@@ -4,7 +4,7 @@ module API
       module MessageEntities
         class Summary < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :title, :message_type, :is_read, :url, :logo_url, :sender
+          expose :id, :title, :message_type, :is_read, :url, :logo_url, :sender, :item_id
           expose :desc do |message|
             message.desc || message.item_name
           end

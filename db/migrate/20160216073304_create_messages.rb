@@ -16,6 +16,7 @@ class CreateMessages < ActiveRecord::Migration
 
       t.string :receiver_type
       t.integer :receiver_id
+      t.text :receiver_ids
 
       t.string :item_type
       t.string :item_id

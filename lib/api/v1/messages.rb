@@ -11,25 +11,25 @@ module API
           optional :page, type: Integer
         end
         get '/' do
-          messages = current_kol.messages.send(params[:status]).page(params[:page]).per_page(10)
+          if params[:status] == 'all'
+            messages = current_kol.messages.page(params[:page]).per_page(10)
+          elsif params[:statys] == 'unread'
+            messages = current_kol.unread_messages.page(params[:page]).per_page(10)
+          else
+            messages = current_kol.read_messages.page(params[:page]).per_page(10)
+          end
           present :error, 0
           to_paginate(messages)
           present :messages, messages, with: API::V1::Entities::MessageEntities::Summary
         end
 
-
         params do
           requires :id, type: Integer
         end
         put ':id/read' do
-          message = current_kol.messages.find(params[:id])   rescue nil
-          if message
-            message.read
-            present :error, 0
-            present :message, message, with: API::V1::Entities::MessageEntities::Summary
-          else
-            return error_403!({error: 1, detail: '你查看的消息不存在' })
-          end
+          current_kol.read_message(params[:id])
+          present :error, 0
+          present :detail, 0
         end
       end
     end

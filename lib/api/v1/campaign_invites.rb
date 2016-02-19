@@ -23,22 +23,29 @@ module API
           requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'liked']
           optional :page, type: Integer
           optional :title, type: String
+          optional :with_message, type: String, values: ['y','n']
         end
         #TODO 使用搜索插件
         get '/' do
-          if params[:status] == 'liked'
-            like_campaign_ids = current_kol.like_campaigns.collect{|t| t.campaign_id }
-            @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids ).
+          # if params[:status] == 'liked'
+          #   like_campaign_ids = current_kol.like_campaigns.collect{|t| t.campaign_id }
+          #   @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids ).
+          #     joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
+          # end
+          # hide_campaign_ids = current_kol.hide_campaigns.collect{|t| t.campaign_id }
+          hide_campaign_ids = []
+          if params[:status] == 'all'
+            @campaign_invites = current_kol.campaign_invites.where.not(:campaign_id => hide_campaign_ids).
               joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
           else
-            hide_campaign_ids = current_kol.hide_campaigns.collect{|t| t.campaign_id }
             @campaign_invites = current_kol.campaign_invites.send(params[:status]).where.not(:campaign_id => hide_campaign_ids).
               joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
           end
           @campaign_invites = @campaign_invites.page(params[:page]).per_page(10)
           present :error, 0
+          present :message, {:count => current_kol.unread_messages.size, :new_income => current_kol.new_income}  if params[:with_message] == 'y'
           to_paginate(@campaign_invites)
-          present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
+          present :campaign_invites, @campaign_invites.includes(:campaign), with: API::V1::Entities::CampaignInviteEntities::Summary
         end
 
 
@@ -82,7 +89,7 @@ module API
         ## 上传截图
         params do
           requires :id, type: Integer
-          requires :screenshot, type:File   if !Rails.env.development?
+          # requires :screenshot, type: File   if !Rails.env.development?
         end
         put ':id/upload_screenshot' do
           params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?

@@ -111,7 +111,7 @@ class CampaignInvite < ActiveRecord::Base
       #记录新收入
       self.redis_new_income.incr(campaign.per_action_budget * 100)
       #发送新收入消息
-      Message.udpate_income(self,campaign)
+      Message.new_income(self,campaign)
     end
   end
 
