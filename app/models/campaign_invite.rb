@@ -138,7 +138,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def tag
-    campaign = self.campaign
+    return nil if  self.campaign.blank?
     if campaign.is_red
       return 'red'
     elsif is_invited

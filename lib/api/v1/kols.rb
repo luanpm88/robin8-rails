@@ -22,6 +22,7 @@ module API
         get 'account' do
           present :error, 0
           present :kol, current_kol, with: API::V1::Entities::KolEntities::Account
+          present :stats, current_kol.recent_income
         end
 
         get 'primary' do

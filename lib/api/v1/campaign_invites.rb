@@ -33,17 +33,13 @@ module API
           #     joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
           # end
           # hide_campaign_ids = current_kol.hide_campaigns.collect{|t| t.campaign_id }
-          hide_campaign_ids = []
-          if params[:status] == 'all'
-            @campaign_invites = current_kol.campaign_invites.where.not(:campaign_id => hide_campaign_ids).
-              joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
-          else
-            @campaign_invites = current_kol.campaign_invites.send(params[:status]).where.not(:campaign_id => hide_campaign_ids).
-              joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
-          end
+          @campaign_invites = current_kol.campaign_invites.send(params[:status]).order("campaign_invites.created_at desc")
           @campaign_invites = @campaign_invites.page(params[:page]).per_page(10)
           present :error, 0
-          present :message, {:count => current_kol.unread_messages.size, :new_income => current_kol.new_income}  if params[:with_message] == 'y'
+          if params[:with_message] == 'y'
+            present :unread_message_count, current_kol.unread_messages.size
+            present :new_income , current_kol.new_income
+          end
           to_paginate(@campaign_invites)
           present :campaign_invites, @campaign_invites.includes(:campaign), with: API::V1::Entities::CampaignInviteEntities::Summary
         end
