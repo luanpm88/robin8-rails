@@ -5,8 +5,8 @@ class PusherWorker
     10 * (count + 1)
   end
 
-  def perform(pusher_message_id)
-    Getui.send(pusher_message_id)
+  def perform(push_message_id)
+    GeTui::Dispatcher.send_message(push_message_id)
   end
 
 end

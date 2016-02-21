@@ -308,7 +308,7 @@ class Kol < ActiveRecord::Base
   #当前用户新收入总计
   def new_income
     income_campaign_invite_ids = unread_income_messages.collect{|message| message.item_id}
-    total_income = CampaignInvite.where(:id => income_campaign_invite_ids).inject(0){|sum,i| sum + i.redis_new_income }
+    total_income = CampaignInvite.where(:id => income_campaign_invite_ids).inject(0){|sum,i| sum + i.redis_new_income.value }
     total_income / 100
   end
 

@@ -1,43 +1,82 @@
 class PushMessage < ActiveRecord::Base
+  include GeTui::Dispatcher
+
   serialize :receiver_ids, Array
-  serialize :reciver_cids, Array
+  serialize :receiver_cids, Array
   serialize :template_content, Hash
   serialize :receiver_list, Hash
   serialize :result_serial, Hash
-
-  after_commit :send_to_client
-
+  after_commit :async_send_to_client
   # template_type  'transmission', 'notification'
 
-  def  message_template_content(message)
-    {
-      :action => message.message_type,
-      :title => message.title,
-      :logo_url => message.logo_url,
-      :desc => message.desc,
-      :url => message.url,
-      :item_id => message.item_id
+  def get_title
+    "ddd"
+  end
+
+  def self.transmission_template_content(message)
+    content = {:action => message.message_type}
+    if message.message_type == 'income'
+      receiver = message.receiver
+      content.merge!({:new_income =>  receiver.new_income, :unread_message_count => receiver.unread_messages.count})
+    end
+    content
+  end
+
+  # notification template
+  def self.campaign_template_content(message)
+    campaign = message.item
+    content = {
+      :logo => '',
+      :logo_url => campaign.img_url,
+      :title => '您有一个新的活动',
+      :text => campaign.name,
+      :transmission_type => 'campaign',
+      :transmission_content => campaign.id
     }
+    content
   end
 
   def self.create_message_push(message)
     if message.message_type == 'income'
       receiver = message.receiver
-      push_message = self.new(:receiver_type => 'single', :template_type => 'transmission', :receiver_ids => [receiver.id], :receiver_cids => [receiver.device_token])
-      push_message.template_content = message_template_content
+      push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
+                              :receiver_cids => [receiver.device_token] )
+      push_message.template_content = transmission_template_content(message)
+      push_message.save
+    elsif message.message_type == 'announcement'
+      push_message = self.new(:receiver_type => 'All', :template_type => 'transmission',
+                              :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
+      push_message.template_content = transmission_template_content(message)
+      push_message.save
+    elsif message.message_type == 'campaign'
+      push_message = self.new(:template_type => 'notification', :template_content => campaign_template_content(message))
+      if message.receiver_type == 'All'
+        push_message.receiver_type = 'App'
+        push_message.receiver_list = {:app_id_list => [GeTui::Dispatcher::AppId] }
+        push_message.template_content = campaign_template_content(message)
+      elsif message.receiver_type == 'Kol'
+        receiver = message.receiver
+        push_message.receiver_type = 'Single'
+        push_message.receiver_id = [receiver.id]
+        push_message.receiver_ids = [receiver.device_token]
+      elsif message.receiver_type == 'List'
+        receivers = Kol.where(:id => message.receiver_ids)
+        push_message.receiver_type = 'List'
+        push_message.receiver_id = receivers.collect{|t| t.id }
+        push_message.receiver_ids = receivers.collect{|t| t.device_token}
+      end
       push_message.save
     end
   end
 
-  def send_to_client
+  def async_send_to_client
+    puts "====async_send_to_client"
     if Rails.env.development?
       PusherWorker.new.perform(self.id)
     else
       PusherWorker.perform_async(self.id)
     end
   end
-
-
 
   # t.string :receiver_type
   # t.string :receiver_ids

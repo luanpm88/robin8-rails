@@ -10,7 +10,7 @@ class Message < ActiveRecord::Base
   scope :unread, -> {where(:is_read => false)}
   scope :read, -> {where(:is_read => true)}
 
-  after_create :generate_push_message
+  # after_create :generate_push_message
 
   def item_name
     self.item.name  rescue nil
@@ -34,6 +34,7 @@ class Message < ActiveRecord::Base
         end
       end
     end
+    generate_push_message(message)
   end
 
   def self.new_announcement(announcement)
@@ -41,24 +42,45 @@ class Message < ActiveRecord::Base
                           :sender => 'Robin8', :item => announcement  )
     message.receiver_type = "All"
     message.save
+
+    generate_push_message(message)
   end
 
 
   # create or update
   def self.new_income(invite, campaign)
-    income_message = Message.find_or_initialize_by(:message_type => 'income', :owner => invite.kol, :item => invite)
-    if income_message.new_record
-      income_message.logo_url = campaign.img_url
-      income_message.sender = campaign.user.campaign  rescue nil
+    message = Message.find_or_initialize_by(:message_type => 'income', :receiver => invite.kol, :item => invite)
+    if message.new_record?
+      message.logo_url = campaign.img_url
+      message.sender = campaign.user.campaign  rescue nil
     end
-    income_message.is_read = false
-    income_message.title = "新收入 #{invite.redis_new_income.value / 100.0} "
-    income_message.save
+    message.is_read = false
+    message.title = "新收入 #{invite.redis_new_income.value / 100.0} "
+    message.save
+
+    generate_push_message(message)
   end
 
-  def generate_push_message
-    PushMessage.create_message_push(self)
+
+  def self.test_income
+    kol = Kol.find 84
+    campaign_invite = kol.campaign_invites.last
+    new_income(campaign_invite,campaign_invite.campaign)
   end
+
+
+  def self.test_campaign
+    kol = Kol.find 84
+    campaign_invite = kol.campaign_invites.last
+    self.new_campaign(campaign_invite.campaign, kol.id)
+  end
+
+
+  def self.generate_push_message(message)
+    puts "----generate_push_message"
+    PushMessage.create_message_push(message)
+  end
+
 end
 
 

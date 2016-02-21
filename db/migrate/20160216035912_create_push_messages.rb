@@ -1,9 +1,10 @@
 class CreatePushMessages < ActiveRecord::Migration
   def change
     create_table :push_messages do |t|
+      t.string :title
       t.string :receiver_type
-      t.string :receiver_ids
-      t.text :reciver_cids
+      t.text :receiver_ids
+      t.text :receiver_cids
       t.string :receiver_list
       t.string :template_type
       t.text :template_content
