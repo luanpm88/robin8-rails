@@ -55,6 +55,15 @@ module API
             kol.campaign_invites.settled.count
           end
         end
+
+        class MessageStat < Grape::Entity
+          expose :unread_message_count do |kol|
+            kol.unread_messages.count
+          end
+          expose :new_income do |kol|
+            kol.new_income
+          end
+        end
       end
     end
   end

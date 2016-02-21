@@ -6,24 +6,11 @@ module API
           authenticate!
         end
 
-        # #任务概要
-        # get 'stat_summary' do
-        #   invites = current_kol.campaign_invites.unrejected
-        #   all_count = invites.size
-        #   running_count = invites.running.size
-        #   approved_count = invites.approved.size
-        #   verifying_count = invites.verifying.size
-        #   settled_count = invites.settled.size
-        #   stat = {:all_count => all_count, :running_count => running_count, :approved_count => approved_count,
-        #           :verifying_count => verifying_count, :settled_count => settled_count }
-        #   return {:error => 0, :stat => stat}
-        # end
-
         params do
           requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'liked']
           optional :page, type: Integer
           optional :title, type: String
-          optional :with_message, type: String, values: ['y','n']
+          optional :with_message_stat, type: String, values: ['y','n']
         end
         #TODO 使用搜索插件
         get '/' do
@@ -36,10 +23,7 @@ module API
           @campaign_invites = current_kol.campaign_invites.send(params[:status]).order("campaign_invites.created_at desc")
           @campaign_invites = @campaign_invites.page(params[:page]).per_page(10)
           present :error, 0
-          if params[:with_message] == 'y'
-            present :unread_message_count, current_kol.unread_messages.size
-            present :new_income , current_kol.new_income
-          end
+          present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
           to_paginate(@campaign_invites)
           present :campaign_invites, @campaign_invites.includes(:campaign), with: API::V1::Entities::CampaignInviteEntities::Summary
         end
