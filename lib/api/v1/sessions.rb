@@ -55,10 +55,12 @@ module API
         end
         post 'oauth_login' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
-          kol =  identity.kol   rescue nil
+          kol = identity.kol   rescue nil
           if !kol
             ActiveRecord::Base.transaction do
-              kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version], device_token: params[:device_token])
+              kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
+                                device_token: params[:device_token], name: params[:name], avatar: params[:avatar_url],
+                                social_name: params[:name], provider: params[:provider], social_uid: auth_params[:uid])
               if identity.blank?
                 attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
                 identity = Identity.new
