@@ -184,6 +184,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initFormValidation: ->
       parentThis = @
+      MAX_OPTIONS = 5
       @ui.form.formValidation(
         framework: 'bootstrap'
         excluded: [
@@ -280,6 +281,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                     return false
                   return true
 
+          'option[]':
+            validators:
+              callback:
+                message: '链接格式错误， 正确格式如: http://www.example.com'
+                callback: (value, validator, $field) ->
+                  RegExp = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                  if RegExp.test(value)
+                    return true
+                  return false
+              notEmpty:
+                message: '链接不能为空'
         )
         .on 'err.validator.fv', (e, data) ->
           data.element
@@ -287,6 +299,30 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               .find('.help-block[data-fv-for="' + data.field + '"]').hide()
               .filter('[data-fv-validator="' + data.validator + '"]').show();
 
+        .on('click', '.addButton', ->
+          $template = $('#optionTemplate')
+          $clone = $template.clone().removeClass('hide').removeAttr('id').insertBefore($template)
+          $option = $clone.find('[name="option[]"]')
+          # Add new field
+          $('#campaign-form').formValidation 'addField', $option
+        ).on('click', '.removeButton', ->
+          $row = $(this).parents('.form-group').first()
+          $option = $row.find('[name="option[]"]')
+          # Remove element containing the option
+          $row.remove()
+          # Remove field
+          $('#campaign-form').formValidation 'removeField', $option
+        ).on('added.field.fv', (e, data) ->
+          # data.field   --> The field name
+          # data.element --> The new field element
+          # data.options --> The new field options
+          if data.field == 'option[]'
+            if $('#campaign-form').find(':visible[name="option[]"]').length >= MAX_OPTIONS
+              $('#campaign-form').find('.addButton').attr 'disabled', 'disabled'
+        ).on 'removed.field.fv', (e, data) ->
+          if data.field == 'option[]'
+            if $('#campaign-form').find(':visible[name="option[]"]').length < MAX_OPTIONS
+              $('#campaign-form').find('.addButton').removeAttr 'disabled'
 
     initDatepicker: ->
       now = new Date
