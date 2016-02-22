@@ -60,11 +60,118 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       e.preventDefault()
       model_id = e.target.id
       collection = @getRegion('currentTab').currentView.collection
-      model = collection.get(model_id)
+      @model = collection.get(model_id)
       modalView = new Show.TaskModal
-        model: model
+        model: @model
         parent: this
       @getRegion('modal').show modalView
+      @upload_screenshot_count_down(@model)
+      @initQiniuUploader()
+
+    upload_screenshot_count_down: (model) ->
+      #清除所有定时任务
+      i = 1
+      while i < 99999
+        window.clearInterval i
+        i++
+      #计算时间差
+      approved_time = new Date(model.get('approved_at'))
+      now = new Date
+      time_difference = Math.floor((now - approved_time)/1000/60)
+      left_time = 30 - time_difference
+
+      if (left_time > 0)
+        $('#screenshot-container').hide()
+        $('#upload-tip').show()
+        $('#upload-tip input').val("剩余" + left_time + "分钟")
+        left_time--
+      else
+        $('#screenshot-container').show()
+        $('#upload-tip').hide()
+
+      countdown = setInterval(( ->
+        if (left_time > 0)
+          $('#screenshot-container').hide()
+          $('#upload-tip').show()
+          $('#upload-tip input').val("剩余" + left_time + "分钟")
+        else
+          $('#screenshot-container').show()
+          $('#upload-tip').hide()
+        if left_time <= 0
+          clearInterval countdown
+        left_time--
+      ), 1000*60)
+
+    initQiniuUploader: ->
+      parentThis = @
+      uploader = Qiniu.uploader(
+        parentThis: parentThis
+        runtimes: 'html5,flash,html4'
+        browse_button: 'upload-screenshot'
+        uptoken_url: '/users/qiniu_uptoken'
+        unique_names: true
+        domain: '7xozqe.com1.z0.glb.clouddn.com'
+        container: 'screenshot-container'
+        max_file_size: '100mb'
+        flash_swf_url: 'js/plupload/Moxie.swf'
+        max_retries: 3
+        # dragdrop: true
+        # drop_element: 'screenshot-container'
+        chunk_size: '4mb'
+        auto_start: true
+        filters: mime_types: [ {
+          title: 'Image files'
+          extensions: 'jpg,jpeg,gif,png'
+        } ]
+        init:
+          'FilesAdded': (up, files) ->
+            plupload.each files, (file) ->
+              # 文件添加进队列后,处理相关的事情
+              return
+            return
+          'BeforeUpload': (up, file) ->
+            # 每个文件上传前,处理相关的事情
+            return
+          'UploadProgress': (up, file) ->
+            # 每个文件上传时,处理相关的事情
+            return
+          'FileUploaded': (up, file, info) ->
+            domain = up.getOption('domain')
+            res = jQuery.parseJSON(info)
+            sourceLink = 'http://' + domain + '/' + res.key
+            $('#show-screenshot').attr 'src', sourceLink
+            $('input[name=screenshot]').val sourceLink
+            console.log 'after upload success: ', up.getOption('parentThis').model
+            model = up.getOption('parentThis').model
+
+            console.log 'start save: '
+            model.save screenshot: sourceLink,
+              success: (m, r, o) =>
+                $.growl
+                  message: '上传截图成功，我们将在一个工作日内审核'
+                  type: 'success'
+                updatedView = new Show.TaskModal
+                  model: model
+                updatedViewHtml = updatedView.render().$el
+                up.getOption('parentThis').$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+                parentThis.initQiniuUploader()
+                console.log 'success'
+              error: =>
+                $.growl
+                  message: '上传失败，请刷新页面重试'
+                  type: 'danger'
+                console.log 'error'
+
+            #获取上传成功后的文件的Url
+            return
+          'Error': (up, err, errTip) ->
+            #上传出错时,处理相关的事情
+            return
+          'UploadComplete': ->
+            #队列文件处理完毕后,处理相关的事情
+            return
+      )
+
 
     loadMore: (e) ->
       e.preventDefault()
@@ -182,6 +289,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             updatedViewHtml = updatedView.render().$el
             parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
             $('.triggerMark').remove()
+            parentThis.upload_screenshot_count_down()
             parentThis.initQiniuUploader()
           else if data.status == 'needMobile'
             console.log 'need mobile'
@@ -201,6 +309,9 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @initQiniuUploader()
       $('#taskModal').modal()
       clipboard = new Clipboard('.task-modal-btn');
+
+    onRender: ()->
+      @initQiniuUploader()
 
     initQiniuUploader: ->
       parentThis = @
@@ -254,6 +365,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
                   model: model
                 updatedViewHtml = updatedView.render().$el
                 up.getOption('parentThis').$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+                parentThis.initQiniuUploader()
                 console.log 'success'
               error: =>
                 $.growl
@@ -270,3 +382,38 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             #队列文件处理完毕后,处理相关的事情
             return
       )
+
+    upload_screenshot_count_down: () ->
+      #清除所有定时任务
+      i = 1
+      while i < 99999
+        window.clearInterval i
+        i++
+      #计算时间差
+      # approved_time = new Date(@model.get('approved_at'))
+      # now = new Date
+      # time_difference = (now - approved_time)/1000
+
+      left_time = 30
+
+      if left_time >= 0
+        $('#upload-screenshot').hide()
+        $('#upload-tip').show()
+        $('#upload-tip input').val("剩余" + left_time + "分钟")
+        left_time--
+      else
+        $('#upload-screenshot').show()
+        $('#upload-tip').hide()
+
+      countdown = setInterval(( ->
+        if left_time > 0
+          $('#upload-screenshot').hide()
+          $('#upload-tip').show()
+          $('#upload-tip input').val("剩余" + left_time + "分钟")
+        else
+          $('#upload-screenshot').show()
+          $('#upload-tip').hide()
+        if left_time < 0
+          clearInterval countdown
+        left_time--
+      ), 1000*60)

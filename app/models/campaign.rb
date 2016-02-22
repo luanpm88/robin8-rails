@@ -35,6 +35,10 @@ class Campaign < ActiveRecord::Base
     user.try :email
   end
 
+  def upload_screenshot_deadline
+    self.deadline +  SettleWaitTimeForKol
+  end
+
   def get_stats
     end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows
@@ -47,6 +51,10 @@ class Campaign < ActiveRecord::Base
       avail_clicks << shows.valid.by_date(date.to_datetime).count
     end
     [self.per_budget_type, labels, total_clicks, avail_clicks]
+  end
+
+  def need_finish
+    self.per_budget_type == 'post' && self.valid_invites.size >= self.max_action && self.status == 'executing'
   end
 
   #统计信息
@@ -105,6 +113,8 @@ class Campaign < ActiveRecord::Base
     return 0 if status == 'unexecute'
     self.valid_invites.size
   end
+  alias_method :share_times, :get_share_time
+
 
   # 开始时候就发送邀请 但是状态为pending
   # c = Campaign.find xx

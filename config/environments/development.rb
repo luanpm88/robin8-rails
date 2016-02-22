@@ -40,30 +40,30 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
-
-  # Configure to use with mailcatcher - for more information (http://mailcatcher.me/)
-  config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
-
-  config.middleware.use ExceptionNotification::Rack,
-    :email => {
-      :email_prefix => "[Exception]",
-      :sender_address => %{notifier@robin8.com},
-      :exception_recipients => %w{exceptions@example.com}
-    }
-
-  # uncomment to avoid caching during dev
-  # config.cache_store = :null_store
-
-  ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = {
-    :user_name => Rails.application.secrets[:smtp][:user_name],
-    :password => Rails.application.secrets[:smtp][:password],
-    :domain => Rails.application.secrets[:smtp][:domain],
-    :address => Rails.application.secrets[:smtp][:address],
-    :port => Rails.application.secrets[:smtp][:port],
-    :authentication => :plain,
-    :enable_starttls_auto => true
-  }
+  # config.action_mailer.default_url_options = { host: Rails.application.secrets[:host] }
+  #
+  # # Configure to use with mailcatcher - for more information (http://mailcatcher.me/)
+  # config.action_mailer.delivery_method = :smtp
+  # # config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+  #
+  # config.middleware.use ExceptionNotification::Rack,
+  #   :email => {
+  #     :email_prefix => "[Exception]",
+  #     :sender_address => %{notifier@robin8.com},
+  #     :exception_recipients => %w{exceptions@example.com}
+  #   }
+  #
+  # # uncomment to avoid caching during dev
+  # # config.cache_store = :null_store
+  #
+  # ActionMailer::Base.delivery_method = :smtp
+  # ActionMailer::Base.smtp_settings = {
+  #   :user_name => Rails.application.secrets[:smtp][:user_name],
+  #   :password => Rails.application.secrets[:smtp][:password],
+  #   :domain => Rails.application.secrets[:smtp][:domain],
+  #   :address => Rails.application.secrets[:smtp][:address],
+  #   :port => Rails.application.secrets[:smtp][:port],
+  #   :authentication => :plain,
+  #   :enable_starttls_auto => true
+  # }
 end

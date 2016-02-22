@@ -5,11 +5,23 @@ class CampaignInvite < ActiveRecord::Base
 
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
+  UploadScreenshotWait = 30.minutes
+
   validates_inclusion_of :status, :in => STATUSES
 
   belongs_to :campaign
   belongs_to :kol
+  scope :unrejected, -> {where("status != 'rejected'")}
+  scope :running, -> {where(:status => 'running')}
+  scope :approved, -> {where(:status => 'approved')}
   scope :passed, -> {where(:img_status => 'passed')}
+  scope :verifying, -> {where(:status => 'finish').where.not(:img_status => 'passed')}
+  scope :settled, -> {where(:status => 'settled')}
+
+  def can_upload_screenshot
+    return  (status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > (approved_at + UploadScreenshotWait) &&
+      Time.now < self.campaign.upload_screenshot_deadline
+  end
 
   def screenshot_pass
     campaign = self.campaign
@@ -63,6 +75,16 @@ class CampaignInvite < ActiveRecord::Base
     ShortUrl.convert origin_share_url(uuid)
   end
 
+  def earn_money
+    campaign = self.campaign
+    return 0.0 if campaign.blank?
+    if campaign.is_click_type?
+      (get_avail_click * campaign.per_action_budget).round(2)       rescue 0
+    else
+      campaign.per_action_budget.round(2) rescue 0
+    end
+  end
+
   def add_click(valid)
     self.redis_avail_click.increment if valid
     self.redis_total_click.increment
@@ -76,12 +98,12 @@ class CampaignInvite < ActiveRecord::Base
     self.save
   end
 
-  def self.create_invite(campaign_id, kol_id)
-    return if CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign_id)
+  def self.create_invite(campaign_id, kol_id, status = 'pending')
+    # return if CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign_id)
     invite = CampaignInvite.new
-    invite.status = 'pending'
+    invite.status = status
     invite.campaign_id = campaign_id
     invite.kol_id = kol_id
-    invite.save!
+    invite.save(validate: false)
   end
 end
