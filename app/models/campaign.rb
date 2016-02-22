@@ -7,7 +7,7 @@ class Campaign < ActiveRecord::Base
   #Per_budget_type click post
   belongs_to :user
   has_many :campaign_invites
-  has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
+  # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
@@ -68,7 +68,6 @@ class Campaign < ActiveRecord::Base
   def get_valid_by_day
     self.campaign_shows.valid.group("date_format(created_at, 'YYYY-MM-DD') ").select(" date_format(created_at, 'YYYY-MM-DD') as created, count(*) as count ")
   end
-
 
   def get_avail_click
     self.redis_avail_click.value      rescue self.avail_click
@@ -132,21 +131,21 @@ class Campaign < ActiveRecord::Base
     campaign_id = self.id
     ActiveRecord::Base.transaction do
       if kol_ids.present?
-        kols = Kol.where(:id => kol_ids)
-        kols.each do |kol|
-          CampaignInvite.create_invite(campaign_id, kol.id)
+        Kol.where(:id => kol_ids).each do |kol|
+          kol.add_campaign_id campaign_id
         end
       else
         Kol.find_each do |kol|
-          CampaignInvite.create_invite(campaign_id, kol.id)
+          kol.add_campaign_id campaign_id
         end
       end
       # 删除黑名单campaign
-      block_kol_ids = Kol.where("forbid_campaign_time > '#{Time.now}'").collect{|t| t.id}
-      Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kol_ids}-"
-      CampaignInvite.where(:kol_id => block_kol_ids, :campaign_id => campaign_id).delete_all
+      block_kols = Kol.where("forbid_campaign_time > '#{Time.now}'")
+      block_kols.each do |kol|
+        kol.delete_campaign_id campaign_id
+      end
+      Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
     end
-    # 新campaign   TODO to change to list
     Message.new_campaign(self)
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
@@ -156,16 +155,6 @@ class Campaign < ActiveRecord::Base
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
   end
 
-  def send_invite_to_kol kol, status
-    invite = CampaignInvite.new
-    invite.status = status
-    invite.campaign_id = self.id
-    invite.kol_id = kol.id
-    uuid = Base64.encode64({:campaign_id => self.id, :kol_id=> kol.id}.to_json).gsub("\n","")
-    invite.uuid = uuid
-    invite.share_url = CampaignInvite.generate_share_url(uuid)
-    invite.save!
-  end
 
   # 开始进行  此时需要更改invite状态
   def go_start
@@ -173,7 +162,7 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
-      self.pending_invites.update_all(:status => 'running')
+      # self.pending_invites.update_all(:status => 'running')
     end
     Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end

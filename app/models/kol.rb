@@ -2,8 +2,8 @@ class Kol < ActiveRecord::Base
   include Redis::Objects
   # counter :redis_new_income      #unit is cent
   list :read_message_ids, :maxlength => 1000             # 所有阅读过的
-  list :list_message_ids, :maxlength => 1000        # 所有发送给部分人消息ids
-  list :approving_campaign_ids, :maxlength => 1000             # 用户收到的所有campaign 邀请(待接收)
+  list :list_message_ids, :maxlength => 1000             # 所有发送给部分人消息ids
+  list :receive_campaign_ids, :maxlength => 1000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -263,7 +263,7 @@ class Kol < ActiveRecord::Base
 
     # 记录到 read_meesage_ids
     if message.receiver_type == "All" || message.receiver_type == 'List'
-      self.read_message_ids << message_id unless  self.read_message_ids.values.include? message_id
+      self.read_message_ids << message_id unless  self.read_message_ids.include? message_id
     end
 
     # 重置 invite 收入
@@ -312,5 +312,34 @@ class Kol < ActiveRecord::Base
     total_income / 100
   end
 
+  def add_campaign_id(campaign_id)
+    self.receive_campaign_ids << campaign_id unless self.receive_campaign_ids.include? campaign_id
+  end
+
+  def delete_campaign_id(campaign_id)
+    self.receive_campaign_ids.delete(campaign_id)
+  end
+
+  # 接收活动
+  def approve_campaign(campaign_id)
+    campaign = Campaign.find campaign_id  rescue nil
+    return if campaign.blank? || campaign.status != 'executing'
+    campaign_invite = CamapignInvite.where(:campaign_id => campaign_id, :kol_id => self.id).first       rescue nil
+    if (campaign_invite && campaign_invites.status == 'running')  || campaign_invite.blank?
+      uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
+      self.approved_at = Time.now
+      self.status = 'approved'
+      self.uuid = uuid
+      self.share_url = CampaignInvite.generate_share_url(uuid)
+    end
+  end
+
+  # 待接收活动列表
+  def running_campaigns
+    approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).collect{|t| t.campaign_id}
+    unapproved_campaign_ids = self.receive_campaign_ids.values -  approved_campaign_ids
+    campaigns = Campaign.where(:id => unapproved_campaign_ids).where(:status => 'executing')
+    campaigns
+  end
 
 end

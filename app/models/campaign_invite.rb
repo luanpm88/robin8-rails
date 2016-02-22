@@ -14,7 +14,7 @@ class CampaignInvite < ActiveRecord::Base
   belongs_to :campaign
   belongs_to :kol
   scope :unrejected, -> {where("campaign_invites.status != 'rejected'")}
-  scope :running, -> {where(:status => 'running')}
+  # scope :running, -> {where(:status => 'running')}
   scope :approved, -> {where(:status => 'approved')}
   scope :passed, -> {where(:img_status => 'passed')}
   scope :verifying, -> {where(:status => 'finished').where.not(:img_status => 'passed')}
@@ -123,13 +123,6 @@ class CampaignInvite < ActiveRecord::Base
     bring_income(campaign) if valid &&  campaign
   end
 
-  # def generate_uuid_and_share_url
-  #   uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id=> self.kol_id}.to_json).gsub("\n","")
-  #   self.uuid = uuid
-  #   self.share_url = CampaignInvite.generate_share_url(uuid)
-  #   self.save
-  # end
-
   def approve
     uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id => self.kol_id}.to_json).gsub("\n","")
     self.approved_at = Time.now
@@ -137,15 +130,6 @@ class CampaignInvite < ActiveRecord::Base
     self.uuid = uuid
     self.share_url = CampaignInvite.generate_share_url(uuid)
     self.save
-  end
-
-  def self.create_invite(campaign_id, kol_id, status = 'pending')
-    # return if CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign_id)
-    invite = CampaignInvite.new
-    invite.status = status
-    invite.campaign_id = campaign_id
-    invite.kol_id = kol_id
-    invite.save(validate: false)
   end
 
   def tag

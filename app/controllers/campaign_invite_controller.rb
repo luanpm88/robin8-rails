@@ -38,7 +38,7 @@ class CampaignInviteController < ApplicationController
     end
 
     if @campaign_invite.status.eql? 'running'
-      @campaign_invite.approve
+      current_kol.approve_campaign(params[:id])
     end
 
     return render :json => {status: 'ok'}
