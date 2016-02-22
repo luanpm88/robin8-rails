@@ -72,18 +72,29 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initFormValidation()
         @initQiniuUploader()
         @initChoosePerBudgetType()
+        @choosePerBudgetType()
         @initCreateCampaignModal()
 
         $(".budget_input").focus()
         $(".campaign_name_input").focus()
 
     initChoosePerBudgetType: ->
-      if @model.attributes.per_budget_type == null
-        $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
-      else if @model.attributes.per_budget_type == 'click'
+      if @model.attributes.per_budget_type == 'click'
         $('input:radio[name="action_type"]').filter('[value=click]').prop('checked', true)
+      else if @model.attributes.per_budget_type == 'post'
+        $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
+      else if @model.attributes.per_budget_type == 'download'
+        $('input:radio[name="action_type"]').filter('[value=download]').prop('checked', true)
       else
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
+
+    choosePerBudgetType: ->
+      $('input:radio[name="action_type"]').filter('[value=download]').click ->
+        $(".download-urls").show()
+      $('input:radio[name="action_type"]').filter('[value=click]').click ->
+        $(".download-urls").hide()
+      $('input:radio[name="action_type"]').filter('[value=post]').click ->
+        $(".download-urls").hide()
 
     initCreateCampaignModal: ->
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
@@ -102,6 +113,10 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       if $('input:radio[name="action_type"]').filter('[value=click]').is(":checked")
         parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
         parentThis.model.attributes.per_budget_type = "click"
+      if $('input:radio[name="action_type"]').filter('[value=download]').is(":checked")
+        parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
+        parentThis.model.attributes.per_budget_type = "download"
+
       parentThis.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
 
