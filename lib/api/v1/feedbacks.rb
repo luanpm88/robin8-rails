@@ -6,18 +6,6 @@ module API
           authenticate!
         end
 
-        # get '/' do
-        #   if params[:status].present?
-        #     withdraws = current_kol.withdraws.send(params[:status]).page(params[:page]).per_page(10)
-        #   else
-        #     withdraws = current_kol.withdraws.page(params[:page]).per_page(10)
-        #   end
-        #   present :error, 0
-        #   to_paginate(withdraws)
-        #   present :withdraws, withdraws, with: API::V1::Entities::WithdrawEntities::Summary
-        # end
-
-
         params do
           requires :app_version, type: String
           requires :os_version, type: String
