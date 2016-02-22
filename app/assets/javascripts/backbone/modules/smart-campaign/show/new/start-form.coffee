@@ -126,6 +126,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           $('[name="option[]"]').each ->
             if $(this).val().length != 0
               action_list.push $(this).val()
+          action_list.pop()   #delete repeat input value
           parentThis.model.attributes.action_list = action_list
 
 
