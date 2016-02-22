@@ -17,8 +17,8 @@ module GeTui
       elsif push_message.template_type == 'notification'
         single_message.data = Template.notification_template(push_message)
       end
-      client_cid = IGeTui::Client.new(push_message.receiver_cids[0])
-      pusher.push_message_to_single(single_message, client_cid)
+      client = IGeTui::Client.new(push_message.receiver_cids[0])
+      pusher.push_message_to_single(single_message, client)
     end
 
     def self.push_to_list(push_message)
@@ -30,8 +30,8 @@ module GeTui
         list_message.data = Template.notification_template(push_message)
       end
       #获取 存储的信息 id
-      list_message_content_id = @@pusher.get_content_id(list_message)
-      client_cids = receiver_cids.collect{|cid| IGeTui::Client.new(cid)}
+      list_message_content_id = pusher.get_content_id(list_message)
+      client_cids = push_message.receiver_cids.collect{|cid| IGeTui::Client.new(cid)}
       pusher.push_message_to_list(list_message_content_id, client_cids)
     end
 
@@ -53,16 +53,15 @@ module GeTui
         return
       end
       res = eval("push_to_#{push_message.receiver_type.downcase}(push_message)")
-      push_message
-      puts res.inspect
-      # case push_message.receiver_type
-      #   when 'Single'
-      #    push_to_single
-      #   when 'List'
-      #    push_to_list
-      #   when 'App'
-      #    push_to_app
-      # end
+      Rails.logger.pusher.logger "-------push_message:#{push_message.id}----#{res}"
+      if res['result'] == 'ok'
+        push_message.result = 'ok'
+        push_message.task_id = res["taskId"]
+        push_message.status = res["status"]
+      else
+        push_message.detail = res["result"]
+      end
+      push_message.save
     end
   end
 end

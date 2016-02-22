@@ -14,6 +14,7 @@ module API
       mount API::V1::Cities
       mount API::V1::Withdraws
       mount API::V1::Messages
+      mount API::V1::Feedbacks
     end
   end
 end

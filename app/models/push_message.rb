@@ -10,7 +10,7 @@ class PushMessage < ActiveRecord::Base
   # template_type  'transmission', 'notification'
 
   def get_title
-    "ddd"
+    "您有一个新的活动"
   end
 
   def self.transmission_template_content(message)
@@ -57,13 +57,13 @@ class PushMessage < ActiveRecord::Base
       elsif message.receiver_type == 'Kol'
         receiver = message.receiver
         push_message.receiver_type = 'Single'
-        push_message.receiver_id = [receiver.id]
-        push_message.receiver_ids = [receiver.device_token]
+        push_message.receiver_ids = [receiver.id]
+        push_message.receiver_cids = [receiver.device_token]
       elsif message.receiver_type == 'List'
         receivers = Kol.where(:id => message.receiver_ids)
         push_message.receiver_type = 'List'
-        push_message.receiver_id = receivers.collect{|t| t.id }
-        push_message.receiver_ids = receivers.collect{|t| t.device_token}
+        push_message.receiver_ids = receivers.collect{|t| t.id }
+        push_message.receiver_cids = receivers.collect{|t| t.device_token}
       end
       push_message.save
     end
