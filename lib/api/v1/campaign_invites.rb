@@ -7,7 +7,7 @@ module API
         end
 
         params do
-          requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'liked']
+          requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'rejected', 'liked']
           optional :page, type: Integer
           optional :title, type: String
           optional :with_message_stat, type: String, values: ['y','n']
@@ -20,6 +20,10 @@ module API
           #     joins(:campaign).where("campaigns.name like '%#{params[:title]}%'").order("campaign_invites.created_at desc")
           # end
           # hide_campaign_ids = current_kol.hide_campaigns.collect{|t| t.campaign_id }
+          # if  params[:status] == 'all'
+          #   campaigns = Campaign.where(:id => current_kol.receive_campaign_ids).order("created_at desc").page(params[:page]).per_page(10)
+          #
+          # end
           @campaign_invites = current_kol.campaign_invites.send(params[:status]).order("campaign_invites.created_at desc")
           @campaign_invites = @campaign_invites.page(params[:page]).per_page(10)
           present :error, 0

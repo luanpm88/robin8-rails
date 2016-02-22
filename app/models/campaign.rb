@@ -324,6 +324,18 @@ class Campaign < ActiveRecord::Base
     self.status == 'executeing' && ((self.deadline - 1.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
   end
 
+  def get_campaign_invite(kol_id)
+    invite = CampaignInvite.find_or_initialize_by(:campaign_id => self.id, :kol_id => kol_id)
+    if invite.new_record? && self.status == 'executing'
+      invite.status = 'running'
+    elsif invite.new_record? && self.status == 'unexecuting'
+      invite.status = 'pending'
+    elsif invite.new_record? && self.status == 'executing'
+      invite.status = 'rejected'
+    end
+    invite
+  end
+
   def self.generate_campaign_reports kol_id
     invites = CampaignInvite.where(kol_id: kol_id, status: "finished")
     cookies = {}

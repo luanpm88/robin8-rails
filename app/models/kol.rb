@@ -323,7 +323,7 @@ class Kol < ActiveRecord::Base
   # 接收活动
   def approve_campaign(campaign_id)
     campaign = Campaign.find campaign_id  rescue nil
-    return if campaign.blank? || campaign.status != 'executing'
+    return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? campaign_id)
     campaign_invite = CamapignInvite.where(:campaign_id => campaign_id, :kol_id => self.id).first       rescue nil
     if (campaign_invite && campaign_invites.status == 'running')  || campaign_invite.blank?
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
@@ -332,6 +332,7 @@ class Kol < ActiveRecord::Base
       self.uuid = uuid
       self.share_url = CampaignInvite.generate_share_url(uuid)
     end
+    campaign_invite
   end
 
   # 待接收活动列表
