@@ -8,12 +8,13 @@ module API
 
         params do
           requires :app_version, type: String
+          requires :app_platform, type: String
           requires :os_version, type: String
           requires :device_model, type: String
           requires :content, type: String
         end
         post 'create' do
-          attrs = attributes_for_keys([:app_version, :os_version, :device_model, :content])
+          attrs = attributes_for_keys([:app_version, :app_platform, :os_version, :device_model, :content])
           feedback = Feedback.new
           feedback.attributes = attrs
           feedback.kol_id = current_kol.id
