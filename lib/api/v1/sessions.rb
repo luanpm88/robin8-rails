@@ -27,7 +27,8 @@ module API
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
           kol = Kol.find_by(mobile_number: params[:mobile_number])
           if kol.present?
-            kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version], device_token: params[:device_token])
+            kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
+                                  device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
           else
             kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                           app_version: params[:app_version], device_token: params[:device_token])
@@ -60,7 +61,8 @@ module API
             ActiveRecord::Base.transaction do
               kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
                                 device_token: params[:device_token], name: params[:name], avatar: params[:avatar_url],
-                                social_name: params[:name], provider: params[:provider], social_uid: auth_params[:uid])
+                                social_name: params[:name], provider: params[:provider], social_uid: auth_params[:uid],
+                                IMEI: params[:IMEI], IDFA: params[:IDFA])
               if identity.blank?
                 attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
                 identity = Identity.new
