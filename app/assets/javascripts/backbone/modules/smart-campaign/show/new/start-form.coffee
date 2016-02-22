@@ -83,18 +83,23 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         $('input:radio[name="action_type"]').filter('[value=click]').prop('checked', true)
       else if @model.attributes.per_budget_type == 'post'
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
-      else if @model.attributes.per_budget_type == 'download'
-        $('input:radio[name="action_type"]').filter('[value=download]').prop('checked', true)
+      else if @model.attributes.per_budget_type == 'action'
+        $('input:radio[name="action_type"]').filter('[value=action]').prop('checked', true)
+        $(".action-urls").show()
+        $(".more-action-urls").show()
       else
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
 
     choosePerBudgetType: ->
-      $('input:radio[name="action_type"]').filter('[value=download]').click ->
-        $(".download-urls").show()
+      $('input:radio[name="action_type"]').filter('[value=action]').click ->
+        $(".action-urls").show()
+        $(".more-action-urls").show()
       $('input:radio[name="action_type"]').filter('[value=click]').click ->
-        $(".download-urls").hide()
+        $(".action-urls").hide()
+        $(".more-action-urls").hide()
       $('input:radio[name="action_type"]').filter('[value=post]').click ->
-        $(".download-urls").hide()
+        $(".action-urls").hide()
+        $(".more-action-urls").hide()
 
     initCreateCampaignModal: ->
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
@@ -113,9 +118,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       if $('input:radio[name="action_type"]').filter('[value=click]').is(":checked")
         parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
         parentThis.model.attributes.per_budget_type = "click"
-      if $('input:radio[name="action_type"]').filter('[value=download]').is(":checked")
+      if $('input:radio[name="action_type"]').filter('[value=action]').is(":checked")
         parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
-        parentThis.model.attributes.per_budget_type = "download"
+        parentThis.model.attributes.per_budget_type = "action"
+        action_list= []
+        if $('[name="option[]"]').length != 0
+          $('[name="option[]"]').each ->
+            if $(this).val().length != 0
+              action_list.push $(this).val()
+          parentThis.model.attributes.action_list = action_list
+
+
 
       parentThis.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
@@ -284,7 +297,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           'option[]':
             validators:
               callback:
-                message: '链接格式错误， 正确格式如: http://www.example.com'
+                message: '链接格式错误， 以http://开头'
                 callback: (value, validator, $field) ->
                   RegExp = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
                   if RegExp.test(value)
@@ -303,6 +316,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
           $template = $('#optionTemplate')
           $clone = $template.clone().removeClass('hide').removeAttr('id').insertBefore($template)
           $option = $clone.find('[name="option[]"]')
+          $option.val("")
           # Add new field
           $('#campaign-form').formValidation 'addField', $option
         ).on('click', '.removeButton', ->

@@ -164,6 +164,7 @@ class CampaignController < ApplicationController
       render :json => {:status => 'no enough amount!'} and return
     end
 
+    binding.pry
     campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url))
     campaign.user = current_user
     campaign.status = "unexecute"
