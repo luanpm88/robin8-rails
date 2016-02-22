@@ -15,6 +15,7 @@ module API
       mount API::V1::Withdraws
       mount API::V1::Messages
       mount API::V1::Feedbacks
+      mount API::V1::Upgrades
     end
   end
 end
