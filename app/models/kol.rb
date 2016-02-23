@@ -279,9 +279,12 @@ class Kol < ActiveRecord::Base
     kol_id = self.id
     list_message_ids = self.list_message_ids.values.size == 0 ? "''" : self.list_message_ids.values.join(',')
     sql = "select * from messages
-           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}')  or
-                 (messages.receiver_type = 'All') or
-                 (messages.receiver_type = 'List' and messages.id in (" + list_message_ids + ") )
+           where (
+                  (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}')  or
+                  (messages.receiver_type = 'All') or
+                  (messages.receiver_type = 'List' and messages.id in (" + list_message_ids + "))
+                 )  and
+                 messages.created_at > '#{self.created_at}'
                  order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -293,9 +296,12 @@ class Kol < ActiveRecord::Base
     list_unread_message_ids = list_unread_message_ids.size == 0 ? "''" : list_unread_message_ids.join(",")
     read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     sql = "select * from messages
-           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
-                 (messages.receiver_type = 'All' and messages.id not in (" + read_message_ids + ")) or
-                 (messages.receiver_type = 'List' and messages.id in (" + list_unread_message_ids + "))
+           where (
+                  (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
+                  (messages.receiver_type = 'All' and messages.id not in (" + read_message_ids + ")) or
+                  (messages.receiver_type = 'List' and messages.id in (" + list_unread_message_ids + "))
+                 ) and
+                 messages.created_at > '#{self.created_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -305,8 +311,11 @@ class Kol < ActiveRecord::Base
     kol_id = self.id
     read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     sql = "select * from messages
-           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
-                 (messages.id in (" + read_message_ids + "))
+           where (
+                  (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
+                   (messages.id in (" + read_message_ids + "))
+                 ) and
+                 messages.created_at > '#{self.created_at}
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
