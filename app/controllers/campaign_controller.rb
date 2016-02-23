@@ -165,6 +165,16 @@ class CampaignController < ApplicationController
     end
 
     campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url))
+    action_urls = params[:action_list]
+    short_urls = []
+    action_urls.each do |x|
+      short_urls << (ShortUrl.convert x)
+    end
+
+    action_urls.length.times do |i|
+      campaign.campaign_action_urls.new(action_url: action_urls[i], short_url: short_urls[i])
+    end
+
     campaign.user = current_user
     campaign.status = "unexecute"
     campaign.deadline = params[:campaign][:deadline].to_time

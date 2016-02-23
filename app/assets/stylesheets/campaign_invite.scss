@@ -37,6 +37,9 @@ div#datetimepicker6{
   text-align: left;
 }
 
+.action_types {
+  margin-bottom: 10px;
+}
 
 .action_type_radion {
   float: left;
@@ -52,9 +55,13 @@ div#datetimepicker6{
   width: 500px;
   margin-top: 20px;
   &:nth-last-child(1) {
-    margin-top: 68px;
+    margin-top: 40px;
     margin-bottom: 20px;
   }
+}
+
+.download-urls {
+  margin-top: 18px;
 }
 
 .campaign_budget_label{

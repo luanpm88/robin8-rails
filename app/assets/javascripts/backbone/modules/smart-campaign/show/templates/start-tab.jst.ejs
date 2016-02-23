@@ -102,12 +102,39 @@
                 <i class="glyphicon glyphicon-plus operate-money-icon plus_budget_icon"></i>
               </div>
             </div>
-            <div class="action_type_radion">
-              <input type="radio" name="action_type" value="post" > &nbsp;&nbsp;按转发次数付费
+
+            <div class="action_types clearfix">
+              <div class="action_type_radion">
+                <input type="radio" name="action_type" value="post" > &nbsp;&nbsp;按转发次数付费
+              </div>
+              <div class="action_type_radion">
+                <input type="radio" name="action_type" value="click" > &nbsp;&nbsp;按点击次数付费
+              </div>
+
+              <div class="action_type_radion">
+                <input type="radio" name="action_type" value="action" > &nbsp;&nbsp;按行动次数付费
+              </div>
             </div>
-            <div class="action_type_radion">
-              <input type="radio" name="action_type" value="click" > &nbsp;&nbsp;按点击次数付费
+
+            <div class="form-group action-urls" style="display: none">
+              <div class="col-xs-5">
+                <input type="text" class="form-control" name="option[]" placeholder="请输入链接" />
+              </div>
+              <div class="col-xs-4">
+                <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+              </div>
             </div>
+
+            <div class="form-group hide more-action-urls" id="optionTemplate">
+              <div class="col-xs-5">
+                <input class="form-control" type="text" name="option[]" placeholder="请输入链接" />
+              </div>
+              <div class="col-xs-4">
+                <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+              </div>
+            </div>
+
+
             <div class="col-md-5 cell campaign_time_group campaign_per_click_group">
               <div class="input-group money-input-group">
                 <label for="name" class="control-label start-form campaign_budget_label new_campaign_label" style="text-align: left"><%=polyglot.t('smart_campaign.start_step.campaign_per_action_budget_label')%></label>
@@ -117,6 +144,7 @@
                 <i class="glyphicon glyphicon-plus operate-money-icon plus_per_budget_icon"></i>
               </div>
             </div>
+
           </div>
         </div>
         <div class='row col-md-12'>
