@@ -32,7 +32,7 @@ module API
           else
             kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                           app_version: params[:app_version], device_token: params[:device_token],
-                          MEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number])
+                          IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number])
           end
           kol.reload
           present :error, 0
