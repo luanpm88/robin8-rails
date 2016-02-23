@@ -71,6 +71,7 @@ module API
               return error_403!({error: 1, detail: '验证码与手机号码不匹配!'})
             else
               current_kol.update_column(:mobile_number, params[:mobile_number])
+              current_kol.update_column(:name, params[:mobile_number])    if current_kol.name.blank?
               current_kol.reset_private_token
               present :error, 0
               present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
