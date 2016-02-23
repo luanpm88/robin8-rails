@@ -4,7 +4,7 @@ class Campaign < ActiveRecord::Base
   counter :redis_total_click
 
   #Status : unexecute agreed rejected  executing executed
-  #Per_budget_type click post
+  #Per_budget_type click post cpa
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
@@ -38,6 +38,10 @@ class Campaign < ActiveRecord::Base
 
   def upload_screenshot_deadline
     self.deadline +  SettleWaitTimeForKol
+  end
+
+  def is_cpa?
+    self.per_budget_type.to_s == "cpa"
   end
 
   def get_stats
