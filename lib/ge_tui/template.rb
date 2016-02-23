@@ -2,10 +2,10 @@ module GeTui
   module Template
     def self.notification_template(push_message,options = {})
       template = IGeTui::NotificationTemplate.new
-      push_message.template_content.stringify_keys.each{|key,value| template.instance_variable_set("@#{key}",value)}
+      # push_message.template_content.stringify_keys.each{|key,value| template.instance_variable_set("@#{key}",value)}
       #apns 通知
       # setPushInfo(actionLocKey, badge, message, sound, payload, locKey, locArgs, launchImage)
-      template.set_push_info("open", 1, push_message.get_title, "")
+      template.set_push_info("open", 1, push_message.title, "")
       template
     end
 
@@ -15,6 +15,7 @@ module GeTui
       puts content
       template = IGeTui::TransmissionTemplate.new
       template.transmission_content = content
+      template.set_push_info("open", 1, push_message.title, "")
       puts template.transmission_content
       template
     end

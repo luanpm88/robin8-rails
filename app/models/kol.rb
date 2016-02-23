@@ -337,7 +337,7 @@ class Kol < ActiveRecord::Base
 
   # 待接收活动列表
   def running_campaigns
-    approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).collect{|t| t.campaign_id}
+    approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
     unapproved_campaign_ids = self.receive_campaign_ids.values -  approved_campaign_ids
     campaigns = Campaign.where(:id => unapproved_campaign_ids).where(:status => 'executing')
     campaigns

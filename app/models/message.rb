@@ -10,8 +10,6 @@ class Message < ActiveRecord::Base
   scope :unread, -> {where(:is_read => false)}
   scope :read, -> {where(:is_read => true)}
 
-  # after_create :generate_push_message
-
   def item_name
     self.item.name  rescue nil
   end
