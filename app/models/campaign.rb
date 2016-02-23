@@ -303,9 +303,11 @@ class Campaign < ActiveRecord::Base
 
   def self.add_test_data
     if !Rails.env.production?
-      u = User.find 81
-      Campaign.create(:user => u, :budget => 1, :per_action_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
-      :url => "http://www.baidu.com", :name => 'test')
+      u = User.find 84
+      campaign = Campaign.create(:user => u, :budget => 1, :per_action_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
+      :url => "http://www.baidu.com", :name => "test-#{Time.now.to_s(:date_time)}", :img_url => "http://7xozqe.com2.z0.glb.qiniucdn.com/22%202.jpg")
+      campaign.status = 'agreed'
+      campaign.save
     end
   end
 
