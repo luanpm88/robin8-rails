@@ -9,7 +9,7 @@
       <div class="col-md-3">
         <div class="text-center" id="container">
           <% if (Robin.currentUser.attributes.avatar_url) { %>
-            <img src="<%= Robin.currentUser.attributes.avatar_url %>" id="avatar-image" alt="avatar" style="width: 200px; height: 200px">
+            <img src="<%= Robin.currentUser.attributes.avatar_url+'-400' %>" id="avatar-image" alt="avatar" style="width: 200px; height: 200px">
           <% } else {%>
             <img src="<%= AppAssets.path('noavatar.jpg') %>" id="avatar-image" alt="avatar" style="width: 200px; height: 200px">
           <% } %>
