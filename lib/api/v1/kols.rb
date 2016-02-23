@@ -85,6 +85,37 @@ module API
           present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
+        #用户绑定第三方账号
+        params do
+          # requires :app_platform
+          # requires :app_version, type: String
+          # requires :device_token, type: String
+          # optional :IDFA, type: String
+          # optional :IMEI, type: String
+          requires :provider, type: String, values: ['weibo', 'wechat']
+          requires :uid, type: String
+          requires :token, type: String
+          optional :name, type: String
+          optional :url, type: String
+          optional :avatar_url, type: String
+          optional :desc, type: String
+          optional :serial_params, type: JSON
+        end
+        post 'identity_bind' do
+          identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
+          if identity.blank?
+            attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
+            identity = Identity.new
+            identity.attributes = attrs
+            identity.kol_id = current_kol.id
+            identity.save
+            present :error, 0
+            present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          else
+            return error_403!({error: 1, detail: '该账号已经被绑定！'})
+          end
+        end
+
         #第三方账号解除绑定
         params do
           requires :uid, type: String

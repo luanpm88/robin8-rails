@@ -6,7 +6,7 @@ class PushMessage < ActiveRecord::Base
   serialize :template_content, Hash
   serialize :receiver_list, Hash
   serialize :result_serial, Hash
-  after_commit :async_send_to_client
+  after_commit :async_send_to_client, :on => :create
   # template_type  'transmission', 'notification'
 
   def get_title
