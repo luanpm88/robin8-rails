@@ -23,7 +23,9 @@ class PushMessage < ActiveRecord::Base
     content = {:action => message.message_type, :title => get_title(message)}
     if message.message_type == 'income'
       receiver = message.receiver
-      content.merge!({:new_income =>  receiver.new_income, :unread_message_count => receiver.unread_messages.count})
+      new_income =  receiver.new_income
+      new_income = rand(100) if Rails.env.development? && new_income == 0
+      content.merge!({:new_income =>  new_income, :unread_message_count => receiver.unread_messages.count})
     end
     content
   end
