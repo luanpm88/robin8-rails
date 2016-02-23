@@ -15,7 +15,7 @@ module API
           if campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
-            campaign_invite = CampaignInvite.new(:campaign_id => campaign.id)
+            campaign_invite = campaign.get_campaign_invite(current_kol.id)
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end

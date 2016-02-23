@@ -6,7 +6,7 @@ module API
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
           expose :id, :name, :description, :status, :message, :url, :per_budget_type, :per_action_budget, :budget
           expose :img_url do |campaign|
-            campaign.img_url + "!cover"
+            campaign.img_url.gsub("-400","") + "!cover"     rescue nil
           end
           with_options(format_with: :iso_timestamp) do
             expose :deadline

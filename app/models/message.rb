@@ -7,6 +7,7 @@ class Message < ActiveRecord::Base
 
   # MessageTypes = ['income', 'announcement', 'campaign']
 
+  scope :created_desc, -> {order("created_at desc")}
   scope :unread, -> {where(:is_read => false)}
   scope :read, -> {where(:is_read => true)}
 
