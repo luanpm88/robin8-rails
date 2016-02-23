@@ -291,7 +291,7 @@ class Kol < ActiveRecord::Base
     kol_id = self.id
     list_unread_message_ids = self.list_message_ids.values - self.read_message_ids.values
     list_unread_message_ids = list_unread_message_ids.size == 0 ? "''" : list_unread_message_ids.join(",")
-    read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.join(",")
+    read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     sql = "select * from messages
            where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
                  (messages.receiver_type = 'All' and messages.id not in (" + read_message_ids + ")) or
@@ -330,8 +330,8 @@ class Kol < ActiveRecord::Base
   def approve_campaign(campaign_id)
     campaign = Campaign.find campaign_id  rescue nil
     return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
-    campaign_invite = CamapignInvite.where(:campaign_id => campaign_id, :kol_id => self.id).first       rescue nil
-    if (campaign_invite && campaign_invites.status == 'running')  || campaign_invite.blank?
+    campaign_invite = CamapignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
+    if (campaign_invite && campaign_invites.status == 'running')  || campaign_invite.new_record?
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
       campaign_invite.approved_at = Time.now
       campaign_invite.status = 'approved'
@@ -354,7 +354,7 @@ class Kol < ActiveRecord::Base
   # 错过的活动
   def rejected_campaigns
     Campaign.joins("left join campaign_invites on campaign_invites.campaign_id=campaigns.id").
-      where("campaigns_invites.kol_id = '#{self.id}'").
+      where("campaign_invites.kol_id = '#{self.id}'").
       where("campaigns.id in (#{self.receive_campaign_ids.values.join(',')})").
       where("campaign_invites.status != 'approved' and campaign_invites.status != 'running' and
         campaign_invites.status !='finished' and campaign_invites.status !='settled'")
