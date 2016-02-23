@@ -1,9 +1,9 @@
 class Kol < ActiveRecord::Base
   include Redis::Objects
   # counter :redis_new_income      #unit is cent
-  list :read_message_ids, :maxlength => 1000             # 所有阅读过的
-  list :list_message_ids, :maxlength => 1000             # 所有发送给部分人消息ids
-  list :receive_campaign_ids, :maxlength => 1000             # 用户收到的所有campaign 邀请(待接收)
+  list :read_message_ids, :maxlength => 2000             # 所有阅读过的
+  list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
+  list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -262,14 +262,16 @@ class Kol < ActiveRecord::Base
     message.save
 
     # 记录到 read_meesage_ids
-    if message.receiver_type == "All" || message.receiver_type == 'List'
-      self.read_message_ids << message_id unless  self.read_message_ids.include? message_id
-    end
+    self.read_message_ids << message_id unless  self.read_message_ids.include? message_id
 
     # 重置 invite 收入
     if message.message_type == 'income'
       message.item.reset_new_income  if message.item
     end
+  end
+
+  def message_status(message_id)
+    self.read_message_ids.include? message_id
   end
 
   #所有消息

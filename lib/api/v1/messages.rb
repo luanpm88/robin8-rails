@@ -22,7 +22,7 @@ module API
           present :error, 0
           present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
           to_paginate(messages)
-          present :messages, messages, with: API::V1::Entities::MessageEntities::Summary
+          present :messages, messages, with: API::V1::Entities::MessageEntities::Summary, current_kol: current_kol
         end
 
         params do
