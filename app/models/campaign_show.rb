@@ -48,16 +48,15 @@ class CampaignShow < ActiveRecord::Base
       end
     end
 
-
     return [true,nil]
   end
 
   #TODO campaign  campaign_invite store in redis
   def self.add_click(uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer)
     info = JSON.parse(Base64.decode64(uuid))   rescue {}
-    campaign = Campaign.find info['campaign_id']  rescue nil
+    campaign = Campaign.find_by :id => info['campaign_id']  rescue nil
     campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil
-    if campaign_invite.nil?  ||  campaign.nil?   || campaign_invite.status == 'running' || campaign_invite.status == 'pending' || campaign_invite.status == 'rejected'
+    if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.status)
       Rails.logger.campaign_show_sidekiq.info "---------CampaignShow return: --uuid:#{uuid}---status:#{campaign_invite.status}---"
       return false
     end
