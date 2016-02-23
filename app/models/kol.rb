@@ -333,10 +333,11 @@ class Kol < ActiveRecord::Base
     campaign_invite = CamapignInvite.where(:campaign_id => campaign_id, :kol_id => self.id).first       rescue nil
     if (campaign_invite && campaign_invites.status == 'running')  || campaign_invite.blank?
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
-      self.approved_at = Time.now
-      self.status = 'approved'
-      self.uuid = uuid
-      self.share_url = CampaignInvite.generate_share_url(uuid)
+      campaign_invite.approved_at = Time.now
+      campaign_invite.status = 'approved'
+      campaign_invite.uuid = uuid
+      campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
+      campaign_invite.save
     end
     campaign_invite
   end
