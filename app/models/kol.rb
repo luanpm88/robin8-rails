@@ -232,10 +232,10 @@ class Kol < ActiveRecord::Base
 
   # 最近7天的收入情况
   def recent_income
-    _start = Date.today - 7.days
-    _end = Date.today - 1.days
+    _start = Date.today - 6.days
+    _end = Date.today
     transactions_stats_arr = transactions.created_desc.recent(_start,_end)
-      .select("date_format(created_at, '%Y-%m-%d') as created, count(*) as count_all, sum(amount) as total_amount ")
+      .select("date_format(created_at, '%Y-%m-%d') as created, count(*) as count_all, sum(credits) as total_amount ")
       .group("date_format(created_at, '%Y-%m-%d')").to_a
     recent_income = []
     (_start.._end).to_a.each do |date|
@@ -341,6 +341,16 @@ class Kol < ActiveRecord::Base
     unapproved_campaign_ids = self.receive_campaign_ids.values -  approved_campaign_ids
     campaigns = Campaign.where(:id => unapproved_campaign_ids).where(:status => 'executing')
     campaigns
+  end
+
+
+  # 错过的活动
+  def rejected_campaigns
+    Campaign.joins("left join campaign_invites on campaign_invites.campaign_id=campaigns.id").
+      where("campaigns_invites.kol_id = '#{self.id}'").
+      where("campaigns.id in (#{self.receive_campaign_ids.values.join(',')})").
+      where("campaign_invites.status != 'approved' and campaign_invites.status != 'running' and
+        campaign_invites.status !='finished' and campaign_invites.status !='settled'")
   end
 
 end

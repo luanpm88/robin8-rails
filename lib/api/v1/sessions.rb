@@ -44,6 +44,8 @@ module API
           requires :app_platform
           requires :app_version, type: String
           requires :device_token, type: String
+          optional :IDFA, type: String
+          optional :IMEI, type: String
 
           requires :provider, type: String, values: ['weibo', 'wechat']
           requires :uid, type: String
@@ -61,7 +63,7 @@ module API
             ActiveRecord::Base.transaction do
               kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
                                 device_token: params[:device_token], name: params[:name], avatar: params[:avatar_url],
-                                social_name: params[:name], provider: params[:provider], social_uid: auth_params[:uid],
+                                social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
                                 IMEI: params[:IMEI], IDFA: params[:IDFA])
               if identity.blank?
                 attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
