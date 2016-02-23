@@ -121,8 +121,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
 
                 var domain = up.getOption('domain');
                 var res = jQuery.parseJSON(info);
-                var imageView2 = '-400'
-                var sourceLink = 'http://' + domain + '/' + res.key + imageView2; //获取上传成功后的文件的Url
+                var sourceLink = 'http://' + domain + '/' + res.key; //获取上传成功后的文件的Url
                 $.ajax({
                   method: "POST",
                   url: "/users/set_avatar_url",
@@ -132,7 +131,7 @@ Robin.module('Profile.Show', function(Show, App, Backbone, Marionette, $, _){
                   data: {"avatar_url": sourceLink}
                 })
                   .done(function(data){
-                    $("#avatar-image").attr('src', sourceLink);
+                    $("#avatar-image").attr('src', sourceLink+'-400');
                     Robin.currentUser.set({avatar_url: sourceLink});
                   });
 
