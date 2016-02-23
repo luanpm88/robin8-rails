@@ -1,5 +1,9 @@
 <div class="clearfix">
-  <img class="discover-item-img" alt="" src='<%= item.img_url %>'>
+  <% if(item.has_img){ %>
+    <img class="discover-item-img" alt="" src='<%= item.img_url + '-400' %>'>
+  <% }else{ %>
+    <img class="discover-item-img" alt="" src='<%= item.img_url %>'>
+  <% } %>
   <div class="discover-w">
     <div class="discover-item-header clearfix">
       <h5><%= item.name %></h5>
