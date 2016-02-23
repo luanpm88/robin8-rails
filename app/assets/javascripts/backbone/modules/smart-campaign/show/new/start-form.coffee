@@ -153,8 +153,8 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             domain = up.getOption('domain')
             res = jQuery.parseJSON(info)
             imageView2 = '-400'
-            sourceLink = 'http://' + domain + '/' + res.key + imageView2
-            $('#campaign-image').attr 'src', sourceLink
+            sourceLink = 'http://' + domain + '/' + res.key
+            $('#campaign-image').attr 'src', sourceLink + imageView2
             $('input[name=img_url]').val sourceLink
             #获取上传成功后的文件的Url
             return
