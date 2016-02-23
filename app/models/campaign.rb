@@ -303,7 +303,7 @@ class Campaign < ActiveRecord::Base
   Pre = "http://7xozqe.com2.z0.glb.qiniucdn.com/"
   def self.get_img_url
     order = rand(21)
-    "#{Pre}#{order}.jpg"
+    "#{Pre}test#{order}.jpg"
   end
 
   TestCampaigns = [
