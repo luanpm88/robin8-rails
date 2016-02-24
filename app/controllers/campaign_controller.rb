@@ -165,7 +165,7 @@ class CampaignController < ApplicationController
     end
 
     campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url))
-    action_urls = params[:action_list]
+    action_urls = params[:action_url_list]
     action_urls.each do |action_url|
       campaign.campaign_action_urls.new(action_url: action_url)
     end
@@ -185,6 +185,13 @@ class CampaignController < ApplicationController
     origin_budget = campaign.budget
 
     campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url)
+    campaign_action_urls = params[:action_url_list]
+
+    campaign.campaign_action_urls.destroy_all
+
+    campaign_action_urls.each do |action_url|
+      campaign.campaign_action_urls.create(action_url: action_url)
+    end
 
     unless (current_user.avail_amount.to_f + origin_budget.to_f) >= params[:budget].to_f
       render :json => {:status => 'no enough amount!'} and return
