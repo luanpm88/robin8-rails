@@ -17,7 +17,7 @@ class Message < ActiveRecord::Base
 
   # new campaign  to all  or list
   def self.new_campaign(campaign, kol_ids = [])
-    message = Message.new(:message_type => 'campaign', :title => '邀请您参与转发', :logo_url => (campaign.img_url + "!200" rescue nil), :name => campaign.name,
+    message = Message.new(:message_type => 'campaign', :title => '邀请您参与转发', :logo_url => (campaign.img_url + "!logo" rescue nil), :name => campaign.name,
                           :sender => (campaign.user.name  rescue nil), :item => campaign  )
     # to all
     if kol_ids.size == 0
@@ -50,8 +50,9 @@ class Message < ActiveRecord::Base
     message = Message.find_or_initialize_by(:message_type => 'income', :receiver => invite.kol, :item => invite)
     if message.new_record?
       message.logo_url = campaign.img_url
-      message.sender = campaign.user.campaign  rescue nil
+      message.sender = campaign.user.company  rescue nil
       message.name = campaign.name
+      message.logo_url = campaign.img_url + "!logo" rescue nil
     end
     message.is_read = false
     message.title ="新收入 ￥#{invite.redis_new_income.value / 100.0}"
