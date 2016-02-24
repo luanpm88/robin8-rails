@@ -146,7 +146,6 @@ class Campaign < ActiveRecord::Base
       end
       Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
     end
-    Message.new_campaign(self)
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
     _start_time = self.start_time < Time.now ? (Time.now + 15.seconds) : self.start_time
@@ -162,6 +161,7 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
+      Message.new_campaign(self)
       # self.pending_invites.update_all(:status => 'running')
     end
     Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
