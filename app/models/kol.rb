@@ -339,7 +339,7 @@ class Kol < ActiveRecord::Base
   def approve_campaign(campaign_id)
     campaign = Campaign.find campaign_id  rescue nil
     return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
-    campaign_invite = CamapignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
+    campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
     if (campaign_invite && campaign_invites.status == 'running')  || campaign_invite.new_record?
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
       campaign_invite.approved_at = Time.now
