@@ -23,25 +23,21 @@ class CampaignInviteController < ApplicationController
   end
 
   def mark_as_running
-    @kol = current_kol
-    return render :json => {error: 'no available kol!'} if @kol.blank?
+    return render :json => { error: 'no available kol!' } if current_kol.blank?
+    return render :json => { status: 'needMobile' } unless current_kol.mobile_number.present?
 
-    @campaign_invite = CampaignInvite.find params[:id]
+    campaign = Campaign.find params[:id]
 
-    return render :json => {status: 'needMobile'} unless @kol.mobile_number.present?
-
-    @campaign = @campaign_invite.campaign
-
-    if @campaign.need_finish
-      CampaignWorker.perform_async(@campaign.id, 'fee_end')
-      return render :json => {status: 'campaign finished'}
+    if campaign.need_finish
+      CampaignWorker.perform_async campaign.id, 'fee_end'
+      return render :json => { status: 'campaign finished' }
     end
 
-    if @campaign_invite.status.eql? 'running'
-      current_kol.approve_campaign(params[:id])
+    if current_kol.approve_campaign(campaign.id).is_a? CampaignInvite
+      return render :json => { status: 'ok' }
+    else
+      return render :json => { status: 'error' }
     end
-
-    return render :json => {status: 'ok'}
   end
 
   def interface
