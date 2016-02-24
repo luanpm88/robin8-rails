@@ -95,6 +95,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def earn_money
+    return 0 if self.new_record?
     campaign = self.campaign
     return 0.0 if campaign.blank?
     if campaign.is_click_type?

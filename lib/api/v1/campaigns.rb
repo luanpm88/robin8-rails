@@ -33,7 +33,7 @@ module API
           elsif campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'running')
             return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
           elsif campaign.need_finish
-            CampaignWorker.perform_async(@campaign.id, 'fee_end')
+            CampaignWorker.perform_async(campaign.id, 'fee_end')
             return error_403!({error: 1, detail: '该活动已经结束！' })
           else
             campaign_invite = current_kol.approve_campaign(params[:id])

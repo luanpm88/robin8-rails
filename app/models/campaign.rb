@@ -391,7 +391,7 @@ class Campaign < ActiveRecord::Base
       invite.status = 'running'
     elsif invite.new_record? && self.status == 'unexecuting'
       invite.status = 'pending'
-    elsif invite.new_record? && self.status == 'executing'
+    elsif invite.new_record? && (self.status == 'executed' ||  self.status == 'settled')
       invite.status = 'rejected'
     end
     invite
