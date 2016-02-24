@@ -5,9 +5,10 @@ class CampaignShowController < ApplicationController
   def show
     campaign_id = JSON.parse(Base64.decode64(params[:uuid]))['campaign_id']     rescue nil
     @campaign = Campaign.find campaign_id rescue nil
+    @campaign_invite = CampaignInvite.find_by(:uuid => uuid)     rescue nil
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
     Rails.logger.info "-----show ---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-    if @campaign && @campaign.status == 'agreed'
+    if  @campaign.status == 'agreed' ||  @campaign_invite.blank?
       redirect_to @campaign.url
     elsif @campaign
       CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer)
