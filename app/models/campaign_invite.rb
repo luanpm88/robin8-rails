@@ -109,8 +109,9 @@ class CampaignInvite < ActiveRecord::Base
     self.redis_new_income.reset
   end
 
-  def bring_income(campaign)
-    if  campaign.is_click_type?
+  # 接收新活动时候  force = true
+  def bring_income(campaign, force = false)
+    if  campaign.is_click_type?  || force
       #记录新收入
       self.redis_new_income.incr(campaign.per_action_budget * 100)
       #发送新收入消息
