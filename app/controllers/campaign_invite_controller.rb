@@ -41,38 +41,31 @@ class CampaignInviteController < ApplicationController
   end
 
   def interface
-    @kol = current_kol
-
-    return render :json => {error: 'no available kol!'} if @kol.blank?
-
-    status = case params[:type]
-             when 'upcoming'
-               'running'
-             when 'running'
-               'approved'
-             when 'complete'
-               'finished'
-             when 'verify'
-               'verify'
-             else
-               'error'
-             end
-
-    return render :json => {error: 'error type!'} if status.eql?('error')
-
-    if status.eql? 'verify'
-      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).order('updated_at desc')
-    elsif status.eql? 'finished'
-      campaigns_by_status = @kol.campaign_invites.where(img_status: 'passed', status: ['finished', 'settled']).order('created_at desc')
-    else
-      campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
-    end
+    return render :json => { error: 'no available kol!' } if current_kol.blank?
 
     limit = params[:limit] || 3
     offset = params[:offset] || 0
-    campaign_invites_by_limit_and_offset = campaigns_by_status.offset(offset.to_i).limit(limit.to_i)
 
-    render json: campaign_invites_by_limit_and_offset, each_serializer: CampaignInviteSerializer
+    # todo refactor this return campaign should not in campaign_invites controller
+    if params[:type].eql? 'upcoming'
+      campaigns = current_kol.running_campaigns
+      return render :json => campaigns.offset(offset.to_i).limit(limit.to_i), :each_serializer => CampaignsSerializer
+    end
+
+    campaign_invites_by_type = case params[:type]
+                        when 'running'
+                          current_kol.campaign_invites.where(status: 'approved').order('created_at desc')
+                        when 'complete'
+                          current_kol.campaign_invites.where(img_status: 'passed', status: ['finished', 'settled']).order('created_at desc')
+                        when 'verify'
+                          current_kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).order('updated_at desc')
+                        else
+                          return render :json => { error: 'error type!' }
+                        end
+
+    campaign_invites_by_paged = campaign_invites_by_type.offset(offset.to_i).limit(limit.to_i)
+
+    render :json => campaign_invites_by_paged, :each_serializer => CampaignInviteSerializer
   end
 
   def change_img_status
