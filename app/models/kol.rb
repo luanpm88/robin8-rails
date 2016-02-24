@@ -348,6 +348,7 @@ class Kol < ActiveRecord::Base
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       campaign_invite.save
     end
+    campaign_invite.bring_income(campaign,true)
     campaign_invite
   end
 

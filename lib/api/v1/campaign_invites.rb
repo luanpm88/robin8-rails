@@ -17,7 +17,7 @@ module API
           present :error, 0
           present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
           if  params[:status] == 'all'
-            @campaigns = Campaign.where.not("status != 'executing' and status != 'agreed'").
+            @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").
               where(:id => current_kol.receive_campaign_ids.values).
               order("created_at desc").page(params[:page]).per_page(10)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
