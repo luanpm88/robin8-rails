@@ -68,7 +68,8 @@ class CampaignShow < ActiveRecord::Base
                         :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip,
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer)
     Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark:#{remark}---cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
-    add_result = campaign_invite.add_click(status,campaign)
+    campaign_invite.add_click(status,campaign)
+    Rails.logger.campaign_show_sidekiq.info "---------CampaignShow ----- start ----- campaign.add_click(status)----"
     campaign.add_click(status)
   end
 end
