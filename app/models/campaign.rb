@@ -82,6 +82,10 @@ class Campaign < ActiveRecord::Base
     "#{self.take_budget} / #{self.budget}"
   end
 
+  def get_campaign_action_urls
+    self.campaign_action_urls
+  end
+
   def take_budget
     if self.is_click_type?
       if self.status == 'settled'

@@ -40,7 +40,7 @@ class CampaignController < ApplicationController
     if (user.blank? or c.user_id != user.id)  and cookies[:admin] != "true"
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget, :post_count], :include => [:valid_invites]})
+    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget, :post_count, :get_campaign_action_urls], :include => [:valid_invites]})
   end
 
   def article
