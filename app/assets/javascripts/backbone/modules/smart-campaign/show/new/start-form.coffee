@@ -83,7 +83,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         $('input:radio[name="action_type"]').filter('[value=click]').prop('checked', true)
       else if @model.attributes.per_budget_type == 'post'
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
-      else if @model.attributes.per_budget_type == 'action'
+      else if @model.attributes.per_budget_type == 'cpa'
         $('input:radio[name="action_type"]').filter('[value=action]').prop('checked', true)
         $(".action-urls").show()
         $(".more-action-urls").show()
@@ -120,7 +120,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         parentThis.model.attributes.per_budget_type = "click"
       if $('input:radio[name="action_type"]').filter('[value=action]').is(":checked")
         parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
-        parentThis.model.attributes.per_budget_type = "action"
+        parentThis.model.attributes.per_budget_type = "cpa"
         action_list= []
         if $('[name="option[]"]').length != 0
           $('[name="option[]"]').each ->

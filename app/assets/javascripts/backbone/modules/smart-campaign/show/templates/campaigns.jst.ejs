@@ -39,7 +39,7 @@
             <td class="middle"><%= c.get_fee_info %></td>
             <td class="middle" data-order="<%= timestamp(c.start_time) %>"><%= formatDate(c.start_time) %></td>
             <td class="middle" data-order="<%= timestamp(c.deadline) %>"><%= formatDate(c.deadline) %></td>
-            <% if (c.per_budget_type == 'action') { %>
+            <% if (c.per_budget_type == 'cpa') { %>
               <td class="middle" align="center">
                 <a href="#" class="btn btn-success vcenter edit-btn" id="show_action_urls" campaign="<%= c.id %>">查看</a>
               </td>
