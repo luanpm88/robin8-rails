@@ -270,8 +270,12 @@ class Kol < ActiveRecord::Base
     end
   end
 
-  def message_status(message_id)
-    self.read_message_ids.include? message_id.to_s
+  def message_status(message)
+    if message.receiver_type == 'Kol'
+      message.is_read
+    else
+      self.read_message_ids.include? message.id.to_s
+    end
   end
 
   #所有消息

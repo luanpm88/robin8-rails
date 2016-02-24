@@ -69,7 +69,6 @@ class CampaignShow < ActiveRecord::Base
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer)
     Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark:#{remark}---cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
     campaign_invite.add_click(status,campaign)
-    Rails.logger.campaign_show_sidekiq.info "---------CampaignShow ----- start ----- campaign.add_click(status)----"
     campaign.add_click(status)
   end
 end
