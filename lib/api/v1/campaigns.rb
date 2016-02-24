@@ -37,8 +37,9 @@ module API
             return error_403!({error: 1, detail: '该活动已经结束！' })
           else
             campaign_invite = current_kol.approve_campaign(params[:id])
+            campaign_invite = campaign_invite.reload
             present :error, 0
-            present :campaign_invite, campaign_invite.reload, with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end
         end
       end
