@@ -363,7 +363,7 @@ class Campaign < ActiveRecord::Base
     if !Rails.env.production?
       u = User.find 84
       campaign_attrs = TestCampaigns[rand(12)]
-      campaign = Campaign.create(:user => u, :budget => 1, :per_action_budget => 0.2, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
+      campaign = Campaign.create(:user => u, :budget => 3, :per_action_budget => 1, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
       :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url)
       campaign.status = 'agreed'
       campaign.save

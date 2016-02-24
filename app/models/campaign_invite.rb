@@ -122,6 +122,7 @@ class CampaignInvite < ActiveRecord::Base
     self.redis_avail_click.increment if valid
     self.redis_total_click.increment
     bring_income(campaign) if valid &&  campaign
+    return true
   end
 
   def approve
