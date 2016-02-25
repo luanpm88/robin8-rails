@@ -91,7 +91,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    if self.is_click_type?
+    if self.is_click_type? or self.is_cpa?
       if self.status == 'settled'
         (self.settled_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
       else
@@ -112,7 +112,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def post_count
-    if self.per_budget_type == "click"
+    if self.per_budget_type == "click" or self.is_cpa?
       return -1
     end
     return valid_invites.count
@@ -242,7 +242,7 @@ class Campaign < ActiveRecord::Base
       self.passed_invites.each do |invite|
         kol = invite.kol
         invite.update_column(:status, 'settled')
-        if is_click_type?
+        if is_click_type? or is_cpa?
           kol.income(invite.avail_click * self.per_action_budget, 'campaign', self, self.user)
           Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.per_action_budget}-- after avail_amount:#{kol.avail_amount}"
         else

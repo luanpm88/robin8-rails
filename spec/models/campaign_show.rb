@@ -39,7 +39,28 @@ RSpec.describe CampaignShow, :type => :model do
         visit_campaign_for_step_two campaign, 0
       end
     end
+
+    context "当预算 花完后" do
+      it "kol 收入 增加" do
+        campaign = create_campaign brand_1, :per_budget_type => :cpa, :budget => 1, per_action_budget: 1
+        visit_campaign_for_step_one campaign do
+          expect(CampaignShow.last.status).to eq '0'
+        end
+
+        
+        visit_campaign_for_step_two campaign do
+          expect(CampaignShow.last.status).to eq '1'
+        end
+        expect{
+          campaign.settle_accounts_for_kol
+        }to change{
+          kol_1.amount
+        }.by(1)
+      end
+    end
   end
+
+
 
   private
 
