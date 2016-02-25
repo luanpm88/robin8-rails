@@ -75,11 +75,22 @@ class IdentitiesController < ApplicationController
 
   def discover
     kol = current_kol
+    key = "discover:kol_id_#{kol.id}"
 
-    is_cache_existed = Rails.cache.exist? "discover:kol_id_#{kol.id}"
+    cache_existed = if Rails.cache.exist? key
+                      cache = Rails.cache.read key
+                      if cache[:discovers].empty?
+                        Rails.cache.delete key
+                        false
+                      else
+                        true
+                      end
+                    else
+                      false
+                    end
 
-    if is_cache_existed
-      cache = Rails.cache.read "discover:kol_id_#{kol.id}"
+    if cache_existed
+      cache = Rails.cache.read key
       page = params[:page] || 1
       page_size = 10
 
