@@ -38,7 +38,7 @@ class CampaignShowController < ApplicationController
   def deal_with_cpa_campaign uuid_params
     uuid_params.symbolize_keys!
     other_options = {}
-    other_options[:step] = (uuid_params["step"] || 1).to_i
+    other_options[:step] = (uuid_params[:step] || 1).to_i
     if other_options[:step] == 1
       campaign_invite = CampaignInvite.where(:uuid => params[:uuid]).first     rescue nil
       expired_at = (@campaign.deadline > Time.now ? @campaign.deadline : Time.now)
