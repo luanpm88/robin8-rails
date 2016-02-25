@@ -83,10 +83,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         $('input:radio[name="action_type"]').filter('[value=click]').prop('checked', true)
       else if @model.attributes.per_budget_type == 'post'
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
-      else if @model.attributes.per_budget_type == 'action'
+      else if @model.attributes.per_budget_type == 'cpa'
         $('input:radio[name="action_type"]').filter('[value=action]').prop('checked', true)
         $(".action-urls").show()
         $(".more-action-urls").show()
+        action_urls_length = @model.attributes.get_campaign_action_urls.length
+        i = 0
+        while i < action_urls_length
+          action_url_input = $('[name="option[]"]')[i]
+          action_url_input.value = @model.attributes.get_campaign_action_urls[i].action_url
+          i++
+          if i < action_urls_length
+            $(".addButton").click()
       else
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
 
@@ -120,14 +128,16 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         parentThis.model.attributes.per_budget_type = "click"
       if $('input:radio[name="action_type"]').filter('[value=action]').is(":checked")
         parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
-        parentThis.model.attributes.per_budget_type = "action"
-        action_list= []
-        if $('[name="option[]"]').length != 0
+        parentThis.model.attributes.per_budget_type = "cpa"
+        action_url_list= []
+        action_url_list_length = $('[name="option[]"]').length
+        if action_url_list_length != 0
           $('[name="option[]"]').each ->
             if $(this).val().length != 0
-              action_list.push $(this).val()
-          action_list.pop()   #delete repeat input value
-          parentThis.model.attributes.action_list = action_list
+              action_url_list.push $(this).val()
+          if action_url_list[action_url_list_length - 1]
+            action_url_list.pop()   #delete repeat input value
+          parentThis.model.attributes.action_url_list = action_url_list
 
 
 

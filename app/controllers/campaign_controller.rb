@@ -1,7 +1,7 @@
 class CampaignController < ApplicationController
 
   def index
-    return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_total_click, :get_fee_info, :get_share_time]})
+    return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_total_click, :get_fee_info, :get_share_time, :get_campaign_action_urls]})
     if params[:status] == "declined" || params[:status] == "accepted"
       status = params[:status] == "declined" ? "D" : "A"
       campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
@@ -40,7 +40,7 @@ class CampaignController < ApplicationController
     if (user.blank? or c.user_id != user.id)  and cookies[:admin] != "true"
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget, :post_count], :include => [:valid_invites]})
+    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget, :post_count, :get_campaign_action_urls], :include => [:valid_invites]})
   end
 
   def article
@@ -165,14 +165,9 @@ class CampaignController < ApplicationController
     end
 
     campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url))
-    action_urls = params[:action_list]
-    short_urls = []
-    action_urls.each do |x|
-      short_urls << (ShortUrl.convert x)
-    end
-
-    action_urls.length.times do |i|
-      campaign.campaign_action_urls.new(action_url: action_urls[i], short_url: short_urls[i])
+    action_urls = params[:action_url_list]
+    action_urls.each do |action_url|
+      campaign.campaign_action_urls.new(action_url: action_url)
     end
 
     campaign.user = current_user
@@ -190,6 +185,13 @@ class CampaignController < ApplicationController
     origin_budget = campaign.budget
 
     campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url)
+    campaign_action_urls = params[:action_url_list]
+
+    campaign.campaign_action_urls.destroy_all
+
+    campaign_action_urls.each do |action_url|
+      campaign.campaign_action_urls.create(action_url: action_url)
+    end
 
     unless (current_user.avail_amount.to_f + origin_budget.to_f) >= params[:budget].to_f
       render :json => {:status => 'no enough amount!'} and return
