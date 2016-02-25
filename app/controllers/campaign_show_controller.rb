@@ -39,11 +39,6 @@ class CampaignShowController < ApplicationController
     uuid_params.symbolize_keys!
     other_options = {}
     other_options[:step] = (uuid_params[:step] || 1).to_i
-    if other_options[:step] == 1
-      campaign_invite = CampaignInvite.where(:uuid => params[:uuid]).first     rescue nil
-      expired_at = (@campaign.deadline > Time.now ? @campaign.deadline : Time.now)
-      Rails.cache.write(cookies[:_robin8_visitor] + ":cpa_campaign_id:#{@campaign.id}", campaign_invite.id, :expired_at => expired_at) if campaign_invite
-    end
 
     CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, other_options)
     if other_options[:step] == 1

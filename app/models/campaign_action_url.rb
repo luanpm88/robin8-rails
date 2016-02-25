@@ -5,7 +5,7 @@ class CampaignActionUrl < ActiveRecord::Base
   def save_short_url
     uuid = Base64.encode64({ :campaign_id => self.campaign.id, :campaign_action_url_id => self.id, :step => '2' }.to_json).gsub("\n","")
     self.short_url = generate_short_url(uuid)
-    self.update_column(:short_url, self.short_url)
+    self.update_columns(:short_url => self.short_url, :uuid => uuid)
   end
 
   def generate_short_url(uuid)

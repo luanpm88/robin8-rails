@@ -14,7 +14,6 @@ class CampaignShow < ActiveRecord::Base
 
     if campaign.is_cpa?
       return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
-
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
       end
@@ -61,12 +60,20 @@ class CampaignShow < ActiveRecord::Base
 
   #TODO campaign  campaign_invite store in redis
   def self.add_click(uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, options={})
+    options.symbolize_keys!
+
     info = JSON.parse(Base64.decode64(uuid))   rescue {}
     campaign = Campaign.find_by :id => info['campaign_id']  rescue nil
 
-    if campaign.is_cpa? and options[:step] == 2
-      campaign_invite_id = Rails.cache.fetch(cookies[:_robin8_visitor] + ":cpa_campaign_id:#{campaign.id}")
-      campaign_invite = CampaignInvite.find_by :id => campaign_invite_id if campaign_invite_id
+    if campaign.is_cpa?
+      if (options[:step].to_i == 2 or info["step"].to_i == 2)
+        campaign_invite_id = Rails.cache.fetch(visitor_cookies + ":cpa_campaign_id:#{campaign.id}")
+        campaign_invite = CampaignInvite.find_by :id => campaign_invite_id if campaign_invite_id
+      else
+        campaign_invite = CampaignInvite.where(:uuid => uuid).first  rescue nil 
+        expired_at = (campaign.deadline > Time.now ? campaign.deadline : Time.now)
+        Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expired_at => expired_at) if campaign_invite
+      end
     else
       campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil
     end
