@@ -15,8 +15,9 @@ RSpec.describe CampaignShow, :type => :model do
 
         campaign_invite = CampaignInvite.find_by :campaign_id => campaign.id, :kol_id => kol_1.id
         approve_campaign campaign_invite
-
         CampaignShowWorker.new.perform(campaign_invite.uuid, "vistor_01", '127.0.0.1', 'user agent', "referer", {})
+
+        expect(campaign_invite.last.status).to eq '0'
       end
     end
   end
