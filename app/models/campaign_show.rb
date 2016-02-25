@@ -78,8 +78,8 @@ class CampaignShow < ActiveRecord::Base
       campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil
     end
 
-    if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.status)
-      Rails.logger.campaign_show_sidekiq.info "---------CampaignShow return: --uuid:#{uuid}---status:#{campaign_invite.status}---"
+    if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.try(:status))
+      Rails.logger.campaign_show_sidekiq.info "---------CampaignShow return: --uuid:#{uuid}---status:#{campaign_invite.try (:status)}---"
       return false
     end
 

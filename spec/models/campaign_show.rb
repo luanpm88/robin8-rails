@@ -32,6 +32,13 @@ RSpec.describe CampaignShow, :type => :model do
         end
       end
     end
+
+    context "当 用户 没有访问第一步" do
+      it "将第二步的访问 视为 无效点击" do
+        campaign = create_campaign brand_1, :per_budget_type => :cpa, :budget => 2, per_action_budget: 1
+        visit_campaign_for_step_two campaign, 0
+      end
+    end
   end
 
   private
@@ -52,10 +59,10 @@ RSpec.describe CampaignShow, :type => :model do
       CampaignShow.count
     }.by(1)
 
-    yield
+    yield if block_given?
   end
 
-  def visit_campaign_for_step_two campaign
+  def visit_campaign_for_step_two campaign, incr_count=1
     brand_1.reload
     
     campaign_action_url = campaign.campaign_action_urls.first
@@ -63,9 +70,9 @@ RSpec.describe CampaignShow, :type => :model do
       CampaignShowWorker.new.perform(campaign_action_url.uuid, "vistor_01", '127.0.0.1', 'user agent', "referer", {:step => 2})
     }.to change{
       CampaignShow.count
-    }.by(1)
+    }.by(incr_count)
 
-    yield
+    yield if block_given?
   end
 
   def create_campaign user, campaign_params={}
