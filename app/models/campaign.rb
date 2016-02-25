@@ -389,7 +389,7 @@ class Campaign < ActiveRecord::Base
 
   #冲刺标签
   def is_sprint
-    self.status == 'executeing' && ((self.deadline - 1.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
+    self.status == 'executeing' && ((self.deadline - 4.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
   end
 
   def get_campaign_invite(kol_id)
