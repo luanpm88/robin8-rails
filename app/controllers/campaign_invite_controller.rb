@@ -68,6 +68,17 @@ class CampaignInviteController < ApplicationController
     render :json => campaign_invites_by_paged, :each_serializer => CampaignInviteSerializer
   end
 
+  def find_by_kol_and_campaign
+    # todo this line appear too many times
+    return render :json => { error: 'no available kol!' } if current_kol.blank?
+
+    campaign = CampaignInvite.find params[:campaign_id]
+
+    campaign_invite = CampaignInvite.where(:kol => current_kol, :campaign => campaign).first
+
+    return render :json => campaign_invite, :serizlizer => CampaignInviteSerializer
+  end
+
   def change_img_status
     campaign_invite_id = params[:id]
     @campaign_invite = CampaignInvite.find campaign_invite_id
