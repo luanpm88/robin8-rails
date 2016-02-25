@@ -289,7 +289,7 @@ class Kol < ActiveRecord::Base
                    (messages.receiver_type = 'List' and messages.id in (" + list_message_ids + "))
                  )  and
                  messages.created_at > '#{self.created_at}'
-                 order by messages.is_read asc, messages.created_at desc "
+                 order by messages.created_at desc "
     Message.find_by_sql sql
   end
 
