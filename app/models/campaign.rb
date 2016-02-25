@@ -4,7 +4,7 @@ class Campaign < ActiveRecord::Base
   counter :redis_total_click
 
   #Status : unexecute agreed rejected  executing executed
-  #Per_budget_type click post
+  #Per_budget_type click post cpa
   belongs_to :user
   has_many :campaign_invites
   has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
@@ -38,6 +38,10 @@ class Campaign < ActiveRecord::Base
 
   def upload_screenshot_deadline
     self.deadline +  SettleWaitTimeForKol
+  end
+
+  def is_cpa?
+    self.per_budget_type.to_s == "cpa"
   end
 
   def get_stats
@@ -182,7 +186,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    if self.redis_avail_click.value >= self.max_action && self.status == 'executing' && self.per_budget_type == "click"
+    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && self.per_budget_type == "click"
       finish('fee_end')
     end
   end
