@@ -27,7 +27,7 @@ class Campaign < ActiveRecord::Base
   has_many :interested_campaigns
   belongs_to :release
 
-  scope :click_campaigns, -> {where(:per_action_budget => 'click')}
+  scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :order_by_start, -> { order('start_time desc')}
   scope :order_by_status, -> { order("case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
                           start_time desc") }
@@ -362,12 +362,14 @@ class Campaign < ActiveRecord::Base
     },
   ]
 
-  def self.add_test_data
+  def self.add_test_data(per_budget_type = nil, long = nil)
     if !Rails.env.production?
       u = User.find 84
+      per_budget_type = ['post', 'click'].sample    if per_budget_type.blank?
       campaign_attrs = TestCampaigns[rand(12)]
-      campaign = Campaign.create(:user => u, :budget => 3, :per_action_budget => 1, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
-      :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url)
+      long = rand(2) == 1                            if long.nil?
+      campaign = Campaign.create(:user => u, :budget => (long ? 40 ? 3), :per_action_budget => 1, :start_time => Time.now + 5.seconds, :deadline => Time.now + (long ? 24.hours : 1.hours),
+      :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url, :per_budget_type => per_budget_type)
       campaign.status = 'agreed'
       campaign.save
     end
