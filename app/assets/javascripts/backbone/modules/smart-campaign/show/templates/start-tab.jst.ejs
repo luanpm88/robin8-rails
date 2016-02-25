@@ -74,7 +74,7 @@
               <div class="text-center" id="img-url-container">
 
               <% if (campaign && campaign.img_url)  {%>
-                <img src="<%= campaign.img_url%>" id="campaign-image" alt="avatar" style="width: 200px; height: 200px">
+                <img src="<%= campaign.img_url + '-400' %>" id="campaign-image" alt="avatar" style="width: 200px; height: 200px">
               <% }else { %>
                 <img src="<%= AppAssets.path('campaign_default_img.png')%>" id="campaign-image" alt="avatar" style="width: 200px; height: 200px">
               <%}%>

@@ -56,7 +56,7 @@
         </p>
 
         <% if(item.has_img){ %>
-          <p><i class='glyphicon glyphicon-info-sign'></i>配图: <img src="<%= item.img_url %>" alt="" style='height: 50px;'></p>
+          <p><i class='glyphicon glyphicon-info-sign'></i>配图: <img src="<%= item.img_url + '-400' %>" alt="" style='height: 50px;'></p>
         <% } %>
         <p class="form-control disabled"  id='descAndUrl'><%= item.description %> <%= item.share_url %></p>
         <br />
