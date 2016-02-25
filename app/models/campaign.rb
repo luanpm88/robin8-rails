@@ -127,6 +127,7 @@ class Campaign < ActiveRecord::Base
   # c.update_column(:status,'agreed')
   # c.send_invites(kol_ids)
   def send_invites(kol_ids = nil)
+    _start = Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
     return if self.status != 'agreed'
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
@@ -151,10 +152,11 @@ class Campaign < ActiveRecord::Base
     end
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
-    _start_time = self.start_time < Time.now ? (Time.now + 15.seconds) : self.start_time
+    _start_time = self.start_time < Time.now ? (Time.now + 2.seconds) : self.start_time
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id} _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
+    Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---"
   end
 
 
@@ -368,7 +370,7 @@ class Campaign < ActiveRecord::Base
       per_budget_type = ['post', 'click'].sample    if per_budget_type.blank?
       campaign_attrs = TestCampaigns[rand(12)]
       long = rand(2) == 1                            if long.nil?
-      campaign = Campaign.create(:user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :start_time => Time.now + 5.seconds, :deadline => Time.now + (long ? 24.hours : 1.hours),
+      campaign = Campaign.create(:user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :start_time => Time.now + 2.seconds, :deadline => Time.now + (long ? 24.hours : 1.hours),
       :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url, :per_budget_type => per_budget_type)
       campaign.status = 'agreed'
       campaign.save
