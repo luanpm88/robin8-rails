@@ -73,15 +73,10 @@ RSpec.describe CacheDiscoverWorker do
     end
   end
 
-  describe '.tell_staff_api_might_down' do
-    before :each do
-      Rails.cache.delete_matched 'request:api_failed_count'
-    end
+  describe '.tell_staff_error_when_request' do
 
-    it 'ping slack to tell staff api might down' do
-      count = 11
-
-      result = CacheDiscoverWorker.tell_staff_api_might_down count
+    it 'ping slack to tell staff request error' do
+      result = CacheDiscoverWorker.tell_staff_error_when_request 'url', 'error_message'
       expect(result.code).to eq "200"
     end
   end
@@ -92,24 +87,6 @@ RSpec.describe CacheDiscoverWorker do
 
   describe '.request' do
 
-  end
-
-  describe '.request_api_timeout_count_increment' do
-    context 'key not exists' do
-      it 'create new redis record and increment from 0 to 1' do
-        
-      end
-
-      it 'set expires_in' do
-
-      end
-    end
-
-    context 'key already exists' do
-      it 'increment 1' do
-
-      end
-    end
   end
 
   describe '.write_rails_cache' do
