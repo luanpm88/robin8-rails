@@ -13,7 +13,7 @@ class CampaignShow < ActiveRecord::Base
     end
 
     if campaign.is_cpa?
-      return [false, 'is_first_step_of_cpa_campaign'] if options[:step] == 1
+      return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
 
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
