@@ -19,17 +19,17 @@ module API
           if  params[:status] == 'all'
             @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").
               where(:id => current_kol.receive_campaign_ids.values).
-              order("created_at desc").page(params[:page]).per_page(10)
+              order_by_status.page(params[:page]).per_page(10)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'rejected'
-            @campaigns = current_kol.rejected_campaigns.order("created_at desc").page(params[:page]).per_page(10)
+            @campaigns = current_kol.rejected_campaigns.order_by_start.page(params[:page]).per_page(10)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'running'
-            @campaigns = current_kol.running_campaigns.order("created_at desc").page(params[:page]).per_page(10)
+            @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary

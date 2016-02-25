@@ -3,8 +3,13 @@ ActiveAdmin.register Withdraw do
   member_action :unagree, :method => :put
   member_action :agree, :method => :put
   member_action :withdraw_history, :method => :get
+  remove_filter :kol
 
   controller do
+    def scoped_collection
+      Withdraw.includes(:kol)   # includes User / Brand models in listing products
+    end
+
     def unagree
       withdraw = Withdraw.find params[:id]
       withdraw.update_column(:status , 'rejected')

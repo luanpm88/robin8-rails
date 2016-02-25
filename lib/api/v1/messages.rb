@@ -14,7 +14,7 @@ module API
         get '/' do
           if params[:status] == 'all'
             messages = current_kol.messages.paginate(:page => params[:page], :per_page => 10 )
-          elsif params[:statys] == 'unread'
+          elsif params[:status] == 'unread'
             messages = current_kol.unread_messages.paginate(:page => params[:page], :per_page => 10 )
           else
             messages = current_kol.read_messages.paginate(:page => params[:page], :per_page => 10 )

@@ -113,7 +113,7 @@ class CampaignInvite < ActiveRecord::Base
   def bring_income(campaign, force = false)
     if  campaign.is_click_type?  || force
       #记录新收入
-      self.redis_new_income.incr(campaign.per_action_budget * 100)
+      self.redis_new_income.incr((campaign.per_action_budget * 100).to_i)
       #发送新收入消息
       Message.new_income(self,campaign)
     end

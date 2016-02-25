@@ -27,7 +27,10 @@ class Campaign < ActiveRecord::Base
   has_many :interested_campaigns
   belongs_to :release
 
-  scope :click_campaigns, -> {where(:per_action_budget => 'click')}
+  scope :click_campaigns, -> {where(:per_budget_type => 'click')}
+  scope :order_by_start, -> { order('start_time desc')}
+  scope :order_by_status, -> { order("case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
+                          start_time desc") }
 
 
   after_save :create_job
@@ -124,6 +127,7 @@ class Campaign < ActiveRecord::Base
   # c.update_column(:status,'agreed')
   # c.send_invites(kol_ids)
   def send_invites(kol_ids = nil)
+    _start = Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
     return if self.status != 'agreed'
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
@@ -148,10 +152,11 @@ class Campaign < ActiveRecord::Base
     end
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
-    _start_time = self.start_time < Time.now ? (Time.now + 15.seconds) : self.start_time
+    _start_time = self.start_time < Time.now ? (Time.now + 2.seconds) : self.start_time
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id} _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
+    Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---"
   end
 
 
@@ -359,12 +364,14 @@ class Campaign < ActiveRecord::Base
     },
   ]
 
-  def self.add_test_data
+  def self.add_test_data(per_budget_type = nil, long = nil)
     if !Rails.env.production?
       u = User.find 84
+      per_budget_type = ['post', 'click'].sample    if per_budget_type.blank?
       campaign_attrs = TestCampaigns[rand(12)]
-      campaign = Campaign.create(:user => u, :budget => 3, :per_action_budget => 1, :start_time => Time.now + 10.seconds, :deadline => Time.now + 1.hours,
-      :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url)
+      long = rand(2) == 1                            if long.nil?
+      campaign = Campaign.create(:user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :start_time => Time.now + 2.seconds, :deadline => Time.now + (long ? 24.hours : 1.hours),
+      :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url, :per_budget_type => per_budget_type)
       campaign.status = 'agreed'
       campaign.save
     end
@@ -382,7 +389,7 @@ class Campaign < ActiveRecord::Base
 
   #冲刺标签
   def is_sprint
-    self.status == 'executeing' && ((self.deadline - 1.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
+    self.status == 'executeing' && ((self.deadline - 4.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
   end
 
   def get_campaign_invite(kol_id)

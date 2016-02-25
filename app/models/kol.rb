@@ -270,8 +270,12 @@ class Kol < ActiveRecord::Base
     end
   end
 
-  def message_status(message_id)
-    self.read_message_ids.include? message_id.to_s
+  def message_status(message)
+    if message.receiver_type == 'Kol'
+      message.is_read
+    else
+      self.read_message_ids.include? message.id.to_s
+    end
   end
 
   #所有消息
@@ -315,7 +319,7 @@ class Kol < ActiveRecord::Base
                    (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
                    (messages.id in (" + read_message_ids + "))
                  ) and
-                 messages.created_at > '#{self.created_at}
+                 messages.created_at > '#{self.created_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -346,16 +350,17 @@ class Kol < ActiveRecord::Base
       campaign_invite.status = 'approved'
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
+      Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
     end
-    campaign_invite.bring_income(campaign,true)
+    campaign_invite.bring_income(campaign,true)    if !campaign.is_click_type?
     campaign_invite
   end
 
   # 待接收活动列表
   def running_campaigns
     approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
-    unapproved_campaign_ids = self.receive_campaign_ids.values -  approved_campaign_ids
+    unapproved_campaign_ids = self.receive_campaign_ids.values.map(&:to_i) -  approved_campaign_ids
     campaigns = Campaign.where(:id => unapproved_campaign_ids).where(:status => 'executing')
     campaigns
   end
