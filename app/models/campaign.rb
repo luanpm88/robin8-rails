@@ -368,7 +368,7 @@ class Campaign < ActiveRecord::Base
       per_budget_type = ['post', 'click'].sample    if per_budget_type.blank?
       campaign_attrs = TestCampaigns[rand(12)]
       long = rand(2) == 1                            if long.nil?
-      campaign = Campaign.create(:user => u, :budget => (long ? 40 ? 3), :per_action_budget => 1, :start_time => Time.now + 5.seconds, :deadline => Time.now + (long ? 24.hours : 1.hours),
+      campaign = Campaign.create(:user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :start_time => Time.now + 5.seconds, :deadline => Time.now + (long ? 24.hours : 1.hours),
       :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url, :per_budget_type => per_budget_type)
       campaign.status = 'agreed'
       campaign.save
