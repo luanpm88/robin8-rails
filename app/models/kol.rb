@@ -319,7 +319,7 @@ class Kol < ActiveRecord::Base
                    (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
                    (messages.id in (" + read_message_ids + "))
                  ) and
-                 messages.created_at > '#{self.created_at}
+                 messages.created_at > '#{self.created_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -350,7 +350,7 @@ class Kol < ActiveRecord::Base
       campaign_invite.status = 'approved'
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
-      Rails.logger.info "----------share_url:-----#{campaign_invite.share_url}"
+      Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
     end
     campaign_invite.bring_income(campaign,true)
