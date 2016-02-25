@@ -353,7 +353,7 @@ class Kol < ActiveRecord::Base
       Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
     end
-    campaign_invite.bring_income(campaign,true)
+    campaign_invite.bring_income(campaign,true)    if !campaign.is_click_type?
     campaign_invite
   end
 
