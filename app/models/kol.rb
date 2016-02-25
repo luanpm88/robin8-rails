@@ -350,6 +350,7 @@ class Kol < ActiveRecord::Base
       campaign_invite.status = 'approved'
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
+      Rails.logger.info "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
     end
     campaign_invite.bring_income(campaign,true)
