@@ -3,17 +3,24 @@ class CampaignShowController < ApplicationController
   layout 'website'
 
   def show
-    campaign_id = JSON.parse(Base64.decode64(params[:uuid]))['campaign_id']     rescue nil
+    uuid_params = JSON.parse(Base64.decode64(params[:uuid]))
+
+    campaign_id = uuid_params['campaign_id']
     @campaign = Campaign.find campaign_id rescue nil
     @campaign_invite = CampaignInvite.find_by(:uuid => params[:uuid])     rescue nil
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
-    Rails.logger.info "-----show ---campaign_status:#{@campaign.status} - campaign_invite:#{@campaign_invite.try(:id)}- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-    if  @campaign.status == 'agreed' ||  @campaign_invite.blank? || (request.user_agent.include?("Jakarta Commons-HttpClient")  rescue false)
+
+    Rails.logger.info "-----show ---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
+
+    if @campaign.status == 'agreed' ||  @campaign_invite.blank? || (request.user_agent.include?("Jakarta Commons-HttpClient")  rescue false)
       redirect_to @campaign.url
     elsif @campaign
-      Rails.logger.info "-----show ---campaign_id:#{@campaign_invite.id}-----count"
-      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer)
-      redirect_to @campaign.url
+      if @campaign.is_cpa?
+        deal_with_cpa_campaign uuid_params
+      else
+        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, other_options)
+        redirect_to @campaign.url
+      end
     end
   end
 
@@ -28,5 +35,18 @@ class CampaignShowController < ApplicationController
     # end
   end
 
+  private
+  def deal_with_cpa_campaign uuid_params
+    uuid_params.symbolize_keys!
+    other_options = {}
+    other_options[:step] = (uuid_params[:step] || 1).to_i
 
+    CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, other_options)
+    if other_options[:step] == 1
+      redirect_to @campaign.url
+    else
+      campaign_action_url = CampaignActionUrl.find_by :id => uuid_params[:campaign_action_url_id]
+      redirect_to (campaign_action_url.try(:action_url) || "http://robin8.net")
+    end
+  end
 end

@@ -19,6 +19,8 @@ class CampaignInvite < ActiveRecord::Base
   scope :passed, -> {where(:img_status => 'passed')}
   scope :verifying, -> {where(:status => 'finished').where.not(:img_status => 'passed')}
   scope :settled, -> {where(:status => 'settled')}
+  # 已完成的概率改成 接收过的 且结算（含结算失败）
+  scope :completed, -> {where("status = 'settled' or status = 'rejected'")}
 
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
@@ -40,10 +42,16 @@ class CampaignInvite < ActiveRecord::Base
       Time.now < self.upload_end_at)
   end
 
+  # 进行中的活动 审核通过时  仅仅更新它状态
+  # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
   def screenshot_pass
+    return false if self.img_status == 'passed' || self.status == 'settled'
     campaign = self.campaign
     kol = self.kol
-    if (campaign.status == 'executed' || campaign.status == "executing") && self.img_status != 'passed'
+    if campaign.status == 'executing'
+      self.img_status = 'passed'
+      self.save!
+    elsif campaign.status == 'executed'
       ActiveRecord::Base.transaction do
         self.status = 'settled'
         self.img_status = 'passed'
@@ -98,7 +106,7 @@ class CampaignInvite < ActiveRecord::Base
     return 0 if self.new_record?
     campaign = self.campaign
     return 0.0 if campaign.blank?
-    if campaign.is_click_type?
+    if campaign.is_click_type? or campaign.is_cpa?
       (get_avail_click * campaign.per_action_budget).round(2)       rescue 0
     else
       campaign.per_action_budget.round(2) rescue 0

@@ -1,10 +1,8 @@
 FactoryGirl.define do
   factory :kol do
-    sequence(:email) { |n| "kol#{n}@robin8.com" }
-    password 'password'
-    sequence(:first_name) { |n| "kol#{n}" }
-    last_name 'John'
-    sequence(:mobile_number) { |n| 18888888888 }
+    email "kol@email.com"
+    mobile_number "15300731907"
+    name "I'm kol"
+    password "12345678"
   end
-
 end
