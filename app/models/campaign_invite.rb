@@ -10,6 +10,7 @@ class CampaignInvite < ActiveRecord::Base
   UploadScreenshotWait = 30.minutes
 
   validates_inclusion_of :status, :in => STATUSES
+  validates_uniqueness_of :uuid
 
   belongs_to :campaign
   belongs_to :kol
