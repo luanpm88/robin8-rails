@@ -5,7 +5,7 @@ module GeTui
       # push_message.template_content.stringify_keys.each{|key,value| template.instance_variable_set("@#{key}",value)}
       #apns 通知
       # setPushInfo(actionLocKey, badge, message, sound, payload, locKey, locArgs, launchImage)
-      template.set_push_info("open", 1, push_message.title, "")
+      template.set_push_info("open", 1, push_message.title, "")   if (push_message.template_content[:action] == 'campaign' rescue false)
       template
     end
 

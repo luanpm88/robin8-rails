@@ -60,7 +60,7 @@ module GeTui
         push_message.task_id = res["taskId"]
         push_message.status = res["status"]
       else
-        push_message.detail = res["result"]
+        push_message.details = res["result"]
       end
       push_message.save
     end

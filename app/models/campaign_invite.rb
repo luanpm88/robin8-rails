@@ -19,6 +19,8 @@ class CampaignInvite < ActiveRecord::Base
   scope :passed, -> {where(:img_status => 'passed')}
   scope :verifying, -> {where(:status => 'finished').where.not(:img_status => 'passed')}
   scope :settled, -> {where(:status => 'settled')}
+  # 已完成的概率改成 接收过的 且结算（含结算失败）
+  scope :completed, -> {where("status = 'settled' or status = 'rejected'")}
 
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
@@ -40,10 +42,16 @@ class CampaignInvite < ActiveRecord::Base
       Time.now < self.upload_end_at)
   end
 
+  # 进行中的活动 审核通过时  仅仅更新它状态
+  # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
   def screenshot_pass
+    return false if self.img_status == 'passed' || self.status == 'settled'
     campaign = self.campaign
     kol = self.kol
-    if (campaign.status == 'executed' || campaign.status == "executing") && self.img_status != 'passed'
+    if campaign.status == 'executing'
+      self.img_status = 'passed'
+      self.save!
+    elsif campaign.status == 'executed'
       ActiveRecord::Base.transaction do
         self.status = 'settled'
         self.img_status = 'passed'
@@ -95,6 +103,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def earn_money
+    return 0 if self.new_record?
     campaign = self.campaign
     return 0.0 if campaign.blank?
     if campaign.is_click_type?
@@ -108,10 +117,11 @@ class CampaignInvite < ActiveRecord::Base
     self.redis_new_income.reset
   end
 
-  def bring_income(campaign)
-    if  campaign.is_click_type?
+  # 接收新活动时候  force = true
+  def bring_income(campaign, force = false)
+    if  campaign.is_click_type?  || force
       #记录新收入
-      self.redis_new_income.incr(campaign.per_action_budget * 100)
+      self.redis_new_income.incr((campaign.per_action_budget * 100).to_i)
       #发送新收入消息
       Message.new_income(self,campaign)
     end
@@ -121,6 +131,7 @@ class CampaignInvite < ActiveRecord::Base
     self.redis_avail_click.increment if valid
     self.redis_total_click.increment
     bring_income(campaign) if valid &&  campaign
+    return true
   end
 
   def approve

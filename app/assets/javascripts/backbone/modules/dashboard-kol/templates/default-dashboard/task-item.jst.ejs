@@ -15,7 +15,7 @@
           <i class='glyphicon glyphicon-piggy-bank'></i> 分享即可获得： <%= Number((item.per_action_budget).toFixed(2)) %> &nbsp;&nbsp;
         <% } %>
         <i class='glyphicon glyphicon-piggy-bank'></i> 剩余预算： <%= item.remain_budget %> &nbsp;&nbsp;
-        <% if(item.status=='finished' && item.img_status!='passed'){ %>
+        <% if(item.status && item.status=='finished' && item.img_status!='passed'){ %>
           <i class='glyphicon glyphicon-warning-sign'></i> 审核状态：
           <% if(item.img_status=='pending'){ %>
             <% if(item.screenshot){ %>

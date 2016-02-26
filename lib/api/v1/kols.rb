@@ -63,14 +63,15 @@ module API
           requires :code, type: Integer, regexp: /\d{6}/
         end
         put 'update_mobile' do
-          kol = Kol.find_by :mobile_number => params[:mobile_number]
-          if kol
+          mobile_exist = Kol.find_by(:mobile_number => params[:mobile_number])
+          if mobile_exist
             error_403!({error: 1, detail: '该手机已经绑定了其他账号！'})
           else
             if !YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
               return error_403!({error: 1, detail: '验证码与手机号码不匹配!'})
             else
               current_kol.update_column(:mobile_number, params[:mobile_number])
+              current_kol.update_column(:name, params[:mobile_number])    if current_kol.name.blank?
               current_kol.reset_private_token
               present :error, 0
               present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary

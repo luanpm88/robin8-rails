@@ -1,9 +1,9 @@
 class Kol < ActiveRecord::Base
   include Redis::Objects
   # counter :redis_new_income      #unit is cent
-  list :read_message_ids, :maxlength => 1000             # 所有阅读过的
-  list :list_message_ids, :maxlength => 1000             # 所有发送给部分人消息ids
-  list :receive_campaign_ids, :maxlength => 1000             # 用户收到的所有campaign 邀请(待接收)
+  list :read_message_ids, :maxlength => 2000             # 所有阅读过的
+  list :list_message_ids, :maxlength => 2000             # 所有发送给部分人消息ids
+  list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -262,9 +262,7 @@ class Kol < ActiveRecord::Base
     message.save
 
     # 记录到 read_meesage_ids
-    if message.receiver_type == "All" || message.receiver_type == 'List'
-      self.read_message_ids << message_id unless  self.read_message_ids.include? message_id
-    end
+    self.read_message_ids << message_id unless  self.read_message_ids.include? message_id.to_s
 
     # 重置 invite 收入
     if message.message_type == 'income'
@@ -272,14 +270,25 @@ class Kol < ActiveRecord::Base
     end
   end
 
+  def message_status(message)
+    if message.receiver_type == 'Kol'
+      message.is_read
+    else
+      self.read_message_ids.include? message.id.to_s
+    end
+  end
+
   #所有消息
   def messages
     kol_id = self.id
-    list_message_ids = self.list_message_ids.values.join(',')
+    list_message_ids = self.list_message_ids.values.size == 0 ? "''" : self.list_message_ids.values.join(',')
     sql = "select * from messages
-           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}')  or
-                 (messages.receiver_type = 'All') or
-                 (messages.receiver_type = 'List' and messages.id in ('#{list_message_ids}') )
+           where (
+                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}')  or
+                   (messages.receiver_type = 'All') or
+                   (messages.receiver_type = 'List' and messages.id in (" + list_message_ids + "))
+                 )  and
+                 messages.created_at > '#{self.created_at}'
                  order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -287,12 +296,16 @@ class Kol < ActiveRecord::Base
   #所有未读消息
   def unread_messages
     kol_id = self.id
-    list_unread_message_ids = (self.list_message_ids.values - self.read_message_ids.values).join(",")
-    read_message_ids = self.read_message_ids.values.join(",")
+    list_unread_message_ids = self.list_message_ids.values - self.read_message_ids.values
+    list_unread_message_ids = list_unread_message_ids.size == 0 ? "''" : list_unread_message_ids.join(",")
+    read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     sql = "select * from messages
-           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
-                 (messages.receiver_type = 'All' and messages.id not in ('#{read_message_ids}')) or
-                 (messages.receiver_type = 'List' and messages.id in ('#{list_unread_message_ids}'))
+           where (
+                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '0' )  or
+                   (messages.receiver_type = 'All' and messages.id not in (" + read_message_ids + ")) or
+                   (messages.receiver_type = 'List' and messages.id in (" + list_unread_message_ids + "))
+                 ) and
+                 messages.created_at > '#{self.created_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -300,10 +313,13 @@ class Kol < ActiveRecord::Base
   #所有已读消息
   def read_messages
     kol_id = self.id
-    read_message_ids = self.read_message_ids.values.join(",")
+    read_message_ids = self.read_message_ids.values.size == 0 ? "''" : self.read_message_ids.values.join(",")
     sql = "select * from messages
-           where (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
-                 (messages.id in ('#{read_message_ids}'))
+           where (
+                   (messages.receiver_type = 'Kol' and messages.receiver_id = '#{kol_id}' and messages.is_read = '1' )  or
+                   (messages.id in (" + read_message_ids + "))
+                 ) and
+                 messages.created_at > '#{self.created_at}'
            order by messages.created_at desc "
     Message.find_by_sql sql
   end
@@ -316,7 +332,7 @@ class Kol < ActiveRecord::Base
   end
 
   def add_campaign_id(campaign_id)
-    self.receive_campaign_ids << campaign_id unless self.receive_campaign_ids.include? campaign_id
+    self.receive_campaign_ids << campaign_id unless self.receive_campaign_ids.include? campaign_id.to_s
   end
 
   def delete_campaign_id(campaign_id)
@@ -326,34 +342,44 @@ class Kol < ActiveRecord::Base
   # 接收活动
   def approve_campaign(campaign_id)
     campaign = Campaign.find campaign_id  rescue nil
-    return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? campaign_id)
-    campaign_invite = CamapignInvite.where(:campaign_id => campaign_id, :kol_id => self.id).first       rescue nil
-    if (campaign_invite && campaign_invites.status == 'running')  || campaign_invite.blank?
+    return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
+    campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
+    if (campaign_invite && campaign_invite.status == 'running')  || campaign_invite.new_record?
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
-      self.approved_at = Time.now
-      self.status = 'approved'
-      self.uuid = uuid
-      self.share_url = CampaignInvite.generate_share_url(uuid)
+      campaign_invite.approved_at = Time.now
+      campaign_invite.status = 'approved'
+      campaign_invite.uuid = uuid
+      campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
+      Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
+      campaign_invite.save
     end
+    campaign_invite.bring_income(campaign,true)    if !campaign.is_click_type?
     campaign_invite
   end
 
   # 待接收活动列表
   def running_campaigns
     approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
-    unapproved_campaign_ids = self.receive_campaign_ids.values -  approved_campaign_ids
+    unapproved_campaign_ids = self.receive_campaign_ids.values.map(&:to_i) -  approved_campaign_ids
     campaigns = Campaign.where(:id => unapproved_campaign_ids).where(:status => 'executing')
     campaigns
   end
 
 
-  # 错过的活动
-  def rejected_campaigns
-    Campaign.joins("left join campaign_invites on campaign_invites.campaign_id=campaigns.id").
-      where("campaigns_invites.kol_id = '#{self.id}'").
-      where("campaigns.id in (#{self.receive_campaign_ids.values.join(',')})").
-      where("campaign_invites.status != 'approved' and campaign_invites.status != 'running' and
-        campaign_invites.status !='finished' and campaign_invites.status !='settled'")
+  # # 失败的活动
+  # def rejected_campaigns
+  #   Campaign.joins("left join campaign_invites on campaign_invites.campaign_id=campaigns.id").
+  #     where("campaign_invites.kol_id = '#{self.id}'").
+  #     where("campaigns.id in (#{self.receive_campaign_ids.values.join(',')})").
+  #     where("campaign_invites.status != 'approved' and campaign_invites.status != 'running' and
+  #       campaign_invites.status !='finished' and campaign_invites.status !='settled'")
+  # end
+
+  # 已错过的活动
+  def missed_campaigns
+    approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
+    unapproved_campaign_ids = self.receive_campaign_ids.values.map(&:to_i) -  approved_campaign_ids
+    Campaign.completed.where(:id => unapproved_campaign_ids)
   end
 
 end

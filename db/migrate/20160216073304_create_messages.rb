@@ -5,6 +5,7 @@ class CreateMessages < ActiveRecord::Migration
       t.boolean :is_read, :default => false
       t.datetime :read_at
       t.string :title
+      t.string :name
       t.string :desc
       t.string :url
       t.string :logo_url
