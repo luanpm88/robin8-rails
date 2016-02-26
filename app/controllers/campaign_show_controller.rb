@@ -19,7 +19,7 @@ class CampaignShowController < ApplicationController
     if @campaign.status == 'agreed' ||  @campaign_invite.blank? || (request.user_agent.include?("Jakarta Commons-HttpClient")  rescue false)
       redirect_to @campaign.url
     else
-      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, other_options)
+      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
       redirect_to @campaign.url
       # end
     end
