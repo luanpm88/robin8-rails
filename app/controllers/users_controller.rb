@@ -167,7 +167,7 @@ class UsersController < ApplicationController
   def set_avatar_url
     current_user.avatar_url = params[:avatar_url]
     current_user.save
-    render json: {"result": "ok"}
+    render json: {:result => "ok"}
   end
 
   private

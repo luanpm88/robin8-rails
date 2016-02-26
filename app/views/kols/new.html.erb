@@ -46,9 +46,12 @@
                 <div class="small-9 large-9 columns">
                   <%= rucaptcha_input_tag(class: 'form-control rucaptcha_input', placeholder: '图片验证码') %>
                 </div>
-                <%= rucaptcha_image_tag(alt: 'Captcha', :class => "rucaptcha_tag") %>
+                <a class="rucaptcha_tag_box", href="javascript:;">
+                  <%= rucaptcha_image_tag(alt: 'Captcha', :class => "rucaptcha_tag") %>
+                </a>
                 <section class='tips'>
                   <p class=not_unique_number><%= @l.t("kols.mobile_number_already_token") %></p>
+                  <p class=rucaptcha_not_right><%= "图片验证码不正确" %></p>
                   <p class=mobile_numer_is_blank><%= @l.t("kols.mobile_format_error") %></p>
                   <p class=send_sms_failed><%= @l.t("kols.send_sms_error") %></p>
                   <p class=send_sms_success><%= @l.t("kols.send_sms_success") %></p>

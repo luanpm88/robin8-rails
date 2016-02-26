@@ -62,7 +62,7 @@
   }
 
   .tips {
-    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed, .rucaptcha_not_right {
       font-size: 15px;
       color: red;
       margin-bottom: 2px;
@@ -109,7 +109,7 @@
   }
 
   .tips {
-    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed, .rucaptcha_not_right {
       font-size: 15px;
       color: red;
       margin-bottom: 2px;

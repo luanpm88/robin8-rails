@@ -204,7 +204,7 @@ class KolsController < ApplicationController
     Rails.logger.sms_spider.error '-'*60
 
     ips = Rails.cache.fetch("spider_ip_from_kol_6579")
-    if ips.include?(request.ip)
+    if ips && ips.include?(request.ip)
       Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次, 且存在在爬虫黑名单中")
     end
     ip_key = "#{request.ip}_visitor_count"
@@ -217,12 +217,18 @@ class KolsController < ApplicationController
     send_count =  Rails.cache.fetch(key).to_i || 1
     Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封,.---- 已经尝试#{send_count} 次")
     Rails.cache.write(key, send_count + 1, :expires_in => 60.seconds)
+    
+    
     if send_count > 10
       Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封, 已经尝试#{send_count} 次")
       return render json: {}
     end
     if request.user_agent == "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)"
       Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封, 已经尝试#{send_count} 次, user_agent #{request.user_agent}")
+    end
+
+    unless verify_rucaptcha?
+      return render json: {rucaptcha_not_right: true}
     end
 
     phone_number = params[:phone_number]
