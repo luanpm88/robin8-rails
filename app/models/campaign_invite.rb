@@ -19,6 +19,8 @@ class CampaignInvite < ActiveRecord::Base
   scope :passed, -> {where(:img_status => 'passed')}
   scope :verifying, -> {where(:status => 'finished').where.not(:img_status => 'passed')}
   scope :settled, -> {where(:status => 'settled')}
+  # 已完成的概率改成 接收过的 且结算（含结算失败）
+  scope :completed, -> {where("status = 'settled' or status = 'rejected'")}
 
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 

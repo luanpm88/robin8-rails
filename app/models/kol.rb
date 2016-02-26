@@ -366,13 +366,20 @@ class Kol < ActiveRecord::Base
   end
 
 
-  # 错过的活动
-  def rejected_campaigns
-    Campaign.joins("left join campaign_invites on campaign_invites.campaign_id=campaigns.id").
-      where("campaign_invites.kol_id = '#{self.id}'").
-      where("campaigns.id in (#{self.receive_campaign_ids.values.join(',')})").
-      where("campaign_invites.status != 'approved' and campaign_invites.status != 'running' and
-        campaign_invites.status !='finished' and campaign_invites.status !='settled'")
+  # # 失败的活动
+  # def rejected_campaigns
+  #   Campaign.joins("left join campaign_invites on campaign_invites.campaign_id=campaigns.id").
+  #     where("campaign_invites.kol_id = '#{self.id}'").
+  #     where("campaigns.id in (#{self.receive_campaign_ids.values.join(',')})").
+  #     where("campaign_invites.status != 'approved' and campaign_invites.status != 'running' and
+  #       campaign_invites.status !='finished' and campaign_invites.status !='settled'")
+  # end
+
+  # 已错过的活动
+  def missed_campaigns
+    approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
+    unapproved_campaign_ids = self.receive_campaign_ids.values.map(&:to_i) -  approved_campaign_ids
+    Campaign.completed.where(:id => unapproved_campaign_ids)
   end
 
 end
