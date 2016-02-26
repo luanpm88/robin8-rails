@@ -257,7 +257,10 @@ class KolsController < ApplicationController
   private
 
   def sms_request_is_valid_for_login_user?
-    return false unless current_kol
+    unless current_kol
+      Rails.logger.sms_spider.error "用户没有登录, #{cookies[:_robin8_visitor]}"
+      return false 
+    end
     key = "kol_#{current_kol.id}_send_sms_count"
     send_count =  Rails.cache.fetch(key).to_i || 1
     Rails.cache.write(key, send_count + 1, :expires_in => 360.seconds)
