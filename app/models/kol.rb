@@ -331,8 +331,12 @@ class Kol < ActiveRecord::Base
     total_income / 100
   end
 
-  def add_campaign_id(campaign_id)
-    self.receive_campaign_ids << campaign_id unless self.receive_campaign_ids.include? campaign_id.to_s
+  def add_campaign_id(campaign_id, valid = true)
+    if valid
+      self.receive_campaign_ids << campaign_id unless self.receive_campaign_ids.include? campaign_id.to_s
+    else
+      self.receive_campaign_ids << campaign_id
+    end
   end
 
   def delete_campaign_id(campaign_id)
@@ -352,8 +356,8 @@ class Kol < ActiveRecord::Base
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
+      campaign_invite.bring_income(campaign,true)    if !campaign.is_click_type?
     end
-    campaign_invite.bring_income(campaign,true)    if !campaign.is_click_type?
     campaign_invite
   end
 
@@ -375,7 +379,7 @@ class Kol < ActiveRecord::Base
   #       campaign_invites.status !='finished' and campaign_invites.status !='settled'")
   # end
 
-  # 已错过的活动
+  # 已错过的活动       活动状态为finished \settled  且没接
   def missed_campaigns
     approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
     unapproved_campaign_ids = self.receive_campaign_ids.values.map(&:to_i) -  approved_campaign_ids

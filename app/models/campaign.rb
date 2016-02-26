@@ -142,30 +142,28 @@ class Campaign < ActiveRecord::Base
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
     campaign_id = self.id
-    ActiveRecord::Base.transaction do
-      if kol_ids.present?
-        Kol.where(:id => kol_ids).each do |kol|
-          kol.add_campaign_id campaign_id
-        end
-      else
-        Kol.find_each do |kol|
-          kol.add_campaign_id campaign_id
-        end
+    if kol_ids.present?
+      Kol.where(:id => kol_ids).each do |kol|
+        kol.add_campaign_id campaign_id
       end
-      # 删除黑名单campaign
-      block_kols = Kol.where("forbid_campaign_time > '#{Time.now}'")
-      block_kols.each do |kol|
-        kol.delete_campaign_id campaign_id
+    else
+      Kol.find_each do |kol|
+        kol.add_campaign_id(campaign_id,false)
       end
-      Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
     end
+    # 删除黑名单campaign
+    block_kols = Kol.where("forbid_campaign_time > '#{Time.now}'")
+    block_kols.each do |kol|
+      kol.delete_campaign_id campaign_id
+    end
+    Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
-    _start_time = self.start_time < Time.now ? (Time.now + 2.seconds) : self.start_time
+    _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id} _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-    Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---"
+    Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
   end
 
 
