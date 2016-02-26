@@ -1,5 +1,7 @@
 class InitApprovingCampaignIdsFromInvites < ActiveRecord::Migration
   def change
+    #删除以前无效 invites
+    CampaignInvite.where("uuid is null and id < 163 ").delete_all
     Kol.find_each do |kol|
       puts "---kol_id:#{kol.id}"
       # add campaign_id to kol receive_campaign list
