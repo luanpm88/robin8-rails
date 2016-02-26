@@ -63,7 +63,12 @@
                   <%=f.text_field :mobile_number,:placeholder=>@l.t('kols.mobile_number'), "data-validation"=>"number","data-validation-error-msg"=> @l.t('kols.mobile_format_error') %>
                 </div>
               <% end %>
+            <div class="small-9 large-9 columns">
+              <%= rucaptcha_input_tag(class: 'form-control rucaptcha_input', placeholder: '图片验证码') %>
             </div>
+            <%= rucaptcha_image_tag(alt: 'Captcha', :class => "rucaptcha_tag") %>
+            </div>
+
 
             <p class="agree"><%= @l.t('kols.agree').html_safe %></a>
 

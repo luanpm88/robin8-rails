@@ -194,6 +194,37 @@ class KolsController < ApplicationController
   end
 
   def send_sms
+    Rails.logger.sms_spider.error '-'*60
+    Rails.logger.sms_spider.error 'remote_ip:' + request.remote_ip
+    Rails.logger.sms_spider.error 'ip' + request.ip
+    Rails.logger.sms_spider.error 'user_agent' + request.user_agent
+    Rails.logger.sms_spider.error 'referer' + request.referer
+    Rails.logger.sms_spider.error 'cookie' + cookies[:_robin8_visitor]
+    Rails.logger.sms_spider.error 'csrf_token' + request.env["HTTP_X_CSRF_TOKEN"]
+    Rails.logger.sms_spider.error '-'*60
+
+    ips = Rails.cache.fetch("spider_ip_from_kol_6579")
+    if ips.include?(request.ip)
+      Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次, 且存在在爬虫黑名单中")
+    end
+    ip_key = "#{request.ip}_visitor_count"
+    send_count =  Rails.cache.fetch(ip_key).to_i || 1
+    Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次")
+    Rails.cache.write(ip_key, send_count + 1, :expires_in => 60.seconds)
+
+    key = cookies[:_robin8_visitor] + "send_sms"
+
+    send_count =  Rails.cache.fetch(key).to_i || 1
+    Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封,.---- 已经尝试#{send_count} 次")
+    Rails.cache.write(key, send_count + 1, :expires_in => 60.seconds)
+    if send_count > 10
+      Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封, 已经尝试#{send_count} 次")
+      return render json: {}
+    end
+    if request.user_agent == "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)"
+      Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封, 已经尝试#{send_count} 次, user_agent #{request.user_agent}")
+    end
+
     phone_number = params[:phone_number]
     if Rails.env.development?
       ms_client = YunPian::SendRegisterSms.new(phone_number)
@@ -208,7 +239,16 @@ class KolsController < ApplicationController
       else
         return render json: {not_unique: true}  if Kol.check_mobile_number phone_number
       end
+      total_send_key = "robin8_send_sms_count"
+      send_count =  Rails.cache.fetch(total_send_key).to_i || 1
+      Rails.cache.write(total_send_key, send_count + 1, :expires_in => 5.hours)
+      Rails.logger.sms_spider.error "发送的 有效的量已经超过了 #{send_count}"
+      if send_count > 1000
+         Rails.logger.sms_spider.error "发送的 有效的量已经超过了 #{send_count}"
+         return render json: {}
+       end
       sms_client = YunPian::SendRegisterSms.new(phone_number)
+
       res = sms_client.send_sms  rescue {}
       render json: res
     end
@@ -275,5 +315,4 @@ class KolsController < ApplicationController
       render :new, :layout => "website"
     end
   end
-
 end
