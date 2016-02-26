@@ -69,7 +69,13 @@ ActiveAdmin.register Campaign do
     column :budget
     column :status
     column "mode" do |my_resource|
-      my_resource.per_budget_type == "click" ? 'Per click' : 'Per Post'
+      if my_resource.per_budget_type == "click"
+        'Per click'
+      elsif my_resource.per_budget_type == "post"
+        'Per post'
+      else
+        'cpa'
+      end
     end
     column "Spent" do |my_resource|
       my_resource.take_budget
