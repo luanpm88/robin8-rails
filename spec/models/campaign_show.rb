@@ -43,19 +43,28 @@ RSpec.describe CampaignShow, :type => :model do
     context "当预算 花完后" do
       it "kol 收入 增加" do
         campaign = create_campaign brand_1, :per_budget_type => :cpa, :budget => 1, per_action_budget: 1
+        
         visit_campaign_for_step_one campaign do
           expect(CampaignShow.last.status).to eq '0'
         end
-
         
+        campaign_invite = CampaignInvite.find_by :campaign_id => campaign.id, :kol_id => kol_1.id
+        campaign_invite.update_columns(:screenshot => "screenshot", :img_status => "passed")
+
         visit_campaign_for_step_two campaign do
           expect(CampaignShow.last.status).to eq '1'
         end
-        expect{
-          campaign.settle_accounts_for_kol
-        }to change{
-          kol_1.amount
-        }.by(1)
+
+        kol_old_amount = kol_1.reload.amount.to_i
+        brand_old_amount = brand_1.reload.amount.to_i
+        brand_old_frozen_amount = brand_1.frozen_amount.to_i
+
+        campaign.settle_accounts_for_kol
+
+        kol_1.reload
+        brand_1.reload
+
+        expect(kol_old_amount)
       end
     end
   end
@@ -69,13 +78,11 @@ RSpec.describe CampaignShow, :type => :model do
 
     brand_1.reload
     
-    approve_campaign_by_admin_user campaign, kol_1
-
-    campaign_invite = CampaignInvite.find_by :campaign_id => campaign.id, :kol_id => kol_1.id
+    campaign_invite = CampaignInvite.find_by :kol_id => kol_1.id, :campaign_id => campaign.id
     approve_campaign campaign_invite
     
     expect{
-      CampaignShowWorker.new.perform(campaign_invite.uuid, "", '127.0.0.1', 'user agent', "referer", {})
+      CampaignShowWorker.new.perform(campaign_invite.uuid, "vistor_01", '127.0.0.1', 'user agent', "referer", {})
     }.to change{
       CampaignShow.count
     }.by(1)
@@ -97,14 +104,17 @@ RSpec.describe CampaignShow, :type => :model do
   end
 
   def create_campaign user, campaign_params={}
-    campaign = FactoryGirl.create(:campaign, campaign_params.merge(:user_id => user.id))
-    campaign_action_url = FactoryGirl.create(:campaign_action_url, :campaign_id => campaign.id, :action_url => "http://baidu.com")
-    campaign
-  end
+    kol_1.save
+    campaign = FactoryGirl.create(:campaign, campaign_params.merge(:user_id => user.id, :status => "unexecute"))
 
-  def approve_campaign_by_admin_user campaign, kol
-    campaign.update_column(:status, "agreed")
-    campaign.send_invites([kol_1.id])
+    campaign_action_url = FactoryGirl.create(:campaign_action_url, :campaign_id => campaign.id, :action_url => "http://baidu.com")
+    
+    campaign.status = "agreed"
+    campaign.save
+
+    campaign.go_start
+
+    campaign.reload
   end
 
   def approve_campaign campaign_invite
@@ -115,5 +125,11 @@ RSpec.describe CampaignShow, :type => :model do
 
   def clear_redis_cache campaign, visitor_cookies
     Rails.cache.delete visitor_cookies.to_s + campaign.id.to_s
+    campaign.redis_avail_click.clear
+    campaign.redis_total_click.clear
+    CampaignInvite.all.each do |invite|
+      invite.redis_total_click.clear
+      invite.redis_avail_click.clear
+    end
   end
 end

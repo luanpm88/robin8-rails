@@ -186,7 +186,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && self.per_budget_type == "click"
+    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa?)
       finish('fee_end')
     end
   end
@@ -202,9 +202,12 @@ class Campaign < ActiveRecord::Base
         if Rails.env.production?
           CampaignWorker.perform_at(self.deadline + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
           CampaignWorker.perform_at(self.deadline + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
-        else
+        elsif Rails.env.development? or Rails.env.staging?
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+        elsif Rails.env.test?
+          CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
+          CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
         end
       end
     end
@@ -304,7 +307,7 @@ class Campaign < ActiveRecord::Base
       end
     elsif (self.status_changed? && status == 'agreed')
       Rails.logger.campaign.info "--------agreed_job:  ---#{self.id}-----#{self.inspect}"
-      if Rails.env.development?
+      if Rails.env.development? or Rails.env.test?
         CampaignWorker.new.perform(self.id, 'send_invites')
       else
         CampaignWorker.perform_async(self.id, 'send_invites')
