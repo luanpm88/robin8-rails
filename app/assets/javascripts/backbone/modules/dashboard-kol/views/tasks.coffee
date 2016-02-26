@@ -284,7 +284,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
             parentThis.model.collection.remove parentThis.model
             $.ajax
               type: 'get'
-              url: '/campaign_invite/' + parentThis.model.get('id')
+              url: '/campaign_invite_by_campaign/' + parentThis.model.get('id')
               dataType: 'json'
               success: (data) ->
                 console.log 'get campaign_invite: ', data
