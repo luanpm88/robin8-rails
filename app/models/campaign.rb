@@ -32,7 +32,7 @@ class Campaign < ActiveRecord::Base
   scope :order_by_status, -> { order("case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
                           start_time desc") }
 
-
+  scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   after_save :create_job
 
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
@@ -189,13 +189,8 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        if Rails.env.production?
-          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
-        else
-          CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-          CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
-        end
+        CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+        CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
       end
     end
   end
@@ -252,7 +247,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
     return if self.status != 'executed'
     #首先先付款给期间审核的kol
-    settle_accounts_for_kol
+    # settle_accounts_for_kol
     #没审核通过的设置为拒绝
     self.finish_need_check_invites.update_all(:img_status => 'rejected')
     ActiveRecord::Base.transaction do
@@ -399,7 +394,7 @@ class Campaign < ActiveRecord::Base
     elsif invite.new_record? && self.status == 'unexecuting'
       invite.status = 'pending'
     elsif invite.new_record? && (self.status == 'executed' ||  self.status == 'settled')
-      invite.status = 'rejected'
+      invite.status = 'missed'
     end
     invite
   end
