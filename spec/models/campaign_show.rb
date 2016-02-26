@@ -78,8 +78,8 @@ RSpec.describe CampaignShow, :type => :model do
 
     brand_1.reload
     
+    approve_campaign campaign
     campaign_invite = CampaignInvite.find_by :kol_id => kol_1.id, :campaign_id => campaign.id
-    approve_campaign campaign_invite
     
     expect{
       CampaignShowWorker.new.perform(campaign_invite.uuid, "vistor_01", '127.0.0.1', 'user agent', "referer", {})
@@ -117,10 +117,8 @@ RSpec.describe CampaignShow, :type => :model do
     campaign.reload
   end
 
-  def approve_campaign campaign_invite
-    campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
-    campaign_invite.generate_uuid_and_share_url
-    campaign_invite.reload
+  def approve_campaign campaign
+    kol_1.approve_campaign campaign.id
   end
 
   def clear_redis_cache campaign, visitor_cookies
