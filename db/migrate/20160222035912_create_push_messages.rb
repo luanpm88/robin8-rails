@@ -1,5 +1,8 @@
 class CreatePushMessages < ActiveRecord::Migration
   def change
+    if ActiveRecord::Base.connection.table_exists? 'push_messages'
+      drop_table 'push_messages'
+    end
     create_table :push_messages do |t|
       t.string :title
       t.string :receiver_type
@@ -14,6 +17,7 @@ class CreatePushMessages < ActiveRecord::Migration
       t.text :result_serial
       t.string :details
       t.string :task_id
+      t.string :status
 
       t.timestamps null: false
     end

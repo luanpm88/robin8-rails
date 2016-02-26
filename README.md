@@ -18,5 +18,5 @@ Starting MailCatcher
 ### 2.0 新配置
 * 加入七牛账号
 * 加入个推账号
-* rake regions:import
-*
+* rake china_regions:import
+* 新增app_upgrade 数据
