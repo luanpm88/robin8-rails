@@ -1,9 +1,5 @@
 class CampaignsSerializer < ActiveModel::Serializer
-<<<<<<< HEAD
-  attributes :id, :name, :description, :deadline, :budget, :created_at, :updated_at, :user, :tracking_code, :concepts, :summaries, :hashtags, :invite_status, :short_description, :content_type, :non_cash, :iptc_categories, :interested, :campaign_action_urls
-=======
-  attributes :id, :name, :description, :img_url, :per_budget_type, :per_action_budget, :start_time, :deadline, :remain_budget, :message, :url, :has_img
->>>>>>> master2
+  attributes :id, :name, :description, :img_url, :per_budget_type, :per_action_budget, :start_time, :deadline, :remain_budget, :message, :url, :has_img, :campaign_action_urls
 
   def img_url
     object.img_url.present? ? object.campaign.img_url : ActionController::Base.helpers.asset_path('campaign_default_img.png')
