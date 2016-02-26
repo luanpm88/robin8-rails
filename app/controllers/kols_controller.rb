@@ -206,7 +206,7 @@ class KolsController < ApplicationController
         return render json: {rucaptcha_not_right: true}
       end
     end
-
+    
     phone_number = params[:phone_number]
     if Rails.env.development?
       ms_client = YunPian::SendRegisterSms.new(phone_number)
@@ -259,7 +259,7 @@ class KolsController < ApplicationController
   def sms_request_is_valid_for_login_user?
     return false unless current_kol
     key = "kol_#{current_kol.id}_send_sms_count"
-    send_count =  Rails.cache.fetch(ip_key).to_i || 1
+    send_count =  Rails.cache.fetch(key).to_i || 1
     Rails.cache.write(key, send_count + 1, :expires_in => 360.seconds)
 
     Rails.logger.sms_spider.error "kol #{current_kol.id}, tel #{current_kol.mobile_number} send sms #{send_count}"
@@ -282,19 +282,21 @@ class KolsController < ApplicationController
 
     ips = Rails.cache.fetch("spider_ip_from_kol_6579")
 
+
+    ip_key = "#{request.ip}_visitor_count"
+    send_count =  Rails.cache.fetch(ip_key).to_i || 1
+    
     if ips && ips.include?(request.ip)
       Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次, 且存在在爬虫黑名单中")
       return false
     end
 
-    ip_key = "#{request.ip}_visitor_count"
-    send_count =  Rails.cache.fetch(ip_key).to_i || 1
     Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次")
     Rails.cache.write(ip_key, send_count + 1, :expires_in => 360.seconds)
 
     key = cookies[:_robin8_visitor] + "send_sms"
     send_count =  Rails.cache.fetch(key).to_i || 1
-    Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封,.---- 已经尝试#{send_count} 次")
+    Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "已经尝试#{send_count} 次")
     Rails.cache.write(key, send_count + 1, :expires_in => 360.seconds)
     
     if send_count > 10
