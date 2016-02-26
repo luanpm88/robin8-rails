@@ -14,6 +14,7 @@ class CreatePushMessages < ActiveRecord::Migration
       t.text :result_serial
       t.string :details
       t.string :task_id
+      t.string :status
 
       t.timestamps null: false
     end
