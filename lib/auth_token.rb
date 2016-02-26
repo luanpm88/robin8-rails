@@ -31,8 +31,8 @@ module AuthToken
     end
   end
 
-  def AuthToken.test_issue_token
-    kol = Kol.find 84
+  def AuthToken.test_issue_token(mobile_number = '13817164642')
+    kol = Kol.find_by :mobile_number => mobile_number
     payload = {Key => kol.get_private_token, :time => Time.now.to_i}
     token = JWT.encode(payload, Secret, Algorithm)
     puts token
