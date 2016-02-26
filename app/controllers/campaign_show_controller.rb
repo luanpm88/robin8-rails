@@ -12,15 +12,16 @@ class CampaignShowController < ApplicationController
 
     Rails.logger.info "-----show ---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
 
+    if @campaign and @campaign.is_cpa?
+      return deal_with_cpa_campaign uuid_params
+    end
+
     if @campaign.status == 'agreed' ||  @campaign_invite.blank? || (request.user_agent.include?("Jakarta Commons-HttpClient")  rescue false)
       redirect_to @campaign.url
-    elsif @campaign
-      if @campaign.is_cpa?
-        deal_with_cpa_campaign uuid_params
-      else
-        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, other_options)
-        redirect_to @campaign.url
-      end
+    else
+      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, other_options)
+      redirect_to @campaign.url
+      # end
     end
   end
 
@@ -37,6 +38,11 @@ class CampaignShowController < ApplicationController
 
   private
   def deal_with_cpa_campaign uuid_params
+    if ["unexecute", "agreed"].include?(@campaign.status)
+      redirect_to @campaign.url
+      return
+    end
+
     uuid_params.symbolize_keys!
     other_options = {}
     other_options[:step] = (uuid_params[:step] || 1).to_i
