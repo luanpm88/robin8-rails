@@ -3,7 +3,7 @@ module API
     module Entities
       module TagEntities
         class Summary < Grape::Entity
-          expose :name, :label
+          expose :name, :label, :cover_url
         end
       end
     end
