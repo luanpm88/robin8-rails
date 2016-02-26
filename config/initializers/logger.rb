@@ -10,3 +10,5 @@ MultiLogger.add_logger('campaign', formatter: formatter)
 MultiLogger.add_logger('campaign_sidekiq', formatter: formatter)
 MultiLogger.add_logger('campaign_show_sidekiq', formatter: formatter)
 
+MultiLogger.add_logger('pusher', formatter: formatter)
+

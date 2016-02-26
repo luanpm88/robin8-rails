@@ -15,6 +15,12 @@ module API
           to_paginate(transactions)
           present :transactions, transactions, with: API::V1::Entities::TransactionEntities::Summary
         end
+
+        get 'recent_income' do
+          recent_income = current_kol.recent_income
+          present :error, 0
+          present :stats, recent_income
+        end
       end
     end
   end

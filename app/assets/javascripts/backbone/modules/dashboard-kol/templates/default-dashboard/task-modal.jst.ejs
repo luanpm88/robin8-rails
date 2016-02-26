@@ -14,12 +14,16 @@
 
         <p>
           <i class='glyphicon glyphicon-exclamation-sign'></i> 接受状态：
-          <% if(item.status=='running'){ %>
-            未接受
-          <% }else if(item.status=='approved'){ %>
-            已接受
+          <% if(item.status){ %>
+            <% if(item.status=='running'){ %>
+              未接受
+            <% }else if(item.status=='approved'){ %>
+              已接受
+            <% }else{ %>
+              已完成
+            <% } %>
           <% }else{ %>
-            已完成
+            未接受
           <% } %>
         </p>
 
@@ -112,7 +116,7 @@
         <hr>
         <% } %>
         <p>
-          <% if(item.status=='running'){ %>
+          <% if(!item.status){ %>
             注意：请点击「接受」按钮接受这次活动
           <% } %>
         </p>
@@ -128,7 +132,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <% if(item.status=='running') { %>
+        <% if(!item.status) { %>
           <% if(needComplete){ %>
             <a class='triggerMark btn disabled' disabled="disabled"><i class='glyphicon glyphicon-ok'></i>&nbsp;接受</a>
             <a class='triggerComplete btn btn-primary'><i class='glyphicon glyphicon-ok'></i>&nbsp;完善资料</a>

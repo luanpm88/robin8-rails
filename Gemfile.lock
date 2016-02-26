@@ -277,6 +277,9 @@ GEM
     i18n_data (0.7.0)
     ice_cube (0.11.1)
     ice_nine (0.11.1)
+    igetui-ruby (1.2.2)
+      json (~> 1.8, >= 1.8.1)
+      ruby-protocol-buffers (~> 1.5, >= 1.5.1)
     imgkit (1.6.1)
     inherited_resources (1.6.0)
       actionpack (>= 3.2, < 5)
@@ -478,7 +481,7 @@ GEM
     rails-assets-bootstrap.growl (2.0.1)
       rails-assets-bootstrap (>= 2.0.0)
       rails-assets-jquery (>= 1.10.2)
-    rails-assets-datatables (1.10.10)
+    rails-assets-datatables (1.10.11)
       rails-assets-jquery (>= 1.7.0)
     rails-assets-datatables-tabletools (2.2.4)
       rails-assets-datatables (>= 1.9.0)
@@ -490,10 +493,10 @@ GEM
       rails-assets-moment-timezone (>= 0.4.0)
     rails-assets-font-awsome (4.3.0)
     rails-assets-jquery (2.2.0)
-    rails-assets-moment (2.11.1)
+    rails-assets-moment (2.11.2)
     rails-assets-moment-timezone (0.5.0)
       rails-assets-moment (>= 2.6.0)
-    rails-assets-momentjs (2.11.1)
+    rails-assets-momentjs (2.11.2)
     rails-assets-please-wait (0.0.5)
     rails-assets-sass-bootstrap-glyphicons (1.0.0)
     rails-assets-select2 (3.5.2)
@@ -502,7 +505,7 @@ GEM
       rails-assets-select2 (>= 3.3.2, < 4)
     rails-assets-spinjs (2.3.2)
     rails-assets-spinkit (1.2.5)
-    rails-assets-timeago (1.5.0)
+    rails-assets-timeago (1.5.2)
       rails-assets-jquery (>= 1.4)
     rails-assets-underscore (1.6.0)
     rails-assets-underscore.inflection (1.1.1)
@@ -590,6 +593,7 @@ GEM
       sidekiq (>= 2.4.0)
     rspec-support (3.2.2)
     ruby-hmac (0.4.0)
+    ruby-protocol-buffers (1.6.1)
     rubyzip (1.1.7)
     sass (3.4.14)
     sass-rails (5.0.3)
@@ -748,6 +752,7 @@ DEPENDENCIES
   hpricot
   htmlentities
   httparty
+  igetui-ruby
   imgkit
   jbuilder (~> 2.0)
   jquery-rails

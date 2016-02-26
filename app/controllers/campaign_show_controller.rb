@@ -7,11 +7,12 @@ class CampaignShowController < ApplicationController
 
     campaign_id = uuid_params['campaign_id']
     @campaign = Campaign.find campaign_id rescue nil
+    @campaign_invite = CampaignInvite.find_by(:uuid => params[:uuid])     rescue nil
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
-    
+
     Rails.logger.info "-----show ---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-    
-    if @campaign && @campaign.status == 'agreed'
+
+    if @campaign.status == 'agreed' ||  @campaign_invite.blank? || (request.user_agent.include?("Jakarta Commons-HttpClient")  rescue false)
       redirect_to @campaign.url
     elsif @campaign
       if @campaign.is_cpa?

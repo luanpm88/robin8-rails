@@ -75,6 +75,16 @@ namespace :deploy do
     end
   end
 
+  task :import_regions do
+    on roles(:db)  do
+      within "#{current_path}" do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'china_regions:import'
+        end
+      end
+    end
+  end
+
   desc "Update the crontab file"
   task :update_crontab do
     on roles :app do

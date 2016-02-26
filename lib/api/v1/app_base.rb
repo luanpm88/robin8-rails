@@ -1,3 +1,5 @@
+
+Dir["#{Rails.root}/lib/api/v1/entities/*.rb"].each { |file| require file }
 module API
   module V1
     class AppBase < API::Application
@@ -9,6 +11,11 @@ module API
       mount API::V1::Campaigns
       mount API::V1::CampaignInvites
       mount API::V1::Transactions
+      mount API::V1::Cities
+      mount API::V1::Withdraws
+      mount API::V1::Messages
+      mount API::V1::Feedbacks
+      mount API::V1::Upgrades
     end
   end
 end

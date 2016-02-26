@@ -282,15 +282,21 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (data) ->
           if data.status == 'ok'
             parentThis.model.collection.remove parentThis.model
-            $('a#running').append('<span class="badge">1</span>')
-            parentThis.model.set('status', 'approved')
-            updatedView = new Show.TaskModal
-              model: parentThis.model
-            updatedViewHtml = updatedView.render().$el
-            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
-            $('.triggerMark').remove()
-            parentThis.upload_screenshot_count_down()
-            parentThis.initQiniuUploader()
+            $.ajax
+              type: 'get'
+              url: '/campaign_invite/' + parentThis.model.get('id')
+              dataType: 'json'
+              success: (data) ->
+                console.log 'get campaign_invite: ', data
+                model = new Robin.Models.CampaignInvitation data
+                $('a#running').append('<span class="badge">1</span>')
+                updatedView = new Show.TaskModal
+                  model: model
+                updatedViewHtml = updatedView.render().$el
+                parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+                $('.triggerMark').remove()
+                parentThis.upload_screenshot_count_down()
+                parentThis.initQiniuUploader()
           else if data.status == 'needMobile'
             console.log 'need mobile'
             updatedView = new Show.TaskModal

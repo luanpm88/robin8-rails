@@ -6,40 +6,40 @@ module API
           authenticate!
         end
 
-        get 'stat_summary' do
-          invites = current_kol.campaign_invites.unrejected
-          all_count = invites.size
-          running_count = invites.running.size
-          approved_count = invites.approved.size
-          verifying_count = invites.verifying.size
-          settled_count = invites.settled.size
-          stat = {:all_count => all_count, :running_count => running_count, :approved_count => approved_count,
-                  :verifying_count => verifying_count, :settled_count => settled_count }
-          return {:error => 0, :stat => stat}
-        end
-
         params do
-          requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'settled', 'liked']
+          requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'completed', 'missed', 'liked']
           optional :page, type: Integer
+          optional :title, type: String
+          optional :with_message_stat, type: String, values: ['y','n']
         end
+        #TODO 使用搜索插件
         get '/' do
-          if params[:status] == 'like'
-            like_campaign_ids = current_user.like_campaigns.collect{|t| t.campaign_id }
-            @campaign_invites = current_kol.campaign_invites.where(:campaign_id => like_campaign_ids )
-          else
-            hide_campaign_ids = current_kol.hide_campaigns.collect{|t| t.campaign_id }
-            if params[:status] == 'all'
-              @campaign_invites = current_kol.campaign_invites.unrejected.where.not(:campaign_id => hide_campaign_ids)
-            else
-              @campaign_invites = current_kol.campaign_invites.send(params[:status]).where.not(:campaign_id => hide_campaign_ids)
-            end
-          end
-          @campaign_invites = @campaign_invites.page(params[:page]).per_page(10)
           present :error, 0
-          to_paginate(@campaign_invites)
-          present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
+          present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
+          if  params[:status] == 'all'
+            @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").
+              where(:id => current_kol.receive_campaign_ids.values).
+              order_by_status.page(params[:page]).per_page(10)
+            @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+            to_paginate(@campaigns)
+            present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
+          elsif params[:status] == 'running'
+            @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
+            @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+            to_paginate(@campaigns)
+            present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
+          elsif params[:status] == 'missed'
+            @campaigns = current_kol.missed_campaigns.order_by_start.page(params[:page]).per_page(10)
+            @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
+            to_paginate(@campaigns)
+            present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
+          else
+            @campaign_invites = current_kol.campaign_invites.send(params[:status]).order("campaign_invites.created_at desc")
+                                .page(params[:page]).per_page(10)
+            to_paginate(@campaign_invites)
+            present :campaign_invites, @campaign_invites.includes(:campaign), with: API::V1::Entities::CampaignInviteEntities::Summary
+          end
         end
-
 
         #活动邀请详情
         params do
@@ -71,16 +71,17 @@ module API
             CampaignWorker.perform_async(@campaign.id, 'fee_end')
             return error_403!({error: 1, detail: '该活动已经结束！' })
           else
-            campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
+            campaign_invite.approve
             campaign_invite.reload
             present :error, 0
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
           end
         end
 
+        ## 上传截图
         params do
           requires :id, type: Integer
-          requires :screenshot, type:File   if !Rails.env.development?
+          # requires :screenshot, type: File   if !Rails.env.development?
         end
         put ':id/upload_screenshot' do
           params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?
@@ -91,7 +92,9 @@ module API
           elsif campaign_invite.can_upload_screenshot
             uploader = AvatarUploader.new
             uploader.store!(params[:screenshot])
-            return {:error => 0, :detail => uploader.url }
+            campaign_invite.screenshot = uploader.url
+            campaign_invite.save
+            return {:error => 0, :screenshot_url => uploader.url }
           else
             return error_403!({error: 1, detail: '该活动已经过了上传截图时间' })
           end
@@ -168,8 +171,8 @@ module API
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该营销活动不存在' })
           else
-            campaign_invite.increase!(:share_count)
-            return {:error => 0, :detail => '已转发！'}
+            campaign_invite.increment!(:share_count,1)
+            return {:error => 0, :detail => '转发成功！'}
           end
         end
       end

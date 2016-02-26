@@ -41,7 +41,7 @@
           </td>
 
           <td>
-            模式
+            <%= @campaigns[i].per_budget_type%>
           </td>
 
           <td>
@@ -57,7 +57,11 @@
           </td>
 
           <td>
-            <%= (@campaigns[i].per_action_budget * @campaign_invites[i].avail_click).round(2) %>
+            <% if @campaigns[i].is_click_type? %>
+              <%= (@campaigns[i].per_action_budget * @campaign_invites[i].avail_click).round(2) %>
+            <% else %>
+              <%= (@campaigns[i].per_action_budget).round(2) %>
+            <% end %>
           </td>
 
           <td>

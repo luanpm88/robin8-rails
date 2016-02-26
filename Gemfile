@@ -211,3 +211,5 @@ gem 'jwt'
 
 gem 'carrierwave'
 gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
+
+gem 'igetui-ruby', require: 'igetui'

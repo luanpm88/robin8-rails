@@ -7,7 +7,7 @@ module AuthToken
   if Rails.env.production?
     Expired = 1.hours
   else
-    Expired = 50.hours
+    Expired = 5000.hours
   end
 
   def AuthToken.issue_token(private_token)
