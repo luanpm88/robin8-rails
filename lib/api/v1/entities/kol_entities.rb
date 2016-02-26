@@ -3,8 +3,11 @@ module API
     module Entities
       module KolEntities
         class Summary < Grape::Entity
-          expose :email, :mobile_number, :name, :gender, :date_of_birthday,
+          expose :email, :mobile_number, :gender, :date_of_birthday,
                  :alipay_account, :desc
+          expose :name do  |kol|
+            kol.name || kol.mobile_number
+          end
           expose :country do |kol|
             kol.app_country
           end
