@@ -95,12 +95,17 @@ class CampaignInvite < ActiveRecord::Base
     status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
   end
 
+
   def self.origin_share_url(uuid)
     "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"          rescue nil
   end
 
   def self.generate_share_url(uuid)
     ShortUrl.convert origin_share_url(uuid)
+  end
+
+  def origin_share_url
+    "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
   end
 
   def earn_money

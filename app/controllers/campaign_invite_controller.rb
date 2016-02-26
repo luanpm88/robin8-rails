@@ -72,7 +72,7 @@ class CampaignInviteController < ApplicationController
     # todo this line appear too many times
     return render :json => { error: 'no available kol!' } if current_kol.blank?
 
-    campaign = CampaignInvite.find params[:campaign_id]
+    campaign = Campaign.find params[:campaign_id]
 
     campaign_invite = CampaignInvite.where(:kol => current_kol, :campaign => campaign).first
 
