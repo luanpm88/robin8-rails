@@ -1,4 +1,4 @@
-class InitTags < ActiveRecord::Migration
+class InitTagsAndUpgrade < ActiveRecord::Migration
   def change
     tags = {
       food:	"美食",
@@ -25,8 +25,8 @@ class InitTags < ActiveRecord::Migration
       start += 1
     end
 
-    AppUpgrade.create(:app_platform => "IOS", :app_version => '1.0.0', :release_at => Time.now, :release_note => "首次发布", :download => 'http://www.robin8.net')
-    AppUpgrade.create(:app_platform => "Andriod", :app_version => '1.0.0', :release_at => Time.now, :release_note => "首次发布", :download => 'http://www.robin8.net')
+    AppUpgrade.create(:app_platform => "IOS", :app_version => '1.0.0', :release_at => Time.now, :release_note => "首次发布", :download_url => 'http://www.robin8.net')
+    AppUpgrade.create(:app_platform => "Andriod", :app_version => '1.0.0', :release_at => Time.now, :release_note => "首次发布", :download_url => 'http://www.robin8.net')
 
   end
 end
