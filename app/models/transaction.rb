@@ -21,6 +21,8 @@ class Transaction < ActiveRecord::Base
         '人工充值'
       when 'manual_withdraw'
         '人工提现'
+      when 'withdraw'
+        '提现'
     end
 
   end
