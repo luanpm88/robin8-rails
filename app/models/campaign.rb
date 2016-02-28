@@ -43,7 +43,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def upload_screenshot_deadline
-    self.deadline +  SettleWaitTimeForKol
+    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForKol
   end
 
   def is_cpa?
@@ -196,10 +196,9 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-
         if Rails.env.production?
-          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
         elsif Rails.env.development? or Rails.env.staging?
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
@@ -207,7 +206,6 @@ class Campaign < ActiveRecord::Base
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
         end
-
       end
     end
   end
