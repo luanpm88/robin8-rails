@@ -93,6 +93,7 @@ module API
             uploader = AvatarUploader.new
             uploader.store!(params[:screenshot])
             campaign_invite.screenshot = uploader.url
+            campaign_invite.img_status = 'pending'
             campaign_invite.save
             return {:error => 0, :screenshot_url => uploader.url }
           else

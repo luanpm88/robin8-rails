@@ -216,6 +216,7 @@ class Campaign < ActiveRecord::Base
     self.total_click = self.redis_total_click.value
     self.status = 'executed'
     self.finish_remark = finish_remark
+    Rails.logger.campaign.info "======update_info----#{Time.now}"
     self.actual_deadline_time = Time.now
     self.save!
   end
