@@ -19,14 +19,17 @@ module AuthToken
     begin
       decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
       if decoded_data['time'].blank? || decoded_data[Key].blank?
+        Rails.logger.info "-----decoded data: #{decoded_data} --- 格式错误"
         return [false, '格式错误' ]
       end
-      if decoded_data['time'].to_i > (Time.now - Expired).to_i && decoded_data['time'].to_i <= Time.now.to_i
+      if decoded_data['time'].to_i > (Time.now - Expired).to_i && (decoded_data['time'].to_i <= (Time.now + 10.minutes).to_i)
         return [true, decoded_data[Key]]
       else
+        Rails.logger.info "-----decoded data: #{decoded_data} --#{Time.now.to_i}--- token已经过期"
         return [false, 'token已经过期' ]
       end
     rescue
+      Rails.logger.info "-----  data: #{data} --- unknow"
       return [false, 'unknow']
     end
   end
