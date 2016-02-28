@@ -351,7 +351,7 @@ class Kol < ActiveRecord::Base
     if (campaign_invite && campaign_invite.status == 'running')  || campaign_invite.new_record?
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
       campaign_invite.approved_at = Time.now
-      campaign_invite.status = 'running'
+      campaign_invite.status = 'approved'
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
