@@ -220,6 +220,9 @@ class Campaign < ActiveRecord::Base
         invite.status = 'finished'
         invite.avail_click = invite.redis_avail_click.value
         invite.total_click = invite.redis_total_click.value
+      elsif
+        # receive but not apporve  we must delete
+        invite.delete
       else
         invite.status = 'rejected'
       end

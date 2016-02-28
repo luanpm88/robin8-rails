@@ -97,7 +97,7 @@ module API
             campaign_invite.save
             return {:error => 0, :screenshot_url => uploader.url }
           else
-            return error_403!({error: 1, detail: '该活动已经过了上传截图时间' })
+            return error_403!({error: 1, detail: '该活动已错过上传截图时间' })
           end
         end
 
@@ -171,9 +171,12 @@ module API
           campaign = campaign_invite.campaign  rescue nil
           if campaign_invite.blank?  || campaign.blank?
             return error_403!({error: 1, detail: '该营销活动不存在' })
+          elsif campaign_invite.status != 'running'
+            return error_403!({error: 1, detail: '该营销活动已转发成功' })
           else
-            campaign_invite.increment!(:share_count,1)
-            return {:error => 0, :detail => '转发成功！'}
+            campaign_invite = current_kol.share_campaign_invite(params[:id])
+            present :error, 0
+            present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
           end
         end
       end
