@@ -15,7 +15,7 @@ class InitApprovingCampaignIdsFromInvites < ActiveRecord::Migration
       end
 
       # remove history rejected status as miss and get running from redis
-      CampaignInvite.where(:kol_id => kol.id).where("status = 'rejected' or status = 'running' or status ='pending'").delete_all
+      CampaignInvite.where(:kol_id => kol.id).where("status = 'rejected'  or status ='pending'").delete_all
     end
 
   end
