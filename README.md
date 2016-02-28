@@ -20,3 +20,4 @@ Starting MailCatcher
 * 加入个推账号
 * rake china_regions:import
 * 新增app_upgrade 数据
+* 配置 identify_enabled

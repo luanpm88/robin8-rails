@@ -63,9 +63,14 @@ module API
           if !kol
             ActiveRecord::Base.transaction do
               kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
-                                device_token: params[:device_token], name: params[:name], avatar: params[:avatar_url],
+                                device_token: params[:device_token], name: params[:name],
                                 social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
                                 IMEI: params[:IMEI], IDFA: params[:IDFA])
+              #保存头像
+              if params[:avatar_url].present?
+                kol.remote_avatar_url =  params[:avatar_url]
+                kol.save
+              end
               if identity.blank?
                 attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
                 identity = Identity.new
