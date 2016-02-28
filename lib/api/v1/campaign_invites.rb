@@ -176,7 +176,7 @@ module API
           else
             campaign_invite = current_kol.share_campaign_invite(params[:id])
             present :error, 0
-            present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
+            present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end
         end
       end
