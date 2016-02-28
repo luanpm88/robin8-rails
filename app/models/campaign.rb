@@ -35,8 +35,8 @@ class Campaign < ActiveRecord::Base
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   after_save :create_job
 
-  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
-  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
+  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
+  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 4.hours
   def email
     user.try :email
   end
@@ -138,6 +138,7 @@ class Campaign < ActiveRecord::Base
         kol.add_campaign_id campaign_id
       end
     else
+      #TODO multi-thread deal
       Kol.find_each do |kol|
         kol.add_campaign_id(campaign_id,false)
       end
@@ -255,7 +256,7 @@ class Campaign < ActiveRecord::Base
     #首先先付款给期间审核的kol
     # settle_accounts_for_kol
     #没审核通过的设置为拒绝
-    self.finish_need_check_invites.update_all(:img_status => 'rejected')
+    self.finish_need_check_invites.update_all(:status => 'rejected', :img_status => 'rejected')
     ActiveRecord::Base.transaction do
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)
