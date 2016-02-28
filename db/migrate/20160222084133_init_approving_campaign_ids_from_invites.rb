@@ -3,7 +3,7 @@ class InitApprovingCampaignIdsFromInvites < ActiveRecord::Migration
     #删除以前无效 invites
     CampaignInvite.where("uuid is null and id < 163 ").delete_all
     # 历史无上传截图的 (status 还是rejected)
-    CampaignInvite.joins(:campaign).where("campaign_invites.status = 'finished' or campaign_invites.status ='rejected' and campaigns.status='settled'").each do |campaign_invite|
+    CampaignInvite.joins(:campaign).where("campaign_invites.status = 'finished' and campaign_invites.img_status ='rejected' and campaigns.status='settled'").each do |campaign_invite|
       campaign_invite.status = 'rejected'
       campaign_invite.save
     end
