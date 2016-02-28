@@ -31,7 +31,7 @@
             <div class="value">￥<%= budget %></div>
           </div>
           <div class="col-md-5">
-            <% if (per_budget_type == "click") {%>
+            <% if (per_budget_type == "click" || per_budget_type == "cpa") {%>
               <div class="name"><%= polyglot.t("smart_campaign.stats.per_action_budget") %></div>
               <div class="value">￥<%= per_action_budget %>/<%= polyglot.t("smart_campaign.stats.click") %></div>
             <% } else { %>
@@ -42,7 +42,7 @@
         </div>
         <div class="row">
           <div class="col-md-5">
-            <% if (per_budget_type == "click") {%>
+            <% if (per_budget_type == "click" || per_budget_type == "cpa" ) {%>
               <div class="name"><%= polyglot.t("smart_campaign.stats.avail_click") %></div>
               <div class="value"><%= get_avail_click %></div>
             <% } else { %>
