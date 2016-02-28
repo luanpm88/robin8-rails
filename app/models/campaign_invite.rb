@@ -7,7 +7,7 @@ class CampaignInvite < ActiveRecord::Base
 
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
-  UploadScreenshotWait = 30.minutes
+  UploadScreenshotWait = Rails.env.production? ? 30.minutes  : 3.minutes
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
