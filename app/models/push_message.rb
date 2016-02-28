@@ -9,18 +9,18 @@ class PushMessage < ActiveRecord::Base
   after_commit :async_send_to_client, :on => :create
   # template_type  'transmission', 'notification'       =>   'transmission'
 
-  def self.get_title(message)
-    if message.message_type == 'income'
-      "您有一笔新收入"
-    elsif message.message_type == 'campaign'
-      "您有一个新的活动"
-    elsif message.message_type ==  'announcement'
-      "您有一个新的公告"
-    end
-  end
+  # def self.get_title(message)
+  #   if message.message_type == 'income'
+  #     "您有一笔新收入"
+  #   elsif message.message_type == 'campaign'
+  #     "邀请您参与转发"
+  #   elsif message.message_type ==  'announcement'
+  #     "您有一个新的公告"
+  #   end
+  # end
 
   def self.transmission_template_content(message)
-    content = {:action => message.message_type, :title => get_title(message)}
+    content = {:action => message.message_type, :title => message.title, :sender => message.sender, :name => message.name}
     if message.message_type == 'income'
       receiver = message.receiver
       new_income =  receiver.new_income
@@ -48,17 +48,17 @@ class PushMessage < ActiveRecord::Base
     if message.message_type == 'income'
       receiver = message.receiver
       push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
-                              :title => get_title(message), :receiver_cids => [receiver.device_token] )
+                              :title => message.title, :receiver_cids => [receiver.device_token] )
       push_message.template_content = transmission_template_content(message)
       push_message.save
     elsif message.message_type == 'announcement'
-      push_message = self.new(:receiver_type => 'All', :template_type => 'transmission', :title => get_title(message),
+      push_message = self.new(:receiver_type => 'All', :template_type => 'transmission', :title => message.title,
                               :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
       push_message.template_content = transmission_template_content(message)
       push_message.save
     elsif message.message_type == 'campaign'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
-                              :title => get_title(message))
+                              :title => message.title)
       if message.receiver_type == 'All'
         push_message.receiver_type = 'App'
         push_message.receiver_list = {:app_id_list => [GeTui::Dispatcher::AppId] }
