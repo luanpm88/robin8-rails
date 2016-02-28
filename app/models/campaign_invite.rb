@@ -77,9 +77,9 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def reupload_screenshot(img)
+  def reupload_screenshot(img_url)
     self.img_status = 'pending'
-    self.screenshot = img
+    self.screenshot = img_url
     self.save
     Rails.logger.info "---kol_id:#{self.kol_id}----- reupload_screenshot: ---cid:#{campaign.id}--"
   end
