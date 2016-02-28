@@ -16,6 +16,7 @@ module API
       mount API::V1::Messages
       mount API::V1::Feedbacks
       mount API::V1::Upgrades
+      mount API::V1::Configs
     end
   end
 end
