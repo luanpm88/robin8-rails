@@ -58,7 +58,6 @@ module API
 
 
         #更换手机
-        #第三方登陆后绑定手机
         params do
           requires :mobile_number, type: Integer, regexp: /\d{11}/
           requires :code, type: Integer
@@ -76,7 +75,33 @@ module API
               current_kol.reset_private_token
               present :error, 0
               present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
-              # return {:error => 0, :detail => '更换成功'}
+            end
+          end
+        end
+
+
+        #第三方账号绑定手机号
+        params do
+          requires :mobile_number, type: Integer, regexp: /\d{11}/
+          requires :code, type: Integer
+        end
+        put 'bind_mobile' do
+          if !YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
+            return error_403!({error: 1, detail: '验证码与手机号码不匹配!'})
+          else
+            mobile_kol = Kol.find_by(:mobile_number => params[:mobile_number])
+            # 如果该手机号码在系统存在，此时需要把当前用户的identity 转移到mobil_kol身上，同时把当前用户删除
+            if mobile_kol
+              Identity.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
+              mobile_kol.reset_private_token
+              present :error, 0
+              present :kol, mobile_kol, with: API::V1::Entities::KolEntities::Summary
+            else
+              current_kol.update_column(:mobile_number, params[:mobile_number])
+              current_kol.update_column(:name, params[:mobile_number])    if current_kol.name.blank?
+              current_kol.reset_private_token
+              present :error, 0
+              present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
             end
           end
         end
