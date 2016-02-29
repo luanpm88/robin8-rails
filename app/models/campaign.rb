@@ -31,7 +31,7 @@ class Campaign < ActiveRecord::Base
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :order_by_start, -> { order('start_time desc')}
   scope :order_by_status, -> { order("case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
-                          start_time desc") }
+                                      start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   after_save :create_job
