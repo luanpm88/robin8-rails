@@ -57,6 +57,7 @@ module API
                 attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
                 identity = Identity.new
                 identity.attributes = attrs
+                identity.from_type = 'app'
                 identity.kol_id = kol.id
                 identity.save
               end

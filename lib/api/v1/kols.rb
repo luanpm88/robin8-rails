@@ -109,7 +109,7 @@ module API
         #第三方账号列表
         get 'identities' do
           present :error, 0
-          present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          present :identities, current_kol.identities.from_app, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #用户绑定第三方账号
@@ -130,6 +130,7 @@ module API
             identity = Identity.new
             identity.attributes = attrs
             identity.kol_id = current_kol.id
+            identity.from_type = 'app'
             identity.save
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
             if params[:avatar_url].present? && kol.avatar.url.blank?
