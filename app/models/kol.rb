@@ -199,7 +199,7 @@ class Kol < ActiveRecord::Base
   def today_post_campaign_income
     income = 0
     self.campaign_invites.today_approved.includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && !invite.campaign.is_click_type?  )
+      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && invite.campaign.is_post_type?  )
     end
     income
   end

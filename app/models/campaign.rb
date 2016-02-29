@@ -278,7 +278,7 @@ class Campaign < ActiveRecord::Base
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)
       Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-      if is_click_type?
+      if is_click_type?  || campaign.is_cpa?
         pay_total_click = self.settled_invites.sum(:avail_click)
         self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
         Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
