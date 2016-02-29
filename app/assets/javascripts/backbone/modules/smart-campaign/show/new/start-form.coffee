@@ -72,18 +72,43 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         @initFormValidation()
         @initQiniuUploader()
         @initChoosePerBudgetType()
+        @choosePerBudgetType()
         @initCreateCampaignModal()
 
         $(".budget_input").focus()
         $(".campaign_name_input").focus()
 
     initChoosePerBudgetType: ->
-      if @model.attributes.per_budget_type == null
-        $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
-      else if @model.attributes.per_budget_type == 'click'
+      $('[data-toggle="popover"]').popover()
+      if @model.attributes.per_budget_type == 'click'
         $('input:radio[name="action_type"]').filter('[value=click]').prop('checked', true)
+      else if @model.attributes.per_budget_type == 'post'
+        $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
+      else if @model.attributes.per_budget_type == 'cpa'
+        $('input:radio[name="action_type"]').filter('[value=action]').prop('checked', true)
+        $(".action-urls").show()
+        $(".more-action-urls").show()
+        action_urls_length = @model.attributes.get_campaign_action_urls.length
+        i = 0
+        while i < action_urls_length
+          action_url_input = $('[name="option[]"]')[i]
+          action_url_input.value = @model.attributes.get_campaign_action_urls[i].action_url
+          i++
+          if i < action_urls_length
+            $(".addButton").click()
       else
         $('input:radio[name="action_type"]').filter('[value=post]').prop('checked', true)
+
+    choosePerBudgetType: ->
+      $('input:radio[name="action_type"]').filter('[value=action]').click ->
+        $(".action-urls").show()
+        $(".more-action-urls").show()
+      $('input:radio[name="action_type"]').filter('[value=click]').click ->
+        $(".action-urls").hide()
+        $(".more-action-urls").hide()
+      $('input:radio[name="action_type"]').filter('[value=post]').click ->
+        $(".action-urls").hide()
+        $(".more-action-urls").hide()
 
     initCreateCampaignModal: ->
       $(".create-campaign-modal").on "hidden.bs.modal", (e)->
@@ -102,6 +127,21 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
       if $('input:radio[name="action_type"]').filter('[value=click]').is(":checked")
         parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
         parentThis.model.attributes.per_budget_type = "click"
+      if $('input:radio[name="action_type"]').filter('[value=action]').is(":checked")
+        parentThis.model.attributes.per_action_budget = $('input[name=per_action_budget]').val()
+        parentThis.model.attributes.per_budget_type = "cpa"
+        action_url_list= []
+        action_url_list_length = $('[name="option[]"]').length
+        if action_url_list_length != 0
+          $('[name="option[]"]').each ->
+            if $(this).val().length != 0
+              action_url_list.push $(this).val()
+          if action_url_list[action_url_list_length - 1]
+            action_url_list.pop()   #delete repeat input value
+          parentThis.model.attributes.action_url_list = action_url_list
+
+
+
       parentThis.model.attributes.budget = $('input[name=budget]').val()
       @ui.form.data("formValidation").validate()
 
@@ -169,6 +209,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     initFormValidation: ->
       parentThis = @
+      MAX_OPTIONS = 5
       @ui.form.formValidation(
         framework: 'bootstrap'
         excluded: [
@@ -265,6 +306,17 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
                     return false
                   return true
 
+          'option[]':
+            validators:
+              callback:
+                message: '链接格式错误， 以http://开头'
+                callback: (value, validator, $field) ->
+                  RegExp = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                  if RegExp.test(value)
+                    return true
+                  return false
+              notEmpty:
+                message: '链接不能为空'
         )
         .on 'err.validator.fv', (e, data) ->
           data.element
@@ -272,6 +324,31 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
               .find('.help-block[data-fv-for="' + data.field + '"]').hide()
               .filter('[data-fv-validator="' + data.validator + '"]').show();
 
+        .on('click', '.addButton', ->
+          $template = $('#optionTemplate')
+          $clone = $template.clone().removeClass('hide').removeAttr('id').insertBefore($template)
+          $option = $clone.find('[name="option[]"]')
+          $option.val("")
+          # Add new field
+          $('#campaign-form').formValidation 'addField', $option
+        ).on('click', '.removeButton', ->
+          $row = $(this).parents('.form-group').first()
+          $option = $row.find('[name="option[]"]')
+          # Remove element containing the option
+          $row.remove()
+          # Remove field
+          $('#campaign-form').formValidation 'removeField', $option
+        ).on('added.field.fv', (e, data) ->
+          # data.field   --> The field name
+          # data.element --> The new field element
+          # data.options --> The new field options
+          if data.field == 'option[]'
+            if $('#campaign-form').find(':visible[name="option[]"]').length >= MAX_OPTIONS
+              $('#campaign-form').find('.addButton').attr 'disabled', 'disabled'
+        ).on 'removed.field.fv', (e, data) ->
+          if data.field == 'option[]'
+            if $('#campaign-form').find(':visible[name="option[]"]').length < MAX_OPTIONS
+              $('#campaign-form').find('.addButton').removeAttr 'disabled'
 
     initDatepicker: ->
       now = new Date

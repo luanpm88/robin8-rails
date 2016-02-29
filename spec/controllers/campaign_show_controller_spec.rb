@@ -1,0 +1,1 @@
+# 测试 cpa campaign 的第一步 访问 为无效点击， 并检测cookies 中变化

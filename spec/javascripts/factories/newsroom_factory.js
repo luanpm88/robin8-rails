@@ -1,5 +1,0 @@
-Factory.define('newsroom', Robin.Models.NewsRoom)
-  .attr('id', 1)
-  .attr('created_at', function() { return new Date(); })
-  .attr('company_name', 'Test newsroom')
-  .attr('user_id', 1)

@@ -59,7 +59,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
 
     initStatsChat: (per_budget_type, label, total_clicks, avail_clicks) ->
-      if per_budget_type == "click"
+      if per_budget_type == "click" || per_budget_type == "cpa"
         option = {
           title : {
             text: '',
