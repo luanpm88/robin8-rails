@@ -6,15 +6,22 @@ class CampaignShow < ActiveRecord::Base
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
   # 检查 campaign status
-  def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
+  def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, options={})
     now = Time.now
     # check campaign status
     if campaign.status == 'executed'  ||  campaign.status == 'settled'
       return [false, 'campaign_had_executed']
     end
 
+    if campaign.is_cpa?
+      return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
+      if options[:step] == 2 and campaign_invite.blank?
+        return [false, "the_first_step_not_exist_of_cpa_campaign"]
+      end
+    end
+
     #check status
-    # if campaign_invite.status != 'approved'
+    # if campaign_invite.status != 'approved
     #   return [false, 'campaign_invite_not_approved']
     # end
 
@@ -49,21 +56,35 @@ class CampaignShow < ActiveRecord::Base
       end
     end
 
-
     return [true,nil]
   end
 
   #TODO campaign  campaign_invite store in redis
-  def self.add_click(uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer)
+  def self.add_click(uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, options={})
+    options.symbolize_keys!
+
     info = JSON.parse(Base64.decode64(uuid))   rescue {}
-    campaign = Campaign.find info['campaign_id']  rescue nil
-    campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil
-    if campaign_invite.nil?  ||  campaign.nil?   || campaign_invite.status == 'running' || campaign_invite.status == 'pending' || campaign_invite.status == 'rejected'
-      Rails.logger.campaign_show_sidekiq.info "---------CampaignShow return: --uuid:#{uuid}---status:#{campaign_invite.status}---"
+    campaign = Campaign.find_by :id => info['campaign_id']  rescue nil
+
+    if campaign.is_cpa?
+      if (options[:step].to_i == 2 or info["step"].to_i == 2)
+        campaign_invite_id = Rails.cache.fetch(visitor_cookies + ":cpa_campaign_id:#{campaign.id}")
+        campaign_invite = CampaignInvite.find_by :id => campaign_invite_id if campaign_invite_id
+      else
+        campaign_invite = CampaignInvite.where(:uuid => uuid).first  rescue nil 
+        expired_at = (campaign.deadline > Time.now ? campaign.deadline : Time.now)
+        Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expired_at => expired_at) if campaign_invite
+      end
+    else
+      campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil
+    end
+
+    if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.try(:status))
+      Rails.logger.campaign_show_sidekiq.info "---------CampaignShow return: --uuid:#{uuid}---status:#{campaign_invite.try (:status)}---"
       return false
     end
 
-    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies)
+    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, options)
     CampaignShow.create!(:kol_id => info['kol_id'], :campaign_id => info['campaign_id'], :visitor_cookie => visitor_cookies,
                         :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip,
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer)

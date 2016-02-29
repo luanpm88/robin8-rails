@@ -61,6 +61,8 @@
             <i class='glyphicon glyphicon-info-sign'></i> 有效点击单价： ￥<%= item.per_action_budget %>
           <% } else if(item.per_budget_type == 'post') { %>
             <i class='glyphicon glyphicon-info-sign'></i> 转发即可获得： ￥<%= item.per_action_budget %>
+          <% } else if(item.per_budget_type == 'cpa') { %>
+            <i class='glyphicon glyphicon-info-sign'></i> 有效行动单价： ￥<%= item.per_action_budget %>
           <% } %>
         </p>
 

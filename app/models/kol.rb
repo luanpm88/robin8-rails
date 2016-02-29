@@ -356,7 +356,7 @@ class Kol < ActiveRecord::Base
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
-      campaign_invite.bring_income(campaign,true)    if !campaign.is_click_type?
+      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
     end
     campaign_invite
   end
@@ -373,7 +373,7 @@ class Kol < ActiveRecord::Base
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       campaign_invite.save
-      campaign_invite.bring_income(campaign,true)    if !campaign.is_click_type?
+      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
     end
     campaign_invite
   end

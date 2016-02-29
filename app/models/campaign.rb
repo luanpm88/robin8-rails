@@ -4,7 +4,7 @@ class Campaign < ActiveRecord::Base
   counter :redis_total_click
 
   #Status : unexecute agreed rejected  executing executed
-  #Per_budget_type click post
+  #Per_budget_type click post cpa
   belongs_to :user
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
@@ -21,6 +21,7 @@ class Campaign < ActiveRecord::Base
   has_many :weibo, through: :weibo_invites
   has_many :articles
   has_many :kol_categories, :through => :kols
+  has_many :campaign_action_urls, autosave: true
 
   has_many :campaign_categories
   has_many :iptc_categories, :through => :campaign_categories
@@ -43,6 +44,10 @@ class Campaign < ActiveRecord::Base
 
   def upload_screenshot_deadline
     (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForKol
+  end
+
+  def is_cpa?
+    self.per_budget_type.to_s == "cpa"
   end
 
   def get_stats
@@ -86,8 +91,12 @@ class Campaign < ActiveRecord::Base
     "#{self.take_budget} / #{self.budget}"
   end
 
+  def get_campaign_action_urls
+    self.campaign_action_urls
+  end
+
   def take_budget
-    if self.is_click_type?
+    if self.is_click_type? or self.is_cpa?
       if self.status == 'settled'
         (self.settled_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
       else
@@ -108,7 +117,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def post_count
-    if self.per_budget_type == "click"
+    if self.per_budget_type == "click" or self.is_cpa?
       return -1
     end
     return valid_invites.count
@@ -175,7 +184,7 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    if self.redis_avail_click.value >= self.max_action && self.status == 'executing' && self.per_budget_type == "click"
+    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa?)
       finish('fee_end')
     end
   end
@@ -238,7 +247,7 @@ class Campaign < ActiveRecord::Base
       self.passed_invites.each do |invite|
         kol = invite.kol
         invite.update_column(:status, 'settled')
-        if is_click_type?
+        if is_click_type? or is_cpa?
           kol.income(invite.avail_click * self.per_action_budget, 'campaign', self, self.user)
           Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.per_action_budget}-- after avail_amount:#{kol.avail_amount}"
         else
@@ -251,6 +260,10 @@ class Campaign < ActiveRecord::Base
 
   def is_click_type?
     self.per_budget_type == "click"
+  end
+
+  def is_post_type?
+    self.per_budget_type == "post"
   end
 
   # 结算 for brand
@@ -300,7 +313,7 @@ class Campaign < ActiveRecord::Base
       end
     elsif (self.status_changed? && status == 'agreed')
       Rails.logger.campaign.info "--------agreed_job:  ---#{self.id}-----#{self.inspect}"
-      if Rails.env.development?
+      if Rails.env.development? or Rails.env.test?
         CampaignWorker.new.perform(self.id, 'send_invites')
       else
         CampaignWorker.perform_async(self.id, 'send_invites')
