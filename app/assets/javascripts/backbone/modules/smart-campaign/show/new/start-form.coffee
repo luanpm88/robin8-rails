@@ -79,6 +79,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
         $(".campaign_name_input").focus()
 
     initChoosePerBudgetType: ->
+      $('[data-toggle="popover"]').popover()
       if @model.attributes.per_budget_type == 'click'
         $('input:radio[name="action_type"]').filter('[value=click]').prop('checked', true)
       else if @model.attributes.per_budget_type == 'post'
