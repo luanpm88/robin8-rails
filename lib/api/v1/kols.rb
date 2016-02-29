@@ -3,7 +3,8 @@ module API
     class Kols < Grape::API
       resources :kols do
         before do
-          authenticate!
+          action_name =  @options[:path].join("")
+          authenticate! if action_name != 'sign_in'  &&  action_name != "oauth_login"
           params[:gender] = params[:gender].to_i    if params[:gender].present?
         end
 
@@ -60,7 +61,7 @@ module API
         #第三方登陆后绑定手机
         params do
           requires :mobile_number, type: Integer, regexp: /\d{11}/
-          requires :code, type: Integer, regexp: /\d{6}/
+          requires :code, type: Integer
         end
         put 'update_mobile' do
           mobile_exist = Kol.find_by(:mobile_number => params[:mobile_number])
@@ -88,11 +89,6 @@ module API
 
         #用户绑定第三方账号
         params do
-          # requires :app_platform
-          # requires :app_version, type: String
-          # requires :device_token, type: String
-          # optional :IDFA, type: String
-          # optional :IMEI, type: String
           requires :provider, type: String, values: ['weibo', 'wechat']
           requires :uid, type: String
           requires :token, type: String
@@ -110,6 +106,11 @@ module API
             identity.attributes = attrs
             identity.kol_id = current_kol.id
             identity.save
+            # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
+            if params[:avatar_url].present? && kol.avatar.url.blank?
+              kol.remote_avatar_url =  params[:avatar_url]
+              kol.save
+            end
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           else
