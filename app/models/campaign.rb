@@ -253,6 +253,10 @@ class Campaign < ActiveRecord::Base
     self.per_budget_type == "click"
   end
 
+  def is_post_type?
+    self.per_budget_type == "post"
+  end
+
   # 结算 for brand
   def settle_accounts_for_brand
     Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
