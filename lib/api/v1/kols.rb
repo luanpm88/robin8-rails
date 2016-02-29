@@ -133,7 +133,7 @@ module API
             identity.from_type = 'app'
             identity.save
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
-            if params[:avatar_url].present? && kol.avatar.url.blank?
+            if params[:avatar_url].present? && current_kol.avatar.url.blank?
               kol.remote_avatar_url =  params[:avatar_url]
               kol.save
             end
