@@ -21,6 +21,7 @@ module API
         end
 
         get 'get_code' do
+          return error_403!({error: 1, detail: '你不能调用该接口'})      if !can_get_code
           required_attributes! [:mobile_number]
           # return error_403!({error: 1, detail: '手机号码已经被使用!'}) if Kol.find_by(mobile_number: params[:mobile_number]).present?
           sms_client = YunPian::SendRegisterSms.new(params[:mobile_number])

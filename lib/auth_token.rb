@@ -15,6 +15,7 @@ module AuthToken
     JWT.encode(payload, Secret, Algorithm)
   end
 
+  #校验用户
   def AuthToken.valid?(data)
     begin
       decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
@@ -31,6 +32,19 @@ module AuthToken
     rescue
       Rails.logger.info "-----  data: #{data} --- unknow"
       return [false, 'unknow']
+    end
+  end
+
+
+  #校验get_code 是否存在
+  def AuthToken.can_get_code(data)
+    begin
+      decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
+      if decoded_data['get_code']
+        return true
+      else
+        return false
+      end
     end
   end
 
