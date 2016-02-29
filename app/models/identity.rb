@@ -7,7 +7,7 @@ class Identity < ActiveRecord::Base
   scope :from_pc, -> {where(:from_type => 'pc')}
   scope :from_app, -> {where(:from_type => 'app')}
 
-  scope :valid, ->{ where("provider = 'weibo' or (provider='wecaht' and from_type='app')")}
+  scope :valid, ->{ where("provider = 'weibo' or (provider='wechat' and from_type='app')")}
 
   WxThirdProvider = 'wechat_third'
   after_save :spider_weibo_data

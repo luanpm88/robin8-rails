@@ -12,6 +12,10 @@ module API
       end
     end
 
+    def can_get_code
+      AuthToken.can_get_code(headers["Authorization"])
+    end
+
     def paginate(object)
       #paginate object
       object.page(params[:page]).per(params[:per_page].to_i)
