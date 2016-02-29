@@ -24,7 +24,7 @@ module YunPian
       begin
         res = ChinaSMS.to @phone_number, tpl_params, tpl_id: 1
       rescue Exception => ex
-        Rails.logger.error ex
+        Rails.logger.sms_spider.error ex
         return {:message => ex.message}
       end
 
