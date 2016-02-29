@@ -17,7 +17,7 @@ module YunPian
       code = security_code
       write_cache_for @phone_number, code
 
-      return {'code' => 0 } if @phone_number == "robin8.best"  || Rails.env.development?   || Rails.env.staging?
+      return {'code' => 0 } if @phone_number == "robin8.best"  || Rails.env.development?
 
       ChinaSMS.use :yunpian, password: @api_key
       tpl_params = {code: code, company: @company_sign}
@@ -26,6 +26,8 @@ module YunPian
       rescue Exception => ex
         Rails.logger.sms_spider.error ex
         return {:message => ex.message}
+      ensure
+        return {'code' => 0 } if  Rails.env.staging?
       end
 
       if res["code"] == 0
@@ -56,7 +58,7 @@ module YunPian
     end
 
     def self.verify_code(phone, code)
-      return (code == '123456' || Rails.cache.read(phone) == code)  if Rails.env.development?  || Rails.env.staging?
+      return (code == '123456' || code == 123456 || Rails.cache.read(phone) == code)  if Rails.env.development?  || Rails.env.staging?
       Rails.cache.read(phone) == code
     end
   end

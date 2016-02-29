@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 #Dir["#{Rails.root}/lib/api/*.rb"].each {|file| require file}
-Dir["#{Rails.root}/lib/api/v1/entities/*.rb"].each { |file| require file }
 
 module API
   class Application < Grape::API
