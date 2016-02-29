@@ -61,7 +61,7 @@ module API
         #第三方登陆后绑定手机
         params do
           requires :mobile_number, type: Integer, regexp: /\d{11}/
-          requires :code, type: Integer, regexp: /\d{6}/
+          requires :code, type: Integer
         end
         put 'update_mobile' do
           mobile_exist = Kol.find_by(:mobile_number => params[:mobile_number])

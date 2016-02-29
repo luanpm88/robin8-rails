@@ -1,7 +1,7 @@
 module API
   module V1
     class Sessions < Grape::API
-      resources "kols" do
+      resources :kols do
         # 用户登录
         post 'sign_in' do
           required_attributes! [:mobile_number, :code, :app_platform, :app_version, :device_token]
