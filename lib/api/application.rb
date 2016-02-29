@@ -12,20 +12,20 @@ module API
 
     logger Logger.new(Rails.root.join("log/grape.log"))
 
-    # rescue_from :all do |exception|
-    #   trace = exception.backtrace
-    #
-    #   message = "\n #{exception.class} (#{exception.message}): \n"
-    #   message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
-    #   message << "\n\t" << trace.join("\n\t")
-    #
-    #   if Rails.env.development? or Rails.env.test?
-    #     puts message
-    #   else
-    #     Rails.logger.info message
-    #   end
-    #   rack_response({'message' => '500 Internal Server Error'}, 500)
-    # end
+    rescue_from :all do |exception|
+      trace = exception.backtrace
+
+      message = "\n #{exception.class} (#{exception.message}): \n"
+      message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)
+      message << "\n\t" << trace.join("\n\t")
+
+      if Rails.env.development? or Rails.env.test?
+        puts message
+      else
+        logger.info message
+      end
+      rack_response({'message' => '500 Internal Server Error'}, 500)
+    end
 
     before do
       params.permit! if params
