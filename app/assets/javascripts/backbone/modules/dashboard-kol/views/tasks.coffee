@@ -231,6 +231,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       localDate = new Date(date)
       formatted_date = localDate.getFullYear() + '年' + (localDate.getMonth() + 1) + '月' + localDate.getDate() + '日' + localDate.getHours() + '时' + localDate.getMinutes() + '分'
 
+    templateHelpers:
+      isShowIncome: (item) ->
+        if item.status=='running' or item.status=='finished' or item.status=='settled'
+          return true
+        else
+          return false
+
   Show.Tasks = Backbone.Marionette.CollectionView.extend
     childView: Show.Task
     childViewContainer: 'ul'
@@ -245,6 +252,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     fixupProfile: (e) ->
       $('#taskModal').modal('hide')
+
+    templateHelpers:
+      isShowIncome: (item) ->
+        if item.status=='running' or item.status=='finished' or item.status=='settled'
+          return true
+        else
+          return false
 
     initialize: (opts) ->
       @model = opts.model
