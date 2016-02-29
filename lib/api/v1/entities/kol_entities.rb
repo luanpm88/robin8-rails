@@ -11,12 +11,6 @@ module API
           expose :country do |kol|
             kol.app_country
           end
-          # expose :province do |kol|
-          #   kol.app_province
-          # end
-          # expose :city do |kol|
-          #   kol.app_city
-          # end
           expose :app_city
           expose :app_city_label
           expose :avatar_url do |kol|
@@ -41,9 +35,9 @@ module API
           expose :avail_amount do |kol|
             (kol.amount - kol.frozen_amount).round(2)  rescue 0
           end
-          expose :total_income
-          expose :total_withdraw
-          expose :today_income
+          expose :total_income.round(2)
+          expose :total_withdraw.round(2)
+          expose :today_income.round(2)
         end
 
         class Primary < Grape::Entity
@@ -64,7 +58,7 @@ module API
             kol.unread_messages.count
           end
           expose :new_income do |kol|
-            kol.new_income
+            kol.new_income.round(1)
           end
         end
       end
