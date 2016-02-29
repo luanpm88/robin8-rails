@@ -134,8 +134,8 @@ module API
             identity.save
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
             if params[:avatar_url].present? && current_kol.avatar.url.blank?
-              kol.remote_avatar_url =  params[:avatar_url]
-              kol.save
+              current_kol.remote_avatar_url =  params[:avatar_url]
+              current_kol.save
             end
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
