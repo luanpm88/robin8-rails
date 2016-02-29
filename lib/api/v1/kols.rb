@@ -109,7 +109,7 @@ module API
         #第三方账号列表
         get 'identities' do
           present :error, 0
-          present :identities, current_kol.identities.from_app, with: API::V1::Entities::IdentityEntities::Summary
+          present :identities, current_kol.identities.valid, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #用户绑定第三方账号
