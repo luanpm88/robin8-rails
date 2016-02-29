@@ -23,7 +23,7 @@ module AuthToken
         Rails.logger.info "-----decoded data: #{decoded_data} --- 格式错误"
         return [false, '格式错误' ]
       end
-      if decoded_data['time'].to_i > (Time.now - Expired).to_i && (decoded_data['time'].to_i <= (Time.now + 10.minutes).to_i)
+      if AuthToken.valid_time?(decoded_data)
         return [true, decoded_data[Key]]
       else
         Rails.logger.info "-----decoded data: #{decoded_data} --#{Time.now.to_i}--- token已经过期"
@@ -36,21 +36,25 @@ module AuthToken
   end
 
 
-  #校验get_code 是否存在
-  def AuthToken.can_get_code(data)
+  def AuthToken.can_get_code?(data)
     begin
       decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
-      if decoded_data['get_code']
-        return true
-      else
+      if decoded_data['time'].blank? || decoded_data['get_code'].blank?  || !AuthToken.valid_time?(decoded_data)
         return false
+      else
+        return true
       end
     end
   end
 
+
+  def AuthToken.valid_time?(decoded_data)
+    return decoded_data['time'].to_i > (Time.now - Expired).to_i && (decoded_data['time'].to_i <= (Time.now + 10.minutes).to_i)
+  end
+
   def AuthToken.test_issue_token(mobile_number = '13817164642')
     kol = Kol.find_by :mobile_number => mobile_number
-    payload = {Key => kol.get_private_token, :time => Time.now.to_i}
+    payload = {Key => kol.get_private_token, :get_code => 'get_code', :time => Time.now.to_i}
     token = JWT.encode(payload, Secret, Algorithm)
     puts token
     token
