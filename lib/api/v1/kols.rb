@@ -88,11 +88,6 @@ module API
 
         #用户绑定第三方账号
         params do
-          # requires :app_platform
-          # requires :app_version, type: String
-          # requires :device_token, type: String
-          # optional :IDFA, type: String
-          # optional :IMEI, type: String
           requires :provider, type: String, values: ['weibo', 'wechat']
           requires :uid, type: String
           requires :token, type: String
@@ -110,6 +105,7 @@ module API
             identity.attributes = attrs
             identity.kol_id = current_kol.id
             identity.save
+
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           else
