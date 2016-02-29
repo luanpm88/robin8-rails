@@ -195,12 +195,26 @@ class KolsController < ApplicationController
   end
 
   def send_sms
+    unless sms_request_is_valid?
+      return render json: {}
+    end
+    if params[:login_user] == "yes"
+      unless sms_request_is_valid_for_login_user?
+        return render json: {}
+      end
+    else
+      unless verify_rucaptcha?
+        return render json: {rucaptcha_not_right: true}
+      end
+    end
+    
     phone_number = params[:phone_number]
     if Rails.env.development?
       ms_client = YunPian::SendRegisterSms.new(phone_number)
       ms_client.send_sms
       return render json: {}
     end
+
     if phone_number.blank?
       render json: {mobile_number_is_blank: true}
     else
@@ -209,8 +223,16 @@ class KolsController < ApplicationController
       else
         return render json: {not_unique: true}  if Kol.check_mobile_number phone_number
       end
+
+      total_send_key = "robin8_send_sms_count"
+      send_count =  Rails.cache.fetch(total_send_key).to_i || 1
+      Rails.cache.write(total_send_key, send_count + 1, :expires_in => 50.hours)
+      Rails.logger.sms_spider.error "发送的 有效的量已经超过了 #{send_count}"
+
       sms_client = YunPian::SendRegisterSms.new(phone_number)
+
       res = sms_client.send_sms  rescue {}
+      Rails.logger.sms_spider.error "send sms code #{res}"    
       render json: res
     end
   end
@@ -235,6 +257,66 @@ class KolsController < ApplicationController
   end
 
   private
+
+  def sms_request_is_valid_for_login_user?
+
+    unless current_kol
+      Rails.logger.sms_spider.error "用户没有登录, #{cookies[:_robin8_visitor]}"
+      return false 
+    end
+
+    key = "kol_#{current_kol.id}_send_sms_count"
+    send_count =  Rails.cache.fetch(key).to_i || 1
+    Rails.cache.write(key, send_count + 1, :expires_in => 360.seconds)
+
+    Rails.logger.sms_spider.error "kol #{current_kol.id}, tel #{current_kol.mobile_number} send sms #{send_count}"
+
+    return false if send_count > 20
+    return true
+  end
+
+  def sms_request_is_valid?
+    Rails.logger.sms_spider.error '-'*60
+
+    Rails.logger.sms_spider.error 'remote_ip: ' + request.remote_ip
+    Rails.logger.sms_spider.error 'ip: ' + request.ip
+    Rails.logger.sms_spider.error 'user_agent: ' + request.user_agent
+    Rails.logger.sms_spider.error 'referer: ' + request.referer
+    Rails.logger.sms_spider.error 'cookie: ' + cookies[:_robin8_visitor]
+    Rails.logger.sms_spider.error 'csrf_token: ' + request.env["HTTP_X_CSRF_TOKEN"]
+
+    Rails.logger.sms_spider.error '-'*60
+
+    ips = Rails.cache.fetch("spider_ip_from_kol_6579")
+
+
+    ip_key = "#{request.ip}_visitor_count"
+    send_count =  Rails.cache.fetch(ip_key).to_i || 1
+    
+    if ips && ips.include?(request.ip)
+      Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次, 且存在在爬虫黑名单中")
+      return false
+    end
+
+    Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次")
+    Rails.cache.write(ip_key, send_count + 1, :expires_in => 360.seconds)
+
+    key = cookies[:_robin8_visitor] + "send_sms"
+    send_count =  Rails.cache.fetch(key).to_i || 1
+    Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "已经尝试#{send_count} 次")
+    Rails.cache.write(key, send_count + 1, :expires_in => 360.seconds)
+    
+    if send_count > 10
+      Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封, 已经尝试#{send_count} 次")
+      return false
+    end
+    if request.user_agent == "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)"
+      Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封, 已经尝试#{send_count} 次, user_agent #{request.user_agent}")
+      return false
+    end
+    return true
+  end
+
   def kol_params
     params.require(:kol).permit(:email, :password, :mobile_number)
   end
@@ -276,5 +358,4 @@ class KolsController < ApplicationController
       render :new, :layout => "website"
     end
   end
-
 end
