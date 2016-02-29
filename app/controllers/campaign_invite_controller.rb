@@ -47,21 +47,26 @@ class CampaignInviteController < ApplicationController
     offset = params[:offset] || 0
 
     # todo refactor this return campaign should not in campaign_invites controller
-    if params[:type].eql? 'upcoming'
-      campaigns = current_kol.running_campaigns
+    if params[:type].eql? 'upcoming' or params[:type].eql? 'missed'
+      campaigns = case params[:type]
+                  when 'upcoming'
+                    current_kol.running_campaigns
+                  when 'missed'
+                    current_kol.missed_campaigns
+                  end
       return render :json => campaigns.offset(offset.to_i).limit(limit.to_i), :each_serializer => CampaignsSerializer
     end
 
     campaign_invites_by_type = case params[:type]
-                        when 'running'
-                          current_kol.campaign_invites.where(status: 'approved').order('created_at desc')
-                        when 'complete'
-                          current_kol.campaign_invites.where(img_status: 'passed', status: ['finished', 'settled']).order('created_at desc')
-                        when 'verify'
-                          current_kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).order('updated_at desc')
-                        else
-                          return render :json => { error: 'error type!' }
-                        end
+                               when 'running'
+                                 current_kol.campaign_invites.approved
+                               when 'complete'
+                                 current_kol.campaign_invites.completed
+                               when 'verify'
+                                 current_kol.campaign_invites.verifying
+                               else
+                                 return render :json => { error: 'error type!' }
+                               end
 
     campaign_invites_by_paged = campaign_invites_by_type.offset(offset.to_i).limit(limit.to_i)
 

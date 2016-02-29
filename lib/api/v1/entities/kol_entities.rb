@@ -55,7 +55,7 @@ module API
             kol.campaign_invites.verifying.count
           end
           expose :settled_count do |kol|
-            kol.campaign_invites.settled.count
+            kol.campaign_invites.completed.count
           end
         end
 

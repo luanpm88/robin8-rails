@@ -331,15 +331,19 @@ class Kol < ActiveRecord::Base
     total_income / 100
   end
 
-  def add_campaign_id(campaign_id)
-    self.receive_campaign_ids << campaign_id unless self.receive_campaign_ids.include? campaign_id.to_s
+  def add_campaign_id(campaign_id, valid = true)
+    if valid
+      self.receive_campaign_ids << campaign_id unless self.receive_campaign_ids.include? campaign_id.to_s
+    else
+      self.receive_campaign_ids << campaign_id
+    end
   end
 
   def delete_campaign_id(campaign_id)
     self.receive_campaign_ids.delete(campaign_id)
   end
 
-  # 接收活动
+  # 成功接收接收活动for pc
   def approve_campaign(campaign_id)
     campaign = Campaign.find campaign_id  rescue nil
     return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
@@ -352,9 +356,40 @@ class Kol < ActiveRecord::Base
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
+      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
     end
-    campaign_invite.bring_income(campaign,true)    if !campaign.is_click_type?
     campaign_invite
+  end
+
+
+  #拆开 approve_campaign 先创建，再接收
+  def receive_campaign(campaign_id)
+    campaign = Campaign.find campaign_id  rescue nil
+    return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
+    campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
+    if (campaign_invite && campaign_invite.status == 'running')  || campaign_invite.new_record?
+      uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
+      campaign_invite.status = 'running'
+      campaign_invite.uuid = uuid
+      campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
+      campaign_invite.save
+      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
+    end
+    campaign_invite
+  end
+
+
+  # 成功转发活动
+  def share_campaign_invite(campaign_invite_id)
+    campaign_invite = CampaignInvite.find campaign_invite_id  rescue nil
+    if campaign_invite && campaign_invite.status == 'running'
+      campaign_invite.status = 'approved'
+      campaign_invite.approved_at = Time.now
+      campaign_invite.save
+      campaign_invite.reload
+    else
+      nil
+    end
   end
 
   # 待接收活动列表
@@ -375,7 +410,7 @@ class Kol < ActiveRecord::Base
   #       campaign_invites.status !='finished' and campaign_invites.status !='settled'")
   # end
 
-  # 已错过的活动
+  # 已错过的活动       活动状态为finished \settled  且没接
   def missed_campaigns
     approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
     unapproved_campaign_ids = self.receive_campaign_ids.values.map(&:to_i) -  approved_campaign_ids

@@ -7,9 +7,10 @@ class CampaignInvite < ActiveRecord::Base
 
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
-  UploadScreenshotWait = 30.minutes
+  UploadScreenshotWait = Rails.env.production? ? 30.minutes : 3.minutes
 
   validates_inclusion_of :status, :in => STATUSES
+  validates_uniqueness_of :uuid
 
   belongs_to :campaign
   belongs_to :kol
@@ -20,7 +21,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :verifying, -> {where(:status => 'finished').where.not(:img_status => 'passed')}
   scope :settled, -> {where(:status => 'settled')}
   # 已完成的概率改成 接收过的 且结算（含结算失败）
-  scope :completed, -> {where("status = 'settled' or status = 'rejected'")}
+  scope :completed, -> {where("(status = 'finished' and img_status='passed') or status = 'settled' or status = 'rejected'")}
 
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
@@ -94,12 +95,17 @@ class CampaignInvite < ActiveRecord::Base
     status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
   end
 
+
   def self.origin_share_url(uuid)
     "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"          rescue nil
   end
 
   def self.generate_share_url(uuid)
     ShortUrl.convert origin_share_url(uuid)
+  end
+
+  def origin_share_url
+    "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
   end
 
   def earn_money

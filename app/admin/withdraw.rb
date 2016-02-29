@@ -12,17 +12,14 @@ ActiveAdmin.register Withdraw do
 
     def unagree
       withdraw = Withdraw.find params[:id]
-      withdraw.update_column(:status , 'rejected')
+      withdraw.update_attributes(:status => 'rejected')
       redirect_to admin_withdraws_path
     end
 
     def agree
       withdraw = Withdraw.find params[:id]
       if withdraw.kol.avail_amount > withdraw.credits
-        ActiveRecord::Base.transaction do
-          withdraw.update_column(:status , 'paid')
-          withdraw.kol.payout(withdraw.credits, 'withdraw')
-        end
+        withdraw.update_attributes(:status => 'paid')
         redirect_to admin_withdraws_path
       else
         flash[:error] = "提现金额超过可用余额"

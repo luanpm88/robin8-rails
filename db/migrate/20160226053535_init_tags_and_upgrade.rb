@@ -1,5 +1,6 @@
 class InitTagsAndUpgrade < ActiveRecord::Migration
   def change
+    add_column :tags, :cover_url, :string
     tags = {
       food:	"美食",
       babies:	"母婴",
@@ -18,6 +19,7 @@ class InitTagsAndUpgrade < ActiveRecord::Migration
     start = 1
     tags.each do |key, value|
       tag = Tag.new
+      tag.cover_url = "http://7xozqe.com2.z0.glb.qiniucdn.com/tag_#{key}.png"
       tag.name = key
       tag.label = value
       tag.position = start

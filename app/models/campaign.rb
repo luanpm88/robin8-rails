@@ -31,19 +31,19 @@ class Campaign < ActiveRecord::Base
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :order_by_start, -> { order('start_time desc')}
   scope :order_by_status, -> { order("case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
-                          start_time desc") }
+                                      start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   after_save :create_job
 
-  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 5.minutes
-  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 10.minutes
+  SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
+  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 4.hours
   def email
     user.try :email
   end
 
   def upload_screenshot_deadline
-    self.deadline +  SettleWaitTimeForKol
+    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForKol
   end
 
   def is_cpa?
@@ -142,30 +142,29 @@ class Campaign < ActiveRecord::Base
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
     campaign_id = self.id
-    ActiveRecord::Base.transaction do
-      if kol_ids.present?
-        Kol.where(:id => kol_ids).each do |kol|
-          kol.add_campaign_id campaign_id
-        end
-      else
-        Kol.find_each do |kol|
-          kol.add_campaign_id campaign_id
-        end
+    if kol_ids.present?
+      Kol.where(:id => kol_ids).each do |kol|
+        kol.add_campaign_id campaign_id
       end
-      # 删除黑名单campaign
-      block_kols = Kol.where("forbid_campaign_time > '#{Time.now}'")
-      block_kols.each do |kol|
-        kol.delete_campaign_id campaign_id
+    else
+      #TODO multi-thread deal
+      Kol.find_each do |kol|
+        kol.add_campaign_id(campaign_id,false)
       end
-      Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
     end
+    # 删除黑名单campaign
+    block_kols = Kol.where("forbid_campaign_time > '#{Time.now}'")
+    block_kols.each do |kol|
+      kol.delete_campaign_id campaign_id
+    end
+    Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
-    _start_time = self.start_time < Time.now ? (Time.now + 2.seconds) : self.start_time
+    _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id} _start_time:#{_start_time}-------"
     CampaignWorker.perform_at(_start_time, self.id, 'start')
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-    Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---"
+    Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
   end
 
 
@@ -198,10 +197,9 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-
         if Rails.env.production?
-          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-          CampaignWorker.perform_at(self.deadline + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
         elsif Rails.env.development? or Rails.env.staging?
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
@@ -209,7 +207,6 @@ class Campaign < ActiveRecord::Base
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
         end
-
       end
     end
   end
@@ -219,6 +216,7 @@ class Campaign < ActiveRecord::Base
     self.total_click = self.redis_total_click.value
     self.status = 'executed'
     self.finish_remark = finish_remark
+    Rails.logger.campaign.info "======update_info----#{Time.now}"
     self.actual_deadline_time = Time.now
     self.save!
   end
@@ -231,6 +229,9 @@ class Campaign < ActiveRecord::Base
         invite.status = 'finished'
         invite.avail_click = invite.redis_avail_click.value
         invite.total_click = invite.redis_total_click.value
+      elsif
+        # receive but not apporve  we must delete
+        invite.delete
       else
         invite.status = 'rejected'
       end
@@ -261,14 +262,18 @@ class Campaign < ActiveRecord::Base
     self.per_budget_type == "click"
   end
 
+  def is_post_type?
+    self.per_budget_type == "post"
+  end
+
   # 结算 for brand
   def settle_accounts_for_brand
     Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
     return if self.status != 'executed'
     #首先先付款给期间审核的kol
-    # settle_accounts_for_kol
+    settle_accounts_for_kol
     #没审核通过的设置为拒绝
-    self.finish_need_check_invites.update_all(:img_status => 'rejected')
+    self.finish_need_check_invites.update_all(:status => 'rejected')
     ActiveRecord::Base.transaction do
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)

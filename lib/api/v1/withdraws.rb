@@ -34,8 +34,9 @@ module API
             withdraw = Withdraw.new(:withdraw_type => 'alipay')
             withdraw.attributes = attrs
             withdraw.kol_id = current_kol.id
+            withdraw.status = 'pending'
             if withdraw.save
-              ContactMailWorker.new.perform withdraw.id, true
+              # ContactMailWorker.new.perform withdraw.id, true
               present :error, 0
               present :withdraw, withdraw, with: API::V1::Entities::WithdrawEntities::Summary
             else
