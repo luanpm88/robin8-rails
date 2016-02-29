@@ -35,9 +35,15 @@ module API
           expose :avail_amount do |kol|
             (kol.amount - kol.frozen_amount).round(2)  rescue 0
           end
-          expose :total_income.round(2)
-          expose :total_withdraw.round(2)
-          expose :today_income.round(2)
+          expose :total_income do |kol|
+            kol.total_income.round(2)
+          end
+          expose :total_withdraw do |kol|
+            kol.total_withdraw.round(2)
+          end
+          expose :today_income do |kol|
+            kol.today_income.round(2)
+          end
         end
 
         class Primary < Grape::Entity
