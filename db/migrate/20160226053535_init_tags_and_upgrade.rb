@@ -1,5 +1,6 @@
 class InitTagsAndUpgrade < ActiveRecord::Migration
   def change
+    add_column :tags, :cover_url, :string
     tags = {
       food:	"美食",
       babies:	"母婴",
