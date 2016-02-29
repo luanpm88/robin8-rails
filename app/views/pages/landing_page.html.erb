@@ -7,26 +7,47 @@
       </h1>
       <h2 class="title_landing"><%= @l.t('landing_page.title_landing') %></h2>
 
-      <div class="social-list">
+      <div class="social-list clearfix">
 
         <div class="small-12 columns social-login">
-          <a href="/users/auth/weibo?provider=weibo" class="social btn btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %></span></a>
+          <a href="/users/auth/weibo?provider=weibo" class="social  btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %></span></a>
         </div>
 
         <% unless mobile_request? %>
           <div class="small-12 columns social-login">
-            <a href="/users/auth/wechat?provider=wechat" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %></span></a>
+            <a href="/users/auth/wechat?provider=wechat" class="social  btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %></span></a>
           </div>
 
           <div class="small-12 columns social-login">
-            <a href="/users/auth/wechat_third?provider=wechat_third" class="social btn btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %></span></a>
+            <a href="/users/auth/wechat_third?provider=wechat_third" class="social  btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %></span></a>
           </div>
         <% end %>
         <a href="/kols/new" class="sign_up_with_email"><%= @l.t("login.use_email") %></a>
-        <% if mobile_request? %>
-          <p class="wechat_tip">如果希望使用微信注册登录，请使用电脑操作</p>
-        <% end %>
       </div>
+      <% if mobile_request? %>
+        <p class="wechat_tip">如果希望使用微信注册登录，请使用电脑操作</p>
+        <div class="download-app">
+          <a href="#androidModal" class="button small round secondary" id="android-btn"  >Android</a>
+          <a href="#iphoneModal" class="button small round secondary" id="iphone-btn" >iPhone</a>
+        </div>
+      <% else %>
+        <div class="download-app">
+          <a href="#androidModal" class="button round secondary" id="android-btn" rel="modal:open" >Android下载</a>
+          <a href="#iphoneModal" class="button round secondary" id="iphone-btn" rel="modal:open">iPhone下载</a>
+
+          <!-- Modal HTML embedded directly into document -->
+          <div class="app-qr-code" id="androidModal" style="display:none;">
+            <img src="http://qr.api.cli.im/qr?data=http%253A%252F%252Fopenbox.mobilem.360.cn%252Findex%252Fd%252Fsid%252F3228710&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=de2023bfc39b6abc10fb985838b7b325">
+          </div>
+
+          <div class="app-qr-code" id="iphoneModal" style="display:none;">
+            <img src="http://qr.liantu.com/api.php?w=200&amp;text=http://robin8.net/campaign_share?id=694105">
+          </div>
+          <!-- Modal HTML embedded directly into document -->
+
+        </div>
+      <% end %>
+
 
     </div>
   </div>
