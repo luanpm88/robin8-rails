@@ -315,6 +315,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @initQiniuUploader()
       $('#taskModal').modal()
       clipboard = new Clipboard('.task-modal-btn');
+      $('#question_pop').popover({trigger: 'hover'})
 
     onRender: ()->
       @initQiniuUploader()
