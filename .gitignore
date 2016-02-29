@@ -46,3 +46,5 @@ app/assets/stylesheets/app/dev_base.scss
 #app/assets/stylesheets/app/dev_reload.scss
 
 public/dev_base_compact.css
+
+node_modules

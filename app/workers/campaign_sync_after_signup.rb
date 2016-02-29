@@ -7,7 +7,7 @@ class CampaignSyncAfterSignup
 
     while true
       break if kol.present? or try_count > 3
-      sleep 3
+      sleep 1
       kol = Kol.where(:id => kol_id).first
       try_count += 1
     end
@@ -15,15 +15,11 @@ class CampaignSyncAfterSignup
     return unless kol.present?
 
     Campaign.where(:status => :agreed).each do |campaign|
-      unless CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign.id)
-        CampaignInvite.create_invite(campaign.id, kol_id, 'pending')
-      end
+      kol.add_campaign_id campaign.id
     end
 
     Campaign.where(:status => :executing).each do |campaign|
-      unless CampaignInvite.exists?(:kol_id => kol_id, :campaign_id => campaign.id)
-        CampaignInvite.create_invite(campaign.id, kol_id, 'running')
-      end
+      kol.add_campaign_id campaign.id
     end
   end
 end

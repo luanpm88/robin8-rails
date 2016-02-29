@@ -52,7 +52,8 @@ class KolsController < ApplicationController
     key = "registration_account:#{auth_params[:uid]}"
     return redirect_to root_path if Rails.cache.read(key)
     Rails.cache.write(key, true, :expire_in => 600.seconds)
-    @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider], social_uid: auth_params[:uid]})
+    @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider],
+                    social_uid: auth_params[:uid], avatar: auth_params[:avatar_url]})
     @kol.country = 'China(中国)' if china_instance?
     if cookies[:campaign_name]
       @kol.from_which_campaign = cookies[:campaign_name]

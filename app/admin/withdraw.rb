@@ -3,21 +3,23 @@ ActiveAdmin.register Withdraw do
   member_action :unagree, :method => :put
   member_action :agree, :method => :put
   member_action :withdraw_history, :method => :get
+  remove_filter :kol
 
   controller do
+    def scoped_collection
+      Withdraw.includes(:kol)   # includes User / Brand models in listing products
+    end
+
     def unagree
       withdraw = Withdraw.find params[:id]
-      withdraw.update_column(:status , 'rejected')
+      withdraw.update_attributes(:status => 'rejected')
       redirect_to admin_withdraws_path
     end
 
     def agree
       withdraw = Withdraw.find params[:id]
       if withdraw.kol.avail_amount > withdraw.credits
-        ActiveRecord::Base.transaction do
-          withdraw.update_column(:status , 'paid')
-          withdraw.kol.payout(withdraw.credits, 'withdraw')
-        end
+        withdraw.update_attributes(:status => 'paid')
         redirect_to admin_withdraws_path
       else
         flash[:error] = "提现金额超过可用余额"
