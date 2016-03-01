@@ -14,13 +14,32 @@
 
         <p>
           <i class='glyphicon glyphicon-exclamation-sign'></i> 接受状态：
-          <% if(item.status=='running'){ %>
-            未接受
-          <% }else if(item.status=='approved'){ %>
-            已接受
+          <% if(item.status){ %>
+            <% if(item.status=='running'){ %>
+              未接受
+            <% }else if(item.status=='approved'){ %>
+              已接受
+            <% }else{ %>
+              已完成
+            <% } %>
           <% }else{ %>
-            已完成
+            未接受
           <% } %>
+        </p>
+
+        <p>
+          <i class='glyphicon glyphicon-exclamation-sign'></i> 收入模式:
+          <% if(item.per_budget_type=='click'){ %>
+            点击
+            <span class='glyphicon glyphicon-question-sign' id='question_pop' data-toggle='popover' data-content='点击：活动期间通过 KOL 个人链接点击计入收入。'></span>
+          <% }else if(item.per_budget_type=='post'){ %>
+            转发
+            <span class='glyphicon glyphicon-question-sign' id='question_pop' data-toggle='popover' data-content='转发：一旦发布并上传截图，审核通过即可获得收入。'></span>
+          <% }else if(item.per_budget_type=='cpa'){ %>
+            行动
+            <span class='glyphicon glyphicon-question-sign' id='question_pop' data-toggle='popover' data-content='行动：广告主定义的活动，如下载 APP 或者订阅。'></span>
+          <% } %>
+
         </p>
 
         <p>
@@ -31,23 +50,24 @@
           <i class='glyphicon glyphicon-time'></i> 结束时间： <%= end_at %>
         </p>
 
-        <% if(item.status != 'running' && item.per_budget_type == 'click'){ %>
+        <% if(isShowIncome(item) && (item.per_budget_type == 'click' || item.per_budget_type == 'cpa')){ %>
         <p>
           <i class='glyphicon glyphicon-hand-up'></i> 当前有效点击： <%= item.avail_click %>
         </p>
         <% } %>
 
         <p>
-          <% if(item.per_budget_type == 'click'){ %>
+          <% if(isShowIncome(item) && (item.per_budget_type == 'click' || item.per_budget_type == 'cpa')){ %>
             <i class='glyphicon glyphicon-info-sign'></i> 有效点击单价： ￥<%= item.per_action_budget %>
           <% } else if(item.per_budget_type == 'post') { %>
             <i class='glyphicon glyphicon-info-sign'></i> 转发即可获得： ￥<%= item.per_action_budget %>
+          <% } else if(item.per_budget_type == 'cpa') { %>
+            <i class='glyphicon glyphicon-info-sign'></i> 有效行动单价： ￥<%= item.per_action_budget %>
           <% } %>
         </p>
 
-        <% if(item.status != 'running'){ %>
         <p>
-          <% if(item.per_budget_type == 'click'){ %>
+          <% if(isShowIncome(item) && (item.per_budget_type == 'click' || item.per_budget_type == 'cpa')){ %>
             <i class='glyphicon glyphicon-piggy-bank'></i> 当前收入： ￥<%= Number((item.avail_click * item.per_action_budget).toFixed(2)) %>
           <% } else if(item.per_budget_type == 'post') { %>
           <% } %>
@@ -62,7 +82,6 @@
 
         <div class='alert alert-warning displayForMobile' role='alert'>请复制文本并上传配图分享给你的朋友吧（长按图片可下载）</div>
 
-        <% } %>
         <h6>来自品牌的消息：</h6>
         <p>
           <%= item.message %>
@@ -110,7 +129,7 @@
         <hr>
         <% } %>
         <p>
-          <% if(item.status=='running'){ %>
+          <% if(!item.status){ %>
             注意：请点击「接受」按钮接受这次活动
           <% } %>
         </p>
@@ -126,7 +145,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <% if(item.status=='running') { %>
+        <% if(!item.status) { %>
           <% if(needComplete){ %>
             <a class='triggerMark btn disabled' disabled="disabled"><i class='glyphicon glyphicon-ok'></i>&nbsp;接受</a>
             <a class='triggerComplete btn btn-primary'><i class='glyphicon glyphicon-ok'></i>&nbsp;完善资料</a>

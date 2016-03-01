@@ -420,7 +420,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
           beforeSend: (xhr) ->
             xhr.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
             return
-          data: 'phone_number': phone_number
+          data: {'phone_number': phone_number, "login_user": "yes"}
         ).done (data) ->
           $('.tips').children().hide()
           if data['mobile_number_is_blank']

@@ -1,6 +1,6 @@
 Robin8
 ======
-Robin8 is next generation social and content marketing platform powered 
+Robin8 is next generation social and content marketing platform powered
 by artificial intelligence.
 
 # Development
@@ -14,3 +14,10 @@ Starting MailCatcher
 ==> smtp://127.0.0.1:1025
 ==> http://127.0.0.1:1080
 ```
+
+### 2.0 新配置
+* 加入七牛账号
+* 加入个推账号
+* rake china_regions:import
+* 新增app_upgrade 数据
+* 配置 identify_enabled

@@ -3,7 +3,7 @@
       <thead style="cursor:pointer;">
       <tr>
         <th><%= polyglot.t("smart_campaign.stats.kol_name") %></th>
-        <% if (campaign["per_budget_type"] == "click") {%>
+        <% if (campaign["per_budget_type"] == "click" || campaign["per_budget_type"] == "cpa") {%>
           <th><%= polyglot.t("smart_campaign.stats.avail_click") %></th>
         <% } %>
         <th><%= polyglot.t("smart_campaign.stats.total_click") %></th>

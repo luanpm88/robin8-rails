@@ -19,6 +19,9 @@ config/database.yml
 public/system
 .DS_Store
 /doc
+.rvmrc
+app/assets/javascripts/generated/
+client/
 
 *.sublime-project
 *.sublime-workspace
@@ -43,3 +46,5 @@ app/assets/stylesheets/app/dev_base.scss
 #app/assets/stylesheets/app/dev_reload.scss
 
 public/dev_base_compact.css
+
+node_modules

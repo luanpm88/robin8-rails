@@ -231,6 +231,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       localDate = new Date(date)
       formatted_date = localDate.getFullYear() + '年' + (localDate.getMonth() + 1) + '月' + localDate.getDate() + '日' + localDate.getHours() + '时' + localDate.getMinutes() + '分'
 
+    templateHelpers:
+      isShowIncome: (item) ->
+        if item.status=='running' or item.status=='finished' or item.status=='settled'
+          return true
+        else
+          return false
+
   Show.Tasks = Backbone.Marionette.CollectionView.extend
     childView: Show.Task
     childViewContainer: 'ul'
@@ -245,6 +252,13 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
 
     fixupProfile: (e) ->
       $('#taskModal').modal('hide')
+
+    templateHelpers:
+      isShowIncome: (item) ->
+        if item.status=='running' or item.status=='finished' or item.status=='settled'
+          return true
+        else
+          return false
 
     initialize: (opts) ->
       @model = opts.model
@@ -282,15 +296,22 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
         success: (data) ->
           if data.status == 'ok'
             parentThis.model.collection.remove parentThis.model
-            $('a#running').append('<span class="badge">1</span>')
-            parentThis.model.set('status', 'approved')
-            updatedView = new Show.TaskModal
-              model: parentThis.model
-            updatedViewHtml = updatedView.render().$el
-            parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
-            $('.triggerMark').remove()
-            parentThis.upload_screenshot_count_down()
-            parentThis.initQiniuUploader()
+            $.ajax
+              type: 'get'
+              url: '/campaign_invite_by_campaign/' + parentThis.model.get('id')
+              dataType: 'json'
+              success: (data) ->
+                console.log 'get campaign_invite: ', data
+                model = new Robin.Models.CampaignInvitation data
+                $('a#running').append('<span class="badge">1</span>')
+                updatedView = new Show.TaskModal
+                  model: model
+                updatedViewHtml = updatedView.render().$el
+                parentThis.$el.find('.modal-body').replaceWith updatedViewHtml.find('.modal-body')
+                $('.triggerMark').remove()
+                parentThis.upload_screenshot_count_down()
+                parentThis.initQiniuUploader()
+                $('#question_pop').popover({trigger: 'hover'})
           else if data.status == 'needMobile'
             console.log 'need mobile'
             updatedView = new Show.TaskModal
@@ -309,6 +330,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
       @initQiniuUploader()
       $('#taskModal').modal()
       clipboard = new Clipboard('.task-modal-btn');
+      $('#question_pop').popover({trigger: 'hover'})
 
     onRender: ()->
       @initQiniuUploader()

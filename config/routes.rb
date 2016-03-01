@@ -3,6 +3,7 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
+  mount RuCaptcha::Engine => "/rucaptcha"
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
   resources :discover_records, only: [:create]
 
   get 'campaign_invite/interface/:type' => 'campaign_invite#interface'
+  get 'campaign_invite_by_campaign/:campaign_id' => 'campaign_invite#find_by_kol_and_campaign'
   get 'mark_as_running/:id' => 'campaign_invite#mark_as_running'
 
   match '/wechat_third/notify', :via => [:get, :post]

@@ -36,28 +36,6 @@ class CacheDiscoverWorker
     Rails.logger.sidekiq.info "Completed perform #{self.class.to_s} with kol_id: #{kol_id}"
   end
 
-  def self.request_api_timeout_count_increment
-    key = "request:api_failed_count"
-    # todo fix: marshal data too short if no {:raw => true} option
-    if Rails.cache.exist?(key, :raw => true)
-      Rails.cache.increment key
-    else
-      expires_in_ttl = 1.days.to_i
-      Rails.cache.increment key
-      Rails.cache.expire key, expires_in_ttl
-    end
-
-    count = Rails.cache.read(key, :raw => true).to_i
-    CacheDiscoverWorker.tell_staff_api_might_down count if count > 10
-  end
-
-  def self.tell_staff_api_might_down count
-    # todo move slack webhook url to secrets.yml
-    notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
-
-    notifier.ping "[#{Rails.env}] fetching API failed count: `#{count}`, DateEngine API might down!"
-  end
-
   def self.encode_labels_url_for identity
     url = case identity.provider
           when 'weibo'
@@ -128,9 +106,16 @@ class CacheDiscoverWorker
       end
     rescue => e
       Rails.logger.sidekiq.error "something was wrong when request: #{url}, error msg: #{e.message}"
-      CacheDiscoverWorker.request_api_timeout_count_increment
+      CacheDiscoverWorker.tell_staff_error_when_request url, e.message
       return
     end
+  end
+
+  def self.tell_staff_error_when_request url, message
+    # todo move slack webhook url to secrets.yml
+    notifier = Slack::Notifier.new 'https://hooks.slack.com/services/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'
+
+    notifier.ping "[#{Rails.env}] fetching `#{url}` failed, message: `#{message}`"
   end
 
   def self.asset_path discovers
