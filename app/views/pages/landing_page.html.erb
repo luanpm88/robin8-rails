@@ -27,23 +27,21 @@
       <% if mobile_request? %>
         <p class="wechat_tip">如果希望使用微信注册登录，请使用电脑操作</p>
         <div class="download-app">
-          <a href="#androidModal" class="button small round secondary" id="android-btn"  >Android</a>
-          <a href="#iphoneModal" class="button small round secondary" id="iphone-btn" >iPhone</a>
+          <!-- <a href="#androidModal" class="button small round secondary" id="android-btn"  >Android</a>
+          <a href="#iphoneModal" class="button small round secondary" id="iphone-btn" >iPhone</a> -->
         </div>
       <% else %>
         <div class="download-app">
-          <a href="#androidModal" class="button round secondary" id="android-btn" rel="modal:open" >Android下载</a>
+          <!-- <a href="#androidModal" class="button round secondary" id="android-btn" rel="modal:open" >Android下载</a>
           <a href="#iphoneModal" class="button round secondary" id="iphone-btn" rel="modal:open">iPhone下载</a>
 
-          <!-- Modal HTML embedded directly into document -->
           <div class="app-qr-code" id="androidModal" style="display:none;">
             <img src="http://qr.api.cli.im/qr?data=http%253A%252F%252Fopenbox.mobilem.360.cn%252Findex%252Fd%252Fsid%252F3228710&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=de2023bfc39b6abc10fb985838b7b325">
           </div>
 
           <div class="app-qr-code" id="iphoneModal" style="display:none;">
             <img src="http://qr.api.cli.im/qr?data=https%253A%252F%252Fitunes.apple.com%252Fcn%252Fapp%252Fid1085946339&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=fc7f1bb7a54eb929fa1e2d99dc80ea0d">
-          </div>
-          <!-- Modal HTML embedded directly into document -->
+          </div> -->
 
         </div>
       <% end %>
