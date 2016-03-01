@@ -23,7 +23,7 @@
           该用户未设置昵称
         <% } %>
       </td>
-      <% if (campaign["per_budget_type"] == "click") {%>
+      <% if (campaign["per_budget_type"] == "click" || campaign["per_budget_type"] == "cpa") {%>
         <td class="middle col-md-1"><%= c.get_avail_click %></td>
       <% } %>
       <td class="middle col-md-1"><%= c.get_total_click %></td>
