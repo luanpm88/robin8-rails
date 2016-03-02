@@ -373,7 +373,6 @@ class Kol < ActiveRecord::Base
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       campaign_invite.save
-      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
     end
     campaign_invite
   end
@@ -386,6 +385,7 @@ class Kol < ActiveRecord::Base
       campaign_invite.status = 'approved'
       campaign_invite.approved_at = Time.now
       campaign_invite.save
+      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
       campaign_invite.reload
     else
       nil
