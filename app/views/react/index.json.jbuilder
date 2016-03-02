@@ -1,1 +1,1 @@
-json.a 1
+json.name 'david'
