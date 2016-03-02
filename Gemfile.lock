@@ -43,7 +43,7 @@ GIT
       omniauth-oauth2 (~> 1.0)
 
 GEM
-  remote: https://rubygems.org/
+  remote: https://ruby.taobao.org/
   remote: http://rails-assets.org/
   specs:
     actionmailer (4.2.0)
@@ -855,6 +855,3 @@ DEPENDENCIES
   whenever
   will_paginate (~> 3.0.6)
   will_paginate-bootstrap
-
-BUNDLED WITH
-   1.10.6
