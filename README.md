@@ -16,8 +16,5 @@ Starting MailCatcher
 ```
 
 ### 2.0 新配置
-* 加入七牛账号
-* 加入个推账号
-* rake china_regions:import
-* 新增app_upgrade 数据
-* 配置 identify_enabled
+* 加入phone_location sidekiq
+
