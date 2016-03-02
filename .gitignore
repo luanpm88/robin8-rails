@@ -48,3 +48,6 @@ node_modules
 
 # Generated js bundles
 /app/assets/javascripts/generated/*
+
+.ruby-version
+.ruby-gemset
