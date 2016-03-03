@@ -48,6 +48,7 @@ node_modules
 
 # Generated js bundles
 /app/assets/javascripts/generated/*
+app/assets/webpack/
 
 .ruby-version
 .ruby-gemset
