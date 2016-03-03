@@ -2,12 +2,12 @@ module YunPian
   class SendVoiceSms
     FakeNumber = 'robin8.best'
     FakeCode = '1234'
-    VoiceServer = "https://sms.yunpian.com/v1/sms/send.json"
+    VoiceServer = "https://voice.yunpian.com/v1/voice/send.json"
 
     def initialize(phone_number,
                    api_key = Rails.application.secrets.yunpian[:api_key],
                    company_sign = Rails.application.secrets.yunpian[:company_sign])
-      @phone_number = phone_number
+      @phone_number = phone_number.to_s
       @api_key = api_key
       @company_sign = company_sign
     end
@@ -22,7 +22,7 @@ module YunPian
     end
 
     def send_request
-      options = {:mobile => @phone_number, :apikey => @api_key, :text => @code}
+      options = {:mobile => @phone_number, :apikey => @api_key, :code => @code}
       res = Net::HTTP.post_form(URI.parse(VoiceServer), options)
       begin
         JSON.parse res
@@ -43,10 +43,10 @@ module YunPian
     def check_rule?
       records = Rails.cache.read(get_key)
         # 30秒内最多发送1次
-      if records && records.last.send_time > Time.now - 30.seconds
+      if records && records.last[:send_time] > Time.now - 30.seconds
         return false
         # 5分钟内最多发送3次。
-      elsif records && records.first > Time.now + 5.minutes && records.size == 3
+      elsif records && records.first[:send_time] > Time.now + 5.minutes && records.size == 3
         return false
       else
         return true
@@ -54,9 +54,9 @@ module YunPian
     end
 
     def add_rule
-      records = Rails.cache.read("voice_sms_#{@phone_number}")[-2,2]
+      records = (Rails.cache.read("voice_sms_#{@phone_number}"))[-2,2] || []  rescue []
       records << {:send_time => Time.now, :code => @code}
-      Rails.cache.write(get_key, :expires_in => 10.minutes)
+      Rails.cache.write(get_key, records, :expires_in => 10.minutes)
     end
 
     def set_security_code

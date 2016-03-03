@@ -39,7 +39,7 @@ module AuthToken
   def AuthToken.can_get_code?(data)
     begin
       decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
-      if decoded_data['time'].blank? || decoded_data['get_code'].blank?  || !AuthToken.valid_time?(decoded_data)
+      if decoded_data['time'].blank?  || !AuthToken.valid_time?(decoded_data)
         return false
       else
         return true
