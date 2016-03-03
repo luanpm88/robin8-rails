@@ -51,3 +51,4 @@ node_modules
 
 .ruby-version
 .ruby-gemset
+npm-debug.log*
