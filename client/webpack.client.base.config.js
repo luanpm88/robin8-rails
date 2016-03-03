@@ -25,7 +25,11 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.less', '.png', '.jpg', '.gif', '.css'],
+    root: [
+      path.resolve('./assets/stylesheets'),
+      path.resolve('./assets/images')
+    ],
     alias: {
       lib: path.join(process.cwd(), 'app', 'lib'),
       react: path.resolve('./node_modules/react'),
@@ -55,11 +59,63 @@ module.exports = {
   ],
   module: {
     loaders: [
+      // 加载bootstrap资源
+      {test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
+      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
+      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
+      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
+
+      // 加载图片
+      { test: /\.png$/, loader: "url-loader?limit=100000" },
+      { test: /\.jpg$/, loader: "file-loader" },
+      { test: /\.gif$/, loader: "file-loader" },
+
+      // 用babel加载jsx
+      {
+        test: /\.jsx?$/,
+        loader: 'babel',
+        exclude: /node_modules/,
+        query: {
+          plugins: [
+            [
+              'react-transform',
+              {
+                transforms: [
+                  {
+                    transform: 'react-transform-hmr',
+                    imports: ['react'],
+                    locals: ['module'],
+                  },
+                ],
+              },
+            ],
+          ],
+        },
+      },
+      {
+        test: /\.css$/,
+        loader: "style-loader!css-loader?importLoaders=1!postcss",
+      },
+      {
+        test: /\.scss$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=3&localIdentName=[name]__[local]__[hash:base64:5]',
+          'postcss',
+          'sass',
+          'sass-resources',
+        ],
+      },
+      {
+        test: require.resolve('jquery-ujs'),
+        loader: 'imports?jQuery=jquery',
+      },
 
       // Not all apps require jQuery. Many Rails apps do, such as those using TurboLinks or
       // bootstrap js
       { test: require.resolve('jquery'), loader: 'expose?jQuery' },
       { test: require.resolve('jquery'), loader: 'expose?$' },
+      { test: /\.less$/, loader: "style!css!less" },
     ],
   },
 };
