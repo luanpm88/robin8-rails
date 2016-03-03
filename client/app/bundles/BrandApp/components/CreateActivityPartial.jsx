@@ -1,7 +1,12 @@
 import React from 'react';
 import "create_activity.css";
+import createActivity from "raw/create_activity";
 
 export default class CreateActivityPartial extends React.Component {
+  componentDidMount() {
+    createActivity();
+  }
+
   render() {
     return (
       <div className="wrapper">
