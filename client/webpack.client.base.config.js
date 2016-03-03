@@ -2,7 +2,7 @@
 
 const webpack = require('webpack');
 const path = require('path');
-
+const glob = require("glob");
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
 
@@ -16,7 +16,7 @@ module.exports = {
     vendor: [
       'babel-polyfill',
       'jquery',
-    ],
+    ].concat(glob.sync("./app/lib/raw/**/*.js")),
 
     // This will contain the app entry points defined by webpack.hot.config and
     // webpack.rails.config
@@ -27,8 +27,9 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.less', '.png', '.jpg', '.gif', '.css'],
     root: [
+      path.resolve('./app/lib'),
       path.resolve('./assets/stylesheets'),
-      path.resolve('./assets/images')
+      path.resolve('./assets/images'),
     ],
     alias: {
       lib: path.join(process.cwd(), 'app', 'lib'),
