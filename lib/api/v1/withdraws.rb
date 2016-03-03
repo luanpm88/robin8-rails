@@ -44,7 +44,7 @@ module API
               error_403!({error: 1, detail: errors_message(withdraw)})
             end
           else
-            return {:error => 1, :detail => '提现金额超出可用余额或提现金额格式不对'}
+            return {:error => 1, :detail => '提现金额超出可用金额'}
           end
         end
       end

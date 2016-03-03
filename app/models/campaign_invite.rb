@@ -57,7 +57,7 @@ class CampaignInvite < ActiveRecord::Base
         self.status = 'settled'
         self.img_status = 'passed'
         self.save!
-        if campaign.is_click_type?
+        if campaign.is_click_type?  || campaign.is_cpa?
           kol.income(self.avail_click * campaign.per_action_budget, 'campaign', campaign, campaign.user)
           Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.per_action_budget}---#avail_amount:#{kol.avail_amount}-"
         else
@@ -125,7 +125,7 @@ class CampaignInvite < ActiveRecord::Base
 
   # 接收新活动时候  force = true
   def bring_income(campaign, force = false)
-    if  campaign.is_click_type?  || force
+    if  campaign.is_click_type? || campaign.is_cpa? || force
       #记录新收入
       self.redis_new_income.incr((campaign.per_action_budget * 100).to_i)
       #发送新收入消息
