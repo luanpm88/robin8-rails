@@ -206,6 +206,7 @@ end
 gem 'grape', '~> 0.9.0'
 gem 'grape-entity', '~> 0.4.3'
 gem 'grape-present_cache', :git => 'https://github.com/u2/grape-present_cache.git'
+gem 'grape-kaminari'
 
 gem 'jwt'
 

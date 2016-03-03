@@ -23,6 +23,19 @@ RSpec.describe Brand::V1::UserAPI do
       expect(response.status).to eq 401
     end
 
+   # todo: it should move to shared example
+    it 'supports paginate' do
+      get '/brand_api/v1/user/campaigns'
+
+      expect(response.header).to be_include('X-Offset')
+      expect(response.header).to be_include('X-Page')
+      expect(response.header).to be_include('X-Per-Page')
+      expect(response.header).to be_include('X-Next-Page')
+      expect(response.header).to be_include('X-Prev-Page')
+      expect(response.header).to be_include('X-Total')
+      expect(response.header).to be_include('X-Total-Pages')
+    end
+
     it 'returns campaigns belongs to current_user' do
       get '/brand_api/v1/user/campaigns'
 
