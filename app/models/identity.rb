@@ -9,8 +9,10 @@ class Identity < ActiveRecord::Base
 
   scope :valid, ->{ where("provider = 'weibo' or (provider='wechat' and from_type='app')")}
 
+
+
   WxThirdProvider = 'wechat_third'
-  after_save :spider_weibo_data
+  after_save :spider_weibo_data, :get_value_info, :on => :create
 
   scope :provider , -> (provider) {where(:provider => provider)}
 
@@ -64,8 +66,10 @@ class Identity < ActiveRecord::Base
     value
   end
 
+
   SinaUserServer = 'https://api.weibo.com/2/users/show.json'
   def get_value_info
+    return if self.provider != 'weibo' || self.registered_at.present?
     respond_json = RestClient.get SinaUserServer , {:params => {:access_token => self.token, :uid => self.uid}}       rescue ""
     respond = JSON.parse respond_json    rescue  {"error" => 1}
     #返回错误
@@ -80,7 +84,6 @@ class Identity < ActiveRecord::Base
       self.serial_params = respond_json
       self.save
     end
-
   end
 
   private
