@@ -3,6 +3,8 @@ ENV['RAILS_ENV'] ||= 'test'
 require 'spec_helper'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
+# https://github.com/chancancode/json_expressions
+require 'json_expressions/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -77,3 +79,7 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+# https://github.com/plataformatec/devise/wiki/How-To:-Test-with-Capybara
+include Warden::Test::Helpers
+Warden.test_mode!

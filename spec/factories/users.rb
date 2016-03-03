@@ -1,8 +1,13 @@
 FactoryGirl.define do
   factory :user do
-    email "brand_test@email.com"
-    password "12345678"
+    sequence :email do |n|
+      "staff_#{n}@robin8.com"
+    end
+    password 'password'
+    password_confirmation 'password'
 
-    amount 100
+    factory :rich_user do
+      amount 1000
+    end
   end
 end

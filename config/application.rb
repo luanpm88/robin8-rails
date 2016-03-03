@@ -36,6 +36,9 @@ module Robin8
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
     config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/mongo_models)
 
+    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
+
     config.action_dispatch.perform_deep_munge = false
     config.i18n.available_locales = ['en', 'zh']
     # I18n.enforce_available_locales = false

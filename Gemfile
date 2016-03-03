@@ -218,3 +218,4 @@ gem "react_on_rails", '~> 3.0.0-rc.2'
 gem 'foreman'
 gem 'bootstrap-sass', '~> 3.3.6'
 
+gem 'json_expressions'
