@@ -4,22 +4,14 @@ import Layout from '../containers/BrandApp';
 import HomePartial from '../components/HomePartial';
 import CreateActivityPartial from '../components/CreateActivityPartial';
 
+/*
+ 路由的配置
+ https://github.com/reactjs/react-router/blob/master/docs/guides/RouteConfiguration.md
+*/
 export default (
   <Route path="/react/" component={Layout}>
-    <IndexRoute
-      component={HomePartial}
-    />
+    <IndexRoute component={HomePartial} />
 
     <Route path="create_activity" component={CreateActivityPartial} />
-
-    {/*// <Route
-    //   path="react-router"
-    //   component={TestReactRouter}
-    // />
-    // <Route
-    //   path="react-router/redirect"
-    //   component={TestReactRouterRedirect}
-    //   onEnter={TestReactRouterRedirect.checkAuth}
-    // />*/}
   </Route>
 );
