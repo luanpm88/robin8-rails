@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
 
-  get "react/(/*all)", to: "react#index"
+  get "react/(/*all)/", to: "react#index"
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"

@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Immutable from 'immutable';
 import * as PostActionCreators from '../actions/PostActionCreators';
-import UpdatePostPartial from '../components/UpdatePostPartial';
+import NavPartial from '../components/NavPartial';
+
+import "base.css";
 
 const mapStateToProps = (state) => ({
   $$PostStore: state.$$PostStore
@@ -14,6 +16,7 @@ class Layout extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     $$PostStore: PropTypes.instanceOf(Immutable.Map).isRequired,
+    children: PropTypes.object.isRequired,
   };
 
   constructor(props, context) {
@@ -21,17 +24,11 @@ class Layout extends React.Component {
   }
 
   render() {
-    // 因为connect，这个Component是smart的，拥有dispatch和mapStateToProps注册进来的属性
-    const { dispatch, $$PostStore } = this.props;
-
-    // bind的作用是，生成绑定好的函数（可以直接调用，不需要dispatch，为的是让非smart Component方便调用）
-    const actions = bindActionCreators(PostActionCreators, dispatch);
-    const { updateName } = actions;
-
-    const name = $$PostStore.get('name');
-
     return (
-      <UpdatePostPartial {...{ updateName, name }} />
+      <div>
+        <NavPartial />
+        {this.props.children}
+      </div>
     );
   }
 }

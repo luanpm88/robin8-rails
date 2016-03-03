@@ -1,5 +1,5 @@
 import { compose, createStore, applyMiddleware, combineReducers } from 'redux';
-
+import { routerReducer } from 'react-router-redux';
 // 异步 action_creator
 // 文档 http://camsong.github.io/redux-in-chinese/docs/advanced/AsyncActions.html
 import thunkMiddleware from 'redux-thunk';
@@ -26,7 +26,11 @@ export default props => {
   };
 
   // 这些都是redux的一些基本的创建store、添加middleware的函数
-  const reducer = combineReducers(reducers);
+  const reducer = combineReducers({
+    ...reducers,
+    routing: routerReducer,
+  });
+
   const composedStore = compose(
     applyMiddleware(thunkMiddleware, loggerMiddleware)
   );
