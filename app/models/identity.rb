@@ -64,6 +64,25 @@ class Identity < ActiveRecord::Base
     value
   end
 
+  SinaUserServer = 'https://api.weibo.com/2/users/show.json'
+  def get_value_info
+    respond_json = RestClient.get SinaUserServer , {:params => {:access_token => self.token, :uid => self.uid}}       rescue ""
+    respond = JSON.parse respond_json    rescue  {"error" => 1}
+    #返回错误
+    if respond["error"]
+      return false;
+    else
+      self.followers_count =  respond["followers_count"]
+      self.friends_count = respond["friends_count"]
+      self.statuses_count = respond["statuses_count"]
+      self.registered_at = respond["created_at"]
+      self.verified = respond["verified"]
+      self.serial_params = respond_json
+      self.save
+    end
+
+  end
+
   private
   def spider_weibo_data
     if self.provider == "weibo" and self.kol_id.present? and self.has_grabed == false
