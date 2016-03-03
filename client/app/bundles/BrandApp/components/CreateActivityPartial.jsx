@@ -1,4 +1,5 @@
 import React from 'react';
+import "create_activity.css";
 
 export default class CreateActivityPartial extends React.Component {
   render() {

@@ -52,7 +52,7 @@ export default class HomePartial extends React.Component {
           <div className="panel my-medias-panel">
             <div className="panel-heading">
               <a href="#panelMedias" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-              <a href="#" target="_blank" className="btn btn-blue btn-big quick-btn">认识新的自媒体</a>
+              <a href="/react/create_activity" target="_blank" className="btn btn-blue btn-big quick-btn">认识新的自媒体</a>
               <h4 className="panel-title">我的御用媒体<i className="carte">/</i><strong className="stat-num">5698</strong></h4>
             </div>
             <div id="panelMedias" className="panel-collapse collapse in">

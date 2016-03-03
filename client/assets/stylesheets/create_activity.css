@@ -968,7 +968,7 @@ fieldset[disabled] .datepicker table tr td span.active:hover:hover {
   position: relative;
   float: right;
   text-align: center;
-  background: url(images/creat_activity_coverphoto.jpg) no-repeat bottom center;
+  background: url(~creat_activity_coverphoto.jpg) no-repeat bottom center;
 }
 .creat-activity-basic-intro .cover-photo,
 .creat-activity-basic-intro .cover-photo .inner {
@@ -1106,7 +1106,7 @@ fieldset[disabled] .datepicker table tr td span.active:hover:hover {
   bottom: 10px;
   width: 18px;
   height: 18px;
-  background: url(images/robin8_ui_sprites.png) no-repeat 0 -285px;
+  background: url(~robin8_ui_sprites.png) no-repeat 0 -285px;
 }
 .date-range-form-area .form-control {
   position: relative;

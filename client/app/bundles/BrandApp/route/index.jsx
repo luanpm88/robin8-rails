@@ -10,7 +10,7 @@ export default (
       component={HomePartial}
     />
 
-    {/*<Route path="create_activity" component={CreateActivityPartial} />*/}
+    <Route path="create_activity" component={CreateActivityPartial} />
 
     {/*// <Route
     //   path="react-router"
