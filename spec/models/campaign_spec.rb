@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Campaign, :type => :model do
+  it { is_expected.to validate_presence_of(:name) }
+  it { is_expected.to validate_presence_of(:description) }
+  it { is_expected.to validate_presence_of(:url) }
+  it { is_expected.to validate_presence_of(:budget) }
+  it { is_expected.to validate_presence_of(:per_budget_type) }
+  it { is_expected.to validate_presence_of(:per_action_budget) }
+  it { is_expected.to validate_presence_of(:start_time) }
+  it { is_expected.to validate_presence_of(:deadline) }
+
   let(:brand_1) {FactoryGirl.create(:user, :email => "brand_1@gmail.com")}
   describe "测试 创建campaign 相关逻辑" do
     context "当 brand amount 足够时, 创建 campaign" do

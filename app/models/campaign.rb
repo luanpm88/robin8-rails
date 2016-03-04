@@ -3,6 +3,8 @@ class Campaign < ActiveRecord::Base
   counter :redis_avail_click
   counter :redis_total_click
 
+  validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline
+
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   belongs_to :user
