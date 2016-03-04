@@ -2,20 +2,20 @@ module Influence
   class IdentityInfluence
     #将identitity得分 转化成百分制得分
     def self.covert_to_hundred_score(rate_score)
-      (rate_score / Influence::IdentityTotalRate).round(2)
+      (rate_score / Value::IdentityTotalRate).round(2)
     end
 
     #最终得到的是百分制得分
     def self.cal_score(kol_uuid,identity_id)
       identity = Identity.find identity_id
       return 0 if identity.blank?
-      follower_rate_score =  cal_follower_score(identity)  * Influence::Rate[:follower_rate]
-      status_rate_score =  cal_status_score(identity)  *  Influence::Rate[:status_rate]
-      register_rate_score = cal_register_score(identity)  * Influence::Rate[:register_rate]
-      verify_rate_score = cal_verify_score(identity) * Influence::Rate[:cal_verify_score]
+      follower_rate_score =  cal_follower_score(identity)  * Value::Rate[:follower_rate]
+      status_rate_score =  cal_status_score(identity)  *  Value::Rate[:status_rate]
+      register_rate_score = cal_register_score(identity)  * Value::Rate[:register_rate]
+      verify_rate_score = cal_verify_score(identity) * Value::Rate[:cal_verify_score]
       rate_score = follower_rate_score + status_rate_score +  register_rate_score +  verify_rate_score
       hundred_score =  covert_to_hundred_score(rate_score)
-      Rails.cache.write(Influence.identity_key(kol_uuid),hundred_score)  if   hundred_score >  Influence.identity_score(kol_uuid)
+      Rails.cache.write(Value.identity_key(kol_uuid),hundred_score)  if   hundred_score >  Value.identity_score(kol_uuid)
       identity.update_column(:score, hundred_score)
     end
 

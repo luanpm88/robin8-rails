@@ -5,8 +5,9 @@ production:
   :concurrency: 25
 :queues:
   - [default, 10]
-  - [campaign, 20]
+  - [campaign, 40]
   - [campaign_show, 10]
-  - [influence, 40]
+  - [influence, 80]
+  - [phone_location, 40]
 :limits:
   campaign_show: 1

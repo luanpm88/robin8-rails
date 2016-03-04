@@ -1,11 +1,11 @@
 module Influence
-  class Influence
+  class Value
     #https://robin8.atlassian.net/wiki/display/RPM/KOL+Influence+Scoring+Algorithm
     #计算总价值
     # kol_uuid_contact = {:exist => true, :hunder_score => 0}
     # kol_uuid_identity = {:exist => true, :hunder_score => 0}
     Rate = {:follower_rate => 0.3, :status_rate => 0.15, :register_rate => 0.05, :verify_rate => 0.1, :contact_rate => 0.4 }
-    IdentityTotalRate = Rate[:follower_rate] + Rate[:status_rate] + Rate[:register_rate] + Rate[:cal_verify_score]
+    IdentityTotalRate = Rate[:follower_rate] + Rate[:status_rate] + Rate[:register_rate] + Rate[:verify_rate]
     def self.get_total_score(kol_uuid)
       wait_cal_score(kol_uuid)
       score = 0

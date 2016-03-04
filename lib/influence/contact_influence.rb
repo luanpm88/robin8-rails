@@ -1,3 +1,5 @@
+$value = []
+
 module Influence
   class ContactInfluence
     #计算 加权好友数后 得分
@@ -26,7 +28,7 @@ module Influence
       hunder_score = ContactLevels.each do |level|
         return level[:score] if contact_count > level[:min_count]
       end
-      Rails.cache.write(Influence.contact_key(kol_uuid),hunder_score)
+      Rails.cache.write(Value.contact_key(kol_uuid),hunder_score)
     end
 
     def self.get_mobile_scores(cal_mobiles)
@@ -35,15 +37,15 @@ module Influence
       mobile_location = []
       cal_mobiles.each do |mobile|
         if is_mobile?(mobile)
-          PhoneLocationWorker.perform_async(mobile,contact_scores, mobile_location)
+          PhoneLocationWorker.perform_async(mobile,mobile_scores, mobile_location)
         else
-          contact_scores << 0.5
+          mobile_scores << 0.5
         end
       end
       loop_times = 0
       loop_seconds = 0.1
       while  true
-        break if loop_times >= 100 ||  contact_scores.size >= cal_mobiles_size * 0.9
+        break if loop_times >= 50 ||  mobile_scores.size >= cal_mobiles_size * 0.9
         loop_times += 1
         sleep loop_seconds
       end
@@ -56,5 +58,14 @@ module Influence
       mobile =~ /^((13[0-9])|(15[^4,\D])|(18[0-9])|(14[5,7])|(17[0-9]))\d{8}$/
     end
 
+
+
+    def self.test
+      kol_uuid = Time.now.to_i
+      puts kol_uuid
+      mobiles  = Kol.where("mobile_number is not null").limit(200).collect{|t| t.mobile_number}
+      cal_score(kol_uuid, mobiles)
+      puts Rails.cache.read(Value.contact_key(kol_uuid))
+    end
   end
 end

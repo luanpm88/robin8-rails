@@ -1,9 +1,9 @@
 class PhoneLocationWorker
   include Sidekiq::Worker
-  sidekiq_options :queue => :influence, :retry => 0
+  sidekiq_options :queue => :phone_location, :retry => 0
 
-  def perform(phone, store_key)
-    PhoneLocation.get_location(phone,store_key)
+  def perform(phone, contact_scores, mobile_location)
+    Influence::PhoneLocation.get_location(phone,contact_scores, mobile_location)
   end
 
 end

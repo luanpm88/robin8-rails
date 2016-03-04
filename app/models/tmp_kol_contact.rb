@@ -12,11 +12,8 @@ class TmpKolContact < ActiveRecord::Base
     # 报道存在联系人
     Influence::Influence.init_contact(self.kol_uuid)
     # 计算联系人价值
+    # CalInfluenceWorker.new("contact",kol_uuid, mobiles )
     CalInfluenceWorker.perform_async("contact",kol_uuid, mobiles )
   end
-
-  # def self.test
-  #   kol_uuid = Secur
-  # end
 
 end
