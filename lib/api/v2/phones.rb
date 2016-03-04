@@ -1,8 +1,10 @@
 module API
-  module V1
+  module V2
     class Phones < Grape::API
       resources :phones do
         get 'get_voice_code' do
+          # present :a, "bbbbd"
+          # present :aa, [{:a => "a", "b" => "b"},{:a => "a", "b" => "b"}]
           return error_403!({error: 1, detail: '你不能调用该接口'})      if !can_get_code?
           required_attributes! [:mobile_number]
           sms_client = YunPian::SendVoiceSms.new(params[:mobile_number])

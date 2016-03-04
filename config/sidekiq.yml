@@ -7,6 +7,6 @@ production:
   - [default, 10]
   - [campaign, 20]
   - [campaign_show, 10]
-  - [phone_location, 40]
+  - [influence, 40]
 :limits:
   campaign_show: 1
