@@ -15,14 +15,13 @@ import { initialStates } from '../reducers';
 export default props => {
   // props参数是 Rails helper react_component 传进来的 props
 
-  const { name } = props;
+  const { current_uesr } = props;
+
+  const { $$CurrentUserInitialState } = initialStates;
 
   // 根据rails传进来的参数 与 reducers里边定义的初始状态集合，构建最终store的初始状态
-  const { $$PostInitialState } = initialStates;
   const initialState = {
-    $$PostStore: $$PostInitialState.merge({
-      name,
-    }),
+    $$CurrentUser: $$CurrentUserInitialState.merge(current_uesr),
   };
 
   // 这些都是redux的一些基本的创建store、添加middleware的函数

@@ -10,7 +10,7 @@ export default class HomePartial extends React.Component {
             <div className="brand-logo"><img src={ require("temp/brand_logo.png") } /></div>
             <div className="brand-menu">
               <div className="dropdown">
-                <a href="#" className="brand-name" data-toggle="dropdown">可口可乐COCACOLA<i className="caret-arrow" /></a>
+                <a href="#" className="brand-name" data-toggle="dropdown">{this.props.$$CurrentUser.get('name')}<i className="caret-arrow" /></a>
                 <ul className="dropdown-menu">
                   <li><a href="#">Action</a></li>
                 </ul>

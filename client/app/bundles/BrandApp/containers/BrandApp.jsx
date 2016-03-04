@@ -8,14 +8,14 @@ import NavPartial from '../components/NavPartial';
 import "base.css";
 
 const mapStateToProps = (state) => ({
-  $$PostStore: state.$$PostStore
+  $$CurrentUser: state.$$CurrentUser
 });
 
 class Layout extends React.Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    $$PostStore: PropTypes.instanceOf(Immutable.Map).isRequired,
+    $$CurrentUser: PropTypes.instanceOf(Immutable.Map).isRequired,
     children: PropTypes.object.isRequired,
   };
 
@@ -24,10 +24,16 @@ class Layout extends React.Component {
   }
 
   render() {
+    const childrenWithProps = React.Children.map(this.props.children, (child) => {
+        return React.cloneElement(child, {
+          $$CurrentUser: this.props.$$CurrentUser
+        });
+    });
+
     return (
       <div>
-        <NavPartial />
-        {this.props.children}
+        <NavPartial currentUser={this.props.$$CurrentUser} />
+        {childrenWithProps}
       </div>
     );
   }
