@@ -12,11 +12,13 @@ module API
           requires :os_version, type: String
           requires :device_model, type: String
           requires :content, type: String
+          optional :screenshot, type: File
         end
         post 'create' do
           attrs = attributes_for_keys([:app_version, :app_platform, :os_version, :device_model, :content])
           feedback = Feedback.new
           feedback.attributes = attrs
+          feedback.screenshot = params[:screenshot] if params[:screenshot]
           feedback.kol_id = current_kol.id
           if feedback.save
             present :error, 0
