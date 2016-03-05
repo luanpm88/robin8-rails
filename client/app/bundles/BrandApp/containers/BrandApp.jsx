@@ -2,13 +2,15 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Immutable from 'immutable';
-import * as PostActionCreators from '../actions/PostActionCreators';
 import NavPartial from '../components/NavPartial';
+
+import * as CampaignActionCreators from '../actions/CampaignActionCreators';
 
 import "base.css";
 
 const mapStateToProps = (state) => ({
-  $$CurrentUser: state.$$CurrentUser
+  $$CurrentUser: state.$$CurrentUser,
+  $$Campaign: state.$$Campaign
 });
 
 class Layout extends React.Component {
@@ -16,6 +18,7 @@ class Layout extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     $$CurrentUser: PropTypes.instanceOf(Immutable.Map).isRequired,
+    $$Campaign: PropTypes.instanceOf(Immutable.Map).isRequired,
     children: PropTypes.object.isRequired,
   };
 
@@ -24,9 +27,13 @@ class Layout extends React.Component {
   }
 
   render() {
+    const campaignActions = bindActionCreators(CampaignActionCreators, this.props.dispatch);
+
     const childrenWithProps = React.Children.map(this.props.children, (child) => {
         return React.cloneElement(child, {
-          $$CurrentUser: this.props.$$CurrentUser
+          $$CurrentUser: this.props.$$CurrentUser,
+          $$Campaign: this.props.$$Campaign,
+          campaignActions
         });
     });
 

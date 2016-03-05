@@ -8,6 +8,7 @@ import thunkMiddleware from 'redux-thunk';
 // redux中的middleware它提供的是位于 action 被发起之后，到达 reducer 之前的扩展点
 // 文档 http://camsong.github.io/redux-in-chinese/docs/advanced/Middleware.html
 import loggerMiddleware from 'lib/middlewares/loggerMiddleware';
+import promiseMiddleware from 'lib/middlewares/promiseMiddleware';
 
 import reducers from '../reducers';
 import { initialStates } from '../reducers';
@@ -17,11 +18,12 @@ export default props => {
 
   const { current_uesr } = props;
 
-  const { $$CurrentUserInitialState } = initialStates;
+  const { $$CurrentUserInitialState, $$CampaignInitialState } = initialStates;
 
   // 根据rails传进来的参数 与 reducers里边定义的初始状态集合，构建最终store的初始状态
   const initialState = {
     $$CurrentUser: $$CurrentUserInitialState.merge(current_uesr),
+    $$Campaign: $$CampaignInitialState
   };
 
   // 这些都是redux的一些基本的创建store、添加middleware的函数
@@ -31,7 +33,7 @@ export default props => {
   });
 
   const composedStore = compose(
-    applyMiddleware(thunkMiddleware, loggerMiddleware)
+    applyMiddleware(thunkMiddleware, promiseMiddleware, loggerMiddleware)
   );
 
   const storeCreator = composedStore(createStore);

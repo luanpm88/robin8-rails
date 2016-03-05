@@ -29,7 +29,7 @@ export default props => {
   const reducer = combineReducers(reducers);
   const composedStore = compose(
     // 理解 thunk 这个 middleware 是做什么的。
-    applyMiddleware(thunkMiddleware, loggerMiddleware)
+    applyMiddleware(loggerMiddleware, thunkMiddleware)
   );
   const storeCreator = composedStore(createStore);
   const store = storeCreator(reducer, initialState);
