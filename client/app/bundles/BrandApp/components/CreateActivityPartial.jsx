@@ -31,7 +31,7 @@ class CreateActivityPartial extends React.Component {
 
               <div className="creat-form-footer">
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写。在此<a href="#">预览</a></p>
-                <button type="submit" className="btn btn-blue btn-lg">查看最优推广渠道</button>
+                <button disabled={this.props.submitting} type="submit" className="btn btn-blue btn-lg">查看最优推广渠道</button>
               </div>
             </form>
           </div>
