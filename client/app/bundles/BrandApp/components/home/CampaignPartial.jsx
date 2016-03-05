@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import {Link} from 'react-router';
 
 export default class CampaignPartial extends React.Component {
   render() {
@@ -10,9 +11,9 @@ export default class CampaignPartial extends React.Component {
             <span className="txt">收起</span>
             <i className="caret-arrow" />
           </a>
-          <a href="/react/create_activity" target="_blank" className="btn btn-blue btn-big quick-btn">
+          <Link to="/react/create_activity" className="btn btn-blue btn-big quick-btn">
             添加推广活动
-          </a>
+          </Link>
           <h4 className="panel-title">
             我的推广活动
             <span className="carte">/</span>
