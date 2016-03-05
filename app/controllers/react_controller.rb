@@ -30,8 +30,11 @@ class ReactController < ApplicationController
   end
 
   def create_campaigns
+    sleep(2);
+
     render json: {
-      success: true,
+      success: [true, false].sample,
+      error: '错误信息',
       model: {
         name: '创建的',
         start_time: Time.zone.now.to_i * 1000,
