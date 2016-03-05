@@ -41,7 +41,7 @@ export default class CampaignPartial extends React.Component {
                   <div className="summary">
                     { campaign.get('description') }
                   </div>
-                  <a href="#" className="link">
+                  <a href={ campaign.get('url') } className="link">
                     { campaign.get('url') }
                   </a>
                   <ul className="stat-info grid-4">

@@ -6,6 +6,9 @@ class ReactController < ApplicationController
 
   # fake campaigns
   def campaigns
+    # 加一个延时，模拟获取数据耗时
+    sleep(2)
+
     render json: {
       success: true,
       campaigns: [
@@ -20,7 +23,7 @@ class ReactController < ApplicationController
           ctr: '28.7%',
           remaining_days: 2
         }
-      ]
+      ] * 10
     }
   end
 end
