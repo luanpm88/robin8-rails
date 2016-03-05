@@ -6,8 +6,13 @@ export default class CampaignPartial extends React.Component {
     return (
       <div className="panel my-activities-panel">
         <div className="panel-heading">
-          <a href="#panelActivities" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <a href="create_activity.html" target="_blank" className="btn btn-blue btn-big quick-btn">添加推广活动</a>
+          <a href="#panelActivities" data-toggle="collapse" className="switch">
+            <span className="txt">收起</span>
+            <i className="caret-arrow" />
+          </a>
+          <a href="/react/create_activity" target="_blank" className="btn btn-blue btn-big quick-btn">
+            添加推广活动
+          </a>
           <h4 className="panel-title">
             我的推广活动
             <span className="carte">/</span>
@@ -24,11 +29,21 @@ export default class CampaignPartial extends React.Component {
             {this.props.$$Campaign.get('items').map(function(campaign, index) {
               return <div className="brand-activity-card" key={index}>
                 <div className="brand-activity-content">
-                  <a href="brand_activity_detail.html" className="detail-link">&gt;</a>
-                  <h2 className="activity-title">{ campaign.get('name') }</h2>
-                  <small className="date">{ moment(campaign.get('start_time')).format("D.M.YYYY") }</small>
-                  <div className="summary">{ campaign.get('description') }</div>
-                  <a href="#" className="link">{ campaign.get('url') }</a>
+                  <a href="brand_activity_detail.html" className="detail-link">
+                    &gt;
+                  </a>
+                  <h2 className="activity-title">
+                    { campaign.get('name') }
+                  </h2>
+                  <small className="date">
+                    { moment(campaign.get('start_time')).format("D.M.YYYY") }
+                  </small>
+                  <div className="summary">
+                    { campaign.get('description') }
+                  </div>
+                  <a href="#" className="link">
+                    { campaign.get('url') }
+                  </a>
                   <ul className="stat-info grid-4">
                     <li>
                       <span className="txt">已花费</span>
