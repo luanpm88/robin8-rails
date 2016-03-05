@@ -29,6 +29,7 @@ export default function createActivity () {
     allowDuplicates: false, //关键词不能重复
     confirmKeys: [13, 32] // 回车或空格确认输入
   });
+
   // 关键词满5个提示
   $('.activity-keywords-input').on({'itemAdded':function(event){
     var tips = '<span class="label label-danger">最多输入5个关键词</span>';
@@ -65,6 +66,7 @@ export default function createActivity () {
     var str = yyyy + '/' + mm + '/' + d;
     return str;
   }
+
   // 显示当天日期
   $('.date-range-form-area input').val(currentDate());
   $('.input-daterange').datepicker({
@@ -91,7 +93,7 @@ export default function createActivity () {
       $(uploader).change(function(e) {
         var files = e.target.files;
         if(FileReader && files && files.length) {
-          reader = new FileReader();
+          var reader = new FileReader();
           reader.onload = function() {
             placeholder[0].src = reader.result;
           };
