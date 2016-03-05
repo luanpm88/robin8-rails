@@ -10,17 +10,35 @@ export default function promiseMiddleware() {
 
     next({ ...rest, readyState: 'request' });
 
-    return promise.then(response => response.json()).then(
-      (json) => {
+    return promise.then((response) => {
 
-        // 成功后的跳转
-        if (redirect) {
-          browserHistory.push(redirect)
+      // http Code Error
+      if (!response.ok) {
+        next({ ...rest, readyState: 'failure' })
+        throw Error(response.statusText);
+      }
+
+      return response.json();
+    }).then( (json) => {
+        // 服务器返回，需要有一个固定的key，这里暂定success
+        if (json.success) {
+
+          // 成功后的跳转
+          if (redirect) {
+            browserHistory.push(redirect)
+          }
+
+          next({ ...rest, result: json, readyState: 'success' })
+        } else {
+
+          // 自定义报错方式
+          alert(json.error)
+
+          next({ ...rest, readyState: 'failure' })
         }
-
-        next({ ...rest, result: json, readyState: 'success' })
-      },
-      (error) => next({ ...rest, error, readyState: 'failure' })
-    );
+      }
+    ).catch( error => {
+      console.log(error);
+    });
   };
 }
