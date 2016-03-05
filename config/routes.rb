@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   mount API::Application => '/api'
 
   get "react/(/*all)/", to: "react#index"
+  get "react_fake_data/campaigns", to: 'react#campaigns'
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
