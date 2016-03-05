@@ -4,6 +4,8 @@ import { routerReducer } from 'react-router-redux';
 // 文档 http://camsong.github.io/redux-in-chinese/docs/advanced/AsyncActions.html
 import thunkMiddleware from 'redux-thunk';
 
+import {reducer as formReducer} from 'redux-form';
+
 // loggerMiddleware
 // redux中的middleware它提供的是位于 action 被发起之后，到达 reducer 之前的扩展点
 // 文档 http://camsong.github.io/redux-in-chinese/docs/advanced/Middleware.html
@@ -30,9 +32,11 @@ export default props => {
   const reducer = combineReducers({
     ...reducers,
     routing: routerReducer,
+    form: formReducer
   });
 
   const composedStore = compose(
+    // applyMiddleware(thunkMiddleware, promiseMiddleware)
     applyMiddleware(thunkMiddleware, promiseMiddleware, loggerMiddleware)
   );
 

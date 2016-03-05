@@ -12,10 +12,10 @@ import routes from '../route';
 export default (props) => {
   const store = createStore(props);
 
-  console.log(store.getState());
-  let unsubscribe = store.subscribe(() =>
-    console.log(store.getState())
-  );
+  // console.log(store.getState());
+  // let unsubscribe = store.subscribe(() =>
+  //   console.log(store.getState())
+  // );
 
   const history = syncHistoryWithStore(
     browserHistory,
