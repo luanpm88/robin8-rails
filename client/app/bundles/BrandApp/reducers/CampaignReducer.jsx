@@ -19,6 +19,10 @@ export default function CampaignReducer($$state = $$initialState, action) {
       }
 
       return $$state;
+    case actionTypes.SAVE_CAMPAIGN:
+
+      // cache for items
+      return $$state;
     default:
       return $$state;
   }
