@@ -1,5 +1,4 @@
 import { actionTypes } from '../constants';
-import { browserHistory } from 'react-router'
 
 export function requestCampaigns() {
   return {
@@ -20,14 +19,13 @@ export function saveCampaign(data) {
     }
   }
 
-  browserHistory.push('/react/')
-
   return {
     type: actionTypes.SAVE_CAMPAIGN,
     promise: fetch(
       'http://localhost:3000/react_fake_data/campaigns.json', {
         method: 'post',
         body: formData
-      })
+      }),
+    redirect: '/react/'
   };
 }
