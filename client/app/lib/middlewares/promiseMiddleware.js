@@ -37,7 +37,7 @@ export default function promiseMiddleware() {
           next({ ...rest, readyState: 'failure' })
         }
       }
-    ).catch( error => {
+    )['catch']( error => {
       console.log(error);
     });
   };
