@@ -9,15 +9,6 @@ class PushMessage < ActiveRecord::Base
   after_commit :async_send_to_client, :on => :create
   # template_type  'transmission', 'notification'       =>   'transmission'
 
-  # def self.get_title(message)
-  #   if message.message_type == 'income'
-  #     "您有一笔新收入"
-  #   elsif message.message_type == 'campaign'
-  #     "邀请您参与转发"
-  #   elsif message.message_type ==  'announcement'
-  #     "您有一个新的公告"
-  #   end
-  # end
 
   def self.transmission_template_content(message)
     content = {:action => message.message_type, :title => message.title, :sender => message.sender, :name => message.name}
@@ -50,11 +41,17 @@ class PushMessage < ActiveRecord::Base
       push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
                               :title => message.title, :receiver_cids => [receiver.device_token] )
       push_message.template_content = transmission_template_content(message)
+      push_message.message_id = message.id
+      push_message.item_id = message.item_id
+      push_message.item_type = message.item_type
       push_message.save
     elsif message.message_type == 'announcement'
       push_message = self.new(:receiver_type => 'All', :template_type => 'transmission', :title => message.title,
                               :receiver_list => {:app_id_list => [GeTui::Dispatcher::AppId] })
       push_message.template_content = transmission_template_content(message)
+      push_message.message_id = message.id
+      push_message.item_id = message.item_id
+      push_message.item_type = message.item_type
       push_message.save
     elsif message.message_type == 'campaign'
       push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
@@ -73,6 +70,9 @@ class PushMessage < ActiveRecord::Base
         push_message.receiver_ids = receivers.collect{|t| t.id }
         push_message.receiver_cids = receivers.collect{|t| t.device_token}
       end
+      push_message.message_id = message.id
+      push_message.item_id = message.item_id
+      push_message.item_type = message.item_type
       push_message.save
     end
   end
