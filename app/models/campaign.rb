@@ -46,6 +46,10 @@ class Campaign < ActiveRecord::Base
     (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForKol
   end
 
+  def reupload_screenshot_deadline
+    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
+  end
+
   def is_cpa?
     self.per_budget_type.to_s == "cpa"
   end
@@ -232,8 +236,6 @@ class Campaign < ActiveRecord::Base
       elsif
         # receive but not apporve  we must delete
         invite.delete
-      else
-        invite.status = 'rejected'
       end
       invite.save!
     end
