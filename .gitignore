@@ -20,7 +20,6 @@ public/system
 /doc
 .rvmrc
 app/assets/javascripts/generated/
-client/
 
 *.sublime-project
 *.sublime-workspace
@@ -45,11 +44,7 @@ app/assets/stylesheets/app/dev_base.scss
 #app/assets/stylesheets/app/dev_reload.scss
 
 public/dev_base_compact.css
-<<<<<<< HEAD
-=======
-
 node_modules
->>>>>>> feature/brand_api
 # React on Rails
 npm-debug.log
 node_modules
