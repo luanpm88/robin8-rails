@@ -1,5 +1,3 @@
-$value = []
-
 module Influence
   class ContactInfluence
     #计算 加权好友数后 得分
@@ -22,34 +20,42 @@ module Influence
         cal_mobiles = mobiles
       end
       # 获取 cal_mobile（部分好友） 加权人数
-      cal_mobile_scores = get_mobile_scores(cal_mobiles)
+      cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
+      Rails.logger.info "===============callll---#{Time.now}"
+      Rails.logger.info  cal_mobile_scores
+      Rails.logger.info  cal_mobile_scores.sum
       # 获取所有好友加权后好友人数 需还原 加权人数
       contact_count = cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)
       hunder_score = ContactLevels.each do |level|
         return level[:score] if contact_count > level[:min_count]
       end
-      Rails.cache.write(Value.contact_key(kol_uuid),hunder_score)
+      Rails.cache.write(Value.contact_key(kol_uuid), hunder_score)
     end
 
-    def self.get_mobile_scores(cal_mobiles)
+    def self.get_mobile_scores(kol_uuid, cal_mobiles)
       cal_mobiles_size = cal_mobiles.size
-      mobile_scores = []
-      mobile_location = []
-      cal_mobiles.each do |mobile|
+      store_keys = []
+      cal_mobiles.each_with_index do |mobile, index|
+        store_key = "#{kol_uuid}#{index}"
         if is_mobile?(mobile)
-          PhoneLocationWorker.perform_async(mobile,mobile_scores, mobile_location)
+          store_keys << store_key
+          PhoneLocationWorker.perform_async(mobile , store_key, kol_uuid)
         else
-          mobile_scores << 0.5
+          Rails.cache.write(store_keys, 0.5)
         end
       end
+      Rails.logger.info  store_keys
       loop_times = 0
       loop_seconds = 0.1
+      scores_hash = {}
       while  true
-        break if loop_times >= 50 ||  mobile_scores.size >= cal_mobiles_size * 0.9
+        eval("scores_hash = Rails.cache.fetch_multi(#{store_keys.join(",")}){nil}")
+        break if loop_times >= 50 ||  scores_hash.values.compact.size >= cal_mobiles_size * 0.8
         loop_times += 1
         sleep loop_seconds
       end
-      return mobile_scores
+      Rails.logger.info  scores_hash.values
+      return scores_hash.values.compact
     end
 
 
@@ -64,8 +70,8 @@ module Influence
       kol_uuid = Time.now.to_i
       puts kol_uuid
       mobiles  = Kol.where("mobile_number is not null").limit(200).collect{|t| t.mobile_number}
+      Rails.logger.info "===============test---#{Time.now}"
       cal_score(kol_uuid, mobiles)
-      puts Rails.cache.read(Value.contact_key(kol_uuid))
     end
   end
 end

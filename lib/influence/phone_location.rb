@@ -6,17 +6,15 @@ module Influence
 
     #https://www.juhe.cn/docs/api/id/11
 
-    def self.get_location(phone,contact_scores, mobile_location)
+    def self.get_location(phone, store_key, kol_uuid)
       respond_json = RestClient.get JuheService, {:params => {:key => JuheKey, :phone => phone}, :timeout => 0.8 }       rescue ""
       respond = JSON.parse respond_json
       if  respond["resultcode"] == "200"
         city = respond["result"]["city"]
         value = get_city_value city
-        $value << value
-        contact_scores << value
-        mobile_location << {:value => value, :phone => phone}
-        Rails.logger.sidekiq.info "========#{city}"
-        Rails.logger.sidekiq.info $value
+        mobile_location  = {:value => value, :phone => phone}
+        Rails.cache.write(store_key, value, :expires_in => 15.minutes)
+        Rails.cache.write("#{kol_uuid}_location", mobile_location, :expires_in => 2.hours)
       end
     end
 

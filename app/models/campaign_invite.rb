@@ -44,7 +44,7 @@ class CampaignInvite < ActiveRecord::Base
 
   def can_upload_screenshot
     return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  \
-      (screenshot.blank? && Time.now < self.upload_end_at) || (screenshot.present? && Time.now < self.upload_end_at)
+      (screenshot.blank? && Time.now < self.upload_end_at) || (screenshot.present? && Time.now < self.reupload_end_at))
   end
 
   # 进行中的活动 审核通过时  仅仅更新它状态
