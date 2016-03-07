@@ -1,0 +1,14 @@
+<% @campaign_action_urls.each_with_index do |campaign_action, index| %>
+  <br>
+  <p>原链接<%= index+1 %>: <%= campaign_action.action_url %></p>
+  <p>短链接<%= index+1 %>: <%= campaign_action.short_url %></p>
+  <p><a class="edit_link member_link" href="/admin/campaign_action_urls/<%=campaign_action.id%>/edit">修改</a></p>
+  <hr>
+<% end %>
+
+
+<style>
+  p {
+    font-size: 20px;
+  }
+</style>

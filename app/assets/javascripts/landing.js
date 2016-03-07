@@ -14,9 +14,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
-//= require ./lib/foundation.min
-//= require ./lib/modernizr
 //= require website/vendor/jquery.cookie
+//= require ./lib/jquery.modal
 
 $(function(){
   $(".social").click(function(){

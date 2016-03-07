@@ -42,7 +42,7 @@
   }
 }
 
-.send_sms {
+.send_sms, .rucaptcha_tag {
   display: inline-block;
   height: 2.3125rem;
   float: left;
@@ -50,18 +50,19 @@
   padding: 0 1em;
 }
 
+
 @media (max-width: 700px) {
   .verify-code {
     width: 50%
   }
 
-  .send_sms{
+  .send_sms, .rucaptcha_tag{
     width: 45%;
     margin-left: 5%;
   }
 
   .tips {
-    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed, .rucaptcha_not_right {
       font-size: 15px;
       color: red;
       margin-bottom: 2px;
@@ -102,13 +103,13 @@
     width: 75%
   }
 
-  .send_sms{
+  .send_sms, .rucaptcha_tag{
     width: 20%;
     margin-left: 5%;
   }
 
   .tips {
-    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed {
+    .not_unique_number, .mobile_numer_is_blank, .send_sms_failed, .rucaptcha_not_right {
       font-size: 15px;
       color: red;
       margin-bottom: 2px;

@@ -8,7 +8,7 @@
       <th>名称</th>
       <th>开始时间</th>
       <th>结算时间</th>
-      <th>模式(cpc/ppp)</th>
+      <th>模式(cpc/ppp/cpa)</th>
       <th>单价</th>
 
       <th>有效点击</th>
@@ -41,7 +41,7 @@
           </td>
 
           <td>
-            模式
+            <%= @campaigns[i].per_budget_type%>
           </td>
 
           <td>
@@ -57,7 +57,11 @@
           </td>
 
           <td>
-            <%= (@campaigns[i].per_action_budget * @campaign_invites[i].avail_click).round(2) %>
+            <% if @campaigns[i].is_click_type? %>
+              <%= (@campaigns[i].per_action_budget * @campaign_invites[i].avail_click).round(2) %>
+            <% else %>
+              <%= (@campaigns[i].per_action_budget).round(2) %>
+            <% end %>
           </td>
 
           <td>

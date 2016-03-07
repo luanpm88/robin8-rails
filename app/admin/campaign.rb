@@ -4,6 +4,7 @@ ActiveAdmin.register Campaign do
 
   member_action :unagree, :method => :put
   member_action :agree, :method => :put
+  member_action :show_action_urls, :method => :get
 
   controller do
     before_filter :set_admin_to_cookie, only: [:index]
@@ -23,6 +24,11 @@ ActiveAdmin.register Campaign do
       campaign = Campaign.find params[:id]
       campaign.update(:status => :agreed)
       redirect_to admin_campaigns_path
+    end
+
+    def show_action_urls
+      campaign = Campaign.find params[:id]
+      @campaign_action_urls = campaign.campaign_action_urls
     end
   end
 
@@ -63,7 +69,13 @@ ActiveAdmin.register Campaign do
     column :budget
     column :status
     column "mode" do |my_resource|
-      my_resource.per_budget_type == "click" ? 'Per click' : 'Per Post'
+      if my_resource.per_budget_type == "click"
+        'Per click'
+      elsif my_resource.per_budget_type == "post"
+        'Per post'
+      else
+        'cpa'
+      end
     end
     column "Spent" do |my_resource|
       my_resource.take_budget
@@ -72,6 +84,9 @@ ActiveAdmin.register Campaign do
       my_resource.get_avail_click
     end
     column "点击计费/post 计费", :per_action_budget
+    column "action_urls" do |my_resource|
+      (link_to '查看', show_action_urls_admin_campaign_path(my_resource.id), :method => :get, :target => "_blank" )
+    end
     actions do |my_resource|
       if my_resource.status == "unexecute"
         (link_to 'agree ', agree_admin_campaign_path(my_resource.id), :method => :put )

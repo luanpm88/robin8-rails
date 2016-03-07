@@ -4,11 +4,16 @@
   "description": "Built using the react_on_rails generator. Allows you to run npm install from root.",
   "main": "server.js",
   "engines": {
+<<<<<<< HEAD
     "node": "5.0.0",
+=======
+    "node": "4.2.0",
+>>>>>>> feature/brand_api
     "npm": "3.3.6"
   },
   "scripts": {
     "postinstall": "cd client && npm install",
+<<<<<<< HEAD
     "test": "rspec && npm run test:client && npm run lint",
     "test:client": "(cd client && npm run test --silent)",
     "lint": "(cd client && npm run lint --silent)",
@@ -21,6 +26,11 @@
     "build:dev:server": "(cd client && npm run build:dev:server --silent)",
     "hot-assets": "(cd client && npm run hot-assets)",
     "start": "(cd client && npm run start --silent)"
+=======
+    "test": "rspec && (cd client && npm run lint)",
+    "express-server": "echo 'visit http://localhost:4000' && cd client && npm start",
+    "rails-server": "echo 'visit http://localhost:3000/hello_world' && foreman start -f Procfile.dev"
+>>>>>>> feature/brand_api
   },
   "repository": {
     "type": "git",

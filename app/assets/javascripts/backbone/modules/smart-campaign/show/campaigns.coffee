@@ -9,6 +9,7 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
 
     events:
       "click #copy_campaign": "showEditCampaign"
+      "click #show_action_urls": "showActionUrls"
 
     templateHelpers:
       formatDate: (d) ->
@@ -52,3 +53,18 @@ Robin.module 'SmartCampaign.Show', (Show, App, Backbone, Marionette, $, _)->
             isRenew: true
           Backbone.history.navigate("campaign/" + id);
           Robin.layouts.main.content.show page
+
+    showActionUrls: (e) ->
+      e.preventDefault()
+      id = e.target.attributes["campaign"].value
+      $.ajax
+        method: 'GET'
+        url: "/campaign/" + id
+      .done (data) ->
+        i = 0
+        $(".modal-body").replaceWith("<div class='modal-body'> </div>")
+        while i < data.get_campaign_action_urls.length
+          template = _.template("<p>行动链接:</p><p><%- action_url %></p><p>短链接:</p><p><%- short_url %></p><hr>")
+          $(".modal-body").append(template {action_url: data.get_campaign_action_urls[i].action_url, short_url: data.get_campaign_action_urls[i].short_url} )
+          i++
+        $(".show-campaign-action-urls-modal").modal("show");

@@ -1,37 +1,7 @@
 class CampaignController < ApplicationController
 
   def index
-    return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_total_click, :get_fee_info, :get_share_time]})
-    if params[:status] == "declined" || params[:status] == "accepted"
-      status = params[:status] == "declined" ? "D" : "A"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => status}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
-    elsif params[:status] == "latest"
-      if kol_signed_in?
-        campaigns_invited = current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC').map { |c| c.id }
-        campaigns_latest = Campaign.where("created_at > ? and deadline > ?",Date.today - 14, Time.zone.now.beginning_of_day).order('deadline DESC').map { |c| c.id }
-        campaigns_latest-=campaigns_invited
-        campaigns = Campaign.where(:id => campaigns_latest).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
-      else
-        campaigns = current_user.campaigns
-      end
-    elsif params[:status] == "history"
-      campaigns = kol_signed_in? ? Campaign.joins(:interested_campaigns).where("interested_campaigns.kol_id = ? and campaigns.deadline <= ?", current_kol.id, Time.zone.now.beginning_of_day) | current_kol.campaigns.joins(:campaign_invites).where("campaign_invites.kol_id = ? and campaigns.deadline <= ?", current_kol.id, Time.zone.now.beginning_of_day) : current_user.campaigns
-    elsif params[:status] == "all"
-      if kol_signed_in?
-        categories = KolCategory.where(:kol_id => current_kol.id).map { |c| c.iptc_category_id }
-        campaigns_all = CampaignCategory.where(:iptc_category_id => categories).map { |c| c.campaign_id }
-        campaigns_invites = CampaignInvite.where(:kol_id => current_kol.id).map { |c| c.campaign_id }
-        campaigns_all-=campaigns_invites
-        campaigns = Campaign.where(:id => campaigns_all).where("deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC')
-      else
-        return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_fee_info, :get_share_time]})
-      end
-    elsif params[:status] == "negotiating"
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'N'}).where("campaigns.deadline > ?", Time.zone.now.beginning_of_day).order('deadline DESC') : current_user.campaigns
-    else
-      campaigns = kol_signed_in? ? current_kol.campaigns.joins(:campaign_invites).where(:campaign_invites => {:kol_id => current_kol.id, :status => 'A'}) : current_user.campaigns
-    end
-    render json: campaigns, each_serializer: CampaignsSerializer, campaign_status: params[:status], scope: current_kol
+    return render json: current_user.campaigns.to_json({:methods => [:get_avail_click, :get_total_click, :get_fee_info, :get_share_time, :get_campaign_action_urls]})
   end
 
   def show
@@ -40,7 +10,7 @@ class CampaignController < ApplicationController
     if (user.blank? or c.user_id != user.id)  and cookies[:admin] != "true"
       return render json: {:status => 'Thanks! We appreciate your request and will contact you ASAP'}
     end
-    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget, :post_count], :include => [:valid_invites]})
+    render json: c.to_json({:methods => [:get_avail_click, :get_total_click,  :take_budget, :remain_budget, :post_count, :get_campaign_action_urls], :include => [:valid_invites]})
   end
 
   def article
@@ -165,6 +135,12 @@ class CampaignController < ApplicationController
     end
 
     campaign = Campaign.new(params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url))
+    if action_urls = params[:action_url_list]
+      action_urls.each do |action_url|
+        campaign.campaign_action_urls.new(action_url: action_url)
+      end
+    end
+
     campaign.user = current_user
     campaign.status = "unexecute"
     campaign.deadline = params[:campaign][:deadline].to_time
@@ -180,6 +156,14 @@ class CampaignController < ApplicationController
     origin_budget = campaign.budget
 
     campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url)
+    if campaign_action_urls = params[:action_url_list]
+
+      campaign.campaign_action_urls.destroy_all
+
+      campaign_action_urls.each do |action_url|
+        campaign.campaign_action_urls.create(action_url: action_url)
+      end
+    end
 
     unless (current_user.avail_amount.to_f + origin_budget.to_f) >= params[:budget].to_f
       render :json => {:status => 'no enough amount!'} and return

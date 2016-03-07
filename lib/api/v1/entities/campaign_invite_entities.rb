@@ -4,7 +4,10 @@ module API
       module CampaignInviteEntities
         class Summary < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :status, :img_status, :share_url, :is_invited, :screenshot, :reject_reason
+          expose :id, :status, :img_status, :is_invited, :screenshot, :reject_reason , :uuid
+          expose :share_url do |campaign_invite|
+            campaign_invite.origin_share_url
+          end
           with_options(format_with: :iso_timestamp) do
             expose :approved_at
           end
@@ -16,6 +19,8 @@ module API
             campaign_invite.get_total_click
           end
           expose :earn_money
+          expose :tag
+          expose :upload_interval_time
           expose :campaign, using: API::V1::Entities::CampaignEntities::Summary    if  lambda { |instance, options| instance.campaign.present? }
         end
       end

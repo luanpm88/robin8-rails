@@ -1,4 +1,3 @@
-#source 'https://rubygems.org'
 source 'https://ruby.taobao.org'
 # source 'https://ruby.taobao.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -207,13 +206,16 @@ end
 gem 'grape', '~> 0.9.0'
 gem 'grape-entity', '~> 0.4.3'
 gem 'grape-present_cache', :git => 'https://github.com/u2/grape-present_cache.git'
+gem 'grape-kaminari'
 
 gem 'jwt'
 
 gem 'carrierwave'
 gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
 
+gem 'rucaptcha'
+gem 'igetui-ruby', require: 'igetui'
 gem "react_on_rails", '~> 3.0.0-rc.2'
 gem 'foreman'
 gem 'bootstrap-sass', '~> 3.3.6'
-
+gem 'json_expressions'
