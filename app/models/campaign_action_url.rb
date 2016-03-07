@@ -2,6 +2,9 @@ class CampaignActionUrl < ActiveRecord::Base
   belongs_to :campaign
   after_save :save_short_url
 
+  validates_presence_of :action_url, :campaign_id
+  validates_format_of :action_url, :with => URI::regexp(%w(http https))
+
   def save_short_url
     uuid = Base64.encode64({ :campaign_id => self.campaign.id, :campaign_action_url_id => self.id, :step => '2' }.to_json).gsub("\n","")
     self.short_url = generate_short_url(uuid)
