@@ -21,7 +21,7 @@ module.exports = {
     // This will contain the app entry points defined by webpack.hot.config and
     // webpack.rails.config
     app: [
-      './app/bundles/BrandApp/startup/clientRegistration',
+      './app/bundles/Robin8/startup/clientRegistration',
     ],
   },
   resolve: {
