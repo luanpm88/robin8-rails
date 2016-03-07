@@ -9,5 +9,9 @@ FactoryGirl.define do
     factory :rich_user do
       amount 1000
     end
+
+    factory :poor_user do
+      amount 0
+    end
   end
 end
