@@ -8,6 +8,7 @@ const devBuild = process.env.NODE_ENV !== 'production';
 config.output = {
   filename: 'brand-[name]-bundle-[hash].js',
   path: '../app/assets/webpack',
+  publicPath: '/assets/'
 };
 
 config.entry.vendor.unshift(
