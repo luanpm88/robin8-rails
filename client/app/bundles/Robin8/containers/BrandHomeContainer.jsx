@@ -10,7 +10,7 @@ import CampaignList from '../components/CampaignList'
 import "base.css";
 import "home.css";
 
-import * as brandHomeActionCreators from '../actions/brandHomeActionCreators'
+import * as brandHomeActionCreators from '../actions/BrandHomeActionCreators'
 
 
 function select(state) {

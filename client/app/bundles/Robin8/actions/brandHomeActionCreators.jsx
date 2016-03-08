@@ -2,7 +2,7 @@ console.log("begin brandHomeActionCreators");
 
 import requestsEmail from 'lib/requestsManager';
 import requestCampaignList from 'lib/requestCampaignList';
-import actionTypes from '../constants/brandHomeConstants'
+import actionTypes from '../constants/BrandHomeConstants'
 
 export function setIsFetching() {
   console.log("in setIsFetching");

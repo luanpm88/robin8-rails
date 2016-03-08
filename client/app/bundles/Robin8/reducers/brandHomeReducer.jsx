@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import actionTypes from '../constants/brandHomeConstants'
+import actionTypes from '../constants/BrandHomeConstants'
 
 export const $$initialState = Immutable.fromJS({
   brand: "",
