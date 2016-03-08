@@ -67,12 +67,21 @@ RSpec.describe CreateCampaignService, :type => :service do
 
   context 'when perform failure' do
     context 'when invalid user' do
-      it 'returns invaild params or user error' do
+      it 'returns invalid params or user error' do
         invalid_user = User.new
         service = CreateCampaignService.new invalid_user, campaign_params
 
         expect(service.perform).to be_falsy
-        expect(service.errors).to be_include 'Invaild params or user!'
+        expect(service.errors).to be_include 'Invalid params or user!'
+      end
+    end
+
+    context 'when nil user' do
+      it 'returns invalid params or user error' do
+        service = CreateCampaignService.new nil, campaign_params
+
+        expect(service.perform).to be_falsy
+        expect(service.errors).to be_include 'Invalid params or user!'
       end
     end
 
@@ -81,7 +90,7 @@ RSpec.describe CreateCampaignService, :type => :service do
         service = CreateCampaignService.new user
 
         expect(service.perform).to be_falsy
-        expect(service.errors).to be_include 'Invaild params or user!'
+        expect(service.errors).to be_include 'Invalid params or user!'
       end
     end
 

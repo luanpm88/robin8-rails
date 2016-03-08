@@ -12,9 +12,9 @@ class CreateCampaignService
 
   def perform
 
-    if @campaign_params.empty? or not @user.persisted?
+    if @campaign_params.empty? or @user.nil? or not @user.persisted?
       # todo: use I18n(also include blow errors)
-      @errors << 'Invaild params or user!'
+      @errors << 'Invalid params or user!'
       return false
     end
 
