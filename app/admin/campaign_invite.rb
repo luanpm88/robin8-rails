@@ -1,8 +1,6 @@
 ActiveAdmin.register CampaignInvite do
+  remove_filter :kol
 
-  before_filter :only => [:index] do
-    params['q'] = {:img_status_eq => 'pending', :screenshot_present => '1'}
-  end
 
   actions :all, :except => [:destroy]
 

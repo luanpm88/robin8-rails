@@ -12,11 +12,10 @@ module API
           optional :avatar_url, type: String
           optional :desc, type: String
           optional :serial_params, type: String
-
           optional :followers_count, Integer
           optional :friends_count, Integer
           optional :statuses_count, Integer
-          optional :registered_at, Integer
+          optional :registered_at, Time
           optional :verified, :boolean
           optional :refresh_token, :string
           optional :kol_uuid, :string
@@ -81,14 +80,40 @@ module API
           # present :kol_contacts, kol_contacts
         end
 
+        # 排名
+        params do
+          requires :kol_uuid, type: String
+        end
+        get 'rank' do
+          contacts = TmpIdentity.where(:kol_uuid => params[:kol_uuid]).order_by_exist
+          present :error, 0
+          present :kol_uuid, kol_uuid
+          present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
+        end
+
+        # invite
+        params do
+          requires :kol_uuid, type: String
+          requires :mobiles, type: String
+        end
+        post 'send_invite' do
+          invite_content = YunPian::TemplateContent.get_invite_sms('','')
+          result = YunPian::SendSms.send_msg(mobiles,invite_content)
+          puts result
+          present :error, 0
+        end
+
         # 计算总得分
         params do
           requires :kol_uuid, type: String
         end
         post 'cal_score' do
+          score = Influence::Value.get_total_score(params[:kol_uuid])    rescue 0
+          @campaigns = Campaign.where(:status => 'executing')
           present :error, 0
           present :kol_uuid, kol_uuid
-          present :score, 0
+          present :score, score
+          present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
         end
       end
     end

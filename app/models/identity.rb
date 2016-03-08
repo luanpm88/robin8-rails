@@ -77,7 +77,6 @@ class Identity < ActiveRecord::Base
       return false;
     else
       self.followers_count =  respond["followers_count"]
-      self.friends_count = respond["friends_count"]
       self.statuses_count = respond["statuses_count"]
       self.registered_at = respond["created_at"]
       self.verified = respond["verified"]

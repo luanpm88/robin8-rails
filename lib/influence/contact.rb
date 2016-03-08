@@ -1,5 +1,5 @@
 module Influence
-  class ContactInfluence
+  class Contact
     #计算 加权好友数后 得分
     ContactLevels = [{:min_count => 500, :score => 100},
                      {:min_count => 400, :score => 90},
@@ -21,14 +21,13 @@ module Influence
       end
       # 获取 cal_mobile（部分好友） 加权人数
       cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
-      Rails.logger.info "===============callll---#{Time.now}"
-      Rails.logger.info  cal_mobile_scores
-      Rails.logger.info  cal_mobile_scores.sum
+      Rails.logger.info "===============cal_score---#{Time.now}"
       # 获取所有好友加权后好友人数 需还原 加权人数
       contact_count = cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)
       hunder_score = ContactLevels.each do |level|
         return level[:score] if contact_count > level[:min_count]
       end
+      Rails.logger.info "===============cal_score---hunder_score:#{hunder_score}"
       Rails.cache.write(Value.contact_key(kol_uuid), hunder_score)
     end
 

@@ -417,4 +417,48 @@ class Kol < ActiveRecord::Base
     Campaign.completed.where(:id => unapproved_campaign_ids)
   end
 
+  def self.reg_or_sign_in(params)
+    kol = Kol.find_by(mobile_number: params[:mobile_number])
+    if kol.present?
+      kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
+                            device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
+    else
+      kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
+                        app_version: params[:app_version], device_token: params[:device_token],
+                        IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number])
+    end
+    return kol
+  end
+
+  def create_info_after_signup
+    if Rails.env.development?
+      SyncInfluenceAfterSignUpWorker.perform_async(self.id)
+    else
+      SyncInfluenceAfterSignUpWorker.perform_async(self.id)
+    end
+  end
+
+  #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中
+  def create_info_from_test_influence(kol_uuid)
+    # create contacts
+    ActiveRecord::Base.transaction do
+      kol_id = self.id
+      TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
+        KolContact.create(:kol_id => kol_id, :name => tmp_contact.name, :mobile => tmp_contact.mobile, :exist => tmp_contact.exist, :city => tmp_contact.city)
+      end
+      # TmpKolContact.where(:kol_uuid => kol_uuid).delete_all if Rails.env.production?
+      TmpIdentity.where(:kol_uuid => kol_uuid).each do |tmp_identity|
+        exist = Identity.find_by :uid => tmp_identity.uid
+        if !exist
+          identity = Identity.new
+          identity.attributes = tmp_identity.attributes
+          identity.kol_id = kol_id
+          identity.save
+        end
+      end
+      # TmpIdentity.where(:kol_uuid => kol_uuid).delete_all   if Rails.env.production?
+     end
+  end
+
+
 end

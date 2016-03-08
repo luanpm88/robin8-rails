@@ -8,9 +8,9 @@ class CalInfluenceWorker
     identity_id = args[2]
     mobiles = args[3]
     if job_type == 'identity'
-      Influence::IdentityInfluence.cal_score(kol_uuid,dentity_id)
+      Influence::Identity.cal_score(kol_uuid,identity_id)
     elsif job_type == 'contact'
-      Influence::ContactInfluence.cal_score(kol_uuid, mobiles)
+      Influence::Contact.cal_score(kol_uuid, mobiles)
     end
   end
 end
