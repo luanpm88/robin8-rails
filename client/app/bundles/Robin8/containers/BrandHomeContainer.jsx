@@ -4,9 +4,9 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
-import BrandNav from '../components/BrandNav'
-import BrandHeader from '../components/BrandHeader'
-import CampaignList from '../components/CampaignList'
+import BrandNav from '../components/brand_home/Nav'
+import BrandHeader from '../components/brand_home/Header'
+import CampaignList from '../components/brand_home/CampaignList'
 import "base.css";
 import "home.css";
 
