@@ -41,6 +41,10 @@ module YunPian
     end
 
     def write_cache_for phone_number, code
+      SendRegisterSms.write_cache_for(phone_number,code)
+    end
+
+    def self.write_cache_for(phone_number,code)
       Rails.cache.write(phone_number, code.to_s, expires_in: 30.minutes)
     end
 

@@ -53,7 +53,7 @@ module YunPian
       end
     end
 
-    def add_rule
+    def add_history
       records = (Rails.cache.read("voice_sms_#{@phone_number}"))[-2,2] || []  rescue []
       records << {:send_time => Time.now, :code => @code}
       Rails.cache.write(get_key, records, :expires_in => 10.minutes)
@@ -61,7 +61,8 @@ module YunPian
 
     def set_security_code
       @code = (1..9).to_a.sample(4).join
-      add_rule
+      YunPian::SendRegisterSms.write_cache_for(@phone_number,@code)
+      add_history
     end
 
   end
