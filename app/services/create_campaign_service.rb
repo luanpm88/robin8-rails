@@ -28,9 +28,11 @@ class CreateCampaignService
       return false
     end
 
+    @campaign_params.merge!({:status => :unexecute})
+
     begin
       ActiveRecord::Base.transaction do
-        @campaign = Campaign.create! @campaign_params.select{|k,v| k != :action_url_list}
+        @campaign = @user.campaigns.create! @campaign_params.select{|k,v| k != :action_url_list}
 
         if is_cpa_campaign?
           @campaign_params[:action_url_list].each do |action_url|

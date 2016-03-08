@@ -14,6 +14,20 @@ RSpec.describe CreateCampaignService, :type => :service do
       expect(service.perform).to be_truthy
     end
 
+    it 'belongs to user' do
+      service = CreateCampaignService.new user, campaign_params
+
+      expect(service.perform).to be_truthy
+      expect(service.campaign.user).to eq user
+    end
+
+    it 'was unexecute status' do
+      service = CreateCampaignService.new user, campaign_params
+
+      expect(service.perform).to be_truthy
+      expect(service.campaign.status).to eq 'unexecute'
+    end
+
     it 'creates new campaign' do
       service = CreateCampaignService.new user, campaign_params
 
