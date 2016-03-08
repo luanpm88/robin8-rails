@@ -29,14 +29,14 @@ export function fetchCampaignListFailure(error) {
   };
 }
 
-export function fetchCampaignList() {
+export function fetchCampaignList(currentPage) {
   console.log("innnnnnn fetchCampaignList");
   return dispatch => {
     dispatch(setIsFetching());
 
     return (
       requestCampaignList
-        .fetchCampaignList()
+        .fetchCampaignList(currentPage)
         .then(res => dispatch(fetchCampaignListSuccess(res.data)))
         .catch(res => dispatch(fetchCampaignListFailure(res.data)))
     );

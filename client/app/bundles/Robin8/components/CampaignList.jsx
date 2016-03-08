@@ -14,8 +14,19 @@ export default class CampaignList extends React.Component {
 
   componentDidMount() {
     const { fetchCampaignList } = this.props.actions;
-    fetchCampaignList();
-    showPaginate();
+    fetchCampaignList({ page: 1 });
+
+    var pagination_options = {
+      currentPage: 1,
+      totalPages: 3,
+      size: 'large',
+      onPageClicked:  function(e,originalEvent,type,page){
+        fetchCampaignList({ page: page });
+      }
+    }
+
+    this.props.data.get("isFetching") ? "" : showPaginate(pagination_options)
+
   }
 
   render() {
@@ -59,12 +70,12 @@ export default class CampaignList extends React.Component {
             <div id="panelActivities" className="panel-collapse collapse in">
               <div className="panel-body">
                 {campaigns}
+                <div id="campaigns-paginator">
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="campaigns-paginator"></div>
-
       </div>
     )
   }
