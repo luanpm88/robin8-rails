@@ -1,5 +1,7 @@
 class TmpKolContact < ActiveRecord::Base
   scope :order_by_exist, ->{ order('exist desc')}
+  scope :joined, -> {where(:exist => true)}
+  scope :unjoined, -> {where(:exist => false)}
 
   def self.add_contacts(kol_uuid,contacts)
     mobiles = []

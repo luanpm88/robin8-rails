@@ -19,6 +19,7 @@ module API
           optional :verified, :boolean
           optional :refresh_token, :string
           optional :kol_uuid, :string
+          optional :unionid, type: String
         end
         post 'bind_identity' do
           kol_uuid = SecureRandom.hex if params[:kol_uuid]
@@ -27,14 +28,7 @@ module API
             present :error, 1
             present :detail, "该账号已经添加"
           else
-            tmp_identity = TmpIdentity.new
-            attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params,
-                                         :followers_count, :friends_count, :statuses_count, :registered_at, :verified,
-                                         :refresh_token]
-            tmp_identity.from_type = 'app'
-            tmp_identity.attributes = attrs
-            tmp_identity.kol_uuid = kol_uuid
-            tmp_identity.save
+            TmpIdentity.create_identity_from_app(params.merge({:from_type => 'app', :kol_uuid => kol_uuid }))
             kol_identities = TmpIdentity.get_identities(kol_uuid)
             present :error, 0
           end
@@ -85,9 +79,12 @@ module API
           requires :kol_uuid, type: String
         end
         get 'rank' do
-          contacts = TmpIdentity.where(:kol_uuid => params[:kol_uuid]).order_by_exist
+          joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
+          # unjoined_contacts = TmpKolContact.unjoined.where(:kol_uuid => params[:kol_uuid]).order_by_exist
+          contacts = TmpKolContact.where(:kol_uuid => params[:kol_uuid])
           present :error, 0
-          present :kol_uuid, kol_uuid
+          present :influence_title,''
+          present :joined_count, joined_contacts.size
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
 
@@ -99,7 +96,6 @@ module API
         post 'send_invite' do
           invite_content = YunPian::TemplateContent.get_invite_sms('','')
           result = YunPian::SendSms.send_msg(mobiles,invite_content)
-          puts result
           present :error, 0
         end
 

@@ -31,6 +31,14 @@ class TmpIdentity < ActiveRecord::Base
     identity.save
   end
 
+  def self.create_identity_from_app(params)
+    TmpIdentity.create(provider: params[:provider], provider: params[:provider], uid: params[:uid], token: params[:token],
+                    name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
+                    followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
+                    registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params.to_json,kol_id: kol_id,
+                    kol_uuid: params[:kol_uuid])
+  end
+
   private
   def cal_identity_influence
     if self.provider == 'weibo'

@@ -34,11 +34,13 @@ module API
           optional :registered_at, Time
           optional :verified, :boolean
           optional :refresh_token, :string
-
+          optional :unionid, type: String
           optional :kol_uuid, type: String
         end
         post 'oauth_login' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
+          #兼容pc端 wechat
+          identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if params[:unionid]
           kol = identity.kol   rescue nil
           if !kol
             ActiveRecord::Base.transaction do
@@ -47,19 +49,10 @@ module API
                                 social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
                                 IMEI: params[:IMEI], IDFA: params[:IDFA])
               #保存头像
-              if params[:avatar_url].present?
-                kol.remote_avatar_url =  params[:avatar_url]
-                kol.save
-              end
-              if identity.blank?
-                attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
-                identity = Identity.new
-                identity.attributes = attrs
-                identity.from_type = 'app'
-                identity.kol_id = kol.id
-                identity.save
-              end
+              kol.update_attribute(remote_avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
+              identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?
             end
+            identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
           end
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
