@@ -40,7 +40,7 @@ class CreateCampaignService
       end
       return true
     rescue Exception => e
-      @errors << e.record.errors.full_messages.flatten
+      @errors.concat e.record.errors.full_messages.flatten
       return false
     end
 
@@ -53,7 +53,7 @@ class CreateCampaignService
   private
 
   def permited_params_from params
-    params.select { |k, v| PERMIT_PARAMS.include? k } 
+    params.nil? ? [] : params.select { |k, v| PERMIT_PARAMS.include? k } 
   end
 
   def enough_amount? user, budget
