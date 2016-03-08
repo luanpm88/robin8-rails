@@ -52,6 +52,11 @@ config.module.loaders.push(
 );
 
 config.plugins.push(
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'vendor-bundle.js',
+    minChunks: Infinity,
+  }),
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin()
 );

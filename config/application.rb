@@ -10,6 +10,15 @@ Bundler.require(*Rails.groups)
 
 module Robin8
   class Application < Rails::Application
+
+    # 跨域请求
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins 'local.robin8.com'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

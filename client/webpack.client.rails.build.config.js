@@ -6,7 +6,7 @@ const config = require('./webpack.client.base.config');
 const devBuild = process.env.NODE_ENV !== 'production';
 
 config.output = {
-  filename: '[name]-bundle.js',
+  filename: 'brand-[name]-bundle-[hash].js',
   path: '../app/assets/webpack',
 };
 
@@ -61,7 +61,11 @@ config.module.loaders.push(
 );
 
 config.plugins.push(
-  new ExtractTextPlugin('[name]-bundle.css', { allChunks: true }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: Infinity,
+  }),
+  new ExtractTextPlugin('brand-[name]-bundle-[contenthash].css', { allChunks: true }),
   new webpack.optimize.DedupePlugin()
 );
 

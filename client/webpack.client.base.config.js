@@ -38,19 +38,13 @@ module.exports = {
         NODE_ENV: JSON.stringify(nodeEnv),
       },
     }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor-bundle.js',
-      minChunks: Infinity,
-    }),
   ],
   module: {
     loaders: [
       // 加载普通静态资源
-      { test: /\.(woff2?|svg)$/, loader: 'url?limit=10000' },
-      { test: /\.(ttf|eot)$/, loader: 'file' },
-      { test: /\.(jpe?g|png|gif|svg|ico)$/, loader: 'url?limit=10000' },
+      { test: /\.(woff2?|svg)$/, loader: 'url?name=brand-[name]-[hash].[ext]&limit=10000' },
+      { test: /\.(ttf|eot)$/, loader: 'file?name=brand-[name]-[hash].[ext]' },
+      { test: /\.(jpe?g|png|gif|svg|ico)$/, loader: 'url?name=brand-[name]-[hash].[ext]&limit=10000' },
 
       // 扩展全局namespace
       { test: require.resolve('jquery'), loader: 'expose?jQuery' },
