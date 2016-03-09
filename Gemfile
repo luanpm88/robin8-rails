@@ -218,3 +218,5 @@ gem 'foreman'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'rack-cors', :require => 'rack/cors'
 gem "non-stupid-digest-assets"
+gem 'rucaptcha'
+gem 'igetui-ruby', require: 'igetui'

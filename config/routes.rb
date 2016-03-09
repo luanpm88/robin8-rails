@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'hello_world', to: 'hello_world#index'
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
+  mount RuCaptcha::Engine => "/rucaptcha"
 
   get "react/(/*all)/", to: "react#index"
   get "react_fake_data/campaigns", to: 'react#campaigns'
@@ -25,6 +26,7 @@ Rails.application.routes.draw do
   resources :discover_records, only: [:create]
 
   get 'campaign_invite/interface/:type' => 'campaign_invite#interface'
+  get 'campaign_invite_by_campaign/:campaign_id' => 'campaign_invite#find_by_kol_and_campaign'
   get 'mark_as_running/:id' => 'campaign_invite#mark_as_running'
 
   match '/wechat_third/notify', :via => [:get, :post]

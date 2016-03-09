@@ -23,60 +23,65 @@ class CampaignInviteController < ApplicationController
   end
 
   def mark_as_running
-    @kol = current_kol
-    return render :json => {error: 'no available kol!'} if @kol.blank?
+    return render :json => { error: 'no available kol!' } if current_kol.blank?
+    return render :json => { status: 'needMobile' } unless current_kol.mobile_number.present?
 
-    @campaign_invite = CampaignInvite.find params[:id]
+    campaign = Campaign.find params[:id]
 
-    return render :json => {status: 'needMobile'} unless @kol.mobile_number.present?
-
-    @campaign = @campaign_invite.campaign
-
-    if @campaign.need_finish
-      CampaignWorker.perform_async(@campaign.id, 'fee_end')
-      return render :json => {status: 'campaign finished'}
+    if campaign.need_finish
+      CampaignWorker.perform_async campaign.id, 'fee_end'
+      return render :json => { status: 'campaign finished' }
     end
 
-    if @campaign_invite.status.eql? 'running'
-      @campaign_invite.update_attributes({status: 'approved', approved_at: Time.now})
+    if current_kol.approve_campaign(campaign.id).is_a? CampaignInvite
+      return render :json => { status: 'ok' }
+    else
+      return render :json => { status: 'error' }
     end
-
-    return render :json => {status: 'ok'}
   end
 
   def interface
-    @kol = current_kol
-
-    return render :json => {error: 'no available kol!'} if @kol.blank?
-
-    status = case params[:type]
-             when 'upcoming'
-               'running'
-             when 'running'
-               'approved'
-             when 'complete'
-               'finished'
-             when 'verify'
-               'verify'
-             else
-               'error'
-             end
-
-    return render :json => {error: 'error type!'} if status.eql?('error')
-
-    if status.eql? 'verify'
-      campaigns_by_status = @kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).order('updated_at desc')
-    elsif status.eql? 'finished'
-      campaigns_by_status = @kol.campaign_invites.where(img_status: 'passed', status: ['finished', 'settled']).order('created_at desc')
-    else
-      campaigns_by_status = @kol.campaign_invites.where(status: status).order('created_at desc')
-    end
+    return render :json => { error: 'no available kol!' } if current_kol.blank?
 
     limit = params[:limit] || 3
     offset = params[:offset] || 0
-    campaign_invites_by_limit_and_offset = campaigns_by_status.offset(offset.to_i).limit(limit.to_i)
 
-    render json: campaign_invites_by_limit_and_offset, each_serializer: CampaignInviteSerializer
+    # todo refactor this return campaign should not in campaign_invites controller
+    if params[:type].eql? 'upcoming' or params[:type].eql? 'missed'
+      campaigns = case params[:type]
+                  when 'upcoming'
+                    current_kol.running_campaigns
+                  when 'missed'
+                    current_kol.missed_campaigns
+                  end
+      return render :json => campaigns.offset(offset.to_i).limit(limit.to_i), :each_serializer => CampaignsSerializer
+    end
+
+    campaign_invites_by_type = case params[:type]
+                               when 'running'
+                                 current_kol.campaign_invites.approved
+                               when 'complete'
+                                 current_kol.campaign_invites.completed
+                               when 'verify'
+                                 current_kol.campaign_invites.verifying
+                               else
+                                 return render :json => { error: 'error type!' }
+                               end
+
+    campaign_invites_by_paged = campaign_invites_by_type.offset(offset.to_i).limit(limit.to_i)
+
+    render :json => campaign_invites_by_paged, :each_serializer => CampaignInviteSerializer
+  end
+
+  def find_by_kol_and_campaign
+    # todo this line appear too many times
+    return render :json => { error: 'no available kol!' } if current_kol.blank?
+
+    campaign = Campaign.find params[:campaign_id]
+
+    campaign_invite = CampaignInvite.where(:kol => current_kol, :campaign => campaign).first
+
+    return render :json => campaign_invite, :serizlizer => CampaignInviteSerializer
   end
 
   def change_img_status

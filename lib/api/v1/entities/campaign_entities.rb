@@ -4,10 +4,16 @@ module API
       module CampaignEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :img_url, :status, :message, :url, :per_budget_type, :per_action_budget, :budget
+          expose :id, :name, :description, :status, :message, :url, :per_budget_type, :per_action_budget, :budget
+          expose :img_url do |campaign|
+            campaign.img_url.gsub("-400","") + "!cover2"     rescue nil
+          end
           with_options(format_with: :iso_timestamp) do
             expose :deadline
             expose :start_time
+          end
+          expose :brand_name do |campaign|
+            campaign.user.company   rescue nil
           end
           expose :avail_click do |campaign|
             campaign.get_avail_click

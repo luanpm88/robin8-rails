@@ -21,6 +21,16 @@
 //= require select2
 
 $(function(){
+  $(".rucaptcha_tag_box").click(function(){
+    $.ajax({
+      method: "GET",
+      url: "/rucaptcha/"
+    }).done(function(data){
+      new_src = $(".rucaptcha_tag").attr('src').split('?')[0] + '?' + (new Date()).getTime()
+      $(".rucaptcha_tag").attr("src", new_src)
+    })
+  });
+
   $(".send_sms").click(function(){
     var phone_number = $("#kol_mobile_number").val().trim();
     var old_button_text = $(".send_sms").text();
@@ -44,7 +54,7 @@ $(function(){
           beforeSend: function(xhr) {
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
           },
-         data: {"phone_number": phone_number, 'role': $("#kol_mobile_number").attr("data-role")}
+         data: {"phone_number": phone_number, 'role': $("#kol_mobile_number").attr("data-role"), '_rucaptcha':  $(".rucaptcha_input").val()}
       })
         .done(function(data) {
           $(".tips").children().hide();
@@ -53,11 +63,15 @@ $(function(){
             return null;
           }
 
+
           if (data["not_unique"]) {
             $("#kol_mobile_number").css({"border-color": "red"})
             $(".not_unique_number").show();
             $(".not_unique_number").siblings().hide();
-          } else {
+          } else if (data["rucaptcha_not_right"]){
+            $(".rucaptcha_not_right").show();
+          }
+          else {
             if (data["code"]) {
               $("#kol_mobile_number").css({"border-color": "red"})
               $(".send_sms_failed").show();

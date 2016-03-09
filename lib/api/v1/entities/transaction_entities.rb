@@ -15,6 +15,10 @@ module API
             expose :created_at
           end
         end
+
+        class Stat  < Grape::Entity
+          expose :credits, :amount, :avail_amount, :frozen_amount
+        end
       end
     end
   end
