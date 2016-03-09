@@ -214,3 +214,4 @@ gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
 
 gem 'rucaptcha'
 gem 'igetui-ruby', require: 'igetui'
+gem 'csv_shaper'
