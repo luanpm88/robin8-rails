@@ -8,6 +8,9 @@ class ReactController < ApplicationController
 
   # fake campaigns
   def campaigns
+
+    # return render json: {campaigns: [], error: 'error'}, status: 301
+
     # 加一个延时，模拟获取数据耗时
     sleep(1)
 
