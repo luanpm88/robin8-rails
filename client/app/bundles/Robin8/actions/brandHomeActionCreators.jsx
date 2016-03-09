@@ -1,46 +1,16 @@
 console.log("begin brandHomeActionCreators");
 
-import requestsEmail from 'lib/requestsManager';
-import requestCampaignList from 'lib/requestCampaignList';
 import actionTypes from '../constants/BrandHomeConstants'
 
-export function setIsFetching() {
-  console.log("in setIsFetching");
-  return {
-    type: actionTypes.SET_IS_FETCHING
-  };
-}
+const CAMPAIGNS_URL = 'brand_api/v1/user/campaigns'
 
-export function fetchCampaignListSuccess(campaignList) {
-  console.log("in fetchCampaignListSuccess");
+export function fetchCampaigns(currentPage) {
 
   return {
-    type: actionTypes.FETCH_CAMPAIGN_LIST_SUCCESS,
-    campaignList
+    type: actionTypes.FETCH_CAMPAIGNS,
+    promise: fetch(CAMPAIGNS_URL + "?page=" + currentPage.page)
   };
 }
 
-export function fetchCampaignListFailure(error) {
-  console.log("in fetchCampaignListFailure");
-
-  return {
-    type: actionTypes.FETCH_CAMPAIGN_LIST_FAILURE,
-    error
-  };
-}
-
-export function fetchCampaignList(currentPage) {
-  console.log("innnnnnn fetchCampaignList");
-  return dispatch => {
-    dispatch(setIsFetching());
-
-    return (
-      requestCampaignList
-        .fetchCampaignList(currentPage)
-        .then(res => dispatch(fetchCampaignListSuccess(res.data)))
-        .catch(res => dispatch(fetchCampaignListFailure(res.data)))
-    );
-  };
-}
 
 console.log("after brandHomeActionCreators");

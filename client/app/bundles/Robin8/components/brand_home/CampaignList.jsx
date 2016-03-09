@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import Campaign from './Campaign'
 import showPaginate from 'raw/campaign-list'
+import getUrlQueryParams from '../../helpers/GetUrlQueryParams'
 
 export default class CampaignList extends React.Component {
   static propTypes = {
@@ -13,20 +14,26 @@ export default class CampaignList extends React.Component {
   }
 
   componentDidMount() {
-    const { fetchCampaignList } = this.props.actions;
-    fetchCampaignList({ page: 1 });
+    const { fetchCampaigns } = this.props.actions;
 
-    var pagination_options = {
-      currentPage: 1,
-      totalPages: 3,
-      size: 'large',
-      onPageClicked:  function(e,originalEvent,type,page){
-        fetchCampaignList({ page: page });
+    let page_params = getUrlQueryParams()["page"]
+    let currentPage = page_params ? page_params : 1
+    fetchCampaigns({ page:  currentPage});
+  }
+
+  componentDidUpdate() {
+    const { fetchCampaigns } = this.props.actions;
+    if (this.props.data.get("currentPage")) {
+      let pagination_options = {
+        currentPage: this.props.data.get("currentPage"),
+        totalPages: this.props.data.get("totalPages"),
+        size: 'large',
+        onPageClicked:  function(e,originalEvent,type,page){
+          fetchCampaigns({ page: page });
+        }
       }
+      showPaginate(pagination_options)
     }
-
-    this.props.data.get("isFetching") ? "" : showPaginate(pagination_options)
-
   }
 
   render() {
@@ -37,10 +44,10 @@ export default class CampaignList extends React.Component {
 
     for (var index = 0; index < campaignList.size; index++) {
       if (index % 2 === 0) {
-        campaigns.push( <Campaign campaign= {campaignList.get(index)} tagColor="brand-activity-card" /> );
+        campaigns.push( <Campaign campaign= {campaignList.get(index)} tagColor="brand-activity-card" key={ index } /> );
       }
       else {
-        campaigns.push( <Campaign campaign= {campaignList.get(index)} tagColor="brand-activity-card closure" /> );
+        campaigns.push( <Campaign campaign= {campaignList.get(index)} tagColor="brand-activity-card closure"key={ index } /> );
       }
     }
 
@@ -62,7 +69,7 @@ export default class CampaignList extends React.Component {
                 我的推广活动
                 <span className="carte">/</span>
                 <strong className="stat-num">
-                  { campaignList.size }
+                  { this.props.data.get('campaignsCount') }
                 </strong>
               </h4>
             </div>

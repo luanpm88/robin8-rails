@@ -16,7 +16,7 @@ export default class Campaign extends React.Component {
     const { campaign, tagColor } = this.props
 
     return (
-      <div className={tagColor}>
+      <div className={tagColor} >
         <div className="brand-activity-content">
           <a href="#" className="detail-link">&gt;</a>
           <h2 className="activity-title">
