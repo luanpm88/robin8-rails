@@ -2,7 +2,7 @@ console.log("in BrandHomeAppClient");
 
 import React from 'react'
 import { Provider } from 'react-redux'
-import createStore from '../store/BrandHomeStore'
+import createStore from '../store/Robin8Store'
 import BrandHomeContainer from '../containers/BrandHomeContainer'
 
 export default (props) => {
