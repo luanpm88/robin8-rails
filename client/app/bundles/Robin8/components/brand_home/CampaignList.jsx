@@ -11,6 +11,7 @@ export default class CampaignList extends React.Component {
 
   constructor(props, context) {
     super(props, context)
+    this.displayPaginator = this.displayPaginator.bind(this)
   }
 
   componentDidMount() {
@@ -22,12 +23,22 @@ export default class CampaignList extends React.Component {
   }
 
   componentDidUpdate() {
+    this.displayPaginator(this.props)
+  }
+
+  displayPaginator(props) {
     const { fetchCampaigns } = this.props.actions;
     if (this.props.data.get("currentPage")) {
       let pagination_options = {
         currentPage: this.props.data.get("currentPage"),
         totalPages: this.props.data.get("totalPages"),
         size: 'large',
+        shouldShowPage: function(type, page, current) {
+          switch (type) {
+            default:
+              return true
+          }
+        },
         onPageClicked:  function(e,originalEvent,type,page){
           fetchCampaigns({ page: page });
         }
@@ -39,17 +50,6 @@ export default class CampaignList extends React.Component {
   render() {
     const actions = this.props.actions;
     const campaignList = this.props.data.get('campaignList');
-
-    var campaigns = [];
-
-    for (var index = 0; index < campaignList.size; index++) {
-      if (index % 2 === 0) {
-        campaigns.push( <Campaign campaign= {campaignList.get(index)} tagColor="brand-activity-card" key={ index } /> );
-      }
-      else {
-        campaigns.push( <Campaign campaign= {campaignList.get(index)} tagColor="brand-activity-card closure"key={ index } /> );
-      }
-    }
 
     return (
       <div className="wrapper">
@@ -76,7 +76,19 @@ export default class CampaignList extends React.Component {
 
             <div id="panelActivities" className="panel-collapse collapse in">
               <div className="panel-body">
-                {campaigns}
+
+                { do
+                  {
+                    campaignList.map(function(campaign, index){
+                      if (index % 2 === 0) {
+                        return <Campaign campaign= {campaign} tagColor="brand-activity-card" key={ index } />
+                      } else {
+                        return <Campaign campaign= {campaign} tagColor="brand-activity-card closure" key={ index } />
+                      }
+                    })
+                  }
+                }
+
                 <div id="campaigns-paginator">
                 </div>
               </div>

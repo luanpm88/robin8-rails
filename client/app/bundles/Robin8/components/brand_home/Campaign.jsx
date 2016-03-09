@@ -1,6 +1,5 @@
-console.log("in campaign");
-
 import React, { PropTypes } from 'react'
+import moment from 'moment'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -13,17 +12,16 @@ export default class Campaign extends React.Component {
 
   render() {
 
-    const { campaign, tagColor } = this.props
-
+    const { campaign, tagColor, index } = this.props
     return (
-      <div className={tagColor} >
+      <div className={tagColor} key={index}>
         <div className="brand-activity-content">
           <a href="#" className="detail-link">&gt;</a>
           <h2 className="activity-title">
             { campaign.get("name") }
           </h2>
           <small className="date">
-            { campaign.get("start_time") } 至 { campaign.get("deadline") }
+            { moment(campaign.get("start_time")).format("D.M.YYYY") } 至 { moment(campaign.get("deadline")).format("D.M.YYYY") }
           </small>
           <div className="summary">
             { campaign.get("description") }
