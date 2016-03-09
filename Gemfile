@@ -46,7 +46,6 @@ gem 'legato'
 gem 'redis-objects'
 gem 'redis-rails'
 gem 'rest-client'
-gem "typhoeus"
 
 gem 'mongoid', '~> 5.0.0'
 
