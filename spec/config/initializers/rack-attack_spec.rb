@@ -45,7 +45,10 @@ describe Rack::Attack do
     it 'request was blocked when the ip in block list' do
       get '/', {}, 'REMOTE_ADDR' => '1.2.3.4'
 
-      expect(last_response.status).to eq 403
+      # expect(last_response.status).to eq 403
+      #
+      # return 503 so that make attacker confused
+      expect(last_response.status).to eq 503
     end
   end
 end
