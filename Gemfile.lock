@@ -205,6 +205,14 @@ GEM
       nokogiri (~> 1.5)
       rubyzip (~> 1.1.6)
     ejs (1.1.1)
+    elasticsearch (1.0.15)
+      elasticsearch-api (= 1.0.15)
+      elasticsearch-transport (= 1.0.15)
+    elasticsearch-api (1.0.15)
+      multi_json
+    elasticsearch-transport (1.0.15)
+      faraday
+      multi_json
     email_validator (1.6.0)
       activemodel
     equalizer (0.0.11)
@@ -737,6 +745,7 @@ DEPENDENCIES
   devise_invitable
   docx
   ejs
+  elasticsearch
   email_validator
   exception_notification
   factory_girl_rails
