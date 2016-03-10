@@ -20,7 +20,7 @@ function select(state) {
 class BrandHomeContainer extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
   }
 
   constructor(props, context) {
