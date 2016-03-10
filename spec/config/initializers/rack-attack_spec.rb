@@ -10,6 +10,10 @@ describe Rack::Attack do
   describe 'throttle excessive requests by IP address' do 
     let(:limit) { 1000 }
 
+    before :each do
+      Rails.cache.delete_matched "rack::attack*"
+    end
+
     context 'numbers of requests is lower than the limit' do
       it 'do nothing' do
         limit.times do
@@ -31,6 +35,36 @@ describe Rack::Attack do
     end
 
     pending 'not throttle request start_with /assets'
+  end
+
+  describe 'throttle by cookies' do
+    let(:limit) { 1000 }
+
+    before :each do
+      Rails.cache.delete_matched "rack::attack*"
+      clear_cookies
+      set_cookie '_robin8_visitor=test_cookies'
+    end
+
+    context 'numbers of request is lower than the limit' do
+      it 'do nothing' do
+        limit.times do
+          get '/'
+
+          expect(last_response.status).to_not eq 429
+        end
+      end
+    end
+
+    context 'numbers of request is higher than the limit' do
+      it 'returns 429' do
+        (limit * 2).times do |i|
+          get '/'
+
+          expect(last_response.status).to eq 429 if i > limit
+        end
+      end
+    end
   end
 
   describe 'blacklisting' do
