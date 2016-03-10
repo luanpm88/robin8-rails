@@ -199,7 +199,7 @@ class Kol < ActiveRecord::Base
         if invite.campaign.is_post_type?
           income += invite.campaign.per_action_budget
         else
-          income += campaign.per_action_budget * invite.get_avail_click  rescue 0
+          income += invite.campaign.per_action_budget * invite.get_avail_click  rescue 0
         end
       end
     end
