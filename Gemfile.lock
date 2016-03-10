@@ -433,6 +433,8 @@ GEM
     rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
+    rack-attack (4.4.1)
+      rack
     rack-mini-profiler (0.9.7)
       rack (>= 1.1.3)
     rack-mount (0.8.3)
@@ -790,7 +792,9 @@ DEPENDENCIES
   qiniu (~> 6.5.1)
   quiet_assets
   qy_wechat (~> 1.0.1)
+  rack-attack
   rack-mini-profiler
+  rack-test
   railroady
   rails (= 4.2.0)
   rails-assets-backbone-relational!
