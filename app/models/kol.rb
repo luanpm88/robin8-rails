@@ -194,7 +194,7 @@ class Kol < ActiveRecord::Base
 
   def verifying_income
     income = 0
-    self.campaign_invites.verifying.includes(:campaign).each do |invite|
+    self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
       if invite.campaign &&  invite.campaign.per_action_budget
         if invite.campaign.is_post_type?
           income += invite.campaign.per_action_budget
