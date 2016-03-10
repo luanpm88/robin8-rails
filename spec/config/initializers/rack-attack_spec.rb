@@ -83,6 +83,7 @@ describe Rack::Attack do
       #
       # return 503 so that make attacker confused
       expect(last_response.status).to eq 503
+      expect(last_response.body).to eq 'The server is currently unavailable (because it is overloaded or down for maintenance)'
     end
   end
 end
