@@ -55,6 +55,12 @@ class KolsController < ApplicationController
     @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider],
                     social_uid: auth_params[:uid], avatar: auth_params[:avatar_url]})
     @kol.country = 'China(中国)' if china_instance?
+
+    if utm_source = cookies['utm_source']
+      @kol.utm_source = utm_source
+      cookies.delete 'utm_source'
+    end
+
     if cookies[:campaign_name]
       @kol.from_which_campaign = cookies[:campaign_name]
       cookies.delete :campaign_name
