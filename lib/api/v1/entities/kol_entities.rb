@@ -48,7 +48,7 @@ module API
 
         class Primary < Grape::Entity
           expose :today_income  do |kol|
-            kol.total_income.round(2)
+            kol.total_income.round(2)  + kol.verifying_income.round(2)
           end
           expose :unread_count do |kol|
             kol.unread_messages.count

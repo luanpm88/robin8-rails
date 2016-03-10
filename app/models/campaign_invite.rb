@@ -37,6 +37,9 @@ class CampaignInvite < ActiveRecord::Base
     return interval_time(Time.now, upload_start_at)
   end
 
+  def start_upload_screenshot
+    Time.now >  upload_start_at  rescue false
+  end
 
   def can_upload_screenshot
     return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  \
