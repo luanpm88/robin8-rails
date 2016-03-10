@@ -18,9 +18,10 @@ class CampaignInvite < ActiveRecord::Base
   # scope :running, -> {where(:status => 'running')}
   scope :approved, -> {where(:status => 'approved')}
   scope :passed, -> {where(:img_status => 'passed')}
+  scope :verifying_or_approved,  -> {where("status = 'finished' or status = 'approved'").where.not(:img_status => 'passed')}
   scope :verifying, -> {where(:status => 'finished').where.not(:img_status => 'passed')}
   scope :settled, -> {where(:status => 'settled')}
-  # 已完成的概率改成 接收过的 且结算（含结算失败）
+  # 已完成的概念改成 接收过的 已审核通过（活动没结束 状态还是finished）或已结算（含结算失败）
   scope :completed, -> {where("(status = 'finished' and img_status='passed') or status = 'settled' or status = 'rejected'")}
 
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
