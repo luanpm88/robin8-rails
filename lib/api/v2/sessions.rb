@@ -1,5 +1,5 @@
 module API
-  module V1
+  module V2
     class Sessions < Grape::API
       resources :kols do
         # 用户登录

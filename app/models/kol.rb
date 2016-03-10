@@ -44,6 +44,9 @@ class Kol < ActiveRecord::Base
   mount_uploader :avatar, ImageUploader
 
   has_many :withdraws
+  has_many :article_actions
+  has_many :read_articles, ->{:where}, :class_name => 'ArticleAction'
+
 
   def email_required?
     false if self.provider != "signup"

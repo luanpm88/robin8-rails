@@ -1,5 +1,5 @@
 module API
-  module V1
+  module V2
     class Upgrades < Grape::API
       resources :upgrades do
         before do
