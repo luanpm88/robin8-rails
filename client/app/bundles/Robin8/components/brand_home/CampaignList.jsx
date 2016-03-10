@@ -4,10 +4,6 @@ import showPaginate from 'raw/campaign-list'
 import getUrlQueryParams from '../../helpers/GetUrlQueryParams'
 
 export default class CampaignList extends React.Component {
-  static propTypes = {
-    actions: PropTypes.object.isRequired,
-    data: PropTypes.object.isRequired
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -17,8 +13,8 @@ export default class CampaignList extends React.Component {
   componentDidMount() {
     const { fetchCampaigns } = this.props.actions;
 
-    let page_params = getUrlQueryParams()["page"]
-    let currentPage = page_params ? page_params : 1
+    const page_params = getUrlQueryParams()["page"]
+    const currentPage = page_params ? page_params : 1
     fetchCampaigns({ page:  currentPage});
   }
 
@@ -29,7 +25,7 @@ export default class CampaignList extends React.Component {
   displayPaginator(props) {
     const { fetchCampaigns } = this.props.actions;
     if (this.props.data.get("currentPage")) {
-      let pagination_options = {
+      const pagination_options = {
         currentPage: this.props.data.get("currentPage"),
         totalPages: this.props.data.get("totalPages"),
         size: 'large',

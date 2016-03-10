@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import BrandNav from '../components/brand_home/Nav'
 import BrandHeader from '../components/brand_home/Header'
-import CampaignList from '../components/brand_home/CampaignList'
 import "base.css";
 import "home.css";
 
@@ -31,11 +30,19 @@ class BrandHomeContainer extends React.Component {
     const { dispatch, data } = this.props;
     const actions = bindActionCreators(brandHomeActionCreators, dispatch)
 
+    const childrenWithProps = React.Children.map(this.props.children, (child) =>{
+      return React.cloneElement(child, {
+        data: this.props.data,
+        actions
+      })
+    })
+
+
     return (
       <div>
         <BrandNav {...{ actions, data }} />
         <BrandHeader {...{ actions, data }} />
-        <CampaignList {...{ actions, data }} />
+        { childrenWithProps }
       </div>
     );
   }
