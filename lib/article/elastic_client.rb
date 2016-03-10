@@ -1,7 +1,7 @@
 require 'elasticsearch'
 
 Host = "139.196.39.136"
-class MyElasticClient
+class ElasticClient
   cattr_accessor :client
   def self.client
     @@client ||  Elasticsearch::Client.new({host: Host, log: true, ssl_verifypeer: false})
@@ -12,7 +12,8 @@ class MyElasticClient
     client.cluster.health
   end
 
-  def self.search(field = 'text', field_value = '', from = 0 ,  size = 100)
+  # field = 'text', field_value = ''
+  def self.search(size = 100, read_list_ids =[], push_list_ids = [])
     res = client.search index: 'wx_page2',
                         type: 'fulltext',
                         body: {
@@ -29,16 +30,10 @@ class MyElasticClient
                             }
                           },
                           from: 0,
-                          size: 10
+                          size: size
                         }
     res['hits']['hits']
   end
-
-  def self.cache_articles(key, articles)
-
-  end
-
-
 end
 
 
