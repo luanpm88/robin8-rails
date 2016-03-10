@@ -1,4 +1,5 @@
 class ArticleAction < ActiveRecord::Base
+<<<<<<< HEAD
   #Action read:阅读  like:点赞  collect:收藏   forward:转发
 
   after_commit :update_list
@@ -40,4 +41,6 @@ class ArticleAction < ActiveRecord::Base
 
   end
 
+=======
+>>>>>>> 7576b3f839bf1612fcf1ffd82f4bf1397e8d01ad
 end
