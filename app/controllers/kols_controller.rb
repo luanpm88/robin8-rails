@@ -344,6 +344,11 @@ class KolsController < ApplicationController
   def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
 
+    if utm_source = cookies['utm_source']
+      @kol.utm_source = utm_source
+      cookies.delete 'utm_source'
+    end
+
     if cookies[:campaign_name]
       @kol.from_which_campaign = cookies[:campaign_name]
       cookies.delete :campaign_name
