@@ -83,7 +83,7 @@
               <%=f.password_field :password,:placeholder=>@l.t('register.password_placeholder'),"data-validation"=>"length", "data-validation-length"=>"min8",
                                   "data-validation-error-msg"=> @l.t('register.messages.pass_invalid')%>
             </label>
-            <p class="agree"> <a href="/terms"><%= @l.t('register.agree_terms')%></a>.
+            <p class="agree"> <a href="/privacy_policy"><%= @l.t('register.agree_terms')%></a>.
             <% if request.location && request.location.country.to_s == "China" %>
               <p class="kols"><%= @l.t('register.kol_signup')%> <a href="/kols/new"><%= @l.t('register.here')%></a>
             <% else %>
