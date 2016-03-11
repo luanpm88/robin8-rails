@@ -12,12 +12,12 @@ module API
           optional :url, type: String
           optional :avatar_url, type: String
           optional :desc, type: String
-          optional :followers_count, Integer
-          optional :statuses_count, Integer
-          optional :registered_at, DateTime
-          optional :verified, :boolean
-          optional :refresh_token, :string
-          optional :kol_uuid, :string
+          optional :followers_count, type: Integer
+          optional :statuses_count, type: Integer
+          optional :registered_at, type: DateTime
+          optional :verified, type: Boolean
+          optional :refresh_token, type: String
+          optional :kol_uuid, type: String
           optional :unionid, type: String
         end
         post 'bind_identity' do
@@ -44,7 +44,7 @@ module API
         params do
           requires :provider, type: String, values: ['weibo', 'wechat']
           requires :uid, type: String
-          requires :kol_uuid, :string
+          requires :kol_uuid, String
         end
         post 'unbind_identity' do
           kol_identities = TmpIdentity.get_identities(kol_uuid)
@@ -63,7 +63,7 @@ module API
         #联系人
         params do
           requires :contacts, type: String
-          optional :kol_uuid, :string
+          optional :kol_uuid, type: String
         end
         post 'bind_contacts' do
           aa = params[:contacts].to_s
@@ -93,16 +93,16 @@ module API
         # invite
         params do
           requires :kol_uuid, type: String
-          requires :mobiles, type: String
+          requires :mobile, type: String
         end
         post 'send_invite' do
-          invite_content = YunPian::TemplateContent.get_invite_sms('','')
-          mobiles = []
-          params[:mobiles].split(",").each do |mobile|
-            mobiles << mobile if Influence::Contact.is_mobile?(mobile)
+          if  Influence::Contact.is_mobile?(mobile)
+            invite_content = YunPian::TemplateContent.get_invite_sms('','')
+            result = YunPian::SendSms.send_msg(mobile,invite_content)
+            present :error, 0
+          else
+            return  error_403!({error: 1, detail: '该号码不是手机号'})
           end
-          result = YunPian::SendSms.send_msg(mobiles.join(","),invite_content)       if mobiles.size > 0
-          present :error, 0
         end
 
         # 计算总得分

@@ -10,18 +10,48 @@ module Articles
       client.transport.reload_connections!
     end
 
-    # field = 'text', field_value = ''
-    #TODO add log
-    def self.search(size = 100, read_list_ids =[], push_list_ids = [])
-      puts "-----elastic search"
-      Rails.logger.elastic.info "=======search===#{read_list_ids} #{push_list_ids}"
+    def self.get_text(read_list_ids =[])
+      puts "-----elastic get_text"
+      Rails.logger.elastic.info "=======get_text===#{read_list_ids}"
       try_count = 0
       begin
         res = client.search index: 'wx_biz',
                             type: 'fulltext',
                             body: {
+                              _source: ["text", "title",  "biz_name"],
                               query: {
-                                match: { text: 'Consulting  IssueShare  Chongqing  Beijing  Shanghai Shanghai Shanghai Shanghai  10月8日 10月8日 10月8日  2015年10月7日  10月9日  Company  LimitedLiabilityCompany  Friday  Bone  FacialExpression FacialExpression  Eye ' },
+                                match: { id: read_list_ids  },
+                              }
+                            }
+        res = res['hits']['hits']
+        res.collect{|t| t["_source"]}
+      rescue  e
+        try_count += 1
+        if try_count < 3
+          reset
+          retry
+        else
+          Rails.logger.elastic.info e.message
+        end
+      end
+    end
+
+    # field = 'text', field_value = ''
+    #TODO add log
+    def self.search(text, push_list_ids = [], size = 100)
+      puts "-----elastic search"
+      # Rails.logger.elastic.info "=======search=== #{push_list_ids} ==text#{text}"
+      try_count = 0
+      begin
+        res = client.search index: 'wx_biz',
+                            type: 'fulltext',
+                            body: {
+                              _source: ["id", "url", "msg_cdn_url", "title_orig", "biz_name"],
+                              query: {
+                                multi_match: {
+                                  query:  text,
+                                  fields: [ "text", "title", "biz_info" ]
+                                }
                               },
                               filter:{
                                 bool: {
@@ -36,7 +66,7 @@ module Articles
                               size: size
                             }
         res = res['hits']['hits']
-        res.collect{|t| t["_source"]}
+        res.collect{|t| t['_source']}
       rescue  e
         try_count += 1
         if try_count < 3
