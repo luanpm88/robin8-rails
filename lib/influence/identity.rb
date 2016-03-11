@@ -15,7 +15,7 @@ module Influence
       verify_rate_score = cal_verify_score(identity) * Value::Rate[:verify_rate]
       rate_score = follower_rate_score + status_rate_score +  register_rate_score +  verify_rate_score
       hundred_score =  covert_to_hundred_score(rate_score)
-      Rails.cache.write(Value.identity_key(kol_uuid),hundred_score)  if   hundred_score >  Value.identity_score(kol_uuid)
+      Rails.cache.write(Value.identity_key(kol_uuid),hundred_score, :expires_in => 1.days)  if   hundred_score >  Value.identity_score(kol_uuid)
       identity.update_column(:score, hundred_score)
     end
 

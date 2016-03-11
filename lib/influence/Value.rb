@@ -7,13 +7,14 @@ module Influence
     Rate = {:follower_rate => 0.3, :status_rate => 0.15, :register_rate => 0.05, :verify_rate => 0.1, :contact_rate => 0.4 }
     IdentityTotalRate = Rate[:follower_rate] + Rate[:status_rate] + Rate[:register_rate] + Rate[:verify_rate]
     def self.get_total_score(kol_uuid)
+      return 0 if  contact_score(kol_uuid).blank? &&  identity_score(kol_uuid).blank?
       wait_cal_score(kol_uuid)
       score = 0
-      if  contact_score(kol_uuid) != -1  &&  identity_score(kol_uuid) != -1
+      if ((contact_score(kol_uuid) >= 0 &&  identity_score(kol_uuid) >= 0)  rescue false)
         score = contact_score(kol_uuid) * IdentityTotalRate +  identity_score(kol_uuid) * Rate[:contact_rate]
-      elsif contact_score(kol_uuid) != -1
+      elsif (contact_score(kol_uuid) >= 0 rescue false)
         score = contact_score(kol_uuid) * 0.8
-      elsif  identity_score(kol_uuid) != -1
+      elsif  (identity_score(kol_uuid) >= 0 rescue false)
         score = identity_score(kol_uuid) * 0.8
       end
       score * 100
@@ -25,8 +26,8 @@ module Influence
     def self.wait_cal_score(kol_uuid)
       loop_times = 0
       ok = false
-      while loop_time < LoopTimes && !ok
-        ok = true if  contact_score(kol_uuid) != -1 && identity_score(kol_uuid) != -1
+      while loop_times < LoopTimes && !ok
+        ok = true if  (contact_score(kol_uuid).blank? || contact_score(kol_uuid) != -1) && (identity_score(kol_uuid).blank? || identity_score(kol_uuid) != -1)
         sleep LoopSecond
         loop_times += 1
       end
@@ -42,12 +43,12 @@ module Influence
 
     # 有上传联系人后需要init，报道下，计算价值时候看看是否需要以你为依据
     def self.init_contact(kol_uuid)
-      Rails.cache.write(contact_key(kol_uuid), -1)    if  Rails.cache.read(contact_key(kol_uuid)).nil?
+      Rails.cache.write(contact_key(kol_uuid), -1, :expires_in => 1.days)    if  Rails.cache.read(contact_key(kol_uuid)).nil?
     end
 
     # 有identity 进入后需要init，最终作为是否纳入总价值的依据
     def self.init_identity(kol_uuid)
-      Rails.cache.write(identity_key(kol_uuid), -1)  if  Rails.cache.read(identity_key(kol_uuid)).nil?
+      Rails.cache.write(identity_key(kol_uuid), -1, :expires_in => 1.days)  if  Rails.cache.read(identity_key(kol_uuid)).nil?
     end
 
     # 联系人 价值   存储key

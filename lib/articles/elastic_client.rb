@@ -51,7 +51,7 @@ module Articles
 end
 
 
-# curl -XPOST 139.196.39.136:9200/wx_biz/fulltext/_search -d '
+# curl -XPOST h4:9200/wx_biz/fulltext/_search -d '
 # {
 # "from": 0,
 # "size": 5,

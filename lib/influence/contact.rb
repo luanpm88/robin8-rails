@@ -28,7 +28,7 @@ module Influence
         return level[:score] if contact_count > level[:min_count]
       end
       Rails.logger.info "===============cal_score---hunder_score:#{hunder_score}"
-      Rails.cache.write(Value.contact_key(kol_uuid), hunder_score)
+      Rails.cache.write(Value.contact_key(kol_uuid), hunder_score, :expires_in => 1.days)
     end
 
     def self.get_mobile_scores(kol_uuid, cal_mobiles)

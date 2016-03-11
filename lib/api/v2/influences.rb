@@ -7,22 +7,26 @@ module API
           requires :provider, type: String, values: ['weibo', 'wechat']
           requires :uid, type: String
           requires :token, type: String
-          optional :name, type: String
+          requires :name, type: String
+          requires :serial_params, type: String
           optional :url, type: String
           optional :avatar_url, type: String
           optional :desc, type: String
-          optional :serial_params, type: String
           optional :followers_count, Integer
-          optional :friends_count, Integer
           optional :statuses_count, Integer
-          optional :registered_at, Time
+          optional :registered_at, DateTime
           optional :verified, :boolean
           optional :refresh_token, :string
           optional :kol_uuid, :string
           optional :unionid, type: String
         end
         post 'bind_identity' do
-          kol_uuid = SecureRandom.hex if params[:kol_uuid]
+          if params[:provider] == 'weibo'
+            required_attributes! [:followers_count, :statuses_count, :registered_at, :verified, :refresh_token]
+          else
+            required_attributes! [:unionid]
+          end
+          kol_uuid = params[:kol_uuid].blank? ? SecureRandom.hex : params[:kol_uuid]
           kol_identities = TmpIdentity.get_identities(kol_uuid)
           if kol_identities.collect{|identity| identity.uid }.include? params[:uid]
             present :error, 1
@@ -33,17 +37,16 @@ module API
             present :error, 0
           end
           present :kol_uuid, kol_uuid
-          present :kol_identities, kol_identities
+          present :kol_identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #第三方账号 价值  解除绑定
         params do
           requires :provider, type: String, values: ['weibo', 'wechat']
           requires :uid, type: String
-          optional :kol_uuid, :string
+          requires :kol_uuid, :string
         end
         post 'unbind_identity' do
-          kol_uuid = SecureRandom.hex if params[:kol_uuid]
           kol_identities = TmpIdentity.get_identities(kol_uuid)
           if kol_identities.collect{|identity| identity.uid }.include? params[:uid]
             present :error, 1
@@ -53,7 +56,7 @@ module API
             present :error, 0
           end
           present :kol_uuid, kol_uuid
-          present :kol_identities, kol_identities
+          present :kol_identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
 
@@ -63,11 +66,10 @@ module API
           optional :kol_uuid, :string
         end
         post 'bind_contacts' do
-          contacts = JSON.parse(params[:contacts])      rescue []
-          if contacts.size == 0
-            return  error_403!({error: 1, detail: '联系人不存在或格式错误'})
-          end
-          kol_uuid = SecureRandom.hex if params[:kol_uuid]
+          aa = params[:contacts].to_s
+          contacts = JSON.parse(aa)
+          return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
+          kol_uuid = params[:kol_uuid].blank? ? SecureRandom.hex : params[:kol_uuid]
           kol_contacts = TmpKolContact.add_contacts(kol_uuid,contacts)
           present :error, 0
           present :kol_uuid, kol_uuid
@@ -95,7 +97,11 @@ module API
         end
         post 'send_invite' do
           invite_content = YunPian::TemplateContent.get_invite_sms('','')
-          result = YunPian::SendSms.send_msg(mobiles,invite_content)
+          mobiles = []
+          params[:mobiles].split(",").each do |mobile|
+            mobiles << mobile if Influence::Contact.is_mobile?(mobile)
+          end
+          result = YunPian::SendSms.send_msg(mobiles.join(","),invite_content)       if mobiles.size > 0
           present :error, 0
         end
 
@@ -107,8 +113,10 @@ module API
           score = Influence::Value.get_total_score(params[:kol_uuid])    rescue 0
           @campaigns = Campaign.where(:status => 'executing')
           present :error, 0
-          present :kol_uuid, kol_uuid
+          present :kol_uuid, params[:kol_uuid]
           present :score, score
+          present :identity_hundren_score, Influence::Value.identity_score(params[:kol_uuid])
+          present :contact_hundren_score, Influence::Value.contact_score(params[:kol_uuid])
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
         end
       end
