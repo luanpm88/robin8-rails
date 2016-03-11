@@ -121,22 +121,22 @@ module API
           optional :url, type: String
           optional :avatar_url, type: String
           optional :desc, type: String
-          optional :serial_params, type: JSON
+          optional :serial_params, type: String
+          optional :followers_count, Integer
+          optional :statuses_count, Integer
+          optional :registered_at, Time
+          optional :verified, :boolean
+          optional :refresh_token, :string
+          optional :unionid, type: String
         end
         post 'identity_bind' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
+          #兼容pc端 wechat
+          identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if params[:unionid]
           if identity.blank?
-            attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
-            identity = Identity.new
-            identity.attributes = attrs
-            identity.kol_id = current_kol.id
-            identity.from_type = 'app'
-            identity.save
+            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
-            if params[:avatar_url].present? && current_kol.avatar.url.blank?
-              kol.remote_avatar_url =  params[:avatar_url]
-              kol.save
-            end
+            kol.update_attribute(:remote_avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar.url.blank?
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           else

@@ -1,5 +1,4 @@
 class ArticleAction < ActiveRecord::Base
-<<<<<<< HEAD
   #Action read:阅读  like:点赞  collect:收藏   forward:转发
 
   after_commit :update_list
@@ -34,13 +33,11 @@ class ArticleAction < ActiveRecord::Base
     count = Rails.cache.increment(ArticleAction.kol_action_key(kol_id, 'change'), 1)
     if count > ChangeThreshold
       #1. 清空文章缓存
-      Article::Store.reset_kol_articles(kol_id)
+      Articles::Store.reset_kol_articles(kol_id)
       #2. 清除累积
       Rails.cache.write(ArticleAction.kol_action_key(kol_id, 'change'), 0)
     end
 
   end
 
-=======
->>>>>>> 7576b3f839bf1612fcf1ffd82f4bf1397e8d01ad
 end
