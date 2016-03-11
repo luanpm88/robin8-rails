@@ -192,8 +192,23 @@ class Kol < ActiveRecord::Base
     self.withdraw_transactions.sum(:credits)
   end
 
+  def verifying_income
+    income = 0
+    self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
+      if invite.campaign &&  invite.campaign.per_action_budget
+        if invite.campaign.is_post_type?
+          income += invite.campaign.per_action_budget
+        else
+          income += invite.campaign.per_action_budget * invite.get_avail_click  rescue 0
+        end
+      end
+    end
+    income
+  end
+
+
   def today_income
-    today_post_campaign_income +  today_click_campaign_income
+    today_post_campaign_income +  today_click_or_action_campaign_income
   end
 
   def today_post_campaign_income
@@ -217,14 +232,15 @@ class Kol < ActiveRecord::Base
 # on campaigns.id=shows.campaign_id
 # where campaigns.per_action_budget='click'
 
-  def today_click_campaign_income
+  #
+  def today_click_or_action_campaign_income
     income = 0
     today_show_hash = {}
     self.campaign_shows.today.valid.group(:campaign_id).select("campaign_id, count(*) as count").each do |show|
       today_show_hash["#{show.campaign_id}"] = show.count
     end
     puts today_show_hash
-    Campaign.click_campaigns.where(:id => today_show_hash.keys ).each do |campaign|
+    Campaign.click_or_action_campaigns.where(:id => today_show_hash.keys ).each do |campaign|
       income += campaign.per_action_budget * today_show_hash["#{campaign.id}"]  rescue 0
     end
     income
@@ -385,7 +401,7 @@ class Kol < ActiveRecord::Base
       campaign_invite.status = 'approved'
       campaign_invite.approved_at = Time.now
       campaign_invite.save
-      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
+      campaign_invite.bring_income(campaign_invite.campaign,true)    if campaign_invite.campaign.is_post_type?
       campaign_invite.reload
     else
       nil
