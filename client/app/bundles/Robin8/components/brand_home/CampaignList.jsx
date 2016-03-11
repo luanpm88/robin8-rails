@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 import Campaign from './Campaign'
 import showPaginate from 'raw/campaign-list'
 import getUrlQueryParams from '../../helpers/GetUrlQueryParams'
@@ -57,9 +58,9 @@ export default class CampaignList extends React.Component {
                 <i className="caret-arrow"></i>
               </a>
 
-              <a href="#" className="btn btn-blue btn-big quick-btn">
+              <Link to="/brand/create_activity" className="btn btn-blue btn-big quick-btn">
                 添加推广活动
-              </a>
+              </Link>
 
               <h4 className="panel-title">
                 我的推广活动

@@ -4,8 +4,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
-import BrandNav from '../components/brand_home/Nav'
-import BrandHeader from '../components/brand_home/Header'
+import BrandNav from '../components/shared/Nav'
 import "base.css";
 import "home.css";
 
@@ -41,7 +40,6 @@ class BrandHomeContainer extends React.Component {
     return (
       <div>
         <BrandNav {...{ actions, data }} />
-        <BrandHeader {...{ actions, data }} />
         { childrenWithProps }
       </div>
     );

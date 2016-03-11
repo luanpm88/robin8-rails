@@ -5,7 +5,6 @@ import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import createStore from '../store/Robin8Store'
-import BrandHomeContainer from '../containers/BrandHomeContainer'
 import routes from '../route'
 
 function logger_location_path(location){
