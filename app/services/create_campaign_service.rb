@@ -52,11 +52,11 @@ class CreateCampaignService
     @errors.first
   end
 
-  private
-
   def permited_params_from params
     params.nil? ? [] : params.select { |k, v| PERMIT_PARAMS.include? k } 
   end
+
+  private
 
   def enough_amount? user, budget
     avail_amout = user.avail_amount
