@@ -24,6 +24,11 @@ export default function brandHomeReducer($$state = $$initialState, action = null
         });
       }
       return $$state;
+
+    case actionTypes.SAVE_CAMPAIGN:
+      
+      return $$state;
+
     default:
       return $$state;
   }
