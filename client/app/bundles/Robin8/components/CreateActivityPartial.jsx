@@ -3,30 +3,31 @@ import { reduxForm } from 'redux-form'
 
 import "create_activity.css"
 
-import createActivity from "raw/create_activity"
-
 import IntroPartial from './create_activity/IntroPartial'
 import ContentPartial from './create_activity/ContentPartial'
 import DatePartial from './create_activity/DatePartial'
 import BudgetPartial from './create_activity/BudgetPartial'
 
-export default class CreateActivityPartial extends React.Component {
+import createActivity from "raw/create_activity"
+
+class CreateActivityPartial extends React.Component {
 
   componentDidMount() {
     createActivity()
   }
 
   render() {
+    const {name, description, image, start_time, deadline, forward_url, content, url, originality, budget} = this.props.fields;
 
     return (
       <div className="wrapper">
         <div className="container">
           <div className="creat-activity-wrap">
-            <form action="" name="" id="">
-              <IntroPartial />
-              <ContentPartial />
-              <DatePartial />
-              <BudgetPartial />
+            <form action="" name="" id="" onSubmit={this.props.handleSubmit(this.props.actions.saveCampaign)}>
+              <IntroPartial {...{name, description, image}}/>
+              <ContentPartial {...{forward_url, content, url, originality}} />
+              <DatePartial {...{start_time, deadline}} />
+              <BudgetPartial {...{budget}} />
 
               <div className="creat-form-footer">
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写。在此<a href="#">预览</a></p>
@@ -39,3 +40,10 @@ export default class CreateActivityPartial extends React.Component {
     )
   }
 }
+
+CreateActivityPartial = reduxForm({
+  form: 'activity_form',
+  fields: ['name', 'description', 'image', 'start_time', 'deadline', 'forward_url', 'content', 'url', 'originality', 'budget']
+})(CreateActivityPartial);
+
+export default CreateActivityPartial

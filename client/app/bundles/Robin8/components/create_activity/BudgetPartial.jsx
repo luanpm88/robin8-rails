@@ -3,6 +3,9 @@ import React from 'react';
 export default class BudgetPartial extends React.Component {
 
   render() {
+
+    const { budget } = this.props
+
     return (
       <div className="creat-activity-form creat-budget">
         <div className="header">
@@ -14,7 +17,7 @@ export default class BudgetPartial extends React.Component {
             <label>总预算</label>
             <div className="spinner-box">
               <span className="symbol">$</span>
-              <input type="text" defaultValue={0} className="spinner-input budget-input" readOnly />
+              <input {...budget} type="text" defaultValue={0} className="spinner-input budget-input" style={{display: 'block'}} />
             </div>
             <p className="stat">最低费用<strong className="stat-num">1000</strong>元</p>
           </div>

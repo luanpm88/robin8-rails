@@ -3,6 +3,7 @@ import React from 'react';
 export default class IntroPartial extends React.Component {
 
   render() {
+    const { name, description, image } = this.props
 
     return (
       <div className="creat-activity-form creat-intro">
@@ -16,19 +17,20 @@ export default class IntroPartial extends React.Component {
                 <img id="coverPhotoPlaceholder" />
 
                 <div className="form-control-file">
-                  <span className="btn-upload">上传图片</span><input type="file" id="coverUpload" />
+                  <span className="btn-upload">上传图片</span>
+                  <input {...image} value={ null } type="file" id="coverUpload" />
                 </div>
               </div>
             </div>
             <div className="basic-intro">
               <div className="form-group">
                 <label htmlFor="activityTitle">活动标题</label>
-                <input type="text" className="form-control activity-title-input" maxLength={20} placeholder="请概括您的推广，让您的内容一目了然" required />
+                <input {...name} type="text" className="form-control activity-title-input" maxLength={20} placeholder="请概括您的推广，让您的内容一目了然" required />
                 <span className="word-limit">20</span>
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">活动简介</label>
-                <textarea name="" className="form-control activity-intro-input" maxLength={140} placeholder="请简要介绍您的推广，帮助媒体了解如何能够更好的帮您传播，请给出适当的列子，如：请 先评论棒极了，再给出买家秀" required ></textarea>
+                <textarea {...description} name="" className="form-control activity-intro-input" maxLength={140} placeholder="请简要介绍您的推广，帮助媒体了解如何能够更好的帮您传播，请给出适当的列子，如：请 先评论棒极了，再给出买家秀" required ></textarea>
                 <span className="word-limit">140</span>
               </div>
             </div>
