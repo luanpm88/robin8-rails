@@ -1,6 +1,6 @@
 class UpdateCampaignService
 
-  attr_reader :errors
+  attr_reader :errors, :campaign
 
   def initialize user, campaign_id, args={}
     @user = user

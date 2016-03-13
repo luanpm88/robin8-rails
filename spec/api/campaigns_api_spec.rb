@@ -107,6 +107,35 @@ RSpec.describe Brand::V1::CampaignsAPI do
       }
       expect(response.body).to match_json_expression pattern
     end
-    
+  end
+
+  describe 'PUT /brand_api/v1/campaigns/:id' do
+
+    before :each do
+      @update_campaign_params = @campaign.attributes.select {|k,v| CreateCampaignService::PERMIT_PARAMS.include? k.to_sym }.merge({:name => 'new name'})
+    end
+
+    it 'returns 200' do
+      put "/brand_api/v1/campaigns/#{@campaign.id}", @update_campaign_params
+
+      expect(response.status).to eq 200
+    end
+
+    it 'changed campaign' do
+      expect { put "/brand_api/v1/campaigns/#{@campaign.id}", @update_campaign_params }.to change{ @campaign.reload.name }.from(@campaign.name).to(@update_campaign_params[:name])
+    end
+
+    it 'return errors when no permission' do
+      campaign = FactoryGirl.create :campaign
+
+      put "/brand_api/v1/campaigns/#{campaign.id}", @update_campaign_params
+
+      expect(response.status).to eq 422
+      pattern = {
+        error: 'Unprocessable!',
+        detail: 'No permission!'
+      }
+      expect(response.body).to match_json_expression pattern
+    end
   end
 end
