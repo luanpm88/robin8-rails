@@ -12,4 +12,8 @@ module Brand::V1::APIHelpers
         error! 'Access Denied', 401
       end
   end
+
+  def error_unprocessable! detail=nil
+    error!({error: 'Unprocessable!', detail: detail}, 422)
+  end
 end
