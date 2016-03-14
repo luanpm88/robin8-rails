@@ -21,7 +21,7 @@ Rails.application.config.assets.precompile += %w(
 Rails.application.config.assets.precompile +=  %w(*.woff *.ttf *.svg *.eot)
 
 # react 部分 编译
-Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpack")
+Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpack").to_s
 Rails.application.config.assets.precompile += %w( brand-static.css brand-static.js server-bundle.js )
 
 NonStupidDigestAssets.whitelist += [/brand-/]

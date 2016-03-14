@@ -42,9 +42,9 @@ module.exports = {
   module: {
     loaders: [
       // 加载普通静态资源
-      { test: /\.(woff2?|svg)$/, loader: 'file?name=brand-[name]-[hash].[ext]' },
-      { test: /\.(ttf|eot)$/, loader: 'file?name=brand-[name]-[hash].[ext]' },
-      { test: /\.(jpe?g|png|gif|svg|ico)$/, loader: 'file?name=brand-[name]-[hash].[ext]' },
+      { test: /\.(woff2?|svg)$/, loader: 'file?name=brand-[name]_[hash].[ext]' },
+      { test: /\.(ttf|eot)$/, loader: 'file?name=brand-[name]_[hash].[ext]' },
+      { test: /\.(jpe?g|png|gif|svg|ico)$/, loader: 'file?name=brand-[name]_[hash].[ext]' },
 
       // 扩展全局namespace
       { test: require.resolve('jquery'), loader: 'expose?jQuery' },
