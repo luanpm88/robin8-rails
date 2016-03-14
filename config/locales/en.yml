@@ -634,7 +634,8 @@ en:
     footer:
       about: About
       contact: Contact
-      privacy_and_terms: Privacy & Terms
+      privacy: Privacy
+      terms: Terms
       right_reserved: 2015 Robin8 Inc. All rights reserved
       team: Team
     forgot:
