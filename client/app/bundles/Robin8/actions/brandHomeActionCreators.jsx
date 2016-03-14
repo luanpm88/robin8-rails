@@ -9,7 +9,7 @@ export function fetchCampaigns(currentPage) {
 
   return {
     type: actionTypes.FETCH_CAMPAIGNS,
-    promise: fetch(CAMPAIGNS_URL + "?page=" + currentPage.page)
+    promise: fetch(CAMPAIGNS_URL + "?page=" + currentPage.page, { credentials: 'include' })
   };
 }
 

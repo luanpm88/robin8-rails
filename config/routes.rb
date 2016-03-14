@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
-  mount ApplicationAPI => 'brand_api'
+  mount ApplicationAPI => '/brand/brand_api'
 
   get "react/(/*all)/", to: "react#index"
   get "react_fake_data/campaigns", to: 'react#campaigns'
