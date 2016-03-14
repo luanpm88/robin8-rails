@@ -60,6 +60,7 @@
     "immutable": "^3.7.6",
     "imports-loader": "^0.6.5",
     "isomorphic-fetch": "^2.2.1",
+    "jcrop-0.9.12": "^0.9.12",
     "jquery": "^2.2.0",
     "jquery-ujs": "^1.2.0",
     "loader-utils": "^0.2.12",
