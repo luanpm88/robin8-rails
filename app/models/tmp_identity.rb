@@ -39,6 +39,15 @@ class TmpIdentity < ActiveRecord::Base
                     kol_uuid: params[:kol_uuid])
   end
 
+
+  def self.get_name(kol_uuid)
+    TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.name rescue nil
+  end
+
+  def self.get_avatar_url(kol_uuid)
+    TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.avatar_url rescue nil
+  end
+
   private
   def cal_identity_influence
     if self.provider == 'weibo'

@@ -34,7 +34,7 @@ module API
 
     def required_attributes!(keys)
       keys.each do |key|
-        bad_request!(key) if params[key].blank?
+        bad_request!(key) if params[key] != false && params[key].blank?
       end
     end
 

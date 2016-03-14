@@ -36,7 +36,6 @@ module Articles
       end
     end
 
-    # field = 'text', field_value = ''
     #TODO add log
     def self.search(text, push_list_ids = [], size = 100)
       puts "-----elastic search"

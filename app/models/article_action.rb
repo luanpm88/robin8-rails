@@ -30,12 +30,14 @@ class ArticleAction < ActiveRecord::Base
 
   def update_list
     append_value(ArticleAction.kol_action_key(kol_id, action), article_id)
-    count = Rails.cache.increment(ArticleAction.kol_action_key(kol_id, 'change'), 1)
-    if count > ChangeThreshold
-      #1. 清空文章缓存
-      Articles::Store.reset_kol_articles(kol_id)
-      #2. 清除累积
-      Rails.cache.write(ArticleAction.kol_action_key(kol_id, 'change'), 0)
+    if self.action == 'read'
+      count = Rails.cache.increment(ArticleAction.kol_action_key(kol_id, 'change'), 1)
+      if count > ChangeThreshold
+        #1. 清空文章缓存
+        Articles::Store.reset_kol_articles(kol_id)
+        #2. 清除累积
+        Rails.cache.delete(ArticleAction.kol_action_key(kol_id, 'change'))
+      end
     end
 
   end

@@ -22,7 +22,7 @@ module API
         end
         post 'bind_identity' do
           if params[:provider] == 'weibo'
-            required_attributes! [:followers_count, :statuses_count, :registered_at, :verified, :refresh_token]
+            required_attributes! [:followers_count, :statuses_count, :registered_at, :verified]
           else
             required_attributes! [:unionid]
           end
@@ -99,22 +99,37 @@ module API
           if  Influence::Contact.is_mobile?(mobile)
             invite_content = YunPian::TemplateContent.get_invite_sms('','')
             result = YunPian::SendSms.send_msg(mobile,invite_content)
+            puts result
             present :error, 0
           else
-            return  error_403!({error: 1, detail: '该号码不是手机号'})
+            return  error_403!({error: 1, detail: '非手机号不能发送短信'})
           end
+        end
+
+        # 没有允许获取通讯
+        params do
+          requires :kol_uuid, type: String
+        end
+        post 'without_contacts_score' do
+          present :error, 0
+          present :kol_uuid, params[:kol_uuid]
+          present :total_kol_count, Kol.count
+          present :name, TmpIdentity.get_name(params[:kol_uuid])
+          present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
         end
 
         # 计算总得分
         params do
           requires :kol_uuid, type: String
         end
-        post 'cal_score' do
+        post 'with_contacts_score' do
           score = Influence::Value.get_total_score(params[:kol_uuid])    rescue 0
           @campaigns = Campaign.where(:status => 'executing')
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
           present :score, score
+          present :name, TmpIdentity.get_name(params[:kol_uuid])
+          present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
           present :identity_hundren_score, Influence::Value.identity_score(params[:kol_uuid])
           present :contact_hundren_score, Influence::Value.contact_score(params[:kol_uuid])
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary

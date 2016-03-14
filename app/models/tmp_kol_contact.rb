@@ -16,7 +16,7 @@ class TmpKolContact < ActiveRecord::Base
     # 计算联系人价值
     # CalInfluenceWorker.new("contact",kol_uuid, mobiles )
     CalInfluenceWorker.perform_async("contact",kol_uuid, mobiles )
-    joined_mobiles = Kol.where(:mobile_number => mobiles).collect{|t| mobile_number}
+    joined_mobiles = Kol.where(:mobile_number => mobiles).collect{|t| t.mobile_number}
     TmpKolContact.where(:mobile => joined_mobiles).update_all(:exist => true)
   end
 
