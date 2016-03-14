@@ -29,6 +29,7 @@ module API
           optional :remark, type: String
         end
         post 'apply' do
+          return {:error => 1, :detail => '金额满100方可提现'}  if params[:credits] < 100
           if current_kol.avail_amount > params[:credits] && params[:credits] > 0
             attrs = attributes_for_keys([:credits, :real_name, :alipay_no, :remark])
             withdraw = Withdraw.new(:withdraw_type => 'alipay')
