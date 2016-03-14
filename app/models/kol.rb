@@ -222,20 +222,6 @@ class Kol < ActiveRecord::Base
     income
   end
 
-  #TODO use sql
-#   select shows.campaign_id from
-#   （
-#   SELECT campaign_id,count(*) as count
-#   FROM `campaign_shows`
-#   WHERE `campaign_shows`.`kol_id` = 81
-# 	AND `campaign_shows`.`status` = '1'
-# 	GROUP BY campaign_id
-# ） as shows
-# left join campaigns
-# on campaigns.id=shows.campaign_id
-# where campaigns.per_action_budget='click'
-
-  #
   def today_click_or_action_campaign_income
     income = 0
     today_show_hash = {}
@@ -449,33 +435,32 @@ class Kol < ActiveRecord::Base
     return kol
   end
 
-  def create_info_after_signup
-    if Rails.env.development?
-      SyncInfluenceAfterSignUpWorker.perform_async(self.id)
-    else
-      SyncInfluenceAfterSignUpWorker.perform_async(self.id)
-    end
-  end
-
   #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中
   def create_info_from_test_influence(kol_uuid)
-    # create contacts
     ActiveRecord::Base.transaction do
       kol_id = self.id
+      #sync score
+      self.update_column(:influence_score, Influence::Value.get_total_score(kol_uuid))
+      # create contacts
       TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
-        KolContact.create(:kol_id => kol_id, :name => tmp_contact.name, :mobile => tmp_contact.mobile, :exist => tmp_contact.exist, :city => tmp_contact.city)
+        if !KolContact.find_by(:kol_id => kol_id, :mobile => tmp_contact.mobile)
+          KolContact.create(:kol_id => kol_id, :name => tmp_contact.name, :mobile => tmp_contact.mobile, :exist => tmp_contact.exist)
+        end
       end
-      # TmpKolContact.where(:kol_uuid => kol_uuid).delete_all if Rails.env.production?
+
+      # sync identity
       TmpIdentity.where(:kol_uuid => kol_uuid).each do |tmp_identity|
-        exist = Identity.find_by :uid => tmp_identity.uid
-        if !exist
+        identity = Identity.find_by :uid => tmp_identity.uid
+        if !identity
           identity = Identity.new
           identity.attributes = tmp_identity.attributes
           identity.kol_id = kol_id
           identity.save
+        elsif identity &&  identity.kol_id == self.id  #如果存在，则更新
+          identity.attributes = identity.attributes
+          identity.save
         end
       end
-      # TmpIdentity.where(:kol_uuid => kol_uuid).delete_all   if Rails.env.production?
      end
   end
 
