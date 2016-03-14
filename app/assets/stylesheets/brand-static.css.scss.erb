@@ -1,0 +1,4 @@
+// These assets are located in app/assets/webpack directory
+<% Dir.new(File.join(Rails.root, 'app', 'assets', 'webpack')).select{ |x| x =~ /brand-vendor-bundle_(.*).css$/ || x =~ /brand-app-bundle_(.*).css$/ }.map{|x| x.sub(/.css/, '') }.sort.reverse.each do |file| %>
+  @import '<%= file%>';
+<% end %>

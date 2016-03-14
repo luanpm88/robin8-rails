@@ -1,7 +1,3 @@
-// Run like this:
-// cd client && npm run build:client
-// Note that Foreman (Procfile.dev) has also been configured to take care of this.
-
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -10,21 +6,17 @@ const config = require('./webpack.client.base.config');
 const devBuild = process.env.NODE_ENV !== 'production';
 
 config.output = {
-  filename: '[name]-bundle.js',
+  filename: 'brand-[name]-bundle_[hash].js',
   path: '../app/assets/webpack',
+  publicPath: '/assets/'
 };
 
-// You can add entry points specific to rails here
 config.entry.vendor.unshift(
   'es5-shim/es5-shim',
   'es5-shim/es5-sham',
   'jquery-ujs',
-
-  // Configures extractStyles to be true if NODE_ENV is production
   'bootstrap-loader/extractStyles'
 );
-
-// See webpack.common.config for adding modules common to both the webpack dev server and rails
 
 config.module.loaders.push(
   {
@@ -32,23 +24,32 @@ config.module.loaders.push(
     loader: 'babel-loader',
     exclude: /node_modules/,
   },
+
   {
     test: /\.css$/,
     loader: ExtractTextPlugin.extract(
       'style',
-      'css?minimize&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]' +
+      'css?minimize&importLoaders=1' +
       '!postcss'
-    ),
+    )
+  },
+  {
+    test: /\.less$/,
+    loader: ExtractTextPlugin.extract(
+      'style',
+      'css?minimize&importLoaders=1' +
+      '!postcss'
+    )
   },
   {
     test: /\.scss$/,
     loader: ExtractTextPlugin.extract(
       'style',
-      'css?minimize&modules&importLoaders=3&localIdentName=[name]__[local]__[hash:base64:5]' +
+      'css?minimize&importLoaders=3' +
       '!postcss' +
       '!sass' +
       '!sass-resources'
-    ),
+    )
   },
   {
     test: require.resolve('react'),
@@ -61,7 +62,11 @@ config.module.loaders.push(
 );
 
 config.plugins.push(
-  new ExtractTextPlugin('[name]-bundle.css', { allChunks: true }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: Infinity,
+  }),
+  new ExtractTextPlugin('brand-[name]-bundle_[contenthash].css', { allChunks: true }),
   new webpack.optimize.DedupePlugin()
 );
 

@@ -51,11 +51,8 @@ node_modules
 
 # Generated js bundles
 /app/assets/javascripts/generated/*
-<<<<<<< HEAD
 app/assets/webpack/
 
 .ruby-version
 .ruby-gemset
 npm-debug.log*
-=======
->>>>>>> feature/brand_api
