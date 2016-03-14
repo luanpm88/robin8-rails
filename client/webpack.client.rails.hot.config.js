@@ -1,8 +1,3 @@
-// Run with Rails server like this:
-// rails s
-// cd client && babel-node server-rails-hot.js
-// Note that Foreman (Procfile.dev) has also been configured to take care of this.
-
 const path = require('path');
 const webpack = require('webpack');
 
@@ -28,11 +23,40 @@ config.output = {
   publicPath: `http://localhost:${hotRailsPort}/`,
 };
 
-// config.module.loaders.push(
-
-// );
+config.module.loaders.push(
+  // 用babel加载jsx
+  {
+    test: /\.jsx?$/,
+    loader: 'babel',
+    exclude: /node_modules/,
+    query: {
+      plugins: [
+        [
+          'react-transform',
+          {
+            transforms: [
+              {
+                transform: 'react-transform-hmr',
+                imports: ['react'],
+                locals: ['module'],
+              },
+            ],
+          },
+        ],
+      ],
+    },
+  },
+  { test: /\.css$/, loader: "style!css?importLoaders=1!postcss", },
+  { test: /\.less$/, loader: "style!css?importLoaders=2!postcss!less" },
+  { test: /\.scss$/, loader: "style!css?importLoaders=3!postcss!scss!sass-resources" },
+);
 
 config.plugins.push(
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'vendor-bundle.js',
+    minChunks: Infinity,
+  }),
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin()
 );

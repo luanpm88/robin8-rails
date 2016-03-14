@@ -14,7 +14,11 @@ namespace :assets do
 
   desc "Compile assets with webpack"
   task :webpack do
-    sh "cd client && npm run build:client"
+    if Rails.env.development?
+      sh "cd client && npm run build:client"
+    else
+      sh "cd client && npm run build:production:client"
+    end
   end
 
   task :clobber do
