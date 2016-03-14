@@ -10,6 +10,7 @@ module API
       # mount API::V2::Kols
       mount API::V2::Sessions
       mount API::V2::Upgrades
+      mount API::V2::Notify
     end
   end
 end

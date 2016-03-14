@@ -11,8 +11,6 @@ module Articles
     end
 
     def self.get_text(read_list_ids =[])
-      puts "-----elastic get_text"
-      Rails.logger.elastic.info "=======get_text===#{read_list_ids}"
       try_count = 0
       begin
         res = client.search index: 'wx_biz',
@@ -38,8 +36,6 @@ module Articles
 
     #TODO add log
     def self.search(text, push_list_ids = [], size = 100)
-      puts "-----elastic search"
-      # Rails.logger.elastic.info "=======search=== #{push_list_ids} ==text#{text}"
       try_count = 0
       begin
         res = client.search index: 'wx_biz',
