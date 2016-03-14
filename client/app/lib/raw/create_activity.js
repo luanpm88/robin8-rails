@@ -47,34 +47,40 @@ export default function createActivity () {
   // bootstrap-touchspin
   // https://github.com/istvan-ujjmeszaros/bootstrap-touchspin
   $('.spinner-input').TouchSpin({
-    min: 1000,
+    min: 0,
     max: 10000000,
-    prefix: '$'
+    prefix: '￥'
   });
 
   // 日期控件
   // bootstrap-datepicker
   // https://github.com/eternicode/bootstrap-datepicker
-  function currentDate(){
-    var curDate = new Date(),
-        yyyy = curDate.getFullYear(),
-        mm   = curDate.getMonth()+1,
-        d    = curDate.getDate();
+  var now = new Date
+  var start_time = new Date(now.setHours(now.getHours() + 2));
+  var deadline = new Date(now.setDate(now.getDate() + 2));
 
-    if(mm < 10) mm = '0' + mm;
-
-    var str = yyyy + '/' + mm + '/' + d;
-    return str;
+  var datepickerStartOptions = {
+    ignoreReadonly: true,
+    locale: 'zh-cn',
+    format: 'YYYY-MM-DD HH:mm',
+    defaultDate: start_time
   }
 
-  // 显示当天日期
-  $('.date-range-form-area input').val(currentDate());
-  $('.input-daterange').datepicker({
-    format: 'yyyy/mm/dd',
-    startDate: '',
-    autoclose: true,
-    startDate: new Date(),
-    language: 'zh-CN'
+  var datepickerEndOptions = {
+    ignoreReadonly: true,
+    locale: 'zh-cn',
+    format: 'YYYY-MM-DD HH:mm',
+    useCurrent: false,
+    defaultDate: deadline
+  }
+
+  $('#start-time-datepicker').datetimepicker(datepickerStartOptions);
+  $('#deadline-datepicker').datetimepicker(datepickerEndOptions);
+  $("#start-time-datepicker").on("dp.change", function (e) {
+    $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
+  });
+  $("#deadline-datepicker").on("dp.change", function (e) {
+      $('#start-time-datepicker').data("DateTimePicker").maxDate(e.date);
   });
 
 

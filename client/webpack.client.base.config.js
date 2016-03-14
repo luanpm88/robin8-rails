@@ -16,7 +16,7 @@ module.exports = {
     ].concat(glob.sync("./app/lib/raw/**/*.js")),
 
     app: [
-      './app/bundles/BrandApp/startup/clientRegistration',
+      './app/bundles/Robin8/startup/clientRegistration',
     ],
   },
   resolve: {
@@ -32,6 +32,7 @@ module.exports = {
       'react-dom': path.resolve('./node_modules/react-dom'),
     },
   },
+  devtool: 'eval-source-map',
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
