@@ -39,9 +39,9 @@ class ArticleAction < ActiveRecord::Base
   end
 
   def update_list
-    append_value(ArticleAction.kol_action_key(kol_id, action), article_id)
-    if self.action == 'read'
-      Articles::Store.reset_kol_articles(kol_id)
+    append_value(ArticleAction.kol_action_key(kol_id, 'read'), article_id)
+    Articles::Store.reset_kol_articles(kol_id)
+    # if self.read_changed? && self.read == true
       # count = Rails.cache.increment(ArticleAction.kol_action_key(kol_id, 'change'), 1)
       # if count > ChangeThreshold
       #   #1. 清空文章缓存
@@ -49,7 +49,7 @@ class ArticleAction < ActiveRecord::Base
       #   #2. 清除累积
       #   Rails.cache.delete(ArticleAction.kol_action_key(kol_id, 'change'))
       # end
-    end
+    # end
   end
 
   def share_url

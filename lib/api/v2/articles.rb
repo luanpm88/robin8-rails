@@ -25,7 +25,7 @@ module API
           requires :article_author, type: String
         end
         put 'read_article' do
-          ArticleAction.article_action(current_kol.id, params)
+          ArticleAction.read_article(current_kol.id, params)
           present :error, 0
           present :articles, articles, with: API::V2::Entities::ArticleActionEntities::Summary
         end
@@ -37,6 +37,16 @@ module API
         end
         put ':id/action' do
           article_action = current_kol.article_actions.where(:id => params[:id]).first rescue nil
+          if article_action
+            article_action = article_action.action(params[:action])
+            present :error, 0
+            present :article_action, article_action, with: API::V2::Entities::ArticleActionEntities::Summary
+          else
+            return error_403!({error: 1, detail: '该文章不错存在'})
+          end
+        end
+
+        get 'test' do
           if article_action
             article_action = article_action.action(params[:action])
             present :error, 0

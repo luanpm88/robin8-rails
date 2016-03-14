@@ -9,7 +9,7 @@ module API
           required_attributes! [:mobile_number]
           sms_client = YunPian::SendVoiceSms.new(params[:mobile_number])
           res = sms_client.send_sms  rescue {}
-          if res["code"] == 0
+          if res["code"].to_s == '0'
             return {error: 0, detail: '验证码发送成功' }
           else
             error_403!({error: 1, detail: res['msg'] || '调用第三方接口错误，请联系客服'})

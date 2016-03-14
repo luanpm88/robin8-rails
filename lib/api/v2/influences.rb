@@ -49,11 +49,11 @@ module API
         post 'unbind_identity' do
           kol_identities = TmpIdentity.get_identities(kol_uuid)
           if kol_identities.collect{|identity| identity.uid }.include? params[:uid]
-            present :error, 1
-            present :detail, "删除的账号不存在"
-          else
             TmpIdentity.find_by(:kol_uuid => kol_uuid, :uid => params[:uid]).delete
             present :error, 0
+          else
+            present :error, 1
+            present :detail, "删除的账号不存在"
           end
           present :kol_uuid, kol_uuid
           present :kol_identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
@@ -96,9 +96,9 @@ module API
           requires :mobile, type: String
         end
         post 'send_invite' do
-          if  Influence::Contact.is_mobile?(mobile)
+          if  Influence::Contact.is_mobile?(params[:mobile])
             invite_content = YunPian::TemplateContent.get_invite_sms('','')
-            result = YunPian::SendSms.send_msg(mobile,invite_content)
+            result = YunPian::SendSms.send_msg(params[:mobile],invite_content)
             puts result
             present :error, 0
           else

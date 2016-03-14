@@ -16,13 +16,12 @@ module Articles
         res = client.search index: 'wx_biz',
                             type: 'fulltext',
                             body: {
-                              _source: ["text", "title",  "biz_name"],
+                              _source: ["text", "title", "title_orig",  "biz_name"],
                               query: {
-                                match: { id: read_list_ids  },
+                                terms: { id: read_list_ids  },
                               }
                             }
-        sources = res['hits']['hits'].collect{|t| t["_source"]}
-        sources
+        res['hits']['hits'].collect{|t| t["_source"]}
       rescue  Exception => e
         try_count += 1
         if try_count < 3
@@ -30,12 +29,12 @@ module Articles
           retry
         else
           Rails.logger.elastic.info e.message
+          return []
         end
       end
     end
 
-    #TODO add log
-    def self.search(text, push_list_ids = [], size = 100)
+    def self.search(text, push_list_ids = [], options = {})
       try_count = 0
       begin
         res = client.search index: 'wx_biz',
@@ -45,7 +44,7 @@ module Articles
                               query: {
                                 multi_match: {
                                   query:  text,
-                                  fields: [ "text", "title", "biz_info" ]
+                                  fields: options[:query] ? ["title_orig"] : [ "text", "title", "title_orig" ]
                                 }
                               },
                               filter:{
@@ -58,7 +57,7 @@ module Articles
                                 }
                               },
                               from: 0,
-                              size: size
+                              size: options[:size] || 100
                             }
         sources = res['hits']['hits'].collect{|t| t["_source"]}
         sources
@@ -69,6 +68,7 @@ module Articles
           retry
         else
           Rails.logger.elastic.info e.message
+          return []
         end
       end
     end
