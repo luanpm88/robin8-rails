@@ -19,7 +19,7 @@ module API
             article['url']
           end
           expose :article_avatar_url do |article|
-            article['msg_cdn_url']
+            article['msg_cdn_url'] + "/300"
           end
           expose :article_author do |article|
             article['biz_name']

@@ -9,12 +9,14 @@ class PushArticle
   field :article_title, type: String
   field :article_author, type: String
 
+  # field :created_at, type: DateTime
+
   validates :kol_id, presence: true
   validates :article_id, presence: true
 
   def self.get_push_ids(kol_id)
     Rails.cache.fetch  kol_push_ids(kol_id) do
-      PushArticle.where("created_at > '#{7.days.ago}'").collect{|t| t.article_id}
+      PushArticle.where(:created_at.gte => 7.days.ago).collect{|t| t.article_id}
     end
   end
 
@@ -28,7 +30,7 @@ class PushArticle
     article_ids = []
     articles.each do |article|
       article_ids << article['id']
-      PushArticle.create(:kol_id => kol_id, :article_id => article['id'])
+      PushArticle.create(:kol_id => kol_id, :article_id => article['id'], :created_at => Time.now)
     end
     #2. 更新到cache
     append_value(self.kol_push_ids(kol_id), article_ids)
