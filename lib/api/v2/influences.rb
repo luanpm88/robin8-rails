@@ -8,7 +8,7 @@ module API
           requires :uid, type: String
           requires :token, type: String
           requires :name, type: String
-          requires :serial_params, type: String
+          optional :serial_params, type: String
           optional :url, type: String
           optional :avatar_url, type: String
           optional :desc, type: String

@@ -3,12 +3,6 @@ module API
     module Entities
       module ArticleEntities
         class Summary  < Grape::Entity
-          # format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          # with_options(format_with: :iso_timestamp) do
-          #   expose :deadline
-          #   expose :start_time
-          # end
-
           expose :article_id do |article|
             article['id']
           end
@@ -24,6 +18,16 @@ module API
           expose :article_author do |article|
             article['biz_name']
           end
+          expose :article_author do |article|
+            article['biz_name']
+          end
+        end
+      end
+
+      module ArticleActionEntities
+        class ArticleAction  < Grape::Entity
+          expose :id, :article_id, :article_url, :article_avatar_url, :article_title, :article_author, :read, :forward, :collect, :like
+          expose :share_url
         end
       end
     end

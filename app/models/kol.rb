@@ -45,7 +45,7 @@ class Kol < ActiveRecord::Base
 
   has_many :withdraws
   has_many :article_actions
-  has_many :read_articles, ->{:where}, :class_name => 'ArticleAction'
+
 
 
   def email_required?

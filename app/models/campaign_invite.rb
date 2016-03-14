@@ -97,12 +97,9 @@ class CampaignInvite < ActiveRecord::Base
     # status == 'finished' ? self.total_click : self.redis_total_click.value
   end
 
-
-
   def get_avail_click
     status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
   end
-
 
   def self.origin_share_url(uuid)
     "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"          rescue nil

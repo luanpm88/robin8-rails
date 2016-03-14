@@ -12,7 +12,7 @@ module API
           requires :os_version, type: String
           requires :device_model, type: String
           requires :content, type: String
-          optional :screenshot, type: File
+          optional :screenshot
         end
         post 'create' do
           attrs = attributes_for_keys([:app_version, :app_platform, :os_version, :device_model, :content])

@@ -31,7 +31,7 @@ module API
           optional :serial_params, type: String
           optional :followers_count, Integer
           optional :statuses_count, Integer
-          optional :registered_at, Time
+          optional :registered_at, DateTime
           optional :verified, :boolean
           optional :refresh_token, :string
           optional :unionid, type: String

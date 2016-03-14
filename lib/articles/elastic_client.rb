@@ -21,9 +21,9 @@ module Articles
                                 match: { id: read_list_ids  },
                               }
                             }
-        res = res['hits']['hits']
-        res.collect{|t| t["_source"]}
-      rescue  e
+        sources = res['hits']['hits'].collect{|t| t["_source"]}
+        sources
+      rescue  Exception => e
         try_count += 1
         if try_count < 3
           reset
@@ -60,9 +60,9 @@ module Articles
                               from: 0,
                               size: size
                             }
-        res = res['hits']['hits']
-        res.collect{|t| t['_source']}
-      rescue  e
+        sources = res['hits']['hits'].collect{|t| t["_source"]}
+        sources
+      rescue Exception => e
         try_count += 1
         if try_count < 3
           reset
