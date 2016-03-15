@@ -200,6 +200,7 @@ Rails.application.routes.draw do
   get '/about', to: 'pages#about'
   get '/team', to: 'pages#team'
   get '/terms', to: 'pages#terms'
+  get '/privacy_policy', to: 'pages#privacy_policy'
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
   get '/screenshot_sample', to: 'pages#screenshot_sample'

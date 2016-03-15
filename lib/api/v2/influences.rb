@@ -96,7 +96,7 @@ module API
           requires :mobile, type: String
         end
         post 'send_invite' do
-          if  Influence::Contact.is_mobile?(params[:mobile])
+          if  Influence::Util.is_mobile?(params[:mobile])
             invite_content = YunPian::TemplateContent.get_invite_sms('','')
             # result = YunPian::SendSms.send_msg(params[:mobile],invite_content)
             present :error, 0

@@ -21,14 +21,14 @@ module Influence
       end
       # 获取 cal_mobile（部分好友） 实际加权人数
       cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
-      Rails.logger.info "===============cal_score---#{Time.now}"
+      Rails.logger.info "===============Contact:cal_score---#{Time.now}"
       # 获取所有好友加权后好友人数 需还原 加权人数
       contact_count = cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)
-      hunder_score = ContactLevels.each do |level|
+      total_score = ContactLevels.each do |level|
         return level[:score] if contact_count > level[:min_count]
       end
-      Rails.logger.info "===============cal_score---hunder_score:#{hunder_score}"
-      Rails.cache.write(Value.contact_key(kol_uuid), hunder_score, :expires_in => 1.days)
+      Rails.logger.info "===============Contact:cal_score---total_score:#{total_score}"
+      Rails.cache.write(Value.contact_key(kol_uuid), total_score, :expires_in => 1.days)
     end
 
     def self.get_mobile_scores(kol_uuid, cal_mobiles)
@@ -36,7 +36,7 @@ module Influence
       store_keys = []
       cal_mobiles.each_with_index do |mobile, index|
         store_key = "#{kol_uuid}#{index}"
-        if is_mobile?(mobile)
+        if Util.is_mobile?(mobile)
           store_keys << store_key
           PhoneLocationWorker.perform_async(mobile , store_key, kol_uuid)
         else
@@ -56,14 +56,6 @@ module Influence
       Rails.logger.info  scores_hash.values
       return scores_hash.values.compact
     end
-
-
-    #是否mobile
-    def self.is_mobile?(mobile)
-      mobile =~ /^((13[0-9])|(15[^4,\D])|(18[0-9])|(14[5,7])|(17[0-9]))\d{8}$/
-    end
-
-
 
     def self.test
       kol_uuid = Time.now.to_i
