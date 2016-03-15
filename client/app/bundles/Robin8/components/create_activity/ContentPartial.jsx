@@ -9,35 +9,54 @@ export default class ContentPartial extends React.Component {
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
-          <h3 className="tit">推广内容&nbsp;<span className="what">?</span></h3>
+          <h3 className="tit">推广详情&nbsp;<span className="what">?</span></h3>
         </div>
         <div className="content">
           <div className="form-item form-horizontal">
+            <p className="action-mode">
+              奖励模式选择
+            </p>
             <div className="sources-check radio">
               <label>
                 <input {...forward_url} type="radio" name="contentSources" id="" defalutValue="转发链接" defaultChecked />
-                转发链接
+                按照发布奖励KOL
+              </label>
+              <label>
+                <input {...forward_url} type="radio" name="contentSources" id="" defalutValue="转发链接" />
+                按照点击奖励KOL
+              </label>
+              <label>
+                <input {...forward_url} type="radio" name="contentSources" id="" defalutValue="转发链接" />
+                按照行动奖励KOL
               </label>
             </div>
-            <div className="form-group">
-              <label htmlFor="promotionContent" className="col-sm-2 control-label">评价内容</label>
-              <div className="col-sm-10">
-                <input {...content} type="text" id="promotionContent" className="form-control" placeholder="请以自媒体的口吻推荐您的链接内容，方便自媒体转发" required />
+
+            <div className="action-url-group">
+              <div className="clearfix">
+                <p className="action-url-text">确认链接</p>
+                <input type="text" className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+              </div>
+              <div className="clearfix">
+                <button className="btn btn-blue btn-default generate-short-url-btn">生成链接</button>
+              </div>
+              <div className="clearfix">
+                <p className="generate-short-url-text">生成链接</p>
+                <p className="action-short-url">xxx</p>
+                <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
               </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="promotionUrl" className="col-sm-2 control-label">推广链接</label>
-              <div className="col-sm-10">
-                <input {...url} type="url" id="promotionUrl" className="form-control" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效" required />
+
+            <div className="per-budget-group">
+              <p className="per-budget-text">单次预算</p>
+              <div className="spinner-form-area">
+                <div className="spinner-box">
+                  <span className="symbol">$</span>
+                  <input type="text" defaultValue={0} className="spinner-input budget-input" style={{display: 'block'}} />
+                </div>
               </div>
             </div>
           </div>
-          <div className="form-item">
-            <div className="sources-check radio">
-              <input {...originality} type="radio" name="contentSources" id="" value="自主创作" />
-              <label htmlFor="">自主创作</label>
-            </div>
-          </div>
+
         </div>
       </div>
     )

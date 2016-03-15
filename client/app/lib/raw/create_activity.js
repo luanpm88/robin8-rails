@@ -2,6 +2,7 @@
  * 创建品牌活动JS
  * 02.15.2016
 */
+
 export default function createActivity () {
   // 关闭或刷新该页面时提示
   // 防止用户误关闭页面而重新填写
@@ -20,28 +21,7 @@ export default function createActivity () {
     appendToParent: '.form-group'
   });
 
-
-  // 媒体关键词
-  // bootstrap-tagsinput
-  // https://github.com/bootstrap-tagsinput/bootstrap-tagsinput
-  $('.activity-keywords-input').tagsinput({
-    maxTags: 5,
-    allowDuplicates: false, //关键词不能重复
-    confirmKeys: [13, 32] // 回车或空格确认输入
-  });
-
-  // 关键词满5个提示
-  $('.activity-keywords-input').on({'itemAdded':function(event){
-    var tips = '<span class="label label-danger">最多输入5个关键词</span>';
-    if ( $('.bootstrap-tagsinput').hasClass('bootstrap-tagsinput-max') ) {
-      $(this).parent().append( tips );
-      //console.log('5个了')
-    }
-  },'itemRemoved':function(event){
-      $(this).siblings('.label-danger').remove();
-    }
-  });
-
+  $('.target-city-selector').CitySelector();
 
   // 推广预算
   // bootstrap-touchspin
@@ -117,3 +97,5 @@ export default function createActivity () {
     uploader: '#coverUpload'
   });
 }
+
+// ===========================================

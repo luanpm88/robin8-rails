@@ -3,7 +3,7 @@ import React from 'react';
 export default class IntroPartial extends React.Component {
 
   render() {
-    const { name, description, image } = this.props
+    const { name, description, image, url } = this.props
 
     return (
       <div className="creat-activity-form creat-intro">
@@ -30,17 +30,13 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">活动简介</label>
-                <textarea {...description} name="" className="form-control activity-intro-input" maxLength={140} placeholder="请简要介绍您的推广，帮助媒体了解如何能够更好的帮您传播，请给出适当的列子，如：请 先评论棒极了，再给出买家秀" required ></textarea>
+                <textarea {...description} name="" className="form-control activity-intro-input" maxLength={140} placeholder="请简要介绍您的推广，帮助媒体了解如何能够更好的帮您传播，请给出适当的列子，如：请先评论棒极了，再给出买家秀" required ></textarea>
                 <span className="word-limit">140</span>
               </div>
-            </div>
-          </div>
-          <div className="creat-activity-keywords">
-            <div className="form-group">
-              <label>媒体关键词</label>
-              <input type="text" className="form-control activity-keywords-input" placeholder="输入媒体关键词" />
-              <p className="help-block">您需要具有哪些特点的人帮您传播？用空格分隔</p>
-              <span className="word-limit">5</span>
+              <div className="form-group">
+                <label htmlFor="campaign-url">活动链接</label>
+                  <input {...url} type="url" id="promotionUrl" className="form-control" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效" required />
+              </div>
             </div>
           </div>
         </div>

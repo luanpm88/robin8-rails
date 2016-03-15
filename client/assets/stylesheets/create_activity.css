@@ -639,29 +639,97 @@
 .creat-activity-basic-intro textarea.form-control {
   height: 125px;
 }
-.creat-activity-keywords {
-  position: relative;
-  margin-top: 60px;
-  padding-bottom: 60px;
-  min-height: 149px;
-}
-.creat-activity-keywords .help-block {
-  position: absolute;
-  left: 0;
-  top: 0;
-  margin: 0;
-  width: 100%;
-  text-align: center;
-}
-.creat-activity-keywords .label-danger {
-  position: absolute;
-  right: 10px;
-  bottom: 8px;
-  font-weight: 400;
-}
+
 .creat-intro label {
   margin-bottom: 25px;
 }
+
+.creat-activity-target {
+  padding-top: 38px;
+}
+
+.creat-activity-target .target-age-range {
+  float: left;
+  margin-right: 30%;
+}
+
+.creat-activity-target .target-location {
+  float: left;
+  margin-right: 20%;
+}
+
+.creat-activity-target .target-location .province {
+  margin-right: 20px;
+}
+
+.kol-message {
+  padding: 30px 0px;
+}
+
+.kol-message p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.creat-content-sources .action-mode {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: bold;
+  width: 120px;
+  float: left;
+}
+
+.creat-content-sources .sources-check label {
+  margin-right: 100px;
+}
+
+.creat-content-sources .sources-check label:first-child {
+  margin-left: 20px !important;
+}
+
+.creat-content-sources .action-url-group .action-url-text {
+  float: left;
+  margin-left: 20px;
+  margin-top: 12px;
+}
+
+.creat-content-sources .action-url-group .action-url {
+  margin-left: 140px;
+  width: 635px;
+}
+
+.creat-content-sources .action-url-group .generate-short-url-btn {
+  margin-left: 140px;
+  margin-top: 20px;
+}
+
+.creat-content-sources .action-url-group .generate-short-url-text {
+  float: left;
+  margin-left: 20px;
+  margin-top: 28px;
+}
+
+.creat-content-sources .action-url-group .action-short-url {
+  margin-top: 27px;
+  margin-left: 140px;
+}
+
+.creat-content-sources .action-url-group .action-url-notice {
+  margin-left: 138px;
+  margin-top: 22px;
+  color: #186616;
+}
+
+.creat-content-sources .per-budget-text {
+  float: left;
+  margin-left: 20px;
+  margin-top: 47px;
+}
+
+.creat-content-sources .spinner-box {
+  width: 450px;
+}
+
 .creat-content-sources .form-horizontal .control-label {
   padding-right: 0;
   text-align: left;
@@ -724,7 +792,7 @@
 .date-range-form-area .date-box:after {
   content: '';
   position: absolute;
-  right: 120px;
+  right: 104px;
   bottom: 10px;
   width: 18px;
   height: 18px;
@@ -735,9 +803,9 @@
   z-index: 10;
   display: inline-block;
   padding: 0;
-  width: 50%;
-  height: 40px;
-  font-size: 28px;
+  width: 54%;
+  height: 39px;
+  font-size: 20px;
   text-align: center;
   border-bottom: none !important;
 }

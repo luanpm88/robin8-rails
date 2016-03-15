@@ -4,6 +4,7 @@ import { reduxForm } from 'redux-form'
 import "create_activity.css"
 
 import IntroPartial from './create_activity/IntroPartial'
+import TargetPartial from './create_activity/TargetPartial'
 import ContentPartial from './create_activity/ContentPartial'
 import DatePartial from './create_activity/DatePartial'
 import BudgetPartial from './create_activity/BudgetPartial'
@@ -25,13 +26,14 @@ class CreateActivityPartial extends React.Component {
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={this.props.handleSubmit(this.props.actions.saveCampaign)}>
               <IntroPartial {...{name, description, image}}/>
+              <TargetPartial />
+              <BudgetPartial {...{budget}} />
               <ContentPartial {...{forward_url, content, url, originality}} />
               <DatePartial {...{start_time, deadline}} />
-              <BudgetPartial {...{budget}} />
 
               <div className="creat-form-footer">
-                <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写。在此<a href="#">预览</a></p>
-                <button type="submit" className="btn btn-blue btn-lg">查看最优推广渠道</button>
+                <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
+                <button type="submit" className="btn btn-blue btn-lg">完成发布活动并查看相关公众号</button>
               </div>
             </form>
           </div>
