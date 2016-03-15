@@ -636,7 +636,8 @@ zh:
     footer:
       about: "关于Robin8"
       contact: "联系我们"
-      privacy_and_terms: "隐私权和条款"
+      privacy: "隐私政策"
+      terms: "服务协议"
       right_reserved: 2015 Robin8 保留所有权利
       team: "团队"
     forgot:

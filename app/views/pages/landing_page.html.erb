@@ -191,7 +191,8 @@
       <%= image_tag 'robin8-footer-icon.png' %>
     </div>
     <div class="small-12 medium-12 columns left">
-      <span class="ft-copyright">&copy;<%= @l.t('footer.right_reserved') %></span> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/terms" class="ft-link privacy"><%= @l.t('footer.privacy_and_terms') %> </a>
+      <span class="ft-copyright">&copy;<%= @l.t('footer.right_reserved') %></span> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/privacy_policy" class="ft-link privacy"><%= @l.t('footer.privacy') %> </a> <a href='/terms'> <%= @l.t('footer.terms') %> </a>
+      <%# <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %1></a> %> 
     </div>
   </div>
 </footer>
