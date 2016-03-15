@@ -250,7 +250,7 @@ class Kol < ActiveRecord::Base
   def recent_income
     _start = Date.today - 7.days
     _end = Date.today - 1.days
-    transactions_stats_arr = transactions.created_desc.recent(_start,_end)
+    transactions_stats_arr = income_transactions.created_desc.recent(_start,_end)
       .select("date_format(created_at, '%Y-%m-%d') as created, count(*) as count_all, sum(credits) as total_amount ")
       .group("date_format(created_at, '%Y-%m-%d')").to_a
     recent_income = []
