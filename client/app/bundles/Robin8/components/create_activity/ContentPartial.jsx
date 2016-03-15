@@ -18,20 +18,20 @@ export default class ContentPartial extends React.Component {
             </p>
             <div className="sources-check radio">
               <label>
-                <input {...forward_url} type="radio" name="contentSources" id="" defalutValue="转发链接" defaultChecked />
+                <input {...forward_url} type="radio" name="action_type" value="click" defalutValue="转发链接" defaultChecked />
                 按照发布奖励KOL
               </label>
               <label>
-                <input {...forward_url} type="radio" name="contentSources" id="" defalutValue="转发链接" />
+                <input {...forward_url} type="radio" name="action_type" value="post" defalutValue="转发链接" />
                 按照点击奖励KOL
               </label>
               <label>
-                <input {...forward_url} type="radio" name="contentSources" id="" defalutValue="转发链接" />
+                <input {...forward_url} type="radio" name="action_type" value="action" defalutValue="转发链接" />
                 按照行动奖励KOL
               </label>
             </div>
 
-            <div className="action-url-group">
+            <div className="action-url-group" style={{display: 'none'}}>
               <div className="clearfix">
                 <p className="action-url-text">确认链接</p>
                 <input type="text" className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>

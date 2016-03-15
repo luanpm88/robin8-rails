@@ -96,6 +96,15 @@ export default function createActivity () {
   $('#coverPhotoPlaceholder').previewImage({
     uploader: '#coverUpload'
   });
-}
 
-// ===========================================
+  // per budget 类型选择
+  $('input:radio[name="action_type"]').filter('[value=click]').click(function(){
+    $(".action-url-group").hide()
+  })
+  $('input:radio[name="action_type"]').filter('[value=post]').click(function() {
+    $(".action-url-group").hide()
+  })
+  $('input:radio[name="action_type"]').filter('[value=action]').click(function() {
+    $(".action-url-group").show()
+  })
+}

@@ -16,9 +16,13 @@ export default class TargetPartial extends React.Component {
                 <label>年龄段</label>
                 <div className="target-age-selector">
                   <select>
-                    <option value ="all">全部</option>
-                    <option value ="male">男</option>
-                    <option value ="female">女</option>
+                    <option value = "all">全部</option>
+                    <option value = "baby">0-5岁</option>
+                    <option value = "chidren">5-10</option>
+                    <option value = "yong">10-20</option>
+                    <option value = "man">20-40</option>
+                    <option value = "gentleman">40-60</option>
+                    <option value = "old">60以上</option>
                   </select>
                 </div>
               </div>
