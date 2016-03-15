@@ -60,7 +60,7 @@ ActiveAdmin.register Withdraw do
     end
 
     column "total amount" do |resource|
-      resource.kol.avail_amount
+      resource.kol.amount
     end
 
     column "frozen amount" do |resource|
@@ -73,7 +73,7 @@ ActiveAdmin.register Withdraw do
       resource.kol.mobile_number
     end
 
-    column :withdraw_type
+    # column :withdraw_type
     column :real_name
     column :credits
     column :alipay_no
