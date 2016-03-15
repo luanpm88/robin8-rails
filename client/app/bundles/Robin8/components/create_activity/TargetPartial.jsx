@@ -4,6 +4,8 @@ export default class TargetPartial extends React.Component {
 
   render() {
 
+    const { message } = this.props
+
     return (
       <div className="creat-activity-form creat-target">
         <div className="header">
@@ -49,7 +51,7 @@ export default class TargetPartial extends React.Component {
           <div className="kol-message">
             <p>KOL留言</p>
             <div>
-              <input type="text" className="form-control" placeholder="给KOL留言" required />
+              <input {...message} type="text" className="form-control" placeholder="给KOL留言" required />
             </div>
           </div>
 

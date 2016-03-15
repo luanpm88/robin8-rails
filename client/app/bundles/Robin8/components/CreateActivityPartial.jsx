@@ -18,18 +18,18 @@ class CreateActivityPartial extends React.Component {
   }
 
   render() {
-    const {name, description, image, start_time, deadline, forward_url, content, url, originality, budget} = this.props.fields;
+    const { name, description, image, url, message, budget, per_budget_type, action_url, short_url, start_time, per_action_budget, deadline } = this.props.fields;
 
     return (
       <div className="wrapper">
         <div className="container">
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={this.props.handleSubmit(this.props.actions.saveCampaign)}>
-              <IntroPartial {...{name, description, image}}/>
-              <TargetPartial />
-              <BudgetPartial {...{budget}} />
-              <DetailPartial {...{forward_url, content, url, originality}} />
-              <DatePartial {...{start_time, deadline}} />
+              <IntroPartial {...{ name, description, image, url }}/>
+              <TargetPartial {...{ message }} />
+              <BudgetPartial {...{ budget }} />
+              <DetailPartial {...{ per_budget_type, action_url, short_url, per_action_budget }} />
+              <DatePartial {...{ start_time, deadline }} />
 
               <div className="creat-form-footer">
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
@@ -45,7 +45,7 @@ class CreateActivityPartial extends React.Component {
 
 CreateActivityPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'image', 'start_time', 'deadline', 'forward_url', 'content', 'url', 'originality', 'budget']
+  fields: ['name', 'description', 'image', 'url', 'message', 'budget', 'per_budget_type', 'action_url', 'short_url', 'start_time', 'per_action_budget', 'deadline']
 })(CreateActivityPartial);
 
 export default CreateActivityPartial
