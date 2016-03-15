@@ -2,102 +2,136 @@ require 'rails_helper'
 
 RSpec.describe CreateCampaignService, :type => :service do
 
+  let(:user) { FactoryGirl.create :user }
   let(:campaign_params) do
     {:name => 'Campaign', :description => 'desc', :url => 'http://robin8.net', :budget => 2, :per_budget_type => 'click', :per_action_budget => 0.1, :start_time => Time.now, :deadline => Time.now.tomorrow, :message => 'Message'}
   end
 
-  it 'create new pay_by_click(default) type campaign' do
-    rich_user = FactoryGirl.create :rich_user
-    service = CreateCampaignService.new rich_user, campaign_params
+  context 'when perform success' do
+    it 'returns true' do
+      service = CreateCampaignService.new user, campaign_params
 
-    expect { service.perform }.to change(Campaign, :count).by(1)
-    expect(service.campaign.per_budget_type).to eq 'click'
+      expect(service.perform).to be_truthy
+    end
+
+    it 'belongs to user' do
+      service = CreateCampaignService.new user, campaign_params
+
+      expect(service.perform).to be_truthy
+      expect(service.campaign.user).to eq user
+    end
+
+    it 'was unexecute status' do
+      service = CreateCampaignService.new user, campaign_params
+
+      expect(service.perform).to be_truthy
+      expect(service.campaign.status).to eq 'unexecute'
+    end
+
+    it 'creates new campaign' do
+      service = CreateCampaignService.new user, campaign_params
+
+      expect{ service.perform }.to change(Campaign, :count).by(1)
+    end
+
+    context 'when type is pay_by_click' do
+      it 'create pay_by_click campaign' do
+        campaign_params[:per_budget_type] = 'click'
+        service = CreateCampaignService.new user, campaign_params
+
+        expect{ service.perform }.to change(Campaign, :count).by(1)
+        expect(service.campaign.per_budget_type).to eq 'click'
+      end
+    end
+
+    context 'when type is pay_by_post' do
+      it 'create pay_by_post campaign' do
+        campaign_params[:per_budget_type] = 'post'
+        service = CreateCampaignService.new user, campaign_params
+
+        expect{ service.perform }.to change(Campaign, :count).by(1)
+        expect(service.campaign.per_budget_type).to eq 'post'
+      end
+    end
+
+    context 'when type is pay_by_action' do
+      it 'create pay_by_action campaign' do
+        campaign_params.merge!({:per_budget_type => 'cpa', :action_url_list => ['http://robin8.com']})
+        service = CreateCampaignService.new user, campaign_params
+
+        expect{ service.perform }.to change(Campaign, :count).by(1)
+        expect(service.campaign.per_budget_type).to eq 'cpa'
+      end
+    end
   end
 
-  it 'create new pay_by_post type campaign' do
-    rich_user = FactoryGirl.create :rich_user
-    campaign_params[:per_budget_type] = 'post'
-    service = CreateCampaignService.new rich_user, campaign_params
+  context 'when perform failure' do
+    context 'when invalid user' do
+      it 'returns invalid params or user error' do
+        invalid_user = User.new
+        service = CreateCampaignService.new invalid_user, campaign_params
 
-    expect { service.perform }.to change(Campaign, :count).by(1)
-    expect(service.campaign.per_budget_type).to eq 'post'
-  end
+        expect(service.perform).to be_falsy
+        expect(service.errors).to be_include 'Invalid params or user!'
+      end
+    end
 
-  it 'create new CPA type campaign' do
-    rich_user = FactoryGirl.create :rich_user
-    campaign_params.merge!({:per_budget_type => 'cpa', :action_url_list => ['http://robin8.com', 'http://robin8.net']})
-    service = CreateCampaignService.new rich_user, campaign_params
+    context 'when nil user' do
+      it 'returns invalid params or user error' do
+        service = CreateCampaignService.new nil, campaign_params
 
-    expect { service.perform }.to change(Campaign, :count).by(1)
-    expect(service.campaign.per_budget_type).to eq 'cpa'
-  end
+        expect(service.perform).to be_falsy
+        expect(service.errors).to be_include 'Invalid params or user!'
+      end
+    end
 
-  it 'returns true for create campaign success' do
-    rich_user = FactoryGirl.create :rich_user
-    service = CreateCampaignService.new rich_user, campaign_params
+    context 'when invalid campaign_params' do
+      it 'returns invalid params or user error' do
+        service = CreateCampaignService.new user
 
-    expect(service.perform).to be_truthy
-  end
+        expect(service.perform).to be_falsy
+        expect(service.errors).to be_include 'Invalid params or user!'
+      end
+    end
 
-  it 'returns false and error for invaild user' do
-    user = User.new
-    service = CreateCampaignService.new user, campaign_params
+    context 'when nout enough amount' do
+      it 'returns not enouth amount error' do
+        poor_user = FactoryGirl.create :poor_user
+        service = CreateCampaignService.new poor_user, campaign_params
 
-    expect(service.perform).to be_falsy
-    expect(service.errors).to be_include 'Invaild params or user!'
-  end
+        expect(service.perform).to be_falsy
+        expect(service.errors).to be_include 'Not enough amount!'
+      end
+    end
 
-  it 'returns false and error for empty campaigns params' do
-    user = FactoryGirl.create :user
-    service = CreateCampaignService.new user
+    context 'when cpa but no action urls' do
+      it 'return no availiable action urls error' do
+        campaign_params[:per_budget_type] = 'cpa'
+        service = CreateCampaignService.new user, campaign_params
 
-    expect(service.perform).to be_falsy
-    expect(service.errors).to be_include 'Invaild params or user!'
-  end
+        expect(service.perform).to be_falsy
+        expect(service.errors).to be_include 'No availiable action urls!'
+      end
+    end
 
-  it 'returns false and error for not enough amount' do
-    poor_user = FactoryGirl.create :poor_user
+    context 'when campaign name absent' do
+      it 'return error from activerecord validation' do
+        campaign_params.delete :name
+        service = CreateCampaignService.new user, campaign_params
 
-    service = CreateCampaignService.new poor_user, campaign_params
-    
-    expect(service.perform).to be_falsy
-    expect(service.errors).to be_include 'Not enough amount!'
-  end
+        expect(service.perform).to be_falsy
+        expect(service.first_error_message).to eq "Name can't be blank"
+      end
+    end
 
-  it 'returns false and error for cpa type but no action urls' do
-    user = FactoryGirl.create :user
+    context 'when cpa campaign but action urls save failure' do
+      it 'rollback' do
+        # todo: this case to test action_record will exec rollback, but blow code can't prove it rollback.
+        campaign_params.merge!({:per_budget_type => 'cpa', :action_url_list => ['error.url']})
+        service = CreateCampaignService.new user, campaign_params
 
-    campaign_params[:per_budget_type] = 'cpa'
-    service = CreateCampaignService.new user, campaign_params
-
-    expect(service.perform).to be_falsy
-    expect(service.errors).to be_include 'No availiable action urls!'
-  end
-
-  it 'returns errors for campaign name absent' do
-    campaign_params.delete :name
-    user = FactoryGirl.create :user
-    service = CreateCampaignService.new user, campaign_params
-
-    expect(service.perform).to be_falsy
-    expect(service.first_error_message).to be_include "Name can't be blank"
-  end
-
-  it 'returns false for CPA type campaign action urls save failure' do
-    campaign_params.merge!({:per_budget_type => 'cpa', :action_url_list => [] })
-    user = FactoryGirl.create :user
-    service = CreateCampaignService.new user, campaign_params
-
-    result = nil
-    expect { result = service.perform }.to change(Campaign, :count).by(0)
-    expect(result).to be_falsy
-  end
-
-  it 'rollback for CPA type campaign action urls format error' do
-    campaign_params.merge!({:per_budget_type => 'cpa', :action_url_list => ['url.error.msg'] })
-    user = FactoryGirl.create :user
-    service = CreateCampaignService.new user, campaign_params
-
-    expect { service.perform }.to change(Campaign, :count).by(0)
+        expect { service.perform }.to change(Campaign, :count).by(0)
+      end
+    end
   end
 end

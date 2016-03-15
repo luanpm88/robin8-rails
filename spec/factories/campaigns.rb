@@ -14,5 +14,17 @@ FactoryGirl.define do
     per_action_budget 1.0
     per_budget_type 'click'
     status 'unexecute'
+
+    factory :cpa_campaign do
+      transient do
+        action_urls_count 3
+      end
+
+      per_budget_type 'cpa'
+
+      after(:create) do |campaign, evaluator|
+        create_list(:campaign_action_url, evaluator.action_urls_count, campaign: campaign)
+      end
+    end
   end
 end

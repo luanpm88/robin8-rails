@@ -12,9 +12,9 @@ class CreateCampaignService
 
   def perform
 
-    if @campaign_params.empty? or not @user.persisted?
+    if @campaign_params.empty? or @user.nil? or not @user.persisted?
       # todo: use I18n(also include blow errors)
-      @errors << 'Invaild params or user!'
+      @errors << 'Invalid params or user!'
       return false
     end
 
@@ -28,9 +28,11 @@ class CreateCampaignService
       return false
     end
 
+    @campaign_params.merge!({:status => :unexecute})
+
     begin
       ActiveRecord::Base.transaction do
-        @campaign = Campaign.create! @campaign_params.select{|k,v| k != :action_url_list}
+        @campaign = @user.campaigns.create! @campaign_params.select{|k,v| k != :action_url_list}
 
         if is_cpa_campaign?
           @campaign_params[:action_url_list].each do |action_url|
@@ -40,7 +42,7 @@ class CreateCampaignService
       end
       return true
     rescue Exception => e
-      @errors << e.record.errors.full_messages.flatten
+      @errors.concat e.record.errors.full_messages.flatten
       return false
     end
 
@@ -50,11 +52,11 @@ class CreateCampaignService
     @errors.first
   end
 
-  private
-
   def permited_params_from params
-    params.select { |k, v| PERMIT_PARAMS.include? k } 
+    params.nil? ? [] : params.select { |k, v| PERMIT_PARAMS.include? k } 
   end
+
+  private
 
   def enough_amount? user, budget
     avail_amout = user.avail_amount
