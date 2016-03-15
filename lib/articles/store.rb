@@ -1,10 +1,17 @@
 module Articles
  class Store
-   def self.get_list(kol_id, title = nil, per_page = 10)
+   #发现文章列表
+   def self.get_discovery_list(kol_id, title = nil, per_page = 10)
      #1. 找出
      selected_articles = search_list(kol_id, title, per_page)
      #2. 对即将推送的文章的数据进行 存储
      PushArticle.kol_add_push_articles(kol_id, selected_articles)
+     selected_articles
+   end
+
+   #选择喜爱文章 列表
+   def self.get_select_like_list(kol_id, title = nil, per_page = 10)
+     selected_articles = search_list(kol_id, title, per_page)
      selected_articles
    end
 
@@ -61,8 +68,7 @@ module Articles
      articles = ElasticClient.get_text(kol_read_ids)
      text = articles.collect{|article| "#{article['text']} #{article['title'] } #{article['title_orig']} #{article['biz_info']}"}.join(" ")
      puts text
-     puts "====\n\n"
-     articles = ElasticClient.search("Photo   Price 2月28日  Platform Platform   Investment  Investment  Investment  Investment  Investment  Investment  Investment  Investment  Investment   Sale   Landing     StanfordUniversity   凤凰   MassachusettsInstituteOfTechnology   Bosch  Platform   Conference   Service   RoundTrip   PersonalComputer  PersonalComputer  PersonalComputer  PersonalComputer  PersonalComputer   MobilePhone  MobilePhone  MobilePhone  MobilePhone  MobilePhone  UnitedStates UnitedStates UnitedStates UnitedStates UnitedStates UnitedStates UnitedStates   Beijing  Use   Car   PassengerCar  PassengerCar   ElectronicSystem   Experience  Experience  Experience  Company   ResearchCenter  ResearchCenter  ResearchCenter", kol_read_ids, 10)
+     articles = ElasticClient.search("Photo   Price 2月28日  Platform Platform   Investment  Investment  Investment  Investment  Investment  Investment  Investment  Investment  Investment   Sale   Landing     StanfordUniversity  ResearchCenter", kol_read_ids)
      puts articles
    end
  end

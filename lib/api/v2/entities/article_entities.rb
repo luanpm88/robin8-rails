@@ -23,13 +23,6 @@ module API
           end
         end
       end
-
-      module ArticleActionEntities
-        class ArticleAction  < Grape::Entity
-          expose :id, :article_id, :article_url, :article_avatar_url, :article_title, :article_author, :read, :forward, :collect, :like
-          expose :share_url
-        end
-      end
     end
   end
 end

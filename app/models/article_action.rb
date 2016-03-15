@@ -3,26 +3,30 @@ class ArticleAction < ActiveRecord::Base
   include Redis::Objects
   counter :redis_click
 
+  scope :collect, ->{where(:collect => true)}
+
   after_save :update_list, :on => :create
 
   ChangeThreshold = 5
 
-  def self.read_article(kol_id, params )
+  def self.action_from_list(action, kol_id, params )
     article_action = ArticleAction.find_or_initialize_by(:kol_id => kol_id, :article_id => params[:article_id])
     if article_action.new_record?
       article_action.article_title = params[:article_title]
       article_action.article_url = params[:article_url]
       article_action.article_avatar_url  = params[:article_avatar_url]
       article_action.article_author = params[:article_author]
-      article_action.save
-    else
-      article_action.update_column(:read, true)
     end
+    article_action.send("#{action}=", true)
+    # article_action.instance_variable_set(:"@#{action}", true)
+    article_action.save
+    article_action
   end
 
   def action(action)
-    article_action.instance_eval_set("@#{action}", !article_action.send(action))
-    article_action.save
+    self.send("#{action}=", !self.send(action))
+    self.save
+    self
   end
 
   #存储所有action

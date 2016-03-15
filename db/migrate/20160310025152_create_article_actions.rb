@@ -7,7 +7,6 @@ class CreateArticleActions < ActiveRecord::Migration
       t.string :article_url
       t.string :article_avatar_url
       t.string :article_author
-      t.string :action
 
       t.timestamps null: false
     end

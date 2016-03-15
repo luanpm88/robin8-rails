@@ -3,7 +3,8 @@ module Articles
     Host = Rails.application.secrets[:elastic_server]
     cattr_accessor :client
     def self.client
-      @@client ||  Elasticsearch::Client.new({host: Host, log: true, ssl_verifypeer: false})
+      @@client = Elasticsearch::Client.new({host: Host, log: true})    if @@client.blank?
+      @@client
     end
 
     def self.reset
@@ -67,7 +68,7 @@ module Articles
           reset
           retry
         else
-          Rails.logger.elastic.info e.message
+          Rails.logger.elastic.info e.backtrace
           return []
         end
       end

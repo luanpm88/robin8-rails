@@ -19,6 +19,10 @@ module API
           expose :tags do |kol|
             kol.tags.collect{|t| {:name => t.name, :label => t.label} }
           end
+          expose :influence_score
+          expose :selected_like_articles do |kol|
+            kol.article_actions.count > 0
+          end
           expose :issue_token do |kol|
             kol.get_issue_token
           end

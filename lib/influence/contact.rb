@@ -19,7 +19,7 @@ module Influence
       else
         cal_mobiles = mobiles
       end
-      # 获取 cal_mobile（部分好友） 加权人数
+      # 获取 cal_mobile（部分好友） 实际加权人数
       cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
       Rails.logger.info "===============cal_score---#{Time.now}"
       # 获取所有好友加权后好友人数 需还原 加权人数
