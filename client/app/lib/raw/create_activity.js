@@ -63,7 +63,6 @@ export default function createActivity () {
       $('#start-time-datepicker').data("DateTimePicker").maxDate(e.date);
   });
 
-
   // image upload previewer
   $.fn.previewImage = function(options) {
     var previewer = new ImagePreviewer(this, options.uploader);
