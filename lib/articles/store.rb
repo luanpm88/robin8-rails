@@ -40,10 +40,7 @@ module Articles
    end
 
    def self.get_read_article_text(kol_id, kol_read_ids = nil)
-     kol_read_ids = kol_read_ids ||ArticleAction.get_action_ids(kol_id, 'read')
-     # kol_like_ids = ArticleAction.get_action_ids(kol_id, 'like')
-     # kol_forward_ids = ArticleAction.get_action_ids(kol_id, 'forward')
-     # kol_collect_ids = ArticleAction.get_action_ids(kol_id, 'collect')
+     kol_read_ids = kol_read_ids || ArticleAction.get_action_ids(kol_id, 'read')
      Rails.logger.elastic.info "=======get_read_article_text===kol_id:#{kol_id}====kol_read_ids:#{kol_read_ids}"
      if kol_read_ids.size > 0
        articles = ElasticClient.get_text(kol_read_ids)
