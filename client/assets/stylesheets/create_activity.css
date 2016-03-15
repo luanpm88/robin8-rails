@@ -590,12 +590,12 @@
   position: relative;
   float: right;
   text-align: center;
-  background: url(~creat_activity_coverphoto.jpg) no-repeat bottom center;
+  background: url(~creat_activity_coverphoto.png) no-repeat bottom center;
 }
 .creat-activity-basic-intro .cover-photo,
 .creat-activity-basic-intro .cover-photo .inner {
   width: 226px;
-  height: 337px;
+  height: 430px;
   overflow: hidden;
 }
 .creat-activity-basic-intro .cover-photo .inner {
@@ -710,8 +710,10 @@
 }
 
 .creat-content-sources .action-url-group .action-short-url {
-  margin-top: 27px;
-  margin-left: 140px;
+  margin-top: 24px;
+  margin-left: 54px;
+  width: 640px;
+  border: none;
 }
 
 .creat-content-sources .action-url-group .action-url-notice {
@@ -728,6 +730,12 @@
 
 .creat-content-sources .spinner-box {
   width: 450px;
+}
+
+.creat-content-sources .spinner-box .average-price{
+  float: right;
+  margin-top: 6px;
+  color: #186616;
 }
 
 .creat-content-sources .form-horizontal .control-label {

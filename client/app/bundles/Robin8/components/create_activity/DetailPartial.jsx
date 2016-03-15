@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ContentPartial extends React.Component {
+export default class DetailPartial extends React.Component {
 
   render() {
 
@@ -41,7 +41,7 @@ export default class ContentPartial extends React.Component {
               </div>
               <div className="clearfix">
                 <p className="generate-short-url-text">生成链接</p>
-                <p className="action-short-url">xxx</p>
+                <input type="text" className="action-short-url" readOnly></input>
                 <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
               </div>
             </div>
@@ -52,6 +52,7 @@ export default class ContentPartial extends React.Component {
                 <div className="spinner-box">
                   <span className="symbol">$</span>
                   <input type="text" defaultValue={0} className="spinner-input budget-input" style={{display: 'block'}} />
+                  <p className="average-price">均价xxx</p>
                 </div>
               </div>
             </div>
