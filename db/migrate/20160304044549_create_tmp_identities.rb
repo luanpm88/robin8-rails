@@ -1,4 +1,4 @@
-class CreateIdentitiesTmp < ActiveRecord::Migration
+class CreateTmpIdentities < ActiveRecord::Migration
   def change
     create_table :tmp_identities do |t|
       t.string   "provider",              limit: 255
