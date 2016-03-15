@@ -44,7 +44,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def upload_screenshot_deadline
-    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForKol
+    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
   end
 
   def reupload_screenshot_deadline
