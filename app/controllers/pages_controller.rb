@@ -67,6 +67,10 @@ class PagesController < ApplicationController
     render :layout => "website"
   end
 
+  def privacy_policy
+    render :layout => 'website'
+  end
+
   def payment_confirmation
     render :layout => "website"
   end
