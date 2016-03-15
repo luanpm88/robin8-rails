@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229092140) do
+ActiveRecord::Schema.define(version: 20160310060042) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -352,6 +352,13 @@ ActiveRecord::Schema.define(version: 20160229092140) do
     t.string   "audience_publish_fres", limit: 255
     t.boolean  "has_grabed",            limit: 1,     default: false
     t.string   "from_type",             limit: 255,   default: "pc"
+    t.integer  "followers_count",       limit: 4
+    t.integer  "friends_count",         limit: 4
+    t.integer  "statuses_count",        limit: 4
+    t.datetime "registered_at"
+    t.boolean  "verified",              limit: 1,     default: false
+    t.string   "refresh_token",         limit: 255
+    t.datetime "refresh_time"
   end
 
   create_table "industries", force: :cascade do |t|
@@ -513,6 +520,8 @@ ActiveRecord::Schema.define(version: 20160229092140) do
     t.string   "app_city",                         limit: 255
     t.string   "IMEI",                             limit: 255
     t.string   "IDFA",                             limit: 255
+    t.string   "phone_city",                       limit: 255
+    t.string   "utm_source",                       limit: 255
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree

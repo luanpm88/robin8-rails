@@ -2,7 +2,7 @@ console.log("begin brandHomeActionCreators");
 
 import actionTypes from '../constants/BrandHomeConstants'
 
-const CAMPAIGNS_URL = 'brand_api/v1/user/campaigns'
+const CAMPAIGNS_URL = '/brand_api/v1/user/campaigns'
 const SAVE_CAMPAIGN_URL = 'campaign'
 
 export function fetchCampaigns(currentPage) {
@@ -26,9 +26,8 @@ export function saveCampaign(campaign) {
         campaign[key] = campaign[key] || $("#deadline-datepicker").val()
       } else if (key == "budget") {
         campaign[key] = campaign[key] || $(".budget-input").val()
-      } else {
-        ;
       }
+
       formData.append(`campaign[${key}]`, campaign[key]);
     }
   }
@@ -36,7 +35,7 @@ export function saveCampaign(campaign) {
   return {
     type: actionTypes.SAVE_CAMPAIGN,
     promise: fetch(
-      'http://localhost:3000/campaign', {
+      '/campaign', {
         headers: {
           "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
         },
