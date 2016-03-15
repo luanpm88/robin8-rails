@@ -24,6 +24,7 @@ class Campaign < ActiveRecord::Base
   has_many :articles
   has_many :kol_categories, :through => :kols
   has_many :campaign_action_urls, autosave: true
+  has_many :campaign_targets
 
   has_many :campaign_categories
   has_many :iptc_categories, :through => :campaign_categories

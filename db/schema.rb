@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160310060042) do
+ActiveRecord::Schema.define(version: 20160315094928) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -124,12 +124,11 @@ ActiveRecord::Schema.define(version: 20160310060042) do
   end
 
   create_table "campaign_actions", force: :cascade do |t|
-    t.integer  "kol_id",             limit: 4
-    t.integer  "campaign_id",        limit: 4
-    t.integer  "campaign_invite_id", limit: 4
-    t.string   "action",             limit: 255
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.integer  "kol_id",      limit: 4
+    t.integer  "campaign_id", limit: 4
+    t.string   "action",      limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "campaign_categories", force: :cascade do |t|
@@ -175,6 +174,17 @@ ActiveRecord::Schema.define(version: 20160310060042) do
     t.datetime "updated_at",                    null: false
     t.string   "visitor_agent",   limit: 3555
     t.string   "visitor_referer", limit: 3555
+  end
+
+  create_table "campaign_targets", force: :cascade do |t|
+    t.integer  "campaign_id", limit: 4
+    t.string   "target_type", limit: 255
+    t.string   "age",         limit: 255
+    t.string   "province",    limit: 255
+    t.string   "city",        limit: 255
+    t.string   "sex",         limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "campaigns", force: :cascade do |t|
