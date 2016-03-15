@@ -13,7 +13,7 @@ class Withdraw < ActiveRecord::Base
   belongs_to :kol
   scope :whole, ->{order('created_at desc')}
   scope :pending, -> {where(:status => 'pending').order('created_at desc')}
-  scope :approved, -> {where(:status => 'pending').order('created_at desc')}
+  scope :approved, -> {where(:status => 'paid').order('created_at desc')}
   scope :rejected, -> {where(:status => 'rejected').order('created_at desc')}
 
   def check_avail_amount
