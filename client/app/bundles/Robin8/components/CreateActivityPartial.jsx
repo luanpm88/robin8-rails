@@ -18,7 +18,7 @@ class CreateActivityPartial extends React.Component {
   }
 
   render() {
-    const { name, description, image, url, message, budget, per_budget_type, action_url, short_url, start_time, per_action_budget, deadline } = this.props.fields;
+    const { name, description, image, url, age, province, city, sex, message, budget, per_budget_type, action_url, short_url, start_time, per_action_budget, deadline } = this.props.fields;
 
     return (
       <div className="wrapper">
@@ -26,7 +26,7 @@ class CreateActivityPartial extends React.Component {
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={this.props.handleSubmit(this.props.actions.saveCampaign)}>
               <IntroPartial {...{ name, description, image, url }}/>
-              <TargetPartial {...{ message }} />
+              <TargetPartial {...{ age, province, city, sex, message }} />
               <BudgetPartial {...{ budget }} />
               <DetailPartial {...{ per_budget_type, action_url, short_url, per_action_budget }} />
               <DatePartial {...{ start_time, deadline }} />
@@ -45,7 +45,7 @@ class CreateActivityPartial extends React.Component {
 
 CreateActivityPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'image', 'url', 'message', 'budget', 'per_budget_type', 'action_url', 'short_url', 'start_time', 'per_action_budget', 'deadline']
+  fields: ['name', 'description', 'image', 'url', 'age', 'province', 'city', 'sex', 'message', 'budget', 'per_budget_type', 'action_url', 'short_url', 'start_time', 'per_action_budget', 'deadline']
 })(CreateActivityPartial);
 
 export default CreateActivityPartial

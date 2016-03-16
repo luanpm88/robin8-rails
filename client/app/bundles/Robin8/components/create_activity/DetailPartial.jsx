@@ -51,7 +51,7 @@ export default class DetailPartial extends React.Component {
               <div className="spinner-form-area">
                 <div className="spinner-box">
                   <span className="symbol">$</span>
-                  <input {...per_action_budget} type="text" defaultValue={0} className="spinner-input budget-input" style={{display: 'block'}} />
+                  <input {...per_action_budget} type="text" defaultValue={0} className="spinner-input per-budget-input" style={{display: 'block'}} />
                   <p className="average-price">均价xxx</p>
                 </div>
               </div>
