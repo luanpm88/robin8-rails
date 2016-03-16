@@ -3,14 +3,20 @@ module Influence
     #https://robin8.atlassian.net/wiki/display/RPM/KOL+Influence+Scoring+Algorithm
     #计算总价值
     BaseScore = 500
-    def self.get_total_score(kol_uuid, kol_city, kol_mobile_model)
+    def self.cal_total_score(kol_uuid, kol_city, kol_mobile_model)
       kol_city = get_kol_city(kol_city, kol_uuid)
       location_score = Other.kol_location_score(kol_city)
       mobile_score = Other.mobile_model_score(kol_mobile_model)
       identity_score = Identity.get_identity_score(kol_uuid)
       identity_count_score = Other.identity_count_score(kol_uuid)
       contact_score = get_contact_score(kol_uuid)
-      BaseScore + location_score + mobile_score + identity_count_score +  contact_score +  identity_score
+      total_score = BaseScore + location_score + mobile_score + identity_count_score +  contact_score +  identity_score
+      Rails.cache.write("total_score_#{kol_uuid}", total_score)
+      total_score
+    end
+
+    def self.get_total_score(kol_uuid)
+      Rails.cache.read("total_score_#{kol_uuid}")
     end
 
     #获取用户城市

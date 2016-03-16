@@ -437,6 +437,7 @@ class Kol < ActiveRecord::Base
 
   #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中
   def create_info_from_test_influence(kol_uuid)
+    return if kol_uuid.blank?
     ActiveRecord::Base.transaction do
       kol_id = self.id
       #sync score

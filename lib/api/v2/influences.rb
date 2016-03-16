@@ -66,7 +66,7 @@ module API
         end
         post 'bind_contacts' do
           if Rails.env.development?
-            contacts = Kol.limit(200).collect{|t| {:mobile => t.mobile_number, :name => t.name || t.id}}
+            contacts = Kol.where("mobile_number is not null").limit(20).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}
           else
             contacts = JSON.parse(params[:contacts])
           end
@@ -84,11 +84,17 @@ module API
         end
         get 'rank' do
           joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
-          # unjoined_contacts = TmpKolContact.unjoined.where(:kol_uuid => params[:kol_uuid]).order_by_exist
+          influence_score = Influence::Value.get_total_score(params[:kol_uuid])
+          rank_index = joined_contacts.where("influence_score > '#{influence_score}'").count
+          rank_index = rank_index + 1
           contacts = TmpKolContact.where(:kol_uuid => params[:kol_uuid])
           present :error, 0
           present :influence_title,''
+          present :score, influence_score
           present :joined_count, joined_contacts.size
+          present :rank_index, rank_index
+          present :name, TmpIdentity.get_name(params[:kol_uuid])
+          present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
 
@@ -107,17 +113,17 @@ module API
           end
         end
 
-        # 没有允许获取通讯
-        params do
-          requires :kol_uuid, type: String
-        end
-        post 'without_contacts_score' do
-          present :error, 0
-          present :kol_uuid, params[:kol_uuid]
-          present :total_kol_count, Kol.count
-          present :name, TmpIdentity.get_name(params[:kol_uuid])
-          present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
-        end
+        # # 没有允许获取通讯
+        # params do
+        #   requires :kol_uuid, type: String
+        # end
+        # post 'without_contacts_score' do
+        #   present :error, 0
+        #   present :kol_uuid, params[:kol_uuid]
+        #   present :total_kol_count, Kol.count
+        #   present :name, TmpIdentity.get_name(params[:kol_uuid])
+        #   present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
+        # end
 
         # 计算总得分
         params do
@@ -125,16 +131,14 @@ module API
           requires :kol_mobile_model, type: String
           optional :kol_city, type: String
         end
-        post 'with_contacts_score' do
-          score = Influence::Value.get_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 0
+        post 'cal_score' do
+          score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 0
           @campaigns = Campaign.where(:status => 'executing')
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
           present :score, score
           present :name, TmpIdentity.get_name(params[:kol_uuid])
           present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
-          present :identity_hundren_score, Influence::Value.identity_score(params[:kol_uuid])
-          present :contact_hundren_score, Influence::Value.contact_score(params[:kol_uuid])
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
         end
       end

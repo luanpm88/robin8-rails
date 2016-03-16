@@ -19,6 +19,7 @@ module Influence
 
 
     def self.get_city_value(city)
+      city = city[0,2]
        if Util::FirstCitys.include? city
          return 1
        elsif Util::SecondCitys.include? city

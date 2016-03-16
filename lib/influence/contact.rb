@@ -13,7 +13,8 @@ module Influence
                      {:min_count => 20, :score => 10},
                      {:min_count => -1, :score => 0}]
     def self.cal_score(kol_uuid, mobiles, contact_count = nil)
-      contact_count =  contact_count || cal_contact_count(kol_uuid, mobiles)
+      puts mobiles
+      contact_count =  contact_count || cal_contact_count(kol_uuid, mobiles)   || 0
       total_score = ContactLevels.each do |level|
         return level[:score] if contact_count > level[:min_count]
       end
@@ -22,9 +23,9 @@ module Influence
     end
 
     # 计算加权人数
-    def self.cal_contact_count(kol_uuid,mobiles)
-      mobile_size = mobiles.size
-      cal_mobiles = mobiles.sample(100)  if mobile_size > 100
+    def self.cal_contact_count(kol_uuid,cal_mobiles)
+      mobile_size = cal_mobiles.size
+      cal_mobiles = cal_mobiles.sample(100)  if mobile_size > 100
       # 获取 cal_mobile（部分好友） 实际加权人数
       cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
       Rails.logger.info "===============Contact:cal_score---#{Time.now}"
@@ -48,15 +49,16 @@ module Influence
       Rails.logger.info  store_keys
       loop_times = 0
       loop_seconds = 0.4
-      scores_hash = {}
+      scores = []
       while  true
-        eval("scores_hash = Rails.cache.fetch_multi(#{store_keys.join(',')}){nil}")
-        break if loop_times >= 14 ||  scores_hash.values.compact.size >= cal_mobiles_size * 0.8
+        scores = []
+        store_keys.each{|t| scores << Rails.cache.read(t)}
+        break if loop_times >= 14 ||  scores.compact.size >= cal_mobiles_size * 0.8
         loop_times += 1
         sleep loop_seconds
       end
-      Rails.logger.info  scores_hash.values
-      return scores_hash.values.compact
+      Rails.logger.info  scores
+      return scores.compact
     end
 
     def self.contact_score(kol_uuid)

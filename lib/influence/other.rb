@@ -15,7 +15,7 @@ module Influence
     def self.mobile_model_score(device_model)
       device_model = device_model.gsub(" ","").downcase
       MobileModelLevels.each do |level|
-        return level[:score] if  level[:model].include?(device_model)
+        return level[:score] if  device_model.include?(level[:model])
       end
     end
 

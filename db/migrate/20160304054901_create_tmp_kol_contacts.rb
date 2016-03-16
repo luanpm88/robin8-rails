@@ -8,6 +8,7 @@ class CreateTmpKolContacts < ActiveRecord::Migration
         t.boolean :exist, :default => false
         t.float :score
         t.string :kol_uuid
+        t.float :influence_score
 
         t.timestamps null: false
     end

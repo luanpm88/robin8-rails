@@ -35,7 +35,7 @@ class ArticleAction < ActiveRecord::Base
   #存储所有action
   def self.get_action_ids(kol_id, action)
     Rails.cache.fetch ArticleAction.kol_action_key(kol_id, action)  do
-      articles = ArticleAction.where(:kol_id => kol_id).where("#{action} = 1").order('id desc')
+      articles = ArticleAction.where(:kol_id => kol_id).order('id desc')
       articles.collect{|t| t.article_id}
     end
   end

@@ -8,7 +8,7 @@ module API
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
           kol = Kol.reg_or_sign_in(params)
-          SyncInfluenceAfterSignUpWorker.perform_async(kol.id, kol_uuid)     if params[:kol_uuid].present?
+          SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])     if params[:kol_uuid].present?
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
         end
@@ -55,7 +55,7 @@ module API
             end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
           end
-          SyncInfluenceAfterSignUpWorker.perform_async(kol.id, kol_uuid)     if params[:kol_uuid].present?
+          SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])     if params[:kol_uuid].present?
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
         end
