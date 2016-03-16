@@ -138,4 +138,23 @@ RSpec.describe Brand::V1::CampaignsAPI do
       expect(response.body).to match_json_expression pattern
     end
   end
+
+  describe 'GET /brand_api/v1/campaigns/short_url' do
+    it 'returns short url' do
+      get '/brand_api/v1/campaigns/short_url?url=http://robin9.com&identifier=token'
+
+      pattern = /http:\/\/t.cn/
+      expect(response.body).to match_json_expression pattern
+    end
+
+    it 'returns 400 when url or identifier absent' do
+      get '/brand_api/v1/campaigns/short_url?url=http://robin8.com'
+
+      pattern = {
+        error: 'identifier is missing'
+      }
+      expect(response.status).to eq 400
+      expect(response.body).to match_json_expression pattern
+    end
+  end
 end
