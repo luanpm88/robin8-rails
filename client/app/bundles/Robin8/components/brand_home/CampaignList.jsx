@@ -25,10 +25,10 @@ export default class CampaignList extends React.Component {
 
   displayPaginator(props) {
     const { fetchCampaigns } = this.props.actions;
-    if (this.props.data.get("currentPage")) {
+    if (this.props.data.get("paginate").get("X-Page")) {
       const pagination_options = {
-        currentPage: this.props.data.get("currentPage"),
-        totalPages: this.props.data.get("totalPages"),
+        currentPage: this.props.data.get("paginate").get("X-Page"),
+        totalPages: this.props.data.get("paginate").get("X-Total-Pages"),
         size: 'large',
         shouldShowPage: function(type, page, current) {
           switch (type) {
@@ -66,7 +66,7 @@ export default class CampaignList extends React.Component {
                 我的推广活动
                 <span className="carte">/</span>
                 <strong className="stat-num">
-                  { this.props.data.get('campaignsCount') }
+                  { this.props.data.get("paginate").get('X-Total') }
                 </strong>
               </h4>
             </div>

@@ -7,7 +7,7 @@ module Brand
         authenticate!
       end
 
-      paginate per_page: 20
+      paginate per_page: 4
       desc 'Get campaigns current user owns'
       get '/campaigns' do
         campaigns = paginate(Kaminari.paginate_array(current_user.campaigns))

@@ -4,9 +4,7 @@ import actionTypes from '../constants/BrandHomeConstants'
 export const $$initialState = Immutable.fromJS({
   readyState: 'init',
   campaignList: [],
-  currentPage: "",
-  totalPages: "",
-  campaignsCount: ""
+  paginate: {}
 });
 
 export default function brandHomeReducer($$state = $$initialState, action = null) {
@@ -17,16 +15,14 @@ export default function brandHomeReducer($$state = $$initialState, action = null
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.merge({
-          "campaignList": Immutable.fromJS(action.result.campaigns),
-          "currentPage": Immutable.fromJS(action.result.current_page),
-          "totalPages": Immutable.fromJS(action.result.total_page),
-          "campaignsCount": Immutable.fromJS(action.result.campaigns_count)
+          "campaignList": Immutable.fromJS(action.result.items),
+          "paginate": Immutable.fromJS(action.result.paginate)
         });
       }
       return $$state;
 
     case actionTypes.SAVE_CAMPAIGN:
-      
+
       return $$state;
 
     default:
