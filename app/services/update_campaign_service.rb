@@ -64,7 +64,7 @@ class UpdateCampaignService
   end
 
   def permited_params_from params
-    params.nil? ? [] : params.select { |k,v| CreateCampaignService::PERMIT_PARAMS.include? k }
+    params.nil? ? {} : params.select { |k,v| CreateCampaignService::PERMIT_PARAMS.include? k }
   end
 
   def is_cpa_campaign?

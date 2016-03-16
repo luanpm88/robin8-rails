@@ -53,7 +53,7 @@ class CreateCampaignService
   end
 
   def permited_params_from params
-    params.nil? ? [] : params.select { |k, v| PERMIT_PARAMS.include? k } 
+    params.nil? ? {} : params.select { |k, v| PERMIT_PARAMS.include? k }
   end
 
   private
