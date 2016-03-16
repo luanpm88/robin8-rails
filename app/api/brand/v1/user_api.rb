@@ -3,6 +3,10 @@ module Brand
     class UserAPI < Base
       include Grape::Kaminari
 
+      before do
+        authenticate!
+      end
+
       paginate per_page: 20
       desc 'Get campaigns current user owns'
       get '/campaigns' do

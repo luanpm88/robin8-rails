@@ -2,6 +2,10 @@ module Brand
   module V1
     class CampaignsAPI < Base
 
+      before do
+        authenticate!
+      end
+
       resource :campaigns do
         
         # short_url api should not placed in here. but now I don't know where to placed :(

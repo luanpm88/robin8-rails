@@ -13,6 +13,10 @@ module Brand::V1::APIHelpers
       end
   end
 
+  def authenticate!
+    error!('Access Denied', 401) unless current_user
+  end
+
   def error_unprocessable! detail=nil
     error!({error: 'Unprocessable!', detail: detail}, 422)
   end
