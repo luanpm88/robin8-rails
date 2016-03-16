@@ -49,7 +49,8 @@ class Identity < ActiveRecord::Base
     Identity.create(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
                     name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
                     followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
-                    registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],kol_id: kol_id)
+                    registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
+                    kol_id: kol_id,  verified: params[:verified])
   end
 
 

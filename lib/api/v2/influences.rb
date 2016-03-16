@@ -59,15 +59,17 @@ module API
           present :kol_identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
-
         #联系人
         params do
           requires :contacts, type: String
           optional :kol_uuid, type: String
         end
         post 'bind_contacts' do
-          aa = params[:contacts].to_s
-          contacts = JSON.parse(aa)
+          if Rails.env.development?
+            contacts = Kol.limit(200).collect{|t| {:mobile => t.mobile_number, :name => t.name || t.id}}
+          else
+            contacts = JSON.parse(params[:contacts])
+          end
           return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
           kol_uuid = params[:kol_uuid].blank? ? SecureRandom.hex : params[:kol_uuid]
           kol_contacts = TmpKolContact.add_contacts(kol_uuid,contacts)
@@ -120,8 +122,8 @@ module API
         # 计算总得分
         params do
           requires :kol_uuid, type: String
-          requires :kol_city, type: String
           requires :kol_mobile_model, type: String
+          optional :kol_city, type: String
         end
         post 'with_contacts_score' do
           score = Influence::Value.get_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 0

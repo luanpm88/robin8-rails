@@ -4,7 +4,7 @@ module Influence
     #计算总价值
     BaseScore = 500
     def self.get_total_score(kol_uuid, kol_city, kol_mobile_model)
-      kol_city = get_kol_city(kol_uuid)    if kol_city.blank?
+      kol_city = get_kol_city(kol_city, kol_uuid)
       location_score = Other.kol_location_score(kol_city)
       mobile_score = Other.mobile_model_score(kol_mobile_model)
       identity_score = Identity.get_identity_score(kol_uuid)
@@ -14,17 +14,20 @@ module Influence
     end
 
     #获取用户城市
-    def self.get_kol_city(kol_uuid)
-      kol_city = ''
-      TmpIdentity.where(:kol_uuid => kol_uuid).each do |identity|
-        if identity.provider == 'weibo'
-          city_names = JSON.parse(identity.serial_params)['location'].split(" ") rescue []
-          kol_city = City.where("name like '%#{city_names[0]}%' or name like '%#{city_names[1]}%'").first.name     rescue nil
-        else
-          city_en_name = JSON.parse(identity.serial_params)['city'].downcase    rescue nil
-          kol_city = City.where("name_en like '%#{city_en_name}%'").first.name     rescue nil
+    def self.get_kol_city(kol_city, kol_uuid)
+      if kol_city.present?
+        kol_city = City.where("name_en like '%#{kol_city}%'").first.name     rescue nil
+      else
+        TmpIdentity.where(:kol_uuid => kol_uuid).each do |identity|
+          if identity.provider == 'weibo'
+            city_names = JSON.parse(identity.serial_params)['location'].split(" ") rescue []
+            kol_city = City.where("name like '%#{city_names[0]}%' or name like '%#{city_names[1]}%'").first.name     rescue nil
+          else
+            city_en_name = JSON.parse(identity.serial_params)['city'].downcase    rescue nil
+            kol_city = City.where("name_en like '%#{city_en_name}%'").first.name     rescue nil
+          end
+          break if kol_city.present?
         end
-        break if kol_city.present?
       end
       return kol_city
     end

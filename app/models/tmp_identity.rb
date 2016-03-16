@@ -36,7 +36,7 @@ class TmpIdentity < ActiveRecord::Base
                     name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
                     followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
                     registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
-                    kol_uuid: params[:kol_uuid])
+                    kol_uuid: params[:kol_uuid], verified: params[:verified])
   end
 
 
@@ -52,7 +52,8 @@ class TmpIdentity < ActiveRecord::Base
   def cal_identity_influence
     if self.provider == 'weibo'
       # Influence::Value.init_identity(self.kol_uuid)
-      CalInfluenceWorker.perform_async('identity', self.kol_uuid, self.id, nil)
+      Influence::Identity.cal_score(kol_uuid,self.id)
+      # CalInfluenceWorker.perform_async('identity', self.kol_uuid, self.id, nil)
     end
   end
 

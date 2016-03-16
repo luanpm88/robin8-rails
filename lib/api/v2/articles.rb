@@ -29,7 +29,7 @@ module API
           requires :article_url, type: String
           requires :article_avatar_url, type: String
           requires :article_author, type: String
-          requires :action, type: String, values: ['read' ,'collect']
+          requires :action, type: String, values: ['look' ,'collect']
         end
         put 'action' do
           article_action = ArticleAction.action_from_list(params[:action], current_kol.id, params)

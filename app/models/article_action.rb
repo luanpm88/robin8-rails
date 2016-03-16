@@ -9,16 +9,19 @@ class ArticleAction < ActiveRecord::Base
 
   ChangeThreshold = 5
 
+  # 取消喜欢的文章   action: read/collect
   def self.action_from_list(action, kol_id, params )
     article_action = ArticleAction.find_or_initialize_by(:kol_id => kol_id, :article_id => params[:article_id])
+    #阅读 收藏
     if article_action.new_record?
       article_action.article_title = params[:article_title]
       article_action.article_url = params[:article_url]
       article_action.article_avatar_url  = params[:article_avatar_url]
       article_action.article_author = params[:article_author]
+      article_action.send("#{action}=", true)
+    elsif action == 'collect'        #如果已经收藏 则取消搜藏
+      article_action.send("#{action}=", !self.send(action))
     end
-    article_action.send("#{action}=", true)
-    # article_action.instance_variable_set(:"@#{action}", true)
     article_action.save
     article_action
   end
@@ -32,7 +35,7 @@ class ArticleAction < ActiveRecord::Base
   #存储所有action
   def self.get_action_ids(kol_id, action)
     Rails.cache.fetch ArticleAction.kol_action_key(kol_id, action)  do
-      articles = ArticleAction.where(:kol_id => kol_id).where("#{action} = '1'").order('id desc')
+      articles = ArticleAction.where(:kol_id => kol_id).where("#{action} = 1").order('id desc')
       articles.collect{|t| t.article_id}
     end
   end
@@ -43,8 +46,12 @@ class ArticleAction < ActiveRecord::Base
   end
 
   def update_list
-    append_value(ArticleAction.kol_action_key(kol_id, 'read'), article_id)
-    Articles::Store.reset_kol_articles(kol_id)
+    if self.look_changed? && self.look == true
+      # 更新阅读列表
+      append_value(ArticleAction.kol_action_key(kol_id, 'look'), article_id)
+      # 缓重置存的内容
+      Articles::Store.reset_kol_articles(kol_id)
+    end
     # if self.read_changed? && self.read == true
       # count = Rails.cache.increment(ArticleAction.kol_action_key(kol_id, 'change'), 1)
       # if count > ChangeThreshold
