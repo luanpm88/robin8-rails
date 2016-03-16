@@ -1,10 +1,20 @@
-import React from 'react';
+import React from 'react'
+import _ from 'lodash'
 
 export default class DetailPartial extends React.Component {
 
+  constructor(props, context) {
+    super(props, context);
+    _.bindAll(this, '_fetchShortUrl');
+  }
+
+  _fetchShortUrl(brand_id) {
+    console.log("---------------user_id", brand_id);
+  }
+
   render() {
 
-    const { per_budget_type, action_url, short_url, per_action_budget } = this.props
+    const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget } = this.props
 
     return (
       <div className="creat-activity-form creat-content-sources">
@@ -37,12 +47,13 @@ export default class DetailPartial extends React.Component {
                 <input {...action_url} type="text" className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
               </div>
               <div className="clearfix">
-                <button className="btn btn-blue btn-default generate-short-url-btn">生成链接</button>
+                <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl(this.props.brand_id)}>生成链接</button>
               </div>
               <div className="clearfix">
                 <p className="generate-short-url-text">生成链接</p>
                 <input {...short_url} type="text" className="action-short-url" readOnly></input>
                 <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
+                <input {...action_url_identifier} type="hidden" readOnly></input>
               </div>
             </div>
 

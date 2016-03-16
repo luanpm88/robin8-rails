@@ -1,5 +1,6 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
 
 import "create_activity.css"
 
@@ -11,14 +12,25 @@ import BudgetPartial from './create_activity/BudgetPartial'
 
 import createActivity from "raw/create_activity"
 
+
+function select(state) {
+  return { brand_id: state.$$brandHomeStore.get("brand").get("id") };
+}
+
+
 class CreateActivityPartial extends React.Component {
+
+  constructor(props, context) {
+    super(props, context);
+  }
 
   componentDidMount() {
     createActivity()
   }
 
   render() {
-    const { name, description, image, url, age, province, city, sex, message, budget, per_budget_type, action_url, short_url, start_time, per_action_budget, deadline } = this.props.fields;
+    const { name, description, image, url, age, province, city, sex, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
+    const brand_id = this.props.brand_id
 
     return (
       <div className="wrapper">
@@ -28,7 +40,7 @@ class CreateActivityPartial extends React.Component {
               <IntroPartial {...{ name, description, image, url }}/>
               <TargetPartial {...{ age, province, city, sex, message }} />
               <BudgetPartial {...{ budget }} />
-              <DetailPartial {...{ per_budget_type, action_url, short_url, per_action_budget }} />
+              <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand_id }} />
               <DatePartial {...{ start_time, deadline }} />
 
               <div className="creat-form-footer">
@@ -45,7 +57,7 @@ class CreateActivityPartial extends React.Component {
 
 CreateActivityPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'image', 'url', 'age', 'province', 'city', 'sex', 'message', 'budget', 'per_budget_type', 'action_url', 'short_url', 'start_time', 'per_action_budget', 'deadline']
+  fields: ['name', 'description', 'image', 'url', 'age', 'province', 'city', 'sex', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline']
 })(CreateActivityPartial);
 
-export default CreateActivityPartial
+export default connect(select)(CreateActivityPartial)
