@@ -43,6 +43,7 @@ ActiveAdmin.register User do
     end
     column :email
     column :created_at
+    column :utm_source
     column "avail amount" do |my_resource|
       my_resource.avail_amount
     end
