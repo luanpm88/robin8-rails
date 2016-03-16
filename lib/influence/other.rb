@@ -1,6 +1,5 @@
 module Influence
   class Other
-
     #kol 手机型号等级
     MobileModelLevels = [{:model => 'iphone6', :score => 30},
                         {:model => 'iphone5', :score => 25},
@@ -20,7 +19,7 @@ module Influence
       end
     end
 
-    #kol 归属地
+    #kol 归属地 得分
     KolLocationScore = [30,20,15,10,0]
     def self.kol_location_score(city_name)
       city_name = city_name[0,2]
@@ -37,6 +36,17 @@ module Influence
       end
     end
 
-    # def self.
+    # 社交账号数量得分
+    IdentityCountLevels= [{:count => 3, :score => 50},
+                          {:count => 2, :score => 30},
+                          {:count => 1, :score => 10},
+                          {:model => 0, :score => 0}]
+    def self.identity_count_score(kol_uuid)
+      count = TmpIdentity.where(:kol_uuid => kol_uuid).count
+      IdentityCountLevels.each do |level|
+        return level[:score] if  count >= level[:count]
+      end
+
+    end
   end
 end

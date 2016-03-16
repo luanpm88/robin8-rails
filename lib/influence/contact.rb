@@ -12,25 +12,27 @@ module Influence
                      {:min_count => 30, :score => 20},
                      {:min_count => 20, :score => 10},
                      {:min_count => -1, :score => 0}]
-    def self.cal_score(kol_uuid,mobiles)
-      mobile_size = mobiles.size
-      if mobile_size > 100
-        cal_mobiles = mobiles.sample(100)
-      else
-        cal_mobiles = mobiles
-      end
-      # 获取 cal_mobile（部分好友） 实际加权人数
-      cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
-      Rails.logger.info "===============Contact:cal_score---#{Time.now}"
-      # 获取所有好友加权后好友人数 需还原 加权人数
-      contact_count = cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)
+    def self.cal_score(kol_uuid, cal_mobiles, contact_count = nil)
+      contact_count =  contact_count || cal_contact_count(kol_uuid, cal_mobiles)
       total_score = ContactLevels.each do |level|
         return level[:score] if contact_count > level[:min_count]
       end
       Rails.logger.info "===============Contact:cal_score---total_score:#{total_score}"
-      Rails.cache.write(Value.contact_key(kol_uuid), total_score, :expires_in => 1.days)
+      Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 1.days)
     end
 
+    # 计算加权人数
+    def self.cal_contact_count(kol_uuid,cal_mobiles)
+      mobile_size = mobiles.size
+      cal_mobiles = mobiles.sample(100)  if mobile_size > 100
+      # 获取 cal_mobile（部分好友） 实际加权人数
+      cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
+      Rails.logger.info "===============Contact:cal_score---#{Time.now}"
+      # 获取所有好友加权后好友人数 需还原 加权人数
+      cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)
+    end
+
+     #获取样本得分
     def self.get_mobile_scores(kol_uuid, cal_mobiles)
       cal_mobiles_size = cal_mobiles.size
       store_keys = []
@@ -55,6 +57,20 @@ module Influence
       end
       Rails.logger.info  scores_hash.values
       return scores_hash.values.compact
+    end
+
+    def self.contact_score(kol_uuid)
+      Rails.cache.read(contact_key(kol_uuid))
+    end
+
+    # 有上传联系人后需要init，报道下，计算价值时候看看是否需要以你为依据
+    def self.init_contact(kol_uuid)
+      Rails.cache.write(contact_key(kol_uuid), -1, :expires_in => 1.days)    if  Rails.cache.read(contact_key(kol_uuid)).nil?
+    end
+
+    # 联系人 价值   存储key
+    def self.contact_key(kol_uuid)
+      "#{kol_uuid}_contact"
     end
 
     def self.test

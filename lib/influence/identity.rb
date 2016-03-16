@@ -1,14 +1,13 @@
 module Influence
   class Identity
+    def self.get_identity_score(kol_uuid)
+      TmpIdentity.where(:kol_uuid => kol_uuid).order("score desc").first.score rescue 0
+    end
+
     def self.cal_score(kol_uuid,identity_id)
       identity = TmpIdentity.find identity_id
       return 0 if identity.blank?
-      follower_rate_score =  cal_follower_score(identity)
-      status_rate_score =  cal_status_score(identity)
-      register_rate_score = cal_register_score(identity)
-      verify_rate_score = cal_verify_score(identity)
-      total_score = follower_rate_score + status_rate_score +  register_rate_score +  verify_rate_score
-      Rails.cache.write(Value.identity_key(kol_uuid),total_score, :expires_in => 1.days)  if   total_score >  Value.identity_score(kol_uuid)
+      total_score = cal_follower_score(identity) + cal_status_score(identity) +  cal_register_score(identity) +  cal_verify_score(identity)
       identity.update_column(:score, total_score)
     end
 

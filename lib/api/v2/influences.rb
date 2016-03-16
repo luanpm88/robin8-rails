@@ -120,9 +120,11 @@ module API
         # 计算总得分
         params do
           requires :kol_uuid, type: String
+          requires :kol_city, type: String
+          requires :kol_mobile_model, type: String
         end
         post 'with_contacts_score' do
-          score = Influence::Value.get_total_score(params[:kol_uuid])    rescue 0
+          score = Influence::Value.get_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 0
           @campaigns = Campaign.where(:status => 'executing')
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
