@@ -2,16 +2,32 @@ module Brand
   module V1
     class CampaignsAPI < Base
 
+      before do
+        authenticate!
+      end
+
       resource :campaigns do
         
+        # short_url api should not placed in here. but now I don't know where to placed :(
+        # and should placed before :id, otherwise grape will match :id not :short_url
+        desc 'Generate short url by origin url and identifier'
+        params do
+          requires :url, type: String
+          requires :identifier, type: String
+        end
+        get :short_url do
+          # todo: should add execption handle
+          action_url_params = declared params
+          origin_action_url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{action_url_params[:identifier]}"
+          short_url = ShortUrl.convert origin_action_url
+        end
+
         desc 'Return a campaign by id'
         params do
           requires :id, type: Integer, desc: 'Campaign id'
         end
-        route_param :id do
-          get do
-            present Campaign.find(params[:id])
-          end
+        get ':id' do
+          present Campaign.find(params[:id])
         end
 
         desc 'Create a campaign'
@@ -59,9 +75,7 @@ module Brand
             error_unprocessable! service.first_error_message
           end
         end
-
       end
-
     end
   end
 end
