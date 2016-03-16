@@ -8,6 +8,7 @@ class Campaign < ActiveRecord::Base
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   belongs_to :user
+  has_many :campaign_targets
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
