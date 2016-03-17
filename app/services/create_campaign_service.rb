@@ -1,5 +1,5 @@
 class CreateCampaignService
-  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :action_url_list]
+  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :action_url_list, :target]
 
   attr_reader :errors, :campaign
 
@@ -32,12 +32,16 @@ class CreateCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create! @campaign_params.select{|k,v| k != :action_url_list}
+        @campaign = @user.campaigns.create! @campaign_params.reject{|k,v| [:action_url_list, :target].include? k }
 
         if is_cpa_campaign?
           @campaign_params[:action_url_list].each do |action_url|
             @campaign.campaign_action_urls.create!(action_url: action_url)
           end
+        end
+
+        @campaign_params[:target].each do |k,v|
+          @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
         end
       end
       return true
