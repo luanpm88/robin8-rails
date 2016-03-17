@@ -45,7 +45,7 @@ module Articles
                               query: {
                                 multi_match: {
                                   query:  text,
-                                  fields: options[:query] ? ["title_orig"] : [ "text", "title", "title_orig" ]
+                                  fields:  [ "text", "title", "title_orig" ]
                                 }
                               },
                               filter:{
@@ -84,7 +84,7 @@ end
 # "query" : {
 # "query_string" : {
 # "default_field" : "text",
-# "query" : "Consulting  IssueShare  Chongqing  Beijing  Shanghai Shanghai Shanghai Shanghai  10月8日 10月8日 10月8日  2015年10月7日  10月9日  Company  LimitedLiabilityCompany  Friday  Bone  FacialExpression FacialExpression  Eye "
+# "query" : "母婴"
 # }
 # },
 # "filter" : {

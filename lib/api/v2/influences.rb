@@ -76,7 +76,6 @@ module API
           kol_contacts = TmpKolContact.add_contacts(kol_uuid,contacts)
           present :error, 0
           present :kol_uuid, kol_uuid
-          # present :kol_contacts, kol_contacts
         end
 
         # 排名

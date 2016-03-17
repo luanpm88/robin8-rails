@@ -21,6 +21,8 @@ class ArticleAction < ActiveRecord::Base
       article_action.send("#{action}=", true)
     elsif action == 'collect'        #如果已经收藏 则取消搜藏
       article_action.send("#{action}=", !self.send(action))
+    else
+      article_action.look = true
     end
     article_action.save
     article_action
