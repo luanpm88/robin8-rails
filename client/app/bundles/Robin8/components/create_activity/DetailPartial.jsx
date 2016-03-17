@@ -30,6 +30,25 @@ export default class DetailPartial extends React.Component {
     )
   }
 
+  componentDidMount() {
+    // 推广预算
+    // bootstrap-touchspin
+    // https://github.com/istvan-ujjmeszaros/bootstrap-touchspin
+    const { onChange } = this.props.per_action_budget;
+
+    $('.spinner-input').TouchSpin({
+      min: 0,
+      max: 10000000,
+      prefix: '￥'
+    }).on('change', function(event) {
+      onChange($(this).val());
+    });
+  }
+
+  componentWillUnmount() {
+    $('.spinner-input').off('change');
+  }
+
   render() {
 
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget } = this.props

@@ -23,15 +23,6 @@ export default function createActivity () {
 
   $('.target-city-selector').CitySelector();
 
-  // 推广预算
-  // bootstrap-touchspin
-  // https://github.com/istvan-ujjmeszaros/bootstrap-touchspin
-  $('.spinner-input').TouchSpin({
-    min: 0,
-    max: 10000000,
-    prefix: '￥'
-  });
-
   // 日期控件
   // bootstrap-datepicker
   // https://github.com/eternicode/bootstrap-datepicker
