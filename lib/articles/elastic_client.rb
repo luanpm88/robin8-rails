@@ -17,7 +17,7 @@ module Articles
         res = client.search index: 'wx_biz',
                             type: 'fulltext',
                             body: {
-                              _source: ["text", "title", "title_orig",  "biz_name"],
+                              _source: ["text", "title", "title",  "biz_name"],
                               query: {
                                 terms: { id: read_list_ids  },
                               }
@@ -41,11 +41,11 @@ module Articles
         res = client.search index: 'wx_biz',
                             type: 'fulltext',
                             body: {
-                              _source: ["id", "url", "msg_cdn_url", "title_orig", "biz_name"],
+                              _source: ["id", "url", "msg_cdn_url", "title", "biz_name"],
                               query: {
                                 multi_match: {
                                   query:  text,
-                                  fields:  [ "text", "title", "title_orig" ]
+                                  fields:  [ "text", "title", "title" ]
                                 }
                               },
                               filter:{
@@ -92,7 +92,7 @@ end
 # }
 # }'
 
-# curl -XPOST 139.196.39.136:9200/wx_page2/fulltext/_search -d '
+# curl -XPOST 139.196.39.136:9200/wx_biz/fulltext/_search -d '
 # {
 # "from": 0,
 # "size": 5,

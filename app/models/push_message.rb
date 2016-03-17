@@ -21,9 +21,9 @@ class PushMessage < ActiveRecord::Base
     content
   end
 
-
   def self.create_message_push(message)
-    if message.message_type == 'income'
+    #to one
+    if message.message_type == 'income'  || message.message_type == 'screenshot_passed' ||  message.message_type == 'screenshot_rejected'
       receiver = message.receiver
       push_message = self.new(:receiver_type => 'Single', :template_type => 'transmission', :receiver_ids => [receiver.id],
                               :title => message.title, :receiver_cids => [receiver.device_token] )
@@ -57,6 +57,18 @@ class PushMessage < ActiveRecord::Base
         push_message.receiver_ids = receivers.collect{|t| t.id }
         push_message.receiver_cids = receivers.collect{|t| t.device_token}
       end
+      push_message.message_id = message.id
+      push_message.item_id = message.item_id
+      push_message.item_type = message.item_type
+      push_message.save
+    # to list
+    elsif message.message_type == 'remind_upload'
+      push_message = self.new(:template_type => 'transmission', :template_content => transmission_template_content(message),
+                              :title => message.title)
+      receivers = Kol.where(:id => message.receiver_ids)
+      push_message.receiver_type = 'List'
+      push_message.receiver_ids = receivers.collect{|t| t.id }
+      push_message.receiver_cids = receivers.collect{|t| t.device_token}
       push_message.message_id = message.id
       push_message.item_id = message.item_id
       push_message.item_type = message.item_type

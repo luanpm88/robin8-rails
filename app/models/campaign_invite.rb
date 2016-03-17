@@ -77,6 +77,7 @@ class CampaignInvite < ActiveRecord::Base
         end
       end
     end
+    Message.new_check_message('screenshot_passed', self, campaign)
   end
 
   def screenshot_reject
@@ -85,7 +86,7 @@ class CampaignInvite < ActiveRecord::Base
       self.img_status = 'rejected'
       self.save
       #审核拒绝
-      Message.new_common_message('screenshot_rejected', self, campaign)
+      Message.new_check_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
     end
   end
@@ -99,7 +100,6 @@ class CampaignInvite < ActiveRecord::Base
 
   def get_total_click
     self.redis_total_click.value   rescue self.total_click
-    # status == 'finished' ? self.total_click : self.redis_total_click.value
   end
 
   def get_avail_click

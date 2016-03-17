@@ -44,7 +44,7 @@ module Articles
      Rails.logger.elastic.info "=======get_read_article_text===kol_id:#{kol_id}====kol_read_ids:#{kol_read_ids}"
      if kol_read_ids.size > 0
        articles = ElasticClient.get_text(kol_read_ids)
-       text = articles.collect{|article| "#{article['text']} #{article['title']} #{article['biz_info']} #{article['title_orig']}"}.join(" ")
+       text = articles.collect{|article| "#{article['text']} #{article['title']} #{article['biz_info']} "}.join(" ")
        Rails.logger.elastic.info "=======get_read_article_text===text:#{text[0..200]}"
        return text
      end
@@ -60,14 +60,14 @@ module Articles
      Rails.cache.delete_matched('kol_push_ids_*')
    end
 
-   def self.test(kol_read_ids)
-     kol_read_ids = kol_read_ids.split(",") if kol_read_ids.class == String
-     articles = ElasticClient.get_text(kol_read_ids)
-     text = articles.collect{|article| "#{article['text']} #{article['title'] } #{article['title_orig']} #{article['biz_info']}"}.join(" ")
-     puts text
-     articles = ElasticClient.search("Photo   Price 2月28日  Platform Platform   Investment  Investment  Investment  Investment  Investment  Investment  Investment  Investment  Investment   Sale   Landing     StanfordUniversity  ResearchCenter", kol_read_ids)
-     puts articles
-   end
+   # def self.test(kol_read_ids)
+   #   kol_read_ids = kol_read_ids.split(",") if kol_read_ids.class == String
+   #   articles = ElasticClient.get_text(kol_read_ids)
+   #   text = articles.collect{|article| "#{article['text']} #{article['title'] } #{article['title_orig']}"}.join(" ")
+   #   puts text
+   #   articles = ElasticClient.search("Photo   Price 2月28日  Platform Platform   Investment  Investment  Investment  Investment  Investment  Investment  Investment  Investment  Investment   Sale   Landing     StanfordUniversity  ResearchCenter", kol_read_ids)
+   #   puts articles
+   # end
  end
 
 end

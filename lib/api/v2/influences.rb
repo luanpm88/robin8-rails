@@ -121,7 +121,7 @@ module API
         end
         post 'cal_score' do
           influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 0
-          @campaigns = Campaign.where(:status => 'executing')
+          @campaigns = Campaign.order_by_status.limit(5)
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
           present :influence_score, influence_score

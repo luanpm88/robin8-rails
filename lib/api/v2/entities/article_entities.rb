@@ -7,7 +7,7 @@ module API
             article['id']
           end
           expose :article_title do |article|
-            article['title_orig']
+            article['title']
           end
           expose :article_url do |article|
             article['url']

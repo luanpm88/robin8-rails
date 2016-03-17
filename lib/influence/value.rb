@@ -67,6 +67,7 @@ module Influence
       InfluenceLevels.each do |level|
         return level[:title]  if score >= level[:score]
       end
+      return 'unknown'
     end
 
   end

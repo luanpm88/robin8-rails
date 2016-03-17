@@ -15,11 +15,23 @@ class Message < ActiveRecord::Base
     self.item.name  rescue nil
   end
 
+  # new new_remind_upload list
+  def self.new_remind_upload(campaign, kol_ids = [])
+    wait_upload_invites = CampaignInvite.waiting_upload.where(:campaign_id => campaign.id)
+    kol_ids = wait_upload_invites.collect{|t| t.kol_id}
+    message = Message.new(:message_type => 'remind_upload', :title => '您参与的活动就要结束了，请尽快上传截图', :logo_url => (campaign.img_url + "!logo" rescue nil), :name => campaign.name,
+                          :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign, :receiver_type => "List"  )
+    message.receiver_ids = kol_ids
+    if message.save
+      Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }
+    end
+    generate_push_message(message)
+  end
+
   # new campaign  to all  or list
   def self.new_campaign(campaign, kol_ids = [])
-    message = Message.new(:message_type => 'campaign', :title => '邀请您参与转发', :logo_url => (campaign.img_url + "!logo" rescue nil), :name => campaign.name,
+    message = Message.new(:message_type => 'campaign', :title => '你有一个新的特邀转发活动', :logo_url => (campaign.img_url + "!logo" rescue nil), :name => campaign.name,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign  )
-    # to all
     if kol_ids.size == 0
       message.receiver_type = "All"
       message.save
@@ -27,10 +39,7 @@ class Message < ActiveRecord::Base
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
       if message.save
-        # 列表消息 需要插入到用户 message list
-        Kol.where(:id => kol_ids).each do  |kol|
-          kol.list_message_ids << message.id
-        end
+        Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
     end
     generate_push_message(message)
@@ -45,14 +54,12 @@ class Message < ActiveRecord::Base
   end
 
 
-  def self.new_common_message(message_type,invite, campaign)
+  def self.new_check_message(message_type,invite, campaign)
     message = Message.new(:message_type => message_type, :receiver => invite.kol, :item => invite)
-    if message_type == 'upload_screenshot'
-      message.title = "请尽快上传截图"
-    elsif message_type == 'screenshot_passed'
-      message.title = "审核通过"
+    if  message_type == 'screenshot_passed'
+      message.title = "截图已经通过审核，快来查查你的收益"
     elsif message_type == 'screenshot_rejected'
-      message.title = "审核被拒绝，请重新上传截图"
+      message.title = "截图未通过审核，请尽快重新上传"
     end
     message.logo_url = campaign.img_url
     message.sender = campaign.user.company || campaign.user.name  rescue nil
