@@ -1,4 +1,5 @@
 import React from 'react';
+import ShowError from '../shared/ShowError';
 
 export default class TargetPartial extends React.Component {
 
@@ -51,7 +52,8 @@ export default class TargetPartial extends React.Component {
           <div className="kol-message">
             <p>KOL留言</p>
             <div>
-              <input {...message} type="text" className="form-control" placeholder="给KOL留言" required />
+              <input {...message} type="text" className="form-control" placeholder="给KOL留言" />
+              <ShowError field={message} />
             </div>
           </div>
 
