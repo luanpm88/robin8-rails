@@ -48,14 +48,21 @@ module API
           expose :today_income do |kol|
             kol.today_income.round(2)
           end
+          expose :verifying_income do |kol|
+            kol.verifying_income.round(2)
+          end
         end
 
         class Primary < Grape::Entity
+          # key 没改，内容已经变成所有收入
           expose :today_income  do |kol|
             kol.total_income.round(2)  + kol.verifying_income.round(2)
           end
           expose :unread_count do |kol|
             kol.unread_messages.count
+          end
+          expose :waiting_upload_count do |kol|
+            kol.campaign_invites.waiting_upload.count
           end
           expose :verifying_count do |kol|
             kol.campaign_invites.verifying.count

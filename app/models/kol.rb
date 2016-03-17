@@ -209,50 +209,51 @@ class Kol < ActiveRecord::Base
     income
   end
 
-
   def today_income
-    today_post_campaign_income +  today_click_or_action_campaign_income
+    income_by_date(Date.today)
   end
 
-  def today_post_campaign_income
+  def income_by_date(date)
+    post_campaign_income(date) +  click_or_action_campaign_income(date)
+  end
+
+  def campaign_count_by_date(date)
+    self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at > '#{date.beginning_of_day}'")
+        .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time < '#{date.end_of_day}'").count
+  end
+
+  def post_campaign_income(date)
     income = 0
-    self.campaign_invites.today_approved.includes(:campaign).each do |invite|
+    self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
       income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && invite.campaign.is_post_type?  )
     end
     income
   end
 
-  def today_click_or_action_campaign_income
+  def click_or_action_campaign_income(date)
     income = 0
     today_show_hash = {}
-    self.campaign_shows.today.valid.group(:campaign_id).select("campaign_id, count(*) as count").each do |show|
+    self.campaign_shows.by_date(date).valid.group(:campaign_id).select("campaign_id, count(*) as count").each do |show|
       today_show_hash["#{show.campaign_id}"] = show.count
     end
     puts today_show_hash
-    Campaign.click_or_action_campaigns.where(:id => today_show_hash.keys ).each do |campaign|
-      income += campaign.per_action_budget * today_show_hash["#{campaign.id}"]  rescue 0
+    self.campaign_invites.not_rejected.includes(:campaign).each do |invite|
+      income += invite.campaign.per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0  if !invite.campaign.is_post_type?
     end
     income
   end
 
+
   # 最近7天的收入情况
   def recent_income
-    _start = Date.today - 7.days
-    _end = Date.today - 1.days
-    transactions_stats_arr = income_transactions.created_desc.recent(_start,_end)
-      .select("date_format(created_at, '%Y-%m-%d') as created, count(*) as count_all, sum(credits) as total_amount ")
-      .group("date_format(created_at, '%Y-%m-%d')").to_a
-    recent_income = []
+    _start = Date.today - 6.days
+    _end = Date.today
+    _recent_income = []
     (_start.._end).to_a.each do |date|
-      date_stats = transactions_stats_arr.select{|t| t.created == date.to_s}.first
-      if date_stats
-        stats= {:date => date, :total_amount => date_stats.total_amount, :count => date_stats.count_all  }
-      else
-        stats = {:date => date, :total_amount => 0, :count => 0  }
-      end
-      recent_income <<  stats
+      stats= {:date => date, :total_amount => income_by_date(date), :count => campaign_count_by_date(date)  }
+      _recent_income <<  stats
     end
-    recent_income
+    _recent_income
   end
 
   def app_city_label
@@ -404,15 +405,6 @@ class Kol < ActiveRecord::Base
     campaigns
   end
 
-
-  # # 失败的活动
-  # def rejected_campaigns
-  #   Campaign.joins("left join campaign_invites on campaign_invites.campaign_id=campaigns.id").
-  #     where("campaign_invites.kol_id = '#{self.id}'").
-  #     where("campaigns.id in (#{self.receive_campaign_ids.values.join(',')})").
-  #     where("campaign_invites.status != 'approved' and campaign_invites.status != 'running' and
-  #       campaign_invites.status !='finished' and campaign_invites.status !='settled'")
-  # end
 
   # 已错过的活动       活动状态为finished \settled  且没接
   def missed_campaigns
