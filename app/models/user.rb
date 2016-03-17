@@ -35,11 +35,6 @@ class User < ActiveRecord::Base
 
   has_many :private_kols
   has_many :kols, through: :private_kols
-  # has_many :user_add_ons, dependent: :destroy
-  # has_many :add_ons, through: :user_add_ons
-
-  after_create :create_default_news_room, :decrease_feature_number
-  after_destroy :increase_feature_number
 
   include Models::Identities
 
@@ -354,34 +349,8 @@ class User < ActiveRecord::Base
   end
 
   private
-    def create_default_news_room
-      if is_primary?
-        news_room = self.news_rooms.new(
-            company_name: "#{self.email}'s Default Brand Gallery",
-            subdomain_name: self.slug,
-            default_news_room: true
-        )
-        news_room.save(validate: false)
-      end
-    end
 
     def needed_user
       is_primary? ? self : self.invited_by
-    end
-
-    def decrease_feature_number
-      af = current_user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-      uf = af.nil? ? needed_user.user_features.seat.available.first : af
-      return false if uf.blank?
-      uf.available_count -= 1
-      uf.save
-    end
-
-    def increase_feature_number
-      af = current_user_features.seat.available.joins(:product).where(products: {is_package: false}).first
-      uf = af.nil? ? needed_user.user_features.seat.used.first : af
-      return false if uf.blank?
-      uf.available_count += 1
-      uf.save
     end
 end

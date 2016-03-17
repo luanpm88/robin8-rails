@@ -1,9 +1,19 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+
+  get 'hello_world', to: 'hello_world#index'
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
+  mount ApplicationAPI => '/brand_api'
+
+  get "react/(/*all)/", to: "react#index"
+  get "react_fake_data/campaigns", to: 'react#campaigns'
+  post "react_fake_data/campaigns", to: 'react#create_campaigns'
+
+
+  get 'brand/(/*all)/', to: "brand#index"
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"

@@ -17,17 +17,17 @@
 
 if ENV['china_instance'] == 'Y'
   server '139.196.36.27', user: 'deployer', roles: %w{web app db}
-  set :branch, 'QA'
+  set :branch, 'new_QA'
 else
 
 end
 
-set :unicorn_env, "staging"
-set :unicorn_rack_env, "staging"
+set :unicorn_env, "production"
+set :unicorn_rack_env, "production"
 
-set :stage, "staging"
+set :stage, "production"
 
-set :rails_env, "staging"
+set :rails_env, "production"
 
 set :rbenv_ruby, '2.2.0'
 
