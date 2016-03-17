@@ -22,6 +22,9 @@ else
 
 end
 
+set :default_env, {
+  :RACK_ENV => 'production'
+}
 set :unicorn_env, "production"
 set :unicorn_rack_env, "production"
 
