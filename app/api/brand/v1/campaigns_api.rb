@@ -7,7 +7,7 @@ module Brand
       end
 
       resource :campaigns do
-        
+
         # short_url api should not placed in here. but now I don't know where to placed :(
         # and should placed before :id, otherwise grape will match :id not :short_url
         desc 'Generate short url by origin url and identifier'
@@ -18,7 +18,8 @@ module Brand
         get :short_url do
           # todo: should add execption handle
           action_url_params = declared params
-          origin_action_url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{action_url_params[:identifier]}"
+          uuid = Base64.encode64({ :campaign_action_url_identifier => action_url_params[:identifier], :step => '2'}.to_json).gsub("\n","")
+          origin_action_url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"
           short_url = ShortUrl.convert origin_action_url
         end
 

@@ -5,11 +5,24 @@ export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, '_fetchShortUrl');
   }
 
-  _fetchShortUrl(brand_id) {
-    console.log("---------------user_id", brand_id);
+
+  _fetchShortUrl = (e) => {
+    e.preventDefault()
+    let action_url = $(".action-url").val()
+    let brand_id = this.props.brand_id.toString();
+    let timestamps = Math.floor(Date.now()).toString();
+    let random = Math.floor(Math.random() * 100000).toString();
+    let identifier = brand_id + timestamps + random
+    $.ajax({
+      method: "GET",
+      url: '/brand_api/v1/campaigns/short_url',
+      data: { url: action_url, identifier: identifier }
+    }).done(function(data) {
+      $(".action-short-url").val(data);
+      $(".action_url_identifier").val(identifier);
+    })
   }
 
   render() {
@@ -47,13 +60,13 @@ export default class DetailPartial extends React.Component {
                 <input {...action_url} type="text" className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
               </div>
               <div className="clearfix">
-                <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl(this.props.brand_id)}>生成链接</button>
+                <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl}>生成链接</button>
               </div>
               <div className="clearfix">
                 <p className="generate-short-url-text">生成链接</p>
-                <input {...short_url} type="text" className="action-short-url" readOnly></input>
+                <input {...short_url} type="text" className="action-short-url" disabled="disabled" readOnly></input>
                 <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
-                <input {...action_url_identifier} type="hidden" readOnly></input>
+                <input {...action_url_identifier} type="hidden" disabled="disabled" className="action_url_identifier" readOnly></input>
               </div>
             </div>
 
