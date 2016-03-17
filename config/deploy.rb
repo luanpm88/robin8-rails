@@ -47,7 +47,7 @@ set :linked_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system client/node_modules}
 
 # Default value for default_env is {}
-set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:$PATH" }
+set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:$PATH", :RACK_ENV => 'production'}
 
 set :ssh_options, {:forward_agent => true}
 

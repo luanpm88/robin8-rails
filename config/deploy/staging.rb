@@ -21,10 +21,6 @@ if ENV['china_instance'] == 'Y'
 else
 
 end
-
-set :default_env, {
-  :RACK_ENV => 'production'
-}
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
 
