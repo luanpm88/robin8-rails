@@ -67,7 +67,7 @@ module API
         end
         post 'bind_contacts' do
           if Rails.env.development?
-            contacts = Kol.where("mobile_number is not null").limit(20).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}
+            contacts = Kol.where("mobile_number is not null").limit(40).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}
           else
             contacts = JSON.parse(params[:contacts])
           end
@@ -120,7 +120,7 @@ module API
           optional :kol_city, type: String
         end
         post 'cal_score' do
-          influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 0
+          influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 500
           @campaigns = Campaign.order_by_status.limit(5)
           present :error, 0
           present :kol_uuid, params[:kol_uuid]

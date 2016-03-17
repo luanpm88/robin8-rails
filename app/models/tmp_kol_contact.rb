@@ -24,8 +24,8 @@ class TmpKolContact < ActiveRecord::Base
     Influence::Contact.init_contact(kol_uuid)
     # 计算联系人价值
     if Rails.env.development?
-      # CalInfluenceWorker.new.perform("contact",kol_uuid, mobiles )
-      CalInfluenceWorker.perform_async("contact",kol_uuid, mobiles )
+      CalInfluenceWorker.new.perform("contact",kol_uuid, mobiles )
+      # CalInfluenceWorker.perform_async("contact",kol_uuid, mobiles )
     else
       CalInfluenceWorker.perform_async("contact",kol_uuid, mobiles )
     end

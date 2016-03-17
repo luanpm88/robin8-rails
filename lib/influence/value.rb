@@ -21,6 +21,7 @@ module Influence
 
     #获取用户城市
     def self.get_kol_city(kol_uuid)
+      kol_city = ''
       TmpIdentity.where(:kol_uuid => kol_uuid).each do |identity|
         if identity.provider == 'weibo'
           city_names = JSON.parse(identity.serial_params)['location'].split(" ") rescue []
@@ -31,6 +32,7 @@ module Influence
         end
         break if kol_city.present?
       end
+      return kol_city
     end
 
 

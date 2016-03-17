@@ -13,13 +13,16 @@ module Influence
                      {:min_count => 20, :score => 10},
                      {:min_count => -1, :score => 0}]
     def self.cal_score(kol_uuid, mobiles, contact_count = nil)
-      puts mobiles
       contact_count =  contact_count || cal_contact_count(kol_uuid, mobiles)   || 0
-      total_score = ContactLevels.each do |level|
-        return level[:score] if contact_count > level[:min_count]
+      Rails.logger.info "===============---contact_count:#{contact_count}"
+      total_score = 0
+      ContactLevels.each do |level|
+         total_score = level[:score] and break if contact_count.to_i > level[:min_count]
       end
-      Rails.logger.info "===============Contact:cal_score---total_score:#{total_score}"
+      Rails.logger.info "===============---contact_count:#{contact_count}"
       Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 1.days)
+      Rails.logger.info "===============Contact:---total_score:#{total_score}"
+      total_score
     end
 
     # 计算加权人数
@@ -28,9 +31,9 @@ module Influence
       cal_mobiles = cal_mobiles.sample(100)  if mobile_size > 100
       # 获取 cal_mobile（部分好友） 实际加权人数
       cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
-      Rails.logger.info "===============Contact:cal_score---#{Time.now}"
+      Rails.logger.info "===============Contact:cal_score---#{cal_mobile_scores.sum}----#{mobile_size}---#{cal_mobile_scores.size}"
       # 获取所有好友加权后好友人数 需还原 加权人数
-      cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)
+      cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)       rescue 0
     end
 
      #获取样本得分
@@ -78,9 +81,10 @@ module Influence
     def self.test
       kol_uuid = Time.now.to_i
       puts kol_uuid
-      mobiles  = Kol.where("mobile_number is not null").limit(200).collect{|t| t.mobile_number}
+      mobiles  = Kol.where("mobile_number is not null").limit(40).collect{|t| t.mobile_number}
       Rails.logger.info "===============test---#{Time.now}"
-      cal_score(kol_uuid, mobiles)
+      score = cal_score(kol_uuid, mobiles)
+      Rails.logger.info "===============score---#{score}"
     end
   end
 end
