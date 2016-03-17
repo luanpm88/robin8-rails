@@ -1,8 +1,8 @@
-import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
-import Campaign from './Campaign'
-import showPaginate from 'raw/campaign-list'
-import getUrlQueryParams from '../../helpers/GetUrlQueryParams'
+import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
+import Campaign from './Campaign';
+import showPaginate from 'raw/campaign-list';
+import getUrlQueryParams from '../../helpers/GetUrlQueryParams';
 
 export default class CampaignList extends React.Component {
 

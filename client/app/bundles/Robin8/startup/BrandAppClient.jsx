@@ -1,11 +1,11 @@
 console.log("in BrandHomeAppClient");
 
-import React from 'react'
-import { Provider } from 'react-redux'
-import { Router, browserHistory } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
-import createStore from '../store/Robin8Store'
-import routes from '../route'
+import React from 'react';
+import { Provider } from 'react-redux';
+import { Router, browserHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
+import createStore from '../store/Robin8Store';
+import routes from '../route';
 
 function logger_location_path(location){
   //https://github.com/reactjs/react-router-redux#how-do-i-watch-for-navigation-events-such-as-for-analytics

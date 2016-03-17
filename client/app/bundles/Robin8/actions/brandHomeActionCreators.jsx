@@ -1,9 +1,9 @@
 console.log("begin brandHomeActionCreators");
 
-import actionTypes from '../constants/BrandHomeConstants'
+import actionTypes from '../constants/brandHomeConstants';
 
-const CAMPAIGNS_URL = '/brand_api/v1/user/campaigns'
-const SAVE_CAMPAIGN_URL = '/brand_api/v1/campaigns'
+const CAMPAIGNS_URL = '/brand_api/v1/user/campaigns';
+const SAVE_CAMPAIGN_URL = '/brand_api/v1/campaigns';
 
 export function fetchCampaigns(currentPage) {
 

@@ -1,16 +1,16 @@
-import React from 'react'
-import { reduxForm } from 'redux-form'
-import { connect } from 'react-redux'
+import React from 'react';
+import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 
-import "create_activity.css"
+import "create_activity.css";
 
-import IntroPartial from './create_activity/IntroPartial'
-import TargetPartial from './create_activity/TargetPartial'
-import DetailPartial from './create_activity/DetailPartial'
-import DatePartial from './create_activity/DatePartial'
-import BudgetPartial from './create_activity/BudgetPartial'
+import IntroPartial from './create_activity/IntroPartial';
+import TargetPartial from './create_activity/TargetPartial';
+import DetailPartial from './create_activity/DetailPartial';
+import DatePartial from './create_activity/DatePartial';
+import BudgetPartial from './create_activity/BudgetPartial';
 
-import createActivity from "raw/create_activity"
+import createActivity from "raw/create_activity";
 
 
 function select(state) {
