@@ -30,7 +30,7 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">活动简介</label>
-                <textarea {...description} name="" className="form-control activity-intro-input" maxLength={140} placeholder="请简要介绍您的推广，帮助媒体了解如何能够更好的帮您传播，请给出适当的列子，如：请先评论棒极了，再给出买家秀" required ></textarea>
+                <textarea {...description} className="form-control activity-intro-input" maxLength={140} placeholder="请简要介绍您的推广，帮助媒体了解如何能够更好的帮您传播，请给出适当的列子，如：请先评论棒极了，再给出买家秀"  ></textarea>
                 <span className="word-limit">140</span>
               </div>
               <div className="form-group">
