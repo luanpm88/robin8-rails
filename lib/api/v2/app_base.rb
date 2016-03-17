@@ -12,6 +12,7 @@ module API
       mount API::V2::Sessions
       mount API::V2::Upgrades
       mount API::V2::Notify
+      mount API::V2::Messages
     end
   end
 end

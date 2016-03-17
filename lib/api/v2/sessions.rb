@@ -4,7 +4,7 @@ module API
       resources :kols do
         # 用户登录
         post 'sign_in' do
-          required_attributes! [:kol_uuid, :mobile_number, :code, :app_platform, :app_version, :device_token]
+          required_attributes! [:mobile_number, :code, :app_platform, :app_version, :device_token]
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
           kol = Kol.reg_or_sign_in(params)

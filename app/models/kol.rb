@@ -361,7 +361,6 @@ class Kol < ActiveRecord::Base
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
-      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
     end
     campaign_invite
   end
@@ -463,6 +462,10 @@ class Kol < ActiveRecord::Base
         end
       end
      end
+  end
+
+  def reset_kol_uuid
+    self.update_column(:kol_uuid, SecureRandom.hex)
   end
 
 

@@ -14,6 +14,7 @@ module API
           optional :desc, type: String
           optional :followers_count, type: Integer
           optional :statuses_count, type: Integer
+
           optional :registered_at, type: DateTime
           optional :verified, type: Boolean
           optional :refresh_token, type: String
@@ -105,25 +106,13 @@ module API
         end
         post 'send_invite' do
           if  Influence::Util.is_mobile?(params[:mobile])
-            invite_content = YunPian::TemplateContent.get_invite_sms('','')
-            # result = YunPian::SendSms.send_msg(params[:mobile],invite_content)
+            invite_content = YunPian::TemplateContent.get_invite_sms(TmpIdentity.get_name(params[:kol_uuid]), 'http://www.baidu.com')
+            Emay::SendSms.to(params[:mobile],invite_content)
             present :error, 0
           else
             return  error_403!({error: 1, detail: '非手机号不能发送短信'})
           end
         end
-
-        # # 没有允许获取通讯
-        # params do
-        #   requires :kol_uuid, type: String
-        # end
-        # post 'without_contacts_score' do
-        #   present :error, 0
-        #   present :kol_uuid, params[:kol_uuid]
-        #   present :total_kol_count, Kol.count
-        #   present :name, TmpIdentity.get_name(params[:kol_uuid])
-        #   present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
-        # end
 
         # 计算总得分
         params do
@@ -132,11 +121,12 @@ module API
           optional :kol_city, type: String
         end
         post 'cal_score' do
-          score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 0
+          influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 0
           @campaigns = Campaign.where(:status => 'executing')
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
-          present :score, score
+          present :influence_score, influence_score
+          present :influence_level, Influence::Value.get_influence_level(influence_score)
           present :name, TmpIdentity.get_name(params[:kol_uuid])
           present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary

@@ -32,23 +32,23 @@ class ArticleAction < ActiveRecord::Base
     self
   end
 
-  #存储所有action
-  def self.get_action_ids(kol_id, action)
+  #存储所有action  当前为look
+  def self.get_action_ids(kol_id, action = 'look')
     Rails.cache.fetch ArticleAction.kol_action_key(kol_id, action)  do
       articles = ArticleAction.where(:kol_id => kol_id).order('id desc')
       articles.collect{|t| t.article_id}
     end
   end
 
-  #存储所有action     key
-  def self.kol_action_key(kol_id, action)
+  #存储所有action   当前为look
+  def self.kol_action_key(kol_id, action = 'look')
     "kol_#{action}_ids_#{kol_id}"
   end
 
   def update_list
-    if self.look_changed? && self.look == true
+    if (self.look_changed? && self.look == true)  || (self.collect_changed? && self.collect == true)
       # 更新阅读列表
-      append_value(ArticleAction.kol_action_key(kol_id, 'look'), article_id)
+      append_value(ArticleAction.kol_action_key(kol_id), article_id)
       # 缓重置存的内容
       Articles::Store.reset_kol_articles(kol_id)
     end

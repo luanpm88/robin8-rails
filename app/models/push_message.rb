@@ -21,19 +21,6 @@ class PushMessage < ActiveRecord::Base
     content
   end
 
-  # # notification template
-  # def self.campaign_template_content(message)
-  #   campaign = message.item
-  #   content = {
-  #     :logo => '',
-  #     :logo_url => campaign.img_url,
-  #     :title => '您有一个新的活动',
-  #     :text => campaign.name,
-  #     :transmission_type => 'campaign',
-  #     :transmission_content => campaign.id
-  #   }
-  #   content
-  # end
 
   def self.create_message_push(message)
     if message.message_type == 'income'

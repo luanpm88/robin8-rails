@@ -45,6 +45,24 @@ class Message < ActiveRecord::Base
   end
 
 
+  def self.new_common_message(message_type,invite, campaign)
+    message = Message.new(:message_type => message_type, :receiver => invite.kol, :item => invite)
+    if message_type == 'upload_screenshot'
+      message.title = "请尽快上传截图"
+    elsif message_type == 'screenshot_passed'
+      message.title = "审核通过"
+    elsif message_type == 'screenshot_rejected'
+      message.title = "审核被拒绝，请重新上传截图"
+    end
+    message.logo_url = campaign.img_url
+    message.sender = campaign.user.company || campaign.user.name  rescue nil
+    message.name = campaign.name
+    message.logo_url = campaign.img_url + "!logo" rescue nil
+    message.is_read = false
+    message.save
+    generate_push_message(message)
+  end
+
   # create or update
   def self.new_income(invite, campaign)
     message = Message.find_or_initialize_by(:message_type => 'income', :receiver => invite.kol, :item => invite)

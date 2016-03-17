@@ -59,5 +59,15 @@ module Influence
       return score
     end
 
+    InfluenceLevels = [{:title => "非常优秀", :score => 800},
+                       {:title => "优秀", :score => 700},
+                       {:title => "良好", :score => 550},
+                       {:title => "一般", :score => 500}]
+    def self.get_influence_level(score)
+      InfluenceTitleLevels.each do |level|
+        return level[:title]  if score >= level[:score]
+      end
+    end
+
   end
 end

@@ -81,6 +81,8 @@ class CampaignInvite < ActiveRecord::Base
     if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
       self.img_status = 'rejected'
       self.save
+      #审核拒绝
+      Message.new_common_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
     end
   end
