@@ -5,24 +5,29 @@ export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    _.bindAll(this, '_fetchShortUrl');
   }
 
 
-  _fetchShortUrl = (e) => {
+  _fetchShortUrl(e) {
     e.preventDefault()
-    let action_url = $(".action-url").val()
-    let brand_id = this.props.brand_id.toString();
-    let timestamps = Math.floor(Date.now()).toString();
-    let random = Math.floor(Math.random() * 100000).toString();
-    let identifier = brand_id + timestamps + random
-    $.ajax({
-      method: "GET",
-      url: '/brand_api/v1/campaigns/short_url',
-      data: { url: action_url, identifier: identifier }
-    }).done(function(data) {
-      $(".action-short-url").val(data);
-      $(".action_url_identifier").val(identifier);
-    })
+
+    const action_url = $(".action-url").val()
+    const brand_id = this.props.brand_id.toString();
+    const timestamps = Math.floor(Date.now()).toString();
+    const random = Math.floor(Math.random() * 100000).toString();
+    const identifier = brand_id + timestamps + random
+    promise: fetch( `/brand_api/v1/campaigns/short_url?url=${action_url}&identifier=${identifier}`, { credentials: 'include' })
+      .then(function(response) {
+        response.json().then(function(data){
+          $(".action-short-url").val(data);
+          $(".action_url_identifier").val(identifier);
+        })
+      },
+      function(error){
+        console.log("-----fetchShortUrl error");
+      }
+    )
   }
 
   render() {
@@ -85,6 +90,5 @@ export default class DetailPartial extends React.Component {
         </div>
       </div>
     )
-
   }
 }
