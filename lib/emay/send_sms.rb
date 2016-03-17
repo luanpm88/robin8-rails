@@ -10,7 +10,7 @@ module Emay
       content = TemplateContent.get_content(content)
       phones = Array(phone).join(',')
       res = Net::HTTP.post_form(URI.parse(EmayServer), cdkey: EmayName, password: EmayPassword, phone: phones, message: content)
-      Rails.logger.info "---------emay----#{phone}---result:#{res.inspect}"
+      Rails.logger.info "---------emay----#{phone}---result:#{res.body.inspect}"
       result res.body
     end
 
@@ -23,7 +23,7 @@ module Emay
     end
 
     def self.test(mobiles='13817164642', content='http://www.baidu.com')
-      content = TemplateContent.get_invite_sms(mobiles,content)
+      content = TemplateContent.get_invite_sms(content)
       result = self.to mobiles, content
       result
     end

@@ -46,7 +46,7 @@ module Articles
        articles = ElasticClient.get_text(kol_read_ids)
        text = articles.collect{|article| "#{article['text']} #{article['title']} #{article['biz_info']} "}.join(" ")
        Rails.logger.elastic.info "=======get_read_article_text===text:#{text[0..200]}"
-       return text
+       return text[0,300]
      end
    end
 

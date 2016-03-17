@@ -6,8 +6,8 @@ module Emay
       "#{Pre}#{content}#{TD}"
     end
 
-    def self.get_invite_sms(name, url)
-      "Robin8全球第一影响力管理平台，#{name || '我'}已经加入了，你也来测测你的影响力价值吧！下载APP：#{url}"
+    def self.get_invite_sms(name)
+      "Robin8全球第一影响力管理平台，#{name || '我'}已经加入了，你也来测测你的影响力价值吧！下载APP：#{Rails.application.secrets.download_url}"
     end
   end
 end

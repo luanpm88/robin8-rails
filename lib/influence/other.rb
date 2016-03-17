@@ -40,13 +40,12 @@ module Influence
     IdentityCountLevels= [{:count => 3, :score => 50},
                           {:count => 2, :score => 30},
                           {:count => 1, :score => 10},
-                          {:model => 0, :score => 0}]
+                          {:count => 0, :score => 0}]
     def self.identity_count_score(kol_uuid)
       count = TmpIdentity.where(:kol_uuid => kol_uuid).count
       IdentityCountLevels.each do |level|
         return level[:score] if  count >= level[:count]
       end
-
     end
   end
 end

@@ -105,7 +105,7 @@ module API
         end
         post 'send_invite' do
           if  Influence::Util.is_mobile?(params[:mobile])
-            invite_content = YunPian::TemplateContent.get_invite_sms(TmpIdentity.get_name(params[:kol_uuid]), 'http://www.baidu.com')
+            invite_content = Emay::TemplateContent.get_invite_sms(TmpIdentity.get_name(params[:kol_uuid]))
             Emay::SendSms.to(params[:mobile],invite_content)
             present :error, 0
           else
