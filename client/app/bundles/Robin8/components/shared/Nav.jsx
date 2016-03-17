@@ -1,6 +1,6 @@
 console.log("in BrandNav");
 
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 
 export default class BrandNav extends React.Component {
   static propTypes = {

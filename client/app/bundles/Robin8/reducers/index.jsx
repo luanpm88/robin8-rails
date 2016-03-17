@@ -1,5 +1,5 @@
-import brandHomeReducer from './BrandHomeReducer'
-import { $$initialState as $$brandHomeState } from './BrandHomeReducer'
+import brandHomeReducer from './brandHomeReducer';
+import { $$initialState as $$brandHomeState } from './brandHomeReducer';
 
 export default {
   $$brandHomeStore: brandHomeReducer

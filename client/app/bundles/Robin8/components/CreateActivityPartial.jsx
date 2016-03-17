@@ -1,8 +1,8 @@
-import React from 'react'
-import { reduxForm } from 'redux-form'
-import { connect } from 'react-redux'
+import React from 'react';
+import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 
-import "create_activity.css"
+import "create_activity.css";
 
 import IntroPartial from './create_activity/IntroPartial';
 import TargetPartial from './create_activity/TargetPartial';

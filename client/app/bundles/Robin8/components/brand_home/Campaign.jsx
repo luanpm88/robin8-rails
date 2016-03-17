@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react'
-import moment from 'moment'
+import React, { PropTypes } from 'react';
+import moment from 'moment';
 
 export default class Campaign extends React.Component {
   static propTypes = {
