@@ -7,23 +7,23 @@
       </h1>
       <h2 class="title_landing"><%= @l.t('landing_page.title_landing') %></h2>
 
-      <div class="social-list clearfix">
+      <%# <div class="social-list clearfix"> %>
 
-        <div class="small-12 columns social-login">
-          <a href="/users/auth/weibo?provider=weibo" class="social  btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %></span></a>
-        </div>
+      <%#   <div class="small-12 columns social-login"> %>
+      <%#     <a href="/users/auth/weibo?provider=weibo" class="social  btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %1></span></a> %>
+      <%#   </div> %>
 
-        <% unless mobile_request? %>
-          <div class="small-12 columns social-login">
-            <a href="/users/auth/wechat?provider=wechat" class="social  btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %></span></a>
-          </div>
+      <%#   <% unless mobile_request? %1> %>
+      <%#     <div class="small-12 columns social-login"> %>
+      <%#       <a href="/users/auth/wechat?provider=wechat" class="social  btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %1></span></a> %>
+      <%#     </div> %>
 
-          <div class="small-12 columns social-login">
-            <a href="/users/auth/wechat_third?provider=wechat_third" class="social  btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %></span></a>
-          </div>
-        <% end %>
-        <a href="/kols/new" class="sign_up_with_email"><%= @l.t("login.use_email") %></a>
-      </div>
+      <%#     <div class="small-12 columns social-login"> %>
+      <%#       <a href="/users/auth/wechat_third?provider=wechat_third" class="social  btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %1></span></a> %>
+      <%#     </div> %>
+      <%#   <% end %1> %>
+      <%#   <a href="/kols/new" class="sign_up_with_email"><%= @l.t("login.use_email") %1></a> %>
+      <%# </div> %>
       <% if mobile_request? %>
         <p class="wechat_tip">如果希望使用微信注册登录，请使用电脑操作</p>
         <div class="download-app">
@@ -165,14 +165,14 @@
 
 
 
-<div class="ft-lead">
-  <div class="row">
-    <div class="large-12 columns">
-      <h2><%= @l.t('landing_page.text9') %></h2>
-      <a class="button button-signup" href="/kols/new"><%= @l.t('landing_page.register_text') %></a>
-    </div>
-  </div>
-</div>
+<%# <div class="ft-lead"> %>
+<%#   <div class="row"> %>
+<%#     <div class="large-12 columns"> %>
+<%#       <h2><%= @l.t('landing_page.text9') %1></h2> %>
+<%#       <a class="button button-signup" href="/kols/new"><%= @l.t('landing_page.register_text') %1></a> %>
+<%#     </div> %>
+<%#   </div> %>
+<%# </div> %>
 
 <footer>
   <div class="row">
