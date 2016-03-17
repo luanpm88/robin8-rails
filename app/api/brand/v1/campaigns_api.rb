@@ -69,6 +69,11 @@ module Brand
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
+          optional :target, type: Hash do
+            optional :age, type:String, default: 'all'
+            optional :region, type:String, default: 'all'
+            optional :gender, type:String, values: ['all', 'male', 'female'], default: 'all'
+          end
           optional :action_url_list, type: String
         end
         put ':id' do
