@@ -17,7 +17,7 @@ module Articles
         res = client.search index: 'wx_biz',
                             type: 'fulltext',
                             body: {
-                              _source: ["text", "title", "title",  "biz_name"],
+                              _source: ["text", "title", "biz_name"],
                               query: {
                                 terms: { id: read_list_ids  },
                               }
@@ -45,7 +45,7 @@ module Articles
                               query: {
                                 multi_match: {
                                   query:  text,
-                                  fields:  [ "text", "title", "title" ]
+                                  fields:  [ "text", "title"]
                                 }
                               },
                               filter:{
@@ -93,16 +93,14 @@ end
 # }'
 
 # curl -XPOST 139.196.39.136:9200/wx_biz/fulltext/_search -d '
+# curl -XPOST 10.174.119.175:9200/wx_biz/fulltext/_search -d '
 # {
 # "from": 0,
 # "size": 5,
 # "query" : {
 # "query_string" : {
 # "default_field" : "text",
-# "query" : "Consulting  IssueShare  Chongqing  Beijing  Shanghai Shanghai Shanghai Shanghai  10月8日 10月8日 10月8日  2015年10月7日  10月9日  Company  LimitedLiabilityCompany  Friday  Bone  FacialExpression FacialExpression  Eye "
+# "query" : "company study body"
 # }
-# },
-# "filter" : {
-# "bool": {"must_not": {"terms" : { "id" : [ "78443398", "78400096","78165963","78327314","78238955" ,"78186008" ]  }  }}
 # }
 # }'
