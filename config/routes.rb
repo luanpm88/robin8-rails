@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   post "react_fake_data/campaigns", to: 'react#create_campaigns'
 
 
-  get 'brand', to: "brand#index"
+  get 'brand/(/*all)/', to: "brand#index"
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
