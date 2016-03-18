@@ -5,7 +5,7 @@ export default class TargetPartial extends React.Component {
 
   render() {
 
-    const { message, age, province, city, sex } = this.props
+    const { message, age, province, city, gender } = this.props
 
     return (
       <div className="creat-activity-form creat-target">
@@ -36,10 +36,10 @@ export default class TargetPartial extends React.Component {
                  <select {...city} className="city"></select>
                 </div>
               </div>
-              <div className="target-sex clearfix">
+              <div className="target-gender clearfix">
                 <label>性别</label>
-                <div className="target-sex-selector">
-                  <select {...sex} className="sex" >
+                <div className="target-gender-selector">
+                  <select {...gender} className="gender" >
                     <option value ="all">全部</option>
                     <option value ="male">男</option>
                     <option value ="female">女</option>

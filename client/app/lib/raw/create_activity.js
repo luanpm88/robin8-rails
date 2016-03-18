@@ -94,7 +94,7 @@ export default function createActivity () {
   $('input:radio[name="action_type"]').filter('[value=post]').click(function() {
     $(".action-url-group").hide()
   })
-  $('input:radio[name="action_type"]').filter('[value=action]').click(function() {
+  $('input:radio[name="action_type"]').filter('[value=cpa]').click(function() {
     $(".action-url-group").show()
   })
 }

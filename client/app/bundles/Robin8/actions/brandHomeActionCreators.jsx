@@ -23,6 +23,7 @@ export function saveCampaign(campaign) {
       switch(key) {
         case 'age':
           campaign[key] = campaign[key] || $('.age-range').val()
+          formData.append("campaign[target][age]", campaign[key]);
           break;
         case 'province':
           campaign[key] = campaign[key] || $('.province').val()
@@ -30,24 +31,48 @@ export function saveCampaign(campaign) {
         case 'city':
           campaign[key] = campaign[key] || $('.city').val()
           break;
-        case 'sex':
-          campaign[key] = campaign[key] || $('.sex').val()
+        case 'gender':
+          campaign[key] = campaign[key] || $('.gender').val()
+          formData.append("campaign[target][gender]", campaign[key]);
           break;
         case 'start_time':
           campaign[key] = campaign[key] || $("#start-time-datepicker").val()
+          formData.append(`campaign[${key}]`, campaign[key]);
           break;
         case 'deadline':
           campaign[key] = campaign[key] || $("#deadline-datepicker").val()
+          formData.append(`campaign[${key}]`, campaign[key]);
           break;
         case 'budget':
           campaign[key] = campaign[key] || $(".budget-input").val()
+          formData.append(`campaign[${key}]`, campaign[key]);
+          break;
+        case 'per_budget_type':
+          campaign[key] = campaign[key] || $('input:radio[name="action_type"]:checked').val()
+          formData.append(`campaign[${key}]`, campaign[key]);
+          break;
+        case 'action_url':
+          campaign[key] = campaign[key] || $('.action_url').val()
+          formData.append("campaign[campaign_action_url][action_url]", campaign[key]);
+          break;
+        case 'short_url':
+          campaign[key] = campaign[key] || $('.action-short-url').val()
+          formData.append("campaign[campaign_action_url][short_url]", campaign[key]);
+          break;
+        case 'action_url_identifier':
+          campaign[key] = campaign[key] || $('.action_url_identifier').val()
+          formData.append("campaign[campaign_action_url][action_url_identifier]", campaign[key]);
           break;
         case 'per_action_budget':
           campaign[key] = campaign[key] || $(".per-budget-input").val()
+          formData.append(`campaign[${key}]`, campaign[key]);
+          break;
+        default:
+          formData.append(`campaign[${key}]`, campaign[key]);
           break;
       }
-      formData.append(`campaign[${key}]`, campaign[key]);
     }
+    formData.append("campaign[target][region]", (campaign['province'] + " " + campaign['city']))
   }
 
 

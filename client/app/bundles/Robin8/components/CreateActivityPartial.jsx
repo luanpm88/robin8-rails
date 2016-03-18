@@ -38,10 +38,10 @@ class CreateActivityPartial extends React.Component {
   }
 
   render() {
-    const { name, description, image, url, age, province, city, sex, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline} = this.props.fields;
+    const { name, description, image, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
+    const brand_id = this.props.brand_id
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
-    const brand_id = this.props.brand_id
 
     return (
       <div className="wrapper">
@@ -49,7 +49,7 @@ class CreateActivityPartial extends React.Component {
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, image, url }}/>
-              <TargetPartial {...{ age, province, city, sex, message }} />
+              <TargetPartial {...{ age, province, city, gender, message }} />
               <BudgetPartial {...{ budget }} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand_id }} />
               <DatePartial {...{ start_time, deadline }} />
@@ -68,7 +68,7 @@ class CreateActivityPartial extends React.Component {
 
 CreateActivityPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'image', 'url', 'age', 'province', 'city', 'sex', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline'],
+  fields: ['name', 'description', 'image', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline'],
   returnRejectedSubmitPromise: true,
   validate
 })(CreateActivityPartial);

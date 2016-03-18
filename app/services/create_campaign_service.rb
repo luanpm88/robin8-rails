@@ -1,5 +1,5 @@
 class CreateCampaignService
-  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :action_url_list]
+  PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :target]
 
   attr_reader :errors, :campaign
 
@@ -11,7 +11,6 @@ class CreateCampaignService
   end
 
   def perform
-
     if @campaign_params.empty? or @user.nil? or not @user.persisted?
       # todo: use I18n(also include blow errors)
       @errors << 'Invalid params or user!'
@@ -32,12 +31,17 @@ class CreateCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        @campaign = @user.campaigns.create! @campaign_params.select{|k,v| k != :action_url_list}
+        @campaign = @user.campaigns.create! @campaign_params.reject{|k,v| [:campaign_action_url, :target].include? k }
 
         if is_cpa_campaign?
-          @campaign_params[:action_url_list].each do |action_url|
-            @campaign.campaign_action_urls.create!(action_url: action_url)
-          end
+          action_url = @campaign_params[:campaign_action_url][:action_url]
+          short_url = @campaign_params[:campaign_action_url][:short_url]
+          identifier = @campaign_params[:campaign_action_url][:identifier]
+          @campaign.campaign_action_urls.create!(action_url: action_url, short_url: short_url, identifier: identifier)
+        end
+
+        @campaign_params[:target].each do |k,v|
+          @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
         end
       end
       return true
@@ -53,7 +57,7 @@ class CreateCampaignService
   end
 
   def permited_params_from params
-    params.nil? ? [] : params.select { |k, v| PERMIT_PARAMS.include? k } 
+    params.nil? ? {} : params.select { |k, v| PERMIT_PARAMS.include? k }
   end
 
   private
@@ -68,7 +72,7 @@ class CreateCampaignService
   end
 
   def any_action_url_present?
-    @campaign_params[:action_url_list] and @campaign_params[:action_url_list].any?
+    @campaign_params[:campaign_action_url]
   end
 
 end

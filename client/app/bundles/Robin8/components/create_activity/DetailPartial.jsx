@@ -73,7 +73,7 @@ export default class DetailPartial extends React.Component {
                 按照点击奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="action" defalutValue="转发链接" />
+                <input {...per_budget_type} type="radio" name="action_type" value="cpa" defalutValue="转发链接" />
                 按照行动奖励KOL
               </label>
             </div>
