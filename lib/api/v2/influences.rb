@@ -2,12 +2,24 @@ module API
   module V2
     class Influences < Grape::API
       resources :influences do
+        get 'start' do
+          if current_kol
+            current_kol.reset_kol_uuid
+            kol_uuid = current_kol.kol_uuid
+          else
+            kol_uuid = SecureRandom.hex
+          end
+          present :error, 0
+          present :kol_uuid, kol_uuid
+        end
+
         #第三方账号 价值
         params do
           requires :provider, type: String, values: ['weibo', 'wechat']
           requires :uid, type: String
           requires :token, type: String
           requires :name, type: String
+          requires :kol_uuid, type: String
           optional :serial_params, type: String
           optional :url, type: String
           optional :avatar_url, type: String
@@ -18,7 +30,6 @@ module API
           optional :registered_at, type: DateTime
           optional :verified, type: Boolean
           optional :refresh_token, type: String
-          optional :kol_uuid, type: String
           optional :unionid, type: String
         end
         post 'bind_identity' do
@@ -27,7 +38,7 @@ module API
           else
             required_attributes! [:unionid]
           end
-          kol_uuid = params[:kol_uuid].blank? ? SecureRandom.hex : params[:kol_uuid]
+          kol_uuid =  params[:kol_uuid]
           kol_identities = TmpIdentity.get_identities(kol_uuid)
           if kol_identities.collect{|identity| identity.uid }.include? params[:uid]
             present :error, 1
@@ -63,7 +74,7 @@ module API
         #联系人
         params do
           requires :contacts, type: String
-          optional :kol_uuid, type: String
+          requires :kol_uuid, type: String
         end
         post 'bind_contacts' do
           if Rails.env.development?
@@ -72,8 +83,8 @@ module API
             contacts = JSON.parse(params[:contacts])
           end
           return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
-          kol_uuid = params[:kol_uuid].blank? ? SecureRandom.hex : params[:kol_uuid]
-          kol_contacts = TmpKolContact.add_contacts(kol_uuid,contacts)
+          kol_uuid = params[:kol_uuid]
+          TmpKolContact.add_contacts(kol_uuid,contacts)
           present :error, 0
           present :kol_uuid, kol_uuid
         end
