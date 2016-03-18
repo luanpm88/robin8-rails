@@ -29,9 +29,13 @@ class ArticleAction < ActiveRecord::Base
   end
 
   def action(action)
-    self.send("#{action}=", !self.send(action))
-    self.save
-    self
+    if action == 'forward'
+      self.update_column("forward", true)
+      self.forward = true
+    else
+      self.update_column("#{action}", !self.send(action))
+    end
+    self.reload
   end
 
   #存储所有action  当前为look
@@ -66,10 +70,10 @@ class ArticleAction < ActiveRecord::Base
   end
 
   def share_url
-    "#{Rails.application.secrets.domain}/articles/#{self.id}/show"
+    "#{Rails.application.secrets.domain}/article/#{self.id}/show"
   end
 
-  def fetch_article_action(id)
+  def self.fetch_article_action(id)
     Rails.cache.fetch("article_action_#{id}") do
       ArticleAction.find id rescue nil
     end

@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get 'identities/discover/:labels' => 'identities#discover'
   get 'identities/labels/:user_id' => 'identities#labels'
 
+  get 'articles/:id/show' => "articles#show"
+
   resources :discover_records, only: [:create]
 
   get 'campaign_invite/interface/:type' => 'campaign_invite#interface'

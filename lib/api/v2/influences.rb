@@ -133,7 +133,7 @@ module API
         end
         post 'cal_score' do
           influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])
-          SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])     if params[:kol_uuid].present?
+          SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])     if current_kol.present?
           @campaigns = Campaign.order_by_status.limit(5)
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
