@@ -91,6 +91,7 @@ module API
           present :error, 0
           present :influence_title,''
           present :score, influence_score
+          present :influence_score, influence_score
           present :joined_count, joined_contacts.size
           present :rank_index, rank_index
           present :name, TmpIdentity.get_name(params[:kol_uuid])
@@ -120,7 +121,7 @@ module API
           optional :kol_city, type: String
         end
         post 'cal_score' do
-          influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])    rescue 500
+          influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])
           @campaigns = Campaign.order_by_status.limit(5)
           present :error, 0
           present :kol_uuid, params[:kol_uuid]

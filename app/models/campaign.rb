@@ -38,8 +38,8 @@ class Campaign < ActiveRecord::Base
   after_save :create_job
 
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
-  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 4.hours
-  RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 3.minutes
+  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 2.hours
+  RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
   def email
     user.try :email
   end
