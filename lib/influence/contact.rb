@@ -20,7 +20,7 @@ module Influence
          total_score = level[:score] and break if contact_count.to_i > level[:min_count]
       end
       Rails.logger.info "===============---contact_count:#{contact_count}"
-      Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 1.days)
+      Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 10.days)
       Rails.logger.info "===============Contact:---total_score:#{total_score}"
       total_score
     end
@@ -70,7 +70,7 @@ module Influence
 
     # 有上传联系人后需要init，报道下，计算价值时候看看是否需要以你为依据
     def self.init_contact(kol_uuid)
-      Rails.cache.write(contact_key(kol_uuid), -1, :expires_in => 1.days)    if  Rails.cache.read(contact_key(kol_uuid)).nil?
+      Rails.cache.write(contact_key(kol_uuid), -1, :expires_in => 10.days)    if  Rails.cache.read(contact_key(kol_uuid)).nil?
     end
 
     # 联系人 价值   存储key
