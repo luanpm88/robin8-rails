@@ -358,6 +358,7 @@ class Kol < ActiveRecord::Base
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
       campaign_invite.approved_at = Time.now
       campaign_invite.status = 'approved'
+      campaign_invite.img_status = 'pending'
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
@@ -375,6 +376,7 @@ class Kol < ActiveRecord::Base
     if (campaign_invite && campaign_invite.status == 'running')  || campaign_invite.new_record?
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
       campaign_invite.status = 'running'
+      campaign_invite.img_status = 'pending'
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       campaign_invite.save
@@ -433,6 +435,7 @@ class Kol < ActiveRecord::Base
       kol_id = self.id
       #sync score
       self.update_column(:influence_score, Influence::Value.get_total_score(kol_uuid))
+      self.update_column(:influence_score, Influence::Value.get_cal_time(kol_uuid))
       # create contacts
       TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
         if !KolContact.find_by(:kol_id => kol_id, :mobile => tmp_contact.mobile)
@@ -459,6 +462,5 @@ class Kol < ActiveRecord::Base
   def reset_kol_uuid
     self.update_column(:kol_uuid, SecureRandom.hex)
   end
-
 
 end

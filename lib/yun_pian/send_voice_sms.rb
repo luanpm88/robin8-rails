@@ -18,7 +18,9 @@ module YunPian
       return {'code' => 1, :msg => "发送频繁，请稍后再试"} if  !check_rule?
       return {'code' => 0 } if Rails.env.development?
       set_security_code
-      return send_request
+      result = send_request
+      Rails.logger.sms.info "-----void_sms:  #{result.inspect}"
+      return result
     end
 
     def send_request

@@ -17,6 +17,6 @@ Starting MailCatcher
 
 ### 2.0 新配置
 * 加入phone_location influence sidekiq queue
-* 加入 配置文件  juhe_key elastic_server  download_url
+* 加入 配置文件  juhe_key elastic_server  download_url    emay
 * rake database:
 

@@ -1,5 +1,5 @@
 class Message < ActiveRecord::Base
-  serialize :reciever_ids, Array
+  serialize :receiver_ids, Array
 
   belongs_to :receiver, :polymorphic => true
   belongs_to :item, :polymorphic => true
@@ -19,7 +19,7 @@ class Message < ActiveRecord::Base
   def self.new_remind_upload(campaign, kol_ids = [])
     wait_upload_invites = CampaignInvite.waiting_upload.where(:campaign_id => campaign.id)
     kol_ids = wait_upload_invites.collect{|t| t.kol_id}
-    message = Message.new(:message_type => 'remind_upload', :title => '您参与的活动就要结束了，请尽快上传截图', :logo_url => (campaign.img_url + "!logo" rescue nil), :name => campaign.name,
+    message = Message.new(:message_type => 'remind_upload', :title => '活动就要结束了，请尽快上传截图', :logo_url => (campaign.img_url + "!logo" rescue nil), :name => campaign.name,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign, :receiver_type => "List"  )
     message.receiver_ids = kol_ids
     if message.save
