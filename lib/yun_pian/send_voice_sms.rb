@@ -27,7 +27,7 @@ module YunPian
       options = {:mobile => @phone_number, :apikey => @api_key, :code => @code}
       res = Net::HTTP.post_form(URI.parse(VoiceServer), options)
       begin
-        JSON.parse res
+        JSON.parse res.body
       rescue => e
         {
           code: 502,

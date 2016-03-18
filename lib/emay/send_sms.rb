@@ -10,7 +10,7 @@ module Emay
       content = TemplateContent.get_content(content)
       phones = Array(phone).join(',')
       res = Net::HTTP.post_form(URI.parse(EmayServer), cdkey: EmayName, password: EmayPassword, phone: phones, message: content)
-      Rails.logger.emay.info "---------sms:---emay----#{phone}--#{content}-result:#{res.body.inspect}"
+      Rails.logger.sms.info "-----------emay----#{phone}--#{content}-result:#{res.body.inspect}"
       result res.body
     end
 
