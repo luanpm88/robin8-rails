@@ -7,7 +7,7 @@ module Influence
       kol_city = get_kol_city(kol_uuid)   if kol_city.blank?
       location_score = Other.kol_location_score(kol_city)
       mobile_score = Other.mobile_model_score(kol_mobile_model)
-      identity_score = Identity.get_identity_score(kol_uuid)
+      identity_score = Influence::Identity.get_identity_score(kol_uuid)
       identity_count_score = Other.identity_count_score(kol_uuid)
       contact_score = get_contact_score(kol_uuid)
       total_score = BaseScore + location_score + mobile_score + identity_count_score +  contact_score +  identity_score
@@ -40,18 +40,18 @@ module Influence
     LoopTimes = 50
     LoopSecond = 0.1
     def self.get_contact_score(kol_uuid)
-      return 0 if  Contact.contact_score(kol_uuid).blank?
+      return 0 if  Influence::Contact.contact_score(kol_uuid).blank?
       loop_times = 0
       ok = false
       while loop_times < LoopTimes && !ok
-        ok = true if   Contact.contact_score(kol_uuid) != -1
+        ok = true if   Influence::Contact.contact_score(kol_uuid) != -1
         sleep LoopSecond
         loop_times += 1
       end
-      score = Contact.contact_score(kol_uuid)
+      score = Influence::Contact.contact_score(kol_uuid)
       if !score
         contract_count = TmpKolContact.where(:kol_uuid => kol_uuid).count * 0.65
-        score = Contact.cal_score(kol_uuid, nil, contract_count)
+        score = Influence::Contact.cal_score(kol_uuid, nil, contract_count)
       end
       return score
     end
