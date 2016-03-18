@@ -1,7 +1,7 @@
 module Influence
   class Identity
     def self.get_identity_score(kol_uuid)
-      TmpIdentity.where(:kol_uuid => kol_uuid).order("score desc").first.score rescue 0
+      TmpIdentity.where(:kol_uuid => kol_uuid).order("score desc").first.score || 0 rescue 0
     end
 
     def self.cal_score(kol_uuid,identity_id)

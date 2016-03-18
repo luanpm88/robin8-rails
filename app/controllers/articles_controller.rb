@@ -1,4 +1,4 @@
-class ArtilesController < ApplicationController
+class ArticlesController < ApplicationController
   skip_before_action  :only => [:show, :share]
 
   def show

@@ -19,7 +19,6 @@ module Influence
       ContactLevels.each do |level|
          total_score = level[:score] and break if contact_count.to_i > level[:min_count]
       end
-      Rails.logger.info "===============---contact_count:#{contact_count}"
       Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 10.days)
       Rails.logger.info "===============Contact:---total_score:#{total_score}"
       total_score

@@ -29,7 +29,7 @@ module API
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'waiting_upload'
-            @campaign_invites = current_kol.campaign_invites.waiting_upload.order_by_start.page(params[:page]).per_page(10)
+            @campaign_invites = current_kol.campaign_invites.waiting_upload.page(params[:page]).per_page(10)
             to_paginate(@campaign_invites)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'missed'
