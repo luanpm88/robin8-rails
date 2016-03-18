@@ -24,7 +24,7 @@ module API
 
         #搜藏列表
         get 'collect' do
-          collect_article_actions = current_kol.article_actions.collect
+          collect_article_actions = current_kol.article_actions.where(:collect => true)
           present :error, 0
           present :article_actions, collect_article_actions, with: API::V2::Entities::ArticleActionEntities::Summary
         end

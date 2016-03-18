@@ -54,10 +54,6 @@ module Influence
         loop_times += 1
       end
       score = Influence::Contact.contact_score(kol_uuid)
-      if !score
-        contract_count = TmpKolContact.where(:kol_uuid => kol_uuid).count * 0.65
-        score = Influence::Contact.cal_score(kol_uuid, nil, contract_count)
-      end
       return score
     end
 

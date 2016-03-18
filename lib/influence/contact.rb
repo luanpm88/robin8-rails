@@ -1,26 +1,10 @@
 module Influence
   class Contact
-    #计算 加权好友数后 得分
-    ContactLevels = [{:min_count => 500, :score => 100},
-                     {:min_count => 400, :score => 90},
-                     {:min_count => 300, :score => 80},
-                     {:min_count => 200, :score => 70},
-                     {:min_count => 100, :score => 60},
-                     {:min_count => 80, :score => 50},
-                     {:min_count => 60, :score => 40},
-                     {:min_count => 50, :score => 30},
-                     {:min_count => 30, :score => 20},
-                     {:min_count => 20, :score => 10},
-                     {:min_count => -1, :score => 0}]
-    def self.cal_score(kol_uuid, mobiles, contact_count = nil)
-      contact_count =  contact_count || cal_contact_count(kol_uuid, mobiles)   || 0
-      Rails.logger.info "===============---contact_count:#{contact_count}"
-      total_score = 0
-      ContactLevels.each do |level|
-         total_score = level[:score] and break if contact_count.to_i > level[:min_count]
-      end
+    def self.cal_score(kol_uuid, mobiles)
+      contact_count =  cal_contact_count(kol_uuid, mobiles)   || 0
+      total_score = get_contact_level_score(kol_uuid, contact_count)
+      Rails.logger.info "===============---contact_count:#{contact_count}----total_score:#{total_score}"
       Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 10.days)
-      Rails.logger.info "===============Contact:---total_score:#{total_score}"
       total_score
     end
 
@@ -75,6 +59,26 @@ module Influence
     # 联系人 价值   存储key
     def self.contact_key(kol_uuid)
       "#{kol_uuid}_contact"
+    end
+
+
+    #计算 加权好友数后 得分
+    ContactLevels = [{:min_count => 500, :score => 100},
+                     {:min_count => 400, :score => 90},
+                     {:min_count => 300, :score => 80},
+                     {:min_count => 200, :score => 70},
+                     {:min_count => 100, :score => 60},
+                     {:min_count => 80, :score => 50},
+                     {:min_count => 60, :score => 40},
+                     {:min_count => 50, :score => 30},
+                     {:min_count => 30, :score => 20},
+                     {:min_count => 20, :score => 10},
+                     {:min_count => -1, :score => 0}]
+    def self.get_contact_level_score(kol_uuid, contact_count)
+      contact_count = TmpKolContact.where(:kol_uuid => kol_uuid).count * 0.65   if (contact_count.to_i == 0  rescue true)
+      ContactLevels.each do |level|
+        return level[:score]  if contact_count > level[:min_count]
+      end
     end
 
     def self.test
