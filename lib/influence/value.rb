@@ -12,11 +12,16 @@ module Influence
       contact_score = get_contact_score(kol_uuid)
       total_score = BaseScore + location_score + mobile_score + identity_count_score +  contact_score +  identity_score
       Rails.cache.write("total_score_#{kol_uuid}", total_score)
+      Rails.cache.write("cal_time_#{kol_uuid}", Time.now)
       total_score
     end
 
     def self.get_total_score(kol_uuid)
       Rails.cache.read("total_score_#{kol_uuid}")
+    end
+
+    def self.get_cal_time(kol_uuid)
+      Rails.cache.read("cal_time_#{kol_uuid}")
     end
 
     #获取用户城市

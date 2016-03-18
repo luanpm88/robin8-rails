@@ -89,9 +89,9 @@ module API
           rank_index = rank_index + 1
           contacts = TmpKolContact.where(:kol_uuid => params[:kol_uuid])
           present :error, 0
-          present :influence_title,''
-          present :score, influence_score
           present :influence_score, influence_score
+          present :influence_level, Influence::Value.get_influence_level(influence_score)
+          present :cal_time, Influence::Value.get_cal_time(params[:kol_uuid])
           present :joined_count, joined_contacts.size
           present :rank_index, rank_index
           present :name, TmpIdentity.get_name(params[:kol_uuid])
@@ -127,6 +127,7 @@ module API
           present :kol_uuid, params[:kol_uuid]
           present :influence_score, influence_score
           present :influence_level, Influence::Value.get_influence_level(influence_score)
+          present :cal_time, Influence::Value.get_cal_time(params[:kol_uuid])
           present :name, TmpIdentity.get_name(params[:kol_uuid])
           present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
