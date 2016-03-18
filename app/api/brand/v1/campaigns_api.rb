@@ -7,7 +7,7 @@ module Brand
       end
 
       resource :campaigns do
-        
+
         # short_url api should not placed in here. but now I don't know where to placed :(
         # and should placed before :id, otherwise grape will match :id not :short_url
         desc 'Generate short url by origin url and identifier'
@@ -37,16 +37,20 @@ module Brand
           requires :url, type: String
           optional :img_url, type: String
           requires :budget, type: Float
-          requires :per_budget_type, type: String
+          requires :per_budget_type, type: String, default: 'click'
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
-          optional :target, type: Hash do
-            optional :age, type:String, default: 'all'
-            optional :region, type:String, default: 'all'
-            optional :gender, type:String, values: ['all', 'male', 'female'], default: 'all'
+          requires :target, type: Hash do
+            requires :age, type:String, default: 'all'
+            requires :region, type:String, default: '全部 全部'
+            requires :gender, type:String, values: ['all', 'male', 'female'], default: 'all'
           end
-          optional :action_url_list, type: String
+          optional :campaign_action_url, type: Hash do
+            optional :action_url, type: String
+            optional :short_url, type: String
+            optional :identifier, type: String
+          end
         end
         post do
           service = CreateCampaignService.new current_user, declared(params)
