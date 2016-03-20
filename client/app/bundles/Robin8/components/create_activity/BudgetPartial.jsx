@@ -10,7 +10,7 @@ export default class BudgetPartial extends React.Component {
   _initTouchSpin() {
     $('.budget-input').TouchSpin({
       min: 0,
-      max: 10000000,
+      max: 10000,
       prefix: '￥'
     })
   }
@@ -43,7 +43,7 @@ export default class BudgetPartial extends React.Component {
             <label>总预算</label>
             <div className="spinner-box">
               <span className="symbol">$</span>
-              <input {...budget} type="text" defaultValue={0} className="spinner-input budget-input" style={{display: 'block'}} />
+              <input {...budget} type="text" className="spinner-input budget-input" style={{display: 'block'}} />
             </div>
             <p className="stat">最低费用<strong className="stat-num">1000</strong>元</p>
           </div>

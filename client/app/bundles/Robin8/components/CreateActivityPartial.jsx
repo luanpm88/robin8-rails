@@ -14,7 +14,9 @@ import beforeUnload from './shared/BeforeUnload';
 
 import createActivity from "raw/create_activity";
 
-
+const initCampaign = {
+  budget: 100
+}
 const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
@@ -75,6 +77,10 @@ CreateActivityPartial = reduxForm({
   fields: ['name', 'description', 'image', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline'],
   returnRejectedSubmitPromise: true,
   validate
-})(CreateActivityPartial);
+},
+  state => ({
+      initialValues: initCampaign
+    })
+)(CreateActivityPartial);
 
 export default connect(select)(CreateActivityPartial)
