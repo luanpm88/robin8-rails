@@ -19,6 +19,7 @@ module API
             articles = ::Articles::Store.get_discovery_list(current_kol.id, params[:title])
           end
           present :error, 0
+          present :articles_count, articles.size
           present :articles, articles, with: API::V2::Entities::ArticleEntities::Summary
         end
 

@@ -4,7 +4,7 @@ class ArticleAction < ActiveRecord::Base
   counter :redis_click
 
   scope :collect, ->{where(:collect => true)}
-  scope :order_by_status, -> { order("forward desc, collect desc, 'like desc', look desc") }
+  scope :order_by_status, -> { order("forward desc, collect desc, 'like desc', look desc, created_at desc") }
 
   after_save :update_list, :on => :create
 

@@ -23,9 +23,13 @@ module API
         end
 
         #搜藏列表
+        params do
+          optional :page, type: Integer
+        end
         get 'collect' do
-          collect_article_actions = current_kol.article_actions.where(:collect => true)
+          collect_article_actions = current_kol.article_actions.where(:collect => true).page(params[:page]).per_page(10)
           present :error, 0
+          to_paginate(collect_article_actions)
           present :article_actions, collect_article_actions, with: API::V2::Entities::ArticleActionEntities::Summary
         end
       end
