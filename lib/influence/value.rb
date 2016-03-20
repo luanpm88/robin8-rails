@@ -43,8 +43,8 @@ module Influence
 
 
     #联系人得分 等待后台计算
-    LoopTimes = 50
-    LoopSecond = 0.1
+    LoopTimes = 16
+    LoopSecond = 0.4
     def self.get_contact_score(kol_uuid)
       return 0 if  Influence::Contact.contact_score(kol_uuid).blank?
       loop_times = 0
@@ -55,7 +55,7 @@ module Influence
         loop_times += 1
       end
       score = Influence::Contact.contact_score(kol_uuid)
-      return score
+      return (score > 0) ? score : 0
     end
 
     InfluenceLevels = [{:title => "影响力极好", :score => 800},
