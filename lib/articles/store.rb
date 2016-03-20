@@ -25,11 +25,10 @@ module Articles
        else
          kol_push_ids = PushArticle.get_push_ids(kol_id)
          #2.1  检索时 需要先根据阅读文章取文章关键字
-         text = get_read_article_text(kol_id)
+         text = get_relation_article_text(kol_id)
          #2.2  把文章关键字 去查询
          articles = ElasticClient.search(text, kol_push_ids, {:size => per_page * 10})
        end
-       Rails.logger.elastic.info "=======search_list===articles:#{articles.collect{|t| t['id']}}"
      end
      #3. 取出，并把剩下的缓存住
      selected_articles = articles.shift(per_page)
@@ -39,15 +38,15 @@ module Articles
      selected_articles
    end
 
-   def self.get_read_article_text(kol_id, kol_read_ids = nil)
-     kol_read_ids = kol_read_ids || ArticleAction.get_action_ids(kol_id)
-     Rails.logger.elastic.info "=======get_read_article_text===kol_id:#{kol_id}====kol_read_ids:#{kol_read_ids}"
-     if kol_read_ids.size > 0
-       articles = ElasticClient.get_text(kol_read_ids)
+   def self.get_relation_article_text(kol_id)
+     relation_ids = ArticleAction.get_relation_ids(kol_id)
+     Rails.logger.elastic.info "=======get_read_article_text===kol_id:#{kol_id}====relation_ids:#{relation_ids}"
+     if relation_ids.size > 0
+       articles = ElasticClient.get_text(relation_ids)
        text = articles.collect{|article| "#{article['text']} #{article['title']} #{article['biz_info']} "}.join(" ")
-       Rails.logger.elastic.info "=======get_read_article_text===text:#{text[0..200]}"
-       return text[0,300]
+       return text
      end
+     return " "
    end
 
    def self.reset_kol_articles(kol_id)
