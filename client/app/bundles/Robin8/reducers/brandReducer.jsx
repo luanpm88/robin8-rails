@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import actionTypes from '../constants/brandHomeConstants';
+import actionTypes from '../constants/brandConstants';
 
 export const $$initialState = Immutable.fromJS({
   readyState: 'init',
@@ -7,7 +7,7 @@ export const $$initialState = Immutable.fromJS({
   paginate: {}
 });
 
-export default function brandHomeReducer($$state = $$initialState, action = null) {
+export default function brandReducer($$state = $$initialState, action = null) {
   const { type, campaignList } = action;
   switch (type) {
     case actionTypes.FETCH_CAMPAIGNS:

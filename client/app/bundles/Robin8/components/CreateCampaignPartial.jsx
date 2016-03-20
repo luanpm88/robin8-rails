@@ -5,14 +5,13 @@ import _ from 'lodash';
 
 import "create_activity.css";
 
-import IntroPartial from './create_activity/IntroPartial';
-import TargetPartial from './create_activity/TargetPartial';
-import DetailPartial from './create_activity/DetailPartial';
-import DatePartial from './create_activity/DatePartial';
-import BudgetPartial from './create_activity/BudgetPartial';
+import IntroPartial from './create_campaign/IntroPartial';
+import TargetPartial from './create_campaign/TargetPartial';
+import DetailPartial from './create_campaign/DetailPartial';
+import DatePartial from './create_campaign/DatePartial';
+import BudgetPartial from './create_campaign/BudgetPartial';
+import createActivity from "raw/create_campaign";
 import beforeUnload from './shared/BeforeUnload';
-
-import createActivity from "raw/create_activity";
 
 const initCampaign = {
   budget: 100
@@ -29,7 +28,7 @@ const validateFailed = (errors) => {
 }
 
 function select(state) {
-  return { brand_id: state.$$brandHomeStore.get("brand").get("id") };
+  return { brand_id: state.$$brandStore.get("brand").get("id") };
 }
 
 class CreateActivityPartial extends React.Component {
@@ -48,8 +47,8 @@ class CreateActivityPartial extends React.Component {
     const brand_id = this.props.brand_id
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
-    
-    return ( 
+
+    return (
       <div className="wrapper">
         <div className="container">
           <div className="creat-activity-wrap">

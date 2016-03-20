@@ -1,6 +1,4 @@
-console.log("begin brandHomeActionCreators");
-
-import actionTypes from '../constants/brandHomeConstants';
+import actionTypes from '../constants/brandConstants';
 
 const CAMPAIGNS_URL = '/brand_api/v1/user/campaigns';
 const SAVE_CAMPAIGN_URL = '/brand_api/v1/campaigns';
@@ -77,6 +75,3 @@ export function saveCampaign(campaign) {
     redirect: '/brand/'
   };
 }
-
-
-console.log("after brandHomeActionCreators");
