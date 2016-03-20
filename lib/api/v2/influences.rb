@@ -41,7 +41,7 @@ module API
         post 'bind_identity' do
           if params[:provider] == 'weibo'
             required_attributes! [:followers_count, :statuses_count, :registered_at, :verified]
-          else
+          elsif params[:provider] == 'wechat'
             required_attributes! [:unionid]
           end
           kol_uuid =  params[:kol_uuid]
@@ -65,9 +65,10 @@ module API
           requires :kol_uuid, type: String
         end
         post 'unbind_identity' do
-          kol_identities = TmpIdentity.get_identities(kol_uuid)
+          kol_identities = TmpIdentity.get_identities(params[:kol_uuid])
           if kol_identities.collect{|identity| identity.uid }.include? params[:uid]
-            TmpIdentity.find_by(:kol_uuid => kol_uuid, :uid => params[:uid]).delete
+            TmpIdentity.find_by(:kol_uuid => params[:kol_uuid], :uid => params[:uid]).delete
+            kol_identities = TmpIdentity.get_identities(params[:kol_uuid])
             present :error, 0
           else
             present :error, 1
