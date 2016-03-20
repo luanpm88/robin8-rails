@@ -1,10 +1,10 @@
 import brandReducer from './brandReducer';
-import { $$initialState as $$brandHomeState } from './brandReducer';
+import { $$initialState as $$brandState } from './brandReducer';
 
 export default {
-  $$brandHomeStore: brandReducer
+  $$brandStore: brandReducer
 };
 
 export const initialStates = {
-  $$brandHomeState
+  $$brandState
 }

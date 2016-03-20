@@ -25,7 +25,7 @@ const validateFailed = (errors) => {
 }
 
 function select(state) {
-  return { brand_id: state.$$brandHomeStore.get("brand").get("id") };
+  return { brand_id: state.$$brandStore.get("brand").get("id") };
 }
 
 class CreateActivityPartial extends React.Component {

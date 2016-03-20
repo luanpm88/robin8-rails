@@ -11,9 +11,9 @@ import { initialStates } from '../reducers'
 export default props => {
 
   const { brand } = props;
-  const { $$brandHomeState } = initialStates;
+  const { $$brandState } = initialStates;
   const initialState = {
-    $$brandHomeStore: $$brandHomeState.merge({
+    $$brandStore: $$brandState.merge({
       brand,
     }),
   };

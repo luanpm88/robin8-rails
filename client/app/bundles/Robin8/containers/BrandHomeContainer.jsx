@@ -12,7 +12,7 @@ import * as brandActionCreators from '../actions/brandActionCreators';
 
 
 function select(state) {
-  return { data: state.$$brandHomeStore };
+  return { data: state.$$brandStore };
 }
 
 class BrandHomeContainer extends React.Component {
