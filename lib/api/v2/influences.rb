@@ -41,7 +41,7 @@ module API
         post 'bind_identity' do
           if params[:provider] == 'weibo'
             required_attributes! [:followers_count, :statuses_count, :registered_at, :verified]
-          else
+          elsif params[:provider] == 'wechat'
             required_attributes! [:unionid]
           end
           kol_uuid =  params[:kol_uuid]
