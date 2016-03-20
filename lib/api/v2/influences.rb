@@ -15,7 +15,7 @@ module API
 
         #第三方账号 价值
         params do
-          requires :provider, type: String, values: ['weibo', 'wechat']
+          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
           requires :token, type: String
           requires :name, type: String
@@ -31,6 +31,12 @@ module API
           optional :verified, type: Boolean
           optional :refresh_token, type: String
           optional :unionid, type: String
+
+          optional :province, type: String
+          optional :city, type: String
+          optional :gender, type: String
+          optional :is_vip, type: Boolean
+          optional :is_yellow_vip, type: Boolean
         end
         post 'bind_identity' do
           if params[:provider] == 'weibo'
@@ -137,6 +143,7 @@ module API
           requires :mobile, type: String
         end
         post 'send_invite' do
+          return error_403!({error: 1, detail: '你不能调用该接口'})      if !can_get_code?
           if  Influence::Util.is_mobile?(params[:mobile])
             invite_content = Emay::TemplateContent.get_invite_sms(TmpIdentity.get_name(params[:kol_uuid]))
             Emay::SendSms.to(params[:mobile],invite_content)

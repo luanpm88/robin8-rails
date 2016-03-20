@@ -114,7 +114,7 @@ module API
 
         #用户绑定第三方账号
         params do
-          requires :provider, type: String, values: ['weibo', 'wechat']
+          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
           requires :token, type: String
           optional :name, type: String
@@ -128,6 +128,12 @@ module API
           optional :verified, :boolean
           optional :refresh_token, :string
           optional :unionid, type: String
+
+          optional :province, type: String
+          optional :city, type: String
+          optional :gender, type: String
+          optional :is_vip, type: Boolean
+          optional :is_yellow_vip, type: Boolean
         end
         post 'identity_bind' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])

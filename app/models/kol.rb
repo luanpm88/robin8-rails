@@ -460,16 +460,17 @@ class Kol < ActiveRecord::Base
           identity.save
         end
       end
+
+      # sync influence_item
+      TmpKolInfluenceItem.where(:kol_uuid => kol_uuid).each do |influence_item|
+        kol_influence_item = KolInfluenceItem.find_or_initialize_by :kol_id => kol_id, :item_name => influence_item.item_name
+        kol_influence_item.item_value =  influence_item.item_value
+        kol_influence_item.item_score =  influence_item.item_score
+        kol_influence_item.item_detail_content =  influence_item.item_detail_content
+        kol_influence_item.save
+      end
     end
 
-    # sync influence_item
-    TmpKolInfluenceItem.where(:kol_uuid => kol_uuid).each do |influence_item|
-      kol_influence_item = KolInfluenceItem.find_or_initialize_by :kol_id => kol_id, :item_name => influence_item.item_name
-      kol_influence_item.item_value =  influence_item.item_value
-      kol_influence_item.item_score =  influence_item.item_score
-      kol_influence_item.item_detail_content =  influence_item.item_detail_content
-      kol_influence_item.save
-    end
   end
 
   def reset_kol_uuid

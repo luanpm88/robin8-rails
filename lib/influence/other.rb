@@ -53,7 +53,7 @@ module Influence
       tm_identities =  TmpIdentity.where(:kol_uuid => kol_uuid)
       count = tm_identities.count
       IdentityCountLevels.each do |level|
-        identity_score = level[:score] and break if  count >= level[:count]
+        identity_count_score = level[:score] and break if  count >= level[:count]
       end
       #store
       TmpKolInfluenceItem.store_item(kol_uuid, 'identity_count', count, identity_count_score, tm_identities.to_json)
