@@ -8,7 +8,7 @@ import BrandNav from '../components/shared/Nav';
 import "base.css";
 import "home.css";
 
-import * as brandHomeActionCreators from '../actions/brandHomeActionCreators';
+import * as brandActionCreators from '../actions/brandActionCreators';
 
 
 function select(state) {
@@ -27,7 +27,7 @@ class BrandHomeContainer extends React.Component {
 
   render() {
     const { dispatch, data } = this.props;
-    const actions = bindActionCreators(brandHomeActionCreators, dispatch)
+    const actions = bindActionCreators(brandActionCreators, dispatch)
 
     const childrenWithProps = React.Children.map(this.props.children, (child) =>{
       return React.cloneElement(child, {
