@@ -4,15 +4,6 @@
 */
 
 export default function createActivity () {
-  // 关闭或刷新该页面时提示
-  // 防止用户误关闭页面而重新填写
-  $(window).bind('beforeunload', function() {
-    var T = $('.activity-title-input').val().length,
-        I = $('.activity-intro-input').val().length,
-        C = $('.creat-content-sources input[type="text"]').val().length;
-    if ( T != 0 || I != 0 || C != 0 ) return '您填写的信息将不被保存！';
-  });
-
   // 输入字数限制
   // bootstrap-maxlength
   // https://github.com/mimo84/bootstrap-maxlength/

@@ -9,13 +9,15 @@ import TargetPartial from './create_activity/TargetPartial';
 import DetailPartial from './create_activity/DetailPartial';
 import DatePartial from './create_activity/DatePartial';
 import BudgetPartial from './create_activity/BudgetPartial';
+import beforeUnload from './shared/BeforeUnload';
+
 import createActivity from "raw/create_activity";
+
 
 const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: true } },
-  message: { require: true },
 })
 
 const validateFailed = (errors) => {
@@ -34,7 +36,8 @@ class CreateActivityPartial extends React.Component {
   }
 
   componentDidMount() {
-    createActivity()
+    createActivity();
+    beforeUnload(this.props);
   }
 
   render() {
@@ -42,8 +45,8 @@ class CreateActivityPartial extends React.Component {
     const brand_id = this.props.brand_id
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
-
-    return (
+    
+    return ( 
       <div className="wrapper">
         <div className="container">
           <div className="creat-activity-wrap">
