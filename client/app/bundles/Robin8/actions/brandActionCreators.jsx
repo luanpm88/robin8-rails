@@ -75,3 +75,10 @@ export function saveCampaign(campaign) {
     redirect: '/brand/'
   };
 }
+
+export function fetchCampaign(id) {
+  return {
+    type: actionTypes.FETCH_CAMPAIGN,
+    promise: fetch(`/brand_api/v1/campaigns/${id}`, { credentials: 'include' })
+  };
+}

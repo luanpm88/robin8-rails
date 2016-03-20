@@ -17,8 +17,7 @@ export default class DetailPartial extends React.Component {
     const action_url = $(".action-url").val()
     if(action_url == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
     if(action_url == "") return;
-
-    const brand_id = this.props.brand_id.toString();
+    const brand_id = this.props.brand.get('id').toString();
     const timestamps = Math.floor(Date.now()).toString();
     const random = Math.floor(Math.random() * 100000).toString();
     const identifier = brand_id + timestamps + random

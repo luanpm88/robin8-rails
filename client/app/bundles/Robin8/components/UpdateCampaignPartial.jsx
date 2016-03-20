@@ -1,7 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import "create_activity.css";
 
@@ -11,35 +10,34 @@ import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
 import createActivity from "raw/create_campaign";
-import beforeUnload from './shared/BeforeUnload';
 
-const initCampaign = {
-  budget: 100
-}
 const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
-  url: { require: true, url: { require_protocol: true } },
+  url: { require: true, url: { require_protocol: true} },
+  message: { require: true }
 })
 
 const validateFailed = (errors) => {
-  console.log(errors);
   $('[name="' + Object.keys(errors)[0] + '"]').focus();
 }
 
 function select(state) {
-  return { brand: state.$$brandStore.get("brand") };
+  return {
+    brand: state.$$brandStore.get("brand")
+  };
 }
 
-class CreateCampaignPartial extends React.Component {
-
+class UpdateCampaignPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
 
   componentDidMount() {
-    createActivity();
-    beforeUnload(this.props);
+    createActivity()
+    const campaign_id = this.props.params.id
+    const { fetchCampaign } = this.props.actions
+    fetchCampaign(campaign_id)
   }
 
   render() {
@@ -71,15 +69,15 @@ class CreateCampaignPartial extends React.Component {
   }
 }
 
-CreateCampaignPartial = reduxForm({
+UpdateCampaignPartial = reduxForm({
   form: 'activity_form',
   fields: ['name', 'description', 'image', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline'],
   returnRejectedSubmitPromise: true,
   validate
 },
 state => ({
-  initialValues: initCampaign
+  initialValues: state.$$brandStore.get("campaign").toJSON()
 })
-)(CreateCampaignPartial);
+)(UpdateCampaignPartial);
 
-export default connect(select)(CreateCampaignPartial)
+export default connect(select)(UpdateCampaignPartial)
