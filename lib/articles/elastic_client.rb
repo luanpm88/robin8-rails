@@ -93,14 +93,13 @@ end
 # }'
 
 # curl -XPOST 139.196.39.136:9200/wx_biz/fulltext/_search -d '
-# curl -XPOST 10.174.119.175:9200/wx_biz/fulltext/_search -d '
 # {
 # "from": 0,
 # "size": 5,
 # "query" : {
 # "query_string" : {
 # "default_field" : "text",
-# "query" : "company study body"
+# "query" : "母婴"
 # }
 # }
 # }'

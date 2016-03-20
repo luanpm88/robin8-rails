@@ -448,7 +448,10 @@ class Kol < ActiveRecord::Base
         identity = Identity.find_by :uid => tmp_identity.uid
         if !identity
           identity = Identity.new
-          identity.attributes = tmp_identity.attributes
+          attrs = tmp_identity.attributes
+          attrs.delete("id")
+          attrs.delete("kol_uuid")
+          identity.attributes = attrs
           identity.kol_id = kol_id
           identity.save
         elsif identity &&  identity.kol_id == self.id  #如果存在，则更新

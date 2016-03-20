@@ -11,6 +11,7 @@ module Influence
       identity_count_score = Other.identity_count_score(kol_uuid)
       contact_score = get_contact_score(kol_uuid)
       total_score = BaseScore + location_score + mobile_score + identity_count_score +  contact_score +  identity_score
+      Rails.logger.info "==cal_total_score====location_score:#{location_score}====mobile_score:#{mobile_score}====identity_score:#{identity_score}====identity_count_score:#{identity_count_score}====contact_score:#{contact_score}"
       Rails.cache.write("total_score_#{kol_uuid}", total_score, :expires_in => 10.days)
       Rails.cache.write("cal_time_#{kol_uuid}", Time.now, :expires_in => 10.days)
       total_score

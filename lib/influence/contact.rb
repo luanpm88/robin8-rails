@@ -3,7 +3,7 @@ module Influence
     def self.cal_score(kol_uuid, mobiles)
       contact_count =  cal_contact_count(kol_uuid, mobiles)   || 0
       total_score = get_contact_level_score(kol_uuid, contact_count)
-      Rails.logger.info "===============---contact_count:#{contact_count}----total_score:#{total_score}"
+      Rails.logger.info "========kol_uuid:#{kol_uuid}=======---contact_count:#{contact_count}----total_score:#{total_score}"
       Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 10.days)
       total_score
     end
@@ -14,7 +14,7 @@ module Influence
       cal_mobiles = cal_mobiles.sample(100)  if mobile_size > 100
       # 获取 cal_mobile（部分好友） 实际加权人数
       cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
-      Rails.logger.info "===============Contact:cal_score---#{cal_mobile_scores.sum}----#{mobile_size}---#{cal_mobile_scores.size}"
+      Rails.logger.info "======kol_uuid:#{kol_uuid}=========Contact:cal_score---#{cal_mobile_scores.sum}----#{mobile_size}---#{cal_mobile_scores.size}"
       # 获取所有好友加权后好友人数 需还原 加权人数
       cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)       rescue 0
     end
