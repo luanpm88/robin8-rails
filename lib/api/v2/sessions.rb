@@ -22,7 +22,7 @@ module API
           optional :IDFA, type: String
           optional :IMEI, type: String
 
-          requires :provider, type: String, values: ['weibo', 'wechat']
+          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
           requires :token, type: String
           optional :name, type: String
@@ -30,12 +30,19 @@ module API
           optional :avatar_url, type: String
           optional :desc, type: String
           optional :serial_params, type: String
-          optional :followers_count, Integer
-          optional :statuses_count, Integer
-          optional :registered_at, DateTime
-          optional :verified, :boolean
-          optional :refresh_token, :string
+          optional :followers_count, type: Integer
+          optional :statuses_count, type: Integer
+          optional :registered_at, type: DateTime
+          optional :verified, type: Boolean
+          optional :refresh_token, type: String
           optional :unionid, type: String
+
+          optional :province, type: String
+          optional :city, type: String
+          optional :gender, type: String
+          optional :is_vip, type: Boolean
+          optional :is_yellow_vip, type: Boolean
+
           optional :kol_uuid, type: String
         end
         post 'oauth_login' do

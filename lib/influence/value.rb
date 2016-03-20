@@ -5,13 +5,12 @@ module Influence
     BaseScore = 500
     def self.cal_total_score(kol_uuid, kol_city, kol_mobile_model)
       kol_city = get_kol_city(kol_uuid)   if kol_city.blank?
-      location_score = Other.kol_location_score(kol_city)
-      mobile_score = Other.mobile_model_score(kol_mobile_model)
+      location_score = Other.kol_location_score(kol_uuid,kol_city)
+      mobile_score = Other.mobile_model_score(kol_uuid, kol_mobile_model)
       identity_score = Influence::Identity.get_identity_score(kol_uuid)
       identity_count_score = Other.identity_count_score(kol_uuid)
       contact_score = get_contact_score(kol_uuid)
       total_score = BaseScore + location_score + mobile_score + identity_count_score +  contact_score +  identity_score
-      Rails.logger.info "==cal_total_score====location_score:#{location_score}====mobile_score:#{mobile_score}====identity_score:#{identity_score}====identity_count_score:#{identity_count_score}====contact_score:#{contact_score}"
       Rails.cache.write("total_score_#{kol_uuid}", total_score, :expires_in => 10.days)
       Rails.cache.write("cal_time_#{kol_uuid}", Time.now, :expires_in => 10.days)
       total_score
@@ -42,9 +41,9 @@ module Influence
     end
 
 
-    #联系人得分 等待后台计算
-    LoopTimes = 50
-    LoopSecond = 0.1
+    #联系人得分 等待后台计算  必须大于后台计算时间
+    LoopTimes = 16
+    LoopSecond = 0.4
     def self.get_contact_score(kol_uuid)
       return 0 if  Influence::Contact.contact_score(kol_uuid).blank?
       loop_times = 0
@@ -55,7 +54,7 @@ module Influence
         loop_times += 1
       end
       score = Influence::Contact.contact_score(kol_uuid)
-      return score
+      return  (score > 0) ? score : 0
     end
 
     InfluenceLevels = [{:title => "影响力极好", :score => 800},

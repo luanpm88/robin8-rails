@@ -3,8 +3,8 @@ module Influence
     def self.cal_score(kol_uuid, mobiles)
       contact_count =  cal_contact_count(kol_uuid, mobiles)   || 0
       total_score = get_contact_level_score(kol_uuid, contact_count)
-      Rails.logger.info "========kol_uuid:#{kol_uuid}=======---contact_count:#{contact_count}----total_score:#{total_score}"
       Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 10.days)
+      TmpKolInfluenceItem.store_item(kol_uuid, 'contacts', contact_count, total_score, mobiles.to_json)
       total_score
     end
 
