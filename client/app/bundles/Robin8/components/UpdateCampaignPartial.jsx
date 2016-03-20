@@ -1,6 +1,7 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import _ from 'lodash'
 
 import "create_activity.css";
 
@@ -31,18 +32,23 @@ function select(state) {
 class UpdateCampaignPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
+    _.bindAll(this, '_fetchCampaign');
+  }
+
+  _fetchCampaign() {
+    const campaign_id = this.props.params.id;
+    const { fetchCampaign } = this.props.actions;
+    fetchCampaign(campaign_id);
   }
 
   componentDidMount() {
-    createActivity()
-    const campaign_id = this.props.params.id
-    const { fetchCampaign } = this.props.actions
-    fetchCampaign(campaign_id)
+    createActivity();
+    this._fetchCampaign();
   }
 
   render() {
     const { name, description, image, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
-    const brand = this.props.brand
+    const brand = this.props.brand;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
 
