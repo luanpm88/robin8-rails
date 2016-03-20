@@ -2,6 +2,32 @@ import React from 'react';
 
 export default class BudgetPartial extends React.Component {
 
+  constructor(props, context) {
+    super(props, context);
+    _.bindAll(this, ['_initTouchSpin', '_handleBudgetInputChange']);
+  }
+
+  _initTouchSpin() {
+    $('.budget-input').TouchSpin({
+      min: 0,
+      max: 10000000,
+      prefix: '￥'
+    })
+  }
+
+  _handleBudgetInputChange() {
+    const { onChange } = this.props.budget;
+    $('.budget-input').change(function() {
+      onChange($(this).val());
+    })
+  }
+
+  componentDidMount() {
+    this._initTouchSpin()
+    this._handleBudgetInputChange()
+  }
+
+
   render() {
 
     const { budget } = this.props

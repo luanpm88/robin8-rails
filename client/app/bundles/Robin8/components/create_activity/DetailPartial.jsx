@@ -1,16 +1,18 @@
 import React from 'react';
-import _ from 'lodash';
 
 export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, '_fetchShortUrl');
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange']);
   }
 
 
   _fetchShortUrl(e) {
+
     e.preventDefault()
+
+    const { short_url, action_url_identifier } = this.props
 
     const action_url = $(".action-url").val()
     const brand_id = this.props.brand_id.toString();
@@ -20,8 +22,8 @@ export default class DetailPartial extends React.Component {
     promise: fetch( `/brand_api/v1/campaigns/short_url?url=${action_url}&identifier=${identifier}`, { credentials: 'include' })
       .then(function(response) {
         response.json().then(function(data){
-          $(".action-short-url").val(data);
-          $(".action_url_identifier").val(identifier);
+          short_url.onChange(data);
+          action_url_identifier.onChange(identifier);
         })
       },
       function(error){
@@ -30,19 +32,24 @@ export default class DetailPartial extends React.Component {
     )
   }
 
-  componentDidMount() {
-    // 推广预算
-    // bootstrap-touchspin
-    // https://github.com/istvan-ujjmeszaros/bootstrap-touchspin
-    const { onChange } = this.props.per_action_budget;
-
-    $('.spinner-input').TouchSpin({
+  _initTouchSpin() {
+    $('.per-budget-input').TouchSpin({
       min: 0,
       max: 10000000,
       prefix: '￥'
-    }).on('change', function(event) {
+    })
+  }
+
+  _handlePerBudgetInputChange() {
+    const { onChange } = this.props.per_action_budget;
+    $('.per-budget-input').change(function() {
       onChange($(this).val());
-    });
+    })
+  }
+
+  componentDidMount() {
+    this._initTouchSpin()
+    this._handlePerBudgetInputChange()
   }
 
   componentWillUnmount() {
@@ -50,7 +57,6 @@ export default class DetailPartial extends React.Component {
   }
 
   render() {
-
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget } = this.props
 
     return (

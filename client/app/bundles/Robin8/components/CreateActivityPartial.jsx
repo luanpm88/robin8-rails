@@ -1,6 +1,7 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import "create_activity.css";
 
