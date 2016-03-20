@@ -56,7 +56,7 @@ module API
         params do
           requires :provider, type: String, values: ['weibo', 'wechat']
           requires :uid, type: String
-          requires :kol_uuid, String
+          requires :kol_uuid, type: String
         end
         post 'unbind_identity' do
           kol_identities = TmpIdentity.get_identities(kol_uuid)
@@ -89,6 +89,27 @@ module API
           present :kol_uuid, kol_uuid
         end
 
+
+        # 计算总得分
+        params do
+          requires :kol_uuid, type: String
+          requires :kol_mobile_model, type: String
+          optional :kol_city, type: String
+        end
+        post 'cal_score' do
+          influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])
+          SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])     if current_kol.present?
+          @campaigns = Campaign.order_by_status.limit(5)
+          present :error, 0
+          present :kol_uuid, params[:kol_uuid]
+          present :influence_score, influence_score
+          present :influence_level, Influence::Value.get_influence_level(influence_score)
+          present :cal_time, Influence::Value.get_cal_time(params[:kol_uuid])
+          present :name, TmpIdentity.get_name(params[:kol_uuid])
+          present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
+          present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
+        end
+
         # 排名
         params do
           requires :kol_uuid, type: String
@@ -119,30 +140,11 @@ module API
           if  Influence::Util.is_mobile?(params[:mobile])
             invite_content = Emay::TemplateContent.get_invite_sms(TmpIdentity.get_name(params[:kol_uuid]))
             Emay::SendSms.to(params[:mobile],invite_content)
+            TmpKolContact.record_send_invite(params[:kol_uuid], params[:mobile], current_kol)
             present :error, 0
           else
             return  error_403!({error: 1, detail: '非手机号不能发送短信'})
           end
-        end
-
-        # 计算总得分
-        params do
-          requires :kol_uuid, type: String
-          requires :kol_mobile_model, type: String
-          optional :kol_city, type: String
-        end
-        post 'cal_score' do
-          influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])
-          SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])     if current_kol.present?
-          @campaigns = Campaign.order_by_status.limit(5)
-          present :error, 0
-          present :kol_uuid, params[:kol_uuid]
-          present :influence_score, influence_score
-          present :influence_level, Influence::Value.get_influence_level(influence_score)
-          present :cal_time, Influence::Value.get_cal_time(params[:kol_uuid])
-          present :name, TmpIdentity.get_name(params[:kol_uuid])
-          present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
-          present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
         end
       end
     end
