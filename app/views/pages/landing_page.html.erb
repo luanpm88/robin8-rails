@@ -33,24 +33,30 @@
     <div class="tab-content">
       <!-- 注册 S -->
       <div id="signup-tab-pane" class="tab-pane fade in active">
-        <form action="/users/new" method='post'>
+        <%= form_tag('/users/new', method: 'post', remote: true) do %>
+          <div class="form-group">
+            <i class="icon-email"></i>
+            <label>品牌名称</label>
+            <input type="text" class="form-control" name='user[name]' placeholder="输入您的品牌名称">
+            <span class="what">?</span>
+          </div>
           <div class="form-group">
             <i class="icon-email"></i>
             <label>邮箱</label>
-            <input type="email" class="form-control" placeholder="输入您的邮箱">
+            <input type="text" class="form-control" name='user[mobile_number]' placeholder="输入您的手机号">
             <span class="what">?</span>
           </div>
           <div class="form-group">
             <i class="icon-pwd"></i>
             <label>密码</label>
-            <input type="password" class="form-control" placeholder="设置您的密码">
+            <input type="password" class="form-control" name='user[password]' placeholder="设置您的密码">
           </div>
           <button type="submit" class="btn btn-blue btn-block">注册</button>
 
           <p class='help-block'>
             注册即视为同意Robin8的<a href='/terms'>服务条款</a>
           </p>
-        </form>
+        <% end %>
       </div>
       <!-- 注册 E -->
 
