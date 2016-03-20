@@ -5,12 +5,12 @@ import _ from 'lodash';
 
 import "create_activity.css";
 
-import IntroPartial from './create_activity/IntroPartial';
-import TargetPartial from './create_activity/TargetPartial';
-import DetailPartial from './create_activity/DetailPartial';
-import DatePartial from './create_activity/DatePartial';
-import BudgetPartial from './create_activity/BudgetPartial';
-import createActivity from "raw/create_activity";
+import IntroPartial from './create_campaign/IntroPartial';
+import TargetPartial from './create_campaign/TargetPartial';
+import DetailPartial from './create_campaign/DetailPartial';
+import DatePartial from './create_campaign/DatePartial';
+import BudgetPartial from './create_campaign/BudgetPartial';
+import createActivity from "raw/create_campaign";
 
 const validate = new FormValidate({
   name: { require: true },

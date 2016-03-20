@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import BrandHomeContainer from '../containers/BrandHomeContainer';
-import CreateActivityPartial from '../components/CreateActivityPartial';
+import CreateActivityPartial from '../components/CreateCampaignPartial';
 import BrandHomePartial from '../components/BrandHomePartial';
 
 
