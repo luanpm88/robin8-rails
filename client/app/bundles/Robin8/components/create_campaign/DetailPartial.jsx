@@ -15,6 +15,9 @@ export default class DetailPartial extends React.Component {
     const { short_url, action_url_identifier } = this.props
 
     const action_url = $(".action-url").val()
+    if(action_url == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
+    if(action_url == "") return;
+
     const brand_id = this.props.brand_id.toString();
     const timestamps = Math.floor(Date.now()).toString();
     const random = Math.floor(Math.random() * 100000).toString();
@@ -24,6 +27,7 @@ export default class DetailPartial extends React.Component {
         response.json().then(function(data){
           short_url.onChange(data);
           action_url_identifier.onChange(identifier);
+          $(".action-url").attr("data-origin-url", action_url);
         })
       },
       function(error){
@@ -58,7 +62,6 @@ export default class DetailPartial extends React.Component {
 
   render() {
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget } = this.props
-
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
@@ -87,7 +90,7 @@ export default class DetailPartial extends React.Component {
             <div className="action-url-group" style={{display: 'none'}}>
               <div className="clearfix">
                 <p className="action-url-text">确认链接</p>
-                <input {...action_url} type="text" className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+                <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
               </div>
               <div className="clearfix">
                 <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl}>生成链接</button>
