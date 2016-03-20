@@ -15,7 +15,7 @@ export default class DetailPartial extends React.Component {
     const { short_url, action_url_identifier } = this.props
 
     const action_url = $(".action-url").val()
-    const brand_id = this.props.brand_id.toString();
+    const brand_id = this.props.brand.get('id').toString();
     const timestamps = Math.floor(Date.now()).toString();
     const random = Math.floor(Math.random() * 100000).toString();
     const identifier = brand_id + timestamps + random

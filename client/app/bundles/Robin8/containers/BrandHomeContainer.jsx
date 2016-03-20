@@ -1,9 +1,8 @@
-console.log("in BrandHomeContainer");
-
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Immutable from 'immutable';
+import _ from 'lodash'
 import BrandNav from '../components/shared/Nav';
 import "base.css";
 import "home.css";
