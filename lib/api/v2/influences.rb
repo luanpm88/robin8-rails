@@ -96,7 +96,6 @@ module API
           present :kol_uuid, kol_uuid
         end
 
-
         # 计算总得分
         params do
           requires :kol_uuid, type: String
@@ -104,16 +103,11 @@ module API
           optional :kol_city, type: String
         end
         post 'cal_score' do
-          influence_score = Influence::Value.cal_total_score(params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])
-          SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])     if current_kol.present?
+          kol_value = KolInfluenceValue.cal_and_store_score(current_kol.try(:id), params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])
+          SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])    if current_kol.present?
           @campaigns = Campaign.order_by_status.limit(5)
           present :error, 0
-          present :kol_uuid, params[:kol_uuid]
-          present :influence_score, influence_score
-          present :influence_level, Influence::Value.get_influence_level(influence_score)
-          present :cal_time, Influence::Value.get_cal_time(params[:kol_uuid])
-          present :name, TmpIdentity.get_name(params[:kol_uuid])
-          present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
           present :campaigns, @campaigns, with: API::V2::Entities::CampaignEntities::Summary
         end
 
@@ -122,19 +116,14 @@ module API
           requires :kol_uuid, type: String
         end
         get 'rank' do
+          kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
-          influence_score = Influence::Value.get_total_score(params[:kol_uuid])
-          rank_index = joined_contacts.where("influence_score > '#{influence_score}'").count
-          rank_index = rank_index + 1
+          rank_index = joined_contacts.where("influence_score > '#{kol_value.influence_score}'").count   + 1
           contacts = TmpKolContact.where(:kol_uuid => params[:kol_uuid])
           present :error, 0
-          present :influence_score, influence_score
-          present :influence_level, Influence::Value.get_influence_level(influence_score)
-          present :cal_time, Influence::Value.get_cal_time(params[:kol_uuid])
           present :joined_count, joined_contacts.size
           present :rank_index, rank_index
-          present :name, TmpIdentity.get_name(params[:kol_uuid])
-          present :avatar_url, TmpIdentity.get_avatar_url(params[:kol_uuid])
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
 
