@@ -14,7 +14,7 @@ module Articles
     def self.get_text(read_list_ids =[])
       try_count = 0
       begin
-        res = client.search index: 'wx_biz',
+        res = client.search index: 'article_all',
                             type: 'fulltext',
                             body: {
                               _source: ["text", "title", "biz_name"],
@@ -35,28 +35,41 @@ module Articles
       end
     end
 
-    def self.search(text, push_list_ids = [], options = {})
+    # , publish_date: {gte: Date.today - 1.days}
+    def self.search(text, options = {})
       try_count = 0
+      if !options[:select]   #根据收藏历史推荐
+        filter = {
+          bool: {
+            must_not: {
+              terms: { id: options[:push_list_ids]}
+            }
+          }
+        }
+        query = {
+          multi_match: {
+            query:  text,
+            fields:  [ "text", "title"]
+          }
+        }
+      else      # 选择喜欢文章
+        filter = {}
+        query = {
+          bool: {
+            filter: [
+              { term: { chosen: 't'}},
+              { range: { publish_date: { gte: Date.today - 1.days }}}
+            ]
+          }
+        }
+      end
       begin
-        res = client.search index: 'wx_biz',
+        res = client.search index: 'article_7',
                             type: 'fulltext',
                             body: {
                               _source: ["id", "url", "msg_cdn_url", "title", "biz_name"],
-                              query: {
-                                multi_match: {
-                                  query:  text,
-                                  fields:  [ "text", "title"]
-                                }
-                              },
-                              filter:{
-                                bool: {
-                                  must_not: {
-                                    terms: {
-                                      id: push_list_ids
-                                    }
-                                  }
-                                }
-                              },
+                              query: query,
+                              filter: filter,
                               from: 0,
                               size: options[:size] || 100
                             }
@@ -102,4 +115,16 @@ end
 # "query" : "母婴"
 # }
 # }
+# }'
+
+
+# curl -XPOST 139.196.39.136:9200/article_7/fulltext/_search -d '
+# {
+#   "query": {
+#     "bool": {
+#        "filter": [
+#         { "term":  { "chosen": "t" }}
+#       ]
+#     }
+#   }
 # }'
