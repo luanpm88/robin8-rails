@@ -11,23 +11,23 @@ module Articles
 
    #选择喜爱文章 列表
    def self.get_select_like_list(kol_id, title = nil, per_page = 10)
-     selected_articles = search_list(kol_id, title, per_page)
+     selected_articles = search_list(kol_id, title, per_page, true)
      selected_articles
    end
 
-   def self.search_list(kol_id, title, per_page)
+   def self.search_list(kol_id, title, per_page, select = false)
      #1. 优先从缓存读取
      articles = Rails.cache.read("kol_articles_#{kol_id}_#{title}")  rescue []
      #2. 缓存没有需要去检索
      if (articles.nil? || articles.size == 0)
-       if title
-         articles = ElasticClient.search(title, [], {:query => true, :size => per_page * 10})
+       if select
+         articles = ElasticClient.search(title, {:select => true, :size => per_page * 10})
        else
          kol_push_ids = PushArticle.get_push_ids(kol_id)
          #2.1  检索时 需要先根据阅读文章取文章关键字
          text = get_relation_article_text(kol_id)
          #2.2  把文章关键字 去查询
-         articles = ElasticClient.search(text, kol_push_ids, {:size => per_page * 10})
+         articles = ElasticClient.search(text, {:push_list_ids => kol_push_ids, :size => per_page * 10})
        end
      end
      #3. 取出，并把剩下的缓存住
