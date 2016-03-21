@@ -34,7 +34,7 @@ module Articles
      selected_articles = articles.shift(per_page)
      Rails.cache.write("kol_articles_#{kol_id}_#{title}", articles, :expires_in => 1.days)
      #4. 返回取出的文章
-     Rails.logger.elastic.info "=======selected_articles===selected_articles:#{articles.collect{|t| t['id']}}"
+     Rails.logger.elastic.info "=======search_list===selected_articles:#{selected_articles.collect{|t| t['id']}}"
      selected_articles
    end
 
