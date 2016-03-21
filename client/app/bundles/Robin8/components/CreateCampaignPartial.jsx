@@ -2,6 +2,7 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import moment from 'moment';
 
 import "create_activity.css";
 
@@ -13,9 +14,19 @@ import BudgetPartial from './create_campaign/BudgetPartial';
 import createActivity from "raw/create_campaign";
 import beforeUnload from './shared/BeforeUnload';
 
+
 const initCampaign = {
-  budget: 100
+  age: 'all',
+  province: '全部',
+  city: '全部',
+  gender: 'all',
+  budget: 0,
+  per_budget_type: 'click',
+  per_action_budget: 0,
+  start_time: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
+  deadline: moment().add(2, 'days').format('YYYY-MM-DD HH:mm')
 }
+
 const validate = new FormValidate({
   name: { require: true },
   description: { require: true },

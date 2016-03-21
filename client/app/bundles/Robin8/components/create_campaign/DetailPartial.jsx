@@ -73,15 +73,15 @@ export default class DetailPartial extends React.Component {
             </p>
             <div className="sources-check radio">
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="click" defalutValue="转发链接" defaultChecked />
+                <input {...per_budget_type} type="radio" name="action_type" value="click" checked={per_budget_type.value === "click"} />
                 按照发布奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="post" defalutValue="转发链接" />
+                <input {...per_budget_type} type="radio" name="action_type" value="post" checked={per_budget_type.value === "post"} />
                 按照点击奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="cpa" defalutValue="转发链接" />
+                <input {...per_budget_type} type="radio" name="action_type" value="cpa" checked={per_budget_type.value === "cpa"} />
                 按照行动奖励KOL
               </label>
             </div>

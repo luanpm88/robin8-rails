@@ -3,6 +3,19 @@ import ShowError from '../shared/ShowError';
 
 export default class TargetPartial extends React.Component {
 
+  constructor(props, context) {
+    super(props, context);
+    _.bindAll(this, '_initCitySelector');
+  }
+
+  _initCitySelector() {
+    $('.target-city-selector').CitySelector();
+  }
+
+  componentDidMount() {
+    this._initCitySelector()
+  }
+
   render() {
 
     const { message, age, province, city, gender } = this.props
@@ -21,7 +34,7 @@ export default class TargetPartial extends React.Component {
                   <select {...age} className="age-range">
                     <option value = "all">全部</option>
                     <option value = "baby">0-5岁</option>
-                    <option value = "chidren">5-10</option>
+                    <option value = "children">5-10</option>
                     <option value = "young">10-20</option>
                     <option value = "man">20-40</option>
                     <option value = "middle_age">40-60</option>

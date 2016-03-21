@@ -12,39 +12,6 @@ export default function createActivity () {
     appendToParent: '.form-group'
   });
 
-  $('.target-city-selector').CitySelector();
-
-  // 日期控件
-  // bootstrap-datepicker
-  // https://github.com/eternicode/bootstrap-datepicker
-  var now = new Date
-  var start_time = new Date(now.setHours(now.getHours() + 2));
-  var deadline = new Date(now.setDate(now.getDate() + 2));
-
-  var datepickerStartOptions = {
-    ignoreReadonly: true,
-    locale: 'zh-cn',
-    format: 'YYYY-MM-DD HH:mm',
-    defaultDate: start_time
-  }
-
-  var datepickerEndOptions = {
-    ignoreReadonly: true,
-    locale: 'zh-cn',
-    format: 'YYYY-MM-DD HH:mm',
-    useCurrent: false,
-    defaultDate: deadline
-  }
-
-  $('#start-time-datepicker').datetimepicker(datepickerStartOptions);
-  $('#deadline-datepicker').datetimepicker(datepickerEndOptions);
-  $("#start-time-datepicker").on("dp.change", function (e) {
-    $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
-  });
-  $("#deadline-datepicker").on("dp.change", function (e) {
-      $('#start-time-datepicker').data("DateTimePicker").maxDate(e.date);
-  });
-
   // image upload previewer
   $.fn.previewImage = function(options) {
     var previewer = new ImagePreviewer(this, options.uploader);
