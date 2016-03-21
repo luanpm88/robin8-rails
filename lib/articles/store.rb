@@ -43,8 +43,8 @@ module Articles
      Rails.logger.elastic.info "=======get_read_article_text===kol_id:#{kol_id}====relation_ids:#{relation_ids}"
      if relation_ids.size > 0
        articles = ElasticClient.get_text(relation_ids)
-       text = articles.collect{|article| "#{article['text']} #{article['title']} #{article['biz_info']} "}.join(" ")
-       return text
+       text_arr = articles.collect{|article| "#{article['text']} #{article['title']}".split(/\s+/)}.flatten.uniq
+       return text_arr[0,1000].join(" ")
      end
      return " "
    end
