@@ -31,6 +31,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
       if(fetchState === 'success') {
         $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
       }
+      // console.log($$state.toObject().campaign.toObject())
       return $$state;
 
     default:
