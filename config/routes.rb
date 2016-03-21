@@ -89,6 +89,7 @@ Rails.application.routes.draw do
   put '/kols/monetize' => 'kols#update_monetize'
   get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail'
   get '/kols/valid_phone_number'
+  get 'kol_value' => 'kols#kol_value'
 
   # kols
   devise_for :kols, controllers: {

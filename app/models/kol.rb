@@ -433,7 +433,7 @@ class Kol < ActiveRecord::Base
     return if kol_uuid.blank?
     ActiveRecord::Base.transaction do
       kol_id = self.id
-      kol_value = KolInfluenceValue.find_by :kol_uuid, kol_uuid
+      kol_value = KolInfluenceValue.find_by :kol_uuid => kol_uuid
       #sync score
       self.update_column(:influence_score, kol_value.influence_score)    if    kol_value
       self.update_column(:cal_time, kol_value.created_at)                if    kol_value
