@@ -16,7 +16,7 @@ class PushArticle
 
   def self.get_push_ids(kol_id)
     Rails.cache.fetch  kol_push_ids(kol_id) do
-      PushArticle.where(:created_at.gte => 7.days.ago).collect{|t| t.article_id}
+      PushArticle.where(:kol_id => kol_id).where(:created_at.gte => 7.days.ago).collect{|t| t.article_id}
     end
   end
 
