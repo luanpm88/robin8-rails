@@ -14,9 +14,9 @@ export default class DetailPartial extends React.Component {
 
     const { short_url, action_url_identifier } = this.props
 
-    const action_url = $(".action-url").val()
-    if(action_url == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
+    const action_url = this.props.action_url.value
     if(action_url == "") return;
+    if(action_url == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
     const brand_id = this.props.brand.get('id').toString();
     const timestamps = Math.floor(Date.now()).toString();
     const random = Math.floor(Math.random() * 100000).toString();
@@ -51,8 +51,8 @@ export default class DetailPartial extends React.Component {
   }
 
   componentDidMount() {
-    this._initTouchSpin()
-    this._handlePerBudgetInputChange()
+    this._initTouchSpin();
+    this._handlePerBudgetInputChange();
   }
 
   componentWillUnmount() {
@@ -73,15 +73,15 @@ export default class DetailPartial extends React.Component {
             </p>
             <div className="sources-check radio">
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="click" checked={per_budget_type.value === "click"} />
+                <input {...per_budget_type} type="radio" name="action_type" value="click" onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
                 按照发布奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="post" checked={per_budget_type.value === "post"} />
+                <input {...per_budget_type} type="radio" name="action_type" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                 按照点击奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="cpa" checked={per_budget_type.value === "cpa"} />
+                <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
                 按照行动奖励KOL
               </label>
             </div>

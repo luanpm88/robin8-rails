@@ -28,6 +28,8 @@ class CreateCampaignService
     end
 
     @campaign_params.merge!({:status => :unexecute})
+    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
+    @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
 
     begin
       ActiveRecord::Base.transaction do
@@ -36,7 +38,7 @@ class CreateCampaignService
         if is_cpa_campaign?
           action_url = @campaign_params[:campaign_action_url][:action_url]
           short_url = @campaign_params[:campaign_action_url][:short_url]
-          identifier = @campaign_params[:campaign_action_url][:identifier]
+          identifier = @campaign_params[:campaign_action_url][:action_url_identifier]
           @campaign.campaign_action_urls.create!(action_url: action_url, short_url: short_url, identifier: identifier)
         end
 
