@@ -51,7 +51,7 @@ class ArticleAction < ActiveRecord::Base
   end
 
   def share_url
-    "#{Rails.application.secrets.domain}/article/#{self.id}/show"
+    "#{Rails.application.secrets.domain}/articles/#{self.id}/show"
   end
 
   def self.fetch_article_action(id)
