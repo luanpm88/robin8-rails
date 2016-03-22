@@ -6,12 +6,12 @@ module API
           authenticate!
         end
 
-        put 'recal_score' do
-          current_kol.reset_kol_uuid
-          current_kol.reload
-          present :error, 0
-          present :kol_uuid, current_kol.kol_uuid
-        end
+        # put 'recal_score' do
+        #   current_kol.reset_kol_uuid
+        #   current_kol.reload
+        #   present :error, 0
+        #   present :kol_uuid, current_kol.kol_uuid
+        # end
 
         # #用户绑定第三方账号
         # params do

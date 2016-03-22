@@ -40,12 +40,16 @@ class TmpIdentity < ActiveRecord::Base
   end
 
 
-  def self.get_name(kol_uuid)
-    TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.name rescue nil
+  def self.get_name(kol_uuid, kol_id)
+    name = Kol.find(kol_id).name rescue nil
+    name = TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.name rescue nil  if name.blank?
+    name
   end
 
-  def self.get_avatar_url(kol_uuid)
-    TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.avatar_url rescue nil
+  def self.get_avatar_url(kol_uuid, kol_id)
+    avatar_url = Kol.find(kol_id).avatar_url rescue nil
+    avatar_url = TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.avatar_url rescue nil   if avatar_url.blank?
+    avatar_url
   end
 
   private

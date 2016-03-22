@@ -14,8 +14,8 @@ class KolInfluenceValue < ActiveRecord::Base
       kol_value.contact_score +  kol_value.identity_count_score
     kol_value.influence_score = total_score
     kol_value.influence_level = Influence::Value.get_influence_level(total_score)
-    kol_value.name = TmpIdentity.get_name(kol_uuid)
-    kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid)
+    kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
+    kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid, kol_id)
     kol_value.save
     kol_value
   end

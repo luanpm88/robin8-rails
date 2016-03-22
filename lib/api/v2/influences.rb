@@ -4,13 +4,14 @@ module API
       resources :influences do
         get 'start' do
           if current_kol
-            current_kol.reset_kol_uuid
-            kol_uuid = current_kol.kol_uuid
+            kol_uuid = current_kol.get_kol_uuid
+            current_kol.sync_test_info_from_kol(kol_uuid)
           else
             kol_uuid = SecureRandom.hex
           end
           present :error, 0
           present :kol_uuid, kol_uuid
+          present :kol_identities, (current_kol.identities.valid rescue []), with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #第三方账号 价值
