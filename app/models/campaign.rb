@@ -8,6 +8,7 @@ class Campaign < ActiveRecord::Base
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   belongs_to :user
+  has_many :campaign_targets
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
@@ -99,6 +100,10 @@ class Campaign < ActiveRecord::Base
 
   def get_campaign_action_urls
     self.campaign_action_urls
+  end
+
+  def get_campaign_targets
+    self.campaign_targets
   end
 
   def take_budget
@@ -414,7 +419,7 @@ class Campaign < ActiveRecord::Base
 
   #冲刺标签
   def is_sprint
-    self.status == 'executeing' && ((self.deadline - 4.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
+    self.status == 'executing' && ((self.deadline - 4.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
   end
 
   def get_campaign_invite(kol_id)

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import moment from 'moment';
 
 export default class Campaign extends React.Component {
@@ -20,6 +21,11 @@ export default class Campaign extends React.Component {
           <h2 className="activity-title">
             { campaign.get("name") }
           </h2>
+
+          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="btn btn-blue btn-big quick-btn">
+            编辑
+          </Link>
+
           <small className="date">
             { moment(campaign.get("start_time")).format("D.M.YYYY") } 至 { moment(campaign.get("deadline")).format("D.M.YYYY") }
           </small>

@@ -213,12 +213,12 @@ class KolsController < ApplicationController
         return render json: {rucaptcha_not_right: true}
       end
     end
-    
+
     phone_number = params[:phone_number]
     if Rails.env.development?
       ms_client = YunPian::SendRegisterSms.new(phone_number)
       ms_client.send_sms
-      return render json: {}
+      return render json: {code: 0}
     end
 
     if phone_number.blank?
@@ -238,7 +238,7 @@ class KolsController < ApplicationController
       sms_client = YunPian::SendRegisterSms.new(phone_number)
 
       res = sms_client.send_sms  rescue {}
-      Rails.logger.sms_spider.error "send sms code #{res}"    
+      Rails.logger.sms_spider.error "send sms code #{res}"
       render json: res
     end
   end
@@ -262,13 +262,19 @@ class KolsController < ApplicationController
     end
   end
 
+  def kol_value
+    @kol_value  = KolInfluenceValue.find_by :kol_uuid => params[:kol_uuid]
+    @rate = (@kol_value.influence_score.to_i - 350) / (1000 - 350).to_f
+    render :layout =>  false
+  end
+
   private
 
   def sms_request_is_valid_for_login_user?
 
     unless current_kol
       Rails.logger.sms_spider.error "用户没有登录, #{cookies[:_robin8_visitor]}"
-      return false 
+      return false
     end
 
     key = "kol_#{current_kol.id}_send_sms_count"
@@ -298,7 +304,7 @@ class KolsController < ApplicationController
 
     ip_key = "#{request.ip}_visitor_count"
     send_count =  Rails.cache.fetch(ip_key).to_i || 1
-    
+
     if ips && ips.include?(request.ip)
       Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次, 且存在在爬虫黑名单中")
       return false
@@ -311,7 +317,7 @@ class KolsController < ApplicationController
     send_count =  Rails.cache.fetch(key).to_i || 1
     Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "已经尝试#{send_count} 次")
     Rails.cache.write(key, send_count + 1, :expires_in => 360.seconds)
-    
+
     if send_count > 10
       Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封, 已经尝试#{send_count} 次")
       return false

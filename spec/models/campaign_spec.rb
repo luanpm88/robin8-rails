@@ -9,6 +9,7 @@ RSpec.describe Campaign, :type => :model do
   it { is_expected.to validate_presence_of(:per_action_budget) }
   it { is_expected.to validate_presence_of(:start_time) }
   it { is_expected.to validate_presence_of(:deadline) }
+  it { is_expected.to have_many(:campaign_targets) }
 
   let(:brand_1) {FactoryGirl.create(:user, :email => "brand_1@gmail.com")}
   describe "测试 创建campaign 相关逻辑" do

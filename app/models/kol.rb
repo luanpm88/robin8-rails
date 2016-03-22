@@ -434,14 +434,16 @@ class Kol < ActiveRecord::Base
     return if kol_uuid.blank?
     ActiveRecord::Base.transaction do
       kol_id = self.id
+      kol_value = KolInfluenceValue.find_by :kol_uuid => kol_uuid
       #sync score
-      self.update_column(:influence_score, Influence::Value.get_total_score(kol_uuid))
-      self.update_column(:influence_score, Influence::Value.get_cal_time(kol_uuid))
+      self.update_column(:influence_score, kol_value.influence_score)    if    kol_value
+      self.update_column(:cal_time, kol_value.created_at)                if    kol_value
       # create contacts
-      TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
-        if !KolContact.find_by(:kol_id => kol_id, :mobile => tmp_contact.mobile)
-          KolContact.create(:kol_id => kol_id, :name => tmp_contact.name, :mobile => tmp_contact.mobile, :exist => tmp_contact.exist)
-        end
+      tmp_kol_contacts  = TmpKolContact.where(:kol_uuid => kol_uuid)
+      new_mobiles = tmp_kol_contacts.collect{|t| t.mobile} - KolContact.where(:kol_id => kol_id).collect{|t| t.mobile}
+      tmp_kol_contacts.where(:mobile => new_mobiles).each do |tmp_contact|
+        KolContact.create(:kol_id => kol_id, :name => tmp_contact.name, :mobile => tmp_contact.mobile,
+                          :exist => tmp_contact.exist, :invite_status => tmp_contact.invite_status, :invite_at => tmp_contact.invite_at)
       end
 
       # sync identity
@@ -449,7 +451,10 @@ class Kol < ActiveRecord::Base
         identity = Identity.find_by :uid => tmp_identity.uid
         if !identity
           identity = Identity.new
-          identity.attributes = tmp_identity.attributes
+          attrs = tmp_identity.attributes
+          attrs.delete("id")
+          attrs.delete("kol_uuid")
+          identity.attributes = attrs
           identity.kol_id = kol_id
           identity.save
         elsif identity &&  identity.kol_id == self.id  #如果存在，则更新
@@ -457,7 +462,17 @@ class Kol < ActiveRecord::Base
           identity.save
         end
       end
-     end
+
+      # sync influence_item
+      TmpKolInfluenceItem.where(:kol_uuid => kol_uuid).each do |influence_item|
+        kol_influence_item = KolInfluenceItem.find_or_initialize_by :kol_id => kol_id, :item_name => influence_item.item_name
+        kol_influence_item.item_value =  influence_item.item_value
+        kol_influence_item.item_score =  influence_item.item_score
+        kol_influence_item.item_detail_content =  influence_item.item_detail_content
+        kol_influence_item.save
+      end
+    end
+
   end
 
   def reset_kol_uuid

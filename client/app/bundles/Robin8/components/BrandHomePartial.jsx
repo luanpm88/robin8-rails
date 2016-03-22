@@ -1,5 +1,3 @@
-console.log("in BrandHeader");
-
 import React, { PropTypes } from 'react';
 import CampaignList from './brand_home/CampaignList';
 

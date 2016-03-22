@@ -4,10 +4,9 @@ class ArticleAction < ActiveRecord::Base
   counter :redis_click
 
   scope :collect, ->{where(:collect => true)}
+  scope :order_by_status, -> { order("forward desc, collect desc, 'like desc', look desc, created_at desc") }
 
   after_save :update_list, :on => :create
-
-  ChangeThreshold = 5
 
   # 取消喜欢的文章   action: read/collect
   def self.action_from_list(action, kol_id, params )
@@ -39,38 +38,20 @@ class ArticleAction < ActiveRecord::Base
   end
 
   #存储所有action  当前为look
-  def self.get_action_ids(kol_id, action = 'look')
-    Rails.cache.fetch ArticleAction.kol_action_key(kol_id, action)  do
-      articles = ArticleAction.where(:kol_id => kol_id).order('id desc')
-      articles.collect{|t| t.article_id}
-    end
-  end
-
-  #存储所有action   当前为look
-  def self.kol_action_key(kol_id, action = 'look')
-    "kol_#{action}_ids_#{kol_id}"
+  def self.get_relation_ids(kol_id)
+    articles = ArticleAction.where(:kol_id => kol_id).order_by_status.limit(50)
+    articles.collect{|t| t.article_id}
   end
 
   def update_list
     if (self.look_changed? && self.look == true)  || (self.collect_changed? && self.collect == true)
-      # 更新阅读列表
-      append_value(ArticleAction.kol_action_key(kol_id), article_id)
       # 缓重置存的内容
       Articles::Store.reset_kol_articles(kol_id)
     end
-    # if self.read_changed? && self.read == true
-      # count = Rails.cache.increment(ArticleAction.kol_action_key(kol_id, 'change'), 1)
-      # if count > ChangeThreshold
-      #   #1. 清空文章缓存
-      #   Articles::Store.reset_kol_articles(kol_id)
-      #   #2. 清除累积
-      #   Rails.cache.delete(ArticleAction.kol_action_key(kol_id, 'change'))
-      # end
-    # end
   end
 
   def share_url
-    "#{Rails.application.secrets.domain}/article/#{self.id}/show"
+    "#{Rails.application.secrets.domain}/articles/#{self.id}/show"
   end
 
   def self.fetch_article_action(id)

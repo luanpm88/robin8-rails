@@ -114,7 +114,7 @@ module API
 
         #用户绑定第三方账号
         params do
-          requires :provider, type: String, values: ['weibo', 'wechat']
+          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
           requires :token, type: String
           optional :name, type: String
@@ -128,13 +128,19 @@ module API
           optional :verified, :boolean
           optional :refresh_token, :string
           optional :unionid, type: String
+
+          optional :province, type: String
+          optional :city, type: String
+          optional :gender, type: String
+          optional :is_vip, type: Boolean
+          optional :is_yellow_vip, type: Boolean
         end
         post 'identity_bind' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
           identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if params[:unionid]
           if identity.blank?
-            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))
+            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
             kol.update_attribute(:remote_avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar.url.blank?
             present :error, 0

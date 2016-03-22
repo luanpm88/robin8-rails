@@ -4,7 +4,7 @@ module API
       module KolContactEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :name, :mobile, :influence_score
+          expose :name, :mobile, :influence_score, :invite_status
           expose :joined do |contact|
             contact.exist
           end

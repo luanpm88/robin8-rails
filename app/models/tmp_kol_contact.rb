@@ -31,4 +31,19 @@ class TmpKolContact < ActiveRecord::Base
     end
   end
 
+  def self.record_send_invite(kol_uuid,  mobile, kol = nil)
+    if kol
+      kol_contact = KolContact.where(:kol_id => kol.id, :mobile => mobile).first
+      kol_contact.invite_status = true
+      kol_contact.invite_at = Time.now
+      kol_contact.save
+    else
+      tmp_kol_contact = TmpKolContact.where(:kol_uuid => kol_uuid, :mobile => mobile).first
+      tmp_kol_contact.invite_status = true
+      tmp_kol_contact.invite_at = Time.now
+      tmp_kol_contact.save
+    end
+  end
+
+
 end

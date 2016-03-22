@@ -36,14 +36,14 @@ $.fn.CitySelector = function(){
     ["新疆","乌鲁木齐","石河子","克拉玛依","伊犁","巴音郭勒","昌吉","克孜勒苏柯尔克孜","博尔塔拉","吐鲁番","哈密","喀什","和田","阿克苏"],
     ["香港","香港"],
     ["澳门","澳门"],
-    ["全国", "全国"],
+    ["全部", "全部"],
     ["台湾","台北","高雄","台中","台南","屏东","南投","云林","新竹","彰化","苗栗","嘉义","花莲","桃园","宜兰","基隆","台东","金门","马祖","澎湖"],
     ["国外","美国","日本","澳大利亚","德国","英国","韩国","加拿大","其他"],
   ];
 
   function addProvincesOption() {
-    $(_province).html("<option value=''>不限</option>");
-    $(_city).html("<option value=''>不限</option>");
+    $(_province).html("<option value='全部'>全部</option>");
+    $(_city).html("<option value='全部'>全部</option>");
 
     $.each( _citylist, function(i, n){
       $("<option value='" + n[0] + "'>" + n[0] + "</option>").appendTo($(_province));

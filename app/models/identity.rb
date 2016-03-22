@@ -7,7 +7,7 @@ class Identity < ActiveRecord::Base
   scope :from_pc, -> {where(:from_type => 'pc')}
   scope :from_app, -> {where(:from_type => 'app')}
 
-  scope :valid, ->{ where("provider = 'weibo' or (provider='wechat' and from_type='app')")}
+  scope :valid, ->{ where("provider = 'weibo' or provider = 'qq' or  (provider='wechat' and from_type='app')")}
 
 
 
@@ -50,7 +50,7 @@ class Identity < ActiveRecord::Base
                     name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
                     followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
                     registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
-                    kol_id: kol_id,  verified: params[:verified])
+                    kol_id: params[:kol_id],  verified: params[:verified])
   end
 
 
