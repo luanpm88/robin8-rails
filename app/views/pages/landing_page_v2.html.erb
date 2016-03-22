@@ -37,19 +37,19 @@
           <div class="form-group">
             <i class="icon-brand"></i>
             <label>品牌名称</label>
-            <input type="text" class="form-control" name='user[name]' placeholder="品牌名称">
+            <input type="text" class="form-control" name='user[name]' placeholder="品牌名称" required>
 
           </div>
           <div class="form-group">
             <i class="icon-mobile"></i>
             <label>手机</label>
-            <input type="text" class="form-control brand_mobile_number" name='user[mobile_number]' placeholder="输入您的手机">
+            <input type="text" class="form-control brand_mobile_number" name='user[mobile_number]' placeholder="输入您的手机" required>
 
           </div>
           <div class="form-group verify_code_group">
             <i class="icon-verify"></i>
             <label>验证码</label>
-            <input type="text" class="form-control verify_code" name='user[verify_code]' placeholder="输入验证码">
+            <input type="text" class="form-control verify_code" name='user[verify_code]' placeholder="输入验证码" required>
             <div class="verify_code_block">
               <button type='button' class='send_verify_code'>获取验证码</button>
             </div>
@@ -58,7 +58,7 @@
           <div class="form-group">
             <i class="icon-pwd"></i>
             <label>密码</label>
-            <input type="password" class="form-control" name='user[password]' placeholder="设置您的密码">
+            <input type="password" class="form-control" name='user[password]' placeholder="设置您的密码" required>
           </div>
           <button type="submit" class="btn btn-blue btn-block">注册</button>
 
@@ -84,13 +84,13 @@
         <div class="form-group">
           <i class="icon-mobile"></i>
           <label for='user[login]'>手机号</label>
-          <input type="text" class="form-control" name='user[login]' placeholder="您的登录手机号">
+          <input type="text" class="form-control" name='user[login]' placeholder="您的登录手机号" required>
           <span class="what">?</span>
         </div>
         <div class="form-group">
           <i class="icon-pwd"></i>
           <label for='user[password]'>密码</label>
-          <input type="password" class="form-control" name='user[password]' placeholder="登录密码">
+          <input type="password" class="form-control" name='user[password]' placeholder="登录密码" required>
         </div>
         <div class="loginTips">
           <p class='tipsFailed help-block'>
