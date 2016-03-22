@@ -1,2 +1,4 @@
 $('.tips .tipsFailed').show();
+$('.tips .tipsFailed').html('');
+$('.tips .tipsFailed').append("<%= @user.errors.full_messages.first %>")
 $('.tops .tipsFailed').siblings.hide();
