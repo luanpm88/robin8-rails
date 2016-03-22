@@ -29,6 +29,7 @@ module API
           optional :remark, type: String
         end
         post 'apply' do
+          return {:error => 1, :detail => '金额满100方可提现'}  if params[:credits] < 100
           if current_kol.avail_amount > params[:credits] && params[:credits] > 0
             attrs = attributes_for_keys([:credits, :real_name, :alipay_no, :remark])
             withdraw = Withdraw.new(:withdraw_type => 'alipay')
@@ -44,7 +45,7 @@ module API
               error_403!({error: 1, detail: errors_message(withdraw)})
             end
           else
-            return {:error => 1, :detail => '提现金额超出可用余额或提现金额格式不对'}
+            return {:error => 1, :detail => '提现金额超出可用金额'}
           end
         end
       end

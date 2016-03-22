@@ -14,8 +14,14 @@ end
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 
 Rails.application.config.assets.precompile += %w( landing.js landing.css
-  email.css mail-template.css export_stories.css)
+  email.css mail-template.css export_stories.css kol/kol_value.css)
 Rails.application.config.assets.precompile += %w(
   website.css website.js  kol/*.js kol/*.css app/*.js app/*.css)
 
 Rails.application.config.assets.precompile +=  %w(*.woff *.ttf *.svg *.eot)
+
+# react 部分 编译
+Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpack").to_s
+Rails.application.config.assets.precompile += %w( brand-static.css brand-static.js server-bundle.js )
+
+NonStupidDigestAssets.whitelist += [/brand-/]

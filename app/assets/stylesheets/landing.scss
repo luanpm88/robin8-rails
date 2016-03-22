@@ -1,9 +1,26 @@
 /*
  *= require foundation
+ *= require jquery.modal
  *= require app
 */
 
 @media(min-width: 960px) {
+
+	.download-app {
+		margin-top: 12px !important;
+		a {
+			width: 200px !important;
+			text-transform: none !important;
+		}
+		a#iphone-btn {
+			margin-left: 28px !important;
+		}
+	}
+
+	.app-qr-code {
+		width: 200px;
+	}
+
 	.partner .container {
 		max-width: 960px;
 		margin: 0 auto;
@@ -129,6 +146,22 @@
       margin-right: 15px;
       color: #fff;
     }
+
+		.download-app {
+			margin-top: 12px !important;
+			margin-left: 4% !important;
+			a {
+				float: left !important;
+				width: 40% !important;
+				text-transform: none !important;
+				line-height: 28px !important;
+				margin-bottom: 20px !important;
+			}
+			a#iphone-btn {
+				margin-left: 14% !important;
+			}
+
+		}
 
 	.partner .container {
 		max-width: 100%;

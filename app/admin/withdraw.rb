@@ -59,6 +59,13 @@ ActiveAdmin.register Withdraw do
       (link_to resource.kol.id, "/admin/kols/#{resource.kol.id}", :target => "_blank")
     end
 
+    column "total amount" do |resource|
+      resource.kol.amount
+    end
+
+    column "frozen amount" do |resource|
+      resource.kol.frozen_amount
+    end
     column "avail amount" do |resource|
       resource.kol.avail_amount
     end
@@ -66,12 +73,12 @@ ActiveAdmin.register Withdraw do
       resource.kol.mobile_number
     end
 
-    column :withdraw_type
+    # column :withdraw_type
     column :real_name
     column :credits
     column :alipay_no
-    column :bank_name
-    column :bank_no
+    # column :bank_name
+    # column :bank_no
 
     column "status"
     column "operate" do |my_resource|

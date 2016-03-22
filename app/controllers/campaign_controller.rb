@@ -156,14 +156,6 @@ class CampaignController < ApplicationController
     origin_budget = campaign.budget
 
     campaign_params = params.require(:campaign).permit(:name, :url, :description, :budget, :per_action_budget, :per_budget_type, :message, :img_url)
-    if campaign_action_urls = params[:action_url_list]
-
-      campaign.campaign_action_urls.destroy_all
-
-      campaign_action_urls.each do |action_url|
-        campaign.campaign_action_urls.create(action_url: action_url)
-      end
-    end
 
     unless (current_user.avail_amount.to_f + origin_budget.to_f) >= params[:budget].to_f
       render :json => {:status => 'no enough amount!'} and return
@@ -175,6 +167,8 @@ class CampaignController < ApplicationController
       campaign.update_attributes campaign_params
       campaign.reset_campaign origin_budget, params[:budget], params[:per_action_budget]
     end
+
+    update_campaign_action_urls campaign
 
     render json: {:status => :ok}
   rescue
@@ -236,4 +230,23 @@ class CampaignController < ApplicationController
     render json: {:status => 'Cant send test email'}
   end
 
+  private
+  def update_campaign_action_urls campaign
+    return unless campaign.is_cpa?
+    campaign_action_urls = params[:action_url_list].uniq
+
+    old_action_urls = {}
+    campaign.campaign_action_urls.each do |campaign_action_url|
+      old_action_urls[campaign_action_url.action_url] = campaign_action_url
+    end
+
+    campaign_action_urls.each do |action_url|
+      next if old_action_urls.keys.include?(action_url)
+      campaign.campaign_action_urls.create(action_url: action_url)
+    end
+
+    (old_action_urls.keys - campaign_action_urls).each do |action_url|
+      old_action_urls[action_url].delete
+    end
+  end
 end

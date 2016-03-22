@@ -311,6 +311,7 @@ Robin.module 'DashboardKol.Show', (Show, App, Backbone, Marionette, $, _) ->
                 $('.triggerMark').remove()
                 parentThis.upload_screenshot_count_down()
                 parentThis.initQiniuUploader()
+                $('#question_pop').popover({trigger: 'hover'})
           else if data.status == 'needMobile'
             console.log 'need mobile'
             updatedView = new Show.TaskModal

@@ -58,10 +58,9 @@ module API
 
 
         #更换手机
-        #第三方登陆后绑定手机
         params do
           requires :mobile_number, type: Integer, regexp: /\d{11}/
-          requires :code, type: Integer, regexp: /\d{6}/
+          requires :code, type: Integer
         end
         put 'update_mobile' do
           mobile_exist = Kol.find_by(:mobile_number => params[:mobile_number])
@@ -76,7 +75,33 @@ module API
               current_kol.reset_private_token
               present :error, 0
               present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
-              # return {:error => 0, :detail => '更换成功'}
+            end
+          end
+        end
+
+
+        #第三方账号绑定手机号
+        params do
+          requires :mobile_number, type: Integer, regexp: /\d{11}/
+          requires :code, type: Integer
+        end
+        put 'bind_mobile' do
+          if !YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
+            return error_403!({error: 1, detail: '验证码与手机号码不匹配!'})
+          else
+            mobile_kol = Kol.find_by(:mobile_number => params[:mobile_number])
+            # 如果该手机号码在系统存在，此时需要把当前用户的identity 转移到mobil_kol身上，同时把当前用户删除
+            if mobile_kol
+              Identity.where(:kol_id => current_kol.id).update_all(:kol_id => mobile_kol.id)
+              mobile_kol.reset_private_token
+              present :error, 0
+              present :kol, mobile_kol, with: API::V1::Entities::KolEntities::Summary
+            else
+              current_kol.update_column(:mobile_number, params[:mobile_number])
+              current_kol.update_column(:name, params[:mobile_number])    if current_kol.name.blank?
+              current_kol.reset_private_token
+              present :error, 0
+              present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
             end
           end
         end
@@ -84,33 +109,40 @@ module API
         #第三方账号列表
         get 'identities' do
           present :error, 0
-          present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
+          present :identities, current_kol.identities.valid, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #用户绑定第三方账号
         params do
-          requires :provider, type: String, values: ['weibo', 'wechat']
+          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
           requires :token, type: String
           optional :name, type: String
           optional :url, type: String
           optional :avatar_url, type: String
           optional :desc, type: String
-          optional :serial_params, type: JSON
+          optional :serial_params, type: String
+          optional :followers_count, Integer
+          optional :statuses_count, Integer
+          optional :registered_at, DateTime
+          optional :verified, :boolean
+          optional :refresh_token, :string
+          optional :unionid, type: String
+
+          optional :province, type: String
+          optional :city, type: String
+          optional :gender, type: String
+          optional :is_vip, type: Boolean
+          optional :is_yellow_vip, type: Boolean
         end
         post 'identity_bind' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
+          #兼容pc端 wechat
+          identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if params[:unionid]
           if identity.blank?
-            attrs = attributes_for_keys [:provider, :uid, :token, :name, :url, :avatar_url, :desc, :serial_params]
-            identity = Identity.new
-            identity.attributes = attrs
-            identity.kol_id = current_kol.id
-            identity.save
+            Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
-            if params[:avatar_url].present? && kol.avatar.url.blank?
-              kol.remote_avatar_url =  params[:avatar_url]
-              kol.save
-            end
+            kol.update_attribute(:remote_avatar_url, params[:avatar_url])   if params[:avatar_url].present? && current_kol.avatar.url.blank?
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           else

@@ -4,7 +4,7 @@ class CreateArticleComments < ActiveRecord::Migration
       t.text :text
       t.string :type
       t.references :sender, polymorphic: true, index: true
-      t.belongs_to :article, index: true
+      t.belongs_to :articles, index: true
 
       t.timestamps null: false
     end

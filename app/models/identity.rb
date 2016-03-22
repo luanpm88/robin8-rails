@@ -3,8 +3,16 @@ class Identity < ActiveRecord::Base
   belongs_to :kol  # should have used polymorphic association here
   has_many :kol_categories#, -> { unscope(where: :scene)}
   has_many :iptc_categories, -> { unscope(where: :scene)}, :through => :kol_categories
+
+  scope :from_pc, -> {where(:from_type => 'pc')}
+  scope :from_app, -> {where(:from_type => 'app')}
+
+  scope :valid, ->{ where("provider = 'weibo' or provider = 'qq' or  (provider='wechat' and from_type='app')")}
+
+
+
   WxThirdProvider = 'wechat_third'
-  after_save :spider_weibo_data
+  after_save :spider_weibo_data, :get_value_info, :on => :create
 
   scope :provider , -> (provider) {where(:provider => provider)}
 
@@ -37,6 +45,14 @@ class Identity < ActiveRecord::Base
     )
   end
 
+  def self.create_identity_from_app(params)
+    Identity.create(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
+                    name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
+                    followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
+                    registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
+                    kol_id: params[:kol_id],  verified: params[:verified])
+  end
+
 
   def total_tasks
     0
@@ -56,6 +72,25 @@ class Identity < ActiveRecord::Base
     value += 5  if  [edit_forward, origin_publish, forward, origin_comment, partake_activity, panel_discussion,
                     undertake_activity, image_speak,  give_speech].compact.size > 0
     value
+  end
+
+
+  SinaUserServer = 'https://api.weibo.com/2/users/show.json'
+  def get_value_info
+    return if self.provider != 'weibo' || self.registered_at.present?
+    respond_json = RestClient.get SinaUserServer , {:params => {:access_token => self.token, :uid => self.uid}}       rescue ""
+    respond = JSON.parse respond_json    rescue  {"error" => 1}
+    #返回错误
+    if respond["error"]
+      return false;
+    else
+      self.followers_count =  respond["followers_count"]
+      self.statuses_count = respond["statuses_count"]
+      self.registered_at = respond["created_at"]
+      self.verified = respond["verified"]
+      self.serial_params = respond_json
+      self.save
+    end
   end
 
   private

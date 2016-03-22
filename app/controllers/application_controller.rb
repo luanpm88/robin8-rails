@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   include Concerns::BrowserRequest
   before_filter :set_cookies
+  before_filter :set_utm_source
   before_action :set_translations
   before_action :china_redirect
   helper_method :china_instance?
@@ -19,6 +20,11 @@ class ApplicationController < ActionController::Base
   # before_filter :validate_subscription, unless: :devise_controller?
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  def set_utm_source
+    if utm_source = params[:utm_source]
+      cookies['utm_source'] = { value: utm_source, expires: 1.day.from_now }
+    end
+  end
 
   def set_cookies
     cookies[:_robin8_visitor] ||= SecureRandom.hex

@@ -44,6 +44,9 @@ class Kol < ActiveRecord::Base
   mount_uploader :avatar, ImageUploader
 
   has_many :withdraws
+  has_many :article_actions
+
+
 
   def email_required?
     false if self.provider != "signup"
@@ -192,62 +195,65 @@ class Kol < ActiveRecord::Base
     self.withdraw_transactions.sum(:credits)
   end
 
-  def today_income
-    today_post_campaign_income +  today_click_campaign_income
-  end
-
-  def today_post_campaign_income
+  def verifying_income
     income = 0
-    self.campaign_invites.today_approved.includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && !invite.campaign.is_click_type?  )
+    self.campaign_invites.verifying_or_approved.includes(:campaign).each do |invite|
+      if invite.campaign &&  invite.campaign.per_action_budget
+        if invite.campaign.is_post_type?
+          income += invite.campaign.per_action_budget
+        else
+          income += invite.campaign.per_action_budget * invite.get_avail_click  rescue 0
+        end
+      end
     end
     income
   end
 
-  #TODO use sql
-#   select shows.campaign_id from
-#   （
-#   SELECT campaign_id,count(*) as count
-#   FROM `campaign_shows`
-#   WHERE `campaign_shows`.`kol_id` = 81
-# 	AND `campaign_shows`.`status` = '1'
-# 	GROUP BY campaign_id
-# ） as shows
-# left join campaigns
-# on campaigns.id=shows.campaign_id
-# where campaigns.per_action_budget='click'
+  def today_income
+    income_by_date(Date.today)
+  end
 
-  def today_click_campaign_income
+  def income_by_date(date)
+    post_campaign_income(date) +  click_or_action_campaign_income(date)
+  end
+
+  def campaign_count_by_date(date)
+    self.campaign_invites.not_rejected.joins(:campaign).where("campaign_invites.approved_at > '#{date.beginning_of_day}'")
+        .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time < '#{date.end_of_day}'").count
+  end
+
+  def post_campaign_income(date)
+    income = 0
+    self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
+      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && invite.campaign.is_post_type?  )
+    end
+    income
+  end
+
+  def click_or_action_campaign_income(date)
     income = 0
     today_show_hash = {}
-    self.campaign_shows.today.valid.group(:campaign_id).select("campaign_id, count(*) as count").each do |show|
+    self.campaign_shows.by_date(date).valid.group(:campaign_id).select("campaign_id, count(*) as count").each do |show|
       today_show_hash["#{show.campaign_id}"] = show.count
     end
     puts today_show_hash
-    Campaign.click_campaigns.where(:id => today_show_hash.keys ).each do |campaign|
-      income += campaign.per_action_budget * today_show_hash["#{campaign.id}"]  rescue 0
+    self.campaign_invites.not_rejected.includes(:campaign).each do |invite|
+      income += invite.campaign.per_action_budget * today_show_hash["#{invite.campaign.id}"]  rescue 0  if !invite.campaign.is_post_type?
     end
     income
   end
 
+
   # 最近7天的收入情况
   def recent_income
-    _start = Date.today - 7.days
-    _end = Date.today - 1.days
-    transactions_stats_arr = transactions.created_desc.recent(_start,_end)
-      .select("date_format(created_at, '%Y-%m-%d') as created, count(*) as count_all, sum(credits) as total_amount ")
-      .group("date_format(created_at, '%Y-%m-%d')").to_a
-    recent_income = []
+    _start = Date.today - 6.days
+    _end = Date.today
+    _recent_income = []
     (_start.._end).to_a.each do |date|
-      date_stats = transactions_stats_arr.select{|t| t.created == date.to_s}.first
-      if date_stats
-        stats= {:date => date, :total_amount => date_stats.total_amount, :count => date_stats.count_all  }
-      else
-        stats = {:date => date, :total_amount => 0, :count => 0  }
-      end
-      recent_income <<  stats
+      stats= {:date => date, :total_amount => income_by_date(date), :count => campaign_count_by_date(date)  }
+      _recent_income <<  stats
     end
-    recent_income
+    _recent_income
   end
 
   def app_city_label
@@ -352,11 +358,11 @@ class Kol < ActiveRecord::Base
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
       campaign_invite.approved_at = Time.now
       campaign_invite.status = 'approved'
+      campaign_invite.img_status = 'pending'
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       Rails.logger.error "----------share_url:-----#{campaign_invite.share_url}"
       campaign_invite.save
-      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
     end
     campaign_invite
   end
@@ -370,10 +376,10 @@ class Kol < ActiveRecord::Base
     if (campaign_invite && campaign_invite.status == 'running')  || campaign_invite.new_record?
       uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
       campaign_invite.status = 'running'
+      campaign_invite.img_status = 'pending'
       campaign_invite.uuid = uuid
       campaign_invite.share_url = CampaignInvite.generate_share_url(uuid)
       campaign_invite.save
-      campaign_invite.bring_income(campaign,true)    if campaign.is_post_type?
     end
     campaign_invite
   end
@@ -386,6 +392,7 @@ class Kol < ActiveRecord::Base
       campaign_invite.status = 'approved'
       campaign_invite.approved_at = Time.now
       campaign_invite.save
+      campaign_invite.bring_income(campaign_invite.campaign,true)    if campaign_invite.campaign.is_post_type?
       campaign_invite.reload
     else
       nil
@@ -401,20 +408,74 @@ class Kol < ActiveRecord::Base
   end
 
 
-  # # 失败的活动
-  # def rejected_campaigns
-  #   Campaign.joins("left join campaign_invites on campaign_invites.campaign_id=campaigns.id").
-  #     where("campaign_invites.kol_id = '#{self.id}'").
-  #     where("campaigns.id in (#{self.receive_campaign_ids.values.join(',')})").
-  #     where("campaign_invites.status != 'approved' and campaign_invites.status != 'running' and
-  #       campaign_invites.status !='finished' and campaign_invites.status !='settled'")
-  # end
-
   # 已错过的活动       活动状态为finished \settled  且没接
   def missed_campaigns
     approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
     unapproved_campaign_ids = self.receive_campaign_ids.values.map(&:to_i) -  approved_campaign_ids
     Campaign.completed.where(:id => unapproved_campaign_ids)
+  end
+
+  def self.reg_or_sign_in(params)
+    kol = Kol.find_by(mobile_number: params[:mobile_number])
+    if kol.present?
+      kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
+                            device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
+    else
+      kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
+                        app_version: params[:app_version], device_token: params[:device_token],
+                        IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number])
+    end
+    return kol
+  end
+
+  #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中
+  def create_info_from_test_influence(kol_uuid)
+    return if kol_uuid.blank?
+    ActiveRecord::Base.transaction do
+      kol_id = self.id
+      kol_value = KolInfluenceValue.find_by :kol_uuid => kol_uuid
+      #sync score
+      self.update_column(:influence_score, kol_value.influence_score)    if    kol_value
+      self.update_column(:cal_time, kol_value.created_at)                if    kol_value
+      # create contacts
+      tmp_kol_contacts  = TmpKolContact.where(:kol_uuid => kol_uuid)
+      new_mobiles = tmp_kol_contacts.collect{|t| t.mobile} - KolContact.where(:kol_id => kol_id).collect{|t| t.mobile}
+      tmp_kol_contacts.where(:mobile => new_mobiles).each do |tmp_contact|
+        KolContact.create(:kol_id => kol_id, :name => tmp_contact.name, :mobile => tmp_contact.mobile,
+                          :exist => tmp_contact.exist, :invite_status => tmp_contact.invite_status, :invite_at => tmp_contact.invite_at)
+      end
+
+      # sync identity
+      TmpIdentity.where(:kol_uuid => kol_uuid).each do |tmp_identity|
+        identity = Identity.find_by :uid => tmp_identity.uid
+        if !identity
+          identity = Identity.new
+          attrs = tmp_identity.attributes
+          attrs.delete("id")
+          attrs.delete("kol_uuid")
+          identity.attributes = attrs
+          identity.kol_id = kol_id
+          identity.save
+        elsif identity &&  identity.kol_id == self.id  #如果存在，则更新
+          identity.attributes = identity.attributes
+          identity.save
+        end
+      end
+
+      # sync influence_item
+      TmpKolInfluenceItem.where(:kol_uuid => kol_uuid).each do |influence_item|
+        kol_influence_item = KolInfluenceItem.find_or_initialize_by :kol_id => kol_id, :item_name => influence_item.item_name
+        kol_influence_item.item_value =  influence_item.item_value
+        kol_influence_item.item_score =  influence_item.item_score
+        kol_influence_item.item_detail_content =  influence_item.item_detail_content
+        kol_influence_item.save
+      end
+    end
+
+  end
+
+  def reset_kol_uuid
+    self.update_column(:kol_uuid, SecureRandom.hex)
   end
 
 end

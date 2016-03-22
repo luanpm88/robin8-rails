@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Robin8</title>
+  <%= env_stylesheet_link_tag(
+    static: 'brand-static',
+    media: 'all')
+  %>
+
+  <%= env_javascript_include_tag(
+    static: 'brand-static',
+    hot: [
+      'http://localhost:3500/vendor-bundle.js',
+      'http://localhost:3500/app-bundle.js'
+    ])
+  %>
+
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <%= yield %>
+</body>
+</html>

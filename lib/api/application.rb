@@ -22,7 +22,7 @@ module API
       if Rails.env.development? or Rails.env.test?
         puts message
       else
-        logger.info message
+        Rails.logger.info message
       end
       rack_response({'message' => '500 Internal Server Error'}, 500)
     end
@@ -45,5 +45,6 @@ module API
     format :json
     helpers API::ApiHelpers
     mount API::V1::AppBase
+    mount API::V2::AppBase
   end
 end

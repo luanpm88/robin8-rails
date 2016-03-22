@@ -21,7 +21,6 @@ if ENV['china_instance'] == 'Y'
 else
 
 end
-
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
 
