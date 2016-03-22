@@ -97,7 +97,7 @@ class Message < ActiveRecord::Base
   def self.test_campaign(kol_id = 84)
     kol = Kol.find kol_id
     campaign_invite = kol.campaign_invites.last
-    self.new_campaign(campaign_invite.campaign, kol.id)
+    self.new_campaign(campaign_invite.campaign, [kol.id])
   end
 
 

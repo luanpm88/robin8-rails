@@ -5,13 +5,18 @@ module API
         get 'start' do
           if current_kol
             kol_uuid = current_kol.get_kol_uuid
-            current_kol.sync_test_info_from_kol(kol_uuid)
+            current_kol.sync_tmp_identity_from_kol(kol_uuid)
+            kol_identities = TmpIdentity.get_identities(kol_uuid)
+            upload_contacts = current_kol.has_contacts
           else
             kol_uuid = SecureRandom.hex
+            kol_identities = []
+            upload_contacts = false
           end
           present :error, 0
           present :kol_uuid, kol_uuid
-          present :kol_identities, (current_kol.identities.valid rescue []), with: API::V1::Entities::IdentityEntities::Summary
+          present :uploaded_contacts, upload_contacts
+          present :kol_identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #第三方账号 价值
@@ -91,10 +96,9 @@ module API
             contacts = JSON.parse(params[:contacts])
           end
           return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
-          kol_uuid = params[:kol_uuid]
-          TmpKolContact.add_contacts(kol_uuid,contacts)
+          TmpKolContact.add_contacts(params[:kol_uuid],contacts)   if current_kol.blank? || (current_kol.present? && !current_kol.has_contacts)
           present :error, 0
-          present :kol_uuid, kol_uuid
+          present :kol_uuid, params[:kol_uuid]
         end
 
         # 计算总得分
@@ -117,6 +121,7 @@ module API
           requires :kol_uuid, type: String
         end
         get 'rank' do
+          TmpKolContact.update_joined_kols(params[:kol_uuid])
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           if kol_value.kol_id
             joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
@@ -141,7 +146,7 @@ module API
         post 'send_invite' do
           return error_403!({error: 1, detail: '你不能调用该接口'})      if !can_get_code?
           if  Influence::Util.is_mobile?(params[:mobile])
-            invite_content = Emay::TemplateContent.get_invite_sms(TmpIdentity.get_name(params[:kol_uuid]))
+            invite_content = Emay::TemplateContent.get_invite_sms(TmpIdentity.get_name(params[:kol_uuid], current_kol.id))
             Emay::SendSms.to(params[:mobile],invite_content)
             TmpKolContact.record_send_invite(params[:kol_uuid], params[:mobile], current_kol)
             present :error, 0
