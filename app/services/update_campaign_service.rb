@@ -11,8 +11,8 @@ class UpdateCampaignService
   end
 
   def perform
-
     if @update_campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil? or not target_present?
+
       @errors << 'Invalid params or user/campaign!'
       return false
     end
@@ -36,21 +36,27 @@ class UpdateCampaignService
     begin
       ActiveRecord::Base.transaction do
 
-        if campaign_action_urls = @update_campaign_params[:action_url_list]
+        if campaign_action_urls = @update_campaign_params[:campaign_action_url]
           @campaign.campaign_action_urls.destroy_all
 
-          campaign_action_urls.each do |action_url|
-            @campaign.campaign_action_urls.create!(action_url: action_url)
-          end
+          action_url = @update_campaign_params[:campaign_action_url][:action_url]
+          short_url = @update_campaign_params[:campaign_action_url][:short_url]
+          identifier = @update_campaign_params[:campaign_action_url][:action_url_identifier]
+
+          @campaign.campaign_action_urls.create!(action_url: action_url, short_url: short_url, identifier: identifier)
         end
+
         @campaign.campaign_targets.destroy_all
 
         @update_campaign_params[:target].each do |k,v|
           @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
         end
 
-        @campaign.update_attributes(@update_campaign_params.reject {|c| [:action_url_list, :target].include? c })
+
+
+        @campaign.update_attributes(@update_campaign_params.reject {|c| [:campaign_action_url, :target].include? c })
         @campaign.reset_campaign origin_budget, budget, per_action_budget
+
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -77,7 +83,7 @@ class UpdateCampaignService
   end
 
   def any_action_url_present?
-    @update_campaign_params[:action_url_list] and @update_campaign_params[:action_url_list].any?
+    @update_campaign_params[:campaign_action_url]
   end
 
   def target_present?

@@ -86,16 +86,7 @@ export default class DetailPartial extends React.Component {
               </label>
             </div>
 
-            { do
-              {
-                if ( per_budget_type && per_budget_type.value === 'cpa') {
-                  var action_url_style = {display: 'block'}
-                } else {
-                  var action_url_style = {display: 'none'}
-                }
-              }
-            }
-            <div className="action-url-group" style={ action_url_style }>
+            <div className="action-url-group" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>
               <div className="clearfix">
                 <p className="action-url-text">确认链接</p>
                 <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
