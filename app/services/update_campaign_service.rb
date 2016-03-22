@@ -12,7 +12,7 @@ class UpdateCampaignService
 
   def perform
 
-    if @update_campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil?
+    if @update_campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil? or not target_present?
       @errors << 'Invalid params or user/campaign!'
       return false
     end
@@ -43,8 +43,13 @@ class UpdateCampaignService
             @campaign.campaign_action_urls.create!(action_url: action_url)
           end
         end
+        @campaign.campaign_targets.destroy_all
 
-        @campaign.update_attributes(@update_campaign_params.tap {|c| c.delete :action_url_list})
+        @update_campaign_params[:target].each do |k,v|
+          @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
+        end
+
+        @campaign.update_attributes(@update_campaign_params.reject {|c| [:action_url_list, :target].include? c })
         @campaign.reset_campaign origin_budget, budget, per_action_budget
       end
     rescue Exception => e
@@ -73,6 +78,10 @@ class UpdateCampaignService
 
   def any_action_url_present?
     @update_campaign_params[:action_url_list] and @update_campaign_params[:action_url_list].any?
+  end
+
+  def target_present?
+    @update_campaign_params[:target] and [:age, :region, :gender].all? {|k| @update_campaign_params[:target].keys.include? k }
   end
 
 end
