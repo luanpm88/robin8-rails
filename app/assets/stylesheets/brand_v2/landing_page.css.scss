@@ -350,8 +350,8 @@ body {
 }
 .signinup-wrap .form-control {
   padding: 0 50px;
-  height: 72px;
-  text-align: center;
+  height: 70px;
+  text-align: left;
   border: none;
   border-radius: 2px;
   box-shadow: none;
@@ -362,9 +362,27 @@ body {
 .signinup-wrap .form-group:nth-child(2) .form-control {
   border-radius: 0 0 2px 2px;
 }
+.signinup-wrap .verify_code_group {
+  background: #fff;
+  border-radius: 2px;
+}
+.signinup-wrap .verify_code_group .verify_code_block {
+  width: 100px;
+  height: 70px;
+  line-height: 70px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.signinup-wrap .form-group .verify_code {
+  width: 230px;
+}
 .signinup-wrap .icon-email,
 .signinup-wrap .icon-pwd,
-.signinup-wrap .what {
+.signinup-wrap .what,
+.signinup-wrap .icon-brand,
+.signinup-wrap .icon-mobile,
+.signinup-wrap .icon-verify {
   position: absolute;
   left: 18px;
   top: 50%;
@@ -372,13 +390,24 @@ body {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: image-url('signinup_sprites.png');
-  background-repeat: no-repeat;
+}
+.signinup-wrap .icon-brand {
+  background-image: image-url('register_name_icons.png')
+}
+.signinup-wrap .icon-mobile {
+  background-image: image-url('register_phone_icons.png');
+}
+.signinup-wrap .icon-verify {
+  background-image: image-url('register_verification_icons.png');
 }
 .signinup-wrap .icon-email {
+  background-image: image-url('signinup_sprites.png');
+  background-repeat: no-repeat;
   background-position: -1px 0;
 }
 .signinup-wrap .icon-pwd {
+  background-image: image-url('signinup_sprites.png');
+  background-repeat: no-repeat;
   background-position: 0 -24px;
 }
 .signinup-wrap .what {
@@ -390,6 +419,8 @@ body {
   overflow: hidden;
   text-indent: -9999px;
   background-position: 100% 0;
+  background-image: image-url('signinup_sprites.png');
+  background-repeat: no-repeat;
 }
 .social-binding {
   position: relative;
@@ -539,4 +570,60 @@ body {
 }
 #signinupModal .modal-dialog {
   margin-top: 150px;
+}
+.modal-backdrop.in{
+  opacity: 0.8 !important;
+}
+.fade.in {
+  opacity: 0.6;
+}
+.tips p {
+  display: none;
+}
+.loginTips p {
+  display: none;
+}
+.send_verify_code{
+  outline: 0;
+  background: none;
+  border: none;
+}
+.rucaptcha_input {
+  width: 118px !important;height: 32px !important;border: 2px solid #e1eaf6 !important;
+  float: left;
+  border-radius: 0 !important;
+}
+.rucaptcha_tag {
+  width: 67px;height: 30px;float: left;
+  margin-left: 2px;
+}
+.rucaptcha_ok {
+  width: 118px;
+  height: 30px;
+  cursor: pointer;
+  background: #5398e2;
+  display: block;
+  color: #fff;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 2px;
+}
+.rucaptcha_tips {
+  font-size: 11px;color: #d3d3d3;
+}
+.rucaptcha_ok:hover {
+  text-decoration: none;color: #fff;
+}
+.bs-example-modal-sm .modal-content {
+  border-radius: 0 !important;
+  padding: 20px;
+  height: 182px;
+  width: 330px;
+  margin-top: 100%;
+}
+.bs-example-modal-sm .modal-content .close {
+  cursor: pointer;
+  position: relative;
+  right: 8px;
+  top: -3px;
 }
