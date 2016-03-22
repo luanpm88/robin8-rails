@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import moment from 'moment';
 import "brand_activity_detail.css";
+import Basic from './campaign_show/Basic';
 
 export default class ShowActivityPartial extends Component {
   componentDidMount() {
@@ -38,28 +39,6 @@ export default class ShowActivityPartial extends Component {
           <Link to="/brand/">我的主页</Link>
         </li>
       </ol>
-    );
-  }
-
-  render_basic_info(campaign) {
-    return (
-      <div className="brand-activity-card brand-activity-card-detail">
-        <div className="brand-activity-content">
-          <a href="#" className="btn btn-default btn-red btn-line stop-btn">停止</a>
-          <h2 className="activity-title">{ campaign.get("name") }</h2>
-          <small className="date">{ moment(campaign.get("created_at")).format('D.M.YYYY') }</small>
-          <div className="summary">{ campaign.get("desc") }</div>
-          <a href="#" className="link">{ campaign.get("url") }</a>
-          <ul className="stat-info grid-3">
-            <li><span className="txt">时间</span><strong className="stat-num">{ moment(campaign.get("created_at")).format('YYYY.M.D') }-{ moment(campaign.get("deadline ")).format('YYYY.M.D') }</strong></li>
-            <li><span className="txt">保证金</span><strong className="stat-num"><sapn className="symbol">$</sapn>{ campaign.get("per_budget_type") }</strong></li>
-            <li><span className="txt">一次点击</span><strong className="stat-num"><sapn className="symbol">$</sapn>{ campaign.get("per_budget_type") }</strong></li>
-          </ul>
-        </div>
-        <div className="brand-activity-coverphoto pull-left">
-          <img src={ campaign.get("url") } alt={ campaign.get("name") } />
-        </div>
-      </div>
     );
   }
 
@@ -253,7 +232,7 @@ export default class ShowActivityPartial extends Component {
       <div className="wrapper">
         <div className="container">
           { this.render_breadcrumb(campaign) }
-          { this.render_basic_info(campaign) }
+          <Basic {...{campaign}} />
           { this.render_overview(campaign) }
           { this.render_medias(campaign) }
           { this.render_influence(campaign) }
