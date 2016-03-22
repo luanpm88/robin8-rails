@@ -128,7 +128,7 @@ RSpec.describe Brand::V1::CampaignsAPI do
   describe 'PUT /brand_api/v1/campaigns/:id' do
 
     before :each do
-      @update_campaign_params = @campaign.attributes.select {|k,v| CreateCampaignService::PERMIT_PARAMS.include? k.to_sym }.merge({:name => 'new name'})
+      @update_campaign_params = {:name => 'name name', :description => 'desc', :url => 'http://robin8.com', :budget => 1.0, :per_budget_type => 'click', :per_action_budget => 1.0, :start_time => Time.now, :deadline => Time.now.tomorrow, :message => 'msg', :target => {:age => 'all', :region => 'all', :gender => 'all'}}
     end
 
     it 'returns 200' do
@@ -138,7 +138,8 @@ RSpec.describe Brand::V1::CampaignsAPI do
     end
 
     it 'changed campaign' do
-      expect { put "/brand_api/v1/campaigns/#{@campaign.id}", @update_campaign_params }.to change{ @campaign.reload.name }.from(@campaign.name).to(@update_campaign_params[:name])
+      old_name = @campaign.name
+      expect { put "/brand_api/v1/campaigns/#{@campaign.id}", @update_campaign_params }.to change{ @campaign.reload.name }.from(old_name).to(@update_campaign_params[:name])
     end
 
     it 'return errors when no permission' do

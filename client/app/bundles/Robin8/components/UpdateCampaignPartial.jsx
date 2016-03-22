@@ -50,13 +50,15 @@ class UpdateCampaignPartial extends React.Component {
     const { name, description, image, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
     const brand = this.props.brand;
     const { handleSubmit, submitting, invalid } = this.props;
-    const { saveCampaign } = this.props.actions;
+    const { updateCampaign } = this.props.actions;
+
+    const campaign_id = this.props.data.get("campaign").get("id");
 
     return (
       <div className="wrapper">
         <div className="container">
           <div className="creat-activity-wrap">
-            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) } }>
+            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(updateCampaign(campaign_id, this.props.values))(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, image, url }}/>
               <TargetPartial {...{ age, province, city, gender, message }} />
               <BudgetPartial {...{ budget }} />

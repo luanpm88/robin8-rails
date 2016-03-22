@@ -11,7 +11,7 @@ class CreateCampaignService
   end
 
   def perform
-    if @campaign_params.empty? or @user.nil? or not @user.persisted?
+    if @campaign_params.empty? or @user.nil? or not @user.persisted? or not target_present?
       # todo: use I18n(also include blow errors)
       @errors << 'Invalid params or user!'
       return false
@@ -75,6 +75,10 @@ class CreateCampaignService
 
   def any_action_url_present?
     @campaign_params[:campaign_action_url]
+  end
+
+  def target_present?
+    @campaign_params[:target] and [:age, :region, :gender].all? {|k| @campaign_params[:target].keys.include? k }
   end
 
 end

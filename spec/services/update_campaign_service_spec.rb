@@ -5,7 +5,7 @@ RSpec.describe UpdateCampaignService, :type => :service do
   let(:user) { FactoryGirl.create :user }
   let(:campaign) { FactoryGirl.create :cpa_campaign, user: user }
   let(:update_campaign_params) do
-    { :name => 'new_campaign', :description => 'desc', :url => 'http://robin8.net', :budget => 2, :per_budget_type => 'cpa', :per_action_budget => 0.1, :start_time => Time.now, :deadline => Time.now.tomorrow, :message => 'Message', :action_url_list => ['http://robin8.com'] }
+    { :name => 'new_campaign', :description => 'desc', :url => 'http://robin8.net', :budget => 2, :per_budget_type => 'cpa', :per_action_budget => 0.1, :start_time => Time.now, :deadline => Time.now.tomorrow, :message => 'Message', :action_url_list => ['http://robin8.com'], :target => {:age => 'all', :region => 'all', :gender => 'all'} }
   end
 
   context 'when perform success' do

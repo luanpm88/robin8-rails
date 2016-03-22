@@ -4,7 +4,7 @@ RSpec.describe CreateCampaignService, :type => :service do
 
   let(:user) { FactoryGirl.create :user }
   let(:campaign_params) do
-    {:name => 'Campaign', :description => 'desc', :url => 'http://robin8.net', :budget => 2, :per_budget_type => 'click', :per_action_budget => 0.1, :start_time => Time.now, :deadline => Time.now.tomorrow, :message => 'Message'}
+    {:name => 'Campaign', :description => 'desc', :url => 'http://robin8.net', :budget => 2, :per_budget_type => 'click', :per_action_budget => 0.1, :start_time => Time.now, :deadline => Time.now.tomorrow, :message => 'Message', :target => {:age => 'all', :region => 'all', :gender => 'all'}}
   end
 
   context 'when perform success' do
@@ -73,6 +73,15 @@ RSpec.describe CreateCampaignService, :type => :service do
 
         expect(service.perform).to be_falsy
         expect(service.errors).to be_include 'Invalid params or user!'
+      end
+    end
+
+    context 'when target absent' do
+      it 'returns invalid params or user error' do
+        service = CreateCampaignService.new user, campaign_params.reject{|k| k == :target}
+
+        expect(service.perform).to be_falsy
+        expect(service.first_error_message).to eq 'Invalid params or user!'
       end
     end
 
