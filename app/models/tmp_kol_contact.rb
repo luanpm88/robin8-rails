@@ -4,17 +4,14 @@ class TmpKolContact < ActiveRecord::Base
   scope :unjoined, -> {where(:exist => false)}
 
   def self.add_contacts(kol_uuid,contacts)
-    tmp_kol_contacts = TmpKolContact.where(:kol_uuid => kol_uuid)
+    TmpKolContact.where(:kol_uuid => kol_uuid).delete_all
     TmpKolContact.transaction do
       contacts.each do |contact|
-        tmp_contact =  tmp_kol_contacts.find_by(:mobile => contact['mobile'])
-        tmp_contact = TmpKolContact.new(:kol_uuid => kol_uuid, :mobile => contact['mobile'])  if tmp_contact.blank?
-        tmp_contact.name =  contact["name"]
+        tmp_contact = TmpKolContact.new(:kol_uuid => kol_uuid, :mobile => contact['mobile'], :name => contact["name"])
         tmp_contact.save(:validate => false)
       end
     end
     mobiles = TmpKolContact.where(:kol_uuid => kol_uuid).collect{|t| t.mobile}
-    update_joined_kols(kol_uuid, mobiles)
     # 报道存在联系人
     Influence::Contact.init_contact(kol_uuid)
     # 计算联系人价值

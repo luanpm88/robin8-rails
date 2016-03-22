@@ -47,7 +47,7 @@ class TmpIdentity < ActiveRecord::Base
   end
 
   def self.get_avatar_url(kol_uuid, kol_id)
-    avatar_url = Kol.find(kol_id).avatar_url rescue nil
+    avatar_url = Kol.find(kol_id).avatar.url rescue nil
     avatar_url = TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.avatar_url rescue nil   if avatar_url.blank?
     avatar_url
   end

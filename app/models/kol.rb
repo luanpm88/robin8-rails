@@ -407,7 +407,6 @@ class Kol < ActiveRecord::Base
     campaigns
   end
 
-
   # 已错过的活动       活动状态为finished \settled  且没接
   def missed_campaigns
     approved_campaign_ids = CampaignInvite.where(:kol_id => self.id).where("status != 'running'").collect{|t| t.campaign_id}
@@ -439,15 +438,10 @@ class Kol < ActiveRecord::Base
       self.update_column(:influence_score, kol_value.influence_score)    if    kol_value
       self.update_column(:cal_time, kol_value.updated_at)                if    kol_value
       # sync contacts
-      kol_contacts = KolContact.where(:kol_id => kol_id)
+      KolContact.where(:kol_id => kol_id).delete_all
       TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
-        contact =  kol_contacts.find_by(:kol_uuid => kol_uuid, :mobile => tmp_contact.mobile)
-        contact = KolContact.new(:kol_uuid => kol_uuid, :mobile => tmp_contact.mobile)  if contact.blank?
-        contact.name =  tmp_contact.name
-        contact.exist =  tmp_contact.exist
-        contact.invite_status =  tmp_contact.invite_status
-        contact.invite_at =  tmp_contact.invite_at
-        contact.kol_id = kol_id
+        contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
+                                  :invite_status => tmp_contact.invite_status, invite_at =>  tmp_contact.invite_at)
         contact.save(:validate => false)
       end
 
@@ -467,31 +461,30 @@ class Kol < ActiveRecord::Base
     end
   end
 
-
   def get_kol_uuid
     self.update_column(:kol_uuid, SecureRandom.hex)   if self.kol_uuid.blank?
     self.kol_uuid
   end
 
-  def sync_test_info_from_kol(kol_uuid)
+  def sync_tmp_identity_from_kol(kol_uuid)
     Rails.logger.info "--create_test_info_from_kol---#{kol_uuid}---"
     return if kol_uuid.blank?
     ActiveRecord::Base.transaction do
-      # sync to tmp_identity
       tmp_uids = TmpIdentity.where(:kol_uuid => kol_uuid).collect{|t| t.uid }      rescue []
-      uids = TmpIdentity.where(:kol_uuid => kol_uuid).collect{|t| t.uid }           rescue []
-      Identity.where(:uid => uids - tmp_uids).each do |identity|
+      new_uids = self.identities.collect{|t| t.uid }           rescue []
+      Identity.where(:uid => new_uids - tmp_uids).each do |identity|
         tmp_identity = TmpIdentity.new(:provider => identity.provider, :uid => identity.uid, :name => identity.name,
                                        :avatar_url => identity.avatar_url, :verified => identity.verified, :registered_at => identity.registered_at,
                                        score: identity.score, followers_count: identity.followers_count,  friends_count: identity.friends_count,
-                                       statuses_count: identity.statuses_count
-                                        )
-        tmp_identity.attributes = attrs
-        tmp_identity.kol_uuid = kol_uuid
+                                       statuses_count: identity.statuses_count, kol_uuid:  kol_uuid)
         tmp_identity.save
       end
 
     end
+  end
+
+  def has_contacts
+    KolContact.where(:kol_id => self.id).count > 0
   end
 
 end
