@@ -430,19 +430,25 @@ class Kol < ActiveRecord::Base
 
   #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中
   def create_info_from_test_influence(kol_uuid)
+    Rails.logger.info "--create_info_from_test_influence---#{kol_uuid}---"
     return if kol_uuid.blank?
     ActiveRecord::Base.transaction do
       kol_id = self.id
       kol_value = KolInfluenceValue.find_by :kol_uuid => kol_uuid
       #sync score
       self.update_column(:influence_score, kol_value.influence_score)    if    kol_value
-      self.update_column(:cal_time, kol_value.created_at)                if    kol_value
-      # create contacts
-      tmp_kol_contacts  = TmpKolContact.where(:kol_uuid => kol_uuid)
-      new_mobiles = tmp_kol_contacts.collect{|t| t.mobile} - KolContact.where(:kol_id => kol_id).collect{|t| t.mobile}
-      tmp_kol_contacts.where(:mobile => new_mobiles).each do |tmp_contact|
-        KolContact.create(:kol_id => kol_id, :name => tmp_contact.name, :mobile => tmp_contact.mobile,
-                          :exist => tmp_contact.exist, :invite_status => tmp_contact.invite_status, :invite_at => tmp_contact.invite_at)
+      self.update_column(:cal_time, kol_value.updated_at)                if    kol_value
+      # sync contacts
+      kol_contacts = KolContact.where(:kol_id => kol_id)
+      TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
+        contact =  kol_contacts.find_by(:kol_uuid => kol_uuid, :mobile => tmp_contact.mobile)
+        contact = KolContact.new(:kol_uuid => kol_uuid, :mobile => tmp_contact.mobile)  if contact.blank?
+        contact.name =  tmp_contact.name
+        contact.exist =  tmp_contact.exist
+        contact.invite_status =  tmp_contact.invite_status
+        contact.invite_at =  tmp_contact.invite_at
+        contact.kol_id = kol_id
+        contact.save(:validate => false)
       end
 
       # sync identity
@@ -456,26 +462,36 @@ class Kol < ActiveRecord::Base
           identity.attributes = attrs
           identity.kol_id = kol_id
           identity.save
-        elsif identity &&  identity.kol_id == self.id  #如果存在，则更新
-          identity.attributes = identity.attributes
-          identity.save
         end
       end
-
-      # sync influence_item
-      TmpKolInfluenceItem.where(:kol_uuid => kol_uuid).each do |influence_item|
-        kol_influence_item = KolInfluenceItem.find_or_initialize_by :kol_id => kol_id, :item_name => influence_item.item_name
-        kol_influence_item.item_value =  influence_item.item_value
-        kol_influence_item.item_score =  influence_item.item_score
-        kol_influence_item.item_detail_content =  influence_item.item_detail_content
-        kol_influence_item.save
-      end
     end
-
   end
 
-  def reset_kol_uuid
-    self.update_column(:kol_uuid, SecureRandom.hex)
+
+  def get_kol_uuid
+    self.update_column(:kol_uuid, SecureRandom.hex)   if self.kol_uuid.blank?
+    self.kol_uuid
+  end
+
+  def sync_test_info_from_kol(kol_uuid)
+    Rails.logger.info "--create_test_info_from_kol---#{kol_uuid}---"
+    return if kol_uuid.blank?
+    ActiveRecord::Base.transaction do
+      # sync to tmp_identity
+      tmp_uids = TmpIdentity.where(:kol_uuid => kol_uuid).collect{|t| t.uid }      rescue []
+      uids = TmpIdentity.where(:kol_uuid => kol_uuid).collect{|t| t.uid }           rescue []
+      Identity.where(:uid => uids - tmp_uids).each do |identity|
+        tmp_identity = TmpIdentity.new(:provider => identity.provider, :uid => identity.uid, :name => identity.name,
+                                       :avatar_url => identity.avatar_url, :verified => identity.verified, :registered_at => identity.registered_at,
+                                       score: identity.score, followers_count: identity.followers_count,  friends_count: identity.friends_count,
+                                       statuses_count: identity.statuses_count
+                                        )
+        tmp_identity.attributes = attrs
+        tmp_identity.kol_uuid = kol_uuid
+        tmp_identity.save
+      end
+
+    end
   end
 
 end
