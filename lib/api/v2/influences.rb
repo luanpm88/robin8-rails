@@ -117,7 +117,12 @@ module API
         end
         get 'rank' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-          joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
+          if kol_value.kol_id
+            joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
+          else
+            joined_contacts = KolContact.joined.where(:kol_id => kol_value.kol_id)
+            joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])      if joined_contacts.size == 0  #如果用户还没迁移过去
+          end
           rank_index = joined_contacts.where("influence_score > '#{kol_value.influence_score}'").count   + 1
           contacts = TmpKolContact.where(:kol_uuid => params[:kol_uuid])
           present :error, 0
