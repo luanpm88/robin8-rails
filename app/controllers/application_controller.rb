@@ -73,7 +73,10 @@ class ApplicationController < ActionController::Base
     end
     @l ||= Localization.new
     @l.locale = locale
-    @phrases ||=  JSON.parse(@l.store.get(locale))['application']
+
+    if @l.store.get(locale)
+      @phrases ||=  JSON.parse(@l.store.get(locale))['application']
+    end
     @en_phrases ||=  JSON.parse(@l.store.get("en"))['application']
   end
 

@@ -5,7 +5,7 @@ ActiveAdmin.register_page "Screenshot" do
     kols = []
     timeline = Campaign::SettleWaitTimeForBrand
     sum = CampaignInvite.joins(:campaign, :kol).where("screenshot != ? AND img_status = ? AND (campaign_invites.status = ? OR campaign_invites.status = ?) AND campaigns.deadline > ?", "", "pending", "approved", "finished", Time.now-timeline).count
-    @campaign_invites = CampaignInvite.joins(:campaign, :kol).where("screenshot != ? AND img_status = ? AND (campaign_invites.status = ? OR campaign_invites.status = ?) AND campaigns.deadline > ?", "", "pending", "approved", "finished", Time.now-timeline).limit(40)
+    @campaign_invites = CampaignInvite.joins(:campaign, :kol).where.not(:screenshot => "").where(:img_status => :pending).where(:status => ["approved", "finished"]).where("campaigns.deadline > ?", Time.now-timeline)
     count = @campaign_invites.count
     count.times do |i|
       campaigns << @campaign_invites[i].campaign
