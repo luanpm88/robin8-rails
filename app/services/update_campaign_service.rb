@@ -33,26 +33,14 @@ class UpdateCampaignService
       return false
     end
 
+    @update_campaign_params[:start_time] = @update_campaign_params[:start_time].to_formatted_s(:db)
+    @update_campaign_params[:deadline] = @update_campaign_params[:deadline].to_formatted_s(:db)
+
     begin
       ActiveRecord::Base.transaction do
 
-        if campaign_action_urls = @update_campaign_params[:campaign_action_url]
-          @campaign.campaign_action_urls.destroy_all
-
-          action_url = @update_campaign_params[:campaign_action_url][:action_url]
-          short_url = @update_campaign_params[:campaign_action_url][:short_url]
-          identifier = @update_campaign_params[:campaign_action_url][:action_url_identifier]
-
-          @campaign.campaign_action_urls.create!(action_url: action_url, short_url: short_url, identifier: identifier)
-        end
-
-        @campaign.campaign_targets.destroy_all
-
-        @update_campaign_params[:target].each do |k,v|
-          @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
-        end
-
-
+        update_campaign_action_urls
+        update_campaign_targets
 
         @campaign.update_attributes(@update_campaign_params.reject {|c| [:campaign_action_url, :target].include? c })
         @campaign.reset_campaign origin_budget, budget, per_action_budget
@@ -88,6 +76,30 @@ class UpdateCampaignService
 
   def target_present?
     @update_campaign_params[:target] and [:age, :region, :gender].all? {|k| @update_campaign_params[:target].keys.include? k }
+  end
+
+  def update_campaign_action_urls
+    if campaign.per_budget_type == 'cpa' && @update_campaign_params[:per_budget_type] != 'cpa'
+      campaign.campaign_action_urls.destroy_all and return
+    end
+
+    if (campaign_action_urls = @update_campaign_params[:campaign_action_url]) && @update_campaign_params[:per_budget_type] == 'cpa'
+      @campaign.campaign_action_urls.destroy_all
+
+      action_url = campaign_action_urls[:action_url]
+      short_url = campaign_action_urls[:short_url]
+      identifier = campaign_action_urls[:action_url_identifier]
+
+      @campaign.campaign_action_urls.create!(action_url: action_url, short_url: short_url, identifier: identifier)
+    end
+  end
+
+  def update_campaign_targets
+    @campaign.campaign_targets.destroy_all
+
+    @update_campaign_params[:target].each do |k,v|
+      @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
+    end
   end
 
 end
