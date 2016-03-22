@@ -123,8 +123,9 @@ end
 #   "query": {
 #     "bool": {
 #        "filter": [
-#         { "term":  { "chosen": "t" }}
-#       ]
+#           { "term":  { "chosen": "t" }},
+#           { "range": { "publish_date": { "gte": "2016-03-21" }}}
+#        ]
 #     }
 #   }
 # }'
