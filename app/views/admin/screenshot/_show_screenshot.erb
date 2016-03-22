@@ -1,7 +1,11 @@
 <div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
 
+
 <div>
-  <div style="font-size: 45px">截图总数: <%= locals[:sum] %></div>
+  <div style="font-size: 45px">截图总数: <%= locals[:sum] %>
+    <button class="choose-all">全选</button>
+    <button class="revert-all">反选</button>
+  </div>
   <% count = locals[:count] %>
   <% kols = locals[:kols] %>
   <% campaigns = locals[:campaigns] %>
@@ -32,14 +36,18 @@
   }
 
   .item img {
-    width: 300px;
-    height: 400px;
+    width: 250px;
+    height: 300px;
   }
 
   .clearfix {
     clear: both;
     padding-top: 80px;
     margin-left: 400px;
+  }
+
+  .choose-all, .revert-all {
+    width: 150px;
   }
 
   button {
@@ -55,6 +63,23 @@
 
 <script>
 $(function(){
+
+  $('.choose-all').click(function(){
+    $(':checkbox').each(function(){
+      this.checked = true;
+    });
+  })
+
+  $('.revert-all').click(function(){
+    $(':checkbox').each(function(){
+      if(this.checked == true) {
+        this.checked = false;
+      } else {
+        this.checked = true;
+      }
+    });
+  })
+
   var ids = new Array();
   $(".agree").click(function(){
     $("input[name ='campaign_invites_ids[]']:checked").each(function(){

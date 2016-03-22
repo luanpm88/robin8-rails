@@ -1,6 +1,41 @@
 import React from 'react';
+import moment from 'moment';
 
 export default class DatePartial extends React.Component {
+
+  constructor(props, context) {
+    super(props, context);
+    _.bindAll(this, '_initDateTimePicker')
+  }
+
+  _initDateTimePicker() {
+
+    const datepickerStartOptions = {
+      ignoreReadonly: true,
+      locale: 'zh-cn',
+      format: 'YYYY-MM-DD HH:mm',
+    }
+
+    const datepickerEndOptions = {
+      ignoreReadonly: true,
+      locale: 'zh-cn',
+      format: 'YYYY-MM-DD HH:mm',
+      useCurrent: false,
+    }
+
+    $('#start-time-datepicker').datetimepicker(datepickerStartOptions);
+    $('#deadline-datepicker').datetimepicker(datepickerEndOptions);
+    $("#start-time-datepicker").on("dp.change", function (e) {
+      $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
+    });
+    $("#deadline-datepicker").on("dp.change", function (e) {
+        $('#start-time-datepicker').data("DateTimePicker").maxDate(e.date);
+    });
+  }
+
+  componentDidMount() {
+    this._initDateTimePicker();
+  }
 
   render() {
 

@@ -87,6 +87,10 @@ RSpec.describe Brand::V1::CampaignsAPI do
       expect { post '/brand_api/v1/campaigns', campaign_params }.to change(Campaign, :count).by(1)
     end
 
+    it 'created campaign target' do
+      expect { post '/brand_api/v1/campaigns', campaign_params }.to change(CampaignTarget, :count).by(3)
+    end
+
     it 'returns 400 for params validation failed' do
       campaign_params.delete :per_action_budget
       post '/brand_api/v1/campaigns', campaign_params
@@ -107,6 +111,18 @@ RSpec.describe Brand::V1::CampaignsAPI do
       }
       expect(response.body).to match_json_expression pattern
     end
+
+    it 'returns error when gender not in %w(all, male, female)' do
+      post '/brand_api/v1/campaigns', campaign_params.merge(:target => {:gender => 'invalid'})
+
+      pattern = {
+        error: 'target[gender] does not have a valid value'
+      }
+      expect(response.status).to eq 400
+      expect(response.body).to match_json_expression pattern
+    end
+
+    it 'target[age/region/gender] have default value'
   end
 
   describe 'PUT /brand_api/v1/campaigns/:id' do

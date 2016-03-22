@@ -19,6 +19,9 @@ class PagesController < ApplicationController
     elsif user_signed_in?
       render "home", :layout => 'application'
     elsif kol_signed_in?
+
+      render "landing_page", :layout => 'landing' and return
+
       if current_kol.confirmed_at == nil && current_kol.provider == 'signup'
         flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
       end
@@ -35,7 +38,7 @@ class PagesController < ApplicationController
 
       render "home", :layout => 'kol'
     else
-      render "landing_page", :layout => 'landing'
+      render 'landing_page_v2', :layout => 'brand_v2'
     end
   end
 

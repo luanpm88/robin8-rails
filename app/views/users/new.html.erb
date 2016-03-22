@@ -17,7 +17,7 @@
             <label>
               <%=f.email_field :email,:placeholder=>@l.t('register.email_placeholder'),"data-validation"=>"required",
                                "data-validation-error-msg"=> @l.t('register.messages.email_blank'),"data-validation"=>"email"%>
-              <!-- <input type="email"  name="email" placeholder="Email" required /> -->
+              <input type="email"  name="email" placeholder="Email" required /> 
             </label>
             <label>
               <%=f.text_field :first_name,:placeholder=>@l.t('register.first_name_placeholder'),"data-validation"=>"required",
@@ -83,12 +83,7 @@
               <%=f.password_field :password,:placeholder=>@l.t('register.password_placeholder'),"data-validation"=>"length", "data-validation-length"=>"min8",
                                   "data-validation-error-msg"=> @l.t('register.messages.pass_invalid')%>
             </label>
-            <p class="agree"> <a href="/privacy_policy"><%= @l.t('register.agree_terms')%></a>.
-            <% if request.location && request.location.country.to_s == "China" %>
-              <p class="kols"><%= @l.t('register.kol_signup')%> <a href="/kols/new"><%= @l.t('register.here')%></a>
-            <% else %>
-              <p class="kols"><%= @l.t('register.inf_signup')%> <a href="/kols/new"><%= @l.t('register.here')%></a>
-            <% end %>
+            <p class="agree"> <a href="/privacy_policy"><%= @l.t('register.agree_terms')%></a>
 
             <div class="errorwarning">
               <p>Please fill out all required fields</p>

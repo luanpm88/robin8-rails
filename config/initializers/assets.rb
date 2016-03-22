@@ -16,7 +16,7 @@ end
 Rails.application.config.assets.precompile += %w( landing.js landing.css
   email.css mail-template.css export_stories.css kol/kol_value.css)
 Rails.application.config.assets.precompile += %w(
-  website.css website.js  kol/*.js kol/*.css app/*.js app/*.css)
+  website.css website.js  kol/*.js kol/*.css app/*.js app/*.css brand_v2.css brand_v2.js)
 
 Rails.application.config.assets.precompile +=  %w(*.woff *.ttf *.svg *.eot)
 
