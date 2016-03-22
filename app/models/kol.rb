@@ -249,6 +249,7 @@ class Kol < ActiveRecord::Base
     _start = Date.today - 6.days
     _end = Date.today
     _recent_income = []
+
     (_start.._end).to_a.each do |date|
       stats= {:date => date, :total_amount => income_by_date(date), :count => campaign_count_by_date(date)  }
       _recent_income <<  stats

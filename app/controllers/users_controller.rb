@@ -26,6 +26,12 @@ class UsersController < ApplicationController
       user_params[:mobile_number].strip!      rescue nil
     end
     @user = User.new(user_params)
+
+    if utm_source = cookies['utm_source']
+      @user.utm_source = utm_source
+      cookies.delete 'utm_source'
+    end
+
     if verify_code != params["user"]["verify_code"]
       flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
     elsif @user.valid?
