@@ -348,6 +348,14 @@ class User < ActiveRecord::Base
     return self.where("mobile_number" => mobile_number).present?
   end
 
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
+  end
+
   private
 
     def needed_user

@@ -1,27 +1,32 @@
 import React from 'react';
-import _ from 'lodash';
 
 export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, '_fetchShortUrl');
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange']);
   }
 
 
   _fetchShortUrl(e) {
+
     e.preventDefault()
 
-    const action_url = $(".action-url").val()
-    const brand_id = this.props.brand_id.toString();
+    const { short_url, action_url_identifier } = this.props
+
+    const action_url = this.props.action_url.value
+    if(action_url == "") return;
+    if(action_url == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
+    const brand_id = this.props.brand.get('id').toString();
     const timestamps = Math.floor(Date.now()).toString();
     const random = Math.floor(Math.random() * 100000).toString();
     const identifier = brand_id + timestamps + random
     promise: fetch( `/brand_api/v1/campaigns/short_url?url=${action_url}&identifier=${identifier}`, { credentials: 'include' })
       .then(function(response) {
         response.json().then(function(data){
-          $(".action-short-url").val(data);
-          $(".action_url_identifier").val(identifier);
+          short_url.onChange(data);
+          action_url_identifier.onChange(identifier);
+          $(".action-url").attr("data-origin-url", action_url);
         })
       },
       function(error){
@@ -30,19 +35,24 @@ export default class DetailPartial extends React.Component {
     )
   }
 
-  componentDidMount() {
-    // 推广预算
-    // bootstrap-touchspin
-    // https://github.com/istvan-ujjmeszaros/bootstrap-touchspin
-    const { onChange } = this.props.per_action_budget;
-
-    $('.spinner-input').TouchSpin({
+  _initTouchSpin() {
+    $('.per-budget-input').TouchSpin({
       min: 0,
       max: 10000000,
       prefix: '￥'
-    }).on('change', function(event) {
+    })
+  }
+
+  _handlePerBudgetInputChange() {
+    const { onChange } = this.props.per_action_budget;
+    $('.per-budget-input').change(function() {
       onChange($(this).val());
-    });
+    })
+  }
+
+  componentDidMount() {
+    this._initTouchSpin();
+    this._handlePerBudgetInputChange();
   }
 
   componentWillUnmount() {
@@ -50,9 +60,7 @@ export default class DetailPartial extends React.Component {
   }
 
   render() {
-
     const { per_budget_type, action_url, action_url_identifier, short_url, per_action_budget } = this.props
-
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
@@ -65,23 +73,32 @@ export default class DetailPartial extends React.Component {
             </p>
             <div className="sources-check radio">
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="click" defalutValue="转发链接" defaultChecked />
+                <input {...per_budget_type} type="radio" name="action_type" value="click" onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
                 按照发布奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="post" defalutValue="转发链接" />
+                <input {...per_budget_type} type="radio" name="action_type" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                 按照点击奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="action" defalutValue="转发链接" />
+                <input {...per_budget_type} type="radio" name="action_type" value="cpa" onChange={per_budget_type.onChange} checked={per_budget_type.value === "cpa"} />
                 按照行动奖励KOL
               </label>
             </div>
 
-            <div className="action-url-group" style={{display: 'none'}}>
+            { do
+              {
+                if ( per_budget_type && per_budget_type.value === 'cpa') {
+                  var action_url_style = {display: 'block'}
+                } else {
+                  var action_url_style = {display: 'none'}
+                }
+              }
+            }
+            <div className="action-url-group" style={ action_url_style }>
               <div className="clearfix">
                 <p className="action-url-text">确认链接</p>
-                <input {...action_url} type="text" className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+                <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
               </div>
               <div className="clearfix">
                 <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl}>生成链接</button>

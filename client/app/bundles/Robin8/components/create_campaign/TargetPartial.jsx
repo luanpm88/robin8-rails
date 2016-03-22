@@ -3,9 +3,22 @@ import ShowError from '../shared/ShowError';
 
 export default class TargetPartial extends React.Component {
 
+  constructor(props, context) {
+    super(props, context);
+    _.bindAll(this, '_initCitySelector');
+  }
+
+  _initCitySelector() {
+    $('.target-city-selector').CitySelector();
+  }
+
+  componentDidMount() {
+    this._initCitySelector()
+  }
+
   render() {
 
-    const { message, age, province, city, sex } = this.props
+    const { message, age, province, city, gender } = this.props
 
     return (
       <div className="creat-activity-form creat-target">
@@ -21,7 +34,7 @@ export default class TargetPartial extends React.Component {
                   <select {...age} className="age-range">
                     <option value = "all">全部</option>
                     <option value = "baby">0-5岁</option>
-                    <option value = "chidren">5-10</option>
+                    <option value = "children">5-10</option>
                     <option value = "young">10-20</option>
                     <option value = "man">20-40</option>
                     <option value = "middle_age">40-60</option>
@@ -36,10 +49,10 @@ export default class TargetPartial extends React.Component {
                  <select {...city} className="city"></select>
                 </div>
               </div>
-              <div className="target-sex clearfix">
+              <div className="target-gender clearfix">
                 <label>性别</label>
-                <div className="target-sex-selector">
-                  <select {...sex} className="sex" >
+                <div className="target-gender-selector">
+                  <select {...gender} className="gender" >
                     <option value ="all">全部</option>
                     <option value ="male">男</option>
                     <option value ="female">女</option>

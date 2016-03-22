@@ -42,7 +42,17 @@ module Brand
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
-          optional :action_url_list, type: String
+          requires :target, type: Hash do
+            requires :age, type:String
+            requires :region, type:String
+            requires :gender, type:String
+          end
+
+          optional :campaign_action_url, type: Hash do
+            optional :action_url, type: String
+            optional :short_url, type: String
+            optional :action_url_identifier, type: String
+          end
         end
         post do
           service = CreateCampaignService.new current_user, declared(params)
@@ -65,7 +75,17 @@ module Brand
           requires :per_action_budget, type: Float
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
-          optional :action_url_list, type: String
+          requires :target, type: Hash do
+            requires :age, type:String
+            requires :region, type:String
+            requires :gender, type:String
+          end
+
+          optional :campaign_action_url, type: Hash do
+            optional :action_url, type: String
+            optional :short_url, type: String
+            optional :action_url_identifier, type: String
+          end
         end
         put ':id' do
           service = UpdateCampaignService.new current_user, params[:id], declared(params)

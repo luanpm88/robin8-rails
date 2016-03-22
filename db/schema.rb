@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160310060042) do
+ActiveRecord::Schema.define(version: 20160317090847) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -114,21 +114,21 @@ ActiveRecord::Schema.define(version: 20160310060042) do
   add_index "attachments", ["imageable_type", "imageable_id"], name: "index_attachments_on_imageable_type_and_imageable_id", using: :btree
 
   create_table "campaign_action_urls", force: :cascade do |t|
-    t.integer  "user_id",     limit: 4
     t.integer  "campaign_id", limit: 4
     t.string   "action_url",  limit: 255
     t.string   "short_url",   limit: 255
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.string   "uuid",        limit: 255
+    t.string   "identifier",  limit: 255
   end
 
   create_table "campaign_actions", force: :cascade do |t|
-    t.integer  "kol_id",      limit: 4
-    t.integer  "campaign_id", limit: 4
-    t.string   "action",      limit: 255
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "kol_id",             limit: 4
+    t.integer  "campaign_id",        limit: 4
+    t.integer  "campaign_invite_id", limit: 4
+    t.string   "action",             limit: 255
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "campaign_categories", force: :cascade do |t|
@@ -175,6 +175,16 @@ ActiveRecord::Schema.define(version: 20160310060042) do
     t.string   "visitor_agent",   limit: 3555
     t.string   "visitor_referer", limit: 3555
   end
+
+  create_table "campaign_targets", force: :cascade do |t|
+    t.string   "target_type",    limit: 255
+    t.string   "target_content", limit: 255
+    t.integer  "campaign_id",    limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "campaign_targets", ["campaign_id"], name: "index_campaign_targets_on_campaign_id", using: :btree
 
   create_table "campaigns", force: :cascade do |t|
     t.string   "name",                 limit: 255
@@ -351,13 +361,6 @@ ActiveRecord::Schema.define(version: 20160310060042) do
     t.string   "audience_publish_fres", limit: 255
     t.boolean  "has_grabed",            limit: 1,     default: false
     t.string   "from_type",             limit: 255,   default: "pc"
-    t.integer  "followers_count",       limit: 4
-    t.integer  "friends_count",         limit: 4
-    t.integer  "statuses_count",        limit: 4
-    t.datetime "registered_at"
-    t.boolean  "verified",              limit: 1,     default: false
-    t.string   "refresh_token",         limit: 255
-    t.datetime "refresh_time"
   end
 
   create_table "industries", force: :cascade do |t|
@@ -519,8 +522,6 @@ ActiveRecord::Schema.define(version: 20160310060042) do
     t.string   "app_city",                         limit: 255
     t.string   "IMEI",                             limit: 255
     t.string   "IDFA",                             limit: 255
-    t.string   "phone_city",                       limit: 255
-    t.string   "utm_source",                       limit: 255
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
@@ -1016,6 +1017,7 @@ ActiveRecord::Schema.define(version: 20160310060042) do
     t.datetime "updated_at",                                    null: false
   end
 
+  add_foreign_key "campaign_targets", "campaigns"
   add_foreign_key "weibo_invites", "campaigns"
   add_foreign_key "weibo_invites", "weibos"
 end

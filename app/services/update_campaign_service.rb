@@ -6,7 +6,7 @@ class UpdateCampaignService
     @user = user
     @campaign = Campaign.find_by_id campaign_id
     @update_campaign_params = permited_params_from args
-    
+
     @errors = []
   end
 
@@ -35,7 +35,7 @@ class UpdateCampaignService
 
     begin
       ActiveRecord::Base.transaction do
-        
+
         if campaign_action_urls = @update_campaign_params[:action_url_list]
           @campaign.campaign_action_urls.destroy_all
 
@@ -43,7 +43,7 @@ class UpdateCampaignService
             @campaign.campaign_action_urls.create!(action_url: action_url)
           end
         end
-        
+
         @campaign.update_attributes(@update_campaign_params.tap {|c| c.delete :action_url_list})
         @campaign.reset_campaign origin_budget, budget, per_action_budget
       end
@@ -64,7 +64,7 @@ class UpdateCampaignService
   end
 
   def permited_params_from params
-    params.nil? ? [] : params.select { |k,v| CreateCampaignService::PERMIT_PARAMS.include? k }
+    params.nil? ? {} : params.select { |k,v| CreateCampaignService::PERMIT_PARAMS.include? k }
   end
 
   def is_cpa_campaign?

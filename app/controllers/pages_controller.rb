@@ -35,7 +35,7 @@ class PagesController < ApplicationController
 
       render "home", :layout => 'kol'
     else
-      render "landing_page", :layout => 'landing'
+      render 'landing_page', :layout => 'brand_v2'
     end
   end
 

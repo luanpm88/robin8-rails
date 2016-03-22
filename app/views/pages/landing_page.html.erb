@@ -1,198 +1,172 @@
-<header class="homeheader sizeheader">
-  <%= render :partial => 'pages/partials/menu' %>
-  <div class="row">
-    <div class="large-12 columns" style='position: relative;'>
-      <h1 class="logo" style="margin-top: 194px;">
-        <a href="/"><%= @l.t('header.title') %></a>
-      </h1>
-      <h2 class="title_landing"><%= @l.t('landing_page.title_landing') %></h2>
-
-      <div class="social-list clearfix">
-
-        <div class="small-12 columns social-login">
-          <a href="/users/auth/weibo?provider=weibo" class="social  btn-weibo"><i class="fa fa-weibo"></i> <span><%= @l.t("login.use_weibo") %></span></a>
-        </div>
-
-        <% unless mobile_request? %>
-          <div class="small-12 columns social-login">
-            <a href="/users/auth/wechat?provider=wechat" class="social  btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat") %></span></a>
-          </div>
-
-          <div class="small-12 columns social-login">
-            <a href="/users/auth/wechat_third?provider=wechat_third" class="social  btn-wechat"><i class="fa fa-wechat"></i> <span><%= @l.t("login.use_weichat_third") %></span></a>
-          </div>
-        <% end %>
-        <a href="/kols/new" class="sign_up_with_email"><%= @l.t("login.use_email") %></a>
-      </div>
-      <% if mobile_request? %>
-        <p class="wechat_tip">如果希望使用微信注册登录，请使用电脑操作</p>
-        <div class="download-app">
-          <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb" class="button round secondary" id="android-btn" rel="modal:open" >Android下载</a>
-          <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb" class="button round secondary" id="iphone-btn" rel="modal:open">iPhone下载</a>
-
-          <div class="app-qr-code" id="androidModal" style="display:none;">
-            <img src="http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb">
-          </div>
-
-          <div class="app-qr-code" id="iphoneModal" style="display:none;">
-            <img src="http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb">
-          </div>
-        </div>
-      <% else %>
-        <div class="download-app">
-          <a href="#androidModal" class="button round secondary" id="android-btn" rel="modal:open" >Android下载</a>
-          <a href="#iphoneModal" class="button round secondary" id="iphone-btn" rel="modal:open">iPhone下载</a>
-
-          <div class="app-qr-code" id="androidModal" style="display:none;">
-            <img src="http://qr.api.cli.im/qr?data=http%253A%252F%252Fa.app.qq.com%252Fo%252Fsimple.jsp%253Fpkgname%253Dcom.robin8.rb&level=Q&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=486cf3e730e344e2e7d308172073a64f">
-          </div>
-
-          <div class="app-qr-code" id="iphoneModal" style="display:none;">
-            <img src="http://qr.api.cli.im/qr?data=http%253A%252F%252Fa.app.qq.com%252Fo%252Fsimple.jsp%253Fpkgname%253Dcom.robin8.rb&level=Q&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=486cf3e730e344e2e7d308172073a64f">
-          </div>
-
-        </div>
-      <% end %>
-
-
-    </div>
-  </div>
-</header>
-
-<div class="screenpane">
-  <div class="row">
-
-    <div>
-      <h2><%= @l.t('landing_page.text17') %></h2>
-      <div class="small-12 medium-7 large-6 center">
-        <div class='embed-container'>
-          <%= image_tag "landingpage_kol.png" %>
+<!-- 头部 S -->
+  <header class="navbar r-site-header">
+    <div class="container-fluid">
+      <a href="landingpage.html" class="logo">Robin8</a>
+      <div class="navbar-action pull-right">
+        <a href="#signinupModal" class="quick-login" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
       </div>
     </div>
+  </header>
+  <!-- 头部 E -->
 
-    </div>
-  </div>
-</div>
-
-<div class="prsteps">
-  <div class="row ">
-    <div class="small-12 columns">
-      <h2><%= @l.t('landing_page.text19') %></h2>
-    </div>
-  </div>
-  <div class="row ">
-    <div class="medium-3 columns pr-types">
-      <div class="icon-wrap">
-        <div class="icon-img">
-          <%= image_tag "icon_register.png" %>
-        </div>
-      </div>
-      <div class="pr-content">
-        <h3><%= @l.t('landing_page.register') %></h3>
-      </div>
-    </div>
-    <div class="medium-3 columns pr-types">
-      <div class="icon-wrap">
-        <div class="icon-img">
-          <%= image_tag "icon-social-small.png" %>
-        </div>
-      </div>
-      <div class="pr-content">
-        <h3><%= @l.t('landing_page.social') %></h3>
-      </div>
-    </div>
-    <div class="medium-3 columns pr-types">
-      <div class="icon-wrap">
-        <div class="icon-img">
-          <%= image_tag "icon-score.png" %>
-        </div>
-      </div>
-      <div class="pr-content">
-        <h3><%= @l.t('landing_page.score') %></h3>
-      </div>
-    </div>
-    <div class="medium-3 columns pr-types">
-      <div class="icon-wrap">
-        <div class="icon-img">
-          <%= image_tag "icon-monetize-small.png" %>
-        </div>
-      </div>
-      <div class="pr-content">
-        <h3><%= @l.t('landing_page.monetize') %></h3>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="jumbotron-content">
+        <h1>分享是一种领袖能力</h1>
+        <p>每一次分享都使Robin8更好的了解你的社交影响力，大数据引擎会推荐最适合你的品牌推广机会，见证你意见领袖的一面。<br/> 立即成为Robin8的意见领袖</p>
+        <a href="landingpage_influence.html" class="btn btn-blue btn-big btn-line cneter-block">APP 下载</a>
       </div>
     </div>
   </div>
-  <div class="row ">
-    <div class="small-12 columns">
-      <p><%= @l.t('landing_page.text11') %></p>
-    </div>
-  </div>
 
-</div>
-
-<div class="partner">
-  <div class="container">
-    <ul class='clearfix'>
-      <li class='first_line li1'>
-        <div class="img_container"></div>
-        <p><%= @l.t('landing_page.chinaccelerator') %></p>    </li>
-      <li class='first_line li2'>
-        <div class="img_container"></div>
-        <p><%= @l.t('landing_page.smg') %></p>
-      </li>
-      <li class='first_line li3'>
-        <div class="img_container"></div>
-        <p><%= @l.t('landing_page.mwc') %></p>
-      </li>
-      <li class='second_line li4'>
-        <div class="img_container"></div>
-        <p><%= @l.t('landing_page.technode') %></p>
-        <a class="read_more" href="http://technode.com/2015/06/05/female-founders-takes-the-lead-at-chinaccelerator-demo-day/#.VXX5i1HKgjw.facebook" target="_blank"><span class="label"><%= @l.t("landing_page.read_more") %></span></a>
-      </li>
-      <li class='second_line li5'>
-        <div class="img_container"></div>
-        <p><%= @l.t('landing_page.techinasia') %></p>
-        <a class="read_more" href="https://www.techinasia.com/chinaccelerator-7th-batch-startups/" target="_blank"><span class="label"><%= @l.t("landing_page.read_more") %></span></a>
-      </li>
-      <li class='second_line li6'>
-        <div class="img_container"></div>
-        <p><%= @l.t('landing_page.omd') %></p>
-        <a class="read_more_3" href="http://mp.weixin.qq.com/s?__biz=MzAwMDM5ODM1MQ==&mid=207052870&idx=1&sn=ffa67196a951f0cf82d10a18efeab4ee&scene=1&srcid=1013ZG5ZCHyvA8h7rqVVtXjn&key=b410d3164f5f798e0ef03c9f9834310f510e0ef5cdb78350c655910c26b86f0dc79ad43d61b0875ad6effd889ca5e974&ascene=1&uin=MTU3MjQwNDcyMA%3D%3D&devicetype=Windows+8&version=61050016&pass_ticket=5epe4WzCev7X6VAiPsg63mNE7a2jejgDtpLrxMNIFvJUEMsP47qmlF%2FzIlGxjR7v" target="_blank"><span class="label"><%= @l.t("landing_page.read_more") %></span></a>
-      </li>
+  <!-- 登录注册Modal S -->
+  <div class="modal fade" id="signinupModal" tabindex="-1" data-backdrop="static">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal-dialog">
+      <!-- 引入登录注册组件 -->
+      <!-- 登录注册组件 S -->
+  <div class="signinup-wrap">
+    <ul class="tab-menu">
+      <li class="active"><a href="#signup-tab-pane" data-toggle="tab">注册</a></li>
+      <li><a href="#signin-tab-pane" data-toggle="tab">登录</a></li>
     </ul>
-  </div>
-</div>
+    <div class="tab-content">
+      <!-- 注册 S -->
+      <div id="signup-tab-pane" class="tab-pane fade in active">
+        <%= form_tag('/users/new', method: 'post', remote: true) do %>
+          <div class="form-group">
+            <i class="icon-brand"></i>
+            <label>品牌名称</label>
+            <input type="text" class="form-control" name='user[name]' placeholder="品牌名称">
+
+          </div>
+          <div class="form-group">
+            <i class="icon-mobile"></i>
+            <label>手机</label>
+            <input type="text" class="form-control brand_mobile_number" name='user[mobile_number]' placeholder="输入您的手机">
+
+          </div>
+          <div class="form-group verify_code_group">
+            <i class="icon-verify"></i>
+            <label>验证码</label>
+            <input type="text" class="form-control verify_code" name='user[verify_code]' placeholder="输入验证码">
+            <div class="verify_code_block">
+              <button type='button' class='send_verify_code'>获取验证码</button>
+            </div>
+
+          </div>
+          <div class="form-group">
+            <i class="icon-pwd"></i>
+            <label>密码</label>
+            <input type="password" class="form-control" name='user[password]' placeholder="设置您的密码">
+          </div>
+          <button type="submit" class="btn btn-blue btn-block">注册</button>
+
+          <div class="tips">
+            <p class='tipsFailed help-block'>
+              Failed.
+            </p>
+            <p class='tipsSuccess help-block'>
+              注册成功，正在跳转...
+            </p>
+          </div>
+
+          <p class='help-block'>
+            注册即视为同意Robin8的<a href='/terms'>服务条款</a>
+          </p>
+        <% end %>
+      </div>
+      <!-- 注册 E -->
+
+      <!-- 登录 S -->
+      <div id="signin-tab-pane" class="tab-pane fade">
+        <%= form_tag('/users/sign_in', method: 'post', remote: true) do %>
+        <div class="form-group">
+          <i class="icon-mobile"></i>
+          <label for='user[mobile_number]'>手机号</label>
+          <input type="text" class="form-control" name='user[mobile_number]' placeholder="您的登录手机号">
+          <span class="what">?</span>
+        </div>
+        <div class="form-group">
+          <i class="icon-pwd"></i>
+          <label for='user[password]'>密码</label>
+          <input type="password" class="form-control" name='user[password]' placeholder="登录密码">
+        </div>
+        <div class="loginTips">
+          <p class='tipsFailed help-block'>
+            用户名或密码错误，请重新尝试
+          </p>
+          <p class='tipsSuccess help-block'>
+            登陆成功，正在跳转...
+          </p>
+        </div>
+        <button type="submit" class="btn btn-blue btn-block">登录</button>
+        <% end %>
+      </div>
+      <!-- 登录 E -->
 
 
 
-<div class="ft-lead">
-  <div class="row">
-    <div class="large-12 columns">
-      <h2><%= @l.t('landing_page.text9') %></h2>
-      <a class="button button-signup" href="/kols/new"><%= @l.t('landing_page.register_text') %></a>
+      <!-- 第三方登录注册 S -->
+      <div class="social-binding">
+
+      </div>
+      <!-- 第三方登录注册 S -->
     </div>
   </div>
-</div>
+  <!-- 登录注册组件 E -->
+    </div>
+  </div>
+  <!-- 登录注册Modal E -->
 
-<footer>
-  <div class="row">
+  <!-- Small modal -->
+  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button> -->
 
-    <% if china_instance? %>
-      <a href="<%= Rails.application.secrets.instance_host[:us] %>" title="<%= @l.t('landing_page.english_locale') %>" class="landing_country_flag">
-        <%= image_tag asset_path('us-flag-icon.png'), height: 13 %>
-      </a>
-    <% else %>
-      <a href="<%= Rails.application.secrets.instance_host[:cn] %>" title="<%= @l.t('landing_page.chinese_locale') %>" class="landing_country_flag" >
-        <%= image_tag asset_path('china-flag-icon.png'), height: 13 %>
-      </a>
-    <% end %>
+  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
 
+        <a class='close'>
+          <%= image_tag('register_verification_close_button.png') %>
+        </a>
+
+        <p>
+          请输入图形验证码！
+        </p>
+
+        <div class="clearfix">
+          <%= rucaptcha_input_tag(class: 'form-control rucaptcha_input', placeholder: '图片验证码') %>
+
+          <%= rucaptcha_image_tag(alt: 'Captcha', :class => "rucaptcha_tag") %>
+
+          <span class='rucaptcha_tips'>
+            看不清楚？<br/>点击图片更换
+          </span>
+
+<<<<<<< HEAD
     <div class="small-12 medium-3 columns ft-logo right">
       <%= image_tag 'robin8-footer-icon.png' %>
     </div>
     <div class="small-12 medium-12 columns left">
       <span class="ft-copyright">&copy;<%= @l.t('footer.right_reserved') %></span> <br class="show-for-medium-only" /> <a href="/about" class="ft-link privacy"><%= @l.t('footer.about') %></a> <a href="/contact" class="ft-link privacy"><%= @l.t('footer.contact') %></a> <a  href="/privacy_policy" class="ft-link privacy"><%= @l.t('footer.privacy') %> </a> <a href='/terms'> <%= @l.t('footer.terms') %> </a>
       <%# <a href="/team" class="ft-link privacy"><%= @l.t('footer.team') %1></a> %> 
+=======
+        </div>
+
+
+
+        <br/>
+
+        <a class='rucaptcha_ok'>确定</a>
+
+        <section class='tips'>
+          <p class='not_unique_number'><%= @l.t("kols.mobile_number_already_token") %></p>
+          <p class='mobile_numer_is_blank'><%= @l.t("kols.mobile_format_error") %></p>
+          <p class=rucaptcha_not_right><%= "图片验证码不正确" %></p>
+          <p class='send_sms_failed'><%= @l.t("kols.send_sms_error") %></p>
+          <p class='send_sms_success'><%= @l.t("kols.send_sms_success") %></p>
+        </section>
+      </div>
+>>>>>>> @{-1}
     </div>
   </div>
-</footer>
