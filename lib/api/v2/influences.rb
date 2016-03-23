@@ -90,6 +90,7 @@ module API
           requires :kol_uuid, type: String
         end
         post 'bind_contacts' do
+          Rails.logger.info "-----before: #{params[:kol_uuid]}----#{params[:contacts]}"
           if Rails.env.development?
             contacts = Kol.where("mobile_number is not null").limit(40).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}
           else
