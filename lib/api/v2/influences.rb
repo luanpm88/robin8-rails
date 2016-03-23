@@ -130,7 +130,7 @@ module API
             joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])      if joined_contacts.size == 0  #如果用户还没迁移过去
           end
           rank_index = joined_contacts.where("influence_score > '#{kol_value.influence_score}'").count   + 1
-          contacts = TmpKolContact.where(:kol_uuid => params[:kol_uuid])
+          contacts = TmpKolContact.order_by_exist.where(:kol_uuid => params[:kol_uuid])
           present :error, 0
           present :joined_count, joined_contacts.size
           present :rank_index, rank_index
