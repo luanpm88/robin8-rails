@@ -27,8 +27,8 @@ Rails.application.routes.draw do
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
+ # devise_for :admin_users, ActiveAdmin::Devise.config
+ # ActiveAdmin.routes(self)
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
