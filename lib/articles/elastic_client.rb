@@ -46,6 +46,7 @@ module Articles
             }
           }
         }
+        sort = [  ]
         query = {
           multi_match: {
             query:  text,
@@ -54,11 +55,12 @@ module Articles
         }
       else      # 选择喜欢文章
         filter = {}
+        sort = [ { publish_date:  { order: "desc" }} ]
         query = {
           bool: {
             filter: [
               { term: { chosen: 't'}},
-              { range: { publish_date: { gte: Date.today - 1.days }}}
+              { range: { publish_date: { gte: Date.today - 3.days }}}
             ]
           }
         }
@@ -69,6 +71,7 @@ module Articles
                             body: {
                               _source: ["id", "url", "msg_cdn_url", "title", "biz_name"],
                               query: query,
+                              sort: sort,
                               filter: filter,
                               from: 0,
                               size: options[:size] || 30

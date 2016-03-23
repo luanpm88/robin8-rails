@@ -441,7 +441,7 @@ class Kol < ActiveRecord::Base
       KolContact.where(:kol_id => kol_id).delete_all
       TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
         contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
-                                  :invite_status => tmp_contact.invite_status, invite_at =>  tmp_contact.invite_at)
+                                  :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
         contact.save(:validate => false)
       end
 
