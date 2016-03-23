@@ -20,7 +20,7 @@ const initCampaign = {
   province: '全部',
   city: '全部',
   gender: 'all',
-  budget: 0,
+  budget: 100,
   per_budget_type: 'click',
   per_action_budget: 0,
   start_time: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),

@@ -16,7 +16,6 @@ const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: true} },
-  message: { require: true }
 })
 
 const validateFailed = (errors) => {
