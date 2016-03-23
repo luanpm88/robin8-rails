@@ -26,7 +26,9 @@ module API
           expose :issue_token do |kol|
             kol.get_issue_token
           end
-
+          expose :kol_uuid do |kol|
+            kol.get_kol_uuid
+          end
         end
 
         class Account < Grape::Entity
