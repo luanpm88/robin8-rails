@@ -13,7 +13,6 @@ module API
         end
         get '/' do
           if params[:type] == 'select'
-            title = '智能 母婴'
             articles = ::Articles::Store.get_select_like_list(current_kol.id, title)
           else
             articles = ::Articles::Store.get_discovery_list(current_kol.id, params[:title])

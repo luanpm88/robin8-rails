@@ -11,15 +11,6 @@ class TmpKolContact < ActiveRecord::Base
         tmp_contact.save(:validate => false)
       end
     end
-    mobiles = TmpKolContact.where(:kol_uuid => kol_uuid).collect{|t| t.mobile}
-    # 报道存在联系人
-    Influence::Contact.init_contact(kol_uuid)
-    # 计算联系人价值
-    if Rails.env.development?
-      CalInfluenceWorker.new.perform("contact",kol_uuid, mobiles )
-    else
-      CalInfluenceWorker.perform_async("contact",kol_uuid, mobiles )
-    end
   end
 
   def self.update_joined_kols(kol_uuid)
@@ -35,8 +26,8 @@ class TmpKolContact < ActiveRecord::Base
   end
 
   def self.record_send_invite(kol_uuid,  mobile, kol = nil)
-    if kol
-      kol_contact = KolContact.where(:kol_id => kol.id, :mobile => mobile).first
+    kol_contact = KolContact.where(:kol_id => kol.id, :mobile => mobile).first      rescue nil
+    if kol_contact
       kol_contact.invite_status = true
       kol_contact.invite_at = Time.now
       kol_contact.save
@@ -46,6 +37,5 @@ class TmpKolContact < ActiveRecord::Base
     tmp_kol_contact.invite_at = Time.now
     tmp_kol_contact.save
   end
-
 
 end

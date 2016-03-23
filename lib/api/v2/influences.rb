@@ -95,8 +95,9 @@ module API
           else
             contacts = JSON.parse(params[:contacts])
           end
+          Rails.logger.info "-----#{params[:kol_uuid]}----#{params[:contacts]}"
           return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
-          TmpKolContact.add_contacts(params[:kol_uuid],contacts)   if current_kol.blank? || (current_kol.present? && !current_kol.has_contacts)
+          TmpKolContact.add_contacts(params[:kol_uuid],contacts)          if current_kol.blank? || (current_kol.present? && !current_kol.has_contacts)
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
         end
