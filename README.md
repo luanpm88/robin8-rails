@@ -19,4 +19,5 @@ Starting MailCatcher
 * 加入phone_location influence sidekiq queue
 * 加入 配置文件  juhe_key elastic_server  download_url    emay
 * rake database:
+* notify/clean_cache
 

@@ -2,8 +2,8 @@ module API
   module V2
     class Notify < Grape::API
       resources :notify do
-        get 'reset_elastic_index' do
-          if params[:private_key] == 'robin8&influences'
+        get 'clean_cache' do
+          if params[:private_key] == 'robin8'
             Articles::Store.reset_all_list
             present :error, 0
           else

@@ -18,7 +18,7 @@ class PushArticle
     Rails.cache.fetch  kol_push_ids(kol_id) do
       recent_read_ids = ArticleAction.where(:kol_id => kol_id).where(:created_at.gte => 7.days.ago).collect{|t| t.article_id}   rescue []
       push_ids = PushArticle.where(:kol_id => kol_id).where(:created_at.gte => 7.days.ago).collect{|t| t.article_id}            rescue []
-      (recent_read_ids + push_ids)[0,1200]
+      (recent_read_ids + push_ids)[0,1000]
     end
   end
 

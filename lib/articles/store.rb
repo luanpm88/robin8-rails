@@ -44,6 +44,7 @@ module Articles
      if relation_ids.size > 0
        articles = ElasticClient.get_text(relation_ids)
        text_arr = articles.collect{|article| "#{article['text']} #{article['title']}".split(/\s+/)}.flatten.uniq
+       Rails.logger.info "--------get_read_article_text---text:#{text_arr.join(" ")[0,100]}"
        return text_arr.join(" ")[0,1000]
      end
      return " "
