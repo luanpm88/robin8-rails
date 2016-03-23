@@ -35,9 +35,10 @@
   font-size: 18px;
 }
 .brand-activity-card .brand-activity-content .date,
-.brand-activity-card .brand-activity-content .summary {
+.brand-activity-card .brand-activity-content span.summary {
   color: #9b9a9a;
   font-size: 14px;
+  word-wrap: break-word;
 }
 .brand-activity-card .brand-activity-content .summary {
   margin-top: 20px;
