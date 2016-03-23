@@ -20,7 +20,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.less', '.png', '.jpg', '.gif', '.css'],
+    extensions: ['', '.js', '.jsx', '.less', '.scss', '.png', '.jpg', '.gif', '.css'],
     root: [
       path.resolve('./app/lib'),
       path.resolve('./assets/stylesheets'),
@@ -57,4 +57,5 @@ module.exports = {
     ],
   },
   postcss: [autoprefixer],
+  sassResources: ['./assets/stylesheets/app-variables.scss'],
 };

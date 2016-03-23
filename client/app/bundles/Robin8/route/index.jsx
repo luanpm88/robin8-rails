@@ -5,6 +5,7 @@ import CreateCampaignPartial from '../components/CreateCampaignPartial';
 import UpdateCampaignPartial from '../components/UpdateCampaignPartial';
 import BrandHomePartial from '../components/BrandHomePartial';
 import ShowActivityPartial from '../components/ShowActivityPartial';
+import EditProfilePartial from '../components/EditProfilePartial';
 
 export default (
   <Route path="/brand/" component={BrandHomeContainer}>
@@ -13,5 +14,7 @@ export default (
     <Route path="create_campaign" component={CreateCampaignPartial} />
     <Route path="campaigns/:id/edit" component={UpdateCampaignPartial} />
     <Route path="campaigns/:id" component={ShowActivityPartial} />
+
+    <Route path=":id/edit" component={EditProfilePartial} />
   </Route>
 )
