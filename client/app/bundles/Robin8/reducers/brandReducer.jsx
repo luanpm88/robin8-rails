@@ -26,6 +26,10 @@ export default function brandReducer($$state = $$initialState, action = null) {
 
       return $$state;
 
+    case actionTypes.UPDATE_CAMPAIGN:
+
+      return $$state;
+
     case actionTypes.FETCH_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
