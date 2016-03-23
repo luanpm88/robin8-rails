@@ -218,3 +218,5 @@ gem 'csv_shaper'
 
 gem 'rack-attack'
 gem 'rack-test', require: 'rack/test'
+
+gem 'will_paginate', '~> 3.0.6'
