@@ -20,9 +20,9 @@
               <div class="avater-box"><%= image_tag @kol_value.avatar_url, :class=>"avater" %></div>
               <div class="influence-progress-box">
                 <!-- 影响力值  data-value 为换算好的值-->
-                <div class="influence-progress" data-value="0.89"><%= @kol_value.influence_score %></div>
+                <div class="influence-progress" data-value="<%= @rate %>"><%= @kol_value.influence_score %></div>
                 <div class="inf-info">
-                  <strong class="percent">0</strong>
+                  <strong class="percent"></strong>
                   <span class="text"><%= @kol_value.influence_level %></span>
                   <span class="date"><%= @kol_value.created_at.to_s(:date) %></span>
                 </div>
@@ -56,7 +56,7 @@
             fill: {color: '#f1bc00'},
             emptyFill: '#2dcad0'
         }).on('circle-animation-progress', function(event, progress, stepValue) {
-            $('.influence-progress-box').find('.percent').html(parseInt(stepValue * 100));
+            $('.influence-progress-box').find('.percent').html('<%= @kol_value.influence_score %>');
         });
       })
       </script>

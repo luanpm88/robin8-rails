@@ -16,7 +16,7 @@ module API
           present :error, 0
           present :kol_uuid, kol_uuid
           present :uploaded_contacts, upload_contacts
-          present :kol_identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
+          present :identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #第三方账号 价值
@@ -61,7 +61,7 @@ module API
             present :error, 0
           end
           present :kol_uuid, kol_uuid
-          present :kol_identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
+          present :identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #第三方账号 价值  解除绑定
@@ -81,7 +81,7 @@ module API
             present :detail, "删除的账号不存在"
           end
           present :kol_uuid, kol_uuid
-          present :kol_identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
+          present :identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
         #联系人
