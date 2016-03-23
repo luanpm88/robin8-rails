@@ -8,9 +8,11 @@ class AdminUsers::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    super do
+      respond_with resource, location: marketing_dashboard_path and return 
+    end
+  end
 
   # DELETE /resource/sign_out
   # def destroy
