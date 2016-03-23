@@ -110,6 +110,7 @@ module API
         post 'cal_score' do
           kol_value = KolInfluenceValue.cal_and_store_score(current_kol.try(:id), params[:kol_uuid], params[:kol_city], params[:kol_mobile_model])
           SyncInfluenceAfterSignUpWorker.perform_async(current_kol.id, params[:kol_uuid])    if current_kol.present?
+          current_kol.update_column(:kol_uuid,params[:kol_uuid])                             if current_kol.present?
           @campaigns = Campaign.order_by_status.limit(5)
           present :error, 0
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
@@ -121,14 +122,8 @@ module API
           requires :kol_uuid, type: String
         end
         get 'rank' do
-          TmpKolContact.update_joined_kols(params[:kol_uuid])
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-          if kol_value.kol_id
-            joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
-          else
-            joined_contacts = KolContact.joined.where(:kol_id => kol_value.kol_id)
-            joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])      if joined_contacts.size == 0  #如果用户还没迁移过去
-          end
+          joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
           rank_index = joined_contacts.where("influence_score > '#{kol_value.influence_score}'").count   + 1
           contacts = TmpKolContact.order_by_exist.where(:kol_uuid => params[:kol_uuid])
           present :error, 0

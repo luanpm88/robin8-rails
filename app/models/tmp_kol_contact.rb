@@ -22,8 +22,8 @@ class TmpKolContact < ActiveRecord::Base
     end
   end
 
-  def self.update_joined_kols(kol_uuid, mobiles = nil)
-    mobiles ||= TmpKolContact.where(:kol_uuid => kol_uuid).collect{|t| t.mobile }
+  def self.update_joined_kols(kol_uuid)
+    mobiles = TmpKolContact.where(:kol_uuid => kol_uuid).collect{|t| t.mobile }
     joined_kols = Kol.where(:mobile_number => mobiles).all
     joined_kol_mobiles = joined_kols.collect{|t| t.mobile_number}
     TmpKolContact.where(:mobile => joined_kol_mobiles).each do |contact|
