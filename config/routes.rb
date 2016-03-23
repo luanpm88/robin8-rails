@@ -31,6 +31,10 @@ Rails.application.routes.draw do
     sessions: 'admin_users/sessions'
   }
 
+  namespace :marketing_dashboard do
+    get '/' => 'dashboard#index'
+  end
+
  # devise_for :admin_users, ActiveAdmin::Devise.config
  # ActiveAdmin.routes(self)
   devise_for :users, controllers: {
