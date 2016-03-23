@@ -8,8 +8,11 @@ module API
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
           kol = Kol.reg_or_sign_in(params)
-          kol.update_column(:kol_uuid,params[:kol_uuid])        if params[:kol_uuid].present?
-          SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])     if params[:kol_uuid].present?
+          if params[:kol_uuid].present?
+            kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score)
+            SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
+          end
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
         end
@@ -63,8 +66,11 @@ module API
             end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
           end
-          kol.update_column(:kol_uuid,params[:kol_uuid])        if params[:kol_uuid].present?
-          SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])     if params[:kol_uuid].present?
+          if params[:kol_uuid].present?
+            kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score)
+            SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
+          end
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
         end
