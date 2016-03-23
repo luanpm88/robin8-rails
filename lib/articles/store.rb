@@ -26,8 +26,12 @@ module Articles
          kol_push_ids = PushArticle.get_push_ids(kol_id)
          #2.1  检索时 需要先根据阅读文章取文章关键字
          text = get_relation_article_text(kol_id)
-         #2.2  把文章关键字 去查询
-         articles = ElasticClient.search(text, {:push_list_ids => kol_push_ids, :size => per_page * 10})
+         if text
+           #2.2  把文章关键字 去查询
+           articles = ElasticClient.search(text, {:push_list_ids => kol_push_ids, :size => per_page * 10})
+         else
+           articles = ElasticClient.search(title, {:select => true, :size => per_page * 10})
+         end
        end
      end
      #3. 取出，并把剩下的缓存住
@@ -47,7 +51,7 @@ module Articles
        Rails.logger.info "--------get_read_article_text---text:#{text_arr.join(" ")[0,100]}"
        return text_arr.join(" ")[0,1000]
      end
-     return " "
+     return nil
    end
 
    def self.reset_kol_articles(kol_id)
