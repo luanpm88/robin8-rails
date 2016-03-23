@@ -1,66 +1,9 @@
 module Influence
   class Contact
-    def self.cal_score(kol_uuid, mobiles)
-      contact_count =  cal_contact_count(kol_uuid, mobiles)   || 0
-      total_score = get_contact_level_score(kol_uuid, contact_count)
-      Rails.cache.write(contact_key(kol_uuid), total_score, :expires_in => 10.days)
-      TmpKolInfluenceItem.store_item(kol_uuid, 'contacts', contact_count, total_score, mobiles.to_json)
+    def self.cal_score(kol_uuid)
+      total_score = get_contact_level_score(kol_uuid)
       total_score
     end
-
-    # 计算加权人数
-    def self.cal_contact_count(kol_uuid,cal_mobiles)
-      mobile_size = cal_mobiles.size
-      cal_mobiles = cal_mobiles.sample(100)  if mobile_size > 100
-      # 获取 cal_mobile（部分好友） 实际加权人数
-      cal_mobile_scores = get_mobile_scores(kol_uuid, cal_mobiles)
-      Rails.logger.info "======kol_uuid:#{kol_uuid}=========Contact:cal_score---#{cal_mobile_scores.sum}----#{mobile_size}---#{cal_mobile_scores.size}"
-      # 获取所有好友加权后好友人数 需还原 加权人数
-      cal_mobile_scores.sum *  (mobile_size /  cal_mobile_scores.size.to_f)       rescue 0
-    end
-
-     #获取样本得分
-    def self.get_mobile_scores(kol_uuid, cal_mobiles)
-      cal_mobiles_size = cal_mobiles.size
-      store_keys = []
-      cal_mobiles.each_with_index do |mobile, index|
-        store_key = "#{kol_uuid}#{index}"
-        if Util.is_mobile?(mobile)
-          store_keys << store_key
-          PhoneLocationWorker.perform_async(mobile , store_key, kol_uuid)
-        else
-          Rails.cache.write(store_keys, 0.5)
-        end
-      end
-      Rails.logger.info  store_keys
-      loop_times = 0
-      loop_seconds = 0.4
-      scores = []
-      while  true
-        scores = []
-        store_keys.each{|t| scores << Rails.cache.read(t)}
-        break if loop_times >= 14 ||  scores.compact.size >= cal_mobiles_size * 0.8
-        loop_times += 1
-        sleep loop_seconds
-      end
-      Rails.logger.info  scores
-      return scores.compact
-    end
-
-    def self.contact_score(kol_uuid)
-      Rails.cache.read(contact_key(kol_uuid))
-    end
-
-    # 有上传联系人后需要init，报道下，计算价值时候看看是否需要以你为依据
-    def self.init_contact(kol_uuid)
-      Rails.cache.write(contact_key(kol_uuid), -1, :expires_in => 10.days)    if  Rails.cache.read(contact_key(kol_uuid)).nil?
-    end
-
-    # 联系人 价值   存储key
-    def self.contact_key(kol_uuid)
-      "#{kol_uuid}_contact"
-    end
-
 
     #计算 加权好友数后 得分
     ContactLevels = [{:min_count => 500, :score => 100},
@@ -74,20 +17,11 @@ module Influence
                      {:min_count => 30, :score => 20},
                      {:min_count => 20, :score => 10},
                      {:min_count => -1, :score => 0}]
-    def self.get_contact_level_score(kol_uuid, contact_count)
-      contact_count = TmpKolContact.where(:kol_uuid => kol_uuid).count * 0.65   if (contact_count.to_i == 0  rescue true)
+    def self.get_contact_level_score(kol_uuid, contact_count = nil)
+      contact_count = TmpKolContact.where(:kol_uuid => kol_uuid).count
       ContactLevels.each do |level|
         return level[:score]  if contact_count > level[:min_count]
       end
-    end
-
-    def self.test
-      kol_uuid = Time.now.to_i
-      puts kol_uuid
-      mobiles  = Kol.where("mobile_number is not null").limit(40).collect{|t| t.mobile_number}
-      Rails.logger.info "===============test---#{Time.now}"
-      score = cal_score(kol_uuid, mobiles)
-      Rails.logger.info "===============score---#{score}"
     end
   end
 end

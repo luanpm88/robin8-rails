@@ -9,8 +9,7 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value.mobile_model_score = Influence::Other.mobile_model_score(kol_uuid, kol_mobile_model)
     kol_value.identity_score = Influence::Identity.get_identity_score(kol_uuid)
     kol_value.identity_count_score = Influence::Other.identity_count_score(kol_uuid)
-    contact_score  =   kol_value.contact_score ||  Influence::Value.get_contact_score(kol_uuid)
-    kol_value.contact_score = contact_score
+    kol_value.contact_score = Influence::Contact.cal_score(kol_uuid)
     total_score =  BaseScore + kol_value.location_score + kol_value.mobile_model_score + kol_value.identity_score +
       kol_value.contact_score +  kol_value.identity_count_score
     kol_value.influence_score = total_score
