@@ -9,7 +9,8 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value.mobile_model_score = Influence::Other.mobile_model_score(kol_uuid, kol_mobile_model)
     kol_value.identity_score = Influence::Identity.get_identity_score(kol_uuid)
     kol_value.identity_count_score = Influence::Other.identity_count_score(kol_uuid)
-    kol_value.contact_score = Influence::Value.get_contact_score(kol_uuid)
+    contact_score  =   kol_value.contact_score ||  Influence::Value.get_contact_score(kol_uuid)
+    kol_value.contact_score = contact_score
     total_score =  BaseScore + kol_value.location_score + kol_value.mobile_model_score + kol_value.identity_score +
       kol_value.contact_score +  kol_value.identity_count_score
     kol_value.influence_score = total_score
@@ -20,7 +21,9 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value
   end
 
-  def self.get_score(kol_uuid)
-    KolInfluenceValue.find_by :kol_uuid => kol_uuid
+  def self.get_score(kol_uuid, current_kol = nil)
+    return  KolInfluenceValue.find_by :kol_uuid => kol_uuid    rescue nil
+    # kol_value = KolInfluenceValue.where(:kol_id => current_kol.id).order("id desc").first     rescue nil if current_kol && kol_value.blank?
+    # kol_value
   end
 end
