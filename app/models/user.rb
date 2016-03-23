@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
 
   class EmailValidator < ActiveModel::Validator
     def validate(record)
-      if record.new_record? and Kol.exists?(:email=>record.email)
+      if record.new_record? and Kol.exists?(:email=>record.email) and (record.email != nil or record.email != '')
         record.errors[:base] << "邮箱已存在"
       end
     end
