@@ -32,13 +32,20 @@ function select(state) {
 class UpdateCampaignPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, '_fetchCampaign');
+    _.bindAll(this, ['_fetchCampaign', '_updateCampaign']);
   }
 
   _fetchCampaign() {
     const campaign_id = this.props.params.id;
     const { fetchCampaign } = this.props.actions;
     fetchCampaign(campaign_id);
+  }
+
+  _updateCampaign() {
+    const { updateCampaign } = this.props.actions;
+    const campaign_id = this.props.data.get("campaign").get("id");
+    const campaign_fields = this.props.values
+    updateCampaign(campaign_id, campaign_fields)
   }
 
   componentDidMount() {
@@ -52,13 +59,11 @@ class UpdateCampaignPartial extends React.Component {
     const { handleSubmit, submitting, invalid } = this.props;
     const { updateCampaign } = this.props.actions;
 
-    const campaign_id = this.props.data.get("campaign").get("id");
-
     return (
       <div className="wrapper">
         <div className="container">
           <div className="creat-activity-wrap">
-            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(updateCampaign(campaign_id, this.props.values))(event).catch(validateFailed) } }>
+            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, image, url }}/>
               <TargetPartial {...{ age, province, city, gender, message }} />
               <BudgetPartial {...{ budget }} />

@@ -49,15 +49,15 @@ module Brand
         end
 
         expose :action_url do |object, opts|
-          object.get_campaign_action_urls.first.action_url if object.get_campaign_action_urls.present?
+          object.get_campaign_action_urls.present? ? object.get_campaign_action_urls.first.action_url : ""
         end
 
         expose :short_url do |object, opts|
-          object.get_campaign_action_urls.first.short_url if object.get_campaign_action_urls.present?
+          object.get_campaign_action_urls.present? ? object.get_campaign_action_urls.first.short_url : ""
         end
 
         expose :action_url_identifier do |object, opts|
-          object.get_campaign_action_urls.first.identifier if object.get_campaign_action_urls.present?
+          object.get_campaign_action_urls.present? ? object.get_campaign_action_urls.first.identifier : ""
         end
 
         with_options(format_with: :iso_timestamp) do
