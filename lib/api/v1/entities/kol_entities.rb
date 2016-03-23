@@ -57,6 +57,9 @@ module API
 
         class Primary < Grape::Entity
           # key 没改，内容已经变成所有收入
+          expose :influence_score  do |kol|
+            kol.influence_score
+          end
           expose :today_income  do |kol|
             kol.total_income.round(2)  + kol.verifying_income.round(2)
           end
