@@ -413,7 +413,8 @@ class Kol < ActiveRecord::Base
     else
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
-                        IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number])
+                        IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number],
+                        umt_source: params[:utm_source])
     end
     return kol
   end

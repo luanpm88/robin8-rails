@@ -13,7 +13,7 @@ module API
         end
         get '/' do
           if params[:type] == 'select'
-            articles = ::Articles::Store.get_select_like_list(current_kol.id, title)
+            articles = ::Articles::Store.get_select_like_list(current_kol.id)
           else
             articles = ::Articles::Store.get_discovery_list(current_kol.id, params[:title])
           end
