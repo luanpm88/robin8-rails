@@ -427,6 +427,11 @@ class Kol < ActiveRecord::Base
     return kol
   end
 
+  def update_influence_result(kol_uuid, influence_score)
+    self.update_column(:influence_score, influence_score)
+    self.update_column(:kol_uuid, kol_uuid)
+  end
+
   #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中
   def create_info_from_test_influence(kol_uuid)
     Rails.logger.info "--create_info_from_test_influence---#{kol_uuid}---"
@@ -435,7 +440,6 @@ class Kol < ActiveRecord::Base
       kol_id = self.id
       kol_value = KolInfluenceValue.find_by :kol_uuid => kol_uuid
       #sync score
-      self.update_column(:influence_score, kol_value.influence_score)    if    kol_value
       self.update_column(:cal_time, kol_value.updated_at)                if    kol_value
       # sync contacts
       KolContact.where(:kol_id => kol_id).delete_all
