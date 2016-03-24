@@ -5,7 +5,7 @@ import Immutable from 'immutable';
 import _ from 'lodash'
 import BrandNav from '../components/shared/Nav';
 import "base.css";
-import "home.css";
+import "home.scss";
 
 import * as brandActionCreators from '../actions/brandActionCreators';
 

@@ -47,6 +47,7 @@ export default class CampaignList extends React.Component {
   render() {
     const actions = this.props.actions;
     const campaignList = this.props.data.get('campaignList');
+    const campaignCount = this.props.data.get("paginate").get('X-Total')
 
     return (
       <div className="wrapper">
@@ -66,8 +67,13 @@ export default class CampaignList extends React.Component {
                 我的推广活动
                 <span className="carte">/</span>
                 <strong className="stat-num">
-                  { this.props.data.get("paginate").get('X-Total') }
+                  { campaignCount }
                 </strong>
+                <span className="account-balance">余额:</span>
+                  <strong className="stat-num">
+                    &nbsp;&nbsp;????
+                  </strong>
+                <button className="btn btn-blue btn-default recharge-btn">充值</button>
               </h4>
             </div>
 
