@@ -42,11 +42,11 @@ module Articles
         filter = {
           bool: {
             must_not: {
-              terms: { id: options[:push_list_ids]}
+              terms: { id: options[:push_list_ids] || []}
             }
           }
         }
-        sort = [  ]
+        sort = [ ]
         query = {
           multi_match: {
             query:  text,

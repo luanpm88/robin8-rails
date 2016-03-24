@@ -18,7 +18,7 @@ class TmpKolContact < ActiveRecord::Base
     mobiles = TmpKolContact.where(:kol_uuid => kol_uuid).collect{|t| t.mobile }
     joined_kols = Kol.where(:mobile_number => mobiles).all
     joined_kol_mobiles = joined_kols.collect{|t| t.mobile_number}
-    TmpKolContact.where(:mobile => joined_kol_mobiles).each do |contact|
+    TmpKolContact.where(:kol_uuid => kol_uuid, :mobile => joined_kol_mobiles).each do |contact|
       contact_kol = joined_kols.where(:mobile_number => contact.mobile).first    rescue nil
       contact.influence_score =  contact_kol.influence_score    rescue 0
       contact.exist = true
