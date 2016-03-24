@@ -2,10 +2,6 @@ module API
   module V2
     class Upgrades < Grape::API
       resources :upgrades do
-        before do
-          authenticate!
-        end
-
         params do
           requires :app_platform, type: String, values: ['Android', 'IOS']
           requires :app_version, type: String
