@@ -436,6 +436,7 @@ class Kol < ActiveRecord::Base
       if !self.has_contacts
         KolContact.where(:kol_id => kol_id).delete_all
         TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
+          next if  tmp_contact.mobile.blank?  || tmp_contact.name.blank?   || Influence::Util.is_mobile?(tmp_contact.mobile.to_s).blank?
           contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
                                     :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
           contact.save(:validate => false)
