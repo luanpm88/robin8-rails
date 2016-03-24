@@ -382,7 +382,6 @@ class Kol < ActiveRecord::Base
       campaign_invite.status = 'approved'
       campaign_invite.approved_at = Time.now
       campaign_invite.save
-      campaign_invite.bring_income(campaign_invite.campaign,true)    if campaign_invite.campaign.is_post_type?
       campaign_invite.reload
     else
       nil
