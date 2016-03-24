@@ -57,7 +57,6 @@ class TmpIdentity < ActiveRecord::Base
     if self.provider == 'weibo'
       # Influence::Value.init_identity(self.kol_uuid)
       Influence::Identity.cal_score(kol_uuid,self.id)
-      # CalInfluenceWorker.perform_async('identity', self.kol_uuid, self.id, nil)
     end
   end
 
