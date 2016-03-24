@@ -46,7 +46,7 @@ export default class BudgetPartial extends React.Component {
               <input {...budget} type="text" className="spinner-input budget-input" style={{display: 'block'}} />
               <ShowError field={budget}/>
             </div>
-            <p className="stat">最低费用<strong className="stat-num">1000</strong>元</p>
+            <p className="stat">最低费用<strong className="stat-num">100</strong>元</p>
           </div>
         </div>
       </div>

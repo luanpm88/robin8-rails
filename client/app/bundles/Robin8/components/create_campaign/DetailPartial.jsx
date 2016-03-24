@@ -5,7 +5,7 @@ export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange']);
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
   }
 
 
@@ -53,9 +53,17 @@ export default class DetailPartial extends React.Component {
     })
   }
 
+  _listenPerBudgetTypeChange() {
+    const { per_action_budget } = this.props;
+    $("input[name='action_type']").change(function(){
+      per_action_budget.onBlur();
+    })
+  }
+
   componentDidMount() {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
+    this._listenPerBudgetTypeChange();
   }
 
   componentWillUnmount() {
@@ -93,6 +101,7 @@ export default class DetailPartial extends React.Component {
               <div className="clearfix">
                 <p className="action-url-text">确认链接</p>
                 <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+                <ShowError field={action_url} />
               </div>
               <div className="clearfix">
                 <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl}>生成链接</button>
@@ -100,6 +109,7 @@ export default class DetailPartial extends React.Component {
               <div className="clearfix">
                 <p className="generate-short-url-text">生成链接</p>
                 <input {...short_url} type="text" className="action-short-url" disabled="disabled" readOnly></input>
+                <ShowError field={short_url} />
                 <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
                 <input {...action_url_identifier} type="hidden" disabled="disabled" className="action_url_identifier" readOnly></input>
               </div>
@@ -112,7 +122,7 @@ export default class DetailPartial extends React.Component {
                   <span className="symbol">$</span>
                   <input {...per_action_budget} type="text" defaultValue={0} className="clearfix spinner-input per-budget-input" style={{display: 'block'}} />
                   <p className="average-price clearfix">均价xxx</p>
-                  <ShowError field={per_action_budget}/>
+                  <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
                 </div>
               </div>
             </div>
