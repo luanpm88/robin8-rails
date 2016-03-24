@@ -15,7 +15,7 @@
         <!-- 影响力测试 S -->
         <div class="inf-test-container">
           <div class="content">
-            <h1><%= @kol_value.name %>的社交影响力</h1>
+            <h1><%= @kol_name %>的社交影响力</h1>
             <div class="user-inf-wrap">
               <div class="avater-box"><%= image_tag @kol_value.avatar_url, :class=>"avater" %></div>
               <div class="influence-progress-box">
@@ -29,7 +29,7 @@
                 <%= image_tag "kol/bottom.jpg", :class => 'bottom-img' %>
               </div>
             </div>
-            <h2>来和<%= @kol_value.name %>比比社交影响力？</h2>
+            <h2>来和<%= @kol_name %>比比社交影响力？</h2>
             <a href="<%= Rails.application.secrets.download_url %>" class="inf-test-btn">我也来测测</a>
           </div>
         </div>

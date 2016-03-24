@@ -25,4 +25,3 @@ Rails.application.config.assets.precompile +=  %w(*.woff *.ttf *.svg *.eot)
 # Rails.application.config.assets.precompile += %w( brand-static.css brand-static.js server-bundle.js )
 #
 # NonStupidDigestAssets.whitelist += [/brand-/]
-                                                                  g
