@@ -138,7 +138,7 @@ module API
         post 'identity_bind' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
-          identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if params[:unionid]
+          identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
           if identity.blank?
             Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => current_kol.id))
             # 如果绑定第三方账号时候  kol头像不存在  需要同步第三方头像
