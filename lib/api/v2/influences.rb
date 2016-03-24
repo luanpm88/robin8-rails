@@ -66,7 +66,7 @@ module API
 
         #第三方账号 价值  解除绑定
         params do
-          requires :provider, type: String, values: ['weibo', 'wechat']
+          requires :provider, type: String, values: ['weibo', 'wechat', 'qq']
           requires :uid, type: String
           requires :kol_uuid, type: String
         end
