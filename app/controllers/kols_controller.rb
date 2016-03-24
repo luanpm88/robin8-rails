@@ -218,7 +218,7 @@ class KolsController < ApplicationController
     if Rails.env.development?
       ms_client = YunPian::SendRegisterSms.new(phone_number)
       ms_client.send_sms
-      return render json: {code: 0}
+      return render json: {}
     end
 
     if phone_number.blank?

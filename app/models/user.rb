@@ -1,17 +1,12 @@
 class User < ActiveRecord::Base
   include Concerns::PayTransaction
-
-  attr_accessor :login
-
   has_many :transactions, :as => :account
-
-  validates_uniqueness_of :mobile_number
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, #:validatable, #:confirmable,
-         :omniauthable, :invitable, :authentication_keys => [:login]
+         :recoverable, :rememberable, :trackable, :validatable, #:confirmable,
+         :omniauthable, :invitable
 
   has_many :identities, dependent: :destroy
   has_many :posts, dependent: :destroy
@@ -45,7 +40,7 @@ class User < ActiveRecord::Base
 
   class EmailValidator < ActiveModel::Validator
     def validate(record)
-      if record.new_record? and Kol.exists?(:email=>record.email) and (record.email != nil or record.email != '')
+      if record.new_record? and Kol.exists?(:email=>record.email)
         record.errors[:base] << "邮箱已存在"
       end
     end
@@ -57,14 +52,6 @@ class User < ActiveRecord::Base
   friendly_id :email, use: :slugged
 
   extend Models::Oauth
-  
-  def login= login
-    @login = login
-  end
-
-  def login
-    @login || self.mobile_number || self.email
-  end
 
   def invited_users_list
     invited_id = User.where(invited_by_id: needed_user.id).map(&:id)
@@ -359,23 +346,6 @@ class User < ActiveRecord::Base
 
   def self.check_mobile_number mobile_number
     return self.where("mobile_number" => mobile_number).present?
-  end
-
-  def email_required?
-    false
-  end
-
-  def email_changed?
-    false
-  end
-
-  def self.find_for_database_authentication(warden_conditions)
-    conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions.to_hash).where(["mobile_number = :value OR lower(email) = :value", { :value => login.downcase }]).first
-    elsif conditions.has_key?(:mobile_number) || conditions.has_key?(:email)
-      where(conditions.to_hash).first
-    end
   end
 
   private
