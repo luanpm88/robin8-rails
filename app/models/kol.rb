@@ -433,11 +433,13 @@ class Kol < ActiveRecord::Base
       #sync score
       self.update_column(:cal_time, kol_value.updated_at)                if    kol_value
       # sync contacts
-      KolContact.where(:kol_id => kol_id).delete_all
-      TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
-        contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
-                                  :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
-        contact.save(:validate => false)
+      if !self.has_contacts
+        KolContact.where(:kol_id => kol_id).delete_all
+        TmpKolContact.where(:kol_uuid => kol_uuid).each do |tmp_contact|
+          contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
+                                    :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
+          contact.save(:validate => false)
+        end
       end
 
       # sync identity

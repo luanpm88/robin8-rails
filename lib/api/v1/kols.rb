@@ -165,7 +165,6 @@ module API
             return error_403!({error: 1, detail: '未找到该第三方账号信息'})
           end
         end
-
       end
     end
   end
