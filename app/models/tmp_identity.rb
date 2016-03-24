@@ -3,8 +3,8 @@ class TmpIdentity < ActiveRecord::Base
   scope :from_pc, -> {where(:from_type => 'pc')}
   scope :from_app, -> {where(:from_type => 'app')}
 
-  scope :valid, ->{ where("provider = 'weibo' or (provider='wechat' and from_type='app')")}
   scope :provider , -> (provider) {where(:provider => provider)}
+  scope :order_by_provider, -> { order("case identities.provider  when 'wechat' then 3 when 'weibo' then 2 else 1 end  desc") }
 
   after_save :cal_identity_influence, :on => :create
 
