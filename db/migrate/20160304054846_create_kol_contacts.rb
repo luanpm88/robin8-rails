@@ -7,6 +7,8 @@ class CreateKolContacts < ActiveRecord::Migration
       t.boolean :exist, :default => false
       t.string :city
       t.float :score
+      t.string :kol_uuid
+      t.float :influence_score
 
       t.timestamps null: false
     end

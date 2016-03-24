@@ -80,7 +80,7 @@ module API
             present :error, 1
             present :detail, "删除的账号不存在"
           end
-          present :kol_uuid, kol_uuid
+          present :kol_uuid, params[:kol_uuid]
           present :identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 

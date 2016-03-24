@@ -7,7 +7,7 @@ class TmpKolContact < ActiveRecord::Base
     TmpKolContact.where(:kol_uuid => kol_uuid).delete_all
     TmpKolContact.transaction do
       contacts.each do |contact|
-        next if  contact['mobile'].blank?  || contact['name'].blank?
+        next if  contact['mobile'].blank?  || contact['name'].blank?   || Influence::Util.is_mobile?(contact['mobile'].to_s).blank?
         tmp_contact = TmpKolContact.new(:kol_uuid => kol_uuid, :mobile => contact['mobile'], :name => contact["name"])
         tmp_contact.save(:validate => false)
       end

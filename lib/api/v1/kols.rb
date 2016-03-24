@@ -146,7 +146,7 @@ module API
             present :error, 0
             present :identities, current_kol.identities, with: API::V1::Entities::IdentityEntities::Summary
           else
-            return error_403!({error: 1, detail: '该账号已经被绑定！'})
+            return error_403!({error: 1, detail: '该账号已经被其他用户绑定！'})
           end
         end
 
