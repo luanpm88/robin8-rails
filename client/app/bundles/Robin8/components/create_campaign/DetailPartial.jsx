@@ -1,4 +1,5 @@
 import React from 'react';
+import ShowError from '../shared/ShowError';
 
 export default class DetailPartial extends React.Component {
 
@@ -37,9 +38,11 @@ export default class DetailPartial extends React.Component {
 
   _initTouchSpin() {
     $('.per-budget-input').TouchSpin({
-      min: 0,
+      min: 0.1,
       max: 10000000,
-      prefix: '￥'
+      prefix: '￥',
+      step: 0.1,
+      decimals: 1,
     })
   }
 
@@ -107,8 +110,9 @@ export default class DetailPartial extends React.Component {
               <div className="spinner-form-area">
                 <div className="spinner-box">
                   <span className="symbol">$</span>
-                  <input {...per_action_budget} type="text" defaultValue={0} className="spinner-input per-budget-input" style={{display: 'block'}} />
-                  <p className="average-price">均价xxx</p>
+                  <input {...per_action_budget} type="text" defaultValue={0} className="clearfix spinner-input per-budget-input" style={{display: 'block'}} />
+                  <p className="average-price clearfix">均价xxx</p>
+                  <ShowError field={per_action_budget}/>
                 </div>
               </div>
             </div>
