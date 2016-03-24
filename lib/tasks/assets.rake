@@ -9,11 +9,13 @@ Rake::Task["assets:precompile"]
 namespace :assets do
   # In this task, set prerequisites for the assets:precompile task
   task compile_environment: :webpack do
+    return
     Rake::Task["assets:environment"].invoke
   end
 
   desc "Compile assets with webpack"
   task :webpack do
+    return
     if Rails.env.development?
       sh "cd client && npm run build:client"
     else
@@ -22,6 +24,7 @@ namespace :assets do
   end
 
   task :clobber do
+    return
     rm_r Dir.glob(Rails.root.join("app/assets/javascripts/generated/*"))
   end
 end
