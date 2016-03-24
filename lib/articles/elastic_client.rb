@@ -74,7 +74,7 @@ module Articles
                               sort: sort,
                               filter: filter,
                               from: 0,
-                              size: options[:size] || 30
+                              size:  30
                             }
         sources = res['hits']['hits'].collect{|t| t["_source"]}
         sources

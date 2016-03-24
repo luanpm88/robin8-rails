@@ -22,6 +22,8 @@ module Articles
      if (articles.nil? || articles.size == 0)
        if select
          articles = ElasticClient.search(title, {:select => true, :size => per_page * 10})
+       elsif title
+         articles = ElasticClient.search(title, { :size => per_page * 10})
        else
          kol_push_ids = PushArticle.get_push_ids(kol_id)
          #2.1  检索时 需要先根据阅读文章取文章关键字
