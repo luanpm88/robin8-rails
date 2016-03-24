@@ -15,8 +15,11 @@ import createActivity from "raw/create_campaign";
 const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
-  url: { require: true, url: { require_protocol: true} },
-  message: { require: true }
+  url: { require: true, url: { require_protocol: true } },
+  budget: { require: true, min_budget: 100 },
+  per_action_budget: { require: true },
+  action_url: {cpa_url: { require_protocol: true }},
+  short_url: {cpa_url: { require_protocol: true }}
 })
 
 const validateFailed = (errors) => {

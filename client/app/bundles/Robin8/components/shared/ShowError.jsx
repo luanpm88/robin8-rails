@@ -9,8 +9,10 @@ export default class showError extends Component {
   render() {
     const { field } = this.props;
 
+    let style = { color: 'red', marginTop: 8 }
+
     return (
-      <div style={{color: 'red'}}>{ field.touched && field.error }</div>
+      <div style={style}>{ (field.touched || field.dirty) && field.error }</div>
     );
   }
 }

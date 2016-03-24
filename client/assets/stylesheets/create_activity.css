@@ -693,7 +693,7 @@
   margin-top: 12px;
 }
 
-.creat-content-sources .action-url-group .action-url {
+.creat-content-sources .action-url-group .action-url-section{
   margin-left: 140px;
   width: 635px;
 }
@@ -709,15 +709,17 @@
   margin-top: 28px;
 }
 
+.creat-content-sources .action-url-group .action-short-url_section {
+  margin-left: 140px;
+}
+
 .creat-content-sources .action-url-group .action-short-url {
   margin-top: 24px;
-  margin-left: 54px;
   width: 640px;
   border: none;
 }
 
 .creat-content-sources .action-url-group .action-url-notice {
-  margin-left: 138px;
   margin-top: 22px;
   color: #186616;
 }
@@ -730,6 +732,10 @@
 
 .creat-content-sources .spinner-box {
   width: 450px;
+}
+
+.creat-content-sources .spinner-box .per-budget-input-error {
+  margin-left: 42px;
 }
 
 .creat-content-sources .spinner-box .average-price{
