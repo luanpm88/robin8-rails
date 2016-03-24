@@ -10,7 +10,7 @@ class CreateWechatArticlePerformances < ActiveRecord::Migration
       t.text :claim_reason
       t.text :campaign_name
       t.text :company_name
-      t.belongs_to :article, index: true
+      t.belongs_to :articles, index: true
 
       t.timestamps null: false
     end

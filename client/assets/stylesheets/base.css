@@ -1,0 +1,277 @@
+/*!
+ * Robin8 UI 公共样式
+ * 02.01.2016 20:41
+ * sandmanman@qq.com
+ */
+html,
+body {
+  background: #ebf3f5;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+body {
+  color: #181616;
+  font-family: SimHei, "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", Arial, sans-serif;
+  font-size: 16px;
+}
+.wrapper {
+  padding: 30px 0;
+}
+.container {
+  width: 1000px;
+  max-width: none !important;
+}
+.container-fluid {
+  min-width: 1000px;
+}
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  border-top: 2px solid #e8e8e8;
+}
+.table > thead > tr > th {
+  border-bottom: 2px solid #e8e8e8;
+}
+:-ms-clear {
+  display: none;
+}
+.avater-small {
+  width: 97px;
+  height: 97px;
+  display: inline-block;
+  border-radius: 1000px;
+}
+.avater-x-small {
+  width: 78px;
+  height: 78px;
+  display: inline-block;
+  border-radius: 1000px;
+}
+.r-card,
+.panel {
+  margin-bottom: 40px;
+  border: 1px solid #d9d9d9;
+  background-color: #fff;
+  box-shadow: 3.5px 6.062px 13px 0px rgba(0, 0, 0, 0.05);
+}
+.r-card-body {
+  padding: 20px 40px;
+}
+.panel .panel-body {
+  padding: 20px 40px 40px 40px;
+}
+.panel-heading {
+  padding: 20px 40px;
+  overflow: hidden;
+  line-height: 36px;
+}
+.panel-heading .panel-title {
+  font-size: 18px;
+  line-height: 36px;
+}
+.panel-heading .stat-num {
+  font-size: 22px;
+}
+.panel-heading .switch {
+  float: right;
+  margin-left: 30px;
+  color: #9b9a9a;
+  font-size: 14px;
+}
+.panel-heading .caret-arrow {
+  margin-left: 10px;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background: url(~robin8_ui_sprites.png) no-repeat 0 -76px;
+}
+.panel-heading .collapsed .caret-arrow {
+  background-position: 0 -52px;
+}
+.panel-heading .quick-btn {
+  float: right;
+}
+.panel-heading .carte {
+  margin: 0 10px;
+  color: #e2e9eb;
+  font-style: normal;
+}
+.fuck-ie {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  padding-top: 260px;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+  font-size: 24px;
+  background-color: rgba(0, 0, 0, 0.6);
+  filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#6F000000, endcolorstr=#6F000000);
+}
+.fuck-ie p {
+  margin-bottom: 20px;
+}
+.fuck-ie a {
+  display: inline-block;
+  margin: 0 10px;
+  padding: 2px 10px 2px 30px;
+  vertical-align: middle;
+  border: 2px solid #fff;
+}
+.caret-arrow {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url(~robin8_ui_sprites.png);
+  background-repeat: no-repeat;
+}
+.caret-arrow.left {
+  background-position: 0 -100px;
+}
+.caret-arrow.right {
+  background-position: 0 -124px;
+}
+.caret-arrow.up {
+  background-position: 0 -76px;
+}
+.caret-arrow.down {
+  background-position: 0 -52px;
+}
+.what {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 15px;
+  text-align: center;
+  background-color: #b9bdbe;
+  border-radius: 1000px;
+}
+.icon-medium {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-image: url(~robin8_ui_sprites.png);
+  background-repeat: no-repeat;
+}
+.icon-search {
+  background-position: 0 -388px;
+}
+.icon-modify {
+  background-position: 0 -285px;
+}
+.btn {
+  padding: 0;
+  line-height: 36px;
+  outline: none !important;
+}
+.btn.btn-line {
+  background: transparent;
+}
+.btn-grey {
+  color: #181616;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+}
+.btn-grey:hover {
+  color: #2dcad0;
+  border: 1px solid #2dcad0;
+}
+.btn-blue,
+.btn-red {
+  color: #fff;
+}
+.btn-blue {
+  border: 1px solid #2dcad0;
+  background: #2dcad0;
+}
+.btn-blue.btn-line {
+  color: #2dcad0;
+}
+.btn-blue:hover {
+  color: #fff;
+  border: 1px solid #28b6bb;
+  background: #28b6bb;
+}
+.btn-red {
+  border: 1px solid #e45d34;
+  background: #e45d34;
+}
+.btn-red.btn-line {
+  color: #e45d34;
+}
+.btn-red:hover {
+  color: #fff;
+  border: 1px solid #e14b1e;
+  background: #e14b1e;
+}
+.btn-default {
+  width: 82px;
+}
+.btn-big {
+  width: 180px;
+}
+.btn-lg {
+  width: 330px;
+}
+.btn.disabled,
+.btn[disabled] {
+  opacity: .45;
+}
+.breadcrumb {
+  padding: 0;
+  background-color: transparent;
+}
+.breadcrumb .caret-arrow {
+  margin-right: 5px;
+}
+.breadcrumb a {
+  color: #181616;
+}
+.r-global-header {
+  margin-bottom: 0;
+  max-height: 56px;
+  color: #fff;
+  background: url(~robin8_header_bg.jpg) no-repeat center top #2c2a2b;
+  border-radius: 0;
+  border: none;
+}
+.r-global-header .logo {
+  float: left;
+  width: 89px;
+  height: 60px;
+  overflow: hidden;
+  line-height: 9999px;
+  background: url(~robin8_logo.png) no-repeat center;
+  background-image: -webkit-image-set(url(~robin8_logo.png) 1x, url(~robin8_logo@2x.png) 2x);
+}
+.r-global-header .navbar-user .username {
+  display: block;
+  color: #fff;
+  line-height: 56px;
+  font-weight: 400;
+}
+.r-global-header .navbar-user .username .caret-arrow {
+  margin-left: 10px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: url(~robin8_ui_sprites.png) no-repeat 0 0;
+}
+.r-global-header .navbar-user .dropdown-menu {
+  right: 0;
+  left: auto;
+}

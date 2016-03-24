@@ -1,14 +1,30 @@
 FactoryGirl.define do
   factory :campaign do
-    name "campaign name"
-    short_description "campaign short description"
+    sequence :name do |n|
+      "Campaign No.#{n}"
+    end
+
+    user { FactoryGirl.create(:rich_user) }
+    
     start_time Time.now
-    status "unexecute"
+    deadline Time.now.tomorrow
+    description 'Campaign Desc'
+    budget 10
+    url 'http://robin8.net'
+    per_action_budget 1.0
+    per_budget_type 'click'
+    status 'unexecute'
 
-    deadline Time.now + 10.minutes
-    per_budget_type "cpa"
-    per_action_budget 1
+    factory :cpa_campaign do
+      transient do
+        action_urls_count 3
+      end
 
-    budget 5
+      per_budget_type 'cpa'
+
+      after(:create) do |campaign, evaluator|
+        create_list(:campaign_action_url, evaluator.action_urls_count, campaign: campaign)
+      end
+    end
   end
 end

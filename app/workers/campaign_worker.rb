@@ -30,6 +30,8 @@ class CampaignWorker
       campaign.settle_accounts_for_brand
     elsif job_type == 'fee_end'
       campaign.finish('fee_end') if campaign.status != 'executed'
+    elsif job_type == 'remind_upload'
+      campaign.remind_upload
     end
   end
 

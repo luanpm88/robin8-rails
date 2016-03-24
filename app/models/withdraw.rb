@@ -5,7 +5,7 @@ class Withdraw < ActiveRecord::Base
   validates_presence_of :alipay_no, :if => Proc.new{|t| t.withdraw_type == 'alipay'}
   validates_presence_of :bank_name, :bank_no, :if => Proc.new{|t| t.withdraw_type == 'bank'}
 
-  validate :check_avail_amount
+  validate :check_avail_amount, :on => :create
 
   after_create :frozen_withdraw_amount
   after_save :deal_withdraw
@@ -13,7 +13,7 @@ class Withdraw < ActiveRecord::Base
   belongs_to :kol
   scope :whole, ->{order('created_at desc')}
   scope :pending, -> {where(:status => 'pending').order('created_at desc')}
-  scope :approved, -> {where(:status => 'pending').order('created_at desc')}
+  scope :approved, -> {where(:status => 'paid').order('created_at desc')}
   scope :rejected, -> {where(:status => 'rejected').order('created_at desc')}
 
   def check_avail_amount

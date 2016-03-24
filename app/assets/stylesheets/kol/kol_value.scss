@@ -1,0 +1,150 @@
+/*!
+ * Robin8 mobile landingpage
+ * 03.18.2016
+ */
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+p {
+  margin: 0;
+  padding: 0;
+}
+html {
+  min-height: 100%;
+  background: image_url('kol/bg.png')  no-repeat center bottom #e1eaed;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+body {
+  font-family: Helvetica;
+}
+.container .content {
+  min-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.inf-test-container {
+  text-align: center;
+  background-color: #fff;
+}
+.inf-test-container h1,
+.inf-test-container h2 {
+  font-weight: 400;
+}
+.inf-test-container h1 {
+  font-size: 1.2em;
+}
+.inf-test-container h2 {
+  position: relative;
+  z-index: 10;
+  margin-top: -10px;
+  font-size: 1.4em;
+}
+.inf-test-container .inf-test-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 30px;
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  border-radius: 10px;
+  background-color: #2dcad0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.inf-test-container .inf-test-btn:active {
+  background-color: #28b6bb;
+}
+.inf-test-container .content {
+  padding: 6% 0;
+}
+.user-inf-wrap {
+  position: relative;
+}
+.user-inf-wrap .avater-box {
+  position: absolute;
+  top: 23px;
+  z-index: 10;
+  width: 100%;
+  text-align: center;
+}
+.user-inf-wrap .avater-box .avater {
+  width: 55px;
+  height: 55px;
+  overflow: hidden;
+  border-radius: 100%;
+  background-color: #eee;
+}
+.influence-progress-box {
+  position: relative;
+  display: inline-block;
+  width: 260px;
+  height: 260px;
+  overflow: hidden;
+  text-align: center;
+}
+.influence-progress-box .influence-progress canvas {
+  vertical-align: top;
+  background: transparent !important;
+}
+.influence-progress-box .inf-info {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+}
+.influence-progress-box .inf-info .percent,
+.influence-progress-box .inf-info span {
+  display: block;
+}
+.influence-progress-box .inf-info .percent {
+  font-size: 3.2em;
+}
+.influence-progress-box .inf-info .text {
+  font-size: 1.3em;
+}
+.influence-progress-box .inf-info .date {
+  color: #999;
+  margin-top: 4px;
+}
+.influence-progress-box .bottom-img{
+  position: absolute;
+  top: 181px;
+  left: 0px;
+  z-index: 1;
+  height: 12px;
+  width: 260px;
+}
+
+.slogan-container {
+  text-align: center;
+}
+.slogan-container a,
+.slogan-container .app-icon {
+  display: inline-block;
+}
+.slogan-container .app-icon {
+  width: 60%;
+}
+.slogan-container .slogan {
+  margin-bottom: 15px;
+  font-size: 1.4em;
+}
+.slogan-container .slogan-sub {
+  font-size: 1em;
+}
+.slogan-container .content {
+  padding: 6% 0;
+}
+@media only screen and (max-width: 320px) {
+  .slogan-container .app-icon {
+    width: 50%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .slogan-container .app-icon {
+    width: 100%;
+  }
+}

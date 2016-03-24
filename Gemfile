@@ -1,5 +1,5 @@
-#source 'https://rubygems.org'
 source 'https://ruby.taobao.org'
+# source 'https://ruby.taobao.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 gem 'bundler', '>= 1.7.0'
@@ -30,7 +30,7 @@ gem 'quiet_assets', group: [:development, :staging]
 gem 'roadie', '~> 3.0.5'
 
 # Displays page rendering performance
-gem 'rack-mini-profiler'
+# gem 'rack-mini-profiler'
 
 # create multiple log files
 gem 'multi_logger'
@@ -46,7 +46,6 @@ gem 'legato'
 gem 'redis-objects'
 gem 'redis-rails'
 gem 'rest-client'
-gem "typhoeus"
 
 gem 'mongoid', '~> 5.0.0'
 
@@ -190,6 +189,8 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'puma'
+
+  gem 'rack-mini-profiler'
 end
 
 group :test do
@@ -206,6 +207,7 @@ end
 gem 'grape', '~> 0.9.0'
 gem 'grape-entity', '~> 0.4.3'
 gem 'grape-present_cache', :git => 'https://github.com/u2/grape-present_cache.git'
+gem 'grape-kaminari'
 
 gem 'jwt'
 
@@ -213,8 +215,15 @@ gem 'carrierwave'
 gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
 
 gem 'rucaptcha'
+gem "react_on_rails", '~> 3.0.0-rc.2'
+gem 'foreman'
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'json_expressions'
+gem 'rack-cors', :require => 'rack/cors'
 gem 'igetui-ruby', require: 'igetui'
+gem 'elasticsearch'#, git: 'git://github.com/elasticsearch/elasticsearch-ruby.git'
 gem 'csv_shaper'
 
 gem 'rack-attack'
 gem 'rack-test', require: 'rack/test'
+gem "non-stupid-digest-assets"

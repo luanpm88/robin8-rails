@@ -1,9 +1,15 @@
 class AppUpgrade < ActiveRecord::Base
   scope :Andriod, ->{where(:app_platform => 'Andriod')}
+  scope :Android, ->{where(:app_platform => 'Android')}
   scope :IOS, -> {where(:app_platform => 'IOS')}
 
   def self.newest_version(platform)
-    self.send(platform).order("app_version desc").first
+    # fix v1 spell wrong
+    if platform == 'Andriod'
+      self.send('Android').order("app_version desc").first
+    else
+      self.send(platform).order("app_version desc").first
+    end
   end
 
   def self.check(platform,version)

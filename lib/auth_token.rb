@@ -19,6 +19,10 @@ module AuthToken
   def AuthToken.valid?(data)
     begin
       decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
+      if  data.present?  && (decoded_data.blank? || !AuthToken.valid_time?(decoded_data))
+        Rails.logger.info "-----origin-data:#{data}---"
+        Rails.logger.info "-----before-decoded-data: #{JWT.decode(data, Secret, true, {:algorithm => Algorithm})} ---"
+      end
       if decoded_data['time'].blank? || decoded_data[Key].blank?
         Rails.logger.info "-----decoded data: #{decoded_data} --- 格式错误"
         return [false, '格式错误' ]
@@ -39,7 +43,7 @@ module AuthToken
   def AuthToken.can_get_code?(data)
     begin
       decoded_data = JWT.decode(data, Secret, true, {:algorithm => Algorithm})[0]    rescue ""
-      if decoded_data['time'].blank? || decoded_data['get_code'].blank?  || !AuthToken.valid_time?(decoded_data)
+      if decoded_data['time'].blank?
         return false
       else
         return true

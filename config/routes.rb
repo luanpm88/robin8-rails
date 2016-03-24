@@ -1,9 +1,19 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+
+  get 'hello_world', to: 'hello_world#index'
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
+  mount ApplicationAPI => '/brand_api'
+
+  get "react/(/*all)/", to: "react#index"
+  get "react_fake_data/campaigns", to: 'react#campaigns'
+  post "react_fake_data/campaigns", to: 'react#create_campaigns'
+
+
+  get 'brand/(/*all)/', to: "brand#index"
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
@@ -17,6 +27,8 @@ Rails.application.routes.draw do
   get 'identities/influence/:id' => 'identities#influence'
   get 'identities/discover/:labels' => 'identities#discover'
   get 'identities/labels/:user_id' => 'identities#labels'
+
+  get 'articles/:id/show' => "articles#show"
 
   resources :discover_records, only: [:create]
 
@@ -87,6 +99,7 @@ Rails.application.routes.draw do
   put '/kols/monetize' => 'kols#update_monetize'
   get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail'
   get '/kols/valid_phone_number'
+  get 'kol_value' => 'kols#kol_value'
 
   # kols
   devise_for :kols, controllers: {
