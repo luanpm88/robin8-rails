@@ -14,7 +14,8 @@ module API
           else
             kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                           app_version: params[:app_version], device_token: params[:device_token],
-                          IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number])
+                          IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number],
+                          utm_source: params[:utm_source])
           end
           kol.reload
           present :error, 0
@@ -38,6 +39,7 @@ module API
           optional :avatar_url, type: String
           optional :desc, type: String
           optional :serial_params, type: JSON
+          optional :utm_source, type: String
         end
         post 'oauth_login' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
@@ -47,7 +49,7 @@ module API
               kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
                                 device_token: params[:device_token], name: params[:name],
                                 social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
-                                IMEI: params[:IMEI], IDFA: params[:IDFA])
+                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source])
               #保存头像
               if params[:avatar_url].present?
                 kol.remote_avatar_url =  params[:avatar_url]
