@@ -734,6 +734,10 @@
   width: 450px;
 }
 
+.creat-content-sources .spinner-box .per-budget-input-error {
+  margin-left: 42px;
+}
+
 .creat-content-sources .spinner-box .average-price{
   float: right;
   margin-top: 6px;

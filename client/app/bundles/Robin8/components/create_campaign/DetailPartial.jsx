@@ -126,7 +126,9 @@ export default class DetailPartial extends React.Component {
                   <span className="symbol">$</span>
                   <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input" style={{display: 'block'}} />
                   <p className="average-price clearfix">均价xxx</p>
-                  <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
+                  <div className="per-budget-input-error">
+                    <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
+                  </div>
                 </div>
               </div>
             </div>
