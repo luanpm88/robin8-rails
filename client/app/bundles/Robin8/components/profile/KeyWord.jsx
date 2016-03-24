@@ -5,6 +5,7 @@ export default class Keyword extends Component {
   constructor(props) {
     super(props);
     this.add = this.add.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
 
     this.keywords = this.props.field.value || this.props.field.initialValue;
     this.keywordList = this.keywords.split(",");
@@ -34,6 +35,14 @@ export default class Keyword extends Component {
     // }, 0)
   }
 
+  onKeyPress(event) {
+    if (event.key === 'Enter') {
+      // console.log(event.key);
+      this.add();
+      event.preventDefault();
+    }
+  }
+
   remove(word) {
     const i = this.keywordList.indexOf(word);
     if(i != -1) {
@@ -59,7 +68,7 @@ export default class Keyword extends Component {
 
         <div className="add-keyword">
           <img className="search" src={require("search_icon.png")} />
-          <Input type="text" ref="input" placeholder="品牌关键词" ref="input" />
+          <Input type="text" ref="input" placeholder="品牌关键词" ref="input" onKeyPress={this.onKeyPress}/>
           <img className="add" src={require("keyword_add_btn_al.png")} onClick={this.add.bind(event)} />
         </div>
       </div>
