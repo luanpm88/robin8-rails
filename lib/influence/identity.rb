@@ -28,7 +28,7 @@ module Influence
                           {:min_count => 50, :score => 10},
                           {:min_count => -1, :score => 0}]
     def self.cal_follower_score(identity)
-      count = identity.followers_count
+      count = identity.followers_count || 0  rescue 0
       FollowerScoreLevels.each do |level|
         return level[:score] if  count > level[:min_count]
       end
@@ -47,7 +47,7 @@ module Influence
                             {:min_count => 50, :score => 5},
                             {:min_count => -1, :score => 0}]
     def self.cal_status_score(identity)
-      count = identity.statuses_count
+      count = identity.statuses_count  || 0  rescue 0
       StatusesScoreLevels.each do |level|
         return level[:score] if  count > level[:min_count]
       end
@@ -61,7 +61,7 @@ module Influence
                             {:min_count => 1, :score => 10},
                             {:min_count => -1, :score => 0}]
     def self.cal_register_score(identity)
-      registered_at = identity.registered_at   rescue nil
+      registered_at = identity.registered_at  || Time.now  rescue  Time.now
       registered_day = (Time.now - registered_at) / (24 * 60 * 60)
       count = registered_day / 365.0          # 注册多少年
       RegisterScoreLevels.each do |level|
@@ -73,7 +73,7 @@ module Influence
     VerifyScoreLevels = [{:status => true, :score => 100},
                          {:status => false, :score => 0}]
     def self.cal_verify_score(identity)
-      verified = identity.verified
+      verified = identity.verified rescue false
       VerifyScoreLevels.each do |level|
         return level[:score] if  verified == level[:status]
       end
