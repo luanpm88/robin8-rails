@@ -2,11 +2,11 @@
 # The webpack task must run before assets:environment task.
 # Otherwise Sprockets cannot find the files that webpack produces.
 # This is the secret sauce for how a Heroku deployment knows to create the webpack generated JavaScript files.
-Rake::Task["assets:precompile"]
-  .clear_prerequisites
-  .enhance(["assets:compile_environment"])
+# Rake::Task["assets:precompile"]
+#   .clear_prerequisites
+#   .enhance(["assets:compile_environment"])
 
-namespace :assets do
+namespace :asset do
   # In this task, set prerequisites for the assets:precompile task
   task compile_environment: :webpack do
     # return
