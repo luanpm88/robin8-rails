@@ -8,6 +8,7 @@ ActiveAdmin.register User do
   filter :first_name
   filter :last_name
   filter :email
+  filter :mobile_number
   filter :last_sign_in_at
 
   member_action :login_to_dashboard, method: :get do
