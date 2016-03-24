@@ -34,10 +34,12 @@ class TmpKolContact < ActiveRecord::Base
       kol_contact.invite_at = Time.now
       kol_contact.save
     end
-    tmp_kol_contact = TmpKolContact.where(:kol_uuid => kol_uuid, :mobile => mobile).first
-    tmp_kol_contact.invite_status = true
-    tmp_kol_contact.invite_at = Time.now
-    tmp_kol_contact.save
+    tmp_kol_contact = TmpKolContact.where(:kol_uuid => kol_uuid, :mobile => mobile).first     rescue nil
+    if  tmp_kol_contact
+      tmp_kol_contact.invite_status = true
+      tmp_kol_contact.invite_at = Time.now
+      tmp_kol_contact.save
+    end
   end
 
 end

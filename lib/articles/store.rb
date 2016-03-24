@@ -6,13 +6,13 @@ module Articles
      selected_articles = search_list(kol_id, title, per_page)
      #2. 对即将推送的文章的数据进行 存储
      PushArticle.kol_add_push_articles(kol_id, selected_articles)
-     selected_articles
+     selected_articles.sample(10)
    end
 
    #选择喜爱文章 列表
    def self.get_select_like_list(kol_id, title = nil, per_page = 10)
      selected_articles = search_list(kol_id, title, per_page, true)
-     selected_articles
+     selected_articles.sample(10)
    end
 
    def self.search_list(kol_id, title, per_page, select = false)
