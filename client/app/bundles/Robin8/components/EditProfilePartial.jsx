@@ -96,7 +96,7 @@ class EditProfilePartial extends Component {
 }
 
 EditProfilePartial = reduxForm({
-  form: 'activity_form',
+  form: 'profile_form',
   fields: ['name', 'url', 'desc', 'contacter_email', 'contacter_name', 'contacter_phone', 'keywords', 'contacter_rate'],
   returnRejectedSubmitPromise: true,
   validate
