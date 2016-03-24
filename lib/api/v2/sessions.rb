@@ -68,8 +68,8 @@ module API
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
           end
           if params[:kol_uuid].present?
-            kol_value = KolInfluenceValue.get_score(params[:kol_uuid])         if kol_value.present?
-            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score)
+            kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score)     if kol_value.present?
             SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
           present :error, 0
