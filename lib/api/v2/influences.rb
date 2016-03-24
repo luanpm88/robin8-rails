@@ -128,9 +128,11 @@ module API
         get 'rank' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           if current_kol && current_kol.has_contacts
+            KolContact.update_joined_kols(current_kol.id)
             joined_contacts = KolContact.joined.where(:kol_id => current_kol.id)
             contacts = KolContact.order_by_exist.where(:kol_id => current_kol.id)
           else
+            TmpKolContact.update_joined_kols(params[:kol_uuid])
             joined_contacts = TmpKolContact.joined.where(:kol_uuid => params[:kol_uuid])
             contacts = TmpKolContact.order_by_exist.where(:kol_uuid => params[:kol_uuid])
           end
