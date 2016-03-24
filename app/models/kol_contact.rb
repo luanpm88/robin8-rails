@@ -5,9 +5,9 @@ class KolContact < ActiveRecord::Base
 
   def self.update_joined_kols(kol_id)
     mobiles = KolContact.where(:kol_id => kol_id).collect{|t| t.mobile }
-    joined_kols = Kol.where(:mobile_number => mobiles).all
+    joined_kols = Kol.where(:mobile_number => mobiles)
     joined_kol_mobiles = joined_kols.collect{|t| t.mobile_number}
-    TmpKolContact.where(:mobile => joined_kol_mobiles).each do |contact|
+    KolContact.where(:kol_id => kol_id ,:mobile => joined_kol_mobiles).each do |contact|
       contact_kol = joined_kols.where(:mobile_number => contact.mobile).first    rescue nil
       contact.influence_score =  contact_kol.influence_score    rescue 0
       contact.exist = true
