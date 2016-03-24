@@ -102,7 +102,7 @@ namespace :deploy do
   # end
 
   #after :publishing, :restart
-  after :publishing, :upload_localization
+  # after :publishing, :upload_localization
   after :publishing, :update_crontab
   after :publishing, 'unicorn:restart'
 
