@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import moment from 'moment';
 import "brand_activity_detail.css";
-import Basic from './campaign_show/Basic';
 
-export default class ShowActivityPartial extends Component {
+import Basic from './campaign_show/Basic';
+import Overview from './campaign_show/Overview';
+
+export default class ShowCampaignPartial extends Component {
   componentDidMount() {
     this.set_campaign();
     this.bind_toggle_text();
@@ -39,31 +41,6 @@ export default class ShowActivityPartial extends Component {
           <Link to="/brand/">我的主页</Link>
         </li>
       </ol>
-    );
-  }
-
-  render_overview(campaign) {
-    return (
-      <div className="panel activity-stat-bigshow-panel">
-        <div className="panel-heading">
-          <a href="#panelStatBigShow" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <h4 className="panel-title">总览</h4>
-        </div>
-        <div id="panelStatBigShow" className="panel-collapse collapse in">
-          <div className="panel-body">
-            {/* 活动数据总览大 S */}
-            <div className="activity-stat-bigshow-area">
-              <ul>
-                <li><span className="txt">已花费</span><strong className="stat-num"><sapn className="symbol">$</sapn>{ campaign.get("per_budget_type") }</strong></li>
-                <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("per_budget_type") }</strong></li>
-                <li><span className="txt">点击量</span><strong className="stat-num">{ campaign.get("per_budget_type") }</strong></li>
-                <li><span className="txt">剩余天数</span><strong className="stat-num">{ campaign.get("per_budget_type") }</strong></li>
-              </ul>
-            </div>
-            {/* 活动数据总览大 E */}
-          </div>
-        </div>
-      </div>
     );
   }
 
@@ -233,7 +210,7 @@ export default class ShowActivityPartial extends Component {
         <div className="container">
           { this.render_breadcrumb(campaign) }
           <Basic {...{campaign}} />
-          { this.render_overview(campaign) }
+          <Overview {...{campaign}} />
           { this.render_medias(campaign) }
           { this.render_influence(campaign) }
         </div>

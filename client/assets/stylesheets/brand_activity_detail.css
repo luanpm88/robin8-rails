@@ -6,8 +6,8 @@
   position: relative;
   margin-bottom: 40px;
   padding: 0 70px 0 55px;
-  height: 238px;
   overflow: hidden;
+  height: 100%;
   background-color: #403e3f;
   background-image: linear-gradient(to right, #403e3f, #2f2d2e);
 }
@@ -16,15 +16,18 @@
 }
 .brand-activity-card .brand-activity-coverphoto {
   position: absolute;
-  left: 0;
-  top: 0;
+  width: 304px;
+  height: 100%;
+  top: 10;
 }
 .brand-activity-card .brand-activity-coverphoto > img {
-  width: 280px;
+  width: 304px;
+  height:  100%;
   overflow: hidden;
 }
 .brand-activity-card .brand-activity-content {
   margin-left: 280px;
+  margin-bottom: 15px;
 }
 .brand-activity-card .brand-activity-content .activity-title {
   margin-top: 25px;
@@ -35,11 +38,21 @@
   font-size: 18px;
 }
 .brand-activity-card .brand-activity-content .date,
-.brand-activity-card .brand-activity-content span.summary {
+.brand-activity-card .brand-activity-content small.summary {
   color: #9b9a9a;
   font-size: 14px;
   word-wrap: break-word;
 }
+
+small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
+  display: block;
+}
+
+.campaign_action_short_url span, .campaign_action_url span, .campaign_url span{
+  color: #FFF;
+  font-size: 14px;
+}
+
 .brand-activity-card .brand-activity-content .summary {
   margin-top: 20px;
 }
