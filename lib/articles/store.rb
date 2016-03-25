@@ -1,18 +1,19 @@
 module Articles
  class Store
    #发现文章列表
+   DefaultSize = 20
    def self.get_discovery_list(kol_id, title = nil, per_page = 10)
      #1. 找出
      selected_articles = search_list(kol_id, title, per_page)
      #2. 对即将推送的文章的数据进行 存储
      PushArticle.kol_add_push_articles(kol_id, selected_articles)
-     selected_articles.sample(10)
+     selected_articles
    end
 
    #选择喜爱文章 列表
    def self.get_select_like_list(kol_id, title = nil, per_page = 10)
      selected_articles = search_list(kol_id, title, per_page, true)
-     selected_articles.sample(10)
+     selected_articles
    end
 
    def self.search_list(kol_id, title, per_page, select = false)
@@ -20,19 +21,21 @@ module Articles
      articles = Rails.cache.read("kol_articles_#{kol_id}_#{title}")  rescue []
      #2. 缓存没有需要去检索
      if (articles.nil? || articles.size == 0)
-       if select
+       if select    #选择喜爱文章
          articles = ElasticClient.search(title, {:select => true, :size => per_page * 10})
-       elsif title
-         articles = ElasticClient.search(title, {:size => per_page * 3})
-       else
+         articles.sample(per_page * 10)
+       elsif title   #搜索文章
          kol_push_ids = PushArticle.get_push_ids(kol_id)
+         articles = ElasticClient.search(title, {:size => DefaultSize, :push_list_ids => kol_push_ids })
+         articles.sample(DefaultSize)
+       else
          #2.1  检索时 需要先根据阅读文章取文章关键字
          text = get_relation_article_text(kol_id)
          if text
            #2.2  把文章关键字 去查询
-           articles = ElasticClient.search(text, {:push_list_ids => kol_push_ids, :size => per_page * 3})
+           articles = ElasticClient.search(text, {:push_list_ids => PushArticle.get_push_ids(kol_id), :size => DefaultSize})
          else
-           articles = ElasticClient.search(title, {:select => true, :size => per_page * 3})
+           articles = ElasticClient.search(title, {:select => true, :size => DefaultSize })
          end
        end
      end
@@ -48,9 +51,12 @@ module Articles
      relation_ids = ArticleAction.get_relation_ids(kol_id)
      Rails.logger.elastic.info "=======get_read_article_text===kol_id:#{kol_id}====relation_ids:#{relation_ids}"
      if relation_ids.size > 0
+       order_artciles = []
        articles = ElasticClient.get_text(relation_ids)
-       text_arr = articles.collect{|article| "#{article['text']} #{article['title']}".split(/\s+/)}.flatten
-       Rails.logger.info "--------get_read_article_text---text:#{text_arr.join(" ")[0,100]}"
+       relation_ids.each{|id| order_artciles += articles.select{|t| t["id"] == "#{id}"} }
+       Rails.logger.elastic.info "=======get_read_article_text===order_artciles:#{order_artciles.collect{|t| t['id']}}"
+       text_arr = order_artciles.collect{|article| "#{article['text']} #{article['title']}".split(/\s+/)}.flatten
+       Rails.logger.elastic.info "--------get_read_article_text---text:#{text_arr.join(" ")[0,100]}"
        return text_arr.join(" ")[0,1000]
      end
      return nil

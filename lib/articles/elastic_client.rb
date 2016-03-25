@@ -17,7 +17,7 @@ module Articles
         res = client.search index: 'article_all',
                             type: 'fulltext',
                             body: {
-                              _source: ["text", "title", "biz_name"],
+                              _source: ["id", "text", "title", "biz_name"],
                               query: {
                                 terms: { id: read_list_ids  },
                               }
@@ -74,7 +74,7 @@ module Articles
                               sort: sort,
                               filter: filter,
                               from: 0,
-                              size:  30
+                              size:  options[:size] || 30
                             }
         sources = res['hits']['hits'].collect{|t| t["_source"]}
         sources
