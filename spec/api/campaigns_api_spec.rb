@@ -5,9 +5,6 @@ RSpec.describe Brand::V1::CampaignsAPI do
     @rich_user = FactoryGirl.create :rich_user
     @campaign = FactoryGirl.create(:campaign, user: @rich_user)
     FactoryGirl.create(:campaign_target, campaign: @campaign)
-    FactoryGirl.create(:campaign_target, campaign: @campaign, target_type: 'region')
-    FactoryGirl.create(:campaign_target, campaign: @campaign, target_type: 'gender')
-
 
     login_as(@rich_user, :scope => :user)
   end
@@ -43,6 +40,14 @@ RSpec.describe Brand::V1::CampaignsAPI do
         share_time: Integer,
         take_budget: Float,
         remain_budget: Float,
+	# TODO: age, province, city, gender should merge in one object, not flatten!
+	age: String,
+	province: String,
+	city: String,
+	gender: String,
+	action_url: String,
+	short_url: String,
+	action_url_identifier: String,
         created_at: String,
         updated_at: String
       }
@@ -52,7 +57,7 @@ RSpec.describe Brand::V1::CampaignsAPI do
 
   describe 'POST /brand_api/v1/campaigns', :type => :feature do
     let(:campaign_params) do
-      {:name => 'campaign', :description => 'desc', :url => 'http://robin8.com', :budget => 1.0, :per_budget_type => 'click', :per_action_budget => 1.0, :start_time => Time.now, :deadline => Time.now.tomorrow}
+      {:name => 'campaign', :description => 'desc', :url => 'http://robin8.com', :budget => 1.0, :per_budget_type => 'click', :per_action_budget => 1.0, :start_time => Time.now, :deadline => Time.now.tomorrow, :target => {:age => 'all', :region => 'all', :gender => 'all'}}
     end
 
     it 'returns 201 and present created campaign' do
@@ -79,6 +84,14 @@ RSpec.describe Brand::V1::CampaignsAPI do
         share_time: Integer,
         take_budget: Float,
         remain_budget: Float,
+	# TODO: age, province, city, gender should merge in one object, not flatten!
+	age: String,
+	province: String,
+	city: String,
+	gender: String,
+	action_url: String,
+	short_url: String,
+	action_url_identifier: String,
         created_at: String,
         updated_at: String
       }
@@ -116,17 +129,7 @@ RSpec.describe Brand::V1::CampaignsAPI do
       expect(response.body).to match_json_expression pattern
     end
 
-    it 'returns error when gender not in %w(all, male, female)' do
-      post '/brand_api/v1/campaigns', campaign_params.merge(:target => {:gender => 'invalid'})
-
-      pattern = {
-        error: 'target[gender] does not have a valid value'
-      }
-      expect(response.status).to eq 400
-      expect(response.body).to match_json_expression pattern
-    end
-
-    it 'target[age/region/gender] have default value'
+    it 'returns error when gender not in %w(all, male, female)'
   end
 
   describe 'PUT /brand_api/v1/campaigns/:id' do

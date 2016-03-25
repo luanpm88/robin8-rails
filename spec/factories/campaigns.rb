@@ -15,6 +15,17 @@ FactoryGirl.define do
     per_budget_type 'click'
     status 'unexecute'
 
+    transient do
+      target_count 3
+    end
+
+    after(:create) do |campaign, evaluator|
+      type_list = ['age', 'region', 'gender']
+      evaluator.target_count.times do |index|
+	create(:campaign_target, campaign: campaign, target_type: type_list[index])
+      end
+    end
+
     factory :cpa_campaign do
       transient do
         action_urls_count 3
