@@ -21,12 +21,12 @@ module Brand
 
       desc 'Update current user profile'
       params do
-	requires :name, type: String
-	requires :real_name, type: String
-	requires :description, type: String
-	requires :keywords, type: String
-	requires :url, type: String
-	requires :avatar_url, type: String
+	requires :name        , type: String
+	requires :real_name   , type: String
+	requires :description , type: String
+	requires :keywords    , type: String
+	requires :url         , type: String
+	requires :avatar_url  , type: String
       end
       put '/' do
 	current_user.update_attributes declared(params)
