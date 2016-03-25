@@ -378,8 +378,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.string   "audience_publish_fres", limit: 255
     t.boolean  "has_grabed",            limit: 1,     default: false
     t.string   "from_type",             limit: 255,   default: "pc"
-<<<<<<< 487aef47bec8906880897a658369c0453575efc1
-=======
     t.integer  "followers_count",       limit: 4
     t.integer  "friends_count",         limit: 4
     t.integer  "statuses_count",        limit: 4
@@ -393,7 +391,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.string   "gender",                limit: 255
     t.boolean  "is_vip",                limit: 1
     t.boolean  "is_yellow_vip",         limit: 1
->>>>>>> add keywords, url, description, real_name to user
   end
 
   create_table "industries", force: :cascade do |t|
@@ -543,22 +540,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.string   "social_uid",             limit: 255
     t.string   "from_which_campaign",    limit: 255
     t.datetime "forbid_campaign_time"
-<<<<<<< 487aef47bec8906880897a658369c0453575efc1
-    t.integer  "five_click_threshold",             limit: 4
-    t.integer  "total_click_threshold",            limit: 4
-    t.string   "app_platform",                     limit: 255
-    t.string   "app_version",                      limit: 255
-    t.string   "private_token",                    limit: 255
-    t.string   "device_token",                     limit: 255
-    t.string   "desc",                             limit: 255
-    t.string   "alipay_account",                   limit: 255
-    t.string   "name",                             limit: 255
-    t.string   "app_country",                      limit: 255
-    t.string   "app_province",                     limit: 255
-    t.string   "app_city",                         limit: 255
-    t.string   "IMEI",                             limit: 255
-    t.string   "IDFA",                             limit: 255
-=======
     t.integer  "five_click_threshold",   limit: 4
     t.integer  "total_click_threshold",  limit: 4
     t.string   "app_platform",           limit: 255
@@ -578,7 +559,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.float    "influence_score",        limit: 24,                           default: -1.0
     t.string   "kol_uuid",               limit: 255
     t.datetime "cal_time"
->>>>>>> add keywords, url, description, real_name to user
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
