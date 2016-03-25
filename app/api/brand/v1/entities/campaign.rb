@@ -36,28 +36,28 @@ module Brand
         expose :take_budget
         expose :remain_budget
         expose :age do |object, opts|
-          object.get_campaign_targets.find_by(target_type: "age").target_content
+          object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "age").target_content : nil
         end
         expose :province do |object, opts|
-          object.get_campaign_targets.find_by(target_type: "region").target_content.split(" ").first
+          object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "region").target_content.split(" ").first : nil
         end
         expose :city do |object, opts|
-          object.get_campaign_targets.find_by(target_type: "region").target_content.split(" ").last
+          object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "region").target_content.split(" ").last : nil
         end
         expose :gender do |object, opts|
-          object.get_campaign_targets.find_by(target_type: "gender").target_content
+          object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "gender").target_content : nil
         end
 
         expose :action_url do |object, opts|
-          object.get_campaign_action_urls.present? ? object.get_campaign_action_urls.first.action_url : ""
+          object.campaign_action_urls.present? ? object.get_campaign_action_urls.first.action_url : ""
         end
 
         expose :short_url do |object, opts|
-          object.get_campaign_action_urls.present? ? object.get_campaign_action_urls.first.short_url : ""
+          object.campaign_action_urls.present? ? object.get_campaign_action_urls.first.short_url : ""
         end
 
         expose :action_url_identifier do |object, opts|
-          object.get_campaign_action_urls.present? ? object.get_campaign_action_urls.first.identifier : ""
+          object.campaign_action_urls.present? ? object.get_campaign_action_urls.first.identifier : ""
         end
 
         with_options(format_with: :iso_timestamp) do

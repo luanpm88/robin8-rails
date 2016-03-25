@@ -4,6 +4,10 @@ RSpec.describe Brand::V1::CampaignsAPI do
   before :each do
     @rich_user = FactoryGirl.create :rich_user
     @campaign = FactoryGirl.create(:campaign, user: @rich_user)
+    FactoryGirl.create(:campaign_target, campaign: @campaign)
+    FactoryGirl.create(:campaign_target, campaign: @campaign, target_type: 'region')
+    FactoryGirl.create(:campaign_target, campaign: @campaign, target_type: 'gender')
+
 
     login_as(@rich_user, :scope => :user)
   end
