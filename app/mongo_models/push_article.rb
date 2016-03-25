@@ -16,8 +16,8 @@ class PushArticle
 
   def self.get_push_ids(kol_id)
     recent_read_ids = ArticleAction.where(:kol_id => kol_id).where(:created_at.gte => 7.days.ago).order_by_status.collect{|t| t.article_id}   rescue []
-    push_ids = PushArticle.where(:kol_id => kol_id).where(:created_at.gte => 7.days.ago).collect{|t| t.article_id}            rescue []
-    (recent_read_ids + push_ids)[0,1000]
+    push_ids = PushArticle.where(:kol_id => kol_id).where(:created_at.gte => 7.days.ago).order("created_at desc").collect{|t| t.article_id}            rescue []
+    (recent_read_ids + push_ids)[0,2000]
   end
 
   def self.kol_push_ids(kol_id)
@@ -32,7 +32,5 @@ class PushArticle
       article_ids << article['id']
       PushArticle.create(:kol_id => kol_id, :article_id => article['id'], :created_at => Time.now)
     end
-    #2. 更新到cache
-    # append_value(self.kol_push_ids(kol_id), article_ids)
   end
 end

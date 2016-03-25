@@ -19,7 +19,8 @@ module API
           if params[:type] == 'select'
             articles = ::Articles::Store.get_select_like_list(current_kol.id)
           else
-            articles = ::Articles::Store.get_discovery_list(current_kol.id, params[:title])
+            title = params[:title].present? ? params[:title] : nil
+            articles = ::Articles::Store.get_discovery_list(current_kol.id, title)
           end
           present :error, 0
           present :articles_count, articles.size

@@ -3,10 +3,10 @@ module Articles
    #发现文章列表
    DefaultSize = 20
    def self.get_discovery_list(kol_id, title = nil, per_page = 10)
-     #1. 找出
+     Rails.logger.elastic.info "=======get_discovery_list===kol_id:#{kol_id}====title:#{title}"
      selected_articles = search_list(kol_id, title, per_page)
-     #2. 对即将推送的文章的数据进行 存储
-     PushArticle.kol_add_push_articles(kol_id, selected_articles)
+     #2. 对自动推荐的文章的数据进行 存储
+     PushArticle.kol_add_push_articles(kol_id, selected_articles)      if title.blank?
      selected_articles
    end
 
@@ -24,10 +24,10 @@ module Articles
        if select    #选择喜爱文章
          articles = ElasticClient.search(title, {:select => true, :size => per_page * 10})
          articles.sample(per_page * 10)
-       elsif title   #搜索文章
+       elsif title.present?   #搜索文章
          kol_push_ids = PushArticle.get_push_ids(kol_id)
-         articles = ElasticClient.search(title, {:size => DefaultSize, :push_list_ids => kol_push_ids })
-         articles.sample(DefaultSize)
+         articles = ElasticClient.search(title, {:push_list_ids => kol_push_ids, :size => per_page * 15 })
+         articles.sample(per_page * 15)
        else
          #2.1  检索时 需要先根据阅读文章取文章关键字
          text = get_relation_article_text(kol_id)
@@ -54,8 +54,7 @@ module Articles
        order_artciles = []
        articles = ElasticClient.get_text(relation_ids)
        relation_ids.each{|id| order_artciles += articles.select{|t| t["id"] == "#{id}"} }
-       Rails.logger.elastic.info "=======get_read_article_text===order_artciles:#{order_artciles.collect{|t| t['id']}}"
-       text_arr = order_artciles.collect{|article| "#{article['text']} #{article['title']}".split(/\s+/)}.flatten
+       text_arr = order_artciles.collect{|article| "#{article['text']} #{article['title'].gsub(article['biz_name'],'')}".split(/\s+/)}.flatten
        Rails.logger.elastic.info "--------get_read_article_text---text:#{text_arr.join(" ")[0,100]}"
        return text_arr.join(" ")[0,1000]
      end

@@ -1,9 +1,9 @@
 module Articles
   class ElasticClient
-    Host = Rails.application.secrets[:elastic_server]
+    Hosts = Rails.application.secrets[:elastic_servers]
     cattr_accessor :client
     def self.client
-      @@client = Elasticsearch::Client.new({host: Host, log: true})    if @@client.blank?
+      @@client = Elasticsearch::Client.new({hosts: Hosts, log: true})    if @@client.blank?
       @@client
     end
 
