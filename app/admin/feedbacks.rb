@@ -22,7 +22,7 @@ ActiveAdmin.register Feedback do
     column :device_model
     column :content
     column :screeshot do |resource|
-      image_tag resource.screeshot.url
+      image_tag resource.screenshot.url
     end
     column :created_at
   end

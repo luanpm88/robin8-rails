@@ -29,10 +29,14 @@ class Withdraw < ActiveRecord::Base
 
 
   def deal_withdraw
+    if self.kol.frozen_amount.to_f < self.credits.to_f
+      self.errors.add(:credits, "超出账户冻结金额")
+      return
+    end
     if self.status_changed? && self.status == 'paid'
       # 解冻并提现
-      self.kol.unfrozen(self.credits,'widthdraw', self, nil)
-      self.kol.payout(self.credits, 'withdraw',self,nil)
+        self.kol.unfrozen(self.credits,'widthdraw', self, nil)
+        self.kol.payout(self.credits, 'withdraw',self,nil)
     elsif self.status_changed? && self.status == 'rejected'
       # 解冻
       self.kol.unfrozen(self.credits,'widthdraw', self, nil)
