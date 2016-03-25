@@ -23,7 +23,8 @@ module Brand
 
       # representations
       #
-      represent Campaign, with: Entities::Campaign
+      represent User     , with: Entities::User
+      represent Campaign , with: Entities::Campaign
 
       # namespaces
       #

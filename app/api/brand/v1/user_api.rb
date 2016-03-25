@@ -14,6 +14,11 @@ module Brand
         present campaigns
       end
 
+      desc 'Get current user profile'
+      get '/' do
+	present current_user
+      end
+
     end
   end
 end
