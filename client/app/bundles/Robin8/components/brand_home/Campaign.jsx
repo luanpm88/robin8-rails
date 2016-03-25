@@ -41,14 +41,26 @@ export default class Campaign extends React.Component {
           </a>
 
           <ul className="stat-info grid-4">
-            <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
-            <li><span className="txt">参与人数</span><strong className="stat-num">69876</strong></li>
-            <li><span className="txt">点击率</span><strong className="stat-num">???</strong></li>
-            <li><span className="txt">剩余天数</span><strong className="stat-num">???</strong></li>
+            <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
+            <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
+            <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
+            <li><span className="txt">剩余天数</span><strong className="stat-num">{ campaign.get("avail_click") }</strong></li>
           </ul>
         </div>
         <div className="brand-activity-coverphoto pull-left">
-          <img className="campaign-status-img" src={ require(`campaign_status_approved.png`) } />
+          { do
+            {
+              const status = campaign.get("status");
+              if (status === 'approved')
+                <img className="campaign-status-img" src={ require('campaign_status_approved.png') } />
+              else if (status === 'rejected')
+                <img className="campaign-status-img" src={ require('campaign_status_rejected.png') } />
+              else if (status === 'executing')
+                <img className="campaign-status-img" src={ require('campaign_status_executing.png') } />
+              else if (status === 'executed')
+                <img className="campaign-status-img" src={ require('campaign_status_executed.png') } />
+            }
+          }
           <img src={ campaign.get('img_url') } alt="活动图片" />
         </div>
       </div>
