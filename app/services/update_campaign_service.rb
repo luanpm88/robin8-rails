@@ -3,11 +3,11 @@ class UpdateCampaignService
   attr_reader :errors, :campaign
 
   def initialize user, campaign_id, args={}
-    @user = user
-    @campaign = Campaign.find_by_id campaign_id
+    @user                   = user
+    @campaign               = Campaign.find_by_id campaign_id
     @update_campaign_params = permited_params_from args
-
-    @errors = []
+    
+    @errors                 = []
   end
 
   def perform
