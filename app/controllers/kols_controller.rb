@@ -264,6 +264,11 @@ class KolsController < ApplicationController
 
   def kol_value
     @kol_value  = KolInfluenceValue.find_by :kol_uuid => params[:kol_uuid]
+    if Influence::Util.is_mobile?(@kol_value.name)
+      @kol_name = "我"
+    else
+      @kol_name = @kol_value.name
+    end
     @rate = (@kol_value.influence_score.to_i - 350) / (1000 - 350).to_f
     render :layout =>  false
   end
