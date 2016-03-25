@@ -17,6 +17,10 @@ module Brand
       version 'v1', using: :path
       formatter :json, SuccessFormatter
 
+      before do
+	authenticate!
+      end
+
       # helpers
       #
       helpers APIHelpers
@@ -30,6 +34,10 @@ module Brand
       #
       namespace 'user', desc: 'Operations about current user' do
         mount UserAPI
+      end
+
+      namespace 'util', desc: 'Util' do
+	mount UtilAPI
       end
 
       mount CampaignsAPI
