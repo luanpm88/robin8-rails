@@ -20,8 +20,9 @@
 	  <td> <%= c.send v %> </td>
         <% end %>
 	<td>
-	  <%= link_to 'Edit', edit_marketing_dashboard_campaign_path(c) %>
-	  <%= link_to 'Show', marketing_dashboard_campaign_path(c) %>
+	  <%= link_to 'Edit', edit_marketing_dashboard_campaign_path(c) %> |
+	  <%= link_to 'Show', marketing_dashboard_campaign_path(c) %> |
+	  <%= link_to 'Kols', marketing_dashboard_campaign_kols_path(c) %>
 
 
 	</td>

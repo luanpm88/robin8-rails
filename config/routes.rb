@@ -34,7 +34,9 @@ Rails.application.routes.draw do
 
   namespace :marketing_dashboard do
     get '/' => 'dashboard#index'
-    resources :campaigns, except: [:destroy, :new, :create]
+    resources :campaigns, except: [:destroy, :new, :create] do
+      resources :kols, only: [:index]
+    end
   end
 
  # devise_for :admin_users, ActiveAdmin::Devise.config

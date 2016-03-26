@@ -1,0 +1,20 @@
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |k| %>
+      <% %w(id name email).each do |v| %>
+	<td> <%= k.send v %> </td>
+      <% end %>
+    <% end %>
+  </tbody>
+
+</table>
