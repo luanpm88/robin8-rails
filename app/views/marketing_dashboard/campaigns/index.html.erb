@@ -2,6 +2,7 @@
 
   <thead>
     <tr>
+      <th>ID</th>
       <th>Name</th>
       <th>Type</th>
       <th>Per action budget</th>
@@ -9,14 +10,21 @@
       <th>Start</th>
       <th>Deadline</th>
       <th>Status</th>
+      <th>Ops</th>
     </tr>
   </thead>
   <tbody>
     <% @campaigns.each do |c| %>
       <tr>
-        <% %w(name per_budget_type per_action_budget budget start_time deadline status).each do |v| %>
+        <% %w(id name per_budget_type per_action_budget budget start_time deadline status).each do |v| %>
 	  <td> <%= c.send v %> </td>
         <% end %>
+	<td>
+	  <%= link_to 'Edit', edit_marketing_dashboard_campaign_path(c) %>
+	  <%= link_to 'Show', marketing_dashboard_campaign_path(c) %>
+
+
+	</td>
       </tr>
     <% end %>
   </tbody>

@@ -1,14 +1,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  namespace :marketing_dashboard do
-  get 'campaigns/index'
-  end
-
-  namespace :marketing_dashboard do
-  get 'campaign/index'
-  end
-
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
@@ -39,9 +31,10 @@ Rails.application.routes.draw do
     sessions: 'admin_users/sessions'
   }
 
+
   namespace :marketing_dashboard do
     get '/' => 'dashboard#index'
-    resource :campaigns
+    resources :campaigns, except: [:destroy, :new, :create]
   end
 
  # devise_for :admin_users, ActiveAdmin::Devise.config
