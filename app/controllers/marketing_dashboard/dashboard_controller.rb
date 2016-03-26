@@ -1,7 +1,5 @@
-class MarketingDashboard::DashboardController < ApplicationController
-  layout 'admin'
+class MarketingDashboard::DashboardController < MarketingDashboard::BaseController
 
   def index
-    'success'
   end
 end

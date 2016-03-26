@@ -1,4 +1,4 @@
-class MarketingDashboard::CampaignsController < ApplicationController
+class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
   layout 'admin'
 
   def index
