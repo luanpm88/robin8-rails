@@ -12,7 +12,7 @@
   <tbody>
     <% @kols.each do |k| %>
       <% %w(id name email).each do |v| %>
-	<td> <%= k.send v %> </td>
+        <td> <%= k.send v %> </td>
       <% end %>
     <% end %>
   </tbody>

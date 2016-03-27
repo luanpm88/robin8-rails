@@ -12,7 +12,7 @@
   <tbody>
     <% @feedbacks.each do |f| %>
       <% %w(id app_version app_platform os_version content).each do |v| %>
-	<td> <%= f.send v %> </td>
+        <td> <%= f.send v %> </td>
       <% end %>
     <% end %>
   </tbody>
