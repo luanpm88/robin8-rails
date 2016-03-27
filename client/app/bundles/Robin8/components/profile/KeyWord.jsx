@@ -6,7 +6,6 @@ export default class Keyword extends Component {
     super(props);
     this.add = this.add.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
-
     this.keywords = this.props.field.value || this.props.field.initialValue;
     if (this.keywords){
       this.keywordList = this.keywords.split(",");

@@ -43,6 +43,9 @@ export default function brandReducer($$state = $$initialState, action = null) {
         $$state = $$state.merge({ "brand": Immutable.fromJS(action.result) });
       }
       return $$state;
+    case actionTypes.UPDATE_BRAND_PROFILE:
+
+      return $$state;
 
     default:
       return $$state;

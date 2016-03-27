@@ -31,7 +31,7 @@ class EditProfilePartial extends Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchBrandProfile']);
+    _.bindAll(this, ['_fetchBrandProfile', '_updateBrandProfile']);
   }
 
   componentDidMount() {
@@ -43,8 +43,10 @@ class EditProfilePartial extends Component {
     fetchBrandProfile();
   }
 
-  _updateProfile() {
-    /* 修改的逻辑 */
+  _updateBrandProfile() {
+    const { updateBrandProfile } = this.props.actions;
+    const profile_fields = this.props.values;
+    updateBrandProfile(profile_fields);
   }
 
   render_breadcrumb() {
@@ -68,7 +70,7 @@ class EditProfilePartial extends Component {
       <div className="wrapper">
         <div className="container profile">
           { this.render_breadcrumb() }
-          <form onSubmit={ (event) => { handleSubmit(this._updateProfile)(event).catch(validateFailed) } }>
+          <form onSubmit={ (event) => { handleSubmit(this._updateBrandProfile)(event).catch(validateFailed) } }>
             <div className="header">
               <h3>推广简介</h3>
             </div>
