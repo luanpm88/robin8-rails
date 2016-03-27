@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import moment from 'moment';
+import { connect } from 'react-redux';
+
 import "brand_activity_detail.css";
 
 import Basic from './campaign_show/Basic';
 import Overview from './campaign_show/Overview';
+import Target from './campaign_show/Target';
+import KolList from './campaign_show/KolList';
 
+function select(state){
+  return { 
+    campaign_invites: state.$$brandStore.get("campaign_invites"),
+    hasfetchedInvite: state.$$brandStore.get("hasfetchedInvite"),
+    paginate: state.$$brandStore.get("paginate"),
+  };
+}
 export default class ShowCampaignPartial extends Component {
   componentDidMount() {
     this.set_campaign();
@@ -41,106 +52,6 @@ export default class ShowCampaignPartial extends Component {
           <Link to="/brand/">我的主页</Link>
         </li>
       </ol>
-    );
-  }
-
-  render_medias(campaign) {
-    return (
-      <div className="panel medias-all-panel">
-        <div className="panel-heading">
-          <a href="#panelMediasAll" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <a href="#" className="btn btn-blue btn-big quick-btn">添加新的媒体</a>
-          <h4 className="panel-title">所有媒体<i className="carte">/</i><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>&nbsp;人</h4>
-        </div>
-        <div id="panelMediasAll" className="panel-collapse collapse in">
-          <div className="panel-body">
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    {/* 一类媒体 S */}
-                    <div className="media-class-infographic-card">
-                      <div className="header">
-                        <h6 className="tit">创作型媒体<br /><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</h6>
-                      </div>
-                      <div className="content">
-                        {/* 条状图表 S */}
-                        <div className="media-infographic-box">
-                          <div className="infographic-show">
-                            <div className="inf-show refuse" style={{width: '20%'}} />
-                            <div className="inf-show check" style={{width: '30%'}} />
-                            <div className="inf-show accept" style={{width: '10%'}} />
-                            <div className="inf-show complete" style={{width: '40%'}} />
-                          </div>
-                          <ul className="stat-num-list">
-                            <li><i className="state-color refuse" />拒绝<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                            <li><i className="state-color check" />查看<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                            <li><i className="state-color accept" />接受<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                            <li><i className="state-color complete" />完成<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                          </ul>
-                        </div>
-                        {/* 条状图表 E */}
-                      </div>
-                      <div className="footer"><a href="#" className="btn btn-grey btn-big btn-line center-block">查看详细</a></div>
-                    </div>
-                    {/* 一类媒体 E */}
-                  </td>
-                  <td>
-                    {/* 一类媒体 S */}
-                    <div className="media-class-infographic-card">
-                      <div className="header">
-                        <h6 className="tit">转发型自媒体<br /><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</h6>
-                      </div>
-                      <div className="content">
-                        {/* 条状图表 S */}
-                        <div className="media-infographic-box">
-                          <div className="infographic-show">
-                            <div className="inf-show check" style={{width: '30%'}} />
-                            <div className="inf-show complete" style={{width: '70%'}} />
-                          </div>
-                          <ul className="stat-num-list">
-                            <li><i className="state-color check" />查看<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                            <li><i className="state-color complete" />完成<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                          </ul>
-                        </div>
-                        {/* 条状图表 E */}
-                      </div>
-                      <div className="footer"><a href="#" className="btn btn-grey btn-big btn-line center-block">查看详细</a></div>
-                    </div>
-                    {/* 一类媒体 E */}
-                  </td>
-                  <td>
-                    {/* 一类媒体 S */}
-                    <div className="media-class-infographic-card">
-                      <div className="header">
-                        <h6 className="tit">CPC开放招募<br /><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</h6>
-                      </div>
-                      <div className="content">
-                        {/* 条状图表 S */}
-                        <div className="media-infographic-box">
-                          <div className="infographic-show">
-                            <div className="inf-show refuse" style={{width: '45%'}} />
-                            <div className="inf-show check" style={{width: '5%'}} />
-                            <div className="inf-show accept" style={{width: '50%'}} />
-                          </div>
-                          <ul className="stat-num-list">
-                            <li><i className="state-color refuse" />拒绝<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                            <li><i className="state-color check" />查看<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                            <li><i className="state-color accept" />接受<span className="rg"><strong className="stat-num">{ campaign.get("per_budget_type") }</strong>人</span></li>
-                          </ul>
-                        </div>
-                        {/* 条状图表 E */}
-                      </div>
-                      <div className="footer"><a href="#" className="btn btn-grey btn-big btn-line center-block">查看详细</a></div>
-                    </div>
-                    {/* 一类媒体 E */}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     );
   }
 
@@ -205,16 +116,21 @@ export default class ShowCampaignPartial extends Component {
 
   render() {
     const campaign = this.props.data.get('campaign');
+    const { actions, campaign_invites, hasfetchedInvite, paginate} = this.props;
+    const campaign_id = this.props.params.id
     return (
       <div className="wrapper">
         <div className="container">
           { this.render_breadcrumb(campaign) }
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
-          { this.render_medias(campaign) }
+          <Target {...{campaign}} />
+          <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
           { this.render_influence(campaign) }
         </div>
       </div>
     );
   }
 }
+
+export default connect(select)(ShowCampaignPartial)

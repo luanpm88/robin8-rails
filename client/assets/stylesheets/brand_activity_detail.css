@@ -172,7 +172,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 .my-medias-panel .medias-list {
   margin-bottom: 35px;
 }
-.activity-stat-bigshow-area {
+.activity-stat-bigshow-area, .activity-target-bigshow-area {
   overflow: hidden;
 }
 .activity-stat-bigshow-area li {
@@ -182,29 +182,97 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   list-style: none;
   text-align: center;
 }
-.activity-stat-bigshow-area li .txt {
+
+.activity-target-bigshow-area li {
+  position: relative;
+  float: left;
+  width: 33.3%;
+  list-style: none;
+  text-align: center;
+}
+
+.activity-stat-bigshow-area li .txt, .activity-target-bigshow-area li .txt{
   display: block;
   color: #9b9a9a;
   font-size: 12px;
 }
-.activity-stat-bigshow-area li .stat-num {
-  font-size: 36px;
+
+.activity-stat-bigshow-area li .stat-num, .activity-target-bigshow-area li .stat-num {
+  font-size: 28px;
 }
-.activity-stat-bigshow-area li .symbol {
+
+.kolCampaignScreenshot{
+  height: 100px;
+}
+
+.showMiddleTip{
+  margin-left: auto;
+  max-width: 300px;
+  margin-right: auto;
+}
+
+.activity-stat-bigshow-area li .symbol, .activity-target-bigshow-area li .symbol {
   margin-right: 5px;
   font-size: 22px;
   font-weight: 400;
 }
-.activity-stat-bigshow-area li:after {
+
+.activity-stat-bigshow-area li:after, .activity-target-bigshow-area li:after {
   position: absolute;
   right: 0;
   bottom: 15px;
   content: '/';
   color: #bfc1c0;
 }
-.activity-stat-bigshow-area li:last-child:after {
+
+.activity-stat-bigshow-area li:last-child:after, .activity-target-bigshow-area li:last-child:after {
   display: none;
 }
+
+.panelKolsTable tbody td{
+  height: 112px;
+  text-align:center; 
+  vertical-align:middle !important;
+}
+
+.panelKolsTable thead td{
+  text-align:center; 
+  vertical-align:middle;
+}
+
+.blurUserAvatar{
+  box-shadow: 10px 10px 18px rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  width: 78px;
+  height: 78px;
+}
+
+.activity-message-bigshow-area{
+  margin-top: 64px;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.activity-message-bigshow-area .message_label{
+  padding-left: 40px;
+  font-size: 14px;
+  color: #181616;
+  display: inline-block;
+  vertical-align:top;
+ }
+
+.activity-message-bigshow-area .message_show{
+  margin-left: 56px;
+  font-size: 14px;
+  color: #181616;
+  width: 694px;
+  display: inline-block;
+  vertical-align:top;
+}
+.activity-message-bigshow-area .message_show span{
+  word-wrap: break-word;
+}
+
 .medias-all-panel .panel-body {
   margin-left: -35px;
   margin-right: -35px;

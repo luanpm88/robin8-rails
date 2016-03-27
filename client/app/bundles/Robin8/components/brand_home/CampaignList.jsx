@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import Campaign from './Campaign';
-import showPaginate from 'raw/campaign-list';
 import getUrlQueryParams from '../../helpers/GetUrlQueryParams';
 
 export default class CampaignList extends React.Component {
@@ -29,7 +28,6 @@ export default class CampaignList extends React.Component {
       const pagination_options = {
         currentPage: this.props.data.get("paginate").get("X-Page"),
         totalPages: this.props.data.get("paginate").get("X-Total-Pages"),
-        size: 'large',
         shouldShowPage: function(type, page, current) {
           switch (type) {
             default:
@@ -40,7 +38,7 @@ export default class CampaignList extends React.Component {
           fetchCampaigns({ page: page });
         }
       }
-      showPaginate(pagination_options)
+      $("#campaigns-paginator").bootstrapPaginator(pagination_options);
     }
   }
 

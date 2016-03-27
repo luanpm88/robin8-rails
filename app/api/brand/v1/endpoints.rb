@@ -24,7 +24,7 @@ module Brand
       # representations
       #
       represent Campaign, with: Entities::Campaign
-
+      represent CampaignInvite, with: Entities::CampaignInvite
       # namespaces
       #
       namespace 'user', desc: 'Operations about current user' do
@@ -32,6 +32,7 @@ module Brand
       end
 
       mount CampaignsAPI
+      mount CampaignInvitesApi
     end
   end
 end

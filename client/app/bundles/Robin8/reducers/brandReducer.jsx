@@ -5,7 +5,9 @@ export const $$initialState = Immutable.fromJS({
   readyState: 'init',
   campaignList: [],
   paginate: {},
-  campaign: {}
+  campaign: {},
+  campaign_invites: [],
+  hasfetchedInvite: false
 });
 
 export default function brandReducer($$state = $$initialState, action = null) {
@@ -38,6 +40,16 @@ export default function brandReducer($$state = $$initialState, action = null) {
       // console.log($$state.toObject().campaign.toObject())
       return $$state;
 
+    case actionTypes.FETCH_INVITES_OF_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === "success"){
+        $$state = $$state.merge({
+          "campaign_invites": Immutable.fromJS(action.result.items),
+          "paginate": Immutable.fromJS(action.result.paginate),
+          "hasfetchedInvite": true
+        });
+      }
+      return $$state;
     default:
       return $$state;
   }

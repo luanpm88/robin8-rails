@@ -24,9 +24,14 @@ module Brand
         expose :avail_click do |object, opts|
           object.get_avail_click
         end
+        expose :post_count
+
+        expose :join_count
+
         expose :total_click do |object, opts|
           object.get_total_click
         end
+
         expose :fee_info do |object, opts|
           object.get_fee_info
         end
@@ -36,16 +41,16 @@ module Brand
         expose :take_budget
         expose :remain_budget
         expose :age do |object, opts|
-          object.get_campaign_targets.find_by(target_type: "age").target_content
+          object.get_campaign_targets.find_by(target_type: "age").target_content rescue "all"
         end
         expose :province do |object, opts|
-          object.get_campaign_targets.find_by(target_type: "region").target_content.split(" ").first
+          object.get_campaign_targets.find_by(target_type: "region").target_content.split(" ").first rescue "全部"
         end
         expose :city do |object, opts|
-          object.get_campaign_targets.find_by(target_type: "region").target_content.split(" ").last
+          object.get_campaign_targets.find_by(target_type: "region").target_content.split(" ").last rescue "全部"
         end
         expose :gender do |object, opts|
-          object.get_campaign_targets.find_by(target_type: "gender").target_content
+          object.get_campaign_targets.find_by(target_type: "gender").target_content rescue "all"
         end
 
         expose :action_url do |object, opts|

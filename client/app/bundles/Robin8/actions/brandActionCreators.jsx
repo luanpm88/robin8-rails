@@ -97,3 +97,10 @@ export function fetchCampaign(id) {
     promise: fetch(`/brand_api/v1/campaigns/${id}`, { credentials: 'include' })
   };
 }
+
+export function fetchInvitesOfCampaign(campaign_id, current_page){
+  return {
+    type: actionTypes.FETCH_INVITES_OF_CAMPAIGN,
+    promise: fetch(`/brand_api/v1/campaign_invites?campaign_id=${campaign_id}&page=${current_page.page}`, {'credentials': 'include'})
+  }
+}
