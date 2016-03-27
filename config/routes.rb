@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     get '/' => 'dashboard#index'
     resources :campaigns, except: [:destroy, :new, :create] do
       resources :kols, only: [:index]
+      resources :campaign_shows, only: [:index]
     end
   end
 

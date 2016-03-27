@@ -1,0 +1,20 @@
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campaign_shows.each do |c| %>
+      <% %w(id).each do |v| %>
+	<td> <%= c.send v %> </td>
+      <% end %>
+    <% end %>
+  </tbody>
+
+</table>
