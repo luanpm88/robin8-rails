@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     resources :kols, except: [:destroy, :new, :create]
     resources :users, except: [:destroy, :new, :create]
     resources :feedbacks, except: [:destroy, :new, :create]
+    resources :withdraws, except: [:destroy, :new, :create]
   end
 
  # devise_for :admin_users, ActiveAdmin::Devise.config
