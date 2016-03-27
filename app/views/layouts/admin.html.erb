@@ -65,7 +65,7 @@
               <!-- /input-group -->
               </li>
               <li>
-              <a href="index.html"> Dashboard</a>
+              <%= link_to 'Dashboard', marketing_dashboard_path %>
               </li>
               <li>
               <a href="#"> 活动管理 <span class="fa arrow"></span></a>
@@ -77,6 +77,9 @@
                 <li><a href="#">已通过活动</a></li>
               </ul>
               <!-- /.nav-second-level -->
+              </li>
+              <li>
+                <%= link_to '截图管理', marketing_dashboard_campaign_invites_path %>
               </li>
               <li>
               <%= link_to "品牌主管理", marketing_dashboard_users_path %>

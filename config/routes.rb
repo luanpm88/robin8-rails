@@ -40,12 +40,13 @@ Rails.application.routes.draw do
     end
     resources :kols, except: [:destroy, :new, :create]
     resources :users, except: [:destroy, :new, :create]
+    resources :campaign_invites, except: [:destroy, :new, :create]
     resources :feedbacks, except: [:destroy, :new, :create]
     resources :withdraws, except: [:destroy, :new, :create]
   end
 
- # devise_for :admin_users, ActiveAdmin::Devise.config
- # ActiveAdmin.routes(self)
+  # devise_for :admin_users, ActiveAdmin::Devise.config
+  # ActiveAdmin.routes(self)
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
