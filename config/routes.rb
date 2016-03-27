@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       resources :campaign_shows, only: [:index]
     end
     resources :kols, except: [:destroy, :new, :create]
+    resources :users, except: [:destroy, :new, :create]
   end
 
  # devise_for :admin_users, ActiveAdmin::Devise.config

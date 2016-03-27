@@ -1,0 +1,17 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |u| %>
+      <% %w(id name).each do |v| %>
+        <td> <%= u.send v %> </td>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
