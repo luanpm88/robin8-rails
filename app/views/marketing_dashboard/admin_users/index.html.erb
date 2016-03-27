@@ -1,0 +1,20 @@
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>Last sign in</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_users.each do |a| %>
+      <% %w(id email last_sign_in_at).each do |v| %>
+        <td> <%= a.send v %> </td>
+      <% end %>
+    <% end %>
+  </tbody>
+
+</table>

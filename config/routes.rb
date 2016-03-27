@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     end
     resources :kols, except: [:destroy, :new, :create]
     resources :users, except: [:destroy, :new, :create]
+    resources :admin_users, except: [:destroy, :new, :create]
     resources :campaign_invites, except: [:destroy, :new, :create]
     resources :feedbacks, except: [:destroy, :new, :create]
     resources :withdraws, except: [:destroy, :new, :create]
