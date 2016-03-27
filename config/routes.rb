@@ -43,7 +43,10 @@ Rails.application.routes.draw do
       resources :kols, only: [:index]
       resources :campaign_shows, only: [:index]
     end
-    resources :kols, except: [:destroy, :new, :create]
+    resources :kols, except: [:destroy, :new, :create] do
+      match '/ban' => 'kols#ban', via: [:post, :get]
+      match '/disban' => 'kols#disban', via: [:post]
+    end
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
       match '/withdraw' => 'users#withdraw' , via: [:post, :get]

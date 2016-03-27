@@ -4,3 +4,6 @@
 //= require bootstrap-sass
 //= require lib/sb-admin-2
 //= require lib/metisMenu.min
+//= require momentjs
+//= require momentjs/locale/zh-cn
+//= require eonasdan-bootstrap-datetimepicker

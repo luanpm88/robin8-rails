@@ -14,6 +14,11 @@
       <% %w(id name email).each do |v| %>
         <td> <%= k.send v %> </td>
       <% end %>
+      <td>
+        <%= link_to 'Ban', marketing_dashboard_kol_ban_path(k.id) %>
+        |
+        <%= link_to 'Disban', marketing_dashboard_kol_disban_path(k.id), method: :post %>
+      </td>
     <% end %>
   </tbody>
 

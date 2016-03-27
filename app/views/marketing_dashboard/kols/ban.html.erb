@@ -1,0 +1,20 @@
+<%= form_tag marketing_dashboard_kol_ban_path do %>
+  <div class='col-sm-2'>
+    <div class="form-group">
+      <div class='input-group date' id='datetimepicker1'>
+        <input type='text' class="form-control" name='forbid_time' />
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  $(function () {
+    $('#datetimepicker1').datetimepicker();
+  });
+  </script>
+
+  <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+
+<% end %>
