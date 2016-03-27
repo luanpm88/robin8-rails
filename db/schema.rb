@@ -123,11 +123,12 @@ ActiveRecord::Schema.define(version: 20160325073608) do
   end
 
   create_table "campaign_actions", force: :cascade do |t|
-    t.integer  "kol_id",      limit: 4
-    t.integer  "campaign_id", limit: 4
-    t.string   "action",      limit: 255
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "kol_id",             limit: 4
+    t.integer  "campaign_id",        limit: 4
+    t.integer  "campaign_invite_id", limit: 4
+    t.string   "action",             limit: 255
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "campaign_categories", force: :cascade do |t|
@@ -360,13 +361,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.string   "audience_publish_fres", limit: 255
     t.boolean  "has_grabed",            limit: 1,     default: false
     t.string   "from_type",             limit: 255,   default: "pc"
-    t.integer  "followers_count",       limit: 4
-    t.integer  "friends_count",         limit: 4
-    t.integer  "statuses_count",        limit: 4
-    t.datetime "registered_at"
-    t.boolean  "verified",              limit: 1,     default: false
-    t.string   "refresh_token",         limit: 255
-    t.datetime "refresh_time"
   end
 
   create_table "industries", force: :cascade do |t|
@@ -528,8 +522,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.string   "app_city",                         limit: 255
     t.string   "IMEI",                             limit: 255
     t.string   "IDFA",                             limit: 255
-    t.string   "phone_city",                       limit: 255
-    t.string   "utm_source",                       limit: 255
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
@@ -930,12 +922,12 @@ ActiveRecord::Schema.define(version: 20160325073608) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255,                          default: "",   null: false
+    t.string   "email",                  limit: 255,                          default: "",    null: false
     t.string   "encrypted_password",     limit: 255,                          default: ""
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,                            default: 0,    null: false
+    t.integer  "sign_in_count",          limit: 4,                            default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
@@ -962,10 +954,9 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.string   "avatar_url",             limit: 255
     t.string   "slug",                   limit: 255
     t.string   "locale",                 limit: 255
-    t.decimal  "amount",                             precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount",                             precision: 12, scale: 2, default: 100.0
     t.decimal  "frozen_amount",                      precision: 12, scale: 2, default: 0.0
     t.string   "mobile_number",          limit: 255
-    t.string   "utm_source",             limit: 255
     t.string   "url",                    limit: 255
     t.string   "description",            limit: 255
     t.string   "keywords",               limit: 255

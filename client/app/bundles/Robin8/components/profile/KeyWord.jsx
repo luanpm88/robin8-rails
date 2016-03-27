@@ -8,8 +8,11 @@ export default class Keyword extends Component {
     this.onKeyPress = this.onKeyPress.bind(this);
 
     this.keywords = this.props.field.value || this.props.field.initialValue;
-    if (this.keywords)
+    if (this.keywords){
       this.keywordList = this.keywords.split(",");
+    } else {
+      this.keywordList = [];
+    }
   }
 
   add() {
