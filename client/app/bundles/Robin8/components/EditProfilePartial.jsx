@@ -62,10 +62,9 @@ class EditProfilePartial extends Component {
 
   render() {
     const { name, url, description, email, real_name, mobile_number, keywords} = this.props.fields;
-    // const brand = this.props.brand;
+    const readyState = this.props.data.get("readyState");
     const { handleSubmit, submitting, invalid } = this.props;
-    // const { updateCampaign } = this.props.actions;
-
+    console.log("-----edit profile-----")
     return (
       <div className="wrapper">
         <div className="container profile">
@@ -89,7 +88,7 @@ class EditProfilePartial extends Component {
                 <div className="form-group">
                   <label htmlFor="desc" className="control-label">品牌关键词</label>
                   <div className="control-input" style={{textAlign: 'left', paddingTop: '10px'}}>
-                    <Keyword field={keywords} />
+                    <Keyword field={keywords} readyState={readyState} />
                   </div>
                 </div>
 
