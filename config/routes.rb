@@ -44,7 +44,10 @@ Rails.application.routes.draw do
       resources :campaign_shows, only: [:index]
     end
     resources :kols, except: [:destroy, :new, :create]
-    resources :users, except: [:destroy, :new, :create]
+    resources :users, except: [:destroy, :new, :create] do
+      match '/recharge' => 'users#recharge' , via: [:post, :get]
+      match '/withdraw' => 'users#withdraw' , via: [:post, :get]
+    end
     resources :admin_users, except: [:destroy, :new, :create]
     resources :campaign_invites, except: [:destroy, :new, :create]
     resources :feedbacks, except: [:destroy, :new, :create]

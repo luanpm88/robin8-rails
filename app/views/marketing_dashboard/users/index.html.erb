@@ -12,6 +12,10 @@
       <% %w(id name).each do |v| %>
         <td> <%= u.send v %> </td>
       <% end %>
+      <td>
+        <%= link_to 'Recharge', marketing_dashboard_user_recharge_path(u.id) %> |
+        <%= link_to 'Withdraw', marketing_dashboard_user_withdraw_path(u.id) %>
+      </td>
     <% end %>
   </tbody>
 </table>

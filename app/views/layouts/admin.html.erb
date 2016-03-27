@@ -104,12 +104,12 @@
         </nav>
 
         <div id="page-wrapper">
-
-          <p> <%= flash[:notice] %> </p>
-          <p> <%= flash[:alert] %> </p>
-
-          <br />
-          <%= yield %>
+          <div>
+            <%= flash[:notice] %>
+            <%= flash[:alert] %>
+          
+            <%= yield %>
+          </div>
         </div>
         <!-- /#page-wrapper -->
       </div>
