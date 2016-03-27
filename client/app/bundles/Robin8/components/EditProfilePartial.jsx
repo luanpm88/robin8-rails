@@ -49,7 +49,7 @@ class EditProfilePartial extends Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchBrandProfile', 'upload']);
+    _.bindAll(this, ['_fetchBrandProfile', '_updateBrandProfile', 'upload']);
   }
 
   upload(size, scale) {
@@ -77,8 +77,10 @@ class EditProfilePartial extends Component {
     fetchBrandProfile();
   }
 
-  _updateProfile() {
-    /* 修改的逻辑 */
+  _updateBrandProfile() {
+    const { updateBrandProfile } = this.props.actions;
+    const profile_fields = this.props.values;
+    updateBrandProfile(profile_fields);
   }
 
   render_breadcrumb() {
@@ -94,15 +96,14 @@ class EditProfilePartial extends Component {
 
   render() {
     const { name, url, description, email, real_name, mobile_number, keywords} = this.props.fields;
-    // const brand = this.props.brand;
+    const readyState = this.props.data.get("readyState");
     const { handleSubmit, submitting, invalid } = this.props;
-    // const { updateCampaign } = this.props.actions;
-
+    console.log("-----edit profile-----")
     return (
       <div className="wrapper">
         <div className="container profile">
           { this.render_breadcrumb() }
-          <form onSubmit={ (event) => { handleSubmit(this._updateProfile)(event).catch(validateFailed) } }>
+          <form onSubmit={ (event) => { handleSubmit(this._updateBrandProfile)(event).catch(validateFailed) } }>
             <div className="header">
               <h3>推广简介</h3>
             </div>
@@ -128,7 +129,7 @@ class EditProfilePartial extends Component {
                 <div className="form-group">
                   <label htmlFor="desc" className="control-label">品牌关键词</label>
                   <div className="control-input" style={{textAlign: 'left', paddingTop: '10px'}}>
-                    <Keyword field={keywords} />
+                    <Keyword field={keywords} readyState={readyState} />
                   </div>
                 </div>
 

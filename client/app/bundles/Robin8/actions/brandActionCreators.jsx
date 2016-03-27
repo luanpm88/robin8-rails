@@ -104,3 +104,23 @@ export function fetchBrandProfile() {
     promise: fetch('/brand_api/v1/user', { credentials: 'same-origin' })
   };
 }
+
+export function updateBrandProfile(profile) {
+  var formData = new FormData()
+  for(let key of Object.keys(profile)) {
+    formData.append(`${key}`, profile[key])
+  }
+
+  return {
+    type: actionTypes.UPDATE_BRAND_PROFILE,
+    promise: fetch('/brand_api/v1/user', {
+      headers: {
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT',
+      body: formData
+    }),
+    redirect: '/brand/'
+  }
+}

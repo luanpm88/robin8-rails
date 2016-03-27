@@ -6,7 +6,6 @@ export default class Keyword extends Component {
     super(props);
     this.add = this.add.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
-
     this.keywords = this.props.field.value || this.props.field.initialValue;
     if (this.keywords){
       this.keywordList = this.keywords.split(",");
@@ -14,6 +13,7 @@ export default class Keyword extends Component {
       this.keywordList = [];
     }
   }
+
 
   add() {
     const value = this.refs.input.refs.input.value;
@@ -56,6 +56,16 @@ export default class Keyword extends Component {
   }
 
   render() {
+    if(this.props.field.value || this.props.field.value == ""){
+      this.keywords = this.props.field.value;
+    }else{
+      this.keywords = this.props.field.initialValue;
+    }
+    if (this.keywords){
+      this.keywordList = this.keywords.split(",");
+    } else {
+      this.keywordList = [];
+    }
     const renderKeywordList = [];
     for(let index in this.keywordList) {
       const word = this.keywordList[index]
@@ -66,6 +76,7 @@ export default class Keyword extends Component {
         </Button>
       );
     }
+    console.log("------keyword-----")
     return (
       <div>
         {renderKeywordList}
