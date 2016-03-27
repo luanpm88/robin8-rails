@@ -35,6 +35,11 @@ Rails.application.routes.draw do
   namespace :marketing_dashboard do
     get '/' => 'dashboard#index'
     resources :campaigns, except: [:destroy, :new, :create] do
+      collection do
+        get 'pending'
+        get 'agreed'
+      end
+      match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]
       resources :campaign_shows, only: [:index]
     end

@@ -24,6 +24,11 @@
           <%= link_to 'Show', marketing_dashboard_campaign_path(c) %> |
           <%= link_to 'Kols', marketing_dashboard_campaign_kols_path(c) %> |
           <%= link_to 'Track', marketing_dashboard_campaign_campaign_shows_path(c) %>
+          <% if c.status == 'pending' %>
+            |
+            <%= link_to 'Agree', marketing_dashboard_campaign_agree_path(c), method: :put %>
+          <% end %>
+
 
 
         </td>
