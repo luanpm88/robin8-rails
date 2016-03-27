@@ -16,22 +16,22 @@ module Brand
 
       desc 'Get current user profile'
       get '/' do
-	present current_user
+        present current_user
       end
 
       desc 'Update current user profile'
       params do
-	requires :name        , type: String
-	requires :real_name   , type: String
-	requires :description , type: String
-	requires :keywords    , type: String
-	requires :url         , type: String
-	requires :avatar_url  , type: String
+        requires :name        , type: String
+        requires :real_name   , type: String
+        requires :description , type: String
+        requires :keywords    , type: String
+        requires :url         , type: String
+        requires :avatar_url  , type: String
       end
       put '/' do
-	current_user.update_attributes declared(params)
+        current_user.update_attributes declared(params)
 
-	present current_user
+        present current_user
       end
 
     end

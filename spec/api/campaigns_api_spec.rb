@@ -40,14 +40,14 @@ RSpec.describe Brand::V1::CampaignsAPI do
         share_time: Integer,
         take_budget: Float,
         remain_budget: Float,
-	# TODO: age, province, city, gender should merge in one object, not flatten!
-	age: String,
-	province: String,
-	city: String,
-	gender: String,
-	action_url: String,
-	short_url: String,
-	action_url_identifier: String,
+        # TODO: age, province, city, gender should merge in one object, not flatten!
+        age: String,
+        province: String,
+        city: String,
+        gender: String,
+        action_url: String,
+        short_url: String,
+        action_url_identifier: String,
         created_at: String,
         updated_at: String
       }
@@ -84,14 +84,14 @@ RSpec.describe Brand::V1::CampaignsAPI do
         share_time: Integer,
         take_budget: Float,
         remain_budget: Float,
-	# TODO: age, province, city, gender should merge in one object, not flatten!
-	age: String,
-	province: String,
-	city: String,
-	gender: String,
-	action_url: String,
-	short_url: String,
-	action_url_identifier: String,
+        # TODO: age, province, city, gender should merge in one object, not flatten!
+        age: String,
+        province: String,
+        city: String,
+        gender: String,
+        action_url: String,
+        short_url: String,
+        action_url_identifier: String,
         created_at: String,
         updated_at: String
       }

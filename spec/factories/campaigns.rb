@@ -5,7 +5,7 @@ FactoryGirl.define do
     end
 
     user { FactoryGirl.create(:rich_user) }
-    
+
     start_time Time.now
     deadline Time.now.tomorrow
     description 'Campaign Desc'
@@ -22,7 +22,7 @@ FactoryGirl.define do
     after(:create) do |campaign, evaluator|
       type_list = ['age', 'region', 'gender']
       evaluator.target_count.times do |index|
-	create(:campaign_target, campaign: campaign, target_type: type_list[index])
+        create(:campaign_target, campaign: campaign, target_type: type_list[index])
       end
     end
 
