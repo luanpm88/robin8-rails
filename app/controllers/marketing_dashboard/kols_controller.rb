@@ -6,9 +6,9 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   private
   def load_kols
     @kols = if params[:campaign_id]
-              Campaign.find_by(params[:campaign_id]).kols.paginate(:page => 1, :per_page => 20)
+              Campaign.find_by(params[:campaign_id]).kols
             else
-              Kol.all.paginate(:page => 1, :per_page => 20)
-            end
+              Kol.all
+            end.paginate(paginate_params)
   end
 end
