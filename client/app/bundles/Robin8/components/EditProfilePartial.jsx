@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux'
 import { SplitButton } from 'react-bootstrap';
+import _ from 'lodash';
 import Keyword from './profile/KeyWord';
 import Input, { Textarea, RadioButtons } from './profile/Input';
 import { reduxForm } from 'redux-form';
@@ -9,11 +11,10 @@ import "profile.scss";
 
 const validate = new FormValidate({
   name: { require: true },
-  desc: { require: true },
-  contacter_name: { require: true },
-  contacter_phone: { require: true },
-  contacter_email: { require: true },
-  contacter_rate: { require: true },
+  description: { require: true },
+  real_name: { require: true },
+  mobile_number: { require: true },
+  email: { require: true },
   url: { require: true, url: { require_protocol: false} }
 })
 
@@ -21,7 +22,27 @@ const validateFailed = (errors) => {
   $('[name="' + Object.keys(errors)[0] + '"]').focus();
 }
 
+function select(state) {
+  return { brand: state.$$brandStore.get("brand") }
+}
+
+
 class EditProfilePartial extends Component {
+
+  constructor(props, context) {
+    super(props, context);
+    _.bindAll(this, ['_fetchBrandProfile']);
+  }
+
+  componentDidMount() {
+    this._fetchBrandProfile();
+  }
+
+  _fetchBrandProfile() {
+    const { fetchBrandProfile } = this.props.actions;
+    fetchBrandProfile();
+  }
+
   _updateProfile() {
     /* 修改的逻辑 */
   }
@@ -38,7 +59,7 @@ class EditProfilePartial extends Component {
   }
 
   render() {
-    const { name, url, desc, contacter_email, contacter_name, contacter_phone, keywords, contacter_rate} = this.props.fields;
+    const { name, url, description, email, real_name, mobile_number, keywords} = this.props.fields;
     // const brand = this.props.brand;
     const { handleSubmit, submitting, invalid } = this.props;
     // const { updateCampaign } = this.props.actions;
@@ -61,7 +82,7 @@ class EditProfilePartial extends Component {
               <div className="form-part">
                 <Input field={name} id="name" label="品牌名称" />
                 <Input field={url} id="url" label="官方网站" />
-                <Textarea field={desc} id="desc" label="品牌介绍" />
+                <Textarea field={description} id="desc" label="品牌介绍" />
 
                 <div className="form-group">
                   <label htmlFor="desc" className="control-label">品牌关键词</label>
@@ -78,10 +99,9 @@ class EditProfilePartial extends Component {
             </div>
 
             <div className="contacter-info">
-              <Input field={contacter_name} id="contacter-name" label="真实姓名" />
-              <Input field={contacter_phone} id="contacter-phone" label="联系号码" />
-              <Input field={contacter_email} id="contacter-email" label="电子邮箱" />
-              <RadioButtons field={contacter_rate} label="短信联系频率" collection={[["每次更新", "0"], ["每天更新概况", "1"], ["不联系", "2"]]} />
+              <Input field={real_name} id="contacter-name" label="真实姓名" />
+              <Input field={mobile_number} id="contacter-phone" label="联系号码" />
+              <Input field={email} id="contacter-email" label="电子邮箱" />
             </div>
 
             <div className="options">
@@ -97,22 +117,13 @@ class EditProfilePartial extends Component {
 
 EditProfilePartial = reduxForm({
   form: 'profile_form',
-  fields: ['name', 'url', 'desc', 'contacter_email', 'contacter_name', 'contacter_phone', 'keywords', 'contacter_rate'],
+  fields: ['name', 'url', 'description', 'email', 'real_name', 'mobile_number', 'keywords'],
   returnRejectedSubmitPromise: true,
   validate
 },
 state => ({
-  initialValues: {
-    name: '美年达',
-    url: 'www.baidu.com',
-    desc: '呵呵呵呵',
-    contacter_name: '123',
-    contacter_phone: '1831231232',
-    contacter_email: 'a@a.com',
-    contacter_rate: "1",
-    keywords: '家庭,父母,子女'
-  }
+  initialValues: state.$$brandStore.get("brand").toJSON()
 })
 )(EditProfilePartial);
 
-export default EditProfilePartial;
+export default connect(select)(EditProfilePartial);

@@ -74,22 +74,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "article_actions", force: :cascade do |t|
-    t.integer  "kol_id",             limit: 4
-    t.string   "article_id",         limit: 255
-    t.string   "article_title",      limit: 255
-    t.string   "article_url",        limit: 255
-    t.string   "article_avatar_url", limit: 255
-    t.string   "article_author",     limit: 255
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
-    t.string   "uuid",               limit: 255
-    t.boolean  "look",               limit: 1,   default: false
-    t.boolean  "forward",            limit: 1,   default: false
-    t.boolean  "collect",            limit: 1,   default: false
-    t.boolean  "like",               limit: 1,   default: false
-  end
-
   create_table "article_comments", force: :cascade do |t|
     t.text     "text",         limit: 65535
     t.string   "comment_type", limit: 255
@@ -139,12 +123,11 @@ ActiveRecord::Schema.define(version: 20160325073608) do
   end
 
   create_table "campaign_actions", force: :cascade do |t|
-    t.integer  "kol_id",             limit: 4
-    t.integer  "campaign_id",        limit: 4
-    t.integer  "campaign_invite_id", limit: 4
-    t.string   "action",             limit: 255
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.integer  "kol_id",      limit: 4
+    t.integer  "campaign_id", limit: 4
+    t.string   "action",      limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "campaign_categories", force: :cascade do |t|
@@ -327,7 +310,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.integer  "kol_id",       limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.string   "screenshot",   limit: 255
   end
 
   create_table "followers", force: :cascade do |t|
@@ -385,12 +367,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.boolean  "verified",              limit: 1,     default: false
     t.string   "refresh_token",         limit: 255
     t.datetime "refresh_time"
-    t.string   "score",                 limit: 255
-    t.string   "province",              limit: 255
-    t.string   "city",                  limit: 255
-    t.string   "gender",                limit: 255
-    t.boolean  "is_vip",                limit: 1
-    t.boolean  "is_yellow_vip",         limit: 1
   end
 
   create_table "industries", force: :cascade do |t|
@@ -436,46 +412,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
   add_index "kol_categories", ["iptc_category_id"], name: "index_kol_categories_on_iptc_category_id", using: :btree
   add_index "kol_categories", ["kol_id"], name: "index_kol_categories_on_kol_id", using: :btree
 
-  create_table "kol_contacts", force: :cascade do |t|
-    t.integer  "kol_id",        limit: 4
-    t.string   "name",          limit: 255
-    t.string   "mobile",        limit: 255
-    t.boolean  "exist",         limit: 1,   default: false
-    t.string   "city",          limit: 255
-    t.float    "score",         limit: 24
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.boolean  "invite_status", limit: 1,   default: false
-    t.datetime "invite_at"
-  end
-
-  create_table "kol_influence_items", force: :cascade do |t|
-    t.integer  "kol_id",              limit: 4
-    t.string   "kol_uuid",            limit: 255
-    t.string   "item_name",           limit: 255
-    t.string   "item_value",          limit: 255
-    t.string   "item_score",          limit: 255
-    t.text     "item_detail_content", limit: 65535
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-  end
-
-  create_table "kol_influence_values", force: :cascade do |t|
-    t.integer  "kol_id",               limit: 4
-    t.string   "kol_uuid",             limit: 255
-    t.string   "name",                 limit: 255
-    t.string   "avatar_url",           limit: 255
-    t.string   "influence_score",      limit: 255
-    t.string   "influence_level",      limit: 255
-    t.integer  "location_score",       limit: 4
-    t.integer  "mobile_model_score",   limit: 4
-    t.integer  "identity_score",       limit: 4
-    t.integer  "identity_count_score", limit: 4
-    t.integer  "contact_score",        limit: 4
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-  end
-
   create_table "kol_profile_screens", force: :cascade do |t|
     t.string   "url",         limit: 255
     t.string   "name",        limit: 255
@@ -494,71 +430,106 @@ ActiveRecord::Schema.define(version: 20160325073608) do
   end
 
   create_table "kols", force: :cascade do |t|
-    t.string   "email",                  limit: 255
-    t.string   "encrypted_password",     limit: 255,                          default: "",       null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                            limit: 255
+    t.string   "encrypted_password",               limit: 255,                          default: "",       null: false
+    t.string   "reset_password_token",             limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,                            default: 0,        null: false
+    t.integer  "sign_in_count",                    limit: 4,                            default: 0,        null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
-    t.string   "confirmation_token",     limit: 255
+    t.string   "current_sign_in_ip",               limit: 255
+    t.string   "last_sign_in_ip",                  limit: 255
+    t.string   "confirmation_token",               limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email",      limit: 255
+    t.string   "unconfirmed_email",                limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "first_name",             limit: 255
-    t.string   "last_name",              limit: 255
-    t.string   "location",               limit: 255
-    t.string   "locale",                 limit: 255
-    t.boolean  "is_public",              limit: 1,                            default: true
+    t.string   "first_name",                       limit: 255
+    t.string   "last_name",                        limit: 255
+    t.string   "location",                         limit: 255
+    t.string   "locale",                           limit: 255
+    t.boolean  "is_public",                        limit: 1,                            default: true
     t.date     "date_of_birthday"
-    t.string   "title",                  limit: 255
-    t.string   "industry",               limit: 255
-    t.string   "mobile_number",          limit: 255
-    t.integer  "gender",                 limit: 4,                            default: 0
-    t.string   "country",                limit: 255
-    t.string   "province",               limit: 255
-    t.string   "city",                   limit: 255
-    t.string   "audience_gender_ratio",  limit: 255,                          default: "50:50"
-    t.string   "audience_age_groups",    limit: 255,                          default: ""
-    t.integer  "wechat_personal_fans",   limit: 4
-    t.string   "wechat_public_name",     limit: 255
-    t.string   "wechat_public_id",       limit: 255
-    t.integer  "wechat_public_fans",     limit: 4
-    t.string   "audience_regions",       limit: 255,                          default: ""
-    t.string   "avatar",                 limit: 255
-    t.integer  "stats_total",            limit: 4,                            default: 0
+    t.string   "title",                            limit: 255
+    t.string   "industry",                         limit: 255
+    t.string   "mobile_number",                    limit: 255
+    t.integer  "gender",                           limit: 4,                            default: 0
+    t.string   "country",                          limit: 255
+    t.string   "province",                         limit: 255
+    t.string   "city",                             limit: 255
+    t.string   "audience_gender_ratio",            limit: 255,                          default: "50:50"
+    t.string   "audience_age_groups",              limit: 255,                          default: ""
+    t.integer  "wechat_personal_fans",             limit: 4
+    t.string   "wechat_public_name",               limit: 255
+    t.string   "wechat_public_id",                 limit: 255
+    t.integer  "wechat_public_fans",               limit: 4
+    t.string   "audience_regions",                 limit: 255,                          default: ""
+    t.integer  "monetize_post",                    limit: 4
+    t.integer  "monetize_post_weibo",              limit: 4
+    t.integer  "monetize_post_personal",           limit: 4
+    t.integer  "monetize_post_public1st",          limit: 4
+    t.integer  "monetize_post_public2nd",          limit: 4
+    t.integer  "monetize_create",                  limit: 4
+    t.integer  "monetize_create_weibo",            limit: 4
+    t.integer  "monetize_create_personal",         limit: 4
+    t.integer  "monetize_create_public1st",        limit: 4
+    t.integer  "monetize_create_public2nd",        limit: 4
+    t.integer  "monetize_share",                   limit: 4
+    t.integer  "monetize_share_weibo",             limit: 4
+    t.integer  "monetize_share_personal",          limit: 4
+    t.integer  "monetize_share_public1st",         limit: 4
+    t.integer  "monetize_share_public2nd",         limit: 4
+    t.integer  "monetize_review",                  limit: 4
+    t.integer  "monetize_review_weibo",            limit: 4
+    t.integer  "monetize_review_personal",         limit: 4
+    t.integer  "monetize_review_public1st",        limit: 4
+    t.integer  "monetize_review_public2nd",        limit: 4
+    t.integer  "monetize_speech",                  limit: 4
+    t.integer  "monetize_speech_weibo",            limit: 4
+    t.integer  "monetize_speech_personal",         limit: 4
+    t.integer  "monetize_speech_public1st",        limit: 4
+    t.integer  "monetize_speech_public2nd",        limit: 4
+    t.integer  "monetize_event",                   limit: 4
+    t.integer  "monetize_focus",                   limit: 4
+    t.integer  "monetize_party",                   limit: 4
+    t.integer  "monetize_endorsements",            limit: 4
+    t.boolean  "monetize_interested_post",         limit: 1
+    t.boolean  "monetize_interested_create",       limit: 1
+    t.boolean  "monetize_interested_share",        limit: 1
+    t.boolean  "monetize_interested_review",       limit: 1
+    t.boolean  "monetize_interested_speech",       limit: 1
+    t.boolean  "monetize_interested_event",        limit: 1
+    t.boolean  "monetize_interested_focus",        limit: 1
+    t.boolean  "monetize_interested_party",        limit: 1
+    t.boolean  "monetize_interested_endorsements", limit: 1
+    t.string   "avatar",                           limit: 255
+    t.integer  "stats_total",                      limit: 4,                            default: 0
     t.datetime "stats_total_changed"
-    t.decimal  "amount",                             precision: 12, scale: 2, default: 0.0
-    t.decimal  "frozen_amount",                      precision: 12, scale: 2, default: 0.0
-    t.string   "provider",               limit: 255,                          default: "signup"
-    t.string   "social_name",            limit: 255
-    t.string   "social_uid",             limit: 255
-    t.string   "from_which_campaign",    limit: 255
+    t.decimal  "amount",                                       precision: 12, scale: 2, default: 0.0
+    t.decimal  "frozen_amount",                                precision: 12, scale: 2, default: 0.0
+    t.string   "provider",                         limit: 255,                          default: "signup"
+    t.string   "social_name",                      limit: 255
+    t.string   "social_uid",                       limit: 255
+    t.string   "from_which_campaign",              limit: 255
     t.datetime "forbid_campaign_time"
-    t.integer  "five_click_threshold",   limit: 4
-    t.integer  "total_click_threshold",  limit: 4
-    t.string   "app_platform",           limit: 255
-    t.string   "app_version",            limit: 255
-    t.string   "private_token",          limit: 255
-    t.string   "device_token",           limit: 255
-    t.string   "desc",                   limit: 255
-    t.string   "alipay_account",         limit: 255
-    t.string   "name",                   limit: 255
-    t.string   "app_country",            limit: 255
-    t.string   "app_province",           limit: 255
-    t.string   "app_city",               limit: 255
-    t.string   "IMEI",                   limit: 255
-    t.string   "IDFA",                   limit: 255
-    t.string   "phone_city",             limit: 255
-    t.string   "utm_source",             limit: 255
-    t.float    "influence_score",        limit: 24,                           default: -1.0
-    t.string   "kol_uuid",               limit: 255
-    t.datetime "cal_time"
+    t.integer  "five_click_threshold",             limit: 4
+    t.integer  "total_click_threshold",            limit: 4
+    t.string   "app_platform",                     limit: 255
+    t.string   "app_version",                      limit: 255
+    t.string   "private_token",                    limit: 255
+    t.string   "device_token",                     limit: 255
+    t.string   "desc",                             limit: 255
+    t.string   "alipay_account",                   limit: 255
+    t.string   "name",                             limit: 255
+    t.string   "app_country",                      limit: 255
+    t.string   "app_province",                     limit: 255
+    t.string   "app_city",                         limit: 255
+    t.string   "IMEI",                             limit: 255
+    t.string   "IDFA",                             limit: 255
+    t.string   "phone_city",                       limit: 255
+    t.string   "utm_source",                       limit: 255
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
@@ -802,9 +773,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.string   "status",              limit: 255
     t.datetime "created_at",                                           null: false
     t.datetime "updated_at",                                           null: false
-    t.integer  "message_id",          limit: 4
-    t.string   "item_type",           limit: 255
-    t.integer  "item_id",             limit: 4
   end
 
   create_table "releases", force: :cascade do |t|
@@ -897,68 +865,6 @@ ActiveRecord::Schema.define(version: 20160325073608) do
     t.datetime "updated_at",                 null: false
   end
 
-  create_table "tmp_identities", force: :cascade do |t|
-    t.string   "provider",          limit: 255
-    t.string   "uid",               limit: 255
-    t.string   "token",             limit: 255
-    t.string   "token_secret",      limit: 255
-    t.string   "name",              limit: 255
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
-    t.string   "url",               limit: 255
-    t.integer  "kol_id",            limit: 4
-    t.string   "avatar_url",        limit: 255
-    t.string   "desc",              limit: 255
-    t.text     "serial_params",     limit: 16777215
-    t.string   "service_type_info", limit: 255
-    t.string   "verify_type_info",  limit: 255
-    t.string   "wx_user_name",      limit: 255
-    t.string   "alias",             limit: 255
-    t.string   "unionid",           limit: 255
-    t.boolean  "has_grabed",        limit: 1,        default: false
-    t.string   "from_type",         limit: 255,      default: "pc"
-    t.integer  "followers_count",   limit: 4
-    t.integer  "friends_count",     limit: 4
-    t.integer  "statuses_count",    limit: 4
-    t.datetime "registered_at"
-    t.boolean  "verified",          limit: 1,        default: false
-    t.string   "refresh_token",     limit: 255
-    t.datetime "refresh_time"
-    t.string   "kol_uuid",          limit: 255
-    t.float    "score",             limit: 24
-    t.string   "province",          limit: 255
-    t.string   "city",              limit: 255
-    t.string   "gender",            limit: 255
-    t.boolean  "is_vip",            limit: 1
-    t.boolean  "is_yellow_vip",     limit: 1
-  end
-
-  create_table "tmp_kol_contacts", force: :cascade do |t|
-    t.integer  "kol_id",          limit: 4
-    t.string   "name",            limit: 255
-    t.string   "mobile",          limit: 255
-    t.string   "city",            limit: 255
-    t.boolean  "exist",           limit: 1,   default: false
-    t.float    "score",           limit: 24
-    t.string   "kol_uuid",        limit: 255
-    t.float    "influence_score", limit: 24
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
-    t.boolean  "invite_status",   limit: 1,   default: false
-    t.datetime "invite_at"
-  end
-
-  create_table "tmp_kol_influence_items", force: :cascade do |t|
-    t.integer  "kol_id",              limit: 4
-    t.string   "kol_uuid",            limit: 255
-    t.string   "item_name",           limit: 255
-    t.string   "item_value",          limit: 255
-    t.string   "item_score",          limit: 255
-    t.text     "item_detail_content", limit: 65535
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-  end
-
   create_table "transactions", force: :cascade do |t|
     t.integer  "account_id",    limit: 4
     t.string   "account_type",  limit: 255
@@ -1024,7 +930,7 @@ ActiveRecord::Schema.define(version: 20160325073608) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255
+    t.string   "email",                  limit: 255,                          default: "",   null: false
     t.string   "encrypted_password",     limit: 255,                          default: ""
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"

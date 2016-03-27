@@ -4,7 +4,7 @@ export function fetchCampaigns(current_page) {
 
   return {
     type: actionTypes.FETCH_CAMPAIGNS,
-    promise: fetch(`/brand_api/v1/user/campaigns?page=${current_page.page}`, { credentials: 'include' })
+    promise: fetch(`/brand_api/v1/user/campaigns?page=${current_page.page}`, { credentials: 'same-origin' })
   };
 }
 
@@ -94,6 +94,13 @@ export function updateCampaign(campaign_id, campaign) {
 export function fetchCampaign(id) {
   return {
     type: actionTypes.FETCH_CAMPAIGN,
-    promise: fetch(`/brand_api/v1/campaigns/${id}`, { credentials: 'include' })
+    promise: fetch(`/brand_api/v1/campaigns/${id}`, { credentials: 'same-origin' })
+  };
+}
+
+export function fetchBrandProfile() {
+  return {
+    type: actionTypes.FETCH_BRAND_PROFILE,
+    promise: fetch('/brand_api/v1/user', { credentials: 'same-origin' })
   };
 }

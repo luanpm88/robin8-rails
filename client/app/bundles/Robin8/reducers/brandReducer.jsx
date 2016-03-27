@@ -37,6 +37,12 @@ export default function brandReducer($$state = $$initialState, action = null) {
       }
       // console.log($$state.toObject().campaign.toObject())
       return $$state;
+    case actionTypes.FETCH_BRAND_PROFILE:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({ "brand": Immutable.fromJS(action.result) });
+      }
+      return $$state;
 
     default:
       return $$state;
