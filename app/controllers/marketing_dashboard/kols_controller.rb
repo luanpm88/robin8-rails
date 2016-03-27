@@ -1,5 +1,5 @@
 class MarketingDashboard::KolsController < MarketingDashboard::BaseController
-  before_action :set_kol, only: [:ban, :disban]
+  before_action :set_kol, only: [:ban, :disban, :withdraw]
 
   def index
     load_kols
@@ -23,6 +23,25 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     respond_to do |format|
       format.html { redirect_to marketing_dashboard_kols_path, notice: 'Disban successfully!' }
       format.json { head :no_content }
+    end
+  end
+
+
+  def withdraw
+    render 'withdraw' and return if request.method.eql? 'GET'
+
+    if @kol.avail_amount.to_f > params[:credits].to_f
+      @kol.payout params[:credits].to_f, 'manaual_withdraw'
+
+      respond_to do |format|
+        format.html { redirect_to marketing_dashboard_kols_path, notice: 'Payout successfully!' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to marketing_dashboard_kols_path, alert: 'opps, Payout failed!' }
+        format.json { render :status => 422 }
+      end
     end
   end
 

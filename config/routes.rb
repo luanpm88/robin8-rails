@@ -46,10 +46,10 @@ Rails.application.routes.draw do
     resources :kols, except: [:destroy, :new, :create] do
       match '/ban' => 'kols#ban', via: [:post, :get]
       match '/disban' => 'kols#disban', via: [:post]
+      match '/withdraw' => 'kols#withdraw' , via: [:post, :get]
     end
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
-      match '/withdraw' => 'users#withdraw' , via: [:post, :get]
     end
     resources :admin_users, except: [:destroy, :new, :create]
     resources :campaign_invites, except: [:destroy, :new, :create]
