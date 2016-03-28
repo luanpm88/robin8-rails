@@ -39,7 +39,7 @@ class ArticleAction < ActiveRecord::Base
 
   #存储所有action  当前为look
   def self.get_relation_ids(kol_id)
-    articles = ArticleAction.where(:kol_id => kol_id).order_by_status.limit(50)
+    articles = ArticleAction.where(:kol_id => kol_id).order_by_status.limit(20)
     articles.collect{|t| t.article_id}
   end
 

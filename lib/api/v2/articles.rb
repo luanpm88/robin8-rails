@@ -22,9 +22,14 @@ module API
             title = params[:title].present? ? params[:title] : nil
             articles = ::Articles::Store.get_discovery_list(current_kol.id, title)
           end
-          present :error, 0
-          present :articles_count, articles.size
-          present :articles, articles, with: API::V2::Entities::ArticleEntities::Summary
+
+          if articles.size == 0
+            return error_403!({error: 1, detail: '没有找到新文章！' })
+          else
+            present :error, 0
+            present :articles_count, articles.size
+            present :articles, articles, with: API::V2::Entities::ArticleEntities::Summary
+          end
         end
 
         #用户 阅读/选择喜爱文章操作
