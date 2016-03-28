@@ -564,27 +564,15 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-left: -30px;
+  margin-left: -40px;
   margin-top: -13px;
 }
-.creat-activity-basic-intro .form-control-file .btn-upload {
-  padding: 2px 2px 4px 2px;
+.creat-activity-basic-intro .form-control-file #uploadButton {
+  margin-top: 135px;
+  padding: 0 10px;
   color: #fff;
   font-size: 14px;
-  background: transparent;
   border: none;
-  border-bottom: 2px solid #fff;
-}
-.creat-activity-basic-intro .form-control-file input[type="file"] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  font-size: 20em;
-  cursor: pointer;
-  opacity: 0;
 }
 .creat-activity-basic-intro .cover-photo {
   position: relative;
@@ -604,12 +592,8 @@
 }
 .creat-activity-basic-intro .cover-photo img {
   display: block;
-  max-width: 226px !important;
-  height: auto;
-}
-.creat-activity-basic-intro .cover-photo:hover .form-control-file {
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.7);
+  height: 127px;
+  width: 226px !important;
 }
 .creat-activity-basic-intro .basic-intro {
   position: relative;

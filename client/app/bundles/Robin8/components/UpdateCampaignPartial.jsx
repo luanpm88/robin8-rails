@@ -57,7 +57,7 @@ class UpdateCampaignPartial extends React.Component {
   }
 
   render() {
-    const { name, description, image, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
+    const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
     const brand = this.props.brand;
     const { handleSubmit, submitting, invalid } = this.props;
     const { updateCampaign } = this.props.actions;
@@ -67,7 +67,7 @@ class UpdateCampaignPartial extends React.Component {
         <div className="container">
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) } }>
-              <IntroPartial {...{ name, description, image, url }}/>
+              <IntroPartial {...{ name, description, img_url, url }}/>
               <TargetPartial {...{ age, province, city, gender, message }} />
               <BudgetPartial {...{ budget }} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand }} />
@@ -87,7 +87,7 @@ class UpdateCampaignPartial extends React.Component {
 
 UpdateCampaignPartial = reduxForm({
   form: 'activity_form',
-  fields: ['name', 'description', 'image', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline'],
+  fields: ['name', 'description', 'img_url', 'url', 'age', 'province', 'city', 'gender', 'message', 'budget', 'per_budget_type', 'action_url', 'action_url_identifier' ,'short_url', 'start_time', 'per_action_budget', 'deadline'],
   returnRejectedSubmitPromise: true,
   validate
 },

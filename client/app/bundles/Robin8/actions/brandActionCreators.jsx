@@ -13,23 +13,19 @@ export function saveCampaign(campaign) {
   var formData = new FormData()
 
   for(let key of Object.keys(campaign)) {
-    if (campaign[key] && campaign[key].constructor.name === 'FileList') {
-      formData.append(`${key}`, campaign[key][0])
-    } else {
-      switch(key) {
-        case 'age':
-        case 'gender':
-          formData.append(`target[${key}]`, campaign[key]);
-          break;
-        case 'action_url':
-        case 'short_url':
-        case 'action_url_identifier':
-          formData.append(`campaign_action_url[${key}]`, campaign[key]);
-          break;
-        default:
-          formData.append(`${key}`, campaign[key]);
-          break;
-      }
+    switch(key) {
+      case 'age':
+      case 'gender':
+        formData.append(`target[${key}]`, campaign[key]);
+        break;
+      case 'action_url':
+      case 'short_url':
+      case 'action_url_identifier':
+        formData.append(`campaign_action_url[${key}]`, campaign[key]);
+        break;
+      default:
+        formData.append(`${key}`, campaign[key]);
+        break;
     }
     formData.append("target[region]", (campaign['province'] + " " + campaign['city']))
   }
@@ -55,23 +51,19 @@ export function updateCampaign(campaign_id, campaign) {
   var formData = new FormData()
 
   for(let key of Object.keys(campaign)) {
-    if (campaign[key] && campaign[key].constructor.name === 'FileList') {
-      formData.append(`${key}`, campaign[key][0])
-    } else {
-      switch(key) {
-        case 'age':
-        case 'gender':
-          formData.append(`target[${key}]`, campaign[key]);
-          break;
-        case 'action_url':
-        case 'short_url':
-        case 'action_url_identifier':
-          formData.append(`campaign_action_url[${key}]`, campaign[key]);
-          break;
-        default:
-          formData.append(`${key}`, campaign[key]);
-          break;
-      }
+    switch(key) {
+      case 'age':
+      case 'gender':
+        formData.append(`target[${key}]`, campaign[key]);
+        break;
+      case 'action_url':
+      case 'short_url':
+      case 'action_url_identifier':
+        formData.append(`campaign_action_url[${key}]`, campaign[key]);
+        break;
+      default:
+        formData.append(`${key}`, campaign[key]);
+        break;
     }
     formData.append("target[region]", (campaign['province'] + " " + campaign['city']))
   }

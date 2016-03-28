@@ -76,7 +76,6 @@ export default class Keyword extends Component {
         </Button>
       );
     }
-    console.log("------keyword-----")
     return (
       <div>
         {renderKeywordList}

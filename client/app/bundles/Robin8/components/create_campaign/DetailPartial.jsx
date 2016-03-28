@@ -22,7 +22,8 @@ export default class DetailPartial extends React.Component {
     const timestamps = Math.floor(Date.now()).toString();
     const random = Math.floor(Math.random() * 100000).toString();
     const identifier = brand_id + timestamps + random
-    promise: fetch( `/brand_api/v1/campaigns/short_url?url=${action_url}&identifier=${identifier}`, { credentials: 'include' })
+
+    fetch( `/brand_api/v1/campaigns/short_url?url=${action_url}&identifier=${identifier}`, { credentials: 'same-origin' })
       .then(function(response) {
         response.json().then(function(data){
           short_url.onChange(data);
@@ -32,8 +33,7 @@ export default class DetailPartial extends React.Component {
       },
       function(error){
         console.log("-----fetchShortUrl error");
-      }
-    )
+      })
   }
 
   _initTouchSpin() {
