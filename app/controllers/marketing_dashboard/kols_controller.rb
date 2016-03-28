@@ -1,5 +1,5 @@
 class MarketingDashboard::KolsController < MarketingDashboard::BaseController
-  before_action :set_kol, only: [:ban, :disban, :withdraw]
+  before_action :set_kol, only: [:ban, :disban, :withdraw, :tracks]
 
   def index
     load_kols
@@ -43,6 +43,12 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
         format.json { render :status => 422 }
       end
     end
+  end
+
+  def tracks
+    @campaign_shows = CampaignShow.where(kol_id: @kol.id).paginate(paginate_params)
+
+    render 'marketing_dashboard/shared/_campaign_show_index'
   end
 
   private

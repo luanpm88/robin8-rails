@@ -1,6 +1,7 @@
 class MarketingDashboard::CampaignShowsController < MarketingDashboard::BaseController
   def index
-    @campaign = Campaign.find_by params[:campaign_id]
-    @campaign_shows = @campaign.campaign_shows.paginate(paginate_params)
+    @campaign_shows = CampaignShow.where(campaign_id: params[:campaign_id]).paginate(paginate_params)
+
+    render 'marketing_dashboard/shared/_campaign_show_index'
   end
 end
