@@ -61,7 +61,7 @@ export default class Campaign extends React.Component {
             }
           }
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
-            <img src={ campaign.get('img_url') } alt="活动图片" />
+            <img src={ campaign.get('img_url') } alt="活动图片" className="campaign_img" />
           </Link>
 
         </div>

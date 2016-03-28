@@ -1,5 +1,3 @@
-console.log("in BrandHeader");
-
 import React, { PropTypes } from 'react';
 
 export default class BrandHeader extends React.Component {
