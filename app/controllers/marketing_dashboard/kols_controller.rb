@@ -45,12 +45,6 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     end
   end
 
-  def tracks
-    @campaign_shows = CampaignShow.where(kol_id: @kol.id).paginate(paginate_params)
-
-    render 'marketing_dashboard/shared/_campaign_show_index'
-  end
-
   private
   def load_kols
     @kols = if params[:campaign_id]
