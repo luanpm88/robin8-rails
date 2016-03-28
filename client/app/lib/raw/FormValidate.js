@@ -19,14 +19,14 @@ global.FormValidate = function(options){
         const val = fieldOption.url.message;
         errors[fieldName] = (val ? val : '必须是超链接, 以 http:// 或 https://开头');
       } else if (fieldName == 'budget' && value) {
-        if(value > parseInt($(".budget-input").attr("brand-amount"))){
+        if(parseInt(value) > parseInt($(".budget-input").attr("brand-amount"))){
           errors[fieldName] = "账户余额不足, 请充值";
         }
 
-        promise: fetch(`/users/get_avail_amount`, { credentials: 'included' })
+        promise: fetch('/brand_api/v1/user', { credentials: 'same-origin' })
           .then(function(response){
             response.json().then(function(data){
-              $(".budget-input").attr("brand-amount", parseInt(data["avail_amount"]))
+              $(".budget-input").attr("brand-amount", parseInt(data.avail_amount))
             })
           }
         )

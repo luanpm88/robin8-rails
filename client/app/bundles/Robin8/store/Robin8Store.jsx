@@ -12,11 +12,7 @@ export default props => {
 
   const { brand } = props;
   const { $$brandState } = initialStates;
-  const initialState = {
-    $$brandStore: $$brandState.merge({
-      brand,
-    }),
-  };
+  const initialState = { $$brandStore: $$brandState };
 
   const reducer = combineReducers({
     ...reducers,

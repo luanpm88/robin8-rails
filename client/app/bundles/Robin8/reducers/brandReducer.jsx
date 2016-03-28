@@ -3,6 +3,7 @@ import actionTypes from '../constants/brandConstants';
 
 export const $$initialState = Immutable.fromJS({
   readyState: 'init',
+  brand: {},
   campaignList: [],
   paginate: {},
   campaign: {}

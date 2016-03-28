@@ -10,6 +10,12 @@ export default class BrandNav extends React.Component {
     super(props, context);
   }
 
+  componentDidMount() {
+    const { fetchBrandProfile } = this.props.actions;
+    fetchBrandProfile();
+  }
+
+
   render() {
 
     const { actions, data } = this.props;
