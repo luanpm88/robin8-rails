@@ -10,6 +10,18 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
     @campaign_invites = CampaignInvite.joins(:campaign, :kol).where.not(:screenshot => "").where(:img_status => :pending).where(:status => ['approved', 'finished']).where("campaigns.deadline > ?", Time.now-valid_period).paginate(paginate_params)
   end
 
+  def passed
+    @campaign_invites = CampaignInvite.where(:img_status => 'passed').paginate(paginate_params)
+
+    render 'index'
+  end
+
+  def rejected
+    @campaign_invites = CampaignInvite.where(:img_status => 'reject').paginate(paginate_params)
+
+    render 'index'
+  end
+
   def pass
     @campaign_invite.screenshot_pass
 

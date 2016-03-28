@@ -55,6 +55,8 @@ Rails.application.routes.draw do
     resources :campaign_invites, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
+        get 'passed'
+        get 'rejected'
       end
       match '/pass' => 'campaign_invites#pass', via: [:post]
       match '/reject' => 'campaign_invites#reject', via: [:post]
