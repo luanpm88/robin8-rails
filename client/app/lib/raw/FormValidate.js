@@ -23,13 +23,12 @@ global.FormValidate = function(options){
           errors[fieldName] = "账户余额不足, 请充值";
         }
 
-        promise: fetch('/brand_api/v1/user', { credentials: 'same-origin' })
+        fetch('/brand_api/v1/user', { credentials: 'same-origin' })
           .then(function(response){
             response.json().then(function(data){
               $(".budget-input").attr("brand-amount", parseInt(data.avail_amount))
             })
-          }
-        )
+          })
 
         if (value < fieldOption.min_budget) {
           errors[fieldName] = "最低费用100元";

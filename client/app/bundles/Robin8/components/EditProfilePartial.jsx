@@ -14,10 +14,10 @@ const getUploader = function() {
   return Qiniu.uploader({
       runtimes: 'html5,flash,html4',      // 上传模式,依次退化
       browse_button: 'foo',      // 上传选择的点选按钮，**必需**
-      uptoken_url: '/qiniu_upload_token', // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
+      uptoken_url: '/brand_api/v1/util/qiniu_token', // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
       get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的 uptoken
       unique_names: true,                 // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
-      domain: 'robin8',                   // bucket 域名，下载资源时用到，**必需**
+      domain: '7xozqe.com1.z0.glb.clouddn.com',                   // bucket 域名，下载资源时用到，**必需**
       max_file_size: '100mb',             // 最大文件体积限制
       flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入 flash,相对路径
       max_retries: 3,                     // 上传失败最大重试次数
@@ -49,19 +49,28 @@ class EditProfilePartial extends Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchBrandProfile', '_updateBrandProfile', 'upload']);
+    _.bindAll(this, ['_fetchBrandProfile', '_updateBrandProfile', '_upload']);
   }
 
-  upload(size, scale) {
+  _upload(size, scale) {
     this.uploader.refresh();
     this.uploader.addFile(this.refs.fileInput.files[0]);
-
     this.uploader.bind("FileUploaded", function(up, file, info) {
       window.xx = arguments
       const url = `http://7xozqe.com2.z0.glb.qiniucdn.com/${file.target_name}?imageMogr2/crop/!${size.w * scale}x${size.h * scale}a${size.x * scale}a${size.y * scale}`;
       $('#logo-part img').prop('src', url);
 
-      // url就是裁切后的logo地址，找个办法存起来吧
+      // 保存url
+      fetch('/brand_api/v1/user/avatar', {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+        },
+        credentials: "same-origin",
+        method: 'PUT',
+        body: JSON.stringify({avatar_url: url})
+      })
     });
 
     this.uploader.start();
@@ -96,9 +105,8 @@ class EditProfilePartial extends Component {
 
   render() {
     const { name, url, description, email, real_name, mobile_number, keywords} = this.props.fields;
-    const readyState = this.props.data.get("readyState");
     const { handleSubmit, submitting, invalid } = this.props;
-    console.log("-----edit profile-----")
+    const brand = this.props.brand
     return (
       <div className="wrapper">
         <div className="container profile">
@@ -110,7 +118,14 @@ class EditProfilePartial extends Component {
 
             <div className="base-info">
               <div className="logo-part" id="logo-part">
-                <img ref="logo" src="http://dummyimage.com/300x300/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image" />
+                { do
+                  {
+                    if (brand.get("avatar_url"))
+                      <img ref="logo" src={brand.get("avatar_url")} alt="placeholder+image" />
+                    else
+                      <img ref="logo" src="http://dummyimage.com/300x300/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image" />
+                  }
+                }
 
                 {/* 这个input为了配合Crop，不要使用这个做上传（不要设置name） */}
                 <input ref="fileInput" id="fileInput" type="file" style={{display: 'none'}}/>
@@ -129,7 +144,7 @@ class EditProfilePartial extends Component {
                 <div className="form-group">
                   <label htmlFor="desc" className="control-label">品牌关键词</label>
                   <div className="control-input" style={{textAlign: 'left', paddingTop: '10px'}}>
-                    <Keyword field={keywords} readyState={readyState} />
+                    <Keyword field={keywords} />
                   </div>
                 </div>
 
@@ -152,7 +167,7 @@ class EditProfilePartial extends Component {
             </div>
           </form>
         </div>
-        <Crop fileInputSelector={"#fileInput"} doCrop={this.upload} />
+        <Crop fileInputSelector={"#fileInput"} doCrop={this._upload} />
       </div>
     );
   }
