@@ -17,7 +17,7 @@ RSpec.describe Brand::V1::UtilAPI do
     it 'returns token' do
       get '/brand_api/v1/util/qiniu_token'
 
-      pattern = String
+      pattern = { uptoken: String }
 
       expect(response.body).to match_json_expression pattern
     end
