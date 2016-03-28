@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import moment from 'moment';
+import _ from 'lodash'
+import format_date from '../shared/DateHelper'
+import { showCampaignTypeText } from '../shared/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -13,7 +15,8 @@ export default class Campaign extends React.Component {
 
   render() {
 
-    const { campaign, tagColor, index } = this.props
+    const { campaign, tagColor, index } = this.props;
+    const { campaign_status } = this.props.campaign.get("status");
     return (
       <div className={tagColor} key={index}>
         <div className="brand-activity-content">
@@ -22,28 +25,42 @@ export default class Campaign extends React.Component {
             { campaign.get("name") }
           </h2>
 
-          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="btn btn-blue btn-big quick-btn">
-            编辑
+          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn">
+
           </Link>
 
           <small className="date">
-            { moment(campaign.get("start_time")).format("D.M.YYYY") } 至 { moment(campaign.get("deadline")).format("D.M.YYYY") }
+            { format_date(campaign.get("start_time")) } 至 { format_date(campaign.get("deadline")) }
+            &nbsp;&nbsp;按照{showCampaignTypeText(campaign.get("per_budget_type"))}奖励
           </small>
           <div className="summary">
-            { campaign.get("description") }
+            { _.truncate(campaign.get("description"), {'length': 35}) }
           </div>
-          <a href="#" className="link">
-            { campaign.get("url") }
+          <a href={ campaign.get("url") } className="link" target="_blank">
+            { _.truncate(campaign.get("url"), {'length': 54}) }
           </a>
 
           <ul className="stat-info grid-4">
-            <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
-            <li><span className="txt">参与人数</span><strong className="stat-num">69876</strong></li>
-            <li><span className="txt">点击率</span><strong className="stat-num">???</strong></li>
-            <li><span className="txt">剩余天数</span><strong className="stat-num">???</strong></li>
+            <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
+            <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
+            <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
+            <li><span className="txt">剩余天数</span><strong className="stat-num">{ campaign.get("avail_click") }</strong></li>
           </ul>
         </div>
         <div className="brand-activity-coverphoto pull-left">
+          { do
+            {
+              const status = campaign.get("status");
+              if (status === 'approved')
+                <img className="campaign-status-img" src={ require('campaign_status_approved.png') } />
+              else if (status === 'rejected')
+                <img className="campaign-status-img" src={ require('campaign_status_rejected.png') } />
+              else if (status === 'executing')
+                <img className="campaign-status-img" src={ require('campaign_status_executing.png') } />
+              else if (status === 'executed')
+                <img className="campaign-status-img" src={ require('campaign_status_executed.png') } />
+            }
+          }
           <img src={ campaign.get('img_url') } alt="活动图片" />
         </div>
       </div>

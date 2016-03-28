@@ -15,8 +15,11 @@ import createActivity from "raw/create_campaign";
 const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
-  url: { require: true, url: { require_protocol: true} },
-  message: { require: true }
+  url: { require: true, url: { require_protocol: true } },
+  budget: { require: true, min_budget: 100 },
+  per_action_budget: { require: true },
+  action_url: {cpa_url: { require_protocol: true }},
+  short_url: {cpa_url: { require_protocol: true }}
 })
 
 const validateFailed = (errors) => {
@@ -44,8 +47,8 @@ class UpdateCampaignPartial extends React.Component {
   _updateCampaign() {
     const { updateCampaign } = this.props.actions;
     const campaign_id = this.props.data.get("campaign").get("id");
-    const campaign_fields = this.props.values
-    updateCampaign(campaign_id, campaign_fields)
+    const campaign_fields = this.props.values;
+    updateCampaign(campaign_id, campaign_fields);
   }
 
   componentDidMount() {

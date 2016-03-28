@@ -17,6 +17,10 @@ module Brand
       version 'v1', using: :path
       formatter :json, SuccessFormatter
 
+      before do
+        authenticate!
+      end
+
       # helpers
       #
       helpers APIHelpers
@@ -25,10 +29,15 @@ module Brand
       #
       represent Campaign, with: Entities::Campaign
       represent CampaignInvite, with: Entities::CampaignInvite
+      represent User     , with: Entities::User
       # namespaces
       #
       namespace 'user', desc: 'Operations about current user' do
         mount UserAPI
+      end
+
+      namespace 'util', desc: 'Util' do
+        mount UtilAPI
       end
 
       mount CampaignsAPI

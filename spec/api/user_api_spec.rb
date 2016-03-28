@@ -23,7 +23,7 @@ RSpec.describe Brand::V1::UserAPI do
       expect(response.status).to eq 401
     end
 
-   # todo: it should move to shared example
+    # todo: it should move to shared example
     it 'supports paginate' do
       get '/brand_api/v1/user/campaigns'
 
@@ -61,10 +61,90 @@ RSpec.describe Brand::V1::UserAPI do
           share_time: Integer,
           take_budget: Float,
           remain_budget: Float,
+          # TODO: age, province, city, gender should merge in one object, not flatten!
+          age: String,
+          province: String,
+          city: String,
+          gender: String,
+          action_url: String,
+          short_url: String,
+          action_url_identifier: String,
           created_at: String,
           updated_at: String
         }],
         paginate: Hash
+      }
+      expect(response.body).to match_json_expression pattern
+    end
+  end
+
+  describe 'GET /brand_api/v1/user', :type => :feature do
+    before :each do
+      @user = FactoryGirl.create(:user)
+
+      login_as(@user, :scope => :user)
+    end
+
+    it 'returns 200' do
+      get '/brand_api/v1/user'
+
+      expect(response.status).to eq 200
+    end
+
+    it 'returns current_user' do
+      get '/brand_api/v1/user'
+
+      # use `wildcard_matcher to only make use key exists`
+      pattern = {
+        id: wildcard_matcher,
+        name: wildcard_matcher,
+        real_name: wildcard_matcher,
+        description: wildcard_matcher,
+        keywords: wildcard_matcher,
+        url: wildcard_matcher,
+        email: wildcard_matcher,
+        avatar_url: wildcard_matcher,
+        mobile_number: wildcard_matcher,
+        amount: wildcard_matcher,
+        frozen_amount: wildcard_matcher,
+        avail_amount: wildcard_matcher
+      }
+      expect(response.body).to match_json_expression pattern
+    end
+  end
+
+  describe 'PUT /brand_api/v1/user', :type => :feature do
+    before :each do
+      @user = FactoryGirl.create :user
+
+      login_as(@user, :scope => :user)
+    end
+    let(:update_user_params) do
+      {:name => 'new_name', :real_name => 'new_real_name', :description => 'new_desc', :keywords => 'new_keywords', :url => 'http://robin8.net', :avatar_url => ''}
+    end
+
+    it 'returns 200' do
+      put '/brand_api/v1/user', update_user_params
+
+      expect(response.status).to eq 200
+    end
+
+    it 'returns updated user' do
+      put '/brand_api/v1/user', update_user_params
+
+      pattern = {
+        id: wildcard_matcher,
+        name: 'new_name',
+        real_name: 'new_real_name',
+        description: 'new_desc',
+        keywords: 'new_keywords',
+        url: 'http://robin8.net',
+        email: wildcard_matcher,
+        avatar_url: wildcard_matcher,
+        mobile_number: wildcard_matcher,
+        amount: wildcard_matcher,
+        frozen_amount: wildcard_matcher,
+        avail_amount: wildcard_matcher
       }
       expect(response.body).to match_json_expression pattern
     end

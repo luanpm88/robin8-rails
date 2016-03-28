@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get "react_fake_data/campaigns", to: 'react#campaigns'
   post "react_fake_data/campaigns", to: 'react#create_campaigns'
 
-
+  get 'qiniu_upload_token', to: 'brand#qiniu'
   get 'brand/(/*all)/', to: "brand#index"
 
   get 'campaign_show' => "campaign_show#show"

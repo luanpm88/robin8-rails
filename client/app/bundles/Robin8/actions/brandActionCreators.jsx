@@ -5,7 +5,7 @@ export function fetchCampaigns(current_page) {
 
   return {
     type: actionTypes.FETCH_CAMPAIGNS,
-    promise: fetch(`${baseUrl}/user/campaigns?page=${current_page.page}`, { credentials: 'include' })
+    promise: fetch(`${baseUrl}/v1/user/campaigns?page=${current_page.page}`, { credentials: 'same-origin' })
   };
 }
 
@@ -110,5 +110,32 @@ export function fetchStatisticsClicksOfCampaign(campaign_id){
   return {
     type: actionTypes.FETCH_STATISTICS_CLICKS_OF_CAMPAIGN,
     promise: fetch(`${baseUrl}/campaigns/statistics_clicks?campaign_id=${campaign_id}`, {"credentials": "include"})
+  };
+}
+
+export function fetchBrandProfile() {
+  return {
+    type: actionTypes.FETCH_BRAND_PROFILE,
+    promise: fetch('/brand_api/v1/user', { credentials: 'same-origin' })
+  };
+}
+
+export function updateBrandProfile(profile) {
+  var formData = new FormData()
+  for(let key of Object.keys(profile)) {
+    formData.append(`${key}`, profile[key])
+  }
+
+  return {
+    type: actionTypes.UPDATE_BRAND_PROFILE,
+    promise: fetch('/brand_api/v1/user', {
+      headers: {
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT',
+      body: formData
+    }),
+    redirect: '/brand/'
   }
 }

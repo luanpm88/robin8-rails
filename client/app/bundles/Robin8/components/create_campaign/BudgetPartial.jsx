@@ -1,4 +1,5 @@
 import React from 'react';
+import ShowError from '../shared/ShowError';
 
 export default class BudgetPartial extends React.Component {
 
@@ -9,8 +10,8 @@ export default class BudgetPartial extends React.Component {
 
   _initTouchSpin() {
     $('.budget-input').TouchSpin({
-      min: 0,
-      max: 10000,
+      min: 100,
+      max: 1000000,
       prefix: '￥'
     })
   }
@@ -18,7 +19,7 @@ export default class BudgetPartial extends React.Component {
   _handleBudgetInputChange() {
     const { onChange } = this.props.budget;
     $('.budget-input').change(function() {
-      onChange($(this).val());
+      onChange( $(this).val() );
     })
   }
 
@@ -29,7 +30,6 @@ export default class BudgetPartial extends React.Component {
 
 
   render() {
-
     const { budget } = this.props
 
     return (
@@ -44,8 +44,9 @@ export default class BudgetPartial extends React.Component {
             <div className="spinner-box">
               <span className="symbol">$</span>
               <input {...budget} type="text" className="spinner-input budget-input" style={{display: 'block'}} />
+              <ShowError field={budget}/>
             </div>
-            <p className="stat">最低费用<strong className="stat-num">1000</strong>元</p>
+            <p className="stat">最低费用<strong className="stat-num">100</strong>元</p>
           </div>
         </div>
       </div>

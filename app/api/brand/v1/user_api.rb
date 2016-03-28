@@ -14,6 +14,26 @@ module Brand
         present campaigns
       end
 
+      desc 'Get current user profile'
+      get '/' do
+        present current_user
+      end
+
+      desc 'Update current user profile'
+      params do
+        requires :name        , type: String
+        requires :real_name   , type: String
+        requires :description , type: String
+        requires :keywords    , type: String
+        requires :url         , type: String
+        optional :avatar_url  , type: String
+      end
+      put '/' do
+        current_user.update_attributes declared(params)
+
+        present current_user
+      end
+
     end
   end
 end

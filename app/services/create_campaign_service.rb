@@ -4,10 +4,10 @@ class CreateCampaignService
   attr_reader :errors, :campaign
 
   def initialize user, args={}
-    @user = user
+    @user            = user
     @campaign_params = permited_params_from args
 
-    @errors = []
+    @errors          = []
   end
 
   def perform

@@ -1,10 +1,11 @@
 import React from 'react';
+import ShowError from '../shared/ShowError';
 
 export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange']);
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
   }
 
 
@@ -15,7 +16,7 @@ export default class DetailPartial extends React.Component {
     const { short_url, action_url_identifier } = this.props
 
     const action_url = this.props.action_url.value
-    if(action_url == "") return;
+    if(!action_url) return;
     if(action_url == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
     const brand_id = this.props.brand.get('id').toString();
     const timestamps = Math.floor(Date.now()).toString();
@@ -37,9 +38,11 @@ export default class DetailPartial extends React.Component {
 
   _initTouchSpin() {
     $('.per-budget-input').TouchSpin({
-      min: 0,
+      min: 0.1,
       max: 10000000,
-      prefix: '￥'
+      prefix: '￥',
+      step: 0.1,
+      decimals: 1,
     })
   }
 
@@ -50,9 +53,17 @@ export default class DetailPartial extends React.Component {
     })
   }
 
+  _listenPerBudgetTypeChange() {
+    const { per_action_budget } = this.props;
+    $("input[name='action_type']").change(function(){
+      per_action_budget.onBlur();
+    })
+  }
+
   componentDidMount() {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
+    this._listenPerBudgetTypeChange();
   }
 
   componentWillUnmount() {
@@ -89,15 +100,21 @@ export default class DetailPartial extends React.Component {
             <div className="action-url-group" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>
               <div className="clearfix">
                 <p className="action-url-text">确认链接</p>
-                <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+                <div className="action-url-section">
+                  <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+                  <ShowError field={action_url} />
+                </div>
               </div>
               <div className="clearfix">
                 <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl}>生成链接</button>
               </div>
               <div className="clearfix">
                 <p className="generate-short-url-text">生成链接</p>
-                <input {...short_url} type="text" className="action-short-url" disabled="disabled" readOnly></input>
-                <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
+                <div className="action-short-url_section">
+                  <input {...short_url} type="text" className="action-short-url" disabled="disabled" readOnly></input>
+                  <ShowError field={short_url} />
+                  <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
+                </div>
                 <input {...action_url_identifier} type="hidden" disabled="disabled" className="action_url_identifier" readOnly></input>
               </div>
             </div>
@@ -107,8 +124,11 @@ export default class DetailPartial extends React.Component {
               <div className="spinner-form-area">
                 <div className="spinner-box">
                   <span className="symbol">$</span>
-                  <input {...per_action_budget} type="text" defaultValue={0} className="spinner-input per-budget-input" style={{display: 'block'}} />
-                  <p className="average-price">均价xxx</p>
+                  <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input" style={{display: 'block'}} />
+                  <p className="average-price clearfix">均价xxx</p>
+                  <div className="per-budget-input-error">
+                    <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
+                  </div>
                 </div>
               </div>
             </div>

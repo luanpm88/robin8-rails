@@ -20,9 +20,9 @@ const initCampaign = {
   province: '全部',
   city: '全部',
   gender: 'all',
-  budget: 0,
+  budget: 100,
   per_budget_type: 'click',
-  per_action_budget: 0,
+  per_action_budget: 0.1,
   start_time: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
   deadline: moment().add(2, 'days').format('YYYY-MM-DD HH:mm')
 }
@@ -31,6 +31,10 @@ const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: true } },
+  budget: { require: true, min_budget: 100 },
+  per_action_budget: { require: true },
+  action_url: {cpa_url: { require_protocol: true }},
+  short_url: {cpa_url: { require_protocol: true }}
 })
 
 const validateFailed = (errors) => {

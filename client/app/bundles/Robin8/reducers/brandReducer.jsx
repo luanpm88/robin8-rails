@@ -3,6 +3,7 @@ import actionTypes from '../constants/brandConstants';
 
 export const $$initialState = Immutable.fromJS({
   readyState: 'init',
+  brand: {},
   campaignList: [],
   paginate: {},
   campaign: {},
@@ -39,6 +40,15 @@ export default function brandReducer($$state = $$initialState, action = null) {
         $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
       }
       // console.log($$state.toObject().campaign.toObject())
+      return $$state;
+    case actionTypes.FETCH_BRAND_PROFILE:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({ "brand": Immutable.fromJS(action.result) });
+      }
+      return $$state;
+    case actionTypes.UPDATE_BRAND_PROFILE:
+
       return $$state;
 
     case actionTypes.FETCH_INVITES_OF_CAMPAIGN:
