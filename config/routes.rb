@@ -52,7 +52,13 @@ Rails.application.routes.draw do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
     end
     resources :admin_users, except: [:destroy, :new, :create]
-    resources :campaign_invites, except: [:destroy, :new, :create]
+    resources :campaign_invites, except: [:destroy, :new, :create] do
+      collection do
+        get 'pending'
+      end
+      match '/pass' => 'campaign_invites#pass', via: [:post]
+      match '/reject' => 'campaign_invites#reject', via: [:post]
+    end
     resources :feedbacks, except: [:destroy, :new, :create]
     resources :withdraws, except: [:destroy, :new, :create]
   end

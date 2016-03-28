@@ -9,12 +9,16 @@
   </thead>
   <tbody>
     <% @users.each do |u| %>
-      <% %w(id name).each do |v| %>
-        <td> <%= u.send v %> </td>
-      <% end %>
-      <td>
-        <%= link_to 'Recharge', marketing_dashboard_user_recharge_path(u.id) %> 
-      </td>
+      <tr>
+        <% %w(id name).each do |v| %>
+          <td> <%= u.send v %> </td>
+        <% end %>
+        <td>
+          <%= link_to 'Recharge', marketing_dashboard_user_recharge_path(u.id) %> 
+        </td>
+      </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @users %>

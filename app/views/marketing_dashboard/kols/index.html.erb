@@ -11,17 +11,21 @@
 
   <tbody>
     <% @kols.each do |k| %>
-      <% %w(id name email).each do |v| %>
-        <td> <%= k.send v %> </td>
-      <% end %>
-      <td>
-        <%= link_to 'Ban', marketing_dashboard_kol_ban_path(k.id) %>
-        |
-        <%= link_to 'Disban', marketing_dashboard_kol_disban_path(k.id), method: :post %>
-        |
-        <%= link_to 'Withdraw', marketing_dashboard_kol_withdraw_path(k.id) %>
-      </td>
+      <tr>
+        <% %w(id name email).each do |v| %>
+          <td> <%= k.send v %> </td>
+        <% end %>
+        <td>
+          <%= link_to 'Ban', marketing_dashboard_kol_ban_path(k.id) %>
+          |
+          <%= link_to 'Disban', marketing_dashboard_kol_disban_path(k.id), method: :post %>
+          |
+          <%= link_to 'Withdraw', marketing_dashboard_kol_withdraw_path(k.id) %>
+        </td>
+      </tr>
     <% end %>
   </tbody>
 
 </table>
+
+<%= will_paginate @kols %>
