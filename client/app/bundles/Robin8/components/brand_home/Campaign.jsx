@@ -19,7 +19,7 @@ export default class Campaign extends React.Component {
     return (
       <div className={tagColor} key={index}>
         <div className="brand-activity-content">
-          <a href="#" className="detail-link">&gt;</a>
+          <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">&gt;</Link>
           <h2 className="activity-title">
             { campaign.get("name") }
           </h2>
@@ -60,7 +60,10 @@ export default class Campaign extends React.Component {
                 <img className="campaign-status-img" src={ require('campaign_status_executed.png') } />
             }
           }
-          <img src={ campaign.get('img_url') } alt="活动图片" />
+          <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
+            <img src={ campaign.get('img_url') } alt="活动图片" />
+          </Link>
+
         </div>
       </div>
 
