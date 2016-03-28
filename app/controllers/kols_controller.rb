@@ -264,6 +264,7 @@ class KolsController < ApplicationController
 
   def kol_value
     @kol_value  = KolInfluenceValue.find_by :kol_uuid => params[:kol_uuid]
+    @kol_value.increment!(:read_times)                        if @kol_value
     if Influence::Util.is_mobile?(@kol_value.name)
       @kol_name = "我"
     else
