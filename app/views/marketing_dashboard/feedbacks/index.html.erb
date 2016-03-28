@@ -5,6 +5,7 @@
       <th>App Version</th>
       <th>Platform</th>
       <th>OS Version</th>
+      <th>Device Model</th>
       <th>Content</th>
     </tr>
   </thead>
@@ -12,7 +13,7 @@
   <tbody>
     <% @feedbacks.each do |f| %>
       <tr>
-        <% %w(id app_version app_platform os_version content).each do |v| %>
+        <% %w(id app_version app_platform os_version device_model content).each do |v| %>
           <td> <%= f.send v %> </td>
         <% end %>
       </tr>
