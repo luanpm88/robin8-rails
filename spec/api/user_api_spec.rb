@@ -149,4 +149,21 @@ RSpec.describe Brand::V1::UserAPI do
       expect(response.body).to match_json_expression pattern
     end
   end
+
+  describe 'PUT /brand_api/v1/user/avatar', :type => :feature do
+    before :each do
+      @user = FactoryGirl.create :user
+
+      login_as(@user, :scope => :user)
+    end
+    let(:params) do
+      {:avatar_url => 'http://robin8.com'}
+    end
+
+    it 'returns 200' do
+      put '/brand_api/v1/user/avatar', params
+
+      expect(response.status).to eq 200
+    end
+  end
 end
