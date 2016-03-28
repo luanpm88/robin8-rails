@@ -5,7 +5,7 @@ export function fetchCampaigns(current_page) {
 
   return {
     type: actionTypes.FETCH_CAMPAIGNS,
-    promise: fetch(`${baseUrl}/v1/user/campaigns?page=${current_page.page}`, { credentials: 'same-origin' })
+    promise: fetch(`${baseUrl}/user/campaigns?page=${current_page.page}`, { credentials: 'same-origin' })
   };
 }
 

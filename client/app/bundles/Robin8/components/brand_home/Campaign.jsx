@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import format_date from '../shared/DateHelper'
-import { showCampaignTypeText } from '../shared/CampaignHelper'
+import { showCampaignTypeText, formatDate } from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -30,7 +29,7 @@ export default class Campaign extends React.Component {
           </Link>
 
           <small className="date">
-            { format_date(campaign.get("start_time")) } 至 { format_date(campaign.get("deadline")) }
+            { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
             &nbsp;&nbsp;按照{showCampaignTypeText(campaign.get("per_budget_type"))}奖励
           </small>
           <div className="summary">
