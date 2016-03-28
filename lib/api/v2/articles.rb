@@ -19,18 +19,29 @@ module API
           if params[:type] == 'select'
             articles = ::Articles::Store.get_select_like_list(current_kol.id)
           else
-            title = params[:title].present? ? params[:title] : nil
-            articles = ::Articles::Store.get_discovery_list(current_kol.id, title)
+            articles = ::Articles::Store.get_discovery_list(current_kol.id, params[:title])
           end
-
-          if articles.size == 0
-            return error_403!({error: 1, detail: '没有找到新文章！' })
-          else
-            present :error, 0
-            present :articles_count, articles.size
-            present :articles, articles, with: API::V2::Entities::ArticleEntities::Summary
-          end
+          present :error, 0
+          present :articles_count, articles.size
+          present :articles, articles, with: API::V2::Entities::ArticleEntities::Summary
         end
+
+        #搜索文章列表
+        params do
+          requires :title, type: String
+          optional :page, type: Integer
+        end
+        get 'search' do
+          last_request_time = Rails.cache.read("article_last_request_#{current_kol.id}") || nil
+          return error_403!({error: 1, detail: '刷新过快，请稍后再试！' })   if  (Time.now -  last_request_time <= 2)  rescue false
+          Rails.cache.write("article_last_request_#{current_kol.id}",Time.now)
+
+          articles = ::Articles::Store.get_discovery_list(current_kol.id, params[:title], params[:page] || 1)
+          present :error, 0
+          present :articles_count, articles.size
+          present :articles, articles, with: API::V2::Entities::ArticleEntities::Summary
+        end
+
 
         #用户 阅读/选择喜爱文章操作
         params do

@@ -73,7 +73,7 @@ module Articles
                               query: query,
                               sort: sort,
                               filter: filter,
-                              from: 0,
+                              from: options[:from] || 0,
                               size:  options[:size] || 30
                             }
         sources = res['hits']['hits'].collect{|t| t["_source"]}
