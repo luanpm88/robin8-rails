@@ -1,6 +1,10 @@
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
   def index
-    @campaigns = Campaign.all.paginate(paginate_params)
+    @campaigns = if params[:kol_id]
+                   Kol.find(params[:kol_id]).campaigns
+                 else
+                   Campaign.all
+                 end.paginate(paginate_params)
   end
 
   def pending
