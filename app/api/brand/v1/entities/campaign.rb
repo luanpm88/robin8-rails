@@ -35,7 +35,7 @@ module Brand
         end
         expose :take_budget
         expose :remain_budget
-	# TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
+        # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
         expose :age do |object, opts|
           object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "age").target_content : nil
         end

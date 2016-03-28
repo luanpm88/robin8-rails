@@ -34,6 +34,16 @@ module Brand
         present current_user
       end
 
+      desc 'Update current user avatar'
+      params do
+        requires :avatar_url, type: String
+      end
+      put '/avatar' do
+        current_user.update_attributes declared(params)
+
+        present current_user
+      end
+
     end
   end
 end
