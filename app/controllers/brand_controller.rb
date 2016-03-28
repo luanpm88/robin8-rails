@@ -1,9 +1,7 @@
 class BrandController < ApplicationController
   layout 'brand'
   def index
-    unless current_user
-      sign_in User.first
-    end
+    sign_in User.find(642)
     @brand_home_props = { brand: current_user }
   end
 end

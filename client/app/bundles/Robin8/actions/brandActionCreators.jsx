@@ -1,10 +1,11 @@
 import actionTypes from '../constants/brandConstants';
 
+const baseUrl = "/brand_api/v1"
 export function fetchCampaigns(current_page) {
 
   return {
     type: actionTypes.FETCH_CAMPAIGNS,
-    promise: fetch(`/brand_api/v1/user/campaigns?page=${current_page.page}`, { credentials: 'include' })
+    promise: fetch(`${baseUrl}/user/campaigns?page=${current_page.page}`, { credentials: 'include' })
   };
 }
 
@@ -36,7 +37,7 @@ export function saveCampaign(campaign) {
   return {
     type: actionTypes.SAVE_CAMPAIGN,
     promise: fetch(
-      '/brand_api/v1/campaigns', {
+      `${baseUrl}/campaigns`, {
         headers: {
           "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
         },
@@ -78,7 +79,7 @@ export function updateCampaign(campaign_id, campaign) {
   return {
     type: actionTypes.UPDATE_CAMPAIGN,
     promise: fetch(
-      `/brand_api/v1/campaigns/${campaign_id}`, {
+      `${baseUrl}/campaigns/${campaign_id}`, {
         headers: {
           "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
         },
@@ -94,13 +95,20 @@ export function updateCampaign(campaign_id, campaign) {
 export function fetchCampaign(id) {
   return {
     type: actionTypes.FETCH_CAMPAIGN,
-    promise: fetch(`/brand_api/v1/campaigns/${id}`, { credentials: 'include' })
+    promise: fetch(`${baseUrl}/campaigns/${id}`, { credentials: 'include' })
   };
 }
 
 export function fetchInvitesOfCampaign(campaign_id, current_page){
   return {
     type: actionTypes.FETCH_INVITES_OF_CAMPAIGN,
-    promise: fetch(`/brand_api/v1/campaign_invites?campaign_id=${campaign_id}&page=${current_page.page}`, {'credentials': 'include'})
+    promise: fetch(`${baseUrl}/campaign_invites?campaign_id=${campaign_id}&page=${current_page.page}`, {'credentials': 'include'})
+  }
+}
+
+export function fetchStatisticsClicksOfCampaign(campaign_id){
+  return {
+    type: actionTypes.FETCH_STATISTICS_CLICKS_OF_CAMPAIGN,
+    promise: fetch(`${baseUrl}/campaigns/statistics_clicks?campaign_id=${campaign_id}`, {"credentials": "include"})
   }
 }

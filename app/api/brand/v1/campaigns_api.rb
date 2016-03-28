@@ -23,6 +23,14 @@ module Brand
           short_url = ShortUrl.convert origin_action_url
         end
 
+        params do
+          requires :campaign_id, type: String
+        end
+        get :statistics_clicks do
+          campaign = Campaign.find params[:campaign_id]
+          present campaign.get_stats
+        end
+
         desc 'Return a campaign by id'
         params do
           requires :id, type: Integer, desc: 'Campaign id'

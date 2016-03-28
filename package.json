@@ -38,7 +38,10 @@
     "url": "https://github.com/shakacode/react-webpack-rails-tutorial/issues"
   },
   "homepage": "https://github.com/shakacode/react-webpack-rails-tutorial",
-  "dependencies": {},
+  "dependencies": {
+    "echarts": "^3.1.4",
+    "element-resize-event": "^2.0.3"
+  },
   "devDependencies": {
     "mirror-creator": "^1.1.0",
     "sass-loader": "^3.2.0"
