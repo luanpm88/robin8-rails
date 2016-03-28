@@ -56,8 +56,8 @@ class EditProfilePartial extends Component {
     this.uploader.refresh();
     this.uploader.addFile(this.refs.fileInput.files[0]);
     this.uploader.bind("FileUploaded", function(up, file, info) {
-      window.xx = arguments
-      const url = `http://7xozqe.com2.z0.glb.qiniucdn.com/${file.target_name}?imageMogr2/crop/!${size.w * scale}x${size.h * scale}a${size.x * scale}a${size.y * scale}`;
+      const domain = up.getOption('domain');
+      const url = 'http://' + domain + `/${file.target_name}?imageMogr2/crop/!${size.w * scale}x${size.h * scale}a${size.x * scale}a${size.y * scale}`;
       $('#logo-part img').prop('src', url);
 
       // 保存url
