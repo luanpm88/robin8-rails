@@ -62,7 +62,15 @@ Rails.application.routes.draw do
       match '/reject' => 'campaign_invites#reject', via: [:post]
     end
     resources :feedbacks, except: [:destroy, :new, :create]
-    resources :withdraws, except: [:destroy, :new, :create]
+    resources :withdraws, except: [:destroy, :new, :create] do
+      collection do
+        get 'pending'
+        get 'agreed'
+        get 'rejected'
+      end
+      match '/agree' => 'withdraws#agree', via: [:post]
+      match '/reject' => 'withdraws#reject', via: [:post]
+    end
   end
 
   # devise_for :admin_users, ActiveAdmin::Devise.config
