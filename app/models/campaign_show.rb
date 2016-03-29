@@ -20,11 +20,6 @@ class CampaignShow < ActiveRecord::Base
       end
     end
 
-    #check status
-    # if campaign_invite.status != 'approved
-    #   return [false, 'campaign_invite_not_approved']
-    # end
-
     store_key = visitor_cookies.to_s + campaign.id.to_s
     # check_cookie?
     if Rails.cache.read(store_key)
@@ -71,7 +66,7 @@ class CampaignShow < ActiveRecord::Base
         campaign_invite_id = Rails.cache.fetch(visitor_cookies + ":cpa_campaign_id:#{campaign.id}")
         campaign_invite = CampaignInvite.find_by :id => campaign_invite_id if campaign_invite_id
       else
-        campaign_invite = CampaignInvite.where(:uuid => uuid).first  rescue nil 
+        campaign_invite = CampaignInvite.where(:uuid => uuid).first  rescue nil
         expired_at = (campaign.deadline > Time.now ? campaign.deadline : Time.now)
         Rails.cache.write(visitor_cookies + ":cpa_campaign_id:#{campaign.id}", campaign_invite.id, :expired_at => expired_at) if campaign_invite
       end
