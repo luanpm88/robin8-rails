@@ -15,7 +15,7 @@ class PagesController < ApplicationController
 
   def home
     if user_signed_in?
-      redirect_to '/brand'
+      redirect_to '/brand/'
     else
       render 'landing_page_v2', :layout => 'brand_v2'
     end
