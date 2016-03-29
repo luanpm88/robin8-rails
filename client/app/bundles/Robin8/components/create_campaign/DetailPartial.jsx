@@ -84,11 +84,11 @@ export default class DetailPartial extends React.Component {
             </p>
             <div className="sources-check radio">
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="click" onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
+                <input {...per_budget_type} type="radio" name="action_type" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                 按照发布奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
+                <input {...per_budget_type} type="radio" name="action_type" value="click" onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
                 按照点击奖励KOL
               </label>
               <label>
@@ -125,7 +125,6 @@ export default class DetailPartial extends React.Component {
                 <div className="spinner-box">
                   <span className="symbol">$</span>
                   <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input" style={{display: 'block'}} />
-                  <p className="average-price clearfix">均价xxx</p>
                   <div className="per-budget-input-error">
                     <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
                   </div>

@@ -32,7 +32,7 @@ const validate = new FormValidate({
   description: { require: true },
   real_name: { require: true },
   mobile_number: { require: true },
-  email: { require: true },
+  email: { require: true, email: true },
   url: { require: true, url: { require_protocol: false} }
 })
 
@@ -49,7 +49,12 @@ class EditProfilePartial extends Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchBrandProfile', '_updateBrandProfile', '_upload']);
+    _.bindAll(this, ['_fetchBrandProfile', '_updateBrandProfile', '_upload', '_cancelSubmitForm']);
+  }
+
+  _cancelSubmitForm(e) {
+    e.preventDefault();
+    this.props.history.push('/brand/');
   }
 
   _upload(size, scale) {
@@ -157,13 +162,12 @@ class EditProfilePartial extends Component {
 
             <div className="contacter-info">
               <Input field={real_name} id="contacter-name" label="真实姓名" />
-              <Input field={mobile_number} id="contacter-phone" label="联系号码" />
               <Input field={email} id="contacter-email" label="电子邮箱" />
             </div>
 
             <div className="options">
               <button className="btn btn-blue" type="submit">保存</button>
-              <button className="btn btn-red">取消</button>
+              <button className="btn btn-red" onClick={this._cancelSubmitForm}>取消</button>
             </div>
           </form>
         </div>

@@ -1,0 +1,161 @@
+<!-- 头部 S -->
+  <header class="navbar r-site-header">
+    <div class="container-fluid">
+      <a href="landingpage.html" class="logo">Robin8</a>
+      <div class="navbar-action pull-right">
+        <a href="#signinupModal" class="quick-login" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
+      </div>
+    </div>
+  </header>
+  <!-- 头部 E -->
+
+    <div class="container">
+      <div class="jumbotron-content">
+        <h1>分享是一种领袖能力</h1>
+        <p>每一次分享都使Robin8更好的了解你的社交影响力，大数据引擎会推荐最适合你的品牌推广机会，见证你意见领袖的一面。<br/> 立即成为Robin8的意见领袖</p>
+        <a href="landingpage_influence.html" class="btn btn-blue btn-big btn-line cneter-block">APP 下载</a>
+      </div>
+    </div>
+
+  <!-- 登录注册Modal S -->
+  <div class="modal fade" id="signinupModal" tabindex="-1" data-backdrop="static">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal-dialog">
+      <!-- 引入登录注册组件 -->
+      <!-- 登录注册组件 S -->
+  <div class="signinup-wrap">
+    <ul class="tab-menu">
+      <li class="active"><a href="#signup-tab-pane" data-toggle="tab">注册</a></li>
+      <li><a href="#signin-tab-pane" data-toggle="tab">登录</a></li>
+    </ul>
+    <div class="tab-content">
+      <!-- 注册 S -->
+      <div id="signup-tab-pane" class="tab-pane fade in active">
+        <%= form_tag('/users/new', method: 'post', remote: true) do %>
+          <div class="form-group">
+            <i class="icon-brand"></i>
+            <label>品牌名称</label>
+            <input type="text" class="form-control" name='user[name]' placeholder="品牌名称" required>
+
+          </div>
+          <div class="form-group">
+            <i class="icon-mobile"></i>
+            <label>手机</label>
+            <input type="text" class="form-control brand_mobile_number" name='user[mobile_number]' placeholder="输入您的手机" required>
+
+          </div>
+          <div class="form-group verify_code_group">
+            <i class="icon-verify"></i>
+            <label>验证码</label>
+            <input type="text" class="form-control verify_code" name='user[verify_code]' placeholder="输入验证码" required>
+            <div class="verify_code_block">
+              <button type='button' class='send_verify_code'>获取验证码</button>
+            </div>
+
+          </div>
+          <div class="form-group">
+            <i class="icon-pwd"></i>
+            <label>密码</label>
+            <input type="password" class="form-control" name='user[password]' placeholder="设置您的密码" required>
+          </div>
+          <button type="submit" class="btn btn-blue btn-block">注册</button>
+
+          <div class="tips">
+            <p class='tipsFailed help-block'>
+              Failed.
+            </p>
+            <p class='tipsSuccess help-block'>
+              注册成功，正在跳转...
+            </p>
+          </div>
+
+          <p class='help-block'>
+            注册即视为同意Robin8的<a href='/terms'>服务条款</a>
+          </p>
+        <% end %>
+      </div>
+      <!-- 注册 E -->
+
+      <!-- 登录 S -->
+      <div id="signin-tab-pane" class="tab-pane fade">
+        <%= form_tag('/users/sign_in', method: 'post', remote: true) do %>
+        <div class="form-group">
+          <i class="icon-mobile"></i>
+          <label for='user[login]'>手机号</label>
+          <input type="text" class="form-control" name='user[login]' placeholder="您的登录手机号" required>
+          <span class="what">?</span>
+        </div>
+        <div class="form-group">
+          <i class="icon-pwd"></i>
+          <label for='user[password]'>密码</label>
+          <input type="password" class="form-control" name='user[password]' placeholder="登录密码" required>
+        </div>
+        <div class="loginTips">
+          <p class='tipsFailed help-block'>
+            用户名或密码错误，请重新尝试
+          </p>
+          <p class='tipsSuccess help-block'>
+            登陆成功，正在跳转...
+          </p>
+        </div>
+        <button type="submit" class="btn btn-blue btn-block">登录</button>
+        <% end %>
+      </div>
+      <!-- 登录 E -->
+
+
+
+      <!-- 第三方登录注册 S -->
+      <div class="social-binding">
+
+      </div>
+      <!-- 第三方登录注册 S -->
+    </div>
+  </div>
+  <!-- 登录注册组件 E -->
+    </div>
+  </div>
+  <!-- 登录注册Modal E -->
+
+  <!-- Small modal -->
+  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button> -->
+
+  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+
+        <a class='close'>
+          <%= image_tag('register_verification_close_button.png') %>
+        </a>
+
+        <p>
+          请输入图形验证码！
+        </p>
+
+        <div class="clearfix">
+          <%= rucaptcha_input_tag(class: 'form-control rucaptcha_input', placeholder: '图片验证码') %>
+
+          <%= rucaptcha_image_tag(alt: 'Captcha', :class => "rucaptcha_tag") %>
+
+          <span class='rucaptcha_tips'>
+            看不清楚？<br/>点击图片更换
+          </span>
+
+        </div>
+
+
+
+        <br/>
+
+        <a class='rucaptcha_ok'>确定</a>
+
+        <section class='tips'>
+          <p class='not_unique_number'><%= @l.t("kols.mobile_number_already_token") %></p>
+          <p class='mobile_numer_is_blank'><%= @l.t("kols.mobile_format_error") %></p>
+          <p class=rucaptcha_not_right><%= "图片验证码不正确" %></p>
+          <p class='send_sms_failed'><%= @l.t("kols.send_sms_error") %></p>
+          <p class='send_sms_success'><%= @l.t("kols.send_sms_success") %></p>
+        </section>
+      </div>
+    </div>
+  </div>
