@@ -28,7 +28,7 @@ module Articles
          articles.sample(MaxSize)
        elsif title.present?   #搜索文章
          Rails.logger.elastic.info "=======search discovery===kol_id:#{kol_id}====title:#{title}"
-         articles = ElasticClient.search(title, options.merge!({:size => DefaultSize, :from => (options[:page] - 1) * PerPage }))
+         articles = ElasticClient.search(title, options.merge!({:size => PerPage, :from => (options[:page] - 1) * PerPage }))
        else
          #2.1  检索时 需要先根据阅读文章取文章关键字
          text = get_relation_article_text(kol_id)
