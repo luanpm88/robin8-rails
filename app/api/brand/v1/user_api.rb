@@ -26,7 +26,6 @@ module Brand
         requires :description , type: String
         requires :keywords    , type: String
         requires :url         , type: String
-        optional :avatar_url  , type: String
       end
       put '/' do
         current_user.update_attributes declared(params)
