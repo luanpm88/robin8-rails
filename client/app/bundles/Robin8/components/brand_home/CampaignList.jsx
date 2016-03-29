@@ -73,7 +73,7 @@ export default class CampaignList extends React.Component {
                   <strong className="stat-num">
                     &nbsp;&nbsp;{avail_amount}
                   </strong>
-                <button className="btn btn-blue btn-default recharge-btn">充值</button>
+                <a href="/contact?from=recharge" target="_blank" className="btn btn-blue btn-default recharge-btn">充值</a>
               </h4>
             </div>
 
