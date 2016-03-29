@@ -43,15 +43,15 @@ class User < ActiveRecord::Base
 
   include Models::Identities
 
-  class EmailValidator < ActiveModel::Validator
-    def validate(record)
-      if record.new_record? and Kol.exists?(:email=>record.email) and (record.email != nil or record.email != '')
-        record.errors[:base] << "邮箱已存在"
-      end
-    end
-  end
+  # class EmailValidator < ActiveModel::Validator
+  #   def validate(record)
+  #     if record.new_record? and Kol.exists?(:email=>record.email) and (record.email != nil or record.email != '')
+  #       record.errors[:base] << "邮箱已存在"
+  #     end
+  #   end
+  # end
 
-  validates_with EmailValidator
+  # validates_with EmailValidator
 
   extend FriendlyId
   friendly_id :email, use: :slugged
