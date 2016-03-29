@@ -102,11 +102,11 @@ Rails.application.routes.draw do
   get 'kol_value' => 'kols#kol_value'
 
   # kols
-  # devise_for :kols, controllers: {
-  #   registrations: "kols/registrations",
-  #   sessions: "users/sessions",
-  #   passwords: "kols/passwords"
-  # }
+  devise_for :kols, controllers: {
+    registrations: "kols/registrations",
+    sessions: "users/sessions",
+    passwords: "kols/passwords"
+  }
   # get '/kols/get_current_kol' => 'kols#get_current_kol'
   # get '/kols/current_categories' => 'kols#current_categories'
   # get '/kols/suggest_categories' => 'kols#suggest_categories'
