@@ -1,6 +1,6 @@
 module SuccessFormatter
   def self.call obj, env
-    if obj.is_a? Array
+    if obj.is_a? Array and env['api.endpoint'].header
       {
         :items => obj,
         :paginate => env['api.endpoint'].header
