@@ -18,7 +18,11 @@ class CampaignShowController < ApplicationController
     if @campaign.status == 'agreed' ||  @campaign_invite.blank?
       redirect_to @campaign.url
     else
-      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
+      if Rails.env.development?
+        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
+      else
+        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
+      end
       redirect_to @campaign.url
     end
   end

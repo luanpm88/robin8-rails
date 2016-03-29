@@ -1,12 +1,13 @@
 class CampaignShow < ActiveRecord::Base
-  CookieTimeout = Rails.env.production? ? 30.minutes : 30.seconds
+  CookieTimeout = Rails.env.production? ? 30.minutes : 3.seconds
+  IpTimeout = Rails.env.production? ? 3.minutes : 3.seconds
 
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
   # 检查 campaign status
-  def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, options={})
+  def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, options={})
     now = Time.now
     # check campaign status
     if campaign.status == 'executed'  ||  campaign.status == 'settled'
@@ -20,13 +21,25 @@ class CampaignShow < ActiveRecord::Base
       end
     end
 
-    store_key = visitor_cookies.to_s + campaign.id.to_s
     # check_cookie?
+    store_key = visitor_cookies.to_s + campaign.id.to_s
     if Rails.cache.read(store_key)
       return [false, 'cookies_visit_fre']
     else
-      Rails.cache.write(store_key, now, :expired_at => now + CookieTimeout)
+      Rails.cache.write(store_key, now, :expires_in => CookieTimeout)
     end
+
+    # check_ip?
+    store_key = visitor_ip.to_s + campaign.id.to_s
+    if Rails.cache.read(store_key)
+      return [false, 'ip_visit_fre']
+    else
+      Rails.cache.write(store_key, now, :expires_in => IpTimeout)
+    end
+
+    # check_useragent?  &&   visitor_referer
+    return [false, 'visitor_agent_is_invalid']  if visitor_agent.blank?
+    return [false, 'visitor_referer_exist']  if visitor_referer.present?
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)
     # check kol's five_click_threshold
@@ -49,6 +62,12 @@ class CampaignShow < ActiveRecord::Base
       else
         Rails.cache.write(store_key,current_total_click + 1, :expired_at => campaign.deadline)
       end
+    end
+
+    # check visitor ip
+    ip_score = IpScore.fetch_ip_score(visitor_ip)
+    if ip_score.to_i < 60
+      return [false, "ip_score_low"]
     end
 
     return [true,nil]
@@ -74,12 +93,9 @@ class CampaignShow < ActiveRecord::Base
       campaign_invite = CampaignInvite.where(:uuid => uuid).first     rescue nil
     end
 
-    if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.try(:status))
-      Rails.logger.campaign_show_sidekiq.info "---------CampaignShow return: --uuid:#{uuid}---status:#{campaign_invite.try (:status)}---"
-      return false
-    end
+    return false if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.try(:status))
 
-    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, options)
+    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer,  options)
     CampaignShow.create!(:kol_id => info['kol_id'], :campaign_id => info['campaign_id'], :visitor_cookie => visitor_cookies,
                         :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip,
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer)
