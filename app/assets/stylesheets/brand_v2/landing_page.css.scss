@@ -6,6 +6,10 @@
 html,
 body {
   background: #fff;
+  height: 100%;
+}
+body.landing_page_bg {
+  background: image-url('robin8_brand_bg.jpg') no-repeat top center #2c2a2b;
 }
 body {
   color: #181616;
@@ -499,8 +503,6 @@ body {
 }
 .jumbotron {
   padding: 0 !important;
-  height: 660px;
-  background: image-url('robin8_brand_bg.jpg') no-repeat top center #2c2a2b;
 }
 .jumbotron .container {
   width: 852px !important;
