@@ -17,11 +17,10 @@
 
 if ENV['china_instance'] == 'Y'
   server '139.196.36.27', user: 'deployer', roles: %w{web app db}
-  set :branch, 'test_react_deploy'
+  set :branch, 'QA'
 else
 
 end
-
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
 

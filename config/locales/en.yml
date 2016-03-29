@@ -634,7 +634,8 @@ en:
     footer:
       about: About
       contact: Contact
-      privacy_and_terms: Privacy & Terms
+      privacy: Privacy
+      terms: Terms
       right_reserved: 2015 Robin8 Inc. All rights reserved
       team: Team
     forgot:
@@ -692,7 +693,7 @@ en:
       you_dont_have_any_accepted: You don't have any accepted campaigns.
       you_dont_have_any_declined: You don't have any declined campaigns.
     kols:
-      agree: By signing up you agree to Robin8's <a href="/terms">Terms of Service
+      agree: By signing up you agree to Robin8's <a href="/privacy_policy">Terms of Service
       email: Email
       email_is_blank: Email can't be blank
       email_error: "Please input valid email"

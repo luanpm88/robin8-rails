@@ -8,6 +8,7 @@ ActiveAdmin.register User do
   filter :first_name
   filter :last_name
   filter :email
+  filter :mobile_number
   filter :last_sign_in_at
 
   member_action :login_to_dashboard, method: :get do
@@ -43,6 +44,8 @@ ActiveAdmin.register User do
     end
     column :email
     column :created_at
+    column :mobile_number
+    column :utm_source
     column "avail amount" do |my_resource|
       my_resource.avail_amount
     end

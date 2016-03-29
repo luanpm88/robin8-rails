@@ -45,5 +45,6 @@ module API
     format :json
     helpers API::ApiHelpers
     mount API::V1::AppBase
+    mount API::V2::AppBase
   end
 end

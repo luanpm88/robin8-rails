@@ -19,10 +19,16 @@ module API
           expose :tags do |kol|
             kol.tags.collect{|t| {:name => t.name, :label => t.label} }
           end
+          expose :influence_score
+          expose :selected_like_articles do |kol|
+            kol.article_actions.count > 0
+          end
           expose :issue_token do |kol|
             kol.get_issue_token
           end
-
+          expose :kol_uuid do |kol|
+            kol.get_kol_uuid
+          end
         end
 
         class Account < Grape::Entity
@@ -44,12 +50,24 @@ module API
           expose :today_income do |kol|
             kol.today_income.round(2)
           end
+          expose :verifying_income do |kol|
+            kol.verifying_income.round(2)
+          end
         end
 
         class Primary < Grape::Entity
-          expose :today_income
+          # key 没改，内容已经变成所有收入
+          expose :influence_score  do |kol|
+            kol.influence_score
+          end
+          expose :today_income  do |kol|
+            kol.total_income.round(2)  + kol.verifying_income.round(2)
+          end
           expose :unread_count do |kol|
             kol.unread_messages.count
+          end
+          expose :waiting_upload_count do |kol|
+            kol.campaign_invites.waiting_upload.count
           end
           expose :verifying_count do |kol|
             kol.campaign_invites.verifying.count

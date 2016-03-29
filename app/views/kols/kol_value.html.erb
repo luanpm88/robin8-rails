@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Robin8</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+      <%= stylesheet_link_tag    'kol/kol_value', media: 'all' %>
+      <%= javascript_include_tag 'kol/kol_value' %>
+    </head>
+    <body>
+      <div class="container">
+        <!-- 影响力测试 S -->
+        <div class="inf-test-container">
+          <div class="content">
+            <h1><%= @kol_name %>的社交影响力</h1>
+            <div class="user-inf-wrap">
+              <div class="avater-box"><%= image_tag @kol_value.avatar_url, :class=>"avater" %></div>
+              <div class="influence-progress-box">
+                <!-- 影响力值  data-value 为换算好的值-->
+                <div class="influence-progress" data-value="<%= @rate %>"><%= @kol_value.influence_score %></div>
+                <div class="inf-info">
+                  <strong class="percent"></strong>
+                  <span class="text"><%= @kol_value.influence_level %></span>
+                  <span class="date"><%= @kol_value.created_at.to_s(:date) %></span>
+                </div>
+                <%= image_tag "kol/bottom.jpg", :class => 'bottom-img' %>
+              </div>
+            </div>
+            <h2>来和<%= @kol_name %>比比社交影响力？</h2>
+            <a href="<%= Rails.application.secrets.download_url %>" class="inf-test-btn">我也来测测</a>
+          </div>
+        </div>
+        <!-- 影响力测试 End -->
+
+        <div class="slogan-container">
+          <div class="content">
+            <a href="#"><%= image_tag "kol/app_icon.png", :class =>"app-icon" %></a>
+            <p class="slogan">比你更了解你的社交影响力</p>
+            <p class="slogan-sub">基于社交媒体大数据的个人影响力管理APP</p>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+      $(document).ready(function(){
+        // 影响值
+        $('.influence-progress').circleProgress({
+            arcCoef: 0.62,
+            dashesAmount: 0,
+            dashSize: Math.PI / 100,
+            size: 260,
+            thickness: 12,
+            lineCap: 'round',
+            fill: {color: '#f1bc00'},
+            emptyFill: '#2dcad0'
+        }).on('circle-animation-progress', function(event, progress, stepValue) {
+            $('.influence-progress-box').find('.percent').html('<%= @kol_value.influence_score %>');
+        });
+      })
+      </script>
+    </body>
+</html>

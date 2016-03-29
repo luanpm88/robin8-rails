@@ -7,7 +7,7 @@ class CampaignInvite < ActiveRecord::Base
 
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
-  UploadScreenshotWait = Rails.env.production? ? 30.minutes : 3.minutes
+  UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
@@ -16,14 +16,20 @@ class CampaignInvite < ActiveRecord::Base
   belongs_to :kol
   scope :unrejected, -> {where("campaign_invites.status != 'rejected'")}
   # scope :running, -> {where(:status => 'running')}
-  scope :approved, -> {where(:status => 'approved')}
+
+  # 已接受且上传截图 放入待审核
+  scope :approved, -> {where(:status => 'approved').where("screenshot is null ")}
   scope :passed, -> {where(:img_status => 'passed')}
-  scope :verifying, -> {where(:status => 'finished').where.not(:img_status => 'passed')}
+  scope :verifying_or_approved,  -> {where("status = 'finished' or status = 'approved'")}
+  scope :verifying, -> {where("(status = 'finished' or status = 'approved') and img_status != 'passed'  and screenshot is not null")}
   scope :settled, -> {where(:status => 'settled')}
-  # 已完成的概率改成 接收过的 且结算（含结算失败）
-  scope :completed, -> {where("(status = 'finished' and img_status='passed') or status = 'settled' or status = 'rejected'")}
+  # 已完成的概念改成  已审核通过（活动没结束 状态还是finished）或已结算（含结算失败）
+  scope :completed, -> {where("img_status='passed'  or status = 'rejected'")}
 
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
+  scope :approved_by_date, -> (date){where(:approved_at => date.beginning_of_day..date.end_of_day)}
+  scope :not_rejected, -> {where("campaign_invites.status != 'rejected'")}
+  scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settle'")}
 
   def upload_start_at
      approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
@@ -33,14 +39,21 @@ class CampaignInvite < ActiveRecord::Base
     self.campaign.upload_screenshot_deadline
   end
 
+  def reupload_end_at
+    self.campaign.reupload_screenshot_deadline
+  end
+
   def upload_interval_time
     return interval_time(Time.now, upload_start_at)
   end
 
+  def start_upload_screenshot
+    Time.now >  upload_start_at  rescue false
+  end
 
   def can_upload_screenshot
     return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  \
-      Time.now < self.upload_end_at)
+      (screenshot.blank? && Time.now < self.upload_end_at) || (screenshot.present? && Time.now < self.reupload_end_at))
   end
 
   # 进行中的活动 审核通过时  仅仅更新它状态
@@ -66,6 +79,7 @@ class CampaignInvite < ActiveRecord::Base
         end
       end
     end
+    Message.new_check_message('screenshot_passed', self, campaign)
   end
 
   def screenshot_reject
@@ -73,28 +87,26 @@ class CampaignInvite < ActiveRecord::Base
     if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
       self.img_status = 'rejected'
       self.save
+      #审核拒绝
+      Message.new_check_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
     end
   end
 
-  def reupload_screenshot(img)
+  def reupload_screenshot(img_url)
     self.img_status = 'pending'
-    self.screenshot = img
+    self.screenshot = img_url
     self.save
     Rails.logger.info "---kol_id:#{self.kol_id}----- reupload_screenshot: ---cid:#{campaign.id}--"
   end
 
   def get_total_click
     self.redis_total_click.value   rescue self.total_click
-    # status == 'finished' ? self.total_click : self.redis_total_click.value
   end
-
-
 
   def get_avail_click
     status == 'finished' ? self.avail_click : (self.redis_avail_click.value  rescue 0)
   end
-
 
   def self.origin_share_url(uuid)
     "#{Rails.application.secrets.domain}/campaign_show?uuid=#{uuid}"          rescue nil
@@ -136,7 +148,7 @@ class CampaignInvite < ActiveRecord::Base
   def add_click(valid, campaign = nil)
     self.redis_avail_click.increment if valid
     self.redis_total_click.increment
-    bring_income(campaign) if valid &&  campaign
+    # bring_income(campaign) if valid &&  campaign
     return true
   end
 
@@ -158,9 +170,16 @@ class CampaignInvite < ActiveRecord::Base
     elsif campaign.is_sprint
       return 'sprint'
     elsif campaign.is_new
-      return 'new'
+      return campaign.per_budget_type
     else
       nil
     end
+  end
+
+  def self.income_by_day(kol,date)
+    # #
+    # cpp_income =  kol.campaign_invites.joins(:campaign).where("campaigns.per_budget_type = 'post'").where("campaign_invites.status != 'rejected'").where(:approved_at => date.beginning_of_day..date.end_of_day)
+    # kol.campaign_invites.joins(:campaign).where("campaigns.per_budget_type != 'post'").where("campaign_invites.status != 'rejected'").where(:approved_at => date.beginning_of_day..date.end_of_day)
+    #  kol.campaign_invites.where(:status != 'rejected')
   end
 end

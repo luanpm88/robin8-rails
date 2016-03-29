@@ -37,6 +37,9 @@ ActiveAdmin.register Kol do
     end
     column :mobile_number
     column :province
+    column "total amount" do |my_resource|
+      my_resource.amount
+    end
     column "avail amount" do |my_resource|
       my_resource.avail_amount
     end
@@ -44,8 +47,6 @@ ActiveAdmin.register Kol do
     column "forbid campaign time"   do |resource|
       resource.forbid_campaign_time.to_s(:all_time)  rescue nil
     end
-    column :five_click_threshold
-    column :total_click_threshold
     actions do |kol|
       link_to '充值/提现', show_recharge_admin_kol_path(kol.id), :method => :get, :target => "_blank" if current_admin_user.is_super_admin?
     end

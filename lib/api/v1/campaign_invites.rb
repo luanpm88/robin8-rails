@@ -7,7 +7,7 @@ module API
         end
 
         params do
-          requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'completed', 'missed', 'liked']
+          requires :status, type: String, values: ['all', 'running', 'approved' ,'verifying', 'completed', 'missed', 'liked', 'waiting_upload']
           optional :page, type: Integer
           optional :title, type: String
           optional :with_message_stat, type: String, values: ['y','n']
@@ -27,6 +27,10 @@ module API
             @campaigns = current_kol.running_campaigns.order_by_start.page(params[:page]).per_page(10)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
+            present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
+          elsif params[:status] == 'waiting_upload'
+            @campaign_invites = current_kol.campaign_invites.waiting_upload.page(params[:page]).per_page(10)
+            to_paginate(@campaign_invites)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
           elsif params[:status] == 'missed'
             @campaigns = current_kol.missed_campaigns.order_by_start.page(params[:page]).per_page(10)

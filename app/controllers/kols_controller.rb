@@ -55,6 +55,12 @@ class KolsController < ApplicationController
     @kol = Kol.new({social_name: auth_params[:name], provider: auth_params[:provider],
                     social_uid: auth_params[:uid], avatar: auth_params[:avatar_url]})
     @kol.country = 'China(中国)' if china_instance?
+
+    if utm_source = cookies['utm_source']
+      @kol.utm_source = utm_source
+      cookies.delete 'utm_source'
+    end
+
     if cookies[:campaign_name]
       @kol.from_which_campaign = cookies[:campaign_name]
       cookies.delete :campaign_name
@@ -207,7 +213,7 @@ class KolsController < ApplicationController
         return render json: {rucaptcha_not_right: true}
       end
     end
-    
+
     phone_number = params[:phone_number]
     if Rails.env.development?
       ms_client = YunPian::SendRegisterSms.new(phone_number)
@@ -232,7 +238,7 @@ class KolsController < ApplicationController
       sms_client = YunPian::SendRegisterSms.new(phone_number)
 
       res = sms_client.send_sms  rescue {}
-      Rails.logger.sms_spider.error "send sms code #{res}"    
+      Rails.logger.sms_spider.error "send sms code #{res}"
       render json: res
     end
   end
@@ -256,13 +262,24 @@ class KolsController < ApplicationController
     end
   end
 
+  def kol_value
+    @kol_value  = KolInfluenceValue.find_by :kol_uuid => params[:kol_uuid]
+    if Influence::Util.is_mobile?(@kol_value.name)
+      @kol_name = "我"
+    else
+      @kol_name = @kol_value.name
+    end
+    @rate = (@kol_value.influence_score.to_i - 350) / (1000 - 350).to_f
+    render :layout =>  false
+  end
+
   private
 
   def sms_request_is_valid_for_login_user?
 
     unless current_kol
       Rails.logger.sms_spider.error "用户没有登录, #{cookies[:_robin8_visitor]}"
-      return false 
+      return false
     end
 
     key = "kol_#{current_kol.id}_send_sms_count"
@@ -292,7 +309,7 @@ class KolsController < ApplicationController
 
     ip_key = "#{request.ip}_visitor_count"
     send_count =  Rails.cache.fetch(ip_key).to_i || 1
-    
+
     if ips && ips.include?(request.ip)
       Rails.logger.sms_spider.error ("#{request.ip} 已经尝试#{send_count} 次, 且存在在爬虫黑名单中")
       return false
@@ -305,7 +322,7 @@ class KolsController < ApplicationController
     send_count =  Rails.cache.fetch(key).to_i || 1
     Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "已经尝试#{send_count} 次")
     Rails.cache.write(key, send_count + 1, :expires_in => 360.seconds)
-    
+
     if send_count > 10
       Rails.logger.sms_spider.error (cookies[:_robin8_visitor] + "被禁封, 已经尝试#{send_count} 次")
       return false
@@ -337,6 +354,11 @@ class KolsController < ApplicationController
 
   def create_kol_and_sign_in(kol_params)
     @kol = Kol.new(kol_params)
+
+    if utm_source = cookies['utm_source']
+      @kol.utm_source = utm_source
+      cookies.delete 'utm_source'
+    end
 
     if cookies[:campaign_name]
       @kol.from_which_campaign = cookies[:campaign_name]

@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   get 'identities/discover/:labels' => 'identities#discover'
   get 'identities/labels/:user_id' => 'identities#labels'
 
+  get 'articles/:id/show' => "articles#show"
+
   resources :discover_records, only: [:create]
 
   get 'campaign_invite/interface/:type' => 'campaign_invite#interface'
@@ -97,6 +99,7 @@ Rails.application.routes.draw do
   put '/kols/monetize' => 'kols#update_monetize'
   get 'kols/resend_confirmation_mail' => 'kols#resend_confirmation_mail'
   get '/kols/valid_phone_number'
+  get 'kol_value' => 'kols#kol_value'
 
   # kols
   devise_for :kols, controllers: {
@@ -210,6 +213,7 @@ Rails.application.routes.draw do
   get '/about', to: 'pages#about'
   get '/team', to: 'pages#team'
   get '/terms', to: 'pages#terms'
+  get '/privacy_policy', to: 'pages#privacy_policy'
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#contact'
   get '/screenshot_sample', to: 'pages#screenshot_sample'

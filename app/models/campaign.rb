@@ -32,6 +32,7 @@ class Campaign < ActiveRecord::Base
   belongs_to :release
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
+  scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :order_by_start, -> { order('start_time desc')}
   scope :order_by_status, -> { order("case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
                                       start_time desc") }
@@ -40,13 +41,18 @@ class Campaign < ActiveRecord::Base
   after_save :create_job
 
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
-  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 4.hours
+  SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 2.hours
+  RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
   def email
     user.try :email
   end
 
   def upload_screenshot_deadline
-    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForKol
+    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
+  end
+
+  def reupload_screenshot_deadline
+    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
   end
 
   def is_cpa?
@@ -82,12 +88,10 @@ class Campaign < ActiveRecord::Base
 
   def get_avail_click
     self.redis_avail_click.value      rescue self.avail_click
-    # status == 'executed' ? self.avail_click : self.redis_avail_click.value      rescue 0
   end
 
   def get_total_click
     self.redis_total_click.value   rescue self.total_click
-    # status == 'executed' ? self.total_click : self.redis_total_click.value      rescue 0
   end
 
   def get_fee_info
@@ -111,7 +115,6 @@ class Campaign < ActiveRecord::Base
   end
 
   def remain_budget
-    # return 0 if (status == 'executed' || status == 'settled')
     return (self.budget - self.take_budget).round(2)
   end
 
@@ -134,10 +137,6 @@ class Campaign < ActiveRecord::Base
 
 
   # 开始时候就发送邀请 但是状态为pending
-  # c = Campaign.find xx
-  # kol_ids = Kol.where("province like '%shanghai%'").collect{|t| t.id}
-  # c.update_column(:status,'agreed')
-  # c.send_invites(kol_ids)
   def send_invites(kol_ids = nil)
     _start = Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
@@ -170,7 +169,6 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
   end
 
-
   # 开始进行  此时需要更改invite状态
   def go_start
     Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
@@ -178,7 +176,6 @@ class Campaign < ActiveRecord::Base
       self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
       Message.new_campaign(self)
-      # self.pending_invites.update_all(:status => 'running')
     end
     Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
@@ -200,15 +197,15 @@ class Campaign < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
-        if Rails.env.production?
+        settle_accounts_for_kol
+        if !Rails.env.test?
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
-        elsif Rails.env.development? or Rails.env.staging?
-          CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
-          CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+          CampaignWorker.perform_at(Time.now + RemindUploadWaitTime ,self.id, 'remind_upload')
         elsif Rails.env.test?
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
+          CampaignWorker.new.perform(self.id, 'remind_upload')
         end
       end
     end
@@ -235,11 +232,18 @@ class Campaign < ActiveRecord::Base
       elsif
         # receive but not apporve  we must delete
         invite.delete
-      else
-        invite.status = 'rejected'
       end
       invite.save!
     end
+  end
+
+  # 提醒上传截图
+  def remind_upload
+    Rails.logger.campaign_sidekiq.info "-----remind_upload:  ----start-----#{self.inspect}----------"
+    ActiveRecord::Base.transaction do
+      Message.new_remind_upload(self)
+    end
+    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
 
   # 结算 for kol
@@ -339,7 +343,7 @@ class Campaign < ActiveRecord::Base
 
   #冲刺标签
   def is_sprint
-    self.status == 'executeing' && ((self.deadline - 4.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
+    self.status == 'executing' && ((self.deadline - 4.hours < Time.now) || (self.remain_budget < 20) || (self.remain_budget < self.budget * 0.2))      rescue false
   end
 
   def get_campaign_invite(kol_id)

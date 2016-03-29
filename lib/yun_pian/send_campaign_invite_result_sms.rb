@@ -11,7 +11,7 @@ module YunPian
       return if @phone_number.blank?
       ChinaSMS.use :yunpian, password: @api_key
       begin
-        res = ChinaSMS.to @phone_number, '【罗宾科技】您上传的任务截图未通过审核，请打开已接受活动查看截图范例并重新上传。'
+        res = ChinaSMS.to @phone_number, '【罗宾科技】您上传的任务截图未通过审核，请打开已接受活动查看帮助并重新上传。'
       rescue Exception => ex
         Rails.logger.error ex
         return nil

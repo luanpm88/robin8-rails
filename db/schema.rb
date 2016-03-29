@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160327033437) do
+ActiveRecord::Schema.define(version: 20160329041533) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -462,8 +462,10 @@ ActiveRecord::Schema.define(version: 20160327033437) do
     t.integer  "identity_score",       limit: 4
     t.integer  "identity_count_score", limit: 4
     t.integer  "contact_score",        limit: 4
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.integer  "share_times",          limit: 4,   default: 0
+    t.integer  "read_times",           limit: 4,   default: 0
   end
 
   create_table "kol_profile_screens", force: :cascade do |t|

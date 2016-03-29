@@ -46,7 +46,6 @@ gem 'legato'
 gem 'redis-objects'
 gem 'redis-rails'
 gem 'rest-client'
-gem "typhoeus"
 
 gem 'mongoid', '~> 5.0.0'
 
@@ -190,6 +189,8 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'puma'
+
+  gem 'rack-mini-profiler'
 end
 
 group :test do
@@ -220,4 +221,9 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem 'json_expressions'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'igetui-ruby', require: 'igetui'
+gem 'elasticsearch'#, git: 'git://github.com/elasticsearch/elasticsearch-ruby.git'
+gem 'csv_shaper'
+
+gem 'rack-attack'
+gem 'rack-test', require: 'rack/test'
 gem "non-stupid-digest-assets"

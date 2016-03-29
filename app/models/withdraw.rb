@@ -5,7 +5,7 @@ class Withdraw < ActiveRecord::Base
   validates_presence_of :alipay_no, :if => Proc.new{|t| t.withdraw_type == 'alipay'}
   validates_presence_of :bank_name, :bank_no, :if => Proc.new{|t| t.withdraw_type == 'bank'}
 
-  validate :check_avail_amount
+  validate :check_avail_amount, :on => :create
 
   after_create :frozen_withdraw_amount
   after_save :deal_withdraw
@@ -13,7 +13,7 @@ class Withdraw < ActiveRecord::Base
   belongs_to :kol
   scope :whole, ->{order('created_at desc')}
   scope :pending, -> {where(:status => 'pending').order('created_at desc')}
-  scope :approved, -> {where(:status => 'pending').order('created_at desc')}
+  scope :approved, -> {where(:status => 'paid').order('created_at desc')}
   scope :rejected, -> {where(:status => 'rejected').order('created_at desc')}
 
   def check_avail_amount
@@ -29,10 +29,14 @@ class Withdraw < ActiveRecord::Base
 
 
   def deal_withdraw
+    if self.kol.frozen_amount.to_f < self.credits.to_f
+      self.errors.add(:credits, "超出账户冻结金额")
+      return
+    end
     if self.status_changed? && self.status == 'paid'
       # 解冻并提现
-      self.kol.unfrozen(self.credits,'widthdraw', self, nil)
-      self.kol.payout(self.credits, 'withdraw',self,nil)
+        self.kol.unfrozen(self.credits,'widthdraw', self, nil)
+        self.kol.payout(self.credits, 'withdraw',self,nil)
     elsif self.status_changed? && self.status == 'rejected'
       # 解冻
       self.kol.unfrozen(self.credits,'widthdraw', self, nil)
