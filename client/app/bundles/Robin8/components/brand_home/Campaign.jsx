@@ -21,7 +21,7 @@ export default class Campaign extends React.Component {
         <div className="brand-activity-content">
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">&gt;</Link>
           <h2 className="activity-title">
-            { campaign.get("name") }
+            { _.truncate(campaign.get("name"), {'length': 30})}
           </h2>
 
           <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn">
@@ -30,10 +30,10 @@ export default class Campaign extends React.Component {
 
           <small className="date">
             { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
-            &nbsp;&nbsp;按照{showCampaignTypeText(campaign.get("per_budget_type"))}奖励
+            &nbsp;&nbsp;按照<span className="campaign-type">{showCampaignTypeText(campaign.get("per_budget_type"))}</span>奖励
           </small>
           <div className="summary">
-            { _.truncate(campaign.get("description"), {'length': 35}) }
+            { _.truncate(campaign.get("description"), {'length': 120}) }
           </div>
           <ul className="stat-info grid-4">
             <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>

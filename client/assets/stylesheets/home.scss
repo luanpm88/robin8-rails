@@ -57,6 +57,15 @@
   background-color: #403e3f;
   background-image: linear-gradient(to right, #403e3f, #2f2d2e);
 }
+
+.brand-activity-card .summary{
+  color: #d8d8d8;
+}
+
+.brand-activity-card.closure .summary{
+  color: #686868;
+}
+
 .brand-activity-card:last-child {
   margin-bottom: 0;
 }
@@ -91,10 +100,18 @@
   color: #fff;
   font-size: 18px;
 }
-.brand-activity-card .brand-activity-content .date,
+
 .brand-activity-card .brand-activity-content .summary {
   color: #9b9a9a;
   font-size: 14px;
+}
+
+.brand-activity-card .brand-activity-content .date{
+  font-size: 12px;
+}
+
+.brand-activity-card  .campaign-type{
+  color: #f26d45;
 }
 
 .brand-activity-card {

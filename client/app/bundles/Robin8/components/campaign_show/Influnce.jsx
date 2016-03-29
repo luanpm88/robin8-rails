@@ -83,7 +83,8 @@ export default class Influnce extends React.Component{
           type : 'value'
         }
       ],
-      series : Array.from(clicks)
+      series : Array.from(clicks),
+      color: ['#f98b33', '#62e6fb']
     };
     console.log('----legend--');
     console.log(clicks)

@@ -31,17 +31,43 @@
 }
 .brand-activity-card .brand-activity-content .activity-title {
   margin-top: 25px;
-  margin-bottom: 0;
+  margin-bottom: 13px;
   height: 22px;
   overflow: hidden;
   color: #fff;
-  font-size: 18px;
+  font-size: 22px;
+}
+
+span.campaign-type {
+    /* font-size: 18px; */
+    color: #f26d45;
+}
+
+.brand-activity-card .brand-activity-content .date{
+  margin-bottom: 8px;
 }
 .brand-activity-card .brand-activity-content .date,
 .brand-activity-card .brand-activity-content small.summary {
   color: #9b9a9a;
   font-size: 14px;
   word-wrap: break-word;
+  display: block;
+}
+
+.brand-activity-card .brand-activity-content small.summary {
+  margin-bottom: 12px; 
+  height: 32px;
+  line-height: 16px;
+  overflow:  hidden;
+}
+
+.brand-activity-card .brand-activity-content small.summary:after {
+    content:"...";
+    font-weight:bold;
+    position:absolute;
+    bottom:0;
+    right:0;
+    padding:0 20px 1px 45px;
 }
 
 small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
@@ -97,7 +123,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 .brand-activity-card .brand-activity-content .stat-info li:after {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 5px;
   content: '/';
   color: #bfc1c0;
 }
@@ -128,6 +154,11 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   color: #fff;
   font-size: 18px;
 }
+
+.brand-activity-card .brand-activity-content .stat-info .date {
+  color: #fff;
+}
+
 .brand-activity-card .brand-activity-content .stat-info .symbol {
   margin-right: 5px;
   font-size: 14px;
@@ -248,7 +279,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 }
 
 .activity-message-bigshow-area{
-  margin-top: 64px;
+  margin-top: 54px;
   margin-bottom: 20px;
   display: inline-block;
 }
