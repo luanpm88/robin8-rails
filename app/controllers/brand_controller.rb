@@ -1,4 +1,5 @@
 class BrandController < ApplicationController
+  before_action :authenticate_user!
   layout 'brand'
   def index
     @brand_home_props = { brand: current_user }
@@ -20,4 +21,14 @@ class BrandController < ApplicationController
       }'
     }) }
   end
+
+  private
+  def authenticate_user!
+    if user_signed_in?
+      super
+    else
+      redirect_to '/'
+    end
+  end
+
 end
