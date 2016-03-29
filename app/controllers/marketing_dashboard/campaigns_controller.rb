@@ -23,7 +23,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @campaign = Campaign.find params[:campaign_id]
     @campaign.update(:status => :agreed)
     respond_to do |format|
-      format.html { redirect_to agreed_marketing_dashboard_campaigns_path, notice: 'Agreed successfully!'}
+      format.html { redirect_to :back, notice: 'Agreed successfully!'}
       format.json { head :no_content }
     end
   end
