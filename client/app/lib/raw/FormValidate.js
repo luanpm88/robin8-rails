@@ -18,6 +18,8 @@ global.FormValidate = function(options){
 
         const val = fieldOption.url.message;
         errors[fieldName] = (val ? val : '必须是超链接, 以 http:// 或 https://开头');
+      } else if (value && fieldOption.email && !validator.isEmail(value)) {
+        errors[fieldName] = "邮箱格式不正确";
       } else if (fieldName == 'budget' && value) {
         if(parseInt(value) > parseInt($(".budget-input").attr("brand-amount"))){
           errors[fieldName] = "账户余额不足, 请充值";
@@ -51,6 +53,16 @@ global.FormValidate = function(options){
             const val = fieldOption.cpa_url.message;
             errors[fieldName] = (val ? val : '必须是超链接, 以 http:// 或 https://开头');
           }
+        }
+      }
+      else if(fieldName === "new_password_confirmation") {
+        if(value !== $('#new_password').val()) {
+          errors[fieldName] = "确认密码和新密码不一致";
+        }
+      }
+      else if(fieldName === 'new_password' || fieldName === 'password' || fieldName === 'new_password_confirmation') {
+        if(value.length < fieldOption.min_length) {
+          errors[fieldName] = "密码最少为6位"
         }
       }
     })

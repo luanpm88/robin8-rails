@@ -113,20 +113,34 @@ export function fetchBrandProfile() {
 }
 
 export function updateBrandProfile(profile) {
-  var formData = new FormData()
-  for(let key of Object.keys(profile)) {
-    formData.append(`${key}`, profile[key])
-  }
-
   return {
     type: actionTypes.UPDATE_BRAND_PROFILE,
-    promise: fetch('/brand_api/v1/user', {
+    promise: fetch(`${baseUrl}/user`, {
       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
         "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
       },
       credentials: 'same-origin',
       method: 'PUT',
-      body: formData
+      body: JSON.stringify(profile)
+    }),
+    redirect: '/brand/'
+  }
+}
+
+export function updateBrandPassword(password) {
+  return {
+    type: actionTypes.UPDATE_BRAND_PASSWORD,
+    promise: fetch(`${baseUrl}/user/password`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT',
+      body: JSON.stringify(password)
     }),
     redirect: '/brand/'
   }

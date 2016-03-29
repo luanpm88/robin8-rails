@@ -48,7 +48,9 @@ export default function brandReducer($$state = $$initialState, action = null) {
       }
       return $$state;
     case actionTypes.UPDATE_BRAND_PROFILE:
+      return $$state;
 
+    case actionTypes.UPDATE_BRAND_PASSWORD:
       return $$state;
 
     case actionTypes.FETCH_INVITES_OF_CAMPAIGN:
