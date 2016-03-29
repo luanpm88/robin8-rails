@@ -18,8 +18,8 @@
         <% end %>
         <td><img src="<%= c.screenshot %>" ></td>
         <td>
-          <%= link_to 'Pass', marketing_dashboard_campaign_invite_pass_path(c.id), method: :post %> |
-          <%= link_to 'Reject', marketing_dashboard_campaign_invite_reject_path(c.id), method: :post %>
+          <%= link_to '通过', marketing_dashboard_campaign_invite_pass_path(c.id), method: :post %> |
+          <%= link_to '拒绝', marketing_dashboard_campaign_invite_reject_path(c.id) %>
 
         </td>
       </tr>

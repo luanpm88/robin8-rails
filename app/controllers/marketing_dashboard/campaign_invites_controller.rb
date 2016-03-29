@@ -6,8 +6,10 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
   end
 
   def pending
-    valid_period = Campaign::SettleWaitTimeForBrand
-    @campaign_invites = CampaignInvite.joins(:campaign, :kol).where.not(:screenshot => "").where(:img_status => :pending).where(:status => ['approved', 'finished']).where("campaigns.deadline > ?", Time.now-valid_period).paginate(paginate_params)
+    # valid_period = Campaign::SettleWaitTimeForBrand
+    # @campaign_invites = CampaignInvite.joins(:campaign, :kol).where.not(:screenshot => "").where(:img_status => :pending).where(:status => ['approved', 'finished']).where("campaigns.deadline > ?", Time.now-valid_period).paginate(paginate_params)
+
+    @campaign_invites = CampaignInvite.where(:img_status => :pending).paginate(paginate_params)
   end
 
   def passed
@@ -32,7 +34,10 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
   end
 
   def reject
+    render 'reject' and return if request.method.eql? 'GET'
+
     @campaign_invite.screenshot_reject
+    @campaign_invite.update(reject_reason: params[:reject_reason])
 
     respond_to do |format|
       format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Reject successfully!'}

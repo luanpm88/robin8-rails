@@ -61,7 +61,7 @@ Rails.application.routes.draw do
         get 'rejected'
       end
       match '/pass' => 'campaign_invites#pass', via: [:post]
-      match '/reject' => 'campaign_invites#reject', via: [:post]
+      match '/reject' => 'campaign_invites#reject', via: [:post, :get]
     end
     resources :feedbacks, except: [:destroy, :new, :create]
     resources :withdraws, except: [:destroy, :new, :create] do
