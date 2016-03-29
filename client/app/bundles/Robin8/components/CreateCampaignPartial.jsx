@@ -76,7 +76,7 @@ class CreateCampaignPartial extends React.Component {
 
               <div className="creat-form-footer">
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
-                <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动并查看相关公众号</button>
+                <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动并查看相关公众号</button>
               </div>
             </form>
           </div>

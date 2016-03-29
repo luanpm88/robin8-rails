@@ -422,6 +422,11 @@
   border: none;
   background: #fff;
 }
+
+.createCampaignSubmit{
+  font-size: 14px !important;
+}
+
 .spinner-form-area input,
 .spinner-form-area .form-control {
   position: static;
@@ -505,6 +510,7 @@
 }
 .creat-activity-form .tit {
   text-align: center;
+  margin-bottom: 15px;
 }
 .creat-activity-form .content {
   padding: 0 40px;
@@ -704,8 +710,8 @@
 }
 
 .creat-content-sources .action-url-group .action-url-notice {
-  margin-top: 22px;
-  color: #186616;
+  color: #2ba6aa;
+  font-size: 13px;
 }
 
 .creat-content-sources .per-budget-text {
