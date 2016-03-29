@@ -27,15 +27,23 @@ class UsersController < ApplicationController
     end
     @user = User.new(user_params)
     if verify_code != params["user"]["verify_code"]
-      flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
+    # flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
+      render :template => 'users/create_failed.js.erb' and return
     elsif @user.valid?
-      @user.save
+      begin
+        @user.save
+      rescue ActiveRecord::RecordNotUnique => e
+	render :template => 'users/create_failed.js.erb' and return
+      end
+
       sign_in @user
-      return redirect_to root_path + "#profile"
+      render :template => 'users/create.js.erb' and return
+
+      # return redirect_to root_path + "#profile"
     else
-      flash.now[:errors] = @user.errors.full_messages
+      # flash.now[:errors] = @user.errors.full_messages
+      render :template => 'users/create_failed.js.erb' and return
     end
-    render :new, :layout=>"website"
   end
 
   def delete_user
@@ -173,7 +181,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name,:last_name,:email,:password, :mobile_number)
+    params.require(:user).permit(:name, :password, :mobile_number)
   end
 
 end
