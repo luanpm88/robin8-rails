@@ -166,4 +166,29 @@ RSpec.describe Brand::V1::UserAPI do
       expect(response.status).to eq 200
     end
   end
+
+  describe 'PUT /brand_api/v1/uesr/password', :type => :feature do
+    before :each do
+      @user = FactoryGirl.create :user
+
+      login_as(@user, :scope => :user)
+    end
+    let(:params) do
+      { :password => 'password', :new_password => 'new password', :new_password_confirmation => 'new_password' }
+    end
+
+    it 'returns 200' do
+      put '/brand_api/v1/user/password', params
+
+      expect(response.status).to eq 200
+    end
+
+    it 'returns error when password invalid' do
+      params.merge!({:password => 'pwd'})
+      put '/brand_api/v1/user/password', params
+
+      expect(response.status).to eq 422
+      expect(response.body).to be_include 'Invalid password!'
+    end
+  end
 end
