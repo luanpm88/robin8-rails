@@ -75,7 +75,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 }
 .brand-activity-card .brand-activity-content .stat-info {
   margin: 20px 0 0;
-  padding: 20px 0 0;
+  padding: 8px 0 0;
   overflow: hidden;
   text-align: center;
   border-top: 1px solid rgba(255, 255, 255, 0.2);

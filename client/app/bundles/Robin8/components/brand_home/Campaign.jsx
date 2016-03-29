@@ -35,10 +35,6 @@ export default class Campaign extends React.Component {
           <div className="summary">
             { _.truncate(campaign.get("description"), {'length': 35}) }
           </div>
-          <a href={ campaign.get("url") } className="link" target="_blank">
-            { _.truncate(campaign.get("url"), {'length': 54}) }
-          </a>
-
           <ul className="stat-info grid-4">
             <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
             <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
