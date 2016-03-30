@@ -74,9 +74,14 @@
   left: 0;
   top: 0;
 }
+
+.brand-activity-card .brand-activity-coverphoto a {
+  height: 100%;
+}
+
 .brand-activity-card .brand-activity-coverphoto a > img {
   width: 280px;
-  height: 238px;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -84,8 +89,8 @@
   .campaign-status-img {
     position: absolute;
     z-index: 2;
-    width: 101px;
-    height: 102px;
+    width: 64px;
+    height: 64px;
   }
 }
 
@@ -95,8 +100,9 @@
 .brand-activity-card .brand-activity-content .activity-title {
   margin-top: 25px;
   margin-bottom: 0;
+  width: 350px;
   height: 22px;
-  overflow: hidden;
+  text-overflow: ellipsis;
   color: #fff;
   font-size: 18px;
 }
@@ -104,6 +110,7 @@
 .brand-activity-card .brand-activity-content .summary {
   color: #9b9a9a;
   font-size: 14px;
+  word-break: break-all;
 }
 
 .brand-activity-card .brand-activity-content .date{
@@ -120,8 +127,8 @@
       position: absolute;
       right: 100px;
       top: 17px;
-      width: 94px;
-      height: 38px;
+      width: 82px;
+      height: 36px;
       background: url(~edit-button.png) no-repeat ;
     }
   }

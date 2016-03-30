@@ -73,7 +73,7 @@ export default class Crop extends Component {
 
   initCrop() {
     const that = this;
-
+    const { aspectRatio } = this.props;
     $('#cropImage')[0].src = that.image;
 
     $('#cropImage').Jcrop({
@@ -83,7 +83,7 @@ export default class Crop extends Component {
       keySupport: false,
       bgOpacity:   .4,
       setSelect:   [ 0, 0, 300, 300 ],
-      aspectRatio: 1,
+      aspectRatio: aspectRatio,
       onRelease : function(){ this.setOptions({ setSelect: [ 0, 0, 300, 300 ] }) }
     });
   }
