@@ -13,6 +13,10 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     render 'index'
   end
 
+  def show
+    @campaign = Campaign.find params[:id]
+  end
+
   def agreed
     @campaigns = Campaign.all.where.not(status: 'pending').order('created_at DESC').paginate(paginate_params)
 
