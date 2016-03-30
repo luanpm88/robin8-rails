@@ -67,7 +67,6 @@ export default class ShowCampaignPartial extends Component {
           { this.render_breadcrumb(campaign) }
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
-          <Target {...{campaign}} />
           <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
           <Influnce {...{campaign, actions, campaign_id, campaign_statistics}} />
         </div>
