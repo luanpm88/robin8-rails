@@ -100,7 +100,7 @@ export default class IntroPartial extends React.Component {
             </div>
           </div>
         </div>
-        <Crop fileInputSelector={"#fileInput"} doCrop={this._upload} />
+        <Crop fileInputSelector={"#fileInput"} doCrop={this._upload} aspectRatio={(16/9)} />
       </div>
      )
    }

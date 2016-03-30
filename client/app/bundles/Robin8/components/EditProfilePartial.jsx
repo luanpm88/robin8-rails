@@ -171,7 +171,7 @@ class EditProfilePartial extends Component {
             </div>
           </form>
         </div>
-        <Crop fileInputSelector={"#fileInput"} doCrop={this._upload} />
+        <Crop fileInputSelector={"#fileInput"} doCrop={this._upload} aspectRatio={1} />
       </div>
     );
   }
