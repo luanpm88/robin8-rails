@@ -21,10 +21,27 @@ class UpdatePasswordPartial extends Component {
     _.bindAll(this, ['_updateBrandPassword', '_cancelSubmitForm']);
   }
 
-  _updateBrandPassword() {
-    const { updateBrandPassword } = this.props.actions;
+  _updateBrandPassword(password) {
     const password_fields = this.props.values;
-    updateBrandPassword(password_fields);
+
+    fetch(`/brand_api/v1/user/password`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT',
+      body: JSON.stringify(password_fields)
+    }).then(function(response) {
+      response.json().then(function(data){
+        window.location = '/users/sign_out';
+        window.location = '/'
+      })
+    },
+    function(error) {
+      console.log('---------------update brand password error------------');
+    })
   }
 
   _cancelSubmitForm(e) {

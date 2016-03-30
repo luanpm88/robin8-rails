@@ -128,20 +128,3 @@ export function updateBrandProfile(profile) {
     redirect: '/brand/'
   }
 }
-
-export function updateBrandPassword(password) {
-  return {
-    type: actionTypes.UPDATE_BRAND_PASSWORD,
-    promise: fetch(`${baseUrl}/user/password`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
-      },
-      credentials: 'same-origin',
-      method: 'PUT',
-      body: JSON.stringify(password)
-    }),
-    redirect: '/brand/'
-  }
-}

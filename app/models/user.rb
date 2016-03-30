@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, #:validatable, :confirmable,
-         :omniauthable, :invitable
+         :omniauthable, :invitable, :authentication_keys => [:login]
 
   has_many :identities, dependent: :destroy
   has_many :posts, dependent: :destroy
