@@ -177,9 +177,5 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def self.income_by_day(kol,date)
-    # #
-    # cpp_income =  kol.campaign_invites.joins(:campaign).where("campaigns.per_budget_type = 'post'").where("campaign_invites.status != 'rejected'").where(:approved_at => date.beginning_of_day..date.end_of_day)
-    # kol.campaign_invites.joins(:campaign).where("campaigns.per_budget_type != 'post'").where("campaign_invites.status != 'rejected'").where(:approved_at => date.beginning_of_day..date.end_of_day)
-    #  kol.campaign_invites.where(:status != 'rejected')
   end
 end

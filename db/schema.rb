@@ -416,6 +416,13 @@ ActiveRecord::Schema.define(version: 20160328102034) do
     t.datetime "decline_date"
   end
 
+  create_table "ip_scores", force: :cascade do |t|
+    t.string   "ip",         limit: 255
+    t.integer  "score",      limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "iptc_categories", force: :cascade do |t|
     t.string   "label",      limit: 255
     t.string   "parent",     limit: 8
@@ -1052,6 +1059,10 @@ ActiveRecord::Schema.define(version: 20160328102034) do
     t.decimal  "frozen_amount",                      precision: 12, scale: 2, default: 0.0
     t.string   "mobile_number",          limit: 255
     t.string   "utm_source",             limit: 255
+    t.string   "url",                    limit: 255
+    t.string   "description",            limit: 255
+    t.string   "keywords",               limit: 255
+    t.string   "real_name",              limit: 255
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
