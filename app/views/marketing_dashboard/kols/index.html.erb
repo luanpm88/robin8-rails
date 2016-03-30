@@ -4,27 +4,30 @@
       <th>ID</th>
       <th>Name</th>
       <th>Email</th>
-      <th></th>
-      <th></th>
+      <th>MobileNumber</th>
+      <th>Province</th>
+      <th>Amount</th>
+      <th>Avail Amount</th>
+      <th>Forbid Campaign Time</th>
     </tr>
   </thead>
 
   <tbody>
     <% @kols.each do |k| %>
       <tr>
-        <% %w(id name email).each do |v| %>
+        <% %w(id name email mobile_number province amount avail_amount forbid_campaign_time).each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
         <td>
-          <%= link_to 'Ban', marketing_dashboard_kol_ban_path(k.id) %>
+          <%= link_to '拉黑', marketing_dashboard_kol_ban_path(k.id) %>
           |
-          <%= link_to 'Disban', marketing_dashboard_kol_disban_path(k.id), method: :post %>
+          <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(k.id), method: :post %>
           |
-          <%= link_to 'Withdraw', marketing_dashboard_kol_withdraw_path(k.id) %>
+          <%= link_to '提现', marketing_dashboard_kol_withdraw_path(k.id) %>
           |
-          <%= link_to 'Tracks', marketing_dashboard_kol_campaign_shows_path(k.id) %>
+          <%= link_to '点击数据', marketing_dashboard_kol_campaign_shows_path(k.id) %>
           |
-          <%= link_to 'Campagins', marketing_dashboard_kol_campaigns_path(k.id) %>
+          <%= link_to '接受的活动', marketing_dashboard_kol_campaigns_path(k.id) %>
         </td>
       </tr>
     <% end %>

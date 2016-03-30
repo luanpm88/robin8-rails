@@ -51,7 +51,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
               Campaign.find_by(params[:campaign_id]).kols
             else
               Kol.all
-            end.paginate(paginate_params)
+            end.order('created_at DESC').paginate(paginate_params)
   end
 
   def set_kol
