@@ -1,6 +1,6 @@
 class CampaignShow < ActiveRecord::Base
-  CookieTimeout = Rails.env.production? ? 60.minutes : 30.seconds
-  IpTimeout = Rails.env.production? ? 3.minutes : 10.seconds
+  CookieTimeout = Rails.env.production? ? 45.minutes : 30.seconds
+  IpTimeout = Rails.env.production? ? 2.minutes : 10.seconds
 
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
@@ -70,7 +70,7 @@ class CampaignShow < ActiveRecord::Base
 
     # check visitor ip
     ip_score = IpScore.fetch_ip_score(visitor_ip)
-    if ip_score.to_i < 70
+    if ip_score.to_i < 65
       return [false, "ip_score_low"]
     end
 
