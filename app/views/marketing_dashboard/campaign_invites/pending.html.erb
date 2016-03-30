@@ -16,10 +16,10 @@
         <% %w(id kol_id campaign_id img_status).each do |v| %>
           <td> <%= c.send v %> </td>
         <% end %>
-        <td><img src="<%= c.screenshot %>" ></td>
+        <td><img src="<%= c.screenshot %>" height='300px;' ></td>
         <td>
           <%= link_to '通过', marketing_dashboard_campaign_invite_pass_path(c.id), method: :post %> |
-          <%= link_to '拒绝', marketing_dashboard_campaign_invite_reject_path(c.id) %>
+          <%= link_to '拒绝', marketing_dashboard_campaign_invite_reject_path(c.id) ,target: '_blank' %>
 
         </td>
       </tr>

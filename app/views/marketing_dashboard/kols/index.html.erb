@@ -8,6 +8,7 @@
       <th>Province</th>
       <th>Amount</th>
       <th>Avail Amount</th>
+      <th>Source</th>
       <th>Forbid Campaign Time</th>
     </tr>
   </thead>
@@ -15,7 +16,7 @@
   <tbody>
     <% @kols.each do |k| %>
       <tr>
-        <% %w(id name email mobile_number province amount avail_amount forbid_campaign_time).each do |v| %>
+        <% %w(id name email mobile_number province amount avail_amount utm_source forbid_campaign_time).each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
         <td>
