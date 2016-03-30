@@ -1,0 +1,2 @@
+module MarketingDashboard::CampaignsHelper
+end

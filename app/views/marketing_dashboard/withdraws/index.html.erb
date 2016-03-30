@@ -1,0 +1,26 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Kol ID</th>
+      <th>Real Name</th>
+      <th>Credits</th>
+      <th>Withdraw type</th>
+      <th>Alipay No.</th>
+      <th>Bank Name</th>
+      <th>Bank No.</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @withdraws.each do |w| %>
+      <tr>
+        <% %w(id kol_id real_name credits withdraw_type alipay_no bank_name bank_no status).each do |v| %>
+          <td> <%= w.send v %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @withdraws %>
