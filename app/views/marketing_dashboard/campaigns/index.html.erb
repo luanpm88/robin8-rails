@@ -6,10 +6,12 @@
       <th>Name</th>
       <th>User ID</th>
       <th>Type</th>
-      <th>Per action budget</th>
+      <th>CPA/CPP</th>
       <th>Budget</th>
-      <th>Take Budget</th>
-      <th>Actual Clicks</th>
+      <th>Spent</th>
+      <th>Max Click</th>
+      <th>Avail Click</th>
+      <th>Total Click</th>
       <th>Start_at</th>
       <th>Deadline</th>
       <th>Status</th>
@@ -19,18 +21,18 @@
   <tbody>
     <% @campaigns.each do |c| %>
       <tr>
-        <% %w(id name user_id per_budget_type per_action_budget budget take_budget get_avail_click start_time deadline status).each do |v| %>
+        <% %w(id name user_id per_budget_type per_action_budget budget take_budget max_action get_avail_click get_total_click start_time deadline status).each do |v| %>
           <td> <%= c.send v %> </td>
         <% end %>
         <td>
-          <%= link_to 'Edit', edit_marketing_dashboard_campaign_path(c) %> |
-          <%= link_to 'Show', marketing_dashboard_campaign_path(c) %> |
-          <%= link_to 'Kols', marketing_dashboard_campaign_kols_path(c) %> |
-          <%= link_to 'Track', marketing_dashboard_campaign_campaign_shows_path(c) %> |
+          <%= link_to '编辑', edit_marketing_dashboard_campaign_path(c) %> |
+          <%= link_to '详情', marketing_dashboard_campaign_path(c) %> |
+          <%= link_to '接受活动的Kols', marketing_dashboard_campaign_kols_path(c) %> |
+          <%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c) %> |
           <%= link_to '统计', "/#smart_campaign/stats/#{c.id}" %>
           <% if c.status == 'pending' %>
             |
-            <%= link_to 'Agree', marketing_dashboard_campaign_agree_path(c), method: :put %>
+            <%= link_to '审核通过', marketing_dashboard_campaign_agree_path(c), method: :put %>
           <% end %>
 
 
