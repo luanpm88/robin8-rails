@@ -1,6 +1,6 @@
 class CampaignShow < ActiveRecord::Base
-  CookieTimeout = Rails.env.production? ? 30.minutes : 3.seconds
-  IpTimeout = Rails.env.production? ? 3.minutes : 3.seconds
+  CookieTimeout = Rails.env.production? ? 60.minutes : 30.seconds
+  IpTimeout = Rails.env.production? ? 3.minutes : 10.seconds
 
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
@@ -21,7 +21,7 @@ class CampaignShow < ActiveRecord::Base
       end
     end
 
-    if ip.start_with?("101.226.103.6") ||  ip.start_with?("101.226.103.7")
+    if visitor_ip.start_with?("101.226.103.6") ||  visitor_ip.start_with?("101.226.103.7")
       return [false, 'wechat_crawler']
     end
 
@@ -70,7 +70,7 @@ class CampaignShow < ActiveRecord::Base
 
     # check visitor ip
     ip_score = IpScore.fetch_ip_score(visitor_ip)
-    if ip_score.to_i < 60
+    if ip_score.to_i < 70
       return [false, "ip_score_low"]
     end
 
