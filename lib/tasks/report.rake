@@ -43,4 +43,9 @@ namespace :report do
     file.write(csv_string)
     file.close
   end
+
+  desc "Generates Redis localization from yaml files"
+  task :campain_show_list_for_campaign do
+    
+  end
 end
