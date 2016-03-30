@@ -14,6 +14,7 @@
       <th>Total Click</th>
       <th>Start_at</th>
       <th>Deadline</th>
+      <th>Accepted Kols Count</th>
       <th>Status</th>
       <th>Ops</th>
     </tr>
@@ -21,8 +22,8 @@
   <tbody>
     <% @campaigns.each do |c| %>
       <tr>
-        <% %w(id name user_id per_budget_type per_action_budget budget take_budget max_action get_avail_click get_total_click start_time deadline status).each do |v| %>
-          <td> <%= c.send v %> </td>
+        <% %w(id name user_id per_budget_type per_action_budget budget take_budget max_action get_avail_click get_total_click start_time deadline campaign_invites.count status).each do |v| %>
+          <td> <%= multi_send c, v %> </td>
         <% end %>
         <td>
           <%= link_to '编辑', edit_marketing_dashboard_campaign_path(c) %> |
