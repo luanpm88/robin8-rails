@@ -16,10 +16,12 @@ import beforeUnload from './shared/BeforeUnload';
 
 
 const initCampaign = {
+  img_url: '',
   age: 'all',
   province: '全部',
   city: '全部',
   gender: 'all',
+  message: '',
   budget: 100,
   per_budget_type: 'post',
   per_action_budget: 2,

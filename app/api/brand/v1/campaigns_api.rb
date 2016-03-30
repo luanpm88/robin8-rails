@@ -44,6 +44,7 @@ module Brand
           requires :budget, type: Float
           requires :per_budget_type, type: String
           requires :per_action_budget, type: Float
+          optional :message, type: String
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
           requires :target, type: Hash do
@@ -76,6 +77,7 @@ module Brand
           requires :budget, type: Float
           requires :per_budget_type, type: String
           requires :per_action_budget, type: Float
+          optional :message, type: String
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
           requires :target, type: Hash do

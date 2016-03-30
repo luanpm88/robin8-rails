@@ -1,5 +1,4 @@
 import React from 'react';
-import ShowError from '../shared/ShowError';
 
 export default class TargetPartial extends React.Component {
 
@@ -33,12 +32,12 @@ export default class TargetPartial extends React.Component {
                 <div className="target-age-selector">
                   <select {...age} className="age-range">
                     <option value = "all">全部</option>
-                    <option value = "baby">0-5岁</option>
-                    <option value = "children">5-10</option>
-                    <option value = "young">10-20</option>
-                    <option value = "man">20-40</option>
-                    <option value = "middle_age">40-60</option>
-                    <option value = "old">60以上</option>
+                    <option value = "0-5">0-5岁</option>
+                    <option value = "5-10">5-10</option>
+                    <option value = "10-20">10-20</option>
+                    <option value = "20-40">20-40</option>
+                    <option value = "40-60">40-60</option>
+                    <option value = "60以上">60以上</option>
                   </select>
                 </div>
               </div>
@@ -66,7 +65,6 @@ export default class TargetPartial extends React.Component {
             <p>KOL留言</p>
             <div>
               <input {...message} type="text" className="form-control" placeholder="给KOL留言 (选填)" />
-              <ShowError field={message} />
             </div>
           </div>
 

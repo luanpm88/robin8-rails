@@ -48,7 +48,6 @@ export default class IntroPartial extends React.Component {
 
   render() {
     const { name, description, img_url, url } = this.props
-
     return (
       <div className="creat-activity-form creat-intro">
         <div className="header">
