@@ -17,7 +17,7 @@
     <% @withdraws.each do |w| %>
       <tr>
         <% %w(id kol_id real_name credits withdraw_type alipay_no bank_name bank_no status).each do |v| %>
-          <td> <%= w.send v %> </td>
+          <td> <%= multi_send w, v %> </td>
         <% end %>
         <td>
           <%= link_to 'Agree', marketing_dashboard_withdraw_agree_path(w.id), method: :post %> |
