@@ -48,9 +48,16 @@ module Articles
         }
         sort = [ ]
         query = {
-          multi_match: {
-            query:  text,
-            fields:  [ "text", "title"]
+          function_score:{
+            script_score: {
+              script: "_score * 24*3600*1000 /(DateTime.now().getMillis() - doc.publish_date.value ) "
+            },
+            query: {
+               multi_match: {
+                query:  text,
+                fields:  [ "text", "title"]
+              }
+            }
           }
         }
       else      # 选择喜欢文章
