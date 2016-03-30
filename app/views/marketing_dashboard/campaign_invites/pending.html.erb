@@ -1,0 +1,31 @@
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Kol ID</th>
+      <th>Campaign ID</th>
+      <th>Img Status</th>
+      <th>Img</th>
+      <th>Ops</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campaign_invites.each do |c| %>
+      <tr>
+        <% %w(id kol_id campaign_id img_status).each do |v| %>
+          <td> <%= c.send v %> </td>
+        <% end %>
+        <td><img src="<%= c.screenshot %>" ></td>
+        <td>
+          <%= link_to '通过', marketing_dashboard_campaign_invite_pass_path(c.id), method: :post %> |
+          <%= link_to '拒绝', marketing_dashboard_campaign_invite_reject_path(c.id) %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @campaign_invites %>

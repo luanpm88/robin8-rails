@@ -1,0 +1,35 @@
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |k| %>
+      <tr>
+        <% %w(id name email).each do |v| %>
+          <td> <%= k.send v %> </td>
+        <% end %>
+        <td>
+          <%= link_to 'Ban', marketing_dashboard_kol_ban_path(k.id) %>
+          |
+          <%= link_to 'Disban', marketing_dashboard_kol_disban_path(k.id), method: :post %>
+          |
+          <%= link_to 'Withdraw', marketing_dashboard_kol_withdraw_path(k.id) %>
+          |
+          <%= link_to 'Tracks', marketing_dashboard_kol_campaign_shows_path(k.id) %>
+          |
+          <%= link_to 'Campagins', marketing_dashboard_kol_campaigns_path(k.id) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @kols %>

@@ -1,0 +1,2 @@
+module MarketingDashboard::UsersHelper
+end
