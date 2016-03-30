@@ -29,7 +29,7 @@ module Articles
          articles = ElasticClient.search(title, {:push_list_ids => kol_push_ids, :size => per_page * 15 })
          articles.sample(per_page * 15)
        else
-         #2.1  检索时 需要先根据阅读文章取文章关键字
+         #2.1  推荐时 需要先根据阅读文章取文章关键字
          text = get_relation_article_text(kol_id)
          if text
            #2.2  把文章关键字 去查询
@@ -37,6 +37,7 @@ module Articles
          else
            articles = ElasticClient.search(title, {:select => true, :size => DefaultSize })
          end
+         articles.sample(DefaultSize)
        end
      end
      #3. 取出，并把剩下的缓存住
