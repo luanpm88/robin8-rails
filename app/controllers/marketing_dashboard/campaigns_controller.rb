@@ -1,20 +1,20 @@
 class MarketingDashboard::CampaignsController < MarketingDashboard::BaseController
   def index
     @campaigns = if params[:kol_id]
-                   Kol.find(params[:kol_id]).campaigns
+                   Kol.find(params[:kol_id]).campaigns.order('created_at DESC')
                  else
-                   Campaign.all
+                   Campaign.all.order('created_at DESC')
                  end.paginate(paginate_params)
   end
 
   def pending
-    @campaigns = Campaign.all.where(status: 'pending').paginate(paginate_params)
+    @campaigns = Campaign.all.where(status: 'pending').order('created_at DESC').paginate(paginate_params)
 
     render 'index'
   end
 
   def agreed
-    @campaigns = Campaign.all.where.not(status: 'pending').paginate(paginate_params)
+    @campaigns = Campaign.all.where.not(status: 'pending').order('created_at DESC').paginate(paginate_params)
 
     render 'index'
   end
