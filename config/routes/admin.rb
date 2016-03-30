@@ -6,6 +6,9 @@ Rails.application.routes.draw do
         get 'pending'
         get 'agreed'
       end
+      member do
+        get "targets"
+      end
       match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]
       resources :campaign_shows, only: [:index]

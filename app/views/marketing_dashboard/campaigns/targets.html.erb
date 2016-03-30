@@ -1,4 +1,6 @@
-<% attrs = %(id name email mobile_number) %>
+<h2><%= @title %></h2>
+
+<% attrs = %w(id name email mobile_number) %>
 <table class='table table-bordered'>
   <thead>
     
@@ -12,7 +14,7 @@
   <tbody>
     <% @kols.each do |k| %>
       <tr>
-        <% attr.each do |v| %>
+        <% attrs.each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
         </td>

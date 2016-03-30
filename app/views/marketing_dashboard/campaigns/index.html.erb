@@ -33,7 +33,7 @@
           <%= link_to '统计', "/#smart_campaign/stats/#{c.id}" %>
           <% if c.status == 'pending' %>
             |
-            <%= link_to '审核通过', marketing_dashboard_campaign_agree_path(c), method: :put %>
+            <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %>
           <% end %>
 
 

@@ -19,12 +19,14 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def agreed
     @campaigns = Campaign.all.where.not(status: 'pending').order('created_at DESC').paginate(paginate_params)
-
     render 'index'
   end
 
   def targets
+    @campaign = Campaign.find params[:id]
     @kols = Kol.all.paginate(paginate_params)
+
+    @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
   end
 
   def agree
