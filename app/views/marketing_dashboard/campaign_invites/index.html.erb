@@ -4,6 +4,8 @@
       <th>ID</th>
       <th>Kol ID</th>
       <th>Campaign ID</th>
+      <th>Total Click</th>
+      <th>Avail Click</th>
       <th>Img Status</th>
       <th>Img</th>
     </tr>
@@ -12,7 +14,7 @@
   <tbody>
     <% @campaign_invites.each do |c| %>
       <tr>
-        <% %w(id kol_id campaign_id img_status).each do |v| %>
+        <% %w(id kol_id campaign_id get_total_click get_avail_click img_status).each do |v| %>
           <td> <%= multi_send c, v %> </td>
         <% end %>
         <td><img src="<%= c.screenshot %>" height='300px' alt=""></td>
