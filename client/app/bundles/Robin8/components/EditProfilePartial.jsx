@@ -118,7 +118,7 @@ class EditProfilePartial extends Component {
           { this.render_breadcrumb() }
           <form onSubmit={ (event) => { handleSubmit(this._updateBrandProfile)(event).catch(validateFailed) } }>
             <div className="header">
-              <h3>推广简介</h3>
+              <h3>品牌简介</h3>
             </div>
 
             <div className="base-info">

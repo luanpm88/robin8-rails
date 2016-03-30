@@ -8,6 +8,7 @@ export default function createActivity () {
   // bootstrap-maxlength
   // https://github.com/mimo84/bootstrap-maxlength/
   $('.activity-title-input, .activity-intro-input').maxlength({
+    threshold: 21,
     placement: 'centered-right',
     appendToParent: '.form-group'
   });

@@ -52,7 +52,7 @@ export default class IntroPartial extends React.Component {
     return (
       <div className="creat-activity-form creat-intro">
         <div className="header">
-          <h3 className="tit">推广简介&nbsp;<span className="what">?</span></h3>
+          <h3 className="tit">品牌简介&nbsp;<span className="what">?</span></h3>
         </div>
         <div className="content">
           <div className="creat-activity-basic-intro">
@@ -81,10 +81,10 @@ export default class IntroPartial extends React.Component {
             <div className="basic-intro">
               <div className="form-group">
                 <label htmlFor="activityTitle">活动标题</label>
-                <input {...name} type="text" className="form-control activity-title-input" maxLength={20} placeholder="请概括您的推广，让您的内容一目了然" />
+                <input {...name} type="text" className="form-control activity-title-input" maxLength={22} placeholder="请概括您的推广，让您的内容一目了然" />
                 <ShowError field={name} />
 
-                <span className="word-limit">20</span>
+                <span className="word-limit">22</span>
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">活动简介</label>
