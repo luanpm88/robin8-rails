@@ -2,13 +2,13 @@ class Campaign < ActiveRecord::Base
   include Redis::Objects
   counter :redis_avail_click
   counter :redis_total_click
+  include Campaigns::CampaignTargetHelper
 
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline
 
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   belongs_to :user
-  has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender])}
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'

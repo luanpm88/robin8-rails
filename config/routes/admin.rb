@@ -7,7 +7,9 @@ Rails.application.routes.draw do
         get 'agreed'
       end
       member do
-        get "targets"
+        get :targets
+        post :add_target
+        delete :delete_target
       end
       match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]

@@ -1,7 +1,9 @@
 class CampaignTarget < ActiveRecord::Base
-  # target_type: 
-  # remove_campaign 表示 去掉 接受这个campaign 的kol 列表
-  # 
+  TargetTypes = {
+    :remove_campaign => "去掉参与该活动的人",
+  }
+  attr_accessor :target_type_text
+
   belongs_to :campaign
 
   validates_presence_of :target_type, :target_content

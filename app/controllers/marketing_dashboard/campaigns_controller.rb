@@ -22,6 +22,10 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     render 'index'
   end
 
+  def add_target
+    
+  end
+
   def targets
     @campaign = Campaign.find params[:id]
     @kols = Kol.all.paginate(paginate_params)
