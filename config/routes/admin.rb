@@ -35,6 +35,7 @@ Rails.application.routes.draw do
       match '/pass' => 'campaign_invites#pass', via: [:post]
       match '/reject' => 'campaign_invites#reject', via: [:post, :get]
     end
+    resources :stastic_datas
     resources :feedbacks, except: [:destroy, :new, :create]
     resources :withdraws, except: [:destroy, :new, :create] do
       collection do
