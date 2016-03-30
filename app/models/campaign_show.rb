@@ -21,7 +21,11 @@ class CampaignShow < ActiveRecord::Base
       end
     end
 
-    # check_cookie?
+    if ip.start_with?("101.226.103.6") ||  ip.start_with?("101.226.103.7")
+      return [false, 'wechat_crawler']
+    end
+
+      # check_cookie?
     store_key = visitor_cookies.to_s + campaign.id.to_s
     if Rails.cache.read(store_key)
       return [false, 'cookies_visit_fre']
