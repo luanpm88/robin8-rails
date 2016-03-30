@@ -21,7 +21,7 @@ export default class Campaign extends React.Component {
         <div className="brand-activity-content">
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">&gt;</Link>
           <h2 className="activity-title">
-            { _.truncate(campaign.get("name"), {'length': 30})}
+            { _.truncate(campaign.get("name"), {'length': 16})}
           </h2>
 
           <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn">
@@ -46,18 +46,22 @@ export default class Campaign extends React.Component {
           { do
             {
               const status = campaign.get("status");
-              if (status === 'approved')
-                <img className="campaign-status-img" src={ require('campaign_status_approved.png') } />
+              if (status === 'unexecute')
+                <img className="campaign-status-img" src={ require('campaign_unexecute.png') } />
               else if (status === 'rejected')
-                <img className="campaign-status-img" src={ require('campaign_status_rejected.png') } />
+                <img className="campaign-status-img" src={ require('campaign-rejected.png') } />
+              else if (status === 'agreed')
+                <img className="campaign-status-img" src={ require('campaign-agreed.png') } />
               else if (status === 'executing')
-                <img className="campaign-status-img" src={ require('campaign_status_executing.png') } />
+                <img className="campaign-status-img" src={ require('campaign-executing.png') } />
               else if (status === 'executed')
-                <img className="campaign-status-img" src={ require('campaign_status_executed.png') } />
+                <img className="campaign-status-img" src={ require('campaign-executed.png') } />
+              else if (status === 'settled')
+                <img className="campaign-status-img" src={ require('campaign-settled.png') } />
             }
           }
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
-            <img src={ campaign.get('img_url') } alt="活动图片" className="campaign_img" />
+            <img src={ campaign.get('img_url') } alt="" className="campaign_img" />
           </Link>
 
         </div>
