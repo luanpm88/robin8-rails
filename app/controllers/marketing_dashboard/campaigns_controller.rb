@@ -23,13 +23,17 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def add_target
-    
+    CampaignTarget.create(params.require(:campaign_target).permit(:target_type_text, :target_content).merge(:campaign_id => params[:id]))
+    redirect_to targets_marketing_dashboard_campaign_path(:id => params[:id])
   end
 
   def targets
     @campaign = Campaign.find params[:id]
-    @kols = Kol.all.paginate(paginate_params)
 
+    unmatched_kol_ids = @campaign.get_unmatched_kol_ids
+
+    @kols = Kol.where.not(:id => unmatched_kol_ids).paginate(paginate_params)
+    @unmatched_kols = Kol.where(:id => unmatched_kol_ids)
     @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
   end
 
@@ -41,5 +45,4 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
       format.json { head :no_content }
     end
   end
-
 end
