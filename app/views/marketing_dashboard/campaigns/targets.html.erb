@@ -1,0 +1,25 @@
+<% attrs = %(id name email mobile_number) %>
+<table class='table table-bordered'>
+  <thead>
+    
+    <tr>
+      <% attrs.each do |attr| %>
+        <th><%= attr.camelcase %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |k| %>
+      <tr>
+        <% attr.each do |v| %>
+          <td> <%= k.send v %> </td>
+        <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @kols %>

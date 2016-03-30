@@ -23,6 +23,10 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     render 'index'
   end
 
+  def targets
+    @kols = Kol.all.paginate(paginate_params)
+  end
+
   def agree
     @campaign = Campaign.find params[:campaign_id]
     @campaign.update(:status => :agreed)
