@@ -11,13 +11,6 @@ module ApplicationHelper
     ENV["REACT_ON_RAILS_ENV"] == "HOT"
   end
 
-  def multi_send obj, list
-    splited_list = list.split('.')
-    @result = obj
-    (splited_list.count > 0) ? (splited_list.each {|x| @result = @result.send x}) : (@result = nil)
-    @result
-  end
-
   private
 
   def send_tag_method(tag_method_name, args)
