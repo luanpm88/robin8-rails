@@ -2,23 +2,23 @@ class MarketingDashboard::WithdrawsController < MarketingDashboard::BaseControll
   before_action :set_withdraw, only: [:agree, :reject]
 
   def index
-    @withdraws = Withdraw.all.paginate(paginate_params)
+    @withdraws = Withdraw.all.order('created_at DESC').paginate(paginate_params)
   end
 
   def pending
-    @withdraws = Withdraw.all.where(status: 'pending').paginate(paginate_params)
+    @withdraws = Withdraw.all.where(status: 'pending').order('created_at DESC').paginate(paginate_params)
 
     render 'pending'
   end
 
   def agreed
-    @withdraws = Withdraw.all.where(status: 'paid').paginate(paginate_params)
+    @withdraws = Withdraw.all.where(status: 'paid').order('created_at DESC').paginate(paginate_params)
 
     render 'index'
   end
 
   def rejected
-    @withdraws = Withdraw.all.where(status: 'rejected').paginate(paginate_params)
+    @withdraws = Withdraw.all.where(status: 'rejected').order('created_at DESC').paginate(paginate_params)
 
     render 'index'
   end

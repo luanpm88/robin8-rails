@@ -3,14 +3,20 @@
     <tr>
       <th>ID</th>
       <th>Name</th>
-      <th></th>
-      <th></th>
+      <th>Email</th>
+      <th>MobileNumber</th>
+      <th>FirstName</th>
+      <th>LastName</th>
+      <th>Company</th>
+      <th>Amount</th>
+      <th>Avail Amount</th>
+      <th>Ops</th>
     </tr>
   </thead>
   <tbody>
     <% @users.each do |u| %>
       <tr>
-        <% %w(id name).each do |v| %>
+        <% %w(id name email mobile_number first_name last_name company amount avail_amount).each do |v| %>
           <td> <%= u.send v %> </td>
         <% end %>
         <td>
