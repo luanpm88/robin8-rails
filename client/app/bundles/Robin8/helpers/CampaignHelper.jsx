@@ -49,3 +49,10 @@ export function genderHelper(gender){
 
   }
 }
+
+
+export function campaignStatusHelper(status){
+  const img_name = `campaign_${status}.png`
+  
+  }
+}

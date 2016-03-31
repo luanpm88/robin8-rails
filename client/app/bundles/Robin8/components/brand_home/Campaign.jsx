@@ -46,18 +46,8 @@ export default class Campaign extends React.Component {
           { do
             {
               const status = campaign.get("status");
-              if (status === 'unexecute')
-                <img className="campaign-status-img" src={ require('campaign_unexecute.png') } />
-              else if (status === 'rejected')
-                <img className="campaign-status-img" src={ require('campaign-rejected.png') } />
-              else if (status === 'agreed')
-                <img className="campaign-status-img" src={ require('campaign-agreed.png') } />
-              else if (status === 'executing')
-                <img className="campaign-status-img" src={ require('campaign-executing.png') } />
-              else if (status === 'executed')
-                <img className="campaign-status-img" src={ require('campaign-executed.png') } />
-              else if (status === 'settled')
-                <img className="campaign-status-img" src={ require('campaign-settled.png') } />
+              <img className="campaign-status-img" src={ require(`campaign-${status}.png`) } />
+              
             }
           }
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
