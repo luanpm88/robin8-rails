@@ -822,3 +822,8 @@
   font-size: 16px;
   text-decoration: underline;
 }
+
+.recharge-btn {
+  color: #fff;
+  margin-left: 30px;
+}

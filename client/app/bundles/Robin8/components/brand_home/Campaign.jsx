@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import { showCampaignTypeText, formatDate } from '../../helpers/CampaignHelper'
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign} from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -10,6 +10,12 @@ export default class Campaign extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+  }
+
+  renderEditButton(campaign){
+    if(canEditCampaign(campaign.get("status"))){
+      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn"></Link>
+    }
   }
 
   render() {
@@ -24,10 +30,8 @@ export default class Campaign extends React.Component {
             { _.truncate(campaign.get("name"), {'length': 16})}
           </h2>
 
-          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn">
 
-          </Link>
-
+          { this.renderEditButton(campaign) }
           <small className="date">
             { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
             &nbsp;&nbsp;按照<span className="campaign-type">{showCampaignTypeText(campaign.get("per_budget_type"))}</span>奖励
@@ -43,23 +47,7 @@ export default class Campaign extends React.Component {
           </ul>
         </div>
         <div className="brand-activity-coverphoto pull-left">
-          { do
-            {
-              const status = campaign.get("status");
-              if (status === 'unexecute')
-                <img className="campaign-status-img" src={ require('campaign_unexecute.png') } />
-              else if (status === 'rejected')
-                <img className="campaign-status-img" src={ require('campaign-rejected.png') } />
-              else if (status === 'agreed')
-                <img className="campaign-status-img" src={ require('campaign-agreed.png') } />
-              else if (status === 'executing')
-                <img className="campaign-status-img" src={ require('campaign-executing.png') } />
-              else if (status === 'executed')
-                <img className="campaign-status-img" src={ require('campaign-executed.png') } />
-              else if (status === 'settled')
-                <img className="campaign-status-img" src={ require('campaign-settled.png') } />
-            }
-          }
+          { campaignStatusHelper(campaign.get("status")) }
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
             <img src={ campaign.get('img_url') } alt="" className="campaign_img" />
           </Link>
