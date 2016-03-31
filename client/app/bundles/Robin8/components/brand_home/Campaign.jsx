@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import { showCampaignTypeText, formatDate } from '../../helpers/CampaignHelper'
+import { showCampaignTypeText, formatDate, campaignStatusHelper} from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -43,13 +43,7 @@ export default class Campaign extends React.Component {
           </ul>
         </div>
         <div className="brand-activity-coverphoto pull-left">
-          { do
-            {
-              const status = campaign.get("status");
-              <img className="campaign-status-img" src={ require(`campaign-${status}.png`) } />
-              
-            }
-          }
+          { campaignStatusHelper(campaign.get("status")) }
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
             <img src={ campaign.get('img_url') } alt="" className="campaign_img" />
           </Link>

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import React from 'react';
 
 export function showCampaignTypeText(budget_type){
   switch(budget_type){
@@ -52,7 +53,16 @@ export function genderHelper(gender){
 
 
 export function campaignStatusHelper(status){
-  const img_name = `campaign_${status}.png`
-  
+  switch(status){
+    case "unexecute":
+      return(<img className="campaign-status-img" src={ require('campaign-unexecute.png') } />)
+    case "agreed":
+      return(<img className="campaign-status-img" src={ require('campaign-agreed.png') } />)
+    case "executing":
+      return(<img className="campaign-status-img" src={ require('campaign-executing.png') } />)
+    case "executed":
+      return(<img className="campaign-status-img" src={ require('campaign-executed.png') } />)
+    case "settled":
+      return(<img className="campaign-status-img" src={ require('campaign-settled.png') } />)
   }
 }

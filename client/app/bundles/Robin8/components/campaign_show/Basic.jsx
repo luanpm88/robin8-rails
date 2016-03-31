@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 import { Link } from 'react-router';
 
-import { showCampaignTypeText, formatDate} from "../../helpers/CampaignHelper";
+import { showCampaignTypeText, formatDate, campaignStatusHelper} from "../../helpers/CampaignHelper";
 
 export default class Basic extends React.Component {
   constructor(props, context){
@@ -45,6 +45,7 @@ export default class Basic extends React.Component {
           </ul>
         </div>
         <div className="brand-activity-coverphoto pull-left">
+          { campaignStatusHelper(campaign.get("status")) }
           <img src={ campaign.get("img_url") } alt={ campaign.get("name") } />
         </div>
       </div>
