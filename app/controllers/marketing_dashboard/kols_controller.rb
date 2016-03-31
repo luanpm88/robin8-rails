@@ -9,6 +9,16 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     @kol = Kol.find params[:id]
   end
 
+  def search
+    render 'search' and return if request.method.eql? 'GET'
+
+    search_by = params[:search_key]
+
+    @kols = Kol.where("name LIKE ? OR mobile_number LIKE ? OR email LIKE ? OR name LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params)
+
+    render 'index'
+  end
+
   def ban
     render 'ban' and return if request.method.eql? 'GET'
 

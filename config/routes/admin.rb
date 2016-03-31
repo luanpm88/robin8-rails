@@ -20,6 +20,10 @@ Rails.application.routes.draw do
       match '/ban' => 'kols#ban', via: [:post, :get]
       match '/disban' => 'kols#disban', via: [:post]
       match '/withdraw' => 'kols#withdraw' , via: [:post, :get]
+      collection do
+        get 'search'
+        post 'search'
+      end
       resources :campaign_shows, only: [:index]
       resources :campaigns, only: [:index]
     end
