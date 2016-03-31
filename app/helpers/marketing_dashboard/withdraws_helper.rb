@@ -1,2 +1,0 @@
-module MarketingDashboard::WithdrawsHelper
-end
