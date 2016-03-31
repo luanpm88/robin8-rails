@@ -155,9 +155,7 @@ class Campaign < ActiveRecord::Base
         kol.add_campaign_id(campaign_id,false)
       end
     end
-    # 删除黑名单campaign
-    block_kols = Kol.where("forbid_campaign_time > '#{Time.now}'")
-    block_kols.each do |kol|
+    Kol.where(:id => self.get_unmatched_kol_ids).each do |kol|
       kol.delete_campaign_id campaign_id
     end
     Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
@@ -244,7 +242,6 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       Message.new_remind_upload(self)
     end
-    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
 
   # 结算 for kol
