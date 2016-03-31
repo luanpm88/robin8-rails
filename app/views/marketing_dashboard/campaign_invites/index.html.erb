@@ -8,6 +8,7 @@
       <th>Avail Click</th>
       <th>Img Status</th>
       <th>Img</th>
+      <th>Ops</th>
     </tr>
   </thead>
 
@@ -18,6 +19,9 @@
           <td> <%= multi_send c, v %> </td>
         <% end %>
         <td><img src="<%= c.screenshot %>" height='300px' alt=""></td>
+        <td>
+          <%= link_to '点击数据', marketing_dashboard_campaign_invite_campaign_shows_path(c.id) %>
+        </td>
       </tr>
     <% end %>
   </tbody>

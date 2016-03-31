@@ -18,7 +18,7 @@ export default class Keyword extends Component {
   add() {
     const value = this.refs.input.refs.input.value;
 
-    if(!value) {
+    if(!value || this.keywordList.length > 4 ) {
       return
     }
 
@@ -84,6 +84,7 @@ export default class Keyword extends Component {
           <img className="search" src={require("search_icon.png")} />
           <Input type="text" ref="input" placeholder="品牌关键词" ref="input" onKeyPress={this.onKeyPress}/>
           <img className="add" src={require("keyword_add_btn_al.png")} onClick={this.add.bind(event)} />
+          <p className="help-block">最多5个关键词</p>
         </div>
       </div>
     );
