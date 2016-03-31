@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import { showCampaignTypeText, formatDate, campaignStatusHelper} from '../../helpers/CampaignHelper'
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign} from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -10,6 +10,12 @@ export default class Campaign extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+  }
+
+  renderEditButton(campaign){
+    if(canEditCampaign(campaign.get("status"))){
+      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn"></Link>
+    }
   }
 
   render() {
@@ -24,10 +30,8 @@ export default class Campaign extends React.Component {
             { _.truncate(campaign.get("name"), {'length': 16})}
           </h2>
 
-          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn">
 
-          </Link>
-
+          { this.renderEditButton(campaign) }
           <small className="date">
             { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
             &nbsp;&nbsp;按照<span className="campaign-type">{showCampaignTypeText(campaign.get("per_budget_type"))}</span>奖励
