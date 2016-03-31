@@ -27,7 +27,7 @@ class CreateCampaignService
       return false
     end
 
-    @campaign_params.merge!({:status => :pending})
+    @campaign_params.merge!({:status => :unexecute})
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
 

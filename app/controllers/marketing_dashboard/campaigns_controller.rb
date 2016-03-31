@@ -8,7 +8,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def pending
-    @campaigns = Campaign.all.where(status: 'pending').order('created_at DESC').paginate(paginate_params)
+    @campaigns = Campaign.all.where(status: 'unexecute').order('created_at DESC').paginate(paginate_params)
 
     render 'index'
   end
