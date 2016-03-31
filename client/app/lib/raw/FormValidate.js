@@ -17,7 +17,7 @@ global.FormValidate = function(options){
         // url
 
         const val = fieldOption.url.message;
-        errors[fieldName] = (val ? val : '必须是超链接, 以 http:// 或 https://开头');
+        errors[fieldName] = (val ? val : '链接格式错误, 以 http:// 或 https://开头');
       } else if (value && fieldOption.email && !validator.isEmail(value)) {
         errors[fieldName] = "邮箱格式不正确";
       } else if (fieldName == 'budget' && value) {
@@ -50,8 +50,8 @@ global.FormValidate = function(options){
           if (!value) {
             errors[fieldName] = "该选项为必填项";
           } else if (value && !validator.isURL(value, fieldOption.url)) {
-            const val = fieldOption.cpa_url.message;
-            errors[fieldName] = (val ? val : '必须是超链接, 以 http:// 或 https://开头');
+            const val = fieldOption.url.message;
+            errors[fieldName] = '链接格式错误, 以 http:// 或 https://开头';
           }
         }
       }
