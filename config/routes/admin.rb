@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]
       resources :campaign_shows, only: [:index]
+      resources :campaign_invites, only: [:index]
     end
     resources :kols, except: [:destroy, :new, :create] do
       match '/ban' => 'kols#ban', via: [:post, :get]
