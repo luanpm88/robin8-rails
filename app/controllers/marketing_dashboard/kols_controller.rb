@@ -52,7 +52,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
   private
   def load_kols
     @kols = if params[:campaign_id]
-              Campaign.find_by(params[:campaign_id]).kols
+              Campaign.find(params[:campaign_id]).kols
             else
               Kol.all
             end.order('created_at DESC').paginate(paginate_params)
