@@ -69,7 +69,7 @@ export default class CampaignList extends React.Component {
                 <strong className="stat-num">
                   { campaignCount }
                 </strong>
-                <span className="account-balance">余额:</span>
+                <span className="account-balance">当前余额:</span>
                   <strong className="stat-num">
                     &nbsp;&nbsp;{avail_amount}
                   </strong>
