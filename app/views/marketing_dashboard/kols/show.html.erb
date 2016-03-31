@@ -1,5 +1,5 @@
 <table class="table table-striped">
-  <% @kol.attributes.each do |k, v| %>
+  <% @kol.attributes.except(*sensitivity_list).each do |k, v| %>
     <tr>
       <td> <%= k.classify %></td>
       <td> <%= v %> </td>

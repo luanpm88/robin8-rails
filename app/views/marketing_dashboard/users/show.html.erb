@@ -1,0 +1,8 @@
+<table class="table table-striped">
+  <% @user.attributes.except(*sensitivity_list).each do |k, v| %>
+    <tr>
+      <th> <%= k.classify %> </th>
+      <th> <%= v %> </th>
+    </tr>
+  <% end %>
+</table>

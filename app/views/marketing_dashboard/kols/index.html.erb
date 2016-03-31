@@ -22,6 +22,8 @@
           <td> <%= k.send v %> </td>
         <% end %>
         <td>
+          <%= link_to '详情', marketing_dashboard_kol_path(k.id) %>
+          |
           <%= link_to '拉黑', marketing_dashboard_kol_ban_path(k.id) %>
           |
           <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(k.id), method: :post %>

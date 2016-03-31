@@ -6,6 +6,11 @@ module MarketingDashboard::BaseHelper
     @result
   end
 
+  def sensitivity_list
+    ['encrypted_password', 'reset_password_token', 'reset_password_token_at', 'remeber_created_at', 'confirmation_token', 'reset_password_sent_at', 'remember_created_at', 'unconfirmed_email']
+
+  end
+
   private
   def parse_and_send r, x
     if x.include? '_id'
