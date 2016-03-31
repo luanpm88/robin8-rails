@@ -1,4 +1,5 @@
 import validator from 'validator';
+import React from 'react';
 
 global.FormValidate = function(options){
   return (values) => {
@@ -22,6 +23,7 @@ global.FormValidate = function(options){
         errors[fieldName] = "邮箱格式不正确";
       } else if (fieldName == 'budget' && value) {
         if(parseInt(value) > parseInt($(".budget-input").attr("brand-amount"))){
+          
           errors[fieldName] = "账户余额不足, 请充值";
         }
 
@@ -69,4 +71,5 @@ global.FormValidate = function(options){
 
     return errors;
   }
+
 }
