@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   get 'qiniu_upload_token', to: 'brand#qiniu'
   get 'brand/(/*all)/', to: "brand#index"
+  get "brand", to: "brand#index"
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
