@@ -5,7 +5,7 @@ class Message < ActiveRecord::Base
   belongs_to :item, :polymorphic => true
   # belongs_to :sender, :polymorphic => true
 
-  # MessageTypes = ['income', 'announcement', 'campaign']
+  # MessageTypes = ['income','announcement','campaign','screenshot_passed','screenshot_rejected','remind_upload'，'common']
 
   scope :created_desc, -> {order("created_at desc")}
   scope :unread, -> {where(:is_read => false)}
@@ -29,20 +29,26 @@ class Message < ActiveRecord::Base
   end
 
   # new campaign  to all  or list
-  def self.new_campaign(campaign, kol_ids = [])
+  def self.new_campaign(campaign, kol_ids = [], unmatch_kol_id = [])
     message = Message.new(:message_type => 'campaign', :title => '你有一个新的特邀转发活动', :logo_url => (campaign.img_url + "!logo" rescue nil), :name => campaign.name,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign  )
-    if kol_ids.size == 0
-      message.receiver_type = "All"
-      message.save
-    else
+    if kol_ids.size > 0
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
       if message.save
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
+    elsif unmatch_kol_id.size > 0
+      kol_ids = Kol.where("device_token is not null").where.not(:id => unmatch_kol_id).collect{|t| t.kol_id }
+      message.receiver_type = "List"
+      message.receiver_ids = kol_ids
+      if message.save
+        Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
+      end
+    else
+      message.receiver_type = "All"
+      message.save
     end
-    generate_push_message(message)
   end
 
   def self.new_announcement(announcement)
