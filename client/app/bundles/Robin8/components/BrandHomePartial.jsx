@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import CampaignList from './brand_home/CampaignList';
+import Header from './brand_home/Header'
 
 export default class BrandHeader extends React.Component {
 
@@ -14,19 +15,7 @@ export default class BrandHeader extends React.Component {
 
     return (
       <div>
-        <header className="brand-header">
-          <div className="container-fluid">
-            <div className="brand-logo"><img src={ brand.get('avatar_url') } /></div>
-            <div className="brand-menu">
-              <div className="dropdown">
-                <a href="#" className="brand-name" data-toggle="dropdown">{ brand.get('email') }<i className="caret-arrow"></i></a>
-                <ul className="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Header {...this.props} />
         <CampaignList {...this.props} />
       </div>
     );
