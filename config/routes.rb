@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   get 'qiniu_upload_token', to: 'brand#qiniu'
   get 'brand/(/*all)/', to: "brand#index"
+  get "brand", to: "brand#index"
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
@@ -43,12 +44,12 @@ Rails.application.routes.draw do
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
 
-  devise_for :admin_users, controllers: {
-    sessions: 'admin_users/sessions'
-  }
+  # devise_for :admin_users, controllers: {
+  #   sessions: 'admin_users/sessions'
+  # }
 
-  # devise_for :admin_users, ActiveAdmin::Devise.config
-  # ActiveAdmin.routes(self)
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",

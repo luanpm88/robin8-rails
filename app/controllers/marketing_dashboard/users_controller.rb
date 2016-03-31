@@ -5,6 +5,10 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
     @users = User.all.order('created_at DESC').paginate(paginate_params)
   end
 
+  def show
+    @user = User.find params[:id]
+  end
+
   def search
     render 'search' and return if request.method.eql? 'GET'
 

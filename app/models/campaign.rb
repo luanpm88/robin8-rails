@@ -3,6 +3,7 @@ class Campaign < ActiveRecord::Base
   counter :redis_avail_click
   counter :redis_total_click
   include Campaigns::CampaignTargetHelper
+  include Campaigns::CampaignBaseHelper
 
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline
 

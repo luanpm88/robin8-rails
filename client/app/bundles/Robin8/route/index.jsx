@@ -9,7 +9,7 @@ import EditProfilePartial from '../components/EditProfilePartial';
 import UpdatePasswordPartial from '../components/UpdatePasswordPartial';
 
 export default (
-  <Route path="/brand/" component={BrandHomeContainer}>
+  <Route path="/brand" component={BrandHomeContainer}>
     <IndexRoute component={BrandHomePartial} />
 
     <Route path="create_campaign" component={CreateCampaignPartial} />
