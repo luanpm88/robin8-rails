@@ -31,7 +31,7 @@
           <%= link_to '接受活动的Kols', marketing_dashboard_campaign_kols_path(c) %> |
           <%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c) %> |
           <%= link_to '统计', "/#smart_campaign/stats/#{c.id}" %>
-          <% if c.status == 'pending' %>
+          <% if c.status == 'unexecute' %>
             |
             <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %>
           <% end %>
