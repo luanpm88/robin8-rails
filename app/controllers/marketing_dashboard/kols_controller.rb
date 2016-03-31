@@ -14,7 +14,7 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
 
     search_by = params[:search_key]
 
-    @kols = Kol.where("name LIKE ? OR mobile_number LIKE ? OR email LIKE ? OR name LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params)
+    @kols = Kol.where("name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by).paginate(paginate_params)
 
     render 'index'
   end

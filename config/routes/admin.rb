@@ -29,6 +29,10 @@ Rails.application.routes.draw do
     end
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
+      collection do 
+        get 'search'
+        post 'search'
+      end
     end
     resources :admin_users, except: [:destroy, :new, :create]
     resources :campaign_invites, except: [:destroy, :new, :create] do
