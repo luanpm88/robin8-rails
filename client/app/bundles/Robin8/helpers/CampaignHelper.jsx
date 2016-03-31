@@ -66,3 +66,12 @@ export function campaignStatusHelper(status){
       return(<img className="campaign-status-img" src={ require('campaign-settled.png') } />)
   }
 }
+
+export function canEditCampaign(status){
+  switch(status){
+    case "unexecute":
+      return true
+    default:
+      return false
+  }
+}
