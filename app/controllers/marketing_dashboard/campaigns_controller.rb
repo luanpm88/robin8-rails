@@ -18,7 +18,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   end
 
   def agreed
-    @campaigns = Campaign.all.where.not(status: 'pending').order('created_at DESC').paginate(paginate_params)
+    @campaigns = Campaign.all.where.not(status: 'unexecute').order('created_at DESC').paginate(paginate_params)
     render 'index'
   end
 
