@@ -27,7 +27,7 @@ export default class BrandNav extends React.Component {
           <Link to="/brand/" className="logo">Robin8</Link>
           <div className="navbar-user pull-right">
             <div className="dropdown ">
-              <a href="#" data-toggle="dropdown" className="username">{ brand.get('email') }<i className="caret-arrow"></i></a>
+              <a href="#" data-toggle="dropdown" className="username">{ brand.get('name') }<i className="caret-arrow"></i></a>
               <ul className="dropdown-menu">
                 <li><Link to={`/brand/${brand.get('id')}/edit`}>品牌资料</Link></li>
                 <li><Link to={'/brand/password'}>修改密码</Link></li>

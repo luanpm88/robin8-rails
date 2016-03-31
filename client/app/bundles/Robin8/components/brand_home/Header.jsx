@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 
 export default class BrandHeader extends React.Component {
   static propTypes = {
@@ -17,14 +18,13 @@ export default class BrandHeader extends React.Component {
     return (
       <header className="brand-header">
         <div className="container-fluid">
-          <div className="brand-logo"><img src={ brand.get('avatar_url') } /></div>
+          <div className="brand-logo">
+            <Link to={`/brand/${brand.get('id')}/edit`}>
+              <img src={ brand.get('avatar_url') } />
+            </Link>
+          </div>
           <div className="brand-menu">
-            <div className="dropdown">
-              <a href="#" className="brand-name" data-toggle="dropdown">{ brand.get('email') }<i className="caret-arrow"></i></a>
-              <ul className="dropdown-menu">
-                <li><a href="#">Action</a></li>
-              </ul>
-            </div>
+            <Link to={`/brand/${brand.get('id')}/edit`} className="brand-name">{ brand.get('name') }</Link>
           </div>
         </div>
       </header>
