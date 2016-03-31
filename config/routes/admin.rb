@@ -35,6 +35,7 @@ Rails.application.routes.draw do
       end
       match '/pass' => 'campaign_invites#pass', via: [:post]
       match '/reject' => 'campaign_invites#reject', via: [:post, :get]
+      resources :campaign_shows, only: [:index]
     end
     resources :stastic_datas
     resources :feedbacks, except: [:destroy, :new, :create]

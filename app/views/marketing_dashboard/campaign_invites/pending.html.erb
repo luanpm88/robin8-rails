@@ -21,7 +21,8 @@
         <td><img src="<%= c.screenshot %>" height='300px;' ></td>
         <td>
           <%= link_to '通过', marketing_dashboard_campaign_invite_pass_path(c.id), method: :post %> |
-          <%= link_to '拒绝', marketing_dashboard_campaign_invite_reject_path(c.id) ,target: '_blank' %>
+          <%= link_to '拒绝', marketing_dashboard_campaign_invite_reject_path(c.id) ,target: '_blank' %> |
+          <%= link_to '点击数据', marketing_dashboard_campaign_invite_campaign_shows_path(c.id) %>
 
         </td>
       </tr>
