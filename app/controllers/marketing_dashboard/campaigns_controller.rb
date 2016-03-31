@@ -34,6 +34,11 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
     @kols = Kol.where.not(:id => unmatched_kol_ids).paginate(paginate_params)
     @unmatched_kols = Kol.where(:id => unmatched_kol_ids)
+
+    @remove_kol_ids = @campaign.get_remove_kol_ids_by_target
+    @black_list_ids = @campaign.get_black_list_kols
+    @receive_campaign_kol_ids  = @campaign.get_remove_kol_ids_of_campaign_by_target
+
     @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
   end
 

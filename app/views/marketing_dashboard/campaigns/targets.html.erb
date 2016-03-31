@@ -1,4 +1,5 @@
 <h2><%= @title %></h2>
+<%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :method => :put, "data-confirm" => "您确定要审核通过吗"%>
 <% attrs = %w(id name email mobile_number) %>
 <table class='table table-bordered'>
   <thead>
@@ -51,6 +52,8 @@
   </div>
 </div>
 
+<%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :confirm => "您确定要审核通过吗"%>
+
 <div class="login-panel panel panel-default well">
   <div class="panel-heading">
     <h1 style="display: block;"> 筛选规则列表 </h1>
@@ -75,6 +78,8 @@
   </div>
 </div>
 
+<%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", "data-confirm" => "您确定要审核通过吗"%>
+
 <h1> 过滤掉的kols </h1>
 <table class='table table-bordered well'>
   <thead>
@@ -82,6 +87,7 @@
       <% attrs.each do |attr| %>
         <th><%= attr.camelcase %></th>
       <% end %>
+      <th>过滤理由</th>
     </tr>
   </thead>
   <tbody>
@@ -90,6 +96,7 @@
         <% attrs.each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
+        <td><%= filter_kol_reason(k.id, @remove_kol_ids, @black_list_ids,  @receive_campaign_kol_ids) %></td>
       </tr>
     <% end %>
   </tbody>

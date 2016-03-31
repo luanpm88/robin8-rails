@@ -12,7 +12,7 @@ module Campaigns
     def get_unmatched_kol_ids
       # 获取 不匹配的kol_ids
       # (接过指定campaign 的kols + 指定去掉的kol + 黑名单中的kol).uniq - 指定添加的kol
-      (get_remove_kol_ids_of_campaign_by_target + get_remove_kol_ids_by_target + get_black_list_kols).uniq + add_kols_by_targets
+      (get_remove_kol_ids_of_campaign_by_target + get_remove_kol_ids_by_target + get_black_list_kols).uniq - add_kols_by_targets
     end
 
     def get_remove_kol_ids_by_target
