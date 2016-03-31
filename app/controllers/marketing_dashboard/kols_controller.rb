@@ -5,6 +5,10 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     load_kols
   end
 
+  def show
+    @kol = Kol.find params[:id]
+  end
+
   def ban
     render 'ban' and return if request.method.eql? 'GET'
 

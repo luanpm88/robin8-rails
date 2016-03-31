@@ -2,7 +2,11 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
   before_action :set_campaign_invite, only: [:pass, :reject]
 
   def index
-    @campaign_invites = CampaignInvite.where.not(:screenshot => '').order('created_at DESC').paginate(paginate_params)
+    if params[:campaign_id]
+      @campaign_invites = Campaign.find(params[:campaign_id]).campaign_invites.order('created_at DESC').paginate(paginate_params)
+    else
+      @campaign_invites = CampaignInvite.where.not(:screenshot => '').order('created_at DESC').paginate(paginate_params)
+    end
   end
 
   def pending

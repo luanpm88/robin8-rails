@@ -1,5 +1,8 @@
 <table class="table table-striped">
 
+  <%= link_to 'CampaignInvites', marketing_dashboard_campaign_campaign_invites_path(@campaign.id), :class => 'btn btn-primary' %> &nbsp;
+  <%= link_to 'CampaignShows', marketing_dashboard_campaign_campaign_shows_path(@campaign.id), :class => 'btn btn-primary' %>
+
   <% %w(id user_id user.email name description start_time deadline budget take_budget per_action_budget per_budget_type img_url avail_click total_click status actual_deadline_time).each do |v| %>
     <tr>
       <td> <%= v.classify %> </td>

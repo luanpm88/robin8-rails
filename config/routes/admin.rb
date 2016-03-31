@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]
       resources :campaign_shows, only: [:index]
+      resources :campaign_invites, only: [:index]
     end
     resources :kols, except: [:destroy, :new, :create] do
       match '/ban' => 'kols#ban', via: [:post, :get]
@@ -35,6 +36,7 @@ Rails.application.routes.draw do
       match '/pass' => 'campaign_invites#pass', via: [:post]
       match '/reject' => 'campaign_invites#reject', via: [:post, :get]
     end
+    resources :stastic_datas
     resources :feedbacks, except: [:destroy, :new, :create]
     resources :withdraws, except: [:destroy, :new, :create] do
       collection do
