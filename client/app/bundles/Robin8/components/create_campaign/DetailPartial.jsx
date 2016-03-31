@@ -10,25 +10,27 @@ export default class DetailPartial extends React.Component {
 
 
   _fetchShortUrl(e) {
+    e.preventDefault();
 
-    e.preventDefault()
+    const { action_url, short_url, action_url_identifier } = this.props;
 
-    const { short_url, action_url_identifier } = this.props
+    if(action_url.error) {
+      action_url.onBlur();
+      return;
+    }
 
-    const action_url = this.props.action_url.value
-    if(!action_url) return;
-    if(action_url == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
+    if(action_url.value == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
     const brand_id = this.props.brand.get('id').toString();
     const timestamps = Math.floor(Date.now()).toString();
     const random = Math.floor(Math.random() * 100000).toString();
-    const identifier = brand_id + timestamps + random
+    const identifier = brand_id + timestamps + random;
 
-    fetch( `/brand_api/v1/campaigns/short_url?url=${action_url}&identifier=${identifier}`, { credentials: 'same-origin' })
+    fetch( `/brand_api/v1/campaigns/short_url?url=${action_url.value}&identifier=${identifier}`, { credentials: 'same-origin' })
       .then(function(response) {
         response.json().then(function(data){
           short_url.onChange(data);
           action_url_identifier.onChange(identifier);
-          $(".action-url").attr("data-origin-url", action_url);
+          $(".action-url").attr("data-origin-url", action_url.value);
         })
       },
       function(error){
