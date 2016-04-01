@@ -16,7 +16,6 @@ import beforeUnload from './shared/BeforeUnload';
 
 
 const initCampaign = {
-  img_url: '',
   age: 'all',
   province: '全部',
   city: '全部',
@@ -33,6 +32,7 @@ const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: true } },
+  img_url: { require_img: true },
   budget: { require: true, min_budget: 100 },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: true }},
@@ -42,6 +42,9 @@ const validate = new FormValidate({
 const validateFailed = (errors) => {
   console.log(errors);
   $('[name="' + Object.keys(errors)[0] + '"]').focus();
+  if ( (Object.keys(errors).length === 1) && errors["img_url"]) {
+    $("html,body").animate({scrollTop: $(".cover-photo").offset().top}, 100);
+  }
 }
 
 function select(state) {

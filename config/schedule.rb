@@ -40,7 +40,7 @@ every 1.day, :at => '11:00 am' do
   command "PushMessage.push_campaign_message"
 end
 
-every 1.day, :at => '17:30 am' do
+every 1.day, :at => '17:30 pm' do
   command "PushMessage.push_campaign_message"
 end
 
