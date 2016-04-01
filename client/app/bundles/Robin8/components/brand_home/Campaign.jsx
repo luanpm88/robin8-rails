@@ -26,10 +26,11 @@ export default class Campaign extends React.Component {
       <div className={tagColor} key={index}>
         <div className="brand-activity-content">
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">&gt;</Link>
-          <h2 className="activity-title">
-            { _.truncate(campaign.get("name"), {'length': 16})}
-          </h2>
-
+          <Link to={`/brand/campaigns/${campaign.get("id")}`}>
+            <h2 className="activity-title">
+              { _.truncate(campaign.get("name"), {'length': 16})}
+            </h2>
+          </Link>
 
           { this.renderEditButton(campaign) }
           <small className="date">

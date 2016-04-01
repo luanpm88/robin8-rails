@@ -39,9 +39,9 @@ export default class Basic extends React.Component {
         <div className="brand-activity-content">
           <h2 className="activity-title">{ campaign.get("name") }</h2>
 
-          { renderEditCampaignButton(campaign) }
+          { this.renderEditCampaignButton(campaign) }
           <small className="date">最后更新: { formatDate(campaign.get("updated_at")) }, 按照<span className="campaign-type">{showCampaignTypeText(campaign.get("per_budget_type"))}</span>奖励 </small>
-          
+
           <small className="summary">{_.truncate(campaign.get("description"), {'length': 120})}</small>
           <small className="campaign_url"><span>活动网址:</span><a href={campaign.get("url")} className="link" target="_blank">{ _.truncate(campaign.get("url"), {'length': 35}) }</a></small>
           {this.renderCpaActionUrl(campaign)}
@@ -57,6 +57,5 @@ export default class Basic extends React.Component {
         </div>
       </div>
     );
-  }  
+  }
 }
-
