@@ -32,11 +32,8 @@ export default function promiseMiddleware() {
       }
     )['catch']( error => {
       const response = error.response;
-
       error.response.json().then( (json) => {
-
-        // 自定义报错方式
-        alert(json.error)
+        alert(json.detail)
       })
 
       next({ ...rest, readyState: 'failure' })
