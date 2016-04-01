@@ -73,6 +73,12 @@ class UpdateCampaignPartial extends React.Component {
               <DatePartial {...{ start_time, deadline }} />
 
               <div className="creat-form-footer">
+                <div className="alert alert-danger alert-dismissible fade in" role="alert">
+                  <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                  <strong>Holy guacamole!</strong>Best check yo self, you are not looking too good.
+                </div>
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
                 <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动并查看相关公众号</button>
               </div>
