@@ -12,7 +12,7 @@ module Campaigns
     def get_unmatched_kol_ids
       # 获取 不匹配的kol_ids
       # (接过指定campaign 的kols + 指定去掉的kol + 黑名单中的kol).uniq - 指定添加的kol
-      (get_remove_kol_ids_of_campaign_by_target + get_remove_kol_ids_by_target + get_black_list_kols).uniq - add_kols_by_targets
+      (get_remove_kol_ids_of_campaign_by_target + get_remove_kol_ids_by_target + get_black_list_kols +  today_receive_three_times_kol_ids).uniq - add_kols_by_targets
     end
 
     def get_remove_kol_ids_by_target
@@ -30,6 +30,10 @@ module Campaigns
     def get_remove_kol_ids_of_campaign_by_target
       campaign_ids = get_ids_from_target_content self.remove_campaign_targets.map(&:target_content)
       CampaignInvite.where(:campaign_id => campaign_ids).map(&:kol_id)
+    end
+
+    def today_receive_three_times_kol_ids
+      CampaignInvite.today_approved.group("kol_id").having("count(kol_id) >= 3").collect{|t| t.kol_id}
     end
 
     private
