@@ -48,4 +48,13 @@ namespace :report do
   task :campain_show_list_for_campaign do
     
   end
+
+  desc "每一天的 每个渠道的注册数目去掉重复的个数(在同一个设备 注册多个时间号， 只算首次的时间)"
+  task :stat_source_of_kol do
+    stats = {}
+    kols = Kol.where("created_at > ?", "2016-3-28".to_time)
+    kols.each do |kol|
+      
+    end
+  end
 end
