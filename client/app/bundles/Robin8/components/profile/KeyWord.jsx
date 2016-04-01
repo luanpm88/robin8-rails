@@ -83,7 +83,7 @@ export default class Keyword extends Component {
         <div className="add-keyword">
           <img className="search" src={require("search_icon.png")} />
           <Input type="text" ref="input" placeholder="品牌关键词" ref="input" onKeyPress={this.onKeyPress}/>
-          <img className="add" src={require("keyword_add_btn_al.png")} onClick={this.add.bind(event)} />
+          <img className="add" src={require("keyword_add_btn_al.png")} onClick={this.add} />
           <p className="help-block">最多5个关键词</p>
         </div>
       </div>

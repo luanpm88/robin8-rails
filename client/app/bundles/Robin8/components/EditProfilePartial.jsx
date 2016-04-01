@@ -5,7 +5,7 @@ import { SplitButton } from 'react-bootstrap';
 import _ from 'lodash';
 import Keyword from './profile/KeyWord';
 import Crop from './shared/Crop';
-import CostomInput, { Textarea, RadioButtons } from './profile/Input';
+import Input, { Textarea, RadioButtons } from './profile/Input';
 import { reduxForm } from 'redux-form';
 import 'qiniu-js/dist/qiniu.min.js';
 import "profile.scss";
@@ -142,8 +142,8 @@ class EditProfilePartial extends Component {
               </div>
 
               <div className="form-part">
-                <CostomInput field={name} id="name" label="品牌名称" />
-                <CostomInput field={url} id="url" label="官方网站" />
+                <Input field={name} id="name" label="品牌名称" />
+                <Input field={url} id="url" label="官方网站" />
                 <Textarea field={description} id="desc" label="品牌介绍" />
 
                 <div className="form-group">
@@ -161,8 +161,8 @@ class EditProfilePartial extends Component {
             </div>
 
             <div className="contacter-info">
-              <CostomInput field={real_name} id="contacter-name" label="真实姓名" />
-              <CostomInput field={email} id="contacter-email" label="电子邮箱" />
+              <Input field={real_name} id="contacter-name" label="真实姓名" />
+              <Input field={email} id="contacter-email" label="电子邮箱" />
             </div>
 
             <div className="options">

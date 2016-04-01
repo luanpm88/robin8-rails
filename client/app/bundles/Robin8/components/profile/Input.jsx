@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ShowError from '../shared/ShowError';
 
-export default class CostomInput extends Component {
+export default class Input extends Component {
   render() {
     return (
       <div className="form-group">
