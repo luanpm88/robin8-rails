@@ -51,7 +51,7 @@ export default class IntroPartial extends React.Component {
     return (
       <div className="creat-activity-form creat-intro">
         <div className="header">
-          <h3 className="tit">品牌简介&nbsp;<span className="what">?</span></h3>
+          <h3 className="tit">品牌简介&nbsp;</h3>
         </div>
         <div className="content">
           <div className="creat-activity-basic-intro">

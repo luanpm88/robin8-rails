@@ -41,13 +41,18 @@ export default class BudgetPartial extends React.Component {
     )
   }
 
+  renderBudgetTips(){
+    const tip = "1、为保障活动效果, Robin8每次活动推广费必须大于100元; \n2、活动发布后, 推广金额将被冻结; 活动结束后, 剩余金额会在4天后返回账户。\n3、请注意, 由于账户已充值的余额不能提现, 如您目前账户余额大于100且小于200元, 请尽量在一次活动中用完。"
+    return tip
+  }
+
   render() {
     const { budget } = this.props
 
     return (
       <div className="creat-activity-form creat-budget">
         <div className="header">
-          <h3 className="tit">推广预算&nbsp;<span className="what">?</span>
+          <h3 className="tit">推广预算&nbsp;<span className="what" title={this.renderBudgetTips()}>?</span>
           </h3>
         </div>
         <div className="content">
