@@ -50,7 +50,15 @@ export default class Campaign extends React.Component {
         <div className="brand-activity-coverphoto pull-left">
           { campaignStatusHelper(campaign.get("status")) }
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
-            <img src={ campaign.get('img_url') } alt="" className="campaign_img" />
+            {
+              do {
+                if(campaign.get('img_url'))
+                  <img src={ campaign.get('img_url') } alt="" className="campaign_img" />
+                else
+                  <img src={ require('campaign-list-pic.jpg') } alt="" className="campaign_img" />
+              }
+            }
+
           </Link>
 
         </div>

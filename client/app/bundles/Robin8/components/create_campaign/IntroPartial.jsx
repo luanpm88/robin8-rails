@@ -62,7 +62,7 @@ export default class IntroPartial extends React.Component {
                     if (img_url.initialValue)
                       <img src={img_url.initialValue} id="coverPhotoPlaceholder" />
                     else
-                      <img src="http://dummyimage.com/155x127/e7f0ed/0d2cde.png&text=placeholder+image" id="coverPhotoPlaceholder" />
+                      <img src={require("campaign-pic.jpg")} id="coverPhotoPlaceholder" />
                   }
                 }
                 <div className="form-control-file">

@@ -128,7 +128,7 @@ class EditProfilePartial extends Component {
                     if (brand.get("avatar_url"))
                       <img ref="logo" src={brand.get("avatar_url")} alt="placeholder+image" />
                     else
-                      <img ref="logo" src="http://dummyimage.com/300x300/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image" />
+                      <img ref="logo" src={require('brand-profile-pic.jpg')} />
                   }
                 }
 
