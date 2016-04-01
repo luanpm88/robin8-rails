@@ -40,7 +40,7 @@ module Brand
           requires :name, type: String
           requires :description, type: String
           requires :url, type: String
-          optional :img_url, type: String
+          requires :img_url, type: String
           requires :budget, type: Float
           requires :per_budget_type, type: String
           requires :per_action_budget, type: Float
@@ -73,7 +73,7 @@ module Brand
           requires :name, type: String
           requires :description, type: String
           requires :url, type: String
-          optional :img_url, type: String
+          requires :img_url, type: String
           requires :budget, type: Float
           requires :per_budget_type, type: String
           requires :per_action_budget, type: Float

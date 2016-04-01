@@ -65,6 +65,7 @@ export default class IntroPartial extends React.Component {
                       <img src={require("campaign-pic.jpg")} id="coverPhotoPlaceholder" />
                   }
                 }
+                <ShowError field={img_url} />
                 <div className="form-control-file">
 
                   {/* 这个input为了配合Crop，不要使用这个做上传（不要设置name） */}
@@ -72,7 +73,6 @@ export default class IntroPartial extends React.Component {
 
                   {/* 七牛的bug， 没这个元素不行 */}
                   <button type="button" id="foo" className="btn btn-blue" style={{display: 'none'}}>上传品牌LOGO</button>
-                  <input {...img_url} type="hidden" disabled="disabled" className="img_url" readOnly></input>
                   <label htmlFor="fileInput" id="uploadButton" className="btn btn-blue">上传图片</label>
                 </div>
               </div>

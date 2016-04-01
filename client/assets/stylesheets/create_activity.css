@@ -574,7 +574,8 @@
   margin-top: -13px;
 }
 .creat-activity-basic-intro .form-control-file #uploadButton {
-  margin-top: 135px;
+  position: relative;
+  top: 135px;
   padding: 0 10px;
   color: #fff;
   font-size: 14px;
