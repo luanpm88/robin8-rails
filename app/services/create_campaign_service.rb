@@ -18,7 +18,7 @@ class CreateCampaignService
     end
 
     if not enough_amount?(@user, @campaign_params[:budget])
-      @errors << 'Not enough amount!'
+      @errors << '账号余额不足, 请充值!'
       return false
     end
 
