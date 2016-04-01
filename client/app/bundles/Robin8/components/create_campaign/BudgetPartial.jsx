@@ -36,7 +36,7 @@ export default class BudgetPartial extends React.Component {
         <strong className="stat-num">
           &nbsp;&nbsp;{1}
         </strong>
-        <a href="/contact?from=recharge" target="_blank" className="btn btn-blue btn-default recharge-btn">充值</a>
+        <a href="/contact?from=recharge" target="_blank" className="btn-default recharge-btn">充值</a>
       </div>
     )
   }
@@ -59,7 +59,6 @@ export default class BudgetPartial extends React.Component {
               <ShowError field={budget}/>
             </div>
             <p className="stat">最低费用<strong className="stat-num">100</strong>元</p>
-            { this.renderAvailAmount() }
           </div>
         </div>
       </div>
