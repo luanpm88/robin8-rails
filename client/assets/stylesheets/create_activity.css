@@ -440,6 +440,10 @@
   border: none !important;
   box-shadow: none;
 }
+
+.spinner-form-area input {
+  height: auto;
+}
 .spinner-form-area .btn {
   width: 28px;
   height: 28px;
@@ -523,7 +527,6 @@
   margin-bottom: 0;
 }
 .creat-activity-form .form-control {
-  padding: 10px 15px;
   color: #181616;
   border-radius: 0;
   background-color: transparent;
@@ -631,6 +634,13 @@
   height: 125px;
 }
 
+.creat-activity-basic-intro .stat {
+  margin: 5px 0;
+  color: #737373;
+  font-size: 12px;
+  font-weight: 400;
+}
+
 .creat-intro label {
   margin-bottom: 25px;
 }
@@ -708,6 +718,7 @@
   margin-top: 24px;
   width: 640px;
   border: none;
+  background-color: transparent;
 }
 
 .creat-content-sources .action-url-group .action-url-notice {

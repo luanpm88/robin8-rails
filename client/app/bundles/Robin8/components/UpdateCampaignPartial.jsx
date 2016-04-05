@@ -79,8 +79,8 @@ class UpdateCampaignPartial extends React.Component {
               <DatePartial {...{ start_time, deadline }} />
               <NotificationSystem />
               <div className="creat-form-footer">
-                <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
-                <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动并查看相关公众号</button>
+                <p className="help-block">我们会在24小时内审核活动并短信通知您, 活动一旦通过审核将不能更改</p>
+                <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动</button>
               </div>
             </form>
           </div>

@@ -14,16 +14,17 @@
 
     > input.form-control {
       display: inline-block;
-      padding: 20px 20px;
+      padding: 10px 10px;
       border: none;
       background-color: transparent;
       border-bottom: 2px solid #7b7b7b;
       box-shadow: none !important;
       border-radius: 0;
+      height: auto;
     }
 
     > textarea.form-control {
-      padding: 20px 20px;
+      padding: 10px 10px;
       border: none;
       background-color: transparent;
       border: 2px solid #7b7b7b;
@@ -52,12 +53,13 @@
     background-image: -moz-linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
     background-image: -webkit-linear-gradient(120deg, #2e2c2d 0%, #413f40 100%);
     box-shadow: 5px 8.66px 18px 0px rgba(0, 0, 0, 0.3);
-    text-align: center;
 
     .logo-part {
       display: inline-block;
       vertical-align: top;
       width: 300px;
+      text-align: center;
+
 
       img {
         width: 300px;
@@ -157,7 +159,7 @@
     color: #181616;
     background-color: white;
     box-shadow: 5px 8.66px 18px 0px rgba(0, 0, 0, 0.3);
-    text-align: center;
+    text-align: left;
 
     .form-group {
       margin-bottom: 30px;
