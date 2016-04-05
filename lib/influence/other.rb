@@ -44,8 +44,8 @@ module Influence
     end
 
     # 社交账号数量得分
-    IdentityCountLevels= [{:count => 3, :score => 50},
-                          {:count => 2, :score => 30},
+    IdentityCountLevels= [{:count => 3, :score => 30},
+                          {:count => 2, :score => 20},
                           {:count => 1, :score => 10},
                           {:count => 0, :score => 0}]
     def self.identity_count_score(kol_uuid)

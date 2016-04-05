@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160405054756) do
+ActiveRecord::Schema.define(version: 20160405084247) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -460,21 +460,30 @@ ActiveRecord::Schema.define(version: 20160405054756) do
   end
 
   create_table "kol_influence_values", force: :cascade do |t|
-    t.integer  "kol_id",               limit: 4
-    t.string   "kol_uuid",             limit: 255
-    t.string   "name",                 limit: 255
-    t.string   "avatar_url",           limit: 255
-    t.string   "influence_score",      limit: 255
-    t.string   "influence_level",      limit: 255
-    t.integer  "location_score",       limit: 4
-    t.integer  "mobile_model_score",   limit: 4
-    t.integer  "identity_score",       limit: 4
-    t.integer  "identity_count_score", limit: 4
-    t.integer  "contact_score",        limit: 4
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.integer  "share_times",          limit: 4,   default: 0
-    t.integer  "read_times",           limit: 4,   default: 0
+    t.integer  "kol_id",                     limit: 4
+    t.string   "kol_uuid",                   limit: 255
+    t.string   "name",                       limit: 255
+    t.string   "avatar_url",                 limit: 255
+    t.string   "influence_score",            limit: 255
+    t.string   "influence_level",            limit: 255
+    t.integer  "location_score",             limit: 4
+    t.integer  "mobile_model_score",         limit: 4
+    t.integer  "identity_score",             limit: 4
+    t.integer  "identity_count_score",       limit: 4
+    t.integer  "contact_score",              limit: 4
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.integer  "share_times",                limit: 4,   default: 0
+    t.integer  "read_times",                 limit: 4,   default: 0
+    t.integer  "base_score",                 limit: 4,   default: 500
+    t.integer  "follower_score",             limit: 4,   default: 0
+    t.integer  "status_score",               limit: 4,   default: 0
+    t.integer  "register_score",             limit: 4,   default: 0
+    t.integer  "verify_score",               limit: 4,   default: 0
+    t.integer  "campaign_total_click_score", limit: 4,   default: 0
+    t.integer  "campaign_avg_click_score",   limit: 4,   default: 0
+    t.integer  "article_total_click_score",  limit: 4,   default: 0
+    t.integer  "article_avg_click_score",    limit: 4,   default: 0
   end
 
   create_table "kol_profile_screens", force: :cascade do |t|

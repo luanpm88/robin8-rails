@@ -84,7 +84,7 @@ module API
           present :identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
-        #联系人
+        #联系人  已经存在的用户 更新kol_contacts,新用户更新tmp_tmp_contacts
         params do
           requires :contacts, type: String
           requires :kol_uuid, type: String
@@ -98,7 +98,11 @@ module API
           end
           Rails.logger.info "-----#{params[:kol_uuid]}----#{params[:contacts]}"
           return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
-          TmpKolContact.add_contacts(params[:kol_uuid],contacts)          if current_kol.blank? || (current_kol.present? && !current_kol.has_contacts)
+          if current_kol.blank?
+            TmpKolContact.add_contacts(params[:kol_uuid],contacts)
+          else
+            KolContact.add_contacts(params[:kol_uuid],contacts)
+          end
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
         end
