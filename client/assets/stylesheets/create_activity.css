@@ -634,6 +634,13 @@
   height: 125px;
 }
 
+.creat-activity-basic-intro .stat {
+  margin: 5px 0;
+  color: #737373;
+  font-size: 12px;
+  font-weight: 400;
+}
+
 .creat-intro label {
   margin-bottom: 25px;
 }
