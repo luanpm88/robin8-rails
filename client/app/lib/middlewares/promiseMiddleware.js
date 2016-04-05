@@ -27,16 +27,15 @@ export default function promiseMiddleware() {
         if (redirect) {
           browserHistory.push(redirect)
         }
-
         return next({ ...rest, result: json, readyState: 'success' })
       }
     )['catch']( error => {
-      const response = error.response;
       error.response.json().then( (json) => {
-        alert(json.detail)
+        $(".notificationData").attr("data-notify", json.detail);
+        $(".notificationData").attr("data-notify-type", "error")
+        $('.notificationData').trigger("change")
       })
-
-      next({ ...rest, readyState: 'failure' })
+      return next({ ...rest, readyState: 'failure'})
     });
   };
 }

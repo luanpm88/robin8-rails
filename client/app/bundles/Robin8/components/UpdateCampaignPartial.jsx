@@ -2,7 +2,6 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import _ from 'lodash'
-
 import "create_activity.css";
 
 import IntroPartial from './create_campaign/IntroPartial';
@@ -11,6 +10,7 @@ import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
 import createActivity from "raw/create_campaign";
+import NotificationSystem from './shared/NotificationSystem';
 
 const validate = new FormValidate({
   name: { require: true },
@@ -32,11 +32,13 @@ const validateFailed = (errors) => {
 
 function select(state) {
   return {
-    brand: state.$$brandStore.get("brand")
+    brand: state.$$brandStore.get("brand"),
+    readyState: state.$$brandStore.get("readyState")
   };
 }
 
 class UpdateCampaignPartial extends React.Component {
+
   constructor(props, context) {
     super(props, context);
     _.bindAll(this, ['_fetchCampaign', '_updateCampaign']);
@@ -75,7 +77,7 @@ class UpdateCampaignPartial extends React.Component {
               <BudgetPartial {...{ budget }} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand }} />
               <DatePartial {...{ start_time, deadline }} />
-
+              <NotificationSystem />
               <div className="creat-form-footer">
                 <p className="help-block">我们会在24小时内审核活动并短信通知您, 活动一旦通过审核将不能更改</p>
                 <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动</button>

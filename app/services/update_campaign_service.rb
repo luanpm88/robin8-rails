@@ -22,6 +22,11 @@ class UpdateCampaignService
       return false
     end
 
+    if @campaign.status != "unexecute"
+      @errors << "活动已经开始, 不能编辑"
+      return false
+    end
+
     if is_cpa_campaign? and not any_action_url_present?
       @errors << 'No availiable action urls!'
       return false
