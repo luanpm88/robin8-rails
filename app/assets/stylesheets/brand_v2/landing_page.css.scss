@@ -561,6 +561,22 @@ body {
 .influence-test-wrap .again-test-btn:hover {
   opacity: 1;
 }
+
+#downloadModal .modal-body{
+  margin-top: 40%;
+  margin-left: 22%;
+}
+
+#downloadModal .close{
+  position: absolute;
+  right: 60px;
+  top: 60px;
+  color: #fff;
+  font-size: 36px;
+  font-weight: 400;
+  text-show: none;
+}
+
 #signinupModal .close {
   position: absolute;
   right: 60px;
@@ -617,6 +633,8 @@ body {
   text-decoration: none;color: #fff;
 }
 .bs-example-modal-sm .modal-content {
+  position: absolute;
+  left: -15px;
   border-radius: 0 !important;
   padding: 20px;
   height: 182px;
