@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328102034) do
+ActiveRecord::Schema.define(version: 20160405054756) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -171,6 +171,8 @@ ActiveRecord::Schema.define(version: 20160328102034) do
     t.string   "reject_reason", limit: 255
     t.boolean  "is_invited",    limit: 1,   default: false
     t.integer  "share_count",   limit: 4,   default: 0
+    t.string   "ocr_status",    limit: 255
+    t.string   "ocr_detail",    limit: 255
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
