@@ -3,6 +3,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
+import NotificationSystem from "react-notification-system";
 
 import "create_activity.css";
 
@@ -62,6 +63,24 @@ class CreateCampaignPartial extends React.Component {
     beforeUnload(this.props);
   }
 
+  updateNotificationSystem(){
+    const notify_value = $(".notificationData").attr("data-notify")
+    if(notify_value && notify_value.length > 0){
+      const notification = {
+        title: '保存失败',
+        message: notify_value,
+        level: $(".notificationData").attr("data-notify-type"),
+        position: 'tr',
+        autoDismiss: 5
+      }
+      $(".notificationData").attr("data-notify", "")
+      this.refs.notificationSystem.addNotification(notification);
+    }
+  }
+
+  componentDidUpdate() {
+    this.updateNotificationSystem()
+  }
   render() {
     const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
     const brand = this.props.brand
@@ -80,6 +99,9 @@ class CreateCampaignPartial extends React.Component {
 
               <div className="creat-form-footer">
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
+                <div className="notificationData" data-notify="" data-notify-type="">
+                  <NotificationSystem  ref="notificationSystem" allHTML={false}/>
+                </div>
                 <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动并查看相关公众号</button>
               </div>
             </form>

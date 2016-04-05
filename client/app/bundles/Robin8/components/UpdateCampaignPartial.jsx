@@ -33,7 +33,8 @@ const validateFailed = (errors) => {
 
 function select(state) {
   return {
-    brand: state.$$brandStore.get("brand")
+    brand: state.$$brandStore.get("brand"),
+    readyState: state.$$brandStore.get("readyState")
   };
 }
 
@@ -55,26 +56,34 @@ class UpdateCampaignPartial extends React.Component {
     const { updateCampaign } = this.props.actions;
     const campaign_id = this.props.data.get("campaign").get("id");
     const campaign_fields = this.props.values;
-    const notification = {
-      title: 'I\'ll be here forever!',
-      message: 'Just kidding, you can click me.',
-      level: 'success',
-      position: 'tr',
-      autoDismiss: 1
-    }
-    this._notificationSystem.addNotification(notification)
     updateCampaign(campaign_id, campaign_fields);
   }
 
   componentDidMount() {
     createActivity();
     this._fetchCampaign();
-    this._notificationSystem = this.refs.notificationSystem;
+  }
+
+  _updateNotificationSystem() {
+    const notify_value = $(".notificationData").attr("data-notify")
+    if(notify_value && notify_value.length > 0){
+      const notification = {
+        title: '保存失败',
+        message: notify_value,
+        level: $(".notificationData").attr("data-notify-type"),
+        position: 'tr',
+        autoDismiss: 5
+      }
+      $(".notificationData").attr("data-notify", "")
+      this.refs.notificationSystem.addNotification(notification);
+    }
+  }
+
+  componentDidUpdate() {
+    this._updateNotificationSystem()
   }
 
   render() {
-    console.log('-----------');
-    console.log(this.props);
     const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
     const brand = this.props.brand;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -91,14 +100,10 @@ class UpdateCampaignPartial extends React.Component {
               <DatePartial {...{ start_time, deadline }} />
 
               <div className="creat-form-footer">
-                <div className="alert alert-danger alert-dismissible fade in" role="alert">
-                  <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                  <strong>Holy guacamole!</strong>Best check yo self, you are not looking too good.
-                </div>
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
-                <NotificationSystem ref="notificationSystem" allHTML={false}/>
+                <div className="notificationData" data-notify="" data-notify-type="">
+                  <NotificationSystem  ref="notificationSystem" allHTML={false}/>
+                </div>
                 <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动并查看相关公众号</button>
               </div>
             </form>

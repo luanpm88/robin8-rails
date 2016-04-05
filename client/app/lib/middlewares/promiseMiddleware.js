@@ -27,13 +27,15 @@ export default function promiseMiddleware() {
         if (redirect) {
           browserHistory.push(redirect)
         }
-        console.log("走到 success......")
         return next({ ...rest, result: json, readyState: 'success' })
       }
     )['catch']( error => {
-      const response = error.response;
-      console.log("走到 catch......")
-      next({ ...rest, readyState: 'failure', error_message: response.json.detail })
+      // const response = error.response;
+      // error.response.json().then( (json) => {
+      //   $(".notificationData").attr("data-notify", json.detail);
+      //   $(".notificationData").attr("data-notify-type", "error")
+      // })
+      return next({ ...rest, readyState: 'failure'})
     });
   };
 }
