@@ -10,6 +10,7 @@ export const $$initialState = Immutable.fromJS({
   campaign_invites: [],
   hasfetchedInvite: false,
   campaign_statistics: [],
+  error: ""
 });
 
 export default function brandReducer($$state = $$initialState, action = null) {
@@ -34,9 +35,10 @@ export default function brandReducer($$state = $$initialState, action = null) {
       return $$state;
 
     case actionTypes.UPDATE_CAMPAIGN:
-      if(fetchState == "failure"){
-        $$state = $$state.merge({ "readyState": fetchState });
+      if(fetchState === "failure"){
+        $$state = $$state.merge({ "readyState": fetchState, "error": action.error });
       }
+      console.log("fetchState" + fetchState);
       return $$state;
 
     case actionTypes.FETCH_CAMPAIGN:

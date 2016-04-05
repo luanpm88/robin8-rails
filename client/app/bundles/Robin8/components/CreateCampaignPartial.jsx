@@ -3,7 +3,6 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
-import NotificationSystem from "react-notification-system";
 
 import "create_activity.css";
 
@@ -14,6 +13,7 @@ import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
 import createActivity from "raw/create_campaign";
 import beforeUnload from './shared/BeforeUnload';
+import NotificationSystem from './shared/NotificationSystem';
 
 
 const initCampaign = {
@@ -63,24 +63,6 @@ class CreateCampaignPartial extends React.Component {
     beforeUnload(this.props);
   }
 
-  updateNotificationSystem(){
-    const notify_value = $(".notificationData").attr("data-notify")
-    if(notify_value && notify_value.length > 0){
-      const notification = {
-        title: '保存失败',
-        message: notify_value,
-        level: $(".notificationData").attr("data-notify-type"),
-        position: 'tr',
-        autoDismiss: 5
-      }
-      $(".notificationData").attr("data-notify", "")
-      this.refs.notificationSystem.addNotification(notification);
-    }
-  }
-
-  componentDidUpdate() {
-    this.updateNotificationSystem()
-  }
   render() {
     const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
     const brand = this.props.brand
@@ -99,6 +81,7 @@ class CreateCampaignPartial extends React.Component {
 
               <div className="creat-form-footer">
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
+                <NotificationSystem />
                 <div className="notificationData" data-notify="" data-notify-type="">
                   <NotificationSystem  ref="notificationSystem" allHTML={false}/>
                 </div>

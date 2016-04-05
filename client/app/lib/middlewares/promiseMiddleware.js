@@ -30,11 +30,11 @@ export default function promiseMiddleware() {
         return next({ ...rest, result: json, readyState: 'success' })
       }
     )['catch']( error => {
-      // const response = error.response;
-      // error.response.json().then( (json) => {
-      //   $(".notificationData").attr("data-notify", json.detail);
-      //   $(".notificationData").attr("data-notify-type", "error")
-      // })
+      error.response.json().then( (json) => {
+        $(".notificationData").attr("data-notify", json.detail);
+        $(".notificationData").attr("data-notify-type", "error")
+        $('.notificationData').trigger("change")
+      })
       return next({ ...rest, readyState: 'failure'})
     });
   };
