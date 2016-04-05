@@ -27,7 +27,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
       return $$state;
 
     case actionTypes.SAVE_CAMPAIGN:
-
+      debugger
       return $$state;
 
     case actionTypes.UPDATE_CAMPAIGN:

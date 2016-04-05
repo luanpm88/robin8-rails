@@ -2,6 +2,7 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import _ from 'lodash'
+import NotificationSystem from "react-notification-system";
 
 import "create_activity.css";
 
@@ -37,6 +38,8 @@ function select(state) {
 }
 
 class UpdateCampaignPartial extends React.Component {
+  _notificationSystem: null
+
   constructor(props, context) {
     super(props, context);
     _.bindAll(this, ['_fetchCampaign', '_updateCampaign']);
@@ -52,15 +55,26 @@ class UpdateCampaignPartial extends React.Component {
     const { updateCampaign } = this.props.actions;
     const campaign_id = this.props.data.get("campaign").get("id");
     const campaign_fields = this.props.values;
+    const notification = {
+      title: 'I\'ll be here forever!',
+      message: 'Just kidding, you can click me.',
+      level: 'success',
+      position: 'tr',
+      autoDismiss: 1
+    }
+    this._notificationSystem.addNotification(notification)
     updateCampaign(campaign_id, campaign_fields);
   }
 
   componentDidMount() {
     createActivity();
     this._fetchCampaign();
+    this._notificationSystem = this.refs.notificationSystem;
   }
 
   render() {
+    console.log('-----------');
+    console.log(this.props);
     const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
     const brand = this.props.brand;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -84,6 +98,7 @@ class UpdateCampaignPartial extends React.Component {
                   <strong>Holy guacamole!</strong>Best check yo self, you are not looking too good.
                 </div>
                 <p className="help-block">以上信息将帮助Robin8精确计算合适的推广渠道，请谨慎填写</p>
+                <NotificationSystem ref="notificationSystem" allHTML={false}/>
                 <button type="submit" className="btn btn-blue btn-lg" disabled={ submitting }>完成发布活动并查看相关公众号</button>
               </div>
             </form>
