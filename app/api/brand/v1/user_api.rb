@@ -45,10 +45,10 @@ module Brand
             # TODO: in RESTful, update/delete success should return 204(no content).
             present current_user
           else
-            error_unprocessable! current_user.errors.full_messages
+            error_unprocessable! "密码修改失败，请重试"
           end
         else
-          error_unprocessable! 'Invalid password!'
+          error_unprocessable! '旧密码不正确'
         end
       end
 
