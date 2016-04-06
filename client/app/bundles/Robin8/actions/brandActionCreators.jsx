@@ -141,6 +141,6 @@ export function updateBrandPassword(password_fields) {
       credentials: 'same-origin',
       method: 'PUT',
       body: JSON.stringify(password_fields)
-    });
+    })
   }
 }

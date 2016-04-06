@@ -162,7 +162,6 @@ class EditProfilePartial extends Component {
 
             <div className="contacter-info">
               <Input field={real_name} id="contacter-name" label="真实姓名" />
-              <Input field={email} id="contacter-email" label="电子邮箱" />
             </div>
 
             <div className="options">
