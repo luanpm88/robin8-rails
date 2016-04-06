@@ -19,13 +19,12 @@ $(function(){
 
     if(phone_number.match(/^1[34578][0-9]{9}$/)) {
       console.log('good mobile')
+      $(".tips .phone-number-error").hide();
       $('.bs-example-modal-sm').modal()
     } else {
-      // todo: more firendly error alert
-      alert('Invalid Phone Number!')
+      $(".tips p").hide();
+      $(".tips .phone-number-error").show();
     }
-
-
   });
 
   $('.rucaptcha_ok').click(function(){
