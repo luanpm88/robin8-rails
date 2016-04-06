@@ -13,7 +13,7 @@ import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
 import createActivity from "raw/create_campaign";
 import beforeUnload from './shared/BeforeUnload';
-import NotificationSystem from './shared/NotificationSystem';
+import NotificationSystem from './shared/NotificationSystemPartial';
 
 
 const initCampaign = {

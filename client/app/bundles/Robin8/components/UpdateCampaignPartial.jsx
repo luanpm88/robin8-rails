@@ -10,7 +10,7 @@ import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
 import createActivity from "raw/create_campaign";
-import NotificationSystem from './shared/NotificationSystem';
+import NotificationSystem from './shared/NotificationSystemPartial';
 
 const validate = new FormValidate({
   name: { require: true },
