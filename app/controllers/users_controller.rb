@@ -34,12 +34,13 @@ class UsersController < ApplicationController
 
     if verify_code != params["user"]["verify_code"]
     # flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
+      @user.errors[:base] << "验证码错误"
       render :template => 'users/create_failed.js.erb' and return
     elsif @user.valid?
       begin
         @user.save
       rescue ActiveRecord::RecordNotUnique => e
-	render :template => 'users/create_failed.js.erb' and return
+	    render :template => 'users/create_failed.js.erb' and return
       end
 
       sign_in @user
