@@ -21,27 +21,10 @@ class UpdatePasswordPartial extends Component {
     _.bindAll(this, ['_updateBrandPassword', '_cancelSubmitForm']);
   }
 
-  _updateBrandPassword(password) {
+  _updateBrandPassword() {
     const password_fields = this.props.values;
-
-    fetch(`/brand_api/v1/user/password`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
-      },
-      credentials: 'same-origin',
-      method: 'PUT',
-      body: JSON.stringify(password_fields)
-    }).then(function(response) {
-      response.json().then(function(data){
-        window.location = '/users/sign_out';
-        window.location = '/'
-      })
-    },
-    function(error) {
-      console.log('---------------update brand password error------------');
-    })
+    const { updateBrandPassword } = this.props.actions;
+    updateBrandPassword(password_fields);
   }
 
   _cancelSubmitForm(e) {
@@ -64,13 +47,11 @@ class UpdatePasswordPartial extends Component {
 
     const { password, new_password, new_password_confirmation } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
-
     return (
       <div className="wrapper">
         <div className="container profile">
           { this.render_breadcrumb() }
-          <form onSubmit={ (event) => { handleSubmit(this._updateBrandPassword)(event).catch(validateFailed) } }>
-            <div className="header contacter-header">
+          <form onSubmit={ (event) => { handleSubmit(this._updateBrandPassword)(event).catch(validateFailed) } }>            <div className="header contacter-header">
               <h3>修改密码</h3>
             </div>
 
