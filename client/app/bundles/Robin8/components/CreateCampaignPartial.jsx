@@ -81,7 +81,7 @@ class CreateCampaignPartial extends React.Component {
 
               <div className="creat-form-footer">
                 <NotificationSystem />
-                <p className="help-block">我们会在24小时内审核活动并短信通知您, 活动一旦通过审核将不能更改</p>
+                <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当日10:00 - 18:00提交的订单，其余时间段提交的订单次日审核</p>
                 <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>
               </div>
             </form>
