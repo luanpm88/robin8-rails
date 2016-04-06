@@ -48,7 +48,7 @@ export default class Crop extends Component {
         reader.readAsDataURL(this.files[0]);
       }
       else {
-        alert("Your browser doesn't support file upload!");
+        //alert("Your browser doesn't support file upload!");
       }
     });
   }

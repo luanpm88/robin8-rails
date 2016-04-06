@@ -8,7 +8,7 @@ global.imagePreviewer = function (options) {
       reader.readAsDataURL(files[0]);
     }
     else {
-      alert("Your browser doesn't support file upload!");
+      //alert("Your browser doesn't support file upload!");
     }
   });
 };

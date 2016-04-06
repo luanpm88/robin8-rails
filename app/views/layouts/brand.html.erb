@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Robin8</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
   <%= env_stylesheet_link_tag(
     static: 'brand-static',
     media: 'all')
@@ -16,6 +17,7 @@
   %>
 
   <%= csrf_meta_tags %>
+
   <% if Rails.env.production? %>
     <!--Start of Zopim Live Chat Script-->
     <script type="text/javascript">
