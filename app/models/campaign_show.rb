@@ -9,10 +9,6 @@ class CampaignShow < ActiveRecord::Base
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, options={})
     now = Time.now
-    # check campaign status
-    if campaign.status == 'executed'  ||  campaign.status == 'settled'
-      return [false, 'campaign_had_executed']
-    end
 
     if campaign.is_cpa?
       return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
@@ -74,6 +70,11 @@ class CampaignShow < ActiveRecord::Base
       return [false, "ip_score_low"]
     end
 
+      # check campaign status
+    if campaign.status == 'executed'  ||  campaign.status == 'settled'
+      return [false, 'campaign_had_executed']
+    end
+
     return [true,nil]
   end
 
@@ -104,7 +105,7 @@ class CampaignShow < ActiveRecord::Base
                         :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip,
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer)
     Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark:#{remark}---cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
-    campaign_invite.add_click(status,campaign)
+    campaign_invite.add_click(status,remark)
     campaign.add_click(status)
   end
 end

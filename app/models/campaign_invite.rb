@@ -1,7 +1,8 @@
 class CampaignInvite < ActiveRecord::Base
   include Redis::Objects
-  counter :redis_avail_click
-  counter :redis_total_click
+  counter :redis_avail_click        #有效计费点击
+  counter :redis_total_click        #所有点击
+  counter :redis_real_click         #所有有效点击(含活动结束后)
   counter :redis_new_income      #unit is cent
 
 
@@ -149,10 +150,10 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def add_click(valid, campaign = nil)
+  def add_click(valid, remark = nil)
     self.redis_avail_click.increment if valid
+    self.redis_real_click.increment if valid || remark == 'campaign_had_executed'
     self.redis_total_click.increment
-    # bring_income(campaign) if valid &&  campaign
     return true
   end
 
@@ -187,5 +188,12 @@ class CampaignInvite < ActiveRecord::Base
       details << OcrDetails[item_key]
     end
     details.join(",")
+  end
+
+  def self.get_click_info(kol_id)
+    invites =  CampaignInvite.where(:kol_id => kol_id).where("status != 'running'")
+    invite_count = invites.count
+    real_click_count = invites.collect{|t| t.redis_real_click.value }.sum
+    return  [invite_count, real_click_count]
   end
 end
