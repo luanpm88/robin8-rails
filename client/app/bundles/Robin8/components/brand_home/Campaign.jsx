@@ -47,7 +47,7 @@ export default class Campaign extends React.Component {
             <li><span className="txt">剩余天数</span><strong className="stat-num">{ campaign.get("avail_click") }</strong></li>
           </ul>
         </div>
-        <div className="brand-activity-coverphoto pull-left">
+        <div className="brand-activity-coverphoto brand-home-campaign-img  pull-left">
           { campaignStatusHelper(campaign.get("status")) }
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
             {

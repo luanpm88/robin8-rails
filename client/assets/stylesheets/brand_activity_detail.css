@@ -15,16 +15,17 @@
   margin-bottom: 0;
 }
 .brand-activity-card .brand-activity-coverphoto {
-  position: absolute;
-  width: 304px;
-  height: 100%;
-  top: 10;
+  width: auto;
+  max-width: 309px;
+  height: 250px;
+  overflow: hidden;
 }
 .brand-activity-card .brand-activity-coverphoto > img {
-  width: 304px;
+  width: auto;
   height:  100%;
   overflow: hidden;
 }
+
 .brand-activity-card .brand-activity-content {
   margin-left: 280px;
   margin-bottom: 15px;
@@ -38,6 +39,10 @@
   font-size: 22px;
 }
 
+.brand-activity-coverphoto.brand-home-campaign-img{
+  height: 204px;
+  max-width: 294px;
+}
 span.campaign-type {
     /* font-size: 18px; */
     color: #f26d45;
