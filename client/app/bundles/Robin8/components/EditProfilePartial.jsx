@@ -33,7 +33,7 @@ const validate = new FormValidate({
   real_name: { require: true },
   mobile_number: { require: true },
   email: { require: true, email: true },
-  url: { require: true, url: { require_protocol: false} }
+  url: { require: true, url: { require_protocol: true} }
 })
 
 const validateFailed = (errors) => {
