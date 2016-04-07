@@ -6,14 +6,8 @@ class ReactEcharts extends React.Component {
   componentDidMount() {
     const _this = this;
 
-    /*
-      这里用的require(AMD)
-      也可以用require.ensure(Commonjs)
-      根据喜好选择吧，注意区别, require.ensure只获取文件，并不执行，需要自己require
-      https://webpack.github.io/docs/code-splitting.html
-    */
-
-    require(['echarts'], function(echarts) {
+    require.ensure(['echarts'], function(require) {
+      const echarts = require("echarts");
       const chart = _this._renderChart(echarts)
       // need to manually resize the chart when the container changes size
       elementResizeEvent(_this.refs.chart, () => {
@@ -21,14 +15,15 @@ class ReactEcharts extends React.Component {
       })
       const { onReady } = _this.props
       if (typeof onReady === 'function') onReady(chart)
-    })
+    }, 'echarts')
   }
 
   componentDidUpdate() {
     const _this = this;
-    require(['echarts'], function(echarts) {
+    require.ensure(['echarts'], function(require) {
+      const echarts = require("echarts");
       _this._renderChart(echarts);
-    })
+    }, 'echarts')
   }
 
   componentWillUnmount() {
