@@ -485,4 +485,8 @@ class Kol < ActiveRecord::Base
     KolContact.where(:kol_id => self.id).count > 0
   end
 
+  def get_rongcloud_token
+    RongCloud.get_token self
+  end
+
 end
