@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
 
   has_many :transactions, :as => :account
 
-  validates_uniqueness_of :mobile_number, :message => "手机号码已经存在"
-  validates_uniqueness_of :name, :message => "品牌名称已经存在"
+  validates_uniqueness_of :mobile_number, allow_blank: true, :message => "手机号码已经存在"
+  validates_uniqueness_of :name, allow_blank: true, :message => "品牌名称已经存在"
   validates_length_of :password, :minimum => 6, :message => "密码长度最少为6位"
 
   # Include default devise modules. Others available are:
