@@ -31,8 +31,6 @@ const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
   real_name: { require: true },
-  mobile_number: { require: true },
-  email: { require: true, email: true },
   url: { require: true, url: { require_protocol: true} }
 })
 
@@ -109,7 +107,7 @@ class EditProfilePartial extends Component {
   }
 
   render() {
-    const { name, url, description, email, real_name, mobile_number, keywords} = this.props.fields;
+    const { name, url, description, real_name, keywords} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const brand = this.props.brand
     return (
@@ -178,7 +176,7 @@ class EditProfilePartial extends Component {
 
 EditProfilePartial = reduxForm({
   form: 'profile_form',
-  fields: ['name', 'url', 'description', 'email', 'real_name', 'mobile_number', 'keywords'],
+  fields: ['name', 'url', 'description', 'real_name', 'keywords'],
   returnRejectedSubmitPromise: true,
   validate
 },

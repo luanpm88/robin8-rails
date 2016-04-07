@@ -87,7 +87,7 @@ export function updateCampaign(campaign_id, campaign) {
 export function fetchCampaign(id) {
   return {
     type: actionTypes.FETCH_CAMPAIGN,
-    promise: fetch(`${baseUrl}/campaigns/${id}`, { credentials: 'include' })
+    promise: fetch(`${baseUrl}/campaigns/${id}`, { "credentials": 'same-origin' })
   };
 }
 
