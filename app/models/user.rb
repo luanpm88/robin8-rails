@@ -5,11 +5,6 @@ class User < ActiveRecord::Base
 
   has_many :transactions, :as => :account
 
-  validates_presence_of :name, :mobile_number
-  validates_uniqueness_of :mobile_number, allow_blank: true, :message => "手机号码已经存在"
-  validates_uniqueness_of :name, allow_blank: true, :message => "品牌名称已经存在"
-  validates_length_of :password, :minimum => 6, :message => "密码长度最少为6位", on: :create
-
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -43,6 +38,13 @@ class User < ActiveRecord::Base
 
   has_many :private_kols
   has_many :kols, through: :private_kols
+
+  validates_presence_of :name, :mobile_number
+  validates_presence_of :password, :if => Proc.new { |user| user.encrypted_password_changed? }
+  validates_uniqueness_of :mobile_number, allow_blank: true, allow_nil: true, :message => "手机号码已经存在"
+  validates_uniqueness_of :name, allow_blank: true, allow_nil: true, :message => "品牌名称已经存在"
+  validates_uniqueness_of :email, allow_blank: true, allow_nil: true, :message => "邮箱已经存在"
+  validates_length_of :password, :minimum => 6, :message => "密码长度最少为6位", :if => Proc.new { |user| user.encrypted_password_changed? }
 
   include Models::Identities
 

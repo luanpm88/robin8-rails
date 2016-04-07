@@ -16,11 +16,12 @@ function select(state){
     campaign_invites: state.$$brandStore.get("campaign_invites"),
     hasfetchedInvite: state.$$brandStore.get("hasfetchedInvite"),
     paginate: state.$$brandStore.get("paginate"),
-    campaign_statistics: state.$$brandStore.get("campaign_statistics"),
+    campaign_statistics: state.$$brandStore.get("campaign_statistics")
   };
 }
 export default class ShowCampaignPartial extends Component {
   componentDidMount() {
+    console.log("---------campaign show did mount--------");
     this._fetchCampaign();
     this.bind_toggle_text();
   }

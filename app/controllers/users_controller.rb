@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
     if verify_code != params["user"]["verify_code"]
     # flash.now[:errors] = [@l.t("kols.number_and_code_unmatch")]
-      @user.errors[:base] << "验证码错误"
+      @user.errors[:base] << "验证码错误!!"
       render :template => 'users/create_failed.js.erb' and return
     elsif @user.valid?
       begin
