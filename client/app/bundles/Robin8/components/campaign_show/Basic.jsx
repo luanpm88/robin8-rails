@@ -46,7 +46,7 @@ export default class Basic extends React.Component {
           <small className="campaign_url"><span>活动网址:</span><a href={campaign.get("url")} className="link" target="_blank">{ _.truncate(campaign.get("url"), {'length': 35}) }</a></small>
           {this.renderCpaActionUrl(campaign)}
           <ul className="stat-info grid-3">
-            <li><span className="txt">起止时间</span><small className="date">{ formatDate(campaign.get("created_at")) } - { formatDate(campaign.get("deadline ")) }</small></li>
+            <li><span className="txt">起止时间</span><small className="date">{ formatDate(campaign.get("created_at")) } - { formatDate(campaign.get("deadline")) }</small></li>
             <li><span className="txt">总预算</span><strong className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("budget") }</strong></li>
             <li><span className="txt">一次{showCampaignTypeText(campaign.get("per_budget_type"))}</span><strong className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("per_action_budget") }</strong></li>
           </ul>
