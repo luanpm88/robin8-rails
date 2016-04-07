@@ -27,7 +27,7 @@ class ReactEcharts extends React.Component {
   }
 
   componentWillUnmount() {
-    //echarts.dispose(this.refs.chart)
+    echarts.dispose(this.refs.chart)
   }
 
   _renderChart(echarts) {
