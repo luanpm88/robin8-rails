@@ -5,7 +5,6 @@ import InviteKol from './InviteKol'
 export default class KolList extends React.Component {
   constructor(props, context){
     super(props, context);
-
   }
 
   componentDidMount(){

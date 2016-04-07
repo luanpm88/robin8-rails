@@ -292,6 +292,7 @@ body {
 }
 .signinup-wrap .help-block {
   margin-bottom: 20px;
+  margin-top: 0px !important;
   color: #fff;
   font-size: 14px;
   text-align: center;
@@ -587,7 +588,7 @@ body {
   text-show: none;
 }
 #signinupModal .modal-dialog {
-  margin-top: 150px;
+  margin-top: 70px;
 }
 .modal-backdrop.in{
   opacity: 0.8 !important;
@@ -646,4 +647,18 @@ body {
   position: relative;
   right: 8px;
   top: -3px;
+}
+
+.form-group{
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 0px !important;
+}
+
+.tips{
+  height: 40px;
+  line-height:  40px;
+  
+  .error{
+    color: #f50000;
+  }
 }
