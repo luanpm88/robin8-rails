@@ -31,7 +31,7 @@ const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
   real_name: { require: true },
-  url: { require: true, url: { require_protocol: true} }
+  url: { url: { require_protocol: true} }
 })
 
 const validateFailed = (errors) => {
@@ -140,9 +140,9 @@ class EditProfilePartial extends Component {
               </div>
 
               <div className="form-part">
-                <Input field={name} id="name" label="品牌名称" />
-                <Input field={url} id="url" label="官方网站" />
-                <Textarea field={description} id="desc" label="品牌介绍" />
+                <Input field={name} id="name" label="品牌名称" placeholder="必填" />
+                <Input field={url} id="url" label="官方网站" placeholder="选填" />
+                <Textarea field={description} id="desc" label="品牌介绍" placeholder="必填" />
 
                 <div className="form-group">
                   <label htmlFor="desc" className="control-label">品牌关键词</label>
@@ -159,7 +159,7 @@ class EditProfilePartial extends Component {
             </div>
 
             <div className="contacter-info">
-              <Input field={real_name} id="contacter-name" label="真实姓名" />
+              <Input field={real_name} id="contacter-name" label="真实姓名" placeholder="必填" />
             </div>
 
             <div className="options">
