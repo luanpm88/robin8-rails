@@ -1,5 +1,4 @@
 import React from 'react';
-import echarts from 'echarts';
 import ReactEcharts from '../shared/ReactEcharts';
 
 export default class Influnce extends React.Component{
@@ -22,7 +21,7 @@ export default class Influnce extends React.Component{
 
     if(campaign_statistics.get(0) === "post"){
       legend.push("总点击");
-      clicks << 
+      clicks <<
         {
           name: '总点击',
           type:'line',
@@ -90,7 +89,7 @@ export default class Influnce extends React.Component{
     console.log(clicks)
     return options
   }
-  
+
   render(){
     const options = this.generate_echarts_options();
 
