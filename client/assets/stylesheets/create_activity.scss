@@ -406,6 +406,11 @@
   top: 3px;
   width: auto;
 }
+
+.spinner-form-area .bootstrap-touchspin .spinner-input {
+  line-height: 34px;
+}
+
 .spinner-form-area .input-group-btn:first-child {
   left: 0;
 }
@@ -730,6 +735,10 @@
   float: left;
   margin-left: 20px;
   margin-top: 47px;
+}
+
+.spinner-box {
+  height: 65px;
 }
 
 .creat-content-sources .spinner-box {

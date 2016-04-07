@@ -6,6 +6,12 @@
 
 @import "webfont";
 
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  border: 1px solid #CCC!important;
+}
+
 html,
 body {
   background: #ebf3f5;
@@ -268,6 +274,8 @@ body {
   font-weight: 400;
 }
 .r-global-header .navbar-user .username .caret-arrow {
+  position: relative;
+  top: 5px;
   margin-left: 10px;
   display: inline-block;
   width: 18px;

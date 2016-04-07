@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 
-import "create_activity.css";
+import "create_activity.scss";
 
 import IntroPartial from './create_campaign/IntroPartial';
 import TargetPartial from './create_campaign/TargetPartial';
