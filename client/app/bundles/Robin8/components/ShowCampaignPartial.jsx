@@ -21,6 +21,7 @@ function select(state){
 }
 export default class ShowCampaignPartial extends Component {
   componentDidMount() {
+    console.log("---------campaign show did mount--------");
     this._fetchCampaign();
     this.bind_toggle_text();
   }
