@@ -155,10 +155,11 @@ class Campaign < ActiveRecord::Base
         kol.add_campaign_id(campaign_id,false)
       end
     end
-    Kol.where(:id => get_unmatched_kol_ids).each do |kol|
+    unmatched_kol_ids = get_unmatched_kol_ids
+    Kol.where(:id => unmatched_kol_ids).each do |kol|
       kol.delete_campaign_id campaign_id
     end
-    Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
+    Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign unmatched_kol_ids: ---#{unmatched_kol_ids}-"
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
     _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
