@@ -24,7 +24,9 @@
         <td>
           <%= link_to '详情', marketing_dashboard_user_path(u.id) %>
           |
-          <%= link_to 'Recharge', marketing_dashboard_user_recharge_path(u.id) %> 
+          <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id) %>
+          |
+          <%= link_to '以品牌主身份查看', brand_path(user_id: u.id, super_visitor_token: Rails.cache.fetch("super_visitor_token")) %> 
         </td>
       </tr>
     <% end %>
