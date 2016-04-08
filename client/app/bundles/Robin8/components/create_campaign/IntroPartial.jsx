@@ -20,6 +20,20 @@ const getUploader = function() {
   });
 }
 
+const initBootstrapMaxLength = function() {
+  $('.activity-title-input').maxlength({
+    threshold: 21,
+    placement: 'centered-right',
+    appendToParent: '.form-group'
+  });
+
+  $('.activity-intro-input').maxlength({
+    threshold: 139,
+    placement: 'centered-right',
+    appendToParent: '.form-group'
+  });
+}
+
 export default class IntroPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -44,6 +58,7 @@ export default class IntroPartial extends React.Component {
 
   componentDidMount() {
     this.uploader = getUploader();
+    initBootstrapMaxLength();
   }
 
   render() {

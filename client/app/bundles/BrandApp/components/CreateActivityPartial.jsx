@@ -1,8 +1,6 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
 
-import "create_activity.css";
-
 import createActivity from "raw/create_activity";
 
 import IntroPartial from './create_activity/IntroPartial';

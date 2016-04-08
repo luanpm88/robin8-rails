@@ -466,6 +466,7 @@
   border: 1px solid #b7b7b7;
   border-radius: 1000px !important;
   outline: none;
+  box-shadow: none !important;
 }
 .bootstrap-tagsinput {
   width: 100%;
@@ -555,8 +556,32 @@
 .creat-activity-form textarea.form-control:focus {
   border: 2px solid #2dcad0;
 }
-.creat-activity-form .form-group {
-  position: relative;
+.creat-activity-form {
+  .form-group {
+    position: relative;
+  }
+
+  .form-group:first-child {
+    height: 85px;
+  }
+
+  .form-group:nth-child(2) {
+    height: 216px;
+    margin-bottom: 10px;
+
+    .word-limit {
+      bottom: 50px;
+    }
+
+    span.label-success {
+      position: absolute;
+      bottom: 50px !important;
+    }
+    span.label-danger {
+      position: absolute;
+      bottom: 50px !important;
+    }
+  }
 }
 .creat-activity-form .word-limit {
   position: absolute;

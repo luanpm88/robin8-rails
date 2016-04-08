@@ -5,13 +5,18 @@
  */
 
 @font-face {
-    font-family: SourceHanSansCN-Normal;
-    src: asset-url("SourceHanSansCN-Normal.ttf");
+    font-family: 'SourceHanSansCN';
+    src: font-url("SourceHanSansCN-Normal.ttf");
+    font-style: normal;
 }
 
 @font-face {
-    font-family: SourceHanSansCN-Light;
-    src: asset-url("SourceHanSansCN-Light.ttf");
+  font-family: 'SourceHanSansCN-Light';
+  src: asset-url("SourceHanSansCN-Light.eot?#iefix") format('embedded-opentype'),
+       asset-url("SourceHanSansCN-Light.woff") format('woff'),
+       asset-url("SourceHanSansCN-Light.ttf") format('truetype'),
+       asset-url("SourceHanSansCN-Light.svg#SourceHanSansCN-Light'") format('svg');
+  font-style: lighter;
 }
 
 input:-webkit-autofill {
@@ -31,10 +36,11 @@ body {
 }
 body.landing_page_bg {
   background: image-url('robin8_brand_bg.jpg') no-repeat top center #2c2a2b;
+  background-size: cover;
 }
 body {
   color: #181616;
-  font-family: SourceHanSansCN-Normal !important;
+  font-family: 'SourceHanSansCN' !important;
   font-size: 16px;
 }
 .btn {
@@ -576,7 +582,7 @@ button.btn-blue:hover {
 }
 .jumbotron-content p {
   font-size: 16px !important;
-  font-family: SourceHanSansCN-Light;
+  font-family: 'SourceHanSansCN';
   line-height: 15px;
   letter-spacing: 2px;
   margin-bottom: 15px !important;
