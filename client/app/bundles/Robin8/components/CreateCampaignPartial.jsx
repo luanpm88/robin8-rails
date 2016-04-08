@@ -1,6 +1,7 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -59,6 +60,17 @@ class CreateCampaignPartial extends React.Component {
     beforeUnload(this.props);
   }
 
+  render_breadcrumb() {
+    return (
+      <ol className="breadcrumb">
+        <li>
+          <i className="caret-arrow left" />
+          <Link to="/brand/">我的主页</Link>
+        </li>
+      </ol>
+    );
+  }
+
   render() {
     const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
     const brand = this.props.brand
@@ -68,6 +80,7 @@ class CreateCampaignPartial extends React.Component {
     return (
       <div className="wrapper">
         <div className="container">
+         { this.render_breadcrumb() }
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }}/>
