@@ -11,7 +11,6 @@ import TargetPartial from './create_campaign/TargetPartial';
 import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
-import createActivity from "raw/create_campaign";
 import beforeUnload from './shared/BeforeUnload';
 
 const initCampaign = {
@@ -57,7 +56,6 @@ class CreateCampaignPartial extends React.Component {
   }
 
   componentDidMount() {
-    createActivity();
     beforeUnload(this.props);
   }
 

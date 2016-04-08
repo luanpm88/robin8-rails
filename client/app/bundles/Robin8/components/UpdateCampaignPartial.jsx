@@ -9,7 +9,6 @@ import TargetPartial from './create_campaign/TargetPartial';
 import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
-import createActivity from "raw/create_campaign";
 
 const validate = new FormValidate({
   name: { require: true },
@@ -57,7 +56,6 @@ class UpdateCampaignPartial extends React.Component {
   }
 
   componentDidMount() {
-    createActivity();
     this._fetchCampaign();
   }
 
