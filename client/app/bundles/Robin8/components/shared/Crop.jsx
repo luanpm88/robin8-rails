@@ -91,7 +91,7 @@ export default class Crop extends Component {
   render() {
     return (
       <div>
-        <Modal show={this.state.showModal} onHide={this.close} onEntered={this.initCrop} onExit={this.reset}>
+        <Modal show={this.state.showModal} onEntered={this.initCrop} onExit={this.reset}>
           <Modal.Body>
             <img id="cropImage" style={{maxWidth: '100%'}} />
           </Modal.Body>
