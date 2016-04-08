@@ -26,18 +26,14 @@
           <td> <%= multi_send c, v %> </td>
         <% end %>
         <td>
-          <%= link_to '编辑', edit_marketing_dashboard_campaign_path(c) %> |
-          <%= link_to '详情', marketing_dashboard_campaign_path(c) %> |
-          <%= link_to '接受活动的Kols', marketing_dashboard_campaign_kols_path(c) %> |
-          <%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c) %> |
-          <%= link_to '统计', "/#smart_campaign/stats/#{c.id}" %>
+          <%= link_to '编辑', edit_marketing_dashboard_campaign_path(c), :target => "_blank" %> |<br/>
+          <%= link_to '详情', marketing_dashboard_campaign_path(c), :target => "_blank" %> | <br/>
+          <%= link_to '接受活动的Kols', marketing_dashboard_campaign_kols_path(c), :target => "_blank" %> | <br/>
+          <%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c), :target => "_blank" %> | <br/>
+          <%= link_to '统计', "/brand/campaigns/#{c.id}?super_visitor_token=#{Rails.cache.fetch('super_visitor_token')}&user_id=#{c.user_id}", :target => "_blank" %> | <br/>
           <% if c.status == 'unexecute' %>
-            |
             <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %>
           <% end %>
-
-
-
         </td>
       </tr>
     <% end %>

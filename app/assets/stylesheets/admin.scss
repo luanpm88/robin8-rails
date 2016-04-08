@@ -6,3 +6,8 @@
 *= require font-awsome
 */
 @import 'bootstrap';
+
+td {
+  max-width: 100px !important;
+  word-break: break-all;
+}
