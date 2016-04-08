@@ -366,16 +366,21 @@
  .input-group.date .input-group-addon {
    cursor: pointer;
  }
- .sr-only {
-   position: absolute;
-   width: 1px;
-   height: 1px;
-   margin: -1px;
-   padding: 0;
-   overflow: hidden;
-   clip: rect(0, 0, 0, 0);
-   border: 0;
- }
+
+.header {
+  margin-bottom: 40px;
+}
+
+.sr-only {
+ position: absolute;
+ width: 1px;
+ height: 1px;
+ margin: -1px;
+ padding: 0;
+ overflow: hidden;
+ clip: rect(0, 0, 0, 0);
+ border: 0;
+}
 
 
 .spinner-form-area {
@@ -456,7 +461,7 @@
   margin: 0 !important;
   font-size: 18px;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 0px;
   background: #fff;
   border: 1px solid #b7b7b7;
   border-radius: 1000px !important;

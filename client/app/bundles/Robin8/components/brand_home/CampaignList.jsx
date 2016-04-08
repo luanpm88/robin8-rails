@@ -69,9 +69,11 @@ export default class CampaignList extends React.Component {
                 <strong className="stat-num">
                   { campaignCount }
                 </strong>
-                <span className="account-balance">当前余额:</span>
+                <span className="account-balance">当前余额</span>
                   <strong className="stat-num">
-                    &nbsp;&nbsp;{avail_amount}
+                    &nbsp;&nbsp;
+                    <span className="money">￥</span>
+                    <span className="avail-amount">{avail_amount}</span>
                   </strong>
                 <a href="/contact?from=recharge" target="_blank" className="btn btn-blue btn-default recharge-btn">充值</a>
               </h4>

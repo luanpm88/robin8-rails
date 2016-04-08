@@ -7,6 +7,11 @@
   color: #fff;
   text-align: center;
   background: url(~robin8_header_bg.jpg) no-repeat center bottom #2c2a2b;
+
+  .brand-menu {
+    margin-top: 37px;
+  }
+
 }
 .brand-header .brand-name,
 .brand-header .dropdown {
@@ -19,12 +24,12 @@
   margin-bottom: 20px;
   width: 132px;
   height: 76px;
-  box-shadow: 10.5px 18.187px 19px 0px rgba(0, 0, 0, 0.55);
 }
 .brand-header .brand-logo a > img {
-  width: 132px;
-  height: 76px;
-  border-radius: 3px;
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  box-shadow: 10.5px 18.187px 19px 0px rgba(0, 0, 0, 0.55);
 }
 .brand-header .brand-name {
   color: #fff;
@@ -46,6 +51,8 @@
   .recharge-btn {
     color: #fff;
     margin-left: 30px;
+    height: 31px;
+    line-height: 31px;
   }
 }
 

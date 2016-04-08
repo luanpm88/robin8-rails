@@ -637,7 +637,7 @@ a.download-btn:link{
   position: absolute;
   right: 60px;
   top: 60px;
-  color: #fff;
+  color: #efefef;
   font-size: 36px;
   font-weight: 400;
   text-show: none;
@@ -647,7 +647,7 @@ a.download-btn:link{
   position: absolute;
   right: 60px;
   top: 60px;
-  color: #fff;
+  color: #efefef;
   font-size: 36px;
   font-weight: 400;
   text-show: none;
@@ -696,10 +696,14 @@ a.download-btn:link{
   font-size: 11px;
   color: #7b7a7a;
 
-  p {
-    position: relative;
-    left: 12px;
-    margin-bottom: 2px;
+  p:first-child {
+    position: absolute;
+    left: 215px;
+  }
+  p:nth-child(2) {
+    position: absolute;
+    top: 65px;
+    left: 215px;
   }
 }
 .rucaptcha_ok:hover {
