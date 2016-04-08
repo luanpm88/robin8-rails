@@ -6,7 +6,11 @@
   <% %w(id user_id user.email name description start_time deadline budget take_budget per_action_budget per_budget_type img_url avail_click total_click status actual_deadline_time).each do |v| %>
     <tr>
       <td> <%= v.classify %> </td>
-      <td> <%= multi_send @campaign, v %> </td>
+      <% if v.end_with?("url") %>
+        <td> <%= link_to multi_send(@campaign, v),  multi_send(@campaign, v), :target => "blank"%> </td>
+      <% else %>
+        <td> <%= multi_send @campaign, v %> </td>
+      <% end %>
     </tr>
   <% end %>
 </table>

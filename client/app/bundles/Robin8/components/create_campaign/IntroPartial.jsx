@@ -1,7 +1,7 @@
 import React from 'react';
 import Crop from '../shared/Crop';
 import 'qiniu-js/dist/qiniu.min.js';
-import ShowError from '../shared/ShowError';
+import { ShowError } from '../shared/ShowError';
 
 const getUploader = function() {
   return Qiniu.uploader({

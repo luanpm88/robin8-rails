@@ -1,5 +1,5 @@
 import React from 'react';
-import ShowError from '../shared/ShowError';
+import { ShowError, BudgetShowError } from '../shared/ShowError';
 
 export default class BudgetPartial extends React.Component {
 
@@ -61,9 +61,9 @@ export default class BudgetPartial extends React.Component {
             <div className="spinner-box">
               <span className="symbol">$</span>
               <input {...budget} type="text" className="spinner-input budget-input" style={{display: 'block'}} />
-              <ShowError field={budget}/>
             </div>
             <p className="stat">最低费用<strong className="stat-num">100</strong>元</p>
+            <BudgetShowError field={budget}/>
           </div>
         </div>
       </div>
