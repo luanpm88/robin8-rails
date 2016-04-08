@@ -17,7 +17,7 @@ class Weibo
   end
 
   def self.update_identity_info(access_token)
-    if access_token_refresh_time
+    # if access_token_refresh_time
     server = "https://api.weibo.com/2/users/show.json?access_token=#{access_token}"
     res_json = RestClient.get(server)
     res = JSON.parse res_json        rescue nil
