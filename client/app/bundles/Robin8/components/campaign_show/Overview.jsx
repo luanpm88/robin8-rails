@@ -37,7 +37,7 @@ export default class Overview extends React.Component{
           <div className="panel-body">
             <div className="activity-stat-bigshow-area">
               <ul>
-                <li><span className="txt">已花费</span><strong className="stat-num"><sapn className="symbol">$</sapn>{ campaign.get("take_budget") }</strong></li>
+                <li><span className="txt">已花费</span><strong className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("take_budget") }</strong></li>
                 <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("join_count") }</strong></li>
                 { this.render_total_count(campaign) }
                 { this.render_available_count(campaign) }

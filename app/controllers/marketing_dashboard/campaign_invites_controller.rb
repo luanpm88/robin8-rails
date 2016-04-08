@@ -39,10 +39,7 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
 
   def reject
     render 'reject' and return if request.method.eql? 'GET'
-
-    @campaign_invite.screenshot_reject
-    @campaign_invite.update(reject_reason: params[:reject_reason])
-
+    @campaign_invite.screenshot_reject(params[:reject_reason].present? ? params[:reject_reason] : params[:common_reject_reason])
     respond_to do |format|
       format.html { redirect_to pending_marketing_dashboard_campaign_invites_path, notice: 'Reject successfully!'}
       format.json { head :no_content }

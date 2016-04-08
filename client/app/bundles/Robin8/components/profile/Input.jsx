@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ShowError from '../shared/ShowError';
+import { ShowError }  from '../shared/ShowError';
 
 export default class Input extends Component {
   render() {
