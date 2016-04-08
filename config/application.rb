@@ -10,10 +10,6 @@ Bundler.require(*Rails.groups)
 
 module Robin8
   class Application < Rails::Application
-    config.before_configuration do
-      $REDIS_CONFIG = ::YAML::load(File.read(File.join(Rails.root.to_s, 'config/redis.yml')))[Rails.env.to_s]
-    end
-    
     # 跨域请求
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
@@ -64,6 +60,7 @@ module Robin8
     config.cache_store = :redis_store, { :host => "localhost",
                                          :port => 6379,
                                          :db => 0,
+                                         :password => "robin888",
                                          :namespace => "robcache",
                                          :expires_in => 90.minutes }
   end
