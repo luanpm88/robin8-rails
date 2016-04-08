@@ -44,7 +44,7 @@ export default class Campaign extends React.Component {
             <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
             <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
             <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
-            <li><span className="txt">剩余天数</span><strong className="stat-num">{ campaign.get("avail_click") }</strong></li>
+            <li><span className="txt">剩余天数</span><strong className="stat-num remain-time">{ campaign.get("avail_click") }</strong></li>
           </ul>
         </div>
         <div className="brand-activity-coverphoto brand-home-campaign-img  pull-left">
