@@ -569,6 +569,7 @@ ActiveRecord::Schema.define(version: 20160405104537) do
     t.float    "influence_score",        limit: 24,                           default: -1.0
     t.string   "kol_uuid",               limit: 255
     t.datetime "cal_time"
+    t.string   "rongcloud_token",        limit: 255
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
@@ -629,7 +630,7 @@ ActiveRecord::Schema.define(version: 20160405104537) do
 
   create_table "messages", force: :cascade do |t|
     t.string   "message_type",  limit: 255
-    t.boolean  "is_read",       limit: 1,     default: false
+    t.boolean  "is_read",       limit: 1,          default: false
     t.datetime "read_at"
     t.string   "title",         limit: 255
     t.string   "name",          limit: 255
@@ -639,11 +640,11 @@ ActiveRecord::Schema.define(version: 20160405104537) do
     t.string   "sender",        limit: 255
     t.string   "receiver_type", limit: 255
     t.integer  "receiver_id",   limit: 4
-    t.text     "receiver_ids",  limit: 65535
+    t.text     "receiver_ids",  limit: 4294967295
     t.string   "item_type",     limit: 255
     t.string   "item_id",       limit: 255
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
   end
 
   create_table "news_rooms", force: :cascade do |t|
@@ -798,20 +799,20 @@ ActiveRecord::Schema.define(version: 20160405104537) do
   create_table "push_messages", force: :cascade do |t|
     t.string   "title",               limit: 255
     t.string   "receiver_type",       limit: 255
-    t.text     "receiver_ids",        limit: 65535
-    t.text     "receiver_cids",       limit: 65535
+    t.text     "receiver_ids",        limit: 4294967295
+    t.text     "receiver_cids",       limit: 4294967295
     t.string   "receiver_list",       limit: 255
     t.string   "template_type",       limit: 255
     t.text     "template_content",    limit: 65535
-    t.boolean  "is_offline",          limit: 1,     default: true
-    t.integer  "offline_expire_time", limit: 4,     default: 43200000
+    t.boolean  "is_offline",          limit: 1,          default: true
+    t.integer  "offline_expire_time", limit: 4,          default: 43200000
     t.string   "result",              limit: 255
     t.text     "result_serial",       limit: 65535
     t.string   "details",             limit: 255
     t.string   "task_id",             limit: 255
     t.string   "status",              limit: 255
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                                null: false
+    t.datetime "updated_at",                                                null: false
     t.integer  "message_id",          limit: 4
     t.string   "item_type",           limit: 255
     t.integer  "item_id",             limit: 4
@@ -1050,7 +1051,7 @@ ActiveRecord::Schema.define(version: 20160405104537) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email",      limit: 255
-    t.string   "name",                   limit: 255
+    t.string   "name",                   limit: 191
     t.string   "first_name",             limit: 255
     t.string   "last_name",              limit: 255
     t.string   "company",                limit: 255
@@ -1080,6 +1081,7 @@ ActiveRecord::Schema.define(version: 20160405104537) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["is_primary"], name: "index_users_on_is_primary", using: :btree
+  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
 

@@ -22,9 +22,8 @@ Starting MailCatcher
 
 
 ### 4-15
-# 检测 qiniu:  bucket_domain
 # rongyun
 #   ocr:
-   root_path: /home/deployer/apps/screenshot_approve
-    logo_name: 'logo.png'
-    screenshot_name: 'screenshot_name.png'
+   :root_path: /home/deployer/apps/screenshot_approve
+    :logo_name: 'logo.png'
+    :screenshot_name: 'screenshot_name.png'
