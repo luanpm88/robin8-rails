@@ -60,19 +60,10 @@ span.campaign-type {
 }
 
 .brand-activity-card .brand-activity-content small.summary {
-  margin-bottom: 12px; 
+  margin-bottom: 12px;
   height: 32px;
   line-height: 16px;
   overflow:  hidden;
-}
-
-.brand-activity-card .brand-activity-content small.summary:after {
-    content:"...";
-    font-weight:bold;
-    position:absolute;
-    bottom:0;
-    right:0;
-    padding:0 20px 1px 45px;
 }
 
 small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
@@ -115,6 +106,10 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   position: relative;
   float: left;
   list-style: none;
+
+  span.per-cost {
+    margin-right: 12px;
+  }
 }
 .brand-activity-card .brand-activity-content .stat-info li:first-child {
   text-align: left;
@@ -155,6 +150,11 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   color: #9b9a9a;
   font-size: 12px;
 }
+
+.brand-activity-card .brand-activity-content .stat-info span {
+  font-family: FuturaStd-Medium;
+}
+
 .brand-activity-card .brand-activity-content .stat-info .stat-num {
   color: #fff;
   font-size: 18px;
@@ -235,6 +235,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 
 .activity-stat-bigshow-area li .stat-num, .activity-target-bigshow-area li .stat-num {
   font-size: 28px;
+  font-family: FuturaStd-Medium;
 }
 
 .kolCampaignScreenshot{
@@ -267,12 +268,12 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 
 .panelKolsTable tbody td{
   height: 112px;
-  text-align:center; 
+  text-align:center;
   vertical-align:middle !important;
 }
 
 .panelKolsTable thead td{
-  text-align:center; 
+  text-align:center;
   vertical-align:middle;
 }
 

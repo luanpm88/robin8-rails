@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import "brand_activity_detail.css";
+import "brand_activity_detail.scss";
 
 import Basic from './campaign_show/Basic';
 import Overview from './campaign_show/Overview';
@@ -12,7 +12,7 @@ import KolList from './campaign_show/KolList';
 import Influnce from './campaign_show/Influnce'
 
 function select(state){
-  return { 
+  return {
     campaign_invites: state.$$brandStore.get("campaign_invites"),
     hasfetchedInvite: state.$$brandStore.get("hasfetchedInvite"),
     paginate: state.$$brandStore.get("paginate"),
