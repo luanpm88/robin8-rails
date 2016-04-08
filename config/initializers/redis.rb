@@ -1,1 +1,1 @@
-$redis = Redis.new($REDIS_CONFIG['redis'])
+# $redis = Redis.new($REDIS_CONFIG['redis'])

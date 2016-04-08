@@ -853,3 +853,11 @@
   color: #fff;
   margin-left: 30px;
 }
+
+.budget-show-error, .budget-show-error:hover{
+  color: #ce0101;
+  font-size: 15px;
+  border-bottom: 1px solid #ce0101;
+  padding-bottom: 2px;
+  text-decoration: none;
+}
