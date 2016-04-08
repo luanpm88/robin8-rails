@@ -445,16 +445,13 @@ class Kol < ActiveRecord::Base
 
       # sync identity
       TmpIdentity.where(:kol_uuid => kol_uuid).each do |tmp_identity|
-        identity = Identity.find_by :uid => tmp_identity.uid
-        if !identity
-          identity = Identity.new
-          attrs = tmp_identity.attributes
-          attrs.delete("id")
-          attrs.delete("kol_uuid")
-          identity.attributes = attrs
-          identity.kol_id = kol_id
-          identity.save
-        end
+        identity = Identity.find_or_initialize_by :uid => tmp_identity.uid
+        attrs = tmp_identity.attributes
+        attrs.delete("id")
+        attrs.delete("kol_uuid")
+        identity.attributes = attrs
+        identity.kol_id = kol_id
+        identity.save
       end
     end
   end
@@ -468,13 +465,14 @@ class Kol < ActiveRecord::Base
     Rails.logger.info "--create_test_info_from_kol---#{kol_uuid}---"
     return if kol_uuid.blank?
     ActiveRecord::Base.transaction do
-      tmp_uids = TmpIdentity.where(:kol_uuid => kol_uuid).collect{|t| t.uid }      rescue []
-      new_uids = self.identities.collect{|t| t.uid }           rescue []
-      Identity.where(:uid => new_uids - tmp_uids).each do |identity|
+      TmpIdentity.where(:kol_uuid => kol_uuid).delete_all
+      self.identities.each do |identity|
         tmp_identity = TmpIdentity.new(:provider => identity.provider, :uid => identity.uid, :name => identity.name,
                                        :avatar_url => identity.avatar_url, :verified => identity.verified, :registered_at => identity.registered_at,
                                        score: identity.score, followers_count: identity.followers_count,  friends_count: identity.friends_count,
-                                       statuses_count: identity.statuses_count, kol_uuid:  kol_uuid)
+                                       statuses_count: identity.statuses_count, kol_uuid:  kol_uuid, refresh_time: identity.refresh_time,
+                                       access_token_refresh_token: identity.access_token_refresh_token)
+        tmp_identity.update_s
         tmp_identity.save
       end
 

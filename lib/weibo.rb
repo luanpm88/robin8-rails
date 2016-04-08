@@ -9,14 +9,15 @@ class Weibo
     end
   end
 
-  def self.get_statuses(identity)
-      server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{access_token}"
-      res_json = RestClient.get(server)
-      res = JSON.parse res_json        rescue nil
-      return res
+  def self.update_statuses(identity)
+    server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{access_token}"
+    res_json = RestClient.get(server)
+    res = JSON.parse res_json        rescue nil
+    return res
   end
 
-  def self.get_info(access_token)
+  def self.update_identity_info(access_token)
+    if access_token_refresh_time
     server = "https://api.weibo.com/2/users/show.json?access_token=#{access_token}"
     res_json = RestClient.get(server)
     res = JSON.parse res_json        rescue nil

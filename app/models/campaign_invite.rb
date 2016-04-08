@@ -9,7 +9,7 @@ class CampaignInvite < ActiveRecord::Base
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']
-  OcrDetails = [{"unfound" => "未找到活动"},{"time" => '发表时间必须在30分钟前'},{"group" => '不能设置分组'}, {"owner" => '非本人发布的活动'}]
+  OcrDetails = {"unfound" => "未找到活动", "time" => '发表时间必须在30分钟前', "group" => '不能设置分组', "owner" => '非本人发布的活动'}
   # Ocr_detail  'unfound','time','group','owner']
   #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
