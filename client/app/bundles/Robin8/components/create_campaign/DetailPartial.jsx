@@ -129,9 +129,9 @@ export default class DetailPartial extends React.Component {
             <div className="per-budget-group">
               <p className="per-budget-text">单次预算</p>
               <div className="spinner-form-area">
-                <div className="spinner-box">
+                <div className="spinner-box per_action_budget-input">
                   <span className="symbol">$</span>
-                  <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input" style={{display: 'block'}} />
+                  <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input " style={{display: 'block'}} />
                   <div className="per-budget-input-error">
                     <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
                   </div>

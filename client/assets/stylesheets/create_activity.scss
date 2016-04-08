@@ -763,7 +763,6 @@
 
 .creat-content-sources .per-budget-text {
   float: left;
-  margin-left: 20px;
   margin-top: 47px;
 }
 
@@ -777,6 +776,15 @@
 
 .creat-content-sources .spinner-box .per-budget-input-error {
   margin-left: 86px;
+}
+
+.spinner-box .btn{
+  padding-top: 3px;
+  padding-left: 2px;
+}
+
+.spinner-box .bootstrap-touchspin span:first-child .btn{
+  padding-top: 1px;
 }
 
 .creat-content-sources .form-horizontal .control-label {
@@ -886,3 +894,12 @@
   padding-bottom: 2px;
   text-decoration: none;
 }
+
+
+.creat-campaign-total-budget{
+  margin-bottom: 15px !important;
+}
+
+// .per_action_budget-input{
+//   margin-left: -13px !important;
+// }
