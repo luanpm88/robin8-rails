@@ -7,11 +7,18 @@ export default function createActivity () {
   // 输入字数限制
   // bootstrap-maxlength
   // https://github.com/mimo84/bootstrap-maxlength/
-  $('.activity-title-input, .activity-intro-input').maxlength({
+  $('.activity-title-input').maxlength({
     threshold: 21,
     placement: 'centered-right',
     appendToParent: '.form-group'
   });
+
+  $('.activity-intro-input').maxlength({
+    threshold: 139,
+    placement: 'centered-right',
+    appendToParent: '.form-group'
+  });
+
 
   // image upload previewer
   $.fn.previewImage = function(options) {
