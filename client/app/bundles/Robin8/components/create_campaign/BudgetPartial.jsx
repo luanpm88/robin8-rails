@@ -57,7 +57,7 @@ export default class BudgetPartial extends React.Component {
         </div>
         <div className="content">
           <div className="spinner-form-area">
-            <label>总预算</label>
+            <label className="creat-campaign-total-budget">总预算</label>
             <div className="spinner-box">
               <span className="symbol">$</span>
               <input {...budget} type="text" className="spinner-input budget-input" style={{display: 'block'}} />

@@ -3,9 +3,6 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
 
   def index
     @users = User.all.order('created_at DESC').paginate(paginate_params)
-    unless Rails.cache.fetch("super_visitor_token")
-      Rails.cache.write("super_visitor_token", SecureRandom.hex, :expire_in => 1.days)
-    end
   end
 
   def show

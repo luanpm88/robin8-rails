@@ -8,7 +8,13 @@ module MarketingDashboard::BaseHelper
 
   def sensitivity_list
     ['encrypted_password', 'reset_password_token', 'reset_password_token_at', 'remeber_created_at', 'confirmation_token', 'reset_password_sent_at', 'remember_created_at', 'unconfirmed_email']
+  end
 
+  def get_super_visitor_token
+    unless Rails.cache.fetch("super_visitor_token")
+      Rails.cache.write("super_visitor_token", SecureRandom.hex, :expire_in => 1.days)
+    end
+    Rails.cache.fetch("super_visitor_token")
   end
 
   private
