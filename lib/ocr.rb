@@ -1,8 +1,8 @@
 class Ocr
   def self.get_result(campaign_invite, params)
-    ocr_root_path = Rails.application.secrets[:ocr]['root_path']
-    logo_name = Rails.application.secrets[:ocr]['logo_name']
-    screenshot_name = Rails.application.secrets[:ocr]['screenshot_name']
+    ocr_root_path = Rails.application.secrets[:ocr][:root_path]
+    logo_name = Rails.application.secrets[:ocr][:logo_name]
+    screenshot_name = Rails.application.secrets[:ocr][:screenshot_name]
     invite_floder_path = "#{ocr_root_path}/campaign_invites/#{campaign_invite.id}"
     system("mkdir -p #{invite_floder_path}")
     File.write("#{invite_floder_path}/#{logo_name}", params[:campaign_logo])

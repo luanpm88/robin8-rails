@@ -1,8 +1,8 @@
 require 'rest-client'
 class RongCloud
   Server = 'https://api.cn.ronghub.com'
-  AppKey = Rails.application.secrets[:rong_cloud]['app_key']
-  AppSecret = Rails.application.secrets[:rong_cloud]['app_secret']
+  AppKey = Rails.application.secrets[:rong_cloud][:app_key]
+  AppSecret = Rails.application.secrets[:rong_cloud][:app_secret]
 
   def self.generate_headers
     headers = {}
