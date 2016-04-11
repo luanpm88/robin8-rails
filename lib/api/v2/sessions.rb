@@ -53,7 +53,7 @@ module API
         post 'oauth_login' do
           identity = Identity.find_by(:provider => params[:provider], :uid => params[:uid])
           #兼容pc端 wechat
-          identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if params[:unionid]
+          identity = Identity.find_by(:provider => params[:provider], :unionid => params[:unionid])  if identity.blank? && params[:unionid]
           kol = identity.kol   rescue nil
           if !kol
             ActiveRecord::Base.transaction do
