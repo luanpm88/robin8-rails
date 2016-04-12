@@ -10,7 +10,7 @@ export default class InviteKol extends React.Component {
   render_kol_id() {
     const { campaign_invite } = this.props;
     if (isSuperVistor()) {
-      return <td>{campaign_invite.get("id")}</td>
+      return <td>{campaign_invite.get("kol").get("id")}</td>
     }
   }
 
