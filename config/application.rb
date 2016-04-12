@@ -61,6 +61,7 @@ module Robin8
                                          :port => 6379,
                                          :db => 0,
                                          :namespace => "robcache",
+                                         :password => Rails.application.secrets[:redis][:password],
                                          :expires_in => 90.minutes }
   end
 
