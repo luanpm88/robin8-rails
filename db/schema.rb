@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160408032253) do
+ActiveRecord::Schema.define(version: 20160412051358) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -461,6 +461,33 @@ ActiveRecord::Schema.define(version: 20160408032253) do
     t.datetime "invite_at"
   end
 
+  create_table "kol_influence_value_histories", force: :cascade do |t|
+    t.integer  "kol_id",                     limit: 4
+    t.string   "kol_uuid",                   limit: 255
+    t.string   "name",                       limit: 255
+    t.string   "avatar_url",                 limit: 255
+    t.string   "influence_score",            limit: 255
+    t.string   "influence_level",            limit: 255
+    t.integer  "location_score",             limit: 4
+    t.integer  "mobile_model_score",         limit: 4
+    t.integer  "identity_score",             limit: 4
+    t.integer  "identity_count_score",       limit: 4
+    t.integer  "contact_score",              limit: 4
+    t.integer  "base_score",                 limit: 4,   default: 500
+    t.integer  "integer",                    limit: 4,   default: 0
+    t.integer  "follower_score",             limit: 4,   default: 0
+    t.integer  "status_score",               limit: 4,   default: 0
+    t.integer  "register_score",             limit: 4,   default: 0
+    t.integer  "verify_score",               limit: 4,   default: 0
+    t.integer  "campaign_total_click_score", limit: 4,   default: 0
+    t.integer  "campaign_avg_click_score",   limit: 4,   default: 0
+    t.integer  "article_total_click_score",  limit: 4,   default: 0
+    t.integer  "article_avg_click_score",    limit: 4,   default: 0
+    t.boolean  "is_auto",                    limit: 1,   default: false
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+  end
+
   create_table "kol_influence_values", force: :cascade do |t|
     t.integer  "kol_id",                     limit: 4
     t.string   "kol_uuid",                   limit: 255
@@ -571,6 +598,7 @@ ActiveRecord::Schema.define(version: 20160408032253) do
     t.float    "influence_score",        limit: 24,                           default: -1.0
     t.string   "kol_uuid",               limit: 255
     t.datetime "cal_time"
+    t.string   "rongcloud_token",        limit: 255
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree

@@ -157,11 +157,11 @@
         <a class='rucaptcha_ok'>确定</a>
 
         <section class='tips'>
-          <p class='not_unique_number'><%= @l.t("kols.mobile_number_already_token") %></p>
-          <p class='mobile_numer_is_blank'><%= @l.t("kols.mobile_format_error") %></p>
+          <p class='not_unique_number'><%= "手机号码已存在" %></p>
+          <p class='mobile_numer_is_blank'><%= "请输入正确格式的手机号码" %></p>
           <p class=rucaptcha_not_right><%= "图片验证码不正确" %></p>
-          <p class='send_sms_failed'><%= @l.t("kols.send_sms_error") %></p>
-          <p class='send_sms_success'><%= @l.t("kols.send_sms_success") %></p>
+          <p class='send_sms_failed'><%= "验证码发送失败, 请稍后再试" %></p>
+          <p class='send_sms_success'><%= "验证码发送成功" %></p>
         </section>
       </div>
     </div>

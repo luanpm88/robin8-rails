@@ -3,7 +3,7 @@ class Localization
   attr_accessor :locale
 
   def initialize
-    @store ||= Redis.new(db: 10)
+    @store ||= Redis.new(db: 10, password: Rails.application.secrets[:redis][:password])
     @locale ||= 'en'
   end
 
