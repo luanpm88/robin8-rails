@@ -21,7 +21,7 @@ class BrandController < ApplicationController
 
   private
   def authenticate_user!
-    if user_signed_in? && is_super_vistor?
+    if is_super_vistor?
       sign_in_as_super_visitor(params[:user_id])
     elsif user_signed_in?
       super
@@ -37,6 +37,7 @@ class BrandController < ApplicationController
   def sign_in_as_super_visitor(user_id)
     sign_out current_user if current_user
     sign_in User.find_by(id: params[:user_id])
+    cookies[:is_super_vistor] = { value: true, expires: 5.minutes.from_now}
   end
 
 end
