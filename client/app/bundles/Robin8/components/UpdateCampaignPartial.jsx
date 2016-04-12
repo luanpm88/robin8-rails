@@ -10,7 +10,7 @@ import TargetPartial from './create_campaign/TargetPartial';
 import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
-import initToolTip from './shared/initToolTip';
+import initToolTip from './shared/InitToolTip';
 
 const validate = new FormValidate({
   name: { require: true },
