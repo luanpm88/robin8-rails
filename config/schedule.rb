@@ -37,10 +37,13 @@ every 1.day, :at => '12:00 pm' do
 end
 
 every 1.day, :at => '11:00 am' do
-  command "PushMessage.push_campaign_message"
+  runner "PushMessage.push_campaign_message"
 end
 
 every 1.day, :at => '17:30 pm' do
-  command "PushMessage.push_campaign_message"
+  runner "PushMessage.push_campaign_message"
 end
 
+every :sunday, :at => '0:15 am' do
+  runner "Task.do_something_great"
+end

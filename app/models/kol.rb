@@ -477,8 +477,7 @@ class Kol < ActiveRecord::Base
                                        :avatar_url => identity.avatar_url, :verified => identity.verified, :registered_at => identity.registered_at,
                                        score: identity.score, followers_count: identity.followers_count,  friends_count: identity.friends_count,
                                        statuses_count: identity.statuses_count, kol_uuid:  kol_uuid, refresh_time: identity.refresh_time,
-                                       access_token_refresh_token: identity.access_token_refresh_token)
-        tmp_identity.update_s
+                                       access_token_refresh_time: identity.access_token_refresh_time)
         tmp_identity.save
       end
 

@@ -9,8 +9,9 @@ class Ocr
     File.open("#{invite_floder_path}/#{screenshot_name}", "wb"){|f| f.write(params[:screenshot][:tempfile].read) }
     # `cd /home/deployer/apps/screenshot_approve && python  find.py /home/deployer/apps/screenshot_approve/images/campaign/campaign.jpg /home/deployer/apps/screenshot_approve/images/wechat_screenshot/wechat_screen_1.jpg `
     result = `cd #{ocr_root_path} && python  find.py #{invite_floder_path}/#{logo_name} #{invite_floder_path}/#{screenshot_name} `    rescue nil
+    Rails.logger.info "--campaign_invite_id:#{campaign_invite.id}----result:#{result}"
     if result.present?
-      parse_result(res)
+      parse_result(result)
     else
      return ['failure', 'unfound']
     end
@@ -18,8 +19,9 @@ class Ocr
 
   def self.parse_result(res)
     most_detail = []
-    most_priority = 0
-    res.split('\n')[1..-1].each do |item|
+    most_priority = -1
+    Rails.logger.info  res.split("\n")[0..-1]
+    res.split("\n")[1..-1].each do |item|
       points = item.split(" ")
       priority = 0
       detail = []
@@ -46,7 +48,8 @@ class Ocr
         most_priority = priority
       end
     end
-    status = (priority == 5 ? 'passed' : 'failure')
+    Rails.logger.info "-----parse-result:  --#{most_priority} --- #{most_detail}"
+    status = (most_priority == 5 ? 'passed' : 'failure')
     return [status, most_detail.join(',')]
   end
 end

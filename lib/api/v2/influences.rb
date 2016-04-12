@@ -148,6 +148,17 @@ module API
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
 
+        # 维度得分
+        params do
+          requires :kol_uuid, type: String
+        end
+        get 'item_rate' do
+          kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+          item_rate = kol_value.get_item_scores
+          present :error, 0
+          present :item_rate, item_rate
+        end
+
         # 分享分数
         params do
           requires :kol_uuid, type: String

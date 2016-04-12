@@ -261,7 +261,7 @@ ActiveRecord::Schema.define(version: 20160408032253) do
   add_index "contacts", ["email", "origin"], name: "index_contacts_on_email_and_origin", using: :btree
   add_index "contacts", ["twitter_screen_name", "origin"], name: "index_contacts_on_twitter_screen_name_and_origin", using: :btree
 
-<<<<<<< HEAD
+  <<<<<<< HEAD
   create_table "discounts", force: :cascade do |t|
     t.string   "code",          limit: 255
     t.string   "description",   limit: 255
@@ -1142,5 +1142,3 @@ ActiveRecord::Schema.define(version: 20160408032253) do
   add_foreign_key "weibo_invites", "campaigns"
   add_foreign_key "weibo_invites", "weibos"
 end
-=======
->>>>>>> master2_dev
