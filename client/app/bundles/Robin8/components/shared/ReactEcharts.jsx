@@ -10,9 +10,9 @@ class ReactEcharts extends React.Component {
       const echarts = require("echarts");
       const chart = _this._renderChart(echarts)
       // need to manually resize the chart when the container changes size
-      elementResizeEvent.bind(window)(_this.refs.chart, () => {
-        chart.resize()
-      })
+      // elementResizeEvent.bind(window)(_this.refs.chart, () => {
+      //   chart.resize()
+      // })
       const { onReady } = _this.props
       if (typeof onReady === 'function') onReady(chart)
     }, 'echarts')
@@ -27,7 +27,9 @@ class ReactEcharts extends React.Component {
   }
 
   componentWillUnmount() {
-    //echarts.dispose(this.refs.chart)
+    // require.ensure(['echarts'], function(require) {
+    //   echarts.dispose(this.refs.chart)
+    // }
   }
 
   _renderChart(echarts) {
