@@ -414,6 +414,7 @@
 
 .spinner-form-area .bootstrap-touchspin .spinner-input {
   line-height: 34px;
+  font-family: FuturaStd-Medium;
 }
 
 .spinner-form-area .input-group-btn:first-child {
@@ -845,6 +846,10 @@
 .date-range-form-area .date-box {
   position: relative;
   display: table-cell;
+
+  input {
+    font-family: FuturaStd-Medium;
+  }
 }
 .date-range-form-area .date-box:after {
   content: '';

@@ -4,20 +4,20 @@
  * sandmanman@qq.com
  */
 
-@font-face {
-    font-family: 'SourceHanSansCN';
-    src: font-url("SourceHanSansCN-Normal.ttf");
-    font-style: normal;
-}
-
-@font-face {
-  font-family: 'SourceHanSansCN-Light';
-  src: asset-url("SourceHanSansCN-Light.eot?#iefix") format('embedded-opentype'),
-       asset-url("SourceHanSansCN-Light.woff") format('woff'),
-       asset-url("SourceHanSansCN-Light.ttf") format('truetype'),
-       asset-url("SourceHanSansCN-Light.svg#SourceHanSansCN-Light") format('svg');
-  font-style: lighter;
-}
+// @font-face {
+//     font-family: 'SourceHanSansCN';
+//     src: font-url("SourceHanSansCN-Normal.ttf");
+//     font-style: normal;
+// }
+//
+// @font-face {
+//   font-family: 'SourceHanSansCN-Light';
+//   src: asset-url("SourceHanSansCN-Light.eot?#iefix") format('embedded-opentype'),
+//        asset-url("SourceHanSansCN-Light.woff") format('woff'),
+//        asset-url("SourceHanSansCN-Light.ttf") format('truetype'),
+//        asset-url("SourceHanSansCN-Light.svg#SourceHanSansCN-Light") format('svg');
+//   font-style: lighter;
+// }
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
@@ -40,7 +40,7 @@ body.landing_page_bg {
 }
 body {
   color: #181616;
-  font-family: 'SourceHanSansCN' !important;
+  // font-family: 'SourceHanSansCN' !important;
   font-size: 16px;
 }
 .btn {
@@ -582,7 +582,7 @@ button.btn-blue:hover {
 }
 .jumbotron-content p {
   font-size: 16px !important;
-  font-family: 'SourceHanSansCN';
+  // font-family: 'SourceHanSansCN';
   line-height: 15px;
   letter-spacing: 2px;
   margin-bottom: 15px !important;
