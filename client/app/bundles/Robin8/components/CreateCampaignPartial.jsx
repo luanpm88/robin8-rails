@@ -13,6 +13,7 @@ import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
 import beforeUnload from './shared/BeforeUnload';
+import initToolTip from './shared/InitToolTip';
 
 const initCampaign = {
   age: 'all',
@@ -58,6 +59,7 @@ class CreateCampaignPartial extends React.Component {
 
   componentDidMount() {
     beforeUnload(this.props);
+    initToolTip({placement:'bottom', html: true});
   }
 
   render_breadcrumb() {

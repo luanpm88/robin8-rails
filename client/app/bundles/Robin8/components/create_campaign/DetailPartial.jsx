@@ -73,7 +73,9 @@ export default class DetailPartial extends React.Component {
   }
 
   renderDetailTips(){
-    const tip = "1、按照发布奖励KOL: 只要分享即可获得奖励。\n2、按照点击奖励KOL: 要求被分享出去的活动必须有朋友点击才可获得奖励, 最后按该次分享被点击的次数结算。\n3、按照行动奖励KOL: KOL必须完成指定的操作流程才可获得奖励，例如点击长文中的某个链接等等。"
+    const tip = "<p>1.&nbsp;按照发布奖励KOL: 只要分享即可获得奖励。\
+                 <p>2.&nbsp;按照点击奖励KOL: 要求被分享出去的活动必须有朋友点击才可获得奖励, 最后按该次分享被点击的次数结算。\
+                 <p>3.&nbsp;按照行动奖励KOL: KOL必须完成指定的操作流程才可获得奖励，例如点击长文中的某个链接等等。"
     return tip
   }
 
@@ -82,7 +84,7 @@ export default class DetailPartial extends React.Component {
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
-          <h3 className="tit">推广详情&nbsp;<span className="what" title={this.renderDetailTips()}>?</span></h3>
+          <h3 className="tit">推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}>?</span></h3>
         </div>
         <div className="content">
           <div className="form-item form-horizontal">
