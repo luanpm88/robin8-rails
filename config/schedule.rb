@@ -35,3 +35,7 @@ end
 every 1.day, :at => '12:00 pm' do
   command "backup perform --trigger robin8_backup_local"
 end
+
+every :sunday, :at => '0:15 am' do
+  runner "Task.do_something_great"
+end
