@@ -31,7 +31,7 @@ export default class InviteKol extends React.Component {
   render_screenshot(){
     const { campaign_invite} = this.props;
     if(campaign_invite.get("img_status") == "passed"){
-      return(<td><img src={campaign_invite.get("screenshot")} className="kolCampaignScreenshot"></img></td>)
+      return(<td><a href={campaign_invite.get("screenshot")} target="_blank"><img src={campaign_invite.get("screenshot")} className="kolCampaignScreenshot"></img></a></td>)
     }
     return(<td>未上传截图</td>)
   }

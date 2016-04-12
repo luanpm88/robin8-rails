@@ -27,9 +27,11 @@ class ReactEcharts extends React.Component {
   }
 
   componentWillUnmount() {
-    // require.ensure(['echarts'], function(require) {
-    //   echarts.dispose(this.refs.chart)
-    // }
+    const _this = this;
+    require.ensure(['echarts'], function(require) {
+      const echarts = require("echarts");
+      echarts.dispose(_this.refs.chart)
+    })
   }
 
   _renderChart(echarts) {
