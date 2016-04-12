@@ -1,4 +1,10 @@
-<%= link_to 'Search', search_marketing_dashboard_users_path, :class => 'btn btn-primary' %>
+<h3>品牌主列表</h3>
+<div class="well">
+  <%= form_tag search_marketing_dashboard_users_path do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以名称、手机号、ID、email 进行搜索", :class => "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
 
 <table class="table table-bordered">
   <thead>
