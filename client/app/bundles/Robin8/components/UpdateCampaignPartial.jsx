@@ -10,6 +10,7 @@ import TargetPartial from './create_campaign/TargetPartial';
 import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
+import initToolTip from './shared/initToolTip';
 
 const validate = new FormValidate({
   name: { require: true },
@@ -57,6 +58,7 @@ class UpdateCampaignPartial extends React.Component {
   }
 
   componentDidMount() {
+    initToolTip({placement:'bottom', html: true});
     this._fetchCampaign();
   }
 

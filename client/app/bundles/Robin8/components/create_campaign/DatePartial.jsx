@@ -37,8 +37,12 @@ export default class DatePartial extends React.Component {
     this._initDateTimePicker();
   }
 
+
+
   renderDateTips(){
-    const tip = "1、开始时间: 允许KOL参加活动的时间。\n2、结束时间: 活动设定结束时间, 或活动费用消耗完毕即活动结束时间。"
+    const tip = "<p>1.&nbsp;开始时间: 允许KOL参加活动的时间。</p> \
+                 <p>2.&nbsp;结束时间: 活动设定结束时间, 或活动费用消耗完毕即活动结束时间。</p> \
+                 <p>3.&nbsp;以北京时间为准。</p>"
     return tip
   }
   render() {
@@ -48,7 +52,7 @@ export default class DatePartial extends React.Component {
     return (
       <div className="creat-activity-form creat-date">
         <div className="header">
-          <h3 className="tit">推广时间&nbsp;<span className="what" title={this.renderDateTips()}>?</span></h3>
+          <h3 className="tit">推广时间&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDateTips()}>?</span></h3>
         </div>
         <div className="content">
           <div className="date-range-form-area input-daterange">
