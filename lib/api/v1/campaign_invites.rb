@@ -86,8 +86,7 @@ module API
         params do
           requires :id, type: Integer
           # requires :screenshot, type: File   if !Rails.env.development?
-          # options :campaign_logo, type: File
-          # options :app_platform, type: String, values: ['IOS','Android']
+          # optional :campaign_logo, type: File
         end
         put ':id/upload_screenshot' do
           # params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?

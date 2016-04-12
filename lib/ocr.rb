@@ -5,8 +5,8 @@ class Ocr
     screenshot_name = Rails.application.secrets[:ocr][:screenshot_name]
     invite_floder_path = "#{ocr_root_path}/campaign_invites/#{campaign_invite.id}"
     system("mkdir -p #{invite_floder_path}")
-    File.write("#{invite_floder_path}/#{logo_name}", params[:campaign_logo].read)
-    File.write("#{invite_floder_path}/#{screenshot_name}", params[:screenshot].read)
+    File.open("#{invite_floder_path}/#{logo_name}", "wb") {|f| f.write(params[:campaign_logo][:tempfile].read) }
+    File.open("#{invite_floder_path}/#{screenshot_name}", "wb"){|f| f.write(params[:screenshot][:tempfile].read) }
     # `cd /home/deployer/apps/screenshot_approve && python  find.py /home/deployer/apps/screenshot_approve/images/campaign/campaign.jpg /home/deployer/apps/screenshot_approve/images/wechat_screenshot/wechat_screen_1.jpg `
     result = `cd #{ocr_root_path} && python  find.py #{invite_floder_path}/#{logo_name} #{invite_floder_path}/#{screenshot_name} `    rescue nil
     if result.present?
