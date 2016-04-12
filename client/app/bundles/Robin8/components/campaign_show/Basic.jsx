@@ -14,7 +14,7 @@ export default class Basic extends React.Component {
         <div>
         <small className="campaign_action_url">
           <span>CPA地址:</span>
-          <a href={ campaign.get("action_url") } className="link" target="_blank">{ campaign.get("action_url") }</a>
+          <a href={ _.truncate(campaign.get("action_url"), {'length': 35}) } className="link" target="_blank">{ campaign.get("action_url") }</a>
         </small>
         <small className="campaign_action_short_url">
           <span>CPA短链:</span>
