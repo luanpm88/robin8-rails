@@ -1,13 +1,18 @@
 class CampaignInvite < ActiveRecord::Base
   include Redis::Objects
-  counter :redis_avail_click
-  counter :redis_total_click
+  counter :redis_avail_click        #有效计费点击
+  counter :redis_total_click        #所有点击
+  counter :redis_real_click         #所有有效点击(含活动结束后)
   counter :redis_new_income      #unit is cent
 
 
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
   CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果"]
   ImgStatus = ['pending','passed', 'rejected']
+  OcrStatus = ['pending', 'passed','failure']
+  OcrDetails = {"unfound" => "未找到活动", "time" => '发表时间必须在30分钟前', "group" => '不能设置分组', "owner" => '非本人发布的活动'}
+  # Ocr_detail  'unfound','time','group','owner']
+  #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
 
   validates_inclusion_of :status, :in => STATUSES
@@ -30,7 +35,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :today_approved, -> {where(:approved_at => Time.now.beginning_of_day..Time.now.end_of_day)}
   scope :approved_by_date, -> (date){where(:approved_at => date.beginning_of_day..date.end_of_day)}
   scope :not_rejected, -> {where("campaign_invites.status != 'rejected'")}
-  scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settle'")}
+  scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
 
   def upload_start_at
      approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
@@ -147,10 +152,10 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def add_click(valid, campaign = nil)
+  def add_click(valid, remark = nil)
     self.redis_avail_click.increment if valid
+    self.redis_real_click.increment if valid || remark == 'campaign_had_executed'
     self.redis_total_click.increment
-    # bring_income(campaign) if valid &&  campaign
     return true
   end
 
@@ -178,10 +183,19 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def self.income_by_day(kol,date)
-    # #
-    # cpp_income =  kol.campaign_invites.joins(:campaign).where("campaigns.per_budget_type = 'post'").where("campaign_invites.status != 'rejected'").where(:approved_at => date.beginning_of_day..date.end_of_day)
-    # kol.campaign_invites.joins(:campaign).where("campaigns.per_budget_type != 'post'").where("campaign_invites.status != 'rejected'").where(:approved_at => date.beginning_of_day..date.end_of_day)
-    #  kol.campaign_invites.where(:status != 'rejected')
+  def get_ocr_detail
+    return nil if self.ocr_detail.blank?
+    details = []
+    self.ocr_detail.split(",").each do |item_key|
+      details << OcrDetails[item_key]
+    end
+    details.join(",")
+  end
+
+  def self.get_click_info(kol_id)
+    invites =  CampaignInvite.where(:kol_id => kol_id).where("status != 'running'")
+    invite_count = invites.count
+    real_click_count = invites.collect{|t| t.redis_real_click.value }.sum
+    return  [invite_count, real_click_count]
   end
 end

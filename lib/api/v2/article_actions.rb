@@ -32,6 +32,18 @@ module API
           to_paginate(collect_article_actions)
           present :article_actions, collect_article_actions, with: API::V2::Entities::ArticleActionEntities::Summary
         end
+
+
+        #搜索文章列表
+        params do
+          optional :page, type: Integer
+        end
+        get 'history' do
+          articles = current_kol.article_actions.page(params[:page]).per_page(10)
+          present :error, 0
+          to_paginate(articles)
+          present :articles, articles, with: API::V2::Entities::ArticleEntities::Summary
+        end
       end
     end
   end

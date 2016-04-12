@@ -48,9 +48,16 @@ module Articles
         }
         sort = [ ]
         query = {
-          multi_match: {
-            query:  text,
-            fields:  [ "text", "title"]
+          function_score:{
+            script_score: {
+              script: "_score * 24*3600*1000 /(DateTime.now().getMillis() - doc.publish_date.value ) "
+            },
+            query: {
+               multi_match: {
+                query:  text,
+                fields:  [ "text", "title"]
+              }
+            }
           }
         }
       else      # 选择喜欢文章
@@ -73,7 +80,7 @@ module Articles
                               query: query,
                               sort: sort,
                               filter: filter,
-                              from: 0,
+                              from: options[:from] || 0,
                               size:  options[:size] || 30
                             }
         sources = res['hits']['hits'].collect{|t| t["_source"]}

@@ -14,12 +14,12 @@
 ActiveRecord::Schema.define(version: 20160408032253) do
 
   create_table "active_admin_comments", force: :cascade do |t|
-    t.string   "namespace",     limit: 255
-    t.text     "body",          limit: 65535
-    t.string   "resource_id",   limit: 255,   null: false
-    t.string   "resource_type", limit: 255,   null: false
+    t.string   "namespace",     limit: 191
+    t.text     "body",          limit: 16777215
+    t.string   "resource_id",   limit: 191
+    t.string   "resource_type", limit: 191
     t.integer  "author_id",     limit: 4
-    t.string   "author_type",   limit: 255
+    t.string   "author_type",   limit: 191
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -29,9 +29,9 @@ ActiveRecord::Schema.define(version: 20160408032253) do
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
   create_table "admin_users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "",    null: false
-    t.string   "encrypted_password",     limit: 255, default: "",    null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                  limit: 191
+    t.string   "encrypted_password",     limit: 255
+    t.string   "reset_password_token",   limit: 191
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
@@ -91,13 +91,13 @@ ActiveRecord::Schema.define(version: 20160408032253) do
   end
 
   create_table "article_comments", force: :cascade do |t|
-    t.text     "text",         limit: 65535
-    t.string   "comment_type", limit: 255
+    t.text     "text",         limit: 16777215
+    t.string   "comment_type", limit: 191
     t.integer  "sender_id",    limit: 4
-    t.string   "sender_type",  limit: 255
+    t.string   "sender_type",  limit: 191
     t.integer  "article_id",   limit: 4
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   add_index "article_comments", ["article_id"], name: "index_article_comments_on_article_id", using: :btree
@@ -105,11 +105,11 @@ ActiveRecord::Schema.define(version: 20160408032253) do
   add_index "article_comments", ["sender_type", "sender_id"], name: "index_article_comments_on_sender_type_and_sender_id", using: :btree
 
   create_table "articles", force: :cascade do |t|
-    t.text     "text",          limit: 65535
+    t.text     "text",          limit: 16777215
     t.integer  "campaign_id",   limit: 4
     t.integer  "kol_id",        limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "tracking_code", limit: 255
   end
 
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(version: 20160408032253) do
     t.string   "url",             limit: 255
     t.string   "attachment_type", limit: 255
     t.integer  "imageable_id",    limit: 4
-    t.string   "imageable_type",  limit: 255
+    t.string   "imageable_type",  limit: 191
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.string   "name",            limit: 255
@@ -148,25 +148,25 @@ ActiveRecord::Schema.define(version: 20160408032253) do
 
   create_table "campaign_categories", force: :cascade do |t|
     t.integer "campaign_id",      limit: 4
-    t.string  "iptc_category_id", limit: 255
+    t.string  "iptc_category_id", limit: 191
   end
 
   add_index "campaign_categories", ["campaign_id"], name: "index_campaign_categories_on_campaign_id", using: :btree
   add_index "campaign_categories", ["iptc_category_id"], name: "index_campaign_categories_on_iptc_category_id", using: :btree
 
   create_table "campaign_invites", force: :cascade do |t|
-    t.string   "status",        limit: 255
+    t.string   "status",        limit: 191
     t.integer  "campaign_id",   limit: 4
     t.integer  "kol_id",        limit: 4
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.date     "decline_date"
     t.string   "uuid",          limit: 255
     t.string   "share_url",     limit: 255
     t.integer  "total_click",   limit: 4,   default: 0
     t.integer  "avail_click",   limit: 4,   default: 0
     t.datetime "approved_at"
-    t.string   "img_status",    limit: 255, default: "pending"
+    t.string   "img_status",    limit: 255
     t.string   "screenshot",    limit: 255
     t.string   "reject_reason", limit: 255
     t.boolean  "is_invited",    limit: 1,   default: false
@@ -205,18 +205,18 @@ ActiveRecord::Schema.define(version: 20160408032253) do
 
   create_table "campaigns", force: :cascade do |t|
     t.string   "name",                 limit: 255
-    t.text     "description",          limit: 65535
+    t.text     "description",          limit: 16777215
     t.datetime "deadline"
-    t.decimal  "budget",                             precision: 10
+    t.decimal  "budget",                                precision: 10
     t.integer  "user_id",              limit: 4
-    t.datetime "created_at",                                                          null: false
-    t.datetime "updated_at",                                                          null: false
+    t.datetime "created_at",                                                           null: false
+    t.datetime "updated_at",                                                           null: false
     t.integer  "release_id",           limit: 4
-    t.text     "concepts",             limit: 65535
-    t.text     "summaries",            limit: 65535
-    t.text     "hashtags",             limit: 65535
+    t.text     "concepts",             limit: 16777215
+    t.text     "summaries",            limit: 16777215
+    t.text     "hashtags",             limit: 16777215
     t.string   "content_type",         limit: 255
-    t.boolean  "non_cash",             limit: 1,                    default: false
+    t.boolean  "non_cash",             limit: 1,                       default: false
     t.string   "short_description",    limit: 255
     t.text     "url",                  limit: 65535
     t.float    "per_action_budget",    limit: 53
@@ -224,12 +224,12 @@ ActiveRecord::Schema.define(version: 20160408032253) do
     t.text     "message",              limit: 65535
     t.string   "status",               limit: 255
     t.integer  "max_action",           limit: 4
-    t.integer  "avail_click",          limit: 4,                    default: 0
-    t.integer  "total_click",          limit: 4,                    default: 0
+    t.integer  "avail_click",          limit: 4,                       default: 0
+    t.integer  "total_click",          limit: 4,                       default: 0
     t.string   "finish_remark",        limit: 255
     t.string   "img_url",              limit: 255
     t.datetime "actual_deadline_time"
-    t.string   "per_budget_type",      limit: 255,                  default: "click"
+    t.string   "per_budget_type",      limit: 255
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -249,8 +249,8 @@ ActiveRecord::Schema.define(version: 20160408032253) do
     t.integer  "author_id",           limit: 4
     t.string   "first_name",          limit: 255
     t.string   "last_name",           limit: 255
-    t.string   "email",               limit: 255
-    t.string   "twitter_screen_name", limit: 255
+    t.string   "email",               limit: 191
+    t.string   "twitter_screen_name", limit: 191
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.integer  "origin",              limit: 1,   default: 0
@@ -261,6 +261,7 @@ ActiveRecord::Schema.define(version: 20160408032253) do
   add_index "contacts", ["email", "origin"], name: "index_contacts_on_email_and_origin", using: :btree
   add_index "contacts", ["twitter_screen_name", "origin"], name: "index_contacts_on_twitter_screen_name_and_origin", using: :btree
 
+<<<<<<< HEAD
   create_table "discounts", force: :cascade do |t|
     t.string   "code",          limit: 255
     t.string   "description",   limit: 255
@@ -1141,3 +1142,5 @@ ActiveRecord::Schema.define(version: 20160408032253) do
   add_foreign_key "weibo_invites", "campaigns"
   add_foreign_key "weibo_invites", "weibos"
 end
+=======
+>>>>>>> master2_dev

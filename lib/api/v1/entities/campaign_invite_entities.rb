@@ -22,6 +22,10 @@ module API
           expose :earn_money
           expose :tag
           expose :upload_interval_time
+          expose :ocr_status
+          expose :ocr_detail do |campaign_invite|
+            campaign_invite.get_ocr_detail
+          end
           expose :campaign, using: API::V1::Entities::CampaignEntities::Summary    if  lambda { |instance, options| instance.campaign.present? }
         end
       end

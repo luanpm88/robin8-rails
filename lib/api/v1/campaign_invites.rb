@@ -86,9 +86,10 @@ module API
         params do
           requires :id, type: Integer
           # requires :screenshot, type: File   if !Rails.env.development?
+          # optional :campaign_logo, type: File
         end
         put ':id/upload_screenshot' do
-          params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?
+          # params[:screenshot] = Rack::Test::UploadedFile.new(File.open("#{Rails.root}/app/assets/images/100.png"))  if Rails.env.development?
           campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
           campaign = campaign_invite.campaign  rescue nil
           if campaign_invite.blank?  || campaign.blank?
@@ -98,8 +99,13 @@ module API
             uploader.store!(params[:screenshot])
             campaign_invite.screenshot = uploader.url
             campaign_invite.img_status = 'pending'
+            #是否进入自动审核
+            if params[:campaign_logo].present?
+              campaign_invite.ocr_status, campaign_invite.ocr_detail = Ocr.get_result(campaign_invite, params)
+            end
             campaign_invite.save
-            return {:error => 0, :screenshot_url => uploader.url }
+            present :error, 0
+            present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
           else
             return error_403!({error: 1, detail: '该活动已错过上传截图时间' })
           end
