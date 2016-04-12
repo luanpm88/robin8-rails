@@ -4,7 +4,7 @@ class TmpIdentity < ActiveRecord::Base
   scope :from_app, -> {where(:from_type => 'app')}
 
   scope :provider , -> (provider) {where(:provider => provider)}
-  scope :order_by_provider, -> { order("case identities.provider  when 'wechat' then 3 when 'weibo' then 2 else 1 end  desc") }
+  scope :order_by_provider, -> { order("case provider  when 'wechat' then 3 when 'weibo' then 2 else 1 end  desc, score desc") }
 
   after_save :cal_identity_influence, :on => :create
 
@@ -36,19 +36,19 @@ class TmpIdentity < ActiveRecord::Base
                     name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
                     followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
                     registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
-                    kol_uuid: params[:kol_uuid], verified: params[:verified])
+                    kol_uuid: params[:kol_uuid], verified: params[:verified], refresh_time: Time.now, access_token_refresh_token: Time.now)
   end
 
 
   def self.get_name(kol_uuid, kol_id)
     name = Kol.find(kol_id).name rescue nil
-    name = TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.name rescue nil  if name.blank?
+    name = TmpIdentity.where(:kol_uuid => kol_uuid).order_by_provider.first.name rescue nil  if name.blank?
     name
   end
 
   def self.get_avatar_url(kol_uuid, kol_id)
     avatar_url = Kol.find(kol_id).avatar.url rescue nil
-    avatar_url = TmpIdentity.where(:kol_uuid => kol_uuid).order('provider asc,score desc').first.avatar_url rescue nil   if avatar_url.blank?
+    avatar_url = TmpIdentity.where(:kol_uuid => kol_uuid).order_by_provider.first.avatar_url rescue nil   if avatar_url.blank?
     avatar_url
   end
 

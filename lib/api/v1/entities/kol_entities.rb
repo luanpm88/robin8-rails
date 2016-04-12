@@ -29,6 +29,9 @@ module API
           expose :kol_uuid do |kol|
             kol.get_kol_uuid
           end
+          expose :rongcloud_token do |kol|
+            kol.get_rongcloud_token
+          end
         end
 
         class Account < Grape::Entity

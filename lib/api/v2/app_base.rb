@@ -13,6 +13,7 @@ module API
       mount API::V2::Upgrades
       mount API::V2::Notify
       mount API::V2::Messages
+      mount API::V2::System
     end
   end
 end
