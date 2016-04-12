@@ -185,6 +185,7 @@ module API
             return error_403!({error: 1, detail: '该营销活动已转发成功' })
           else
             campaign_invite = current_kol.share_campaign_invite(params[:id])
+            CampaignWorker.perform_async(campaign.id, 'fee_end') if campaign.need_finish
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end
