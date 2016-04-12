@@ -13,7 +13,7 @@ import DetailPartial from './create_campaign/DetailPartial';
 import DatePartial from './create_campaign/DatePartial';
 import BudgetPartial from './create_campaign/BudgetPartial';
 import beforeUnload from './shared/BeforeUnload';
-import initToolTip from './shared/initToolTip';
+import initToolTip from './shared/InitToolTip';
 
 const initCampaign = {
   age: 'all',
