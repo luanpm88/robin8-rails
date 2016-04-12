@@ -20,7 +20,7 @@ module Influence
     InfluenceLevels = [{:title => "影响力极好", :score => 800},
                        {:title => "影响力优秀", :score => 700},
                        {:title => "影响力尚可", :score => 550},
-                       {:title => "影响力极具潜力", :score => 500}]
+                       {:title => "影响力极具潜力", :score => 350}]
     def self.get_influence_level(score)
       InfluenceLevels.each do |level|
         return level[:title]  if score >= level[:score]

@@ -1,10 +1,12 @@
 module Influence
   class Identity
+    def self.get_best_identity(kol_uuid)
+      TmpIdentity.where(:kol_uuid => kol_uuid).order("score desc").first    rescue nil
+    end
+
     def self.get_identity_score(kol_uuid)
-      identity_score = 0
-      max_score_identity = TmpIdentity.where(:kol_uuid => kol_uuid).order("score desc").first
+      max_score_identity = get_best_identity(kol_uuid)
       identity_score = max_score_identity.score || 0 rescue 0
-      TmpKolInfluenceItem.store_item(kol_uuid, 'identity', identity_score, identity_score, max_score_identity.to_json)
       identity_score
     end
 
