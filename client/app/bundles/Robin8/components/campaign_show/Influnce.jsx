@@ -92,7 +92,7 @@ export default class Influnce extends React.Component{
 
   render(){
     const options = this.generate_echarts_options();
-
+    const { campaign } = this.props;
     return(
       <div className="panel influence-charts-panel">
         <div className="panel-heading">
@@ -102,7 +102,17 @@ export default class Influnce extends React.Component{
         <div id="influenceChartsPanel" className="panel-collapse collapse in">
           <div className="panel-body">
             <div className="influence-charts-area">
-              <ReactEcharts height={500} option={options}  showLoading={false}/>
+              { do 
+                {
+                  if(campaign.get("total_click") === 0){
+                    <div className="panel-body showMiddleTip">
+                      暂时没有Kol点击
+                    </div>
+                  }else{
+                    <ReactEcharts height={500} option={options}  showLoading={false}/>
+                  }
+                }
+              }
             </div>
           </div>
         </div>

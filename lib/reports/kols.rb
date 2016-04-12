@@ -1,4 +1,4 @@
-# Reports::Kols.signup_count_from_every_channel "2016-3-28".to_date, "2016-4-2".to_date
+# Reports::Kols.signup_count_from_every_channel "2016-4-8".to_date, "2016-4-12".to_date
 module Reports
   module Kols
     extend self

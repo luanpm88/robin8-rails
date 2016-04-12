@@ -14,7 +14,7 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
 
     search_by = params[:search_key]
 
-    @users = User.where("name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by).paginate(paginate_params)
+    @users = User.where("id LIKE ? OR name LIKE ? OR mobile_number LIKE ? OR email LIKE ?", search_by, search_by, search_by, search_by).paginate(paginate_params)
 
     render 'index'
   end
