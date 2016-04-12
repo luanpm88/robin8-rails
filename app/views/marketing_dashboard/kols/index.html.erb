@@ -1,4 +1,11 @@
-<%= link_to 'Search', search_marketing_dashboard_kols_path, :class => 'btn btn-primary' %>
+<h1>Kol列表</h1>
+<div class="well">
+  <%= form_tag search_marketing_dashboard_kols_path do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以name、email、mobile_number、id 搜索", class: "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
 
 <table class='table table-bordered'>
   <thead>
