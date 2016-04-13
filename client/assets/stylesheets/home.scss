@@ -224,7 +224,8 @@
 }
 
 .brand-activity-card .brand-activity-content .stat-info .remain-time {
-  padding-right: 19px;
+  padding-left: 30px;
+  text-align: center;
 }
 
 .brand-activity-card .brand-activity-content .stat-info .symbol {
@@ -396,4 +397,9 @@
 .pagination-mini ul > li > span {
   padding: 0 6px;
   font-size: 10.5px;
+}
+
+.recharge-btn:visited{
+  border: 1px solid #2dcad0;
+  background: #2dcad0;
 }

@@ -31,7 +31,11 @@ export default class InviteKol extends React.Component {
   render_reward(){
     const { campaign_invite, campaign} = this.props;
     if(campaign.get("per_budget_type") == "cpa" || campaign.get("per_budget_type") == "click"){
-      return(<td>{campaign_invite.get("get_avail_click")*campaign.get("per_action_budget")}</td>)
+      if (Number.isSafeInteger(campaign.get("per_action_budget")) === true || campaign_invite.get("get_avail_click") == 0){
+        return(<td>{(campaign_invite.get("get_avail_click")*campaign.get("per_action_budget")).toFixed()}</td>)
+      }else{
+        return(<td>{(campaign_invite.get("get_avail_click")*campaign.get("per_action_budget")).toFixed(1)}</td>)
+      }
     }
     return(<td>{campaign.get("per_action_budget")}</td>)
   }

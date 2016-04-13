@@ -106,16 +106,12 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   position: relative;
   float: left;
   list-style: none;
-
-  span.per-cost {
-    margin-right: 12px;
-  }
 }
 .brand-activity-card .brand-activity-content .stat-info li:first-child {
   text-align: left;
 }
-.brand-activity-card .brand-activity-content .stat-info li:last-child {
-  text-align: right;
+.brand-activity-card .brand-activity-content .stat-info li.remain-time {
+  text-align: center;
 }
 .brand-activity-card .brand-activity-content .stat-info li:last-child:after {
   display: none !important;

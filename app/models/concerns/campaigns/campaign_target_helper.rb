@@ -3,7 +3,7 @@ module Campaigns
     extend ActiveSupport::Concern
     included do
       has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender])}
-      has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols])}, class_name: "CampaignTarget"
+      has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
       has_many :remove_kol_targets, -> {where(:target_type => [:remove_kols])}, class_name: "CampaignTarget"
       has_many :add_kol_targets, -> {where(:target_type => [:add_kols])}, class_name: "CampaignTarget"
