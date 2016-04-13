@@ -23,7 +23,12 @@ Starting MailCatcher
 
 ### 4-15
 # rongyun
-#   ocr:
+#  ocr:
    :root_path: /home/deployer/apps/screenshot_approve
     :logo_name: 'logo.png'
     :screenshot_name: 'screenshot_name.png'
+# schedule auto cal influence
+  cal_influence:
+    :wday: 2
+    :hour: 0
+    :min:  5
