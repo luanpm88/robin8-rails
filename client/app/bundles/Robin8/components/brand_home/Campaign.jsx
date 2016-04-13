@@ -14,7 +14,7 @@ export default class Campaign extends React.Component {
 
   renderEditButton(campaign){
     if(canEditCampaign(campaign.get("status"))){
-      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn"></Link>
+      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn btn">编辑</Link>
     }
   }
 
