@@ -72,7 +72,7 @@ class Campaign < ActiveRecord::Base
       avail_clicks << shows.valid.by_date(date.to_datetime).count
     end
     if total_clicks.size == 1
-      labels.unshift ""
+      labels.unshift "活动开始"
       total_clicks.unshift 0
       avail_clicks.unshift 0
     end
