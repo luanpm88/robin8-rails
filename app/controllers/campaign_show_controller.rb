@@ -11,29 +11,25 @@ class CampaignShowController < ApplicationController
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
 
     Rails.logger.info "-----show ---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-
     if @campaign and @campaign.is_cpa?
       return deal_with_cpa_campaign uuid_params
     end
 
-    if @campaign.status == 'agreed' ||  @campaign_invite.blank? || (request.user_agent.include?("Jakarta Commons-HttpClient")  rescue false)
+    if @campaign.status == 'agreed' ||  @campaign_invite.blank?
       redirect_to @campaign.url
     else
-      CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
+      if Rails.env.development?
+        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
+      else
+        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
+      end
       redirect_to @campaign.url
-      # end
     end
   end
 
   def share
     @campaign_invite = CampaignInvite.find_by :id => params[:id]   rescue nil
     @campaign = @campaign_invite.campaign  rescue nil     if @campaign_invite
-    #Rails.logger.info "-----show ---#{@campaign.status} --0000--- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-    # if @campaign && @campaign.status != 'agreed'
-    #   CampaignShowWorker.perform_async(@campaign_invite.uuid, cookies[:_robin8_visitor], request.remote_ip)
-    # else
-    #   # render :text => "你访问的Campaign 不存在"
-    # end
   end
 
   private

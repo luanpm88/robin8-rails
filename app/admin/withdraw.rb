@@ -12,17 +12,22 @@ ActiveAdmin.register Withdraw do
 
     def unagree
       withdraw = Withdraw.find params[:id]
-      withdraw.update_attributes(:status => 'rejected')
-      redirect_to admin_withdraws_path
+      if withdraw.kol.frozen_amount >= withdraw.credits
+        withdraw.update_attributes(:status => 'rejected')
+        redirect_to admin_withdraws_path
+      else
+        flash[:error] = "提现金额超出冻结金额"
+        redirect_to admin_withdraws_path#, :notice => "提现金额超过可用余额"
+      end
     end
 
     def agree
       withdraw = Withdraw.find params[:id]
-      if withdraw.kol.avail_amount > withdraw.credits
+      if withdraw.kol.frozen_amount >= withdraw.credits
         withdraw.update_attributes(:status => 'paid')
         redirect_to admin_withdraws_path
       else
-        flash[:error] = "提现金额超过可用余额"
+        flash[:error] = "提现金额超出冻结金额"
         redirect_to admin_withdraws_path#, :notice => "提现金额超过可用余额"
       end
     end
