@@ -22,7 +22,11 @@ ActiveAdmin.register Feedback do
     column :device_model
     column :content
     column :screeshot do |resource|
-      image_tag resource.screenshot.url
+      if resource.screenshot &&  resource.screenshot.url
+        (link_to resource.screenshot.url, resource.screenshot.url, :target => "_blank")
+      else
+        ''
+      end
     end
     column :created_at
   end

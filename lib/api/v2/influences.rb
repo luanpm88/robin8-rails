@@ -144,6 +144,16 @@ module API
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
         end
 
+        # 分享分数
+        params do
+          requires :kol_uuid, type: String
+        end
+        put 'share' do
+          kol_value = KolInfluenceValue.get_score(params[:kol_uuid])     rescue nil
+          kol_value.increment!(:share_times)                             if kol_value
+          present :error, 0
+        end
+
         # invite
         params do
           requires :kol_uuid, type: String

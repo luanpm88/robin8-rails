@@ -25,7 +25,7 @@
 
 <%= will_paginate @kols %>
 
-<div class="col-md-4">
+<div class="col-md-5">
   <div class="login-panel panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">新建过滤规则</h3>
@@ -51,6 +51,7 @@
     </div>
   </div>
 </div>
+
 
 <%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :method => :put, "data-confirm" => "您确定要审核通过吗"%>
 
