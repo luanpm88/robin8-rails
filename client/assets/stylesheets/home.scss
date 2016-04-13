@@ -141,7 +141,13 @@
       top: 17px;
       width: 82px;
       height: 36px;
-      background: url(~edit-button.png) no-repeat ;
+      border: 1px solid #e45d34;
+      color: #e45d34;
+    }
+    .edit-campaign-btn:hover {
+      color: #fff;
+      border: 1px solid #e14b1e;
+      background: #e14b1e;
     }
   }
 }
