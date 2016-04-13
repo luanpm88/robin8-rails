@@ -42,7 +42,7 @@ class Transaction < ActiveRecord::Base
 
 
   ImgDomian = Rails.application.secrets[:qiniu][:bucket_domain]
-  AccountNotices = [{:question => "什么叫预计收入？", :answer => "您尚未完成的任务到目前为止预计会赚取的收入总和。", :logo => "http://#{ImgDomian}/account_incomeing.png"},
+  AccountNotices = [{:question => "什么叫预计收入？", :answer => "您尚未完成的任务到目前为止预计会赚取的收入总和。", :logo => "http://#{ImgDomian}/account_incoming.png"},
                     {:question => "可提现的金额什么意思？", :answer => '您参加活动后被审核通过，等待整个活动时间结束，酬劳就会由“预计收入”中的金额变成“可提现”金额。' , :logo => "http://#{ImgDomian}/account_amount.png"},
                     {:question => "提现中什么意思？", :answer => '正在提现过程中系统冻结的金额。', :logo => "http://#{ImgDomian}/account_withdrawing.png" },
                     {:question => "已提现什么意思？", :answer => '您已成功提现的金额。' , :logo => "http://#{ImgDomian}/account_withdrawed.png" },
