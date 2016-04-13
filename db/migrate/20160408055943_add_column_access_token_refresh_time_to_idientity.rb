@@ -11,5 +11,6 @@ class AddColumnAccessTokenRefreshTimeToIdientity < ActiveRecord::Migration
     TmpIdentity.all.each do |identity|
       identity.update_columns(:access_token_refresh_time => identity.created_at, :refresh_time => identity.created_at)
     end
+
   end
 end
