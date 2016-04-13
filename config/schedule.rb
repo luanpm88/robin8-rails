@@ -48,3 +48,4 @@ end
 #与secret 保持一致
 every :tuesday, :at => '00:05 am' do
   runner "KolInfluenceValue.schedule_cal_influence"
+end
