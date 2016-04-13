@@ -10,7 +10,7 @@ export default class InviteKol extends React.Component {
   render_kol_id() {
     const { campaign_invite } = this.props;
     if (isSuperVistor()) {
-      return <td>{campaign_invite.get("id")}</td>
+      return <td>{campaign_invite.get("kol").get("id")}</td>
     }
   }
 
@@ -52,7 +52,7 @@ export default class InviteKol extends React.Component {
     const { campaign_invite } = this.props;
     return(
       <tr>
-        {this.render_kol_id}
+        {this.render_kol_id()}
         {this.render_avatar(campaign_invite)}
         <td>{campaign_invite.get("kol").get("name") || "该用户未设置昵称"}</td>
         {this.render_avail_click()}
