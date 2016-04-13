@@ -44,6 +44,7 @@ every 1.day, :at => '17:30 pm' do
   runner "PushMessage.push_campaign_message"
 end
 
-every :sunday, :at => '0:15 am' do
-  runner "Task.do_something_great"
-end
+
+#与secret 保持一致
+every :tuesday, :at => '00:05 am' do
+  runner "KolInfluenceValue.schedule_cal_influence"

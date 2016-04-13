@@ -21,7 +21,7 @@ class KolInfluenceValue < ActiveRecord::Base
     end
     kol_value.location_score = Influence::Other.kol_location_score(kol_uuid,kol_city)    if kol_city
     kol_value.mobile_model_score = Influence::Other.mobile_model_score(kol_uuid, kol_mobile_model)   if kol_mobile_model
-    kol_value.identity_score = Influence::Identity.get_identity_score(kol_uuid)
+    kol_value.identity_score = Influence::Identity.cal_total_score(kol_uuid)
     kol_value.identity_count_score = Influence::Other.identity_count_score(kol_uuid)
     kol_value.contact_score = Influence::Contact.cal_score(kol_uuid,kol_id)
     kol_value.influence_score = get_total_score(kol_value)
@@ -33,7 +33,7 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value
   end
 
-  def self.get_total_score(kol_value)
+  def self.cal_total_score(kol_value)
     BaseScore + kol_value.location_score + kol_value.mobile_model_score + kol_value.identity_score +
       kol_value.contact_score +  kol_value.identity_count_score  + kol_value.campaign_total_click_score +
       kol_value.campaign_avg_click_score +  kol_value.article_total_click_score +  kol_value.article_avg_click_score
@@ -52,10 +52,15 @@ class KolInfluenceValue < ActiveRecord::Base
     contact_score = ItemBaseScore + contact_score
     rate = {}
     rate[:feature_rate] =  (feature_score / 216.0).round(2)
-    rate[:active_rate] =  (feature_score / 256.0).round(2)
-    rate[:campaign_rate] =  (feature_score / 176.0).round(2)
-    rate[:share_rate] =  (feature_score / 176.0).round(2)
-    rate[:contact_rate] =  (feature_score / 176.0).round(2)
+    rate[:active_rate] =  (active_score / 256.0).round(2)
+    rate[:campaign_rate] =  (campaign_score / 176.0).round(2)
+    rate[:share_rate] =  (share_score / 176.0).round(2)
+    rate[:contact_rate] =  (contact_score / 176.0).round(2)
     rate
   end
+
+  def self.schedule_cal_influence
+    CalInfluenceWorker.perform_async
+  end
+
 end

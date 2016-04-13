@@ -6,3 +6,5 @@ if Rails.env.production? || Rails.env.staging?
    config.redis = { url: Rails.application.secrets[:redis][:url], password: Rails.application.secrets[:redis][:password] }
   end
 end
+
+
