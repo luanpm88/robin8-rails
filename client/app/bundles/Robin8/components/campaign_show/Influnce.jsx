@@ -20,20 +20,19 @@ export default class Influnce extends React.Component{
       return {}
     }
 
-    if(campaign_statistics.get(0) === "post"){
+    if(campaign_statistics.get(0) == "post"){
       legend.push("总点击");
-      colors.push('#f98b33')
-      clicks <<
-        {
-          name: '总点击',
-          type:'line',
-          stack: '总量',
-          areaStyle: {normal: {}},
-          data:campaign_statistics.get(2)
-        }
+      colors.push('#f98b33');
+      clicks.push({
+            name: '总点击',
+            type:'line',
+            stack: '总量',
+            areaStyle: {normal: {}},
+            data: Array.from(campaign_statistics.get(2))
+          })
     }else{
-      colors.push('#f98b33')
-      colors.push('#62e6fb')
+      colors.push('#f98b33');
+      colors.push('#62e6fb');
       legend.push("计费点击");
       legend.push("总点击");
       clicks.push({
