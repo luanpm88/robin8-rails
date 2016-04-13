@@ -1,8 +1,8 @@
 class CampaignTarget < ActiveRecord::Base
   TargetTypes = {
-    :remove_campaigns => "去掉参与指定活动的人",
-    :remove_kols      => "去掉指定的kols",
-    :add_kols         => "添加指定的kols",
+    :remove_campaigns => "去掉参与指定活动的人(填写campaign_id)",
+    :remove_kols      => "去掉指定的kols(填写kol_id)",
+    :add_kols         => "添加指定的kols(填写(kol_id)",
 
   }
   attr_accessor :target_type_text
