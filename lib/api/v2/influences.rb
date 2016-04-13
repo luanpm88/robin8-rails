@@ -92,7 +92,7 @@ module API
         post 'bind_contacts' do
           Rails.logger.info "-----before: #{params[:kol_uuid]}----#{params[:contacts]}"
           if Rails.env.development?
-            contacts = Kol.where("mobile_number is not null").limit(40).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}
+            contacts = Kol.where("mobile_number is not null").limit(50).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}
           else
             contacts = JSON.parse(params[:contacts])
           end
@@ -157,6 +157,7 @@ module API
           item_rate = kol_value.get_item_scores
           present :error, 0
           present :item_rate, item_rate
+          present :cal_hisotry, KolInfluenceValueHistory.get_auto_history(current_kol.id)
         end
 
         # 分享分数
