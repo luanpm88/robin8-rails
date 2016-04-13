@@ -12,7 +12,7 @@ export function showCampaignTypeText(budget_type){
   }
 }
 
-export function formatDate(date, format="YYYY-M-D h:mm"){
+export function formatDate(date, format="YYYY-M-D H:mm"){
   return moment(date).format(format)
 }
 
