@@ -53,13 +53,14 @@ class KolInfluenceValue < ActiveRecord::Base
     active_score =  ItemBaseScore + follower_score + status_score + register_score
     campaign_score = ItemBaseScore + campaign_avg_click_score + campaign_total_click_score
     share_score = ItemBaseScore + article_avg_click_score + article_total_click_score
-    contact_score = ItemBaseScore + contact_score
+    contacts_score = ItemBaseScore + contact_score
     rate = {}
     rate[:feature_rate] =  (feature_score / 216.0).round(2)
     rate[:active_rate] =  (active_score / 256.0).round(2)
     rate[:campaign_rate] =  (campaign_score / 176.0).round(2)
     rate[:share_rate] =  (share_score / 176.0).round(2)
-    rate[:contact_rate] =  (contact_score / 176.0).round(2)
+    rate[:contact_rate] =  (contacts_score / 176.0).round(2)
+    puts rate
     rate
   end
 
