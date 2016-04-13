@@ -71,6 +71,11 @@ class Campaign < ActiveRecord::Base
       total_clicks << shows.by_date(date.to_datetime).count
       avail_clicks << shows.valid.by_date(date.to_datetime).count
     end
+    if total_clicks.size == 1
+      labels.unshift ""
+      total_clicks.unshift 0
+      avail_clicks.unshift 0
+    end
     [self.per_budget_type, labels, total_clicks, avail_clicks]
   end
 
