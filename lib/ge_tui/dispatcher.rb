@@ -54,6 +54,7 @@ module GeTui
       end
       res = eval("push_to_#{push_message.receiver_type.downcase}(push_message)")
       Rails.logger.pusher.info "-------push_message:#{push_message.id}----#{res}"
+      return if res.blank?
       if res['result'] == 'ok'
         push_message.result = 'ok'
         push_message.task_id = res["taskId"]
