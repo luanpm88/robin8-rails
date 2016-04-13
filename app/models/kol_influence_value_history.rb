@@ -11,7 +11,16 @@ class KolInfluenceValueHistory < ActiveRecord::Base
     history.save
     exist_auto_cal = KolInfluenceValueHistory.where(:kol_uuid => history.kol_uuid, :is_auto => true).count > 0 ? true : false
     if !exist_auto_cal && (Date.today.wday > ScheduleWday || ((Date.today.wday == ScheduleWday) &&  ((Time.now.hour * 60 + Time.now.min) >= (ScheduleHour * 60 + ScheduleMin))))
-      # auto_history = history = KolInfluenceValueHistory.new(:is_auto => is_auto)
+      auto_history = KolInfluenceValueHistory.new(:is_auto => true)
+      attrs = history.attributes
+      attrs.delete("id")
+      auto_history.attributes = attrs
+      auto_history.save
     end
+  end
+
+  #确保每周生成一次 auto=true 然后取最近4条
+  def self.get_auto_history(kol_id)
+     KolInfluenceValueHistory.where(:kol_id => kol_id).order("id desc").limit(4)
   end
 end
