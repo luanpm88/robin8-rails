@@ -99,7 +99,7 @@ module API
           Rails.logger.info "-----#{params[:kol_uuid]}----#{params[:contacts]}"
           return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
           if current_kol.blank?
-            TmpKolContact.add_contacts(params[:kol_uuid],contacts)
+            TmpKolContact.add_contacts(current_kol.id,contacts)
           else
             KolContact.add_contacts(params[:kol_uuid],contacts)
           end
@@ -131,7 +131,7 @@ module API
         end
         get 'rank' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-          if current_kol && current_kol.has_contacts
+          if current_kol
             KolContact.update_joined_kols(current_kol.id)
             joined_contacts = KolContact.joined.where(:kol_id => current_kol.id)
             contacts = KolContact.order_by_exist.where(:kol_id => current_kol.id)
@@ -158,6 +158,17 @@ module API
           present :error, 0
           present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
           present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid])
+        end
+
+        # 提升影响力
+        params do
+          requires :kol_uuid, type: String
+        end
+        get 'upgrade' do
+          kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+          present :error, 0
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+          present :upgrade_info, current_kol, with: API::V1::Entities::KolEntities::Upgrade
         end
 
         # 分享分数
