@@ -7,7 +7,7 @@ class KolStatus
   field :weibo_id, type: Integer
   field :weibo_mid, type: String
   field :weibo_idstr, type: String
-  field :text, type: Text
+  field :text, type: String
   field :source, type: String
   field :favorited, type: Boolean
   field :truncated, type: Boolean
@@ -16,8 +16,6 @@ class KolStatus
   field :comments_count, type: String
   field :attitudes_count, type: String
   field :visible, type: String
-  field :pic_ids, type: Text
-  field :ad, type: Text
-
+  field :pic_ids, type: Object
 
 end

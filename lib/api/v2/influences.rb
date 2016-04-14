@@ -152,12 +152,12 @@ module API
         params do
           requires :kol_uuid, type: String
         end
-        get 'item_rate' do
+        get 'item_detail' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           item_rate = kol_value.get_item_scores
           present :error, 0
-          present :item_rate, item_rate
-          present :cal_hisotry, KolInfluenceValueHistory.get_auto_history(current_kol.id)
+          present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
+          present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid])
         end
 
         # 分享分数

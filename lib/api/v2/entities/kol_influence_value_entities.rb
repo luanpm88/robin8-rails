@@ -14,6 +14,24 @@ module API
             end
           end
         end
+
+        class History  < Grape::Entity
+          expose :feature_rate do |history|
+            history[:feature_rate]
+          end
+          expose :active_rate do |history|
+            history[:active_rate]
+          end
+          expose :campaign_rate do |history|
+            history[:campaign_rate]
+          end
+          expose :campaign_rate do |history|
+            history[:campaign_rate]
+          end
+          expose :contact_rate do |history|
+            history[:contact_rate]
+          end
+        end
       end
     end
   end

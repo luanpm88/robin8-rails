@@ -27,6 +27,7 @@ class Weibo
   end
 
   def self.update_identity_info(identity)
+    Rails.logger.info "----update_identity_info"
     if identity.access_token_refresh_time <  Time.now + AccessTokenExpired
       update_identity_to_db(identity)
     elsif identity.refresh_token && identity.refresh_time < Time.now + RefreshTokenExpired
