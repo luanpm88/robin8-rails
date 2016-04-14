@@ -152,7 +152,7 @@ module API
         params do
           requires :kol_uuid, type: String
         end
-        get 'detail' do
+        get 'item_detail' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           item_rate = kol_value.get_item_scores
           present :error, 0
