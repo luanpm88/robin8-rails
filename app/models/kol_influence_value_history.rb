@@ -25,7 +25,7 @@ class KolInfluenceValueHistory < ActiveRecord::Base
   #确保每周生成一次 auto=true 然后取最近4条
   def self.get_auto_history(kol_uuid)
     history_scores = []
-    KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).order("id desc").limit(4).each do |record|
+    KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).order("id desc").limit(4).each do |record|
      history_scores << {:date => record.created_at.to_date, :score => record.influence_score}
     end
     history_scores
