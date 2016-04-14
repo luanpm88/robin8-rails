@@ -20,6 +20,7 @@ module Influence
     #计算 微博粉丝 得分
     def self.cal_follower_score(identity)
       count = identity.followers_count || 0  rescue 0
+      return 0 if  count <= 1
       score = (20 * Math.log10(count)).round(0)  rescue 0
       score  = 100 if score > 100
       score
@@ -28,6 +29,7 @@ module Influence
     #计算 微博数 得分
     def self.cal_status_score(identity)
       count = identity.statuses_count  || 0  rescue 0
+      return 0 if  count <= 1
       score = (12.5 * Math.log10(count)).round(0)  rescue 0
       score  = 50 if score > 50
       score
@@ -38,6 +40,7 @@ module Influence
       registered_at = identity.registered_at  || Time.now  rescue  Time.now
       registered_day = (Time.now - registered_at) / (24 * 60 * 60)
       count = registered_day / 30         # 注册多少月
+      return 0 if  count <= 1
       score = (15 * Math.log10(count)).round(0)     rescue 0
       score = 30 if score > 30
       score
