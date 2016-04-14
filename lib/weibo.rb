@@ -16,7 +16,7 @@ class Weibo
 
 
   def self.update_identity_to_db(identity)
-    server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.access_token}"
+    server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
     res_json = RestClient.get(server)
     res = JSON.parse res_json        rescue {}
     return if res.size == 0
@@ -50,7 +50,7 @@ class Weibo
   end
 
   def self.update_statuses_to_db(identity)
-    server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.access_token}"
+    server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
     res_json = RestClient.get(server)
     res = JSON.parse res_json        rescue {}
     return if res.size == 0

@@ -10,6 +10,7 @@ module Influence
     def self.get_avg_click_score(kol_id)
       invite_count, real_click_count = CampaignInvite.get_click_info(kol_id)
       avg_click_count = real_click_count / invite_count
+      return 0 if invite_count == 0
       score = (25 * Math.log10(avg_click_count)).round(0)   rescue 0
       score = 50  if score > 50
       score

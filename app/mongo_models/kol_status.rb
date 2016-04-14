@@ -30,7 +30,7 @@ class KolStatus
         truncated: status['truncated'], original_pic:status['original_pic'], reposts_count:status['reposts_count'],
         comments_count: status['comments_count'], attitudes_count: status['attitudes_count'], visible: status['visible'],
         pic_ids: status['pic_ids'], created: status['created_at']
-        )
+      )
     end
   end
 
