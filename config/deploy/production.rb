@@ -17,7 +17,7 @@
 
 if ENV['china_instance'] == 'Y'
   server '139.196.14.144', user: 'deployer', roles: %w{web app db}
-  set :branch, 'master_cn'
+  set :branch, 'react_master_cn'
 else
 
 end
