@@ -65,7 +65,11 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.schedule_cal_influence
-    CalInfluenceWorker.perform_async
+    if Rails.env.development?
+      CalInfluenceWorker.new.perform
+    else
+      CalInfluenceWorker.perform_async
+    end
   end
 
 end
