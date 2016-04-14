@@ -7,7 +7,7 @@ class Weibo
       url = "http://api.weibo.com/oauth2/access_token?client_id=1466698189&client_secret=1dca7fa45c0921a663e980a1c8c2f723&
       grant_type=refresh_token&redirect_uri=#{redirect_url}&refresh_token=#{identity.refresh_token}"
       res_json = RestClient.post url, {}   rescue {}
-      return if  res_json.size == 0
+      return if res_json.blank? || res_json.size == 0
       identity.token = res_json['access_token']
       identity.access_token_refresh_time = Time.now
       identity.save
@@ -19,7 +19,7 @@ class Weibo
     server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
     res_json = RestClient.get(server)    rescue {}
     res = JSON.parse res_json        rescue {}
-    return if res.size == 0
+    return if res.blank? || res.size == 0
     identity.followers_count =  res['followers_count']
     identity.statuses_count = res['statuses_count']
     identity.verified = res['verified']

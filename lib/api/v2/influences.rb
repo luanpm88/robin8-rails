@@ -99,9 +99,9 @@ module API
           Rails.logger.info "-----#{params[:kol_uuid]}----#{params[:contacts]}"
           return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
           if current_kol.blank?
-            TmpKolContact.add_contacts(current_kol.id,contacts)
+            TmpKolContact.add_contacts(params[:kol_uuid],contacts)
           else
-            KolContact.add_contacts(params[:kol_uuid],contacts)
+            KolContact.add_contacts(params[:kol_uuid, contacts, current_kol.id)
           end
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
