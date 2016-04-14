@@ -101,7 +101,7 @@ module API
           if current_kol.blank?
             TmpKolContact.add_contacts(params[:kol_uuid],contacts)
           else
-            KolContact.add_contacts(params[:kol_uuid, contacts, current_kol.id)
+            KolContact.add_contacts(params[:kol_uuid], contacts, current_kol.id)
           end
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
