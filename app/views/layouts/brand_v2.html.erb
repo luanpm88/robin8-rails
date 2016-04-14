@@ -9,10 +9,10 @@
     <meta property="og:image" content="/assets/ROBIN8-logo.png" />
     <meta property="wb:webmaster" content="7a41f1aee4f72768" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    <%= favicon_link_tag 'favicon.ico' %>
     <%= javascript_include_tag 'brand_v2' %>
     <%= stylesheet_link_tag    'brand_v2', media: 'all' %>
     <%= csrf_meta_tags %>
-    <%= favicon_link_tag 'favicon.ico' %>
 </head>
 <% if params[:controller] == 'pages' and params[:action] == 'home' %>
   <body class="landing_page_bg">
