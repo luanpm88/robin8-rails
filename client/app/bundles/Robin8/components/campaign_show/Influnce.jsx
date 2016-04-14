@@ -15,21 +15,24 @@ export default class Influnce extends React.Component{
     const { campaign_statistics } = this.props;
     const legend = [];
     const clicks = [];
+    const colors = []
     if(campaign_statistics.size != 4){
       return {}
     }
 
-    if(campaign_statistics.get(0) === "post"){
+    if(campaign_statistics.get(0) == "post"){
       legend.push("总点击");
-      clicks <<
-        {
-          name: '总点击',
-          type:'line',
-          stack: '总量',
-          areaStyle: {normal: {}},
-          data:campaign_statistics.get(2)
-        }
+      colors.push('#f98b33');
+      clicks.push({
+            name: '总点击',
+            type:'line',
+            stack: '总量',
+            areaStyle: {normal: {}},
+            data: Array.from(campaign_statistics.get(2))
+          })
     }else{
+      colors.push('#f98b33');
+      colors.push('#62e6fb');
       legend.push("计费点击");
       legend.push("总点击");
       clicks.push({
@@ -83,7 +86,7 @@ export default class Influnce extends React.Component{
         }
       ],
       series : Array.from(clicks),
-      color: ['#f98b33', '#62e6fb']
+      color: colors
     };
     console.log('----legend--');
     console.log(clicks)

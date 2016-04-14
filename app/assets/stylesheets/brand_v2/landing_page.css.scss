@@ -4,9 +4,13 @@
  * sandmanman@qq.com
  */
 
-input:-webkit-autofill {
+input:-webkit-autofill{
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
   border: 1px solid #CCC!important;
+}
+input:-webkit-autofill:focus{
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }
 
 .form-control:focus {
@@ -447,7 +451,7 @@ button.btn-blue:hover {
   background-image: image-url('register_name_icons.png')
 }
 .signinup-wrap .icon-mobile {
-  background-image: image-url('register_phone_icons.png');
+  background: image-url('register_phone_icons.png') no-repeat 3px;
 }
 .signinup-wrap .icon-verify {
   background-image: image-url('register_verification_icons.png');

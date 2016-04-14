@@ -73,6 +73,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 .campaign_action_short_url span, .campaign_action_url span, .campaign_url span{
   color: #FFF;
   font-size: 14px;
+  margin-right: 3px;
 }
 
 .brand-activity-card .brand-activity-content .summary {
@@ -154,6 +155,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 .brand-activity-card .brand-activity-content .stat-info .stat-num {
   color: #fff;
   font-size: 18px;
+  margin-left: -4px;
 }
 
 .brand-activity-card .brand-activity-content .stat-info .date {
@@ -236,6 +238,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 
 .kolCampaignScreenshot{
   height: 100px;
+  width: 60px;
 }
 
 .showMiddleTip{
