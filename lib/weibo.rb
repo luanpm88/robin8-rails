@@ -17,7 +17,7 @@ class Weibo
 
   def self.update_identity_to_db(identity)
     server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
-    res_json = RestClient.get(server)
+    res_json = RestClient.get(server)    rescue {}
     res = JSON.parse res_json        rescue {}
     return if res.size == 0
     identity.followers_count =  res['followers_count']
@@ -27,6 +27,7 @@ class Weibo
   end
 
   def self.update_identity_info(identity)
+    return if identity.token.blank?
     Rails.logger.info "----update_identity_info"
     if identity.access_token_refresh_time <  Time.now + AccessTokenExpired
       update_identity_to_db(identity)
@@ -40,6 +41,7 @@ class Weibo
 
 
   def self.update_statuses(identity)
+    return if identity.token.blank?
     # access_token 有效无需重新获取
     if identity.access_token_refresh_time <  Time.now + AccessTokenExpired
       update_statuses_to_db(identity)

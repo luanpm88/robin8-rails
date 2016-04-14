@@ -101,6 +101,16 @@ module API
             kol.get_rongcloud_token
           end
         end
+
+        class Upgrade < Grape::Entity
+          expose :campaign_count do |kol|
+            kol.campaign_invites.completed.size
+          end
+          expose :identity_count do |kol|
+            kol.identities.size
+          end
+          expose :has_contacts
+        end
       end
     end
   end

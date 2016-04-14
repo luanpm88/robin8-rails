@@ -16,8 +16,8 @@ class KolContact < ActiveRecord::Base
     end
   end
 
-  def self.add_contacts(kol_uuid,contacts)
-    present_mobiles = KolContact.where(:kol_uuid => kol_uuid).collect{|t| t.mobile.to_s }
+  def self.add_contacts(kol_id,contacts)
+    present_mobiles = KolContact.where(:kol_id => kol_id).collect{|t| t.mobile.to_s }
     KolContact.transaction do
       contacts.each do |contact|
         next if  contact['mobile'].blank?  || contact['name'].blank?   || Influence::Util.is_mobile?(contact['mobile'].to_s).blank?
