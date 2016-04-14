@@ -41,3 +41,7 @@ end
 every :tuesday, :at => '0:05 am' do
   runner "KolInfluenceValue.schedule_cal_influence"
 end
+
+every 12.hours do
+  runner "KolStatus.schedule_update_status"
+end

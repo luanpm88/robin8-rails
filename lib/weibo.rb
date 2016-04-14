@@ -54,7 +54,6 @@ class Weibo
     res_json = RestClient.get(server)
     res = JSON.parse res_json        rescue {}
     return if res.size == 0
-
-
+    KolStatus.add_status(identity, status)
   end
 end
