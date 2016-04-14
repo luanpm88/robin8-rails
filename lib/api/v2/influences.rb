@@ -101,7 +101,7 @@ module API
           if current_kol.blank?
             TmpKolContact.add_contacts(params[:kol_uuid],contacts)
           else
-            KolContact.add_contacts(params[:kol_uuid, contacts, current_kol.id)
+            KolContact.add_contacts(params[:kol_uuid], contacts, current_kol.id)
           end
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
@@ -166,8 +166,10 @@ module API
         end
         get 'upgrade' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+          rank_index = KolContact.joined.where(:kol_id => current_kol.id).where("influence_score > '#{kol_value.influence_score}'").count   + 1
           present :error, 0
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+          present :rank_index, rank_index
           present :upgrade_info, current_kol, with: API::V1::Entities::KolEntities::Upgrade
         end
 
