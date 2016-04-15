@@ -1,5 +1,6 @@
 class Campaign < ActiveRecord::Base
   include Redis::Objects
+  include Concerns::CampaignTest
   counter :redis_avail_click
   counter :redis_total_click
   include Campaigns::CampaignTargetHelper

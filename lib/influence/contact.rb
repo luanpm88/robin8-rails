@@ -6,6 +6,7 @@ module Influence
       else
         contact_count = TmpKolContact.where(:kol_uuid => kol_uuid).count
       end
+      return 0 if  contact_count <= 1
       score = (33 * Math.log10(contact_count)).round(0)     rescue 0
       score = 100 if score > 100
       score

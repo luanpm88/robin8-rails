@@ -101,7 +101,7 @@ module API
           if current_kol.blank?
             TmpKolContact.add_contacts(params[:kol_uuid],contacts)
           else
-            KolContact.add_contacts(params[:kol_uuid],contacts)
+            KolContact.add_contacts(params[:kol_uuid], contacts, current_kol.id)
           end
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
@@ -131,7 +131,7 @@ module API
         end
         get 'rank' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-          if current_kol && current_kol.has_contacts
+          if current_kol
             KolContact.update_joined_kols(current_kol.id)
             joined_contacts = KolContact.joined.where(:kol_id => current_kol.id)
             contacts = KolContact.order_by_exist.where(:kol_id => current_kol.id)
@@ -152,12 +152,25 @@ module API
         params do
           requires :kol_uuid, type: String
         end
-        get 'item_rate' do
+        get 'item_detail' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           item_rate = kol_value.get_item_scores
           present :error, 0
-          present :item_rate, item_rate
-          present :cal_hisotry, KolInfluenceValueHistory.get_auto_history(current_kol.id)
+          present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
+          present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid])
+        end
+
+        # 提升影响力
+        params do
+          requires :kol_uuid, type: String
+        end
+        get 'upgrade' do
+          kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+          rank_index = KolContact.joined.where(:kol_id => current_kol.id).where("influence_score > '#{kol_value.influence_score}'").count   + 1
+          present :error, 0
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+          present :rank_index, rank_index
+          present :upgrade_info, current_kol, with: API::V1::Entities::KolEntities::Upgrade
         end
 
         # 分享分数

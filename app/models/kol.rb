@@ -458,6 +458,7 @@ class Kol < ActiveRecord::Base
         identity.attributes = attrs
         identity.kol_id = kol_id
         identity.save
+        Weibo.update_identity_info(identity)
       end
     end
   end

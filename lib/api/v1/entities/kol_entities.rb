@@ -3,7 +3,7 @@ module API
     module Entities
       module KolEntities
         class Summary < Grape::Entity
-          expose :email, :mobile_number, :gender, :date_of_birthday,
+          expose :id, :email, :mobile_number, :gender, :date_of_birthday,
                  :alipay_account, :desc
           expose :name do  |kol|
             kol.name || kol.mobile_number
@@ -87,6 +87,29 @@ module API
           expose :new_income do |kol|
             kol.new_income.round(1)
           end
+        end
+
+        class Common < Grape::Entity
+          expose :email, :mobile_number
+          expose :name do  |kol|
+            kol.name || kol.mobile_number
+          end
+          expose :avatar_url do |kol|
+            kol.avatar.url(200)  rescue ''
+          end
+          expose :rongcloud_token do |kol|
+            kol.get_rongcloud_token
+          end
+        end
+
+        class Upgrade < Grape::Entity
+          expose :campaign_count do |kol|
+            kol.campaign_invites.completed.size
+          end
+          expose :identity_count do |kol|
+            kol.identities.size
+          end
+          expose :has_contacts
         end
       end
     end
