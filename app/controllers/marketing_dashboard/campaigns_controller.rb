@@ -2,6 +2,8 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def index
     @campaigns = if params[:kol_id]
                    Kol.find(params[:kol_id]).campaigns.order('created_at DESC')
+                 elsif params[:user_id]
+                  User.find(params[:user_id]).campaigns.order('created_at DESC')
                  else
                    Campaign.all.order('created_at DESC')
                  end.paginate(paginate_params)
