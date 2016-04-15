@@ -1,4 +1,5 @@
 class KolInfluenceValue < ActiveRecord::Base
+  UpgradeNotices = ["1. 绑定更多的社交账号，提升你的影响力分数","2. 积极参与悬赏活动，增强个人账户的活跃度","3. 邀请更多好友加入Robin8，通过通讯录建立你的朋友圈，精准分析你的影响力"]
   #计算总价值
   BaseScore = 380
   def self.cal_and_store_score(kol_id, kol_uuid, kol_city, kol_mobile_model, is_auto = false)
@@ -69,6 +70,17 @@ class KolInfluenceValue < ActiveRecord::Base
       CalInfluenceWorker.new.perform
     else
       CalInfluenceWorker.perform_async
+    end
+  end
+
+  def self.diff_score(kol_uuid)
+    last_auto = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).where("created_at < '#{Date.today.beginning_of_week}'").order("id desc").first   rescue nil
+    if last_auto
+      value = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).last
+      diff = value.influence_score - last_auto.influence_score
+      return "影响力分数#{value.influence_score}分 比上周增加了#{diff}分"
+    else
+      return nil
     end
   end
 
