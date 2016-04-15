@@ -67,7 +67,7 @@ module Articles
           bool: {
             filter: [
               { term: { chosen: 't'}},
-              { range: { publish_date: { gte: Date.today - 3.days }}}
+              { range: { publish_date: { gte: Date.today - 4.days }}}
             ]
           }
         }
