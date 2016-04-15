@@ -9,6 +9,6 @@ namespace :deploy_hanlder do
   task backup_current_assets: :environment do
     system("rm -rf /home/deployer/robin8_assets")
     system("mkdir -p /home/deployer/robin8_assets")
-    system("cp -rf /home/deployer/apps/robin8/current/public/assets /home/deployer/robin8_assets/")
+    system("cp -rf #{Dir.pwd}/public/assets /home/deployer/robin8_assets/")
   end  
 end
