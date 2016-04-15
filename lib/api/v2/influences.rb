@@ -156,6 +156,7 @@ module API
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           item_rate = kol_value.get_item_scores
           present :error, 0
+          present :diff_score, KolInfluenceValue.diff_score(params[:kol_uuid])
           present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
           present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid])
         end
@@ -168,6 +169,7 @@ module API
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
           rank_index = KolContact.joined.where(:kol_id => current_kol.id).where("influence_score > '#{kol_value.influence_score}'").count   + 1
           present :error, 0
+          present :upgrade_notices, KolInfluenceValue::UpgradeNotices
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
           present :rank_index, rank_index
           present :upgrade_info, current_kol, with: API::V1::Entities::KolEntities::Upgrade
