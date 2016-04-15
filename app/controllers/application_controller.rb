@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   before_filter :set_cookies
   before_filter :set_utm_source
   before_action :set_translations
-  before_action :china_redirect
   helper_method :china_instance?
   helper_method :china_request?
   helper_method :china_locale?
@@ -28,22 +27,11 @@ class ApplicationController < ActionController::Base
 
   def set_cookies
     cookies[:_robin8_visitor] ||= SecureRandom.hex
-    # cookies[:_robin8_visitor] = SecureRandom.hex
   end
 
-  def china_redirect
-    if Rails.env.production? and china_client? and not china_instance?
-      china_domain = if not Rails.application.secrets.china_domain.nil?
-                       Rails.application.secrets.china_domain
-                     else
-                       "http://robin8.cn"
-                     end
-      # return redirect_to "#{china_domain}#{request.fullpath}", :status => :moved_permanently
-    end
-  end
 
   def is_china_request?
-    (request.location && request.location.country.to_s == "China") || (china_instance? && request.location.ip == '127.0.0.1'  rescue false)
+    return true
   end
   alias_method :china_request?, :is_china_request?
 
@@ -154,6 +142,6 @@ class ApplicationController < ActionController::Base
   end
 
   def china_client?
-    request.location && request.location.country.to_s == "China"
+    return true
   end
 end

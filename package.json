@@ -4,8 +4,8 @@
   "description": "Built using the react_on_rails generator. Allows you to run npm install from root.",
   "main": "server.js",
   "engines": {
-    "node": "5.0.0",
-    "npm": "3.3.6"
+    "node": "5.10.1",
+    "npm": "3.8.3"
   },
   "scripts": {
     "postinstall": "cd client && npm install",

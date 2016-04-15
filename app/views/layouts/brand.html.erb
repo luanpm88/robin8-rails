@@ -2,7 +2,14 @@
 <html>
 <head>
   <title>Robin8</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="ROBIN8" />
+  <meta property="og:description" content="The next generation PR platform powered by artificial intelligence" />
+  <meta property="og:image" content="/assets/ROBIN8-logo.png" />
+  <meta property="wb:webmaster" content="7a41f1aee4f72768" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+  <%= favicon_link_tag 'favicon.ico' %>
   <%= env_stylesheet_link_tag(
     static: 'brand-static',
     media: 'all')
@@ -20,7 +27,7 @@
 
   <% if Rails.env.production? %>
     <!--Start of Zopim Live Chat Script-->
-    <script type="text/javascript">
+    <script type="text/javascript" defer async="true">
       window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
       d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
       _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
