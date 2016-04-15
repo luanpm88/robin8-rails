@@ -261,7 +261,6 @@ ActiveRecord::Schema.define(version: 20160412051358) do
   add_index "contacts", ["email", "origin"], name: "index_contacts_on_email_and_origin", using: :btree
   add_index "contacts", ["twitter_screen_name", "origin"], name: "index_contacts_on_twitter_screen_name_and_origin", using: :btree
 
-  <<<<<<< HEAD
   create_table "discounts", force: :cascade do |t|
     t.string   "code",          limit: 255
     t.string   "description",   limit: 255

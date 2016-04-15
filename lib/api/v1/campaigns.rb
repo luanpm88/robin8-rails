@@ -60,6 +60,9 @@ module API
           else
             campaign_invite = current_kol.receive_campaign(params[:id])
             campaign_invite = campaign_invite.reload
+            if current_kol.app_platform == "IOS" && current_kol.app_version == "1.1.1"
+              campaign_invite.campaign.url = campaign_invite.origin_share_url
+            end
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end

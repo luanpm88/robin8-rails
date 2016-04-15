@@ -2,7 +2,6 @@ class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
   before_action :authenticate_kol!, only: [:withdraw_apply]
-  before_action :set_video,:only => [:home,:landing_page_brand]
 
   def set_locale
     unless params[:locale].blank?
@@ -174,14 +173,4 @@ class PagesController < ApplicationController
       return redirect_to new_user_path
     end
   end
-
-  private
-  def set_video
-    if request.location && request.location.country.to_s == "China"
-      @video = "<iframe src='http://player.youku.com/embed/XOTI2NzA2MTY0' frameborder='0' allowfullscreen></iframe>"
-    else
-      @video =  "<iframe src='//www.youtube.com/embed/Si6XnxuqhYI' frameborder='0' allowfullscreen></iframe>"
-    end
-  end
-
 end
