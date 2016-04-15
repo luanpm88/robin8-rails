@@ -43,6 +43,6 @@ class KolInfluenceValueHistory < ActiveRecord::Base
       history_scores << {:date => date - (7 * index).days, :score => 0}
       index += 1
     end
-    history_scores
+    history_scores.sort_by{|t| t[:date]}
   end
 end
