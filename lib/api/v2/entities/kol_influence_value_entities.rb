@@ -25,8 +25,8 @@ module API
           expose :campaign_rate do |history|
             history[:campaign_rate]
           end
-          expose :campaign_rate do |history|
-            history[:campaign_rate]
+          expose :share_rate do |history|
+            history[:share_rate]
           end
           expose :contact_rate do |history|
             history[:contact_rate]

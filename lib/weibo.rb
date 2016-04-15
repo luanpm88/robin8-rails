@@ -16,9 +16,11 @@ class Weibo
 
 
   def self.update_identity_to_db(identity)
-    server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
-    res_json = RestClient.get(server)    rescue {}
+    server = "https://api.weibo.com/2/users/show.json?access_token=#{identity.token}&uid=#{identity.uid}"
+    res_json = RestClient.get(server)    rescue ""
     res = JSON.parse res_json        rescue {}
+    Rails.logger.info "----update_identity_to_db"
+    Rails.logger.info res
     return if res.blank? || res.size == 0
     identity.followers_count =  res['followers_count']
     identity.statuses_count = res['statuses_count']
@@ -27,7 +29,7 @@ class Weibo
   end
 
   def self.update_identity_info(identity)
-    return if identity.token.blank?
+    return if identity.token.blank? || identity.uid.blank?
     Rails.logger.info "----update_identity_info"
     if identity.access_token_refresh_time <  Time.now + AccessTokenExpired
       update_identity_to_db(identity)
@@ -53,9 +55,11 @@ class Weibo
 
   def self.update_statuses_to_db(identity)
     server = "https://api.weibo.com/2/statuses/user_timeline.json?access_token=#{identity.token}"
-    res_json = RestClient.get(server)
+    res_json = RestClient.get(server)    rescue ""
     res = JSON.parse res_json        rescue {}
-    return if res.size == 0
-    KolStatus.add_status(identity, status)
+    Rails.logger.info "----update_statuses_to_db"
+    Rails.logger.info res
+    return if res.blank? ||  res.size == 0
+    KolStatus.add_status(identity, res["statuses"])
   end
 end
