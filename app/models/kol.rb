@@ -81,6 +81,12 @@ class Kol < ActiveRecord::Base
     iptc_categories.size
   end
 
+  def avatar_url
+    if self.attributes["avatar"] and (self.attributes["avatar"].start_with?("http") or self.attributes["avatar"].start_with?("https"))
+      return self.attributes["avatar"]
+    end
+    return self.avatar.url
+  end
 
   def self.check_mobile_number mobile_number
     return Kol.where("mobile_number" => mobile_number).present?

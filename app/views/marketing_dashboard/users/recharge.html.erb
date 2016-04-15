@@ -1,0 +1,5 @@
+<h1>用户充值</h1>
+<%= form_tag marketing_dashboard_user_recharge_path do %>
+  <%= text_field_tag :credits, nil, :placeholder => "输入充值金额" %>
+  <%= submit_tag 'submit', :class => 'btn btn-primary' %>
+<% end %>

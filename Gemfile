@@ -1,4 +1,4 @@
-source 'https://ruby.taobao.org'
+source 'https://gems.ruby-china.org'
 # source 'https://ruby.taobao.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -164,6 +164,7 @@ group :development, :test do
   gem 'capistrano-sidekiq', '~> 0.4.0'
   gem 'capistrano-ssh-doctor', '~> 1.0.0'
   gem 'capistrano3-unicorn', '~> 0.2.0'
+  gem 'capistrano-faster-assets', '~> 1.0'
   gem 'pry-rails'
   gem 'pry-nav',    '0.2.4'
   gem 'pry-stack_explorer', '0.4.9.1'
@@ -189,8 +190,6 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'puma'
-
-  gem 'rack-mini-profiler'
 end
 
 group :test do

@@ -1,2 +1,0 @@
-module MediaListsHelper
-end

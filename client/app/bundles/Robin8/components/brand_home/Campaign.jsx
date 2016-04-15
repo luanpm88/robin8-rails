@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import moment from 'moment';
+import _ from 'lodash'
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign} from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -11,40 +12,60 @@ export default class Campaign extends React.Component {
     super(props, context);
   }
 
+  renderEditButton(campaign){
+    if(canEditCampaign(campaign.get("status"))){
+      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn btn">编辑</Link>
+    }
+  }
+
   render() {
 
-    const { campaign, tagColor, index } = this.props
+    const { campaign, tagColor, index } = this.props;
+    const { campaign_status } = this.props.campaign.get("status");
     return (
       <div className={tagColor} key={index}>
         <div className="brand-activity-content">
-          <a href="#" className="detail-link">&gt;</a>
-          <h2 className="activity-title">
-            { campaign.get("name") }
-          </h2>
-
-          <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="btn btn-blue btn-big quick-btn">
-            编辑
+          <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">&gt;</Link>
+          <Link to={`/brand/campaigns/${campaign.get("id")}`}>
+            <h2 className="activity-title">
+              { _.truncate(campaign.get("name"), {'length': 16})}
+            </h2>
           </Link>
 
+          { this.renderEditButton(campaign) }
           <small className="date">
-            { moment(campaign.get("start_time")).format("D.M.YYYY") } 至 { moment(campaign.get("deadline")).format("D.M.YYYY") }
+            { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
+            &nbsp;&nbsp;按照<span className="campaign-type">{showCampaignTypeText(campaign.get("per_budget_type"))}</span>奖励
           </small>
           <div className="summary">
-            { campaign.get("description") }
+            { _.truncate(campaign.get("description"), {'length': 120}) }
           </div>
-          <a href="#" className="link">
-            { campaign.get("url") }
-          </a>
-
           <ul className="stat-info grid-4">
-            <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
-            <li><span className="txt">参与人数</span><strong className="stat-num">69876</strong></li>
-            <li><span className="txt">点击率</span><strong className="stat-num">???</strong></li>
-            <li><span className="txt">剩余天数</span><strong className="stat-num">???</strong></li>
+            <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
+            <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
+            <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
+            <li>
+              <span className="txt">{ campaign.get("per_budget_type") === "post" ? "转发量" : "有效点击"}</span>
+              <div  className="remain-time">
+                <strong className="stat-num">{campaign.get("per_budget_type") === "post" ? campaign.get("post_count") : campaign.get("avail_click") }</strong>
+              </div>
+            </li>
           </ul>
         </div>
-        <div className="brand-activity-coverphoto pull-left">
-          <img src={ campaign.get('img_url') } alt="活动图片" />
+        <div className="brand-activity-coverphoto brand-home-campaign-img  pull-left">
+          { campaignStatusHelper(campaign.get("status")) }
+          <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
+            {
+              do {
+                if(campaign.get('img_url'))
+                  <img src={ campaign.get('img_url') } alt="" className="campaign_img" />
+                else
+                  <img src={ require('campaign-list-pic.jpg') } alt="" className="campaign_img" />
+              }
+            }
+
+          </Link>
+
         </div>
       </div>
 

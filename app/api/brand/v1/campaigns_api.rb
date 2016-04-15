@@ -2,10 +2,6 @@ module Brand
   module V1
     class CampaignsAPI < Base
 
-      before do
-        authenticate!
-      end
-
       resource :campaigns do
 
         # short_url api should not placed in here. but now I don't know where to placed :(
@@ -23,6 +19,14 @@ module Brand
           short_url = ShortUrl.convert origin_action_url
         end
 
+        params do
+          requires :campaign_id, type: String
+        end
+        get :statistics_clicks do
+          campaign = Campaign.find params[:campaign_id]
+          present campaign.get_stats
+        end
+
         desc 'Return a campaign by id'
         params do
           requires :id, type: Integer, desc: 'Campaign id'
@@ -36,22 +40,22 @@ module Brand
           requires :name, type: String
           requires :description, type: String
           requires :url, type: String
-          optional :img_url, type: String
+          requires :img_url, type: String
           requires :budget, type: Float
           requires :per_budget_type, type: String
           requires :per_action_budget, type: Float
+          optional :message, type: String
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
           requires :target, type: Hash do
-            requires :age, type:String
-            requires :region, type:String
-            requires :gender, type:String
+            requires :age    , type:String
+            requires :region , type:String
+            requires :gender , type:String
           end
-
           optional :campaign_action_url, type: Hash do
-            optional :action_url, type: String
-            optional :short_url, type: String
-            optional :action_url_identifier, type: String
+            optional :action_url            , type: String
+            optional :short_url             , type: String
+            optional :action_url_identifier , type: String
           end
         end
         post do
@@ -69,22 +73,22 @@ module Brand
           requires :name, type: String
           requires :description, type: String
           requires :url, type: String
-          optional :img_url, type: String
+          requires :img_url, type: String
           requires :budget, type: Float
           requires :per_budget_type, type: String
           requires :per_action_budget, type: Float
+          optional :message, type: String
           requires :start_time, type: DateTime
           requires :deadline, type: DateTime
           requires :target, type: Hash do
-            requires :age, type:String
-            requires :region, type:String
-            requires :gender, type:String
+            requires :age    , type:String
+            requires :region , type:String
+            requires :gender , type:String
           end
-
           optional :campaign_action_url, type: Hash do
-            optional :action_url, type: String
-            optional :short_url, type: String
-            optional :action_url_identifier, type: String
+            optional :action_url            , type: String
+            optional :short_url             , type: String
+            optional :action_url_identifier , type: String
           end
         end
         put ':id' do

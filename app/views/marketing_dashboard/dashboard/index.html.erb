@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Dashboard</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+  <div class="col-lg-3 col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-comments fa-5x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge"><%= Kol.where("created_at > ?", Date.today.to_time).count %></div>
+            <div>今日新增Kol 数量</div>
+          </div>
+        </div>
+      </div>
+      <a href="/marketing_dashboard/kols">
+        <div class="panel-footer">
+          <span class="pull-left">查看详情</span>
+          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+          <div class="clearfix"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="panel panel-green">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-tasks fa-5x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge"><%= Campaign.where(:status => "unexecute").count %></div>
+            <div>待审核的活动个数</div>
+          </div>
+        </div>
+      </div>
+      <a href="/marketing_dashboard/campaigns/pending">
+        <div class="panel-footer">
+          <span class="pull-left">查看详情</span>
+          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+          <div class="clearfix"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="panel panel-yellow">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-shopping-cart fa-5x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge"><%= CampaignInvite.where(:img_status => :pending).count %></div>
+            <div>待审核的截图个数</div>
+          </div>
+        </div>
+      </div>
+      <a href="/marketing_dashboard/campaign_invites/pending">
+        <div class="panel-footer">
+          <span class="pull-left">查看详情</span>
+          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+          <div class="clearfix"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="panel panel-red">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-support fa-5x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge"><%= Withdraw.all.where(status: 'pending').count %></div>
+            <div>待处理的提现记录</div>
+          </div>
+        </div>
+      </div>
+      <a href="/marketing_dashboard/withdraws/pending">
+        <div class="panel-footer">
+          <span class="pull-left">查看详情</span>
+          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+          <div class="clearfix"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- /.row -->

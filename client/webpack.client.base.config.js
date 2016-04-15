@@ -20,7 +20,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.less', '.png', '.jpg', '.gif', '.css'],
+    extensions: ['', '.js', '.jsx', '.less', '.scss', '.png', '.jpg', '.gif', '.css'],
     root: [
       path.resolve('./app/lib'),
       path.resolve('./assets/stylesheets'),
@@ -43,7 +43,7 @@ module.exports = {
     loaders: [
       // 加载普通静态资源
       { test: /\.(woff2?|svg)$/, loader: 'file?name=brand-[name]_[hash].[ext]' },
-      { test: /\.(ttf|eot)$/, loader: 'file?name=brand-[name]_[hash].[ext]' },
+      { test: /\.(ttf|eot|otf)$/, loader: 'file?name=brand-[name]_[hash].[ext]' },
       { test: /\.(jpe?g|png|gif|svg|ico)$/, loader: 'file?name=brand-[name]_[hash].[ext]' },
 
       // 扩展全局namespace
@@ -57,4 +57,5 @@ module.exports = {
     ],
   },
   postcss: [autoprefixer],
+  sassResources: ['./assets/stylesheets/app-variables.scss'],
 };

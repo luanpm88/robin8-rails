@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import Immutable from 'immutable';
 import _ from 'lodash'
 import BrandNav from '../components/shared/Nav';
-import "base.css";
-import "home.css";
+import "base.scss";
+import "home.scss";
 
 import * as brandActionCreators from '../actions/brandActionCreators';
 

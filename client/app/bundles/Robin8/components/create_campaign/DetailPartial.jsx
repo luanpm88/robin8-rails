@@ -1,45 +1,50 @@
 import React from 'react';
+import {ShowError} from '../shared/ShowError';
 
 export default class DetailPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange']);
+    _.bindAll(this, ['_fetchShortUrl', '_initTouchSpin', '_handlePerBudgetInputChange', '_listenPerBudgetTypeChange']);
   }
 
 
   _fetchShortUrl(e) {
+    e.preventDefault();
 
-    e.preventDefault()
+    const { action_url, short_url, action_url_identifier } = this.props;
 
-    const { short_url, action_url_identifier } = this.props
+    if(action_url.error) {
+      action_url.onBlur();
+      return;
+    }
 
-    const action_url = this.props.action_url.value
-    if(action_url == "") return;
-    if(action_url == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
+    if(action_url.value == $(".action-url").attr("data-origin-url") && $(".action_url_identifier").val() != "") return;
     const brand_id = this.props.brand.get('id').toString();
     const timestamps = Math.floor(Date.now()).toString();
     const random = Math.floor(Math.random() * 100000).toString();
-    const identifier = brand_id + timestamps + random
-    promise: fetch( `/brand_api/v1/campaigns/short_url?url=${action_url}&identifier=${identifier}`, { credentials: 'include' })
+    const identifier = brand_id + timestamps + random;
+
+    fetch( `/brand_api/v1/campaigns/short_url?url=${action_url.value}&identifier=${identifier}`, { credentials: 'same-origin' })
       .then(function(response) {
         response.json().then(function(data){
           short_url.onChange(data);
           action_url_identifier.onChange(identifier);
-          $(".action-url").attr("data-origin-url", action_url);
+          $(".action-url").attr("data-origin-url", action_url.value);
         })
       },
       function(error){
         console.log("-----fetchShortUrl error");
-      }
-    )
+      })
   }
 
   _initTouchSpin() {
     $('.per-budget-input').TouchSpin({
-      min: 0,
+      min: 0.1,
       max: 10000000,
-      prefix: '￥'
+      prefix: '￥',
+      step: 0.1,
+      decimals: 1,
     })
   }
 
@@ -50,13 +55,28 @@ export default class DetailPartial extends React.Component {
     })
   }
 
+  _listenPerBudgetTypeChange() {
+    const { per_action_budget } = this.props;
+    $("input[name='action_type']").change(function(){
+      per_action_budget.onBlur();
+    })
+  }
+
   componentDidMount() {
     this._initTouchSpin();
     this._handlePerBudgetInputChange();
+    this._listenPerBudgetTypeChange();
   }
 
   componentWillUnmount() {
     $('.spinner-input').off('change');
+  }
+
+  renderDetailTips(){
+    const tip = "<p>1.&nbsp;按照发布奖励KOL: 只要分享即可获得奖励。\
+                 <p>2.&nbsp;按照点击奖励KOL: 要求被分享出去的活动必须有朋友点击才可获得奖励, 最后按该次分享被点击的次数结算。\
+                 <p>3.&nbsp;按照行动奖励KOL: KOL必须完成指定的操作流程才可获得奖励，例如点击长文中的某个链接等等。"
+    return tip
   }
 
   render() {
@@ -64,7 +84,7 @@ export default class DetailPartial extends React.Component {
     return (
       <div className="creat-activity-form creat-content-sources">
         <div className="header">
-          <h3 className="tit">推广详情&nbsp;<span className="what">?</span></h3>
+          <h3 className="tit">推广详情&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDetailTips()}>?</span></h3>
         </div>
         <div className="content">
           <div className="form-item form-horizontal">
@@ -73,11 +93,11 @@ export default class DetailPartial extends React.Component {
             </p>
             <div className="sources-check radio">
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="click" onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
+                <input {...per_budget_type} type="radio" name="action_type" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
                 按照发布奖励KOL
               </label>
               <label>
-                <input {...per_budget_type} type="radio" name="action_type" value="post" onChange={per_budget_type.onChange} checked={per_budget_type.value === "post"} />
+                <input {...per_budget_type} type="radio" name="action_type" value="click" onChange={per_budget_type.onChange} checked={per_budget_type.value === "click"} />
                 按照点击奖励KOL
               </label>
               <label>
@@ -86,27 +106,24 @@ export default class DetailPartial extends React.Component {
               </label>
             </div>
 
-            { do
-              {
-                if ( per_budget_type && per_budget_type.value === 'cpa') {
-                  var action_url_style = {display: 'block'}
-                } else {
-                  var action_url_style = {display: 'none'}
-                }
-              }
-            }
-            <div className="action-url-group" style={ action_url_style }>
+            <div className="action-url-group" style={ (per_budget_type && per_budget_type.value == 'cpa') ? {display: 'block'} : {display: 'none'} }>
               <div className="clearfix">
                 <p className="action-url-text">确认链接</p>
-                <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+                <div className="action-url-section">
+                  <input {...action_url} type="text" data-origin-url={action_url.defaultValue} className="form-control action-url" placeholder="请填写确认页的URL方便追踪行动是否完成"></input>
+                  <ShowError field={action_url} />
+                </div>
               </div>
               <div className="clearfix">
                 <button className="btn btn-blue btn-default generate-short-url-btn" onClick={this._fetchShortUrl}>生成链接</button>
               </div>
               <div className="clearfix">
                 <p className="generate-short-url-text">生成链接</p>
-                <input {...short_url} type="text" className="action-short-url" disabled="disabled" readOnly></input>
-                <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
+                <div className="action-short-url_section">
+                  <input {...short_url} type="text" className="action-short-url" disabled="disabled" readOnly></input>
+                  <ShowError field={short_url} />
+                  <p className="action-url-notice">请将下载按钮的href或下载完成页的href替换成生成的链接以方便追踪</p>
+                </div>
                 <input {...action_url_identifier} type="hidden" disabled="disabled" className="action_url_identifier" readOnly></input>
               </div>
             </div>
@@ -114,10 +131,12 @@ export default class DetailPartial extends React.Component {
             <div className="per-budget-group">
               <p className="per-budget-text">单次预算</p>
               <div className="spinner-form-area">
-                <div className="spinner-box">
+                <div className="spinner-box per_action_budget-input">
                   <span className="symbol">$</span>
-                  <input {...per_action_budget} type="text" defaultValue={0} className="spinner-input per-budget-input" style={{display: 'block'}} />
-                  <p className="average-price">均价xxx</p>
+                  <input {...per_action_budget} type="text" className="clearfix spinner-input per-budget-input " style={{display: 'block'}} />
+                  <div className="per-budget-input-error">
+                    <ShowError field={per_action_budget} optionStyle={"padding-left: 45px"}/>
+                  </div>
                 </div>
               </div>
             </div>

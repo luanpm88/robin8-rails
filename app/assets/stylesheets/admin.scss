@@ -1,0 +1,17 @@
+/*
+*= require bootstrap-sass
+*= require lib/sb-admin-2
+*= require lib/metisMenu.min
+*= require sass-bootstrap-glyphicons
+*= require font-awsome
+*/
+@import 'bootstrap';
+
+td {
+  max-width: 100px !important;
+  word-break: break-all;
+}
+
+.search_input{
+  width: 300px;
+}

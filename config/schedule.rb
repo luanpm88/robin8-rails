@@ -35,3 +35,12 @@ end
 every 1.day, :at => '12:00 pm' do
   command "backup perform --trigger robin8_backup_local"
 end
+
+every 1.day, :at => '11:00 am' do
+  runner "PushMessage.push_campaign_message"
+end
+
+every 1.day, :at => '17:30 pm' do
+  runner "PushMessage.push_campaign_message"
+end
+

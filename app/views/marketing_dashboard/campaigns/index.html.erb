@@ -1,0 +1,43 @@
+<table class='table table-bordered'>
+
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>User ID</th>
+      <th>Type</th>
+      <th>CPA/CPP</th>
+      <th>Budget</th>
+      <th>Spent</th>
+      <th>Max Click</th>
+      <th>Avail Click</th>
+      <th>Total Click</th>
+      <th>Start_at</th>
+      <th>Deadline</th>
+      <th>Accepted Kols Count</th>
+      <th>Status</th>
+      <th>Ops</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @campaigns.each do |c| %>
+      <tr>
+        <% %w(id name user_id per_budget_type per_action_budget budget take_budget max_action get_avail_click get_total_click start_time deadline campaign_invites.count status).each do |v| %>
+          <td> <%= multi_send c, v %> </td>
+        <% end %>
+        <td>
+          <%= link_to '编辑', "/brand/campaigns/#{c.id}/edit?super_visitor_token=#{get_super_visitor_token}&user_id=#{c.user_id}", :target => "_blank" %> |<br/>
+          <%= link_to '详情', marketing_dashboard_campaign_path(c), :target => "_blank" %> | <br/>
+          <%= link_to '接受活动的Kols', marketing_dashboard_campaign_kols_path(c), :target => "_blank" %> | <br/>
+          <%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c), :target => "_blank" %> | <br/>
+          <%= link_to '统计', "/brand/campaigns/#{c.id}?super_visitor_token=#{get_super_visitor_token}&user_id=#{c.user_id}", :target => "_blank" %> | <br/>
+          <% if c.status == 'unexecute' %>
+            <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @campaigns %>

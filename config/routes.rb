@@ -1,5 +1,9 @@
 require 'sidekiq/web'
 
+%w(admin).each do |route_name|
+  load "#{Rails.root}/config/routes/#{route_name}.rb"
+end 
+
 Rails.application.routes.draw do
 
   get 'hello_world', to: 'hello_world#index'
@@ -12,8 +16,9 @@ Rails.application.routes.draw do
   get "react_fake_data/campaigns", to: 'react#campaigns'
   post "react_fake_data/campaigns", to: 'react#create_campaigns'
 
-
+  get 'qiniu_upload_token', to: 'brand#qiniu'
   get 'brand/(/*all)/', to: "brand#index"
+  get "brand", to: "brand#index"
 
   get 'campaign_show' => "campaign_show#show"
   get 'campaign_share' => "campaign_show#share"
@@ -38,6 +43,10 @@ Rails.application.routes.draw do
 
   match '/wechat_third/notify', :via => [:get, :post]
   match '/wechat_third/:appid/callback' => "wechat_third#callback", :via => [:get, :post]
+
+  # devise_for :admin_users, controllers: {
+  #   sessions: 'admin_users/sessions'
+  # }
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -107,14 +116,14 @@ Rails.application.routes.draw do
     sessions: "users/sessions",
     passwords: "kols/passwords"
   }
-  get '/kols/get_current_kol' => 'kols#get_current_kol'
-  get '/kols/current_categories' => 'kols#current_categories'
-  get '/kols/suggest_categories' => 'kols#suggest_categories'
-  get '/kols/suggest' => 'kols#suggest_kols'
-  get '/kols/get_attachments' => 'kols#get_attachments'
-  get '/kols/get_categories_labels' => 'kols#categories_labels'
-  get '/kols/get_social_list'
-  get '/kols/get_score'
+  # get '/kols/get_current_kol' => 'kols#get_current_kol'
+  # get '/kols/current_categories' => 'kols#current_categories'
+  # get '/kols/suggest_categories' => 'kols#suggest_categories'
+  # get '/kols/suggest' => 'kols#suggest_kols'
+  # get '/kols/get_attachments' => 'kols#get_attachments'
+  # get '/kols/get_categories_labels' => 'kols#categories_labels'
+  # get '/kols/get_social_list'
+  # get '/kols/get_score'
 
   resources :posts do
     put 'update_social', on: :member

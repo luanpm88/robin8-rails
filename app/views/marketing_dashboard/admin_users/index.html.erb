@@ -1,0 +1,22 @@
+<table class='table table-bordered'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>Last sign in</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_users.each do |a| %>
+      <tr>
+        <% %w(id email last_sign_in_at).each do |v| %>
+          <td> <%= a.send v %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @admin_users %>

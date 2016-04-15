@@ -22,6 +22,4 @@ class AvatarUploader < CarrierWave::Uploader::Base
       "#{uploader_secure_token}#{File.extname(file.path).downcase}" rescue "#{uploader_secure_token}#{File.extname(default_url).downcase}"
     end
   end
-
-
 end

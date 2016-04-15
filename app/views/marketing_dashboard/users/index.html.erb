@@ -1,0 +1,44 @@
+<h3>品牌主列表</h3>
+<div class="well">
+  <%= form_tag search_marketing_dashboard_users_path do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以名称、手机号、ID、email 进行搜索", :class => "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>MobileNumber</th>
+      <th>FirstName</th>
+      <th>LastName</th>
+      <th>Company</th>
+      <th>Amount</th>
+      <th>Avail Amount</th>
+      <th>Ops</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |u| %>
+      <tr>
+        <% %w(id name email mobile_number first_name last_name company amount avail_amount).each do |v| %>
+          <td> <%= u.send v %> </td>
+        <% end %>
+        <td>
+          <%= link_to '详情', marketing_dashboard_user_path(u.id) %>
+          </br>
+          |
+          <%= link_to '充值', marketing_dashboard_user_recharge_path(u.id) %>
+          </br>
+          |
+          <%= link_to '以品牌主身份查看', brand_path(user_id: u.id, super_visitor_token: get_super_visitor_token), :target => "blank" %> 
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @users %>

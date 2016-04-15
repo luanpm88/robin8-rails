@@ -4,8 +4,8 @@
   "description": "Built using the react_on_rails generator.",
   "main": "server.js",
   "engines": {
-    "node": "5.0.0",
-    "npm": "3.5.0"
+    "node": "5.10.1",
+    "npm": "3.8.3"
   },
   "repository": {
     "type": "git",
@@ -73,6 +73,7 @@
     "react": "^0.14.7",
     "react-addons-pure-render-mixin": "^0.14.7",
     "react-bootstrap": "^0.28.3",
+    "react-cookie": "^0.4.5",
     "react-dom": "^0.14.7",
     "react-on-rails": "3.0.0-rc.2",
     "react-redux": "^4.4.0",
@@ -97,15 +98,18 @@
     "chai": "^3.5.0",
     "chai-immutable": "^1.5.3",
     "eslint": "^1.10.3",
-    "eslint-config-shakacode": "^1.0.0",
     "eslint-config-airbnb": "^5.0.0",
+    "eslint-config-shakacode": "^1.0.0",
     "eslint-plugin-react": "^3.16.1",
     "express": "^4.13.4",
     "jade": "^1.11.0",
     "jscs": "^2.9.0",
     "jsdom": "^8.0.2",
     "mocha": "^2.4.5",
+    "moxie": "0.0.0",
+    "qiniu-js": "^1.0.14-beta",
     "react-addons-test-utils": "^0.14.7",
+    "react-cookie": "^0.4.5",
     "react-transform-hmr": "^1.0.2",
     "sleep": "^3.0.1",
     "webpack-dev-server": "^1.14.1"
