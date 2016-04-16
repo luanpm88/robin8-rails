@@ -735,3 +735,36 @@ a.download-btn:link{
     color: #f50000;
   }
 }
+
+@media(max-width: 640px){
+  .container-fluid{
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+  }
+
+  .jumbotron-content {
+    margin-top: 190px;
+    color: #fff;
+    text-align: center;
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 33px !important;
+      letter-spacing: 20px;
+      margin-left: 15px;
+    }
+
+    p {
+      font-size: 13px !important;
+      font-weight: lighter;
+      line-height: 15px;
+      margin-top: 88px;
+    }
+
+    .download-btn{
+      margin-top: 0px;
+    }
+  }
+
+}
