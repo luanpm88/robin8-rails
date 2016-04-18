@@ -226,7 +226,4 @@ gem 'csv_shaper'
 gem 'rack-attack'
 gem 'rack-test', require: 'rack/test'
 gem "non-stupid-digest-assets"
-
-# Mountable status page for your Rails application, to check Cache, Redis, Sidekiq ...
-# https://github.com/rails-engine/status-page
-gem 'status-page'
+gem 'status-page', :git => "https://github.com/gallifreyer/status-page.git"
