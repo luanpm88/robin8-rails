@@ -1,3 +1,3 @@
-Geocoder.configure(
-  :cache => Redis.new
-)
+# Geocoder.configure(
+#   :cache => Redis.new(password: Rails.application.secrets[:redis][:password])
+# )
