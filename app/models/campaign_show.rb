@@ -82,7 +82,12 @@ class CampaignShow < ActiveRecord::Base
     options.symbolize_keys!
 
     info = JSON.parse(Base64.decode64(uuid))   rescue {}
-    campaign = Campaign.find_by :id => info['campaign_id']  rescue nil
+    if info["campaign_action_url_identifier"].present?
+      campaign_action_url = CampaignActionUrl.find_by :identifier => info["campaign_action_url_identifier"]
+      campaign = @campaign_action_url.campaign rescue nil
+    else
+      campaign = Campaign.find_by :id => info['campaign_id']  rescue nil
+    end
 
     if campaign.is_cpa?
       if (options[:step].to_i == 2 or info["step"].to_i == 2)
