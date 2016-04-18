@@ -42,7 +42,7 @@ class MarketingDashboard::StasticDatasController < MarketingDashboard::BaseContr
   def day_statics
     day_count = 5
     @value = KolInfluenceValue.where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at)").group("DATE(created_at)")
-    @article = ArticleAction.where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at)").group("DATE(created_at)")
+    @article = ArticleAction.where(:forward => true).where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at)").group("DATE(created_at)")
     @campaign = CampaignInvite.where("created_at > '#{day_count.days.ago}'").select("DATE(created_at) as created, count(distinct(kol_id)) as count").order("DATE(created_at)").group("DATE(created_at)")
     @collect =  []
     today = Date.today
