@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     end
     resources :users, except: [:destroy, :new, :create] do
       match '/recharge' => 'users#recharge' , via: [:post, :get]
-      collection do 
+      collection do
         get 'search'
         post 'search'
       end
@@ -46,7 +46,11 @@ Rails.application.routes.draw do
       resources :campaign_shows, only: [:index]
     end
     resources :stastic_datas
-    resources :feedbacks, except: [:destroy, :new, :create]
+    resources :feedbacks, except: [:destroy, :new, :create]  do
+      member  do
+        get :processed
+      end
+    end
     resources :withdraws, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
