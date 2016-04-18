@@ -35,7 +35,6 @@ class BrandHomeContainer extends React.Component {
       })
     })
 
-
     return (
       <div>
         <BrandNav {...{ actions, data }} />
