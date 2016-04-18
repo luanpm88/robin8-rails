@@ -84,7 +84,7 @@ class CampaignShow < ActiveRecord::Base
     info = JSON.parse(Base64.decode64(uuid))   rescue {}
     if info["campaign_action_url_identifier"].present?
       campaign_action_url = CampaignActionUrl.find_by :identifier => info["campaign_action_url_identifier"]
-      campaign = @campaign_action_url.campaign rescue nil
+      campaign = campaign_action_url.campaign rescue nil
     else
       campaign = Campaign.find_by :id => info['campaign_id']  rescue nil
     end
