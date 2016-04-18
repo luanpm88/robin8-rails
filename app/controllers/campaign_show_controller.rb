@@ -52,8 +52,8 @@ class CampaignShowController < ApplicationController
     if other_options[:step] == 1
       redirect_to @campaign.url
     else
-      campaign_action_url = CampaignActionUrl.find_by :id => uuid_params[:campaign_action_url_id]
-      redirect_to (campaign_action_url.try(:action_url) || "http://robin8.net")
+      @campaign_action_url = CampaignActionUrl.find_by :identifier => uuid_params[:campaign_action_url_identifier]
+      redirect_to (@campaign_action_url.try(:action_url) || "http://robin8.net")
     end
   end
 end
