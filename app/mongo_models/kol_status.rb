@@ -23,9 +23,10 @@ class KolStatus
 
   def self.add_status(identity, statuses)
     statuses.each do |status|
-      exist  = KolStatus.where(:weibo_id => status.id)
+      Rails.logger.info status
+      exist  = KolStatus.where(:weibo_id => status['id']).first
       return if exist
-      KolStatus.create(:kol_id => identity.kol_id, :uid => identity.uid, weibo_id: status['id'], weibo_mid => status['mid'],
+      KolStatus.create!(kol_id: identity.kol_id, uid: identity.uid, weibo_id: status['id'], weibo_mid: status['mid'],
         weibo_idstr: status['id_str'], text: status['text'], source: status['source'], favorited: status['favorited'],
         truncated: status['truncated'], original_pic:status['original_pic'], reposts_count:status['reposts_count'],
         comments_count: status['comments_count'], attitudes_count: status['attitudes_count'], visible: status['visible'],
@@ -33,6 +34,7 @@ class KolStatus
       )
     end
   end
+
 
   def self.schedule_update_status
     if Rails.env.development?
