@@ -96,7 +96,7 @@ export default class Crop extends Component {
             <img id="cropImage" style={{maxWidth: '100%'}} />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.doCrop}>裁切 & 上传</Button>
+            <Button onClick={this.doCrop}>确定</Button>
             <Button onClick={this.close}>关闭</Button>
           </Modal.Footer>
         </Modal>
