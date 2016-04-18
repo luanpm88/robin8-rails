@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412051358) do
+ActiveRecord::Schema.define(version: 20160415103631) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 20160412051358) do
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.date     "decline_date"
-    t.string   "uuid",          limit: 255
+    t.string   "uuid",          limit: 100
     t.string   "share_url",     limit: 255
     t.integer  "total_click",   limit: 4,   default: 0
     t.integer  "avail_click",   limit: 4,   default: 0
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 20160412051358) do
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
   add_index "campaign_invites", ["kol_id"], name: "index_campaign_invites_on_kol_id", using: :btree
   add_index "campaign_invites", ["status"], name: "index_campaign_invites_on_status", using: :btree
+  add_index "campaign_invites", ["uuid"], name: "index_campaign_invites_on_uuid", unique: true, using: :btree
 
   create_table "campaign_shows", force: :cascade do |t|
     t.integer  "campaign_id",     limit: 4
@@ -191,6 +192,7 @@ ActiveRecord::Schema.define(version: 20160412051358) do
     t.datetime "updated_at",                    null: false
     t.string   "visitor_agent",   limit: 3555
     t.string   "visitor_referer", limit: 3555
+    t.string   "other_options",   limit: 255
   end
 
   create_table "campaign_targets", force: :cascade do |t|
@@ -326,9 +328,10 @@ ActiveRecord::Schema.define(version: 20160412051358) do
     t.string   "device_model", limit: 255
     t.string   "content",      limit: 255
     t.integer  "kol_id",       limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "screenshot",   limit: 255
+    t.string   "status",       limit: 255, default: "pending"
   end
 
   create_table "followers", force: :cascade do |t|
@@ -942,25 +945,25 @@ ActiveRecord::Schema.define(version: 20160412051358) do
     t.string   "token",                     limit: 255
     t.string   "token_secret",              limit: 255
     t.string   "name",                      limit: 255
-    t.datetime "created_at",                                                   null: false
-    t.datetime "updated_at",                                                   null: false
+    t.datetime "created_at",                                                 null: false
+    t.datetime "updated_at",                                                 null: false
     t.string   "url",                       limit: 255
     t.integer  "kol_id",                    limit: 4
     t.string   "avatar_url",                limit: 255
     t.string   "desc",                      limit: 255
-    t.text     "serial_params",             limit: 4294967295
+    t.text     "serial_params",             limit: 16777215
     t.string   "service_type_info",         limit: 255
     t.string   "verify_type_info",          limit: 255
     t.string   "wx_user_name",              limit: 255
     t.string   "alias",                     limit: 255
     t.string   "unionid",                   limit: 255
-    t.boolean  "has_grabed",                limit: 1,          default: false
+    t.boolean  "has_grabed",                limit: 1,        default: false
     t.string   "from_type",                 limit: 255
     t.integer  "followers_count",           limit: 4
     t.integer  "friends_count",             limit: 4
     t.integer  "statuses_count",            limit: 4
     t.datetime "registered_at"
-    t.boolean  "verified",                  limit: 1,          default: false
+    t.boolean  "verified",                  limit: 1,        default: false
     t.string   "refresh_token",             limit: 255
     t.datetime "refresh_time"
     t.string   "kol_uuid",                  limit: 255
@@ -994,9 +997,9 @@ ActiveRecord::Schema.define(version: 20160412051358) do
     t.string   "item_name",           limit: 255
     t.string   "item_value",          limit: 255
     t.string   "item_score",          limit: 255
-    t.text     "item_detail_content", limit: 16777215
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.text     "item_detail_content", limit: 65535
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "transactions", force: :cascade do |t|

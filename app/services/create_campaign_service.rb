@@ -4,21 +4,21 @@ class CreateCampaignService
   attr_reader :errors, :campaign
 
   def initialize user, args={}
-    @user = user
+    @user            = user
     @campaign_params = permited_params_from args
 
-    @errors = []
+    @errors          = []
   end
 
   def perform
-    if @campaign_params.empty? or @user.nil? or not @user.persisted?
+    if @campaign_params.empty? or @user.nil? or not @user.persisted? or not target_present?
       # todo: use I18n(also include blow errors)
       @errors << 'Invalid params or user!'
       return false
     end
 
     if not enough_amount?(@user, @campaign_params[:budget])
-      @errors << 'Not enough amount!'
+      @errors << '账号余额不足, 请充值!'
       return false
     end
 
@@ -75,6 +75,10 @@ class CreateCampaignService
 
   def any_action_url_present?
     @campaign_params[:campaign_action_url]
+  end
+
+  def target_present?
+    @campaign_params[:target] and [:age, :region, :gender].all? {|k| @campaign_params[:target].keys.include? k }
   end
 
 end

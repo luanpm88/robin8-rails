@@ -41,7 +41,7 @@ set :slack_msg_updated, -> { "#{fetch :slack_deploy_user} 部署 `#{fetch :branc
 set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml}
+set :linked_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml config/redis.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system client/node_modules}
@@ -94,6 +94,23 @@ namespace :deploy do
     end
   end
 
+  desc "同步assets"
+  task :sync_assets do
+    on roles(:web) do
+      within current_path do
+        if $*[-1] == "noassets"
+          with rails_env: fetch(:rails_env) do
+            execute :'bin/rake', "deploy_hanlder:sync_lastest_assets"
+          end
+        else
+          with rails_env: fetch(:rails_env) do
+            execute :'bin/rake', "deploy_hanlder:backup_current_assets"
+          end
+        end
+      end
+    end
+  end
+
   # desc 'Restart application'
   # task :restart do
   #   on roles(:app), in: :sequence, wait: 5 do
@@ -102,8 +119,9 @@ namespace :deploy do
   # end
 
   #after :publishing, :restart
-  # after :publishing, :upload_localization
+  after :publishing, :upload_localization
   after :publishing, :update_crontab
+  after :publishing, :sync_assets
   after :publishing, 'unicorn:restart'
 
   after :restart, :clear_cache do
@@ -115,5 +133,13 @@ namespace :deploy do
       end
     end
   end
+end
 
+desc "noassets"
+task :noassets do
+  if $*[-1] == "noassets"
+    puts '-'*80
+    puts "本次部署采用noassets方式, 使用的是上一次部署的assets 文件, 请确保你没有修改assets 资源！！"
+    puts '-'*80
+  end
 end

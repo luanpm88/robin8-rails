@@ -15,12 +15,8 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-if ENV['china_instance'] == 'Y'
-  server '139.196.36.27', user: 'deployer', roles: %w{web app db}
-  set :branch, 'QA'
-else
-
-end
+server '139.196.36.27', user: 'deployer', roles: %w{web app db}
+set :branch, 'QA'
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
 

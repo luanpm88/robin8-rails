@@ -3,13 +3,14 @@ class Campaign < ActiveRecord::Base
   include Concerns::CampaignTest
   counter :redis_avail_click
   counter :redis_total_click
+  include Campaigns::CampaignTargetHelper
+  include Campaigns::CampaignBaseHelper
 
   validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline
 
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
   belongs_to :user
-  has_many :campaign_targets
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
@@ -71,6 +72,11 @@ class Campaign < ActiveRecord::Base
       total_clicks << shows.by_date(date.to_datetime).count
       avail_clicks << shows.valid.by_date(date.to_datetime).count
     end
+    if total_clicks.size == 1
+      labels.unshift "活动开始"
+      total_clicks.unshift 0
+      avail_clicks.unshift 0
+    end
     [self.per_budget_type, labels, total_clicks, avail_clicks]
   end
 
@@ -97,14 +103,6 @@ class Campaign < ActiveRecord::Base
 
   def get_fee_info
     "#{self.take_budget} / #{self.budget}"
-  end
-
-  def get_campaign_action_urls
-    self.campaign_action_urls
-  end
-
-  def get_campaign_targets
-    self.campaign_targets
   end
 
   def take_budget
@@ -134,6 +132,10 @@ class Campaign < ActiveRecord::Base
     return valid_invites.count
   end
 
+  def join_count
+    valid_invites.count
+  end
+
   def get_share_time
     return 0 if status == 'unexecute'
     self.valid_invites.size
@@ -159,12 +161,11 @@ class Campaign < ActiveRecord::Base
         kol.add_campaign_id(campaign_id,false)
       end
     end
-    # 删除黑名单campaign
-    block_kols = Kol.where("forbid_campaign_time > '#{Time.now}'")
-    block_kols.each do |kol|
+    unmatched_kol_ids = get_unmatched_kol_ids
+    Kol.where(:id => unmatched_kol_ids).each do |kol|
       kol.delete_campaign_id campaign_id
     end
-    Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign block_kol_ids: ---#{block_kols.collect{|t| t.id}}-"
+    Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign unmatched_kol_ids: ---#{unmatched_kol_ids}-"
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
     _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
@@ -180,7 +181,7 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
-      Message.new_campaign(self)
+      Message.new_campaign(self, [], get_unmatched_kol_ids)
     end
     Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
@@ -248,7 +249,6 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       Message.new_remind_upload(self)
     end
-    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
 
   # 结算 for kol

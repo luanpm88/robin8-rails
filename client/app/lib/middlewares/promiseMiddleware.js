@@ -27,19 +27,13 @@ export default function promiseMiddleware() {
         if (redirect) {
           browserHistory.push(redirect)
         }
-
         return next({ ...rest, result: json, readyState: 'success' })
       }
     )['catch']( error => {
-      const response = error.response;
-
       error.response.json().then( (json) => {
-
-        // 自定义报错方式
-        alert(json.error)
+        alert(json.detail);
       })
-
-      next({ ...rest, readyState: 'failure' })
+      return next({ ...rest, readyState: 'failure'})
     });
   };
 }

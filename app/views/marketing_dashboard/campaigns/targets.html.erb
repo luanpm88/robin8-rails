@@ -1,0 +1,105 @@
+<h2><%= @title %></h2>
+<%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :method => :put, "data-confirm" => "您确定要审核通过吗"%>
+<% attrs = %w(id name email mobile_number) %>
+<table class='table table-bordered'>
+  <thead>
+    
+    <tr>
+      <% attrs.each do |attr| %>
+        <th><%= attr.camelcase %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |k| %>
+      <tr>
+        <% attrs.each do |v| %>
+          <td> <%= k.send v %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<%= will_paginate @kols %>
+
+<div class="col-md-5">
+  <div class="login-panel panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">新建过滤规则</h3>
+    </div>
+    <div class="panel-body">
+      <%= form_for(CampaignTarget.new, as: :campaign_target, url: add_target_marketing_dashboard_campaign_path(:campaign_id => @campaign.id), method: :post) do |f| %>
+        <div class="field form-group">
+          <%= devise_error_messages! %>
+        </div>
+        <div class="field form-group">
+          <%= f.label "过滤条件" %><br />
+          <%= f.select :target_type_text, CampaignTarget::TargetTypes.values, class: "form-control" %>
+        </div>
+        
+        <div class="field form-group">
+          <%= f.label "过滤content" %><br />
+          <%= f.text_field :target_content, autofocus: true, class: "form-control" %>
+        </div>
+        <div class="actions">
+          <%= f.submit "保存", class: "btn btn-lg btn-success btn-block" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :method => :put, "data-confirm" => "您确定要审核通过吗"%>
+
+<div class="login-panel panel panel-default well">
+  <div class="panel-heading">
+    <h1 style="display: block;"> 筛选规则列表 </h1>
+
+    <table class='table table-bordered'>
+      <thead>
+        <tr>
+          <th>过滤规则</th>
+          <th>过滤内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @campaign.manual_campaign_targets.each do |target| %>
+          <tr>
+            <td> <%= target.get_target_type_text %> </td>
+            <td> <%= target.target_content %> </td>
+          </tr>
+        <% end %>
+      </tbody>
+
+    </table>
+  </div>
+</div>
+
+<%= link_to "审核通过", marketing_dashboard_campaign_agree_path(@campaign), :class => "btn-primary btn pull-right", :method => :put, "data-confirm" => "您确定要审核通过吗"%>
+
+<h1> 过滤掉的kols </h1>
+<table class='table table-bordered well'>
+  <thead>
+    <tr>
+      <% attrs.each do |attr| %>
+        <th><%= attr.camelcase %></th>
+      <% end %>
+      <th>过滤理由</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @unmatched_kols.each do |k| %>
+      <tr>
+        <% attrs.each do |v| %>
+          <td> <%= k.send v %> </td>
+        <% end %>
+        <td><%= filter_kol_reason(k.id, @remove_kol_ids, @black_list_ids,  @receive_campaign_kol_ids, @today_receive_three_times_kol_ids) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>

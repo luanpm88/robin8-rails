@@ -1,0 +1,30 @@
+<%= form_for(@stastic_data, url: marketing_dashboard_stastic_datas_path) do |f| %>
+
+  <% if @stastic_data.errors.any? %>
+
+    <div id="error_explanation">
+      <h2><%= pluralize(@stastic_data.errors.count, "error") %> prohibited this stastic_data from being saved:</h2>
+      <ul>
+        <% @stastic_data.errors.full_messages.each do |msg| %>
+          <li> <%= msg %> </li>
+        <% end %>
+      </ul>
+    </div>
+
+  <% end %>
+
+  <div class='field'>
+    <%= f.label :start_time %>
+    <%= f.datetime_select :start_time %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :end_time %>
+    <%= f.datetime_select :end_time %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+
+<% end %>

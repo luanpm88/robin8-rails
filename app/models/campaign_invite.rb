@@ -7,6 +7,7 @@ class CampaignInvite < ActiveRecord::Base
 
 
   STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
+  CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果"]
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']
   OcrDetails = {"unfound" => "未找到活动", "time" => '发表时间必须在30分钟前', "group" => '不能设置分组', "owner" => '非本人发布的活动'}
@@ -26,7 +27,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :approved, -> {where(:status => 'approved').where("screenshot is null ")}
   scope :passed, -> {where(:img_status => 'passed')}
   scope :verifying_or_approved,  -> {where("status = 'finished' or status = 'approved'")}
-  scope :verifying, -> {where("(status = 'finished' or status = 'approved') and img_status != 'passed'  and screenshot is not null")}
+  scope :verifying, -> {where("(status = 'finished' and img_status != 'passed') or (status = 'approved' and screenshot is not null)")}
   scope :settled, -> {where(:status => 'settled')}
   # 已完成的概念改成  已审核通过（活动没结束 状态还是finished）或已结算（含结算失败）
   scope :completed, -> {where("img_status='passed'  or status = 'rejected'")}
@@ -87,10 +88,11 @@ class CampaignInvite < ActiveRecord::Base
     Message.new_check_message('screenshot_passed', self, campaign)
   end
 
-  def screenshot_reject
+  def screenshot_reject rejected_reason=nil
     campaign = self.campaign
     if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
       self.img_status = 'rejected'
+      self.reject_reason = rejected_reason
       self.save
       #审核拒绝
       Message.new_check_message('screenshot_rejected', self, campaign)

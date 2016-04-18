@@ -3,22 +3,27 @@ class UpdateCampaignService
   attr_reader :errors, :campaign
 
   def initialize user, campaign_id, args={}
-    @user = user
-    @campaign = Campaign.find_by_id campaign_id
+    @user                   = user
+    @campaign               = Campaign.find_by_id campaign_id
     @update_campaign_params = permited_params_from args
-
-    @errors = []
+    
+    @errors                 = []
   end
 
   def perform
+    if @update_campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil? or not target_present?
 
-    if @update_campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil?
       @errors << 'Invalid params or user/campaign!'
       return false
     end
 
     if @campaign.user.id != @user.id
       @errors << 'No permission!'
+      return false
+    end
+
+    if @campaign.status != "unexecute"
+      @errors << "活动已经开始, 不能编辑"
       return false
     end
 
@@ -29,23 +34,22 @@ class UpdateCampaignService
 
     origin_budget, budget, per_action_budget = @campaign.budget, @update_campaign_params[:budget], @update_campaign_params[:per_action_budget]
     if not enough_amount? @user, origin_budget, budget
-      @errors << 'Not enough amount!'
+      @errors << '账号余额不足, 请充值!'
       return false
     end
+
+    @update_campaign_params[:start_time] = @update_campaign_params[:start_time].to_formatted_s(:db)
+    @update_campaign_params[:deadline] = @update_campaign_params[:deadline].to_formatted_s(:db)
 
     begin
       ActiveRecord::Base.transaction do
 
-        if campaign_action_urls = @update_campaign_params[:action_url_list]
-          @campaign.campaign_action_urls.destroy_all
+        update_campaign_action_urls
+        update_campaign_targets
 
-          campaign_action_urls.each do |action_url|
-            @campaign.campaign_action_urls.create!(action_url: action_url)
-          end
-        end
-
-        @campaign.update_attributes(@update_campaign_params.tap {|c| c.delete :action_url_list})
+        @campaign.update_attributes(@update_campaign_params.reject {|c| [:campaign_action_url, :target].include? c })
         @campaign.reset_campaign origin_budget, budget, per_action_budget
+
       end
     rescue Exception => e
       @errors.concat e.record.errors.full_messages.flatten
@@ -72,7 +76,35 @@ class UpdateCampaignService
   end
 
   def any_action_url_present?
-    @update_campaign_params[:action_url_list] and @update_campaign_params[:action_url_list].any?
+    @update_campaign_params[:campaign_action_url]
+  end
+
+  def target_present?
+    @update_campaign_params[:target] and [:age, :region, :gender].all? {|k| @update_campaign_params[:target].keys.include? k }
+  end
+
+  def update_campaign_action_urls
+    if campaign.per_budget_type == 'cpa' && @update_campaign_params[:per_budget_type] != 'cpa'
+      campaign.campaign_action_urls.destroy_all and return
+    end
+
+    if (campaign_action_urls = @update_campaign_params[:campaign_action_url]) && @update_campaign_params[:per_budget_type] == 'cpa'
+      @campaign.campaign_action_urls.destroy_all
+
+      action_url = campaign_action_urls[:action_url]
+      short_url = campaign_action_urls[:short_url]
+      identifier = campaign_action_urls[:action_url_identifier]
+
+      @campaign.campaign_action_urls.create!(action_url: action_url, short_url: short_url, identifier: identifier)
+    end
+  end
+
+  def update_campaign_targets
+    @campaign.campaign_targets.destroy_all
+
+    @update_campaign_params[:target].each do |k,v|
+      @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
+    end
   end
 
 end

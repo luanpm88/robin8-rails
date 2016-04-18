@@ -41,11 +41,13 @@ module Articles
          articles.sample(DefaultSize)
        end
      end
+     # Rails.logger.elastic.info "==========articles_res:  #{articles.collect{|t| t['title']}} --id: #{articles.collect{|t| t['id']}}"
      #3. 取出，并把剩下的缓存住
      selected_articles = articles.shift(PerPage)
      Rails.cache.write("kol_articles_#{kol_id}_#{title}", articles, :expires_in => 1.days)
      #4. 返回取出的文章
-     Rails.logger.elastic.info "=======search_list===selected_articles:#{selected_articles.collect{|t| t['id']}}"
+     # Rails.logger.elastic.info "=======search_list===selected_articles:  #{selected_articles.collect{|t| t['title']}} --id: #{selected_articles.collect{|t| t['id']}}"
+     Rails.logger.elastic.info "=======search_list===selected_articles: #{selected_articles.collect{|t| t['id']}}"
      selected_articles
    end
 

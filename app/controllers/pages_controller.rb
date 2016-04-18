@@ -2,7 +2,6 @@ class PagesController < ApplicationController
   # skip_before_filter :validate_subscription
   before_action :authenticate_user!, only: [:add_ons]
   before_action :authenticate_kol!, only: [:withdraw_apply]
-  before_action :set_video,:only => [:home,:landing_page_brand]
 
   def set_locale
     unless params[:locale].blank?
@@ -14,33 +13,38 @@ class PagesController < ApplicationController
   end
 
   def home
-    if user_signed_in? && !current_user.active_subscription.blank?
-      render "home", :layout => 'application'
-    elsif user_signed_in?
-      render "home", :layout => 'application'
-    elsif kol_signed_in?
-
-      render "landing_page", :layout => 'landing' and return
-
-      if current_kol.confirmed_at == nil && current_kol.provider == 'signup'
-        flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
-      end
-
-      to_verify_count = current_kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).count
-      verify_failed_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'rejected').count
-
-      if to_verify_count>0 or verify_failed_count>0
-        flash[:verify_count] = {
-          :to_verify_count => to_verify_count,
-          :verify_failed_count => verify_failed_count
-        }
-      end
-
-      render "home", :layout => 'kol'
+    if user_signed_in?
+      redirect_to '/brand/'
     else
-      render "landing_page", :layout => 'landing'
+      render 'landing_page_v2', :layout => 'brand_v2'
     end
   end
+
+  # def home
+  #   if user_signed_in? && !current_user.active_subscription.blank?
+  #     render "home", :layout => 'application'
+  #   elsif user_signed_in?
+  #     render "home", :layout => 'application'
+  #   elsif kol_signed_in?
+  #     if current_kol.confirmed_at == nil && current_kol.provider == 'signup'
+  #       flash[:confirmation_alert] = @l.t('dashboard.check_to_activate')
+  #     end
+
+  #     to_verify_count = current_kol.campaign_invites.where(status: 'finished').where.not(img_status: 'passed').joins(:campaign).where('campaign_invites.avail_click > 0 AND campaigns.deadline > ?', Time.now - Campaign::SettleWaitTimeForKol).count
+  #     verify_failed_count = current_kol.campaign_invites.where(status: 'finished', img_status: 'rejected').count
+
+  #     if to_verify_count>0 or verify_failed_count>0
+  #       flash[:verify_count] = {
+  #         :to_verify_count => to_verify_count,
+  #         :verify_failed_count => verify_failed_count
+  #       }
+  #     end
+
+  #     render "home", :layout => 'kol'
+  #   else
+  #     render 'landing_page_v2', :layout => 'brand_v2'
+  #   end
+  # end
 
   def landing_page_brand
     render "landing_page_brand", :layout => 'landing'
@@ -169,14 +173,4 @@ class PagesController < ApplicationController
       return redirect_to new_user_path
     end
   end
-
-  private
-  def set_video
-    if request.location && request.location.country.to_s == "China"
-      @video = "<iframe src='http://player.youku.com/embed/XOTI2NzA2MTY0' frameborder='0' allowfullscreen></iframe>"
-    else
-      @video =  "<iframe src='//www.youtube.com/embed/Si6XnxuqhYI' frameborder='0' allowfullscreen></iframe>"
-    end
-  end
-
 end

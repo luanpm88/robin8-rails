@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robin8 Marketing Dashbard</title>
+    <meta charset='utf-8' />
+    <%= stylesheet_link_tag 'admin' %>
+    <% if params[:controller].include? 'sessions' %>
+    <% else %>
+      <%= javascript_include_tag 'admin' %>
+    <% end %>
+    <%= csrf_meta_tag %>
+  </head>
+  <body>
+    <% if params[:controller].include? 'sessions' %>
+      <%= yield %>
+    <% else %>
+      <div id="wrapper">
+
+        <!-- Navigation -->
+        <%= render :partial => "layouts/admin_nav" %>
+
+        <div id="page-wrapper">
+          <div>
+            <% if flash[:notice] %>
+              <div class='alert alert-success' role='alert'><%= flash[:notice] %></div>
+            <% end %>
+
+            <% if flash[:alert] %>
+              <div class='alert alert-danger' role='alert'><%= flash[:alert] %></div>
+            <% end %>
+            <%= yield %>
+          </div>
+        </div>
+        <!-- /#page-wrapper -->
+      </div>
+      <!-- /#wrapper -->
+    <% end %>
+  </body>
+</html>

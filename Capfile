@@ -21,7 +21,12 @@ require 'capistrano/rbenv'
 # require 'capistrano/chruby'
 require 'capistrano/bundler'
 require 'capistrano3/unicorn'
-require 'capistrano/rails/assets'
+
+unless $*[-1] == "noassets"
+  require 'capistrano/rails/assets'
+  require 'capistrano/faster_assets'
+end
+
 require 'capistrano/rails/migrations'
 require "whenever/capistrano"
 require 'capistrano/sidekiq'

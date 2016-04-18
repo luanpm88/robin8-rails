@@ -6,36 +6,5 @@
         <a href="#"><span><%= @l.t('header.menu') %></span></a>
       </li>
     </ul>
-    <section class="top-bar-section">
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <% if china_locale? %>
-          <li><a href='?locale=en'>EN</a></li>
-        <% else %>
-          <li><a href='?locale=zh'>CN</a></li>
-        <% end %>
-
-
-        <% unless mobile_request? %>
-          <li><a href="/home" class="advertisers_link"><%= @l.t('header.advertisers') %></a></li>
-        <% end %>
-
-        <% if user_signed_in? %>
-          <% if current_user.first_name.blank? || current_user.last_name.blank? %>
-            <li><a href='/'><%= current_user.name.humanize %></a></li>
-          <% else %>
-            <li><a href='/'><%= current_user.first_name.humanize + " " + current_user.last_name.humanize %></a></li>
-          <% end %>
-          <li><%= link_to @l.t('header.logout'), destroy_user_session_path, :method => :delete %></li>
-        <% else %>
-          <% if current_page?(home_path) %>
-            <li><a href='/signin?is_user=true'><%= @l.t('header.log_in') %></a></li>
-          <% else %>
-            <li><a href='/signin'><%= @l.t('header.log_in') %></a></li>
-          <% end %>
-        <% end %>
-      </ul>
-
-    </section>
   </nav>
 </div>
