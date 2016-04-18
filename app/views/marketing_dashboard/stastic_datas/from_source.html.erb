@@ -1,0 +1,24 @@
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>日期</th>
+    <th>渠道</th>
+    <th>数量</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @source_statics.each_with_index do |(date,data), date_index |  %>
+      <% next if date_index > 3 %>
+      <% data.each_with_index do |utm_s,index| %>
+        <tr>
+          <% if index == 0 %>
+            <td rowspan="<%= data.size %><"><%= date %></td>
+          <% end %>
+          <td><%= utm_s.utm_source %></td>
+          <td><%= utm_s.count %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+

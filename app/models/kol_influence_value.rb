@@ -77,7 +77,7 @@ class KolInfluenceValue < ActiveRecord::Base
     last_auto = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).where("created_at < '#{Date.today.beginning_of_week}'").order("id desc").first   rescue nil
     if last_auto
       value = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).last
-      diff = value.influence_score - last_auto.influence_score
+      diff = value.influence_score.to_i - last_auto.influence_score.to_i  rescue 0
       return "影响力分数#{value.influence_score}分 比上周增加了#{diff}分"
     else
       return nil

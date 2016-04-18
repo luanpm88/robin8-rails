@@ -3,6 +3,10 @@ class IntegrationWithDataEngineWorker
   sidekiq_options :retry => 3
 
   def perform spider_type, identity_id
+    # 暂时不执行
+    # RestClient 会导致 sidekiq 假死
+    # https://ruby-china.org/topics/23766
+    return
     IntegrationWithDataEngineWorker.spider_weibo_data spider_type, identity_id
   end
 

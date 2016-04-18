@@ -63,9 +63,9 @@ class ApplicationController < ActionController::Base
     @l.locale = locale
 
     if @l.store.get(locale)
-      @phrases ||=  JSON.parse(@l.store.get(locale))['application']
+      @phrases ||=  JSON.parse(@l.store.get(locale))['application']    rescue {}
     end
-    @en_phrases ||=  JSON.parse(@l.store.get("en"))['application']
+    @en_phrases ||=  JSON.parse(@l.store.get("en"))['application']     rescue {}
   end
 
   def china_locale?

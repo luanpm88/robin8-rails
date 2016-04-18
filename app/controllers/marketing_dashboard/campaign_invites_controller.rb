@@ -13,7 +13,7 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
     # valid_period = Campaign::SettleWaitTimeForBrand
     # @campaign_invites = CampaignInvite.joins(:campaign, :kol).where.not(:screenshot => "").where(:img_status => :pending).where(:status => ['approved', 'finished']).where("campaigns.deadline > ?", Time.now-valid_period).paginate(paginate_params)
 
-    @campaign_invites = CampaignInvite.where(:img_status => :pending).order('created_at DESC').paginate(paginate_params)
+    @campaign_invites = CampaignInvite.where(:img_status => :pending).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
   end
 
   def passed

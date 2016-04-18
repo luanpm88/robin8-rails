@@ -15,7 +15,7 @@ class PushArticle
   validates :article_id, presence: true
 
   def self.get_push_ids(kol_id)
-    recent_read_ids = ArticleAction.where(:kol_id => kol_id).where(:created_at.gte => 7.days.ago).order_by_status.collect{|t| t.article_id}   rescue []
+    recent_read_ids = ArticleAction.where(:kol_id => kol_id).where("created_at.gte > '#{7.days.ago}'").order_by_status.collect{|t| t.article_id}   rescue []
     push_ids = PushArticle.where(:kol_id => kol_id).where(:created_at.gte => 7.days.ago).order("created_at desc").collect{|t| t.article_id}            rescue []
     (recent_read_ids + push_ids)[0,4000]
   end
