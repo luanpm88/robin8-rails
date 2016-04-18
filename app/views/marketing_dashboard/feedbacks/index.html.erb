@@ -8,6 +8,7 @@
       <th>Device Model</th>
       <th>Content</th>
       <th>Screenshot</th>
+      <th>状态<th>
     </tr>
   </thead>
 
@@ -17,7 +18,14 @@
         <% %w(id app_version app_platform os_version device_model content).each do |v| %>
           <td> <%= f.send v %> </td>
         <% end %>
-        <td> <img src="<%= f.screenshot.url %>" alt=""> </td>
+        <td> <img src="<%= f.screenshot.url(200) %>" alt=""> </td>
+        <td id="feedback_<%= f.id %>">
+          <% if f.status == 'pending' %>
+              <%= link_to '设为已处理', processed_marketing_dashboard_feedback_path(f), :remote => true %>
+          <% else %>
+            已处理
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
