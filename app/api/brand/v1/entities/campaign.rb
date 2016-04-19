@@ -18,10 +18,10 @@ module Brand
         expose :per_action_budget
 
         expose :recruit_start_time do |object, opts|
-          object.recruit_start_time.strftime('%Y-%m-%d %H:%M')
+          object.recruit_start_time.strftime('%Y-%m-%d %H:%M') if object.recruit_start_time
         end
         expose :recruit_end_time do |object, opts|
-          object.recruit_end_time.strftime('%Y-%m-%d %H:%M')
+          object.recruit_end_time.strftime('%Y-%m-%d %H:%M') if object.recruit_start_time
         end
 
         expose :deadline do |object, opts|
