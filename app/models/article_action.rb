@@ -60,4 +60,11 @@ class ArticleAction < ActiveRecord::Base
     end
   end
 
+  def self.get_forward_info(kol_id)
+    artilces =  ArticleAction.where(:kol_id => kol_id, :forward => true)
+    article_count = artilces.count
+    read_count = artilces.collect{|t| t.redis_click.value }.sum
+    return  [article_count, read_count]
+  end
+
 end

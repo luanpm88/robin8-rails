@@ -1,6 +1,6 @@
 class CampaignShow < ActiveRecord::Base
   CookieTimeout = Rails.env.production? ? 45.minutes : 30.seconds
-  IpTimeout = Rails.env.production? ? 2.minutes : 10.seconds
+  IpTimeout = Rails.env.production? ? 1.minutes : 10.seconds
 
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
@@ -9,10 +9,6 @@ class CampaignShow < ActiveRecord::Base
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, options={})
     now = Time.now
-    # check campaign status
-    if campaign.status == 'executed'  ||  campaign.status == 'settled'
-      return [false, 'campaign_had_executed']
-    end
 
     if campaign.is_cpa?
       return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
@@ -70,8 +66,13 @@ class CampaignShow < ActiveRecord::Base
 
     # check visitor ip
     ip_score = IpScore.fetch_ip_score(visitor_ip)
-    if ip_score.to_i < 65
+    if ip_score.to_i < 60
       return [false, "ip_score_low"]
+    end
+
+      # check campaign status
+    if campaign.status == 'executed'  ||  campaign.status == 'settled'
+      return [false, 'campaign_had_executed']
     end
 
     return [true,nil]
@@ -109,7 +110,7 @@ class CampaignShow < ActiveRecord::Base
                         :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip,
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer, :other_options => options.inspect)
     Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark:#{remark}---cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
-    campaign_invite.add_click(status,campaign)
+    campaign_invite.add_click(status,remark)
     campaign.add_click(status)
   end
 end

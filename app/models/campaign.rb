@@ -1,5 +1,6 @@
 class Campaign < ActiveRecord::Base
   include Redis::Objects
+  include Concerns::CampaignTest
   counter :redis_avail_click
   counter :redis_total_click
   include Campaigns::CampaignTargetHelper
@@ -31,6 +32,7 @@ class Campaign < ActiveRecord::Base
   has_many :iptc_categories, :through => :campaign_categories
   has_many :interested_campaigns
   belongs_to :release
+  has_many :campaign_applies
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
@@ -54,6 +56,10 @@ class Campaign < ActiveRecord::Base
 
   def reupload_screenshot_deadline
     (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
+  end
+
+  def can_apply
+    self.recruit_start_time < Time.now && Time.now < recruit_end_time
   end
 
   def is_cpa?
@@ -167,9 +173,15 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign unmatched_kol_ids: ---#{unmatched_kol_ids}-"
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
-    _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
-    Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id} _start_time:#{_start_time}-------"
-    CampaignWorker.perform_at(_start_time, self.id, 'start')
+    #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
+    if  is_recruit_type?
+      _start_time = self.recruit_start_time < Time.now ? (Time.now + 5.seconds) : self.recruit_start_time
+      CampaignWorker.perform_at(_start_time, self.id, 'start')
+      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply')
+    else
+      _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
+      CampaignWorker.perform_at(_start_time, self.id, 'start')
+    end
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
     Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
   end
@@ -229,7 +241,7 @@ class Campaign < ActiveRecord::Base
   # 更新invite 状态和点击数
   def end_invites
     campaign_invites.each do |invite|
-      next if invite.status == 'finished' || invite.status == 'settled'
+      next if invite.status == 'finished' || invite.status == 'settled'  || invite.status == 'rejected'
       if invite.status == 'approved'
         invite.status = 'finished'
         invite.avail_click = invite.redis_avail_click.value
@@ -276,6 +288,11 @@ class Campaign < ActiveRecord::Base
   def is_post_type?
     self.per_budget_type == "post"
   end
+
+  def is_recruit_type?
+    self.per_budget_type == "recruit"
+  end
+
 
   # 结算 for brand
   def settle_accounts_for_brand

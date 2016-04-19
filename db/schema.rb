@@ -146,6 +146,18 @@ ActiveRecord::Schema.define(version: 20160419060719) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "campaign_applies", force: :cascade do |t|
+    t.integer  "campaign_id",         limit: 4
+    t.integer  "kol_id",              limit: 4
+    t.string   "name",                limit: 255
+    t.string   "phone",               limit: 255
+    t.string   "weixin_no",           limit: 255
+    t.integer  "weixin_friend_count", limit: 4
+    t.string   "status",              limit: 255
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
   create_table "campaign_categories", force: :cascade do |t|
     t.integer "campaign_id",      limit: 4
     t.string  "iptc_category_id", limit: 191
@@ -331,9 +343,10 @@ ActiveRecord::Schema.define(version: 20160419060719) do
     t.string   "device_model", limit: 255
     t.string   "content",      limit: 255
     t.integer  "kol_id",       limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "screenshot",   limit: 255
+    t.string   "status",       limit: 255, default: "pending"
   end
 
   create_table "followers", force: :cascade do |t|
@@ -398,6 +411,7 @@ ActiveRecord::Schema.define(version: 20160419060719) do
     t.boolean  "is_vip",                    limit: 1
     t.boolean  "is_yellow_vip",             limit: 1
     t.datetime "access_token_refresh_time"
+    t.integer  "last_status_id",            limit: 4
   end
 
   create_table "industries", force: :cascade do |t|
