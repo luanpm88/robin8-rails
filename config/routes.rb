@@ -2,11 +2,12 @@ require 'sidekiq/web'
 
 %w(admin).each do |route_name|
   load "#{Rails.root}/config/routes/#{route_name}.rb"
-end 
+end
 
 Rails.application.routes.draw do
 
   get 'hello_world', to: 'hello_world#index'
+  mount StatusPage::Engine, at: '/'
   mount Sidekiq::Web => '/sidekiq'
   mount API::Application => '/api'
   mount RuCaptcha::Engine => "/rucaptcha"
