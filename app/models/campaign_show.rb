@@ -28,6 +28,8 @@ class CampaignShow < ActiveRecord::Base
       # check_cookie?
     store_key = visitor_cookies.to_s + campaign.id.to_s
     if Rails.cache.read(store_key)
+      Rails.logger.error "--------------------------"
+      Rails.logger.error store_key
       return [false, 'cookies_visit_fre']
     else
       Rails.cache.write(store_key, now, :expires_in => CookieTimeout)
@@ -43,7 +45,7 @@ class CampaignShow < ActiveRecord::Base
 
     # check_useragent?  &&   visitor_referer
     return [false, 'visitor_agent_is_invalid']  if visitor_agent.blank?
-    return [false, 'visitor_referer_exist']  if visitor_referer.present?
+    return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa?
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)
     # check kol's five_click_threshold

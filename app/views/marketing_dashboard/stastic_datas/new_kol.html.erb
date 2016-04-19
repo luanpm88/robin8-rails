@@ -1,0 +1,22 @@
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>日期</th>
+    <th>新增总人数</th>
+    <th>新增绑微信</th>
+    <th>新增绑微博</th>
+    <th>新增绑QQ</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @collect.each do | record |  %>
+    <tr>
+      <td><%= record[:date] %></td>
+      <td><%= record[:total] %></td>
+      <td><%= record[:wechat] %></td>
+      <td><%= record[:weibo] %></td>
+      <td><%= record[:qq] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

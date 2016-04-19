@@ -226,3 +226,4 @@ gem 'csv_shaper'
 gem 'rack-attack'
 gem 'rack-test', require: 'rack/test'
 gem "non-stupid-digest-assets"
+gem 'status-page', :git => "https://github.com/gallifreyer/status-page.git"
