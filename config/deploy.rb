@@ -100,11 +100,11 @@ namespace :deploy do
       within current_path do
         if $*[-1] == "noassets"
           with rails_env: fetch(:rails_env) do
-            execute :'bin/rake', "deploy_hanlder:sync_lastest_assets"
+            execute :'rake', "deploy_hanlder:sync_lastest_assets"
           end
         else
           with rails_env: fetch(:rails_env) do
-            execute :'bin/rake', "deploy_hanlder:backup_current_assets"
+            execute :'rake', "deploy_hanlder:backup_current_assets"
           end
         end
       end
