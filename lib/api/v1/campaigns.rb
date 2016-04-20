@@ -68,14 +68,24 @@ module API
           end
         end
 
-        #活动流程
+        #活动报名预审
         params do
           requires :id, type: Integer
         end
-        get ':id/process' do
-          present :error, 0
-          present :process, Campaign::OfflineProcess
-          present :binded_weibo, current_kol.identities.provider('weibo').size > 0
+        put 'can_apply' do
+          campaign = Campaign.find(params[:id]) rescue nil
+          campaign_invite = current_kol.campaign_invites.where(:campaign_id => params[:id]).first  rescue nil
+          if campaign.blank? || !campaign.is_recruit_type? || !current_kol.receive_campaign_ids.include?("#{params[:id]}")
+            return error_403!({error: 1, detail: '该活动不存在' })
+          elsif !campaign.can_apply ||  campaign.status != 'executing' || (campaign_invite && campaign_invite.status != 'applying')
+            return error_403!({error: 1, detail: '该活动已经结束或者您已经接收本次活动！' })
+          elsif campaign.influence_score_target && current_kol.influence_score.to_i < campaign.influence_score_target.target_content.to_i
+            return error_403!({error: 1, detail: "抱歉，本次活动不接受影响力分数低于 #{campaign.influence_score_target.target_content.to_i}的KOL用户报名" })
+          else
+            present :error, 0
+            present :process, Campaign::OfflineProcess
+            present :binded_weibo, current_kol.identities.provider('weibo').size > 0
+          end
         end
 
         #活动报名

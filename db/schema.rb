@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160420035832) do
+ActiveRecord::Schema.define(version: 20160420102756) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -679,22 +679,23 @@ ActiveRecord::Schema.define(version: 20160420035832) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.string   "message_type",  limit: 255
-    t.boolean  "is_read",       limit: 1,          default: false
+    t.string   "message_type",     limit: 255
+    t.boolean  "is_read",          limit: 1,          default: false
     t.datetime "read_at"
-    t.string   "title",         limit: 255
-    t.string   "name",          limit: 255
-    t.string   "desc",          limit: 255
-    t.string   "url",           limit: 255
-    t.string   "logo_url",      limit: 255
-    t.string   "sender",        limit: 255
-    t.string   "receiver_type", limit: 255
-    t.integer  "receiver_id",   limit: 4
-    t.text     "receiver_ids",  limit: 4294967295
-    t.string   "item_type",     limit: 255
-    t.string   "item_id",       limit: 255
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.string   "title",            limit: 255
+    t.string   "name",             limit: 255
+    t.string   "desc",             limit: 255
+    t.string   "url",              limit: 255
+    t.string   "logo_url",         limit: 255
+    t.string   "sender",           limit: 255
+    t.string   "receiver_type",    limit: 255
+    t.integer  "receiver_id",      limit: 4
+    t.text     "receiver_ids",     limit: 4294967295
+    t.string   "item_type",        limit: 255
+    t.string   "item_id",          limit: 255
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
+    t.string   "sub_message_type", limit: 255
   end
 
   create_table "news_rooms", force: :cascade do |t|
