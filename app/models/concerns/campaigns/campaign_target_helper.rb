@@ -43,7 +43,7 @@ module Campaigns
       kols = Kol
       self.campaign_targets.each do |target|
         if target.target_type == 'region'
-          kols = kols.where(:app_city => target.contents.split(","))
+          kols = kols.where(:app_city => target.get_citys)
         # elsif target.target_type == 'age'
         #   kols = kol.where("age > '#{target.contents}'")
         # elsif target.target_type == 'gender'
@@ -53,6 +53,10 @@ module Campaigns
       kols.collect{|t| t.kol_id }
     end
 
+
+    def get_citys
+
+    end
 
     private
     def get_ids_from_target_content contents
