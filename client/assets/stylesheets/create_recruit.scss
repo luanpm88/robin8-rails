@@ -1,0 +1,38 @@
+/*!
+ * 创建品牌活动
+ * 02.01.2016 22:01
+ */
+/*!
+ * bootstrap-datetimepicker (https://github.com/Eonasdan/bootstrap-datetimepicker)
+ *
+ * Copyright 2012 Stefan Petre
+ * Improvements by Andrew Rowls
+ * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ */
+ 
+@import "create_activity_base.scss";
+@import "city_selector.scss";
+
+.creat-recruit-target {
+  padding-top: 38px;
+  width: 100%;
+
+  .target-region-range{
+    float: left;
+    width: 50%;
+    text-align: center;
+  }
+
+  .target-influence-score{
+    width: 50%;
+    float: left;
+    text-align: center;
+  }
+
+  label{
+    display: block;
+    color: #9b9a9a;
+    font-size: 14px;
+    font-weight: 400;
+  }
+}

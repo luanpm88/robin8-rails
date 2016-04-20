@@ -59,7 +59,7 @@ export default class CampaignList extends React.Component {
                 <i className="caret-arrow"></i>
               </a>
 
-              <Link to="/brand/create_campaign" className="btn btn-blue btn-big quick-btn">
+              <Link to="/brand/campaigns/new" className="btn btn-blue btn-big quick-btn">
                 添加推广活动
               </Link>
 

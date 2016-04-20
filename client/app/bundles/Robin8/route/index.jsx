@@ -13,8 +13,8 @@ export default (
   <Route path="/brand" component={BrandHomeContainer}>
     <IndexRoute component={BrandHomePartial} />
 
-    <Route path="create_campaign" component={CreateCampaignPartial} />
-    <Route path="create_recruit" component={CreateRecruitCampaignPartial} />
+    <Route path="campaigns/new" component={CreateCampaignPartial} />
+    <Route path="recruits/new" component={CreateRecruitCampaignPartial} />
     <Route path="campaigns/:id/edit" component={UpdateCampaignPartial} />
     <Route path="campaigns/:id" component={ShowCampaignPartial} />
     <Route path=":id/edit" component={EditProfilePartial} />

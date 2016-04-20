@@ -1,4 +1,5 @@
 import React from 'react';
+import { jobAreaSelect } from '../shared/CitySelector';
 
 export default class TargetPartial extends React.Component {
 
@@ -18,12 +19,12 @@ export default class TargetPartial extends React.Component {
           <h3 className="tit">招募人群&nbsp;<span className="what">?</span></h3>
         </div>
         <div className="content">
-          <div className="creat-activity-target">
+          <div className="creat-recruit-target">
             <div className="form-group">
               <div className="target-region-range">
                 <label>地区</label>
-                <div className="target-age-selector">
-                  <h1>xx</h1>
+                <div className="target-region-selector">
+                  <input id="btn_jobArea" type="button" value="请选择地区" onClick={ (event) => { jobAreaSelect()}} />
                 </div>
               </div>
               <div className="target-influence-score clearfix" >

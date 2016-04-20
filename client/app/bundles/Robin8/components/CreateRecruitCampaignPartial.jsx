@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { _ } from 'lodash';
 import moment from 'moment';
 
-import "create_activity.scss";
+import "create_recruit.scss";
 
 import IntroPartial from "./create_campaign/IntroPartial";
 import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
@@ -51,13 +51,23 @@ class CreateRecruitCampaign extends React.Component{
     return(
       <div className="wrapper">
         <div className="container">
-        {this.render_breadcrumb()}
-        <div className="creat-activity-wrap">
-          <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) }}>
-            <IntroPartial {...{name, description, img_url, url, }}/>
-            <RecruitTargetPartial {...{influence_score}}/>
-          </form>
-        </div>
+          {this.render_breadcrumb()}
+          <div className="creat-activity-wrap">
+            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) }}>
+              <IntroPartial {...{name, description, img_url, url, }}/>
+              <RecruitTargetPartial {...{influence_score}}/>
+            </form>
+          </div>
+          <div id="maskLayer">
+            <iframe id="maskLayer_iframe" frameBorder={0} scrolling="no"></iframe>
+            <div id="alphadiv">
+              <div id="drag">
+                <h3 id="drag_h"></h3>
+                <div id="drag_con"></div>
+              </div>
+            </div>
+          </div>
+          <div id="sublist"></div>
         </div>
       </div>
     )
