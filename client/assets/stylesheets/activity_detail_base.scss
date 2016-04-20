@@ -32,13 +32,13 @@
 }
 .brand-activity-card .brand-activity-content .activity-title {
   margin-top: 25px;
-  margin-bottom: 13px;
-  height: 22px;
-  overflow: hidden;
+  margin-bottom: 10px;
   color: #fff;
   font-size: 22px;
 }
-
+.brand-activity-card .brand-activity-content .activity-title .label {
+  margin-left: 5px;
+}
 .brand-activity-coverphoto.brand-home-campaign-img{
   height: 204px;
   max-width: 294px;
@@ -52,6 +52,8 @@ span.campaign-type {
   margin-bottom: 8px;
 }
 .brand-activity-card .brand-activity-content .date,
+.brand-activity-card .brand-activity-content .address,
+.brand-activity-card .brand-activity-content .duration,
 .brand-activity-card .brand-activity-content small.summary {
   color: #9b9a9a;
   font-size: 14px;
@@ -209,20 +211,35 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 .activity-stat-bigshow-area, .activity-target-bigshow-area {
   overflow: hidden;
 }
+
+.activity-stat-bigshow-area,
+.activity-target-bigshow-area {
+  li {
+    position: relative;
+    float: left;
+    list-style: none;
+    text-align: center;
+  }
+
+  &.grid-4 {
+    li {
+      width: 25%;
+    }
+  }
+
+  &.grid-3 {
+    li {
+      width: 33.333%;
+    }
+  }
+}
+
 .activity-stat-bigshow-area li {
-  position: relative;
-  float: left;
   width: 25%;
-  list-style: none;
-  text-align: center;
 }
 
 .activity-target-bigshow-area li {
-  position: relative;
-  float: left;
   width: 33.3%;
-  list-style: none;
-  text-align: center;
 }
 
 .activity-stat-bigshow-area li .txt, .activity-target-bigshow-area li .txt{

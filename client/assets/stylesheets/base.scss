@@ -272,6 +272,15 @@ span.avail-amount {
 .breadcrumb a {
   color: #181616;
 }
+.label {
+  display: inline-block;
+  font-size: 13px;
+  padding: 3px 6px;
+  vertical-align: middle;
+}
+.label-orange {
+  background-color: #F26E15;
+}
 .r-global-header {
   margin-bottom: 0;
   max-height: 56px;

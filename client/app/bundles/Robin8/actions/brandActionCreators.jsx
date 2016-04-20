@@ -128,6 +128,14 @@ export function fetchCampaign(id) {
   };
 }
 
+export function fetchRecruitCampaign(id) {
+  return {
+    type: actionTypes.FETCH_RECRUIT_CAMPAIGN,
+    promise: fetch(`${baseUrl}/campaigns/${id}`, { "credentials": 'same-origin' })
+    //promise: fetch(`${baseUrl}/recruit_campaigns/${id}`, { "credentials": 'same-origin' })
+  };
+}
+
 export function fetchInvitesOfCampaign(campaign_id, current_page){
   return {
     type: actionTypes.FETCH_INVITES_OF_CAMPAIGN,

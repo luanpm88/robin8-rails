@@ -1,0 +1,17 @@
+@import "./activity_detail_base.scss";
+
+.counter-text {
+  width: 100%;
+  margin-bottom: 40px;
+ .content {
+    position: relative;
+    max-width: 600px;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 18px;
+ }
+  .remaining-time {
+    color: #F26E15;
+  }
+}

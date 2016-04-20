@@ -3,13 +3,12 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import "activity_detail.scss";
+import "recruit_activity_detail.scss";
 
-import Basic from './campaign_show/Basic';
-import Overview from './campaign_show/Overview';
-import Target from './campaign_show/Target';
-import KolList from './campaign_show/KolList';
-import Influnce from './campaign_show/Influnce'
+import Basic from './recruit_campaign_show/Basic';
+import Overview from './recruit_campaign_show/Overview';
+import KolList from './recruit_campaign_show/KolList';
+import Counter from './recruit_campaign_show/Counter';
 
 function select(state){
   return {
@@ -19,21 +18,22 @@ function select(state){
     campaign_statistics: state.$$brandStore.get("campaign_statistics")
   };
 }
-export default class ShowCampaignPartial extends Component {
+
+export default class ShowRecruitCampaignPartial extends Component {
   componentDidMount() {
-    console.log("---------campaign show did mount--------");
-    this._fetchCampaign();
+    console.log("---------recruit campaign show did mount--------");
+    this._fetchRecruitCampaign();
     this.bind_toggle_text();
   }
 
-  _fetchCampaign() {
-    const campaign_id = this.props.params.id;
-    const { fetchCampaign } = this.props.actions;
+  _fetchRecruitCampaign() {
+    const recruit_compaign_id = this.props.params.id;
+    const { fetchRecruitCampaign } = this.props.actions;
 
     // can load campaign from campaigns
     // const campaigns = this.props.data.get("campaigns");
 
-    fetchCampaign(campaign_id);
+    fetchRecruitCampaign(recruit_compaign_id);
   }
 
   bind_toggle_text() {
@@ -61,19 +61,18 @@ export default class ShowCampaignPartial extends Component {
   render() {
     const campaign = this.props.data.get('campaign');
     const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
-    const campaign_id = this.props.params.id
+    const campaign_id = this.props.params.id;
     return (
       <div className="wrapper">
         <div className="container">
           { this.render_breadcrumb() }
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
-          <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
-          <Influnce {...{campaign, actions, campaign_id, campaign_statistics}} />
+          <Counter {...{campaign}} />
         </div>
       </div>
     );
   }
 }
 
-export default connect(select)(ShowCampaignPartial)
+export default connect(select)(ShowRecruitCampaignPartial)
