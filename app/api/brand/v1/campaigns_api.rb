@@ -107,7 +107,7 @@ module Brand
         requires :name, type: String
         requires :description, type: String
         requires :task_description, type: String
-        requires :url, type: String
+        optional :address, type: String
         requires :img_url, type: String
         requires :region, type: String
         requires :influence_score, type: String
@@ -132,7 +132,7 @@ module Brand
         requires :name, type: String
         requires :description, type: String
         requires :task_description, type: String
-        requires :url, type: String
+        optional :address, type: String
         requires :img_url, type: String
         requires :region, type: String
         requires :influence_score, type: String

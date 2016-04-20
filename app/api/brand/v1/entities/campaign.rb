@@ -13,6 +13,7 @@ module Brand
         expose :user, using: Entities::User
         expose :message
         expose :url
+        expose :address
         expose :budget
         expose :per_budget_type
         expose :per_action_budget

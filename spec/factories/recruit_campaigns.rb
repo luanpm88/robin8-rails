@@ -8,7 +8,7 @@ FactoryGirl.define do
 
     description 'Campaign Desc'
     task_description 'Campaign task Desc'
-    url 'http://robin8.net'
+    address '江宁路'
     img_url 'http://baidu.com'
     recruit_start_time Time.now
     recruit_end_time Time.now + 3.days
