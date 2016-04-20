@@ -17,10 +17,14 @@ module API
           present :error, 0
           present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
           if  params[:status] == 'all'
-            @campaign = Campaign.where("status != 'unexecuted' and status != 'agreed'")
-            @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where("per_action_type != 'recruit'")       if current_user.hide_recruit
-            @campaigns =  @campaigns.where(:id => current_kol.receive_campaign_ids.values).
-              order_by_status.page(params[:page]).per_page(10)
+            if current_kol.hide_recruit
+              @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where("per_action_type != 'recruit'")
+              @campaigns =  @campaigns.where(:id => current_kol.receive_campaign_ids.values).
+                order_by_status.page(params[:page]).per_page(10)
+            else
+              @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where(:id => current_kol.receive_campaign_ids.values).
+                order_by_status.page(params[:page]).per_page(10)
+            end
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
             present :campaign_invites, @campaign_invites, with: API::V1::Entities::CampaignInviteEntities::Summary
