@@ -25,8 +25,15 @@ module API
           expose :remain_budget
           expose :share_times
           expose :interval_time do |campaign|
-            interval_time(Time.now, campaign.deadline)
+            if campaign.is_recruit_type?
+              interval_time(Time.now, campaign.recruit_end_time)
+            else
+              interval_time(Time.now, campaign.deadline)
+            end
           end
+          expose :address
+          expose :hide_brand_name
+          expose :task_description
         end
       end
     end

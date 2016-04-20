@@ -10,7 +10,7 @@ class CampaignTarget < ActiveRecord::Base
   belongs_to :campaign
 
   validates_presence_of :target_type, :target_content
-  validates_inclusion_of :target_type, :in => %w(age region gender remove_campaigns remove_kols add_kols)
+  validates_inclusion_of :target_type, :in => %w(age region gender influence_score remove_campaigns remove_kols add_kols)
 
   before_validation :set_target_type_by_text
 
@@ -22,5 +22,22 @@ class CampaignTarget < ActiveRecord::Base
 
   def get_target_type_text
     TargetTypes[self.target_type.to_sym]
+  end
+
+  def get_citys
+    return [] if target_type != 'region' ||  target_content.blank?
+    city_name_ens = []
+    target_content.split(",").each do |region|
+      city = City.where("name like '#{region[0,2]}%'").first
+      if city
+        city_name_ens << city.name_en
+      else
+        province = Province.where("name like '#{region[0,2]}%'").first
+        province.cities.each do |city|
+          city_name_ens << city.name_en
+        end
+      end
+    end
+    city_name_ens
   end
 end

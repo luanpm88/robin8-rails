@@ -6,7 +6,8 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignTargetHelper
   include Campaigns::CampaignBaseHelper
 
-  validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline
+  validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
+  validates_presence_of :name, :description, :task_description, :address, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
 
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
@@ -32,16 +33,19 @@ class Campaign < ActiveRecord::Base
   has_many :iptc_categories, :through => :campaign_categories
   has_many :interested_campaigns
   belongs_to :release
+  has_many :campaign_applies
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :order_by_start, -> { order('start_time desc')}
-  scope :order_by_status, -> { order("case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
+  scope :order_by_status, -> { order("case campaigns.per_action_type when 'recruit' then 4 else 1 end desc,
+                                      case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
                                       start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   after_save :create_job
 
+  OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
   SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 2.hours
   RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
@@ -55,6 +59,10 @@ class Campaign < ActiveRecord::Base
 
   def reupload_screenshot_deadline
     (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
+  end
+
+  def can_apply
+    self.recruit_start_time < Time.now && Time.now < recruit_end_time
   end
 
   def is_cpa?
@@ -151,6 +159,7 @@ class Campaign < ActiveRecord::Base
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
     campaign_id = self.id
+    kol_ids = get_specified_kol_ids
     if kol_ids.present?
       Kol.where(:id => kol_ids).each do |kol|
         kol.add_campaign_id campaign_id
@@ -168,9 +177,15 @@ class Campaign < ActiveRecord::Base
     Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign unmatched_kol_ids: ---#{unmatched_kol_ids}-"
     Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
-    _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
-    Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id} _start_time:#{_start_time}-------"
-    CampaignWorker.perform_at(_start_time, self.id, 'start')
+    #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
+    if  is_recruit_type?
+      _start_time = self.recruit_start_time < Time.now ? (Time.now + 5.seconds) : self.recruit_start_time
+      CampaignWorker.perform_at(_start_time, self.id, 'start')
+      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply')
+    else
+      _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
+      CampaignWorker.perform_at(_start_time, self.id, 'start')
+    end
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
     Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
   end
@@ -230,7 +245,7 @@ class Campaign < ActiveRecord::Base
   # 更新invite 状态和点击数
   def end_invites
     campaign_invites.each do |invite|
-      next if invite.status == 'finished' || invite.status == 'settled'
+      next if invite.status == 'finished' || invite.status == 'settled'  || invite.status == 'rejected'
       if invite.status == 'approved'
         invite.status = 'finished'
         invite.avail_click = invite.redis_avail_click.value
@@ -277,6 +292,11 @@ class Campaign < ActiveRecord::Base
   def is_post_type?
     self.per_budget_type == "post"
   end
+
+  def is_recruit_type?
+    self.per_budget_type == "recruit"
+  end
+
 
   # 结算 for brand
   def settle_accounts_for_brand
@@ -400,4 +420,5 @@ class Campaign < ActiveRecord::Base
     end;nil
     puts "-"*60
   end
+
 end

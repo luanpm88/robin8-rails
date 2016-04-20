@@ -101,6 +101,61 @@ module Brand
           end
         end
       end
+
+      desc 'Create a recruit campaign'
+      params do
+        requires :name, type: String
+        requires :description, type: String
+        requires :task_description, type: String
+        optional :address, type: String
+        requires :img_url, type: String
+        requires :region, type: String
+        requires :influence_score, type: String
+        requires :recruit_start_time, type: DateTime
+        requires :recruit_end_time, type: DateTime
+        requires :start_time, type: DateTime
+        requires :deadline, type: DateTime
+        requires :per_action_budget, type: Float
+        requires :budget, type: Float
+      end
+      post 'recruit_campaigns' do
+        service = CreateRecruitCampaignService.new current_user, declared(params)
+        if service.perform
+          present service.campaign
+        else
+          error_unprocessable! service.first_error_message
+        end
+      end
+
+      desc 'Update a recruit campaign'
+      params do
+        requires :name, type: String
+        requires :description, type: String
+        requires :task_description, type: String
+        optional :address, type: String
+        requires :img_url, type: String
+        requires :region, type: String
+        requires :influence_score, type: String
+        requires :recruit_start_time, type: DateTime
+        requires :recruit_end_time, type: DateTime
+        requires :start_time, type: DateTime
+        requires :deadline, type: DateTime
+        requires :per_action_budget, type: Float
+        requires :budget, type: Float
+      end
+      put '/recruit_campaigns/:id' do
+        service = UpdateRecruitCampaignService.new current_user, params[:id], declared(params)
+        if service.perform
+          present service.campaign
+        else
+          error_unprocessable! service.first_error_message
+        end
+      end
+
+      get '/recruit_campaigns/:id' do
+        present Campaign.find(params[:id])
+      end
+
     end
   end
 end

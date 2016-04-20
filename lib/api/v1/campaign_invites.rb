@@ -17,8 +17,9 @@ module API
           present :error, 0
           present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
           if  params[:status] == 'all'
-            @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").
-              where(:id => current_kol.receive_campaign_ids.values).
+            @campaign = Campaign.where("status != 'unexecuted' and status != 'agreed'")
+            @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where("per_action_type != 'recruit'")       if current_user.hide_recruit
+            @campaigns =  @campaigns.where(:id => current_kol.receive_campaign_ids.values).
               order_by_status.page(params[:page]).per_page(10)
             @campaign_invites = @campaigns.collect{|campaign| campaign.get_campaign_invite(current_kol.id) }
             to_paginate(@campaigns)
@@ -108,67 +109,6 @@ module API
             present :campaign_invite, campaign_invite,with: API::V1::Entities::CampaignInviteEntities::Summary
           else
             return error_403!({error: 1, detail: '该活动已错过上传截图时间' })
-          end
-        end
-
-        # 喜欢/不喜欢活动
-        params do
-          requires :id, type: Integer
-        end
-        put ':id/like' do
-          campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
-          campaign = campaign_invite.campaign  rescue nil
-          if campaign_invite.blank?  || campaign.blank?
-            return error_403!({error: 1, detail: '该营销活动不存在' })
-          else
-            campaign_like = CampaignAction.likes.find_by(:kol_id => current_kol.id, :campaign_id => campaign.id)
-            liked = campaign_like.present?
-            if liked
-              if campaign_like.destroy
-                return {:error => 0, :detail => '取消搜藏成功！'}
-              else
-                return {:error => 1, :detail => '取消搜藏失败，请联系管理员！'}
-              end
-            else
-              campaign_like = CampaignAction.new(:kol_id => current_kol.id, :campaign_id => campaign.id, :action => 'like')
-              if campaign_like.save
-                return {:error => 0, :detail => '搜藏成功！'}
-              else
-                Rails.logger.error "---#{活动取消失败}---#{campaign_like.errors.full_message.inspect rescue nil}"
-                return {:error => 1, :detail => '搜藏失败，请联系管理员！'}
-              end
-            end
-          end
-        end
-
-        # 隐藏活动
-        params do
-          requires :id, type: Integer
-        end
-        put ':id/hide' do
-          campaign_invite = current_kol.campaign_invites.find(params[:id])  rescue nil
-          campaign = campaign_invite.campaign  rescue nil
-          if campaign_invite.blank?  || campaign.blank?
-            return error_403!({error: 1, detail: '该营销活动不存在' })
-          else
-            campaign_hide = CampaignAction.hides.find_by(:kol_id => current_kol.id, :campaign_id => campaign.id)
-            hided = campaign_hide.present?
-            #已经隐藏
-            if hided
-              if campaign_hide.destroy
-                return {:error => 0, :detail => '取消隐藏成功！'}
-              else
-                return {:error => 1, :detail => '取消隐藏失败，请联系管理员！'}
-              end
-            else
-              campaign_hide = CampaignAction.new(:kol_id => current_kol.id, :campaign_id => campaign.id, :action => 'hide')
-              if campaign_hide.save
-                return {:error => 0, :detail => '隐藏成功！'}
-              else
-                Rails.logger.error "---#{活动隐藏失败}---"
-                return {:error => 1, :detail => '隐藏失败，请联系管理员！'}
-              end
-            end
           end
         end
 
