@@ -143,13 +143,17 @@ module Brand
         requires :per_action_budget, type: Float
         requires :budget, type: Float
       end
-      put ':recruit_campaigns/:id' do
+      put '/recruit_campaigns/:id' do
         service = UpdateRecruitCampaignService.new current_user, params[:id], declared(params)
         if service.perform
           present service.campaign
         else
           error_unprocessable! service.first_error_message
         end
+      end
+
+      get '/recruit_campaigns/:id' do
+        present Campaign.find(params[:id])
       end
 
     end

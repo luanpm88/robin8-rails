@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160419060719) do
+ActiveRecord::Schema.define(version: 20160420035832) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -247,6 +247,8 @@ ActiveRecord::Schema.define(version: 20160419060719) do
     t.text     "task_description",     limit: 65535
     t.datetime "recruit_start_time"
     t.datetime "recruit_end_time"
+    t.string   "address",              limit: 255
+    t.boolean  "hide_brand_name",      limit: 1,                       default: false
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree

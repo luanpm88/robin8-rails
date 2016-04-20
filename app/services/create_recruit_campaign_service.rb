@@ -22,10 +22,8 @@ class CreateRecruitCampaignService
     end
 
     @campaign_params.merge!({:status => :unexecute})
-    @campaign_params[:recruit_start_time] = @campaign_params[:recruit_start_time].to_formatted_s(:db)
-    @campaign_params[:recruit_end_time] = @campaign_params[:recruit_end_time].to_formatted_s(:db)
-    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
-    @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
+
+    format_to_db_time
 
     begin
       ActiveRecord::Base.transaction do
@@ -48,6 +46,13 @@ class CreateRecruitCampaignService
   end
 
   private
+
+  def format_to_db_time
+    @campaign_params[:recruit_start_time] = @campaign_params[:recruit_start_time].to_formatted_s(:db)
+    @campaign_params[:recruit_end_time] = @campaign_params[:recruit_end_time].to_formatted_s(:db)
+    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
+    @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
+  end
 
   def permited_params_from params
     params.merge!(per_budget_type: 'recruit')
