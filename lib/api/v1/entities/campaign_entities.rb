@@ -33,6 +33,7 @@ module API
           end
           expose :address
           expose :hide_brand_name
+          expose :task_description
         end
       end
     end

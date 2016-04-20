@@ -50,7 +50,7 @@ module Campaigns
         #   kols = kol.where("gender = '#{target.contents}'")
         end
       end
-      kols.collect{|t| t.kol_id }
+      kols.collect{|t| t.id }
     end
 
 
