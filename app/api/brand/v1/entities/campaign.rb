@@ -7,14 +7,24 @@ module Brand
         expose :name
         expose :description
         expose :short_description
+        expose :task_description
         expose :img_url
         expose :status
         expose :user, using: Entities::User
         expose :message
         expose :url
+        expose :address
         expose :budget
         expose :per_budget_type
         expose :per_action_budget
+
+        expose :recruit_start_time do |object, opts|
+          object.recruit_start_time.strftime('%Y-%m-%d %H:%M') if object.recruit_start_time
+        end
+        expose :recruit_end_time do |object, opts|
+          object.recruit_end_time.strftime('%Y-%m-%d %H:%M') if object.recruit_start_time
+        end
+
         expose :deadline do |object, opts|
           object.deadline.strftime('%Y-%m-%d %H:%M')
         end
@@ -42,16 +52,39 @@ module Brand
         expose :remain_budget
         # TODO thoes lines should placed in CampaignTarget entity make code simple and beauty
         expose :age do |object, opts|
-          object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "age").target_content : nil
+          if object.per_budget_type != 'recruit'
+            object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "age").target_content : nil
+          else
+            nil
+          end
         end
         expose :province do |object, opts|
-          object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "region").target_content.split(" ").first : nil
+          if object.per_budget_type != 'recruit'
+            object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "region").target_content.split(" ").first : nil
+          else
+            nil
+          end
         end
         expose :city do |object, opts|
-          object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "region").target_content.split(" ").last : nil
+          if object.per_budget_type != 'recruit'
+            object.campaign_targets.present? ?  object.campaign_targets.find_by(target_type: "region").target_content.split(" ").last : nil
+          else
+            nil
+          end
         end
         expose :gender do |object, opts|
-          object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "gender").target_content : nil
+          if object.per_budget_type != 'recruit'
+            object.campaign_targets.present? ? object.campaign_targets.find_by(target_type: "gender").target_content : nil
+          else
+            nil
+          end
+        end
+
+        expose :region do |object, opts|
+          object.campaign_targets.where(target_type: :region).present? ? object.campaign_targets.find_by(target_type: "region").target_content : nil
+        end
+        expose :influence_score do |object, opts|
+          object.campaign_targets.where(target_type: :influence_score).present? ? object.campaign_targets.find_by(target_type: 'influence_score').target_content : nil
         end
 
         expose :action_url do |object, opts|

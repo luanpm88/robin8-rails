@@ -3,6 +3,7 @@ module Campaigns
     extend ActiveSupport::Concern
     included do
       has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender])}
+      has_one :influence_score_target, -> {where(:target_type => 'influence_score')}, class_name: "CampaignTarget"
       has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
       has_many :remove_kol_targets, -> {where(:target_type => [:remove_kols])}, class_name: "CampaignTarget"
@@ -34,6 +35,27 @@ module Campaigns
 
     def today_receive_three_times_kol_ids
       CampaignInvite.today_approved.group("kol_id").having("count(kol_id) >= 3").collect{|t| t.kol_id}
+    end
+
+    # 获取指定kols
+    def get_specified_kol_ids
+      return nil if self.campaign_targets.size == 0
+      kols = Kol
+      self.campaign_targets.each do |target|
+        if target.target_type == 'region'
+          kols = kols.where(:app_city => target.get_citys)
+        # elsif target.target_type == 'age'
+        #   kols = kol.where("age > '#{target.contents}'")
+        # elsif target.target_type == 'gender'
+        #   kols = kol.where("gender = '#{target.contents}'")
+        end
+      end
+      kols.collect{|t| t.id }
+    end
+
+
+    def get_citys
+
     end
 
     private

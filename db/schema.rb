@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160418065511) do
+ActiveRecord::Schema.define(version: 20160420035832) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -146,6 +146,19 @@ ActiveRecord::Schema.define(version: 20160418065511) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "campaign_applies", force: :cascade do |t|
+    t.integer  "campaign_id",         limit: 4
+    t.integer  "kol_id",              limit: 4
+    t.string   "name",                limit: 255
+    t.string   "phone",               limit: 255
+    t.string   "weixin_no",           limit: 255
+    t.integer  "weixin_friend_count", limit: 4
+    t.string   "status",              limit: 255
+    t.string   "expect_price",        limit: 255
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
   create_table "campaign_categories", force: :cascade do |t|
     t.integer "campaign_id",      limit: 4
     t.string  "iptc_category_id", limit: 191
@@ -232,6 +245,11 @@ ActiveRecord::Schema.define(version: 20160418065511) do
     t.string   "img_url",              limit: 255
     t.datetime "actual_deadline_time"
     t.string   "per_budget_type",      limit: 255
+    t.text     "task_description",     limit: 65535
+    t.datetime "recruit_start_time"
+    t.datetime "recruit_end_time"
+    t.string   "address",              limit: 255
+    t.boolean  "hide_brand_name",      limit: 1,                       default: false
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
