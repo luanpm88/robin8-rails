@@ -57,10 +57,6 @@ class Campaign < ActiveRecord::Base
     (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
   end
 
-  def reupload_screenshot_deadline
-    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
-  end
-
   def can_apply
     self.recruit_start_time < Time.now && Time.now < recruit_end_time
   end

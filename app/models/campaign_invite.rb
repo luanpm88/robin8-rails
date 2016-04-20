@@ -45,10 +45,6 @@ class CampaignInvite < ActiveRecord::Base
     self.campaign.upload_screenshot_deadline
   end
 
-  def reupload_end_at
-    self.campaign.reupload_screenshot_deadline
-  end
-
   def upload_interval_time
     return interval_time(Time.now, upload_start_at)
   end
@@ -58,8 +54,11 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def can_upload_screenshot
-    return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  \
-      (screenshot.blank? && Time.now < self.upload_end_at) || (screenshot.present? && Time.now < self.reupload_end_at))
+    if campaign.is_recruit_type?
+      status == 'finished' && img_status != 'passed' && Time.now > upload_start_at  &&  Time.now < self.upload_end_at
+    else
+      (status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  Time.now < self.upload_end_at
+    end
   end
 
   # 进行中的活动 审核通过时  仅仅更新它状态
