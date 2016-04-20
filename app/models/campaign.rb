@@ -6,7 +6,8 @@ class Campaign < ActiveRecord::Base
   include Campaigns::CampaignTargetHelper
   include Campaigns::CampaignBaseHelper
 
-  validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline
+  validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
+  validates_presence_of :name, :description, :task_description, :address, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
 
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
