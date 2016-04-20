@@ -9,6 +9,8 @@ class CreateCampaignApplies < ActiveRecord::Migration
       t.integer :weixin_friend_count
       t.string :status
 
+      t.string :expect_price
+
       t.timestamps null: false
     end
   end

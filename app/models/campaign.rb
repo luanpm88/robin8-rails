@@ -43,6 +43,7 @@ class Campaign < ActiveRecord::Base
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   after_save :create_job
 
+  OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
   SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 2.hours
   RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
@@ -156,6 +157,7 @@ class Campaign < ActiveRecord::Base
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
     campaign_id = self.id
+    kol_ids = get_specified_kol_ids
     if kol_ids.present?
       Kol.where(:id => kol_ids).each do |kol|
         kol.add_campaign_id campaign_id
@@ -416,4 +418,5 @@ class Campaign < ActiveRecord::Base
     end;nil
     puts "-"*60
   end
+
 end

@@ -1,10 +1,13 @@
 class CampaignApply < ActiveRecord::Base
-  # Status = ['appling', 'platform_passed', 'platform_rejected' 'brand_passed', 'brand_rejected']    其对应 campaign 的状态都是 approved,每个状态会关闭一些approved
+  belongs_to :campaign
+  belongs_to :kol
+
   scope :applying, -> {where(:status => 'applying')}
   scope :platform_passed, -> {where(:status => 'platform_passed')}
   scope :brand_passed, -> {where(:status => 'brand_passed')}
-
   scope :brand_not_passed, -> {where("status != 'brand_passed'")}
+
+  validates_inclusion_of :status, :in => %w(applying platform_passed platform_rejected brand_passed brand_rejected)
 
   #kol_ids 审核通过的用户
   def self.platform_pass_kols(campaign_id, kol_ids = [])
