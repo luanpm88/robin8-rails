@@ -22,9 +22,10 @@ export default class TargetPartial extends React.Component {
           <div className="creat-recruit-target">
             <div className="form-group">
               <div className="target-region-range">
-                <label>地区</label>
+                <label >地区</label>
                 <div className="target-region-selector">
-                  <input id="btn_jobArea" type="button" value="请选择地区" onClick={ (event) => { jobAreaSelect()}} />
+                  <label id="btn_jobArea" className="target-city-label">北京/上海/广州</label>
+                  <a className="btn btn-blue btn-default create-recruit-region-button" onClick={ (event) => { jobAreaSelect()}}>选择地区</a>
                 </div>
               </div>
               <div className="target-influence-score clearfix" >

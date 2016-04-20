@@ -9,8 +9,14 @@ import "create_recruit.scss";
 
 import IntroPartial from "./create_campaign/IntroPartial";
 import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
+import DatePartial from './create_campaign/DatePartial';
+import RecruitDatePartial from './create_recruit/RecruitDatePartial';
 
 const initCampaign = {
+  recruit_start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
+  recruit_end_time: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
+  start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
+  deadline: moment().add(2, "days").format("YYYY-MM-DD HH:mm")
 }
 
 const validate = new FormValidate({
@@ -45,7 +51,7 @@ class CreateRecruitCampaign extends React.Component{
   }
 
   render(){
-    const { name, description, img_url, url, influence_score} = this.props.fields;
+    const { name, description, img_url, url, influence_score, start_time, deadline, recruit_start_time, recruit_end_time} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
     return(
@@ -56,16 +62,10 @@ class CreateRecruitCampaign extends React.Component{
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, url, }}/>
               <RecruitTargetPartial {...{influence_score}}/>
+              <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
+              <DatePartial {...{ start_time, deadline }} />
+              <RecruitBudgetPartial {...{}} />
             </form>
-          </div>
-          <div id="maskLayer">
-            <iframe id="maskLayer_iframe" frameBorder={0} scrolling="no"></iframe>
-            <div id="alphadiv">
-              <div id="drag">
-                <h3 id="drag_h"></h3>
-                <div id="drag_con"></div>
-              </div>
-            </div>
           </div>
           <div id="sublist"></div>
         </div>
@@ -76,7 +76,7 @@ class CreateRecruitCampaign extends React.Component{
 
 CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
-  fields: ["name", "description", "img_url", "url", "influence_score"],
+  fields: ["name", "description", "img_url", "url", "influence_score", "start_time", "deadline", "recruit_start_time", "recruit_end_time"],
   returnRejectedSubmitPromise: true,
   validate
 },

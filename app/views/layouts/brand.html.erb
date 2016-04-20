@@ -39,6 +39,15 @@
 
 </head>
 <body>
+  <div id="maskLayer">
+    <button type="button" class="close" data-dismiss="modal" onclick="jobArea.cancel()">×</button>
+    <div id="alphadiv">
+      <div id="drag">
+        <h3 id="drag_h"></h3>
+        <div id="drag_con"></div>
+      </div>
+    </div>
+  </div>
   <%= yield %>
 </body>
 </html>

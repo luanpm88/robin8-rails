@@ -35,4 +35,21 @@
     font-size: 14px;
     font-weight: 400;
   }
+
+  .target-city-label{
+    display: inline;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: none !important;
+    color: rgb(24, 22, 22);
+  }
+
+  .create-recruit-region-button{
+    width: 110px;
+    height: 36px;
+    color: #ffffff;
+    background-color: #36cdd3;
+    font-size: 14px;
+    margin-left: 10px;
+  }
 }

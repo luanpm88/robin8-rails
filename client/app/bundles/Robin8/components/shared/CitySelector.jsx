@@ -1,5 +1,6 @@
 //工作地点
 var ja=[];
+
 ja['0100']='北京';
 ja['0200']='上海';
 ja['0300']='广东省';
@@ -421,18 +422,17 @@ function maskLayer(){
   var FH=document.body.scrollHeight;
   var SH=window.screen.height;
   FH=FH<SH?SH:FH;
-  $("#alphadiv").height(FH).width(FW);
+  $("#alphadiv").height("100%").width("100%");
   $('#maskLayer').show();
-  $('#maskLayer_iframe').css({position:"absolute",left:"0px",top:"0px"}).height(FH).width(FW);
 }
 
 function draglayer(){
   var och=$("#drag").height();
   var ocw=$("#drag").width();
-  var bsl = document.documentElement.scrollLeft || document.documentElement.scrollLeft;
-  var bst = document.documentElement.scrollTop || document.documentElement.scrollTop;
-  var bcw = document.documentElement.clientWidth || document.documentElement.clientWidth;
-  var bch = document.documentElement.clientHeight || document.documentElement.clientHeight;
+  var bsl = document.documentElement.scrollLeft;
+  var bst = document.documentElement.scrollTop;
+  var bcw = document.documentElement.clientWidth;
+  var bch = document.documentElement.clientHeight;
 /* 
   !DOCTYPE声明bug调试
   var bsl = document.body.scrollLeft || document.documentElement.scrollLeft;
@@ -445,7 +445,7 @@ function draglayer(){
   var ost = bst + Math.floor( ( bch - och ) / 2 );
   ost = Math.max( bst , ost );
 
-  $("#drag").css({"top":ost,"left":osl,"width":ocw}).show();
+  $("#drag").css({left: osl, width:ocw, top: "50%", transform: "translateY(-50%)"}).show();
   var theHandle = document.getElementById("drag_h");
   var theRoot   = document.getElementById("drag");
   Drag.init(theHandle, theRoot);
@@ -524,7 +524,6 @@ global.jobArea = {
     $("#sublist").html(output).show();
   },
 
-
   Chk : function(id){
     if(!in_array(id,jobArea_Arr)){
       var subArea,myid;
@@ -562,13 +561,20 @@ global.jobArea = {
   confirm : function(){
     var areaStr='';
     for(var i in jobArea_Arr){
-      areaStr+=','+ja[jobArea_Arr[i]];
+      areaStr+='/'+ja[jobArea_Arr[i]];
     }
     areaStr=areaStr.substring(1)?areaStr.substring(1):'请选择地区'; 
-    $('#btn_jobArea').val(areaStr);
+    $('#btn_jobArea').html(areaStr);
     $('#jobAreaID').val(jobArea_Arr);
     boxAlpha();
     $('#jobAreSelected dd').empty();
+    $("body").css({"overflow": ""})
+  },
+
+  cancel : function(){
+    boxAlpha();
+    $('#jobAreSelected dd').empty();
+    $("body").css({"overflow": ""})
   }
 }
 
@@ -580,6 +586,8 @@ export function jobAreaSelect(){
     dragHtml+='</div>';
   $('#drag_h').html('<b>请选择地区（您最多能选择5项）</b><span onclick="jobArea.confirm()">确定</span>');
   $('#drag_con').html(dragHtml);
+  $("#maskLayer").css({width: "100%", height: "100%"})
+  $("body").css({overflow: "hidden"})
   jobArea.Show();
   boxAlpha();
   draglayer();
