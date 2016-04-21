@@ -108,7 +108,6 @@ module API
             return error_403!({error: 2, detail: "抱歉，本次活动不接受影响力分数低于 #{campaign.influence_score_target.target_content.to_i}的KOL用户报名" })
           else
             campaign_invite = current_kol.apply_campaign(params)
-            campaign_invite = campaign_invite.reload
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end

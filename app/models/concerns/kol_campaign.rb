@@ -87,22 +87,25 @@ module Concerns
 
     # 报名活动
     def apply_campaign(params)
+      campaign_invite = nil
       ActiveRecord::Base.transaction  do
         campaign_id = params[:id]
         campaign = Campaign.find campaign_id  rescue nil
         return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
-        self.campaign_applies.create(campaign_id: campaign_id, name: params[:name], phone: params[:phone],  weixin_no: params[:weixin_no],
+        campaign_apply = self.campaign_applies.create(campaign_id: campaign_id, name: params[:name], phone: params[:phone],  weixin_no: params[:weixin_no],
                                      weixin_friend_count: params[:weixin_friend_count], status: 'applying')
         # 成功报名后，同步更改campaign_invites  等同于接收活动
         campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
         if campaign_invite.new_record?
           uuid = Base64.encode64({:campaign_id => campaign_id, :kol_id => self.id}.to_json).gsub("\n","")
+          campaign_invite.campaign_apply_id = campaign_apply.id
           campaign_invite.status = 'applying'
           campaign_invite.img_status = 'pending'
           campaign_invite.uuid = uuid
           campaign_invite.save
         end
       end
+      campaign_invite
     end
 
     def hide_recruit
