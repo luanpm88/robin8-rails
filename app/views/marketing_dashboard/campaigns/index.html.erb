@@ -38,6 +38,9 @@
           <% if c.status == 'unexecute' %>
             <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %>
           <% end %>
+          <% if c.status == 'executing' %>
+            <%= link_to '中途停止',stop_marketing_dashboard_campaign_path(c), :confirm => "确认停止吗？" %>
+          <% end %>
         </td>
       </tr>
     <% end %>
