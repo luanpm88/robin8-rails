@@ -34,6 +34,10 @@ module API
           expose :address
           expose :hide_brand_name
           expose :task_description
+          with_options(format_with: :iso_timestamp) do
+            expose :recruit_start_time
+            expose :recruit_end_time
+          end
         end
       end
     end

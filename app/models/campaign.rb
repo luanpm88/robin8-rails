@@ -38,7 +38,7 @@ class Campaign < ActiveRecord::Base
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :order_by_start, -> { order('start_time desc')}
-  scope :order_by_status, -> { order("case campaigns.per_action_type when 'recruit' then 4 else 1 end desc,
+  scope :order_by_status, -> { order("case campaigns.per_budget_type when 'recruit' then 4 else 1 end desc,
                                       case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
                                       start_time desc") }
 
@@ -54,10 +54,6 @@ class Campaign < ActiveRecord::Base
   end
 
   def upload_screenshot_deadline
-    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
-  end
-
-  def reupload_screenshot_deadline
     (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
   end
 

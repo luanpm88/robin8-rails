@@ -81,7 +81,7 @@ module Concerns
         if !Rails.env.production?
           u = User.find 79
           campaign_attrs = TestCampaigns[rand(12)]
-          campaign = Campaign.create!(:user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :recruit_start_time => Time.now + 2.seconds, :recruit_end_time => Time.now + 10.minutes, :start_time =>  Time.now + 15.minutes, :deadline => Time.now + (long ? 24.hours : 1.hours),
+          campaign = Campaign.create!(:user => u, :budget => (long ? 40 : 3), :per_action_budget => 1, :recruit_start_time => Time.now + 2.seconds, :recruit_end_time => Time.now + 15.minutes, :start_time =>  Time.now + 20.minutes, :deadline => Time.now + (long ? 24.hours : 1.hours),
                                      :url => campaign_attrs[:url], :name => campaign_attrs[:name], :description => campaign_attrs[:desc], :img_url => get_img_url, :per_budget_type => 'recruit', :address => '上海市 静安区 xxx路', :task_description => '先去现场，然后拍照转发到朋友圈')
           puts campaign.id
           CampaignTarget.create(:target_type => 'region', :target_content => region, :campaign_id => campaign.id)
@@ -93,8 +93,8 @@ module Concerns
 
       def check(campaign_id)
         kol_ids = CampaignApply.where(:campaign_id => campaign_id).collect{|t| t.kol_id }
-        CampaignApply.platform_pass_kols(kol_ids)
-        CampaignApply.brand_pass_kols(kol_ids)
+        CampaignApply.platform_pass_kols(campaign_id,kol_ids)
+        CampaignApply.brand_pass_kols(campaign_id,kol_ids)
       end
     end
   end
