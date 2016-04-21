@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160420102756) do
+ActiveRecord::Schema.define(version: 20160421050352) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(version: 20160420102756) do
     t.string   "status",              limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.string   "expect_price",        limit: 11
+    t.string   "agree_reason",        limit: 255
   end
 
   create_table "campaign_categories", force: :cascade do |t|
@@ -414,7 +414,6 @@ ActiveRecord::Schema.define(version: 20160420102756) do
     t.boolean  "is_vip",                    limit: 1
     t.boolean  "is_yellow_vip",             limit: 1
     t.datetime "access_token_refresh_time"
-    t.integer  "last_status_id",            limit: 4
   end
 
   create_table "industries", force: :cascade do |t|

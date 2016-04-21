@@ -56,8 +56,10 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
   def recruit_targets
     @campaign = Campaign.find params[:id]
-    has_applyed_kol_ids = @campaign.campaign_applies.where(status: :applying).pluck(:kol_id)
-    @kols = Kol.where(id: has_applyed_kol_ids)
+    @campaign_applies = @campaign.campaign_applies.where(status: :applying).pluck(:kol_id)
+    @title = "符合要求的招募人数为 #{@campaign_applies.count}"
+    # @kols = Kol.where(id: has_applyed_kol_ids)
+    # @campaign_apply = CampaignApply.find_by(campaign_id: @campaign.id, )
   end
 
   def agree
@@ -71,7 +73,6 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
 
   def add_or_remove_recruit_kol
-    binding.pry
     kol_id = params[:kol_id]
     campaign_id = params[:campaign_id]
     agree_reason = params[:agree_reason]
@@ -80,10 +81,20 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @campaign_apply = CampaignApply.find_by(campaign_id: params[:campaign_id], kol_id: params[:kol_id])
 
     if operate == 'agree'
-      campaign_apply.update_attributes(status: "platform_passed", agree_reason: agree_reason)
+      begin
+        @campaign_apply.update_attributes(status: "platform_passed", agree_reason: agree_reason)
+        return render json: {result: 'succeed', operate: operate, kol_id: kol_id}
+      rescue
+        return render json: {result: 'save status and reason failed'}
+      end
     end
     if operate == 'cancle'
-      campaign_apply.update_attributes(status: "applying", agree_reason: nil)
+      begin
+        @campaign_apply.update_attributes(status: "applying", agree_reason: nil)
+        return render json: {result: 'succeed', operate: operate, kol_id: kol_id}
+      rescue
+        return render json: {result: 'save status and reason failed'}
+      end
     end
   end
 end
