@@ -9,9 +9,9 @@ class CampaignApply < ActiveRecord::Base
 
   validates_inclusion_of :status, :in => %w(applying platform_passed platform_rejected brand_passed brand_rejected)
 
-  #kol_ids 审核通过的用户
-  def self.platform_pass_kols(campaign_id, kol_ids = [])
-    CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'brand_passed')
+  #kol_ids 审核通过的用户, 运营后台也实现了相同逻辑
+  def self.platform_pass_kols(campaign_id, kol_ids = [], agree_reason = nil)
+    CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'platform_passed', :agree_reason => agree_reason)
   end
 
   #kol_ids 审核通过的用户

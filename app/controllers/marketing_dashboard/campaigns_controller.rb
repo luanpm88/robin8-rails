@@ -40,7 +40,11 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
 
     unmatched_kol_ids = @campaign.get_unmatched_kol_ids
 
-    @kols = Kol.where.not(:id => unmatched_kol_ids).paginate(paginate_params)
+    if @campaign.per_budget_type != 'recruit'
+      @kols = Kol.where.not(:id => unmatched_kol_ids).paginate(paginate_params)
+    else
+      @kols = Kol.where.not(:id => unmatched_kol_ids).where(:id => @campaign.get_specified_kol_ids).paginate(paginate_params)
+    end
     @unmatched_kols = Kol.where(:id => unmatched_kol_ids)
 
     @remove_kol_ids = @campaign.get_remove_kol_ids_by_target
@@ -50,12 +54,47 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
   end
 
+  def recruit_targets
+    @campaign = Campaign.find params[:id]
+    @campaign_applies = @campaign.campaign_applies.where(status: :applying).pluck(:kol_id)
+    @title = "符合要求的招募人数为 #{@campaign_applies.count}"
+    # @kols = Kol.where(id: has_applyed_kol_ids)
+    # @campaign_apply = CampaignApply.find_by(campaign_id: @campaign.id, )
+  end
+
   def agree
     @campaign = Campaign.find params[:campaign_id]
     @campaign.update(:status => :agreed)
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Agreed successfully!'}
       format.json { head :no_content }
+    end
+  end
+
+
+  def add_or_remove_recruit_kol
+    kol_id = params[:kol_id]
+    campaign_id = params[:campaign_id]
+    agree_reason = params[:agree_reason]
+    operate = params[:operate]
+
+    @campaign_apply = CampaignApply.find_by(campaign_id: params[:campaign_id], kol_id: params[:kol_id])
+
+    if operate == 'agree'
+      begin
+        @campaign_apply.update_attributes(status: "platform_passed", agree_reason: agree_reason)
+        return render json: {result: 'succeed', operate: operate, kol_id: kol_id}
+      rescue
+        return render json: {result: 'save status and reason failed'}
+      end
+    end
+    if operate == 'cancle'
+      begin
+        @campaign_apply.update_attributes(status: "applying", agree_reason: nil)
+        return render json: {result: 'succeed', operate: operate, kol_id: kol_id}
+      rescue
+        return render json: {result: 'save status and reason failed'}
+      end
     end
   end
 end
