@@ -69,6 +69,8 @@ export default class ShowRecruitCampaignPartial extends Component {
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
           <Counter {...{campaign}} />
+          <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
+          <div className="bottom-tips">*请在报名截止后确定招募名单</div>
         </div>
       </div>
     );

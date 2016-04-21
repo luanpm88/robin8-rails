@@ -9,20 +9,22 @@ export default class Counter extends React.Component {
 
   count_down(){
     const { campaign } = this.props;
+    let self = this;
+
     let current_time = moment(),
-      end_time = moment(campaign.get("deadline")),
+      end_time = moment(campaign.get("recruit_end_time")),
       duration = end_time.diff(current_time, 'minutes'),
       duration_text = moment.duration(duration, "minutes").format("d[天] h[小时] m[分钟]");
 
     this.refs.timeText.innerHTML = duration_text;
 
-    // setTimeout(function() {
-    //   // count_down();
-    // }, 1000 * 60);
+    setTimeout(function() {
+      self.count_down();
+    }, 1000 * 60);
   }
 
-  componentDidMount() {
-    this.count_down()
+  componentDidUpdate() {
+    this.count_down();
   }
 
   render(){

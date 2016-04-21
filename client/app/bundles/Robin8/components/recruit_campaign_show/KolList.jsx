@@ -42,23 +42,33 @@ export default class KolList extends React.Component {
     }
   }
 
+  render_super_vistor_header() {
+    if (isSuperVistor()) {
+      return (
+        <td>kol id</td>
+      )
+    }
+  }
+
   render_kol_list_header(){
     const campaign = this.props.campaign
     const campaign_invites = this.props.campaign_invites
+
     if(campaign_invites.size == 0){
       return
     }
-    if (isSuperVistor()) {
-      if(campaign.get("per_budget_type") != "post"){
-        return(<tr><td>kol id</td><td>头像</td><td>昵称</td><td>计费点击</td><td>总点击</td><td>奖励</td><td>截图</td></tr>)
-      }
-      return(<tr><td>kol id</td><td>头像</td><td>昵称</td><td>总点击</td><td>奖励</td><td>截图</td></tr>)
-    } else {
-      if(campaign.get("per_budget_type") != "post"){
-        return(<tr><td>头像</td><td>昵称</td><td>计费点击</td><td>总点击</td><td>奖励</td><td>截图</td></tr>)
-      }
-      return(<tr><td>头像</td><td>昵称</td><td>总点击</td><td>奖励</td><td>截图</td></tr>)
-    }
+
+    return(
+      <tr>
+        { this.render_super_vistor_header() }
+        <td>头像</td>
+        <td>昵称</td>
+        <td>微博/微信粉丝量</td>
+        <td>影响力分数</td>
+        <td>地区</td>
+        <td>推荐原因</td>
+      </tr>
+    )
   }
 
   render_kol_list(){
@@ -90,7 +100,7 @@ export default class KolList extends React.Component {
     }
     let showTip = "正在加载中..."
     if(hasfetchedInvite && campaign_invites.size == 0){
-      showTip = "暂时还没有kol, 转发活动!"
+      showTip = "暂时还没有人报名"
     }
     return(
       <div className="panel-body showMiddleTip">
@@ -105,7 +115,7 @@ export default class KolList extends React.Component {
       <div className="panel ">
         <div className="panel-heading">
           <a href="#panelKolsBigShow" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <h4 className="panel-title">KOL列表</h4>
+          <h4 className="panel-title">报名列表</h4>
             {this.render_kol_list()}
         </div>
       </div>
