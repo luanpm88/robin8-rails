@@ -52,12 +52,6 @@ module Campaigns
       end
       kols.collect{|t| t.id }
     end
-
-
-    def get_citys
-
-    end
-
     private
     def get_ids_from_target_content contents
       contents.map do |content|

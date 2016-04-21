@@ -36,7 +36,10 @@
           <%= link_to '点击数据', marketing_dashboard_campaign_campaign_shows_path(c), :target => "_blank" %> | <br/>
           <%= link_to '统计', "/brand/campaigns/#{c.id}?super_visitor_token=#{get_super_visitor_token}&user_id=#{c.user_id}", :target => "_blank" %> | <br/>
           <% if c.status == 'unexecute' %>
-            <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %>
+            <%= link_to '审核', targets_marketing_dashboard_campaign_path(c), target: "_blank" %> | <br/>
+          <% end %>
+          <% if c.status != 'unexecute' && c.per_budget_type == "recruit" %>
+            <%= link_to 'kol招募审核', recruit_targets_marketing_dashboard_campaign_path(c), target: "_blank" %> | <br/>
           <% end %>
         </td>
       </tr>
