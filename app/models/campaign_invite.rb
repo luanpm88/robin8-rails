@@ -6,7 +6,7 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_new_income      #unit is cent
 
 
-  STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
+  STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
   CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果"]
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']
