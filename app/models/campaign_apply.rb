@@ -11,18 +11,13 @@ class CampaignApply < ActiveRecord::Base
 
   #kol_ids 审核通过的用户
   def self.platform_pass_kols(campaign_id, kol_ids = [])
-    all_apply_ids = CampaignApply.applying.where(:campaign_id => campaign_id).collect{|t| t.kol_id }
-    need_reject_kol_ids = all_apply_ids - kol_ids
-    CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => need_reject_kol_ids).update_all(:status => 'platform_rejected')
-    CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => need_reject_kol_ids).update_all(:status => 'rejected')
+    CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'brand_passed')
   end
 
   #kol_ids 审核通过的用户
   def self.brand_pass_kols(campaign_id, kol_ids = [])
-    all_apply_ids = CampaignApply.platform_passed.where(:campaign_id => campaign_id).collect{|t| t.kol_id }
-    need_reject_kol_ids = all_apply_ids - kol_ids
-    CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => need_reject_kol_ids).update_all(:status => 'brand_rejected')
-    CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => need_reject_kol_ids).update_all(:status => 'rejected')
+    CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'brand_passed')
+    CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'approved')
   end
 
   def self.end_apply(campaign_id)
@@ -30,9 +25,6 @@ class CampaignApply < ActiveRecord::Base
     not_passed_kol_ids  =  CampaignApply.where(:campaign_id => campaign_id).brand_not_passed.collect{|t| t.kol_id}
     CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => not_passed_kol_ids).update_all(:status => 'brand_rejected')
     CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => not_passed_kol_ids).update_all(:status => 'rejected')
-
-    # 对审核通过的invite 改状态 applying -> approved
-    CampaignInvite.where(:campaign_id => campaign_id).where(:status => 'applying').update_all(:status => 'approved')
   end
 
 

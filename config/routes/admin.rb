@@ -10,6 +10,7 @@ Rails.application.routes.draw do
         get :targets
         post :add_target
         delete :delete_target
+        get :stop
       end
       match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]
