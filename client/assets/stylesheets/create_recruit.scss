@@ -12,6 +12,7 @@
  
 @import "create_activity_base.scss";
 @import "city_selector.scss";
+@import "form_common.scss";
 
 .creat-recruit-target {
   padding-top: 38px;
@@ -52,4 +53,75 @@
     font-size: 14px;
     margin-left: 10px;
   }
+
+}
+
+.recruit-budget-form-area {
+  display: table;
+  table-layout: fixed;
+  padding: 40px 0;
+  width: 100%;
+  text-align: center;
+
+  .budget-box{
+    display: table-cell;
+    position: relative;
+  }
+
+  .budget-box:first-child:after, .budget-box:nth-child(2):after{
+    right: 0;
+    top: 38px;
+    position: absolute;
+    bottom: 15px;
+    content: '/';
+    color: #bfc1c0;
+  }
+
+  .bootstrap-touchspin-prefix {
+    padding: 6px 6px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
+    background-color: transparent !important;
+    border: none !important;
+  }
+  
+  .bootstrap-touchspin-down{
+    background-image: url(~icon-minus.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom-right-radius: 27px !important;
+    border-top-right-radius: 27px !important;
+    border-radius: 27px;
+    width: 27px;
+    height: 27px;
+  }
+
+  .bootstrap-touchspin-up{
+    background-image: url(~icon-plus.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom-left-radius: 27px !important;
+    border-top-left-radius: 27px !important;
+    border-radius: 27px;
+    width: 27px;
+    height: 27px;
+  }
+
+}
+
+
+.common-spinner-input {
+  line-height: 34px;
+  font-family: FuturaStd-Medium;
+  font-weight: 100 !important;
+  text-align: center;
+  border: none !important;
+  font-size: 28px;
+}
+
+.recruit-budget-form-area .budget-box .spinner-box{
+  width: 80%;
+  margin-left: 10%;
 }

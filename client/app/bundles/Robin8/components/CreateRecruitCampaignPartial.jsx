@@ -11,12 +11,14 @@ import IntroPartial from "./create_campaign/IntroPartial";
 import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
 import DatePartial from './create_campaign/DatePartial';
 import RecruitDatePartial from './create_recruit/RecruitDatePartial';
+import RecruitBudgetPartial from './create_recruit/RecruitBudgetPartial';
 
 const initCampaign = {
   recruit_start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
   recruit_end_time: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
   start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
-  deadline: moment().add(2, "days").format("YYYY-MM-DD HH:mm")
+  deadline: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
+  budget: 1000
 }
 
 const validate = new FormValidate({
@@ -51,7 +53,8 @@ class CreateRecruitCampaign extends React.Component{
   }
 
   render(){
-    const { name, description, img_url, url, influence_score, start_time, deadline, recruit_start_time, recruit_end_time} = this.props.fields;
+    const { name, description, img_url, url, influence_score, start_time, deadline, 
+          recruit_start_time, recruit_end_time, budget, per_action_budget} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
     return(
@@ -64,7 +67,7 @@ class CreateRecruitCampaign extends React.Component{
               <RecruitTargetPartial {...{influence_score}}/>
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
-              <RecruitBudgetPartial {...{}} />
+              <RecruitBudgetPartial {...{budget, per_action_budget}} />
             </form>
           </div>
           <div id="sublist"></div>
@@ -76,7 +79,8 @@ class CreateRecruitCampaign extends React.Component{
 
 CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
-  fields: ["name", "description", "img_url", "url", "influence_score", "start_time", "deadline", "recruit_start_time", "recruit_end_time"],
+  fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
+         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget"],
   returnRejectedSubmitPromise: true,
   validate
 },
