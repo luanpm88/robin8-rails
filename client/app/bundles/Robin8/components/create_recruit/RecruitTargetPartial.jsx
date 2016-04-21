@@ -7,6 +7,12 @@ export default class TargetPartial extends React.Component {
     super(props, context);
   }
 
+  _handleTargetRegionInputChange(){
+    const { onChange } = this.props.region;
+    $(".target-city-label").change(function(){
+      onChange($(this).val())
+    })
+  }
 
   componentDidMount() {
   }

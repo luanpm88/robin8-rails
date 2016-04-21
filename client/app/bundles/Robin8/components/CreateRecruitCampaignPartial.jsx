@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import "create_recruit.scss";
 
-import IntroPartial from "./create_campaign/IntroPartial";
+import IntroPartial from "./create_recruit/IntroPartial";
 import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
 import DatePartial from './create_campaign/DatePartial';
 import RecruitDatePartial from './create_recruit/RecruitDatePartial';
@@ -24,6 +24,14 @@ const initCampaign = {
 }
 
 const validate = new FormValidate({
+  name: { require: true },
+  description: { require: true },
+  img_url: { require_img: true },
+  budget: { require: true, min_budget: 100 },
+  per_action_budget: { require: true },
+  action_url: {url: { require_protocol: true }},
+  short_url: {url: { require_protocol: true }},
+  task_description: { require: true }
 })
 
 const validateFailed = (errors) => {
@@ -55,18 +63,18 @@ class CreateRecruitCampaign extends React.Component{
   }
 
   render(){
-    const { name, description, img_url, url, influence_score, start_time, deadline, 
-          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count} = this.props.fields;
+    const { name, description, img_url, influence_score, start_time, deadline, 
+          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
-    const { saveCampaign } = this.props.actions;
+    const { saveRecruit } = this.props.actions;
     return(
       <div className="wrapper">
         <div className="container">
           {this.render_breadcrumb()}
           <div className="creat-activity-wrap">
-            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) }}>
-              <IntroPartial {...{name, description, img_url, url, }}/>
-              <RecruitTargetPartial {...{influence_score}}/>
+            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
+              <IntroPartial {...{name, description, img_url, task_description, address}}/>
+              <RecruitTargetPartial {...{influence_score, region}}/>
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
               <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
@@ -86,7 +94,7 @@ class CreateRecruitCampaign extends React.Component{
 CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
-         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget", "recruit_person_count"],
+         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget", "recruit_person_count", "task_description", 'address', "region"],
   returnRejectedSubmitPromise: true,
   validate
 },

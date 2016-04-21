@@ -116,9 +116,11 @@ module Brand
         requires :start_time, type: DateTime
         requires :deadline, type: DateTime
         requires :per_action_budget, type: Float
-        requires :budget, type: Float
+        requires :recruit_person_count, type: Float
+        optional :budget,   type: Float
       end
       post 'recruit_campaigns' do
+        params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
         service = CreateRecruitCampaignService.new current_user, declared(params)
         if service.perform
           present service.campaign
