@@ -93,8 +93,8 @@ module Concerns
 
       def check(campaign_id)
         kol_ids = CampaignApply.where(:campaign_id => campaign_id).collect{|t| t.kol_id }
-        CampaignApply.platform_pass_kols(kol_ids)
-        CampaignApply.brand_pass_kols(kol_ids)
+        CampaignApply.platform_pass_kols(campaign_id,kol_ids)
+        CampaignApply.brand_pass_kols(campaign_id,kol_ids)
       end
     end
   end
