@@ -8,7 +8,7 @@ export default class RecruitBudgetPartial extends React.Component{
   }
 
   _initTouchSpin() {
-    $('.budget-input').TouchSpin({
+    $('.per-action-budget').TouchSpin({
       min: 100,
       max: 1000000,
       prefix: '￥'
@@ -23,9 +23,14 @@ export default class RecruitBudgetPartial extends React.Component{
   }
 
   _handleBudgetInputChange() {
-    const { onChange } = this.props.budget;
-    $('.budget-input').change(function() {
-      onChange( $(this).val() );
+    const { per_action_budget } = this.props
+    $('.per-action-budget').change(function() {
+      per_action_budget.onChange( $(this).val() );
+    })
+
+    const { recruit_person_count } = this.props;
+    $('.recruit-person-count-input').change(function() {
+      recruit_person_count.onChange( $(this).val() );
     })
   }
 
@@ -42,7 +47,7 @@ export default class RecruitBudgetPartial extends React.Component{
   }
 
   render(){
-    const { budget } = this.props;
+    const { budget, per_action_budget, recruit_person_count} = this.props;
     return(
       <div className="creat-activity-form creat-budget">
         <div className="header">
@@ -54,19 +59,19 @@ export default class RecruitBudgetPartial extends React.Component{
             <div className="budget-box">
               <label className="creat-campaign-total-budget form-common-label">预计招募人数</label>
               <div className="spinner-box">
-                <input {...budget} type="text" className="  spinner-input common-spinner-input recruit-person-count-input" style={{display: 'block'}} />
+                <input {...recruit_person_count} type="text" className="  spinner-input common-spinner-input recruit-person-count-input" style={{display: 'block'}} />
               </div>
             </div>
             <div className="budget-box">
               <label className="creat-campaign-total-budget form-common-label">人均奖励</label>
               <div className="spinner-box">
-                <input {...budget} type="text" className="spinner-input budget-input common-spinner-input" style={{display: 'block'}} />
+                <input {...per_action_budget} type="text" className="spinner-input per-action-budget common-spinner-input" style={{display: 'block'}} />
               </div>
             </div>
             <div className="budget-box">
               <label className="creat-campaign-total-budget form-common-label">招募预算</label>
               <div className="spinner-box">
-                <label type="text" className="" style={{display: 'block'}} >￥0</label>
+                <label type="text" className="recruit-total-target-label" style={{display: 'block'}} >￥{recruit_person_count.value * per_action_budget.value}</label>
               </div>
             </div>
           </div>

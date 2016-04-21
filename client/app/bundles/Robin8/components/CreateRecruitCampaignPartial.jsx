@@ -18,7 +18,9 @@ const initCampaign = {
   recruit_end_time: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
   start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
   deadline: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
-  budget: 1000
+  budget: 1000,
+  per_action_budget: 1000,
+  recruit_person_count: 1
 }
 
 const validate = new FormValidate({
@@ -54,7 +56,7 @@ class CreateRecruitCampaign extends React.Component{
 
   render(){
     const { name, description, img_url, url, influence_score, start_time, deadline, 
-          recruit_start_time, recruit_end_time, budget, per_action_budget} = this.props.fields;
+          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveCampaign } = this.props.actions;
     return(
@@ -67,7 +69,11 @@ class CreateRecruitCampaign extends React.Component{
               <RecruitTargetPartial {...{influence_score}}/>
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
-              <RecruitBudgetPartial {...{budget, per_action_budget}} />
+              <RecruitBudgetPartial {...{budget, per_action_budget, recruit_person_count}} />
+              <div className="creat-form-footer">
+                <p className="help-block">活动一旦通过审核将不能更改，我们将在2小时内审核当日10:00 - 18:00提交的订单，其余时间段提交的订单次日审核</p>
+                <button type="submit" className="btn btn-blue btn-lg createCampaignSubmit" disabled={ submitting }>完成发布活动</button>
+              </div>
             </form>
           </div>
           <div id="sublist"></div>
@@ -80,7 +86,7 @@ class CreateRecruitCampaign extends React.Component{
 CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
-         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget"],
+         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget", "recruit_person_count"],
   returnRejectedSubmitPromise: true,
   validate
 },
