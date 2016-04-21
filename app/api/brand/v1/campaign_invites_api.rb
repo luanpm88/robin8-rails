@@ -10,6 +10,7 @@ module Brand
         paginate per_page: 4
         get "/" do
           # 需要考虑 以管理员的身份 查看 campaign 详情的 需求
+          binding.pry
           campaign = Campaign.find_by :id => params[:campaign_id], :user_id => current_user.id
           campaign_invites = paginate(Kaminari.paginate_array(campaign.valid_invites({:include => :kol })))
           present campaign_invites
