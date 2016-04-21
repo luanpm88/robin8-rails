@@ -74,7 +74,7 @@ class KolInfluenceValue < ActiveRecord::Base
   end
 
   def self.diff_score(kol_uuid)
-    last_auto = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).where("created_at < '#{Date.today.beginning_of_week}'").order("id desc").first   rescue nil
+    last_auto = last_auto_value(kol_uuid)
     if last_auto
       value = KolInfluenceValueHistory.where(:kol_uuid => kol_uuid).last
       diff = value.influence_score.to_i - last_auto.influence_score.to_i  rescue 0
@@ -82,6 +82,10 @@ class KolInfluenceValue < ActiveRecord::Base
     else
       return nil
     end
+  end
+
+  def self.last_auto_value(kol_uuid)
+    KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).where("created_at < '#{Date.today.beginning_of_week}'").order("id desc").first   rescue nil
   end
 
 end

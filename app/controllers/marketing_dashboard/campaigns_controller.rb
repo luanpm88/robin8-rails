@@ -32,6 +32,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
   def stop
     @campaign = Campaign.find params[:id]
     @campaign.finish("stop by admin")
+    redirect_to :action => :index
   end
 
   def targets
