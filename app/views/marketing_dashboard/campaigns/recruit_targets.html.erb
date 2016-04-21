@@ -1,0 +1,71 @@
+<h2><%= @title %></h2>
+<% attrs = %w(id name mobile_number 推荐理由 操作) %>
+<table class='table table-bordered'>
+  <thead>
+
+    <tr>
+      <% attrs.each do |attr| %>
+        <th><%= attr.camelcase %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kols.each do |k| %>
+      <tr class=<%= k.id %>>
+        <td class="kol_id"> <%= k.send :id %> </td>
+        <td class="campaign_id" style="display: none"> <%= @campaign.id %> </td>
+        <td> <%= k.send :name %> </td>
+        <td> <%= k.send :mobile_number %> </td>
+        <td>
+          <input class="agree_reason <%= k.id %>" type='text'>
+        </td>
+        <td>
+          <button class="btn btn-default agree-btn <%= k.id %> " value="cancle" style="background-color: #00b38a; color: white">同意</button>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<script>
+$(function() {
+  $('.agree-btn').click(function(){
+    var kol_id = $(this).parents('tr').find('.kol_id').text().trim()
+    var campaign_id = $(this).parents('tr').find('.campaign_id').text().trim()
+    var agree_reason = $(this).parents('tr').find('.agree_reason').val()
+    if ($(this).val() == 'cancle')
+      var operate = $(this).val('agree').val()
+    else
+      var operate = $(this).val('cancle').val()
+
+    $.ajax({
+      method: "POST",
+      url: "/marketing_dashboard/campaigns/${campaign_id}/add_or_remove_recruit_kol",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "kol_id": kol_id, "campaign_id": campaign_id, "agree_reason": agree_reason, "operate": operate }
+    })
+      .done(function(data) {
+        if(data['result'] == 'succeed'){
+          if(data['operate'] === 'agree') {
+            $('.agree-btn').parents('td').find('.' + data['kol_id']).css({"background-color": "grey"}).text("取消");
+          }
+          if(data['operate'] === 'cancle') {
+            $('.agree-btn').parents('td').find('.' + data['kol_id']).css({"background-color": "#00b38a"}).text("同意");
+            $(".agree_reason").parents('td').find('.' + data['kol_id']).val("")
+          }
+        }
+        else {
+          alert("出现错误，请重试，多次失败请找开发人员~~~");
+        }
+      });
+
+  })
+})
+
+
+
+</script>
