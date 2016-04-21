@@ -192,7 +192,7 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
-      Message.new_campaign(self, [], get_unmatched_kol_ids)
+      Message.new_campaign(self, get_specified_kol_ids, get_unmatched_kol_ids)
     end
     Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
