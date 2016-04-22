@@ -4,7 +4,7 @@ module Brand
       class Campaign < Entities::Base
 
         expose :id, :name, :description, :short_description, :task_description, :img_url, :status, :message, :url, :address, :budget, :per_budget_type, :per_action_budget, :hide_brand_name
-        
+
         expose :user, using: Entities::User
 
         expose :recruit_person_count do |object, opts|
@@ -21,6 +21,7 @@ module Brand
         expose :deadline do |object, opts|
           object.deadline.strftime('%Y-%m-%d %H:%M')
         end
+        
         expose :start_time do |object, opts|
           object.start_time.strftime('%Y-%m-%d %H:%M')
         end
