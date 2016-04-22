@@ -4,7 +4,7 @@ module API
       module CampaignEntities
         class Summary  < Grape::Entity
           format_with(:iso_timestamp) { |dt| dt.iso8601 rescue nil }
-          expose :id, :name, :description, :status, :message, :url, :per_budget_type, :per_action_budget, :budget
+          expose :id, :name, :description, :status, :message, :url, :per_budget_type, :per_action_budget, :budget, :max_action
           expose :img_url do |campaign|
             campaign.img_cover_url
           end

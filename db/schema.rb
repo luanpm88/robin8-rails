@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160421062938) do
+ActiveRecord::Schema.define(version: 20160421114313) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 20160421062938) do
     t.string   "status",              limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "expect_price",        limit: 11
     t.string   "agree_reason",        limit: 255
   end
 
@@ -251,6 +252,7 @@ ActiveRecord::Schema.define(version: 20160421062938) do
     t.datetime "recruit_end_time"
     t.string   "address",              limit: 255
     t.boolean  "hide_brand_name",      limit: 1,                       default: false
+    t.boolean  "end_apply_check",      limit: 1,                       default: false
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -415,6 +417,7 @@ ActiveRecord::Schema.define(version: 20160421062938) do
     t.boolean  "is_vip",                    limit: 1
     t.boolean  "is_yellow_vip",             limit: 1
     t.datetime "access_token_refresh_time"
+    t.integer  "last_status_id",            limit: 4
   end
 
   create_table "industries", force: :cascade do |t|
