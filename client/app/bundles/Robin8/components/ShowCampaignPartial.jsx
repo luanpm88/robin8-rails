@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import "brand_activity_detail.scss";
+import "activity_detail.scss";
 
 import Basic from './campaign_show/Basic';
 import Overview from './campaign_show/Overview';

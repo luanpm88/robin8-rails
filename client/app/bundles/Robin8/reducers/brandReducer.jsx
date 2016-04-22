@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 import actionTypes from '../constants/brandConstants';
+import _ from 'lodash';
 
 export const $$initialState = Immutable.fromJS({
   readyState: 'init',
@@ -48,12 +49,34 @@ export default function brandReducer($$state = $$initialState, action = null) {
       }
       // console.log($$state.toObject().campaign.toObject())
       return $$state;
+
+    case actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOL_STATUS:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.mergeIn(['campaign', 'brand_passed_count'], action.result.brand_passed_count);
+      }
+      return $$state;
+
+    case actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOLS:
+      $$state = $$state.set("readyState", fetchState);
+      $$state = $$state.mergeIn(['campaign', 'end_apply_check'], fetchState === 'success');
+
+      return $$state;
+
+    case actionTypes.FETCH_RECRUIT_CAMPAIGN:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
+      }
+      return $$state;
+
     case actionTypes.FETCH_BRAND_PROFILE:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.merge({ "brand": Immutable.fromJS(action.result) });
       }
       return $$state;
+
     case actionTypes.UPDATE_BRAND_PROFILE:
       return $$state;
 
@@ -69,6 +92,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
       return $$state;
 
     case actionTypes.FETCH_INVITES_OF_CAMPAIGN:
+    case actionTypes.FETCH_APPLIES_OF_RECRUIT_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === "success"){
         $$state = $$state.merge({
@@ -78,6 +102,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
         });
       }
       return $$state;
+
     case actionTypes.FETCH_STATISTICS_CLICKS_OF_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === "success"){
@@ -86,6 +111,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
         })
       }
       return $$state;
+
     default:
       return $$state;
   }
