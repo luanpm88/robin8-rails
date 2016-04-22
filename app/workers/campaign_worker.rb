@@ -24,8 +24,8 @@ class CampaignWorker
       campaign.finish('expired') if campaign.status != 'executed'
     elsif job_type == 'send_invites'
       campaign.send_invites
-    elsif job_type == 'end_apply'
-      CampaignApply.end_apply(campaign_id)
+    elsif job_type == 'end_apply_check'
+      CampaignApply.end_apply_check(campaign_id)
     elsif job_type == 'settle_accounts_for_kol'
       campaign.settle_accounts_for_kol
     elsif job_type == 'settle_accounts_for_brand'
