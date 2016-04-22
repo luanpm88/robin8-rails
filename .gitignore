@@ -58,3 +58,4 @@ app/assets/webpack/
 .ruby-gemset
 npm-debug.log*
 config/selector_city.txt
+config/new_selector_city.txt
