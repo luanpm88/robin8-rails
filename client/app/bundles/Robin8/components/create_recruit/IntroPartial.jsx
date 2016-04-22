@@ -112,9 +112,14 @@ export default class IntroPartial extends React.Component {
                 <ShowError field={task_description} />
               </div>
               <div className="form-group">
-                <label htmlFor="campaign-url">活动地址</label>
+                <label htmlFor="campaign-address">活动地址</label>
                 <input {...address} className="form-control recruit-address-input" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效"  />
                 <ShowError field={address} />
+              </div>
+              <div className="form-group">
+                <label className="recruit-brand-name-showable">
+                  <input type="checkbox">活动发布时隐藏品牌名称</input>
+                </label>
               </div>
             </div>
           </div>
