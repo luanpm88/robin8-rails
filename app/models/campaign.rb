@@ -284,7 +284,7 @@ class Campaign < ActiveRecord::Base
     #首先先付款给期间审核的kol
     settle_accounts_for_kol
     #剩下的邀请  状态全设置为拒绝
-    self.finished_invites.update_all(:status => 'rejected')
+    self.finished_invites.update_all({:status => 'rejected', :img_status => 'rejected'})
     ActiveRecord::Base.transaction do
       self.update_column(:status, 'settled')
       self.user.unfrozen(self.budget, 'campaign', self)

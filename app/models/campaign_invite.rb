@@ -60,7 +60,7 @@ class CampaignInvite < ActiveRecord::Base
   # 进行中的活动 审核通过时  仅仅更新它状态
   # 已结束的活动 审核通过时   更新图片审核状态 + 立即对该kol结算
   def screenshot_pass
-    return false if self.img_status == 'passed' || self.status == 'settled'
+    return false if self.img_status == 'passed' || self.status == 'settled'  ||  self.status == 'rejected'
     campaign = self.campaign
     kol = self.kol
     if campaign.status == 'executing'
