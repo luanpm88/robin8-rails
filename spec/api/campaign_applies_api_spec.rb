@@ -25,4 +25,12 @@ RSpec.describe "campaign_apply api" do
     end
 
   end
+
+  describe "Get all campaign applies" do
+    it "return 200" do
+      get "/brand_api/v1/campaign_applies", {campaign_id: @recruit_campaign.id}
+      expect(response.status).to eq 200
+    end
+  end
+
 end
