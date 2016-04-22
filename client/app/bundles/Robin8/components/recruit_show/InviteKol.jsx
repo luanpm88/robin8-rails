@@ -9,10 +9,8 @@ export default class InviteKol extends React.Component {
   }
 
   updateKolStatus(data, status) {
-    const operation = !!status ? "agree" : "cancle";
-    const { campaign_id, kol_id, user_choose_handle } = data;
-
-    user_choose_handle(campaign_id, kol_id, operation);
+    const { campaign_id, kol_id, callback } = data;
+    callback(campaign_id, kol_id, status);
   }
 
   render_kol_id() {
@@ -40,10 +38,11 @@ export default class InviteKol extends React.Component {
         <td>
           <SwitchBox
             onUserClick={this.updateKolStatus}
+            defaultValue={campaign_invite.get("status") === "brand_passed"}
             userData={{
               campaign_id: campaign_id,
               kol_id: campaign_invite.get("kol").get("id"),
-              user_choose_handle: actions.updateRecruitCompaignKolStatus
+              callback: actions.updateRecruitCompaignKolStatus
             }}
           />
         </td>
@@ -62,10 +61,10 @@ export default class InviteKol extends React.Component {
         <td className="grey">未上传</td>
       )
     } else if (this.props.status === "running") {
-      const approved = !!campaign_invite.get("approved");
+      const passed = campaign_invite.get("status") === "brand_passed";
 
       return (
-        <td className={ approved ? "" : "grey" } >{ !!approved ? "已招募" : "未招募" }</td>
+        <td className={ passed ? "" : "grey" } >{ !!passed ? "已招募" : "未招募" }</td>
       );
     }
   }
@@ -77,7 +76,11 @@ export default class InviteKol extends React.Component {
       <tr>
         {this.render_kol_id()}
         {this.render_profile(campaign_invite)}
-        <td>{campaign_invite.get("kol").get("fans_count") || "-"}</td>
+        <td>
+          {campaign_invite.get("kol").get("weibo_friend_count") || "-"}
+          <i className="slash">/</i>
+          {campaign_invite.get("kol").get("weixin_friend_count") || "-"}
+        </td>
         <td>{campaign_invite.get("kol").get("influence_score") || "-"}</td>
         <td>{campaign_invite.get("kol").get("city") || "-"}</td>
         <td className="reason">{campaign_invite.get("agree_reason") || "-"}</td>

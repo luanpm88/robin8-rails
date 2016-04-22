@@ -4,17 +4,20 @@ import { findDOMNode } from 'react-dom';
 export default class SwitchBox extends Component {
   constructor(props) {
     super(props);
+    this.state = { active: props.defaultValue || false };
+  }
 
-    this.state = { active: false };
+  doSwitch(value) {
+    const element = findDOMNode(this);
+    $(element).toggleClass('active', value);
   }
 
   handleClick(e) {
-    const element = findDOMNode(this);
     const activeValue = !this.state.active;
     const userData = this.props.userData;
 
     this.setState({ active: activeValue });
-    $(element).toggleClass('active', activeValue);
+    this.doSwitch(activeValue);
 
     if (this.props.onUserClick) {
       this.props.onUserClick(userData, activeValue);
@@ -22,6 +25,7 @@ export default class SwitchBox extends Component {
   }
 
   componentDidMount() {
+    this.doSwitch(this.state.active);
   }
 
   render() {

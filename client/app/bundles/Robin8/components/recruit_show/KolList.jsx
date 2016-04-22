@@ -145,7 +145,9 @@ export default class KolList extends React.Component {
   }
 
   render_kol_stat() {
-    if (this.props.status != "choosing") { return; }
+    const { campaign, status } = this.props;
+
+    if (status != "choosing") { return; }
 
     return (
       <div className="kol-stat-wrapper">
@@ -154,11 +156,11 @@ export default class KolList extends React.Component {
             <ul>
               <li>
                 <h5>已选中</h5>
-                <span className="bold">81</span>
+                <span className="bold">{ campaign.get("brand_passed_count") }</span>
               </li>
               <li>
                 <h5>招募</h5>
-                <span className="bold">100</span>
+                <span className="bold">{ campaign.get("valid_applies_count") }</span>
               </li>
             </ul>
           </div>

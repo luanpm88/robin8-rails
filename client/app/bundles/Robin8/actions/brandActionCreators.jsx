@@ -196,11 +196,9 @@ export function updateBrandPassword(password_fields) {
   }
 }
 
-export function updateRecruitCompaignKolStatus(campaign_id, kol_id, op) {
-  let formData = new FormData();
-  formData.append('campaign_id', campaign_id);
-  formData.append('kol_id', kol_id);
-  formData.append('operation', op);
+export function updateRecruitCompaignKolStatus(campaign_id, kol_id, status) {
+  const operation = !!status ? "agree" : "cancel";
+  const data = { campaign_id, kol_id, operation };
 
   return {
     type: actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOL_STATUS,
@@ -212,7 +210,7 @@ export function updateRecruitCompaignKolStatus(campaign_id, kol_id, op) {
       },
       credentials: 'same-origin',
       method: 'PUT',
-      body: formData
+      body: JSON.stringify(data)
     })
   }
 }
