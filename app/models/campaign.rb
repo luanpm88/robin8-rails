@@ -11,6 +11,7 @@ class Campaign < ActiveRecord::Base
 
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
+  # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
   belongs_to :user
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
@@ -177,7 +178,7 @@ class Campaign < ActiveRecord::Base
     if  is_recruit_type?
       _start_time = self.recruit_start_time < Time.now ? (Time.now + 5.seconds) : self.recruit_start_time
       CampaignWorker.perform_at(_start_time, self.id, 'start')
-      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply')
+      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
     else
       _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
       CampaignWorker.perform_at(_start_time, self.id, 'start')

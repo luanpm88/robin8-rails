@@ -16,17 +16,32 @@ class CampaignApply < ActiveRecord::Base
   end
 
   #kol_ids 审核通过的用户
-  def self.brand_pass_kols(campaign_id, kol_ids = [])
-    CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'brand_passed')
-    CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'approved')
+  # def self.brand_pass_kols(campaign_id, kol_ids = [])
+  #   CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => kol_ids).update_all(:status => 'brand_passed')
+  # end
+
+  def brand_pass_kol
+    self.update_column(:status, 'brand_passed')
   end
 
-  def self.end_apply(campaign_id)
-    #check again 避免没有审核一直停留在这个状态
-    not_passed_kol_ids  =  CampaignApply.where(:campaign_id => campaign_id).brand_not_passed.collect{|t| t.kol_id}
-    CampaignApply.where(:campaign_id => campaign_id).where(:kol_id => not_passed_kol_ids).update_all(:status => 'brand_rejected')
-    CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => not_passed_kol_ids).update_all(:status => 'rejected')
+  def brand_reject_kol
+    self.update_column(:status, 'platform_passed')
   end
 
+  #结束审核
+  def self.end_apply_check(campaign_id)
+    ActiveRecord::Base.transaction do
+      campaign = Campaign.find campaign_id
+      return if campaign.blank?
+      campaign.update_column(:end_apply_check, true)
+      #审核通过的
+      brand_passed_kol_ids = CampaignApply.brand_passed.where(:campaign_id => campaign_id).collect{|t| t.kol_id}
+      CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => brand_passed_kol_ids).update_all(:status => 'approved')
+      #剩余的拒绝掉
+      CampaignApply.brand_not_passed.where(:campaign_id => campaign_id).update_all(:status => 'brand_rejected')
+      rejected_kol_ids =  CampaignApply.brand_not_passed.collect{|t| t.kol_id}
+      CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => rejected_kol_ids).update_all(:status => 'rejected')
+    end
+  end
 
 end
