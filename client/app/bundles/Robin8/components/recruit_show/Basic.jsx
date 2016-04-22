@@ -15,13 +15,14 @@ export default class Basic extends React.Component {
   }
 
   render(){
-    const { campaign } = this.props
+    const { campaign } = this.props;
+
     return (
       <div className="brand-activity-card brand-activity-card-detail">
         <div className="brand-activity-content">
           <h2 className="activity-title">{ campaign.get("name") }<span className="label label-orange">招募</span></h2>
           { this.renderEditCampaignButton(campaign) }
-          <small className="duration">{ formatDate(campaign.get("start_time")) } - { formatDate(campaign.get("end_time")) }</small>
+          <small className="duration">{ formatDate(campaign.get("start_time")) } - { formatDate(campaign.get("deadline")) }</small>
           <small className="address">{ campaign.get("address") }</small>
           <small className="summary">{_.truncate(campaign.get("task_description"), {'length': 120})}</small>
 

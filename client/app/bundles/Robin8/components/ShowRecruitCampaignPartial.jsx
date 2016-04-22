@@ -7,11 +7,11 @@ import moment from 'moment';
 
 import "recruit_activity_detail.scss";
 
-import Basic from './recruit_campaign_show/Basic';
-import Overview from './recruit_campaign_show/Overview';
-import ResultView from './recruit_campaign_show/ResultView';
-import KolList from './recruit_campaign_show/KolList';
-import StateText from './recruit_campaign_show/StateText';
+import Basic from './recruit_show/Basic';
+import Overview from './recruit_show/Overview';
+import ResultView from './recruit_show/ResultView';
+import KolList from './recruit_show/KolList';
+import StateText from './recruit_show/StateText';
 
 function select(state){
   return {
@@ -24,28 +24,27 @@ function select(state){
 
 export default class ShowRecruitCampaignPartial extends Component {
   componentDidMount() {
-    console.log("---------recruit campaign show did mount--------");
-    this._fetchRecruitCampaign();
+    this._fetchRecruit();
     this.bind_toggle_text();
+    console.log("---------recruit campaign show did mount--------");
   }
 
-  _fetchRecruitCampaign() {
-    const recruit_compaign_id = this.props.params.id;
-    const { fetchRecruitCampaign } = this.props.actions;
+  _fetchRecruit() {
+    const compaign_id = this.props.params.id;
+    const { fetchRecruit } = this.props.actions;
 
-    // can load campaign from campaigns
-    // const campaigns = this.props.data.get("campaigns");
-
-    fetchRecruitCampaign(recruit_compaign_id);
+    fetchRecruit(compaign_id);
   }
 
   getStatus() {
-    const campaign = this.props.data.get('campaign'),
-      campaign_status = campaign.get("status");
+    const campaign = this.props.data.get('campaign');
+    const campaign_status = campaign.get("status");
 
-    if (campaign_status === "executing") {
+    if (campaign_status === "unexecute") {
+      return "pending"
+    } else if (campaign_status === "executing") {
       const end_time = campaign.get("recruit_end_time"),
-        has_submit = campaign.get("is_recruit_submited");
+        has_submit = campaign.get("end_apply_check");
 
       if (has_submit) {
         // offline activity executing
@@ -99,10 +98,8 @@ export default class ShowRecruitCampaignPartial extends Component {
     const campaign = this.props.data.get('campaign');
     const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
     const campaign_id = _.toInteger(this.props.params.id);
-    // const status = this.getStatus();
-    const status = "finished";
-
-    console.log(status);
+    const status = this.getStatus();
+    // const status = "finished";
 
     return (
       <div className="wrapper">

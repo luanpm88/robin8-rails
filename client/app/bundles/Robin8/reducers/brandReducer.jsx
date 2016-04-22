@@ -41,24 +41,8 @@ export default function brandReducer($$state = $$initialState, action = null) {
       console.log("fetchState" + fetchState);
       return $$state;
 
-    case actionTypes.FETCH_RECRUIT_CAMPAIGN:
-      action.result = {
-        name: "可口可乐带你过大年11",
-        status: "executing",
-        start_time: Date.now(),
-        end_time: Date.now(),
-        address: "上海市 静安区 江宁路77号",
-        task_description: "请大家行动起来，一起转发下面的活动，迎接新的一年!请大家行动起来，一起转发下面的活动，迎接新的一年!请大家行动起来，一起转发下面的活动，迎接新的一年!",
-        recruit_start_time: new Date("2016/04/18 05:30:01"),
-        recruit_end_time: new Date("2016/04/24 08:00:05"),
-        img_url: "http://7xozqe.com1.z0.glb.clouddn.com/o_1agkabe9k146v1es6nrf13q918cuc.gif?imageMogr2/crop/!751.1737089201877x422.53521126760563a35.2112676056338a100",
-        per_action_budget: 100,
-        budget: 1200
-      };
-      $$state = $$state.set("readyState", 'success');
-      $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
-      return $$state;
     case actionTypes.FETCH_CAMPAIGN:
+    case actionTypes.FETCH_RECRUIT_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
@@ -86,6 +70,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
       return $$state;
 
     case actionTypes.FETCH_INVITES_OF_CAMPAIGN:
+    case actionTypes.FETCH_APPLIES_OF_RECRUIT_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === "success"){
         $$state = $$state.merge({

@@ -128,11 +128,10 @@ export function fetchCampaign(id) {
   };
 }
 
-export function fetchRecruitCampaign(id) {
+export function fetchRecruit(id) {
   return {
     type: actionTypes.FETCH_RECRUIT_CAMPAIGN,
-    promise: fetch(`${baseUrl}/campaigns/${id}`, { "credentials": 'same-origin' })
-    //promise: fetch(`${baseUrl}/recruit_campaigns/${id}`, { "credentials": 'same-origin' })
+    promise: fetch(`${baseUrl}/recruit_campaigns/${id}`, { "credentials": 'same-origin' })
   };
 }
 
@@ -140,6 +139,13 @@ export function fetchInvitesOfCampaign(campaign_id, current_page){
   return {
     type: actionTypes.FETCH_INVITES_OF_CAMPAIGN,
     promise: fetch(`${baseUrl}/campaign_invites?campaign_id=${campaign_id}&page=${current_page.page}`, {'credentials': 'include'})
+  }
+}
+
+export function fetchAppliesOfRecruit(campaign_id, current_page){
+  return {
+    type: actionTypes.FETCH_APPLIES_OF_RECRUIT_CAMPAIGN,
+    promise: fetch(`${baseUrl}/campaign_applies?campaign_id=${campaign_id}&page=${current_page.page}`, {'credentials': 'include'})
   }
 }
 
@@ -214,7 +220,7 @@ export function updateRecruitCompaignKolStatus(campaign_id, kol_id, op) {
 export function updateRecruitCompaignKols(campaign_id) {
   return {
     type: actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOLS,
-    promise: fetch(`${baseUrl}/recruit_campaigns/${campaign_id}/execute`, {
+    promise: fetch(`${baseUrl}/recruit_campaigns/${campaign_id}/end_apply_check`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

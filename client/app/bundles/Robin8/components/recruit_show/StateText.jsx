@@ -20,7 +20,7 @@ export default class StateText extends React.Component {
 
     setTimeout(function() {
       self.count_down();
-    }, 1000 * 60);
+    }, 1000 * 30);
   }
 
   componentDidUpdate() {

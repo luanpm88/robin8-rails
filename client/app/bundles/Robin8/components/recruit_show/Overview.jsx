@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import _ from 'lodash';
 
 export default class Overview extends React.Component{
   constructor(props, context){
@@ -29,7 +30,7 @@ export default class Overview extends React.Component{
     const { campaign } = this.props
     let per_budget = campaign.get("per_action_budget"),
       budget = campaign.get("budget"),
-      people_count = Math.floor(budget / per_budget);
+      people_count = _.toInteger(budget / per_budget);
 
     return(
       <div className="panel activity-stat-bigshow-panel">

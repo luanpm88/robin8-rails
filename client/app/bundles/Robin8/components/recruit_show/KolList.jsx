@@ -10,9 +10,9 @@ export default class KolList extends React.Component {
   }
 
   componentDidMount(){
-    const { fetchInvitesOfCampaign } = this.props.actions;
+    const { fetchAppliesOfRecruit } = this.props.actions;
     if(this.props.campaign_id){
-      fetchInvitesOfCampaign(this.props.campaign_id, {page: 1})
+      fetchAppliesOfRecruit(this.props.campaign_id, {page: 1})
     }
   }
 
@@ -22,7 +22,7 @@ export default class KolList extends React.Component {
 
   displayPaginator() {
     const that =  this
-    const { fetchInvitesOfCampaign } = this.props.actions;
+    const { fetchAppliesOfRecruit } = this.props.actions;
     const { campaign_id } = this.props
     if (this.props.paginate.get("X-Page")) {
       const pagination_options = {
@@ -35,7 +35,7 @@ export default class KolList extends React.Component {
           }
         },
         onPageClicked:  function(e,originalEvent,type,page){
-          fetchInvitesOfCampaign(campaign_id,  {page: page});
+          fetchAppliesOfRecruit(campaign_id,  {page: page});
         }
       }
       $("#campaign_invites-paginator").bootstrapPaginator(pagination_options);
@@ -94,8 +94,6 @@ export default class KolList extends React.Component {
   render_kol_list(){
     const { campaign, campaign_id, status, campaign_invites, actions } = this.props;
     const hasfetchedInvite = this.props.hasfetchedInvite;
-
-    console.log(actions);
 
     if(hasfetchedInvite && (campaign_invites.size > 0)){
       return(
