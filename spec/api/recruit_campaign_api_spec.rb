@@ -70,7 +70,6 @@ RSpec.describe "recruit campaign api" do
         created_at: wildcard_matcher,
         updated_at: wildcard_matcher
       }
-
       expect(response.status).to eq 201
       expect(response.body).to match_json_expression pattern
 
@@ -206,8 +205,14 @@ RSpec.describe "recruit campaign api" do
       expect(response.status).to eq 422
       expect(response.body).to match_json_expression pattern
     end
+  end
 
-
+  describe "put /recruit_campaigns/:id/end_apply_check" do
+    it "campaign 'end_apply_check' has changed to 'true' and return 200" do
+      put "/brand_api/v1/recruit_campaigns/#{@recruit_campaign.id}/end_apply_check"
+      expect(@recruit_campaign.reload.end_apply_check).to eq true
+      expect(response.status).to eq 200
+    end
   end
 
 end

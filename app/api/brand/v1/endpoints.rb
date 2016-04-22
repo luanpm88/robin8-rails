@@ -42,6 +42,7 @@ module Brand
 
       mount CampaignsAPI
       mount CampaignInvitesApi
+      mount CampaignAppliesAPI
     end
   end
 end

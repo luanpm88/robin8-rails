@@ -154,10 +154,21 @@ module Brand
         end
       end
 
+      desc "Get a recruit_campaign"
+      params do
+        requires :id, type: Integer
+      end
       get '/recruit_campaigns/:id' do
-        present Campaign.find(params[:id])
+        present Campaign.find_by(id: declared(params)[:id])
       end
 
+      desc "change recruit_campaign's 'end_apply_check' status "
+      params do
+        requires :id, type: Integer
+      end
+      put "/recruit_campaigns/:id/end_apply_check" do
+        CampaignApply.end_apply_check(declared(params)[:id])
+      end
     end
   end
 end

@@ -11,6 +11,7 @@ class Campaign < ActiveRecord::Base
 
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
+  # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
   belongs_to :user
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
@@ -38,7 +39,7 @@ class Campaign < ActiveRecord::Base
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :order_by_start, -> { order('start_time desc')}
-  scope :order_by_status, -> { order("case campaigns.per_action_type when 'recruit' then 4 else 1 end desc,
+  scope :order_by_status, -> { order("case campaigns.per_budget_type when 'recruit' then 4 else 1 end desc,
                                       case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
                                       start_time desc") }
 
@@ -54,10 +55,6 @@ class Campaign < ActiveRecord::Base
   end
 
   def upload_screenshot_deadline
-    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
-  end
-
-  def reupload_screenshot_deadline
     (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
   end
 
@@ -181,7 +178,7 @@ class Campaign < ActiveRecord::Base
     if  is_recruit_type?
       _start_time = self.recruit_start_time < Time.now ? (Time.now + 5.seconds) : self.recruit_start_time
       CampaignWorker.perform_at(_start_time, self.id, 'start')
-      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply')
+      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
     else
       _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
       CampaignWorker.perform_at(_start_time, self.id, 'start')
@@ -196,7 +193,7 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
-      Message.new_campaign(self, [], get_unmatched_kol_ids)
+      Message.new_campaign(self, get_specified_kol_ids, get_unmatched_kol_ids)
     end
     Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end

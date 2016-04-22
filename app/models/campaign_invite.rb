@@ -6,7 +6,7 @@ class CampaignInvite < ActiveRecord::Base
   counter :redis_new_income      #unit is cent
 
 
-  STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
+  STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
   CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果"]
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']
@@ -18,6 +18,7 @@ class CampaignInvite < ActiveRecord::Base
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
 
+  belongs_to :campaign_apply
   belongs_to :campaign
   belongs_to :kol
   scope :unrejected, -> {where("campaign_invites.status != 'rejected'")}
@@ -45,10 +46,6 @@ class CampaignInvite < ActiveRecord::Base
     self.campaign.upload_screenshot_deadline
   end
 
-  def reupload_end_at
-    self.campaign.reupload_screenshot_deadline
-  end
-
   def upload_interval_time
     return interval_time(Time.now, upload_start_at)
   end
@@ -58,8 +55,11 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def can_upload_screenshot
-    return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  \
-      (screenshot.blank? && Time.now < self.upload_end_at) || (screenshot.present? && Time.now < self.reupload_end_at))
+    if campaign.is_recruit_type?
+      status == 'finished' && img_status != 'passed' && Time.now > self.campaign.start_time  &&  Time.now < self.upload_end_at
+    else
+      (status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  Time.now < self.upload_end_at
+    end
   end
 
   # 进行中的活动 审核通过时  仅仅更新它状态
