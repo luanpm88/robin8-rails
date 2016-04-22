@@ -101,11 +101,11 @@ module Brand
         end
 
         expose :valid_applies_count do |object, opts|
-          object.valid_applies.count if object.per_budget_type != 'recruit'
+          object.valid_applies.count if object.per_budget_type == 'recruit'
         end
 
         expose :brand_passed_count do |object, opts|
-          object.brand_passed_applies.count if object.per_budget_type != 'recruit'
+          object.brand_passed_applies.count if object.per_budget_type == 'recruit'
         end
 
         with_options(format_with: :iso_timestamp) do
