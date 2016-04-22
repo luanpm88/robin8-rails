@@ -30,6 +30,21 @@
     text-align: center;
   }
 
+  select.influence_score{
+    height: 27px;
+    width: 182px;
+    appearance: none;
+    background: url(~select_arr.png) no-repeat white;
+    background-position: 159px 7px;
+    -webkit-appearance: none; /* Chrome*/
+    -moz-appearance: none;/* Firefox */
+    font-size: 12px;
+    text-indent: 12px;
+    background-color: #ffffff;
+    border: 1px solid #181616;
+    border-radius: 2px;
+  }
+
   label{
     display: block;
     color: #9b9a9a;
