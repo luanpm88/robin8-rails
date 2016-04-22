@@ -121,10 +121,40 @@ export function updateCampaign(campaign_id, campaign) {
   };
 }
 
+export function updateRecruit(campaign_id, campaign) {
+  var formData = new FormData()
+
+  for(let key of Object.keys(campaign)) {
+    formData.append(`${key}`, campaign[key]);
+  }
+
+  return {
+    type: actionTypes.UPDATE_RECRUIT,
+    promise: fetch(
+      `${baseUrl}/recruit_campaigns/${campaign_id}`, {
+        headers: {
+          "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+        },
+        credentials: "same-origin",
+        method: 'PUT',
+        body: formData
+      }
+    ),
+    redirect: '/brand/'
+  };
+}
+
 export function fetchCampaign(id) {
   return {
     type: actionTypes.FETCH_CAMPAIGN,
     promise: fetch(`${baseUrl}/campaigns/${id}`, { "credentials": 'same-origin' })
+  };
+}
+
+export function fetchRecruit(id) {
+  return {
+    type: actionTypes.FETCH_RECRUIT,
+    promise: fetch(`${baseUrl}/recruit_campaigns/${id}`, { "credentials": 'same-origin' })
   };
 }
 

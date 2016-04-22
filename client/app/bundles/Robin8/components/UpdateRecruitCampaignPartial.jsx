@@ -2,7 +2,7 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import  _ from 'lodash';
+import _  from 'lodash';
 import moment from 'moment';
 
 import "create_recruit.scss";
@@ -12,18 +12,6 @@ import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
 import DatePartial from './create_campaign/DatePartial';
 import RecruitDatePartial from './create_recruit/RecruitDatePartial';
 import RecruitBudgetPartial from './create_recruit/RecruitBudgetPartial';
-
-const initCampaign = {
-  recruit_start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
-  recruit_end_time: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
-  start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
-  deadline: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
-  budget: 1000,
-  per_action_budget: 1000,
-  recruit_person_count: 1,
-  hide_brand_name: false,
-  influence_score: "more_than_600",
-}
 
 const validate = new FormValidate({
   name: { require: true },
@@ -48,9 +36,27 @@ function select(state){
   return { brand: state.$$brandStore.get("brand")};
 }
 
-class CreateRecruitCampaign extends React.Component{
+class UpdateRecruitCampaignPartial extends React.Component{
   constructor(props, context){
     super(props, context);
+    _.bindAll(this, ['_fetchCampaign', '_updateCampaign']);
+  }
+
+  _fetchCampaign() {
+    const campaign_id = this.props.params.id;
+    const { fetchRecruit } = this.props.actions;
+    fetchRecruit(campaign_id);
+  }
+
+  _updateCampaign() {
+    const { updateRecruit } = this.props.actions;
+    const campaign_id = this.props.data.get("campaign").get("id");
+    const campaign_fields = this.props.values;
+    updateRecruit(campaign_id, campaign_fields);
+  }
+
+  componentDidMount() {
+    this._fetchCampaign();
   }
 
   render_breadcrumb(){
@@ -74,7 +80,7 @@ class CreateRecruitCampaign extends React.Component{
         <div className="container">
           {this.render_breadcrumb()}
           <div className="creat-activity-wrap">
-            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
+            <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
               <RecruitTargetPartial {...{influence_score, region}}/>
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
@@ -93,7 +99,7 @@ class CreateRecruitCampaign extends React.Component{
   }
 }
 
-CreateRecruitCampaign = reduxForm({
+UpdateRecruitCampaignPartial = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
          "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget", "recruit_person_count", "task_description", 'address', "region", "hide_brand_name"],
@@ -101,8 +107,8 @@ CreateRecruitCampaign = reduxForm({
   validate
 },
   state => ({
-    initialValues: initCampaign
+    initialValues: state.$$brandStore.get("campaign").toJSON()
   })
-)(CreateRecruitCampaign);
+)(UpdateRecruitCampaignPartial);
 
-export default connect(select)(CreateRecruitCampaign);
+export default connect(select)(UpdateRecruitCampaignPartial);
