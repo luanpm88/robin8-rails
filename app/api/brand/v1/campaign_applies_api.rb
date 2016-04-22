@@ -15,6 +15,13 @@ module Brand
           @campaign_apply = CampaignApply.find_by :campaign_id => declared(params)[:campaign_id], :kol_id => declared(params)[:kol_id]
           @campaign_apply.brand_pass_kol if declared(params)[:operation] == 'agree'
           @campaign_apply.brand_reject_kol if declared(params)[:operation] == 'cancel'
+          present @campaign_apply
+        end
+
+        get '/' do
+          @campaign = Campaign.find_by :id => params[:campaign_id]
+          @campaign_applies = @campaign.valid_applies({:include => :kol})
+          present @campaign_applies
         end
 
         get '/' do

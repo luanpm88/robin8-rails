@@ -1,5 +1,8 @@
 class UpdateRecruitCampaignService
-  PERMIT_PARAMS = [:name, :description, :task_description, :address, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :region, :influence_score, :recruit_start_time, :recruit_end_time]
+  PERMIT_PARAMS = [:name, :description, :task_description,
+                   :address, :img_url, :budget, :per_budget_type,
+                  :per_action_budget, :start_time, :deadline,
+                  :region, :influence_score, :recruit_start_time, :recruit_end_time, :hide_brand_name]
 
   attr_reader :errors, :campaign
 

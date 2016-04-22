@@ -37,7 +37,7 @@ const initBootstrapMaxLength = function() {
 export default class IntroPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_upload'])
+    _.bindAll(this, ['_upload', 'handleHideBrandNameChange'])
   }
 
   _upload(size, scale) {
@@ -61,8 +61,13 @@ export default class IntroPartial extends React.Component {
     initBootstrapMaxLength();
   }
 
+  handleHideBrandNameChange(){
+    const { onChange } = this.props.hide_brand_name;
+    onChange(!this.props.hide_brand_name.value)
+  }
+
   render() {
-    const { name, description, img_url, url, task_description, address} = this.props
+    const { name, description, img_url, url, task_description, address, hide_brand_name} = this.props
     return (
       <div className="creat-activity-form creat-intro">
         <div className="header">
@@ -112,9 +117,14 @@ export default class IntroPartial extends React.Component {
                 <ShowError field={task_description} />
               </div>
               <div className="form-group">
-                <label htmlFor="campaign-url">活动地址</label>
+                <label htmlFor="campaign-address">活动地址</label>
                 <input {...address} className="form-control recruit-address-input" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效"  />
-                <ShowError field={address} />
+              </div>
+              <div className="form-group">
+                <label className="recruit-brand-name-showable">
+                  <input type="checkbox" defaultChecked={hide_brand_name.value} onChange={this.handleHideBrandNameChange}></input>
+                  <label>活动发布时隐藏品牌名称</label>
+                </label>
               </div>
             </div>
           </div>
