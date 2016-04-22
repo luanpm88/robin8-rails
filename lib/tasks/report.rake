@@ -49,6 +49,20 @@ namespace :report do
     
   end
 
+  desc "生成新建recruit 的城市列表"
+  task :generate_cities_for_new_recruit do
+    binding.pry
+    new_lines = []
+    File.new("#{Rails.root}/config/selector_city.txt").readlines.each do |line|
+      line = line.strip
+      if line.include?("=")
+        address = line.match(/\p{Han}+/).to_s
+      else
+        new_lines << line
+      end
+    end
+  end
+
   desc "每一天的 每个渠道的注册数目去掉重复的个数(在同一个设备 注册多个时间号， 只算首次的时间)"
   task :stat_source_of_kol do
     stats = {}
