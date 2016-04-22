@@ -21,7 +21,8 @@ const initCampaign = {
   budget: 1000,
   per_action_budget: 1000,
   recruit_person_count: 1,
-  hide_brand_name: false
+  hide_brand_name: false,
+  influence_score: "more_than_600",
 }
 
 const validate = new FormValidate({

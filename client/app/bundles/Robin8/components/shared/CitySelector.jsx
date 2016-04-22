@@ -565,6 +565,7 @@ global.jobArea = {
     }
     areaStr=areaStr.substring(1)?areaStr.substring(1):'请选择地区'; 
     $('#btn_jobArea').html(areaStr);
+    $('#btn_jobArea').trigger("change");
     $('#jobAreaID').val(jobArea_Arr);
     boxAlpha();
     $('#jobAreSelected dd').empty();
