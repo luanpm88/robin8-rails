@@ -20,7 +20,8 @@ const initCampaign = {
   deadline: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
   budget: 1000,
   per_action_budget: 1000,
-  recruit_person_count: 1
+  recruit_person_count: 1,
+  hide_brand_name: false
 }
 
 const validate = new FormValidate({
@@ -64,7 +65,7 @@ class CreateRecruitCampaign extends React.Component{
 
   render(){
     const { name, description, img_url, influence_score, start_time, deadline, 
-          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region} = this.props.fields;
+          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region, hide_brand_name} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveRecruit } = this.props.actions;
     return(
@@ -73,7 +74,7 @@ class CreateRecruitCampaign extends React.Component{
           {this.render_breadcrumb()}
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
-              <IntroPartial {...{name, description, img_url, task_description, address}}/>
+              <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>
               <RecruitTargetPartial {...{influence_score, region}}/>
               <RecruitDatePartial {...{ recruit_start_time, recruit_end_time }} />
               <DatePartial {...{ start_time, deadline }} />
@@ -94,7 +95,7 @@ class CreateRecruitCampaign extends React.Component{
 CreateRecruitCampaign = reduxForm({
   form: "recruit_campaign_form",
   fields: ["name", "description", "img_url", "url", "influence_score", "start_time",
-         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget", "recruit_person_count", "task_description", 'address', "region"],
+         "deadline", "recruit_start_time", "recruit_end_time", "budget", "per_action_budget", "recruit_person_count", "task_description", 'address', "region", "hide_brand_name"],
   returnRejectedSubmitPromise: true,
   validate
 },

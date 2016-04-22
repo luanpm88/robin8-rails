@@ -37,7 +37,7 @@ const initBootstrapMaxLength = function() {
 export default class IntroPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_upload'])
+    _.bindAll(this, ['_upload', 'handleHideBrandNameChange'])
   }
 
   _upload(size, scale) {
@@ -61,8 +61,13 @@ export default class IntroPartial extends React.Component {
     initBootstrapMaxLength();
   }
 
+  handleHideBrandNameChange(){
+    const { onChange } = this.props.hide_brand_name;
+    onChange(!this.props.hide_brand_name.value)
+  }
+
   render() {
-    const { name, description, img_url, url, task_description, address} = this.props
+    const { name, description, img_url, url, task_description, address, hide_brand_name} = this.props
     return (
       <div className="creat-activity-form creat-intro">
         <div className="header">
@@ -118,7 +123,8 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label className="recruit-brand-name-showable">
-                  <input type="checkbox">活动发布时隐藏品牌名称</input>
+                  <input type="checkbox" defaultChecked={hide_brand_name.value} onChange={this.handleHideBrandNameChange}></input>
+                  <label>活动发布时隐藏品牌名称</label>
                 </label>
               </div>
             </div>
