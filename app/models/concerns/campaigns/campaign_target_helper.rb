@@ -2,7 +2,7 @@ module Campaigns
   module CampaignTargetHelper
     extend ActiveSupport::Concern
     included do
-      has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender])}
+      has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender, :influence_score])}
       has_one :influence_score_target, -> {where(:target_type => 'influence_score')}, class_name: "CampaignTarget"
       has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
@@ -52,12 +52,6 @@ module Campaigns
       end
       kols.collect{|t| t.id }
     end
-
-
-    def get_citys
-
-    end
-
     private
     def get_ids_from_target_content contents
       contents.map do |content|

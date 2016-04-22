@@ -33,8 +33,10 @@ class CampaignTarget < ActiveRecord::Base
         city_name_ens << city.name_en
       else
         province = Province.where("name like '#{region[0,2]}%'").first
-        province.cities.each do |city|
-          city_name_ens << city.name_en
+        if province
+          province.cities.each do |city|
+            city_name_ens << city.name_en
+          end
         end
       end
     end
