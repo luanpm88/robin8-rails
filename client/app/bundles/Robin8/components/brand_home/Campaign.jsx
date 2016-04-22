@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash'
-import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign} from '../../helpers/CampaignHelper'
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign, isRecruitCampaign } from '../../helpers/CampaignHelper'
 
 export default class Campaign extends React.Component {
   static propTypes = {
@@ -18,6 +18,24 @@ export default class Campaign extends React.Component {
     }
   }
 
+  renderCampaignName(campaign) {
+    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+      return (
+        <h2 className="activity-title">
+          { _.truncate(campaign.get("name"), {'length': 16})}
+          <span className="cl-recruit-tag">招募</span>
+        </h2>
+      )
+    }
+    else {
+      return (
+        <h2 className="activity-title">
+          { _.truncate(campaign.get("name"), {'length': 16})}
+        </h2>
+      )
+    }
+  }
+
   render() {
 
     const { campaign, tagColor, index } = this.props;
@@ -27,12 +45,11 @@ export default class Campaign extends React.Component {
         <div className="brand-activity-content">
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">&gt;</Link>
           <Link to={`/brand/campaigns/${campaign.get("id")}`}>
-            <h2 className="activity-title">
-              { _.truncate(campaign.get("name"), {'length': 16})}
-            </h2>
+            { this.renderCampaignName(campaign) }
           </Link>
 
           { this.renderEditButton(campaign) }
+
           <small className="date">
             { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
             &nbsp;&nbsp;按照<span className="campaign-type">{showCampaignTypeText(campaign.get("per_budget_type"))}</span>奖励

@@ -17,6 +17,7 @@ module Brand
         expose :budget
         expose :per_budget_type
         expose :per_action_budget
+        expose :end_apply_check
 
         expose :recruit_start_time do |object, opts|
           object.recruit_start_time.strftime('%Y-%m-%d %H:%M') if object.recruit_start_time
