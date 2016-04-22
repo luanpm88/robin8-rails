@@ -23,6 +23,12 @@ module Brand
           @campaign_applies = @campaign.valid_applies({:include => :kol})
           present @campaign_applies
         end
+
+        get '/' do
+          @campaign = Campaign.find_by :id => params[:campaign_id]
+          @campaign_applies = @campaign.valid_applies({:include => :kol})
+          present @campaign_applies
+        end
       end
     end
   end

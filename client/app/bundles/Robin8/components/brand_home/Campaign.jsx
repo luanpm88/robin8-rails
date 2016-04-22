@@ -22,7 +22,7 @@ export default class Campaign extends React.Component {
     if(isRecruitCampaign(campaign.get("per_budget_type"))) {
       return (
         <h2 className="activity-title">
-          { _.truncate(campaign.get("name"), {'length': 16})}
+          { _.truncate(campaign.get("name"), {'length': 15})}
           <span className="cl-recruit-tag">招募</span>
         </h2>
       )
@@ -32,6 +32,70 @@ export default class Campaign extends React.Component {
         <h2 className="activity-title">
           { _.truncate(campaign.get("name"), {'length': 16})}
         </h2>
+      )
+    }
+  }
+
+  renderCampaignDate(campaign) {
+    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+      return (
+        <small className="date">
+          { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
+        </small>
+      )
+    } else {
+      return (
+        <small className="date">
+            { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
+            &nbsp;&nbsp;按照<span className="campaign-type">{showCampaignTypeText(campaign.get("per_budget_type"))}</span>奖励
+        </small>
+      )
+    }
+  }
+
+  renderCampaignAddress(campaign) {
+    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+      return (
+        <small className="date">
+          { campaign.get("address") }
+        </small>
+      )
+    }
+  }
+
+  renderCampaignStatInfo(campaign) {
+    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+      return (
+        <ul className="stat-info grid-4">
+          <li>
+            <span className="txt">招募人数</span>
+            <div className="cl-recruiters-count">
+              <strong className="stat-num">{ campaign.get("budget") / campaign.get('per_action_budget') }</strong>
+            </div>
+          </li>
+          <li><span className="txt">已招募</span><strong className="stat-num">{ campaign.get("brand_passed_count") }</strong></li>
+          <li><span className="txt">人均预算</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
+          <li>
+            <span className="txt">预算总额</span>
+            <div  className="cl-total-budget">
+              <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
+            </div>
+          </li>
+        </ul>
+      )
+    } else {
+      return (
+        <ul className="stat-info grid-4">
+          <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
+          <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
+          <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
+          <li>
+            <span className="txt">{ campaign.get("per_budget_type") === "post" ? "转发量" : "有效点击"}</span>
+            <div  className="remain-time">
+              <strong className="stat-num">{campaign.get("per_budget_type") === "post" ? campaign.get("post_count") : campaign.get("avail_click") }</strong>
+            </div>
+          </li>
+        </ul>
       )
     }
   }
@@ -49,25 +113,12 @@ export default class Campaign extends React.Component {
           </Link>
 
           { this.renderEditButton(campaign) }
-
-          <small className="date">
-            { formatDate(campaign.get("start_time")) } 至 { formatDate(campaign.get("deadline")) }
-            &nbsp;&nbsp;按照<span className="campaign-type">{showCampaignTypeText(campaign.get("per_budget_type"))}</span>奖励
-          </small>
+          { this.renderCampaignDate(campaign) }
+          { this.renderCampaignAddress(campaign)}
           <div className="summary">
             { _.truncate(campaign.get("description"), {'length': 120}) }
           </div>
-          <ul className="stat-info grid-4">
-            <li><span className="txt">已花费</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("take_budget") }</strong></li>
-            <li><span className="txt">参与人数</span><strong className="stat-num">{ campaign.get("share_time") }</strong></li>
-            <li><span className="txt">点击数</span><strong className="stat-num">{ campaign.get("total_click") }</strong></li>
-            <li>
-              <span className="txt">{ campaign.get("per_budget_type") === "post" ? "转发量" : "有效点击"}</span>
-              <div  className="remain-time">
-                <strong className="stat-num">{campaign.get("per_budget_type") === "post" ? campaign.get("post_count") : campaign.get("avail_click") }</strong>
-              </div>
-            </li>
-          </ul>
+          { this.renderCampaignStatInfo(campaign) }
         </div>
         <div className="brand-activity-coverphoto brand-home-campaign-img  pull-left">
           { campaignStatusHelper(campaign.get("status")) }
