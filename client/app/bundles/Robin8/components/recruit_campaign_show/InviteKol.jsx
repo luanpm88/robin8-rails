@@ -1,10 +1,18 @@
 import React, { PropTypes } from "react";
-import { Link } from 'react-router';
-import isSuperVistor from '../shared/VisitAsAdmin';
+import { Link } from "react-router";
+import isSuperVistor from "../shared/VisitAsAdmin";
+import SwitchBox from "../shared/SwitchBox";
 
 export default class InviteKol extends React.Component {
   constructor(props, context){
     super(props, context);
+  }
+
+  updateKolStatus(data, status) {
+    const operation = !!status ? "agree" : "cancle";
+    const { campaign_id, kol_id, user_choose_handle } = data;
+
+    user_choose_handle(campaign_id, kol_id, operation);
   }
 
   render_kol_id() {
@@ -14,32 +22,66 @@ export default class InviteKol extends React.Component {
     }
   }
 
-  render_avatar(campaign_invite){
-    if (campaign_invite.get("kol").get("avatar_url")){
-      return(<td><img src={campaign_invite.get("kol").get("avatar_url")} className="blurUserAvatar"></img></td>)
-    }
-    return(<td><img src={require("default_pic.png")} className="blurUserAvatar"></img></td>)
+  render_profile(campaign_invite){
+    let img_url = campaign_invite.get("kol").get("avatar_url") || require("default_pic.png");
+    return (
+      <td className="profile">
+        <img src={ img_url } className="avatar"></img>
+        <span className="name">{ campaign_invite.get("kol").get("name") || "该用户未设置昵称" }</span>
+      </td>
+    )
   }
 
-  // render_screenshot(){
-  //   const { campaign_invite} = this.props;
-  //   if(campaign_invite.get("img_status") == "passed"){
-  //     return(<td><a href={campaign_invite.get("screenshot")} target="_blank"><img src={campaign_invite.get("screenshot")} className="kolCampaignScreenshot"></img></a></td>)
-  //   }
-  //   return(<td>未上传截图</td>)
-  // }
+  render_screenshot_or_switchbox() {
+    const { campaign_id, campaign_invite, actions } = this.props;
+
+    if (this.props.status === "choosing") {
+      return (
+        <td>
+          <SwitchBox
+            onUserClick={this.updateKolStatus}
+            userData={{
+              campaign_id: campaign_id,
+              kol_id: campaign_invite.get("kol").get("id"),
+              user_choose_handle: actions.updateRecruitCompaignKolStatus
+            }}
+          />
+        </td>
+      );
+    } else if (this.props.status === "finished") {
+      if(campaign_invite.get("img_status") == "passed"){
+        return (
+          <td>
+            <a href={campaign_invite.get("screenshot")} target="_blank">
+              <img src={campaign_invite.get("screenshot")} className="kolCampaignScreenshot"/>
+            </a>
+          </td>
+        )
+      }
+      return (
+        <td className="grey">未上传</td>
+      )
+    } else if (this.props.status === "running") {
+      const approved = !!campaign_invite.get("approved");
+
+      return (
+        <td className={ approved ? "" : "grey" } >{ !!approved ? "已招募" : "未招募" }</td>
+      );
+    }
+  }
 
   render(){
-    const { campaign_invite } = this.props;
+    const { campaign_invite, campaign, status } = this.props;
+
     return(
       <tr>
         {this.render_kol_id()}
-        {this.render_avatar(campaign_invite)}
-        <td>{campaign_invite.get("kol").get("name") || "该用户未设置昵称"}</td>
-        <td>{campaign_invite.get("kol").get("fans_count")}</td>
-        <td>{campaign_invite.get("kol").get("influence_score")}</td>
-        <td>{campaign_invite.get("kol").get("city")}</td>
-        <td>{campaign_invite.get("agree_reason")}</td>
+        {this.render_profile(campaign_invite)}
+        <td>{campaign_invite.get("kol").get("fans_count") || "-"}</td>
+        <td>{campaign_invite.get("kol").get("influence_score") || "-"}</td>
+        <td>{campaign_invite.get("kol").get("city") || "-"}</td>
+        <td className="reason">{campaign_invite.get("agree_reason") || "-"}</td>
+        {this.render_screenshot_or_switchbox()}
       </tr>
     )
   }

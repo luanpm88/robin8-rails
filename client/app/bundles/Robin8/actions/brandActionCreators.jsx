@@ -189,3 +189,39 @@ export function updateBrandPassword(password_fields) {
     })
   }
 }
+
+export function updateRecruitCompaignKolStatus(campaign_id, kol_id, op) {
+  let formData = new FormData();
+  formData.append('campaign_id', campaign_id);
+  formData.append('kol_id', kol_id);
+  formData.append('operation', op);
+
+  return {
+    type: actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOL_STATUS,
+    promise: fetch(`${baseUrl}/campaign_applies/change_status`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT',
+      body: formData
+    })
+  }
+}
+
+export function updateRecruitCompaignKols(campaign_id) {
+  return {
+    type: actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOLS,
+    promise: fetch(`${baseUrl}/recruit_campaigns/${campaign_id}/execute`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'PUT'
+    })
+  }
+}

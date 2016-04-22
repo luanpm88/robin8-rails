@@ -294,6 +294,15 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   vertical-align:middle;
 }
 
+.panelKolsTable th {
+  font-weight: 400;
+  h4 {
+    font-size: 16px;
+    line-height: 22px;
+    margin: 0;
+  }
+}
+
 .blurUserAvatar{
   box-shadow: 10px 10px 18px rgba(0, 0, 0, 0.1);
   border-radius: 50%;

@@ -42,17 +42,37 @@ export default class KolList extends React.Component {
     }
   }
 
+  updateKols() {
+    const { updateRecruitCompaignKols } = this.props.actions;
+    const { campaign_id } = this.props;
+
+    updateRecruitCompaignKols(campaign_id);
+  }
+
   render_super_vistor_header() {
     if (isSuperVistor()) {
       return (
-        <td>kol id</td>
+        <th>kol id</th>
+      )
+    }
+  }
+
+  render_status_header() {
+    if (this.props.status === "choosing" ||
+      this.props.status === "running") {
+      return (
+        <th>状态</th>
+      )
+    } else if (this.props.status === "finished") {
+      return (
+        <th>截图</th>
       )
     }
   }
 
   render_kol_list_header(){
-    const campaign = this.props.campaign
     const campaign_invites = this.props.campaign_invites
+    const campaign = this.props.campaign
 
     if(campaign_invites.size == 0){
       return
@@ -61,23 +81,25 @@ export default class KolList extends React.Component {
     return(
       <tr>
         { this.render_super_vistor_header() }
-        <td>头像</td>
-        <td>昵称</td>
-        <td>微博/微信粉丝量</td>
-        <td>影响力分数</td>
-        <td>地区</td>
-        <td>推荐原因</td>
+        <th><h4>报名列表</h4></th>
+        <th>微博/微信粉丝量</th>
+        <th>影响力分数</th>
+        <th>地区</th>
+        <th>推荐原因</th>
+        { this.render_status_header() }
       </tr>
     )
   }
 
   render_kol_list(){
-    const campaign_invites = this.props.campaign_invites
-    const campaign = this.props.campaign
-    const hasfetchedInvite = this.props.hasfetchedInvite
+    const { campaign, campaign_id, status, campaign_invites, actions } = this.props;
+    const hasfetchedInvite = this.props.hasfetchedInvite;
+
+    console.log(actions);
+
     if(hasfetchedInvite && (campaign_invites.size > 0)){
       return(
-        <div id="panelKolsBigShow" className="panel-collapse collapse in">
+        <div id="panelKolsBigShow" className="kols-list-wrapper">
           <div className="panel-body">
             <table className="table table-hover panelKolsTable">
               <thead>
@@ -87,7 +109,14 @@ export default class KolList extends React.Component {
                 { do
                   {
                     campaign_invites.map(function(invite, index){
-                      return <InviteKol campaign_invite={invite} key={index} campaign={campaign}/>
+                      return <InviteKol
+                        campaign_invite={invite}
+                        key={index}
+                        campaign_id={campaign_id}
+                        campaign={campaign}
+                        status={status}
+                        actions={actions}
+                      />
                     })
                   }
                 }
@@ -109,15 +138,50 @@ export default class KolList extends React.Component {
     )
   }
 
-  render(){
+  render_bottom_tips() {
+    if (this.props.status != "inviting") { return; }
 
-    return(
-      <div className="panel ">
-        <div className="panel-heading">
-          <a href="#panelKolsBigShow" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <h4 className="panel-title">报名列表</h4>
-            {this.render_kol_list()}
+    return (
+      <div className="bottom-tips">*请在报名截止后确定招募名单</div>
+    );
+  }
+
+  render_kol_stat() {
+    if (this.props.status != "choosing") { return; }
+
+    return (
+      <div className="kol-stat-wrapper">
+        <div className="kol-stat-container">
+          <div className="stat-overview">
+            <ul>
+              <li>
+                <h5>已选中</h5>
+                <span className="bold">81</span>
+              </li>
+              <li>
+                <h5>招募</h5>
+                <span className="bold">100</span>
+              </li>
+            </ul>
+          </div>
+          <div className="kol-form">
+            <button className="btn btn-primary kol-submit" onClick={this.updateKols.bind(this)}>提交名单</button>
+          </div>
         </div>
+      </div>
+    );
+  }
+
+  render(){
+    return(
+      <div>
+        <div className="panel">
+          <div className="panel-heading">
+            {this.render_kol_list()}
+          </div>
+        </div>
+        { this.render_bottom_tips() }
+        { this.render_kol_stat() }
       </div>
     )
   }

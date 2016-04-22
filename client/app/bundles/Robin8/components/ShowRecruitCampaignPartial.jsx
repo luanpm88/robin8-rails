@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import moment from 'moment';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import moment from 'moment';
+
 
 import "recruit_activity_detail.scss";
 
 import Basic from './recruit_campaign_show/Basic';
 import Overview from './recruit_campaign_show/Overview';
+import ResultView from './recruit_campaign_show/ResultView';
 import KolList from './recruit_campaign_show/KolList';
-import Counter from './recruit_campaign_show/Counter';
+import StateText from './recruit_campaign_show/StateText';
 
 function select(state){
   return {
@@ -36,6 +39,30 @@ export default class ShowRecruitCampaignPartial extends Component {
     fetchRecruitCampaign(recruit_compaign_id);
   }
 
+  getStatus() {
+    const campaign = this.props.data.get('campaign'),
+      campaign_status = campaign.get("status");
+
+    if (campaign_status === "executing") {
+      const end_time = campaign.get("recruit_end_time"),
+        has_submit = campaign.get("is_recruit_submited");
+
+      if (has_submit) {
+        // offline activity executing
+        return "running";
+      } else if (moment() > moment(end_time)) {
+        // wait for selecting kols
+        return "choosing"
+      } else {
+        // recruiting kols
+        return "inviting";
+      }
+    } else if (campaign_status === "finished") {
+      // offline activity finished
+      return "finished"
+    }
+  }
+
   bind_toggle_text() {
     $('.panel').each(function(){
       $(this).on('shown.bs.collapse', function () {
@@ -58,19 +85,34 @@ export default class ShowRecruitCampaignPartial extends Component {
     );
   }
 
+  render_result_view(status) {
+    const campaign = this.props.data.get('campaign');
+
+    if (status === "finished") {
+      return (
+        <ResultView {...{campaign}}/>
+      );
+    }
+  }
+
   render() {
     const campaign = this.props.data.get('campaign');
     const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
-    const campaign_id = this.props.params.id;
+    const campaign_id = _.toInteger(this.props.params.id);
+    // const status = this.getStatus();
+    const status = "finished";
+
+    console.log(status);
+
     return (
       <div className="wrapper">
         <div className="container">
           { this.render_breadcrumb() }
-          <Basic {...{campaign}} />
+          <Basic {...{campaign, status}} />
           <Overview {...{campaign}} />
-          <Counter {...{campaign}} />
-          <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
-          <div className="bottom-tips">*请在报名截止后确定招募名单</div>
+          { this.render_result_view(status) }
+          <StateText {...{campaign, status}} />
+          <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
         </div>
       </div>
     );

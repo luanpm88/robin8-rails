@@ -27,6 +27,10 @@ export default class Overview extends React.Component{
 
   render(){
     const { campaign } = this.props
+    let per_budget = campaign.get("per_action_budget"),
+      budget = campaign.get("budget"),
+      people_count = Math.floor(budget / per_budget);
+
     return(
       <div className="panel activity-stat-bigshow-panel">
         <div className="panel-heading">
@@ -37,9 +41,9 @@ export default class Overview extends React.Component{
           <div className="panel-body">
             <div className="activity-stat-bigshow-area grid-3">
               <ul>
-                <li><span className="txt">招募人数</span><small className="stat-num">10</small></li>
-                <li><span className="txt">人均奖励</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("per_action_budget") }</small></li>
-                <li><span className="txt">招募总额</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("budget") }</small></li>
+                <li><span className="txt">招募人数</span><small className="stat-num">{ people_count }</small></li>
+                <li><span className="txt">人均奖励</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ per_budget }</small></li>
+                <li><span className="txt">招募总额</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ budget }</small></li>
               </ul>
             </div>
           </div>
