@@ -18,6 +18,7 @@ class CampaignInvite < ActiveRecord::Base
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
 
+  belongs_to :campaign_apply
   belongs_to :campaign
   belongs_to :kol
   scope :unrejected, -> {where("campaign_invites.status != 'rejected'")}

@@ -86,7 +86,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
         return render json: {result: 'save status and reason failed'}
       end
     end
-    if operate == 'cancle'
+    if operate == 'cancel'
       begin
         @campaign_apply.update_attributes(status: "applying", agree_reason: nil)
         return render json: {result: 'succeed', operate: operate, kol_id: kol_id}

@@ -28,7 +28,7 @@
           <% if campaign_apply.status != 'applying' && campaign_apply.agree_reason.present? %>
             <button class="btn btn-default agree-btn <%= campaign_apply.kol.id %> " value="agree" style="background-color: grey; color: white">取消</button>
           <% else %>
-            <button class="btn btn-default agree-btn <%= campaign_apply.kol.id %> " value="cancle" style="background-color: #00b38a; color: white">同意</button>
+            <button class="btn btn-default agree-btn <%= campaign_apply.kol.id %> " value="cancel" style="background-color: #00b38a; color: white">同意</button>
           <% end %>
         </td>
       </tr>
@@ -43,7 +43,7 @@ $(function() {
     var kol_id = $(this).parents('tr').find('.kol_id').text().trim()
     var campaign_id = $(this).parents('tr').find('.campaign_id').text().trim()
     var agree_reason = $(this).parents('tr').find('.agree_reason').val()
-    if ($(this).val() == 'cancle') {
+    if ($(this).val() == 'cancel') {
       if (agree_reason.length) {
         var operate = $(this).val('agree').val()
       } else {
@@ -51,7 +51,7 @@ $(function() {
         return false;
       }
     } else {
-      var operate = $(this).val('cancle').val()
+      var operate = $(this).val('cancel').val()
     }
 
     $.ajax({
@@ -67,7 +67,7 @@ $(function() {
           if(data['operate'] === 'agree') {
             $('.agree-btn').parents('td').find('.' + data['kol_id']).css({"background-color": "grey"}).text("取消");
           }
-          if(data['operate'] === 'cancle') {
+          if(data['operate'] === 'cancel') {
             $('.agree-btn').parents('td').find('.' + data['kol_id']).css({"background-color": "#00b38a"}).text("同意");
             $(".agree_reason").parents('td').find('.' + data['kol_id']).val("")
           }
