@@ -10,6 +10,7 @@ class CreateCampaignApplies < ActiveRecord::Migration
       t.string :status
 
       t.string :expect_price
+      t.string :agree_reason
 
       t.timestamps null: false
     end

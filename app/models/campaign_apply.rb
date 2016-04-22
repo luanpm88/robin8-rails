@@ -1,6 +1,7 @@
 class CampaignApply < ActiveRecord::Base
   belongs_to :campaign
   belongs_to :kol
+  has_one :campaign_invite
 
   scope :applying, -> {where(:status => 'applying')}
   scope :platform_passed, -> {where(:status => 'platform_passed')}
@@ -38,7 +39,7 @@ class CampaignApply < ActiveRecord::Base
       CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => brand_passed_kol_ids).update_all(:status => 'approved')
       #剩余的拒绝掉
       CampaignApply.brand_not_passed.where(:campaign_id => campaign_id).update_all(:status => 'brand_rejected')
-      rejected_kol_ids =  CampaignApply.brand_not_passed.collect{|t| t.kol_id}
+      rejected_kol_ids =  CampaignApply.brand_not_passed.where(:campaign_id => campaign_id).collect{|t| t.kol_id}
       CampaignInvite.where(:campaign_id => campaign_id).where(:kol_id => rejected_kol_ids).update_all(:status => 'rejected')
     end
   end
