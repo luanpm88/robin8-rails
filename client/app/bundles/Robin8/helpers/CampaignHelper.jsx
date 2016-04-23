@@ -65,7 +65,7 @@ export function campaignStatusHelper(status){
     case "inviting":
       return(<img className="campaign-status-img" src={ require('campaign-inviting.png') } />)
     // 报名结束
-    case "choosfing":
+    case "choosing":
       return(<img className="campaign-status-img" src={ require('campaign-applied.png') } />)
     // 执行中
     case "executing":
