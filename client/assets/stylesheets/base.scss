@@ -82,7 +82,6 @@ body {
 }
 .panel-heading {
   padding: 20px 40px;
-  overflow: hidden;
   line-height: 36px;
 }
 .panel-heading .panel-title {
@@ -125,12 +124,14 @@ span.avail-amount {
 .panel-heading .collapsed .caret-arrow {
   background-position: 0 -52px;
 }
-.panel-heading .quick-btn {
+.panel-heading .quick-btn-group {
   float: right;
   margin-top: 6px;
+}
+.panel-heading .quick-btn {
+  width: 131px;
   height: 31px;
   line-height: 31px;
-  width: 131px;
 }
 .panel-heading .carte {
   margin: 0 10px;

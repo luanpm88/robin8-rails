@@ -36,32 +36,6 @@ export default class ShowRecruitCampaignPartial extends Component {
     fetchRecruit(compaign_id);
   }
 
-  getStatus() {
-    const campaign = this.props.data.get('campaign');
-    const campaign_status = campaign.get("status");
-
-    if (campaign_status === "unexecute") {
-      return "pending"
-    } else if (campaign_status === "executing") {
-      const end_time = campaign.get("recruit_end_time"),
-        has_submit = campaign.get("end_apply_check");
-
-      if (has_submit) {
-        // offline activity executing
-        return "running";
-      } else if (moment() > moment(end_time)) {
-        // wait for selecting kols
-        return "choosing"
-      } else {
-        // recruiting kols
-        return "inviting";
-      }
-    } else if (campaign_status === "finished") {
-      // offline activity finished
-      return "finished"
-    }
-  }
-
   bind_toggle_text() {
     $('.panel').each(function(){
       $(this).on('shown.bs.collapse', function () {
@@ -84,10 +58,10 @@ export default class ShowRecruitCampaignPartial extends Component {
     );
   }
 
-  render_result_view(status) {
+  render_result_view() {
     const campaign = this.props.data.get('campaign');
 
-    if (status === "finished") {
+    if (campaign.get("recruit_status") === "settled") {
       return (
         <ResultView {...{campaign}}/>
       );
@@ -98,17 +72,16 @@ export default class ShowRecruitCampaignPartial extends Component {
     const campaign = this.props.data.get('campaign');
     const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
     const campaign_id = _.toInteger(this.props.params.id);
-    const status = this.getStatus();
-    // const status = "finished";
+    const status = campaign.get("recruit_status");
 
     return (
       <div className="wrapper">
         <div className="container">
           { this.render_breadcrumb() }
-          <Basic {...{campaign, status}} />
+          <Basic {...{campaign}} />
           <Overview {...{campaign}} />
-          { this.render_result_view(status) }
-          <StateText {...{campaign, status}} />
+          { this.render_result_view() }
+          <StateText {...{campaign}} />
           <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
         </div>
       </div>

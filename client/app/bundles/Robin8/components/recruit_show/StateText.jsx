@@ -24,25 +24,30 @@ export default class StateText extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.status === "inviting") {
+    const { campaign } = this.props;
+
+    if (campaign.get("recruit_status") === "inviting") {
       this.count_down();
     }
   }
 
   renderContent() {
-    if (this.props.status === "inviting") {
+    const { campaign } = this.props;
+    const status = campaign.get("recruit_status");
+
+    if (status === "inviting") {
       return (
         <div className="content">
           距离报名截止还有 <span ref="timeText" className="remaining-time"></span>
         </div>
       );
-    } else if (this.props.status === "choosing") {
+    } else if (status === "choosing") {
       return (
         <div className="content">
           请确认您的招募名单
         </div>
       );
-    } else if (this.props.status === "running") {
+    } else if (status === "running") {
       return (
         <div className="content">
           以下是您确认后的名单

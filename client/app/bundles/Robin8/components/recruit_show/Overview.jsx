@@ -31,10 +31,6 @@ export default class Overview extends React.Component{
 
     return(
       <div className="panel activity-stat-bigshow-panel">
-        <div className="panel-heading">
-          <a href="#panelStatBigShow" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <h4 className="panel-title">总览</h4>
-        </div>
         <div id="panelStatBigShow" className="panel-collapse collapse in">
           <div className="panel-body">
             <div className="activity-stat-bigshow-area grid-3">

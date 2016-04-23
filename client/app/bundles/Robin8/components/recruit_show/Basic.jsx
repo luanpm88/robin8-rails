@@ -34,7 +34,7 @@ export default class Basic extends React.Component {
           </ul>
         </div>
         <div className="brand-activity-coverphoto pull-left">
-          { campaignStatusHelper(campaign.get("status")) }
+          { campaignStatusHelper(campaign.get("recruit_status")) }
           <img src={ campaign.get("img_url") } alt={ campaign.get("name") } />
         </div>
       </div>
