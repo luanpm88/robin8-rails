@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import moment from 'moment';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import moment from 'moment';
 
-import "activity_detail.scss";
 
-import Basic from './campaign_show/Basic';
-import Overview from './campaign_show/Overview';
-import Target from './campaign_show/Target';
-import KolList from './campaign_show/KolList';
-import Influnce from './campaign_show/Influnce'
+import "recruit_activity_detail.scss";
+
+import Basic from './recruit_show/Basic';
+import Overview from './recruit_show/Overview';
+import ResultView from './recruit_show/ResultView';
+import KolList from './recruit_show/KolList';
+import StateText from './recruit_show/StateText';
 
 function select(state){
   return {
@@ -19,21 +21,19 @@ function select(state){
     campaign_statistics: state.$$brandStore.get("campaign_statistics")
   };
 }
-export default class ShowCampaignPartial extends Component {
+
+export default class ShowRecruitCampaignPartial extends Component {
   componentDidMount() {
-    console.log("---------campaign show did mount--------");
-    this._fetchCampaign();
+    this._fetchRecruit();
     this.bind_toggle_text();
+    console.log("---------recruit campaign show did mount--------");
   }
 
-  _fetchCampaign() {
-    const campaign_id = this.props.params.id;
-    const { fetchCampaign } = this.props.actions;
+  _fetchRecruit() {
+    const compaign_id = this.props.params.id;
+    const { fetchRecruit } = this.props.actions;
 
-    // can load campaign from campaigns
-    // const campaigns = this.props.data.get("campaigns");
-
-    fetchCampaign(campaign_id);
+    fetchRecruit(compaign_id);
   }
 
   bind_toggle_text() {
@@ -58,22 +58,35 @@ export default class ShowCampaignPartial extends Component {
     );
   }
 
+  render_result_view() {
+    const campaign = this.props.data.get('campaign');
+
+    if (campaign.get("recruit_status") === "settled") {
+      return (
+        <ResultView {...{campaign}}/>
+      );
+    }
+  }
+
   render() {
     const campaign = this.props.data.get('campaign');
     const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
-    const campaign_id = this.props.params.id
+    const campaign_id = _.toInteger(this.props.params.id);
+    const status = campaign.get("recruit_status");
+
     return (
       <div className="wrapper">
         <div className="container">
           { this.render_breadcrumb() }
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
-          <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
-          <Influnce {...{campaign, actions, campaign_id, campaign_statistics}} />
+          { this.render_result_view() }
+          <StateText {...{campaign}} />
+          <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
         </div>
       </div>
     );
   }
 }
 
-export default connect(select)(ShowCampaignPartial)
+export default connect(select)(ShowRecruitCampaignPartial)

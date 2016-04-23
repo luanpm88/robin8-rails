@@ -16,6 +16,8 @@ class Campaign < ActiveRecord::Base
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
+  has_many :valid_applies, -> {where("status='platform_passed' or status='brand_passed' or status='brand_rejected'")}, :class_name => 'CampaignApply'
+  has_many :brand_passed_applies, -> {where(status: 'brand_passed')}, :class_name => 'CampaignApply'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
   has_many :finish_need_check_invites, -> {where(:status => 'finished', :img_status => 'pending')}, :class_name => 'CampaignInvite'
@@ -292,6 +294,25 @@ class Campaign < ActiveRecord::Base
 
   def is_recruit_type?
     self.per_budget_type == "recruit"
+  end
+
+  def recruit_status
+    return 'pending' if self.status == 'unexecute'
+    return 'rejected' if self.status == 'rejected'
+    return 'coming' if self.status == 'agreed'
+    return 'settling' if self.status == 'executed'
+    return 'settled' if self.status == 'settled'
+
+    if self.status == 'executing'
+      if self.end_apply_check
+        'running'
+      elsif Time.now > self.recruit_end_time
+        'choosing'
+      else
+        'inviting'
+      end
+    end
+
   end
 
 

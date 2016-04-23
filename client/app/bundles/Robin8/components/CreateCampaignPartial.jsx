@@ -36,7 +36,8 @@ const validate = new FormValidate({
   budget: { require: true, min_budget: 100 },
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: true }},
-  short_url: {url: { require_protocol: true }}
+  short_url: {url: { require_protocol: true }},
+  
 })
 
 const validateFailed = (errors) => {

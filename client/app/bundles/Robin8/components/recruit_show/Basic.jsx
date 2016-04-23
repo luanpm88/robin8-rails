@@ -1,0 +1,43 @@
+import React, { PropTypes } from "react";
+import { Link } from 'react-router';
+
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign} from "../../helpers/CampaignHelper";
+
+export default class Basic extends React.Component {
+  constructor(props, context){
+    super(props, context)
+  }
+
+  renderEditCampaignButton(campaign){
+    if(canEditCampaign(campaign.get("status"))){
+      return <Link to={`/brand/recruits/${campaign.get("id")}/edit`} className="btn btn-default btn-red btn-line stop-btn">编辑</Link>
+    }
+  }
+
+  render(){
+    const { campaign } = this.props;
+
+    return (
+      <div className="brand-activity-card brand-activity-card-detail">
+        <div className="brand-activity-content">
+          <h2 className="activity-title">{ campaign.get("name") }<span className="label label-orange">招募</span></h2>
+          { this.renderEditCampaignButton(campaign) }
+          <small className="duration">{ formatDate(campaign.get("start_time")) } - { formatDate(campaign.get("deadline")) }</small>
+          <small className="address">{ campaign.get("address") }</small>
+          <small className="summary">{_.truncate(campaign.get("task_description"), {'length': 120})}</small>
+
+          <ul className="stat-info">
+            <li>
+              <span className="txt">报名时间</span>
+              <small className="date">{ formatDate(campaign.get("recruit_start_time")) } - { formatDate(campaign.get("recruit_end_time")) }</small>
+            </li>
+          </ul>
+        </div>
+        <div className="brand-activity-coverphoto pull-left">
+          { campaignStatusHelper(campaign.get("recruit_status")) }
+          <img src={ campaign.get("img_url") } alt={ campaign.get("name") } />
+        </div>
+      </div>
+    );
+  }
+}

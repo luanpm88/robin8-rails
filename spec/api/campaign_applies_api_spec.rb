@@ -14,15 +14,25 @@ RSpec.describe "campaign_apply api" do
     it "change status to 'applying' if this campaign apply has been canceld and return 200" do
       @campaign_apply.update_attributes(status: "brand_passed")
       put "/brand_api/v1/campaign_applies/change_status", {campaign_id: @recruit_campaign.id, kol_id: @kol.id, operation: 'cancel'}
-      expect(@campaign_apply.reload.status).to eq 'applying'
+      expect(@campaign_apply.reload.status).to eq 'platform_passed'
+      expect(JSON.parse(response.body)["brand_passed_count"]).to eq 0
       expect(response.status).to eq 200
     end
 
     it "change status to 'brand_passed' if this campaign apply has been agreed and return 200" do
       put "/brand_api/v1/campaign_applies/change_status", {campaign_id: @recruit_campaign.id, kol_id: @kol.id, operation: 'agree'}
       expect(@campaign_apply.reload.status).to eq 'brand_passed'
+      expect(JSON.parse(response.body)["brand_passed_count"]).to eq 1
       expect(response.status).to eq 200
     end
 
   end
+
+  describe "Get all campaign applies" do
+    it "return 200" do
+      get "/brand_api/v1/campaign_applies", {campaign_id: @recruit_campaign.id}
+      expect(response.status).to eq 200
+    end
+  end
+
 end

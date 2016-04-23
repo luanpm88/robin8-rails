@@ -3,20 +3,15 @@ module Brand
     module Entities
       class Campaign < Entities::Base
 
-        expose :id
-        expose :name
-        expose :description
-        expose :short_description
-        expose :task_description
-        expose :img_url
-        expose :status
+        expose :id, :name, :description, :short_description, :task_description,
+               :img_url, :status, :message, :url, :address, :budget,
+               :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check
+
         expose :user, using: Entities::User
-        expose :message
-        expose :url
-        expose :address
-        expose :budget
-        expose :per_budget_type
-        expose :per_action_budget
+
+        expose :recruit_person_count do |object, opts|
+          object.per_budget_type == "recruit" ? object.budget/object.per_action_budget : nil
+        end
 
         expose :recruit_start_time do |object, opts|
           object.recruit_start_time.strftime('%Y-%m-%d %H:%M') if object.recruit_start_time
@@ -28,6 +23,7 @@ module Brand
         expose :deadline do |object, opts|
           object.deadline.strftime('%Y-%m-%d %H:%M')
         end
+        
         expose :start_time do |object, opts|
           object.start_time.strftime('%Y-%m-%d %H:%M')
         end
@@ -97,6 +93,26 @@ module Brand
 
         expose :action_url_identifier do |object, opts|
           object.campaign_action_urls.present? ? object.campaign_action_urls.first.identifier : ""
+        end
+
+        expose :valid_applies_count do |object, opts|
+          object.valid_applies.count if object.per_budget_type == 'recruit'
+        end
+
+        expose :brand_passed_count do |object, opts|
+          object.brand_passed_applies.count if object.per_budget_type == 'recruit'
+        end
+
+        expose :take_budget do |object, opts|
+          object.take_budget
+        end
+
+        expose :total_finished_kols do |object, opts|
+          object.campaign_invites.where(status: "settled").count
+        end
+
+        expose :recruit_status do |object, opts|
+            object.recruit_status if object.per_budget_type == 'recruit'
         end
 
         with_options(format_with: :iso_timestamp) do

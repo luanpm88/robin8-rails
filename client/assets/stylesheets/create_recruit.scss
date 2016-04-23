@@ -1,0 +1,174 @@
+/*!
+ * 创建品牌活动
+ * 02.01.2016 22:01
+ */
+/*!
+ * bootstrap-datetimepicker (https://github.com/Eonasdan/bootstrap-datetimepicker)
+ *
+ * Copyright 2012 Stefan Petre
+ * Improvements by Andrew Rowls
+ * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ */
+ 
+@import "create_activity_base.scss";
+@import "city_selector.scss";
+@import "form_common.scss";
+
+.creat-recruit-target {
+  padding-top: 38px;
+  width: 100%;
+
+  .target-region-range{
+    float: left;
+    width: 50%;
+    text-align: center;
+  }
+
+  .target-influence-score{
+    width: 50%;
+    float: left;
+    text-align: center;
+  }
+
+  select.influence_score{
+    height: 27px;
+    width: 182px;
+    appearance: none;
+    background: url(~select_arr.png) no-repeat white;
+    background-position: 159px 7px;
+    -webkit-appearance: none; /* Chrome*/
+    -moz-appearance: none;/* Firefox */
+    font-size: 12px;
+    text-indent: 12px;
+    background-color: #ffffff;
+    border: 1px solid #181616;
+    border-radius: 2px;
+  }
+
+  label{
+    display: block;
+    color: #9b9a9a;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .target-city-label{
+    display: inline;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: none !important;
+    color: rgb(24, 22, 22);
+  }
+
+  .create-recruit-region-button{
+    width: 110px;
+    height: 36px;
+    color: #ffffff;
+    background-color: #36cdd3;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+
+}
+
+.recruit-budget-form-area {
+  display: table;
+  table-layout: fixed;
+  padding: 40px 0;
+  width: 100%;
+  text-align: center;
+
+  .budget-box{
+    display: table-cell;
+    position: relative;
+  }
+
+  .budget-box:first-child:after, .budget-box:nth-child(2):after{
+    right: 0;
+    top: 38px;
+    position: absolute;
+    bottom: 15px;
+    content: '/';
+    color: #bfc1c0;
+  }
+
+  .bootstrap-touchspin-prefix {
+    padding: 6px 6px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
+    background-color: transparent !important;
+    border: none !important;
+  }
+  
+  .bootstrap-touchspin-down{
+    background-image: url(~icon-minus.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom-right-radius: 27px !important;
+    border-top-right-radius: 27px !important;
+    border-radius: 27px;
+    width: 27px;
+    height: 27px;
+  }
+
+  .bootstrap-touchspin-up{
+    background-image: url(~icon-plus.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom-left-radius: 27px !important;
+    border-top-left-radius: 27px !important;
+    border-radius: 27px;
+    width: 27px;
+    height: 27px;
+  }
+
+}
+
+
+.common-spinner-input, .recruit-total-target-label {
+  line-height: 34px;
+  font-family: FuturaStd-Medium;
+  font-weight: 100 !important;
+  text-align: center;
+  border: none !important;
+  font-size: 28px;
+}
+.recruit-budget-form-area .budget-box .bootstrap-touchspin-down, .recruit-budget-form-area .budget-box .bootstrap-touchspin-up{
+  box-shadow: none;
+}
+
+.recruit-budget-form-area .budget-box .spinner-box{
+  width: 80%;
+  margin-left: 10%;
+}
+
+.recruit-brand-name-showable{
+  color: #949494;
+  font-size: 14px;
+  input[type="checkbox"]{
+    margin: 4px 5px 0px 0px;
+    width: 13px;
+    height: 13px;
+  }
+}
+
+.changeTaskDescTemplate{
+  display: block;
+  margin-top: 15px;
+  border-bottom: 1px solid;
+  color: #949494;
+  cursor: pointer;
+}
+
+.creat-activity-basic-intro.create-recruit-basic-info .cover-photo, .creat-activity-basic-intro.create-recruit-basic-info .cover-photo .inner{
+  height: 746px !important;
+  background: url(~create_recruit_coverphoto.png) no-repeat center center;
+}
+
+
+.recruit-budget-form-area .budget-box .input-group{
+  width: 80%;
+  margin-left: 10%;
+}

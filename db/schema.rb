@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 20160421114313) do
     t.string   "weixin_no",           limit: 255
     t.integer  "weixin_friend_count", limit: 4
     t.string   "status",              limit: 255
+    t.string   "expect_price",        limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "expect_price",        limit: 11
