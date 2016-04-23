@@ -536,7 +536,7 @@ global.jobArea = {
     for(var i in jobArea_Arr){
       areaStr+='/'+ja[jobArea_Arr[i]];
     }
-    areaStr=areaStr.substring(1)?areaStr.substring(1):'请选择地区'; 
+    areaStr=areaStr.substring(1)?areaStr.substring(1):'全部'; 
     $('#btn_jobArea').html(areaStr);
     $('#btn_jobArea').trigger("change");
     $('#jobAreaID').val(jobArea_Arr);

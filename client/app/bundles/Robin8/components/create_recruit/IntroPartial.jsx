@@ -90,7 +90,7 @@ export default class IntroPartial extends React.Component {
           <h3 className="tit">推广简介&nbsp;</h3>
         </div>
         <div className="content">
-          <div className="creat-activity-basic-intro">
+          <div className="creat-activity-basic-intro create-recruit-basic-info">
             <div className="cover-photo">
               <div className="inner">
                 { do
@@ -146,7 +146,7 @@ export default class IntroPartial extends React.Component {
             </div>
           </div>
         </div>
-        <Crop fileInputSelector={"#fileInput"} doCrop={this._upload} aspectRatio={(16/9)} />
+        <Crop fileInputSelector={"#fileInput"} className="recruit-img" doCrop={this._upload} aspectRatio={(16/9)} />
       </div>
      )
    }

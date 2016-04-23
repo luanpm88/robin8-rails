@@ -161,3 +161,14 @@
   color: #949494;
   cursor: pointer;
 }
+
+.creat-activity-basic-intro.create-recruit-basic-info .cover-photo, .creat-activity-basic-intro.create-recruit-basic-info .cover-photo .inner{
+  height: 746px !important;
+  background: url(~create_recruit_coverphoto.png) no-repeat center center;
+}
+
+
+.recruit-budget-form-area .budget-box .input-group{
+  width: 80%;
+  margin-left: 10%;
+}

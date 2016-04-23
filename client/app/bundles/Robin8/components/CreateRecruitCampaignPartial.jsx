@@ -15,21 +15,21 @@ import RecruitBudgetPartial from './create_recruit/RecruitBudgetPartial';
 
 const initCampaign = {
   recruit_start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
-  recruit_end_time: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
+  recruit_end_time: moment().add(1, "days").format("YYYY-MM-DD HH:mm"),
   start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
   deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
   budget: 1000,
   per_action_budget: 1000,
   recruit_person_count: 1,
   hide_brand_name: false,
-  influence_score: "gt_400",
+  influence_score: "gt_400"
 }
 
 const validate = new FormValidate({
   name: { require: true },
   description: { require: true },
   img_url: { require_img: true },
-  budget: { require: true, min_budget: 100 },
+  budget: { require: true},
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: true }},
   short_url: {url: { require_protocol: true }},
