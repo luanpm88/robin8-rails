@@ -17,6 +17,7 @@ class KolContact < ActiveRecord::Base
   end
 
   def self.add_contacts(kol_uuid,contacts, kol_id)
+    contacts = contacts.uniq{|t| t['mobile']}
     present_mobiles = KolContact.where(:kol_id => kol_id).collect{|t| t.mobile.to_s }
     KolContact.transaction do
       contacts.each do |contact|

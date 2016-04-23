@@ -22,15 +22,21 @@ export default class RecruitDatePartial extends React.Component {
       format: 'YYYY-MM-DD HH:mm',
       useCurrent: false,
     }
+    //$('#start-time-datepicker').data("DateTimePicker").minDate(moment().add(2, "hours").format("YYYY-MM-DD HH:mm"));
 
     $('#recruit-start-time-datepicker').datetimepicker(datepickerStartOptions);
     $('#recruit-deadline-datepicker').datetimepicker(datepickerEndOptions);
+
     $("#recruit-start-time-datepicker").on("dp.change", function (e) {
       $('#recruit-deadline-datepicker').data("DateTimePicker").minDate(e.date);
+      $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
+      $('#start-time-datepicker').data("DateTimePicker").minDate(e.date);
     });
+
     $("#recruit-deadline-datepicker").on("dp.change", function (e) {
-        $('#recruit-deadline-datepicker').data("DateTimePicker").maxDate(e.date);
+        $('#recruit-start-time-datepicker').data("DateTimePicker").maxDate(e.date);
         $('#start-time-datepicker').data("DateTimePicker").minDate(e.date);
+        $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
     });
   }
 

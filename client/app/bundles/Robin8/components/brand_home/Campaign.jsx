@@ -34,7 +34,7 @@ export default class Campaign extends React.Component {
 
   renderEditButton(campaign){
     if(canEditCampaign(campaign.get("status"))){
-      return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn btn">编辑</Link>
+      return <Link to={this.getUrl()} className="edit-campaign-btn btn">编辑</Link>
     }
   }
 
@@ -88,15 +88,15 @@ export default class Campaign extends React.Component {
       return (
         <ul className="stat-info grid-4">
           <li>
-            <span className="txt">招募人数</span>
+            <span className="txt">预计招募人数</span>
             <div className="cl-recruiters-count">
               <strong className="stat-num">{ campaign.get("budget") / campaign.get('per_action_budget') }</strong>
             </div>
           </li>
           <li><span className="txt">已招募</span><strong className="stat-num">{ campaign.get("brand_passed_count") }</strong></li>
-          <li><span className="txt">人均预算</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
+          <li><span className="txt">人均奖励</span><strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("per_action_budget") }</strong></li>
           <li>
-            <span className="txt">预算总额</span>
+            <span className="txt">招募预算</span>
             <div  className="cl-total-budget">
               <strong className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</strong>
             </div>
@@ -123,7 +123,6 @@ export default class Campaign extends React.Component {
   render() {
 
     const { campaign, tagColor, index } = this.props;
-    const { campaign_status } = this.props.campaign.get("status");
     return (
       <div className={tagColor} key={index}>
         <div className="brand-activity-content">
@@ -142,7 +141,7 @@ export default class Campaign extends React.Component {
         </div>
         <div className="brand-activity-coverphoto brand-home-campaign-img  pull-left">
           { this.renderStatusImage() }
-          <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
+          <Link to={this.getUrl()} className="detail-link">
             {
               do {
                 if(campaign.get('img_url'))

@@ -29,7 +29,7 @@ export default class DatePartial extends React.Component {
       $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
     });
     $("#deadline-datepicker").on("dp.change", function (e) {
-        $('#start-time-datepicker').data("DateTimePicker").maxDate(e.date);
+      $('#start-time-datepicker').data("DateTimePicker").maxDate(e.date);
     });
   }
 

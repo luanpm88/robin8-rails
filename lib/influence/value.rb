@@ -17,10 +17,10 @@ module Influence
       return kol_city
     end
 
-    InfluenceLevels = [{:title => "影响力极好", :score => 800},
-                       {:title => "影响力优秀", :score => 700},
-                       {:title => "影响力尚可", :score => 550},
-                       {:title => "影响力极具潜力", :score => 350}]
+    InfluenceLevels = [{:title => "影响力极好", :score => 700},
+                       {:title => "影响力优秀", :score => 600},
+                       {:title => "影响力尚可", :score => 450},
+                       {:title => "影响力极具潜力", :score => 380}]
     def self.get_influence_level(score)
       score = score.to_i
       InfluenceLevels.each do |level|

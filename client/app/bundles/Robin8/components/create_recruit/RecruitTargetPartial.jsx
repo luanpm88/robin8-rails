@@ -40,14 +40,14 @@ export default class TargetPartial extends React.Component {
                   <select {...influence_score} className="influence_score">
                     <option value="gt_400">400分以上</option>
                     <option value="gt_450">450分以上</option>
-                    <option value="gt_400">500分以上</option>
-                    <option value="gt_450">550分以上</option>
-                    <option value="gt_400">600分以上</option>
-                    <option value="gt_450">650分以上</option>
-                    <option value="gt_400">700分以上</option>
-                    <option value="gt_450">750分以上</option>
-                    <option value="gt_400">800分以上</option>
-                    <option value="gt_450">900分以上</option>
+                    <option value="gt_500">500分以上</option>
+                    <option value="gt_550">550分以上</option>
+                    <option value="gt_600">600分以上</option>
+                    <option value="gt_650">650分以上</option>
+                    <option value="gt_700">700分以上</option>
+                    <option value="gt_750">750分以上</option>
+                    <option value="gt_800">800分以上</option>
+                    <option value="gt_900">900分以上</option>
                   </select>
                 </div>
               </div>

@@ -3,7 +3,7 @@ class KolInfluenceValueHistory < ActiveRecord::Base
   ScheduleHour = Rails.application.secrets[:cal_influence][:hour]
   ScheduleMin = Rails.application.secrets[:cal_influence][:min]
 
-  def self.generate_history(kol_value, is_auto = 0)
+  def self.generate_history(kol_value, is_auto = false)
     attrs = kol_value.attributes
     attrs.delete("id")
     attrs.delete("share_times")
