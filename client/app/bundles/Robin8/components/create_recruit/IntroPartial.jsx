@@ -37,7 +37,13 @@ const initBootstrapMaxLength = function() {
 export default class IntroPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_upload', 'handleHideBrandNameChange'])
+    _.bindAll(this, ['_upload', 'handleHideBrandNameChange', "handleChangeTaskTemplate"])
+    this.currentTaskDescriptioinIndex = -1
+    this.taskDescTemplate = [
+      "准时参与品牌活动, 完成品牌指定任务, 发送照片及文字至朋友圈并保证发布时间持续30分钟",
+      "准备到达指定地点签到并参与活动, 用图片或视频记录参与过程, 发送图片或视频到朋友圈并持续30分钟",
+      "按时参加品牌活动, 配合品牌完成相关体验, 记录体验过程,发送图片或小视频至朋友圈"
+    ]
   }
 
   _upload(size, scale) {
@@ -54,6 +60,16 @@ export default class IntroPartial extends React.Component {
     });
 
     this.uploader.start();
+  }
+
+  handleChangeTaskTemplate(){
+    let currentIndex = Number.parseInt($(".changeTaskDescTemplate").attr("data-current-template"))+ 1
+    if (currentIndex >= this.taskDescTemplate.length){
+      currentIndex = 0
+    }
+
+    this.props.task_description.onChange(this.taskDescTemplate[currentIndex]);
+    $(".changeTaskDescTemplate").attr("data-current-template", currentIndex + 1)
   }
 
   componentDidMount() {
@@ -112,6 +128,7 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">任务描述</label>
+                <span className="changeTaskDescTemplate pull-right" data-current-template="1" onClick={this.handleChangeTaskTemplate}>换个模板</span>
                 <textarea {...task_description} className="form-control activity-task-input-input" maxLength={140} placeholder="xxx"  ></textarea>
                 <span className="word-limit">140</span>
                 <ShowError field={task_description} />
