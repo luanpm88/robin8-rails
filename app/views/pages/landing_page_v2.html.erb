@@ -5,10 +5,6 @@
           <a href="#signinupModal" class="quick-login" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
           <a href="#downloadModal" class="" data-toggle="modal" style="color: white; margin-left: 6px;"> APP下载</a>
         </div>
-      <% else %>
-        <div class="navbar-action pull-right">
-          <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb" class="btn btn-blue btn-big btn-line cneter-block download-btn" data-toggle="modal">APP下载</a>
-        </div>
       <% end %>
     </div>
   </header>
@@ -19,9 +15,7 @@
       <% if mobile_request? %>
         <h1>分享是一种</h1>
         <h1>领袖精神</h1>
-      <% else %>
-      <% end %>
-      <% if !mobile_request? %>
+        <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb" class="btn btn-blue btn-big btn-line cneter-block download-btn" data-toggle="modal">APP下载</a>
       <% end %>
     </div>
   </div>
