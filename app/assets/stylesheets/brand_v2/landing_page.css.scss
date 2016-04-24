@@ -24,9 +24,15 @@ body {
   height: 100%;
 }
 body.landing_page_bg {
-  background: image-url('search_engine.jpg') no-repeat top center;
+  background: image-url('search_engine.jpg') no-repeat top center #2c2a2b;
   background-size: 100% 100%;
 }
+
+body.mobile_landing_page_bg{
+ background: image-url('robin8_brand_bg.jpg') no-repeat top center;
+ background-size: cover; 
+}
+
 
 body {
   color: #181616;
