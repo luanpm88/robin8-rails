@@ -24,9 +24,15 @@ body {
   height: 100%;
 }
 body.landing_page_bg {
-  background: image-url('robin8_brand_bg.jpg') no-repeat top center #2c2a2b;
-  background-size: cover;
+  background: image-url('search_engine.jpg') no-repeat top center #2c2a2b;
+  background-size: 100% 100%;
 }
+
+body.mobile_landing_page_bg{
+ background: image-url('robin8_brand_bg.jpg') no-repeat top center;
+ background-size: cover; 
+}
+
 body {
   color: #181616;
   font-family: SimHei, "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", Arial, sans-serif;
@@ -104,7 +110,7 @@ button.btn-blue:hover {
 .infographic-influence-box {
   padding-top: 60px;
   height: 123px;
-  background: image-url('images/brand_influence_rep_bg.gif') repeat;
+  background: image-url('images/brand_influence_rep_bg.gif');
 }
 .infographic-influence-box .infographic-show {
   position: relative;
