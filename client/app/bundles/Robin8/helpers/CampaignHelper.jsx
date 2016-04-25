@@ -75,3 +75,7 @@ export function canEditCampaign(status){
       return false
   }
 }
+
+export function isRecruitCampaign(per_budget_type){
+  return per_budget_type === 'recruit' ? true : false;
+}

@@ -3,7 +3,9 @@ module Brand
     module Entities
       class Campaign < Entities::Base
 
-        expose :id, :name, :description, :short_description, :task_description, :img_url, :status, :message, :url, :address, :budget, :per_budget_type, :per_action_budget, :hide_brand_name
+        expose :id, :name, :description, :short_description, :task_description,
+               :img_url, :status, :message, :url, :address, :budget,
+               :per_budget_type, :per_action_budget, :hide_brand_name, :end_apply_check
 
         expose :user, using: Entities::User
 
@@ -91,6 +93,22 @@ module Brand
 
         expose :action_url_identifier do |object, opts|
           object.campaign_action_urls.present? ? object.campaign_action_urls.first.identifier : ""
+        end
+
+        expose :valid_applies_count do |object, opts|
+          object.valid_applies.count if object.per_budget_type == 'recruit'
+        end
+
+        expose :brand_passed_count do |object, opts|
+          object.brand_passed_applies.count if object.per_budget_type == 'recruit'
+        end
+
+        expose :take_budget do |object, opts|
+          object.take_budget
+        end
+
+        expose :total_finished_kols do |object, opts|
+          object.campaign_invites.where(status: "settled").count
         end
 
         with_options(format_with: :iso_timestamp) do
