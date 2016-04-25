@@ -14,6 +14,10 @@
 @import "city_selector.scss";
 @import "form_common.scss";
 
+.common-textarea{
+  resize: none;
+}
+
 .creat-recruit-target {
   padding-top: 38px;
   width: 100%;
@@ -171,4 +175,8 @@
 .recruit-budget-form-area .budget-box .input-group{
   width: 80%;
   margin-left: 10%;
+}
+
+.create-recruit-basic-info .recruit-basic-info{
+  padding: 20px 40px 0px 40px;
 }
