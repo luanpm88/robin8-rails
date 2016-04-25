@@ -16,8 +16,8 @@ import RecruitBudgetPartial from './create_recruit/RecruitBudgetPartial';
 const initCampaign = {
   recruit_start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
   recruit_end_time: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
-  start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
-  deadline: moment().add(2, "days").format("YYYY-MM-DD HH:mm"),
+  start_time: moment().add(3, "days").format("YYYY-MM-DD HH:mm"),
+  deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
   budget: 1000,
   per_action_budget: 1000,
   recruit_person_count: 1,
