@@ -4,6 +4,7 @@ class TmpKolContact < ActiveRecord::Base
   scope :unjoined, -> {where(:exist => false)}
 
   def self.add_contacts(kol_uuid,contacts)
+    contacts = contacts.uniq{|t| t['mobile']}
     TmpKolContact.where(:kol_uuid => kol_uuid).delete_all
     TmpKolContact.transaction do
       contacts.each do |contact|
