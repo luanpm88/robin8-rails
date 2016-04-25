@@ -38,8 +38,16 @@ export default class TargetPartial extends React.Component {
                 <label>影响力分数</label>
                 <div className="influence-score-selector">
                   <select {...influence_score} className="influence_score">
-                    <option value="more_than_600">600分以上</option>
-                    <option value="more_than_700">700分以上</option>
+                    <option value="more_than_400">400分以上</option>
+                    <option value="more_than_450">450分以上</option>
+                    <option value="more_than_400">500分以上</option>
+                    <option value="more_than_450">550分以上</option>
+                    <option value="more_than_400">600分以上</option>
+                    <option value="more_than_450">650分以上</option>
+                    <option value="more_than_400">700分以上</option>
+                    <option value="more_than_450">750分以上</option>
+                    <option value="more_than_400">800分以上</option>
+                    <option value="more_than_450">900分以上</option>
                   </select>
                 </div>
               </div>

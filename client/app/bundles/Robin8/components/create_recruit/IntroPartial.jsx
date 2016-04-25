@@ -135,7 +135,7 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="campaign-address">活动地址</label>
-                <input {...address} className="form-control recruit-address-input" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效"  />
+                <input {...address} className="form-control recruit-address-input" placeholder="非线下活动可不填写"  />
               </div>
               <div className="form-group">
                 <label className="recruit-brand-name-showable">
