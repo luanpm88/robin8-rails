@@ -3,11 +3,13 @@ class KolInfluenceValueHistory < ActiveRecord::Base
   ScheduleHour = Rails.application.secrets[:cal_influence][:hour]
   ScheduleMin = Rails.application.secrets[:cal_influence][:min]
 
-  def self.generate_history(kol_value, is_auto)
+  def self.generate_history(kol_value, is_auto = 0)
     attrs = kol_value.attributes
     attrs.delete("id")
     attrs.delete("share_times")
     attrs.delete("read_times")
+    attrs.delete("created_at")
+    attrs.delete("updated_at")
     history = KolInfluenceValueHistory.new(:is_auto => is_auto)
     history.attributes = attrs
     history.save
@@ -16,6 +18,7 @@ class KolInfluenceValueHistory < ActiveRecord::Base
       auto_history = KolInfluenceValueHistory.new
       attrs = history.attributes
       attrs.delete("id")
+      attrs.delete("updated_at")
       auto_history.attributes = attrs
       auto_history.is_auto = true
       auto_history.created_at = Time.now - (Date.today.wday - ScheduleWday).days            #生成时间在本周 ScheduleWday
