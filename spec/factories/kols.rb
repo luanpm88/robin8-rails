@@ -14,6 +14,7 @@ FactoryGirl.define do
     avatar "www.baidu.com"
     influence_score '701'
     city '上海'
+    app_city "beijing"
     # name "I'm kol"
     password "12345678"
   end
