@@ -31,9 +31,10 @@ export default class InviteKol extends React.Component {
   }
 
   render_screenshot_or_switchbox() {
-    const { campaign_id, campaign_invite, actions } = this.props;
+    const { campaign, campaign_id, campaign_invite, actions } = this.props;
+    const status = campaign.get("recruit_status");
 
-    if (this.props.status === "choosing") {
+    if (status === "choosing") {
       return (
         <td>
           <SwitchBox
@@ -47,7 +48,7 @@ export default class InviteKol extends React.Component {
           />
         </td>
       );
-    } else if (this.props.status === "finished") {
+    } else if (status === "settling") {
       if(campaign_invite.get("img_status") == "passed"){
         return (
           <td>
@@ -60,7 +61,7 @@ export default class InviteKol extends React.Component {
       return (
         <td className="grey">未上传</td>
       )
-    } else if (this.props.status === "running") {
+    } else if (status === "running") {
       const passed = campaign_invite.get("status") === "brand_passed";
 
       return (
@@ -70,7 +71,7 @@ export default class InviteKol extends React.Component {
   }
 
   render(){
-    const { campaign_invite, campaign, status } = this.props;
+    const { campaign_invite } = this.props;
 
     return(
       <tr>

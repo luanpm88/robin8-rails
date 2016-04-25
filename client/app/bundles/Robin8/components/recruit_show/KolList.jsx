@@ -46,7 +46,9 @@ export default class KolList extends React.Component {
     const { updateRecruitCompaignKols } = this.props.actions;
     const { campaign_id } = this.props;
 
-    updateRecruitCompaignKols(campaign_id);
+    if (confirm("提交后将不可再更改，确认要提交吗？")) {
+      updateRecruitCompaignKols(campaign_id);
+    }
   }
 
   render_super_vistor_header() {
@@ -58,12 +60,14 @@ export default class KolList extends React.Component {
   }
 
   render_status_header() {
-    if (this.props.status === "choosing" ||
-      this.props.status === "running") {
+    const { campaign } = this.props;
+    const status = campaign.get("recruit_status");
+
+    if (status === "choosing" || status === "running") {
       return (
         <th>状态</th>
       )
-    } else if (this.props.status === "finished") {
+    } else if (status === "settling") {
       return (
         <th>截图</th>
       )
@@ -112,7 +116,6 @@ export default class KolList extends React.Component {
                         key={index}
                         campaign_id={campaign_id}
                         campaign={campaign}
-                        status={status}
                         actions={actions}
                       />
                     })
@@ -137,7 +140,9 @@ export default class KolList extends React.Component {
   }
 
   render_bottom_tips() {
-    if (this.props.status != "inviting") { return; }
+    const { campaign } = this.props;
+
+    if (campaign.get("recruit_status") != "inviting") { return; }
 
     return (
       <div className="bottom-tips">*请在报名截止后确定招募名单</div>
@@ -145,9 +150,9 @@ export default class KolList extends React.Component {
   }
 
   render_kol_stat() {
-    const { campaign, status } = this.props;
+    const { campaign } = this.props;
 
-    if (status != "choosing") { return; }
+    if (campaign.get("recruit_status") != "choosing") { return; }
 
     return (
       <div className="kol-stat-wrapper">

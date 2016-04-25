@@ -60,8 +60,9 @@ export default function brandReducer($$state = $$initialState, action = null) {
 
     case actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOLS:
       $$state = $$state.set("readyState", fetchState);
-      $$state = $$state.mergeIn(['campaign', 'end_apply_check'], fetchState === 'success');
-
+      if(fetchState === 'success') {
+        $$state = $$state.merge({ "campaign": Immutable.fromJS(action.result) });
+      }
       return $$state;
 
     case actionTypes.FETCH_RECRUIT_CAMPAIGN:
