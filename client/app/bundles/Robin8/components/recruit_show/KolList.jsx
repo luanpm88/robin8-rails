@@ -165,7 +165,7 @@ export default class KolList extends React.Component {
               </li>
               <li>
                 <h5>招募</h5>
-                <span className="bold">{ campaign.get("valid_applies_count") }</span>
+                <span className="bold">{ campaign.get("recruit_person_count") }</span>
               </li>
             </ul>
           </div>

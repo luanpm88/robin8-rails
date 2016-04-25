@@ -139,7 +139,6 @@
 
 }
 
-
 .common-spinner-input, .recruit-total-target-label {
   line-height: 34px;
   font-family: FuturaStd-Medium;
@@ -148,6 +147,11 @@
   border: none !important;
   font-size: 28px;
 }
+
+.common-spinner-input {
+  padding: 0;
+}
+
 .recruit-budget-form-area .budget-box .bootstrap-touchspin-down, .recruit-budget-form-area .budget-box .bootstrap-touchspin-up{
   box-shadow: none;
 }
