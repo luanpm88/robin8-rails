@@ -400,11 +400,11 @@ class Kol < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       TmpIdentity.where(:kol_uuid => kol_uuid).delete_all
       self.identities.each do |identity|
-        tmp_identity = TmpIdentity.new(:provider => identity.provider, :uid => identity.uid, :name => identity.name,
+        tmp_identity = TmpIdentity.new(:provider => identity.provider, :uid => identity.uid, :name => identity.name, :token => identity.token,
                                        :avatar_url => identity.avatar_url, :verified => identity.verified, :registered_at => identity.registered_at,
                                        score: identity.score, followers_count: identity.followers_count,  friends_count: identity.friends_count,
                                        statuses_count: identity.statuses_count, kol_uuid:  kol_uuid, refresh_time: identity.refresh_time,
-                                       access_token_refresh_time: identity.access_token_refresh_time)
+                                       access_token_refresh_time: identity.access_token_refresh_time, refresh_token: identity.refresh_token)
         tmp_identity.save
       end
 
