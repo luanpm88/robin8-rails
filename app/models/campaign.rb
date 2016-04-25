@@ -296,6 +296,25 @@ class Campaign < ActiveRecord::Base
     self.per_budget_type == "recruit"
   end
 
+  def recruit_status
+    return 'pending' if self.status == 'unexecute'
+    return 'rejected' if self.status == 'rejected'
+    return 'coming' if self.status == 'agreed'
+    return 'settling' if self.status == 'executed'
+    return 'settled' if self.status == 'settled'
+
+    if self.status == 'executing'
+      if self.end_apply_check
+        'running'
+      elsif Time.now > self.recruit_end_time
+        'choosing'
+      else
+        'inviting'
+      end
+    end
+
+  end
+
 
   # 结算 for brand
   def settle_accounts_for_brand
