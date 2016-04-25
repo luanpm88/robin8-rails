@@ -21,6 +21,7 @@
 .creat-recruit-target {
   padding-top: 38px;
   width: 100%;
+  height: 160px;
 
   .target-region-range{
     float: left;
@@ -32,6 +33,14 @@
     width: 50%;
     float: left;
     text-align: center;
+  }
+
+  .target-region-selector{
+    line-height: 35px;
+  }
+
+  .influence-score-selector {
+    margin-top: 25px;
   }
 
   select.influence_score{
