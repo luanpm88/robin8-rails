@@ -31,15 +31,11 @@ export default class Overview extends React.Component{
 
     return(
       <div className="panel activity-stat-bigshow-panel">
-        <div className="panel-heading">
-          <a href="#panelStatBigShow" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
-          <h4 className="panel-title">总览</h4>
-        </div>
         <div id="panelStatBigShow" className="panel-collapse collapse in">
           <div className="panel-body">
             <div className="activity-stat-bigshow-area grid-3">
               <ul>
-                <li><span className="txt">招募人数</span><small className="stat-num">{ campaign.get("valid_applies_count") }</small></li>
+                <li><span className="txt">招募人数</span><small className="stat-num">{ campaign.get("recruit_person_count") }</small></li>
                 <li><span className="txt">人均奖励</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("per_action_budget") }</small></li>
                 <li><span className="txt">招募总额</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("budget") }</small></li>
               </ul>

@@ -12,6 +12,26 @@ export default class Campaign extends React.Component {
     super(props, context);
   }
 
+  getUrl() {
+    const { campaign } = this.props;
+
+    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+      return `/brand/recruits/${campaign.get("id")}`;
+    } else {
+      return `/brand/campaigns/${campaign.get("id")}`;
+    }
+  }
+
+  renderStatusImage() {
+    const { campaign } = this.props;
+
+    if(isRecruitCampaign(campaign.get("per_budget_type"))) {
+      return campaignStatusHelper(campaign.get("recruit_status"));
+    } else {
+      return campaignStatusHelper(campaign.get("status"));
+    }
+  }
+
   renderEditButton(campaign){
     if(canEditCampaign(campaign.get("status"))){
       return <Link to={`/brand/campaigns/${campaign.get("id")}/edit`} className="edit-campaign-btn btn">编辑</Link>
@@ -23,7 +43,7 @@ export default class Campaign extends React.Component {
       return (
         <h2 className="activity-title">
           { _.truncate(campaign.get("name"), {'length': 15})}
-          <span className="cl-recruit-tag">招募</span>
+          <span className="label label-orange">招募</span>
         </h2>
       )
     }
@@ -107,8 +127,8 @@ export default class Campaign extends React.Component {
     return (
       <div className={tagColor} key={index}>
         <div className="brand-activity-content">
-          <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">&gt;</Link>
-          <Link to={`/brand/campaigns/${campaign.get("id")}`}>
+          <Link to={this.getUrl()} className="detail-link">&gt;</Link>
+          <Link to={this.getUrl()}>
             { this.renderCampaignName(campaign) }
           </Link>
 
@@ -121,7 +141,7 @@ export default class Campaign extends React.Component {
           { this.renderCampaignStatInfo(campaign) }
         </div>
         <div className="brand-activity-coverphoto brand-home-campaign-img  pull-left">
-          { campaignStatusHelper(campaign.get("status")) }
+          { this.renderStatusImage() }
           <Link to={`/brand/campaigns/${campaign.get("id")}`} className="detail-link">
             {
               do {
