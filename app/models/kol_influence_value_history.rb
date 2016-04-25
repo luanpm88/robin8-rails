@@ -12,13 +12,13 @@ class KolInfluenceValueHistory < ActiveRecord::Base
     history.attributes = attrs
     history.save
     exist_auto_cal = KolInfluenceValueHistory.where(:kol_uuid => history.kol_uuid, :is_auto => true).count > 0 ? true : false
-    if !exist_auto_cal && (Date.today.wday > ScheduleWday || ((Date.today.wday == ScheduleWday) &&  ((Time.now.hour * 60 + Time.now.min) >= (ScheduleHour * 60 + ScheduleMin))))
+    if !exist_auto_cal && (Date.today.wday > ScheduleWday || (Date.today.wday == ScheduleWday &&  (Time.now.hour * 60 + Time.now.min) >= (ScheduleHour * 60 + ScheduleMin)))
       auto_history = KolInfluenceValueHistory.new
       attrs = history.attributes
       attrs.delete("id")
       auto_history.attributes = attrs
       auto_history.is_auto = true
-      auto_history.created_at = Date.today - (Date.today.wday - ScheduleWday).days            #生成时间在本周 ScheduleWday
+      auto_history.created_at = Time.now - (Date.today.wday - ScheduleWday).days            #生成时间在本周 ScheduleWday
       auto_history.save
     end
   end
