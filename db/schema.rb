@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160415103631) do
+ActiveRecord::Schema.define(version: 20160425095523) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -146,6 +146,20 @@ ActiveRecord::Schema.define(version: 20160415103631) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "campaign_applies", force: :cascade do |t|
+    t.integer  "campaign_id",         limit: 4
+    t.integer  "kol_id",              limit: 4
+    t.string   "name",                limit: 255
+    t.string   "phone",               limit: 255
+    t.string   "weixin_no",           limit: 255
+    t.integer  "weixin_friend_count", limit: 4
+    t.string   "status",              limit: 255
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "expect_price",        limit: 11
+    t.string   "agree_reason",        limit: 255
+  end
+
   create_table "campaign_categories", force: :cascade do |t|
     t.integer "campaign_id",      limit: 4
     t.string  "iptc_category_id", limit: 191
@@ -155,24 +169,25 @@ ActiveRecord::Schema.define(version: 20160415103631) do
   add_index "campaign_categories", ["iptc_category_id"], name: "index_campaign_categories_on_iptc_category_id", using: :btree
 
   create_table "campaign_invites", force: :cascade do |t|
-    t.string   "status",        limit: 191
-    t.integer  "campaign_id",   limit: 4
-    t.integer  "kol_id",        limit: 4
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.string   "status",            limit: 191
+    t.integer  "campaign_id",       limit: 4
+    t.integer  "kol_id",            limit: 4
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.date     "decline_date"
-    t.string   "uuid",          limit: 100
-    t.string   "share_url",     limit: 255
-    t.integer  "total_click",   limit: 4,   default: 0
-    t.integer  "avail_click",   limit: 4,   default: 0
+    t.string   "uuid",              limit: 100
+    t.string   "share_url",         limit: 255
+    t.integer  "total_click",       limit: 4,   default: 0
+    t.integer  "avail_click",       limit: 4,   default: 0
     t.datetime "approved_at"
-    t.string   "img_status",    limit: 255
-    t.string   "screenshot",    limit: 255
-    t.string   "reject_reason", limit: 255
-    t.boolean  "is_invited",    limit: 1,   default: false
-    t.integer  "share_count",   limit: 4,   default: 0
-    t.string   "ocr_status",    limit: 255
-    t.string   "ocr_detail",    limit: 255
+    t.string   "img_status",        limit: 255
+    t.string   "screenshot",        limit: 255
+    t.string   "reject_reason",     limit: 255
+    t.boolean  "is_invited",        limit: 1,   default: false
+    t.integer  "share_count",       limit: 4,   default: 0
+    t.string   "ocr_status",        limit: 255
+    t.string   "ocr_detail",        limit: 255
+    t.integer  "campaign_apply_id", limit: 4
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -232,6 +247,12 @@ ActiveRecord::Schema.define(version: 20160415103631) do
     t.string   "img_url",              limit: 255
     t.datetime "actual_deadline_time"
     t.string   "per_budget_type",      limit: 255
+    t.text     "task_description",     limit: 65535
+    t.datetime "recruit_start_time"
+    t.datetime "recruit_end_time"
+    t.string   "address",              limit: 255
+    t.boolean  "hide_brand_name",      limit: 1,                       default: false
+    t.boolean  "end_apply_check",      limit: 1,                       default: false
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -452,7 +473,7 @@ ActiveRecord::Schema.define(version: 20160415103631) do
   create_table "kol_contacts", force: :cascade do |t|
     t.integer  "kol_id",          limit: 4
     t.string   "name",            limit: 255
-    t.string   "mobile",          limit: 255
+    t.string   "mobile",          limit: 20
     t.boolean  "exist",           limit: 1,   default: false
     t.string   "city",            limit: 255
     t.float    "score",           limit: 24
@@ -463,6 +484,9 @@ ActiveRecord::Schema.define(version: 20160415103631) do
     t.boolean  "invite_status",   limit: 1,   default: false
     t.datetime "invite_at"
   end
+
+  add_index "kol_contacts", ["kol_id"], name: "index_kol_contacts_on_kol_id", using: :btree
+  add_index "kol_contacts", ["mobile"], name: "index_kol_contacts_on_mobile", using: :btree
 
   create_table "kol_influence_value_histories", force: :cascade do |t|
     t.integer  "kol_id",                     limit: 4
@@ -661,22 +685,23 @@ ActiveRecord::Schema.define(version: 20160415103631) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.string   "message_type",  limit: 255
-    t.boolean  "is_read",       limit: 1,          default: false
+    t.string   "message_type",     limit: 255
+    t.boolean  "is_read",          limit: 1,          default: false
     t.datetime "read_at"
-    t.string   "title",         limit: 255
-    t.string   "name",          limit: 255
-    t.string   "desc",          limit: 255
-    t.string   "url",           limit: 255
-    t.string   "logo_url",      limit: 255
-    t.string   "sender",        limit: 255
-    t.string   "receiver_type", limit: 255
-    t.integer  "receiver_id",   limit: 4
-    t.text     "receiver_ids",  limit: 4294967295
-    t.string   "item_type",     limit: 255
-    t.string   "item_id",       limit: 255
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.string   "title",            limit: 255
+    t.string   "name",             limit: 255
+    t.string   "desc",             limit: 255
+    t.string   "url",              limit: 255
+    t.string   "logo_url",         limit: 255
+    t.string   "sender",           limit: 255
+    t.string   "receiver_type",    limit: 255
+    t.integer  "receiver_id",      limit: 4
+    t.text     "receiver_ids",     limit: 4294967295
+    t.string   "item_type",        limit: 255
+    t.string   "item_id",          limit: 255
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
+    t.string   "sub_message_type", limit: 255
   end
 
   create_table "news_rooms", force: :cascade do |t|
@@ -980,7 +1005,7 @@ ActiveRecord::Schema.define(version: 20160415103631) do
   create_table "tmp_kol_contacts", force: :cascade do |t|
     t.integer  "kol_id",          limit: 4
     t.string   "name",            limit: 255
-    t.string   "mobile",          limit: 255
+    t.string   "mobile",          limit: 20
     t.string   "city",            limit: 255
     t.boolean  "exist",           limit: 1,   default: false
     t.float    "score",           limit: 24
@@ -991,6 +1016,9 @@ ActiveRecord::Schema.define(version: 20160415103631) do
     t.boolean  "invite_status",   limit: 1,   default: false
     t.datetime "invite_at"
   end
+
+  add_index "tmp_kol_contacts", ["kol_id"], name: "index_tmp_kol_contacts_on_kol_id", using: :btree
+  add_index "tmp_kol_contacts", ["mobile"], name: "index_tmp_kol_contacts_on_mobile", using: :btree
 
   create_table "tmp_kol_influence_items", force: :cascade do |t|
     t.integer  "kol_id",              limit: 4
