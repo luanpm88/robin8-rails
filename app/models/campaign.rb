@@ -174,7 +174,6 @@ class Campaign < ActiveRecord::Base
       kol.delete_campaign_id campaign_id
     end
     Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign unmatched_kol_ids: ---#{unmatched_kol_ids}-"
-    Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
     #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
     if  is_recruit_type?
@@ -186,7 +185,6 @@ class Campaign < ActiveRecord::Base
       CampaignWorker.perform_at(_start_time, self.id, 'start')
     end
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-    # Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
   end
 
   # 开始进行  此时需要更改invite状态
