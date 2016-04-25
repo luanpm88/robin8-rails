@@ -93,7 +93,7 @@ module Concerns
         campaign = Campaign.find campaign_id  rescue nil
         return if campaign.blank? || campaign.status != 'executing'  || !(self.receive_campaign_ids.include? "#{campaign_id}")
         campaign_apply = self.campaign_applies.create(campaign_id: campaign_id, name: params[:name], phone: params[:phone],  weixin_no: params[:weixin_no],
-                                     weixin_friend_count: params[:weixin_friend_count], status: 'applying')
+                                     weixin_friend_count: params[:weixin_friend_count], status: 'applying', expect_price: params[:expect_price])
         # 成功报名后，同步更改campaign_invites  等同于接收活动
         campaign_invite = CampaignInvite.find_or_initialize_by(:campaign_id => campaign_id, :kol_id => self.id)
         if campaign_invite.new_record?
