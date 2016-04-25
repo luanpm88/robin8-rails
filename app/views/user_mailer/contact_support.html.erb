@@ -6,7 +6,7 @@ Hello Support
   Someone contacted from Robin8 Contact Us Page. Details as follows
   <br/>
 </p>
-
+  <%- @user.symbolize_keys! %>
   First Name: <%=@user[:first_name]%><br/>
   Last Name: <%=@user[:last_name]%><br/>
   Email: <%=@user[:email]%><br/>

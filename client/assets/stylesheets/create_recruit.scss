@@ -14,9 +14,14 @@
 @import "city_selector.scss";
 @import "form_common.scss";
 
+.common-textarea{
+  resize: none;
+}
+
 .creat-recruit-target {
   padding-top: 38px;
   width: 100%;
+  height: 160px;
 
   .target-region-range{
     float: left;
@@ -28,6 +33,14 @@
     width: 50%;
     float: left;
     text-align: center;
+  }
+
+  .target-region-selector{
+    line-height: 35px;
+  }
+
+  .influence-score-selector {
+    margin-top: 25px;
   }
 
   select.influence_score{
@@ -126,7 +139,6 @@
 
 }
 
-
 .common-spinner-input, .recruit-total-target-label {
   line-height: 34px;
   font-family: FuturaStd-Medium;
@@ -135,6 +147,11 @@
   border: none !important;
   font-size: 28px;
 }
+
+.common-spinner-input {
+  padding: 0;
+}
+
 .recruit-budget-form-area .budget-box .bootstrap-touchspin-down, .recruit-budget-form-area .budget-box .bootstrap-touchspin-up{
   box-shadow: none;
 }
@@ -171,4 +188,8 @@
 .recruit-budget-form-area .budget-box .input-group{
   width: 80%;
   margin-left: 10%;
+}
+
+.create-recruit-basic-info .recruit-basic-info{
+  padding: 20px 40px 0px 40px;
 }

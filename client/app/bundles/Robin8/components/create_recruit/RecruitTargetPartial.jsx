@@ -31,8 +31,8 @@ export default class TargetPartial extends React.Component {
                 <label >地区</label>
                 <div className="target-region-selector">
                   <label id="btn_jobArea" className="target-city-label" readOnly="readonly">{region.value}</label>
-                  <a className="btn btn-blue btn-default create-recruit-region-button" onClick={ (event) => { jobAreaSelect()}}>选择地区</a>
                 </div>
+                <a className="btn btn-blue btn-default create-recruit-region-button" onClick={ (event) => { jobAreaSelect()}}>选择地区</a>
               </div>
               <div className="target-influence-score clearfix" >
                 <label>影响力分数</label>

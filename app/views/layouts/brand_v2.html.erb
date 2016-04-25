@@ -15,7 +15,7 @@
     <%= csrf_meta_tags %>
 </head>
 <% if params[:controller] == 'pages' and params[:action] == 'home' %>
-  <body class="landing_page_bg">
+  <body class=<%= mobile_request? ? "mobile_landing_page_bg" : "landing_page_bg"%>>
     <%= yield %>
   </body>
 <% else %>
