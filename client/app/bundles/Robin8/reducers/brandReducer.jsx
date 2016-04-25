@@ -34,7 +34,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
       }
 
       return $$state;
-
+    case actionTypes.UPDATE_RECRUIT:
     case actionTypes.UPDATE_CAMPAIGN:
       if(fetchState === "failure"){
         $$state = $$state.merge({ "readyState": fetchState, "error": action.error });
@@ -42,6 +42,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
       console.log("fetchState" + fetchState);
       return $$state;
 
+    case actionTypes.FETCH_RECRUIT:
     case actionTypes.FETCH_CAMPAIGN:
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {

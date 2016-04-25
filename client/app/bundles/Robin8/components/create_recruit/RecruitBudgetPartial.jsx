@@ -9,7 +9,7 @@ export default class RecruitBudgetPartial extends React.Component{
 
   _initTouchSpin() {
     $('.per-action-budget').TouchSpin({
-      min: 100,
+      min: 1,
       max: 1000000,
       prefix: "￥"
     })

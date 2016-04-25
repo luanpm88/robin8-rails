@@ -5,20 +5,20 @@ export default class TargetPartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    _.bindAll(this, ["_addTriggerTargetRegionInputChange"])
   }
 
-  _handleTargetRegionInputChange(){
+  _addTriggerTargetRegionInputChange(){
     const { onChange } = this.props.region;
-    $(".target-city-label").change(function(){
-      onChange($(this).val())
-    })
+    onChange($('.target-city-label').text())
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    $(".target-city-label").bind("change", this._addTriggerTargetRegionInputChange)
   }
 
   render() {
-    const { influence_score } = this.props;
+    const { influence_score, region} = this.props;
     return (
       <div className="creat-activity-form creat-target">
         <div className="header">
@@ -30,7 +30,7 @@ export default class TargetPartial extends React.Component {
               <div className="target-region-range">
                 <label >地区</label>
                 <div className="target-region-selector">
-                  <label id="btn_jobArea" className="target-city-label">北京/上海/广州</label>
+                  <label id="btn_jobArea" className="target-city-label" readOnly="readonly">{region.value}</label>
                   <a className="btn btn-blue btn-default create-recruit-region-button" onClick={ (event) => { jobAreaSelect()}}>选择地区</a>
                 </div>
               </div>
@@ -38,8 +38,16 @@ export default class TargetPartial extends React.Component {
                 <label>影响力分数</label>
                 <div className="influence-score-selector">
                   <select {...influence_score} className="influence_score">
-                    <option value="more_than_600">600分以上</option>
-                    <option value="more_than_700">700分以上</option>
+                    <option value="gt_400">400分以上</option>
+                    <option value="gt_450">450分以上</option>
+                    <option value="gt_400">500分以上</option>
+                    <option value="gt_450">550分以上</option>
+                    <option value="gt_400">600分以上</option>
+                    <option value="gt_450">650分以上</option>
+                    <option value="gt_400">700分以上</option>
+                    <option value="gt_450">750分以上</option>
+                    <option value="gt_400">800分以上</option>
+                    <option value="gt_450">900分以上</option>
                   </select>
                 </div>
               </div>
