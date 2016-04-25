@@ -111,6 +111,10 @@ module Brand
           object.campaign_invites.where(status: "settled").count
         end
 
+        expose :recruit_status do |object, opts|
+            object.recruit_status if object.per_budget_type == 'recruit'
+        end
+
         with_options(format_with: :iso_timestamp) do
           expose :created_at
           expose :updated_at
