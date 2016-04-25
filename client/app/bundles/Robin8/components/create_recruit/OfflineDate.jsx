@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-export default class RecruitDatePartial extends React.Component {
+export default class DatePartial extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -23,14 +23,13 @@ export default class RecruitDatePartial extends React.Component {
       useCurrent: false,
     }
 
-    $('#recruit-start-time-datepicker').datetimepicker(datepickerStartOptions);
-    $('#recruit-deadline-datepicker').datetimepicker(datepickerEndOptions);
-    $("#recruit-start-time-datepicker").on("dp.change", function (e) {
-      $('#recruit-deadline-datepicker').data("DateTimePicker").minDate(e.date);
+    $('#start-time-datepicker').datetimepicker(datepickerStartOptions);
+    $('#deadline-datepicker').datetimepicker(datepickerEndOptions);
+    $("#start-time-datepicker").on("dp.change", function (e) {
+      $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
     });
-    $("#recruit-deadline-datepicker").on("dp.change", function (e) {
-        $('#recruit-deadline-datepicker').data("DateTimePicker").maxDate(e.date);
-        $('#start-time-datepicker').data("DateTimePicker").minDate(e.date);
+    $("#deadline-datepicker").on("dp.change", function (e) {
+      $('#start-time-datepicker').data("DateTimePicker").maxDate(e.date);
     });
   }
 
@@ -48,22 +47,22 @@ export default class RecruitDatePartial extends React.Component {
   }
   render() {
 
-    const { recruit_start_time, recruit_end_time } = this.props
+    const { start_time, deadline } = this.props
 
     return (
       <div className="creat-activity-form creat-date">
         <div className="header">
-          <h3 className="tit">报名时间&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDateTips()}>?</span></h3>
+          <h3 className="tit">活动时间&nbsp;<span className="what" data-toggle="tooltip" title={this.renderDateTips()}>?</span></h3>
         </div>
         <div className="content">
           <div className="date-range-form-area input-daterange">
             <div className="date-box satrt-date">
-              <label>报名开始时间</label>
-              <input {...recruit_start_time}  type="text" className="form-control" id="recruit-start-time-datepicker" name="startDate" readOnly required />
+              <label>开始时间</label>
+              <input {...start_time}  type="text" className="form-control" id="start-time-datepicker" name="startDate" readOnly required />
             </div>
             <div className="date-box end-date">
-              <label>报名截止时间</label>
-              <input {...recruit_end_time} type="text" className="form-control" id="recruit-deadline-datepicker" name="endDate" readOnly required />
+              <label>结束时间</label>
+              <input {...deadline} type="text" className="form-control" id="deadline-datepicker" name="endDate" readOnly required />
             </div>
           </div>
         </div>

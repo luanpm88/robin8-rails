@@ -9,7 +9,7 @@ import "create_recruit.scss";
 
 import IntroPartial from "./create_recruit/IntroPartial";
 import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
-import DatePartial from './create_campaign/DatePartial';
+import DatePartial from './create_recruit/OfflineDate';
 import RecruitDatePartial from './create_recruit/RecruitDatePartial';
 import RecruitBudgetPartial from './create_recruit/RecruitBudgetPartial';
 

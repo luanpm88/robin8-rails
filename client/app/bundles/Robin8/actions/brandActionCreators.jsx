@@ -50,21 +50,17 @@ export function saveRecruit(campaign) {
   var formData = new FormData()
 
   for(let key of Object.keys(campaign)) {
-    switch(key) {
-      case 'age':
-      case 'gender':
-        formData.append(`target[${key}]`, campaign[key]);
-        break;
-      case 'action_url':
-      case 'short_url':
-      case 'action_url_identifier':
-        formData.append(`campaign_action_url[${key}]`, campaign[key]);
-        break;
+    switch(key){
+      case "region":
+        if(campaign[key] == undefined || campaign[key] == "请选择地区"){
+          formData.append(`${key}`, "全部");
+        }else{
+          formData.append(`${key}`, campaign[key]);
+        }
+        break
       default:
         formData.append(`${key}`, campaign[key]);
-        break;
     }
-    formData.append("target[region]", (campaign['province'] + " " + campaign['city']))
   }
 
   return {
@@ -125,7 +121,17 @@ export function updateRecruit(campaign_id, campaign) {
   var formData = new FormData()
 
   for(let key of Object.keys(campaign)) {
-    formData.append(`${key}`, campaign[key]);
+    switch(key){
+      case "region":
+        if(campaign[key] == undefined || campaign[key] == "请选择地区"){
+          formData.append(`${key}`, "全部");
+        }else{
+          formData.append(`${key}`, campaign[key]);
+        }
+        break
+      default:
+        formData.append(`${key}`, campaign[key]);
+    }
   }
 
   return {
