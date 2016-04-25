@@ -43,7 +43,6 @@ class TmpIdentity < ActiveRecord::Base
   def cal_identity_influence
     if self.provider == 'weibo'
       # Influence::Value.init_identity(self.kol_uuid)
-
       Influence::Identity.cal_score(kol_uuid,self.id)
     end
   end

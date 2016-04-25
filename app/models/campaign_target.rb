@@ -27,7 +27,7 @@ class CampaignTarget < ActiveRecord::Base
   def get_citys
     return [] if target_type != 'region' ||  target_content.blank?
     city_name_ens = []
-    target_content.split(",").each do |region|
+    target_content.split("/").each do |region|
       city = City.where("name like '#{region[0,2]}%'").first
       if city
         city_name_ens << city.name_en
@@ -41,5 +41,10 @@ class CampaignTarget < ActiveRecord::Base
       end
     end
     city_name_ens
+  end
+
+  def get_score_value
+    return 0 if target_type != 'influence_score'
+    self.target_content.split("_").last.to_i rescue 0
   end
 end
