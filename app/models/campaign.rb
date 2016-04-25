@@ -186,7 +186,7 @@ class Campaign < ActiveRecord::Base
       CampaignWorker.perform_at(_start_time, self.id, 'start')
     end
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-    Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
+    # Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
   end
 
   # 开始进行  此时需要更改invite状态
@@ -197,7 +197,6 @@ class Campaign < ActiveRecord::Base
       self.update_column(:status, 'executing')
       Message.new_campaign(self, get_specified_kol_ids, get_unmatched_kol_ids)
     end
-    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
 
   def add_click(valid)
@@ -232,13 +231,8 @@ class Campaign < ActiveRecord::Base
   end
 
   def update_info(finish_remark)
-    self.avail_click = self.redis_avail_click.value
-    self.total_click = self.redis_total_click.value
-    self.status = 'executed'
-    self.finish_remark = finish_remark
-    Rails.logger.campaign.info "======update_info----#{Time.now}"
-    self.actual_deadline_time = Time.now
-    self.save!
+    self.update_attributes(:avail_click => self.redis_avail_click.value, :total_click => self.redis_total_click.value,
+                            :status => 'executed', :finish_remark => finish_remark, :actual_deadline_time => Time.now)
   end
 
   # 更新invite 状态和点击数
@@ -260,9 +254,7 @@ class Campaign < ActiveRecord::Base
   # 提醒上传截图
   def remind_upload
     Rails.logger.campaign_sidekiq.info "-----remind_upload:  ----start-----#{self.inspect}----------"
-    ActiveRecord::Base.transaction do
-      Message.new_remind_upload(self)
-    end
+    Message.new_remind_upload(self)
   end
 
   # 结算 for kol

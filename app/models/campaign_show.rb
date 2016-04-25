@@ -24,7 +24,6 @@ class CampaignShow < ActiveRecord::Base
       # check_cookie?
     store_key = visitor_cookies.to_s + campaign.id.to_s
     if Rails.cache.read(store_key)
-      Rails.logger.error "--------------------------"
       Rails.logger.error store_key
       return [false, 'cookies_visit_fre']
     else
