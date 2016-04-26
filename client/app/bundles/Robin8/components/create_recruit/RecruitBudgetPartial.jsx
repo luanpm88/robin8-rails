@@ -11,12 +11,10 @@ export default class RecruitBudgetPartial extends React.Component{
     $('.per-action-budget').TouchSpin({
       min: 1,
       max: 1000000,
-      prefix: "￥"
     })
     $(".recruit-person-count-input").TouchSpin({
       min: 1,
       max: 1000,
-      prefix: ""
     })
     $(".spinner-box").find(".bootstrap-touchspin-down").html("")
     $(".spinner-box").find(".bootstrap-touchspin-up").html("")
@@ -71,7 +69,7 @@ export default class RecruitBudgetPartial extends React.Component{
             <div className="budget-box">
               <label className="creat-campaign-total-budget form-common-label">招募预算</label>
               <div className="spinner-box">
-                <label type="text" className="recruit-total-target-label" style={{display: 'block'}} >￥{(recruit_person_count.value * per_action_budget.value) || 0}</label>
+                <label type="text" className="recruit-total-target-label" style={{display: 'block'}} >{(recruit_person_count.value * per_action_budget.value) || 0}</label>
               </div>
             </div>
           </div>

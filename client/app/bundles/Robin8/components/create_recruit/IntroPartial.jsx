@@ -121,7 +121,7 @@ export default class IntroPartial extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="basic-intro">
+            <div className="basic-intro recruit-basic-info">
               <div className="form-group">
                 <label htmlFor="activityTitle">活动标题</label>
                 <input {...name} type="text" className="form-control activity-title-input" maxLength={22} placeholder="请概括您的推广，让您的内容一目了然" />
@@ -130,14 +130,14 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">活动简介</label>
-                <textarea {...description} className="form-control activity-intro-input" maxLength={140} placeholder="生动有趣的活动介绍，能让KOL对你的活动好感倍增"  ></textarea>
+                <textarea {...description} className="form-control common-textarea activity-intro-input" maxLength={140} placeholder="生动有趣的活动介绍，能让KOL对你的活动好感倍增"  ></textarea>
                 <span className="word-limit">140</span>
                 <ShowError field={description} />
               </div>
               <div className="form-group">
                 <label htmlFor="activityIntro">任务描述</label>
                 <span className="changeTaskDescTemplate pull-right" data-current-template="1" onClick={this.handleChangeTaskTemplate}>换个模板</span>
-                <textarea {...task_description} className="form-control activity-task-input-input" maxLength={140} placeholder="描述KOL需要完成的活动及推广任务。不会填写？点击“换个模板”试试看"  ></textarea>
+                <textarea {...task_description} className="form-control  common-textarea activity-task-input-input" maxLength={140} placeholder="描述KOL需要完成的活动及推广任务。不会填写？点击“换个模板”试试看"  ></textarea>
                 <span className="word-limit">140</span>
                 <ShowError field={task_description} />
               </div>

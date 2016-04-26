@@ -14,6 +14,7 @@ export default class RecruitDatePartial extends React.Component {
       ignoreReadonly: true,
       locale: 'zh-cn',
       format: 'YYYY-MM-DD HH:mm',
+      minDate: moment().add(2, "hours").format("YYYY-MM-DD HH:mm")
     }
 
     const datepickerEndOptions = {
@@ -22,8 +23,6 @@ export default class RecruitDatePartial extends React.Component {
       format: 'YYYY-MM-DD HH:mm',
       useCurrent: false,
     }
-    //$('#start-time-datepicker').data("DateTimePicker").minDate(moment().add(2, "hours").format("YYYY-MM-DD HH:mm"));
-
     $('#recruit-start-time-datepicker').datetimepicker(datepickerStartOptions);
     $('#recruit-deadline-datepicker').datetimepicker(datepickerEndOptions);
 

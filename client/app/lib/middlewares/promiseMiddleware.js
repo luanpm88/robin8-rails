@@ -31,9 +31,9 @@ export default function promiseMiddleware() {
       }
     )['catch']( error => {
       error.response.json().then( (json) => {
-        $(".brand-notice-modal .modal-title").html("保存失败");
-        $(".brand-notice-modal .modal-body").html(json.detail);
-        $(".brand-notice-modal").modal("show");
+        $(".brand-error-notice-modal .modal-title").html("保存失败");
+        $(".brand-error-notice-modal .modal-body p").html(json.detail);
+        $(".brand-error-notice-modal").modal("show");
       })
       return next({ ...rest, readyState: 'failure'})
     });

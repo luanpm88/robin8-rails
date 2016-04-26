@@ -225,12 +225,13 @@ export function updateBrandPassword(password_fields) {
   }
 }
 
-export function updateRecruitCompaignKolStatus(campaign_id, kol_id, status) {
+export function updateRecruitCompaignKolStatus(campaign_id, kol_id, index, status) {
   const operation = !!status ? "agree" : "cancel";
   const data = { campaign_id, kol_id, operation };
 
   return {
     type: actionTypes.UPDATE_RECRUIT_CAMPAIGN_KOL_STATUS,
+    index: index,
     promise: fetch(`${baseUrl}/campaign_applies/change_status`, {
       headers: {
         'Accept': 'application/json',
