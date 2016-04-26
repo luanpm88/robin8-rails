@@ -59,7 +59,7 @@ module Campaigns
         #   kols = kol.where("gender = '#{target.contents}'")
         end
       end
-      kols.collect{|t| t.id }     rescue nil
+      kols.collect{|t| t.id }  - get_unmatched_kol_ids   rescue nil
     end
 
     def get_kol_ids
