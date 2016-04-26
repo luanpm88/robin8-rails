@@ -1,4 +1,6 @@
 class UpdateRecruitCampaignService
+  include CampaignHelper::RecruitCampaignServicePartial
+
   PERMIT_PARAMS = [:name, :description, :task_description,
                    :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
@@ -9,12 +11,14 @@ class UpdateRecruitCampaignService
   def initialize user, campaign_id, args={}
     @user                   = user
     @campaign               = Campaign.find_by_id campaign_id
-    @update_campaign_params = permitted_params_from args
+    @campaign_params = permitted_params_from args
     @errors                 = []
   end
 
   def perform
-    if @update_campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil?
+    format_to_db_time
+
+    if @campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil?
       @errors << 'Invalid params or user/campaign!'
       return false
     end
@@ -29,19 +33,24 @@ class UpdateRecruitCampaignService
       return false
     end
 
-    origin_budget, budget, per_action_budget = @campaign.budget, @update_campaign_params[:budget], @update_campaign_params[:per_action_budget]
+    validate_recruit_time
+
+    origin_budget, budget, per_action_budget = @campaign.budget, @campaign_params[:budget], @campaign_params[:per_action_budget]
     if not enough_amount? @user, origin_budget, budget
       @errors << '账号余额不足, 请充值!'
       return false
     end
 
-    format_to_db_time
+    if @errors.size > 0
+      return false
+    end
+
 
     begin
       ActiveRecord::Base.transaction do
         update_recruit_region
         update_recruit_influnce_score
-        @campaign.update_attributes(@update_campaign_params.reject {|k,v| [:influence_score, :region].include? k })
+        @campaign.update_attributes(@campaign_params.reject {|k,v| [:influence_score, :region].include? k })
         @campaign.reset_campaign origin_budget, budget, per_action_budget
       end
     rescue Exception => e
@@ -56,13 +65,6 @@ class UpdateRecruitCampaignService
 
   private
 
-  def format_to_db_time
-    @update_campaign_params[:recruit_start_time] = @update_campaign_params[:recruit_start_time].to_formatted_s(:db)
-    @update_campaign_params[:recruit_end_time] = @update_campaign_params[:recruit_end_time].to_formatted_s(:db)
-    @update_campaign_params[:start_time] = @update_campaign_params[:start_time].to_formatted_s(:db)
-    @update_campaign_params[:deadline] = @update_campaign_params[:deadline].to_formatted_s(:db)
-  end
-
   def enough_amount? user, origin_budget, budget
     user.avail_amount.to_f + origin_budget.to_f >= budget.to_f
   end
@@ -74,15 +76,15 @@ class UpdateRecruitCampaignService
 
   def update_recruit_region
     campaign_target = @campaign.campaign_targets.where(target_type: :region).first
-    unless campaign_target.target_content.eql? @update_campaign_params[:region]
-      campaign_target.update_attributes(target_content: @update_campaign_params[:region])
+    unless campaign_target.target_content.eql? @campaign_params[:region]
+      campaign_target.update_attributes(target_content: @campaign_params[:region])
     end
   end
 
   def update_recruit_influnce_score
     campaign_target = @campaign.campaign_targets.where(target_type: :influence_score).first
-    unless campaign_target.target_content.eql? @update_campaign_params[:influence_score]
-      campaign_target.update_attributes(target_content: @update_campaign_params[:influence_score])
+    unless campaign_target.target_content.eql? @campaign_params[:influence_score]
+      campaign_target.update_attributes(target_content: @campaign_params[:influence_score])
     end
   end
 

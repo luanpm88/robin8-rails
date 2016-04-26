@@ -22,27 +22,18 @@ export default class DatePartial extends React.Component {
       format: 'YYYY-MM-DD HH:mm',
       useCurrent: false,
     }
-
     $('#start-time-datepicker').datetimepicker(datepickerStartOptions);
     $('#deadline-datepicker').datetimepicker(datepickerEndOptions);
-    $("#start-time-datepicker").on("dp.change", function (e) {
-      $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
-    });
-    $("#deadline-datepicker").on("dp.change", function (e) {
-      $('#start-time-datepicker').data("DateTimePicker").maxDate(e.date);
-    });
   }
 
   componentDidMount() {
     this._initDateTimePicker();
   }
 
-
-
   renderDateTips(){
-    const tip = "<p>1.&nbsp;开始时间: 允许KOL参加活动的时间。</p> \
-                 <p>2.&nbsp;结束时间: 活动设定结束时间, 或活动费用消耗完毕即活动结束时间。</p> \
-                 <p>3.&nbsp;以北京时间为准。</p>"
+    const tip = "<p>1.&nbsp;活动开始时间，即KOL参与品牌活动的时间；</p> \
+                 <p>2.&nbsp;活动结束时间，即品牌活动结束的时间；</p> \
+                 <p>3.&nbsp;活动时间至少为1小时，且活动开始时间距离报名结束至少为1天</p>"
     return tip
   }
   render() {

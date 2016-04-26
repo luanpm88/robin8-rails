@@ -17,12 +17,17 @@ export default class TargetPartial extends React.Component {
     $(".target-city-label").bind("change", this._addTriggerTargetRegionInputChange)
   }
 
+  renderTargetTitle(){
+    const tip = "<p>选择地域、分数等条件，我们将根选中条件将招募活动推送给最合适的KOL用户</p>"
+    return tip
+  }
+
   render() {
     const { influence_score, region} = this.props;
     return (
       <div className="creat-activity-form creat-target">
         <div className="header">
-          <h3 className="tit">招募人群&nbsp;<span className="what">?</span></h3>
+          <h3 className="tit">招募人群&nbsp;<span className="what"  data-toggle="tooltip"  title={this.renderTargetTitle()}>?</span></h3>
         </div>
         <div className="content">
           <div className="creat-recruit-target">

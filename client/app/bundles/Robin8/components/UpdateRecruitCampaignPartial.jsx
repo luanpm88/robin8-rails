@@ -12,6 +12,7 @@ import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
 import DatePartial from './create_campaign/DatePartial';
 import RecruitDatePartial from './create_recruit/RecruitDatePartial';
 import RecruitBudgetPartial from './create_recruit/RecruitBudgetPartial';
+import initToolTip from './shared/InitToolTip';
 
 const validate = new FormValidate({
   name: { require: true },
@@ -57,6 +58,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
 
   componentDidMount() {
     this._fetchCampaign();
+    initToolTip({placement:'bottom', html: true});  
   }
 
   render_breadcrumb(){
