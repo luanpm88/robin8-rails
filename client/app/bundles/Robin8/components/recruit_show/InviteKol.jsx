@@ -27,7 +27,7 @@ export default class InviteKol extends React.Component {
     return (
       <td className="profile">
         <img src={ img_url } className="avatar"></img>
-        <span className="name">{ campaign_invite.get("kol").get("name") || "该用户未设置昵称" }</span>
+        <span className="name">{ campaign_invite.get("name") || "该用户未设置昵称" }</span>
       </td>
     )
   }
