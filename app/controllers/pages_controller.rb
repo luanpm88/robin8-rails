@@ -20,6 +20,13 @@ class PagesController < ApplicationController
     end
   end
 
+  def track_url
+    @track_url = TrackUrl.find_by(:short_url => params[:id])
+    @track_url.increment!(:click_count)
+    TrackUrlClick.create(:track_url_id => @track_url.id, :cookie => request.cookies["_robin8_visitor"], :refer => request.referer, :user_agent => request.user_agent, :vistor_ip => request.ip)
+    redirect_to @track_url.origin_url
+  end
+
   # def home
   #   if user_signed_in? && !current_user.active_subscription.blank?
   #     render "home", :layout => 'application'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425095523) do
+ActiveRecord::Schema.define(version: 20160425104747) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -1028,6 +1028,25 @@ ActiveRecord::Schema.define(version: 20160425095523) do
     t.text     "item_detail_content", limit: 65535
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+  end
+
+  create_table "track_url_clicks", force: :cascade do |t|
+    t.integer  "track_url_id", limit: 4
+    t.string   "cookie",       limit: 255
+    t.string   "refer",        limit: 255
+    t.string   "user_agent",   limit: 255
+    t.string   "vistor_ip",    limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "track_urls", force: :cascade do |t|
+    t.string   "origin_url",  limit: 255
+    t.string   "short_url",   limit: 255
+    t.string   "desc",        limit: 255
+    t.integer  "click_count", limit: 4,   default: 0
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "transactions", force: :cascade do |t|

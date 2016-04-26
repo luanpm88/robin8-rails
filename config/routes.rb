@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   mount RuCaptcha::Engine => "/rucaptcha"
   mount ApplicationAPI => '/brand_api'
 
+  get 'track_urls/:id', to: "pages#track_url"
+
   get "react/(/*all)/", to: "react#index"
   get "react_fake_data/campaigns", to: 'react#campaigns'
   post "react_fake_data/campaigns", to: 'react#create_campaigns'
