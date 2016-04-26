@@ -20,6 +20,7 @@ const initCampaign = {
   deadline: moment().add(4, "days").format("YYYY-MM-DD HH:mm"),
   budget: 1000,
   per_action_budget: 1000,
+  region: "全部",
   recruit_person_count: 1,
   hide_brand_name: false,
   influence_score: "gt_400"

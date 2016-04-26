@@ -12,7 +12,6 @@ export default class BudgetPartial extends React.Component {
     $('.budget-input').TouchSpin({
       min: 100,
       max: 1000000,
-      prefix: '￥'
     })
   }
 

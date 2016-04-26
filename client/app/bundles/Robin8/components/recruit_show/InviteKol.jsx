@@ -8,9 +8,11 @@ export default class InviteKol extends React.Component {
     super(props, context);
   }
 
-  updateKolStatus(data, status) {
-    const { campaign_id, kol_id, callback } = data;
-    callback(campaign_id, kol_id, status);
+  updateKolStatus(status) {
+    const { campaign, campaign_id, campaign_invite, actions } = this.props;
+    const kod_id = campaign_invite.get("kol").get("id");
+
+    actions.updateRecruitCompaignKolStatus(campaign_id, kod_id, this.props.index, status);
   }
 
   render_kol_id() {
@@ -38,13 +40,8 @@ export default class InviteKol extends React.Component {
       return (
         <td>
           <SwitchBox
-            onUserClick={this.updateKolStatus}
-            defaultValue={campaign_invite.get("status") === "brand_passed"}
-            userData={{
-              campaign_id: campaign_id,
-              kol_id: campaign_invite.get("kol").get("id"),
-              callback: actions.updateRecruitCompaignKolStatus
-            }}
+            onUserClick={this.updateKolStatus.bind(this)}
+            activeValue={campaign_invite.get("status") === "brand_passed"}
           />
         </td>
       );

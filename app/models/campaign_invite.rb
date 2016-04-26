@@ -37,7 +37,7 @@ class CampaignInvite < ActiveRecord::Base
   scope :approved_by_date, -> (date){where(:approved_at => date.beginning_of_day..date.end_of_day)}
   scope :not_rejected, -> {where("campaign_invites.status != 'rejected'")}
   scope :waiting_upload, -> {where("(img_status = 'rejected' or screenshot is null) and status != 'running' and status != 'rejected' and status != 'settled'")}
-
+  delegate :name, to: :campaign
   def upload_start_at
      approved_at.blank? ? nil : approved_at +  UploadScreenshotWait
   end
@@ -69,13 +69,10 @@ class CampaignInvite < ActiveRecord::Base
     campaign = self.campaign
     kol = self.kol
     if campaign.status == 'executing'
-      self.img_status = 'passed'
-      self.save!
+      self.update_attributes(:img_status => 'passed')
     elsif campaign.status == 'executed'
       ActiveRecord::Base.transaction do
-        self.status = 'settled'
-        self.img_status = 'passed'
-        self.save!
+        self.update_attributes(:img_status => 'passed', :status => 'settled')
         if campaign.is_click_type?  || campaign.is_cpa?
           kol.income(self.avail_click * campaign.per_action_budget, 'campaign', campaign, campaign.user)
           Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.per_action_budget}---#avail_amount:#{kol.avail_amount}-"
@@ -91,9 +88,7 @@ class CampaignInvite < ActiveRecord::Base
   def screenshot_reject rejected_reason=nil
     campaign = self.campaign
     if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
-      self.img_status = 'rejected'
-      self.reject_reason = rejected_reason
-      self.save
+      self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason)
       #审核拒绝
       Message.new_check_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
@@ -101,9 +96,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def reupload_screenshot(img_url)
-    self.img_status = 'pending'
-    self.screenshot = img_url
-    self.save
+    self.update_attributes(:img_status => 'pending', :screenshot => img_url)
     Rails.logger.info "---kol_id:#{self.kol_id}----- reupload_screenshot: ---cid:#{campaign.id}--"
   end
 
@@ -138,20 +131,6 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def reset_new_income
-    self.redis_new_income.reset
-  end
-
-  # 接收新活动时候  force = true
-  def bring_income(campaign, force = false)
-    if  campaign.is_click_type? || campaign.is_cpa? || force
-      #记录新收入
-      self.redis_new_income.incr((campaign.per_action_budget * 100).to_i)
-      #发送新收入消息
-      Message.new_income(self,campaign)
-    end
-  end
-
   def add_click(valid, remark = nil)
     self.redis_avail_click.increment if valid
     self.redis_real_click.increment if valid || remark == 'campaign_had_executed'
@@ -161,11 +140,7 @@ class CampaignInvite < ActiveRecord::Base
 
   def approve
     uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id => self.kol_id}.to_json).gsub("\n","")
-    self.approved_at = Time.now
-    self.status = 'approved'
-    self.uuid = uuid
-    self.share_url = CampaignInvite.generate_share_url(uuid)
-    self.save
+    self.update_attributes(:approved_at => Time.now, :status => 'approved', :uuid => uuid, :share_url => CampaignInvite.generate_share_url(uuid))
   end
 
   def tag
