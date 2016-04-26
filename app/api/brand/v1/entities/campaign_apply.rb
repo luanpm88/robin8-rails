@@ -5,6 +5,9 @@ module Brand
         expose :kol, using: Entities::Kol
         expose :campaign, using: Entities::Campaign
         expose :status, :agree_reason
+        expose :img_status do |object, opts|
+          object.campaign_invite.img_status
+        end
         expose :screenshot do |object, opts|
           object.campaign_invite.screenshot
         end
