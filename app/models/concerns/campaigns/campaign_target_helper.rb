@@ -4,6 +4,7 @@ module Campaigns
     included do
       has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender, :influence_score])}
       has_one :influence_score_target, -> {where(:target_type => 'influence_score')}, class_name: "CampaignTarget"
+      has_one :region_target, -> {where(:target_type => 'region')}, class_name: "CampaignTarget"
       has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols, :specified_kols])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
       has_many :remove_kol_targets, -> {where(:target_type => [:remove_kols])}, class_name: "CampaignTarget"
