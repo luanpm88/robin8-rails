@@ -37,7 +37,7 @@ class Message < ActiveRecord::Base
     end
     message = Message.new(:message_type => 'campaign', :sub_message_type => campaign.per_budget_type, :title => title, :logo_url => (campaign.img_url rescue nil), :name => campaign.name,
                           :sender => (campaign.user.company || campaign.user.name  rescue nil), :item => campaign  )
-    if kol_ids.size > 0
+    if kol_ids.present? && kol_ids.size > 0
       message.receiver_type = "List"
       message.receiver_ids = kol_ids
       if message.save
