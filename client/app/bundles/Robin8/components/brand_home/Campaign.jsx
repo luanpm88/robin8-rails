@@ -78,7 +78,7 @@ export default class Campaign extends React.Component {
   renderCampaignAddress(campaign) {
     if(isRecruitCampaign(campaign.get("per_budget_type"))) {
       return (
-        <small className="date">
+        <small className="address">
           { campaign.get("address") }
         </small>
       )
