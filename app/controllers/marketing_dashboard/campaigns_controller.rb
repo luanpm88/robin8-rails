@@ -43,7 +43,7 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     if @campaign.per_budget_type != 'recruit'
       @kols = Kol.where.not(:id => unmatched_kol_ids).paginate(paginate_params)
     else
-      @kols = Kol.where.not(:id => unmatched_kol_ids).where(:id => @campaign.get_specified_kol_ids).paginate(paginate_params)
+      @kols = Kol.where.not(:id => unmatched_kol_ids).where(:id => @campaign.get_matching_kol_ids).paginate(paginate_params)
     end
     @unmatched_kols = Kol.where(:id => unmatched_kol_ids)
 
@@ -52,6 +52,12 @@ class MarketingDashboard::CampaignsController < MarketingDashboard::BaseControll
     @receive_campaign_kol_ids  = @campaign.get_remove_kol_ids_of_campaign_by_target
     @today_receive_three_times_kol_ids = @campaign.today_receive_three_times_kol_ids
     @title = "campaign: #{@campaign.name} 候选kols(总共 #{@kols.count}人)列表"
+  end
+
+  def delete_target
+    @campaign_target = CampaignTarget.find params[:id]
+    @campaign_target.destroy
+    render :js => "alert('删除成功');$('#target_#{params[:id]}').remove()"
   end
 
   def recruit_targets

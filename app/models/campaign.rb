@@ -158,7 +158,8 @@ class Campaign < ActiveRecord::Base
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
     campaign_id = self.id
-    kol_ids = get_specified_kol_ids
+    kol_ids = get_matching_kol_ids
+    #TODO only special_kols
     if kol_ids.present?
       Kol.where(:id => kol_ids).each do |kol|
         kol.add_campaign_id campaign_id
@@ -193,7 +194,7 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
-      Message.new_campaign(self, get_specified_kol_ids, get_unmatched_kol_ids)
+      Message.new_campaign(self, get_matching_kol_ids, get_unmatched_kol_ids)
     end
   end
 
