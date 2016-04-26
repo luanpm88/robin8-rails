@@ -3,7 +3,7 @@
 <% attrs = %w(id name email mobile_number) %>
 <table class='table table-bordered'>
   <thead>
-    
+
     <tr>
       <% attrs.each do |attr| %>
         <th><%= attr.camelcase %></th>
@@ -39,7 +39,7 @@
           <%= f.label "过滤条件" %><br />
           <%= f.select :target_type_text, CampaignTarget::TargetTypes.values, class: "form-control" %>
         </div>
-        
+
         <div class="field form-group">
           <%= f.label "过滤content" %><br />
           <%= f.text_field :target_content, autofocus: true, class: "form-control" %>
@@ -64,13 +64,15 @@
         <tr>
           <th>过滤规则</th>
           <th>过滤内容</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
         <% @campaign.manual_campaign_targets.each do |target| %>
-          <tr>
+          <tr id="target_<%= target.id %>">
             <td> <%= target.get_target_type_text %> </td>
             <td> <%= target.target_content %> </td>
+            <td> <%= link_to '移除',  delete_target_marketing_dashboard_campaign_path(target), :method => :delete, :remote => true %> </td>
           </tr>
         <% end %>
       </tbody>

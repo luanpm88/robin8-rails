@@ -4,10 +4,11 @@ module Campaigns
     included do
       has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender, :influence_score])}
       has_one :influence_score_target, -> {where(:target_type => 'influence_score')}, class_name: "CampaignTarget"
-      has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols])}, class_name: "CampaignTarget"
+      has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols, :only_specified_kol])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
       has_many :remove_kol_targets, -> {where(:target_type => [:remove_kols])}, class_name: "CampaignTarget"
       has_many :add_kol_targets, -> {where(:target_type => [:add_kols])}, class_name: "CampaignTarget"
+      has_many :specified_kol_targets, -> {where(:target_type => [:specified_kols])}, class_name: "CampaignTarget"
     end
 
     def get_unmatched_kol_ids
@@ -37,8 +38,14 @@ module Campaigns
       CampaignInvite.today_approved.group("kol_id").having("count(kol_id) >= 3").collect{|t| t.kol_id}
     end
 
+    def get_specified_kols
+      return  if self.specified_kol_targets.blank?
+      get_ids_from_target_content contents
+    end
+
+
     # 获取指定kols
-    def get_specified_kol_ids
+    def get_matching_kol_ids
       return nil if self.campaign_targets.size == 0
       kols = Kol
       self.campaign_targets.each do |target|
@@ -52,6 +59,7 @@ module Campaigns
       end
       kols.collect{|t| t.id }
     end
+
     private
     def get_ids_from_target_content contents
       contents.map do |content|

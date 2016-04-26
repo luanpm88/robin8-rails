@@ -18,7 +18,7 @@ module API
           present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
           if  params[:status] == 'all'
             if current_kol.hide_recruit
-              @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where("per_action_type != 'recruit'")
+              @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where("per_budget_type != 'recruit'")
               @campaigns =  @campaigns.where(:id => current_kol.receive_campaign_ids.values).
                 order_by_status.page(params[:page]).per_page(10)
             else
