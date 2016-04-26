@@ -1,15 +1,15 @@
 class CreateRecruitCampaignService
-  PERMIT_PARAMS = [:name, :description, :task_description, 
-                  :address, :img_url, :budget, :per_budget_type, 
-                  :per_action_budget, :start_time, :deadline, 
-                  :region, :influence_score, :recruit_start_time, 
+  PERMIT_PARAMS = [:name, :description, :task_description,
+                  :address, :img_url, :budget, :per_budget_type,
+                  :per_action_budget, :start_time, :deadline,
+                  :region, :influence_score, :recruit_start_time,
                   :recruit_end_time, :hide_brand_name]
 
   attr_reader :errors, :campaign
 
   def initialize user, args={}
     @user            = user
-    @campaign_params = permited_params_from args
+    @campaign_params = permitted_params_from args
     @errors          = []
   end
 
@@ -58,8 +58,9 @@ class CreateRecruitCampaignService
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
   end
 
-  def permited_params_from params
+  def permitted_params_from params
     params.merge!(per_budget_type: 'recruit')
+    params.merge!(address: nil) if (params[:address] == 'undefined' or !params.present?)
     params.select { |k, v| PERMIT_PARAMS.include? k }
   end
 

@@ -55,6 +55,7 @@ export default function brandReducer($$state = $$initialState, action = null) {
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.mergeIn(['campaign', 'brand_passed_count'], action.result.brand_passed_count);
+        $$state = $$state.mergeIn(['campaign_invites', action.index, 'status'], action.result.status);
       }
       return $$state;
 

@@ -157,8 +157,8 @@
 }
 
 .recruit-budget-form-area .budget-box .spinner-box{
-  width: 80%;
-  margin-left: 10%;
+  width: 70%;
+  margin-left: 15%;
 }
 
 .recruit-brand-name-showable{
@@ -192,4 +192,8 @@
 
 .create-recruit-basic-info .recruit-basic-info{
   padding: 20px 40px 0px 40px;
+}
+
+.recruit-budget-form-area .bootstrap-touchspin-prefix {
+  font-family: FuturaStd-Medium;
 }

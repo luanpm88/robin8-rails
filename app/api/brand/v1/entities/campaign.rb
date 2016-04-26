@@ -10,7 +10,7 @@ module Brand
         expose :user, using: Entities::User
 
         expose :recruit_person_count do |object, opts|
-          object.per_budget_type == "recruit" ? object.budget/object.per_action_budget : nil
+          object.recruit_person_count if object.per_budget_type == "recruit"
         end
 
         expose :recruit_start_time do |object, opts|
@@ -23,7 +23,7 @@ module Brand
         expose :deadline do |object, opts|
           object.deadline.strftime('%Y-%m-%d %H:%M')
         end
-        
+
         expose :start_time do |object, opts|
           object.start_time.strftime('%Y-%m-%d %H:%M')
         end

@@ -8,6 +8,7 @@ module Brand
         expose :screenshot do |object, opts|
           object.campaign_invite.screenshot
         end
+        expose :name
         expose :weixin_friend_count
         expose :weibo_friend_count do |object, opts|
           object.kol.identities.where(provider: 'weibo').maximum("followers_count")
