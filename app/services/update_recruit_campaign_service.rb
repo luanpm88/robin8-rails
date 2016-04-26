@@ -37,7 +37,7 @@ class UpdateRecruitCampaignService
 
     origin_budget, budget, per_action_budget = @campaign.budget, @campaign_params[:budget], @campaign_params[:per_action_budget]
     if not enough_amount? @user, origin_budget, budget
-      @errors << '账号余额不足, 请充值!'
+      @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
       return false
     end
 

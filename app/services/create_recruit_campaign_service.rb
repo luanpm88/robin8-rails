@@ -25,7 +25,7 @@ class CreateRecruitCampaignService
     end
 
     if not enough_amount?(@user, @campaign_params[:budget])
-      @errors << '账号余额不足, 请充值!'
+      @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
       return false
     end
 
@@ -69,5 +69,4 @@ class CreateRecruitCampaignService
     avail_amout = user.avail_amount
     avail_amout >= budget ? true : false
   end
-
 end
