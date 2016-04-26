@@ -267,11 +267,6 @@ class Kol < ActiveRecord::Base
 
     # 记录到 read_meesage_ids
     self.read_message_ids << message_id unless  self.read_message_ids.include? message_id.to_s
-
-    # 重置 invite 收入
-    if message.message_type == 'income'
-      message.item.reset_new_income  if message.item
-    end
   end
 
   def message_status(message)

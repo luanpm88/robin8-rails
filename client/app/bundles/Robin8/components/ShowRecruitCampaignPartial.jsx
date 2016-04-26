@@ -61,7 +61,7 @@ export default class ShowRecruitCampaignPartial extends Component {
   render_result_view() {
     const campaign = this.props.data.get('campaign');
 
-    if (campaign.get("recruit_status") === "settled") {
+    if (campaign.get("recruit_status") === "settling") {
       return (
         <ResultView {...{campaign}}/>
       );

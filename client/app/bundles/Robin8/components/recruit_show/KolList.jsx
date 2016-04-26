@@ -112,10 +112,11 @@ export default class KolList extends React.Component {
                   {
                     campaign_invites.map(function(invite, index){
                       return <InviteKol
-                        campaign_invite={invite}
+                        index={index}
                         key={index}
-                        campaign_id={campaign_id}
                         campaign={campaign}
+                        campaign_id={campaign_id}
+                        campaign_invite={invite}
                         actions={actions}
                       />
                     })
