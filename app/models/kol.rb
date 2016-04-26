@@ -211,7 +211,7 @@ class Kol < ActiveRecord::Base
   end
 
   def income_by_date(date)
-    post_campaign_income(date) +  click_or_action_campaign_income(date)
+    post_or_recruit_campaign_income(date) +  click_or_action_campaign_income(date)
   end
 
   def campaign_count_by_date(date)
@@ -219,10 +219,10 @@ class Kol < ActiveRecord::Base
         .where("campaigns.actual_deadline_time is null or campaigns.actual_deadline_time < '#{date.end_of_day}'").count
   end
 
-  def post_campaign_income(date)
+  def post_or_recruit_campaign_income(date)
     income = 0
     self.campaign_invites.not_rejected.approved_by_date(date).includes(:campaign).each do |invite|
-      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && invite.campaign.is_post_type?  )
+      income += invite.campaign.per_action_budget if (invite.campaign && invite.campaign.per_action_budget && (invite.campaign.is_post_type? || invite.campaign.is_recruit_type? )  )
     end
     income
   end

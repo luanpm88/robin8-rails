@@ -13,6 +13,7 @@ module Influence
                         {:model => 'oppo', :score => 10},
                         {:model => '', :score => 0}]
     def self.mobile_model_score(kol_uuid,device_model)
+      return 0 if device_model.blank?
       device_model_score = 0
       device_model = device_model.gsub(" ","").downcase
       MobileModelLevels.each do |level|
@@ -25,6 +26,7 @@ module Influence
     #kol 归属地 得分
     KolLocationScore = [30,20,15,10,0]
     def self.kol_location_score(kol_uuid,city_name)
+      return 0 if city_name.blank?
       location_score = 0
       city_name = city_name[0,2]
       if Util::FirstCitys.include? city_name
