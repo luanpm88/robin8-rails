@@ -152,7 +152,7 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label className="recruit-brand-name-showable">
-                  <input type="checkbox" defaultChecked={hide_brand_name.value} onChange={this.handleHideBrandNameChange}></input>
+                  <input type="checkbox" defaultChecked={hide_brand_name.value} checked={hide_brand_name.value} onChange={this.handleHideBrandNameChange}></input>
                   <label>活动发布时隐藏品牌名称</label>
                 </label>
               </div>

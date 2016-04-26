@@ -61,7 +61,7 @@ config.plugins.push(
   new webpack.NoErrorsPlugin()
 );
 
-config.devtool = 'eval-source-map';
+config.devtool = '#eval-source-map';
 
 console.log('Webpack dev build for Rails'); // eslint-disable-line no-console
 

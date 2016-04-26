@@ -22,6 +22,7 @@ const initCampaign = {
   budget: 1000,
   per_action_budget: 1000,
   region: "全部",
+  address: "",
   recruit_person_count: 1,
   hide_brand_name: false,
   influence_score: "gt_400"
@@ -72,7 +73,10 @@ class CreateRecruitCampaign extends React.Component{
 
   render(){
     const { name, description, img_url, influence_score, start_time, deadline, 
-          recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region, hide_brand_name} = this.props.fields;
+          recruit_start_time, recruit_end_time, budget, per_action_budget, 
+          recruit_person_count, task_description, address, region,
+          hide_brand_name
+        } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveRecruit } = this.props.actions;
     return(
