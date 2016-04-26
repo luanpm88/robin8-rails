@@ -305,6 +305,9 @@ class Campaign < ActiveRecord::Base
 
   end
 
+  def recruit_person_count
+    self.budget / self.per_action_budget
+  end
 
   # 结算 for brand
   def settle_accounts_for_brand
