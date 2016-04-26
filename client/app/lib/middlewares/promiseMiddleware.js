@@ -31,8 +31,15 @@ export default function promiseMiddleware() {
       }
     )['catch']( error => {
       error.response.json().then( (json) => {
+        if(Array.isArray(json.detail)){
+          if (json.detail[0] == "amount_not_engouh"){
+            $(".brand-error-notice-modal .modal-body p").html("账号余额不足, 请");  
+            $(".brand-error-notice-modal .modal-body p").append("<span class='recharge'><a href='/contact?from=recharge' target='_blank'>充值</a></span>")
+          }
+        }else{
+          $(".brand-error-notice-modal .modal-body p").html(json.detail);
+        }
         $(".brand-error-notice-modal .modal-title").html("保存失败");
-        $(".brand-error-notice-modal .modal-body p").html(json.detail);
         $(".brand-error-notice-modal").modal("show");
       })
       return next({ ...rest, readyState: 'failure'})
