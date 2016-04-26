@@ -51,7 +51,7 @@ module Campaigns
       return nil if self.campaign_targets.size == 0
       kols = nil
       self.campaign_targets.each do |target|
-        if target.target_type == 'region'
+        if target.target_type == 'region'  && target.target_content != '全部'
           kols = Kol.where(:app_city => target.get_citys)
         # elsif target.target_type == 'age'
         #   kols = kol.where("age > '#{target.contents}'")
