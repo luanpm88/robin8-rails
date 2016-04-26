@@ -1,26 +1,37 @@
 import React, { PropTypes } from "react";
-import moment from 'moment';
+import moment from "moment-timezone";
 import "moment-duration-format";
 
 export default class StateText extends React.Component {
   constructor(props, context){
     super(props, context);
+    moment.tz.setDefault("Asia/Shanghai");
   }
 
   count_down(){
-    const { campaign } = this.props;
-    let self = this;
+    const { campaign, actions, campaign_id } = this.props;
+    let interval, duration_text;
 
-    let current_time = moment(),
+    const current_time = moment(),
       end_time = moment(campaign.get("recruit_end_time")),
-      duration = end_time.diff(current_time, 'minutes'),
-      duration_text = moment.duration(duration, "minutes").format("d[天] h[小时] m[分钟]");
+      seconds = end_time.diff(current_time, 'seconds');
+
+    if (seconds > 60) {
+      const minutes = end_time.diff(current_time, 'minutes');
+      duration_text = moment.duration(minutes + 1, "minutes").format("d[天] h[小时] m[分钟]");
+    } else {
+      duration_text = moment.duration(seconds, "seconds").format("s[秒]");
+    }
+
+    if (seconds <= 0) {
+      actions.fetchRecruit(campaign_id);
+    }
 
     this.refs.timeText.innerHTML = duration_text;
 
     setTimeout(function() {
-      self.count_down();
-    }, 1000 * 30);
+      this.count_down();
+    }.bind(this), 1000);
   }
 
   componentDidUpdate() {
