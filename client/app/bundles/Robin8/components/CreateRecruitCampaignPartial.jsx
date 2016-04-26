@@ -12,6 +12,7 @@ import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
 import DatePartial from './create_recruit/OfflineDate';
 import RecruitDatePartial from './create_recruit/RecruitDatePartial';
 import RecruitBudgetPartial from './create_recruit/RecruitBudgetPartial';
+import initToolTip from './shared/InitToolTip';
 
 const initCampaign = {
   recruit_start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
@@ -63,6 +64,10 @@ class CreateRecruitCampaign extends React.Component{
         </li>
       </ol>
     );
+  }
+
+  componentDidMount() {
+    initToolTip({placement:'bottom', html: true});  
   }
 
   render(){

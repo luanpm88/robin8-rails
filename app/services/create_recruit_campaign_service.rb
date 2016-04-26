@@ -1,4 +1,6 @@
 class CreateRecruitCampaignService
+  include CampaignHelper::RecruitCampaignServicePartial
+
   PERMIT_PARAMS = [:name, :description, :task_description,
                   :address, :img_url, :budget, :per_budget_type,
                   :per_action_budget, :start_time, :deadline,
@@ -14,6 +16,8 @@ class CreateRecruitCampaignService
   end
 
   def perform
+    format_to_db_time
+
     if @campaign_params.empty? or @user.nil? or not @user.persisted?
       # todo: use I18n(also include blow errors)
       @errors << 'Invalid params or user!'
@@ -25,9 +29,13 @@ class CreateRecruitCampaignService
       return false
     end
 
+    validate_recruit_time
+
     @campaign_params.merge!({:status => :unexecute})
 
-    format_to_db_time
+    if @errors.size > 0
+      return false
+    end
 
     begin
       ActiveRecord::Base.transaction do
@@ -50,13 +58,6 @@ class CreateRecruitCampaignService
   end
 
   private
-
-  def format_to_db_time
-    @campaign_params[:recruit_start_time] = @campaign_params[:recruit_start_time].to_formatted_s(:db)
-    @campaign_params[:recruit_end_time] = @campaign_params[:recruit_end_time].to_formatted_s(:db)
-    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
-    @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
-  end
 
   def permitted_params_from params
     params.merge!(per_budget_type: 'recruit')

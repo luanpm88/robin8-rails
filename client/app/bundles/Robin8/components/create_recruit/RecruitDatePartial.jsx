@@ -14,7 +14,7 @@ export default class RecruitDatePartial extends React.Component {
       ignoreReadonly: true,
       locale: 'zh-cn',
       format: 'YYYY-MM-DD HH:mm',
-      minDate: moment().add(2, "hours").format("YYYY-MM-DD HH:mm")
+      minDate: moment().format("YYYY-MM-DD HH:mm")
     }
 
     const datepickerEndOptions = {
@@ -34,8 +34,6 @@ export default class RecruitDatePartial extends React.Component {
 
     $("#recruit-deadline-datepicker").on("dp.change", function (e) {
         $('#recruit-start-time-datepicker').data("DateTimePicker").maxDate(e.date);
-        $('#start-time-datepicker').data("DateTimePicker").minDate(e.date);
-        $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
     });
   }
 
@@ -43,12 +41,11 @@ export default class RecruitDatePartial extends React.Component {
     this._initDateTimePicker();
   }
 
-
-
   renderDateTips(){
-    const tip = "<p>1.&nbsp;开始时间: 允许KOL参加活动的时间。</p> \
-                 <p>2.&nbsp;结束时间: 活动设定结束时间, 或活动费用消耗完毕即活动结束时间。</p> \
-                 <p>3.&nbsp;以北京时间为准。</p>"
+    const tip = "<p>1.&nbsp;报名开始时间，即允许KOL开始报名，此时品牌的活动信息将在Robin8平台展示；</p>\
+                 <p>2.&nbsp;报名结束时间，即KOL截止报名的时间；</p>\
+                 <p>3.&nbsp;截止报名后品牌可以确定招募名单；</p>\
+                 <p>4.&nbsp;报名时间至少为1天</p>"
     return tip
   }
   render() {
