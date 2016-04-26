@@ -43,12 +43,17 @@ class Message < ActiveRecord::Base
       if message.save
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
       end
-    else
-      message.receiver_type = "All"
+    elsif unmatch_kol_id.size > 0
+      kol_ids = Kol.where("device_token is not null").where.not(:id => unmatch_kol_id).collect{|t| t.id }
+      message.receiver_type = "List"
+      message.receiver_ids = kol_ids
       if message.save
         Kol.where(:id => kol_ids).each {|kol| kol.list_message_ids << message.id }     # 列表消息 需要插入到用户 message list
-        Kol.where(:id => unmatch_kol_id).each {|kol| kol.list_message_ids.delete message.id }
       end
+    else
+      message.receiver_type = "All"
+      message.save
+    end
     end
   end
 
