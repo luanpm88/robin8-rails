@@ -85,16 +85,21 @@
 }
 
 .brand-activity-card .brand-activity-coverphoto a {
-  height: 100%;
+  display: block;
+  width: 300px;
+  height: 250px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
-.brand-activity-card .brand-activity-coverphoto a > img {
-  vertical-align: middle;
-  display: inline-block;
-  width: auto;
-  height: 100%;
-  overflow: hidden;
-}
+// .brand-activity-card .brand-activity-coverphoto a > img {
+//   vertical-align: middle;
+//   display: inline-block;
+//   width: auto;
+//   height: 100%;
+//   overflow: hidden;
+// }
 
 .brand-activity-card .brand-activity-coverphoto {
   .campaign-status-img {
@@ -137,8 +142,8 @@
   .brand-activity-content {
     .edit-campaign-btn {
       position: absolute;
-      right: 100px;
-      top: 17px;
+      right: 0;
+      top: 0;
       width: 82px;
       height: 36px;
       border: 1px solid #e45d34;
@@ -187,9 +192,20 @@
 }
 .brand-activity-card .brand-activity-content .stat-info li:first-child {
   text-align: left;
+
+  .cl-recruiters-count {
+    padding-right: 42px;
+    text-align: center;
+  }
 }
 .brand-activity-card .brand-activity-content .stat-info li:last-child {
   text-align: right;
+
+  .cl-total-budget {
+    text-align: center;
+    padding-left: 5px;
+  }
+
 }
 .brand-activity-card .brand-activity-content .stat-info li:last-child:after {
   display: none !important;

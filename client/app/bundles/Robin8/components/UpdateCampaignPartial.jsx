@@ -107,6 +107,7 @@ UpdateCampaignPartial = reduxForm({
   returnRejectedSubmitPromise: true,
   validate
 },
+
 state => ({
   initialValues: state.$$brandStore.get("campaign").toJSON()
 })

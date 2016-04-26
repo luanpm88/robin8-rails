@@ -18,25 +18,12 @@ class TmpIdentity < ActiveRecord::Base
     self.where(:kol_uuid => kol_uuid)
   end
 
-  def self.test
-    identity = TmpIdentity.new
-    identity.provider = 'weibo'
-    identity.uid = 'afefefwefwf'
-    identity.followers_count  = 3000
-    identity.statuses_count  = 1300
-    identity.registered_at = 7.months.ago
-    identity.verified = true
-    identity.from_type = 'app'
-    identity.kol_uuid = Time.now.to_i
-    identity.save
-  end
-
   def self.create_identity_from_app(params)
     TmpIdentity.create(provider: params[:provider], uid: params[:uid], token: params[:token], from_type: params[:from_type],
                     name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
                     followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
                     registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
-                    kol_uuid: params[:kol_uuid], verified: params[:verified])
+                    kol_uuid: params[:kol_uuid], verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now)
   end
 
 

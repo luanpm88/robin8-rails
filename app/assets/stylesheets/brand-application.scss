@@ -1,0 +1,31 @@
+.brand-error-notice-modal{
+  .modal-content{
+    width: 327px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    height: auto;
+  }
+
+  .modal-header h4{
+    font-size: 16px;
+  }
+
+  .modal-body {
+    position: relative;
+    padding: 15px;
+    margin-top: 31px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .modal-footer{
+    margin-bottom: 28px;
+    border-top: none;
+    text-align: center;
+    padding: none;
+  }
+
+  span.recharge a{
+    font-size: 20px;
+  }
+}

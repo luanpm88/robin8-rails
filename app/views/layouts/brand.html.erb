@@ -10,6 +10,7 @@
   <meta property="wb:webmaster" content="7a41f1aee4f72768" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
   <%= favicon_link_tag 'favicon.ico' %>
+  <%= stylesheet_link_tag    'brand-application'%>
   <%= env_stylesheet_link_tag(
     static: 'brand-static',
     media: 'all')
@@ -39,6 +40,32 @@
 
 </head>
 <body>
+  <div id="maskLayer">
+    <button type="button" class="close" data-dismiss="modal" onclick="jobArea.cancel()">×</button>
+    <div id="alphadiv">
+      <div id="drag">
+        <h3 id="drag_h"></h3>
+        <div id="drag_con"></div>
+      </div>
+    </div>
+  </div>
   <%= yield %>
+
+  <div class="modal fade brand-error-notice-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">哈哈</h4>
+        </div>
+        <div class="modal-body">
+          <p>One fine body&hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-blue close-button" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,18 +1,24 @@
 class CampaignInvite < ActiveRecord::Base
   include Redis::Objects
-  counter :redis_avail_click
-  counter :redis_total_click
+  counter :redis_avail_click        #有效计费点击
+  counter :redis_total_click        #所有点击
+  counter :redis_real_click         #所有有效点击(含活动结束后)
   counter :redis_new_income      #unit is cent
 
 
-  STATUSES = ['pending', 'running', 'approved', 'finished', 'rejected', "settled"]
+  STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
   CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果"]
   ImgStatus = ['pending','passed', 'rejected']
+  OcrStatus = ['pending', 'passed','failure']
+  OcrDetails = {"unfound" => "抱歉，没有发现指定的转发活动", "time" => '内容发布时间必须在30分钟前', "group" => '请勿设置好友分组', "owner" => '非您本人发布的活动'}
+  # Ocr_detail  'unfound','time','group','owner']
+  #  ocr_detail_text:
   UploadScreenshotWait = Rails.env.production? ? 30.minutes : 1.minutes
 
   validates_inclusion_of :status, :in => STATUSES
   validates_uniqueness_of :uuid
 
+  belongs_to :campaign_apply
   belongs_to :campaign
   belongs_to :kol
   scope :unrejected, -> {where("campaign_invites.status != 'rejected'")}
@@ -40,10 +46,6 @@ class CampaignInvite < ActiveRecord::Base
     self.campaign.upload_screenshot_deadline
   end
 
-  def reupload_end_at
-    self.campaign.reupload_screenshot_deadline
-  end
-
   def upload_interval_time
     return interval_time(Time.now, upload_start_at)
   end
@@ -53,8 +55,11 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def can_upload_screenshot
-    return  ((status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  \
-      (screenshot.blank? && Time.now < self.upload_end_at) || (screenshot.present? && Time.now < self.reupload_end_at))
+    if campaign.is_recruit_type?
+      status == 'finished' && img_status != 'passed' && Time.now > self.campaign.start_time  &&  Time.now < self.upload_end_at
+    else
+      (status == 'approved' || status == 'finished') && img_status != 'passed' && Time.now > upload_start_at &&  Time.now < self.upload_end_at
+    end
   end
 
   # 进行中的活动 审核通过时  仅仅更新它状态
@@ -64,13 +69,10 @@ class CampaignInvite < ActiveRecord::Base
     campaign = self.campaign
     kol = self.kol
     if campaign.status == 'executing'
-      self.img_status = 'passed'
-      self.save!
+      self.update_attributes(:img_status => 'passed')
     elsif campaign.status == 'executed'
       ActiveRecord::Base.transaction do
-        self.status = 'settled'
-        self.img_status = 'passed'
-        self.save!
+        self.update_attributes(:img_status => 'passed', :status => 'settled')
         if campaign.is_click_type?  || campaign.is_cpa?
           kol.income(self.avail_click * campaign.per_action_budget, 'campaign', campaign, campaign.user)
           Rails.logger.transaction.info "---kol_id:#{kol.id}----- screenshot_check_pass: -click--cid:#{campaign.id}---fee:#{self.avail_click * campaign.per_action_budget}---#avail_amount:#{kol.avail_amount}-"
@@ -86,9 +88,7 @@ class CampaignInvite < ActiveRecord::Base
   def screenshot_reject rejected_reason=nil
     campaign = self.campaign
     if (campaign.status == 'executed' || campaign.status == 'executing') && self.img_status != 'passed'
-      self.img_status = 'rejected'
-      self.reject_reason = rejected_reason
-      self.save
+      self.update_attributes(:img_status => 'rejected', :reject_reason => rejected_reason)
       #审核拒绝
       Message.new_check_message('screenshot_rejected', self, campaign)
       Rails.logger.info "----kol_id:#{self.kol_id}---- screenshot_check_rejected: ---cid:#{campaign.id}--"
@@ -96,9 +96,7 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def reupload_screenshot(img_url)
-    self.img_status = 'pending'
-    self.screenshot = img_url
-    self.save
+    self.update_attributes(:img_status => 'pending', :screenshot => img_url)
     Rails.logger.info "---kol_id:#{self.kol_id}----- reupload_screenshot: ---cid:#{campaign.id}--"
   end
 
@@ -133,34 +131,16 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def reset_new_income
-    self.redis_new_income.reset
-  end
-
-  # 接收新活动时候  force = true
-  def bring_income(campaign, force = false)
-    if  campaign.is_click_type? || campaign.is_cpa? || force
-      #记录新收入
-      self.redis_new_income.incr((campaign.per_action_budget * 100).to_i)
-      #发送新收入消息
-      Message.new_income(self,campaign)
-    end
-  end
-
-  def add_click(valid, campaign = nil)
+  def add_click(valid, remark = nil)
     self.redis_avail_click.increment if valid
+    self.redis_real_click.increment if valid || remark == 'campaign_had_executed'
     self.redis_total_click.increment
-    # bring_income(campaign) if valid &&  campaign
     return true
   end
 
   def approve
     uuid = Base64.encode64({:campaign_id => self.campaign_id, :kol_id => self.kol_id}.to_json).gsub("\n","")
-    self.approved_at = Time.now
-    self.status = 'approved'
-    self.uuid = uuid
-    self.share_url = CampaignInvite.generate_share_url(uuid)
-    self.save
+    self.update_attributes(:approved_at => Time.now, :status => 'approved', :uuid => uuid, :share_url => CampaignInvite.generate_share_url(uuid))
   end
 
   def tag
@@ -178,6 +158,19 @@ class CampaignInvite < ActiveRecord::Base
     end
   end
 
-  def self.income_by_day(kol,date)
+  def get_ocr_detail
+    return nil if self.ocr_detail.blank?
+    details = []
+    self.ocr_detail.split(",").each do |item_key|
+      details << OcrDetails[item_key]
+    end
+    details.join(",")
+  end
+
+  def self.get_click_info(kol_id)
+    invites =  CampaignInvite.where(:kol_id => kol_id).where("status != 'running' and status != 'applying'")
+    invite_count = invites.count
+    real_click_count = invites.collect{|t| t.redis_real_click.value }.sum
+    return  [invite_count, real_click_count]
   end
 end

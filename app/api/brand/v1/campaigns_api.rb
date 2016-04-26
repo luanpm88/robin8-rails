@@ -2,6 +2,10 @@ module Brand
   module V1
     class CampaignsAPI < Base
 
+      before do
+        authenticate!
+      end
+
       resource :campaigns do
 
         # short_url api should not placed in here. but now I don't know where to placed :(
@@ -100,6 +104,79 @@ module Brand
             error_unprocessable! service.first_error_message
           end
         end
+      end
+
+      desc 'Create a recruit campaign'
+      params do
+        requires :name, type: String
+        requires :description, type: String
+        requires :task_description, type: String
+        optional :address, type: String
+        requires :img_url, type: String
+        requires :region, type: String
+        requires :influence_score, type: String
+        requires :recruit_start_time, type: DateTime
+        requires :recruit_end_time, type: DateTime
+        requires :start_time, type: DateTime
+        requires :deadline, type: DateTime
+        requires :per_action_budget, type: Float
+        requires :recruit_person_count, type: Float
+        optional :budget,   type: Float
+        optional :hide_brand_name, type: Boolean
+      end
+      post 'recruit_campaigns' do
+        params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
+        service = CreateRecruitCampaignService.new current_user, declared(params)
+        if service.perform
+          present service.campaign
+        else
+          error_unprocessable! service.first_error_message
+        end
+      end
+
+      desc 'Update a recruit campaign'
+      params do
+        requires :name, type: String
+        requires :description, type: String
+        requires :task_description, type: String
+        optional :address, type: String
+        requires :img_url, type: String
+        requires :region, type: String
+        requires :influence_score, type: String
+        requires :recruit_start_time, type: DateTime
+        requires :recruit_end_time, type: DateTime
+        requires :start_time, type: DateTime
+        requires :deadline, type: DateTime
+        requires :per_action_budget, type: Float
+        requires :recruit_person_count, type: Float
+        optional :budget,   type: Float
+        optional :hide_brand_name, type: Boolean
+      end
+      put '/recruit_campaigns/:id' do
+        params[:budget] = params[:recruit_person_count] * params[:per_action_budget]
+        service = UpdateRecruitCampaignService.new current_user, params[:id], declared(params)
+        if service.perform
+          present service.campaign
+        else
+          error_unprocessable! service.first_error_message
+        end
+      end
+
+      desc "Get a recruit_campaign"
+      params do
+        requires :id, type: Integer
+      end
+      get '/recruit_campaigns/:id' do
+        present Campaign.find_by(id: declared(params)[:id])
+      end
+
+      desc "change recruit_campaign's 'end_apply_check' status "
+      params do
+        requires :id, type: Integer
+      end
+      put "/recruit_campaigns/:id/end_apply_check" do
+        CampaignApply.end_apply_check(declared(params)[:id])
+        present Campaign.find_by(id: declared(params)[:id])
       end
     end
   end

@@ -28,7 +28,7 @@ export default class Overview extends React.Component{
   render(){
     const { campaign } = this.props
     return(
-      <div className="panel activity-stat-bigshow-panel">
+      <div className="panel activity-stat-bigshow-panel activity-stat-bigshow-with-title">
         <div className="panel-heading">
           <a href="#panelStatBigShow" data-toggle="collapse" className="switch"><span className="txt">收起</span><i className="caret-arrow" /></a>
           <h4 className="panel-title">总览</h4>

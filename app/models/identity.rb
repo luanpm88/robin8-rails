@@ -51,7 +51,7 @@ class Identity < ActiveRecord::Base
                     name: params[:name], url: params[:url], avatar_url: params[:avatar_url], desc: params[:desc], unionid: params[:unionid],
                     followers_count: params[:followers_count],friends_count: params[:friends_count],statuses_count: params[:statuses_count],
                     registered_at: params[:registered_at],refresh_token: params[:refresh_token],serial_params: params[:serial_params],
-                    kol_id: params[:kol_id],  verified: params[:verified])
+                    kol_id: params[:kol_id],  verified: params[:verified], refresh_time: Time.now, access_token_refresh_time: Time.now)
   end
 
 

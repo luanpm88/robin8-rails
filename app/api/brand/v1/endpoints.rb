@@ -29,6 +29,7 @@ module Brand
       #
       represent Campaign, with: Entities::Campaign
       represent CampaignInvite, with: Entities::CampaignInvite
+      represent CampaignApply, with: Entities::CampaignApply
       represent User     , with: Entities::User
       # namespaces
       #
@@ -42,6 +43,7 @@ module Brand
 
       mount CampaignsAPI
       mount CampaignInvitesApi
+      mount CampaignAppliesAPI
     end
   end
 end

@@ -51,19 +51,36 @@ export function genderHelper(gender){
   }
 }
 
-
 export function campaignStatusHelper(status){
   switch(status){
+    // 审核中
     case "unexecute":
+    case "pending":
       return(<img className="campaign-status-img" src={ require('campaign-unexecute.png') } />)
+    // 即将执行
+    case "coming":
     case "agreed":
       return(<img className="campaign-status-img" src={ require('campaign-agreed.png') } />)
+    // 报名中
+    case "inviting":
+      return(<img className="campaign-status-img" src={ require('campaign-inviting.png') } />)
+    // 报名结束
+    case "choosing":
+      return(<img className="campaign-status-img" src={ require('campaign-applied.png') } />)
+    // 执行中
     case "executing":
+    case "running":
       return(<img className="campaign-status-img" src={ require('campaign-executing.png') } />)
+    // 结算中
+    case "settling":
     case "executed":
       return(<img className="campaign-status-img" src={ require('campaign-executed.png') } />)
+    // 已完成
     case "settled":
       return(<img className="campaign-status-img" src={ require('campaign-settled.png') } />)
+    // 拒绝
+    case "rejected":
+      return(<img className="campaign-status-img" src={ require('campaign-rejected.png') } />)
   }
 }
 
@@ -74,4 +91,8 @@ export function canEditCampaign(status){
     default:
       return false
   }
+}
+
+export function isRecruitCampaign(per_budget_type){
+  return per_budget_type === 'recruit' ? true : false;
 }

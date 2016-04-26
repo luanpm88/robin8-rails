@@ -23,6 +23,7 @@ module API
           requires :app_platform
           requires :app_version, type: String
           requires :device_token, type: String
+          optional :city_name, type: String
           optional :IDFA, type: String
           optional :IMEI, type: String
 
@@ -57,10 +58,11 @@ module API
           kol = identity.kol   rescue nil
           if !kol
             ActiveRecord::Base.transaction do
+              app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
               kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
                                 device_token: params[:device_token], name: params[:name],
                                 social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
-                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source])
+                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source], app_city: app_city)
               #保存头像
               kol.update_attribute(:remote_avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?
