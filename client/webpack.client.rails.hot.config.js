@@ -49,6 +49,7 @@ config.module.loaders.push(
   { test: /\.css$/, loader: "style!css?importLoaders=1!postcss", },
   { test: /\.less$/, loader: "style!css?importLoaders=2!postcss!less" },
   { test: /\.scss$/, loader: "style!css?importLoaders=3!postcss!sass!sass-resources" },
+  { test: /\.json$/, loader: "json" }
 );
 
 config.plugins.push(

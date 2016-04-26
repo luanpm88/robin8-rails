@@ -36,8 +36,8 @@ export default class Overview extends React.Component{
             <div className="activity-stat-bigshow-area grid-3">
               <ul>
                 <li><span className="txt">预计招募人数</span><small className="stat-num">{ campaign.get("recruit_person_count") }</small></li>
-                <li><span className="txt">人均奖励</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("per_action_budget") }</small></li>
-                <li><span className="txt">招募预算</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("budget") }</small></li>
+                <li><span className="txt">人均奖励</span><small className="stat-num stat-yuan"><sapn className="symbol">￥</sapn>{ campaign.get("per_action_budget") }</small></li>
+                <li><span className="txt">招募预算</span><small className="stat-num stat-yuan"><sapn className="symbol">￥</sapn>{ campaign.get("budget") }</small></li>
               </ul>
             </div>
           </div>
