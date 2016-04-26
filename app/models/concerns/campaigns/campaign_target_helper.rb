@@ -4,7 +4,7 @@ module Campaigns
     included do
       has_many :campaign_targets, -> {where(:target_type => [:age, :region, :gender, :influence_score])}
       has_one :influence_score_target, -> {where(:target_type => 'influence_score')}, class_name: "CampaignTarget"
-      has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols, :only_specified_kol])}, class_name: "CampaignTarget"
+      has_many :manual_campaign_targets, -> {where(:target_type => [:remove_campaigns, :remove_kols, :add_kols, :specified_kols])}, class_name: "CampaignTarget"
       has_many :remove_campaign_targets, -> {where(:target_type => [:remove_campaigns])}, class_name: "CampaignTarget"
       has_many :remove_kol_targets, -> {where(:target_type => [:remove_kols])}, class_name: "CampaignTarget"
       has_many :add_kol_targets, -> {where(:target_type => [:add_kols])}, class_name: "CampaignTarget"
@@ -38,26 +38,31 @@ module Campaigns
       CampaignInvite.today_approved.group("kol_id").having("count(kol_id) >= 3").collect{|t| t.kol_id}
     end
 
-    def get_specified_kols
-      return  if self.specified_kol_targets.blank?
+    # 获取指定kols
+    def get_specified_kol_ids
+      return nil if self.specified_kol_targets.blank?
       get_ids_from_target_content contents
     end
 
 
-    # 获取指定kols
+    # 获取匹配kols
     def get_matching_kol_ids
       return nil if self.campaign_targets.size == 0
-      kols = Kol
+      kols = nil
       self.campaign_targets.each do |target|
         if target.target_type == 'region'
-          kols = kols.where(:app_city => target.get_citys)
+          kols = Kol.where(:app_city => target.get_citys)
         # elsif target.target_type == 'age'
         #   kols = kol.where("age > '#{target.contents}'")
         # elsif target.target_type == 'gender'
         #   kols = kol.where("gender = '#{target.contents}'")
         end
       end
-      kols.collect{|t| t.id }
+      kols.collect{|t| t.id }     rescue nil
+    end
+
+    def get_kol_ids
+      get_specified_kol_ids ||  get_matching_kol_ids
     end
 
     private
