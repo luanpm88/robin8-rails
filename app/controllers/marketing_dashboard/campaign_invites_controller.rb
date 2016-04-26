@@ -23,7 +23,7 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
   end
 
   def rejected
-    @campaign_invites = CampaignInvite.where(:img_status => 'reject').order('created_at DESC').paginate(paginate_params)
+    @campaign_invites = CampaignInvite.where(:img_status => 'rejected').order('created_at DESC').paginate(paginate_params)
 
     render 'index'
   end
