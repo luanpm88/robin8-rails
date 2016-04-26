@@ -9,7 +9,7 @@ class UpdateRecruitCampaignService
   def initialize user, campaign_id, args={}
     @user                   = user
     @campaign               = Campaign.find_by_id campaign_id
-    @update_campaign_params = permited_params_from args
+    @update_campaign_params = permitted_params_from args
     @errors                 = []
   end
 
@@ -67,7 +67,8 @@ class UpdateRecruitCampaignService
     user.avail_amount.to_f + origin_budget.to_f >= budget.to_f
   end
 
-  def permited_params_from params
+  def permitted_params_from params
+    params.merge!(address: nil) unless params[:address].present?
     params.select { |k, v| PERMIT_PARAMS.include? k }
   end
 
