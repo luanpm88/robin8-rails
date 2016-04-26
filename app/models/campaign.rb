@@ -210,7 +210,7 @@ class Campaign < ActiveRecord::Base
   def finish(finish_remark)
     self.reload
     Rails.logger.campaign_sidekiq.info "-----executed: #{finish_remark}----------"
-    if Rails.application.config.china_instance  && self.status == 'executing'
+    if self.status == 'executing'
       ActiveRecord::Base.transaction do
         update_info(finish_remark)
         end_invites
