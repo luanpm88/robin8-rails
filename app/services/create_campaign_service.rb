@@ -20,7 +20,7 @@ class CreateCampaignService
     validate_recruit_time
 
     if not enough_amount?(@user, @campaign_params[:budget])
-      @errors << '账号余额不足, 请充值!'
+      @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
       return false
     end
 
