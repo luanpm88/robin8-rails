@@ -17,7 +17,8 @@ class RongCloud
     headers = generate_headers
     server = "#{Server}/user/getToken.json"
     puts server
-    res_json = RestClient.post server, {:userId => kol.id, :name => kol.name, :portraitUri => kol.avatar_url}, headers
+    res_json = RestClient.post server, {:userId => kol.id, :name => kol.name, :portraitUri => kol.avatar_url}, headers     rescue nil
+    return nil if res_json.blank?
     res  = JSON.parse res_json
     res['token']
   end

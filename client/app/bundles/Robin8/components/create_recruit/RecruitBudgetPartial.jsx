@@ -38,9 +38,8 @@ export default class RecruitBudgetPartial extends React.Component{
   }
 
   renderBudgetTips(){
-    const tip = "<p>1.&nbsp;为保障活动效果, Robin8每次活动推广费必须大于100元。\
-                 <p>2.&nbsp;活动发布后, 推广金额将被冻结; 活动结束后, 剩余金额会在4天后返回账户。\
-                 <p>3.&nbsp;请注意, 由于账户已充值的余额不能提现, 如您目前账户余额大于100且小于200元, 请尽量在一次活动中用完。"
+    const tip = "<p>1.&nbsp;选择预计招募的人数，以及人均的奖励金额；</p>\
+                 <p>2.&nbsp;招募预算总额 = 预计招募人数 x 人均奖励</p>"
     return tip
   }
 

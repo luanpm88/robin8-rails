@@ -1,9 +1,22 @@
 @import "./activity_detail_base.scss";
 
+.brand-activity-card-detail {
+  height: 250px;
+  .brand-activity-content {
+    .stat-info {
+      padding: 20px 0 0 0;
+    }
+  }
+}
+
+
 .activity-stat-bigshow-panel,
 .activity-result-stat-bigshow-panel {
   .panel-body {
     padding-top: 40px;
+  }
+  .stat-yuan {
+    margin-left: -22px;
   }
 }
 
@@ -43,21 +56,20 @@
     }
   }
   .grey {
-    color: #666;
+    color: #999;
   }
   .panel-heading {
     line-height: inherit;
+    padding: 20px 30px;
   }
   .panel-body {
     padding: 20px 0 0 0;
   }
   .profile {
     position: relative;
-    width: 240px;
+    width: 220px;
     text-align: left;
     padding: 16px 16px 16px 85px;
-    line-height: 80px;
-    display:table-cell;
 
     .avatar {
       position: absolute;
@@ -70,12 +82,12 @@
       height: 64px;
     }
     .name {
-      display: inline-block;
+      display: table-cell;
       line-height: 24px;
+      max-width: 100%;
+      word-wrap: break-word;
+      word-break: break-all;
     }
-  }
-  .reason {
-    min-width: 180px;
   }
   .pagination {
     display: block;
@@ -99,6 +111,21 @@
         right: auto;
       }
     }
+  }
+  .reason {
+    width: 200px;
+  }
+  .profiles {
+
+  }
+  .influence {
+    width: 105px;
+  }
+  .location {
+    width: 80px;
+  }
+  .fans {
+    width: 150px;
   }
 }
 

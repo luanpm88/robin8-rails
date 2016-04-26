@@ -17,7 +17,7 @@ export default class ResultView extends React.Component{
               <ul>
                 <li><span className="txt">实际招募人数</span><small className="stat-num">{ campaign.get("brand_passed_count") }</small></li>
                 <li><span className="txt">完成任务人数</span><small className="stat-num">{ campaign.get("total_finished_kols") }</small></li>
-                <li><span className="txt">已支付预算</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("take_budget") }</small></li>
+                <li><span className="txt">已支付预算</span><small className="stat-num stat-yuan"><sapn className="symbol">￥</sapn>{ campaign.get("take_budget") }</small></li>
               </ul>
             </div>
           </div>

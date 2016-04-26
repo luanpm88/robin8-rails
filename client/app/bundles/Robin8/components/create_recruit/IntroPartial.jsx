@@ -90,12 +90,17 @@ export default class IntroPartial extends React.Component {
     onChange(!this.props.hide_brand_name.value)
   }
 
+  renderTips(){
+    const tips = "<p>&nbsp;招募活动采用KOL报名的形式，您只需填写您需要KOL完成的任务，当然这可以是一次线上活动也可以试一次线下活动，我们将为您推送最合适的KOL参加</p>"
+    return tips;
+  }
+
   render() {
     const { name, description, img_url, url, task_description, address, hide_brand_name} = this.props
     return (
       <div className="creat-activity-form creat-intro">
         <div className="header">
-          <h3 className="tit">推广简介&nbsp;</h3>
+          <h3 className="tit">招募活动&nbsp;<span className="what" data-toggle="tooltip" title={this.renderTips()}>?</span></h3>
         </div>
         <div className="content">
           <div className="creat-activity-basic-intro create-recruit-basic-info">
@@ -147,7 +152,7 @@ export default class IntroPartial extends React.Component {
               </div>
               <div className="form-group">
                 <label className="recruit-brand-name-showable">
-                  <input type="checkbox" defaultChecked={hide_brand_name.value} onChange={this.handleHideBrandNameChange}></input>
+                  <input type="checkbox" defaultChecked={hide_brand_name.value} checked={hide_brand_name.value} onChange={this.handleHideBrandNameChange}></input>
                   <label>活动发布时隐藏品牌名称</label>
                 </label>
               </div>
