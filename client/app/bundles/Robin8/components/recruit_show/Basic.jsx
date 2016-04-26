@@ -16,6 +16,7 @@ export default class Basic extends React.Component {
 
   render(){
     const { campaign } = this.props;
+    const imgUrl = !!campaign.get('img_url') ? campaign.get('img_url') : require('campaign-list-pic.jpg');
 
     return (
       <div className="brand-activity-card brand-activity-card-detail">
@@ -35,7 +36,8 @@ export default class Basic extends React.Component {
         </div>
         <div className="brand-activity-coverphoto pull-left">
           { campaignStatusHelper(campaign.get("recruit_status")) }
-          <img src={ campaign.get("img_url") } alt={ campaign.get("name") } />
+          <div className="brand-activity-coverphoto-img" style={{ backgroundImage: 'url(' + imgUrl + ')' }}>
+          </div>
         </div>
       </div>
     );

@@ -34,15 +34,17 @@ export default class Campaign extends React.Component {
 
   renderEditButton(campaign){
     if(canEditCampaign(campaign.get("status"))){
-      return <Link to={this.getUrl()} className="edit-campaign-btn btn">编辑</Link>
+      return <Link to={this.getUrl() + "/edit"} className="edit-campaign-btn btn">编辑</Link>
     }
   }
 
   renderCampaignName(campaign) {
+    const padding = canEditCampaign(campaign.get("status")) ? -3 : 0;
+
     if(isRecruitCampaign(campaign.get("per_budget_type"))) {
       return (
         <h2 className="activity-title">
-          { _.truncate(campaign.get("name"), {'length': 15})}
+          { _.truncate(campaign.get("name"), {"length": 20 + padding, "omission": ".."})}
           <span className="label label-orange">招募</span>
         </h2>
       )
@@ -50,7 +52,7 @@ export default class Campaign extends React.Component {
     else {
       return (
         <h2 className="activity-title">
-          { _.truncate(campaign.get("name"), {'length': 16})}
+          { _.truncate(campaign.get("name"), {'length': 21 + padding, "omission": ".."})}
         </h2>
       )
     }
@@ -123,10 +125,11 @@ export default class Campaign extends React.Component {
   render() {
 
     const { campaign, tagColor, index } = this.props;
+    const imgUrl = !!campaign.get('img_url') ? campaign.get('img_url') : require('campaign-list-pic.jpg');
+    const classes = tagColor + " " + (isRecruitCampaign(campaign.get("per_budget_type")) ? "recruit" : "");
     return (
-      <div className={tagColor} key={index}>
+      <div className={classes} key={index}>
         <div className="brand-activity-content">
-          <Link to={this.getUrl()} className="detail-link">&gt;</Link>
           <Link to={this.getUrl()}>
             { this.renderCampaignName(campaign) }
           </Link>
@@ -139,20 +142,10 @@ export default class Campaign extends React.Component {
           </div>
           { this.renderCampaignStatInfo(campaign) }
         </div>
-        <div className="brand-activity-coverphoto brand-home-campaign-img  pull-left">
+        <div className="brand-activity-coverphoto brand-home-campaign-img pull-left">
           { this.renderStatusImage() }
-          <Link to={this.getUrl()} className="detail-link">
-            {
-              do {
-                if(campaign.get('img_url'))
-                  <img src={ campaign.get('img_url') } alt="" className="campaign_img" />
-                else
-                  <img src={ require('campaign-list-pic.jpg') } alt="" className="campaign_img" />
-              }
-            }
-
+          <Link to={this.getUrl()} className="detail-link" style={{ backgroundImage: 'url(' + imgUrl + ')' }}>
           </Link>
-
         </div>
       </div>
 
