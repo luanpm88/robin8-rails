@@ -67,7 +67,7 @@ export default class KolList extends React.Component {
       return (
         <th>状态</th>
       )
-    } else if (status === "settling") {
+    } else if (status === "settling" || status === "settled") {
       return (
         <th>截图</th>
       )
@@ -85,11 +85,11 @@ export default class KolList extends React.Component {
     return(
       <tr>
         { this.render_super_vistor_header() }
-        <th><h4>报名列表</h4></th>
-        <th>微博/微信粉丝量</th>
-        <th>影响力分数</th>
-        <th>地区</th>
-        <th>推荐原因</th>
+        <th className="profiles"><h4>报名列表</h4></th>
+        <th className="fans">微博/微信粉丝量</th>
+        <th className="influence">影响力分数</th>
+        <th className="location">地区</th>
+        <th className="reason">推荐原因</th>
         { this.render_status_header() }
       </tr>
     )

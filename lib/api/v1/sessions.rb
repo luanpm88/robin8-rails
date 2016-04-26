@@ -13,7 +13,7 @@ module API
                                   device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
           else
             app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
-            current_kol.update_column(:app_city, city.name_en)
+            Rails.logger.info "-------#{app_city}"
             kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                           app_version: params[:app_version], device_token: params[:device_token],
                           IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number],

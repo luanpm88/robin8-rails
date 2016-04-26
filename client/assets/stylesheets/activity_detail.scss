@@ -1,1 +1,9 @@
-@import "./activity_detail_base.scss"
+@import "./activity_detail_base.scss";
+
+.activity-stat-bigshow-with-title {
+  .panel-collapse {
+    .panel-body {
+      padding-top: 0;
+    }
+  }
+}

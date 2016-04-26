@@ -45,7 +45,7 @@ export default class InviteKol extends React.Component {
           />
         </td>
       );
-    } else if (status === "settling") {
+    } else if (status === "settling" || status === "settled") {
       if(campaign_invite.get("img_status") == "passed"){
         return (
           <td>
@@ -81,7 +81,7 @@ export default class InviteKol extends React.Component {
         </td>
         <td>{campaign_invite.get("kol").get("influence_score") || "-"}</td>
         <td>{campaign_invite.get("kol").get("city") || "-"}</td>
-        <td className="reason">{campaign_invite.get("agree_reason") || "-"}</td>
+        <td>{campaign_invite.get("agree_reason") || "-"}</td>
         {this.render_screenshot_or_switchbox()}
       </tr>
     )

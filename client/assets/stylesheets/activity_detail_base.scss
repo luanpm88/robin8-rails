@@ -5,30 +5,41 @@
 .brand-activity-card {
   position: relative;
   margin-bottom: 40px;
-  padding: 0 70px 0 55px;
+  padding: 0 40px 0 55px;
   overflow: hidden;
-  height: 100%;
+  height: 250px;
   background-color: #403e3f;
   background-image: linear-gradient(to right, #403e3f, #2f2d2e);
 }
 .brand-activity-card:last-child {
   margin-bottom: 0;
 }
-.brand-activity-card .brand-activity-coverphoto {
-  width: auto;
-  max-width: 309px;
+// .brand-activity-card .brand-activity-coverphoto {
+//   width: auto;
+//   max-width: 309px;
+//   height: 250px;
+//   overflow: hidden;
+// }
+// .brand-activity-card .brand-activity-coverphoto > img {
+//   width: auto;
+//   height:  100%;
+//   overflow: hidden;
+// }
+
+.brand-activity-coverphoto-img {
+  display: block;
+  width: 300px;
   height: 250px;
-  overflow: hidden;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
-.brand-activity-card .brand-activity-coverphoto > img {
-  width: auto;
-  height:  100%;
-  overflow: hidden;
-}
+
 
 .brand-activity-card .brand-activity-content {
   margin-left: 280px;
   margin-bottom: 15px;
+  position: relative;
 }
 .brand-activity-card .brand-activity-content .activity-title {
   margin-top: 25px;
@@ -39,6 +50,7 @@
 }
 .brand-activity-card .brand-activity-content .activity-title .label {
   margin-left: 5px;
+  margin-top: -2px;
 }
 .brand-activity-coverphoto.brand-home-campaign-img{
   height: 204px;
@@ -80,8 +92,23 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 }
 
 .brand-activity-card .brand-activity-content .summary {
+  height: 65px;
   margin-top: 20px;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
+
+.brand-activity-card.recruit {
+  .brand-activity-content {
+    .summary {
+      height: 40px;
+    }
+  }
+}
+
 .brand-activity-card .brand-activity-content .link {
   color: #fff;
   border-bottom: 1px solid #fff;
@@ -170,11 +197,16 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   font-size: 14px;
   font-weight: 400;
 }
-.brand-activity-card.closure {
-  background-color: #fff;
-  background-image: none;
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+.brand-activity-card {
+  box-shadow: 3.5px 6.062px 13px 1px rgba(0, 0, 0, 0.15);
+
+  &.closure {
+    background-color: #fff;
+    background-image: none;
+    box-shadow: 3.5px 6.062px 8px 1px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+  }
 }
+
 .brand-activity-card.closure .activity-title,
 .brand-activity-card.closure .link,
 .brand-activity-card.closure .detail-link,
@@ -257,6 +289,7 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
 .kolCampaignScreenshot{
   height: 100px;
   width: 60px;
+  border: 1px solid #eee;
 }
 
 .showMiddleTip{
