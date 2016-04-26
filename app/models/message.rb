@@ -54,7 +54,6 @@ class Message < ActiveRecord::Base
       message.receiver_type = "All"
       message.save
     end
-    end
   end
 
   def self.new_announcement(announcement)
