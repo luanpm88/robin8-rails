@@ -17,6 +17,8 @@ class CreateCampaignService
       return false
     end
 
+    validate_recruit_time
+
     if not enough_amount?(@user, @campaign_params[:budget])
       @errors << '账号余额不足, 请充值!'
       return false
@@ -24,6 +26,10 @@ class CreateCampaignService
 
     if is_cpa_campaign? and not any_action_url_present?
       @errors << 'No availiable action urls!'
+      return false
+    end
+
+    if @errors.size > 0
       return false
     end
 
