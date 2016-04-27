@@ -1,4 +1,5 @@
 class CreateCampaignService
+  include CampaignHelper::RecruitCampaignServicePartial
   PERMIT_PARAMS = [:name, :description, :url, :img_url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :message, :campaign_action_url, :target]
 
   attr_reader :errors, :campaign
@@ -17,7 +18,6 @@ class CreateCampaignService
       return false
     end
 
-    validate_recruit_time
 
     if not enough_amount?(@user, @campaign_params[:budget])
       @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
@@ -29,14 +29,13 @@ class CreateCampaignService
       return false
     end
 
-    if @errors.size > 0
-      return false
-    end
-
     @campaign_params.merge!({:status => :unexecute})
     @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
     @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
 
+    if @errors.size > 0
+      return false
+    end
     begin
       ActiveRecord::Base.transaction do
         @campaign = @user.campaigns.create! @campaign_params.reject{|k,v| [:campaign_action_url, :target].include? k }
