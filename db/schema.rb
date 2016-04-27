@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160421114313) do
+ActiveRecord::Schema.define(version: 20160425104747) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -157,10 +157,6 @@ ActiveRecord::Schema.define(version: 20160421114313) do
     t.string   "expect_price",        limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-<<<<<<< HEAD
-=======
-    t.string   "expect_price",        limit: 11
->>>>>>> recruit_campaign
     t.string   "agree_reason",        limit: 255
   end
 
