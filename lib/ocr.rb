@@ -26,7 +26,7 @@ class Ocr
       priority = 0
       detail = []
       #时间
-      if points[0].include?('分钟') && points[0].match(/\d/)[0].to_i < 30
+      if points[0].include?('分钟') && points[0].match(/\d+/)[0].to_i < 30
         detail << 'time'
       else
         priority += 1

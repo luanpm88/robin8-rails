@@ -52,7 +52,11 @@ module Campaigns
       kols = nil
       self.campaign_targets.each do |target|
         if target.target_type == 'region'  && target.target_content != '全部'
-          kols = Kol.where(:app_city => target.get_citys)
+          if self.is_recruit_type?
+            kols = Kol.where(:app_city => target.get_citys).where("app_version >= '1.2.0' and app_version != '2'")
+          else
+            kols = Kol.where(:app_city => target.get_citys)
+          end
         # elsif target.target_type == 'age'
         #   kols = kol.where("age > '#{target.contents}'")
         # elsif target.target_type == 'gender'
