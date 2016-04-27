@@ -12,24 +12,9 @@ class User < ActiveRecord::Base
          :omniauthable, :invitable, :authentication_keys => [:login]
 
   has_many :identities, dependent: :destroy
-  has_many :posts, dependent: :destroy
-  has_many :news_rooms, dependent: :destroy
-  has_many :releases, dependent: :destroy
-  has_many :streams, dependent: :destroy
-  has_many :unsubscribe_emails, dependent: :destroy
 
-  has_many :user_products , dependent: :destroy
-  has_many :payments ,through: :user_products
-  has_many :products,:through => :user_products
-
-  has_many :user_features , dependent: :destroy
-  has_many :features,:through => :user_features
-
-  has_many :media_lists, dependent: :destroy
   has_many :kols_lists, dependent: :destroy
   has_many :contacts, through: :media_lists
-  has_many :pitches
-  has_many :pitches_contacts, through: :pitches
 
   has_many :campaigns
   has_many :campaign_invites, through: :campaigns
