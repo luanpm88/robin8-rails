@@ -64,6 +64,4 @@ module Robin8
                                          :password => Rails.application.secrets[:redis][:password],
                                          :expires_in => 90.minutes }
   end
-
-  require Rails.root.to_s + '/lib/blue_snap.rb'
 end

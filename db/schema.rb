@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160421114313) do
+ActiveRecord::Schema.define(version: 20160425104747) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -157,7 +157,6 @@ ActiveRecord::Schema.define(version: 20160421114313) do
     t.string   "expect_price",        limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.string   "expect_price",        limit: 11
     t.string   "agree_reason",        limit: 255
   end
 
@@ -418,7 +417,6 @@ ActiveRecord::Schema.define(version: 20160421114313) do
     t.boolean  "is_vip",                    limit: 1
     t.boolean  "is_yellow_vip",             limit: 1
     t.datetime "access_token_refresh_time"
-    t.integer  "last_status_id",            limit: 4
   end
 
   create_table "industries", force: :cascade do |t|
@@ -474,7 +472,7 @@ ActiveRecord::Schema.define(version: 20160421114313) do
   create_table "kol_contacts", force: :cascade do |t|
     t.integer  "kol_id",          limit: 4
     t.string   "name",            limit: 255
-    t.string   "mobile",          limit: 255
+    t.string   "mobile",          limit: 20
     t.boolean  "exist",           limit: 1,   default: false
     t.string   "city",            limit: 255
     t.float    "score",           limit: 24
@@ -485,6 +483,9 @@ ActiveRecord::Schema.define(version: 20160421114313) do
     t.boolean  "invite_status",   limit: 1,   default: false
     t.datetime "invite_at"
   end
+
+  add_index "kol_contacts", ["kol_id"], name: "index_kol_contacts_on_kol_id", using: :btree
+  add_index "kol_contacts", ["mobile"], name: "index_kol_contacts_on_mobile", using: :btree
 
   create_table "kol_influence_value_histories", force: :cascade do |t|
     t.integer  "kol_id",                     limit: 4
@@ -1003,7 +1004,7 @@ ActiveRecord::Schema.define(version: 20160421114313) do
   create_table "tmp_kol_contacts", force: :cascade do |t|
     t.integer  "kol_id",          limit: 4
     t.string   "name",            limit: 255
-    t.string   "mobile",          limit: 255
+    t.string   "mobile",          limit: 20
     t.string   "city",            limit: 255
     t.boolean  "exist",           limit: 1,   default: false
     t.float    "score",           limit: 24
@@ -1015,6 +1016,9 @@ ActiveRecord::Schema.define(version: 20160421114313) do
     t.datetime "invite_at"
   end
 
+  add_index "tmp_kol_contacts", ["kol_id"], name: "index_tmp_kol_contacts_on_kol_id", using: :btree
+  add_index "tmp_kol_contacts", ["mobile"], name: "index_tmp_kol_contacts_on_mobile", using: :btree
+
   create_table "tmp_kol_influence_items", force: :cascade do |t|
     t.integer  "kol_id",              limit: 4
     t.string   "kol_uuid",            limit: 255
@@ -1024,6 +1028,25 @@ ActiveRecord::Schema.define(version: 20160421114313) do
     t.text     "item_detail_content", limit: 65535
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+  end
+
+  create_table "track_url_clicks", force: :cascade do |t|
+    t.integer  "track_url_id", limit: 4
+    t.string   "cookie",       limit: 255
+    t.string   "refer",        limit: 255
+    t.string   "user_agent",   limit: 255
+    t.string   "vistor_ip",    limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "track_urls", force: :cascade do |t|
+    t.string   "origin_url",  limit: 255
+    t.string   "short_url",   limit: 255
+    t.string   "desc",        limit: 255
+    t.integer  "click_count", limit: 4,   default: 0
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "transactions", force: :cascade do |t|

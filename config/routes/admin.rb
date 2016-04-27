@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :marketing_dashboard do
     get '/' => 'dashboard#index'
+    resources :track_urls
     resources :campaigns, except: [:destroy, :new, :create] do
       collection do
         get 'pending'
