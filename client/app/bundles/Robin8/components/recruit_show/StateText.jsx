@@ -9,7 +9,7 @@ export default class StateText extends React.Component {
   }
 
   count_down(){
-    const { campaign } = this.props;
+    const { campaign, actions, campaign_id } = this.props;
     let interval, duration_text;
 
     const current_time = moment(),
@@ -24,7 +24,7 @@ export default class StateText extends React.Component {
     }
 
     if (seconds <= 0) {
-      window.location.reload();
+      actions.fetchRecruit(campaign_id);
     }
 
     this.refs.timeText.innerHTML = duration_text;

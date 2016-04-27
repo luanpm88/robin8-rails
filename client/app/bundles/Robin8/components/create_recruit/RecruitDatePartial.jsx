@@ -31,10 +31,6 @@ export default class RecruitDatePartial extends React.Component {
       $('#deadline-datepicker').data("DateTimePicker").minDate(e.date);
       $('#start-time-datepicker').data("DateTimePicker").minDate(e.date);
     });
-
-    $("#recruit-deadline-datepicker").on("dp.change", function (e) {
-        $('#recruit-start-time-datepicker').data("DateTimePicker").maxDate(e.date);
-    });
   }
 
   componentDidMount() {

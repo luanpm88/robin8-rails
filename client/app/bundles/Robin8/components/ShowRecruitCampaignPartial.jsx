@@ -81,7 +81,7 @@ export default class ShowRecruitCampaignPartial extends Component {
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
           { this.render_result_view() }
-          <StateText {...{campaign}} />
+          <StateText {...{campaign, campaign_id, actions}} />
           <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
         </div>
       </div>
