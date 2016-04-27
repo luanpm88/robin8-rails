@@ -296,13 +296,12 @@ class Campaign < ActiveRecord::Base
     if self.status == 'executing'
       if self.end_apply_check
         'running'
-      elsif Time.now > self.recruit_end_time
+      elsif Time.now >= self.recruit_end_time
         'choosing'
       else
         'inviting'
       end
     end
-
   end
 
   def recruit_person_count

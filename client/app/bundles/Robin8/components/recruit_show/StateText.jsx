@@ -9,7 +9,7 @@ export default class StateText extends React.Component {
   }
 
   count_down(){
-    const { campaign } = this.props;
+    const { campaign, actions, campaign_id } = this.props;
     let interval, duration_text;
 
     const current_time = moment(),
@@ -23,18 +23,22 @@ export default class StateText extends React.Component {
       duration_text = moment.duration(seconds, "seconds").format("s[秒]");
     }
 
-    if (seconds <= 0) {
-      window.location.reload();
+    if (seconds < 0) {
+      this.refs.timeText.innerHTML = "0秒 已截止";
+
+      setTimeout(function() {
+        actions.fetchRecruit(campaign_id);
+      }.bind(this), 3000);
+    } else {
+      this.refs.timeText.innerHTML = duration_text;
+
+      setTimeout(function() {
+        this.count_down();
+      }.bind(this), 1000);
     }
-
-    this.refs.timeText.innerHTML = duration_text;
-
-    setTimeout(function() {
-      this.count_down();
-    }.bind(this), 1000);
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     const { campaign } = this.props;
 
     if (campaign.get("recruit_status") === "inviting") {
@@ -42,10 +46,7 @@ export default class StateText extends React.Component {
     }
   }
 
-  renderContent() {
-    const { campaign } = this.props;
-    const status = campaign.get("recruit_status");
-
+  renderContent(status) {
     if (status === "inviting") {
       return (
         <div className="content">
@@ -69,10 +70,11 @@ export default class StateText extends React.Component {
 
   render(){
     const { campaign } = this.props;
+    const status = campaign.get("recruit_status");
 
     return(
       <div className="state-text">
-        { this.renderContent() }
+        { this.renderContent(status) }
       </div>
     );
   }
