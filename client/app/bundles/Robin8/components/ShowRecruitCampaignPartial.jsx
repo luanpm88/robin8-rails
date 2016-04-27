@@ -18,7 +18,6 @@ function select(state){
     campaign_invites: state.$$brandStore.get("campaign_invites"),
     hasfetchedInvite: state.$$brandStore.get("hasfetchedInvite"),
     paginate: state.$$brandStore.get("paginate"),
-    campaign_statistics: state.$$brandStore.get("campaign_statistics")
   };
 }
 
@@ -68,9 +67,17 @@ export default class ShowRecruitCampaignPartial extends Component {
     }
   }
 
+  render_state_text(campaign, campaign_id, actions) {
+    if (campaign.get("status") === "executing") {
+      return (
+        <StateText {...{campaign, campaign_id, actions}} />
+      );
+    }
+  }
+
   render() {
     const campaign = this.props.data.get('campaign');
-    const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
+    const { actions, campaign_invites, hasfetchedInvite, paginate } = this.props;
     const campaign_id = _.toInteger(this.props.params.id);
     const status = campaign.get("recruit_status");
 
@@ -81,7 +88,7 @@ export default class ShowRecruitCampaignPartial extends Component {
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
           { this.render_result_view() }
-          <StateText {...{campaign, campaign_id, actions}} />
+          { this.render_state_text(campaign, campaign_id, actions) }
           <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
         </div>
       </div>
