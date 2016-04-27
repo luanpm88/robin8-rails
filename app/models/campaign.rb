@@ -1,18 +1,23 @@
 class Campaign < ActiveRecord::Base
   include Redis::Objects
+  include Concerns::CampaignTest
   counter :redis_avail_click
   counter :redis_total_click
   include Campaigns::CampaignTargetHelper
   include Campaigns::CampaignBaseHelper
 
-  validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline
+  validates_presence_of :name, :description, :url, :budget, :per_budget_type, :per_action_budget, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type != 'recruit' }
+  validates_presence_of :name, :description, :task_description, :budget, :per_budget_type, :per_action_budget, :recruit_start_time, :recruit_end_time, :start_time, :deadline, :if => Proc.new{ |campaign| campaign.per_budget_type == 'recruit' }
 
   #Status : unexecute agreed rejected  executing executed
   #Per_budget_type click post cpa
+  # status ['unexecuted', 'agreed','rejected', 'executing','executed','settled']
   belongs_to :user
   has_many :campaign_invites
   # has_many :pending_invites, -> {where(:status => 'pending')}, :class_name => 'CampaignInvite'
   has_many :valid_invites, -> {where("status='approved' or status='finished' or status='settled'")}, :class_name => 'CampaignInvite'
+  has_many :valid_applies, -> {where("status='platform_passed' or status='brand_passed'")}, :class_name => 'CampaignApply'
+  has_many :brand_passed_applies, -> {where(status: 'brand_passed')}, :class_name => 'CampaignApply'
   has_many :rejected_invites, -> {where(:status => 'rejected')}, :class_name => 'CampaignInvite'
   has_many :finished_invites, -> {where(:status => 'finished')}, :class_name => 'CampaignInvite'
   has_many :finish_need_check_invites, -> {where(:status => 'finished', :img_status => 'pending')}, :class_name => 'CampaignInvite'
@@ -31,16 +36,19 @@ class Campaign < ActiveRecord::Base
   has_many :iptc_categories, :through => :campaign_categories
   has_many :interested_campaigns
   belongs_to :release
+  has_many :campaign_applies
 
   scope :click_campaigns, -> {where(:per_budget_type => 'click')}
   scope :click_or_action_campaigns, -> {where("per_budget_type = 'click' or per_action_budget = 'cpa'")}
   scope :order_by_start, -> { order('start_time desc')}
   scope :order_by_status, -> { order("case campaigns.status  when 'executing' then 3 when 'executed' then 2 else 1 end desc,
+                                      case campaigns.per_budget_type when 'recruit' then 4 else 1 end desc,
                                       start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
   after_save :create_job
 
+  OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
   SettleWaitTimeForKol = Rails.env.production?  ? 1.days  : 1.hours
   SettleWaitTimeForBrand = Rails.env.production?  ? 4.days  : 2.hours
   RemindUploadWaitTime =  Rails.env.production?  ? 3.days  : 1.minutes
@@ -52,8 +60,8 @@ class Campaign < ActiveRecord::Base
     (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
   end
 
-  def reupload_screenshot_deadline
-    (self.actual_deadline_time ||self.deadline) +  SettleWaitTimeForBrand
+  def can_apply
+    self.recruit_start_time < Time.now && Time.now < recruit_end_time
   end
 
   def is_cpa?
@@ -150,6 +158,7 @@ class Campaign < ActiveRecord::Base
     self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
     Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
     campaign_id = self.id
+    kol_ids = get_kol_ids
     if kol_ids.present?
       Kol.where(:id => kol_ids).each do |kol|
         kol.add_campaign_id campaign_id
@@ -159,19 +168,23 @@ class Campaign < ActiveRecord::Base
       Kol.find_each do |kol|
         kol.add_campaign_id(campaign_id,false)
       end
-    end
-    unmatched_kol_ids = get_unmatched_kol_ids
-    Kol.where(:id => unmatched_kol_ids).each do |kol|
-      kol.delete_campaign_id campaign_id
+      unmatched_kol_ids = get_unmatched_kol_ids
+      Kol.where(:id => unmatched_kol_ids).each do |kol|
+        kol.delete_campaign_id campaign_id
+      end
     end
     Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign unmatched_kol_ids: ---#{unmatched_kol_ids}-"
-    Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id}-- start push to sidekiq-------"
     # make sure those execute late (after invite create)
-    _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
-    Rails.logger.campaign_sidekiq.info "----send_invites: ---cid:#{self.id} _start_time:#{_start_time}-------"
-    CampaignWorker.perform_at(_start_time, self.id, 'start')
+    #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
+    if  is_recruit_type?
+      _start_time = self.recruit_start_time < Time.now ? (Time.now + 5.seconds) : self.recruit_start_time
+      CampaignWorker.perform_at(_start_time, self.id, 'start')
+      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
+    else
+      _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
+      CampaignWorker.perform_at(_start_time, self.id, 'start')
+    end
     CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-    Rails.logger.campaign_sidekiq.info "\n\n-------duration:#{Time.now - _start}---\n\n"
   end
 
   # 开始进行  此时需要更改invite状态
@@ -180,9 +193,8 @@ class Campaign < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
       self.update_column(:status, 'executing')
-      Message.new_campaign(self, [], get_unmatched_kol_ids)
+      Message.new_campaign(self, get_kol_ids, get_unmatched_kol_ids)
     end
-    Rails.logger.campaign_sidekiq.info "-----go_start:------end------- #{self.inspect}----------\n"
   end
 
   def add_click(valid)
@@ -217,19 +229,14 @@ class Campaign < ActiveRecord::Base
   end
 
   def update_info(finish_remark)
-    self.avail_click = self.redis_avail_click.value
-    self.total_click = self.redis_total_click.value
-    self.status = 'executed'
-    self.finish_remark = finish_remark
-    Rails.logger.campaign.info "======update_info----#{Time.now}"
-    self.actual_deadline_time = Time.now
-    self.save!
+    self.update_attributes(:avail_click => self.redis_avail_click.value, :total_click => self.redis_total_click.value,
+                            :status => 'executed', :finish_remark => finish_remark, :actual_deadline_time => Time.now)
   end
 
   # 更新invite 状态和点击数
   def end_invites
     campaign_invites.each do |invite|
-      next if invite.status == 'finished' || invite.status == 'settled'
+      next if invite.status == 'finished' || invite.status == 'settled'  || invite.status == 'rejected'
       if invite.status == 'approved'
         invite.status = 'finished'
         invite.avail_click = invite.redis_avail_click.value
@@ -245,9 +252,7 @@ class Campaign < ActiveRecord::Base
   # 提醒上传截图
   def remind_upload
     Rails.logger.campaign_sidekiq.info "-----remind_upload:  ----start-----#{self.inspect}----------"
-    ActiveRecord::Base.transaction do
-      Message.new_remind_upload(self)
-    end
+    Message.new_remind_upload(self)
   end
 
   # 结算 for kol
@@ -275,6 +280,33 @@ class Campaign < ActiveRecord::Base
 
   def is_post_type?
     self.per_budget_type == "post"
+  end
+
+  def is_recruit_type?
+    self.per_budget_type == "recruit"
+  end
+
+  def recruit_status
+    return 'pending' if self.status == 'unexecute'
+    return 'rejected' if self.status == 'rejected'
+    return 'coming' if self.status == 'agreed'
+    return 'settling' if self.status == 'executed'
+    return 'settled' if self.status == 'settled'
+
+    if self.status == 'executing'
+      if self.end_apply_check
+        'running'
+      elsif Time.now > self.recruit_end_time
+        'choosing'
+      else
+        'inviting'
+      end
+    end
+
+  end
+
+  def recruit_person_count
+    self.budget / self.per_action_budget
   end
 
   # 结算 for brand
@@ -399,4 +431,5 @@ class Campaign < ActiveRecord::Base
     end;nil
     puts "-"*60
   end
+
 end

@@ -9,8 +9,11 @@ Rails.application.routes.draw do
       end
       member do
         get :targets
+        get :recruit_targets
         post :add_target
+        post :add_or_remove_recruit_kol
         delete :delete_target
+        get :stop
       end
       match '/agree' => 'campaigns#agree', via: [:put]
       resources :kols, only: [:index]

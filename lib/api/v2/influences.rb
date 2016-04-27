@@ -46,7 +46,7 @@ module API
         end
         post 'bind_identity' do
           if params[:provider] == 'weibo'
-            required_attributes! [:followers_count, :statuses_count, :registered_at, :verified]
+            required_attributes! [:followers_count, :statuses_count, :registered_at, :verified] #refresh_token
           elsif params[:provider] == 'wechat'
             required_attributes! [:unionid]
           end
@@ -84,7 +84,7 @@ module API
           present :identities, kol_identities, with: API::V1::Entities::IdentityEntities::Summary
         end
 
-        #联系人
+        #联系人  已经存在的用户 更新kol_contacts,新用户更新tmp_tmp_contacts
         params do
           requires :contacts, type: String
           requires :kol_uuid, type: String
@@ -92,13 +92,17 @@ module API
         post 'bind_contacts' do
           Rails.logger.info "-----before: #{params[:kol_uuid]}----#{params[:contacts]}"
           if Rails.env.development?
-            contacts = Kol.where("mobile_number is not null").limit(40).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}
+            contacts = Kol.where("mobile_number is not null").limit(50).collect{|t| {'mobile' => t.mobile_number, 'name' => t.name || t.id}}
           else
             contacts = JSON.parse(params[:contacts])
           end
           Rails.logger.info "-----#{params[:kol_uuid]}----#{params[:contacts]}"
           return  error_403!({error: 1, detail: '联系人不存在或格式错误'})    if contacts.size == 0
-          TmpKolContact.add_contacts(params[:kol_uuid],contacts)          if current_kol.blank? || (current_kol.present? && !current_kol.has_contacts)
+          if current_kol.blank?
+            TmpKolContact.add_contacts(params[:kol_uuid],contacts)
+          else
+            KolContact.add_contacts(params[:kol_uuid], contacts, current_kol.id)
+          end
           present :error, 0
           present :kol_uuid, params[:kol_uuid]
         end
@@ -127,7 +131,7 @@ module API
         end
         get 'rank' do
           kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-          if current_kol && current_kol.has_contacts
+          if current_kol
             KolContact.update_joined_kols(current_kol.id)
             joined_contacts = KolContact.joined.where(:kol_id => current_kol.id)
             contacts = KolContact.order_by_exist.where(:kol_id => current_kol.id)
@@ -140,8 +144,36 @@ module API
           present :error, 0
           present :joined_count, joined_contacts.size
           present :rank_index, rank_index
+          present :last_influence_score, (KolInfluenceValue.last_auto_value(params[:kol_uuid]).influence_score  rescue nil)
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
           present :contacts, contacts, with: API::V2::Entities::KolContactEntities::Summary
+        end
+
+        # 维度得分
+        params do
+          requires :kol_uuid, type: String
+        end
+        get 'item_detail' do
+          kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+          item_rate = kol_value.get_item_scores
+          present :error, 0
+          present :diff_score, KolInfluenceValue.diff_score(params[:kol_uuid])
+          present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
+          present :history, KolInfluenceValueHistory.get_auto_history(params[:kol_uuid])
+        end
+
+        # 提升影响力
+        params do
+          requires :kol_uuid, type: String
+        end
+        get 'upgrade' do
+          kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
+          rank_index = KolContact.joined.where(:kol_id => current_kol.id).where("influence_score > '#{kol_value.influence_score}'").count   + 1
+          present :error, 0
+          present :upgrade_notices, KolInfluenceValue::UpgradeNotices
+          present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+          present :rank_index, rank_index
+          present :upgrade_info, current_kol, with: API::V1::Entities::KolEntities::Upgrade
         end
 
         # 分享分数

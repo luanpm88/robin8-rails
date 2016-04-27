@@ -4,6 +4,7 @@ module Brand
       class CampaignInvite < Entities::Base
         expose :id, :get_avail_click, :get_total_click, :screenshot, :img_status
         expose :kol, using: Entities::Kol
+        expose :campaign, using: Entities::Campaign
       end
     end
   end

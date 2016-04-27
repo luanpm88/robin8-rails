@@ -12,10 +12,12 @@ module API
             kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
                                   device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
           else
+            app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
+            Rails.logger.info "-------#{app_city}"
             kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                           app_version: params[:app_version], device_token: params[:device_token],
                           IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number],
-                          utm_source: params[:utm_source])
+                          utm_source: params[:utm_source], app_city: app_city)
           end
           kol.reload
           present :error, 0
@@ -28,6 +30,7 @@ module API
           requires :app_platform
           requires :app_version, type: String
           requires :device_token, type: String
+          optional :city_name, type: String
           optional :IDFA, type: String
           optional :IMEI, type: String
 
@@ -46,10 +49,11 @@ module API
           kol = identity.kol   rescue nil
           if !kol
             ActiveRecord::Base.transaction do
+              app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
               kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
                                 device_token: params[:device_token], name: params[:name],
                                 social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
-                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source])
+                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source], app_city: app_city)
               #保存头像
               if params[:avatar_url].present?
                 kol.remote_avatar_url =  params[:avatar_url]

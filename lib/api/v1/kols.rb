@@ -165,6 +165,26 @@ module API
             return error_403!({error: 1, detail: '未找到该第三方账号信息'})
           end
         end
+
+        #设置城市
+        params do
+          requires :city_name, type: String
+        end
+        put 'set_city' do
+          city = City.where("name like '#{params[:city_name]}%'").first   rescue nil
+          current_kol.update_column(:app_city, city.name_en)
+          present :error, 0
+        end
+
+        params do
+          requires :kol_id, type: Integer
+        end
+        get 'common' do
+          kol = Kol.find  params[:kol_id]
+          return error_403!({error: 1, detail: '未找到该用户'}) if kol.blank?
+          present :error, 0
+          present :kol, kol, with: API::V1::Entities::KolEntities::Info
+        end
       end
     end
   end
