@@ -34,6 +34,7 @@ module API
           expose :ocr_detail do |campaign_invite|
             campaign_invite.get_ocr_detail
           end
+          expose :invite_status
           expose :campaign, using: API::V1::Entities::CampaignEntities::Summary    if  lambda { |instance, options| instance.campaign.present? }
         end
       end
