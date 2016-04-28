@@ -49,7 +49,6 @@ export default class BudgetPartial extends React.Component {
 
   render() {
     const { budget } = this.props
-
     return (
       <div className="creat-activity-form creat-budget">
         <div className="header">
@@ -61,7 +60,7 @@ export default class BudgetPartial extends React.Component {
             <label className="creat-campaign-total-budget">总预算</label>
             <div className="spinner-box">
               <span className="symbol">$</span>
-              <input {...budget} type="text" className="spinner-input budget-input" style={{display: 'block'}} />
+              <input {...budget} type="text"  data-is-edit={this.props.isEdit} data-origin-budget={budget.defaultValue} className="spinner-input budget-input" style={{display: 'block'}} />
             </div>
             <p className="stat">最低费用<strong className="stat-num">100</strong>元</p>
             <BudgetShowError field={budget}/>

@@ -24,17 +24,22 @@ global.FormValidate = function(options){
       } else if(!value && fieldOption.require_img) {
         errors[fieldName] = "请上传图片";
       } else if (fieldName == 'budget' && value) {
-        // if(parseInt(value) > parseInt($(".budget-input").attr("brand-amount"))){
+        let brand_amount = parseInt($(".budget-input").attr("brand-amount"))
 
-        //   errors[fieldName] = "账户余额不足, 请充值";
-        // }
+        if($(".budget-input").attr("data-is-edit")){
+          brand_amount += parseInt($(".budget-input").attr("data-origin-budget"))
+        }
 
-        // fetch('/brand_api/v1/user', { credentials: 'same-origin' })
-        //   .then(function(response){
-        //     response.json().then(function(data){
-        //       $(".budget-input").attr("brand-amount", parseInt(data.avail_amount))
-        //     })
-        //   })
+        if(parseInt(value) > brand_amount){
+          errors[fieldName] = "账户余额不足, 请充值";
+        }
+
+        fetch('/brand_api/v1/user', { credentials: 'same-origin' })
+          .then(function(response){
+            response.json().then(function(data){
+              $(".budget-input").attr("brand-amount", parseInt(data.avail_amount))
+            })
+          })
 
         if (value < fieldOption.min_budget) {
           errors[fieldName] = "最低费用100元";

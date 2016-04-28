@@ -86,7 +86,7 @@ class UpdateCampaignPartial extends React.Component {
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }}/>
-              <BudgetPartial {...{ budget }} />
+              <BudgetPartial {...{ budget }} isEdit={true} />
               <DetailPartial {...{ per_budget_type, action_url_identifier, action_url, short_url, per_action_budget, brand }} />
               <DatePartial {...{ start_time, deadline }} />
               <div className="creat-form-footer">
