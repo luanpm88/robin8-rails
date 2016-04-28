@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 
+import "campaign/recruit/show.scss";
 
-import "recruit_activity_detail.scss";
-
-import Basic from './recruit_show/Basic';
-import Overview from './recruit_show/Overview';
-import ResultView from './recruit_show/ResultView';
-import KolList from './recruit_show/KolList';
-import StateText from './recruit_show/StateText';
+import Basic       from './recruit_campaigns/show/Basic';
+import Overview    from './recruit_campaigns/show/Overview';
+import ResultView  from './recruit_campaigns/show/ResultView';
+import KolList     from './recruit_campaigns/show/KolList';
+import StateText   from './recruit_campaigns/show/StateText';
 
 function select(state){
   return {
@@ -21,7 +20,7 @@ function select(state){
   };
 }
 
-export default class ShowRecruitCampaignPartial extends Component {
+class ShowRecruitCampaignPartial extends Component {
   componentDidMount() {
     this._fetchRecruit();
     this.bind_toggle_text();
@@ -82,7 +81,7 @@ export default class ShowRecruitCampaignPartial extends Component {
     const status = campaign.get("recruit_status");
 
     return (
-      <div className="wrapper">
+      <div className="page page-recruit page-recruit-show">
         <div className="container">
           { this.render_breadcrumb() }
           <Basic {...{campaign}} />
