@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Link from "react-router";
 
-import { ageHelper, genderHelper } from "../../helpers/CampaignHelper"
+import { ageHelper, genderHelper } from "../../../helpers/CampaignHelper"
 
 export default class Target extends React.Component{
   constructor(props, context){

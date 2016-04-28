@@ -6,12 +6,12 @@ import _ from 'lodash'
 
 import "campaign/activity/new.scss";
 
-import IntroPartial from './create_campaign/IntroPartial';
-import TargetPartial from './create_campaign/TargetPartial';
-import DetailPartial from './create_campaign/DetailPartial';
-import DatePartial from './create_campaign/DatePartial';
-import BudgetPartial from './create_campaign/BudgetPartial';
-import initToolTip from './shared/InitToolTip';
+import IntroPartial    from './create_campaign/IntroPartial';
+import TargetPartial   from './create_campaign/TargetPartial';
+import DetailPartial   from './create_campaign/DetailPartial';
+import DatePartial     from './create_campaign/DatePartial';
+import BudgetPartial   from './create_campaign/BudgetPartial';
+import initToolTip     from './shared/InitToolTip';
 
 const validate = new FormValidate({
   name: { require: true },

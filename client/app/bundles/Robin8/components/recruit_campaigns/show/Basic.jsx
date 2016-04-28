@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 import { Link } from 'react-router';
 
-import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign} from "../../helpers/CampaignHelper";
+import { showCampaignTypeText, formatDate, campaignStatusHelper, canEditCampaign} from "../../../helpers/CampaignHelper";
 
 export default class Basic extends React.Component {
   constructor(props, context){

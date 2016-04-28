@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react";
 import { Link } from 'react-router';
-import isSuperVistor from '../shared/VisitAsAdmin';
+import isSuperVistor from '../../shared/VisitAsAdmin';
 
 export default class InviteKol extends React.Component {
   constructor(props, context){

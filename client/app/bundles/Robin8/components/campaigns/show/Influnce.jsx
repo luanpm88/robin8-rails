@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactEcharts from '../shared/ReactEcharts';
+import ReactEcharts from '../../shared/ReactEcharts';
 
 export default class Influnce extends React.Component{
   constructor(props, context){

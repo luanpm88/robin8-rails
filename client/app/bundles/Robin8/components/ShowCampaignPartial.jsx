@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 
 import "campaign/activity/show.scss";
 
-import Basic from './campaign_show/Basic';
-import Overview from './campaign_show/Overview';
-import Target from './campaign_show/Target';
-import KolList from './campaign_show/KolList';
-import Influnce from './campaign_show/Influnce'
+import Basic      from './campaigns/show/Basic';
+import Overview   from './campaigns/show/Overview';
+import Target     from './campaigns/show/Target';
+import KolList    from './campaigns/show/KolList';
+import Influnce   from './campaigns/show/Influnce'
 
 function select(state){
   return {

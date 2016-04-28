@@ -2,7 +2,7 @@ import React, { PropTypes } from "react";
 import { Link } from 'react-router';
 
 import InviteKol from './InviteKol'
-import isSuperVistor from '../shared/VisitAsAdmin';
+import isSuperVistor from '../../shared/VisitAsAdmin';
 
 export default class KolList extends React.Component {
   constructor(props, context){
