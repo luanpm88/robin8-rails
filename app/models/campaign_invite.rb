@@ -1,5 +1,6 @@
 class CampaignInvite < ActiveRecord::Base
   include Redis::Objects
+  include Concerns::InviteStatus
   counter :redis_avail_click        #有效计费点击
   counter :redis_total_click        #所有点击
   counter :redis_real_click         #所有有效点击(含活动结束后)
