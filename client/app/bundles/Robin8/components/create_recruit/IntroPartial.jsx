@@ -1,5 +1,6 @@
 import React from 'react';
 import Crop from '../shared/Crop';
+import '../shared/plupload.full.min.js'
 import 'qiniu-js/dist/qiniu.min.js';
 import { ShowError } from '../shared/ShowError';
 
@@ -39,7 +40,7 @@ const initBootstrapMaxLength = function() {
     appendToParent: '.form-group'
   });
 
-  
+
 }
 
 export default class IntroPartial extends React.Component {
