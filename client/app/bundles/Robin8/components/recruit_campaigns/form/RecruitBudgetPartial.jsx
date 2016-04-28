@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShowError, BudgetShowError } from '../shared/ShowError';
+import { ShowError, BudgetShowError } from '../../shared/ShowError';
 
 export default class RecruitBudgetPartial extends React.Component{
   constructor(props, context){

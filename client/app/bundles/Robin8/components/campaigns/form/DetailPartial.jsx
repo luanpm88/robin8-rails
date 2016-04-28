@@ -1,5 +1,5 @@
 import React from 'react';
-import {ShowError} from '../shared/ShowError';
+import {ShowError} from '../../shared/ShowError';
 
 export default class DetailPartial extends React.Component {
 

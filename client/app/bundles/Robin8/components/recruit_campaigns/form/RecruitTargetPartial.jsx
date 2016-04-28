@@ -1,5 +1,5 @@
 import React from 'react';
-import { jobAreaSelect } from '../shared/CitySelector';
+import { jobAreaSelect } from '../../shared/CitySelector';
 
 export default class TargetPartial extends React.Component {
 

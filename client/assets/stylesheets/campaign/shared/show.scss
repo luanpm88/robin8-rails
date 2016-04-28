@@ -2,212 +2,20 @@
  * 品牌活动详细
  * 02.01.2016 23:49
  */
-.brand-activity-card {
-  position: relative;
-  margin-bottom: 40px;
-  padding: 0 40px 0 55px;
-  overflow: hidden;
-  height: 250px;
-  background-color: #403e3f;
-  background-image: linear-gradient(to right, #403e3f, #2f2d2e);
-}
-.brand-activity-card:last-child {
-  margin-bottom: 0;
-}
 
-.brand-activity-coverphoto-img {
+.campaign_url,
+.campaign_action_short_url,
+.campaign_action_url {
   display: block;
-  width: 300px;
-  height: 250px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
+  margin-top: 10px;
 
-
-.brand-activity-card .brand-activity-content {
-  margin-left: 280px;
-  margin-bottom: 15px;
-  position: relative;
-}
-.brand-activity-card .brand-activity-content .activity-title {
-  margin-top: 25px;
-  margin-bottom: 10px;
-  color: #fff;
-  font-size: 22px;
-  white-space: nowrap;
-}
-.brand-activity-card .brand-activity-content .activity-title .label {
-  margin-left: 5px;
-  margin-top: -2px;
-}
-.brand-activity-coverphoto.brand-home-campaign-img{
-  height: 204px;
-  max-width: 294px;
-}
-span.campaign-type {
-    /* font-size: 18px; */
-    color: #f26d45;
-}
-
-.brand-activity-card .brand-activity-content .date{
-  margin-bottom: 8px;
-}
-.brand-activity-card .brand-activity-content .date,
-.brand-activity-card .brand-activity-content .address,
-.brand-activity-card .brand-activity-content .duration,
-.brand-activity-card .brand-activity-content small.summary {
-  color: #9b9a9a;
-  font-size: 14px;
-  word-wrap: break-word;
-  display: block;
-}
-
-.brand-activity-card .brand-activity-content small.summary {
-  margin-bottom: 12px;
-  height: 32px;
-  line-height: 16px;
-  overflow:  hidden;
-}
-
-small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
-  display: block;
-}
-
-.campaign_action_short_url span, .campaign_action_url span, .campaign_url span{
-  color: #FFF;
-  font-size: 14px;
-  margin-right: 3px;
-}
-
-.brand-activity-card .brand-activity-content .summary {
-  height: 65px;
-  margin-top: 20px;
-  overflow : hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.brand-activity-card.recruit {
-  .brand-activity-content {
-    .summary {
-      height: 40px;
-    }
+  span {
+    color: #FFF;
+    font-size: 14px;
+    margin-right: 3px;
   }
 }
 
-.brand-activity-card .brand-activity-content .link {
-  color: #fff;
-  border-bottom: 1px solid #fff;
-}
-.brand-activity-card .brand-activity-content .detail-link,
-.brand-activity-card .brand-activity-content .stop-btn {
-  float: right;
-}
-.brand-activity-card .brand-activity-content .detail-link {
-  width: 14px;
-  color: #fff;
-  line-height: 14px;
-  opacity: .7;
-}
-.brand-activity-card .brand-activity-content .detail-link:hover {
-  text-decoration: none;
-}
-.brand-activity-card .brand-activity-content .stat-info {
-  margin: 20px 0 0;
-  padding: 8px 0 0;
-  overflow: hidden;
-  text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-.brand-activity-card .brand-activity-content .stat-info li {
-  position: relative;
-  float: left;
-  list-style: none;
-}
-.brand-activity-card .brand-activity-content .stat-info li:first-child {
-  text-align: left;
-}
-.brand-activity-card .brand-activity-content .stat-info li.remain-time {
-  text-align: center;
-}
-.brand-activity-card .brand-activity-content .stat-info li:last-child:after {
-  display: none !important;
-}
-.brand-activity-card .brand-activity-content .stat-info li:after {
-  position: absolute;
-  right: 0;
-  bottom: 5px;
-  content: '/';
-  color: #bfc1c0;
-}
-.brand-activity-card .brand-activity-content .stat-info.grid-4 li {
-  width: 150px;
-}
-.brand-activity-card .brand-activity-content .stat-info.grid-4 li:first-child {
-  width: 100px;
-}
-.brand-activity-card .brand-activity-content .stat-info.grid-4 li:last-child {
-  width: 80px;
-}
-.brand-activity-card .brand-activity-content .stat-info.grid-3 li {
-  width: 195px;
-}
-.brand-activity-card .brand-activity-content .stat-info.grid-3 li:first-child {
-  width: 260px;
-}
-.brand-activity-card .brand-activity-content .stat-info.grid-3 li:last-child {
-  width: 110px;
-}
-.brand-activity-card .brand-activity-content .stat-info .txt {
-  display: block;
-  color: #9b9a9a;
-  font-size: 12px;
-}
-
-.brand-activity-card .brand-activity-content .stat-info span {
-  font-family: FuturaStd-Medium;
-}
-
-.brand-activity-card .brand-activity-content .stat-info .stat-num {
-  color: #fff;
-  font-size: 18px;
-  margin-left: -4px;
-}
-
-.brand-activity-card .brand-activity-content .stat-info .date {
-  color: #fff;
-}
-
-.brand-activity-card .brand-activity-content .stat-info .symbol {
-  margin-right: 5px;
-  font-size: 14px;
-  font-weight: 400;
-}
-.brand-activity-card {
-  box-shadow: 3.5px 6.062px 13px 1px rgba(0, 0, 0, 0.15);
-
-  &.closure {
-    background-color: #fff;
-    background-image: none;
-    box-shadow: 3.5px 6.062px 8px 1px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(0, 0, 0, 0.15);
-  }
-}
-
-.brand-activity-card.closure .activity-title,
-.brand-activity-card.closure .link,
-.brand-activity-card.closure .detail-link,
-.brand-activity-card.closure .stat-info .stat-num {
-  color: #181616;
-}
-.brand-activity-card.closure .link {
-  border-bottom: 1px solid #181616;
-}
-.brand-activity-card.closure .stat-info {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
 .my-linfluence-panel .panel-body {
   position: relative;
 }
@@ -270,9 +78,16 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   font-size: 12px;
 }
 
-.activity-stat-bigshow-area li .stat-num, .activity-target-bigshow-area li .stat-num {
-  font-size: 28px;
-  font-family: FuturaStd-Medium;
+.activity-stat-bigshow-area,
+.activity-target-bigshow-area {
+   .stat-num {
+    font-size: 28px;
+    font-family: FuturaStd-Medium;
+  }
+
+  .stat-yuan {
+    margin-left: -22px;
+  }
 }
 
 .kolCampaignScreenshot{
@@ -584,11 +399,11 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   -webkit-transform: rotate(-7deg);
 }
 
-.brand-activity-card-detail {
+.brand-activity-coverphoto-img {
+  display: block;
+  width: 300px;
   height: 250px;
-  .brand-activity-content {
-    .stat-info {
-      padding: 20px 0 0 0;
-    }
-  }
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }

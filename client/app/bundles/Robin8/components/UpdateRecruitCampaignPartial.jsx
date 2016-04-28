@@ -5,14 +5,14 @@ import { Link } from 'react-router';
 import _  from 'lodash';
 import moment from 'moment';
 
-import "campaign/recruit/new.scss";
+import "campaign/recruit/form.scss";
 
-import IntroPartial from "./create_recruit/IntroPartial";
-import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
-import DatePartial from './create_campaign/DatePartial';
-import RecruitDatePartial from './create_recruit/RecruitDatePartial';
-import RecruitBudgetPartial from './create_recruit/RecruitBudgetPartial';
-import initToolTip from './shared/InitToolTip';
+import IntroPartial          from "./recruit_campaigns/form/IntroPartial";
+import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
+import DatePartial           from './recruit_campaigns/form/OfflineDate';
+import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
+import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
+import initToolTip           from './shared/InitToolTip';
 
 const validate = new FormValidate({
   name: { require: true },

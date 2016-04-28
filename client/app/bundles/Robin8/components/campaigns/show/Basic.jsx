@@ -49,7 +49,7 @@ export default class Basic extends React.Component {
           {this.renderCpaActionUrl(campaign)}
           <ul className="stat-info grid-3">
             <li><span className="txt">起止时间</span><small className="date">{ formatDate(campaign.get("start_time")) } - { formatDate(campaign.get("deadline")) }</small></li>
-            <li><span className="txt">总预算</span><small className="stat-num"><sapn className="symbol">￥</sapn>{ campaign.get("budget") }</small></li>
+            <li><span className="txt">总预算</span><small className="stat-num"><span className="symbol">￥</span>{ campaign.get("budget") }</small></li>
             <li className="remain-time"><span className="txt">一次{showCampaignTypeText(campaign.get("per_budget_type"))}</span><small className="stat-num"><span className="symbol">￥</span><span>{ campaign.get("per_action_budget") }</span></small></li>
           </ul>
         </div>

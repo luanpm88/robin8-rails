@@ -5,15 +5,15 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import moment from 'moment';
 
-import "campaign/activity/new.scss";
+import "campaign/activity/form.scss";
 
-import IntroPartial from './create_campaign/IntroPartial';
-import TargetPartial from './create_campaign/TargetPartial';
-import DetailPartial from './create_campaign/DetailPartial';
-import DatePartial from './create_campaign/DatePartial';
-import BudgetPartial from './create_campaign/BudgetPartial';
-import beforeUnload from './shared/BeforeUnload';
-import initToolTip from './shared/InitToolTip';
+import IntroPartial   from './campaigns/form/IntroPartial';
+import TargetPartial  from './campaigns/form/TargetPartial';
+import DetailPartial  from './campaigns/form/DetailPartial';
+import DatePartial    from './campaigns/form/DatePartial';
+import BudgetPartial  from './campaigns/form/BudgetPartial';
+import beforeUnload   from './shared/BeforeUnload';
+import initToolTip    from './shared/InitToolTip';
 
 const initCampaign = {
   age: 'all',

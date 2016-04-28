@@ -1,7 +1,7 @@
 import React from 'react';
-import Crop from '../shared/Crop';
+import Crop from '../../shared/Crop';
 import 'qiniu-js/dist/qiniu.min.js';
-import { ShowError } from '../shared/ShowError';
+import { ShowError } from '../../shared/ShowError';
 
 const getUploader = function() {
   return Qiniu.uploader({
@@ -32,26 +32,12 @@ const initBootstrapMaxLength = function() {
     placement: 'centered-right',
     appendToParent: '.form-group'
   });
-
-  $('.activity-task-input-input').maxlength({
-    threshold: 139,
-    placement: 'centered-right',
-    appendToParent: '.form-group'
-  });
-
-  
 }
 
 export default class IntroPartial extends React.Component {
   constructor(props, context) {
     super(props, context);
-    _.bindAll(this, ['_upload', 'handleHideBrandNameChange', "handleChangeTaskTemplate"])
-    this.currentTaskDescriptioinIndex = -1
-    this.taskDescTemplate = [
-      "准时参与品牌活动, 完成品牌指定任务, 发送照片及文字至朋友圈并保证发布时间持续30分钟",
-      "准备到达指定地点签到并参与活动, 用图片或视频记录参与过程, 发送图片或视频到朋友圈并持续30分钟",
-      "按时参加品牌活动, 配合品牌完成相关体验, 记录体验过程,发送图片或小视频至朋友圈"
-    ]
+    _.bindAll(this, ['_upload'])
   }
 
   _upload(size, scale) {
@@ -70,40 +56,20 @@ export default class IntroPartial extends React.Component {
     this.uploader.start();
   }
 
-  handleChangeTaskTemplate(){
-    let currentIndex = Number.parseInt($(".changeTaskDescTemplate").attr("data-current-template"))+ 1
-    if (currentIndex >= this.taskDescTemplate.length){
-      currentIndex = 0
-    }
-
-    this.props.task_description.onChange(this.taskDescTemplate[currentIndex]);
-    $(".changeTaskDescTemplate").attr("data-current-template", currentIndex + 1)
-  }
-
   componentDidMount() {
     this.uploader = getUploader();
     initBootstrapMaxLength();
   }
 
-  handleHideBrandNameChange(){
-    const { onChange } = this.props.hide_brand_name;
-    onChange(!this.props.hide_brand_name.value)
-  }
-
-  renderTips(){
-    const tips = "<p>&nbsp;招募活动采用KOL报名的形式，您只需填写您需要KOL完成的任务，当然这可以是一次线上活动也可以试一次线下活动，我们将为您推送最合适的KOL参加</p>"
-    return tips;
-  }
-
   render() {
-    const { name, description, img_url, url, task_description, address, hide_brand_name} = this.props
+    const { name, description, img_url, url } = this.props
     return (
       <div className="creat-activity-form creat-intro">
         <div className="header">
-          <h3 className="tit">招募活动&nbsp;<span className="what" data-toggle="tooltip" title={this.renderTips()}>?</span></h3>
+          <h3 className="tit">推广简介&nbsp;</h3>
         </div>
         <div className="content">
-          <div className="creat-activity-basic-intro create-recruit-basic-info">
+          <div className="creat-activity-basic-intro">
             <div className="cover-photo">
               <div className="inner">
                 { do
@@ -126,7 +92,7 @@ export default class IntroPartial extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="basic-intro recruit-basic-info">
+            <div className="basic-intro">
               <div className="form-group">
                 <label htmlFor="activityTitle">活动标题</label>
                 <input {...name} type="text" className="form-control activity-title-input" maxLength={22} placeholder="请概括您的推广，让您的内容一目了然" />
@@ -140,26 +106,14 @@ export default class IntroPartial extends React.Component {
                 <ShowError field={description} />
               </div>
               <div className="form-group">
-                <label htmlFor="activityIntro">任务描述</label>
-                <span className="changeTaskDescTemplate pull-right" data-current-template="1" onClick={this.handleChangeTaskTemplate}>换个模板</span>
-                <textarea {...task_description} className="form-control  common-textarea activity-task-input-input" maxLength={140} placeholder="描述KOL需要完成的活动及推广任务。不会填写？点击“换个模板”试试看"  ></textarea>
-                <span className="word-limit">140</span>
-                <ShowError field={task_description} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="campaign-address">活动地址</label>
-                <input {...address} className="form-control recruit-address-input" placeholder="非线下活动可不填写"  />
-              </div>
-              <div className="form-group">
-                <label className="recruit-brand-name-showable">
-                  <input type="checkbox" defaultChecked={hide_brand_name.value} checked={hide_brand_name.value} onChange={this.handleHideBrandNameChange}></input>
-                  <label>活动发布时隐藏品牌名称</label>
-                </label>
+                <label htmlFor="campaign-url">活动链接</label>
+                <input {...url} type="url" id="promotionUrl" className="form-control" placeholder="Robin8将根据此链接统计点击次数，请确定链接真实有效"  />
+                <ShowError field={url} />
               </div>
             </div>
           </div>
         </div>
-        <Crop fileInputSelector={"#fileInput"} className="recruit-img" doCrop={this._upload} aspectRatio={(16/9)} />
+        <Crop fileInputSelector={"#fileInput"} doCrop={this._upload} aspectRatio={(16/9)} />
       </div>
      )
    }

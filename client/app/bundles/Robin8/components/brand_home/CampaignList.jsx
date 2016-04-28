@@ -77,7 +77,7 @@ export default class CampaignList extends React.Component {
         <div className="container">
           <div className="panel brand-activities">
             <div className="panel-heading">
-              <a href="#panelActivities" data-toggle="collapse" className="panel-heading-toggler">
+              <a href="#panelActivities" data-toggle="collapse" className="switch">
                 <span className="txt">收起</span>
                 <i className="caret-arrow"></i>
               </a>
