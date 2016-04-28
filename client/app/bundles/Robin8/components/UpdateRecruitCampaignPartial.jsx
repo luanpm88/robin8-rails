@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import _  from 'lodash';
 import moment from 'moment';
 
-import "create_recruit.scss";
+import "campaign/recruit/new.scss";
 
 import IntroPartial from "./create_recruit/IntroPartial";
 import RecruitTargetPartial from './create_recruit/RecruitTargetPartial';
@@ -78,7 +78,7 @@ class UpdateRecruitCampaignPartial extends React.Component{
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveRecruit } = this.props.actions;
     return(
-      <div className="wrapper">
+      <div className="page page-recruit page-recruit-new">
         <div className="container">
           {this.render_breadcrumb()}
           <div className="creat-activity-wrap">

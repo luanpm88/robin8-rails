@@ -3,7 +3,8 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash'
-import "create_activity.scss";
+
+import "campaign/activity/new.scss";
 
 import IntroPartial from './create_campaign/IntroPartial';
 import TargetPartial from './create_campaign/TargetPartial';
@@ -80,7 +81,7 @@ class UpdateCampaignPartial extends React.Component {
     const { updateCampaign } = this.props.actions;
 
     return (
-      <div className="wrapper">
+      <div className="page page-activity page-activity-edit">
         <div className="container">
           { this.render_breadcrumb() }
           <div className="creat-activity-wrap">

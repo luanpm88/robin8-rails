@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 
-
-import "recruit_activity_detail.scss";
+import "campaign/recruit/show.scss";
 
 import Basic from './recruit_show/Basic';
 import Overview from './recruit_show/Overview';
@@ -21,7 +20,7 @@ function select(state){
   };
 }
 
-export default class ShowRecruitCampaignPartial extends Component {
+class ShowRecruitCampaignPartial extends Component {
   componentDidMount() {
     this._fetchRecruit();
     this.bind_toggle_text();
@@ -82,7 +81,7 @@ export default class ShowRecruitCampaignPartial extends Component {
     const status = campaign.get("recruit_status");
 
     return (
-      <div className="wrapper">
+      <div className="page page-recruit page-recruit-show">
         <div className="container">
           { this.render_breadcrumb() }
           <Basic {...{campaign}} />

@@ -75,9 +75,9 @@ export default class CampaignList extends React.Component {
     return (
       <div className="wrapper">
         <div className="container">
-          <div className="panel my-activities-panel">
+          <div className="panel brand-activities">
             <div className="panel-heading">
-              <a href="#panelActivities" data-toggle="collapse" className="switch">
+              <a href="#panelActivities" data-toggle="collapse" className="panel-heading-toggler">
                 <span className="txt">收起</span>
                 <i className="caret-arrow"></i>
               </a>
@@ -86,11 +86,11 @@ export default class CampaignList extends React.Component {
 
               <h4 className="panel-title">
                 我的推广活动
-                <span className="carte">/</span>
+                <span className="slash">/</span>
                 <strong className="stat-num">
                   { campaignCount }
                 </strong>
-                <span className="account-balance">当前余额</span>
+                <span className="balance">当前余额</span>
                   <strong className="stat-num">
                     &nbsp;&nbsp;
                     <span className="money">￥</span>

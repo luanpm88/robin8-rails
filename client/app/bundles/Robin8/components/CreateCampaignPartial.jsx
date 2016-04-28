@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import moment from 'moment';
 
-import "create_activity.scss";
+import "campaign/activity/new.scss";
 
 import IntroPartial from './create_campaign/IntroPartial';
 import TargetPartial from './create_campaign/TargetPartial';
@@ -81,7 +81,7 @@ class CreateCampaignPartial extends React.Component {
     const { saveCampaign } = this.props.actions;
 
     return (
-      <div className="wrapper">
+      <div className="page page-activity page-activity-new">
         <div className="container">
          { this.render_breadcrumb() }
           <div className="creat-activity-wrap">

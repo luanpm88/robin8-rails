@@ -14,17 +14,6 @@
 .brand-activity-card:last-child {
   margin-bottom: 0;
 }
-// .brand-activity-card .brand-activity-coverphoto {
-//   width: auto;
-//   max-width: 309px;
-//   height: 250px;
-//   overflow: hidden;
-// }
-// .brand-activity-card .brand-activity-coverphoto > img {
-//   width: auto;
-//   height:  100%;
-//   overflow: hidden;
-// }
 
 .brand-activity-coverphoto-img {
   display: block;
@@ -593,4 +582,13 @@ small.campaign_url, small.campaign_action_short_url, small.campaign_action_url{
   width: 5px;
   transform: rotate(-7deg);
   -webkit-transform: rotate(-7deg);
+}
+
+.brand-activity-card-detail {
+  height: 250px;
+  .brand-activity-content {
+    .stat-info {
+      padding: 20px 0 0 0;
+    }
+  }
 }

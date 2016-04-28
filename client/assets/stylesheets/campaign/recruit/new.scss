@@ -9,10 +9,10 @@
  * Improvements by Andrew Rowls
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
- 
-@import "create_activity_base.scss";
-@import "city_selector.scss";
-@import "form_common.scss";
+
+@import "../shared/new.scss";
+@import "../../lib/city_selector.scss";
+@import "../../lib/form_common.scss";
 
 .common-textarea{
   resize: none;

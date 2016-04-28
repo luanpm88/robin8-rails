@@ -57,5 +57,5 @@ module.exports = {
     ],
   },
   postcss: [autoprefixer],
-  sassResources: ['./assets/stylesheets/app-variables.scss'],
+  sassResources: ['./assets/stylesheets/vars.scss'],
 };
