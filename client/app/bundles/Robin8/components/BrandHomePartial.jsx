@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import CampaignList from './brand_home/CampaignList';
 import Header from './brand_home/Header'
 
+import "home.scss";
+
 export default class BrandHeader extends React.Component {
 
   constructor(props, context) {
@@ -14,7 +16,7 @@ export default class BrandHeader extends React.Component {
     const brand = data.get('brand');
 
     return (
-      <div>
+      <div className="page page-home">
         <Header {...this.props} />
         <CampaignList {...this.props} />
       </div>
