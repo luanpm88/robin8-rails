@@ -68,12 +68,12 @@ class CreateRecruitCampaign extends React.Component{
   }
 
   componentDidMount() {
-    initToolTip({placement:'bottom', html: true});  
+    initToolTip({placement:'bottom', html: true});
   }
 
   render(){
-    const { name, description, img_url, influence_score, start_time, deadline, 
-          recruit_start_time, recruit_end_time, budget, per_action_budget, 
+    const { name, description, img_url, influence_score, start_time, deadline,
+          recruit_start_time, recruit_end_time, budget, per_action_budget,
           recruit_person_count, task_description, address, region,
           hide_brand_name
         } = this.props.fields;

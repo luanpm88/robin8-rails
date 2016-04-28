@@ -7,6 +7,7 @@ import Keyword from './profile/KeyWord';
 import Crop from './shared/Crop';
 import Input, { Textarea, RadioButtons } from './profile/Input';
 import { reduxForm } from 'redux-form';
+import {} from './shared/plupload.full.min'
 import 'qiniu-js/dist/qiniu.min.js';
 import "profile.scss";
 
