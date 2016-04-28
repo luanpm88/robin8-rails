@@ -3,7 +3,8 @@ module API
     class Campaigns < Grape::API
       resources :campaigns do
         before do
-          authenticate!
+          action_name =  @options[:path].join("")
+          authenticate! if action_name != ':id'
         end
 
         #获取活动信息 根据
@@ -15,7 +16,7 @@ module API
           if campaign.blank?
             return error_403!({error: 1, detail: '该活动不存在' })
           else
-            campaign_invite = campaign.get_campaign_invite(current_kol.id)
+            campaign_invite = campaign.get_campaign_invite(current_kol.try(:id))
             present :error, 0
             present :campaign_invite, campaign_invite, with: API::V1::Entities::CampaignInviteEntities::Summary
           end
