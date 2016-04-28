@@ -4,6 +4,7 @@ module Brand
 
       before do
         authenticate!
+        current_ability
       end
 
       resource :campaigns do
@@ -36,7 +37,12 @@ module Brand
           requires :id, type: Integer, desc: 'Campaign id'
         end
         get ':id' do
-          present Campaign.find(params[:id])
+          @campaign = Campaign.find_by(id: params[:id])
+          if can?(:read, @campaign)
+            present @campaign
+          else
+            error_403! "没有查看权限"
+          end
         end
 
         desc 'Create a campaign'
@@ -167,7 +173,12 @@ module Brand
         requires :id, type: Integer
       end
       get '/recruit_campaigns/:id' do
-        present Campaign.find_by(id: declared(params)[:id])
+        @recruit_campaign = Campaign.find_by(id: declared(params)[:id])
+        if can?(:read, @recruit_campaign)
+          present @recruit_campaign
+        else
+          error_403! "没有查看权限"
+        end
       end
 
       desc "change recruit_campaign's 'end_apply_check' status "
