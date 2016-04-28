@@ -1,17 +1,18 @@
 class UpdateCampaignService
+  include CampaignHelper::RecruitCampaignServicePartial
 
   attr_reader :errors, :campaign
 
   def initialize user, campaign_id, args={}
     @user                   = user
     @campaign               = Campaign.find_by_id campaign_id
-    @update_campaign_params = permited_params_from args
+    @campaign_params = permited_params_from args
     
     @errors                 = []
   end
 
   def perform
-    if @update_campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil? or not target_present?
+    if @campaign_params.empty? or @user.nil? or not @user.persisted? or @campaign.nil? or not target_present?
 
       @errors << 'Invalid params or user/campaign!'
       return false
@@ -32,14 +33,19 @@ class UpdateCampaignService
       return false
     end
 
-    origin_budget, budget, per_action_budget = @campaign.budget, @update_campaign_params[:budget], @update_campaign_params[:per_action_budget]
+    origin_budget, budget, per_action_budget = @campaign.budget, @campaign_params[:budget], @campaign_params[:per_action_budget]
     if not enough_amount? @user, origin_budget, budget
       @errors << ["amount_not_engouh", '账号余额不足, 请充值!']
       return false
     end
 
-    @update_campaign_params[:start_time] = @update_campaign_params[:start_time].to_formatted_s(:db)
-    @update_campaign_params[:deadline] = @update_campaign_params[:deadline].to_formatted_s(:db)
+    @campaign_params[:start_time] = @campaign_params[:start_time].to_formatted_s(:db)
+    @campaign_params[:deadline] = @campaign_params[:deadline].to_formatted_s(:db)
+    
+    if @errors.size > 0
+      return false
+    end
+
 
     begin
       ActiveRecord::Base.transaction do
@@ -47,7 +53,7 @@ class UpdateCampaignService
         update_campaign_action_urls
         update_campaign_targets
 
-        @campaign.update_attributes(@update_campaign_params.reject {|c| [:campaign_action_url, :target].include? c })
+        @campaign.update_attributes(@campaign_params.reject {|c| [:campaign_action_url, :target].include? c })
         @campaign.reset_campaign origin_budget, budget, per_action_budget
 
       end
@@ -72,23 +78,23 @@ class UpdateCampaignService
   end
 
   def is_cpa_campaign?
-    @update_campaign_params[:per_budget_type].eql? 'cpa'
+    @campaign_params[:per_budget_type].eql? 'cpa'
   end
 
   def any_action_url_present?
-    @update_campaign_params[:campaign_action_url]
+    @campaign_params[:campaign_action_url]
   end
 
   def target_present?
-    @update_campaign_params[:target] and [:age, :region, :gender].all? {|k| @update_campaign_params[:target].keys.include? k }
+    @campaign_params[:target] and [:age, :region, :gender].all? {|k| @campaign_params[:target].keys.include? k }
   end
 
   def update_campaign_action_urls
-    if campaign.per_budget_type == 'cpa' && @update_campaign_params[:per_budget_type] != 'cpa'
+    if campaign.per_budget_type == 'cpa' && @campaign_params[:per_budget_type] != 'cpa'
       campaign.campaign_action_urls.destroy_all and return
     end
 
-    if (campaign_action_urls = @update_campaign_params[:campaign_action_url]) && @update_campaign_params[:per_budget_type] == 'cpa'
+    if (campaign_action_urls = @campaign_params[:campaign_action_url]) && @campaign_params[:per_budget_type] == 'cpa'
       @campaign.campaign_action_urls.destroy_all
 
       action_url = campaign_action_urls[:action_url]
@@ -102,7 +108,7 @@ class UpdateCampaignService
   def update_campaign_targets
     @campaign.campaign_targets.destroy_all
 
-    @update_campaign_params[:target].each do |k,v|
+    @campaign_params[:target].each do |k,v|
       @campaign.campaign_targets.create!({target_type: k.to_s, target_content: v})
     end
   end

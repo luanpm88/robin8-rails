@@ -24,8 +24,13 @@ global.FormValidate = function(options){
       } else if(!value && fieldOption.require_img) {
         errors[fieldName] = "请上传图片";
       } else if (fieldName == 'budget' && value) {
-        if(parseInt(value) > parseInt($(".budget-input").attr("brand-amount"))){
+        let brand_amount = parseInt($(".budget-input").attr("brand-amount"))
 
+        if($(".budget-input").attr("data-is-edit")){
+          brand_amount += parseInt($(".budget-input").attr("data-origin-budget"))
+        }
+
+        if(parseInt(value) > brand_amount){
           errors[fieldName] = "账户余额不足, 请充值";
         }
 

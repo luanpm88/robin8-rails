@@ -1,0 +1,2 @@
+module MarketingDashboard::TrackUrlsHelper
+end
