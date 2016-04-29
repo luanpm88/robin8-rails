@@ -567,7 +567,7 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.0)
-    react_on_rails (3.0.0.rc.2)
+    react_on_rails (5.2.0)
       connection_pool
       execjs (~> 2.5)
       foreman
@@ -863,7 +863,7 @@ DEPENDENCIES
   rails-assets-underscore.inflection!
   rails-assets-underscore.string!
   ransack!
-  react_on_rails (~> 3.0.0.pre.rc.2)
+  react_on_rails (~> 5.2.0)
   redis-objects
   redis-rails
   rest-client

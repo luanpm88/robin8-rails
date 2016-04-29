@@ -40,11 +40,6 @@
   "homepage": "https://github.com/shakacode/react-webpack-rails-tutorial",
   "dependencies": {
     "echarts": "^3.1.4",
-    "element-resize-event": "^2.0.3",
-    "react-cookie": "^0.4.5"
-  },
-  "devDependencies": {
-    "mirror-creator": "^1.1.0",
-    "sass-loader": "^3.2.0"
+    "element-resize-event": "^2.0.3"
   }
 }
