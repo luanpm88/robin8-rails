@@ -1,10 +1,9 @@
 # Shown below are the defaults for configuration
 ReactOnRails.configure do |config|
   # Client bundles are configured in application.js
-
   # Server rendering:
   # Server bundle is a single file for all server rendering of components.
-  config.server_bundle_js_file = "app/assets/javascripts/generated/server-bundle.js"
+  # config.server_bundle_js_file = "app/assets/javascripts/generated/server-bundle.js"
   # increase if you're on JRuby
   config.server_renderer_pool_size = 1
   # seconds
@@ -25,4 +24,6 @@ ReactOnRails.configure do |config|
   config.trace = Rails.env.development?
   # Default is false, enable if your content security policy doesn't include `style-src: 'unsafe-inline'`
   config.skip_display_none = false
+
+  config.generated_assets_dir = "app/assets/webpack"
 end
