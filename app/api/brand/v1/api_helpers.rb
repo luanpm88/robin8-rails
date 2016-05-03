@@ -13,11 +13,27 @@ module Brand::V1::APIHelpers
       end
   end
 
+  def can?(*args)
+    current_ability.can?(*args)
+  end
+
+  def authorize!(*args)
+    current_ability.authorize!(*args)
+  end
+
+  def current_ability
+    @current_ability ||= ::Ability.new(current_user)
+  end
+
   def authenticate!
     error!('Access Denied', 401) unless current_user
   end
 
   def error_unprocessable! detail=nil
     error!({error: 'Unprocessable!', detail: detail}, 422)
+  end
+
+  def error_403! detail = nil
+    error!({error: 'Access Denied', detail: detail}, 403)
   end
 end
