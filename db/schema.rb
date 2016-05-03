@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425104747) do
+ActiveRecord::Schema.define(version: 20160503090236) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 20160425104747) do
     t.string   "weixin_no",           limit: 255
     t.integer  "weixin_friend_count", limit: 4
     t.string   "status",              limit: 255
+    t.string   "expect_price",        limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "agree_reason",        limit: 255
@@ -928,6 +929,7 @@ ActiveRecord::Schema.define(version: 20160425104747) do
     t.integer  "incr_sign_up_kols_count",  limit: 4
     t.text     "from_which_campaign",      limit: 65535
     t.boolean  "is_dealed",                limit: 1,     default: false
+    t.integer  "campaign_invites_count",   limit: 4
   end
 
   create_table "streams", force: :cascade do |t|
