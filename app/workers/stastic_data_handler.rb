@@ -28,6 +28,7 @@ class StasticDataHandler
     stastic_data.incr_sign_up_kols_count = Kol.where(:provider => "signup").where("created_at > ? and created_at < ?", stastic_data.start_time, stastic_data.end_time).count    
 
     stastic_data.campaign_invites_count = CampaignInvite.where("created_at > ? and created_at < ?", stastic_data.start_time, stastic_data.end_time).count
+    stastic_data.uniq_campaign_invites_count = CampaignInvite.where("created_at > ? and created_at < ?", stastic_data.start_time, stastic_data.end_time).map(&:kol_id).uniq.count
     from_which_campaign_hash = {}
     Kol.where("created_at > ? and created_at < ?", stastic_data.start_time, stastic_data.end_time).each do |kol|
       from_which_campaign_hash[kol.from_which_campaign.to_s] = from_which_campaign_hash[kol.from_which_campaign.to_s].to_i + 1 
