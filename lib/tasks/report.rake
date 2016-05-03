@@ -89,4 +89,20 @@ namespace :report do
       
     end
   end
+
+  desc "生成预审 不通过的照片"
+  task generate_unpassed_screenshots: :environment do
+    system("mkdir -p unpassed_imgs/images && mkdir -p unpassed_imgs/small_images")
+    file = File.new("#{Rails.root}/unpassed_imgs/readme.csv", "w")
+    file.write("id,app_version,app_platform,unpassed_reason,img\n")
+    
+    CampaignInvite.where(:ocr_status => "failure").each_with_index do |invite, index|
+      kol = invite.kol
+      puts invite.screenshot, "----", invite.id
+      system("wget #{invite.screenshot} -O #{Rails.root}/unpassed_imgs/images/#{index}.jpg")
+      system("cp /home/deployer/apps/screenshot_approve/campaign_invites/#{invite.id}/logo.jpg #{Rails.root}/unpassed_imgs/small_images/#{index}.jpg")
+      line = "#{kol.id},#{kol.app_version},#{kol.app_platform},#{invite.ocr_detail},#{index}.jpg\n"
+      file.write(line)
+    end
+  end
 end
