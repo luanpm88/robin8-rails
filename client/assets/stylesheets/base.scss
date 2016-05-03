@@ -4,8 +4,7 @@
  * sandmanman@qq.com
  */
 
-@import "webfont";
-
+@import "font";
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
@@ -16,27 +15,39 @@ html,
 body {
   background: #ebf3f5;
 }
+
+body {
+  color: #181616;
+  font-family: SimHei, "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", Arial, sans-serif;
+  font-size: 16px;
+}
+
 ul,
 ol {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-body {
-  color: #181616;
-  font-family: SimHei, "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", Arial, sans-serif;
-  font-size: 16px;
-}
+
 .wrapper {
   padding: 30px 0;
 }
+
+.page {
+  padding: 30px 0;
+}
+
 .container {
-  width: 1000px;
-  max-width: none !important;
+  position: relative;
+  width: $inner-width;
+  max-width: 100%;
+  margin: 0 auto;
 }
+
 .container-fluid {
-  min-width: 1000px;
+  min-width: $inner-width;
 }
+
 .table > tbody > tr > td,
 .table > tbody > tr > th,
 .table > tfoot > tr > td,
@@ -45,28 +56,27 @@ body {
 .table > thead > tr > th {
   border-top: 2px solid #e8e8e8;
 }
+
 .table > thead > tr > th {
   border-bottom: 2px solid #e8e8e8;
 }
+
 :-ms-clear {
   display: none;
 }
+
 .slash {
   color: #bfc1c0;
   margin: 0 5px;
 }
+
 .avater-small {
   width: 97px;
   height: 97px;
   display: inline-block;
   border-radius: 1000px;
 }
-.avater-x-small {
-  width: 78px;
-  height: 78px;
-  display: inline-block;
-  border-radius: 1000px;
-}
+
 .r-card,
 .panel {
   margin-bottom: 40px;
@@ -74,114 +84,93 @@ body {
   background-color: #fff;
   box-shadow: 3.5px 6.062px 13px 0px rgba(0, 0, 0, 0.05);
 }
+
 .r-card-body {
   padding: 20px 40px;
 }
+
 .panel .panel-body {
   padding: 20px 40px 40px 40px;
 }
+
 .panel-heading {
   padding: 20px 40px;
   line-height: 36px;
-}
-.panel-heading .panel-title {
-  font-size: 16px;
-  line-height: 36px;
-}
-.panel-heading .stat-num {
-  font-size: 20px;
-  position: relative;
-  top: 2px;
+
+  .panel-title {
+    font-size: 16px;
+    line-height: 36px;
+  }
+  .switch {
+    float: right;
+    margin-left: 30px;
+    color: #9b9a9a;
+    font-size: 14px;
+    margin-top: 5px;
+    height: 35px;
+  }
+  .stat-num {
+    font-size: 20px;
+    position: relative;
+    top: 2px;
+  }
+  .caret-arrow {
+    margin-left: 10px;
+    background-position: 0 -76px;
+  }
+  .collapsed .caret-arrow {
+    background-position: 0 -52px;
+  }
+  .quick-btn-group {
+    float: right;
+    margin-top: 6px;
+  }
+  .quick-btn {
+    width: 131px;
+    height: 31px;
+    line-height: 31px;
+  }
+  .slash {
+    margin: 0 10px;
+    color: #c3c5c6;
+  }
 }
 
-span.money {
+.money {
   font-size: 13px;
   position: relative;
   right: 2px;
   bottom: 2px;
+  display: inline-block;
 }
 
-span.avail-amount {
+.avail-amount {
   position: relative;
   bottom: 1px;
+  display: inline-block;
 }
 
-.panel-heading .switch {
-  float: right;
-  margin-left: 30px;
-  color: #9b9a9a;
-  font-size: 14px;
-  margin-top: 5px;
-  height: 35px;
-}
-.panel-heading .caret-arrow {
-  margin-left: 10px;
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  background: url(~robin8_ui_sprites.png) no-repeat 0 -76px;
-}
-.panel-heading .collapsed .caret-arrow {
-  background-position: 0 -52px;
-}
-.panel-heading .quick-btn-group {
-  float: right;
-  margin-top: 6px;
-}
-.panel-heading .quick-btn {
-  width: 131px;
-  height: 31px;
-  line-height: 31px;
-}
-.panel-heading .carte {
-  margin: 0 10px;
-  color: #c3c5c6;
-  font-style: normal;
-}
-.fuck-ie {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10000;
-  width: 100%;
-  height: 100%;
-  padding-top: 260px;
-  overflow: hidden;
-  text-align: center;
-  color: #fff;
-  font-size: 24px;
-  background-color: rgba(0, 0, 0, 0.6);
-  filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#6F000000, endcolorstr=#6F000000);
-}
-.fuck-ie p {
-  margin-bottom: 20px;
-}
-.fuck-ie a {
-  display: inline-block;
-  margin: 0 10px;
-  padding: 2px 10px 2px 30px;
-  vertical-align: middle;
-  border: 2px solid #fff;
-}
 .caret-arrow {
   display: inline-block;
   width: 14px;
   height: 14px;
   background-image: url(~robin8_ui_sprites.png);
   background-repeat: no-repeat;
+
+  &.left {
+    background-position: 0 -100px;
+  }
+  &.right {
+    background-position: 0 -124px;
+  }
+  &.up {
+    background-position: 0 -76px;
+  }
+  &.down {
+    background-position: 0 -52px;
+  }
 }
-.caret-arrow.left {
-  background-position: 0 -100px;
-}
-.caret-arrow.right {
-  background-position: 0 -124px;
-}
-.caret-arrow.up {
-  background-position: 0 -76px;
-}
-.caret-arrow.down {
-  background-position: 0 -52px;
-}
+
 .what {
   display: inline-block;
   width: 15px;
@@ -195,6 +184,7 @@ span.avail-amount {
   background-color: #b9bdbe;
   border-radius: 1000px;
 }
+
 .icon-medium {
   display: inline-block;
   width: 18px;
@@ -202,21 +192,26 @@ span.avail-amount {
   background-image: url(~robin8_ui_sprites.png);
   background-repeat: no-repeat;
 }
+
 .icon-search {
   background-position: 0 -388px;
 }
+
 .icon-modify {
   background-position: 0 -285px;
 }
+
 .btn {
   padding: 0;
   line-height: 36px;
   outline: none !important;
   box-shadow: 3.5px 6.062px 13px 1px rgba(0, 0, 0, 0.15);
 }
+
 .btn.btn-line {
   background: transparent;
 }
+
 .btn-grey {
   color: #181616;
   border: 1px solid #bbb;
@@ -270,12 +265,13 @@ span.avail-amount {
 .breadcrumb {
   padding: 0;
   background-color: transparent;
-}
-.breadcrumb .caret-arrow {
-  margin-right: 5px;
-}
-.breadcrumb a {
-  color: #181616;
+
+  a {
+    color: #181616;
+  }
+  .caret-arrow {
+    margin-right: 5px;
+  }
 }
 .label {
   display: inline-block;
@@ -293,104 +289,48 @@ span.avail-amount {
   background: url(~robin8_header_bg.jpg) no-repeat center top #2c2a2b;
   border-radius: 0;
   border: none;
-}
-.r-global-header .logo {
-  float: left;
-  width: 89px;
-  height: 60px;
-  overflow: hidden;
-  line-height: 9999px;
-  background: url(~robin8_logo.png) no-repeat center;
-  background-image: -webkit-image-set(url(~robin8_logo.png) 1x, url(~robin8_logo@2x.png) 2x);
-}
-.r-global-header .navbar-user .username {
-  display: block;
-  color: #fff;
-  line-height: 56px;
-  font-weight: 400;
-}
-.r-global-header .navbar-user .username .caret-arrow {
-  position: relative;
-  top: 5px;
-  margin-left: 10px;
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  background: url(~robin8_ui_sprites.png) no-repeat 0 0;
-}
-.r-global-header .navbar-user .dropdown-menu {
-  right: 0;
-  left: auto;
-}
 
-.switchery {
-  background-color: #B9B9B9;
-  border: 1px solid #B9B9B9;
-  border-radius: 20px;
-  cursor: pointer;
-  display: inline-block;
-  height: 36px;
-  line-height: 35px;
-  position: relative;
-  vertical-align: middle;
-  width: 84px;
-
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  box-sizing: border-box;
-  background-clip: border-box;
-  transition-duration: 0.1s;
-
-  .text {
-    display: inline-block;
-    color: #fff;
-    font-size: 14px;
-    text-align: center;
-    padding: 0 5px;
-    width: 56px;
-    float: right;
+  .logo {
+    float: left;
+    width: 89px;
+    height: 60px;
+    overflow: hidden;
+    line-height: 9999px;
+    background: url(~robin8_logo.png) no-repeat center;
+    background-image: -webkit-image-set(url(~robin8_logo.png) 1x, url(~robin8_logo@2x.png) 2x);
   }
 
-  > input {
-    display: none;
-  }
-
-  > small {
-    position: absolute;
-    height: 29px;
-    line-height: 29px;
-    width: 29px;
-    top: 2px;
-    left: 3px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-    border-radius: 100%;
-    transition-duration: 0.1s;
-    background: #fff;
-    text-align: center;
-    padding: 3px;
-    i {
-      display: inline-block;
-      width: 2px;
-      height: 12px;
-      margin: 1px;
-      background-color: #B9B9B9;
-    }
-  }
-
-  &.active {
-    border-color: #36CCD4;
-    background-color: #36CCD4;
-    .text {
-      float: left;
-    }
-    > small {
-      left: 51px;
-      i {
-        background-color: #36CCD4;
+  .navbar-user {
+    .username {
+      display: block;
+      color: #fff;
+      line-height: 56px;
+      font-weight: 400;
+      .caret-arrow {
+        position: relative;
+        top: 5px;
+        margin-left: 10px;
+        width: 18px;
+        height: 18px;
+        background-position: 0 0;
       }
     }
+    .dropdown-menu {
+      right: 0;
+      left: auto;
+    }
   }
 }
+
+.form-common-label{
+  display: block;
+  color: #9b9a9a;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@import "lib/pagination.scss";
+@import "lib/switchery.scss";
+@import "lib/datetimepicker.scss";
+@import "lib/activity_card.scss";
+@import "lib/city_selector.scss";

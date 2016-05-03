@@ -214,7 +214,7 @@ gem 'carrierwave'
 gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
 
 gem 'rucaptcha'
-gem "react_on_rails", '~> 3.0.0-rc.2'
+gem "react_on_rails", '~> 5.2.0'
 gem 'foreman'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'json_expressions'

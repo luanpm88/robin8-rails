@@ -31,7 +31,7 @@ export default class BrandHeader extends React.Component {
 
             </Link>
           </div>
-          <div className="brand-menu">
+          <div className="brand-content">
             <Link to={`/brand/${brand.get('id')}/edit`} className="brand-name">{ brand.get('name') }</Link>
           </div>
         </div>
