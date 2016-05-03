@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Input from './profile/Input';
 import { reduxForm } from 'redux-form';
-import "profile.scss";
+
+import "user/profile.scss";
 
 const validate = new FormValidate({
   password: {require: true, min_length: 6},
@@ -48,8 +49,8 @@ class UpdatePasswordPartial extends Component {
     const { password, new_password, new_password_confirmation } = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     return (
-      <div className="wrapper">
-        <div className="container profile">
+      <div className="page page-profile page-profile-password">
+        <div className="container">
           { this.render_breadcrumb() }
           <form onSubmit={ (event) => { handleSubmit(this._updateBrandPassword)(event).catch(validateFailed) } }>            <div className="header contacter-header">
               <h3>修改密码</h3>

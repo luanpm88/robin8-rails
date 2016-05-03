@@ -214,7 +214,7 @@ gem 'carrierwave'
 gem 'carrierwave-qiniu', :github => "huobazi/carrierwave-qiniu"
 
 gem 'rucaptcha'
-gem "react_on_rails", '~> 3.0.0-rc.2'
+gem "react_on_rails", '~> 5.2.0'
 gem 'foreman'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'json_expressions'
@@ -227,3 +227,5 @@ gem 'rack-attack'
 gem 'rack-test', require: 'rack/test'
 gem "non-stupid-digest-assets"
 gem 'status-page', :git => "https://github.com/gallifreyer/status-page.git"
+# https://github.com/CanCanCommunity/cancancan
+gem 'cancancan', '~> 1.10'

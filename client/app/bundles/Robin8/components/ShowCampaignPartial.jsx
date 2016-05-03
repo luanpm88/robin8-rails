@@ -3,13 +3,13 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import "activity_detail.scss";
+import "campaign/activity/show.scss";
 
-import Basic from './campaign_show/Basic';
-import Overview from './campaign_show/Overview';
-import Target from './campaign_show/Target';
-import KolList from './campaign_show/KolList';
-import Influnce from './campaign_show/Influnce'
+import Basic      from './campaigns/show/Basic';
+import Overview   from './campaigns/show/Overview';
+import Target     from './campaigns/show/Target';
+import KolList    from './campaigns/show/KolList';
+import Influnce   from './campaigns/show/Influnce'
 
 function select(state){
   return {
@@ -19,7 +19,8 @@ function select(state){
     campaign_statistics: state.$$brandStore.get("campaign_statistics")
   };
 }
-export default class ShowCampaignPartial extends Component {
+
+class ShowCampaignPartial extends Component {
   componentDidMount() {
     console.log("---------campaign show did mount--------");
     this._fetchCampaign();
@@ -63,7 +64,7 @@ export default class ShowCampaignPartial extends Component {
     const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
     const campaign_id = this.props.params.id
     return (
-      <div className="wrapper">
+      <div className="page page-activity page-activity-show">
         <div className="container">
           { this.render_breadcrumb() }
           <Basic {...{campaign}} />

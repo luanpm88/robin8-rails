@@ -3,14 +3,15 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash'
-import "create_activity.scss";
 
-import IntroPartial from './create_campaign/IntroPartial';
-import TargetPartial from './create_campaign/TargetPartial';
-import DetailPartial from './create_campaign/DetailPartial';
-import DatePartial from './create_campaign/DatePartial';
-import BudgetPartial from './create_campaign/BudgetPartial';
-import initToolTip from './shared/InitToolTip';
+import "campaign/activity/form.scss";
+
+import IntroPartial    from './campaigns/form/IntroPartial';
+import TargetPartial   from './campaigns/form/TargetPartial';
+import DetailPartial   from './campaigns/form/DetailPartial';
+import DatePartial     from './campaigns/form/DatePartial';
+import BudgetPartial   from './campaigns/form/BudgetPartial';
+import initToolTip     from './shared/InitToolTip';
 
 const validate = new FormValidate({
   name: { require: true },
@@ -80,7 +81,7 @@ class UpdateCampaignPartial extends React.Component {
     const { updateCampaign } = this.props.actions;
 
     return (
-      <div className="wrapper">
+      <div className="page page-activity page-activity-edit">
         <div className="container">
           { this.render_breadcrumb() }
           <div className="creat-activity-wrap">

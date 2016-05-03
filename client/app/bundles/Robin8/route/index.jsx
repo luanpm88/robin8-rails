@@ -1,27 +1,59 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import BrandHomeContainer from '../containers/BrandHomeContainer';
-import CreateCampaignPartial from '../components/CreateCampaignPartial';
-import UpdateCampaignPartial from '../components/UpdateCampaignPartial';
 import BrandHomePartial from '../components/BrandHomePartial';
-import ShowCampaignPartial from '../components/ShowCampaignPartial';
-import ShowRecruitCampaignPartial from '../components/ShowRecruitCampaignPartial';
-import EditProfilePartial from '../components/EditProfilePartial';
-import UpdatePasswordPartial from '../components/UpdatePasswordPartial';
-import CreateRecruitCampaignPartial from '../components/CreateRecruitCampaignPartial';
-import UpdateRecruitCampaignPartial from '../components/UpdateRecruitCampaignPartial';
 
 export default (
   <Route path="/brand" component={BrandHomeContainer}>
     <IndexRoute component={BrandHomePartial} />
 
-    <Route path="campaigns/new" component={CreateCampaignPartial} />
-    <Route path="recruits/new" component={CreateRecruitCampaignPartial} />
-    <Route path="campaigns/:id/edit" component={UpdateCampaignPartial} />
-    <Route path="campaigns/:id" component={ShowCampaignPartial} />
-    <Route path="recruits/:id/edit" component={UpdateRecruitCampaignPartial} />
-    <Route path="recruits/:id" component={ShowRecruitCampaignPartial} />
-    <Route path=":id/edit" component={EditProfilePartial} />
-    <Route path="password" component={UpdatePasswordPartial} />
+    <Route path="campaigns/new" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/CreateCampaignPartial').default);
+      }, "createCampaign");
+    }}/>
+
+    <Route path="campaigns/:id/edit" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/UpdateCampaignPartial').default);
+      }, "updateCampaign");
+    }}/>
+
+    <Route path="campaigns/:id" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/ShowCampaignPartial').default);
+      }, "showCampaign");
+    }}/>
+
+    <Route path="recruits/new" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/CreateRecruitCampaignPartial').default);
+      }, "createRecruitCampaign");
+    }}/>
+
+    <Route path="recruits/:id" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/ShowRecruitCampaignPartial').default);
+      }, "showRecruitCampaign");
+    }}/>
+
+    <Route path="recruits/:id/edit" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/UpdateRecruitCampaignPartial').default);
+      }, "updateRecruitCampaign");
+    }}/>
+
+    <Route path=":id/edit" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/EditProfilePartial').default);
+      }, "editProfile");
+    }}/>
+
+    <Route path="password" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/UpdatePasswordPartial').default);
+      }, "updatePassword");
+    }}/>
+
   </Route>
 )
