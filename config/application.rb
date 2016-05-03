@@ -49,6 +49,8 @@ module Robin8
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
 
+    config.assets.manifest = Rails.root.join('public', 'assets', 'manifest.json')
+
     config.action_dispatch.perform_deep_munge = false
     config.i18n.available_locales = ['en', 'zh']
     # I18n.enforce_available_locales = false
@@ -57,13 +59,12 @@ module Robin8
     config.china_instance = (ENV['china_instance'] == 'Y' ? true : false)
     puts "Start China Instance ....  value: #{config.china_instance} "
 
-    config.cache_store = :redis_store, { :host => "localhost",
+    # echo 'export redis_host="localhost"/"#{ip}" >> /etc/enviroment
+    config.cache_store = :redis_store, { :host => ENV['redis_host'],
                                          :port => 6379,
                                          :db => 0,
                                          :namespace => "robcache",
                                          :password => Rails.application.secrets[:redis][:password],
                                          :expires_in => 90.minutes }
   end
-
-  require Rails.root.to_s + '/lib/blue_snap.rb'
 end
