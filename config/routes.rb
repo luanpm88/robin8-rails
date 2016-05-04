@@ -156,4 +156,9 @@ Rails.application.routes.draw do
   post 'campaign_invite/reject', to: 'interested_campaigns#update'
   post 'campaign_invite/invite', to: 'interested_campaigns#update'
   post 'campaign_invite/ask_for_invite', to: 'interested_campaigns#ask_for_invite'
+
+
+
+  # =========================申请支付宝需要的页面路由用完要删掉=============================
+  get 'join_in', to: 'pages#join_in'
 end
