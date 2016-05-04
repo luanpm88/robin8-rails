@@ -20,7 +20,7 @@ module API
 
         #第三方登陆
         params do
-          requires :app_platform
+          requires :app_platform, type: String
           requires :app_version, type: String
           requires :device_token, type: String
           requires :os_version, type: String

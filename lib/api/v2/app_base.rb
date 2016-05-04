@@ -8,7 +8,7 @@ module API
       mount API::V2::Influences
       mount API::V2::Articles
       mount API::V2::ArticleActions
-      # mount API::V2::Kols
+      mount API::V2::Kols
       mount API::V2::Sessions
       mount API::V2::Upgrades
       mount API::V2::Notify

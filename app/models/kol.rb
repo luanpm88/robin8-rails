@@ -331,14 +331,14 @@ class Kol < ActiveRecord::Base
   end
 
 
-  def self.reg_or_sign_in(params)
-    kol = Kol.find_by(mobile_number: params[:mobile_number])
+  def self.reg_or_sign_in(params, kol = nil)
+    kol ||= Kol.find_by(mobile_number: params[:mobile_number])
+    app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
       kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
                             device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
-                            os_version: params[:os_version], device_model: params[:device_model])
+                            os_version: params[:os_version], device_model: params[:device_model], app_city: app_city)
     else
-      app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
                         IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number],
