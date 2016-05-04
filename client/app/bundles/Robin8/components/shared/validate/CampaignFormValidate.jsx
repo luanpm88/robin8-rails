@@ -1,7 +1,6 @@
 import validator from 'validator';
-import React from 'react';
 
-global.FormValidate = function(options){
+export default function CampaignFormValidate(options){
   return (values) => {
     const errors = {}
 
@@ -24,23 +23,6 @@ global.FormValidate = function(options){
       } else if(!value && fieldOption.require_img) {
         errors[fieldName] = "请上传图片";
       } else if (fieldName == 'budget' && value) {
-        let brand_amount = parseInt($(".budget-input").attr("brand-amount"))
-
-        if($(".budget-input").attr("data-is-edit")){
-          brand_amount += parseInt($(".budget-input").attr("data-origin-budget"))
-        }
-
-        if(parseInt(value) > brand_amount){
-          errors[fieldName] = "账户余额不足, 请充值";
-        }
-
-        fetch('/brand_api/v1/user', { credentials: 'same-origin' })
-          .then(function(response){
-            response.json().then(function(data){
-              $(".budget-input").attr("brand-amount", parseInt(data.avail_amount))
-            })
-          })
-
         if (value < fieldOption.min_budget) {
           errors[fieldName] = "最低费用100元";
         }
@@ -64,19 +46,7 @@ global.FormValidate = function(options){
           }
         }
       }
-      else if(fieldName === "new_password_confirmation") {
-        if(value !== $('#new_password').val()) {
-          errors[fieldName] = "确认密码和新密码不一致";
-        }
-      }
-      else if(fieldName === 'new_password' || fieldName === 'password' || fieldName === 'new_password_confirmation') {
-        if(value.length < fieldOption.min_length) {
-          errors[fieldName] = "密码最少为6位"
-        }
-      }
     })
-
     return errors;
   }
-
 }
