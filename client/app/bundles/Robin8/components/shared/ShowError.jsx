@@ -17,7 +17,6 @@ export class ShowError extends Component {
   }
 }
 
-
 export class BudgetShowError extends Component {
 
   static propTypes = {

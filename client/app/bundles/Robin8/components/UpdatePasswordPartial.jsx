@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Input from './profile/Input';
 import { reduxForm } from 'redux-form';
+import BrandFormValidate from './shared/validate/BrandFormValidate'
 
 import BreadCrumb     from './shared/BreadCrumb';
 
 import "user/profile.scss";
 
-const validate = new FormValidate({
+const validate = new BrandFormValidate({
   password: {require: true, min_length: 6},
   new_password: {require: true, min_length: 6},
   new_password_confirmation: {require: true, new_password_confirmation: true}

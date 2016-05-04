@@ -14,8 +14,9 @@ import DatePartial           from './recruit_campaigns/form/OfflineDate';
 import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
 import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
 import initToolTip           from './shared/InitToolTip';
+import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
 
-const validate = new FormValidate({
+const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   img_url: { require_img: true },

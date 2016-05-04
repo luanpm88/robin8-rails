@@ -12,6 +12,7 @@ import Input, { Textarea, RadioButtons } from './profile/Input';
 
 import {} from './shared/plupload.full.min'
 import 'qiniu-js/dist/qiniu.min.js';
+import BrandFormValidate from './shared/validate/BrandFormValidate'
 
 import "user/profile.scss";
 
@@ -32,11 +33,11 @@ const getUploader = function() {
   });
 }
 
-const validate = new FormValidate({
+const validate = new BrandFormValidate({
   name: { require: true },
   description: { require: true },
   real_name: { require: true },
-  url: { url: { require_protocol: true} }
+  url: { url: { require_protocol: false} }
 })
 
 const validateFailed = (errors) => {
