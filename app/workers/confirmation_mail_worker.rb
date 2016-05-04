@@ -41,7 +41,7 @@ class ConfirmationMailWorker
       }.merge(data.tap { |d| d.delete(:token) })
 
       mg_client = Mailgun::Client.new(Rails.application.secrets.mailgun[:api_key], api_host='api.mailgun.net', api_version='v3')
-      send_domain = Rails.application.secrets.mailgun[:send_domain]
+      send_domain = Rails.application.secrets.mailgun[:domain]
       begin
         result = mg_client.send_message(send_domain, send_data)
       rescue => e
