@@ -23,6 +23,8 @@ module API
           requires :app_platform
           requires :app_version, type: String
           requires :device_token, type: String
+          requires :os_version, type: String
+          requires :device_model, type: String
           optional :city_name, type: String
           optional :IDFA, type: String
           optional :IMEI, type: String
@@ -62,7 +64,8 @@ module API
               kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
                                 device_token: params[:device_token], name: params[:name],
                                 social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
-                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source], app_city: app_city)
+                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source],
+                                app_city: app_city, os_version: params[:os_version], device_model: params[:device_model])
               #保存头像
               kol.update_attribute(:remote_avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?

@@ -335,13 +335,15 @@ class Kol < ActiveRecord::Base
     kol = Kol.find_by(mobile_number: params[:mobile_number])
     if kol.present?
       kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
-                            device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
+                            device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
+                            os_version: params[:os_version], device_model: params[:device_model])
     else
       app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
                         IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number],
-                        utm_source: params[:utm_source], app_city: app_city)
+                        utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
+                        device_model: params[:device_model])
     end
     return kol
   end
