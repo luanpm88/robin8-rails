@@ -29,17 +29,23 @@
   <div class="buy">
   	<div class="buy1">
       <%= image_tag('temp_zuanshi.png') %>
-  		<div  class='buy-btn'>立即购买</div>
+  		<div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '15000'), target: "_blank" %>
+      </div>
   	</div>
 
   	<div class="buy1">
       <%= image_tag('temp_baijin.png') %>
-  		<div  class='buy-btn'>立即购买</div>
+  		<div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '10000'), target: "_blank" %>
+      </div>
   	</div>
 
   	<div class="buy1">
       <%= image_tag('temp_jinpai.png') %>
-  		<div  class='buy-btn'>立即购买</div>
+  		<div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '5000'), target: "_blank" %>
+      </div>
   	</div>
   </div>
 
@@ -48,17 +54,23 @@
 
     <div class="buy1">
       <%= image_tag('temp_yinpai.png') %>
-      <div  class='buy-btn'>立即购买</div>
+      <div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '3000'), target: "_blank" %>
+      </div>
     </div>
 
     <div class="buy1">
       <%= image_tag('temp_tongpai.png') %>
-      <div  class='buy-btn'>立即购买</div>
+      <div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '1000'), target: "_blank" %>
+      </div>
     </div>
 
     <div class="buy1">
       <%= image_tag('temp_putong.png') %>
-      <div  class='buy-btn'>立即购买</div>
+      <div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '800'), target: "_blank" %>
+      </div>
     </div>
   </div>
 
@@ -121,6 +133,10 @@
     position: absolute;
     bottom: 30px;
     cursor: pointer;
+  }
+
+  .buy-btn a {
+    color: white !important;
   }
 
   .navbar-header {
