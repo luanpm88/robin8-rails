@@ -46,6 +46,7 @@ class Campaign < ActiveRecord::Base
                                       start_time desc") }
 
   scope :completed, -> {where("status = 'executed' or status = 'settled'")}
+  before_save :format_url
   after_save :create_job
 
   OfflineProcess = ["点击立即报名，填写相关资料，完成报名","资质认证通过", "准时参与活动，并配合品牌完成相关活动", "根据品牌要求，完成相关推广任务", "上传任务截图", "任务完成，得到酬金"]
@@ -431,4 +432,11 @@ class Campaign < ActiveRecord::Base
     puts "-"*60
   end
 
+  def format_url
+    # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
+    # 直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
+    if URI(self.url).host == "mp.weixin.qq.com" and not self.url.include?("#wechat_redirect")
+      self.url = self.url + "#wechat_redirect"
+    end
+  end
 end
