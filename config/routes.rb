@@ -161,4 +161,5 @@ Rails.application.routes.draw do
 
   # =========================申请支付宝需要的页面路由用完要删掉=============================
   get 'join_in', to: 'pages#join_in'
+  get 'pay', to: 'pages#pay'
 end

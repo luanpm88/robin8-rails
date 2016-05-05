@@ -186,4 +186,9 @@ class PagesController < ApplicationController
   def join_in
     render 'join_in', :layout => 'brand_v2'
   end
+
+  def pay
+    @price = params[:price]
+    render 'pay', :layout => 'brand_v2'
+  end
 end
