@@ -1,8 +1,11 @@
 class KolInfluenceValue < ActiveRecord::Base
+  belongs_to :kol
+
   UpgradeNotices = ["1. 绑定更多的社交账号，提升你的影响力分数","2. 积极参与悬赏活动，增强个人账户的活跃度","3. 邀请更多好友加入Robin8，通过通讯录建立你的朋友圈，精准分析你的影响力"]
   #计算总价值
   BaseScore = 380
   def self.cal_and_store_score(kol_id, kol_uuid, kol_city, kol_mobile_model, is_auto = false)
+    kol = Kol.find kol_id  rescue nil
     kol_city = Influence::Value.get_kol_city(kol_uuid)   if kol_city.blank?
     kol_value = KolInfluenceValue.find_or_initialize_by(:kol_uuid => kol_uuid)
     kol_value.base_score = BaseScore
@@ -30,6 +33,9 @@ class KolInfluenceValue < ActiveRecord::Base
     kol_value.name = TmpIdentity.get_name(kol_uuid, kol_id)
     kol_value.avatar_url = TmpIdentity.get_avatar_url(kol_uuid, kol_id)
     kol_value.save
+    if kol.present?
+      kol.update_influence_result(kol_uuid,kol_value.influence_score)
+    end
     KolInfluenceValueHistory.generate_history(kol_value, is_auto)
     kol_value
   end
