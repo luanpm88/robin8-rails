@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import Input from './profile/Input';
 import { reduxForm } from 'redux-form';
 
+import BreadCrumb     from './shared/BreadCrumb';
+
 import "user/profile.scss";
 
 const validate = new FormValidate({
@@ -33,17 +35,6 @@ class UpdatePasswordPartial extends Component {
     this.props.history.push('/brand/');
   }
 
-  render_breadcrumb() {
-    return (
-      <ol className="breadcrumb">
-        <li>
-          <i className="caret-arrow left" />
-          <Link to="/brand/">我的主页</Link>
-        </li>
-      </ol>
-    );
-  }
-
   render() {
 
     const { password, new_password, new_password_confirmation } = this.props.fields;
@@ -51,7 +42,7 @@ class UpdatePasswordPartial extends Component {
     return (
       <div className="page page-profile page-profile-password">
         <div className="container">
-          { this.render_breadcrumb() }
+          <BreadCrumb />
           <form onSubmit={ (event) => { handleSubmit(this._updateBrandPassword)(event).catch(validateFailed) } }>            <div className="header contacter-header">
               <h3>修改密码</h3>
             </div>
