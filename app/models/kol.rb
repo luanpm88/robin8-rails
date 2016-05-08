@@ -6,6 +6,7 @@ class Kol < ActiveRecord::Base
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
   include Concerns::KolCampaign
+  include Concerns::KolTask
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
