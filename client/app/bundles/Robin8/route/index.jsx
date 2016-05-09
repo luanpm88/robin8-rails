@@ -55,31 +55,24 @@ export default (
       }, "updatePassword");
     }}/>
 
-  <Route path="financial/" getComponent={(nextState, cb) => {
+  <Route path="financial/recharge" getComponent={(nextState, cb) => {
     require.ensure([], (require) => {
-      cb(null, require('../containers/FinancialContainer').default);
-    }, "recharge");
-  }}>
+      cb(null, require('../components/FinacialRechargePartial').default);
+    }, "FinacialRecharge");
+  }} />
 
-    <IndexRoute getComponent={(nextState, cb) => {
+
+  <Route path="financial/summary" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
-        cb(null, require('../components/FinacialRechargePartial').default);
-      }, "FinacialRecharge");
-    }}/>
+        cb(null, require('../components/FiancialSummaryPartial').default);
+      }, "FinacialSummary");
+  }}/>
 
-    <Route path="summary" getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('../components/FiancialSummaryPartial').default);
-        }, "FinacialSummary");
-    }}/>
-
-    <Route path="invoice" getComponent={(nextState, cb) => {
-      require.ensure([], (require) => {
-        cb(null, require('../components/FinacialInvoicePartial').default);
-      }, "FinacialInvoice");
-    }}/>
-
-  </Route>
+  <Route path="financial/invoice" getComponent={(nextState, cb) => {
+    require.ensure([], (require) => {
+      cb(null, require('../components/FinacialInvoicePartial').default);
+    }, "FinacialInvoice");
+  }}/>
 </Route>
 
 )

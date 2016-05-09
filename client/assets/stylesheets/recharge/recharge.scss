@@ -1,4 +1,33 @@
 .page-recharge {
+
+  .menu {
+    margin-top: 45px;
+    width: 1000px;
+    ul {
+
+      height: 60px;
+      margin-left: 0px;
+
+      a {
+        display: inline-block;
+        background-color: #fff;
+        text-align: center;
+        line-height: 60px;
+        font-size: 18px;
+        width: 320px;
+        border-radius: 5px 5px 0 0;
+        text-decoration: none;
+        color: #181616;
+
+        &:nth-last-child(-n + 2) {
+          margin-left: 5px;
+          background-color: #181616;
+          color: #fff;
+        }
+      }
+    }
+  }
+
   .main-content {
     padding-top: 40px;
     background-color: #fff;

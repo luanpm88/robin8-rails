@@ -1,4 +1,4 @@
-.financial {
+.page-summary {
   .menu {
     margin-top: 45px;
     width: 1000px;
@@ -9,19 +9,28 @@
 
       a {
         display: inline-block;
-        background-color: #181616;
         text-align: center;
         line-height: 60px;
         font-size: 18px;
         width: 320px;
         border-radius: 5px 5px 0 0;
         text-decoration: none;
-        color: #fff;
 
-        &:nth-last-child(-n + 2) {
+        &:nth-child(1) {
+          background-color: #181616;
+          color: #fff;
+        }
+
+        &:nth-child(2) {
+          margin-left: 5px;
+          background-color: #fff;
+          color: #181616;
+        }
+
+        &:nth-child(3) {
           margin-left: 5px;
           background-color: #181616;
-          color: #fff
+          color: #fff;
         }
       }
     }

@@ -96,7 +96,7 @@ export default class CampaignList extends React.Component {
                     <span className="money">￥</span>
                     <span className="avail-amount">{avail_amount}</span>
                   </strong>
-                <Link to="/brand/financial/" className="btn btn-blue btn-default recharge-btn">
+                <Link to="/brand/financial/recharge" className="btn btn-blue btn-default recharge-btn">
                   充值
                 </Link>
               </h4>
