@@ -212,7 +212,7 @@ class Kol < ActiveRecord::Base
   end
 
   def income_by_date(date)
-    post_or_recruit_campaign_income(date) +  click_or_action_campaign_income(date)
+    post_or_recruit_campaign_income(date) +  click_or_action_campaign_income(date) + task_income(date)
   end
 
   def campaign_count_by_date(date)
@@ -227,6 +227,11 @@ class Kol < ActiveRecord::Base
     end
     income
   end
+
+  def task_income(date)
+    self.transactions.recent(date,date).tasks.sum(:credits)
+  end
+
 
   def click_or_action_campaign_income(date)
     income = 0

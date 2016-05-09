@@ -17,7 +17,11 @@ module Concerns
           'end_apply'
         end
       elsif status == 'approved' && self.campaign.is_recruit_type?
-        'executing'
+        if Time.now < self.campaign.start_time
+          'apply_passed'
+        else
+          'executing'
+        end
       elsif status == 'approved'
         if !start_upload_screenshot
           'approved_and_unstart_upload'

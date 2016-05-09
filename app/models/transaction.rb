@@ -5,11 +5,12 @@ class Transaction < ActiveRecord::Base
 
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
+  scope :tasks, ->{where("subject in ('check_in', 'invite_friend', 'complete_info')")}
 
   # kol 和braand 行为有差异  现落到各自model
   # scope :income, -> {where(:direct => 'income')}
   # scope :withdraw, -> {where(:direct => 'payout')}
-  validates_inclusion_of :subject, in: %w(campaign manual_recharge manual_withdraw withdraw checkin  invite_friend  complete_info favorable_comment)
+  validates_inclusion_of :subject, in: %w(campaign manual_recharge manual_withdraw withdraw check_in  invite_friend  complete_info favorable_comment)
 
   # subject
   # manual_recharge manual_withdraw

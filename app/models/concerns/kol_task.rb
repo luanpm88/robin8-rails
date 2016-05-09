@@ -12,7 +12,7 @@ module Concerns
 
 
     def had_complete_info?
-      self.task_records.active.complete_info_records.size > 0
+      self.task_records.active.complete_info.size > 0
     end
 
     def had_favorable_comment?
@@ -29,6 +29,7 @@ module Concerns
     end
 
     def generate_invite_code
+      return if invite_code.present?
       while true
         invite_code = ((0..9).to_a + ('A'..'Z').to_a).sample(5).join("")
         code_exist = Kol.find_by(:invite_code => invite_code).present?
@@ -37,6 +38,10 @@ module Concerns
           return
         end
       end
+    end
+
+    def invite_count
+      reward_records.invite
     end
 
     def invited_from(invite_code)
@@ -62,10 +67,14 @@ module Concerns
       task_record.sync_to_transaction
     end
 
+    def checkin_history
+      task_records.check_in.active.created_desc.where("created_at >= '#{Date.today.beginning_of_month}'").collect{|t| t.created_at.to_date }
+    end
+
     def continuous_checkin_count
       _count = 0
       _start = Date.yesterday
-      last_30_check_in_date = task_records.check_in.active.created_desc.where("created_at < '#{Date.today}'").limit(30).collect{|t| t.created_at.to_data }
+      last_30_check_in_date = task_records.check_in.active.created_desc.where("created_at < '#{Date.today}'").limit(30).collect{|t| t.created_at.to_date }
       (0..30).to_a.each do |i|
         if last_30_check_in_date[i] == (_start - i.days)
           _count += 1

@@ -6,12 +6,12 @@ module API
           expose :task_type, :task_name, :reward_amount
           expose :participate_status do |task, options|
             if task.task_type == RewardTask::CheckIn
-              options[:kol].today_had_check_in? ? 'active' : 'pending'
+              options[:kol].today_had_check_in? ? 'finished' : 'processing'
             elsif task.task_type == RewardTask::CompleteInfo
-              options[:kol].had_complete_info? ? 'active' : 'pending'
+              options[:kol].had_complete_info? ? 'finished' : 'processing'
             else
               # RewardTask::FavorableComment
-              'pending'
+              'processing'
             end
           end
         end

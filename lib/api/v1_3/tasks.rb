@@ -6,12 +6,6 @@ module API
           authenticate!
         end
 
-        get 'task_list' do
-          tasks = RewardTask.all
-          present :error, 0
-          present :tasks, tasks, with: API::V2::Entities::RewardTaskEntities::Summary, kol: current_kol
-        end
-
         #签到
         put 'check_in' do
           if current_kol.today_had_check_in?
@@ -43,10 +37,16 @@ module API
         # end
 
         get 'check_in_history' do
-          check_in_histroy  = current_kol.task_record.check_in.check_in.where("created_at >= '#{Time.now.beginning_of_month}'")
           present :error, 0
           present :continuous_checkin_count, current_kol.continuous_checkin_count
           present :today_had_check_in, current_kol.today_had_check_in?
+          present :checkin_history, current_kol.checkin_history
+        end
+
+        get 'invite_code' do
+          present :error, 0
+          present :invite_code, current_kol.invite_code
+          present :invite_count, current_kol.task_records.invite_friend.count
         end
       end
     end
