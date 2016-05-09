@@ -15,7 +15,6 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require website/vendor/jquery.cookie
-//= require ./lib/jquery.modal
 
 $(function(){
   $(".social").click(function(){

@@ -180,4 +180,15 @@ class PagesController < ApplicationController
       return redirect_to new_user_path
     end
   end
+
+
+  # =====================申请支付宝===================
+  def join_in
+    render 'join_in', :layout => 'brand_v2'
+  end
+
+  def pay
+    @price = params[:price]
+    render 'pay', :layout => 'brand_v2'
+  end
 end

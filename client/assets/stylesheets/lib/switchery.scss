@@ -1,0 +1,75 @@
+/*
+ * 滑动按钮样式
+ */
+
+.switchery {
+  background-color: #B9B9B9;
+  border: 1px solid #B9B9B9;
+  border-radius: 20px;
+  cursor: pointer;
+  display: inline-block;
+  height: 36px;
+  line-height: 35px;
+  position: relative;
+  vertical-align: middle;
+  width: 84px;
+
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+  background-clip: border-box;
+  transition-duration: 0.1s;
+
+  .text {
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    padding: 0 5px;
+    width: 56px;
+    float: right;
+  }
+
+  > input {
+    display: none;
+  }
+
+  > small {
+    position: absolute;
+    height: 29px;
+    line-height: 29px;
+    width: 29px;
+    top: 2px;
+    left: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+    border-radius: 100%;
+    transition-duration: 0.1s;
+    background: #fff;
+    text-align: center;
+    padding: 3px;
+    i {
+      display: inline-block;
+      width: 2px;
+      height: 12px;
+      margin: 1px;
+      background-color: #B9B9B9;
+    }
+  }
+
+  &.active {
+    border-color: #36CCD4;
+    background-color: #36CCD4;
+    .text {
+      float: left;
+    }
+    > small {
+      left: 51px;
+      i {
+        background-color: #36CCD4;
+      }
+    }
+  }
+}

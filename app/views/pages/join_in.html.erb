@@ -1,0 +1,167 @@
+<nav class="navbar">
+  <div class="user-pannel">
+    <div class="container">
+        <span class="location_text" style="float: left; margin-left: -120px;">当前位置：上海市</span>
+        <span class="service-no" style="float: right">客服热线: 400-017-1886</span>
+    </div>
+  </div>
+  <div class="navbar-header">
+    <div class="container">
+      <div class="logo">
+        <%= image_tag('robin8-fixedlogo.png') %>
+      </div>
+      <div class="nav-item">
+        <ul class="nav navbar-nav">
+          <li class="" style="font-size: 25px; color: #a1aab2;"><a href="/">首页</a> </li>
+          <li class="active" style="font-size: 25px; color: #a1aab2;"><a href="/join_in">加入我们</a> </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</nav>
+
+<div class="wrapper">
+
+  <div class="join-banner">
+  </div>
+
+  <div class="buy">
+  	<div class="buy1">
+      <%= image_tag('temp_zuanshi.png') %>
+  		<div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '15000'), target: "_blank" %>
+      </div>
+  	</div>
+
+  	<div class="buy1">
+      <%= image_tag('temp_baijin.png') %>
+  		<div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '10000'), target: "_blank" %>
+      </div>
+  	</div>
+
+  	<div class="buy1">
+      <%= image_tag('temp_jinpai.png') %>
+  		<div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '5000'), target: "_blank" %>
+      </div>
+  	</div>
+  </div>
+
+
+  <div class="buy">
+
+    <div class="buy1">
+      <%= image_tag('temp_yinpai.png') %>
+      <div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '3000'), target: "_blank" %>
+      </div>
+    </div>
+
+    <div class="buy1">
+      <%= image_tag('temp_tongpai.png') %>
+      <div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '1000'), target: "_blank" %>
+      </div>
+    </div>
+
+    <div class="buy1">
+      <%= image_tag('temp_putong.png') %>
+      <div  class='buy-btn'>
+        <%= link_to '立即购买', pay_path(:price => '800'), target: "_blank" %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  html,body,ul,li,div,p{
+    margin: 0;
+    padding: 0;
+  }
+
+
+  body{
+    background: #f0f4fb;
+  }
+
+  .logo {
+    float: left;
+    margin-left: -373px;
+  }
+
+  .logo img {
+    height: 30px;
+    margin-top: 15px;
+    margin-left: 254px;
+  }
+
+
+
+  .buy{
+    width: 1000px;
+    margin: 0 auto;
+    padding-top: 40px;
+    overflow: auto;
+    margin-bottom: 40px;
+  }
+
+  .buy1{
+    width: 320px;
+    float: left;
+    padding-right: 20px;
+    position: relative;
+  }
+
+  .buy1:last-child{
+    padding-right: 0px;
+  }
+
+  .buy1 div{
+    text-align: center;
+    margin: 0 108px;
+    padding: 13px 24px;
+    border-radius:3px ;
+    font-size: 14px;
+    background: #3c96ff;
+    color: white;
+  }
+
+  .buy-btn{
+    position: absolute;
+    bottom: 30px;
+    cursor: pointer;
+  }
+
+  .buy-btn a {
+    color: white !important;
+  }
+
+  .navbar-header {
+    float: none !important;
+  }
+
+  .navbar .user-pannel {
+    height: 33px;
+    line-height: 33px;
+    color: #a1aab2;
+    text-decoration: none;
+    font-size: 13px;
+    border-bottom: 1px solid #e6ecf2;
+  }
+
+  .navbar .navbar-nav {
+    margin-left: 250px;
+    margin-top: 3px;
+  }
+
+
+</style>
+
+<div class="footer">
+    <div class="verison" style="text-align: center">
+      Copying ©2015 CHELING ALL RIGHT REVERED &nbsp;&nbsp;&nbsp;&nbsp; 沪ICP备16004020号-1
+    </div>
+</div>

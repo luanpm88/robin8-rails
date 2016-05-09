@@ -1,2 +1,0 @@
-module Brands::HomeHelper
-end

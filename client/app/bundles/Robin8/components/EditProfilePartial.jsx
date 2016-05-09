@@ -7,8 +7,10 @@ import Keyword from './profile/KeyWord';
 import Crop from './shared/Crop';
 import Input, { Textarea, RadioButtons } from './profile/Input';
 import { reduxForm } from 'redux-form';
+import {} from './shared/plupload.full.min'
 import 'qiniu-js/dist/qiniu.min.js';
-import "profile.scss";
+
+import "user/profile.scss";
 
 const getUploader = function() {
   return Qiniu.uploader({
@@ -111,8 +113,8 @@ class EditProfilePartial extends Component {
     const { handleSubmit, submitting, invalid } = this.props;
     const brand = this.props.brand
     return (
-      <div className="wrapper">
-        <div className="container profile">
+      <div className="page page-profile page-profile-edit">
+        <div className="container">
           { this.render_breadcrumb() }
           <form onSubmit={ (event) => { handleSubmit(this._updateBrandProfile)(event).catch(validateFailed) } }>
             <div className="header">

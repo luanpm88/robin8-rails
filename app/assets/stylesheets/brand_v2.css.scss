@@ -4,3 +4,9 @@
 
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
+
+.join-banner{
+  height: 320px;
+  width: 100%;
+  background: image-url('temp_join_in.png') no-repeat center;
+}

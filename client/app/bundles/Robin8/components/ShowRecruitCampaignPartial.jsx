@@ -4,25 +4,23 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 
+import "campaign/recruit/show.scss";
 
-import "recruit_activity_detail.scss";
-
-import Basic from './recruit_show/Basic';
-import Overview from './recruit_show/Overview';
-import ResultView from './recruit_show/ResultView';
-import KolList from './recruit_show/KolList';
-import StateText from './recruit_show/StateText';
+import Basic       from './recruit_campaigns/show/Basic';
+import Overview    from './recruit_campaigns/show/Overview';
+import ResultView  from './recruit_campaigns/show/ResultView';
+import KolList     from './recruit_campaigns/show/KolList';
+import StateText   from './recruit_campaigns/show/StateText';
 
 function select(state){
   return {
     campaign_invites: state.$$brandStore.get("campaign_invites"),
     hasfetchedInvite: state.$$brandStore.get("hasfetchedInvite"),
     paginate: state.$$brandStore.get("paginate"),
-    campaign_statistics: state.$$brandStore.get("campaign_statistics")
   };
 }
 
-export default class ShowRecruitCampaignPartial extends Component {
+class ShowRecruitCampaignPartial extends Component {
   componentDidMount() {
     this._fetchRecruit();
     this.bind_toggle_text();
@@ -68,20 +66,28 @@ export default class ShowRecruitCampaignPartial extends Component {
     }
   }
 
+  render_state_text(campaign, campaign_id, actions) {
+    if (campaign.get("status") === "executing") {
+      return (
+        <StateText {...{campaign, campaign_id, actions}} />
+      );
+    }
+  }
+
   render() {
     const campaign = this.props.data.get('campaign');
-    const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
+    const { actions, campaign_invites, hasfetchedInvite, paginate } = this.props;
     const campaign_id = _.toInteger(this.props.params.id);
     const status = campaign.get("recruit_status");
 
     return (
-      <div className="wrapper">
+      <div className="page page-recruit page-recruit-show">
         <div className="container">
           { this.render_breadcrumb() }
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
           { this.render_result_view() }
-          <StateText {...{campaign, campaign_id, actions}} />
+          { this.render_state_text(campaign, campaign_id, actions) }
           <KolList {...{campaign, status, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />
         </div>
       </div>
