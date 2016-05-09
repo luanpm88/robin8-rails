@@ -1,0 +1,123 @@
+.page-invoice {
+  .main-content {
+    padding-top: 40px;
+    background-color: #fff;
+    width: 970px;
+    .invoice_img {
+      text-align: center;
+    }
+
+    .invoice-table {
+      .title {
+        position: absolute;
+        top: 242px;
+        left: 50%;
+        right: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+      }
+
+      table {
+        position: absolute;
+        top: 382px;
+        left: 50%;
+        right: 50%;
+        transform: translate(-50%, -50%);
+        td {
+          border: solid 1px #000;
+          text-align: center;
+        }
+        .row-1 {
+          height: 104px;
+        }
+
+        .row-2 {
+          height: 120px;
+        }
+
+        .invoice-info, .express-address {
+          width: 109px;
+          font-size: 18px;
+        }
+        .invoice-detail, .receiver-info {
+          width: 300px;
+          font-size: 14px;
+          text-align: left;
+          padding-left: 25px;
+        }
+        .action {
+          width: 142px;
+
+          .edit {
+            border-color: #36cdd3;
+            background-color: transparent;
+            color: #36cdd3;
+            width: 88px;
+            height: 36px;
+          }
+        }
+      }
+    }
+
+    .apply-invoice {
+      margin-top: 15px;
+      text-align: center;
+
+      ul {
+        margin-top: 18px;
+        li {
+          &:nth-child(2) {
+            position: relative;
+            left: 15px;
+          }
+          &:nth-child(3) {
+            position: relative;
+            left: 30px;
+          }
+          input {
+            width: 153px;
+            height: 35px;
+          }
+          button {
+            height: 35px;
+          }
+        }
+      }
+    }
+
+    .apply-invoice-history {
+      margin-top: 45px;
+      padding-bottom: 60px;
+      table {
+        margin: 0 auto;
+        width: 827px;
+        tr:nth-child(n+2) {
+          font-size: 14px;
+        }
+        td {
+          border: solid 1px #000;
+          text-align: center;
+          height: 45px;
+        }
+        .invoice-amount {
+          width: 89px;
+        }
+        .invoice-type {
+          width: 123px;
+        }
+        .invoice-title {
+          width: 179px;
+        }
+        .invoice-address {
+          width: 199px;
+        }
+        .invoice-create_time {
+          width: 138px;
+        }
+        .express-status {
+          width: 99px;
+        }
+      }
+    }
+  }
+}
