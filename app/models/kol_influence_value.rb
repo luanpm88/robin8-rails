@@ -1,6 +1,7 @@
 class KolInfluenceValue < ActiveRecord::Base
   belongs_to :kol
 
+
   UpgradeNotices = ["1. 绑定更多的社交账号，提升你的影响力分数","2. 积极参与悬赏活动，增强个人账户的活跃度","3. 邀请更多好友加入Robin8，通过通讯录建立你的朋友圈，精准分析你的影响力"]
   #计算总价值
   BaseScore = 380

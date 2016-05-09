@@ -62,5 +62,20 @@ module Concerns
       task_record.sync_to_transaction
     end
 
+    def continuous_checkin_count
+      _count = 0
+      _start = Date.yesterday
+      last_30_check_in_date = task_records.check_in.active.created_desc.where("created_at < '#{Date.today}'").limit(30).collect{|t| t.created_at.to_data }
+      (0..30).to_a.each do |i|
+        if last_30_check_in_date[i] == (_start - i.days)
+          _count += 1
+        else
+          break
+        end
+      end
+      _count += 1 if today_had_check_in?
+      _count
+    end
+
   end
 end

@@ -12,6 +12,7 @@ class TaskRecord < Record::Base
   scope :favorable_comment,  ->{where(:task_type => RewardTask::FavorableComment)}
   scope :check_in,   -> {where(:task_type => RewardTask::CheckIn)}
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
+  scope :created_desc, -> {order("created_at desc")}
 
   # after_save :sync_to_transaction
 

@@ -1,5 +1,5 @@
 module API
-  module V2
+  module V1_3
     class Tasks < Grape::API
       resources :tasks do
         before do
@@ -22,7 +22,7 @@ module API
           end
         end
 
-        #签到
+        #完善资料
         put 'complete_info' do
           if current_kol.had_complete_info?
             return error_403!({error: 1, detail: '您已经完善过资料！' })
@@ -32,14 +32,21 @@ module API
           end
         end
 
-        # 上传评价截图
-        put 'upload_comment_screenshot' do
-          required_attributes! [:screenshot]
-          if current_kol.had_favorable_comment?
-            return error_403!({error: 1, detail: '您已经评价过！' })
-          else
-            current_kol.upload_comment_screenshot(params[:screenshot])
-          end
+        # # 上传评价截图
+        # put 'upload_comment_screenshot' do
+        #   required_attributes! [:screenshot]
+        #   if current_kol.had_favorable_comment?
+        #     return error_403!({error: 1, detail: '您已经评价过！' })
+        #   else
+        #     current_kol.upload_comment_screenshot(params[:screenshot])
+        #   end
+        # end
+
+        get 'check_in_history' do
+          check_in_histroy  = current_kol.task_record.check_in.check_in.where("created_at >= '#{Time.now.beginning_of_month}'")
+          present :error, 0
+          present :continuous_checkin_count, current_kol.continuous_checkin_count
+          present :today_had_check_in, current_kol.today_had_check_in?
         end
       end
     end

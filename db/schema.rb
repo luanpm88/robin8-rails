@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160506085549) do
+ActiveRecord::Schema.define(version: 20160509042350) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -62,6 +62,18 @@ ActiveRecord::Schema.define(version: 20160506085549) do
   add_index "alerts", ["last_email_sent_at"], name: "index_alerts_on_last_email_sent_at", using: :btree
   add_index "alerts", ["last_text_sent_at"], name: "index_alerts_on_last_text_sent_at", using: :btree
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
+
+  create_table "announcements", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.string   "logo",       limit: 255
+    t.string   "banner",     limit: 255
+    t.string   "desc",       limit: 255
+    t.boolean  "display",    limit: 1,   default: false
+    t.integer  "position",   limit: 4,   default: 0
+    t.string   "url",        limit: 255
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
 
   create_table "app_upgrades", force: :cascade do |t|
     t.string   "app_platform",  limit: 255
