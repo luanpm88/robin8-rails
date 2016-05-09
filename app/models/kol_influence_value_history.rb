@@ -28,7 +28,7 @@ class KolInfluenceValueHistory < ActiveRecord::Base
 
   #确保每周生成一次 auto=true 然后取最近6条
   HistorySize = 6
-  def self.get_auto_history(kol_uuid)
+  def self.get_auto_history(kol_uuid, kol_id)
     history_scores = []
     date = nil
     if Date.today.wday > ScheduleWday || ((Date.today.wday == ScheduleWday) &&  (Time.now.hour * 60 + Time.now.min) >= (ScheduleHour * 60 + ScheduleMin))
@@ -38,7 +38,12 @@ class KolInfluenceValueHistory < ActiveRecord::Base
       date = Date.today.last_week +  (ScheduleWday - begin_last_week_date.wday).days
     end
     index = 0
-    KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).order("id desc").limit(HistorySize).each do |record|
+    if kol_id
+      history =  KolInfluenceValueHistory.where(:kol_id => kol_id, :is_auto => true).order("id desc").limit(HistorySize)
+    else
+      history =  KolInfluenceValueHistory.where(:kol_uuid => kol_uuid, :is_auto => true).order("id desc").limit(HistorySize)
+    end
+    history.each do |record|
       history_scores << {:date => date - (7 * index).days, :score => record.influence_score}
       index += 1
     end
