@@ -23,8 +23,8 @@ module API
           requires :app_platform, type: String
           requires :app_version, type: String
           requires :device_token, type: String
-          requires :os_version, type: String
-          requires :device_model, type: String
+          optional :os_version, type: String
+          optional :device_model, type: String
           optional :city_name, type: String
           optional :IDFA, type: String
           optional :IMEI, type: String
