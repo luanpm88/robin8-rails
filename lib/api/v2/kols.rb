@@ -16,7 +16,7 @@ module API
           optional :IDFA, type: String
           optional :IMEI, type: String
         end
-        put 'update_profile'
+        put 'update_profile' do
           current_kol.reg_or_sign_in(params)
         end
       end

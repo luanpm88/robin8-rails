@@ -23,13 +23,14 @@ module API
           expose :tag
           expose :upload_interval_time
           expose :ocr_status do |campaign_invite|
-            if campaign_invite.ocr_status == 'passed'
-              true
-            elsif campaign_invite.ocr_status == 'failure'
-              false
-            else
-              nil
-            end
+            true
+            # if campaign_invite.ocr_status == 'passed'
+            #   true
+            # elsif campaign_invite.ocr_status == 'failure'
+            #   false
+            # else
+            #   nil
+            # end
           end
           expose :ocr_detail do |campaign_invite|
             campaign_invite.get_ocr_detail

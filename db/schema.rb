@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160504042357) do
+ActiveRecord::Schema.define(version: 20160509042350) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -62,6 +62,18 @@ ActiveRecord::Schema.define(version: 20160504042357) do
   add_index "alerts", ["last_email_sent_at"], name: "index_alerts_on_last_email_sent_at", using: :btree
   add_index "alerts", ["last_text_sent_at"], name: "index_alerts_on_last_text_sent_at", using: :btree
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
+
+  create_table "announcements", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.string   "logo",       limit: 255
+    t.string   "banner",     limit: 255
+    t.string   "desc",       limit: 255
+    t.boolean  "display",    limit: 1,   default: false
+    t.integer  "position",   limit: 4,   default: 0
+    t.string   "url",        limit: 255
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
 
   create_table "app_upgrades", force: :cascade do |t|
     t.string   "app_platform",  limit: 255
@@ -628,9 +640,11 @@ ActiveRecord::Schema.define(version: 20160504042357) do
     t.string   "rongcloud_token",        limit: 255
     t.string   "os_version",             limit: 255
     t.string   "device_model",           limit: 255
+    t.string   "invite_code",            limit: 10
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
+  add_index "kols", ["invite_code"], name: "index_kols_on_invite_code", using: :btree
   add_index "kols", ["mobile_number"], name: "index_kols_on_mobile_number", unique: true, using: :btree
   add_index "kols", ["reset_password_token"], name: "index_kols_on_reset_password_token", unique: true, using: :btree
 
@@ -915,23 +929,38 @@ ActiveRecord::Schema.define(version: 20160504042357) do
 
   add_index "releases", ["slug"], name: "index_releases_on_slug", using: :btree
 
+  create_table "reward_tasks", force: :cascade do |t|
+    t.float    "reward_amount", limit: 24
+    t.string   "reward_cycle",  limit: 255
+    t.integer  "limit",         limit: 4
+    t.integer  "position",      limit: 4
+    t.string   "task_name",     limit: 255
+    t.string   "task_type",     limit: 255
+    t.string   "logo",          limit: 255
+    t.boolean  "enable",        limit: 1,   default: true
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+  end
+
   create_table "stastic_data", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"
-    t.integer  "total_kols_count",         limit: 4
-    t.integer  "incr_kols_count",          limit: 4
-    t.integer  "total_campaigns_count",    limit: 4
-    t.integer  "incr_campaigns_count",     limit: 4
-    t.integer  "weibo_kols_count",         limit: 4
-    t.integer  "incr_weibo_kols_count",    limit: 4
-    t.integer  "weixin_kols_count",        limit: 4
-    t.integer  "incr_weixin_kols_count",   limit: 4
-    t.integer  "wx_third_kols_count",      limit: 4
-    t.integer  "incr_wx_third_kols_count", limit: 4
-    t.integer  "sign_up_kols_count",       limit: 4
-    t.integer  "incr_sign_up_kols_count",  limit: 4
-    t.text     "from_which_campaign",      limit: 65535
-    t.boolean  "is_dealed",                limit: 1,     default: false
+    t.integer  "total_kols_count",            limit: 4
+    t.integer  "incr_kols_count",             limit: 4
+    t.integer  "total_campaigns_count",       limit: 4
+    t.integer  "incr_campaigns_count",        limit: 4
+    t.integer  "weibo_kols_count",            limit: 4
+    t.integer  "incr_weibo_kols_count",       limit: 4
+    t.integer  "weixin_kols_count",           limit: 4
+    t.integer  "incr_weixin_kols_count",      limit: 4
+    t.integer  "wx_third_kols_count",         limit: 4
+    t.integer  "incr_wx_third_kols_count",    limit: 4
+    t.integer  "sign_up_kols_count",          limit: 4
+    t.integer  "incr_sign_up_kols_count",     limit: 4
+    t.text     "from_which_campaign",         limit: 65535
+    t.boolean  "is_dealed",                   limit: 1,     default: false
+    t.integer  "campaign_invites_count",      limit: 4
+    t.integer  "uniq_campaign_invites_count", limit: 4
   end
 
   create_table "streams", force: :cascade do |t|
@@ -959,6 +988,20 @@ ActiveRecord::Schema.define(version: 20160504042357) do
     t.datetime "updated_at",             null: false
     t.string   "cover_url",  limit: 255
   end
+
+  create_table "task_records", force: :cascade do |t|
+    t.integer  "kol_id",         limit: 4
+    t.integer  "reward_task_id", limit: 4
+    t.string   "task_type",      limit: 255
+    t.integer  "invitees_id",    limit: 4
+    t.string   "screenshot",     limit: 255
+    t.string   "status",         limit: 255, default: "pending"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  add_index "task_records", ["kol_id"], name: "index_task_records_on_kol_id", using: :btree
+  add_index "task_records", ["reward_task_id"], name: "index_task_records_on_reward_task_id", using: :btree
 
   create_table "test_emails", force: :cascade do |t|
     t.integer  "draft_pitch_id", limit: 4
