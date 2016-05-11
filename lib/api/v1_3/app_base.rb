@@ -6,6 +6,9 @@ module API
       version 'v1_3', using: :path
       mount API::V1_3::My
       mount API::V1_3::Tasks
+      mount API::V1_3::Kols
+      mount API::V1_3::Transactions
+      mount API::V1_3::Withdraw
     end
   end
 end

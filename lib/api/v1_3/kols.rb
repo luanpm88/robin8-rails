@@ -1,5 +1,5 @@
 module API
-  module V2
+  module V1_3
     class Kols < Grape::API
       resources :kols do
         before do
@@ -16,7 +16,18 @@ module API
           optional :IMEI, type: String
         end
         put 'update_profile' do
+          present :error, 0
           current_kol.reg_or_sign_in(params)
+        end
+
+        params do
+          requires :alipay_account, type: String
+          requires :alipay_name, type: String
+        end
+        put 'bind_alipay' do
+          present :error, 0
+          current_kol.update_column(:alipay_account => params[:alipay_account], :alipay_name => params[:alipay_name])
+          present :kols, current_kol.reload,  with: API::V1::Entities::KolEntities::Summary
         end
       end
     end
