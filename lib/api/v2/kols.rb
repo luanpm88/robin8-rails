@@ -9,7 +9,6 @@ module API
         params do
           requires :app_platform, type: String
           requires :app_version, type: String
-          requires :device_token, type: String
           requires :os_version, type: String
           requires :device_model, type: String
           optional :city_name, type: String

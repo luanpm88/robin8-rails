@@ -56,6 +56,9 @@ module API
           expose :verifying_income do |kol|
             kol.verifying_income.round(2)
           end
+          expose :total_amount do |kol|
+            (kol.amount + kol.frozen_amount).round(2)
+          end
         end
 
         class Primary < Grape::Entity
