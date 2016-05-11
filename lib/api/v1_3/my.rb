@@ -9,6 +9,7 @@ module API
         get 'show' do
           kol_value = KolInfluenceValue.get_score(current_kol.kol_uuid)
           item_rate = kol_value.get_item_scores
+          present :error, 0
           tasks = RewardTask.all
           present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
           present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
