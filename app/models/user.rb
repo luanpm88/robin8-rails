@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   attr_accessor :login
 
   has_many :transactions, :as => :account
+  has_many :alipay_orders
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -23,6 +24,7 @@ class User < ActiveRecord::Base
 
   has_many :private_kols
   has_many :kols, through: :private_kols
+  has_many :paid_transactions, -> {where("direct='payout' or direct='income'")}, class_name: 'Transaction', as: :account
 
   validates_presence_of :name, :if => Proc.new{|user| user.new_record? or user.name_changed?}
   validates_presence_of :mobile_number, :if => Proc.new{|user| user.new_record? or user.mobile_number_changed?}

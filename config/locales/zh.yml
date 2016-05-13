@@ -166,6 +166,8 @@ zh:
         alipay_no: 支付宝账号
         bank_name: 银行名称
         bank_no:   银行账号
+      alipay_order:
+        credits: 金额
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
@@ -191,6 +193,12 @@ zh:
               invalid: 格式错误
             mobile_number:
               taken: "已经存在"
+        alipay_order:
+          attributes:
+            credits:
+              blank: "金额不能为空"
+              not_an_integer: "金额必须为整数"
+              greater_than: "金额必须大于500元"
   addons:
     continue: CONTINUE
     go_back: GO BACK

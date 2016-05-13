@@ -17,20 +17,17 @@ module Brand
       version 'v1', using: :path
       formatter :json, SuccessFormatter
 
-      before do
-        authenticate!
-      end
-
       # helpers
       #
       helpers APIHelpers
 
       # representations
       #
-      represent Campaign, with: Entities::Campaign
-      represent CampaignInvite, with: Entities::CampaignInvite
-      represent CampaignApply, with: Entities::CampaignApply
-      represent User     , with: Entities::User
+      represent Campaign,         with: Entities::Campaign
+      represent CampaignInvite,   with: Entities::CampaignInvite
+      represent CampaignApply,    with: Entities::CampaignApply
+      represent User,             with: Entities::User
+      represent Transaction,      with: Entities::Transaction
       # namespaces
       #
       namespace 'user', desc: 'Operations about current user' do
@@ -44,6 +41,8 @@ module Brand
       mount CampaignsAPI
       mount CampaignInvitesApi
       mount CampaignAppliesAPI
+      mount AlipayOrdersAPI
+      mount TransactionsAPI
     end
   end
 end

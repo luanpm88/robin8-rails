@@ -22,7 +22,7 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
   def recharge
     render 'recharge' and return if request.method.eql? 'GET'
 
-    @user.income params[:credits].to_f, 'manaual_recharge'
+    @user.income params[:credits].to_f, 'manual_recharge'
 
     respond_to do |format|
       format.html { redirect_to marketing_dashboard_users_path, notice: 'Recharge successfully!' }
