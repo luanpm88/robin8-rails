@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160509042350) do
+ActiveRecord::Schema.define(version: 20160513020457) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -319,6 +319,19 @@ ActiveRecord::Schema.define(version: 20160509042350) do
     t.string   "name_abbr",  limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "download_invitations", force: :cascade do |t|
+    t.integer  "inviter_id",      limit: 4
+    t.string   "visitor_cookie",  limit: 600
+    t.string   "visitor_ip",      limit: 255
+    t.string   "is_used",         limit: 255
+    t.text     "visitor_referer", limit: 65535
+    t.text     "visitor_agent",   limit: 65535
+    t.string   "device_model",    limit: 255
+    t.string   "os_version",      limit: 255
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "draft_pitches", force: :cascade do |t|
@@ -641,6 +654,7 @@ ActiveRecord::Schema.define(version: 20160509042350) do
     t.string   "os_version",             limit: 255
     t.string   "device_model",           limit: 255
     t.string   "invite_code",            limit: 10
+    t.string   "alipay_name",            limit: 255
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree

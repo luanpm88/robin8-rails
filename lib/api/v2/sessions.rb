@@ -7,6 +7,7 @@ module API
           required_attributes! [:mobile_number, :code, :app_platform, :app_version, :device_token]
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
+          params[:current_sign_in_ip] = request.ip
           kol = Kol.reg_or_sign_in(params)
           if params[:kol_uuid].present?
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
@@ -60,12 +61,8 @@ module API
           kol = identity.kol   rescue nil
           if !kol
             ActiveRecord::Base.transaction do
-              app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
-              kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
-                                device_token: params[:device_token], name: params[:name],
-                                social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
-                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source],
-                                app_city: app_city, os_version: params[:os_version], device_model: params[:device_model])
+              params[:current_sign_in_ip] = request.ip
+              kol = Kol.reg_or_sign_in(params)
               #保存头像
               kol.update_attribute(:remote_avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?

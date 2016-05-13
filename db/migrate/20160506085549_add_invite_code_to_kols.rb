@@ -5,8 +5,8 @@ class AddInviteCodeToKols < ActiveRecord::Migration
 
     add_index :kols, :invite_code
 
-    Kol.find_each do |kol|
-      kol.generate_invite_code
-    end
+    # Kol.find_each do |kol|
+    #   kol.generate_invite_code
+    # end
   end
 end
