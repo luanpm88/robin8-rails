@@ -11,6 +11,7 @@ export const $$initialState = Immutable.fromJS({
   campaign_invites: [],
   hasfetchedInvite: false,
   campaign_statistics: [],
+  transactions: [],
   error: ""
 });
 
@@ -112,6 +113,25 @@ export default function brandReducer($$state = $$initialState, action = null) {
         $$state = $$state.merge({
           "campaign_statistics": Immutable.fromJS(action.result.items),
         })
+      }
+      return $$state;
+
+    case actionTypes.ALIPAY_RECHARGE:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === "success") {
+        if(action.result.alipay_recharge_url) {
+          window.location = action.result.alipay_recharge_url;
+        }
+      } else if (fetchState === "failure"){
+        $$state = $$state.merge({ "readyState": fetchState, "error": action.error });
+      }
+    case actionTypes.FETCH_TRANSACTIONS:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({
+          "transactions": Immutable.fromJS(action.result.items),
+          "paginate": Immutable.fromJS(action.result.paginate)
+        });
       }
       return $$state;
 

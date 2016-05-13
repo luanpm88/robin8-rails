@@ -71,7 +71,6 @@ export default class CampaignList extends React.Component {
     const campaignList = this.props.data.get('campaignList');
     const campaignCount = this.props.data.get("paginate").get('X-Total')
     const avail_amount = this.props.data.get("brand").get("avail_amount")
-
     return (
       <div className="wrapper">
         <div className="container">

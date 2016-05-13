@@ -107,6 +107,16 @@
           font-size: 12px;
           color: #999999;
         }
+        .error-tips {
+          margin-left: 96px;
+          height: 0px;
+          p {
+            display: none;
+            color: rgb(206, 1, 1);
+            margin-top: 8px;
+            font-size: 13px;
+          }
+        }
         .recharge-btn {
           margin-top: 20px;
           margin-bottom: 30px;

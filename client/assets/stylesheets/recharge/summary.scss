@@ -35,4 +35,62 @@
       }
     }
   }
+
+  .main-content {
+    padding-top: 40px;
+    padding-bottom: 60px;
+    padding-left: 70px;
+    background-color: #fff;
+
+    .cost-text {
+      > span {
+        border-left: 3px solid #28b6bb;
+        height: 17px;
+        span {
+          padding-left: 10px;
+          font-size: 17px;
+        }
+      }
+    }
+
+    table {
+      margin-top: 40px;
+      width: 829px;
+      &.fixed {
+        table-layout:fixed;
+        td {
+          overflow: auto;
+        }
+      }
+      tr {
+        height: 50px;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: center;
+        th {
+          vertical-align: middle !important;
+        }
+        td {
+          vertical-align: middle !important;
+          white-space: nowrap;
+        }
+
+        .credits {
+          font-weight: bold;
+        }
+
+        th {
+          font-size: 14px;
+          font-weight: bold;
+          color: #181616;
+          text-align: center;
+        }
+      }
+
+      .ood-transaction {
+        background-color: #f2f2f2;
+      }
+
+    }
+  }
 }

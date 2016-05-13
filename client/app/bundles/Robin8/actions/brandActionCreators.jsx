@@ -259,3 +259,27 @@ export function updateRecruitCompaignKols(campaign_id) {
     })
   }
 }
+
+export function alipayRecharge(credits) {
+  const data = { credits };
+  return {
+    type: actionTypes.ALIPAY_RECHARGE,
+    promise: fetch(`${baseUrl}/alipay_orders`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+  }
+}
+
+export function fetchTransactions(current_page) {
+  return {
+    type: actionTypes.FETCH_TRANSACTIONS,
+    promise: fetch(`${baseUrl}/transactions?page=${current_page.page}`, { credentials: 'same-origin' })
+  };
+}
