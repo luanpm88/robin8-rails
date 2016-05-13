@@ -108,6 +108,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
+    alipay (0.12.0)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (6.0.0)
@@ -756,6 +757,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.8.0)
   activeadmin (~> 1.0.0.pre1)
   activeresource
+  alipay (~> 0.12.0)
   aylien_text_api
   bootstrap-sass (~> 3.3.6)
   bundler (>= 1.7.0)
