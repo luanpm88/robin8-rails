@@ -47,7 +47,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def generate_trade_no
-    self.update_attribute :trade_no, Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
+    self.update_attributes(trade_no: Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join)
   end
 
 

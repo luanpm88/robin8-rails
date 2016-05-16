@@ -22,17 +22,17 @@ class AlipayOrder < ActiveRecord::Base
     if pending?
       ActiveRecord::Base.transaction do
         self.user.income(credits, 'alipay_recharge', self)
-        update_attribute :status, 'paid'
+        update_attributes(status: 'paid')
       end
     end
   end
 
   def save_alipay_trade_no(alipay_trade_no)
-    update_attribute :alipay_trade_no, alipay_trade_no unless self.alipay_trade_no
+    update_attributes(alipay_trade_no: alipay_trade_no) unless self.alipay_trade_no
   end
 
   def save_trade_no_to_transaction(trade_no)
     @transaction = self.get_transaction
-    @transaction.update_attribute :trade_no, trade_no
+    @transaction.update_attributes(trade_no: trade_no)
   end
 end
