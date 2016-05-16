@@ -1,3 +1,4 @@
+require 'typhoeus/adapters/faraday'
 module Articles
   class ElasticClient
     Hosts = Rails.application.secrets[:elastic_servers]
