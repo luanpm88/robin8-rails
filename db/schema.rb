@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512081720) do
+ActiveRecord::Schema.define(version: 20160516035625) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -452,6 +452,34 @@ ActiveRecord::Schema.define(version: 20160512081720) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.datetime "decline_date"
+  end
+
+  create_table "invoice_histories", force: :cascade do |t|
+    t.string   "credits",    limit: 255
+    t.string   "type",       limit: 255
+    t.string   "title",      limit: 255
+    t.string   "address",    limit: 255
+    t.string   "status",     limit: 255
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "invoice_receivers", force: :cascade do |t|
+    t.string   "name",         limit: 255
+    t.string   "phone_number", limit: 255
+    t.string   "address",      limit: 255
+    t.integer  "user_id",      limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.string   "title",        limit: 255
+    t.string   "invoice_type", limit: 255, default: "common"
+    t.integer  "user_id",      limit: 4
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   create_table "ip_scores", force: :cascade do |t|
