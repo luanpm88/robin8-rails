@@ -4,7 +4,7 @@ module Concerns
     included do
       has_many :task_records
       # after_create :generate_invite_code
-      after_commit :find_inviter, :on => :create
+      after_commit :generate_invite_task_record, :on => :create
     end
 
     class_methods do
