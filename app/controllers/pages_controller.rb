@@ -181,6 +181,15 @@ class PagesController < ApplicationController
     end
   end
 
+  #TODO redirect_to  url
+  def download_invitation
+    if request.remote_ip.present? &&  request.user_agent.present?  && params[:inviter_id].present?
+      DownloadInvitation.create!(:inviter_id => params[:inviter_id], :visitor_ip => request.remote_ip, :visitor_agent => request.user_agent,
+                                 :visitor_referer => request.referer, :visitor_cookies => cookies[:_robin8_visitor])
+    end
+    redirect_to 'http://www.baidu.com'
+  end
+
 
   # =====================申请支付宝===================
   def join_in
