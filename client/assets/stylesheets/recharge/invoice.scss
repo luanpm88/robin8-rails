@@ -82,7 +82,7 @@
         .action {
           width: 142px;
 
-          .edit {
+          .edit, .save {
             border-color: #36cdd3;
             background-color: transparent;
             color: #36cdd3;
@@ -153,5 +153,43 @@
         }
       }
     }
+  }
+}
+
+.invoice-info-modal {
+  margin-top: 173px;
+  .modal-content {
+    .invoice-title {
+      float: left;
+      margin-left: 35px;
+      margin-right: 15px;
+    }
+    .invoice-title-input {
+      width: 380px;
+    }
+    .error-tip {
+      color: #ce0101;
+      margin-top: 8px;
+      font-size: 12px;
+      margin-left: 115px;
+    }
+  }
+}
+
+.invoice-receiver-info-modal {
+  .invoice-receiver-name, .invoice-receiver-mobile, .invoice-receiver-address {
+    float: left;
+    margin-left: 35px;
+    margin-right: 15px;
+  }
+
+  .invoice-receiver-name-input, .invoice-receiver-mobile-input, .invoice-receiver-address-input {
+    width: 380px;
+  }
+  .address-error-tip, .mobile-error-tip, .name-error-tip {
+    color: #ce0101;
+    margin-top: 8px;
+    font-size: 12px;
+    margin-left: 130px;
   }
 }

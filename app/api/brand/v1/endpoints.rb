@@ -28,10 +28,20 @@ module Brand
       represent CampaignApply,    with: Entities::CampaignApply
       represent User,             with: Entities::User
       represent Transaction,      with: Entities::Transaction
+      represent Invoice,          with: Entities::Invoice
+      represent InvoiceReceiver,  with: Entities::InvoiceReceiver
       # namespaces
       #
       namespace 'user', desc: 'Operations about current user' do
         mount UserAPI
+      end
+
+      namespace 'invoice', desc: 'invoice' do
+        mount InvoiceAPI
+      end
+
+      namespace 'invoice_receiver', desc: 'invoice receiver' do
+        mount InvoiceReceiverAPI
       end
 
       namespace 'util', desc: 'Util' do
@@ -43,6 +53,7 @@ module Brand
       mount CampaignAppliesAPI
       mount AlipayOrdersAPI
       mount TransactionsAPI
+      mount InvoiceHistoriesAPI
     end
   end
 end
