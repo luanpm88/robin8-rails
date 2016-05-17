@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160513020457) do
+ActiveRecord::Schema.define(version: 20160517065115) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -323,15 +323,16 @@ ActiveRecord::Schema.define(version: 20160513020457) do
 
   create_table "download_invitations", force: :cascade do |t|
     t.integer  "inviter_id",      limit: 4
-    t.string   "visitor_cookie",  limit: 600
+    t.string   "visitor_cookies", limit: 600
     t.string   "visitor_ip",      limit: 255
-    t.string   "is_used",         limit: 255
     t.text     "visitor_referer", limit: 65535
     t.text     "visitor_agent",   limit: 65535
     t.string   "device_model",    limit: 255
     t.string   "os_version",      limit: 255
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.string   "app_platform",    limit: 255
+    t.boolean  "effective",       limit: 1,     default: false
   end
 
   create_table "draft_pitches", force: :cascade do |t|
@@ -882,6 +883,23 @@ ActiveRecord::Schema.define(version: 20160513020457) do
   end
 
   add_index "provinces", ["name"], name: "index_provinces_on_name", using: :btree
+
+  create_table "public_wechat_logins", force: :cascade do |t|
+    t.string   "username",           limit: 255
+    t.string   "password_encrypted", limit: 255
+    t.string   "visitor_cookies",    limit: 255
+    t.string   "redirect_url",       limit: 255
+    t.string   "login_type",         limit: 255
+    t.string   "login_cookies",      limit: 255
+    t.string   "login_time",         limit: 255
+    t.string   "ticket",             limit: 255
+    t.string   "appid",              limit: 255
+    t.string   "uuid",               limit: 255
+    t.string   "operate_seq",        limit: 255
+    t.string   "status",             limit: 255
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
 
   create_table "push_messages", force: :cascade do |t|
     t.string   "title",               limit: 255

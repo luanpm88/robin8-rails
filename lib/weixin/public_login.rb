@@ -8,8 +8,13 @@ module Weixin
 
 
     def  self.login(username = 'wangtuo314@163.com' , password = 'wangtuo19910314', code = nil)
-      res, cookies, redirect_url = login_with_account(username, password, code)
+      res, cookies, redirect_url, token = login_with_account(username, password, code)
       return res if res[0] == 'error'
+      if token
+        visitor_cookies = get_vistor_cookies(redirect_url, cookies, token)
+        PublicWechatLogin.generate_account_login(username, password, visitor_cookies, token)
+        return ['login_success']
+      end
       res, ticket, operation_seq = get_ticket(cookies, redirect_url)
       return res if res[0] == 'error'
       appid = get_appid(cookies,redirect_url)
@@ -19,7 +24,9 @@ module Weixin
       $ticket = ticket
       $operation_seq = operation_seq
       $uuid = uuid
-      get_qrcode_url(ticket, uuid, operation_seq)
+      wechat_login = PublicWechatLogin.generate_qrcode_login(username, password, cookies, ticket, appid, uuid, operation_seq)
+      qrcode_url = get_qrcode_url(ticket, uuid, operation_seq)
+      return ['qrcode_success', wechat_login.id, qrcode_url]
     end
 
 
@@ -43,9 +50,9 @@ module Weixin
         redirect_url = "https://mp.weixin.qq.com/" + response["redirect_url"]
         if redirect_url.include?("token=")
           token = redirect_url.split("token=").last
-          return [['success'], cookies , redirect_url]
+          return ['losuccess', cookies , redirect_url, token]
         else
-          return [['account_success'], cookies , redirect_url]
+          return ['account_success', cookies , redirect_url]
         end
       elsif response["base_resp"].present? || response["base_resp"]["ret"] == '200027'
         return [['error', 'verify_code']]
@@ -109,6 +116,11 @@ module Weixin
     def self.get_qrcode_url(ticket, uuid, operation_seq)
       return "https://mp.weixin.qq.com/safe/safeqrcode?ticket=#{ticket}&uuid=#{uuid}&action=check&type=login&auth=ticket&msgid=#{operation_seq}"
     end
+
+    def self.check_login_status_with_id(login_id)
+      login =
+    end
+
 
     def self.check_login_status(redirect_url, cookies, uuid, username, operation_seq )
       safeuuid_req = Typhoeus.post("https://mp.weixin.qq.com/safe/safeuuid?timespam=#{Time.now.to_i*1000}&token=&lang=zh_CN",
