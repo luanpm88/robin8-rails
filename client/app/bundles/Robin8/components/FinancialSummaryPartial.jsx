@@ -36,28 +36,48 @@ class FinancialSummaryPartial extends React.Component {
           fetchTransactions({ page: page });
         }
       }
-      $("#campaigns-paginator").bootstrapPaginator(pagination_options);
+      $("#transactions-paginator").bootstrapPaginator(pagination_options);
     }
   }
 
-  render_transactions() {
+  render_transactions_table() {
     const transactions = this.props.data.get('transactions');
     return (
-      <tbody>
-        { do
-          {
-            if (transactions.size) {
-              transactions.map(function(transaction, index){
-                if (index % 2 === 0) {
-                  return <Transaction transaction={transaction} tagColor="ood-transaction" key={index} />
-                } else {
-                  return <Transaction transaction={transaction} tagColor="even-transaction" key={index} />
-                }
-              })
+      <table className="table fixed table-bordered">
+        <colgroup>
+          <col width="199px" />
+          <col width="107px" />
+          <col width="108px" />
+          <col width="108px" />
+          <col width="108px" />
+          <col width="199px" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th className="trade-no">账单编号</th>
+            <th className="cost-type">消费类型</th>
+            <th className="cost-date">日期</th>
+            <th className="cost-price">金额</th>
+            <th className="coce">剩余金额</th>
+            <th className="cost-remark">备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          { do
+            {
+              if (transactions.size) {
+                transactions.map(function(transaction, index){
+                  if (index % 2 === 0) {
+                    return <Transaction transaction={transaction} tagColor="ood-transaction" key={index} />
+                  } else {
+                    return <Transaction transaction={transaction} tagColor="even-transaction" key={index} />
+                  }
+                })
+              }
             }
           }
-        }
-      </tbody>
+        </tbody>
+      </table>
     )
   }
 
@@ -75,28 +95,8 @@ class FinancialSummaryPartial extends React.Component {
                   <span>消费记录</span>
                 </span>
               </div>
-              <table className="table fixed table-bordered">
-                <colgroup>
-                  <col width="199px" />
-                  <col width="107px" />
-                  <col width="108px" />
-                  <col width="108px" />
-                  <col width="108px" />
-                  <col width="199px" />
-               </colgroup>
-                <thead>
-                  <tr>
-                    <th className="trade-no">账单编号</th>
-                    <th className="cost-type">消费类型</th>
-                    <th className="cost-date">日期</th>
-                    <th className="cost-price">金额</th>
-                    <th className="coce">剩余金额</th>
-                    <th className="cost-remark">备注</th>
-                  </tr>
-                </thead>
-                { this.render_transactions() }
-              </table>
-              <div id="campaigns-paginator">
+              { this.render_transactions_table() }
+              <div id="transactions-paginator">
               </div>
             </div>
           </div>

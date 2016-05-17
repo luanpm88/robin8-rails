@@ -22,11 +22,14 @@ export default class InvoiceInfoModal extends Component {
   }
 
   handleChange(e) {
-    const invoice = this.props.invoice;
-    this.refs.invoiceTitleInput.value = e.target.value;
     if (!validator.isNull(this.refs.invoiceTitleInput.value.trim())) {
       $('.error-tip').hide();
     }
+  }
+
+  handleBlur(e) {
+    const invoice = this.props.invoice;
+    this.refs.invoiceTitleInput.value = e.target.value;
   }
 
   render() {
@@ -38,7 +41,7 @@ export default class InvoiceInfoModal extends Component {
         <Modal.Body>
           <div>
             <p className='invoice-title'>发票抬头</p>
-            <input ref='invoiceTitleInput' onBlur={this.handleChange.bind(this)} className='invoice-title-input' type="text" defaultValue={this.props.invoice.get('title')} />
+            <input ref='invoiceTitleInput' onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} className='invoice-title-input' type="text" defaultValue={this.props.invoice.get('title')} />
             <p className="error-tip" style={{display: 'none'}}>发票抬头不能为空</p>
           </div>
         </Modal.Body>

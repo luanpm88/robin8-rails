@@ -28,28 +28,31 @@ export default class InvoiceReceiverInfoModal extends Component {
     }
   }
 
-  handleNameChange(e) {
-    const invoice = this.props.invoice;
-    this.refs.invoiceReceiverNameInput.value = e.target.value;
+  handleChange() {
     if (!validator.isNull(this.refs.invoiceReceiverNameInput.value.trim())) {
       $('.name-error-tip').hide();
     }
-  }
-
-  handleMobileChange(e) {
-    const invoice = this.props.invoice;
-    this.refs.invoiceReceiverMobileInput.value = e.target.value;
     if (validator.isMobilePhone(this.refs.invoiceReceiverMobileInput.value.trim(), 'zh-CN')) {
       $('.mobile-error-tip').hide();
     }
-  }
-
-  handleAddressChange(e) {
-    const invoice = this.props.invoice;
-    this.refs.invoiceReceiverAddressInput.value = e.target.value;
     if (!validator.isNull(this.refs.invoiceReceiverAddressInput.value.trim())) {
       $('.address-error-tip').hide();
     }
+  }
+
+  handleNameBlur(e) {
+    const invoice = this.props.invoice;
+    this.refs.invoiceReceiverNameInput.value = e.target.value;
+  }
+
+  handleMobileBlur(e) {
+    const invoice = this.props.invoice;
+    this.refs.invoiceReceiverMobileInput.value = e.target.value;
+  }
+
+  handleAddressBlur(e) {
+    const invoice = this.props.invoice;
+    this.refs.invoiceReceiverAddressInput.value = e.target.value;
   }
 
   render() {
@@ -61,17 +64,17 @@ export default class InvoiceReceiverInfoModal extends Component {
         <Modal.Body>
           <div className='clearfix'>
             <p className='invoice-receiver-name'>收件人姓名</p>
-            <input ref='invoiceReceiverNameInput' onBlur={this.handleNameChange.bind(this)} className='invoice-receiver-name-input' type="text" defaultValue={this.props.invoiceReceiver.get('name')} />
+            <input ref='invoiceReceiverNameInput' onChange={this.handleChange.bind(this)} onBlur={this.handleNameBlur.bind(this)} className='invoice-receiver-name-input' type="text" defaultValue={this.props.invoiceReceiver.get('name')} />
             <p className="name-error-tip" style={{display: 'none'}}>收件人姓名不能为空</p>
           </div>
           <div className='clearfix'>
             <p className='invoice-receiver-mobile'>收件人电话</p>
-            <input ref='invoiceReceiverMobileInput' onBlur={this.handleMobileChange.bind(this)} className='invoice-receiver-mobile-input' type="text" defaultValue={this.props.invoiceReceiver.get('phone_number')} />
+            <input ref='invoiceReceiverMobileInput' onChange={this.handleChange.bind(this)} onBlur={this.handleMobileBlur.bind(this)} className='invoice-receiver-mobile-input' type="text" defaultValue={this.props.invoiceReceiver.get('phone_number')} />
             <p className="mobile-error-tip" style={{display: 'none'}}>收件人电话格式不正确</p>
           </div>
           <div className='clearfix'>
             <p className='invoice-receiver-address'>收件人地址</p>
-            <input ref='invoiceReceiverAddressInput' onBlur={this.handleAddressChange.bind(this)} className='invoice-receiver-address-input' type="text" defaultValue={this.props.invoiceReceiver.get('address')} />
+            <input ref='invoiceReceiverAddressInput' onChange={this.handleChange.bind(this)} onBlur={this.handleAddressBlur.bind(this)} className='invoice-receiver-address-input' type="text" defaultValue={this.props.invoiceReceiver.get('address')} />
             <p className="address-error-tip" style={{display: 'none'}}>收件人地址不能为空</p>
           </div>
         </Modal.Body>
