@@ -30,6 +30,7 @@ module Brand
       represent Transaction,      with: Entities::Transaction
       represent Invoice,          with: Entities::Invoice
       represent InvoiceReceiver,  with: Entities::InvoiceReceiver
+      represent InvoiceHistory,   with: Entities::InvoiceHistory
       # namespaces
       #
       namespace 'user', desc: 'Operations about current user' do

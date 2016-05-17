@@ -117,6 +117,16 @@
           }
         }
       }
+
+      .error-tips {
+        height: 0px;
+        p {
+          display: none;
+          color: #ce0101;
+          margin-top: 8px;
+          font-size: 13px;
+        }
+      }
     }
 
     .apply-invoice-history {
@@ -177,6 +187,7 @@
 }
 
 .invoice-receiver-info-modal {
+  margin-top: 148px;
   .invoice-receiver-name, .invoice-receiver-mobile, .invoice-receiver-address {
     float: left;
     margin-left: 35px;

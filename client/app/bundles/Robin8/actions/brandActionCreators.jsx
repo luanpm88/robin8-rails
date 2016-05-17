@@ -365,3 +365,34 @@ export function updateInvoiceReceiver(name, phone_number, address) {
     })
   }
 }
+
+export function fetchAppliableCredits() {
+  return {
+    type: actionTypes.FETCH_APPLIABLE_CREDITS,
+    promise: fetch(`${baseUrl}/invoice_histories/appliable_credits`, { credentials: 'same-origin' })
+  }
+}
+
+export function fetchInvoiceHistories(current_page) {
+  return {
+    type: actionTypes.FETCH_INVOICE_HISTORIES,
+    promise: fetch(`${baseUrl}/invoice_histories?page=${current_page.page}`, { credentials: 'same-origin' })
+  }
+}
+
+export function saveInvoiceHistory(credits) {
+  const data = { credits };
+  return {
+    type: actionTypes.SAVE_INVOICE_HISTORY,
+    promise: fetch(`${baseUrl}/invoice_histories`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+      },
+      credentials: 'same-origin',
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+  }
+}

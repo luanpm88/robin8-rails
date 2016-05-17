@@ -48,6 +48,9 @@ class Transaction < ActiveRecord::Base
 
   def generate_trade_no
     self.update_attributes(trade_no: Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join)
+    if self.account_type == 'User' and self.direct == 'income'
+      self.account.increment!(:appliable_credits, self.credits)
+    end
   end
 
 

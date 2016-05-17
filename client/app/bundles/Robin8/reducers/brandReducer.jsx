@@ -14,6 +14,8 @@ export const $$initialState = Immutable.fromJS({
   transactions: [],
   invoice: {},
   invoiceReceiver: {},
+  appliableCredits: {},
+  invoiceHistories: [],
   error: ""
 });
 
@@ -180,6 +182,35 @@ export default function brandReducer($$state = $$initialState, action = null) {
       $$state = $$state.set("readyState", fetchState);
       if(fetchState === 'success') {
         $$state = $$state.merge({"invoiceReceiver": Immutable.fromJS(action.result)});
+      }
+      return $$state;
+
+    case actionTypes.FETCH_APPLIABLE_CREDITS:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({"appliableCredits": Immutable.fromJS(action.result)});
+      }
+      return $$state;
+
+    case actionTypes.FETCH_INVOICE_HISTORIES:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({
+          "invoiceHistories": Immutable.fromJS(action.result.items),
+          "paginate": Immutable.fromJS(action.result.paginate)
+        });
+      }
+      return $$state;
+
+    case actionTypes.SAVE_INVOICE_HISTORY:
+      $$state = $$state.set("readyState", fetchState);
+      if(fetchState === 'success') {
+        $$state = $$state.merge({
+          "invoiceHistories": Immutable.fromJS(action.result.items),
+          "paginate": Immutable.fromJS(action.result.paginate)
+        });
+      } else if (fetchState === "failure"){
+        $$state = $$state.merge({ "readyState": fetchState, "error": action.error });
       }
       return $$state;
 
