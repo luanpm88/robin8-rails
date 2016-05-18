@@ -82,5 +82,15 @@ Rails.application.routes.draw do
         get 'search'
       end
     end
+
+    resources :invoice_histories do
+      collection do
+        get 'search'
+      end
+      member do
+        get 'send'
+        match 'send_express' => 'invoice_histories#send_express', via: [:post]
+      end
+    end
   end
 end

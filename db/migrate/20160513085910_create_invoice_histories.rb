@@ -8,6 +8,7 @@ class CreateInvoiceHistories < ActiveRecord::Migration
       t.string :title
       t.string :address
       t.string :status, default: "pending"
+      t.string :tracking_number
       t.integer :user_id
 
       t.timestamps null: false

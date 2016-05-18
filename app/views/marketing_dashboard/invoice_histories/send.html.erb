@@ -1,0 +1,7 @@
+<h3>添加/修改发票快递单号</h3>
+<div class="well">
+  <%= form_tag send_express_marketing_dashboard_invoice_history_path(id: params[:id]) do %>
+    <%= text_field_tag :tracking_no, nil, :placeholder => "输入单号", :class => "search_input" %>
+    <%= submit_tag '添加', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
