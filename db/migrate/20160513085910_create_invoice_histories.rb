@@ -1,6 +1,8 @@
 class CreateInvoiceHistories < ActiveRecord::Migration
   def change
     create_table :invoice_histories do |t|
+      t.string :name
+      t.string :phone_number
       t.string :credits
       t.string :invoice_type
       t.string :title

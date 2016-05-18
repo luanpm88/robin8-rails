@@ -30,7 +30,7 @@ module Brand
             error_unprocessable! "输入金额超出可申请金额"
           end
           invoice_history_params = current_user.invoice.slice(:invoice_type, :title).merge(
-                                   current_user.invoice_receiver.slice(:address).merge(
+                                   current_user.invoice_receiver.slice(:name, :phone_number, :address).merge(
                                    {credits: params[:credits]} ))
           @invoice_history = current_user.invoice_histories.build(invoice_history_params)
           if @invoice_history.save
