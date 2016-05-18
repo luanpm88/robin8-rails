@@ -1,18 +1,14 @@
 module API
   module V1_3
-    class PublicOauth < Grape::API
-      resources :public_oauth do
-        before do
-          authenticate!
-        end
-
+    class PublicLogin < Grape::API
+      resources :public_login do
         params do
-          requires :usrename, type: String
+          requires :username, type: String
           requires :password, type: String
           optional :code, type: String
         end
         post 'login_with_account' do
-          res = Weixin::PublicLogin.login_with_account(params[:username], params[:password], params[:code])
+          res = Weixin::PublicLogin.login(params[:username], params[:password], params[:code])
           if res[0] == 'error'
             present :error, 1
             if res[1] == 'account_error'
@@ -36,7 +32,7 @@ module API
           requires :login_id, type: Integer
         end
         get 'login_status' do
-          Weixin::PublicLogin.check_login_status(login_id)
+          # Weixin::PublicLogin.check_login_status(login_id)
         end
       end
     end
