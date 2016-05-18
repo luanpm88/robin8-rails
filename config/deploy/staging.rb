@@ -16,7 +16,6 @@
 # used to set extended properties on the server.
 
 server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
-server '139.196.169.53', user: 'deployer', roles: %w{app slave}
 set :branch, 'QA'
 
 set :unicorn_env, "staging"
