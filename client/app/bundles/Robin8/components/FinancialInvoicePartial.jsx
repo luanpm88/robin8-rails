@@ -22,6 +22,15 @@ class FinancialInvoicePartial extends React.Component {
 
   componentDidUpdate() {
     this.displayPaginator(this.props);
+    this.hide_or_show_paginator();
+  }
+
+  hide_or_show_paginator() {
+    if (!(this.props.data.get("invoiceHistories").size)) {
+      $("#invoice-paginator").hide();
+    } else {
+      $("#invoice-paginator").show();
+    }
   }
 
   displayPaginator(props) {
@@ -122,6 +131,29 @@ class FinancialInvoicePartial extends React.Component {
     }
   }
 
+  render_appliable_credits() {
+    if (this.props.data.get('appliableCredits').size && (this.props.data.get('appliableCredits').get('appliable_credits') > 0)) {
+      return (
+        <div>
+          <p className="avail-invoice-amount">可申请额度: &nbsp;&nbsp;&nbsp;{this.props.data.get('appliableCredits').get('appliable_credits')}元</p>
+          <ul className="list-inline">
+            <li>
+              申请金额
+            </li>
+            <li>
+              <input onInput={this.check_credits.bind(this)} ref="creditsInput" type="text" className="form-control" placeholder="请输入金额" />
+            </li>
+            <li>
+              <button onClick={this.handleClick.bind(this)} className="btn btn-blue btn-default">确认提交</button>
+            </li>
+          </ul>
+        </div>
+      )
+    } else {
+      return (<p className="avail-invoice-amount">无可申请发票额度</p>)
+    }
+  }
+
   render() {
 
     return (
@@ -133,18 +165,8 @@ class FinancialInvoicePartial extends React.Component {
           <div className="main-content">
             <InvoiceInfo invoice={this.props.data.get('invoice')} invoiceReceiver={this.props.data.get('invoiceReceiver')} actions={this.props.actions} />
             <div className='apply-invoice'>
-              <p className="avail-invoice-amount">可申请额度: &nbsp;&nbsp;&nbsp;{this.props.data.get('appliableCredits').get('appliable_credits')}元</p>
-              <ul className="list-inline">
-                <li>
-                  申请金额
-                </li>
-                <li>
-                  <input onInput={this.check_credits.bind(this)} ref="creditsInput" type="text" className="form-control" placeholder="请输入金额" />
-                </li>
-                <li>
-                  <button onClick={this.handleClick.bind(this)} className="btn btn-blue btn-default">确认提交</button>
-                </li>
-              </ul>
+              { this.render_appliable_credits() }
+
               <div className='error-tips'>
                 <p className="must-input">请输入金额</p>
                 <p className="must-be-integer">金额必须为整数</p>

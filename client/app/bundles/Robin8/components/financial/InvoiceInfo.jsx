@@ -68,10 +68,11 @@ export default class InvoiceInfo extends React.Component {
 
   render_save_or_edit_invoice_receiver_button() {
     const invoiceReceiver = this.props.invoiceReceiver
-    if (invoiceReceiver.get('name'))
+    if (invoiceReceiver && invoiceReceiver.get('name')){
       return <button className="btn edit" onClick={()=>this.setState({showInvoiceReceiverInfoModal: true})}>修改</button>
-    else
+    } else {
       return <button className="btn save" onClick={()=>this.setState({showInvoiceReceiverInfoModal: true})}>创建</button>
+    }
   }
 
   render() {

@@ -42,7 +42,7 @@ export default function promiseMiddleware() {
           browserHistory.push('/brand/');  //若没有权限做某事, 则跳转到首页
         } else {
           $(".brand-error-notice-modal .modal-body p").html(json.detail);
-          $(".brand-error-notice-modal .modal-title").html("保存失败");
+          $(".brand-error-notice-modal .modal-title").html("提交失败");
           $(".brand-error-notice-modal").modal("show");
         }
       })
