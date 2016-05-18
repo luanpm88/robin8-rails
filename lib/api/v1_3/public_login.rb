@@ -22,8 +22,8 @@ module API
             if res[0] == 'login_success'
               present :detail, '登陆成功'
             elsif res[0] == 'qrcode_success'
-              present :login_id,res[2]
-              present :qrcode_url,res[1]
+              present :login_id,res[1]
+              present :qrcode_url,res[2]
             end
           end
         end
@@ -31,8 +31,8 @@ module API
         params do
           requires :login_id, type: Integer
         end
-        get 'login_status' do
-          # Weixin::PublicLogin.check_login_status(login_id)
+        get 'check_status' do
+          Weixin::PublicLogin.check_login_status(params[:login_id])
         end
       end
     end
