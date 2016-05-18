@@ -52,14 +52,21 @@
       }
 
       table {
+        width: 551px;
         position: absolute;
         top: 382px;
         left: 50%;
         right: 50%;
         transform: translate(-50%, -50%);
+        table-layout:fixed !important;
+        td {
+          overflow: auto;
+          white-space: nowrap !important;
+        }
         td {
           border: solid 1px #000;
           text-align: center;
+          white-space: nowrap;
         }
         .row-1 {
           height: 104px;
@@ -135,6 +142,13 @@
       table {
         margin: 0 auto;
         width: 827px;
+
+        table-layout:fixed;
+        td {
+          overflow: auto;
+          white-space: nowrap;
+        }
+
         tr:nth-child(n+2) {
           font-size: 14px;
         }
@@ -142,6 +156,7 @@
           border: solid 1px #000;
           text-align: center;
           height: 45px;
+
         }
         .invoice-amount {
           width: 89px;
