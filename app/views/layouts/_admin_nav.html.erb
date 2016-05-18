@@ -66,6 +66,20 @@
             <%= link_to 'KOL 管理', marketing_dashboard_kols_path %>
           </li>
           <li>
+            <a href="#">支付宝充值管理 <span class='fa arrow'></span></a>
+            <ul class="nav nav-second-level">
+              <li>
+                <%= link_to '所有充值订单', marketing_dashboard_alipay_orders_path %>
+              </li>
+              <li>
+                <%= link_to '待付款订单', marketing_dashboard_alipay_orders_path(pending: true) %>
+              </li>
+              <li>
+                <%= link_to '已付款订单', marketing_dashboard_alipay_orders_path(paid: true) %>
+              </li>
+            </ul>
+          </li>
+          <li>
             <a href="#">提现管理 <span class='fa arrow'></span></a>
             <ul class="nav nav-second-level">
               <li>

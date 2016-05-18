@@ -70,5 +70,17 @@ Rails.application.routes.draw do
       match '/agree' => 'withdraws#agree', via: [:post]
       match '/reject' => 'withdraws#reject', via: [:post]
     end
+
+    resources :alipay_orders do
+      collection do
+        post 'search'
+      end
+    end
+
+    resources :transactions do
+      collection do
+        get 'search'
+      end
+    end
   end
 end
