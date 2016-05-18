@@ -26,7 +26,7 @@ module Weixin
       $uuid = uuid
       wechat_login = PublicWechatLogin.generate_qrcode_login(username, password, cookies, ticket, appid, uuid, operation_seq)
       qrcode_url = get_qrcode_url(ticket, uuid, operation_seq)
-      return [['qrcode_success'], wechat_login.id, qrcode_url]
+      return ['qrcode_success', wechat_login.id, qrcode_url]
     end
 
 
@@ -50,9 +50,9 @@ module Weixin
         redirect_url = "https://mp.weixin.qq.com/" + response["redirect_url"]
         if redirect_url.include?("token=")
           token = redirect_url.split("token=").last
-          return [['success'], cookies , redirect_url, token]
+          return ['login_success', cookies , redirect_url, token]
         else
-          return [['account_success'], cookies , redirect_url]
+          return ['account_success', cookies , redirect_url]
         end
       elsif response["base_resp"].present? || response["base_resp"]["ret"] == '200027'
         return [['error', 'verify_code']]
@@ -117,7 +117,13 @@ module Weixin
       return "https://mp.weixin.qq.com/safe/safeqrcode?ticket=#{ticket}&uuid=#{uuid}&action=check&type=login&auth=ticket&msgid=#{operation_seq}"
     end
 
-    def self.check_login_status(redirect_url, cookies, uuid, username, operation_seq )
+    def self.check_login_status_with_id(login_id)
+      login =  PublicWechatLogin.find login_id
+      check_login_status(login.redirect_url, login.login_cookies, login.uuid, login.username, login.operation_seq)
+    end
+
+
+    def self.check_login_status(redirect_url, cookies, uuid, username, operation_seq)
       safeuuid_req = Typhoeus.post("https://mp.weixin.qq.com/safe/safeuuid?timespam=#{Time.now.to_i*1000}&token=&lang=zh_CN",
                                     :headers => {
                                        :user_agent => UserAgent,
@@ -176,10 +182,10 @@ module Weixin
 end
 
 
-qrcode_url = Weixin::PublicLogin.get_qrcode
-puts "----qrcode_url:#{qrcode_url}"
-while true
-  res = Weixin::PublicLogin.check_login_status($redirect_url, $cookies, $uuid, $username, $operation_seq)
-  puts "=========res#{res}"
-  sleep 1.5
-end
+# qrcode_url = Weixin::PublicLogin.get_qrcode
+# puts "----qrcode_url:#{qrcode_url}"
+# while true
+#   res = Weixin::PublicLogin.check_login_status($redirect_url, $cookies, $uuid, $username, $operation_seq)
+#   puts "=========res#{res}"
+#   sleep 1.5
+# end

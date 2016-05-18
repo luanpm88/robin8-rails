@@ -9,7 +9,8 @@ class DownloadInvitation < ActiveRecord::Base
       download_invitation = DownloadInvitation.effective.where(:visitor_ip => kol.current_sign_in_ip, :app_platform => kol.app_platform,
                                                                :os_version => kol.os_version).first
     else
-      download_invitation = DownloadInvitation.effective.where(:visitor_ip => kol.current_sign_in_ip, :device_model => kol.device_model,
+      device_model = kol.device_model.strip.downcase.gsub(" ","")     rescue nil
+      download_invitation = DownloadInvitation.effective.where(:visitor_ip => kol.current_sign_in_ip, :device_model => device_model,
                                                                :app_platform => kol.app_platform, :os_version => kol.os_version).first
     end
     download_invitation
@@ -29,9 +30,10 @@ class DownloadInvitation < ActiveRecord::Base
       self.app_platform = 'Android'
       res = self.visitor_agent.match(/\s\(.*Android\s(.*?);(.*;)?(.*)\sBuild/)
       self.os_version = res[1]
-      self.device_model = res[3]
+      self.device_model = res[3].strip.downcase.gsub(" ","")     rescue nil
     end
   end
+
 
 
 end
