@@ -11,8 +11,7 @@ module Weixin
       res, cookies, redirect_url, token = login_with_account(username, password, code)
       return res if res[0] == 'error'
       if token
-        visitor_cookies = get_vistor_cookies(redirect_url, cookies, token)
-        PublicWechatLogin.generate_account_login(username, password, visitor_cookies, token)
+        PublicWechatLogin.generate_account_login(username, password, cookies, token)
         return ['login_success']
       end
       res, ticket, operation_seq = get_ticket(cookies, redirect_url)
@@ -24,7 +23,7 @@ module Weixin
       $ticket = ticket
       $operation_seq = operation_seq
       $uuid = uuid
-      wechat_login = PublicWechatLogin.generate_qrcode_login(username, password, cookies, ticket, appid, uuid, operation_seq)
+      wechat_login = PublicWechatLogin.generate_qrcode_login(username, password, cookies, ticket, appid, uuid, operation_seq, redirect_url)
       qrcode_url = get_qrcode_url(ticket, uuid, operation_seq)
       return ['qrcode_success', wechat_login.id, qrcode_url]
     end
@@ -43,10 +42,7 @@ module Weixin
       response = JSON.parse request.response_body   rescue {}
       cookies = ""
       if response["base_resp"] || response["base_resp"]["ret"] == 0
-        request.response_headers.split("\n").each do |res_head|
-          res = res_head.split(":")
-          cookies << "#{res[1].split(";")[0]};"   if res[0].eql? "Set-Cookie"
-        end
+        cookies = append_cookies(cookies, request)
         redirect_url = "https://mp.weixin.qq.com/" + response["redirect_url"]
         if redirect_url.include?("token=")
           token = redirect_url.split("token=").last
@@ -117,13 +113,15 @@ module Weixin
       return "https://mp.weixin.qq.com/safe/safeqrcode?ticket=#{ticket}&uuid=#{uuid}&action=check&type=login&auth=ticket&msgid=#{operation_seq}"
     end
 
-    def self.check_login_status_with_id(login_id)
+
+    def self.check_login_status(login_id)
       login =  PublicWechatLogin.find login_id
-      check_login_status(login.redirect_url, login.login_cookies, login.uuid, login.username, login.operation_seq)
-    end
-
-
-    def self.check_login_status(redirect_url, cookies, uuid, username, operation_seq)
+      return if login.blank?
+      cookies = login.visitor_cookies
+      uuid = login.uuid
+      username = login.username
+      operation_seq = login.operation_seq
+      redirect_url = login.redirect_url
       safeuuid_req = Typhoeus.post("https://mp.weixin.qq.com/safe/safeuuid?timespam=#{Time.now.to_i*1000}&token=&lang=zh_CN",
                                     :headers => {
                                        :user_agent => UserAgent,
@@ -135,15 +133,15 @@ module Weixin
                                     :body => "token=&lang=zh_CN&f=json&ajax=1&random=0.22103375891462052&uuid=#{uuid}&action=json&type=json")
       response = JSON.parse safeuuid_req.response_body  rescue {}
       if response['errcode'] == 405
-        home_url, cookies,  token = get_token(redirect_url, cookies, uuid, username, operation_seq )
-        vistor_cookies = get_vistor_cookies(home_url, cookies, token)
-        return ['login_success',token, vistor_cookies]
+        token = secure_wx_verify(redirect_url, cookies, uuid, username, operation_seq )
+        login.update_columns(visitor_cookies: cookies, token:token)
+        return [response['errcode']]
       else
-        return ['failure']
+        return [response['errcode']]
       end
     end
 
-    def self.get_token(redirect_url, cookies, uuid, username, operation_seq )
+    def self.secure_wx_verify(redirect_url, cookies, uuid, username, operation_seq )
       securewxverify_req = Typhoeus.post("https://mp.weixin.qq.com/cgi-bin/securewxverify",
                                          :headers => {
                                            :user_agent => UserAgent,
@@ -153,31 +151,40 @@ module Weixin
                                            :Cookie => cookies
                                          },
                                          :body => "token=&lang=zh_CN&f=json&ajax=1&random=0.8502100897504383&code=#{uuid}&account=#{username}&operation_seq=#{operation_seq}")
-      cookies = ""
-      securewxverify_req.response_headers.split("\n").each do |res_head|
-        res = res_head.split(":")
-        cookies << "#{res[1].split(";")[0]};"   if res[0].eql? "Set-Cookie"
-      end
+      append_cookies(cookies, securewxverify_req)
       response = JSON.parse securewxverify_req.response_body
       token = response["redirect_url"].split("token=").last
-      home_url = "https://mp.weixin.qq.com#{response["redirect_url"]}"
-      return [home_url, cookies, token]
+      return token
     end
 
-    def self.get_vistor_cookies(home_url, cookies, token)
+    def self.visit_home
+      public_login = PublicWechatLogin.last
+      cookies = public_login.visitor_cookies
+      token = public_login.token
+      referer = public_login.redirect_url
+      home_url = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=#{token}"
       home_req = Typhoeus.get(home_url,
                               :headers => {
                                 :user_agent => UserAgent,
                                 "Upgrade-Insecure-Requests" => 1,
-                                :Cookie => cookies
+                                :Cookie => cookies,
+                                :referer => referer || 'https://mp.weixin.qq.com/'
                               })
-      vistor_cookies = ""
-      home_req.response_headers.split("\n").each do |res_head|
-        res = res_head.split(":")
-        vistor_cookies << "#{res[1].split(";")[0]};"   if res[0].eql? "Set-Cookie"
-      end
-      return  vistor_cookies
+      puts home_req.response_body
     end
+
+    def self.append_cookies(cookies, req)
+      cookies ||= ""
+      req.response_headers.split("\n").each do |res_head|
+        res = res_head.split(":")
+         if res[0].eql?("Set-Cookie")
+           cookies_body =  res[1].split(";")[0]
+           cookies << "#{cookies_body};"   if !cookies.include?(cookies_body)
+         end
+      end
+      cookies
+    end
+
   end
 end
 

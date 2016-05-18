@@ -16,8 +16,8 @@ module API
             present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
             present :kol_value, kol_value, with: API::V2::Entities::KolInfluenceValueEntities::Summary
           else
-            present :item_rate, KolValue.new, with: API::V2::Entities::KolInfluenceValueEntities::History
-            present :kol_value, KolValue.new, with: API::V2::Entities::KolInfluenceValueEntities::Summary
+            present :item_rate, KolInfluenceValue.new, with: API::V2::Entities::KolInfluenceValueEntities::History
+            present :kol_value, KolInfluenceValue.new, with: API::V2::Entities::KolInfluenceValueEntities::Summary
           end
         end
 

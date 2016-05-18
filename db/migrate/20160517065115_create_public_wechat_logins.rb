@@ -4,7 +4,7 @@ class CreatePublicWechatLogins < ActiveRecord::Migration
       t.string :username
       t.string :password_encrypted
       t.text :visitor_cookies
-      t.string :redirect_url
+      t.text :redirect_url
       t.string :login_type
       t.text :login_cookies
       t.datatime :login_time
