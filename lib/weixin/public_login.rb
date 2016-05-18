@@ -135,17 +135,9 @@ module Weixin
       if response['errcode'] == 405
         token = secure_wx_verify(redirect_url, cookies, uuid, username, operation_seq )
         login.update_columns(visitor_cookies: cookies, token:token)
-        return ['login_success']
-      elsif response['errcode'] == 401
-        return ['scanning']
-      elsif response['errcode'] == 402
-        return ['expired']
-      elsif response['errcode'] == 403
-        return ['canceled']
-      elsif response['errcode'] == 404
-        return ['scaned']
+        return [response['errcode']]
       else
-        return ['failure']
+        return [response['errcode']]
       end
     end
 
