@@ -10,6 +10,7 @@ module API
       mount API::V1_3::Kols
       mount API::V1_3::Transactions
       mount API::V1_3::Withdraws
+      mount API::V1_3::WeixinReport
     end
   end
 end

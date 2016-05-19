@@ -18,6 +18,18 @@ class PublicWechatLogin < ActiveRecord::Base
     webchat_login.update_column(visitor_cookies: visitor_cookies, token: token)
   end
 
+
+  # 远程服务器
+  ServerIp = 'http://139.196.36.27'
+  ApiToken = 'b840fc02d524045429941cc15f59e41cb7be6c52'
+  def get_info(info_type = nil)
+    params = {:api_token => ApiToken, :email => self.username, :cookie => self.visitor_cookies,
+              :user_agent => Weixin::PublicLogin::UserAgent, :token => self.token}
+    params["#{info_type}"] = 1 if info_type.present?
+    return RestClient.get("#{ServerIp}/weixin/report", {:params => params})
+  end
+
+
   #TODO
   def sync_to
 

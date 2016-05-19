@@ -23,6 +23,7 @@ module API
             present :login_status, res[0]
             if res[0] == 'login_success'
               present :detail, '登陆成功'
+              present :login_id,res[1]
             elsif res[0] == 'qrcode_success'
               present :detail, '请扫描二维码'
               present :login_id,res[1]
