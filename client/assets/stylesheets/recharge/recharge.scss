@@ -93,6 +93,29 @@
 
         button:focus {outline:0;}
 
+        button {
+          i {
+            background-image: url(~select_price.png);
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            display: none;
+            bottom: 0px;
+          }
+        }
+
+        .price-500 i {
+          left: 69px;
+        }
+
+        .price-1000 i {
+          left: 159px;
+        }
+
+        .price-2000 i {
+          left: 249px;
+        }
+
         .price {
           height: 35px;
           width: 80px;

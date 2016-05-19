@@ -15,13 +15,17 @@ class FinancialRechargePartial extends React.Component {
     this.refs.price_500.style.border = '1px solid #dce4e6';
     this.refs.price_1000.style.border = '1px solid #dce4e6';
     this.refs.price_2000.style.border = '1px solid #dce4e6';
+    $('button i').hide();
     $(".error-tips p").hide();
     if(e.target.value === '500') {
       this.refs.price_500.style.borderColor = "rgb(40, 182, 187)";
+      this.refs.price_500.children[0].style.display = "block"
     } else if (e.target.value === '1000') {
       this.refs.price_1000.style.borderColor = "rgb(40, 182, 187)";
+      this.refs.price_1000.children[0].style.display = "block"
     } else if (e.target.value === '2000'){
       this.refs.price_2000.style.borderColor = "rgb(40, 182, 187)";
+      this.refs.price_2000.children[0].style.display = "block"
     }
   }
 
@@ -30,6 +34,7 @@ class FinancialRechargePartial extends React.Component {
     this.refs.price_500.style.border = '1px solid #dce4e6';
     this.refs.price_1000.style.border = '1px solid #dce4e6';
     this.refs.price_2000.style.border = '1px solid #dce4e6';
+    $('button i').hide();
     const price = this.refs.priceInput.value;
     if(validator.isNull(price)) {
       $(".error-tips p").hide();
@@ -117,13 +122,22 @@ class FinancialRechargePartial extends React.Component {
                     <span>支付金额:</span>
                     <ul className="list-inline">
                       <li>
-                        <button value="500" ref='price_500' className='price price-500' onClick={this.choose_price.bind(this)}>500元</button>
+                        <button value="500" ref='price_500' className='price price-500' onClick={this.choose_price.bind(this)}>
+                          500元
+                          <i className="icon icon-check"></i>
+                        </button>
                       </li>
                       <li>
-                        <button value="1000" ref='price_1000' className='price price-1000' onClick={this.choose_price.bind(this)}>1000元</button>
+                        <button value="1000" ref='price_1000' className='price price-1000' onClick={this.choose_price.bind(this)}>
+                          1000元
+                          <i className="icon icon-check"></i>
+                        </button>
                       </li>
                       <li>
-                        <button value="2000" ref="price_2000" className='price price-2000' onClick={this.choose_price.bind(this)}>2000元</button>
+                        <button value="2000" ref="price_2000" className='price price-2000' onClick={this.choose_price.bind(this)}>
+                          2000元
+                          <i className="icon icon-check"></i>
+                        </button>
                       </li>
                     </ul>
                     <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control" placeholder="请输入金额" />
