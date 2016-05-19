@@ -1,0 +1,210 @@
+.page-recharge {
+
+  .menu {
+    margin-top: 45px;
+    width: 1000px;
+    ul {
+
+      height: 60px;
+      margin-left: 0px;
+
+      a {
+        display: inline-block;
+        background-color: #fff;
+        text-align: center;
+        line-height: 60px;
+        font-size: 18px;
+        width: 320px;
+        border-radius: 5px 5px 0 0;
+        text-decoration: none;
+        color: #181616;
+
+        &:nth-last-child(-n + 2) {
+          margin-left: 5px;
+          background-color: #181616;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .main-content {
+    padding-top: 40px;
+    background-color: #fff;
+    > div {
+      margin-left: 122px;
+      width: 756px;
+    }
+
+    .account-info, .recharge-online, .recharge-offline {
+      > span {
+        border-left: 3px solid #28b6bb;
+        height: 17px;
+        span {
+          padding-left: 10px;
+          font-size: 17px;
+        }
+      }
+    }
+
+    .account-info,.recharge-online,.recharge-offline {
+      .detail {
+        margin-top: 30px;
+        margin-left: 121px;
+      }
+    }
+    .account-info .detail{
+      height: 103px;
+      img {
+        width: 70px;
+        height: 70px;
+        border-radius: 35px;
+        float: left;
+      }
+      div {
+        height: 70px;
+        padding-top: 7px;
+        margin-left: 100px;
+
+        p {
+          font-size: 14px;
+          color: #181616;
+
+          span {
+            margin-left: 15px;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+
+    .recharge-online .detail {
+      img {
+        margin-left: 30px;
+      }
+
+      .recharge-amount{
+        margin-top: 30px;
+        ul {
+          position: relative;
+          top: -22px;
+          left: 96px;
+        }
+
+        button:focus {outline:0;}
+
+        button {
+          i {
+            background-image: url(~select_price.png);
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            display: none;
+            bottom: 0px;
+          }
+        }
+
+        .price-500 i {
+          left: 69px;
+        }
+
+        .price-1000 i {
+          left: 159px;
+        }
+
+        .price-2000 i {
+          left: 249px;
+        }
+
+        .price {
+          height: 35px;
+          width: 80px;
+          background-color: #fff;
+          border: 1px solid #dce4e6;
+          font-size: 14px;
+        }
+
+        input {
+          margin-left: 96px;
+          width: 138px;
+          font-size: 12px;
+          color: #999999;
+        }
+        .error-tips {
+          margin-left: 96px;
+          height: 0px;
+          p {
+            display: none;
+            color: rgb(206, 1, 1);
+            margin-top: 8px;
+            font-size: 13px;
+          }
+        }
+        .recharge-btn {
+          margin-top: 20px;
+          margin-bottom: 30px;
+          margin-left: 96px;
+          &:active {
+            background-color: #2dcad0;
+            color: #fff;
+          }
+          &:focus {
+            background-color: #2dcad0;
+            color: #fff;
+          }
+        }
+      }
+    }
+    .recharge-offline .detail {
+      table {
+        width: 638px;
+        height: 115px;
+        margin-bottom: 24px;
+
+        td {
+          border: solid 1px #000;
+          text-align: center;
+        }
+
+        .row-1 {
+          height: 40px;
+        }
+
+        .row-2 {
+          height: 75px;
+        }
+
+        .account-name {
+          width: 210px;
+        }
+        .account-bank {
+          width: 184px;
+        }
+        .account-number {
+          width: 244px;
+        }
+      }
+
+      hr {
+        margin-top: 24px;
+        border: 1px solid #999999;
+      }
+
+      .description {
+
+        padding-bottom: 100px;
+
+        p {
+          margin-top: 24px;
+          font-size: 14px;
+          color: #909090;
+
+          a {
+            color: #28b6bb
+          }
+        }
+      }
+    }
+  }
+
+}

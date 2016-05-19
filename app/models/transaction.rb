@@ -3,9 +3,13 @@ class Transaction < ActiveRecord::Base
   belongs_to :opposite, :polymorphic => true
   belongs_to :item, :polymorphic => true
 
+  validates :trade_no, allow_nil: true, allow_blank: true, uniqueness: true
+
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
   scope :tasks, ->{where("subject in ('check_in', 'invite_friend', 'complete_info')")}
+
+  after_create :generate_trade_no
 
   # kol 和braand 行为有差异  现落到各自model
   # scope :income, -> {where(:direct => 'income')}
@@ -19,8 +23,10 @@ class Transaction < ActiveRecord::Base
     case subject
       when 'campaign'
         "营销活动(#{self.item.name})"
-      when 'manual_recharge'
-        '人工充值'
+      when 'manual_recharge', 'manaual_recharge'
+        '线下汇款'
+      when 'alipay_recharge'
+        '支付宝'
       when 'manual_withdraw'
         '人工提现'
       when 'withdraw'
@@ -39,6 +45,13 @@ class Transaction < ActiveRecord::Base
         then '冻结'
       when 'unfrozen'
         then '解冻'
+    end
+  end
+
+  def generate_trade_no
+    self.update_attributes(trade_no: Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join)
+    if self.account_type == 'User' and self.direct == 'income'
+      self.account.increment!(:appliable_credits, self.credits)
     end
   end
 

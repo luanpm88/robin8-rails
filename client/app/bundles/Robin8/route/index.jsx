@@ -55,5 +55,24 @@ export default (
       }, "updatePassword");
     }}/>
 
-  </Route>
+  <Route path="financial/recharge" getComponent={(nextState, cb) => {
+    require.ensure([], (require) => {
+      cb(null, require('../components/FinancialRechargePartial').default);
+    }, "FinancialRecharge");
+  }} />
+
+
+  <Route path="financial/summary" getComponent={(nextState, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('../components/FinancialSummaryPartial').default);
+      }, "FinancialSummary");
+  }}/>
+
+  <Route path="financial/invoice" getComponent={(nextState, cb) => {
+    require.ensure([], (require) => {
+      cb(null, require('../components/FinancialInvoicePartial').default);
+    }, "FinancialInvoice");
+  }}/>
+</Route>
+
 )

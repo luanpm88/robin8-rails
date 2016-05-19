@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160517065115) do
   add_index "alerts", ["last_text_sent_at"], name: "index_alerts_on_last_text_sent_at", using: :btree
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
 
+<<<<<<< HEAD
   create_table "announcements", force: :cascade do |t|
     t.string   "title",      limit: 255
     t.string   "logo",       limit: 255
@@ -75,6 +76,20 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.datetime "updated_at",                             null: false
   end
 
+=======
+  create_table "alipay_orders", force: :cascade do |t|
+    t.string   "trade_no",        limit: 255
+    t.string   "alipay_trade_no", limit: 255
+    t.decimal  "credits",                     precision: 8, scale: 2
+    t.string   "status",          limit: 255,                         default: "pending"
+    t.string   "user_id",         limit: 255
+    t.datetime "created_at",                                                              null: false
+    t.datetime "updated_at",                                                              null: false
+  end
+
+  add_index "alipay_orders", ["trade_no"], name: "index_alipay_orders_on_trade_no", unique: true, using: :btree
+
+>>>>>>> feature/alipay
   create_table "app_upgrades", force: :cascade do |t|
     t.string   "app_platform",  limit: 255
     t.string   "app_version",   limit: 255
@@ -168,7 +183,6 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.string   "status",              limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.string   "expect_price",        limit: 11
     t.string   "agree_reason",        limit: 255
   end
 
@@ -443,7 +457,6 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.boolean  "is_vip",                    limit: 1
     t.boolean  "is_yellow_vip",             limit: 1
     t.datetime "access_token_refresh_time"
-    t.integer  "last_status_id",            limit: 4
   end
 
   create_table "industries", force: :cascade do |t|
@@ -468,6 +481,34 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.datetime "decline_date"
+  end
+
+  create_table "invoice_histories", force: :cascade do |t|
+    t.string   "credits",    limit: 255
+    t.string   "type",       limit: 255
+    t.string   "title",      limit: 255
+    t.string   "address",    limit: 255
+    t.string   "status",     limit: 255
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "invoice_receivers", force: :cascade do |t|
+    t.string   "name",         limit: 255
+    t.string   "phone_number", limit: 255
+    t.string   "address",      limit: 255
+    t.integer  "user_id",      limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.string   "title",        limit: 255
+    t.string   "invoice_type", limit: 255, default: "common"
+    t.integer  "user_id",      limit: 4
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   create_table "ip_scores", force: :cascade do |t|
@@ -652,10 +693,13 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.string   "kol_uuid",               limit: 255
     t.datetime "cal_time"
     t.string   "rongcloud_token",        limit: 255
+<<<<<<< HEAD
     t.string   "os_version",             limit: 255
     t.string   "device_model",           limit: 255
     t.string   "invite_code",            limit: 10
     t.string   "alipay_name",            limit: 255
+=======
+>>>>>>> feature/alipay
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
@@ -1142,7 +1186,10 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.string   "opposite_type", limit: 255
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
+    t.string   "trade_no",      limit: 191
   end
+
+  add_index "transactions", ["trade_no"], name: "index_transactions_on_trade_no", unique: true, using: :btree
 
   create_table "unsubscribe_emails", force: :cascade do |t|
     t.integer  "user_id",    limit: 4

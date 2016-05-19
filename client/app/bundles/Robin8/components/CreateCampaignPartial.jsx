@@ -7,6 +7,7 @@ import moment from 'moment';
 
 import "campaign/activity/form.scss";
 
+import BreadCrumb     from './shared/BreadCrumb';
 import IntroPartial   from './campaigns/form/IntroPartial';
 import TargetPartial  from './campaigns/form/TargetPartial';
 import DetailPartial  from './campaigns/form/DetailPartial';
@@ -63,17 +64,6 @@ class CreateCampaignPartial extends React.Component {
     initToolTip({placement:'bottom', html: true});
   }
 
-  render_breadcrumb() {
-    return (
-      <ol className="breadcrumb">
-        <li>
-          <i className="caret-arrow left" />
-          <Link to="/brand/">我的主页</Link>
-        </li>
-      </ol>
-    );
-  }
-
   render() {
     const { name, description, img_url, url, age, province, city, gender, message, budget, per_budget_type, action_url, action_url_identifier, short_url, start_time, per_action_budget, deadline } = this.props.fields;
     const brand = this.props.brand
@@ -83,7 +73,7 @@ class CreateCampaignPartial extends React.Component {
     return (
       <div className="page page-activity page-activity-new">
         <div className="container">
-         { this.render_breadcrumb() }
+         <BreadCrumb />
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveCampaign)(event).catch(validateFailed) } }>
               <IntroPartial {...{ name, description, img_url, url }}/>
