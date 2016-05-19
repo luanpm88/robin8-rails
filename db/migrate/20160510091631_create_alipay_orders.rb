@@ -5,7 +5,7 @@ class CreateAlipayOrders < ActiveRecord::Migration
       t.string :alipay_trade_no
       t.decimal :credits, :precision => 8, :scale => 2
       t.string :status, default: "pending"
-      t.string :user_id
+      t.integer :user_id
 
       t.timestamps null: false
     end
