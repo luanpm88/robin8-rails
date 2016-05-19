@@ -4,7 +4,6 @@ class CampaignShowController < ApplicationController
 
   def show
     uuid_params = JSON.parse(Base64.decode64(params[:uuid]))
-
     campaign_id = uuid_params['campaign_id']
     if uuid_params["campaign_action_url_identifier"].present?
       @campaign_action_url = CampaignActionUrl.find_by :identifier => uuid_params["campaign_action_url_identifier"]
@@ -24,9 +23,9 @@ class CampaignShowController < ApplicationController
       redirect_to @campaign.url
     else
       if Rails.env.development?
-        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
+        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], {})
       else
-        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, {})
+        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], {})
       end
       redirect_to @campaign.url
     end
