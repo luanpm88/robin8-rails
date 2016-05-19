@@ -11,18 +11,13 @@ module Weixin
       res, cookies, redirect_url, token = login_with_account(username, password, code)
       return res if res[0] == 'error'
       if token
-        PublicWechatLogin.generate_account_login(username, password, cookies, token)
-        return ['login_success']
+        wechat_login = PublicWechatLogin.generate_account_login(username, password, cookies, token)
+        return ['login_success', wechat_login.id]
       end
       res, ticket, operation_seq = get_ticket(cookies, redirect_url)
       return res if res[0] == 'error'
       appid = get_appid(cookies,redirect_url)
       uuid = get_uuid(cookies, redirect_url, appid, ticket)
-      $cookies = cookies
-      $redirect_url = redirect_url
-      $ticket = ticket
-      $operation_seq = operation_seq
-      $uuid = uuid
       wechat_login = PublicWechatLogin.generate_qrcode_login(username, password, cookies, ticket, appid, uuid, operation_seq, redirect_url)
       qrcode_url = get_qrcode_url(ticket, uuid, operation_seq)
       return ['qrcode_success', wechat_login.id, qrcode_url]
@@ -135,9 +130,9 @@ module Weixin
       if response['errcode'] == 405
         token = secure_wx_verify(redirect_url, cookies, uuid, username, operation_seq )
         login.update_columns(visitor_cookies: cookies, token:token)
-        return [response['errcode']]
+        return response['errcode']
       else
-        return [response['errcode']]
+        return response['errcode']
       end
     end
 
@@ -187,12 +182,3 @@ module Weixin
 
   end
 end
-
-
-# qrcode_url = Weixin::PublicLogin.get_qrcode
-# puts "----qrcode_url:#{qrcode_url}"
-# while true
-#   res = Weixin::PublicLogin.check_login_status($redirect_url, $cookies, $uuid, $username, $operation_seq)
-#   puts "=========res#{res}"
-#   sleep 1.5
-# end

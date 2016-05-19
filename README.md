@@ -35,4 +35,5 @@ Starting MailCatcher
 
 
 # 5-31
-    游客手机号： 13000000000
+    游客手机号： 13000000000  并且加入密码 123456
+    nginx proxy_set_header  HTTP_X_FORWARDED_FOR $http_x_forwarded_for;
