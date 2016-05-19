@@ -42,43 +42,47 @@ class FinancialSummaryPartial extends React.Component {
 
   render_transactions_table() {
     const transactions = this.props.data.get('transactions');
-    return (
-      <table className="table fixed table-bordered">
-        <colgroup>
-          <col width="199px" />
-          <col width="107px" />
-          <col width="108px" />
-          <col width="108px" />
-          <col width="108px" />
-          <col width="199px" />
-        </colgroup>
-        <thead>
-          <tr>
-            <th className="trade-no">账单编号</th>
-            <th className="cost-type">消费类型</th>
-            <th className="cost-date">日期</th>
-            <th className="cost-price">金额</th>
-            <th className="coce">剩余金额</th>
-            <th className="cost-remark">备注</th>
-          </tr>
-        </thead>
-        <tbody>
-          { do
-            {
-              if (transactions.size) {
-                transactions.map(function(transaction, index){
-                  if (index % 2 === 0) {
-                    return <Transaction transaction={transaction} tagColor="ood-transaction" key={index} />
-                  } else {
-                    return <Transaction transaction={transaction} tagColor="even-transaction" key={index} />
-                  }
-                })
+    if (transactions.size) {
+      return (
+        <table className="table fixed table-bordered">
+          <colgroup>
+            <col width="199px" />
+            <col width="107px" />
+            <col width="108px" />
+            <col width="108px" />
+            <col width="108px" />
+            <col width="199px" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th className="trade-no">账单编号</th>
+              <th className="cost-type">消费类型</th>
+              <th className="cost-date">日期</th>
+              <th className="cost-price">金额</th>
+              <th className="coce">剩余金额</th>
+              <th className="cost-remark">备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            { do
+              {
+                if (transactions.size) {
+                  transactions.map(function(transaction, index){
+                    if (index % 2 === 0) {
+                      return <Transaction transaction={transaction} tagColor="ood-transaction" key={index} />
+                    } else {
+                      return <Transaction transaction={transaction} tagColor="even-transaction" key={index} />
+                    }
+                  })
+                }
               }
             }
-          }
-        </tbody>
-      </table>
-    )
+          </tbody>
+        </table>
+      )
+    } else {
+      return <p className="no-record">暂无消费记录</p>
+    }
   }
 
   render() {
