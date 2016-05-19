@@ -62,6 +62,7 @@ gem 'newrelic_rpm'
 
 # 微信相关
 gem 'weixin_authorize'
+gem "typhoeus"
 
 source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'

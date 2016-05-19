@@ -10,8 +10,9 @@ class IpScore < ActiveRecord::Base
   AppKey = '3f8e431c74da6f38dc0b2d0dac66b565'
   def self.get_score(ip)
     res_json = RestClient.get "#{Server}?ip=#{ip}", {:apikey => AppKey }
-    res = JSON.parse res_json
+    res = JSON.parse res_json   resuce {}
     puts res
+    return 60 if res['data'].blank? || res["data"]["score"].blank?
     return res["data"]["score"]
   end
 end

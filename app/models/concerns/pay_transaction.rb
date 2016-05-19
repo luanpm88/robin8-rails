@@ -25,7 +25,7 @@ module Concerns
         ActiveRecord::Base.transaction do
           self.increment!(:frozen_amount, credits)
           transaction = build_transaction(credits, subject, 'frozen', item , opposite)
-          transaction.save
+          transaction.save!
         end
       end
     end
@@ -37,7 +37,7 @@ module Concerns
       ActiveRecord::Base.transaction do
         self.decrement!(:frozen_amount, credits)
         transaction = build_transaction(credits, subject, 'unfrozen', item , opposite)
-        transaction.save
+        transaction.save!
       end
     end
 
@@ -45,7 +45,7 @@ module Concerns
       ActiveRecord::Base.transaction do
         self.increment!(:amount, credits)
         transaction = build_transaction(credits, subject, 'income', item , opposite)
-        transaction.save
+        transaction.save!
       end
     end
 
@@ -53,7 +53,7 @@ module Concerns
       ActiveRecord::Base.transaction do
         self.decrement!(:amount, credits)
         transaction = build_transaction(credits, subject, 'payout', item , opposite)
-        transaction.save
+        transaction.save!
       end
     end
 

@@ -1,0 +1,32 @@
+<h3>系统活动、公告</h3>
+
+<div style="float:right"><%= link_to '新增系统公告', new_marketing_dashboard_announcement_path, :class => 'btn btn-primary' %></div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>排序</th>
+      <th>主题名</th>
+      <th>描述</th>
+      <th>Banner</th>
+      <th>内容URL</th>
+      <th>Ops</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @announcements.each do |announcement| %>
+      <tr>
+        <td><%= announcement.position %></td>
+        <td><%= announcement.title %></td>
+        <td><%= announcement.desc %></td>
+        <td><%= image_tag announcement.banner.url('200') %></td>
+        <td><%= link_to announcement.url,announcement.url %></td>
+        <td>
+            <%= link_to 'Destroy', marketing_dashboard_announcement_path(announcement), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+

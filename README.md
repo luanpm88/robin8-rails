@@ -32,3 +32,7 @@ Starting MailCatcher
     :wday: 2
     :hour: 0
     :min:  5
+
+
+# 5-31
+    游客手机号： 13000000000

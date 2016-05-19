@@ -4,7 +4,7 @@ module API
       module KolEntities
         class Summary < Grape::Entity
           expose :id, :email, :mobile_number, :gender, :date_of_birthday,
-                 :alipay_account, :desc
+                 :alipay_account, :alipay_name, :desc, :invite_code, :age, :weixin_friend_count
           expose :name do  |kol|
             kol.name || kol.mobile_number
           end
@@ -55,6 +55,9 @@ module API
           end
           expose :verifying_income do |kol|
             kol.verifying_income.round(2)
+          end
+          expose :total_amount do |kol|
+            (kol.amount + kol.frozen_amount).round(2)
           end
         end
 
