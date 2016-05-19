@@ -31,10 +31,10 @@ export default class InvoiceHistory extends React.Component {
         <td className="express-status">
           { do
             {
-              if (invoiceHistory.get("status") === 'pending'){
+              if (invoiceHistory.get("tracking_number")){
+                "已邮寄"
+              } else {
                 "等待邮寄"
-              } else if (invoiceHistory.get("status") === 'passed') {
-                "已寄出"
               }
             }
           }

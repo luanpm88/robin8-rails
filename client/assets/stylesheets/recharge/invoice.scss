@@ -62,9 +62,14 @@
         td {
           overflow: auto;
           white-space: nowrap !important;
+          &:first-child {
+            font-size: 14px;
+            font-weight: bold;
+            color: #181616;
+          }
         }
         td {
-          border: solid 1px #000;
+          border: solid 1px #ddd;
           text-align: center;
           white-space: nowrap;
         }
@@ -152,8 +157,14 @@
         tr:nth-child(n+2) {
           font-size: 14px;
         }
+
+        tr:first-child {
+          font-size: 14px;
+          font-weight: bold;
+          color: #181616;
+        }
         td {
-          border: solid 1px #000;
+          border: solid 1px #ddd;
           text-align: center;
           height: 45px;
 
