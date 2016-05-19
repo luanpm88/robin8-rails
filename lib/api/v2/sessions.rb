@@ -68,6 +68,8 @@ module API
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?
             end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
+          else
+            kol = Kol.reg_or_sign_in(params, kol)
           end
           if params[:kol_uuid].present?
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])

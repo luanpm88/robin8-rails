@@ -185,6 +185,15 @@ class PagesController < ApplicationController
     render :layout => false
   end
 
+  def get_visitor_ip
+    Rails.logger.info "------get_visitor_ip---------"
+    Rails.logger.info  request.env['remote_addr']
+    Rails.logger.info  request.env['X-Forwarded-For']
+    Rails.logger.info  request.env['X-Real-IP']
+    Rails.logger.info "------get_visitor_ip---------"
+    render :json => {:visitor_ip => request.env['remote_addr'] || request.env['X-Forwarded-For'] || request.env['X-Real-IP'] }
+  end
+
   #TODO redirect_to  url
   def download_invitation
     if request.remote_ip.present? &&  request.user_agent.present?  && params[:inviter_id].present?
