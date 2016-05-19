@@ -121,6 +121,14 @@
           margin-top: 20px;
           margin-bottom: 30px;
           margin-left: 96px;
+          &:active {
+            background-color: #2dcad0;
+            color: #fff;
+          }
+          &:focus {
+            background-color: #2dcad0;
+            color: #fff;
+          }
         }
       }
     }
