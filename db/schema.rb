@@ -63,7 +63,6 @@ ActiveRecord::Schema.define(version: 20160517100525) do
   add_index "alerts", ["last_text_sent_at"], name: "index_alerts_on_last_text_sent_at", using: :btree
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
 
-<<<<<<< HEAD
   create_table "announcements", force: :cascade do |t|
     t.string   "title",      limit: 255
     t.string   "logo",       limit: 255
@@ -74,31 +73,6 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.string   "url",        limit: 255
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
-=======
-  create_table "alipay_orders", force: :cascade do |t|
-    t.string   "trade_no",        limit: 255
-    t.string   "alipay_trade_no", limit: 255
-    t.decimal  "credits",                     precision: 8, scale: 2
-    t.string   "status",          limit: 255,                         default: "pending"
-    t.string   "user_id",         limit: 255
-    t.datetime "created_at",                                                              null: false
-    t.datetime "updated_at",                                                              null: false
-  end
-
-  add_index "alipay_orders", ["trade_no"], name: "index_alipay_orders_on_trade_no", unique: true, using: :btree
-
-  create_table "announcements", force: :cascade do |t|
-    t.string   "title",       limit: 255
-    t.string   "logo",        limit: 255
-    t.string   "banner",      limit: 255
-    t.string   "desc",        limit: 255
-    t.boolean  "display",     limit: 1,   default: false
-    t.integer  "position",    limit: 4,   default: 0
-    t.string   "detail_type", limit: 255
-    t.string   "url",         limit: 255
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
->>>>>>> 95ed364... fix migration bug
   end
 
   create_table "app_upgrades", force: :cascade do |t|
@@ -496,40 +470,6 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.datetime "decline_date"
   end
 
-<<<<<<< HEAD
-=======
-  create_table "invoice_histories", force: :cascade do |t|
-    t.string   "name",            limit: 255
-    t.string   "phone_number",    limit: 255
-    t.string   "credits",         limit: 255
-    t.string   "invoice_type",    limit: 255
-    t.string   "title",           limit: 255
-    t.string   "address",         limit: 255
-    t.string   "status",          limit: 255, default: "pending"
-    t.string   "tracking_number", limit: 255
-    t.integer  "user_id",         limit: 4
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-  end
-
-  create_table "invoice_receivers", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.string   "phone_number", limit: 255
-    t.string   "address",      limit: 255
-    t.integer  "user_id",      limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
-  create_table "invoices", force: :cascade do |t|
-    t.string   "title",        limit: 255
-    t.string   "invoice_type", limit: 255, default: "common"
-    t.integer  "user_id",      limit: 4
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
-  end
-
->>>>>>> 95ed364... fix migration bug
   create_table "ip_scores", force: :cascade do |t|
     t.string   "ip",         limit: 255
     t.integer  "score",      limit: 4
@@ -715,12 +655,9 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.string   "os_version",             limit: 255
     t.string   "device_model",           limit: 255
     t.string   "alipay_name",            limit: 255
-<<<<<<< HEAD
-=======
     t.string   "invite_code",            limit: 10
     t.integer  "age",                    limit: 4
     t.integer  "weixin_friend_count",    limit: 4
->>>>>>> 95ed364... fix migration bug
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
@@ -1196,7 +1133,6 @@ ActiveRecord::Schema.define(version: 20160517100525) do
   end
 
   create_table "transactions", force: :cascade do |t|
-<<<<<<< HEAD
     t.integer  "account_id",    limit: 4
     t.string   "account_type",  limit: 255
     t.integer  "item_id",       limit: 4
@@ -1211,24 +1147,6 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.string   "opposite_type", limit: 255
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
-=======
-    t.integer  "account_id",        limit: 4
-    t.string   "account_type",      limit: 255
-    t.integer  "item_id",           limit: 4
-    t.string   "item_type",         limit: 255
-    t.string   "direct",            limit: 255
-    t.string   "subject",           limit: 255
-    t.decimal  "credits",                       precision: 8, scale: 2
-    t.decimal  "amount",                        precision: 8, scale: 2
-    t.decimal  "avail_amount",                  precision: 8, scale: 2
-    t.decimal  "frozen_amount",                 precision: 8, scale: 2
-    t.integer  "opposite_id",       limit: 4
-    t.string   "opposite_type",     limit: 255
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
-    t.string   "trade_no",          limit: 191
-    t.string   "after_tax_credits", limit: 255
->>>>>>> 95ed364... fix migration bug
   end
 
   create_table "unsubscribe_emails", force: :cascade do |t|
