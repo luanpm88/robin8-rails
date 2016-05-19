@@ -31,7 +31,7 @@ namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
   task :copy_manifest_to_slave do
     on roles(:master) do
-      execute "scp /home/deployer/apps/robin8/shared/public/assets/manifest.json deployer@139.196.169.53:/home/deployer/apps/robin8/shared/public/assets/manifest.json"
+      # execute "scp /home/deployer/apps/robin8/shared/public/assets/manifest.json deployer@139.196.169.53:/home/deployer/apps/robin8/shared/public/assets/manifest.json"
     end
   end
 end
