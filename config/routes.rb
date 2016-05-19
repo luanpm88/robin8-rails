@@ -136,6 +136,7 @@ Rails.application.routes.draw do
   match '/withdraw_apply', to: 'pages#withdraw_apply', :via => [:get, :post]
   get '/download_invitation', to: 'pages#download_invitation'
   get '/invite', to: 'pages#invite'
+  get '/get_visitor_ip', to: 'pages#get_visitor_ip'
 
   resources :campaign, only: [:index, :create, :update, :show]
 
