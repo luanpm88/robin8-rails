@@ -11,7 +11,6 @@ module API
         end
         get 'primary' do
           login = PublicWechatLogin.find params[:login_id]
-          puts '---------'
           res = JSON.parse login.get_info     rescue {}
           if res['status']
             present :error, 0
