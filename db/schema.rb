@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517065115) do
+ActiveRecord::Schema.define(version: 20160517100525) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -64,11 +64,11 @@ ActiveRecord::Schema.define(version: 20160517065115) do
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
 
   create_table "alipay_orders", force: :cascade do |t|
-    t.string   "trade_no",        limit: 255
+    t.string   "trade_no",        limit: 191
     t.string   "alipay_trade_no", limit: 255
     t.decimal  "credits",                     precision: 8, scale: 2
     t.string   "status",          limit: 255,                         default: "pending"
-    t.string   "user_id",         limit: 255
+    t.integer  "user_id",         limit: 4
     t.datetime "created_at",                                                              null: false
     t.datetime "updated_at",                                                              null: false
   end
@@ -483,14 +483,17 @@ ActiveRecord::Schema.define(version: 20160517065115) do
   end
 
   create_table "invoice_histories", force: :cascade do |t|
-    t.string   "credits",    limit: 255
-    t.string   "type",       limit: 255
-    t.string   "title",      limit: 255
-    t.string   "address",    limit: 255
-    t.string   "status",     limit: 255
-    t.integer  "user_id",    limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "name",            limit: 255
+    t.string   "phone_number",    limit: 255
+    t.string   "credits",         limit: 255
+    t.string   "invoice_type",    limit: 255
+    t.string   "title",           limit: 255
+    t.string   "address",         limit: 255
+    t.string   "status",          limit: 255, default: "pending"
+    t.string   "tracking_number", limit: 255
+    t.integer  "user_id",         limit: 4
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
   end
 
   create_table "invoice_receivers", force: :cascade do |t|
@@ -1173,21 +1176,22 @@ ActiveRecord::Schema.define(version: 20160517065115) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.integer  "account_id",    limit: 4
-    t.string   "account_type",  limit: 255
-    t.integer  "item_id",       limit: 4
-    t.string   "item_type",     limit: 255
-    t.string   "direct",        limit: 255
-    t.string   "subject",       limit: 255
-    t.decimal  "credits",                   precision: 8, scale: 2
-    t.decimal  "amount",                    precision: 8, scale: 2
-    t.decimal  "avail_amount",              precision: 8, scale: 2
-    t.decimal  "frozen_amount",             precision: 8, scale: 2
-    t.integer  "opposite_id",   limit: 4
-    t.string   "opposite_type", limit: 255
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
-    t.string   "trade_no",      limit: 191
+    t.integer  "account_id",        limit: 4
+    t.string   "account_type",      limit: 255
+    t.integer  "item_id",           limit: 4
+    t.string   "item_type",         limit: 255
+    t.string   "direct",            limit: 255
+    t.string   "subject",           limit: 255
+    t.decimal  "credits",                       precision: 8, scale: 2
+    t.decimal  "amount",                        precision: 8, scale: 2
+    t.decimal  "avail_amount",                  precision: 8, scale: 2
+    t.decimal  "frozen_amount",                 precision: 8, scale: 2
+    t.integer  "opposite_id",       limit: 4
+    t.string   "opposite_type",     limit: 255
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+    t.string   "trade_no",          limit: 191
+    t.string   "after_tax_credits", limit: 255
   end
 
   add_index "transactions", ["trade_no"], name: "index_transactions_on_trade_no", unique: true, using: :btree
@@ -1280,6 +1284,7 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.string   "description",            limit: 255
     t.string   "keywords",               limit: 255
     t.string   "real_name",              limit: 255
+    t.integer  "appliable_credits",      limit: 4,                            default: 0
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
