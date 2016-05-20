@@ -196,6 +196,11 @@
           text-align: center;
           height: 45px;
 
+          div {
+            width: 100%;
+            overflow: auto;
+            line-height: 46px;
+          }
         }
         .invoice-amount {
           width: 89px;
