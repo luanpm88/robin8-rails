@@ -25,7 +25,7 @@ class MarketingDashboard::InvoiceHistoriesController < MarketingDashboard::BaseC
     end
     @invoice_history = InvoiceHistory.find(params[:id])
     @invoice_history.update_attributes(tracking_number: tracking_no, status: 'sent')
-    if @invoice_history.errors.messages.first.last.last
+    if @invoice_history.errors.messages.present?
       flash.now[:alert] = "快递单号重复，请检查后重新输入"
       render 'send' and return
     else
