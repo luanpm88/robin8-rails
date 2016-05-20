@@ -22,7 +22,7 @@ module Brand
                                       { out_trade_no: trade_no,
                                         subject: '账户充值',
                                         total_fee: credits,
-                                        return_url: 'http://aabbcc.ngrok.cc/brand/',
+                                        return_url: 'http://aabbcc.ngrok.cc/brand',
                                         notify_url: 'http://aabbcc.ngrok.cc/brand_api/v1/alipay_orders/alipay_notify'
                                       },
                                       {
