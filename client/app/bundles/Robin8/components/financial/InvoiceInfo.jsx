@@ -33,7 +33,7 @@ export default class InvoiceInfo extends React.Component {
     if (invoice.get('title'))
       return <p>发票抬头: {invoice.get('title')}</p>
     else
-      return <p>发票抬头: </p>
+      return <p>发票抬头: <span className="no-info">请填写发票抬头</span></p>
   }
 
   render_receiver_info() {
@@ -49,9 +49,9 @@ export default class InvoiceInfo extends React.Component {
     } else {
       return (
         <div>
-          <p>收件人姓名:</p>
-          <p>收件人电话:</p>
-          <p>收件人地址:</p>
+          <p>收件人姓名: <span className="no-info">请填写收件人姓名</span></p>
+          <p>收件人电话: <span className="no-info">请填写收件人电话</span></p>
+          <p>收件人地址: <span className="no-info">请填写收件人地址</span></p>
         </div>
       )
     }

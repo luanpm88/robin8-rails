@@ -142,6 +142,7 @@ class FinancialInvoicePartial extends React.Component {
             </li>
             <li>
               <input onInput={this.check_credits.bind(this)} ref="creditsInput" type="text" className="form-control" placeholder="请输入金额" />
+              <span className="yuan">元</span>
             </li>
             <li>
               <button onClick={this.handleClick.bind(this)} className="btn btn-blue btn-default btn-submit">确认提交</button>
