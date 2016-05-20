@@ -17,12 +17,12 @@
         text-decoration: none;
 
         &:nth-child(1) {
-          background-color: #181616;
+          background-image: url(~recharge_menu_bg.jpg);
           color: #fff;
         }
         &:nth-child(2) {
           margin-left: 5px;
-          background-color: #181616;
+          background-image: url(~recharge_menu_bg.jpg);
           color: #fff;
         }
         &:nth-child(3) {
@@ -64,7 +64,6 @@
           white-space: nowrap !important;
           &:first-child {
             font-size: 14px;
-            font-weight: bold;
             color: #181616;
           }
         }
@@ -83,13 +82,17 @@
 
         .invoice-info, .express-address {
           width: 109px;
-          font-size: 18px;
+          font-size: 18px !important;
         }
         .invoice-detail, .receiver-info {
           width: 300px;
           font-size: 14px;
           text-align: left;
-          padding-left: 25px;
+          padding-left: 15px;
+
+          span.no-info {
+            color: #aaa;
+          }
         }
         .action {
           width: 142px;
@@ -100,6 +103,7 @@
             color: #36cdd3;
             width: 88px;
             height: 36px;
+            box-shadow: none;
           }
         }
       }
@@ -112,6 +116,9 @@
       ul {
         margin-top: 18px;
         li {
+          &:first-child {
+            margin-right: -9px;
+          }
           &:nth-child(2) {
             position: relative;
             left: 15px;
@@ -121,18 +128,31 @@
             left: 30px;
           }
           input {
-            width: 153px;
+            width: 140px;
             height: 35px;
+            border-radius: 0px;
+            border-color: #636363;
           }
+
+          .yuan {
+            float: right;
+            margin-top: -26px;
+            margin-right: -22px;
+          }
+
           button {
             height: 35px;
+            margin-left: 22px;
+            border: none;
             &:active {
               background-color: #2dcad0;
               color: #fff;
+              border-color: none;
             }
             &:focus {
               background-color: #2dcad0;
               color: #fff;
+              border-color: none;
             }
           }
         }
