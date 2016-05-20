@@ -43,7 +43,7 @@ class BrandController < ApplicationController
 
   def redirect_alipay_request
     if params.keys.include?('buyer_id') and params.keys.include?('trade_no') and params.keys.include?('trade_status') and params.keys.include?('sign')
-      redirect_to root_path
+      redirect_to '/brand/financial/recharge'
     end
   end
 
