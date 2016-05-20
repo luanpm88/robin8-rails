@@ -94,6 +94,20 @@
             color: #aaa;
           }
         }
+
+        .invoice-detail {
+          .inside-invoice-detail-td {
+            width: 100%;
+            overflow: auto;
+          }
+        }
+
+        .receiver-info {
+          .inside-receiver-info-td {
+            width: 100%;
+            overflow: auto;
+          }
+        }
         .action {
           width: 142px;
 
@@ -132,11 +146,12 @@
             height: 35px;
             border-radius: 0px;
             border-color: #636363;
+            display: inline-block;
           }
 
           .yuan {
             float: right;
-            margin-top: -26px;
+            margin-top: 8px;
             margin-right: -22px;
           }
 

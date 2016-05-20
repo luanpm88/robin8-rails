@@ -90,7 +90,7 @@ export default class InvoiceInfo extends React.Component {
                   发票信息
                 </td>
                 <td className="invoice-detail row-1" >
-                  <div>
+                  <div className="inside-invoice-detail-td">
                     { this.render_title() }
                     <p>发票类型: 普通增值税发票</p>
                   </div>
@@ -104,7 +104,9 @@ export default class InvoiceInfo extends React.Component {
                   <div>邮寄地址</div>
                 </td>
                 <td className="receiver-info row-2">
-                  { this.render_receiver_info() }
+                  <div className="inside-receiver-info-td">
+                    { this.render_receiver_info() }
+                  </div>
                 </td>
                 <td className="action row-2">
                   { this.render_save_or_edit_invoice_receiver_button() }
