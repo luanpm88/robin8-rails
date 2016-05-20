@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517065115) do
+ActiveRecord::Schema.define(version: 20160517100525) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -325,14 +325,14 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.integer  "inviter_id",      limit: 4
     t.string   "visitor_cookies", limit: 600
     t.string   "visitor_ip",      limit: 255
+    t.boolean  "effective",       limit: 1
     t.text     "visitor_referer", limit: 65535
     t.text     "visitor_agent",   limit: 65535
+    t.string   "app_platform",    limit: 255
     t.string   "device_model",    limit: 255
     t.string   "os_version",      limit: 255
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
-    t.string   "app_platform",    limit: 255
-    t.boolean  "effective",       limit: 1,     default: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "draft_pitches", force: :cascade do |t|
@@ -654,8 +654,10 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.string   "rongcloud_token",        limit: 255
     t.string   "os_version",             limit: 255
     t.string   "device_model",           limit: 255
-    t.string   "invite_code",            limit: 10
     t.string   "alipay_name",            limit: 255
+    t.string   "invite_code",            limit: 10
+    t.integer  "age",                    limit: 4
+    t.integer  "weixin_friend_count",    limit: 4
   end
 
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
@@ -887,18 +889,18 @@ ActiveRecord::Schema.define(version: 20160517065115) do
   create_table "public_wechat_logins", force: :cascade do |t|
     t.string   "username",           limit: 255
     t.string   "password_encrypted", limit: 255
-    t.string   "visitor_cookies",    limit: 255
-    t.string   "redirect_url",       limit: 255
+    t.text     "visitor_cookies",    limit: 65535
+    t.text     "redirect_url",       limit: 65535
     t.string   "login_type",         limit: 255
-    t.string   "login_cookies",      limit: 255
-    t.string   "login_time",         limit: 255
+    t.text     "login_cookies",      limit: 65535
+    t.datetime "login_time"
     t.string   "ticket",             limit: 255
     t.string   "appid",              limit: 255
     t.string   "uuid",               limit: 255
-    t.string   "operate_seq",        limit: 255
+    t.string   "operation_seq",      limit: 255
     t.string   "status",             limit: 255
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   create_table "push_messages", force: :cascade do |t|
@@ -964,15 +966,17 @@ ActiveRecord::Schema.define(version: 20160517065115) do
   create_table "reward_tasks", force: :cascade do |t|
     t.float    "reward_amount", limit: 24
     t.string   "reward_cycle",  limit: 255
-    t.integer  "limit",         limit: 4
     t.integer  "position",      limit: 4
     t.string   "task_name",     limit: 255
     t.string   "task_type",     limit: 255
+    t.integer  "limit",         limit: 4
     t.string   "logo",          limit: 255
     t.boolean  "enable",        limit: 1,   default: true
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
+
+  add_index "reward_tasks", ["task_type"], name: "index_reward_tasks_on_task_type", using: :btree
 
   create_table "stastic_data", force: :cascade do |t|
     t.datetime "start_time"
@@ -1034,6 +1038,7 @@ ActiveRecord::Schema.define(version: 20160517065115) do
 
   add_index "task_records", ["kol_id"], name: "index_task_records_on_kol_id", using: :btree
   add_index "task_records", ["reward_task_id"], name: "index_task_records_on_reward_task_id", using: :btree
+  add_index "task_records", ["status"], name: "index_task_records_on_status", using: :btree
 
   create_table "test_emails", force: :cascade do |t|
     t.integer  "draft_pitch_id", limit: 4
@@ -1232,6 +1237,7 @@ ActiveRecord::Schema.define(version: 20160517065115) do
     t.string   "description",            limit: 255
     t.string   "keywords",               limit: 255
     t.string   "real_name",              limit: 255
+    t.integer  "appliable_credits",      limit: 4,                            default: 0
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

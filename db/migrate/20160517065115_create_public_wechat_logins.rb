@@ -8,7 +8,7 @@ class CreatePublicWechatLogins < ActiveRecord::Migration
       t.text :redirect_url
       t.string :login_type
       t.text :login_cookies
-      t.datatime :login_time
+      t.datetime :login_time
       t.string :ticket
       t.string :appid
       t.string :uuid

@@ -12,12 +12,12 @@ class CreateRewardTasks < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+    add_index :reward_tasks, :task_type
+    RewardTask.create(:task_name => '每日签到', :task_type => RewardTask::FavorableComment, :reward_cycle => 'every_day', :position => 1)
+    RewardTask.create(:task_name => '邀请好友', :task_type => RewardTask::InviteFriend, :reward_cycle => 'every_time', :position => 2)
+    RewardTask.create(:task_name => '完善资料', :task_type => RewardTask::CompleteInfo, :reward_cycle => 'first_time', :position => 3)
+    RewardTask.create(:task_name => '好评App', :task_type => RewardTask::FavorableComment, :reward_cycle => 'first_time', :position => 4)
   end
 
-  add_index :reward_tasks, :task_type
 
-  RewardTask.create(:task_name => '每日签到', :task_type => RewardTask::FavorableComment, :reward_cycle => 'every_day', :position => 1)
-  RewardTask.create(:task_name => '邀请好友', :task_type => RewardTask::InviteFriend, :reward_cycle => 'every_time', :position => 2)
-  RewardTask.create(:task_name => '完善资料', :task_type => RewardTask::CompleteInfo, :reward_cycle => 'first_time', :position => 3)
-  RewardTask.create(:task_name => '好评App', :task_type => RewardTask::FavorableComment, :reward_cycle => 'first_time', :position => 4)
 end
