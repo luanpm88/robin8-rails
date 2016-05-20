@@ -10,7 +10,7 @@ module Brand
 
           desc 'Create a alipay order'
           params do
-            requires :credits, type: Float
+            requires :credits, type: Integer
           end
           post do
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
@@ -32,7 +32,7 @@ module Brand
                                     )
               return { alipay_recharge_url: alipay_recharge_url }
             else
-              return error_unprocessable! @alipay_order.errors.messages.first.last.last
+              return error_unprocessable! @alipay_order.errors.messages.first.last.first
             end
           end
         end
