@@ -16,10 +16,13 @@ namespace :assets do
   task :webpack do
     if Rails.env.development?
       sh "cd client && npm run build:client"
-    else
-      #sh "npm --registry=https://registry.npm.taobao.org install && cd client && npm run build:production:client"
-      sh "npm install && cd client && npm run build:production:client"
-    end
+     else
+       #sh "npm --registry=https://registry.npm.taobao.org install && cd client && npm run build:production:client"
+       #sh "npm install && cd client && npm run build:production:client"
+       puts "----------------"
+       system("npm install && cd client && npm run build:production:client")
+       puts "----------------"
+     end
   end
 
   task :clobber do
