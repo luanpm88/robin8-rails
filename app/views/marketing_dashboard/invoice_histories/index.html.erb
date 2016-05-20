@@ -44,7 +44,9 @@
           <td></td>
         <% end %>
         <td>
-          <% unless i.tracking_number %>
+          <% if i.tracking_number %>
+            <%= link_to '修改', send_marketing_dashboard_invoice_history_path(i), :target => "_blank" %>
+          <% else %>
             <%= link_to '添加快递单号', send_marketing_dashboard_invoice_history_path(i), :target => "_blank" %>
           <% end %>
         </td>
