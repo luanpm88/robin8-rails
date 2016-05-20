@@ -129,14 +129,14 @@ end
 # }'
 
 
-# curl -XPOST 139.196.39.136:9200/article_7/fulltext/_search -d '
-# {
-#   "query": {
-#     "bool": {
-#        "filter": [
-#           { "term":  { "chosen": "t" }},
-#           { "range": { "publish_date": { "gte": "2016-03-21" }}}
-#        ]
-#     }
-#   }
-# }'
+curl -XPOST 139.196.39.136:9200/article_7/fulltext/_search -d '
+{
+  "query": {
+    "bool": {
+       "filter": [
+          { "term":  { "chosen": "t" }},
+          { "range": { "publish_date": { "gte": "2016-05-10" }}}
+       ]
+    }
+  }
+}'
