@@ -22,8 +22,8 @@ module Brand
                                       { out_trade_no: trade_no,
                                         subject: '账户充值',
                                         total_fee: credits,
-                                        return_url: 'http://aabbcc.ngrok.cc/brand/',
-                                        notify_url: 'http://aabbcc.ngrok.cc/brand_api/v1/alipay_orders/alipay_notify'
+                                        return_url: 'http://robin8-staging.cn/brand/',
+                                        notify_url: 'http://robin8-staging.cn/brand_api/v1/alipay_orders/alipay_notify'
                                       },
                                       {
                                         sign_type: 'RSA',
