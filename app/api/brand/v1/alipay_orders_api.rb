@@ -9,12 +9,9 @@ module Brand
           end
 
           desc 'Create a alipay order'
-          params do
-            requires :credits, type: Integer
-          end
           post do
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
-            credits = declared(params)[:credits]
+            credits = params[:credits]
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
             @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits})
             if @alipay_order.save

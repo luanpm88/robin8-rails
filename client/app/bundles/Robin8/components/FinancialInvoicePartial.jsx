@@ -54,25 +54,25 @@ class FinancialInvoicePartial extends React.Component {
   }
 
   check_credits() {
-    // const { fetchAppliableCredits } = this.props.actions;
-    // fetchAppliableCredits();
-    // const appliableCredits = this.props.data.get('appliableCredits').get("appliable_credits")
-    // const credits = this.refs.creditsInput.value.trim();
-    // if (validator.isNull(credits)) {
-    //   $(".error-tips p").hide();
-    //   $(".must-input").show();
-    // } else if(!validator.isInt(credits)) {
-    //   $(".error-tips p").hide();
-    //   $(".must-be-integer").show();
-    // } else if(!validator.isInt(credits, {min: 500})) {
-    //   $(".error-tips p").hide();
-    //   $(".must-greater-than-500").show();
-    // } else if(parseFloat(credits) > parseFloat(appliableCredits)) {
-    //   $(".error-tips p").hide();
-    //   $(".must-greater-than-appliable-credits").show();
-    // } else {
-    //   $(".error-tips p").hide();
-    // }
+    const { fetchAppliableCredits } = this.props.actions;
+    fetchAppliableCredits();
+    const appliableCredits = this.props.data.get('appliableCredits').get("appliable_credits")
+    const credits = this.refs.creditsInput.value.trim();
+    if (validator.isNull(credits)) {
+      $(".error-tips p").hide();
+      $(".must-input").show();
+    } else if(!validator.isInt(credits)) {
+      $(".error-tips p").hide();
+      $(".must-be-integer").show();
+    } else if(!validator.isInt(credits, {min: 500})) {
+      $(".error-tips p").hide();
+      $(".must-greater-than-500").show();
+    } else if(parseFloat(credits) > parseFloat(appliableCredits)) {
+      $(".error-tips p").hide();
+      $(".must-greater-than-appliable-credits").show();
+    } else {
+      $(".error-tips p").hide();
+    }
   }
 
 
@@ -82,9 +82,9 @@ class FinancialInvoicePartial extends React.Component {
 
     const credits = this.refs.creditsInput.value.trim();
 
-    // if (validator.isNull(credits) || !validator.isInt(credits) || !validator.isInt(credits, {min: 500}) || (parseFloat(credits) > parseFloat(appliableCredits))) {
-    //   return ;
-    // }
+    if (validator.isNull(credits) || !validator.isInt(credits) || !validator.isInt(credits, {min: 500}) || (parseFloat(credits) > parseFloat(appliableCredits))) {
+      return ;
+    }
 
     if (validator.isNull(credits)) {
       return ;

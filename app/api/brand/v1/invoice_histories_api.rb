@@ -38,7 +38,7 @@ module Brand
             invoice_histories = paginate(Kaminari.paginate_array(current_user.invoice_histories.order('created_at DESC')))
             present invoice_histories
           else
-            error_unprocessable! "保存失败，请重试"
+            error_unprocessable! @invoice_history.errors.messages.first.last.first
           end
         end
 

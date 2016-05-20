@@ -51,37 +51,44 @@ class FinancialRechargePartial extends React.Component {
   }
 
   recharge() {
-    // const { alipayRecharge } = this.props.actions;
-    // const price = this.refs.priceInput.value;
-    // // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元  选项框和input不可共存
-    // let checked_price = "";
-    // let credits = "";
-    // if (this.refs.price_500.style.borderColor === "rgb(40, 182, 187)") {
-    //   checked_price = '500';
-    // } else if (this.refs.price_1000.style.borderColor === "rgb(40, 182, 187)") {
-    //   checked_price = '1000';
-    // } else if (this.refs.price_2000.style.borderColor === "rgb(40, 182, 187)") {
-    //   checked_price = '2000';
-    // }
-    // if (validator.isNull(price) && validator.isNull(checked_price)) {
-    //   $(".error-tips p").hide();
-    //   $(".must-input-or-check").show();
-    //   return ;
-    // } else if (!validator.isNull(price) && validator.isNull(checked_price)) {
-    //   credits = price;
-    // } else if (validator.isNull(price) && !validator.isNull(checked_price)) {
-    //   credits = checked_price;
-    // } else if(!validator.isNull(price) && !validator.isNull(checked_price)) {
-    //   return ;
-    // }
-    //
-    // if(validator.isNull(credits) || !validator.isInt(credits, {min: 500})) {
-    //   return ;
-    // }
-
     const { alipayRecharge } = this.props.actions;
     const price = this.refs.priceInput.value;
-    alipayRecharge(price);
+    // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元  选项框和input不可共存
+    let checked_price = "";
+    let credits = "";
+    if (this.refs.price_500.style.borderColor === "rgb(40, 182, 187)") {
+      checked_price = '500';
+    } else if (this.refs.price_1000.style.borderColor === "rgb(40, 182, 187)") {
+      checked_price = '1000';
+    } else if (this.refs.price_2000.style.borderColor === "rgb(40, 182, 187)") {
+      checked_price = '2000';
+    }
+    if (validator.isNull(price) && validator.isNull(checked_price)) {
+      $(".error-tips p").hide();
+      $(".must-input-or-check").show();
+      return ;
+    } else if (!validator.isNull(price) && validator.isNull(checked_price)) {
+      credits = price;
+    } else if (validator.isNull(price) && !validator.isNull(checked_price)) {
+      credits = checked_price;
+    } else if(!validator.isNull(price) && !validator.isNull(checked_price)) {
+      return ;
+    }
+
+    if(validator.isNull(credits) || !validator.isInt(credits, {min: 500})) {
+      return ;
+    }
+
+    alipayRecharge(credits);
+  }
+
+  render_avatar() {
+    const brand = this.props.data.get('brand')
+    if (brand.get("avatar_url")) {
+      return <img ref="avatar" src={brand.get("avatar_url")} />
+    } else {
+      return <img ref='avatar' src={require('brand-profile-pic.jpg')} />
+    }
   }
 
   render() {
@@ -99,7 +106,7 @@ class FinancialRechargePartial extends React.Component {
                 </span>
 
                 <div className='detail'>
-                  <img ref="avatar" src={brand.get("avatar_url")} />
+                  { this.render_avatar() }
                   <div>
                     <p className="brand-name">{brand.get("name")}</p>
                     <p className="account-balance">账户余额: <span>{brand.get("avail_amount")}</span> &nbsp;元</p>

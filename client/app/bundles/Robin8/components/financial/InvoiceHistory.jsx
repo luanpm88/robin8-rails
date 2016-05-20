@@ -20,13 +20,19 @@ export default class InvoiceHistory extends React.Component {
           }
         </td>
         <td className="invoice-title">
-          { invoiceHistory.get("title") }
+          <div>
+            { invoiceHistory.get("title") }
+          </div>
         </td>
         <td className="invoice-address">
-          { invoiceHistory.get("address") }
+          <div>
+            { invoiceHistory.get("address") }
+          </div>
         </td>
         <td className="invoice-create_time" >
-          { invoiceHistory.get("created_at") }
+          <div>
+            { invoiceHistory.get("created_at") }
+          </div>
         </td>
         <td className="express-status">
           { do
