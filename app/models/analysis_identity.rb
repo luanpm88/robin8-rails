@@ -1,0 +1,24 @@
+class AnalysisIdentity < ActiveRecord::Base
+  WeiboRefreshTokenExpired = 30.days
+  WeiboAccessTokenExpired = 30.days
+  PublicWechatExpired = 1.days
+  def valid?
+    if self.provider == 'weibo'
+      return self.authorize_time +  WeiboRefreshTokenExpired > Time.now
+    else self.provider == 'public_wechat'
+      return self.authorize_time + PublicWechatExpired > Time.now
+    end
+  end
+
+  # 远程服务器
+  ServerIp = 'http://139.196.36.27'
+  ApiToken = 'b840fc02d524045429941cc15f59e41cb7be6c52'
+  def get_weibo_info(info_type = {}, start_date = Date.today - 7.days, end_date = Date.today )
+    return if self.provider != 'weibo'
+    params = {:api_token => ApiToken, :uid => self.uid, :access_token => self.access_token, :refresh_token => self.refresh_token,
+              :authorized_at => self.authorize_time, :expires_at => self.authorize_time + WeiboAccessTokenExpired,
+              :start_date => start_date, :end_date => end_date}
+    params.merge!(info_type)
+    return RestClient.get("#{ServerIp}/weibo/report", {:params => params})
+  end
+end

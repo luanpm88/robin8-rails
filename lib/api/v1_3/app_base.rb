@@ -11,6 +11,7 @@ module API
       mount API::V1_3::Transactions
       mount API::V1_3::Withdraws
       mount API::V1_3::WeixinReport
+      mount API::V1_3::WeiboReport
     end
   end
 end

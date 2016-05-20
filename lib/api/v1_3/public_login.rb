@@ -1,14 +1,18 @@
 module API
   module V1_3
     class PublicLogin < Grape::API
+      before do
+        authenticate!
+      end
+
       resources :public_login do
         params do
           requires :username, type: String
-          requires :password, type: String
+          optional :password, type: String
           optional :imgcode, type: String
         end
         post 'login_with_account' do
-          res = Weixin::PublicLogin.login(params[:username], params[:password], params[:imgcode])
+          res = Analysis::PublicLogin.login(current_kol.id, params[:username], params[:password], params[:imgcode])
           if res[0] == 'error'
             present :error, 1
             present :login_status, res[1]
@@ -16,7 +20,7 @@ module API
               present :detail, '账户错误'
             elsif res[1] == 'verify_code'
               present :detail, '验证码错误'
-              present :imgcode_url, Weixin::PublicLogin.verify_code_url(params[:username])
+              present :imgcode_url, Analysis::PublicLogin.verify_code_url(params[:username])
             end
           else
             present :error, 0
@@ -37,7 +41,7 @@ module API
           requires :login_id, type: Integer
         end
         get 'check_status' do
-          res = Weixin::PublicLogin.check_login_status(params[:login_id])
+          res = Analysis::PublicLogin.check_login_status(params[:login_id])
           if res == '405'
             status_content = '登陆成功'
           elsif res == 401
@@ -60,14 +64,6 @@ module API
           present :status_content, status_content
         end
 
-        # params do
-        #   requires :username, type: String
-        # end
-        # get 'get_stat' do
-        #   present :error, 0
-        #   present :status, res
-        #   present :status_content, status_content
-        # end
       end
     end
   end

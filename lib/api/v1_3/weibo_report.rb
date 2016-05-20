@@ -1,35 +1,24 @@
 module API
   module V1_3
-    class WeixinReport < Grape::API
-      resources :weixin_report do
+    class WeiboReport < Grape::API
+      resources :weibo_report do
         # before do
         #   authenticate!
         # end
-        get 'list' do
-
-        end
 
         params do
-          requires :login_id, type: Integer
+          requires :identity_id, type: Integer
         end
         get 'primary' do
-          login = PublicWechatLogin.find params[:login_id]
-          res = JSON.parse login.get_info     rescue {}
-          if res['status']
-            present :error, 0
-            present :primary, res['data']['user'], with: API::V1_3::Entities::WeixinReportEntities::Primary
-          else
-            present :error, 1
-            present :detail, '请求错误，请稍后再试'
-          end
         end
 
         params do
-          requires :login_id, type: Integer
+          requires :identity_id, type: Integer
+          requires :duration, type: Integer, values: [7,30,90]
         end
-        get 'messages' do
-          login = PublicWechatLogin.find params[:login_id]
-          res = JSON.parse login.get_info('messages')  rescue {}
+        get 'followers' do
+          identity = AnalysisIdentity.find params[:identity_id]
+          res = JSON.parse identity.get_weibo_info(params[:duration], {:bilateral_friendship => 1, :decremental_follower => 1} )  rescue {}
           if res['status']
             present :error, 1
             present :messages, res['data']['messages'], with: API::V1_3::Entities::WeixinReportEntities::Message

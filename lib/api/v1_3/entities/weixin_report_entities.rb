@@ -78,7 +78,7 @@ module API
           end
         end
 
-        class UserAnalysises  < Grape::Entity
+        class UserAnalysise < Grape::Entity
           expose :report_time do |report|
             report['report_time']
           end

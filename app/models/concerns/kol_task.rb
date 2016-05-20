@@ -30,7 +30,7 @@ module Concerns
     end
 
     def invite_count
-      reward_records.invite
+      task_records.invite_friend
     end
 
     def generate_invite_task_record
