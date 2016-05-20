@@ -26,9 +26,13 @@ export default class CampaignList extends React.Component {
   displayPaginator(props) {
     const { fetchCampaigns } = this.props.actions;
     if (this.props.data.get("paginate").get("X-Page")) {
+      let totalPage = this.props.data.get("paginate").get("X-Total-Pages")
+      if (totalPage < this.props.data.get("paginate").get("X-Page")){
+        totalPage = this.props.data.get("paginate").get("X-Page")
+      }
       const pagination_options = {
         currentPage: this.props.data.get("paginate").get("X-Page"),
-        totalPages: this.props.data.get("paginate").get("X-Total-Pages"),
+        totalPages: totalPage,
         shouldShowPage: function(type, page, current) {
           switch (type) {
             default:

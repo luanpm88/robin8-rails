@@ -120,7 +120,7 @@ Rails.application.routes.draw do
   get 'share_by_email/show'
   post 'share_by_email' => 'share_by_email#create'
 
-  get '/home', to: 'pages#landing_page_brand'
+  get '/home', to: 'pages#home'
 
   root 'pages#home'
 
