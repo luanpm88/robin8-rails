@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517100525) do
+ActiveRecord::Schema.define(version: 20160519100948) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.string   "visitor_agent",   limit: 3555
     t.string   "visitor_referer", limit: 3555
     t.string   "other_options",   limit: 255
+    t.string   "proxy_ips",       limit: 255
   end
 
   create_table "campaign_targets", force: :cascade do |t|
