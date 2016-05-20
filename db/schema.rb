@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517100525) do
+ActiveRecord::Schema.define(version: 20160517065115) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -64,15 +64,16 @@ ActiveRecord::Schema.define(version: 20160517100525) do
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
 
   create_table "announcements", force: :cascade do |t|
-    t.string   "title",      limit: 255
-    t.string   "logo",       limit: 255
-    t.string   "banner",     limit: 255
-    t.string   "desc",       limit: 255
-    t.boolean  "display",    limit: 1,   default: false
-    t.integer  "position",   limit: 4,   default: 0
-    t.string   "url",        limit: 255
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.string   "title",       limit: 255
+    t.string   "logo",        limit: 255
+    t.string   "banner",      limit: 255
+    t.string   "desc",        limit: 255
+    t.boolean  "display",     limit: 1,   default: false
+    t.integer  "position",    limit: 4,   default: 0
+    t.string   "detail_type", limit: 255
+    t.string   "url",         limit: 255
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
   end
 
   create_table "app_upgrades", force: :cascade do |t|
@@ -166,9 +167,9 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.string   "weixin_no",           limit: 255
     t.integer  "weixin_friend_count", limit: 4
     t.string   "status",              limit: 255
+    t.string   "expect_price",        limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.string   "expect_price",        limit: 11
     t.string   "agree_reason",        limit: 255
   end
 
@@ -443,7 +444,6 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.boolean  "is_vip",                    limit: 1
     t.boolean  "is_yellow_vip",             limit: 1
     t.datetime "access_token_refresh_time"
-    t.integer  "last_status_id",            limit: 4
   end
 
   create_table "industries", force: :cascade do |t|
@@ -968,7 +968,7 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.string   "reward_cycle",  limit: 255
     t.integer  "position",      limit: 4
     t.string   "task_name",     limit: 255
-    t.string   "task_type",     limit: 255
+    t.string   "task_type",     limit: 50
     t.integer  "limit",         limit: 4
     t.string   "logo",          limit: 255
     t.boolean  "enable",        limit: 1,   default: true
@@ -1031,7 +1031,7 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.string   "task_type",      limit: 255
     t.integer  "invitees_id",    limit: 4
     t.string   "screenshot",     limit: 255
-    t.string   "status",         limit: 255, default: "pending"
+    t.string   "status",         limit: 191, default: "pending"
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
   end
@@ -1213,7 +1213,7 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email",      limit: 255
-    t.string   "name",                   limit: 191
+    t.string   "name",                   limit: 255
     t.string   "first_name",             limit: 255
     t.string   "last_name",              limit: 255
     t.string   "company",                limit: 255
@@ -1237,14 +1237,12 @@ ActiveRecord::Schema.define(version: 20160517100525) do
     t.string   "description",            limit: 255
     t.string   "keywords",               limit: 255
     t.string   "real_name",              limit: 255
-    t.integer  "appliable_credits",      limit: 4,                            default: 0
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["is_primary"], name: "index_users_on_is_primary", using: :btree
-  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
 
