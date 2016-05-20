@@ -24,8 +24,8 @@ body {
   height: 100%;
 }
 body.landing_page_bg {
-  background: image-url('search_engine.jpg') no-repeat top center #2c2a2b;
-  background-size: 100% 100%;
+  background: image-url('robin8_brand_bg.jpg') no-repeat top center #2c2a2b;
+  background-size: cover;
 }
 
 body.mobile_landing_page_bg{
@@ -111,7 +111,7 @@ button.btn-blue:hover {
 .infographic-influence-box {
   padding-top: 60px;
   height: 123px;
-  background: image-url('images/brand_influence_rep_bg.gif');
+  background: image-url('images/brand_influence_rep_bg.gif') repeat;
 }
 .infographic-influence-box .infographic-show {
   position: relative;
