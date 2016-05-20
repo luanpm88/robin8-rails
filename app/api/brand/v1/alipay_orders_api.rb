@@ -20,7 +20,7 @@ module Brand
             if @alipay_order.save
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
                                       { out_trade_no: trade_no,
-                                        subject: '账户充值',
+                                        subject: 'Robin8账户充值',
                                         total_fee: credits,
                                         return_url: 'http://aabbcc.ngrok.cc/brand',
                                         notify_url: 'http://aabbcc.ngrok.cc/brand_api/v1/alipay_orders/alipay_notify'
