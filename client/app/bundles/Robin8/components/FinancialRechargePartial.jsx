@@ -102,7 +102,7 @@ class FinancialRechargePartial extends React.Component {
                   <img ref="avatar" src={brand.get("avatar_url")} />
                   <div>
                     <p className="brand-name">{brand.get("name")}</p>
-                    <p className="account-balance">账户余额: <span>{brand.get("avail_amount")}</span></p>
+                    <p className="account-balance">账户余额: <span>{brand.get("avail_amount")}</span> &nbsp;元</p>
                   </div>
                 </div>
 
@@ -141,6 +141,7 @@ class FinancialRechargePartial extends React.Component {
                       </li>
                     </ul>
                     <input onInput={this.check_price.bind(this)} ref='priceInput' type="text" className="form-control" placeholder="请输入金额" />
+                    <span className="yuan">元</span>
                     <div className='error-tips'>
                       <p className="must-input">请输入金额</p>
                       <p className="must-input-or-check">请选择或输入金额</p>
