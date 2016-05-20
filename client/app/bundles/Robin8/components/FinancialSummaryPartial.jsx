@@ -17,7 +17,16 @@ class FinancialSummaryPartial extends React.Component {
   }
 
   componentDidUpdate() {
-    this.displayPaginator(this.props)
+    this.displayPaginator(this.props);
+    this.hide_or_show_paginator();
+  }
+
+  hide_or_show_paginator() {
+    if (!this.props.data.get('transactions').size) {
+      $("#transactions-paginator").hide();
+    } else {
+      $("#transactions-paginator").show();
+    }
   }
 
   displayPaginator(props) {
