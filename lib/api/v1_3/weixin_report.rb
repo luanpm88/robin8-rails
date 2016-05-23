@@ -4,13 +4,25 @@ module API
       resources :weixin_report do
         before do
           authenticate!
+          @identity = AnalysisIdentity.find(params[:identity_id])    rescue nil
         end
+
         params do
-          requires :login_id, type: Integer
+          optional :identity_id, type: Integer
+          optional :login_id, type: Integer
+          at_least_one_of :identity_id, :login_id,  message: "login_id identity_id 必须存在一个"
         end
         get 'primary' do
-          login = PublicWechatLogin.find params[:login_id]
-          res = JSON.parse login.get_info     rescue {}
+          if params[:login_id]
+            login = PublicWechatLogin.find params[:login_id]  rescue nil
+          else
+            return {:error => 1, :detail => '分析的账户不存在'} if @identity.blank?
+            return {:error => 1, :valid => false}             if !@identity.valid_authorize?
+            login = @identity.newest_login
+          end
+          puts login
+          info =  login.get_info
+          res = JSON.parse info     rescue {}
           if res['status']
             present :error, 0
             present :primary, res['data']['user'], with: API::V1_3::Entities::WeixinReportEntities::Primary
@@ -21,10 +33,18 @@ module API
         end
 
         params do
-          requires :login_id, type: Integer
+          optional :identity_id, type: Integer
+          optional :login_id, type: Integer
+          at_least_one_of :identity_id, :login_id,  message: "login_id identity_id 必须存在一个"
         end
         get 'messages' do
-          login = PublicWechatLogin.find params[:login_id]
+          if params[:login_id]
+            login = PublicWechatLogin.find params[:login_id]  rescue nil
+          else
+            return {:error => 1, :detail => '分析的账户不存在'} if @identity.blank?
+            return {:error => 1, :valid => false}             if !@identity.valid_authorize?
+            login = @identity.newest_login
+          end
           res = JSON.parse login.get_info('messages')  rescue {}
           if res['status']
             present :error, 1
@@ -37,10 +57,18 @@ module API
 
 
         params do
-          requires :login_id, type: Integer
+          optional :identity_id, type: Integer
+          optional :login_id, type: Integer
+          at_least_one_of :identity_id, :login_id,  message: "login_id identity_id 必须存在一个"
         end
         get 'articles' do
-          login = PublicWechatLogin.find params[:login_id]
+          if params[:login_id]
+            login = PublicWechatLogin.find params[:login_id]  rescue nil
+          else
+            return {:error => 1, :detail => '分析的账户不存在'} if @identity.blank?
+            return {:error => 1, :valid => false}             if !@identity.valid_authorize?
+            login = @identity.newest_login
+          end
           res = JSON.parse login.get_info('articles')   rescue {}
           puts res
           if res['status']
@@ -54,10 +82,18 @@ module API
 
 
         params do
-          requires :login_id, type: Integer
+          optional :identity_id, type: Integer
+          optional :login_id, type: Integer
+          at_least_one_of :identity_id, :login_id,  message: "login_id identity_id 必须存在一个"
         end
         get 'user_analysises' do
-          login = PublicWechatLogin.find params[:login_id]
+          if params[:login_id]
+            login = PublicWechatLogin.find params[:login_id]  rescue nil
+          else
+            return {:error => 1, :detail => '分析的账户不存在'} if @identity.blank?
+            return {:error => 1, :valid => false}             if !@identity.valid_authorize?
+            login = @identity.newest_login
+          end
           res = JSON.parse login.get_info('user_analysises')   rescue {}
           if res['status']
             present :error, 1

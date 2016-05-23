@@ -25,4 +25,10 @@ class AnalysisIdentity < ActiveRecord::Base
     end
     return RestClient.get("#{ServerIp}/weibo/report", {:params => params})
   end
+
+  #for public wechat
+  def newest_login
+    return nil if self.provider != 'public_wechat'
+    PublicWechatLogin.where(:username => self.name).order("id desc").first
+  end
 end
