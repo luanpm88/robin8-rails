@@ -10,7 +10,7 @@ module API
           kol_value = KolInfluenceValue.get_score(current_kol.kol_uuid)
           present :error, 0
           tasks = RewardTask.all
-          present :tasks, tasks, with: API::V2::Entities::RewardTaskEntities::Summary, kol: current_kol
+          present :tasks, tasks, with: API::V1_3::Entities::RewardTaskEntities::Summary, kol: current_kol
           if kol_value.present?
             item_rate = kol_value.get_item_scores
             present :item_rate, item_rate, with: API::V2::Entities::KolInfluenceValueEntities::History
