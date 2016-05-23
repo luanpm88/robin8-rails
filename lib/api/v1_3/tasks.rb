@@ -26,16 +26,6 @@ module API
           end
         end
 
-        # # 上传评价截图
-        # put 'upload_comment_screenshot' do
-        #   required_attributes! [:screenshot]
-        #   if current_kol.had_favorable_comment?
-        #     return error_403!({error: 1, detail: '您已经评价过！' })
-        #   else
-        #     current_kol.upload_comment_screenshot(params[:screenshot])
-        #   end
-        # end
-
         get 'check_in_history' do
           present :error, 0
           present :continuous_checkin_count, current_kol.continuous_checkin_count
@@ -43,10 +33,12 @@ module API
           present :checkin_history, current_kol.checkin_history
         end
 
-        get 'invite_code' do
+        get 'invite_info' do
           present :error, 0
-          present :invite_code, current_kol.invite_code
-          present :invite_count, current_kol.task_records.invite_friend.count
+          invite_count = current_kol.task_records.invite_friend.count
+          invite_amount = current_kol.invite_transactions.sum(:credits)
+          present :invite_count, invite_count
+          present :invite_amount, invite_amount
         end
       end
     end

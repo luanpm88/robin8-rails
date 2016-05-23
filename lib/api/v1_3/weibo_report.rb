@@ -18,7 +18,7 @@ module API
         end
         get 'follower_follow' do
           identity = AnalysisIdentity.find params[:identity_id]
-          res = identity.get_weibo_info( {:incremental_followers => 1, :decremental_followers => 1}, params[:duration])  rescue {}
+          res = identity.get_weibo_info( {:incremental_followers => 1, :decremental_followers => 1}, params[:duration])
           res = JSON.parse res
           if res['status']
             present :error, 1

@@ -17,6 +17,21 @@ module API
           end
         end
 
+        class Bilateral  < Grape::Entity
+          expose :r_date do |report|
+            report['r_date']
+          end
+          expose :follower_number do |report|
+            report['followers_number']
+          end
+          expose :bilateral_number do |report|
+            report['bilateral_number']
+          end
+          expose :friend_number do |report|
+            report['friends_number']
+          end
+        end
+
 
         class FollowerVerified  < Grape::Entity
           expose :general_number do |report|
@@ -85,7 +100,6 @@ module API
               report['publised_at']
             end
           end
-
           expose :text do |report|
             report['text']
           end

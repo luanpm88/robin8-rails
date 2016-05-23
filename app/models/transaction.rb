@@ -10,7 +10,7 @@ class Transaction < ActiveRecord::Base
   # kol 和braand 行为有差异  现落到各自model
   # scope :income, -> {where(:direct => 'income')}
   # scope :withdraw, -> {where(:direct => 'payout')}
-  validates_inclusion_of :subject, in: %w(campaign manual_recharge manual_withdraw withdraw check_in  invite_friend  complete_info favorable_comment)
+  validates_inclusion_of :subject, in: %w(campaign manual_recharge manual_withdraw withdraw RewardTask::CheckIn  RewardTask::InviteFriend  RewardTask::CompleteInfo  RewardTask::FavorableComment)
 
   # subject
   # manual_recharge manual_withdraw
@@ -25,6 +25,14 @@ class Transaction < ActiveRecord::Base
         '人工提现'
       when 'withdraw'
         '提现'
+      when RewardTask::CheckIn
+        '签到'
+      when RewardTask::InviteFriend
+        '邀请好友'
+      when RewardTask::CompleteInfo
+        '完善资料'
+      when RewardTask::FavorableComment
+        '好评'
     end
 
   end

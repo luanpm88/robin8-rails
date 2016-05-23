@@ -34,6 +34,7 @@ module API
         get 'profile'  do
           present :error, 0
           present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
+          present :receive_complete_reward, current_kol.receive_complete_reward
         end
 
         params do
