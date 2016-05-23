@@ -18,7 +18,7 @@ module API
 
         #完善资料
         put 'complete_info' do
-          if current_kol.had_complete_info?
+          if current_kol.had_complete_reward?
             return error_403!({error: 1, detail: '您已经完善过资料！' })
           else
             current_kol.complete_info
