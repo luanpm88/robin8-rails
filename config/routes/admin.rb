@@ -75,8 +75,7 @@ Rails.application.routes.draw do
     resources :lottery_activities do
 
       member do
-        get :new_pictures
-        post :create_pictures
+        patch :execute
       end
 
     end

@@ -1,0 +1,19 @@
+<h4>活动名称</h4>
+<p><%= @lottery_activity.name %></p>
+<h4>活动描述</h4>
+<p><% @lottery_activity.description %></p>
+<h4>所需人数</h4>
+<p><% @lottery_activity.total_number %></p>
+<% @lottery_activity.pictures.each do |picture| %>
+  <%= image_tag picture.name.url %>
+<% end %>
+
+<% if @lottery_activity.status ==  "pending" %>
+  <%= form_for([:marketing_dashboard, @lottery_activity], url: execute_marketing_dashboard_lottery_activity_path) do |f| %>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit '发布', :class => 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

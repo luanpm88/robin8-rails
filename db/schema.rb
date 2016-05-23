@@ -749,8 +749,9 @@ ActiveRecord::Schema.define(version: 20160523035002) do
     t.string   "total_number",  limit: 255
     t.string   "actual_number", limit: 255
     t.string   "lucky_number",  limit: 255
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "status",        limit: 255, default: "pending"
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
   end
 
   create_table "lottery_activity_orders", force: :cascade do |t|
