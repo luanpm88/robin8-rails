@@ -102,7 +102,7 @@ module Concerns
     end
 
     def profile_complete?
-      avatar_url.present? && name.present? && gender.present? && age.present? && app_city.present? && tags.size > 0 &&
+      avatar_url.present? && name.present? && gender.present? && gender != 0 && age.present? && app_city.present? && tags.size > 0 &&
         weixin_friend_count.present? && mobile_number.present? && identities.size > 0
     end
 
