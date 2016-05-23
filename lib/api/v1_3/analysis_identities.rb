@@ -18,7 +18,7 @@ module API
           requires :name, type: String
           requires :avatar_url, type: String
           requires :access_token, type: String
-          requires :refresh_token, :string
+          requires :refresh_token, type: String
           requires :location, type: String
           requires :gender, type: String
           requires :serial_params, type: String
@@ -71,7 +71,7 @@ module API
             return error_403!({error: 1, detail: '该账号不存在！'})
           else
             present :error, 0
-            present :valid, identity.valid?
+            present :valid, identity.valid_authorize?
           end
         end
       end

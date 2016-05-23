@@ -10,6 +10,7 @@ module API
           requires :identity_id, type: Integer
         end
         get 'primary' do
+
         end
 
         params do
@@ -35,10 +36,11 @@ module API
         end
         get 'follower_verified' do
           identity = AnalysisIdentity.find params[:identity_id]
-          res = JSON.parse identity.get_weibo_info( {:sorted_follower => 1}, 1)  rescue {}
+          res = JSON.parse identity.get_weibo_info({:sorted_follower => 1}, 1)  rescue {}
+          puts res
           if res['status']
             present :error, 1
-            present :follower_verified, res['data']['sorted_friend'].first, with: API::V1_3::Entities::WeiboReportEntities::Verified
+            present :follower_verified, res['data']['sorted_followers'].first, with: API::V1_3::Entities::WeiboReportEntities::FollowerVerified
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'
@@ -47,11 +49,11 @@ module API
 
         params do
           requires :identity_id, type: Integer
-          requires :duration, type: Integer, values: [7,30,90]
         end
         get 'friend_verified' do
           identity = AnalysisIdentity.find params[:identity_id]
-          res = JSON.parse identity.get_weibo_info( {:sorted_friend => 1, :bilateral_friendships => 1}, params[:duration])  rescue {}
+          res = JSON.parse identity.get_weibo_info( {:sorted_friend => 1, :bilateral_friendship => 1}, 1)  rescue {}
+          puts res
           if res['status']
             present :error, 1
             present :friend_verified, res['data']['sorted_friend'], with: API::V1_3::Entities::WeiboReportEntities::FriendVerified

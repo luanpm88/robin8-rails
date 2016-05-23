@@ -44,13 +44,13 @@ module API
             report['expert_number']
           end
           expose :general_ratio do |report|
-            report['general_ratio']
+            report['general_ratio'].round(2)  rescue 0
           end
           expose :verified_ratio do |report|
-            report['verified_ratio']
+            report['verified_ratio'].round(2)  rescue 0
           end
           expose :expert_ratio do |report|
-            report['expert_ratio']
+            report['expert_ratio'].round(2)  rescue 0
           end
         end
 

@@ -14,7 +14,7 @@ class Transaction < ActiveRecord::Base
   # kol 和braand 行为有差异  现落到各自model
   # scope :income, -> {where(:direct => 'income')}
   # scope :withdraw, -> {where(:direct => 'payout')}
-  validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw withdraw RewardTask::CheckIn  RewardTask::InviteFriend  RewardTask::CompleteInfo  RewardTask::FavorableComment)
+  validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw withdraw check_in invite_friend complete_info)
 
   # subject
   # manual_recharge manual_withdraw

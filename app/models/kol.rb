@@ -44,6 +44,7 @@ class Kol < ActiveRecord::Base
   has_many :withdraws
   has_many :article_actions
   has_many :analysis_identities
+  has_many :kol_identity_prices
 
 
 
