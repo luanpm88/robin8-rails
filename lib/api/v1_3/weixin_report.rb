@@ -2,13 +2,9 @@ module API
   module V1_3
     class WeixinReport < Grape::API
       resources :weixin_report do
-        # before do
-        #   authenticate!
-        # end
-        get 'list' do
-
+        before do
+          authenticate!
         end
-
         params do
           requires :login_id, type: Integer
         end

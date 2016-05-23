@@ -3,7 +3,7 @@ module API
     module Entities
       module AnalysisIdentityEntities
         class Summary  < Grape::Entity
-          expose :provider, :nickname, :username, :avatar_url, :location
+          expose :provider, :nick_name, :name, :avatar_url, :location
           expose :gender do |identity|
             if identity.gender == 'm'
               '男'

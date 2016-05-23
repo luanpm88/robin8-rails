@@ -13,12 +13,15 @@ class AnalysisIdentity < ActiveRecord::Base
   # 远程服务器
   ServerIp = 'http://139.196.36.27'
   ApiToken = 'b840fc02d524045429941cc15f59e41cb7be6c52'
-  def get_weibo_info(info_type = {}, start_date = Date.today - 7.days, end_date = Date.today )
+  def get_weibo_info(info_type = {}, duration = nil )
     return if self.provider != 'weibo'
     params = {:api_token => ApiToken, :uid => self.uid, :access_token => self.access_token, :refresh_token => self.refresh_token,
-              :authorized_at => self.authorize_time, :expires_at => self.authorize_time + WeiboAccessTokenExpired,
-              :start_date => start_date, :end_date => end_date}
+              :authorized_at => self.authorize_time, :expires_at => self.authorize_time + WeiboAccessTokenExpired}
     params.merge!(info_type)
+    if duration
+      params['end_date'] = Date.today
+      params['start_date'] = Date.today - duration.days
+    end
     return RestClient.get("#{ServerIp}/weibo/report", {:params => params})
   end
 end
