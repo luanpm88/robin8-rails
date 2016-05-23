@@ -71,5 +71,14 @@ Rails.application.routes.draw do
       match '/reject' => 'withdraws#reject', via: [:post]
     end
     resources :announcements, except: [:destroy]
+
+    resources :lottery_activities do
+
+      member do
+        get :new_pictures
+        post :create_pictures
+      end
+
+    end
   end
 end

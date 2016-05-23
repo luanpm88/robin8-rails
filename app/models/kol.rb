@@ -48,6 +48,9 @@ class Kol < ActiveRecord::Base
   has_many :withdraws
   has_many :article_actions
 
+  has_many :lottery_activity_orders
+  has_many :lottery_activities, through: :lottery_activity_orders
+
 
 
   def email_required?
