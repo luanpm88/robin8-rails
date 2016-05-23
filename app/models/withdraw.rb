@@ -27,7 +27,6 @@ class Withdraw < ActiveRecord::Base
     self.kol.frozen(self.credits,'widthdraw', self, nil)
   end
 
-
   def deal_withdraw
     if self.kol.frozen_amount.to_f < self.credits.to_f
       self.errors.add(:credits, "超出账户冻结金额")

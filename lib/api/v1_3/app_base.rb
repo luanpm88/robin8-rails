@@ -13,6 +13,7 @@ module API
       mount API::V1_3::AnalysisIdentities
       mount API::V1_3::WeixinReport
       mount API::V1_3::WeiboReport
+      mount API::V1_3::KolIdentityPrices
     end
   end
 end
