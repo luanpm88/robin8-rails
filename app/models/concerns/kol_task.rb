@@ -3,7 +3,7 @@ module Concerns
     extend ActiveSupport::Concern
     included do
       has_many :task_records
-      has_many :invite_transactions, ->{where(:subject => RewardTask::InviteFriend).order('created_at desc')}, :as => :account
+      has_many :invite_transactions, ->{where(:subject => RewardTask::InviteFriend).order('created_at desc')}, :as => :account, :class_name => 'Transaction'
       # after_create :generate_invite_code
       after_commit :generate_invite_task_record, :on => :create
     end
@@ -13,7 +13,7 @@ module Concerns
     end
 
 
-    def had_complete_info?
+    def had_complete_reward?
       self.task_records.active.complete_info.size > 0
     end
 
@@ -106,8 +106,8 @@ module Concerns
         weixin_friend_count.present? && mobile_number.present? && identities.size > 0
     end
 
-    def receive_complete_reward
-      !had_complete_info?  && profile_complete?
+    def can_receive_complete_reward
+      !had_complete_reward?  && profile_complete?
     end
 
   end

@@ -50,7 +50,6 @@ module API
         end
 
         params do
-          requires :provider, type: String, values: ['weibo']
           requires :identity_id, type: String
         end
         put 'identity_unbind' do
@@ -64,10 +63,10 @@ module API
         end
 
         params do
-          requires :identity_id, type: Integer
+          requires :id, type: Integer
         end
-        get 'check' do
-          identity = AnalysisIdentity.find_by(:kol_id => current_kol.id, :identity_id => params[:identity_id])
+        get 'check_authorize' do
+          identity = AnalysisIdentity.find params[:id]
           if identity.blank?
             return error_403!({error: 1, detail: '该账号不存在！'})
           else
