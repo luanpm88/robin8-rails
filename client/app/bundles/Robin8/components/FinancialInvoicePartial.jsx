@@ -90,8 +90,8 @@ class FinancialInvoicePartial extends React.Component {
       return ;
     }
     saveInvoiceHistory(credits);
-    fetchAppliableCredits();
-    this.refs.creditsInput.value = ""
+    this.refs.creditsInput.value = "";
+    setTimeout(fetchAppliableCredits, 1000);
   }
 
   render_invoice_histories_table() {
