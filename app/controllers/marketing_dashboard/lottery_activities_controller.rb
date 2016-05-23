@@ -9,8 +9,10 @@ class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::Base
   end
 
   def create
-    binding.pry
     @lottery_activity = LotteryActivity.new(lottery_activity_params)
+    params[:lottery_activity][:pictures].each do |picture|
+      @lottery_activity.pictures.build(name: picture)
+    end
     if @lottery_activity.save
       redirect_to new_pictures_marketing_dashboard_lottery_activity_path(id: @lottery_activity.id)
     else
@@ -36,7 +38,6 @@ class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::Base
   private
 
   def lottery_activity_params
-    params.require(:lottery_activity).permit(:name, :description, :total_number, :lucky_number)
+    params.require(:lottery_activity).permit(:name, :description, :total_number)
   end
-
 end

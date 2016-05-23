@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160522072712) do
+ActiveRecord::Schema.define(version: 20160523035002) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -875,6 +875,14 @@ ActiveRecord::Schema.define(version: 20160522072712) do
     t.integer  "discount_id",           limit: 4
     t.float    "tax",                   limit: 24,  default: 0.0
     t.string   "currency",              limit: 1
+  end
+
+  create_table "pictures", force: :cascade do |t|
+    t.string   "name",           limit: 255
+    t.integer  "imageable_id",   limit: 4
+    t.string   "imageable_type", limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "pitches", force: :cascade do |t|
