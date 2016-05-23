@@ -1,5 +1,5 @@
 module API
-  module V2
+  module V1_3
     module Entities
       module RewardTaskEntities
         class Summary  < Grape::Entity
