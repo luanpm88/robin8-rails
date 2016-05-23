@@ -5,7 +5,7 @@ class CreateRewardTasks < ActiveRecord::Migration
       t.string :reward_cycle
       t.integer :position
       t.string :task_name
-      t.string :task_type
+      t.string :task_type, :limit => 191
       t.integer :limit        #预留
       t.string :logo         #预留
       t.boolean :enable, :default => true

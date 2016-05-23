@@ -6,7 +6,7 @@ class CreateTaskRecords < ActiveRecord::Migration
       t.string :task_type
       t.integer :invitees_id
       t.string :screenshot
-      t.string :status, :default => 'pending'
+      t.string :status, :default => 'pending', :limit => 191
 
       t.timestamps null: false
     end
