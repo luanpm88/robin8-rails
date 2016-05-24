@@ -37,7 +37,7 @@ export default class BudgetPartial extends React.Component {
         <strong className="stat-num">
           &nbsp;&nbsp;{1}
         </strong>
-        <a href="/contact?from=recharge" target="_blank" className="btn-default recharge-btn">充值</a>
+        <a href="/brand/financial/recharge" target="_blank" className="btn-default recharge-btn">充值</a>
       </div>
     )
   }
