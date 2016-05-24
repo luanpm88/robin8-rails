@@ -47,7 +47,7 @@ module API
           end
           res = JSON.parse login.get_info('messages')  rescue {}
           if res['status']
-            present :error, 1
+            present :error, 0
             present :messages, res['data']['messages'], with: API::V1_3::Entities::WeixinReportEntities::Message
           else
             present :error, 1
@@ -72,7 +72,7 @@ module API
           res = JSON.parse login.get_info('articles')   rescue {}
           puts res
           if res['status']
-            present :error, 1
+            present :error, 0
             present :articles, res['data']['articles'], with: API::V1_3::Entities::WeixinReportEntities::Article
           else
             present :error, 1
@@ -96,7 +96,7 @@ module API
           end
           res = JSON.parse login.get_info('user_analysises')   rescue {}
           if res['status']
-            present :error, 1
+            present :error, 0
             present :user_analysises, res['data']['user_analysises'], with: API::V1_3::Entities::WeixinReportEntities::UserAnalysise
           else
             present :error, 1
