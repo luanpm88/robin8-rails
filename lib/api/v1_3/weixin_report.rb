@@ -16,8 +16,8 @@ module API
           if params[:login_id]
             login = PublicWechatLogin.find params[:login_id]  rescue nil
           else
-            return {:error => 1, :detail => '分析的账户不存在'} if @identity.blank?
-            return {:error => 1, :valid => false}             if !@identity.valid_authorize?
+            return {:error => 1, :detail => '分析的账户不存在'}                   if @identity.blank?
+            return {:error => 3, :detail => '授权过期，请重新授权'}                if !@identity.valid_authorize?
             login = @identity.newest_login
           end
           puts login
@@ -41,8 +41,8 @@ module API
           if params[:login_id]
             login = PublicWechatLogin.find params[:login_id]  rescue nil
           else
-            return {:error => 1, :detail => '分析的账户不存在'} if @identity.blank?
-            return {:error => 1, :valid => false}             if !@identity.valid_authorize?
+            return {:error => 1, :detail => '分析的账户不存在'}                   if @identity.blank?
+            return {:error => 3, :detail => '授权过期，请重新授权'}                if !@identity.valid_authorize?
             login = @identity.newest_login
           end
           res = JSON.parse login.get_info('messages')  rescue {}
@@ -65,8 +65,8 @@ module API
           if params[:login_id]
             login = PublicWechatLogin.find params[:login_id]  rescue nil
           else
-            return {:error => 1, :detail => '分析的账户不存在'} if @identity.blank?
-            return {:error => 1, :valid => false}             if !@identity.valid_authorize?
+            return {:error => 1, :detail => '分析的账户不存在'}                   if @identity.blank?
+            return {:error => 3, :detail => '授权过期，请重新授权'}                if !@identity.valid_authorize?
             login = @identity.newest_login
           end
           res = JSON.parse login.get_info('articles')   rescue {}
@@ -90,8 +90,8 @@ module API
           if params[:login_id]
             login = PublicWechatLogin.find params[:login_id]  rescue nil
           else
-            return {:error => 1, :detail => '分析的账户不存在'} if @identity.blank?
-            return {:error => 1, :valid => false}             if !@identity.valid_authorize?
+            return {:error => 1, :detail => '分析的账户不存在'}                   if @identity.blank?
+            return {:error => 3, :detail => '授权过期，请重新授权'}                if !@identity.valid_authorize?
             login = @identity.newest_login
           end
           res = JSON.parse login.get_info('user_analysises')   rescue {}
