@@ -228,5 +228,16 @@
       }
     }
   }
+}
 
+.recharge-modal {
+  .price {
+    font-size: 24px !important;
+  }
+  .total-amount {
+    margin-bottom: 10px;
+  }
+  .no-invoice {
+    color: #737373;
+  }
 }
