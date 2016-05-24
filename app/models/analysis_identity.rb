@@ -31,4 +31,15 @@ class AnalysisIdentity < ActiveRecord::Base
     return nil if self.provider != 'public_wechat'
     PublicWechatLogin.where(:username => self.name).order("id desc").first
   end
+
+  def self.complete_follower_data(data = [],len)
+    data_len = data.size
+    if data_len < len
+      today = Date.today
+      (data_len..len).to_a.each do |i|
+        data << {"r_date" => today - i.days, 'number' => 0, 'users' => [] }
+      end
+    end
+    data
+  end
 end

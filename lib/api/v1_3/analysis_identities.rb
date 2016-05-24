@@ -54,7 +54,7 @@ module API
           requires :identity_id, type: String
         end
         put 'identity_unbind' do
-          identity = AnalysisIdentity.find identity_id
+          identity = AnalysisIdentity.find params[:identity_id]        rescue nil
           if identity
             identity.delete
             return error_403!({error: 1, detail: '解绑成功！'})

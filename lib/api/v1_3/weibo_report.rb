@@ -37,8 +37,10 @@ module API
           res = JSON.parse res
           if res['status']
             present :error, 0
-            present :incremental_followers, res['data']['incremental_followers'], with: API::V1_3::Entities::WeiboReportEntities::Follower
-            present :decremental_followers, res['data']['decremental_followers'], with: API::V1_3::Entities::WeiboReportEntities::Follower
+            incremental_followers = AnalysisIdentity.complete_follower_data(res['data']['incremental_followers'], params[:duration])
+            decremental_followers = AnalysisIdentity.complete_follower_data(res['data']['decremental_followers'], params[:duration])
+            present :incremental_followers, incremental_followers, with: API::V1_3::Entities::WeiboReportEntities::Follower
+            present :decremental_followers, decremental_followers, with: API::V1_3::Entities::WeiboReportEntities::Follower
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'

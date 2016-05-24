@@ -18,7 +18,7 @@ module API
           expose :friend_number do |report|
             report['friend_number']
           end
-          expose :decremental_follower_number do |report|
+          expose :follower_number do |report|
             report['follower_number']
           end
           expose :bilateral_number do |report|
