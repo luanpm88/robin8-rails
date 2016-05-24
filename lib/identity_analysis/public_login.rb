@@ -37,7 +37,7 @@ module IdentityAnalysis
       cookies = ""
       if response["base_resp"].present? || response["base_resp"]["ret"] == 0
         cookies = append_cookies(cookies, request)
-        redirect_url = "https://mp.weixin.qq.com/" + response["redirect_url"]
+        redirect_url = "https://mp.weixin.qq.com/#{response['redirect_url']}"
         if redirect_url.include?("token=")
           token = redirect_url.split("token=").last
           return ['login_success', cookies , redirect_url, token]

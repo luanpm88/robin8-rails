@@ -32,7 +32,7 @@ module API
         get 'follower_follow' do
           identity = current_kol.analysis_identities.find params[:identity_id]
           return {:error => 1, :detail => '分析的账户不存在'}                                 if  identity.blank?
-          return {:error => 3, :detail => '授权过期，请重新授权'}             if !identity.valid_authorize?
+          return {:error => 3, :detail => '授权过期，请重新授权'}                              if !identity.valid_authorize?
           res = identity.get_weibo_info( {:incremental_follower => 1, :decremental_follower => 1}, params[:duration])
           res = JSON.parse res
           if res['status']
@@ -51,7 +51,7 @@ module API
         get 'follower_verified' do
           identity = current_kol.analysis_identities.find params[:identity_id]
           return {:error => 1, :detail => '分析的账户不存在'}                                 if  identity.blank?
-          return {:error => 3, :detail => '授权过期，请重新授权'}             if !identity.valid_authorize?
+          return {:error => 3, :detail => '授权过期，请重新授权'}                              if !identity.valid_authorize?
           res = JSON.parse identity.get_weibo_info({:sorted_follower => 1}, 1)  rescue {}
           puts res
           if res['status']
@@ -65,11 +65,12 @@ module API
 
         params do
           requires :identity_id, type: Integer
+          requires :duration, type: Integer, values: [7,30,90]
         end
         get 'friend_verified' do
           identity = current_kol.analysis_identities.find params[:identity_id]
           return {:error => 1, :detail => '分析的账户不存在'}                                 if  identity.blank?
-          return {:error => 3, :detail => '授权过期，请重新授权'}             if !identity.valid_authorize?
+          return {:error => 3, :detail => '授权过期，请重新授权'}                             if !identity.valid_authorize?
           res = JSON.parse identity.get_weibo_info( {:sorted_friend => 1, :bilateral_friendship => 1}, 1)  rescue {}
           puts res
           if res['status']
