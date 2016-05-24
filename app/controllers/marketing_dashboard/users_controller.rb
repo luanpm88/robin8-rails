@@ -26,7 +26,7 @@ class MarketingDashboard::UsersController < MarketingDashboard::BaseController
       credits = params[:credits].to_i / 1.06
       tax = params[:credits].to_i - credits
       @user.income credits.to_f, 'manual_recharge'
-      @user.increment!(:appliable_credits, tax)
+      @user.increment!(:appliable_credits, (tax+credits))
     else
       @user.income params[:credits].to_f, 'manual_recharge'
     end
