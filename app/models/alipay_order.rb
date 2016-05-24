@@ -25,7 +25,7 @@ class AlipayOrder < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         self.user.income(credits, 'alipay_recharge', self)
         update_attributes(status: 'paid')
-        increase_user_appliable_credits
+        increase_user_appliable_credits if need_invoice
       end
     end
   end
@@ -46,6 +46,6 @@ class AlipayOrder < ActiveRecord::Base
 
   def increase_user_appliable_credits
     @transaction = self.get_transaction
-    @transaction.account.increment!(:appliable_credits, tax)
+    @transaction.account.increment!(:appliable_credits, (tax + credits))
   end
 end
