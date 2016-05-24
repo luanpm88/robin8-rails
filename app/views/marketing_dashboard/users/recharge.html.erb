@@ -1,5 +1,23 @@
 <h1>用户充值</h1>
 <%= form_tag marketing_dashboard_user_recharge_path do %>
   <%= text_field_tag :credits, nil, :placeholder => "输入充值金额" %>
+  <%= check_box_tag :need_invoice, true, false, class: 'invoice-checkbox' %> <span class="invoice-text">是否需要发票</span>
   <%= submit_tag 'submit', :class => 'btn btn-primary' %>
 <% end %>
+
+
+<style>
+  .invoice-checkbox {
+    display: block;
+    margin-top: 15px;
+  }
+  .invoice-text {
+    position: absolute;
+    top: 147px;
+    margin-left: 22px;
+  }
+
+  .btn {
+    margin-top: 20px;
+  }
+<style>
