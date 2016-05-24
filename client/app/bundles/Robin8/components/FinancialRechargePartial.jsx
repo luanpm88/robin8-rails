@@ -5,10 +5,24 @@ import validator from 'validator';
 import BreadCrumb   from './shared/BreadCrumb';
 import FinancialMenu  from './shared/FinancialMenu';
 import OfflineRecharge from './financial/OfflineRecharge';
+import RechargeModal from './financial/modals/RechargeModal';
 
 import 'recharge/recharge.scss';
 
 class FinancialRechargePartial extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showRechargeModal: false,
+      credits: "",
+      checkInvoice: false
+    };
+  }
+
+  closeRechargeModal() {
+    this.setState({showRechargeModal: false});
+  }
 
   choose_price(e) {
     this.refs.priceInput.value = "";
@@ -51,35 +65,47 @@ class FinancialRechargePartial extends React.Component {
   }
 
   recharge() {
-    const { alipayRecharge } = this.props.actions;
-    const price = this.refs.priceInput.value;
-    // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元  选项框和input不可共存
-    let checked_price = "";
-    let credits = "";
-    if (this.refs.price_500.style.borderColor === "rgb(40, 182, 187)") {
-      checked_price = '500';
-    } else if (this.refs.price_1000.style.borderColor === "rgb(40, 182, 187)") {
-      checked_price = '1000';
-    } else if (this.refs.price_2000.style.borderColor === "rgb(40, 182, 187)") {
-      checked_price = '2000';
-    }
-    if (validator.isNull(price) && validator.isNull(checked_price)) {
-      $(".error-tips p").hide();
-      $(".must-input-or-check").show();
-      return ;
-    } else if (!validator.isNull(price) && validator.isNull(checked_price)) {
-      credits = price;
-    } else if (validator.isNull(price) && !validator.isNull(checked_price)) {
-      credits = checked_price;
-    } else if(!validator.isNull(price) && !validator.isNull(checked_price)) {
-      return ;
-    }
+    // ======
+    // const { alipayRecharge } = this.props.actions;
+    const credits = this.refs.priceInput.value;
+    // ======
 
-    if(validator.isNull(credits) || !validator.isInt(credits, {min: 500})) {
-      return ;
-    }
 
-    alipayRecharge(credits);
+    // const price = this.refs.priceInput.value;
+    // // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元  选项框和input不可共存
+    // let checked_price = "";
+    // let credits = "";
+    // if (this.refs.price_500.style.borderColor === "rgb(40, 182, 187)") {
+    //   checked_price = '500';
+    // } else if (this.refs.price_1000.style.borderColor === "rgb(40, 182, 187)") {
+    //   checked_price = '1000';
+    // } else if (this.refs.price_2000.style.borderColor === "rgb(40, 182, 187)") {
+    //   checked_price = '2000';
+    // }
+    // if (validator.isNull(price) && validator.isNull(checked_price)) {
+    //   $(".error-tips p").hide();
+    //   $(".must-input-or-check").show();
+    //   return ;
+    // } else if (!validator.isNull(price) && validator.isNull(checked_price)) {
+    //   credits = price;
+    // } else if (validator.isNull(price) && !validator.isNull(checked_price)) {
+    //   credits = checked_price;
+    // } else if(!validator.isNull(price) && !validator.isNull(checked_price)) {
+    //   return ;
+    // }
+    //
+    // if(validator.isNull(credits) || !validator.isInt(credits, {min: 500})) {
+    //   return ;
+    // }
+
+    if(this.refs.invoice_checkbox.checked) {
+      this.setState({checkInvoice: true})
+    }
+    this.setState({credits: credits});
+    this.setState({showRechargeModal: true});
+
+
+    // alipayRecharge(credits);
   }
 
   render_avatar() {
@@ -155,6 +181,9 @@ class FinancialRechargePartial extends React.Component {
                       <p className="must-be-integer">金额必须为整数</p>
                       <p className="must-greater-than-500">最小金额为500元</p>
                     </div>
+                    <div>
+                      <input ref='invoice_checkbox' type="checkbox" className="choose-invoice" /><span>&nbsp;&nbsp;是否开具发票</span>
+                    </div>
                     <button onClick={this.recharge.bind(this)} className="btn btn-blue btn-default recharge-btn">立即充值</button>
                   </div>
                 </div>
@@ -165,6 +194,8 @@ class FinancialRechargePartial extends React.Component {
             </div>
           </div>
         </div>
+
+        <RechargeModal show={this.state.showRechargeModal} onHide={this.closeRechargeModal.bind(this)} actions={this.props.actions} credits={this.state.credits} checkInvoice={this.state.checkInvoice} />
       </div>
     )
   }

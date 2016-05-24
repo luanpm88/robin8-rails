@@ -260,8 +260,8 @@ export function updateRecruitCompaignKols(campaign_id) {
   }
 }
 
-export function alipayRecharge(credits) {
-  const data = { credits };
+export function alipayRecharge(credits, tax) {
+  const data = { credits, tax };
   return {
     type: actionTypes.ALIPAY_RECHARGE,
     promise: fetch(`${baseUrl}/alipay_orders`, {

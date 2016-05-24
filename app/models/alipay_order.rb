@@ -3,8 +3,8 @@ class AlipayOrder < ActiveRecord::Base
 
   validates :trade_no, presence: true, uniqueness: true
   validates :credits, presence: true
-  validates :credits, numericality: { only_integer: true }
-  validates :credits, numericality: { greater_than_or_equal_to: 500 }
+  # validates :credits, numericality: { only_integer: true }
+  # validates :credits, numericality: { greater_than_or_equal_to: 500 }
 
   validates_inclusion_of :status, :in => STATUS
 
@@ -25,6 +25,7 @@ class AlipayOrder < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         self.user.income(credits, 'alipay_recharge', self)
         update_attributes(status: 'paid')
+        increase_user_appliable_credits
       end
     end
   end
@@ -36,5 +37,15 @@ class AlipayOrder < ActiveRecord::Base
   def save_trade_no_to_transaction(trade_no)
     @transaction = self.get_transaction
     @transaction.update_attributes(trade_no: trade_no)
+  end
+
+  def save_tax_to_transaction
+    @transaction = self.get_transaction
+    @transaction.update_attributes(tax: tax)
+  end
+
+  def increase_user_appliable_credits
+    @transaction = self.get_transaction
+    @transaction.account.increment!(:appliable_credits, tax)
   end
 end
