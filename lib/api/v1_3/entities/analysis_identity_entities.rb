@@ -13,6 +13,9 @@ module API
               '未知'
             end
           end
+          expose :valid do |identity|
+            identity.valid_authorize?
+          end
         end
       end
     end
