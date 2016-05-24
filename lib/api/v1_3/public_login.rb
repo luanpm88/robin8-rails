@@ -12,7 +12,7 @@ module API
           optional :imgcode, type: String
         end
         post 'login_with_account' do
-          res = Analysis::PublicLogin.login(current_kol.id, params[:username], params[:password], params[:imgcode])
+          res = ::IdentityAnalysis::PublicLogin.login(current_kol.id, params[:username], params[:password], params[:imgcode])
           if res[0] == 'error'
             present :error, 1
             present :login_status, res[1]
@@ -41,7 +41,7 @@ module API
           requires :login_id, type: Integer
         end
         get 'check_status' do
-          res = Analysis::PublicLogin.check_login_status(params[:login_id])
+          res = ::IdentityAnalysis::PublicLogin.check_login_status(params[:login_id])
           if res == '405'
             status_content = '登陆成功'
           elsif res == 401

@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'typhoeus'
 
-module Analysis
+module IdentityAnalysis
   class PublicLogin
     UserAgent =  "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5"
     BaseUrl = "https://mp.weixin.qq.com/cgi-bin/login?lang=zh_CN"
