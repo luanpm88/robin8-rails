@@ -20,7 +20,7 @@ module Brand
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
                                       { out_trade_no: trade_no,
                                         subject: 'Robin8账户充值',
-                                        total_fee: credits,
+                                        total_fee: actual_credits,
                                         return_url: 'http://robin8-staging.cn/brand',
                                         notify_url: 'http://robin8-staging.cn/brand_api/v1/alipay_orders/alipay_notify'
                                       },
