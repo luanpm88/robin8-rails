@@ -35,7 +35,7 @@ module Analysis
                  )
       response = JSON.parse request.response_body   rescue {}
       cookies = ""
-      if response["base_resp"] || response["base_resp"]["ret"] == 0
+      if response["base_resp"].present? || response["base_resp"]["ret"] == 0
         cookies = append_cookies(cookies, request)
         redirect_url = "https://mp.weixin.qq.com/" + response["redirect_url"]
         if redirect_url.include?("token=")

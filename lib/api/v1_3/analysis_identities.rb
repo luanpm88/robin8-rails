@@ -29,6 +29,7 @@ module API
           if params[:bind_type] == 'bind'
             if identity.blank?
               identity =  AnalysisIdentity.new
+              identity.kol_id = current_kol.id
               attrs = attributes_for_keys [:provider, :uid, :name, :avatar_url, :access_token,
                                            :refresh_token, :location, :gender, :serial_params]
               identity.attributes = attrs

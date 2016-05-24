@@ -3,6 +3,30 @@ module API
     module Entities
       module WeiboReportEntities
         class Primary  < Grape::Entity
+          expose :incremental_follower_number do |report|
+            report['incremental_follower_number']
+          end
+          expose :decremental_follower_number do |report|
+            report['decremental_follower_number']
+          end
+          expose :verified_follower_ratio do |report|
+            report['verified_follower_ratio']
+          end
+          expose :unverified_follower_ratio	 do |report|
+            report['unverified_follower_ratio']
+          end
+          expose :friend_number do |report|
+            report['friend_number']
+          end
+          expose :decremental_follower_number do |report|
+            report['follower_number']
+          end
+          expose :bilateral_number do |report|
+            report['bilateral_number']
+          end
+          expose :statuses_number do |report|
+            report['statuses_number']
+          end
         end
 
         class Follower  < Grape::Entity
@@ -18,17 +42,14 @@ module API
         end
 
         class Bilateral  < Grape::Entity
-          expose :r_date do |report|
-            report['r_date']
-          end
           expose :follower_number do |report|
-            report['followers_number']
+            report['follower_number']
           end
           expose :bilateral_number do |report|
             report['bilateral_number']
           end
           expose :friend_number do |report|
-            report['friends_number']
+            report['friend_number']
           end
         end
 
@@ -55,9 +76,6 @@ module API
         end
 
         class FriendVerified  < Grape::Entity
-          expose :r_date do |report|
-            report['r_date']
-          end
           expose :total_number do |report|
             report['total_number']
           end
@@ -69,7 +87,7 @@ module API
           end
         end
 
-        class Sexual  < Grape::Entity
+        class Gender  < Grape::Entity
           expose :male_number do |report|
             report['male_number']
           end
@@ -84,9 +102,21 @@ module API
           end
         end
 
-        class Regional  < Grape::Entity
-          expose :regions do |report|
-            report['regions']
+        class Region  < Grape::Entity
+          expose :name do |report|
+            report['name']
+          end
+          expose :code do |report|
+            report['code']
+          end
+          expose :location do |report|
+            report['location']
+          end
+          expose :number do |report|
+            report['number']
+          end
+          expose :ratio do |report|
+            report['ratio'].round(2)  rescue 0
           end
         end
 
@@ -115,11 +145,11 @@ module API
           expose :attitudes_count do |report|
             report['attitudes_count']
           end
-          expose :user do |report|
-            expose :name do
+          expose :user do
+            expose :name do  |report|
               report['user']['name']
             end
-            expose :profile_image_url do
+            expose :profile_image_url do  |report|
               report['user']['profile_image_url']
             end
           end
