@@ -32,14 +32,37 @@ class AnalysisIdentity < ActiveRecord::Base
     PublicWechatLogin.where(:username => self.name).order("id desc").first
   end
 
+  #补全30天粉丝数
   def self.complete_follower_data(data = [],len)
     data_len = data.size
     if data_len < len
       today = Date.today
       (data_len..len).to_a.each do |i|
-        data << {"r_date" => today - i.days, 'number' => 0, 'users' => [] }
+        data.insert(0,{"r_date" => today - i.days, 'number' => 0, 'users' => [] })
       end
     end
     data
+  end
+
+  # 补全30天好友数
+  def self.complete_sorted_friends(data = [],len)
+    data_len = data.size
+    if data_len < len
+      today = Date.today
+      (data_len..len).to_a.each do |i|
+        data.insert(0,{"r_date" => today - i.days, 'total_number' => 0, 'verified_number' => 0, 'unverified_number' => 0 })
+      end
+    end
+    data
+  end
+
+  def self.cal_follower_change(data, duration = 30)
+    data_len = data.size
+    return [0,0] if data_len.size == 0
+    newest = data.last
+    old = data.first
+    total_count = newest['number'] - old['number']
+    avg_count =  total_count  / data_len
+    return [total_count, avg_count]
   end
 end

@@ -37,7 +37,7 @@ module API
             report['number']
           end
           expose :users do |report|
-            report['users']
+            report['users'] || []
           end
         end
 
@@ -76,6 +76,9 @@ module API
         end
 
         class FriendVerified  < Grape::Entity
+          expose :r_date do |report|
+            report['r_date']
+          end
           expose :total_number do |report|
             report['total_number']
           end
