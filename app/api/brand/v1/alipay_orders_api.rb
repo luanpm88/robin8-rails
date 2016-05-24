@@ -12,13 +12,15 @@ module Brand
           post do
             trade_no = Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join
             credits = params[:credits]
+            tax = params[:tax]
+            actual_credits = credits + tax
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
-            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits})
+            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: tax})
             if @alipay_order.save
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
                                       { out_trade_no: trade_no,
                                         subject: 'Robin8账户充值',
-                                        total_fee: credits,
+                                        total_fee: actual_credits,
                                         return_url: 'http://robin8-staging.cn/brand',
                                         notify_url: 'http://robin8-staging.cn/brand_api/v1/alipay_orders/alipay_notify'
                                       },
@@ -43,6 +45,7 @@ module Brand
                 @alipay_order.pay
                 @alipay_order.save_alipay_trade_no(params[:trade_no])
                 @alipay_order.save_trade_no_to_transaction(params[:out_trade_no])
+                @alipay_order.save_tax_to_transaction
               end
               env['api.format'] = :txt
               body "success"

@@ -149,13 +149,16 @@
         }
         .error-tips {
           margin-left: 96px;
-          height: 0px;
+          height: 15px;
           p {
             display: none;
             color: rgb(206, 1, 1);
             margin-top: 8px;
             font-size: 13px;
           }
+        }
+        input.choose-invoice {
+          width: 10px;
         }
         .recharge-btn {
           margin-top: 20px;
