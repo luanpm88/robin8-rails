@@ -367,7 +367,7 @@ class Kol < ActiveRecord::Base
           next if  tmp_contact.mobile.blank?  || tmp_contact.name.blank?   || Influence::Util.is_mobile?(tmp_contact.mobile.to_s).blank?
           contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
                                     :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
-          contact.save(:validate => false)
+          contact.save!(:validate => false)
         end
       end
 
@@ -401,7 +401,7 @@ class Kol < ActiveRecord::Base
                                        score: identity.score, followers_count: identity.followers_count,  friends_count: identity.friends_count,
                                        statuses_count: identity.statuses_count, kol_uuid:  kol_uuid, refresh_time: identity.refresh_time,
                                        access_token_refresh_time: identity.access_token_refresh_time, refresh_token: identity.refresh_token)
-        tmp_identity.save
+        tmp_identity.save!
       end
 
     end
