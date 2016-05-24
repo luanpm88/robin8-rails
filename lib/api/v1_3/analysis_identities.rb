@@ -57,7 +57,7 @@ module API
           identity = AnalysisIdentity.find params[:identity_id]        rescue nil
           if identity
             identity.delete
-            return error_403!({error: 1, detail: '解绑成功！'})
+            return error_403!({error: 0, detail: '解绑成功！'})
           else
             return error_403!({error: 1, detail: '该账号不存在'})
           end

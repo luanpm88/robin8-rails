@@ -39,6 +39,9 @@ module API
             present :error, 0
             incremental_followers = AnalysisIdentity.complete_follower_data(res['data']['incremental_followers'], params[:duration])
             decremental_followers = AnalysisIdentity.complete_follower_data(res['data']['decremental_followers'], params[:duration])
+            incremental_total_count, incremental_avg_count =  AnalysisIdentity.cal_follower_change(res['data']['incremental_followers'], params[:duration])
+            present :incremental_total_count, incremental_total_count
+            present :incremental_avg_count,  incremental_avg_count
             present :incremental_followers, incremental_followers, with: API::V1_3::Entities::WeiboReportEntities::Follower
             present :decremental_followers, decremental_followers, with: API::V1_3::Entities::WeiboReportEntities::Follower
           else
@@ -73,11 +76,11 @@ module API
           identity = current_kol.analysis_identities.find params[:identity_id]
           return {:error => 1, :detail => '分析的账户不存在'}                                 if  identity.blank?
           return {:error => 3, :detail => '授权过期，请重新授权'}                             if !identity.valid_authorize?
-          res = JSON.parse identity.get_weibo_info( {:sorted_friend => 1, :bilateral_friendship => 1}, 1)  rescue {}
-          puts res
+          res = JSON.parse identity.get_weibo_info( {:sorted_friend => 1, :bilateral_friendship => 1}, params[:duration])  rescue {}
           if res['status']
+            sorted_friends = AnalysisIdentity.complete_sorted_friends(res['data']['sorted_friends'], params[:duration])
             present :error, 0
-            present :friend_verified, res['data']['sorted_friends'], with: API::V1_3::Entities::WeiboReportEntities::FriendVerified
+            present :friend_verified, sorted_friends, with: API::V1_3::Entities::WeiboReportEntities::FriendVerified
             present :bilateral, res['data']['bilateral_friendships'].first, with: API::V1_3::Entities::WeiboReportEntities::Bilateral
           else
             present :error, 1
