@@ -15,7 +15,7 @@ module Brand
             tax = params[:tax]
             actual_credits = credits + tax
             ALIPAY_RSA_PRIVATE_KEY = Rails.application.secrets[:alipay][:private_key]
-            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: tax})
+            @alipay_order =  current_user.alipay_orders.build({trade_no: trade_no, credits: credits, tax: tax, need_invoice: params[:need_invoice]})
             if @alipay_order.save
               alipay_recharge_url = Alipay::Service.create_direct_pay_by_user_url(
                                       { out_trade_no: trade_no,

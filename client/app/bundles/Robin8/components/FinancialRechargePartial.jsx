@@ -100,6 +100,8 @@ class FinancialRechargePartial extends React.Component {
 
     if(this.refs.invoice_checkbox.checked) {
       this.setState({checkInvoice: true})
+    } else {
+      this.setState({checkInvoice: false})
     }
     this.setState({credits: credits});
     this.setState({showRechargeModal: true});
