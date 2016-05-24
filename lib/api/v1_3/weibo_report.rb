@@ -40,10 +40,12 @@ module API
             incremental_followers = AnalysisIdentity.complete_follower_data(res['data']['incremental_followers'], params[:duration])
             decremental_followers = AnalysisIdentity.complete_follower_data(res['data']['decremental_followers'], params[:duration])
             incremental_total_count, incremental_avg_count =  AnalysisIdentity.cal_follower_change(res['data']['incremental_followers'], params[:duration])
+            decremental_follower_list = res['data']['decremental_followers'].collect{|t| t['users']}  rescue  []
             present :incremental_total_count, incremental_total_count
             present :incremental_avg_count,  incremental_avg_count
             present :incremental_followers, incremental_followers, with: API::V1_3::Entities::WeiboReportEntities::Follower
             present :decremental_followers, decremental_followers, with: API::V1_3::Entities::WeiboReportEntities::Follower
+            present :decremental_follower_list, decremental_follower_list, with: API::V1_3::Entities::WeiboReportEntities::FollowerDetail
           else
             present :error, 1
             present :detail, '请求错误，请稍后再试'

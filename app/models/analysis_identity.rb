@@ -38,7 +38,7 @@ class AnalysisIdentity < ActiveRecord::Base
     if data_len < len
       today = Date.today
       (data_len..len).to_a.each do |i|
-        data.insert(0,{"r_date" => today - i.days, 'number' => 0, 'users' => [] })
+        data.insert(0,{"r_date" => today - i.days, 'number' => 0 })
       end
     end
     data
