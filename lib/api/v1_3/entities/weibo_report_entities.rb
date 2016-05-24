@@ -29,6 +29,7 @@ module API
           end
         end
 
+
         class Follower  < Grape::Entity
           expose :r_date do |report|
             report['r_date']
@@ -36,10 +37,23 @@ module API
           expose :number do |report|
             report['number']
           end
-          expose :users do |report|
-            report['users'] || []
+        end
+
+        class FollowerDetail  < Grape::Entity
+          expose :name do |follower|
+            follower['name']
+          end
+          expose :profile_image_url do |follower|
+            follower['profile_image_url']
+          end
+          expose :follower_number do |follower|
+            follower['follower_number']
+          end
+          expose :unfollowed_at do |follower|
+            follower['unfollowed_at']
           end
         end
+
 
         class Bilateral  < Grape::Entity
           expose :follower_number do |report|
