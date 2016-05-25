@@ -22,11 +22,9 @@ class AlipayOrder < ActiveRecord::Base
 
   def pay
     if pending?
-      ActiveRecord::Base.transaction do
-        self.user.income(credits, 'alipay_recharge', self)
-        update_attributes(status: 'paid')
-        increase_user_appliable_credits if need_invoice
-      end
+      self.user.income(credits, 'alipay_recharge', self)
+      update_attributes(status: 'paid')
+      increase_user_appliable_credits if need_invoice
     end
   end
 
