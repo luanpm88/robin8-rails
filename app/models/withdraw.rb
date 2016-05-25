@@ -24,7 +24,7 @@ class Withdraw < ActiveRecord::Base
   end
 
   def frozen_withdraw_amount
-    self.kol.frozen(self.credits,'widthdraw', self, nil)
+    self.kol.frozen(self.credits,'withdraw', self, nil)
   end
 
   def deal_withdraw
@@ -34,11 +34,11 @@ class Withdraw < ActiveRecord::Base
     end
     if self.status_changed? && self.status == 'paid'
       # 解冻并提现
-        self.kol.unfrozen(self.credits,'widthdraw', self, nil)
+        self.kol.unfrozen(self.credits,'withdraw', self, nil)
         self.kol.payout(self.credits, 'withdraw',self,nil)
     elsif self.status_changed? && self.status == 'rejected'
       # 解冻
-      self.kol.unfrozen(self.credits,'widthdraw', self, nil)
+      self.kol.unfrozen(self.credits,'withdraw', self, nil)
     end
   end
 end
