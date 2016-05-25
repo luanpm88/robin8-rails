@@ -7,5 +7,6 @@ production:
   - [default, 10]
   - [campaign, 40]
   - [campaign_show, 10]
+  - [campaign_observer_worker, 10]
 :limits:
   campaign_show: 1

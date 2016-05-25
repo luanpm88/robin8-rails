@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519100948) do
+ActiveRecord::Schema.define(version: 20160525075152) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -197,22 +197,24 @@ ActiveRecord::Schema.define(version: 20160519100948) do
     t.string   "status",            limit: 191
     t.integer  "campaign_id",       limit: 4
     t.integer  "kol_id",            limit: 4
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.date     "decline_date"
     t.string   "uuid",              limit: 100
     t.string   "share_url",         limit: 255
-    t.integer  "total_click",       limit: 4,   default: 0
-    t.integer  "avail_click",       limit: 4,   default: 0
+    t.integer  "total_click",       limit: 4,     default: 0
+    t.integer  "avail_click",       limit: 4,     default: 0
     t.datetime "approved_at"
     t.string   "img_status",        limit: 255
     t.string   "screenshot",        limit: 255
     t.string   "reject_reason",     limit: 255
-    t.boolean  "is_invited",        limit: 1,   default: false
-    t.integer  "share_count",       limit: 4,   default: 0
+    t.boolean  "is_invited",        limit: 1,     default: false
+    t.integer  "share_count",       limit: 4,     default: 0
     t.string   "ocr_status",        limit: 255
     t.string   "ocr_detail",        limit: 255
     t.integer  "campaign_apply_id", limit: 4
+    t.integer  "observer_status",   limit: 4,     default: 0
+    t.text     "observer_text",     limit: 65535
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
