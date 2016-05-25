@@ -62,7 +62,7 @@ module IdentityAnalysis
         sorted_friends << {"r_date" => date, 'total_number' => unverified_number + verified_number, "verified_number" => verified_number, "unverified_number" => unverified_number}
       end
       {"status" => true, "data" => {"user" => {"uid" => 1340795527, "active" => true},
-                                    "bilateral_friendships" => [{"follower_number" => 4654343, "bilateral_number" => 187, "friend_number" => unverified_number + verified_number}],
+                                    "bilateral_friendships" => [{"follower_number" => unverified_number + verified_number, "bilateral_number" => 187, "friend_number" => 4654343}],
                                     "sorted_friends" => sorted_friends
       }}
     end
