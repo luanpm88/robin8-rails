@@ -42,11 +42,13 @@ module Brand
             if Alipay::Sign.verify?(params) && Alipay::Notify.verify?(params)
               @alipay_order = AlipayOrder.find_by trade_no: params[:out_trade_no]
               if params[:trade_status] == 'TRADE_SUCCESS'
-                @alipay_order.pay
-                @alipay_order.save_alipay_trade_no(params[:trade_no])
-                @alipay_order.save_trade_no_to_transaction(params[:out_trade_no])
-                @alipay_order.save_tax_to_transaction
+                @alipay_order.with_lock do
+                  @alipay_order.pay
+                  @alipay_order.save_tax_to_transaction
+                end
               end
+              @alipay_order.save_alipay_trade_no(params[:trade_no])
+              @alipay_order.save_trade_no_to_transaction(params[:out_trade_no])
               env['api.format'] = :txt
               body "success"
             else
