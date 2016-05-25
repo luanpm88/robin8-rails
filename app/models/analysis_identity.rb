@@ -59,10 +59,14 @@ class AnalysisIdentity < ActiveRecord::Base
   def self.cal_follower_change(data, duration = 30)
     data_len = data.size
     return [0,0] if data_len.size == 0
-    newest = data.last
-    old = data.first
-    total_count = newest['number'] - old['number']
+    total_count = data.inject(0 ){|sum, t| sum + t['number']}
     avg_count =  total_count  / data_len
     return [total_count, avg_count]
+  end
+
+  def self.fake_list
+    fake_list = []
+    fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000001,"provider":"weibo","name":"ACATW","nick_name":nil,"avatar_url":"http://tp4.sinaimg.cn/1340795527/180/5721700360/1","user_name":nil,"location":"上海,宝山","gender":"f","uid":"1340795523", "authorize_time": Time.now})
+    fake_list << AnalysisIdentity.new({"kol_id":nil,"id":10000001,"provider":"public_wechat","name":"wangtuo314@163.com","nick_name":nil,"avatar_url":nil,"user_name":nil, "authorize_time": Time.now})
   end
 end

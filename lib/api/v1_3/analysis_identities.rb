@@ -7,7 +7,7 @@ module API
         end
 
         get 'list' do
-          identities = current_kol.analysis_identities
+          identities = AnalysisIdentity.fake_list  + current_kol.analysis_identities.to_a
           present :error, 0
           present :identities, identities,  with: API::V1_3::Entities::AnalysisIdentityEntities::Summary
         end
@@ -57,7 +57,8 @@ module API
           identity = AnalysisIdentity.find params[:identity_id]        rescue nil
           if identity
             identity.delete
-            return error_403!({error: 0, detail: '解绑成功！'})
+            present :error, 0
+            present :detail, '解绑成功'
           else
             return error_403!({error: 1, detail: '该账号不存在'})
           end

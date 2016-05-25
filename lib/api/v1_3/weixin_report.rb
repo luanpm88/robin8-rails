@@ -8,21 +8,24 @@ module API
         end
 
         params do
+          requires :fake, type: Boolean
           optional :identity_id, type: Integer
           optional :login_id, type: Integer
-          at_least_one_of :identity_id, :login_id,  message: "login_id identity_id 必须存在一个"
         end
         get 'primary' do
-          if params[:login_id]
-            login = PublicWechatLogin.find params[:login_id]  rescue nil
+          if params[:fake]
+
           else
-            return {:error => 1, :detail => '分析的账户不存在'}                   if @identity.blank?
-            return {:error => 3, :detail => '授权过期，请重新授权'}                if !@identity.valid_authorize?
-            login = @identity.newest_login
+            if params[:login_id]
+              login = PublicWechatLogin.find params[:login_id]  rescue nil
+            else
+              return {:error => 1, :detail => '分析的账户不存在'}                   if @identity.blank?
+              return {:error => 3, :detail => '授权过期，请重新授权'}                if !@identity.valid_authorize?
+              login = @identity.newest_login
+            end
+            info =  login.get_info
+            res = JSON.parse info     rescue {}
           end
-          puts login
-          info =  login.get_info
-          res = JSON.parse info     rescue {}
           if res['status']
             present :error, 0
             present :primary, res['data']['user'], with: API::V1_3::Entities::WeixinReportEntities::Primary
