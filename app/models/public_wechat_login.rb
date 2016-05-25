@@ -11,18 +11,16 @@ class PublicWechatLogin < ActiveRecord::Base
 
  def self.generate_qrcode_login(kol_id, username, password, visitor_cookies, ticket, appid, uuid, operation_seq, redirect_url)
    password_encrypted = PasswordHandle.encode_pwd(password)
-   wechat_login = PublicWechatLogin.create(kol_id: kol_id, login_type: 'qrcode', username: username, password_encrypted:password_encrypted,
+   wechat_login = PublicWechatLogin.create!(kol_id: kol_id, login_type: 'qrcode', username: username, password_encrypted:password_encrypted,
                             visitor_cookies: visitor_cookies, ticket: ticket, appid: appid, uuid: uuid,
                             operation_seq: operation_seq, login_time: Time.now, redirect_url: redirect_url)
    wechat_login
  end
 
-  def self.success_qrcode_logoin(login_id, visitor_cookies, token)
-    webchat_login = PublicWechatLogin.find login_id
-    return if webchat_login.blank?
-    webchat_login.update_columns(visitor_cookies: visitor_cookies, token: token, status: '1')
-    wechat_login.sync_account_to_identity
-    wechat_login
+  def success_qrcode_login(visitor_cookies, token)
+    self.update_columns(visitor_cookies: visitor_cookies, token: token, status: '1')
+    self.sync_account_to_identity
+    self
   end
 
 
