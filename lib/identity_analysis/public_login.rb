@@ -128,7 +128,7 @@ module IdentityAnalysis
       response = JSON.parse safeuuid_req.response_body  rescue {}
       if response['errcode'] == 405
         token = secure_wx_verify(redirect_url, cookies, uuid, username, operation_seq )
-        login.update_columns(visitor_cookies: cookies, token:token)
+        login.success_qrcode_login(cookies, token)
         return response['errcode']
       else
         return response['errcode']

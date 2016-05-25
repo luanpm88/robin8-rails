@@ -10,10 +10,10 @@ module API
             report['decremental_follower_number']
           end
           expose :verified_follower_ratio do |report|
-            report['verified_follower_ratio']
+            report['verified_follower_ratio'].round(2) rescue 0
           end
           expose :unverified_follower_ratio	 do |report|
-            report['unverified_follower_ratio']
+            report['unverified_follower_ratio'].round(2) rescue 0
           end
           expose :friend_number do |report|
             report['friend_number']
