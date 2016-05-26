@@ -52,7 +52,14 @@ module GeTui
         Rails.logger.pusher.error "----push_message_id not found ---#{push_message_id}---"
         return
       end
-      res = eval("push_to_#{push_message.receiver_type.downcase}(push_message)")
+      if push_message.receiver_type == 'App'
+        res = push_to_app(push_message)
+      elsif  push_message.receiver_type == 'List'
+        res = push_to_list(push_message)
+      elsif push_message.receiver_type == 'Single'
+        res = push_to_single(push_message)
+      end
+      # res = eval("push_to_#{push_message.receiver_type.downcase}(push_message)")
       Rails.logger.pusher.info "-------push_message:#{push_message.id}----#{res}"
       return if res.blank?
       if res['result'] == 'ok'
