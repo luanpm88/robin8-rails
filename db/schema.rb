@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519100948) do
+ActiveRecord::Schema.define(version: 20160525061830) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -27,6 +27,19 @@ ActiveRecord::Schema.define(version: 20160519100948) do
   add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
+
+  create_table "addresses", force: :cascade do |t|
+    t.integer "addressable_id",   limit: 4
+    t.string  "addressable_type", limit: 255
+    t.string  "name",             limit: 255
+    t.string  "phone",            limit: 255
+    t.string  "postcode",         limit: 255
+    t.string  "province",         limit: 255
+    t.string  "city",             limit: 255
+    t.string  "region",           limit: 255
+    t.string  "location",         limit: 255
+    t.string  "remark",           limit: 255
+  end
 
   create_table "admin_users", force: :cascade do |t|
     t.string   "email",                  limit: 191
@@ -101,10 +114,10 @@ ActiveRecord::Schema.define(version: 20160519100948) do
     t.string   "desc",        limit: 255
     t.boolean  "display",     limit: 1,   default: false
     t.integer  "position",    limit: 4,   default: 0
+    t.string   "detail_type", limit: 255
     t.string   "url",         limit: 255
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.string   "detail_type", limit: 255
   end
 
   create_table "app_upgrades", force: :cascade do |t|
@@ -198,9 +211,9 @@ ActiveRecord::Schema.define(version: 20160519100948) do
     t.string   "weixin_no",           limit: 255
     t.integer  "weixin_friend_count", limit: 4
     t.string   "status",              limit: 255
+    t.string   "expect_price",        limit: 255
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.string   "expect_price",        limit: 11
     t.string   "agree_reason",        limit: 255
   end
 
@@ -476,7 +489,6 @@ ActiveRecord::Schema.define(version: 20160519100948) do
     t.boolean  "is_vip",                    limit: 1
     t.boolean  "is_yellow_vip",             limit: 1
     t.datetime "access_token_refresh_time"
-    t.integer  "last_status_id",            limit: 4
   end
 
   create_table "industries", force: :cascade do |t|
@@ -758,6 +770,43 @@ ActiveRecord::Schema.define(version: 20160519100948) do
     t.datetime "updated_at",               null: false
   end
 
+  create_table "lottery_activities", force: :cascade do |t|
+    t.string   "name",          limit: 255
+    t.string   "description",   limit: 255
+    t.integer  "total_number",  limit: 4
+    t.integer  "actual_number", limit: 4
+    t.string   "lucky_number",  limit: 255
+    t.string   "status",        limit: 255, default: "pending"
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.datetime "draw_at"
+    t.datetime "published_at"
+    t.integer  "lucky_kol_id",  limit: 4
+    t.string   "code",          limit: 255
+  end
+
+  create_table "lottery_activity_orders", force: :cascade do |t|
+    t.integer  "kol_id",              limit: 4
+    t.integer  "lottery_activity_id", limit: 4
+    t.integer  "credits",             limit: 4
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
+    t.string   "code",                limit: 255
+    t.integer  "number",              limit: 4,   default: 0
+    t.string   "status",              limit: 255, default: "pending"
+  end
+
+  add_index "lottery_activity_orders", ["kol_id"], name: "index_lottery_activity_orders_on_kol_id", using: :btree
+  add_index "lottery_activity_orders", ["lottery_activity_id"], name: "index_lottery_activity_orders_on_lottery_activity_id", using: :btree
+
+  create_table "lottery_activity_tickets", force: :cascade do |t|
+    t.integer "lottery_activity_order_id", limit: 4
+    t.string  "code",                      limit: 255
+  end
+
+  add_index "lottery_activity_tickets", ["code"], name: "index_lottery_activity_tickets_on_code", using: :btree
+  add_index "lottery_activity_tickets", ["lottery_activity_order_id"], name: "index_lottery_activity_tickets_on_lottery_activity_order_id", using: :btree
+
   create_table "mailgun_events", force: :cascade do |t|
     t.string   "event_type",      limit: 191
     t.datetime "event_time"
@@ -868,6 +917,15 @@ ActiveRecord::Schema.define(version: 20160519100948) do
     t.integer  "discount_id",           limit: 4
     t.float    "tax",                   limit: 24,  default: 0.0
     t.string   "currency",              limit: 1
+  end
+
+  create_table "pictures", force: :cascade do |t|
+    t.string   "name",           limit: 255
+    t.integer  "imageable_id",   limit: 4
+    t.string   "imageable_type", limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "type",           limit: 255
   end
 
   create_table "pitches", force: :cascade do |t|
@@ -1317,7 +1375,6 @@ ActiveRecord::Schema.define(version: 20160519100948) do
     t.string   "description",            limit: 255
     t.string   "keywords",               limit: 255
     t.string   "real_name",              limit: 255
-    t.integer  "appliable_credits",      limit: 4,                            default: 0
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

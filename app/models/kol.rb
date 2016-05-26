@@ -46,6 +46,10 @@ class Kol < ActiveRecord::Base
   has_many :analysis_identities
   has_many :kol_identity_prices
 
+  has_one  :address, as: :addressable
+
+  has_many :lottery_activity_orders
+  has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
 
 
   def email_required?
@@ -425,4 +429,8 @@ class Kol < ActiveRecord::Base
     self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0
   end
 
+  def address!
+    return self.address if self.address
+    Address.create.tap { |a| self.update(address: a) }
+  end
 end
