@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import "campaign/recruit/show.scss";
 
+import BreadCrumb  from './shared/BreadCrumb';
 import Basic       from './recruit_campaigns/show/Basic';
 import Overview    from './recruit_campaigns/show/Overview';
 import ResultView  from './recruit_campaigns/show/ResultView';
@@ -45,17 +46,6 @@ class ShowRecruitCampaignPartial extends Component {
     });
   }
 
-  render_breadcrumb() {
-    return (
-      <ol className="breadcrumb">
-        <li>
-          <i className="caret-arrow left" />
-          <Link to="/brand/">我的主页</Link>
-        </li>
-      </ol>
-    );
-  }
-
   render_result_view() {
     const campaign = this.props.data.get('campaign');
 
@@ -83,7 +73,7 @@ class ShowRecruitCampaignPartial extends Component {
     return (
       <div className="page page-recruit page-recruit-show">
         <div className="container">
-          { this.render_breadcrumb() }
+          <BreadCrumb />
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
           { this.render_result_view() }

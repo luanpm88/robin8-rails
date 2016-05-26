@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 
 import "campaign/activity/show.scss";
 
-import Basic      from './campaigns/show/Basic';
-import Overview   from './campaigns/show/Overview';
-import Target     from './campaigns/show/Target';
-import KolList    from './campaigns/show/KolList';
-import Influnce   from './campaigns/show/Influnce'
+import BreadCrumb     from './shared/BreadCrumb';
+import Basic          from './campaigns/show/Basic';
+import Overview       from './campaigns/show/Overview';
+import Target         from './campaigns/show/Target';
+import KolList        from './campaigns/show/KolList';
+import Influnce       from './campaigns/show/Influnce';
 
 function select(state){
   return {
@@ -48,17 +49,6 @@ class ShowCampaignPartial extends Component {
     });
   }
 
-  render_breadcrumb() {
-    return (
-      <ol className="breadcrumb">
-        <li>
-          <i className="caret-arrow left" />
-          <Link to="/brand/">我的主页</Link>
-        </li>
-      </ol>
-    );
-  }
-
   render() {
     const campaign = this.props.data.get('campaign');
     const { actions, campaign_invites, hasfetchedInvite, paginate, campaign_statistics} = this.props;
@@ -66,7 +56,7 @@ class ShowCampaignPartial extends Component {
     return (
       <div className="page page-activity page-activity-show">
         <div className="container">
-          { this.render_breadcrumb() }
+          <BreadCrumb />
           <Basic {...{campaign}} />
           <Overview {...{campaign}} />
           <KolList {...{campaign, actions, campaign_invites, campaign_id, hasfetchedInvite, paginate}} />

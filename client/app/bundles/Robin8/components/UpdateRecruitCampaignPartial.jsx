@@ -7,6 +7,7 @@ import moment from 'moment';
 
 import "campaign/recruit/form.scss";
 
+import BreadCrumb            from './shared/BreadCrumb';
 import IntroPartial          from "./recruit_campaigns/form/IntroPartial";
 import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
 import DatePartial           from './recruit_campaigns/form/OfflineDate';
@@ -58,29 +59,18 @@ class UpdateRecruitCampaignPartial extends React.Component{
 
   componentDidMount() {
     this._fetchCampaign();
-    initToolTip({placement:'bottom', html: true});  
-  }
-
-  render_breadcrumb(){
-    return (
-      <ol className="breadcrumb">
-        <li>
-          <i className="caret-arrow left" />
-          <Link to="/brand/">我的主页</Link>
-        </li>
-      </ol>
-    );
+    initToolTip({placement:'bottom', html: true});
   }
 
   render(){
-    const { name, description, img_url, influence_score, start_time, deadline, 
+    const { name, description, img_url, influence_score, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region, hide_brand_name} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
     const { saveRecruit } = this.props.actions;
     return(
       <div className="page page-recruit page-recruit-new">
         <div className="container">
-          {this.render_breadcrumb()}
+          <BreadCrumb />
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(this._updateCampaign)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>

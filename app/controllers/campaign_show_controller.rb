@@ -15,7 +15,7 @@ class CampaignShowController < ApplicationController
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
 
     Rails.logger.info "-----show ---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-    if @campaign and @campaign.is_cpa?
+    if @campaign and @campaign.is_cpa_type?
       return deal_with_cpa_campaign uuid_params
     end
 

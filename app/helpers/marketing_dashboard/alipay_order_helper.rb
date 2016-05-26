@@ -1,0 +1,2 @@
+module MarketingDashboard::AlipayOrderHelper
+end
