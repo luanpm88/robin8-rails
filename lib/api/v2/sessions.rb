@@ -11,8 +11,8 @@ module API
           kol = Kol.reg_or_sign_in(params)
           if params[:kol_uuid].present?
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score)    if kol_value.present?
-            SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid], kol_value.updated_at)
+            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)    if kol_value.present?
+            SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
           present :error, 0
           present :kol, kol, with: API::V1::Entities::KolEntities::Summary
