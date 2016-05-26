@@ -25,7 +25,7 @@ class KolInfluenceValue < ActiveRecord::Base
       kol_value.article_avg_click_score = Influence::ArticleClick.get_avg_click_score(kol_id)
     end
     kol_value.location_score = Influence::Other.kol_location_score(kol_uuid,kol_city)
-    kol_value.mobile_model_score = Influence::Other.mobile_model_score(kol_uuid, kol_mobile_model)
+    kol_value.mobile_model_score = Influence::Other.mobile_model_score(kol_uuid, kol_mobile_model)     if kol_mobile_model.present?
     kol_value.identity_score = Influence::Identity.get_identity_score(kol_uuid)
     kol_value.identity_count_score = Influence::Other.identity_count_score(kol_uuid)
     kol_value.contact_score = Influence::Contact.cal_score(kol_uuid,kol_id)
