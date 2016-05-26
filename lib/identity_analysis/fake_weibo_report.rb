@@ -51,18 +51,18 @@ module IdentityAnalysis
     end
 
     def self.friend_verified_data
-      unverified_number = 200
-      verified_number = 14
+      unverified_number = 105200
+      verified_number = 1140
       sorted_friends = []
       today = Date.today
       (Days.downto(0)).to_a.each do |i|
         date = today - i.days
-        unverified_number = unverified_number + 2 + rand(2)
-        verified_number = verified_number + rand(2)
+        unverified_number = unverified_number + 150 + rand(50)
+        verified_number = verified_number + rand(50)
         sorted_friends << {"r_date" => date, 'total_number' => unverified_number + verified_number, "verified_number" => verified_number, "unverified_number" => unverified_number}
       end
       {"status" => true, "data" => {"user" => {"uid" => 1340795527, "active" => true},
-                                    "bilateral_friendships" => [{"follower_number" => unverified_number + verified_number, "bilateral_number" => 187, "friend_number" => 4654343}],
+                                    "bilateral_friendships" => [{"follower_number" => 4654343, "bilateral_number" => 1020807, "friend_number" =>  unverified_number + verified_number}],
                                     "sorted_friends" => sorted_friends
       }}
     end
