@@ -92,5 +92,12 @@ Rails.application.routes.draw do
         match 'send_express' => 'invoice_histories#send_express', via: [:post]
       end
     end
+
+    resources :lottery_activities do
+      member do
+        patch :execute
+      end
+    end
+
   end
 end

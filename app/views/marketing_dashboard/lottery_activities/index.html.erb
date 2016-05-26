@@ -1,0 +1,38 @@
+<h3>一元夺宝</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>编号</th>
+      <th>活动名称</th>
+      <th>所需总人数</th>
+      <th>实际参加人数</th>
+      <th>幸运号码</th>
+      <th>状态</th>
+      <th>Ops</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lottery_activities.each do |lottery_activity| %>
+      <tr>
+        <td><%= lottery_activity.id %></td>
+        <td><%= lottery_activity.code %></td>
+        <td><%= lottery_activity.name %></td>
+        <td><%= lottery_activity.total_number %></td>
+        <td><%= lottery_activity.actual_number %></td>
+        <td><%= lottery_activity.lucky_number %></td>
+        <% if lottery_activity.status == 'pending' %>
+          <td>未发布</td>
+        <% elsif lottery_activity.status == 'executing' %>
+          <td>已发布,活动正在进行</td>
+        <% end %>
+        <td>
+          <%= link_to '查看', marketing_dashboard_lottery_activity_path(lottery_activity) %>
+          <%= link_to '删除', marketing_dashboard_lottery_activity_path(lottery_activity), method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
