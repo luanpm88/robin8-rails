@@ -68,7 +68,7 @@ config.plugins.push(
     name: 'vendor',
     minChunks: Infinity,
   }),
-  new ExtractTextPlugin('brand-[name]-bundle_[contenthash].css', { allChunks: true }),
+  new ExtractTextPlugin('brand-[name]-bundle_[contenthash].css'),
   new webpack.optimize.DedupePlugin()
 );
 

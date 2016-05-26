@@ -14,6 +14,7 @@ import DatePartial    from './campaigns/form/DatePartial';
 import BudgetPartial  from './campaigns/form/BudgetPartial';
 import beforeUnload   from './shared/BeforeUnload';
 import initToolTip    from './shared/InitToolTip';
+import CampaignFormValidate from './shared/validate/CampaignFormValidate'
 
 const initCampaign = {
   age: 'all',
@@ -28,7 +29,7 @@ const initCampaign = {
   deadline: moment().add(2, 'days').format('YYYY-MM-DD HH:mm')
 }
 
-const validate = new FormValidate({
+const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: true } },
@@ -37,7 +38,6 @@ const validate = new FormValidate({
   per_action_budget: { require: true },
   action_url: {url: { require_protocol: true }},
   short_url: {url: { require_protocol: true }},
-  
 })
 
 const validateFailed = (errors) => {

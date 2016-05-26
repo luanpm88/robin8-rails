@@ -12,8 +12,9 @@ import DetailPartial   from './campaigns/form/DetailPartial';
 import DatePartial     from './campaigns/form/DatePartial';
 import BudgetPartial   from './campaigns/form/BudgetPartial';
 import initToolTip     from './shared/InitToolTip';
+import CampaignFormValidate from './shared/validate/CampaignFormValidate'
 
-const validate = new FormValidate({
+const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   url: { require: true, url: { require_protocol: true } },

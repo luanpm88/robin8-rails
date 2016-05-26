@@ -13,6 +13,8 @@ import DatePartial           from './recruit_campaigns/form/OfflineDate';
 import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
 import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
 import initToolTip           from './shared/InitToolTip';
+import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
+
 
 const initCampaign = {
   recruit_start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
@@ -28,7 +30,7 @@ const initCampaign = {
   influence_score: "gt_400"
 }
 
-const validate = new FormValidate({
+const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   img_url: { require_img: true },
