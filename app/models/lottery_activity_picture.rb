@@ -1,0 +1,2 @@
+class LotteryActivityPicture < Picture
+end

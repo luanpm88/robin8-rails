@@ -43,7 +43,8 @@ module API
           return {:error => 1, :detail => '无法找到此夺宝活动'} unless activity
 
           present :error, 0
-          present :activity, activity, with: API::V1_3::Entities::LotteryActivityEntities::Description
+          present :code, activity.code
+          present :pictures, activity.lottery_activity_pictures.map(&:url)
         end
 
         desc 'get order list if (:code) lottery activity.'

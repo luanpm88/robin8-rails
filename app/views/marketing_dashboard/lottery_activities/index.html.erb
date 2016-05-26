@@ -23,13 +23,10 @@
         <td><%= lottery_activity.total_number %></td>
         <td><%= lottery_activity.actual_number %></td>
         <td><%= lottery_activity.lucky_number %></td>
-        <% if lottery_activity.status == 'pending' %>
-          <td>未发布</td>
-        <% elsif lottery_activity.status == 'executing' %>
-          <td>已发布,活动正在进行</td>
-        <% end %>
+        <td><%= lottery_activity.status_text %></td>
         <td>
           <%= link_to '查看', marketing_dashboard_lottery_activity_path(lottery_activity) %>
+          <%= link_to '编辑', edit_marketing_dashboard_lottery_activity_path(lottery_activity) %>
           <%= link_to '删除', marketing_dashboard_lottery_activity_path(lottery_activity), method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>
