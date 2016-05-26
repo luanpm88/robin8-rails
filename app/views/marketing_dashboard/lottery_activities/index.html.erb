@@ -4,8 +4,8 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>编号</th>
       <th>活动名称</th>
-      <th>描述</th>
       <th>所需总人数</th>
       <th>实际参加人数</th>
       <th>幸运号码</th>
@@ -18,8 +18,8 @@
     <% @lottery_activities.each do |lottery_activity| %>
       <tr>
         <td><%= lottery_activity.id %></td>
+        <td><%= lottery_activity.code %></td>
         <td><%= lottery_activity.name %></td>
-        <td><%= lottery_activity.description %></td>
         <td><%= lottery_activity.total_number %></td>
         <td><%= lottery_activity.actual_number %></td>
         <td><%= lottery_activity.lucky_number %></td>
