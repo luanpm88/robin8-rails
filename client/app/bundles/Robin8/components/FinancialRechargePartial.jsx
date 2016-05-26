@@ -191,7 +191,6 @@ class FinancialRechargePartial extends React.Component {
                 </div>
               </div>
 
-              <OfflineRecharge />
 
             </div>
           </div>
