@@ -34,7 +34,7 @@ export default function promiseMiddleware() {
         if(Array.isArray(json.detail)){
           if (json.detail[0] == "amount_not_engouh") {
             $(".brand-error-notice-modal .modal-body p").html("账号余额不足, 请");
-            $(".brand-error-notice-modal .modal-body p").append("<span class='recharge'><a href='/contact?from=recharge' target='_blank'>充值</a></span>")
+            $(".brand-error-notice-modal .modal-body p").append("<span class='recharge'><a href='/brand/financial/recharge' target='_blank'>充值</a></span>")
             $(".brand-error-notice-modal .modal-title").html("保存失败");
             $(".brand-error-notice-modal").modal("show");
           }
@@ -42,7 +42,7 @@ export default function promiseMiddleware() {
           browserHistory.push('/brand/');  //若没有权限做某事, 则跳转到首页
         } else {
           $(".brand-error-notice-modal .modal-body p").html(json.detail);
-          $(".brand-error-notice-modal .modal-title").html("保存失败");
+          $(".brand-error-notice-modal .modal-title").html("提交失败");
           $(".brand-error-notice-modal").modal("show");
         }
       })

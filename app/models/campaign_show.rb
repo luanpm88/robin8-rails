@@ -10,7 +10,7 @@ class CampaignShow < ActiveRecord::Base
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, options={})
     now = Time.now
 
-    if campaign.is_cpa?
+    if campaign.is_cpa_type?
       return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
@@ -40,7 +40,7 @@ class CampaignShow < ActiveRecord::Base
 
     # check_useragent?  &&   visitor_referer
     return [false, 'visitor_agent_is_invalid']  if visitor_agent.blank?
-    return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa?
+    return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa_type?
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)
     # check kol's five_click_threshold
@@ -91,7 +91,7 @@ class CampaignShow < ActiveRecord::Base
       campaign = Campaign.find_by :id => info['campaign_id']  rescue nil
     end
 
-    if campaign.is_cpa?
+    if campaign.is_cpa_type?
       if (options[:step].to_i == 2 or info["step"].to_i == 2)
         campaign_invite_id = Rails.cache.fetch(visitor_cookies + ":cpa_campaign_id:#{campaign.id}")
         campaign_invite = CampaignInvite.find_by :id => campaign_invite_id if campaign_invite_id

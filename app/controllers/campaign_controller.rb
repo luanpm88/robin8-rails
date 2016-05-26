@@ -232,7 +232,7 @@ class CampaignController < ApplicationController
 
   private
   def update_campaign_action_urls campaign
-    return unless campaign.is_cpa?
+    return unless campaign.is_cpa_type?
     campaign_action_urls = params[:action_url_list].uniq
 
     old_action_urls = {}

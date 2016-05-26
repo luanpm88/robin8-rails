@@ -1,0 +1,29 @@
+<h3>流水信息</h3>
+
+<table class='table table-bordered'>
+
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>品牌主ID</th>
+      <th>交易金额</th>
+      <th>账户可用余额</th>
+      <th>订单号</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |t| %>
+      <tr>
+        <% %w(id).each do |v| %>
+          <td> <%= multi_send t, v %> </td>
+        <% end %>
+        <td> <%= link_to t.account_id, marketing_dashboard_user_path(:id => t.account_id), :target => "_blank" %>
+        <% %w(credits avail_amount trade_no).each do |v| %>
+          <td> <%= multi_send t, v %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @transactions %>

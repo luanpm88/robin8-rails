@@ -1,0 +1,58 @@
+<h3>发票列表</h3>
+<div class="well">
+  <%= form_tag search_marketing_dashboard_alipay_orders_path do %>
+    <%= text_field_tag :search_key, nil, :placeholder => "以品牌主名称、手机号、ID、email 进行搜索", :class => "search_input" %>
+    <%= submit_tag 'Search', :class => 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<table class='table table-bordered'>
+
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户ID</th>
+      <th>发票类型</th>
+      <th>发票金额</th>
+      <th>公司抬头</th>
+      <th>收件地址</th>
+      <th>收件人电话</th>
+      <th>快递单号</th>
+      <th>Ops</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invoice_histories.each do |i| %>
+      <tr>
+        <% %w(id).each do |v| %>
+          <td> <%= multi_send i, v %> </td>
+        <% end %>
+        <td> <%= link_to i.user_id, marketing_dashboard_user_path(:id => i.user_id), :target => "_blank" %></td>
+        <td>
+          <% if i.invoice_type == 'common' %>
+            普通增值税发票
+          <% elsif i.invoice_type == 'special' %>
+            增值税专用发票
+          <% end %>
+        </td>
+        <% %w(credits title address phone_number).each do |v| %>
+          <td> <%= multi_send i, v %> </td>
+        <% end %>
+        <% if i.tracking_number %>
+          <td><%= i.tracking_number %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <td>
+          <% if i.tracking_number %>
+            <%= link_to '修改', send_marketing_dashboard_invoice_history_path(i), :target => "_blank" %>
+          <% else %>
+            <%= link_to '添加快递单号', send_marketing_dashboard_invoice_history_path(i), :target => "_blank" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @invoice_histories %>
