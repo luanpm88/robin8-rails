@@ -130,7 +130,7 @@ class CampaignShow < ActiveRecord::Base
     visitor_ip = proxy_ips.split(",").first || visitor_ip
     status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer, proxy_ips, request_uri, options)
     CampaignShow.create!(:kol_id => info['kol_id'] || campaign_invite.kol_id, :campaign_id => info['campaign_id'] || campaign.id, :visitor_cookie => visitor_cookies,
-                        :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip, :request_uri => request_uri,
+                        :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip, :request_url => request_uri,
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer, :other_options => options.inspect, :proxy_ips => proxy_ips)
     Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark:#{remark}---cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
     campaign_invite.add_click(status,remark)
