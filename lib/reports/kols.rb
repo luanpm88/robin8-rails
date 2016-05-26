@@ -83,5 +83,16 @@ module Reports
         puts '-'*15 + "#{day}-end" + "-"*15
       end
     end
+
+    def campaign_reports campaign_id=325
+      campaign = Campaign.find campaign_id
+      campaign_invites = CampaignInvite.where(:campaign_id => campaign_id) 
+      shows = CampaignShow.where(:campaign_id => 325)
+      CampaignShow.where(:campaign_id => 325, :kol_id => 50620).map do |i|
+        puts [i.visitor_cookie, i.created_at, i.status, i.visitor_agent].join("\t")
+      end;nil
+      puts "接单人数: #{campaign_invites.count}"
+      puts "点击总数: #{shows.count}"
+    end
   end
 end
