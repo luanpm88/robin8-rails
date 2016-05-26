@@ -15,15 +15,12 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # 手机机型 判断proxy_ips
-    return [false, 'visitor_agent_is_blank']  if visitor_agent.blank?
+    return [false, 'visitor_agent_is_blank']    if visitor_agent.blank?
+    return [false, 'visitor_agent_is_invalid']  if !visitor_agent.include?("MicroMessenger")
     if visitor_agent.include?("iPhone")
       return [false, 'ios_had_proxy_ip'] if proxy_ips.include(",")
     elsif visitor_agent.include?("Android")
       return [false, 'android_had_no_proxy_ip'] if !proxy_ips.include(",")
-    elsif visitor_agent.include?("Phone")   #win phone
-      #
-    else
-      return [false, 'visitor_agent_is_invalid']
     end
 
     if campaign.is_cpa?
