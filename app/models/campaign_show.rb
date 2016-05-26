@@ -18,9 +18,9 @@ class CampaignShow < ActiveRecord::Base
     return [false, 'visitor_agent_is_blank']    if visitor_agent.blank?
     return [false, 'visitor_agent_is_invalid']  if !visitor_agent.include?("MicroMessenger")
     if visitor_agent.include?("iPhone")
-      return [false, 'ios_had_proxy_ip'] if proxy_ips.include(",")
+      return [false, 'ios_had_proxy_ip'] if proxy_ips.include?(",")
     elsif visitor_agent.include?("Android")
-      return [false, 'android_had_no_proxy_ip'] if !proxy_ips.include(",")
+      return [false, 'android_had_no_proxy_ip'] if !proxy_ips.include?(",")
     end
 
     if campaign.is_cpa_type?
@@ -34,6 +34,14 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'wechat_crawler']
     end
 
+    # check_ip?
+    store_key = visitor_ip.to_s + campaign.id.to_s
+    if Rails.cache.read(store_key)
+      return [false, 'ip_visit_fre']
+    else
+      Rails.cache.write(store_key, now, :expires_in => IpTimeout)
+    end
+
       # check_cookie?
     store_key = visitor_cookies.to_s + campaign.id.to_s
     if Rails.cache.read(store_key)
@@ -41,14 +49,6 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'cookies_visit_fre']
     else
       Rails.cache.write(store_key, now, :expires_in => CookieTimeout)
-    end
-
-    # check_ip?
-    store_key = visitor_ip.to_s + campaign.id.to_s
-    if Rails.cache.read(store_key)
-      return [false, 'ip_visit_fre']
-    else
-      Rails.cache.write(store_key, now, :expires_in => IpTimeout)
     end
 
     # check_ip_reach_max
@@ -131,7 +131,7 @@ class CampaignShow < ActiveRecord::Base
     visitor_ip = proxy_ips.split(",").first || visitor_ip
     status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer, proxy_ips, request_uri, options)
     CampaignShow.create!(:kol_id => info['kol_id'] || campaign_invite.kol_id, :campaign_id => info['campaign_id'] || campaign.id, :visitor_cookie => visitor_cookies,
-                        :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip,
+                        :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip, :request_uri => request_uri,
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer, :other_options => options.inspect, :proxy_ips => proxy_ips)
     Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark:#{remark}---cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
     campaign_invite.add_click(status,remark)
