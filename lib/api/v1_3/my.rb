@@ -24,10 +24,11 @@ module API
         desc 'get current kols lottery activities'
         params do
           optional :status, type: String, values: ["all", "executing", "finished", "win"]
+          optional :page, type: Integer
         end
 
         get 'lottery_activities' do
-          activities = current_kol.lottery_activities.available.ordered
+          activities = current_kol.lottery_activities.available
           if !!params[:status] and params[:status] != "all"
             if params[:status] === "win"
               activities = activities.where(lucky_kol: current_kol, status: "finished")
@@ -36,6 +37,8 @@ module API
             end
           end
 
+          activities = activities.ordered.page(params[:page]).per_page(10)
+          to_paginate(activities)
           present :error, 0
           present :activities, activities, with: API::V1_3::Entities::LotteryActivityEntities::Detail, kol: current_kol
         end
@@ -53,7 +56,7 @@ module API
 
           present :error, 0
           present :activity, activity, with: API::V1_3::Entities::LotteryActivityEntities::Detail
-          present :orders, orders, with: API::V1_3::Entities::LotteryActivityEntities::ShowOrder
+          present :orders, orders, with: API::V1_3::Entities::LotteryActivityEntities::ShowOrder, kol: current_kol
           present :token_number, activity.token_number(current_kol)
         end
 

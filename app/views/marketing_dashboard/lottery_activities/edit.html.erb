@@ -1,0 +1,11 @@
+<div class="container">
+  <h2>
+    编辑夺宝活动
+    <button class="btn btn-default pull-right" onclick="window.history.go(-1)">返回上一页</button>
+  </h2>
+  <hr/>
+
+  <%= form_for([:marketing_dashboard, @lottery_activity], url: marketing_dashboard_lottery_activity_path, html: { multiple: true}) do |f| %>
+    <%= render partial: 'form', locals: { f: f}  %>
+  <% end %>
+</div>
