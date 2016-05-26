@@ -2,7 +2,7 @@ class ChangeLotteryActivities < ActiveRecord::Migration
   def change
     create_table :lottery_activity_tickets do |t|
       t.belongs_to :lottery_activity_order, index: true
-      t.string :code, index: true
+      t.string :code, index: true, limit: 32
     end
 
     change_column :lottery_activities, :total_number, :integer
