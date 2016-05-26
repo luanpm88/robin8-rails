@@ -61,6 +61,23 @@ module API
           present :error, 0
           present :orders, orders, with: API::V1_3::Entities::LotteryActivityEntities::KolingOrder
         end
+
+        desc 'show drawing formula of (:code) lottery activity.'
+        params do
+          requires :code, type: String
+        end
+
+        get ':code/formula' do
+          activity = LotteryActivity.available.where(code: params[:code]).take
+          return {:error => 1, :detail => '无法找到此夺宝活动'} unless activity
+
+          present :error, 0
+          present :code, activity.code
+          present :lucky_number, activity.lucky_number
+          present :order_sum, activity.order_sum
+          present :lottery_number, activity.lottery_number
+          present :lottery_issue, activity.lottery_issue
+        end
       end
 
       resources :lottery_orders do

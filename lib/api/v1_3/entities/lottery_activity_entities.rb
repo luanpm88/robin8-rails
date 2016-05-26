@@ -70,7 +70,9 @@ module API
         end
 
         class ShowOrder < Order
-          expose :tickets, using: Ticket, as: :tickets
+          expose :tickets, if: lambda { |order, opts| opts[:kol] } do |order, opts|
+            order.lottery_activity.token_ticket_codes(opts[:kol])
+          end
         end
 
         class CheckingOrder < Order

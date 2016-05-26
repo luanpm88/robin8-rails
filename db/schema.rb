@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525061830) do
+ActiveRecord::Schema.define(version: 20160526085349) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -773,18 +773,21 @@ ActiveRecord::Schema.define(version: 20160525061830) do
   end
 
   create_table "lottery_activities", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.string   "description",   limit: 255
-    t.integer  "total_number",  limit: 4
-    t.integer  "actual_number", limit: 4
-    t.string   "lucky_number",  limit: 255
-    t.string   "status",        limit: 255, default: "pending"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.string   "name",           limit: 255
+    t.string   "description",    limit: 255
+    t.integer  "total_number",   limit: 4
+    t.integer  "actual_number",  limit: 4
+    t.string   "lucky_number",   limit: 255
+    t.string   "status",         limit: 255, default: "pending"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.datetime "draw_at"
     t.datetime "published_at"
-    t.integer  "lucky_kol_id",  limit: 4
-    t.string   "code",          limit: 255
+    t.integer  "lucky_kol_id",   limit: 4
+    t.string   "code",           limit: 255
+    t.string   "order_sum",      limit: 255
+    t.string   "lottery_number", limit: 255
+    t.string   "lottery_issue",  limit: 255
   end
 
   create_table "lottery_activity_orders", force: :cascade do |t|
