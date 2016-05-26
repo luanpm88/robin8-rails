@@ -6,7 +6,7 @@ module IdentityAnalysis
     end
 
     def self.messages_data
-      {"status"=>true, "data"=>{"user"=>{"email"=>"robin_tech@126.com", "nick_name"=>"robin", "logo_url"=>"http://7xozqe.com2.z0.glb.qiniucdn.com/uploads/weixin/user/logo/57453d4b830f785265906ad3/1d5c7222f1.jpg", "user_name"=>"gh_ea8853a098df", "total_followers_count"=>0, "new_followers_count"=>0, "cancel_followers_count"=>0, "send_message_user_count"=>0, "send_message_count"=>0, "target_user_count"=>0, "read_user_count"=>0},
+      {"status"=>true, "data"=>{"user"=>{"email"=>"robin_tech@126.com", "nick_name"=>"Robin8示例数据", "logo_url"=>"http://7xozqe.com2.z0.glb.qiniucdn.com/uploads/weixin/user/logo/57453d4b830f785265906ad3/1d5c7222f1.jpg", "user_name"=>"gh_ea8853a098df", "total_followers_count"=>0, "new_followers_count"=>0, "cancel_followers_count"=>0, "send_message_user_count"=>0, "send_message_count"=>0, "target_user_count"=>0, "read_user_count"=>0},
                                 "messages"=>[
                                              {"report_time"=>"2016-05-09", "send_message_user_count"=>1630, "send_message_count"=>4333, "per_send_message_count"=>3},
                                              {"report_time"=>"2016-05-10", "send_message_user_count"=>1230, "send_message_count"=>5633, "per_send_message_count"=>4},
@@ -27,7 +27,7 @@ module IdentityAnalysis
     end
 
     def self.articles_data
-      {"status"=>true, "data"=>{"user"=>{"email"=>"robin_tech@126.com", "nick_name"=>"robin", "logo_url"=>"http://7xozqe.com2.z0.glb.qiniucdn.com/uploads/weixin/user/logo/57453d4b830f785265906ad3/1d5c7222f1.jpg", "user_name"=>"gh_ea8853a098df", "total_followers_count"=>0, "new_followers_count"=>0, "cancel_followers_count"=>0, "send_message_user_count"=>0, "send_message_count"=>0, "target_user_count"=>0, "read_user_count"=>0},
+      {"status"=>true, "data"=>{"user"=>{"email"=>"robin_tech@126.com", "nick_name"=>"Robin8示例数据", "logo_url"=>"http://7xozqe.com2.z0.glb.qiniucdn.com/uploads/weixin/user/logo/57453d4b830f785265906ad3/1d5c7222f1.jpg", "user_name"=>"gh_ea8853a098df", "total_followers_count"=>0, "new_followers_count"=>0, "cancel_followers_count"=>0, "send_message_user_count"=>0, "send_message_count"=>0, "target_user_count"=>0, "read_user_count"=>0},
                                 "articles"=>[
                                   {"publish_date"=>"2016-05-09", "target_user_count"=>383786, "share_user_count"=>4988, "read_user_count"=>89323, "title" => '朝阳公园大事件!“跑男”要来?'},
                                   {"publish_date"=>"2016-05-10", "target_user_count"=>385433, "share_user_count"=>6733, "read_user_count"=>62323, "title" => '和男票一样高是种怎样的体验?'},
@@ -49,7 +49,7 @@ module IdentityAnalysis
     end
 
     def self.user_analysises_data
-      {"status"=>true, "data"=>{"user"=>{"email"=>"robin_tech@126.com", "nick_name"=>"robin", "logo_url"=>"http://7xozqe.com2.z0.glb.qiniucdn.com/uploads/weixin/user/logo/57453d4b830f785265906ad3/1d5c7222f1.jpg", "user_name"=>"gh_ea8853a098df", "total_followers_count"=>0, "new_followers_count"=>0, "cancel_followers_count"=>0, "send_message_user_count"=>0, "send_message_count"=>0, "target_user_count"=>0, "read_user_count"=>0},
+      {"status"=>true, "data"=>{"user"=>{"email"=>"robin_tech@126.com", "nick_name"=>"Robin8示例数据", "logo_url"=>"http://7xozqe.com2.z0.glb.qiniucdn.com/uploads/weixin/user/logo/57453d4b830f785265906ad3/1d5c7222f1.jpg", "user_name"=>"gh_ea8853a098df", "total_followers_count"=>0, "new_followers_count"=>0, "cancel_followers_count"=>0, "send_message_user_count"=>0, "send_message_count"=>0, "target_user_count"=>0, "read_user_count"=>0},
                                 "user_analysises"=>[
                                   {"report_time"=>"2016-05-09", "new_followers_count"=>1823, "growth_followers_count"=>1703, "cancel_followers_count"=>120, "total_followers_count" => '383786'},
                                   {"report_time"=>"2016-05-10", "new_followers_count"=>1723, "growth_followers_count"=>1647, "cancel_followers_count"=>76, "total_followers_count" => '385433'},
