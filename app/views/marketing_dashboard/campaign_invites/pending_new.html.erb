@@ -1,0 +1,140 @@
+<div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
+
+
+<div>
+  <div>
+    <label style="font-size: 25px">截图总数: <%= @campaign_invites.count %></label>
+    <button class="choose-all btn btn-success">全选</button>
+    <button class="revert-all btn btn-primary">反选</button>
+    <button class="agree btn btn-success">通过</button>
+    <button class="reject btn btn-danger">拒绝</button>
+    <%= will_paginate @campaign_invites, :class => "pull-right"%>
+  </div>
+  <% @campaign_invites.size.times do |i| %>
+    <div class="item">
+      <img src="<%= @campaign_invites[i].screenshot %>" alt="screenshot" />
+      <div class="admin-campaign-title">活动名称: <%= @campaign_invites[i].campaign.name %> </div>
+      <div>
+        <label>kol_id : <%= link_to @campaign_invites[i].kol_id, "/marketing_dashboard/kols/#{@campaign_invites[i].kol_id}", :target => "_blank"%></label>
+        <label>campaign_id : <%= link_to @campaign_invites[i].campaign_id, "/marketing_dashboard/campaigns/#{@campaign_invites[i].campaign_id}", :target => "_blank"%></label>
+      </div>
+      <div>
+        <label>有效点击: <%= @campaign_invites[i].get_avail_click %></label>
+        <label>总点击: <%= @campaign_invites[i].get_total_click %></label>
+        <label>活动类型: <%= @campaign_invites[i].campaign_type %></label>
+      </div>
+      <div>活动结束时间: <%= @campaign_invites[i].campaign.deadline %></div>
+      <div>
+        <label><%= check_box_tag "campaign_invites_ids[]", @campaign_invites[i].id %></label>
+        <labe>是否作弊: <%= @campaign_invites[i].campaign_observer_status%></label>
+      </div>
+      <hr>
+    </div>
+  <% end %>
+</div>
+
+<div class="clearfix">
+    <button class="agree btn btn-success">通过</button>
+    <button class="reject btn btn-danger">拒绝</button>
+    <%= will_paginate @campaign_invites, :class => "pull-right"%>
+</div>
+<style>
+  .item {
+    float: left;
+    margin-left: 80px;
+    margin-top: 80px;
+  }
+
+  .item img {
+    width: 250px;
+    height: 300px;
+  }
+
+  .clearfix {
+    clear: both;
+    padding-top: 80px;
+    margin-left: 400px;
+  }
+</style>
+
+
+<script>
+$(function(){
+
+  $('.choose-all').click(function(){
+    $(':checkbox').each(function(){
+      this.checked = true;
+    });
+  })
+
+  $('.revert-all').click(function(){
+    $(':checkbox').each(function(){
+      if(this.checked == true) {
+        this.checked = false;
+      } else {
+        this.checked = true;
+      }
+    });
+  })
+
+  var ids = new Array();
+  $(".agree").click(function(){
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      ids.push($(this).val())
+    })
+
+    if(!ids.length) {
+      alert("请至少选择一张图片");
+      return
+    }
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "agree", "ids": ids }
+    })
+      .done(function(data) {
+        if(data['result'] == 'agree'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+
+  $(".reject").click(function(){
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      ids.push($(this).val())
+    })
+
+    if(!ids.length) {
+      alert("请至少选择一张图片");
+      return
+    }
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "reject", "ids": ids }
+    })
+      .done(function(data) {
+        if(data['result'] == 'reject'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+
+
+
+});
+
+
+</script>

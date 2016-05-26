@@ -174,4 +174,29 @@ class CampaignInvite < ActiveRecord::Base
     real_click_count = invites.collect{|t| t.redis_real_click.value }.sum
     return  [invite_count, real_click_count]
   end
+
+  def campaign_type
+    case self.campaign.per_budget_type
+    when 'click'
+      return '点击'
+    when 'post'
+      return '转发'
+    when 'recruit'
+      return "招募"
+    when 'cpa'
+      return 'cpa'
+    end
+    return self.campaign.per_budget_type
+  end
+
+  def campaign_observer_status
+    case observer_status
+    when 0
+      "未统计"
+    when 1
+      "正常"
+    when 2
+      "有作弊嫌疑"
+    end
+  end
 end
