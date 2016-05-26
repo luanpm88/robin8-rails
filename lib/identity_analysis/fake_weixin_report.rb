@@ -1,7 +1,7 @@
 module IdentityAnalysis
   class FakeWeixinReport
     def self.primary_data
-      {"status"=>true, "data"=>{"user"=>{"email"=>"robin_tech@126.com", "nick_name"=>"robin", "logo_url"=>"http://7xozqe.com2.z0.glb.qiniucdn.com/uploads/weixin/user/logo/57453d4b830f785265906ad3/d9ef6d2ef2.jpg",
+      {"status"=>true, "data"=>{"user"=>{"email"=>"robin_tech@126.com", "nick_name"=>"Robin8示例数据", "logo_url"=>"http://7xozqe.com2.z0.glb.qiniucdn.com/uploads/weixin/user/logo/57453d4b830f785265906ad3/d9ef6d2ef2.jpg",
                                          "user_name"=>"gh_ea8853a093df", "total_followers_count"=>402323, "new_followers_count"=>1723, "cancel_followers_count"=>121, "send_message_user_count"=>1223, "send_message_count"=>4232, "target_user_count"=>402323, "read_user_count"=>72323}}}
     end
 
