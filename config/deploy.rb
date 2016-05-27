@@ -146,10 +146,10 @@ task :noassets do
 end
 
 desc "new_qa"
-task :noassets do
-  if $*.include? "noassets"
+task :new_qa do
+  if $*.include? "new_qa"
     puts '-'*80
-    puts "本次部署采用noassets方式, 使用的是上一次部署的assets 文件, 请确保你没有修改assets 资源！！"
+    puts "部署在新的测试环境"
     puts '-'*80
   end
 end
