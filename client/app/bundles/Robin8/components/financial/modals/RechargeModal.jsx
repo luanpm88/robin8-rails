@@ -11,12 +11,12 @@ export default class RechargeModal extends Component {
 
   pay() {
     const { alipayRecharge } = this.props.actions;
-    // const credits = parseInt(this.props.credits);
-    // const tax = this.props.checkInvoice ? credits*0.06 : 0;
+    const credits = parseInt(this.props.credits);
+    const tax = this.props.checkInvoice ? credits*0.06 : 0;
 
 
-    const credits = parseFloat(this.props.credits);
-    const tax = this.props.checkInvoice ? credits*1 : 0;
+    // const credits = parseFloat(this.props.credits);
+    // const tax = this.props.checkInvoice ? credits*1 : 0;
     const need_invoice = this.props.checkInvoice
 
     alipayRecharge(credits, tax, need_invoice);
@@ -24,11 +24,11 @@ export default class RechargeModal extends Component {
   }
 
   render_pay_detail() {
-    // const credits = parseInt(this.props.credits);
-    // const tax = this.props.checkInvoice ? credits*0.06 : 0;
+    const credits = parseInt(this.props.credits);
+    const tax = this.props.checkInvoice ? credits*0.06 : 0;
 
-    const credits = parseFloat(this.props.credits);
-    const tax = this.props.checkInvoice ? credits*1 : 0;
+    // const credits = parseFloat(this.props.credits);
+    // const tax = this.props.checkInvoice ? credits*1 : 0;
 
     if (this.props.checkInvoice) {
       return (
@@ -57,11 +57,11 @@ export default class RechargeModal extends Component {
   }
 
   render() {
-    // const credits = parseInt(this.props.credits);
-    // const tax = this.props.checkInvoice ? credits*0.06 : 0;
+    const credits = parseInt(this.props.credits);
+    const tax = this.props.checkInvoice ? credits*0.06 : 0;
 
-    const credits = parseFloat(this.props.credits);
-    const tax = this.props.checkInvoice ? credits*1 : 0;
+    // const credits = parseFloat(this.props.credits);
+    // const tax = this.props.checkInvoice ? credits*1 : 0;
 
     return (
       <Modal {...this.props} className="recharge-modal">
