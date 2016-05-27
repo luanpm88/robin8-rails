@@ -10,6 +10,11 @@ class CampaignShow < ActiveRecord::Base
   # 检查 campaign status
   def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, request_uri, options={})
     now = Time.now
+
+    if visitor_ip.start_with?("101.226.103.6") ||  visitor_ip.start_with?("101.226.103.7")
+      return [false, 'wechat_crawler']
+    end
+
     if !request_uri.include?("from=timeline")
       return [false, 'not_from_timeline']
     end
@@ -19,8 +24,8 @@ class CampaignShow < ActiveRecord::Base
     return [false, 'visitor_agent_is_invalid']  if !visitor_agent.include?("MicroMessenger")
     if visitor_agent.include?("iPhone")
       return [false, 'ios_had_proxy_ip'] if proxy_ips.include?(",")
-    elsif visitor_agent.include?("Android")
-      return [false, 'android_had_no_proxy_ip'] if !proxy_ips.include?(",")
+    # elsif visitor_agent.include?("Android")
+    #   return [false, 'android_had_no_proxy_ip'] if !proxy_ips.include?(",")
     end
 
     if campaign.is_cpa_type?
@@ -28,10 +33,6 @@ class CampaignShow < ActiveRecord::Base
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
       end
-    end
-
-    if visitor_ip.start_with?("101.226.103.6") ||  visitor_ip.start_with?("101.226.103.7")
-      return [false, 'wechat_crawler']
     end
 
     # check_ip?
