@@ -49,7 +49,7 @@ module API
         class Show < Basic
           expose :description, :lucky_number, :draw_at
           expose :pictures do |activity|
-            activity.pictures.map(&:url)
+            activity.posters.map(&:url)
           end
 
           expose :winner_name do |activity|

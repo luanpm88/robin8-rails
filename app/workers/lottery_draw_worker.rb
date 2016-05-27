@@ -12,7 +12,7 @@ class LotteryDrawWorker
     activity.with_lock do
       raise "夺宝活动开奖异常，活动状态异常！" unless activity.status === "drawing"
 
-      number_a = LotteryActivityOrder.ordered.limit(10).inject(0) do |sum, o|
+      number_a = LotteryActivityOrder.paid.ordered.limit(10).inject(0) do |sum, o|
        sum += o.code.to_i
       end
 

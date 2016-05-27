@@ -6,8 +6,8 @@ class LotteryActivity < ActiveRecord::Base
 
   has_many :orders, class_name: LotteryActivityOrder.to_s, dependent: :destroy
   has_many :kols, through: :orders
-  has_many :pictures, as: :imageable, dependent: :destroy
-  has_many :lottery_activity_pictures, as: :imageable, dependent: :destroy
+  has_many :posters, class_name: LotteryActivityPoster.to_s, as: :imageable, dependent: :destroy
+  has_many :pictures, class_name: LotteryActivityPicture.to_s, as: :imageable, dependent: :destroy
   has_many :tickets, through: :orders, source: :tickets
 
   belongs_to :lucky_kol, class_name: Kol.to_s
@@ -19,7 +19,7 @@ class LotteryActivity < ActiveRecord::Base
   after_create :generate_ticket_bucket
 
   scope :executing, -> { where("status = ? and published_at <= ?", "executing", Time.now) }
-  scope :available, -> { where.not(status: [ "pending", "drawing" ]) }
+  scope :available, -> { where.not(status: [ "pending" ]) }
   scope :ordered, -> { order("created_at desc") }
 
 
@@ -74,17 +74,17 @@ class LotteryActivity < ActiveRecord::Base
   end
 
   def token_number(kol)
-    self.orders.where(kol: kol).sum(:number)
+    self.orders.paid.where(kol: kol).sum(:number)
   end
 
   def token_ticket_codes(kol)
-    self.orders.where(kol: kol).inject([]) do |res, o|
+    self.orders.paid.where(kol: kol).inject([]) do |res, o|
       res += o.tickets
     end.map(&:code)
   end
 
   def poster
-    self.pictures.first
+    self.posters.first
   end
 
   def status_text

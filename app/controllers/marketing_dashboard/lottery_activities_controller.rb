@@ -21,12 +21,12 @@ class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::Base
   def create
     @lottery_activity = LotteryActivity.new(lottery_activity_params)
 
-    params[:lottery_activity][:pictures].each do |picture|
-      @lottery_activity.pictures.build(name: picture)
+    params[:lottery_activity][:posters].each do |picture|
+      @lottery_activity.posters.build(name: picture)
     end
 
-    params[:lottery_activity][:lottery_activity_pictures].each do |picture|
-      @lottery_activity.lottery_activity_pictures.build(name: picture)
+    params[:lottery_activity][:pictures].each do |picture|
+      @lottery_activity.pictures.build(name: picture)
     end
 
     if @lottery_activity.save
@@ -39,6 +39,13 @@ class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::Base
   def update
     @lottery_activity = LotteryActivity.find(params[:id])
 
+    if params[:poster_id]
+      @lottery_activity.posters.where(id: params[:poster_id]).take.tap do |picture|
+        picture.destroy
+      end
+      return render 'edit'
+    end
+
     if params[:picture_id]
       @lottery_activity.pictures.where(id: params[:picture_id]).take.tap do |picture|
         picture.destroy
@@ -46,24 +53,15 @@ class MarketingDashboard::LotteryActivitiesController < MarketingDashboard::Base
       return render 'edit'
     end
 
-    if params[:lottery_activity_picture_id]
-      @lottery_activity.lottery_activity_pictures.where(id: params[:lottery_activity_picture_id]).take.tap do |picture|
-        picture.destroy
+    if params[:lottery_activity][:posters].present?
+      params[:lottery_activity][:posters].each do |picture|
+        @lottery_activity.posters.build(name: picture)
       end
-      return render 'edit'
     end
 
     if params[:lottery_activity][:pictures].present?
-      @lottery_activity.pictures.destroy_all
       params[:lottery_activity][:pictures].each do |picture|
         @lottery_activity.pictures.build(name: picture)
-      end
-    end
-
-    if params[:lottery_activity][:lottery_activity_pictures].present?
-      @lottery_activity.lottery_activity_pictures.destroy_all
-      params[:lottery_activity][:lottery_activity_pictures].each do |picture|
-        @lottery_activity.lottery_activity_pictures.build(name: picture)
       end
     end
 

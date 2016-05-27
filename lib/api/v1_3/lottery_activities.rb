@@ -12,7 +12,7 @@ module API
         end
 
         get '/' do
-          activities = LotteryActivity.executing.ordered.page(params[:page]).per_page(10)
+          activities = LotteryActivity.available.order("status asc, created_at desc").page(params[:page]).per_page(10)
           to_paginate(activities)
           present :error, 0
           present :activities, activities, with: API::V1_3::Entities::LotteryActivityEntities::Basic
@@ -44,7 +44,7 @@ module API
 
           present :error, 0
           present :code, activity.code
-          present :pictures, activity.lottery_activity_pictures.map(&:url)
+          present :pictures, activity.pictures.map(&:url)
         end
 
         desc 'get order list if (:code) lottery activity.'
@@ -113,7 +113,7 @@ module API
         end
 
         put ':code/checkout' do
-          order = LotteryActivityOrder.pending.where(code: params[:code]).take
+          order = current_kol.lottery_activity_orders.pending.where(code: params[:code]).take
           return {:error => 1, :detail => '无法找到此订单'} unless order
 
           begin
