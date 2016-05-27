@@ -111,8 +111,8 @@ class CampaignInviteController < ApplicationController
 
   def change_multi_img_status
     ids = params[:ids]
-    @campaign_invites = CampaignInvite.where :id => ids
 
+    @campaign_invites = CampaignInvite.where :id => ids
     if params[:status] == "agree"
       @campaign_invites.each { |c| c.screenshot_pass }
       return render json: { result: 'agree' }
