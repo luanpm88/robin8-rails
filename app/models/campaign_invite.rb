@@ -117,7 +117,8 @@ class CampaignInvite < ActiveRecord::Base
   end
 
   def origin_share_url
-    "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
+    url = "#{Rails.application.secrets.domain}/campaign_show?uuid=#{self.uuid}"
+    $weixin_client.authorize_url url
   end
 
   def earn_money

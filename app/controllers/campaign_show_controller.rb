@@ -3,6 +3,9 @@ class CampaignShowController < ApplicationController
   layout 'website'
 
   def show
+    sns_info = $weixin_client.get_oauth_access_token(params[:code])
+    open_id = sns_info.result['openid']    rescue nil
+    Rails.logger.info "-----show ---openid:#{open_id}"
     uuid_params = JSON.parse(Base64.decode64(params[:uuid]))
     campaign_id = uuid_params['campaign_id']
     if uuid_params["campaign_action_url_identifier"].present?
