@@ -27,6 +27,34 @@
   </div>
 </div>
 
+<div class="modal admin-campaign-invite-modal-one fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写拒绝理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+          <h3>请输入拒绝理由（非必填）</h3>
+          <div class="col-sm-4">
+            <div>
+              <small>友情提示: 系统会优先考虑 你填的自定义的 拒绝理由</small>
+            </div>
+            <div class="form-group"><%= select_tag :common_reject_reason_one, options_for_select(CampaignInvite::CommonRejectedReason), :class => "common_reject_reason-one" %>
+            </div>
+            <div class="form-group">
+              <input type="text" name='reject_reason' class='reject_reason_one form-control', placeholder="以上理由都不是, 请输入其他的理由">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn reject-one btn-primary">确认拒绝</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div>
   <div>
     <label style="font-size: 25px">截图总数: <%= @campaign_invites.count %></label>
@@ -58,7 +86,8 @@
       <div>
         <label><%= check_box_tag "campaign_invites_ids[]", @campaign_invites[i].id %></label>
       </div>
-      <hr>
+      <button class="agree-one btn btn-success" data-invite-id="<%=  @campaign_invites[i].id%>">通过</button>
+      <button class="reject-modal-one btn btn-danger" data-invite-id="<%=  @campaign_invites[i].id%>">拒绝</button>
     </div>
   <% end %>
 </div>
@@ -140,6 +169,27 @@ $(function(){
       });
   });
 
+  $(".agree-one").click(function(){
+    var agree_ids = new Array();
+    agree_ids.push($(this).attr("data-invite-id"))
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "agree", "ids": agree_ids }
+    })
+      .done(function(data) {
+        if(data['result'] == 'agree'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+
   $(".reject-modal").click(function(){
     $("input[name ='campaign_invites_ids[]']:checked").each(function(){
       ids.push($(this).val())
@@ -151,6 +201,34 @@ $(function(){
       $('.admin-campaign-invite-modal').modal("show")
     }
   })
+
+   $(".reject-modal-one").click(function(){
+    $(".admin-campaign-invite-modal-one").attr("data-invite-id", $(this).attr("data-invite-id"))
+    $('.admin-campaign-invite-modal-one').modal("show")
+   })
+
+
+   $(".reject-one").click(function(){
+    var reject_ids = new Array();
+    reject_ids.push($(".admin-campaign-invite-modal-one").attr("data-invite-id"))
+
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "reject", "ids": reject_ids, "reject_reason":  $('.reject_reason_one').val(), "common_reject_reason_one": $('.common_reject_reason-one').val()}
+    })
+      .done(function(data) {
+        if(data['result'] == 'reject'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
 
 
   $(".reject").click(function(){
@@ -175,9 +253,6 @@ $(function(){
         }
       });
   });
-
-
-
 });
 
 

@@ -111,7 +111,7 @@ class CampaignInviteController < ApplicationController
 
   def change_multi_img_status
     ids = params[:ids]
-    @campaign_invites = CampaignInvite.find ids
+    @campaign_invites = CampaignInvite.where :id => ids
 
     if params[:status] == "agree"
       @campaign_invites.each { |c| c.screenshot_pass }
@@ -121,8 +121,13 @@ class CampaignInviteController < ApplicationController
 
     if params[:status] == "reject"
       mobile_numbers = []
+      if params[:reject_reason].present?
+        reject_reason = params[:reject_reason]
+      else
+        reject_reason = params[:common_reject_reason]
+      end
       @campaign_invites.each do |c|
-        c.screenshot_reject params[:reject_reason] || params[:common_reject_reason]
+        c.screenshot_reject reject_reason
         mobile_numbers << c.kol.mobile_number
       end
 
