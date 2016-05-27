@@ -15,7 +15,7 @@ class CampaignShowController < ApplicationController
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
 
     Rails.logger.info "-----show ---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-    if @campaign and @campaign.is_cpa?
+    if @campaign and @campaign.is_cpa_type?
       return deal_with_cpa_campaign uuid_params
     end
 
@@ -23,9 +23,9 @@ class CampaignShowController < ApplicationController
       redirect_to @campaign.url
     else
       if Rails.env.development?
-        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], {})
+        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, {})
       else
-        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], {})
+        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, {})
       end
       redirect_to @campaign.url
     end
@@ -47,7 +47,7 @@ class CampaignShowController < ApplicationController
     other_options = {}
     other_options[:step] = (uuid_params[:step] || 1).to_i
 
-    CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], other_options)
+    CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.request_uri, other_options)
     if other_options[:step] == 1
       redirect_to @campaign.url
     else

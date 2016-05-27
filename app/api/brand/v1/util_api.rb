@@ -1,6 +1,10 @@
 module Brand
   module V1
     class UtilAPI < Base
+      
+      before do
+        authenticate!
+      end
 
       desc 'Get Qiniu upload token'
       get '/qiniu_token' do

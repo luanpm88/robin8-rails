@@ -6,6 +6,7 @@ class Kol < ActiveRecord::Base
   list :receive_campaign_ids, :maxlength => 2000             # 用户收到的所有campaign 邀请(待接收)
   include Concerns::PayTransaction
   include Concerns::KolCampaign
+  include Concerns::KolTask
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -211,7 +212,7 @@ class Kol < ActiveRecord::Base
   end
 
   def income_by_date(date)
-    post_or_recruit_campaign_income(date) +  click_or_action_campaign_income(date)
+    post_or_recruit_campaign_income(date) +  click_or_action_campaign_income(date) + task_income(date)
   end
 
   def campaign_count_by_date(date)
@@ -226,6 +227,11 @@ class Kol < ActiveRecord::Base
     end
     income
   end
+
+  def task_income(date)
+    self.transactions.recent(date,date).tasks.sum(:credits)
+  end
+
 
   def click_or_action_campaign_income(date)
     income = 0
@@ -331,35 +337,32 @@ class Kol < ActiveRecord::Base
   end
 
 
-  def self.reg_or_sign_in(params)
-    kol = Kol.find_by(mobile_number: params[:mobile_number])
+  def self.reg_or_sign_in(params, kol = nil)
+    kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
+    app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
       kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
-                            device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA])
+                            device_token: params[:device_token], IMEI: params[:IMEI], IDFA: params[:IDFA],
+                            os_version: params[:os_version], device_model: params[:device_model], app_city: app_city)
     else
-      app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
       kol = Kol.create!(mobile_number: params[:mobile_number],  app_platform: params[:app_platform],
                         app_version: params[:app_version], device_token: params[:device_token],
                         IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number],
-                        utm_source: params[:utm_source], app_city: app_city)
+                        utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
+                        device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip])
     end
     return kol
   end
 
-  def update_influence_result(kol_uuid, influence_score)
-    self.update_column(:influence_score, influence_score)
-    self.update_column(:kol_uuid, kol_uuid)
+  def update_influence_result(kol_uuid, influence_score, cal_time = Time.now)
+    self.update_columns(:influence_score => influence_score, :kol_uuid => kol_uuid, :cal_time => cal_time)
   end
 
   #用户测试价值后注册，此时需要把之前绑定的信息移到正式表中
   def create_info_from_test_influence(kol_uuid)
     Rails.logger.info "--create_info_from_test_influence---#{kol_uuid}---"
     return if kol_uuid.blank?
-    ActiveRecord::Base.transaction do
       kol_id = self.id
-      kol_value = KolInfluenceValue.find_by :kol_uuid => kol_uuid
-      #sync score
-      self.update_column(:cal_time, kol_value.updated_at)                if    kol_value
       # sync contacts
       if !self.has_contacts
         KolContact.where(:kol_id => kol_id).delete_all
@@ -367,7 +370,7 @@ class Kol < ActiveRecord::Base
           next if  tmp_contact.mobile.blank?  || tmp_contact.name.blank?   || Influence::Util.is_mobile?(tmp_contact.mobile.to_s).blank?
           contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
                                     :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
-          contact.save(:validate => false)
+          contact.save!(:validate => false)
         end
       end
 
@@ -382,7 +385,6 @@ class Kol < ActiveRecord::Base
         identity.save
         Weibo.update_identity_info(identity)
       end
-    end
   end
 
   def get_kol_uuid
@@ -401,7 +403,7 @@ class Kol < ActiveRecord::Base
                                        score: identity.score, followers_count: identity.followers_count,  friends_count: identity.friends_count,
                                        statuses_count: identity.statuses_count, kol_uuid:  kol_uuid, refresh_time: identity.refresh_time,
                                        access_token_refresh_time: identity.access_token_refresh_time, refresh_token: identity.refresh_token)
-        tmp_identity.save
+        tmp_identity.save!
       end
 
     end
@@ -413,6 +415,10 @@ class Kol < ActiveRecord::Base
 
   def get_rongcloud_token
     RongCloud.get_token self
+  end
+
+  def can_update_alipay
+    self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0
   end
 
 end

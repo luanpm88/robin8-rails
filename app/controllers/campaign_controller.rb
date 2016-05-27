@@ -164,7 +164,7 @@ class CampaignController < ApplicationController
     campaign.deadline = params[:campaign][:deadline].to_time
     campaign.start_time = params[:campaign][:start_time].to_time
     ActiveRecord::Base.transaction do
-      campaign.update_attributes campaign_params
+      campaign.update_attributes! campaign_params
       campaign.reset_campaign origin_budget, params[:budget], params[:per_action_budget]
     end
 
@@ -232,7 +232,7 @@ class CampaignController < ApplicationController
 
   private
   def update_campaign_action_urls campaign
-    return unless campaign.is_cpa?
+    return unless campaign.is_cpa_type?
     campaign_action_urls = params[:action_url_list].uniq
 
     old_action_urls = {}

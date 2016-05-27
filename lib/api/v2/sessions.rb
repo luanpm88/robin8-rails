@@ -7,10 +7,11 @@ module API
           required_attributes! [:mobile_number, :code, :app_platform, :app_version, :device_token]
           code_right = YunPian::SendRegisterSms.verify_code(params[:mobile_number], params[:code])
           return error!({error: 2, detail: '验证码错误'}, 403)   if !code_right
+          params[:current_sign_in_ip] = request.ip
           kol = Kol.reg_or_sign_in(params)
           if params[:kol_uuid].present?
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score)    if kol_value.present?
+            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)    if kol_value.present?
             SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
           present :error, 0
@@ -20,9 +21,11 @@ module API
 
         #第三方登陆
         params do
-          requires :app_platform
+          requires :app_platform, type: String
           requires :app_version, type: String
           requires :device_token, type: String
+          optional :os_version, type: String
+          optional :device_model, type: String
           optional :city_name, type: String
           optional :IDFA, type: String
           optional :IMEI, type: String
@@ -58,20 +61,19 @@ module API
           kol = identity.kol   rescue nil
           if !kol
             ActiveRecord::Base.transaction do
-              app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
-              kol = Kol.create!(app_platform: params[:app_platform], app_version: params[:app_version],
-                                device_token: params[:device_token], name: params[:name],
-                                social_name: params[:name], provider: params[:provider], social_uid: params[:uid],
-                                IMEI: params[:IMEI], IDFA: params[:IDFA], utm_source: params[:utm_source], app_city: app_city)
+              params[:current_sign_in_ip] = request.ip
+              kol = Kol.reg_or_sign_in(params)
               #保存头像
               kol.update_attribute(:remote_avatar_url ,  params[:avatar_url])    if params[:avatar_url].present?
               identity = Identity.create_identity_from_app(params.merge(:from_type => 'app', :kol_id => kol.id))   if identity.blank?
             end
             identity.update_column(:unionid, params[:unionid])  if identity == 'wechat' && identity.unionid.blank?
+          else
+            kol = Kol.reg_or_sign_in(params, kol)
           end
           if params[:kol_uuid].present?
             kol_value = KolInfluenceValue.get_score(params[:kol_uuid])
-            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score)     if kol_value.present?
+            kol.update_influence_result(params[:kol_uuid],kol_value.influence_score, kol_value.updated_at)     if kol_value.present?
             SyncInfluenceAfterSignUpWorker.perform_async(kol.id, params[:kol_uuid])
           end
           present :error, 0

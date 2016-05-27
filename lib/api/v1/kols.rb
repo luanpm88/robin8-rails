@@ -41,7 +41,7 @@ module API
           # optional :tags, type: Array[String]
         end
         put 'update_profile' do
-          attrs = attributes_for_keys [:name, :gender, :date_of_birthday,
+          attrs = attributes_for_keys [:name, :gender, :date_of_birthday, :age, :weixin_friend_count,
                                        :app_country, :app_province, :app_city, :desc, :alipay_account]
           current_kol.attributes = attrs
           if current_kol.save

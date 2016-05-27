@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport"/>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
+  <title>Robin8-Invites</title>
+</head>
+<body bgcolor="#000000">
+<div align="center">
+  <a href="/download_invitation?inviter_id=<%= params[:inviter_id] %>&redirect_url=http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb">
+    <img src="http://7xozqe.com2.z0.glb.qiniucdn.com/invite.jpg" width="100%" />
+  </a>
+</div>
+<script type="text/javascript">
+  $(function(){
+    $.get('/get_visitor_ip', function(data){
+      console.log(data.visitor_ip);
+    })
+  })
+</script>
+</body
+
+</html>

@@ -26,9 +26,13 @@ export default class CampaignList extends React.Component {
   displayPaginator(props) {
     const { fetchCampaigns } = this.props.actions;
     if (this.props.data.get("paginate").get("X-Page")) {
+      let totalPage = this.props.data.get("paginate").get("X-Total-Pages")
+      if (totalPage < this.props.data.get("paginate").get("X-Page")){
+        totalPage = this.props.data.get("paginate").get("X-Page")
+      }
       const pagination_options = {
         currentPage: this.props.data.get("paginate").get("X-Page"),
-        totalPages: this.props.data.get("paginate").get("X-Total-Pages"),
+        totalPages: totalPage,
         shouldShowPage: function(type, page, current) {
           switch (type) {
             default:
@@ -71,7 +75,6 @@ export default class CampaignList extends React.Component {
     const campaignList = this.props.data.get('campaignList');
     const campaignCount = this.props.data.get("paginate").get('X-Total')
     const avail_amount = this.props.data.get("brand").get("avail_amount")
-
     return (
       <div className="wrapper">
         <div className="container">
@@ -96,7 +99,9 @@ export default class CampaignList extends React.Component {
                     <span className="money">￥</span>
                     <span className="avail-amount">{avail_amount}</span>
                   </strong>
-                <a href="/contact?from=recharge" target="_blank" className="btn btn-blue btn-default recharge-btn">充值</a>
+                <Link to="/brand/financial/recharge" className="btn btn-blue btn-default recharge-btn">
+                  充值
+                </Link>
               </h4>
             </div>
 
