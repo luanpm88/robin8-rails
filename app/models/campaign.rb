@@ -220,10 +220,12 @@ class Campaign < ActiveRecord::Base
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
           CampaignWorker.perform_at(Time.now + RemindUploadWaitTime ,self.id, 'remind_upload')
+          CampaignObserverWorker.perform_async(self.id)
         elsif Rails.env.test?
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
           CampaignWorker.new.perform(self.id, 'remind_upload')
+          CampaignObserverWorker.new.perform(self.id)
         end
       end
     end
