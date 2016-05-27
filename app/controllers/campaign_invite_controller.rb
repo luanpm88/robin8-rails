@@ -118,10 +118,11 @@ class CampaignInviteController < ApplicationController
       return render json: { result: 'agree' }
     end
 
+
     if params[:status] == "reject"
       mobile_numbers = []
       @campaign_invites.each do |c|
-        c.screenshot_reject
+        c.screenshot_reject params[:reject_reason] || params[:common_reject_reason]
         mobile_numbers << c.kol.mobile_number
       end
 
@@ -129,6 +130,5 @@ class CampaignInviteController < ApplicationController
       return render json: { result: 'reject' }
     end
     return render json: { result: 'error' }
-
   end
 end
