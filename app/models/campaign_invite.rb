@@ -9,6 +9,7 @@ class CampaignInvite < ActiveRecord::Base
 
   STATUSES = ['pending', 'running', 'applying', 'approved', 'finished', 'rejected', "settled"]
   CommonRejectedReason = ["不在朋友圈/该条信息详细页", "截图不完整", "不足30分钟", "评论涉嫌欺诈", "含有诱导点击文字", "分组可见", "朋友圈过多悬赏活动，影响效果"]
+  # observer_status 0 表示 未计算, 1 表示 正常, 2 表示 存在作弊嫌疑
   ImgStatus = ['pending','passed', 'rejected']
   OcrStatus = ['pending', 'passed','failure']
   OcrDetails = {"unfound" => "抱歉，没有发现指定的转发活动", "time" => '内容发布时间必须在30分钟前', "group" => '请勿设置好友分组', "owner" => '非您本人发布的活动'}
@@ -174,5 +175,30 @@ class CampaignInvite < ActiveRecord::Base
     invite_count = invites.count
     real_click_count = invites.collect{|t| t.redis_real_click.value }.sum
     return  [invite_count, real_click_count]
+  end
+
+  def campaign_type
+    case self.campaign.per_budget_type
+    when 'click'
+      return '点击'
+    when 'post'
+      return '转发'
+    when 'recruit'
+      return "招募"
+    when 'cpa'
+      return 'cpa'
+    end
+    return self.campaign.per_budget_type
+  end
+
+  def campaign_observer_status
+    case observer_status
+    when 0
+      "未统计"
+    when 1
+      "正常"
+    when 2
+      "有作弊嫌疑"
+    end
   end
 end

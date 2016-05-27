@@ -49,7 +49,13 @@
               <%= link_to '所有截图', marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
-              <%= link_to '待审核截图', pending_marketing_dashboard_campaign_invites_path %>
+              <%= link_to '所有待审核截图', pending_marketing_dashboard_campaign_invites_path %>
+            </li>
+            <li>
+              <%= link_to '有作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 2) %>
+            </li>
+            <li>
+              <%= link_to '正常的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 1) %>
             </li>
             <li>
               <%= link_to '已通过截图', passed_marketing_dashboard_campaign_invites_path %>
@@ -63,8 +69,16 @@
           <%= link_to "品牌主管理", marketing_dashboard_users_path %>
         </li>
         <li>
-          <%= link_to 'KOL 管理', marketing_dashboard_kols_path %>
-        </li>
+            <a href="#">KOL 管理 <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+              <li>
+                <%= link_to '所有的Kols', marketing_dashboard_kols_path %>
+              </li>
+              <li>
+                <%= link_to '被拉黑的Kols', marketing_dashboard_kols_path(:ban => 1) %>
+              </li>
+            </ul>
+          </li>
         <li>
           <a href="#">支付宝充值管理 <span class='fa arrow'></span></a>
           <ul class="nav nav-second-level">

@@ -231,22 +231,24 @@ ActiveRecord::Schema.define(version: 20160526085349) do
     t.string   "status",            limit: 191
     t.integer  "campaign_id",       limit: 4
     t.integer  "kol_id",            limit: 4
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.date     "decline_date"
     t.string   "uuid",              limit: 100
     t.string   "share_url",         limit: 255
-    t.integer  "total_click",       limit: 4,   default: 0
-    t.integer  "avail_click",       limit: 4,   default: 0
+    t.integer  "total_click",       limit: 4,     default: 0
+    t.integer  "avail_click",       limit: 4,     default: 0
     t.datetime "approved_at"
     t.string   "img_status",        limit: 255
     t.string   "screenshot",        limit: 255
     t.string   "reject_reason",     limit: 255
-    t.boolean  "is_invited",        limit: 1,   default: false
-    t.integer  "share_count",       limit: 4,   default: 0
+    t.boolean  "is_invited",        limit: 1,     default: false
+    t.integer  "share_count",       limit: 4,     default: 0
     t.string   "ocr_status",        limit: 255
     t.string   "ocr_detail",        limit: 255
     t.integer  "campaign_apply_id", limit: 4
+    t.integer  "observer_status",   limit: 4,     default: 0
+    t.text     "observer_text",     limit: 65535
   end
 
   add_index "campaign_invites", ["campaign_id"], name: "index_campaign_invites_on_campaign_id", using: :btree
@@ -268,6 +270,7 @@ ActiveRecord::Schema.define(version: 20160526085349) do
     t.string   "visitor_referer", limit: 3555
     t.string   "other_options",   limit: 255
     t.string   "proxy_ips",       limit: 255
+    t.string   "request_url",     limit: 255
   end
 
   create_table "campaign_targets", force: :cascade do |t|
@@ -781,10 +784,10 @@ ActiveRecord::Schema.define(version: 20160526085349) do
     t.string   "status",         limit: 255, default: "pending"
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
-    t.datetime "draw_at"
-    t.datetime "published_at"
     t.integer  "lucky_kol_id",   limit: 4
     t.string   "code",           limit: 255
+    t.datetime "draw_at"
+    t.datetime "published_at"
     t.string   "order_sum",      limit: 255
     t.string   "lottery_number", limit: 255
     t.string   "lottery_issue",  limit: 255
@@ -806,7 +809,7 @@ ActiveRecord::Schema.define(version: 20160526085349) do
 
   create_table "lottery_activity_tickets", force: :cascade do |t|
     t.integer "lottery_activity_order_id", limit: 4
-    t.string  "code",                      limit: 255
+    t.string  "code",                      limit: 32
   end
 
   add_index "lottery_activity_tickets", ["code"], name: "index_lottery_activity_tickets_on_code", using: :btree
@@ -1108,7 +1111,7 @@ ActiveRecord::Schema.define(version: 20160526085349) do
     t.string   "reward_cycle",  limit: 255
     t.integer  "position",      limit: 4
     t.string   "task_name",     limit: 255
-    t.string   "task_type",     limit: 255
+    t.string   "task_type",     limit: 50
     t.integer  "limit",         limit: 4
     t.string   "logo",          limit: 255
     t.boolean  "enable",        limit: 1,   default: true
@@ -1171,7 +1174,7 @@ ActiveRecord::Schema.define(version: 20160526085349) do
     t.string   "task_type",      limit: 255
     t.integer  "invitees_id",    limit: 4
     t.string   "screenshot",     limit: 255
-    t.string   "status",         limit: 255, default: "pending"
+    t.string   "status",         limit: 191, default: "pending"
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
   end
@@ -1357,7 +1360,7 @@ ActiveRecord::Schema.define(version: 20160526085349) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email",      limit: 255
-    t.string   "name",                   limit: 191
+    t.string   "name",                   limit: 255
     t.string   "first_name",             limit: 255
     t.string   "last_name",              limit: 255
     t.string   "company",                limit: 255
@@ -1388,7 +1391,6 @@ ActiveRecord::Schema.define(version: 20160526085349) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["is_primary"], name: "index_users_on_is_primary", using: :btree
-  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
 

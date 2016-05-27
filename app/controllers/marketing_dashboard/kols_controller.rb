@@ -64,7 +64,11 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     @kols = if params[:campaign_id]
               Campaign.find(params[:campaign_id]).kols
             else
-              Kol.all
+              if params[:ban]
+                Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
+              else
+                Kol.all
+              end
             end.order('created_at DESC').paginate(paginate_params)
   end
 
