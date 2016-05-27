@@ -24,7 +24,7 @@ class KolContact < ActiveRecord::Base
         next if  contact['mobile'].blank?  || contact['name'].blank?   || Influence::Util.is_mobile?(contact['mobile'].to_s).blank?
         next if  present_mobiles.include?(contact['mobile'].to_s)
         kol_contact = KolContact.new(:kol_uuid => kol_uuid, :kol_id => kol_id, :mobile => contact['mobile'], :name => contact["name"])
-        kol_contact.save(:validate => false)
+        kol_contact.save!(:validate => false)
       end
     end
   end

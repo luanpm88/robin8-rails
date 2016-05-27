@@ -1,5 +1,5 @@
 module API
-  module V1
+  module V1_3
     module Entities
       module TransactionEntities
         class Summary  < Grape::Entity

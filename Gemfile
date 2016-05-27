@@ -62,6 +62,7 @@ gem 'newrelic_rpm'
 
 # 微信相关
 gem 'weixin_authorize'
+gem "typhoeus"
 
 source 'http://rails-assets.org' do
   gem 'rails-assets-bootstrap-sass', '3.3.4'
@@ -229,3 +230,4 @@ gem "non-stupid-digest-assets"
 gem 'status-page', :git => "https://github.com/gallifreyer/status-page.git"
 # https://github.com/CanCanCommunity/cancancan
 gem 'cancancan', '~> 1.10'
+gem 'alipay', '~> 0.12.0'

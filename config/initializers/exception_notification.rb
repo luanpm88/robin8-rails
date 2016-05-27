@@ -19,7 +19,6 @@ ExceptionNotification.configure do |config|
   #   :exception_recipients => %w{dev_notify@robin8.com}
   # }
 
-
   host_name = (`hostname`).gsub("\n", "")
 
   config.add_notifier :async_mail, {

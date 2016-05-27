@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux'
+import { reduxForm } from 'redux-form';
 import { SplitButton } from 'react-bootstrap';
 import _ from 'lodash';
+
+import BreadCrumb     from './shared/BreadCrumb';
 import Keyword from './profile/KeyWord';
 import Crop from './shared/Crop';
 import Input, { Textarea, RadioButtons } from './profile/Input';
-import { reduxForm } from 'redux-form';
+
 import {} from './shared/plupload.full.min'
 import 'qiniu-js/dist/qiniu.min.js';
 import BrandFormValidate from './shared/validate/BrandFormValidate'
@@ -98,17 +101,6 @@ class EditProfilePartial extends Component {
     updateBrandProfile(profile_fields);
   }
 
-  render_breadcrumb() {
-    return (
-      <ol className="breadcrumb">
-        <li>
-          <i className="caret-arrow left" />
-          <Link to="/brand/">我的主页</Link>
-        </li>
-      </ol>
-    );
-  }
-
   render() {
     const { name, url, description, real_name, keywords} = this.props.fields;
     const { handleSubmit, submitting, invalid } = this.props;
@@ -116,7 +108,7 @@ class EditProfilePartial extends Component {
     return (
       <div className="page page-profile page-profile-edit">
         <div className="container">
-          { this.render_breadcrumb() }
+          <BreadCrumb />
           <form onSubmit={ (event) => { handleSubmit(this._updateBrandProfile)(event).catch(validateFailed) } }>
             <div className="header">
               <h3>品牌简介</h3>

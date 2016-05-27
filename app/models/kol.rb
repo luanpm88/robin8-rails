@@ -29,10 +29,6 @@ class Kol < ActiveRecord::Base
   has_many :tags, :through => :kol_tags
   has_many :campaign_actions
   has_many :campaign_shows
-  # has_many :like_campaigns, ->{where(:action => 'like')}, :class => CampaignAction
-  # has_many :hide_campaigns, ->{where(:action => 'hide')}, :class => CampaignAction
-  # has_many :like_campaigns, ->{where(:like => true)}, :through => :campaign_likes, :source => 'campaign'
-  # has_many :hide_campaigns, -> {where(:hide => true)}, :through => :campaign_likes, :source => 'campaign'
 
   has_many :transactions, ->{order('created_at desc')}, :as => :account
   has_many :income_transactions, -> {where(:direct => 'income')}, :as => :account, :class => Transaction
@@ -47,7 +43,13 @@ class Kol < ActiveRecord::Base
 
   has_many :withdraws
   has_many :article_actions
+  has_many :analysis_identities
+  has_many :kol_identity_prices
 
+  has_one  :address, as: :addressable
+
+  has_many :lottery_activity_orders
+  has_many :lottery_activities, -> { distinct }, through: :lottery_activity_orders
 
 
   def email_required?
@@ -338,7 +340,7 @@ class Kol < ActiveRecord::Base
 
 
   def self.reg_or_sign_in(params, kol = nil)
-    kol ||= Kol.find_by(mobile_number: params[:mobile_number])
+    kol ||= Kol.find_by(mobile_number: params[:mobile_number])    if params[:mobile_number].present?
     app_city = City.where("name like '#{params[:city_name]}%'").first.name_en   rescue nil
     if kol.present?
       kol.update_attributes(app_platform: params[:app_platform], app_version: params[:app_version],
@@ -349,7 +351,7 @@ class Kol < ActiveRecord::Base
                         app_version: params[:app_version], device_token: params[:device_token],
                         IMEI: params[:IMEI], IDFA: params[:IDFA], name: params[:mobile_number],
                         utm_source: params[:utm_source], app_city: app_city, os_version: params[:os_version],
-                        device_model: params[:device_model])
+                        device_model: params[:device_model], current_sign_in_ip: params[:current_sign_in_ip])
     end
     return kol
   end
@@ -375,7 +377,7 @@ class Kol < ActiveRecord::Base
           next if  tmp_contact.mobile.blank?  || tmp_contact.name.blank?   || Influence::Util.is_mobile?(tmp_contact.mobile.to_s).blank?
           contact = KolContact.new(:kol_id => kol_id, :mobile => tmp_contact.mobile, :name => tmp_contact.name, :exist => tmp_contact.exist,
                                     :invite_status => tmp_contact.invite_status, :invite_at =>  tmp_contact.invite_at)
-          contact.save(:validate => false)
+          contact.save!(:validate => false)
         end
       end
 
@@ -409,7 +411,7 @@ class Kol < ActiveRecord::Base
                                        score: identity.score, followers_count: identity.followers_count,  friends_count: identity.friends_count,
                                        statuses_count: identity.statuses_count, kol_uuid:  kol_uuid, refresh_time: identity.refresh_time,
                                        access_token_refresh_time: identity.access_token_refresh_time, refresh_token: identity.refresh_token)
-        tmp_identity.save
+        tmp_identity.save!
       end
 
     end
@@ -423,4 +425,12 @@ class Kol < ActiveRecord::Base
     RongCloud.get_token self
   end
 
+  def can_update_alipay
+    self.withdraws.approved.where("created_at > '2016-06-01'").size == 0  &&  self.withdraws.pending.where("created_at > '2016-06-01'").size == 0
+  end
+
+  def address!
+    return self.address if self.address
+    Address.create.tap { |a| self.update(address: a) }
+  end
 end

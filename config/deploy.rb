@@ -55,6 +55,12 @@ set :ssh_options, {:forward_agent => true}
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
+# Default value for whenever roles list
+set :whenever_roles, %w{ master }
+
+# Default value for sidekiq roles
+set :sidekiq_role, %w{ master }
+
 namespace :deploy do
   task :upload_localization do
     on roles(:app)  do

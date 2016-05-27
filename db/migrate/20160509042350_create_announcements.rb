@@ -7,6 +7,7 @@ class CreateAnnouncements < ActiveRecord::Migration
       t.string :desc
       t.boolean :display, :default => false
       t.integer :position, :default => 0
+      t.string :detail_type
       t.string :url
 
       t.timestamps null: false

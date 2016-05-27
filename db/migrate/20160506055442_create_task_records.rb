@@ -6,14 +6,14 @@ class CreateTaskRecords < ActiveRecord::Migration
       t.string :task_type
       t.integer :invitees_id
       t.string :screenshot
-      t.string :status, :default => 'pending'
+      t.string :status, :default => 'pending', :limit => 191
 
       t.timestamps null: false
     end
+    add_index :task_records, :kol_id
+    add_index :task_records, :reward_task_id
+    add_index :task_records, :status
   end
 
-  add_index :task_records, :kol_id
-  add_index :task_records, :reward_task_id
-  add_index :task_records, :status
 
 end

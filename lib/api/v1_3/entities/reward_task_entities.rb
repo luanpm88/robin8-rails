@@ -1,5 +1,5 @@
 module API
-  module V2
+  module V1_3
     module Entities
       module RewardTaskEntities
         class Summary  < Grape::Entity
@@ -8,7 +8,7 @@ module API
             if task.task_type == RewardTask::CheckIn
               options[:kol].today_had_check_in? ? 'finished' : 'processing'
             elsif task.task_type == RewardTask::CompleteInfo
-              options[:kol].had_complete_info? ? 'finished' : 'processing'
+              options[:kol].had_complete_reward? ? 'finished' : 'processing'
             else
               # RewardTask::FavorableComment
               'processing'
