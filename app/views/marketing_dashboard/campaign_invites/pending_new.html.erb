@@ -1,0 +1,259 @@
+<div class="error-flash" style="display:none; font-size: 35px; color: red">操作失败，请重试</div>
+<div class="modal admin-campaign-invite-modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写拒绝理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+          <h3>请输入拒绝理由（非必填）</h3>
+          <div class="col-sm-4">
+            <div>
+              <small>友情提示: 系统会优先考虑 你填的自定义的 拒绝理由</small>
+            </div>
+            <div class="form-group"><%= select_tag :common_reject_reason, options_for_select(CampaignInvite::CommonRejectedReason), :class => "common_reject_reason" %>
+            </div>
+            <div class="form-group">
+              <input type="text" name='reject_reason' class='reject_reason form-control', placeholder="以上理由都不是, 请输入其他的理由">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn reject btn-primary">确认拒绝</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal admin-campaign-invite-modal-one fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写拒绝理由</h4>
+      </div>
+      <div class="modal-body admin-reject-modal-body">
+          <h3>请输入拒绝理由（非必填）</h3>
+          <div class="col-sm-4">
+            <div>
+              <small>友情提示: 系统会优先考虑 你填的自定义的 拒绝理由</small>
+            </div>
+            <div class="form-group"><%= select_tag :common_reject_reason_one, options_for_select(CampaignInvite::CommonRejectedReason), :class => "common_reject_reason-one" %>
+            </div>
+            <div class="form-group">
+              <input type="text" name='reject_reason' class='reject_reason_one form-control', placeholder="以上理由都不是, 请输入其他的理由">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn reject-one btn-primary">确认拒绝</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div>
+    <label style="font-size: 25px">截图总数: <%= @campaign_invites.count %></label>
+    <button class="choose-all btn btn-success">全选</button>
+    <button class="revert-all btn btn-primary">反选</button>
+    <button class="agree btn btn-success">通过</button>
+    <button class="reject-modal btn btn-danger">拒绝</button>
+    <%= will_paginate @campaign_invites, :class => "pull-right"%>
+  </div>
+  <% @campaign_invites.size.times do |i| %>
+    <div class="item">
+      <img src="<%= @campaign_invites[i].screenshot %>" alt="screenshot" />
+      <div class="admin-campaign-title">活动名称: <%= @campaign_invites[i].campaign.name[0...15] %>... </div>
+      <div>
+        <label>kol_id : <%= link_to @campaign_invites[i].kol_id, "/marketing_dashboard/kols/#{@campaign_invites[i].kol_id}", :target => "_blank"%></label>
+        <label>campaign_id : <%= link_to @campaign_invites[i].campaign_id, "/marketing_dashboard/campaigns/#{@campaign_invites[i].campaign_id}", :target => "_blank"%></label>
+      </div>
+      <div>活动结束时间: <%= @campaign_invites[i].campaign.deadline %></div>
+
+
+      <div>
+        <label>有效点击: <%= @campaign_invites[i].get_avail_click %></label>
+        <label>总点击: <%= @campaign_invites[i].get_total_click %></label>
+        <label>活动类型: <%= @campaign_invites[i].campaign_type %></label>
+      </div>
+      <div>
+        <labe>是否作弊: <%= @campaign_invites[i].campaign_observer_status%></label>
+      </div>
+      <div>
+        <label><%= check_box_tag "campaign_invites_ids[]", @campaign_invites[i].id %></label>
+      </div>
+      <button class="agree-one btn btn-success" data-invite-id="<%=  @campaign_invites[i].id%>">通过</button>
+      <button class="reject-modal-one btn btn-danger" data-invite-id="<%=  @campaign_invites[i].id%>">拒绝</button>
+    </div>
+  <% end %>
+</div>
+
+<div class="clearfix">
+    <button class="agree btn btn-success">通过</button>
+    <button class="reject-modal btn btn-danger">拒绝</button>
+    <%= will_paginate @campaign_invites, :class => "pull-right"%>
+</div>
+<style>
+  .item {
+    float: left;
+    margin-left: 80px;
+    margin-top: 80px;
+  }
+
+  .item img {
+    width: 250px;
+    height: 300px;
+  }
+
+  .clearfix {
+    clear: both;
+    padding-top: 80px;
+    margin-left: 400px;
+  }
+
+  .admin-reject-modal-body{
+    height: 200px;
+  }
+</style>
+
+
+<script>
+$(function(){
+
+  $('.choose-all').click(function(){
+    $(':checkbox').each(function(){
+      this.checked = true;
+    });
+  })
+
+  $('.revert-all').click(function(){
+    $(':checkbox').each(function(){
+      if(this.checked == true) {
+        this.checked = false;
+      } else {
+        this.checked = true;
+      }
+    });
+  })
+
+  var ids = new Array();
+  $(".agree").click(function(){
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      ids.push($(this).val())
+    })
+
+    if(!ids.length) {
+      alert("请至少选择一张图片");
+      return
+    }
+
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "agree", "ids": ids }
+    })
+      .done(function(data) {
+        if(data['result'] == 'agree'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+
+  $(".agree-one").click(function(){
+    var agree_ids = new Array();
+    agree_ids.push($(this).attr("data-invite-id"))
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "agree", "ids": agree_ids }
+    })
+      .done(function(data) {
+        if(data['result'] == 'agree'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+
+  $(".reject-modal").click(function(){
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      ids.push($(this).val())
+    })
+
+    if(!ids.length) {
+      alert("请至少选择一张图片");
+    }else{
+      $('.admin-campaign-invite-modal').modal("show")
+    }
+  })
+
+   $(".reject-modal-one").click(function(){
+    $(".admin-campaign-invite-modal-one").attr("data-invite-id", $(this).attr("data-invite-id"))
+    $('.admin-campaign-invite-modal-one').modal("show")
+   })
+
+
+   $(".reject-one").click(function(){
+    var reject_ids = new Array();
+    reject_ids.push($(".admin-campaign-invite-modal-one").attr("data-invite-id"))
+
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "reject", "ids": reject_ids, "reject_reason":  $('.reject_reason_one').val(), "common_reject_reason_one": $('.common_reject_reason-one').val()}
+    })
+      .done(function(data) {
+        if(data['result'] == 'reject'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+
+
+  $(".reject").click(function(){
+    $("input[name ='campaign_invites_ids[]']:checked").each(function(){
+      ids.push($(this).val())
+    })
+
+    $.ajax({
+      method: "POST",
+      url: "/campaign_invite/change_multi_img_status",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      },
+      data: { "status": "reject", "ids": ids, "reject_reason":  $('.reject_reason').val(), "common_reject_reason": $('.common_reject_reason').val()}
+    })
+      .done(function(data) {
+        if(data['result'] == 'reject'){
+          location.reload();
+        }
+        else {
+          $(".error-flash").css("display", "block");
+        }
+      });
+  });
+});
+
+
+</script>

@@ -42,7 +42,7 @@ module Campaigns
     # 获取指定kols
     def get_specified_kol_ids
       return nil if self.specified_kol_targets.blank?
-      get_ids_from_target_content contents
+      get_ids_from_target_content self.specified_kol_targets.map(&:target_content)
     end
 
 
