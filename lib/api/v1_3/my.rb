@@ -37,7 +37,7 @@ module API
             end
           end
 
-          activities = activities.ordered.page(params[:page]).per_page(10)
+          activities = activities.order("status asc, created_at desc").page(params[:page]).per_page(10)
           to_paginate(activities)
           present :error, 0
           present :activities, activities, with: API::V1_3::Entities::LotteryActivityEntities::Detail, kol: current_kol

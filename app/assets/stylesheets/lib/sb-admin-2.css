@@ -31,6 +31,10 @@ body {
     margin-right: 0;
 }
 
+.navbar-top-links.navbar-right {
+    margin-right: 0;
+}
+
 .navbar-top-links li {
     display: inline-block;
 }

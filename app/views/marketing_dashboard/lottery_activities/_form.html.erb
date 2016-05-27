@@ -1,6 +1,20 @@
 
+<style>
+.remove-picture {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -18px 0 0 -40px;
+}
+</style>
+
 <div class="row">
   <div class="col-md-6">
+    <div class="form-group">
+      <label>活动编号</label>
+      <%= f.object.code %>
+    </div>
+
     <div class="form-group">
       <label>活动名称</label>
       <%= f.text_field :name, class: "form-control" %>
@@ -13,33 +27,42 @@
 
     <div class="form-group">
       <label>所需人数</label>
-      <%= f.number_field :total_number, class: "form-control" %>
+      <% if f.object.persisted? %>
+        <%= f.object.total_number %> (不可更改)
+      <% else %>
+        <%= f.number_field :total_number, class: "form-control" %>
+      <% end %>
     </div>
 
     <div class="form-group">
-      <label>轮播图片</label>
-      <% f.object.pictures.each do |picture| %>
-        <div>
-          <%= image_tag picture.name.url, style: "max-width: 300px;" %>
-        </div>
-        <%= link_to marketing_dashboard_lottery_activity_path(f.object, picture_id: picture.id), method: :put do %>
-          移除此图
-        <% end %>
-      <% end unless f.object.pictures.blank? %>
-      <%= f.file_field :pictures, multiple: true, :class => "form-control" %>
+      <label>轮播图片 <span class="text-success">(首张图作为封面)</span></label>
+      <%= f.file_field :posters, multiple: true, :class => "well well-sm" %>
+      <p class="text-warning">* 图片可多选上传，APP上图片将与此处图片顺序保持一致</p>
+      <div class="well" style="width: 380px;">
+        <% f.object.posters.each do |picture| %>
+          <div style="position: relative; text-align: center;">
+            <%= image_tag picture.name.url, style: "width: 100%;" %>
+            <%= link_to marketing_dashboard_lottery_activity_path(f.object, poster_id: picture.id), method: :put, class: "btn btn-danger remove-picture" do %>
+              移除此图
+            <% end %>
+          </div>
+        <% end unless f.object.posters.blank? %>
+      </div>
     </div>
-
     <div class="form-group">
       <label>奖品介绍图片</label>
-      <% f.object.lottery_activity_pictures.each do |picture| %>
-        <div>
-          <%= image_tag picture.name.url, style: "max-width: 300px;" %>
-        </div>
-        <%= link_to marketing_dashboard_lottery_activity_path(f.object, lottery_activity_picture_id: picture.id), method: :put do %>
-          移除此图
-        <% end %>
-      <% end unless f.object.lottery_activity_pictures.blank? %>
-      <%= f.file_field :lottery_activity_pictures, multiple: true, :class => "form-control" %>
+      <%= f.file_field :pictures, multiple: true, :class => "well well-sm" %>
+      <p class="text-warning">* 图片可多选上传，APP上图片将与此处图片顺序保持一致</p>
+      <div class="well" style="width: 380px;">
+        <% f.object.pictures.each do |picture| %>
+          <div style="position: relative; text-align: center;">
+            <%= image_tag picture.name.url, style: "width: 100%;" %>
+            <%= link_to marketing_dashboard_lottery_activity_path(f.object, picture_id: picture.id), method: :put, class: "btn btn-danger remove-picture" do %>
+              移除此图
+            <% end %>
+          </div>
+        <% end unless f.object.pictures.blank? %>
+      </div>
     </div>
   </div>
 </div>

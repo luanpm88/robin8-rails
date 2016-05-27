@@ -1,0 +1,2 @@
+class LotteryActivityPoster < Picture
+end
