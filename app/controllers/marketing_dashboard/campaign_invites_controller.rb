@@ -13,7 +13,13 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
     # valid_period = Campaign::SettleWaitTimeForBrand
     # @campaign_invites = CampaignInvite.joins(:campaign, :kol).where.not(:screenshot => "").where(:img_status => :pending).where(:status => ['approved', 'finished']).where("campaigns.deadline > ?", Time.now-valid_period).paginate(paginate_params)
     params[:per_page] = 18
-    @campaign_invites = CampaignInvite.where(:img_status => :pending).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
+    if params[:observer_status].to_i == 2
+      @campaign_invites = CampaignInvite.where(:img_status => :pending, :observer_status => 2).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
+    elsif params[:observer_status].to_i == 1
+      @campaign_invites = CampaignInvite.where(:img_status => :pending, :observer_status => 1).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
+    else
+      @campaign_invites = CampaignInvite.where(:img_status => :pending).where("screenshot is not NULL").order('created_at DESC').paginate(paginate_params)
+    end
     render :pending_new
   end
 
@@ -25,7 +31,6 @@ class MarketingDashboard::CampaignInvitesController < MarketingDashboard::BaseCo
 
   def rejected
     @campaign_invites = CampaignInvite.where(:img_status => 'rejected').order('created_at DESC').paginate(paginate_params)
-
     render 'index'
   end
 

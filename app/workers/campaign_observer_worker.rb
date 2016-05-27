@@ -4,6 +4,8 @@ class CampaignObserverWorker
 
   def perform(campaign_id)
     CampaignInvite.where(:campaign_id => campaign_id).map do |invite|
+      campaign = Campaign.where(:id => invite.campaign_id, :status => ['executed','settled']).first
+      next unless campaign
       if invite.observer_status != 0
         next
       end

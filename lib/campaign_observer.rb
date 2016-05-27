@@ -12,6 +12,7 @@ module CampaignObserver
 
 
   def observer_campaign_and_kol campaign_id, kol_id
+    campaign = Campaign.where(:id => campaign_id).first
     invalid_reasons = []
     cookie_and_user_agents = {}
     user_agents_count = {}
@@ -80,7 +81,7 @@ module CampaignObserver
       invalid_reasons << "访问者ip 小于50分的次数 超过了#{IpScoreLess50Count}次"
     end
 
-    if user_agents_count.values.max >= MaxUniqUserAgentCount
+    if user_agents_count.values.max.to_i >= MaxUniqUserAgentCount
       invalid_reasons << "单一user_agent 访问了 #{user_agents_count.values.max}不能超过: #{MaxUniqUserAgentCount}次"
     end
 
@@ -99,37 +100,46 @@ module CampaignObserver
       end
     end;nil
     
-    cleanAverageClickTime = averageClickTime - averageClickTime.min(3) - averageClickTime.max(3)
-    if cleanAverageClickTime.count > 3
-      average_time = cleanAverageClickTime.sum/cleanAverageClickTime.count
-      mean_deviation = cleanAverageClickTime.map do |number|
-        (number - average_time)**2
-      end.sum/cleanAverageClickTime.count
-      if mean_deviation < 9
-        invalid_reasons << "点击时间分布比较均匀, 平均为#{average_time}秒, 存在通过使用程序作弊的嫌疑"
+    if averageClickTime.size > 10
+      cleanAverageClickTime = averageClickTime - averageClickTime.min(3) - averageClickTime.max(3)
+      if cleanAverageClickTime.count > 3
+        average_time = cleanAverageClickTime.sum/cleanAverageClickTime.count
+        mean_deviation = cleanAverageClickTime.map do |number|
+          (number - average_time)**2
+        end.sum/cleanAverageClickTime.count
+        if mean_deviation < 9
+          invalid_reasons << "点击时间分布比较均匀, 平均为#{average_time}秒, 存在通过使用程序作弊的嫌疑"
+        end
       end
     end
+    puts kol_id, "kol_id"
+    puts campaign_id
     
-    campaign_ids = Kol.find_by(:id => kol_id).campaigns.where(:status => ['executed','settled']).map(&:id)
-    index = campaign_ids.index(campaign_id)
-    indexs = []
-    if index > 0 and index < campaign_ids.count-1
-      indexs << index - 1
-      indexs << index + 1
-    elsif index == 0
-      indexs << index + 1 if campaign_ids[index + 1]
-      indexs << index + 2 if campaign_ids[index + 2]
-    elsif index == campaign_ids.count - 1
-      indexs << index - 1  if campaign_ids[index - 1]
-      indexs << index - 2  if campaign_ids[index - 2]
-    end
+    kol = Kol.find_by(:id => kol_id)
+    if kol
+      campaign_ids = kol.campaigns.where(:status => ['executed','settled']).map(&:id)
+      index = campaign_ids.index(campaign_id)
+      indexs = []
+      unless index.nil?
+        if index > 0 and index < campaign_ids.count-1
+          indexs << index - 1
+          indexs << index + 1
+        elsif index == 0
+          indexs << index + 1 if campaign_ids[index + 1]
+          indexs << index + 2 if campaign_ids[index + 2]
+        elsif index == campaign_ids.count - 1
+          indexs << index - 1  if campaign_ids[index - 1]
+          indexs << index - 2  if campaign_ids[index - 2]
+        end
 
-    if indexs.count >= 1 and CampaignInvite.where(:campaign_id => campaign_id, :kol_id => kol_id).first.total_click > 30
-      now_cookies = shows.map(&:visitor_cookie)
-      indexs.each do |index|
-        overlap = (CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_ids[index]).map(&:visitor_cookie) & now_cookies).count*1.0/now_cookies.count
-        if overlap > 0.3
-          invalid_reasons << "存在固定的人(#{now_cookies.count} 人)帮该用户点击(猜测可能是有一个群, 相互点击), 和campaign_id: #{campaign_ids[index]} 的重合度是: #{(overlap*100).to_i}%, 大于我们设置的 60% 重合阈值"
+        if indexs.count >= 1 and CampaignInvite.where(:campaign_id => campaign_id, :kol_id => kol_id).first.total_click > 30
+          now_cookies = shows.map(&:visitor_cookie)
+          indexs.each do |index|
+            overlap = (CampaignShow.where(:kol_id => kol_id, :campaign_id => campaign_ids[index]).map(&:visitor_cookie) & now_cookies).count*1.0/now_cookies.count
+            if overlap > 0.3
+              invalid_reasons << "存在固定的人(#{now_cookies.count} 人)帮该用户点击(猜测可能是有一个群, 相互点击), 和campaign_id: #{campaign_ids[index]} 的重合度是: #{(overlap*100).to_i}%, 大于我们设置的 60% 重合阈值"
+            end
+          end
         end
       end
     end
@@ -145,8 +155,8 @@ module CampaignObserver
     texts << "凌晨1点-6点 访问量, 不能超过 #{MaxMorningVisitCount}次"
     texts << "访问者ip 不能超过#{IpScoreLess50Count}次"
     texts << "单一user_agent 不能超过: #{MaxUniqUserAgentCount}次"
-    text  << "统计点击时间分布情况, 判断是否是通过爬虫点击"
-    text  << "该用户最近接过的 3个campaign 点击的cookies 重合度, 来判断这个用户 是否会有固定的人群 帮他点击"
+    texts  << "统计点击时间分布情况, 判断是否是通过爬虫点击"
+    texts  << "该用户最近接过的 3个campaign 点击的cookies 重合度, 来判断这个用户 是否会有固定的人群 帮他点击"
     texts
   end
 end
