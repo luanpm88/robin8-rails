@@ -20,6 +20,7 @@ export default class RechargeModal extends Component {
     const need_invoice = this.props.checkInvoice
 
     alipayRecharge(credits, tax, need_invoice);
+    this.close();
   }
 
   render_pay_detail() {
