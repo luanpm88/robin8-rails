@@ -32,3 +32,5 @@ Starting MailCatcher
     :wday: 2
     :hour: 0
     :min:  5
+
+    weixin

@@ -5,7 +5,6 @@ class CampaignShowController < ApplicationController
   def show
     sns_info = $weixin_client.get_oauth_access_token(params[:code])
     open_id = sns_info.result['openid']    rescue nil
-    Rails.logger.info "-----show ---openid:#{open_id}"
     uuid_params = JSON.parse(Base64.decode64(params[:uuid]))
     campaign_id = uuid_params['campaign_id']
     if uuid_params["campaign_action_url_identifier"].present?
@@ -17,7 +16,7 @@ class CampaignShowController < ApplicationController
     end
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
 
-    Rails.logger.info "-----show ---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
+    Rails.logger.info "-----show ----openid:#{open_id}---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
     if @campaign and @campaign.is_cpa?
       return deal_with_cpa_campaign uuid_params
     end
@@ -26,9 +25,9 @@ class CampaignShowController < ApplicationController
       redirect_to @campaign.url
     else
       if Rails.env.development?
-        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, {})
+        CampaignShowWorker.new.perform(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, openid, {})
       else
-        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url, {})
+        CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.url,openid, {})
       end
       redirect_to @campaign.url
     end
@@ -50,7 +49,7 @@ class CampaignShowController < ApplicationController
     other_options = {}
     other_options[:step] = (uuid_params[:step] || 1).to_i
 
-    CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.request_uri, other_options)
+    CampaignShowWorker.perform_async(params[:uuid], cookies[:_robin8_visitor], request.remote_ip, request.user_agent, request.referer, request.env['HTTP_X_FORWARDED_FOR'], request.request_uri, openid, other_options)
     if other_options[:step] == 1
       redirect_to @campaign.url
     else
