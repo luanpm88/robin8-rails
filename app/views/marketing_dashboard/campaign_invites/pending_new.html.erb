@@ -69,7 +69,7 @@
       <img src="<%= @campaign_invites[i].screenshot %>" alt="screenshot" />
       <div class="admin-campaign-title">活动名称: <%= @campaign_invites[i].campaign.name[0...15] %>... </div>
       <div>
-        <label>kol_id : <%= link_to @campaign_invites[i].kol_id, "/marketing_dashboard/kols/#{@campaign_invites[i].kol_id}", :target => "_blank"%></label>
+        <label>kol_id : <%= link_to @campaign_invites[i].kol_id, "/marketing_dashboard/kols/#{@campaign_invites[i].kol_id}/edit", :target => "_blank"%></label>
         <label>campaign_id : <%= link_to @campaign_invites[i].campaign_id, "/marketing_dashboard/campaigns/#{@campaign_invites[i].campaign_id}", :target => "_blank"%></label>
       </div>
       <div>活动结束时间: <%= @campaign_invites[i].campaign.deadline %></div>
