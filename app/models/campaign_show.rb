@@ -1,6 +1,7 @@
 class CampaignShow < ActiveRecord::Base
-  CookieTimeout = Rails.env.production? ? 30.minutes : 30.seconds
-  OpenidTimeout = Rails.env.production? ? 30.minutes : 30.seconds
+  CookieTimeout = Rails.env.production? ? 30.minutes : 20.seconds
+  OpenidTimeout = Rails.env.production? ? 30.minutes : 20.seconds
+  OpenidMaxCount = 3
   IpTimeout = Rails.env.production? ? 30.seconds : 10.seconds
   IpMaxCount = Rails.env.production? ? 20 : 2
 
@@ -9,7 +10,7 @@ class CampaignShow < ActiveRecord::Base
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
   # 检查 campaign status
-  def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, request_uri, options={})
+  def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, request_uri, openid, options={})
     now = Time.now
 
     if visitor_ip.start_with?("101.226.103.6") ||  visitor_ip.start_with?("101.226.103.7")
@@ -43,6 +44,14 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'openid_visit_fre']
     else
       Rails.cache.write(store_key, now, :expires_in => OpenidTimeout)
+    end
+
+    # openid_ip_reach_max
+    openid_current_count = Rails.cache.read(store_key) || 0
+    if openid_current_count > OpenidMaxCount
+      return [false, 'openid_reach_max_count']
+    else
+      Rails.cache.write(store_key, openid_current_count + 1, :expired_at => campaign.deadline)
     end
 
     # check_ip_reach_max
@@ -122,7 +131,7 @@ class CampaignShow < ActiveRecord::Base
     return false if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.try(:status))
 
     visitor_ip = proxy_ips.split(",").first || visitor_ip
-    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer, proxy_ips, request_uri, options)
+    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer, proxy_ips, request_uri, openid, options)
     CampaignShow.create!(:kol_id => info['kol_id'] || campaign_invite.kol_id, :campaign_id => info['campaign_id'] || campaign.id, :visitor_cookie => visitor_cookies,
                         :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip, :request_url => request_uri,
                         :visitor_agent => visitor_agent, :visitor_referer => visitor_referer, :other_options => options.inspect, :proxy_ips => proxy_ips,
