@@ -120,6 +120,8 @@ module API
             order.checkout
             present :error, 0
             present :order, order, with: API::V1_3::Entities::LotteryActivityEntities::Order
+            present :avail_amount, order.kol.avail_amount
+            present :avail_ticket, order.lottery_activity.avail_number
           rescue RuntimeError => e
             present :error, 1
             present :detail, e.message
