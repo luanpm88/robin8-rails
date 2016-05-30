@@ -1,0 +1,42 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="login-panel panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">修改Kol</h3>
+        </div>
+        <div class="panel-body">
+          <%= form_for(@kol, as: :kol, url: marketing_dashboard_kol_path(@kol), method: :put) do |f| %>
+            <div class="field form-group">
+              <%= devise_error_messages! %>
+            </div>
+            <div class="field form-group">
+              <%= f.label "手机号" %><br />
+              <%= f.text_field :mobile_number, autofocus: true, class: "form-control" %>
+            </div>
+            
+            <div class="field form-group">
+              <%= f.label "名字" %><br />
+              <%= f.text_field :name, autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="field form-group datetime" style="position: relative;">
+              <%= f.label "拉黑截止日期" %><br />
+              <%= f.text_field :forbid_campaign_time, autofocus: true, class: "form-control datetimepicker",  id: "datetimepicker1" %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "保存", class: "btn btn-lg btn-success btn-block" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script type="text/javascript">
+  $(function () {
+    $('.datetimepicker').datetimepicker();
+  });
+  </script>

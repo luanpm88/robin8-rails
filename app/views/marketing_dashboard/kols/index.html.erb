@@ -6,7 +6,7 @@
   <% end %>
 </div>
 
-
+<h5><%= devise_error_messages! %></h5>
 <table class='table table-bordered'>
   <thead>
     <tr>
@@ -30,17 +30,22 @@
           <td> <%= k.send v %> </td>
         <% end %>
         <td>
-          <%= link_to '详情', marketing_dashboard_kol_path(k.id) %>
+          <%= link_to '详情', marketing_dashboard_kol_path(k.id), :target => "_blank"  %>
+          <% if k.forbid_campaign_time.present? and k.forbid_campaign_time > Time.now %>
           |
-          <%= link_to '拉黑', marketing_dashboard_kol_ban_path(k.id) %>
+          <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(k.id), method: :post, :target => "_blank"  %>
+          <% else %>
           |
-          <%= link_to '取消拉黑', marketing_dashboard_kol_disban_path(k.id), method: :post %>
+          <%= link_to '拉黑', marketing_dashboard_kol_ban_path(k.id), :target => "_blank"  %>
+          <% end %>
           |
-          <%= link_to '提现', marketing_dashboard_kol_withdraw_path(k.id) %>
+          <%= link_to '提现', marketing_dashboard_kol_withdraw_path(k.id), :target => "_blank"  %>
           |
-          <%= link_to '点击数据', marketing_dashboard_kol_campaign_shows_path(k.id) %>
+          <%= link_to '点击数据', marketing_dashboard_kol_campaign_shows_path(k.id), :target => "_blank"  %>
           |
-          <%= link_to '接受的活动', marketing_dashboard_kol_campaigns_path(k.id) %>
+          <%= link_to '接受的活动', marketing_dashboard_kol_campaigns_path(k.id), :target => "_blank"  %>
+          |
+          <%= link_to "修改", edit_marketing_dashboard_kol_path(k.id), :target => "_blank" %>
         </td>
       </tr>
     <% end %>
