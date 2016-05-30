@@ -181,6 +181,22 @@ class PagesController < ApplicationController
     end
   end
 
+  def invite
+    Rails.logger.info "------get_visitor_ip---------"
+    Rails.logger.info  request.env['HTTP_X_FORWARDED_FOR']
+    render :layout => false
+  end
+
+  #TODO redirect_to  url
+  def download_invitation
+    remote_ip = request.env['HTTP_X_FORWARDED_FOR'].split(",")[0]   rescue nil
+    if remote_ip.present? &&  request.user_agent.present?  && params[:inviter_id].present?
+      DownloadInvitation.create!(:inviter_id => params[:inviter_id], :visitor_ip => remote_ip, :visitor_agent => request.user_agent,
+                                 :visitor_referer => request.referer, :visitor_cookies => cookies[:_robin8_visitor])
+    end
+    redirect_to params[:redirect_url] || 'http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb'
+  end
+
 
   # =====================申请支付宝===================
   def join_in

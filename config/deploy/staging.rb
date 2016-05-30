@@ -14,10 +14,15 @@
 # This can be used to drop a more detailed server definition into the
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
-
-server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
-server '139.196.169.53', user: 'deployer', roles: %w{app slave}
-set :branch, 'QA'
+if $*.include? "new_qa"
+  server '139.196.44.225', user: 'deployer', roles: %w{web app db master}
+  set :branch, 'alipay_master_cn'
+  set :server_name, '139.196.44.225'
+else
+  server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
+  set :branch, 'QA'
+  set :server_name, 'robin8-staging.cn'
+end
 
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"
@@ -32,7 +37,7 @@ namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
   task :copy_manifest_to_slave do
     on roles(:master) do
-      execute "scp /home/deployer/apps/robin8/shared/public/assets/manifest.json deployer@139.196.169.53:/home/deployer/apps/robin8/shared/public/assets/manifest.json"
+      # execute "scp /home/deployer/apps/robin8/shared/public/assets/manifest.json deployer@139.196.169.53:/home/deployer/apps/robin8/shared/public/assets/manifest.json"
     end
   end
 end

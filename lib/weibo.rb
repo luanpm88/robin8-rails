@@ -31,7 +31,7 @@ class Weibo
   def self.update_identity_info(identity)
     return if identity.token.blank? || identity.uid.blank?
     Rails.logger.info "----update_identity_info"
-    if identity.access_token_refresh_time <  Time.now + AccessTokenExpired
+    if identity.access_token_refresh_time && (identity.access_token_refresh_time <  Time.now + AccessTokenExpired)
       update_identity_to_db(identity)
     elsif identity.refresh_token && identity.refresh_time < Time.now + RefreshTokenExpired
       update_refresh_token(identity)
@@ -45,7 +45,7 @@ class Weibo
   def self.update_statuses(identity)
     return if identity.token.blank?
     # access_token 有效无需重新获取
-    if identity.access_token_refresh_time <  Time.now + AccessTokenExpired
+    if identity.access_token_refresh_time && (identity.access_token_refresh_time <  Time.now + AccessTokenExpired)
       update_statuses_to_db(identity)
     elsif identity.refresh_token && identity.refresh_time < Time.now + RefreshTokenExpired
       update_refresh_token(identity)

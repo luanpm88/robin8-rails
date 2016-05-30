@@ -1,6 +1,7 @@
 class Campaign < ActiveRecord::Base
   include Redis::Objects
   include Concerns::CampaignTest
+  include Campaigns::CampaignProcess
   counter :redis_avail_click
   counter :redis_total_click
   include Campaigns::CampaignTargetHelper
@@ -65,10 +66,6 @@ class Campaign < ActiveRecord::Base
     self.recruit_start_time < Time.now && Time.now < recruit_end_time
   end
 
-  def is_cpa?
-    self.per_budget_type.to_s == "cpa"
-  end
-
   def get_stats
     end_time = ((status == 'executed' || status == 'settled') ? self.deadline : Time.now)
     shows = campaign_shows
@@ -114,7 +111,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def take_budget
-    if self.is_click_type? or self.is_cpa?
+    if self.is_click_type? or self.is_cpa_type?
       if self.status == 'settled'
         (self.settled_invites.sum(:avail_click) * self.per_action_budget).round(2)       rescue 0
       else
@@ -134,7 +131,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def post_count
-    if self.per_budget_type == "click" or self.is_cpa?
+    if self.per_budget_type == "click" or self.is_cpa_type?
       return -1
     end
     return valid_invites.count
@@ -151,58 +148,11 @@ class Campaign < ActiveRecord::Base
   alias_method :share_times, :get_share_time
 
 
-  # 开始时候就发送邀请 但是状态为pending
-  def send_invites(kol_ids = nil)
-    _start = Time.now
-    Rails.logger.campaign_sidekiq.info "---send_invites: cid:#{self.id}--campaign status: #{self.status}---#{self.deadline}----kol_ids:#{kol_ids}-"
-    return if self.status != 'agreed'
-    self.update_attribute(:status, 'rejected') && return if self.deadline < Time.now
-    Rails.logger.campaign_sidekiq.info "---send_invites: -----cid:#{self.id}--start create--"
-    campaign_id = self.id
-    kol_ids = get_kol_ids
-    if kol_ids.present?
-      Kol.where(:id => kol_ids).each do |kol|
-        kol.add_campaign_id campaign_id
-      end
-    else
-      #TODO multi-thread deal
-      Kol.find_each do |kol|
-        kol.add_campaign_id(campaign_id,false)
-      end
-      unmatched_kol_ids = get_unmatched_kol_ids
-      Kol.where(:id => unmatched_kol_ids).each do |kol|
-        kol.delete_campaign_id campaign_id
-      end
-    end
-    Rails.logger.campaign_sidekiq.info "---send_invites: ---cid:#{self.id}--campaign unmatched_kol_ids: ---#{unmatched_kol_ids}-"
-    # make sure those execute late (after invite create)
-    #招募类型 在报名开始时间 就要开始发送活动邀请 ,且在真正开始时间  需要把所有未通过的设置为审核失败
-    if  is_recruit_type?
-      _start_time = self.recruit_start_time < Time.now ? (Time.now + 5.seconds) : self.recruit_start_time
-      CampaignWorker.perform_at(_start_time, self.id, 'start')
-      CampaignWorker.perform_at(self.start_time, self.id, 'end_apply_check')
-    else
-      _start_time = self.start_time < Time.now ? (Time.now + 5.seconds) : self.start_time
-      CampaignWorker.perform_at(_start_time, self.id, 'start')
-    end
-    CampaignWorker.perform_at(self.deadline ,self.id, 'end')
-  end
-
-  # 开始进行  此时需要更改invite状态
-  def go_start
-    Rails.logger.campaign_sidekiq.info "-----go_start:  ----start-----#{self.inspect}----------"
-    ActiveRecord::Base.transaction do
-      self.update_column(:max_action, (budget.to_f / per_action_budget.to_f).to_i)
-      self.update_column(:status, 'executing')
-      Message.new_campaign(self, get_kol_ids, get_unmatched_kol_ids)
-    end
-  end
-
   def add_click(valid)
     Rails.logger.campaign_show_sidekiq.info "---------Campaign add_click: --valid:#{valid}----status:#{self.status}---avail_click:#{self.redis_avail_click.value}---#{self.redis_total_click.value}-"
     self.redis_avail_click.increment  if valid
     self.redis_total_click.increment
-    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa?)
+    if self.redis_avail_click.value.to_i >= self.max_action.to_i && self.status == 'executing' && (self.per_budget_type == "click" or self.is_cpa_type?)
       finish('fee_end')
     end
   end
@@ -220,10 +170,12 @@ class Campaign < ActiveRecord::Base
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
           CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
           CampaignWorker.perform_at(Time.now + RemindUploadWaitTime ,self.id, 'remind_upload')
+          CampaignObserverWorker.perform_async(self.id)
         elsif Rails.env.test?
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
           CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
           CampaignWorker.new.perform(self.id, 'remind_upload')
+          CampaignObserverWorker.new.perform(self.id)
         end
       end
     end
@@ -256,36 +208,12 @@ class Campaign < ActiveRecord::Base
     Message.new_remind_upload(self)
   end
 
-  # 结算 for kol
-  def settle_accounts_for_kol
-    Rails.logger.transaction.info "-------- settle_accounts_for_kol: cid:#{self.id}------status: #{self.status}"
-    return if self.status != 'executed'
-    ActiveRecord::Base.transaction do
-      self.passed_invites.each do |invite|
-        kol = invite.kol
-        invite.update_column(:status, 'settled')
-        if is_click_type? or is_cpa?
-          kol.income(invite.avail_click * self.per_action_budget, 'campaign', self, self.user)
-          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{invite.avail_click * self.per_action_budget}-- after avail_amount:#{kol.avail_amount}"
-        else
-          kol.income(self.per_action_budget, 'campaign', self, self.user)
-          Rails.logger.info "-------- settle_accounts_for_kol:  ---cid:#{self.id}--kol_id:#{kol.id}----credits:#{self.per_action_budget}-- after avail_amount:#{kol.avail_amount}"
-        end
-      end
+  ['click', 'post', 'recruit', 'cpa'].each do |value|
+    define_method "is_#{value}_type?" do
+      self.per_budget_type == value
     end
   end
 
-  def is_click_type?
-    self.per_budget_type == "click"
-  end
-
-  def is_post_type?
-    self.per_budget_type == "post"
-  end
-
-  def is_recruit_type?
-    self.per_budget_type == "recruit"
-  end
 
   def recruit_status
     return 'pending' if self.status == 'unexecute'
@@ -309,45 +237,8 @@ class Campaign < ActiveRecord::Base
     self.budget / self.per_action_budget
   end
 
-  # 结算 for brand
-  def settle_accounts_for_brand
-    Rails.logger.transaction.info "-------- settle_accounts_for_brand: cid:#{self.id}------status: #{self.status}"
-    return if self.status != 'executed'
-    #首先先付款给期间审核的kol
-    settle_accounts_for_kol
-    #剩下的邀请  状态全设置为拒绝
-    self.finished_invites.update_all({:status => 'rejected', :img_status => 'rejected'})
-    ActiveRecord::Base.transaction do
-      self.update_column(:status, 'settled')
-      self.user.unfrozen(self.budget, 'campaign', self)
-      Rails.logger.transaction.info "-------- settle_accounts: user  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-      if is_click_type?  || is_cpa?
-        pay_total_click = self.settled_invites.sum(:avail_click)
-        self.user.payout((pay_total_click * self.per_action_budget) , 'campaign', self )
-        Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{pay_total_click * self.per_action_budget} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
-      else
-        settled_invite_size = self.settled_invites.size
-        self.user.payout((self.per_action_budget * settled_invite_size) , 'campaign', self )
-        Rails.logger.transaction.info "-------- settle_accounts: user-------fee:#{self.per_action_budget * settled_invite_size} --- after payout ---cid:#{self.id}-----#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}---\n"
-      end
-    end
-  end
-
-  def reset_campaign(origin_budget,new_budget, new_per_action_budget)
-    Rails.logger.campaign.info "--------reset_campaign:  ---#{self.id}-----#{self.inspect} -- #{origin_budget}"
-    self.user.unfrozen(origin_budget.to_f, 'campaign', self)
-    Rails.logger.transaction.info "-------- reset_campaign:  after unfrozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-    if self.user.avail_amount >= self.budget.to_f
-      self.user.frozen(new_budget.to_f, 'campaign', self)
-      Rails.logger.transaction.info "-------- reset_campaign:  after frozen ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.avail_amount.to_f} ---#{self.user.frozen_amount.to_f}"
-    else
-      Rails.logger.error("品牌商余额不足--reset_campaign - campaign_id: #{self.id}")
-    end
-  end
-
   def create_job
     if self.status_changed? && self.status == 'unexecute'
-      Rails.logger.campaign.info "--------create_job:  ---#{self.id}-----#{self.inspect}"
       if self.user.avail_amount >= self.budget
         self.user.frozen(budget, 'campaign', self)
         Rails.logger.transaction.info "-------- create_job: after frozen  ---cid:#{self.id}--user_id:#{self.user.id}---#{self.user.inspect}"
@@ -355,7 +246,6 @@ class Campaign < ActiveRecord::Base
         Rails.logger.campaign.error "--------create_job:  品牌商余额不足--campaign_id: #{self.id} --------#{self.inspect}"
       end
     elsif (self.status_changed? && status == 'agreed')
-      Rails.logger.campaign.info "--------agreed_job:  ---#{self.id}-----#{self.inspect}"
       if Rails.env.development? or Rails.env.test?
         CampaignWorker.new.perform(self.id, 'send_invites')
       else

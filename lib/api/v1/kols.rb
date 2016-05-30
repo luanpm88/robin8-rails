@@ -34,6 +34,8 @@ module API
         get 'profile'  do
           present :error, 0
           present :kol, current_kol, with: API::V1::Entities::KolEntities::Summary
+          present :had_complete_reward, current_kol.had_complete_reward?
+          present :can_receive_complete_reward, current_kol.can_receive_complete_reward
         end
 
         params do
@@ -41,7 +43,7 @@ module API
           # optional :tags, type: Array[String]
         end
         put 'update_profile' do
-          attrs = attributes_for_keys [:name, :gender, :date_of_birthday,
+          attrs = attributes_for_keys [:name, :gender, :date_of_birthday, :age, :weixin_friend_count,
                                        :app_country, :app_province, :app_city, :desc, :alipay_account]
           current_kol.attributes = attrs
           if current_kol.save

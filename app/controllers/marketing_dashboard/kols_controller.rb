@@ -59,12 +59,27 @@ class MarketingDashboard::KolsController < MarketingDashboard::BaseController
     end
   end
 
+  def edit
+    @kol = Kol.find params[:id]
+  end
+
+  def update
+    @kol = Kol.find params[:id]
+    @kol.update_attributes(params.require(:kol).permit(:mobile_number, :name, :forbid_campaign_time, :kol_level))
+    flash[:notice] = "保存成功"
+    redirect_to marketing_dashboard_kols_path
+  end
+
   private
   def load_kols
     @kols = if params[:campaign_id]
               Campaign.find(params[:campaign_id]).kols
             else
-              Kol.all
+              if params[:ban]
+                Kol.where("forbid_campaign_time is not null and forbid_campaign_time > ?", Time.now)
+              else
+                Kol.all
+              end
             end.order('created_at DESC').paginate(paginate_params)
   end
 

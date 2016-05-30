@@ -1,9 +1,9 @@
   <header class="navbar r-site-header">
     <div class="container-fluid">
+      <a href="/" class="logo">Robin8</a>
       <% if !mobile_request? %>
         <div class="navbar-action pull-right">
-          <a href="#signinupModal" class="quick-login" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
-          <a href="#downloadModal" class="" data-toggle="modal" style="color: white; margin-left: 6px;"> APP下载</a>
+          <a href="#signinupModal" class="quick-login" show-after-loading="<%= params[:landing_at] == 'brand' ? true : false %>" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
         </div>
       <% end %>
     </div>
@@ -17,10 +17,15 @@
         <h1>领袖精神</h1>
         <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.robin8.rb" class="btn btn-blue btn-big btn-line cneter-block download-btn" data-toggle="modal">APP下载</a>
       <% end %>
+      <% if !mobile_request? %>
+        <p>每一次分享都使Robin8更好的了解你的社交影响力，大数据引擎会推荐最适合你的品牌推广机会，见证你意见领袖的一面。</p>
+        <p>立即成为Robin8的意见领袖</p>
+        <a href="#downloadModal" class="btn btn-blue btn-big btn-line cneter-block download-btn" data-toggle="modal">APP 下载</a>
+      <% end %>
     </div>
   </div>
 
-  <div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade" id="downloadModal" show-after-loading="<%= params[:landing_at]== 'kol' ? true : false%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <button type="button" class="close" data-dismiss="modal">&times;</button>
     <div class="modal-dialog">
       <div class="modal-body">
@@ -165,3 +170,12 @@
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    if($("#downloadModal").attr("show-after-loading") == 'true'){
+      $("#downloadModal").modal('show');
+    }
+    if($('.quick-login').attr("show-after-loading") == 'true'){
+      $(".quick-login").click()
+    }
+  </script>

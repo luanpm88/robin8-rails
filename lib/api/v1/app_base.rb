@@ -10,7 +10,6 @@ module API
       mount API::V1::Tags
       mount API::V1::Campaigns
       mount API::V1::CampaignInvites
-      mount API::V1::Transactions
       mount API::V1::Cities
       mount API::V1::Withdraws
       mount API::V1::Messages

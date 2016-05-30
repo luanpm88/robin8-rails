@@ -1,0 +1,151 @@
+<div class="container-fluid">
+<h2>查看夺宝活动</h2>
+<%= link_to "返回上一页", marketing_dashboard_lottery_activities_path, class: "btn btn-default" %>
+<hr/>
+
+<div class="row">
+  <div class="col-md-8">
+    <h3>活动详情</h3>
+    <table class="table table-bordered">
+      <tr>
+        <td> 活动状态 </td>
+        <td> <%= @lottery_activity.status_text %> </td>
+      </tr>
+      <tr>
+        <td> 活动编号 </td>
+        <td> <%= @lottery_activity.code %> </td>
+      </tr>
+      <tr>
+        <td> 活动名称 </td>
+        <td> <%= @lottery_activity.name %> </td>
+      </tr>
+      <tr>
+        <td> 活动描述 </td>
+        <td> <%= @lottery_activity.description %> </td>
+      </tr>
+      <tr>
+        <td> 所需人次 </td>
+        <td> <%= @lottery_activity.total_number %> </td>
+      </tr>
+      <tr>
+        <td> 当前参与人次 </td>
+        <td> <%= @lottery_activity.actual_number %> </td>
+      </tr>
+      <tr>
+        <td> 创建时间 </td>
+        <td> <%= @lottery_activity.created_at %> </td>
+      </tr>
+      <tr>
+        <td> 发布时间 </td>
+        <td> <%= @lottery_activity.published_at %> </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-8">
+    <h3>开奖详情</h3>
+    <table class="table table-bordered">
+      <tr>
+        <td> 中奖号码 </td>
+        <td> <%= @lottery_activity.lucky_number %> </td>
+      </tr>
+      <tr>
+        <td> 开奖时间 </td>
+        <td> <%= @lottery_activity.draw_at %> </td>
+      </tr>
+      <tr>
+        <td> 数值A </td>
+        <td> <%= @lottery_activity.order_sum %> </td>
+      </tr>
+      <tr>
+        <td> 数值B(老时时彩/重庆时时彩) </td>
+        <td> <%= @lottery_activity.lottery_number %> </td>
+      </tr>
+      <tr>
+        <td> 彩票期号 </td>
+        <td> <%= @lottery_activity.lottery_issue %> </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<% if @lottery_activity.lucky_kol %>
+<div class="row">
+  <div class="col-md-8">
+    <h3>中奖者</h3>
+    <table class="table table-bordered">
+      <tr>
+        <td> 昵称 </td>
+        <td> <%= @lottery_activity.lucky_kol.name %> </td>
+      </tr>
+      <tr>
+        <td> 电话 </td>
+        <td> <%= @lottery_activity.lucky_kol.mobile_number %> </td>
+      </tr>
+      <tr>
+        <td> Email </td>
+        <td> <%= @lottery_activity.lucky_kol.email %> </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <h3>中奖者收获地址</h3>
+    <table class="table table-bordered">
+      <tr>
+        <td> 收货人 </td>
+        <td> <%= @lottery_activity.lucky_kol.address!.name %> </td>
+      </tr>
+      <tr>
+        <td> 收获号码 </td>
+        <td> <%= @lottery_activity.lucky_kol.address!.phone %> </td>
+      </tr>
+      <tr>
+        <td> 收获城市 </td>
+        <td> <%= @lottery_activity.lucky_kol.address!.region %> </td>
+      </tr>
+      <tr>
+        <td> 收获地址 </td>
+        <td> <%= @lottery_activity.lucky_kol.address!.location %> </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<% end %>
+
+<hr />
+
+<h4>轮播图片</h4>
+
+<% @lottery_activity.posters.each do |picture| %>
+  <div class="item">
+    <%= image_tag picture.name.url, style: "max-width: 340px;" %>
+  </div>
+<% end %>
+
+<hr />
+
+<h4>奖品介绍图片</h4>
+
+<% @lottery_activity.pictures.each do |picture| %>
+  <div class="item">
+    <%= image_tag picture.name.url, style: "max-width: 340px;" %>
+  </div>
+<% end %>
+
+<hr/>
+<% if @lottery_activity.status ==  "pending" %>
+  <%= form_for([:marketing_dashboard, @lottery_activity], url: execute_marketing_dashboard_lottery_activity_path) do |f| %>
+    <div>
+      <%= f.submit '确认发布', :class => 'btn btn-primary btn-lg' %>
+      <span class="text-warning">* 活动只有发布后，在APP上才能够看到</span>
+    </div>
+    <hr/>
+  <% end %>
+<% end %>
+

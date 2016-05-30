@@ -120,7 +120,7 @@ Rails.application.routes.draw do
   get 'share_by_email/show'
   post 'share_by_email' => 'share_by_email#create'
 
-  get '/home', to: 'pages#landing_page_brand'
+  get '/home', to: 'pages#home'
 
   root 'pages#home'
 
@@ -134,6 +134,8 @@ Rails.application.routes.draw do
   post '/contact', to: 'pages#contact'
   get '/contact_us', to: "pages#contact_us"
   match '/withdraw_apply', to: 'pages#withdraw_apply', :via => [:get, :post]
+  get '/download_invitation', to: 'pages#download_invitation'
+  get '/invite', to: 'pages#invite'
 
   resources :campaign, only: [:index, :create, :update, :show]
 

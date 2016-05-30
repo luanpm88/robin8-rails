@@ -41,9 +41,9 @@ every :tuesday, :at => '0:05 am' do
   runner "KolInfluenceValue.schedule_cal_influence"
 end
 
-every 12.hours do
-  runner "KolStatus.schedule_update_status"
-end
+# every 12.hours do
+#   runner "KolStatus.schedule_update_status"
+# end
 every 1.day, :at => '11:00 am' do
   runner "PushMessage.push_campaign_message"
 end
@@ -51,4 +51,3 @@ end
 every 1.day, :at => '17:30 pm' do
   runner "PushMessage.push_campaign_message"
 end
-

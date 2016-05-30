@@ -1,3 +1,4 @@
+require 'typhoeus/adapters/faraday'
 module Articles
   class ElasticClient
     Hosts = Rails.application.secrets[:elastic_servers]
@@ -67,7 +68,7 @@ module Articles
           bool: {
             filter: [
               { term: { chosen: 't'}},
-              { range: { publish_date: { gte: Date.today - 4.days }}}
+              { range: { publish_date: { gte: Date.today - 30.days }}}
             ]
           }
         }

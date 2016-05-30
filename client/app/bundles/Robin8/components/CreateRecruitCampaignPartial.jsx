@@ -7,12 +7,15 @@ import moment from 'moment';
 
 import "campaign/recruit/form.scss";
 
+import BreadCrumb            from './shared/BreadCrumb';
 import IntroPartial          from "./recruit_campaigns/form/IntroPartial";
 import RecruitTargetPartial  from './recruit_campaigns/form/RecruitTargetPartial';
 import DatePartial           from './recruit_campaigns/form/OfflineDate';
 import RecruitDatePartial    from './recruit_campaigns/form/RecruitDatePartial';
 import RecruitBudgetPartial  from './recruit_campaigns/form/RecruitBudgetPartial';
 import initToolTip           from './shared/InitToolTip';
+import CampaignFormValidate  from './shared/validate/CampaignFormValidate'
+
 
 const initCampaign = {
   recruit_start_time: moment().add(2, "hours").format("YYYY-MM-DD HH:mm"),
@@ -28,7 +31,7 @@ const initCampaign = {
   influence_score: "gt_400"
 }
 
-const validate = new FormValidate({
+const validate = new CampaignFormValidate({
   name: { require: true },
   description: { require: true },
   img_url: { require_img: true },
@@ -56,17 +59,6 @@ class CreateRecruitCampaign extends React.Component{
     super(props, context);
   }
 
-  render_breadcrumb(){
-    return (
-      <ol className="breadcrumb">
-        <li>
-          <i className="caret-arrow left" />
-          <Link to="/brand/">我的主页</Link>
-        </li>
-      </ol>
-    );
-  }
-
   componentDidMount() {
     initToolTip({placement:'bottom', html: true});
   }
@@ -82,7 +74,7 @@ class CreateRecruitCampaign extends React.Component{
     return(
       <div className="page page-recruit page-recruit-new">
         <div className="container">
-          {this.render_breadcrumb()}
+          <BreadCrumb />
           <div className="creat-activity-wrap">
             <form action="" name="" id="" onSubmit={ (event) => { handleSubmit(saveRecruit)(event).catch(validateFailed) }}>
               <IntroPartial {...{name, description, img_url, task_description, address, hide_brand_name}}/>

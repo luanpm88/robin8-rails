@@ -11,11 +11,13 @@ module API
           optional :page, type: Integer
           optional :title, type: String
           optional :with_message_stat, type: String, values: ['y','n']
+          optional :with_announcements, type: String
         end
         #TODO 使用搜索插件
         get '/' do
           present :error, 0
           present :message_stat, current_kol, with: API::V1::Entities::KolEntities::MessageStat  if params[:with_message_stat] == 'y'
+          present :announcements, Announcement.order_by_position, with: API::V1::Entities::AnnouncementEntities::Summary  if params[:with_announcements] == 'y'
           if  params[:status] == 'all'
             if current_kol.hide_recruit
               @campaigns = Campaign.where("status != 'unexecuted' and status != 'agreed'").where("per_budget_type != 'recruit'")

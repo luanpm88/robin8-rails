@@ -145,6 +145,10 @@ en:
         alipay_no: 支付宝账号
         bank_name: 银行名称
         bank_no:   银行账号
+      alipay_order:
+        credits: 金额
+      invoice_history:
+        credits: 金额
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
@@ -164,12 +168,27 @@ en:
           attributes:
             email:
               blank: Email can't be blank
+        alipay_order:
+          attributes:
+            credits:
+              blank: 金额不能为空
+              not_a_number: 金额必须为数字
+              not_an_integer: 金额必须为整数
+              greater_than_or_equal_to: 金额必须大于500元
+        invoice_history:
+          attributes:
+            credits:
+              blank: 金额不能为空
+              not_a_number: 金额必须为数字
+              not_an_integer: 金额必须为整数
+              greater_than_or_equal_to: 金额必须大于500元
         kol:
           attributes:
             email:
               invalid: format is invalid
             mobile_number:
               taken: has already been taken
+
   application:
     common:
       cancel: Cancel

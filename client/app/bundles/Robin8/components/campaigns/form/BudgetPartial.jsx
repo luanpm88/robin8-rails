@@ -1,5 +1,6 @@
 import React from 'react';
-import { ShowError, BudgetShowError } from '../../shared/ShowError';
+import { ShowError } from '../../shared/ShowError';
+import BudgetAsyncValidate  from '../../shared/validate/BudgetAsyncValidate';
 
 export default class BudgetPartial extends React.Component {
 
@@ -19,6 +20,7 @@ export default class BudgetPartial extends React.Component {
     const { onChange } = this.props.budget;
     $('.budget-input').change(function() {
       onChange( $(this).val() );
+      BudgetAsyncValidate($(this).val());
     })
   }
 
@@ -35,7 +37,7 @@ export default class BudgetPartial extends React.Component {
         <strong className="stat-num">
           &nbsp;&nbsp;{1}
         </strong>
-        <a href="/contact?from=recharge" target="_blank" className="btn-default recharge-btn">充值</a>
+        <a href="/brand/financial/recharge" target="_blank" className="btn-default recharge-btn">充值</a>
       </div>
     )
   }
@@ -60,10 +62,11 @@ export default class BudgetPartial extends React.Component {
             <label className="creat-campaign-total-budget">总预算</label>
             <div className="spinner-box">
               <span className="symbol">$</span>
-              <input {...budget} type="text"  data-is-edit={this.props.isEdit} data-origin-budget={budget.defaultValue} className="spinner-input budget-input" style={{display: 'block'}} />
+              <input {...budget} type="text" data-is-edit={this.props.isEdit} data-origin-budget={budget.defaultValue} className="spinner-input budget-input" style={{display: 'block'}} />
             </div>
             <p className="stat">最低费用<strong className="stat-num">100</strong>元</p>
-            <BudgetShowError field={budget}/>
+            <ShowError field={budget}/>
+            <div><a href="/brand/financial/recharge" className="budget-show-error" target="_blank">账户余额不足, 请充值</a></div>
           </div>
         </div>
       </div>

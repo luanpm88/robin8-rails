@@ -49,7 +49,13 @@
               <%= link_to '所有截图', marketing_dashboard_campaign_invites_path %>
             </li>
             <li>
-              <%= link_to '待审核截图', pending_marketing_dashboard_campaign_invites_path %>
+              <%= link_to '所有待审核截图', pending_marketing_dashboard_campaign_invites_path %>
+            </li>
+            <li>
+              <%= link_to '有作弊嫌疑的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 2) %>
+            </li>
+            <li>
+              <%= link_to '正常的待审核截图', pending_marketing_dashboard_campaign_invites_path(:observer_status => 1) %>
             </li>
             <li>
               <%= link_to '已通过截图', passed_marketing_dashboard_campaign_invites_path %>
@@ -60,60 +66,114 @@
           </ul>
         </li>
         <li>
-            <%= link_to "品牌主管理", marketing_dashboard_users_path %>
-          </li>
-          <li>
-            <%= link_to 'KOL 管理', marketing_dashboard_kols_path %>
-          </li>
-          <li>
-            <a href="#">提现管理 <span class='fa arrow'></span></a>
+          <%= link_to "品牌主管理", marketing_dashboard_users_path %>
+        </li>
+        <li>
+            <a href="#">KOL 管理 <span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
               <li>
-                <%= link_to '所有提现', marketing_dashboard_withdraws_path %>
+                <%= link_to '所有的Kols', marketing_dashboard_kols_path %>
               </li>
               <li>
-                <%= link_to '待审核', pending_marketing_dashboard_withdraws_path %>
-              </li>
-              <li>
-                <%= link_to '已通过', agreed_marketing_dashboard_withdraws_path %>
-              </li>
-              <li>
-                <%= link_to '已拒绝', rejected_marketing_dashboard_withdraws_path %>
+                <%= link_to '被拉黑的Kols', marketing_dashboard_kols_path(:ban => 1) %>
               </li>
             </ul>
           </li>
-          <li>
-            <%= link_to '反馈管理', marketing_dashboard_feedbacks_path %>
-          </li>
-          <li>
-            <%= link_to '管理员列表', marketing_dashboard_admin_users_path %>
-          </li>
-          <li>
-            <%= link_to '追踪链接列表', marketing_dashboard_track_urls_path %>
-          </li>
-          <li>
-            <a href="#">统计报表 <span class='fa arrow'></span> </a>
-            <ul class="nav nav-second-level">
-              <li>
-                <%= link_to '所有报表', marketing_dashboard_stastic_datas_path %>
-              </li>
-              <li>
-                <%= link_to '新建报表', new_marketing_dashboard_stastic_data_path %>
-              </li>
-              <li>
-                <%= link_to '用户来源', from_source_marketing_dashboard_stastic_datas_path %>
-              </li>
-              <li>
-                <%= link_to '用户新增', new_kol_marketing_dashboard_stastic_datas_path %>
-              </li>
-              <li>
-                <%= link_to '日统计', day_statics_marketing_dashboard_stastic_datas_path %>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+        <li>
+          <a href="#">支付宝充值管理 <span class='fa arrow'></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '所有充值订单', marketing_dashboard_alipay_orders_path %>
+            </li>
+            <li>
+              <%= link_to '待付款订单', marketing_dashboard_alipay_orders_path(pending: true) %>
+            </li>
+            <li>
+              <%= link_to '已付款订单', marketing_dashboard_alipay_orders_path(paid: true) %>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">提现管理 <span class='fa arrow'></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '所有提现', marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '待审核', pending_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '已通过', agreed_marketing_dashboard_withdraws_path %>
+            </li>
+            <li>
+              <%= link_to '已拒绝', rejected_marketing_dashboard_withdraws_path %>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">发票管理 <span class='fa arrow'></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '所有发票', marketing_dashboard_invoice_histories_path %>
+            </li>
+            <li>
+              <%= link_to '待处理发票', marketing_dashboard_invoice_histories_path(pending: true) %>
+            </li>
+            <li>
+              <%= link_to '已处理发票', marketing_dashboard_invoice_histories_path(sent: true) %>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <%= link_to '反馈管理', marketing_dashboard_feedbacks_path %>
+        </li>
+        <li>
+          <%= link_to '管理员列表', marketing_dashboard_admin_users_path %>
+        </li>
+        <li>
+          <%= link_to '追踪链接列表', marketing_dashboard_track_urls_path %>
+        </li>
+        <li>
+          <a href="#">统计报表 <span class='fa arrow'></span> </a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '所有报表', marketing_dashboard_stastic_datas_path %>
+            </li>
+            <li>
+              <%= link_to '新建报表', new_marketing_dashboard_stastic_data_path %>
+            </li>
+            <li>
+              <%= link_to '用户来源', from_source_marketing_dashboard_stastic_datas_path %>
+            </li>
+            <li>
+              <%= link_to '用户新增', new_kol_marketing_dashboard_stastic_datas_path %>
+            </li>
+            <li>
+              <%= link_to '日统计', day_statics_marketing_dashboard_stastic_datas_path %>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">一元夺宝 <span class="fa arrow"></span></a>
+          <ul class="nav nav-second-level">
+            <li>
+              <%= link_to '创建夺宝活动', new_marketing_dashboard_lottery_activity_path %>
+            </li>
+            <li>
+              <%= link_to '所有夺宝活动', marketing_dashboard_lottery_activities_path %>
+            </li>
+            <li>
+              <%= link_to '未发布夺宝活动', marketing_dashboard_lottery_activities_path(pending: true) %>
+            </li>
+            <li>
+              <%= link_to '已发布夺宝活动', marketing_dashboard_lottery_activities_path(executing: true) %>
+            </li>
+          </ul>
+        </li>
+      </ul>
       <!-- /.sidebar-collapse -->
     </div>
-    <!-- /.navbar-static-side -->
+    <!-- /.sidebar-collapse -->
+  </div>
+  <!-- /.navbar-static-side -->
 </nav>

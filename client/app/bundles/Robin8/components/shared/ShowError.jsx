@@ -17,7 +17,6 @@ export class ShowError extends Component {
   }
 }
 
-
 export class BudgetShowError extends Component {
 
   static propTypes = {
@@ -30,7 +29,7 @@ export class BudgetShowError extends Component {
     let style = { color: '#ce0101', marginTop: 8, 'fontSize': '10px'}
 
     return (
-      <div style={style}><a href="/contact?from=recharge" className="budget-show-error" target="_blank">{ (field.touched || field.dirty) && field.error }</a></div>
+      <div style={style}><a href="/brand/financial/recharge" className="budget-show-error" target="_blank">{ (field.touched || field.dirty) && field.error }</a></div>
     );
   }
 }
