@@ -4,7 +4,7 @@ class CampaignShowController < ApplicationController
 
   def show
     sns_info = $weixin_client.get_oauth_access_token(params[:code])
-    open_id = sns_info.result['openid']    rescue nil
+    openid = sns_info.result['openid']    rescue nil
     uuid_params = JSON.parse(Base64.decode64(params[:uuid]))
     campaign_id = uuid_params['campaign_id']
     if uuid_params["campaign_action_url_identifier"].present?
@@ -16,8 +16,8 @@ class CampaignShowController < ApplicationController
     end
     return render :text => "你访问的Campaign 不存在" if @campaign.nil?
 
-    Rails.logger.info "-----show ----openid:#{open_id}---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
-    if @campaign and @campaign.is_cpa?
+    Rails.logger.info "-----show ----openid:#{openid}---#{@campaign.status} -- #{params[:uuid]} --- #{cookies[:_robin8_visitor]} --- #{request.remote_ip}"
+    if @campaign and @campaign.is_cpa_type?
       return deal_with_cpa_campaign uuid_params
     end
 
