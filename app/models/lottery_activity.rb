@@ -12,7 +12,7 @@ class LotteryActivity < ActiveRecord::Base
 
   belongs_to :lucky_kol, class_name: Kol.to_s
 
-  validates_numericality_of :total_number, greater_than_or_equal_to: 0
+  validates_numericality_of :total_number, greater_than_or_equal_to: 1
   validates_inclusion_of :status, :in => %w( pending executing drawing finished )
 
   after_initialize :assign_default_values, unless: :persisted?
