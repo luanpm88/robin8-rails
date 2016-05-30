@@ -44,8 +44,8 @@ class LotteryActivity < ActiveRecord::Base
   end
 
   def draw!
-    LotteryDrawWorker.perform_async(self.code)
     self.update(status: "drawing")
+    LotteryDrawWorker.perform_async(self.code)
   end
 
   def allocate(size)

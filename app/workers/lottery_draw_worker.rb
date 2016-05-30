@@ -10,7 +10,7 @@ class LotteryDrawWorker
     Rails.logger.sidekiq.info "夺宝活动开奖 编号：#{code}"
 
     activity.with_lock do
-      raise "夺宝活动开奖异常，活动状态异常！" unless ["drawing", "finished"].include? activity.status
+      raise "夺宝活动开奖异常，活动状态异常！" unless activity.status === "drawing"
 
       number_a = LotteryActivityOrder.paid.ordered.limit(10).inject(0) do |sum, o|
        sum += o.code.to_i
