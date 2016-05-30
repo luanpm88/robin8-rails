@@ -157,6 +157,51 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  #finish_remark:  expired or fee_end
+  def finish(finish_remark)
+    self.reload
+    Rails.logger.campaign_sidekiq.info "-----executed: #{finish_remark}----------"
+    if self.status == 'executing'
+      ActiveRecord::Base.transaction do
+        update_info(finish_remark)
+        end_invites
+        settle_accounts_for_kol
+        if !Rails.env.test?
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForKol ,self.id, 'settle_accounts_for_kol')
+          CampaignWorker.perform_at(Time.now + SettleWaitTimeForBrand ,self.id, 'settle_accounts_for_brand')
+          CampaignWorker.perform_at(Time.now + RemindUploadWaitTime ,self.id, 'remind_upload')
+          CampaignObserverWorker.perform_async(self.id)
+        elsif Rails.env.test?
+          CampaignWorker.new.perform(self.id, 'settle_accounts_for_kol')
+          CampaignWorker.new.perform(self.id, 'settle_accounts_for_brand')
+          CampaignWorker.new.perform(self.id, 'remind_upload')
+          CampaignObserverWorker.new.perform(self.id)
+        end
+      end
+    end
+  end
+
+  def update_info(finish_remark)
+    self.update_attributes(:avail_click => self.redis_avail_click.value, :total_click => self.redis_total_click.value,
+                            :status => 'executed', :finish_remark => finish_remark, :actual_deadline_time => Time.now)
+  end
+
+  # 更新invite 状态和点击数
+  def end_invites
+    campaign_invites.each do |invite|
+      next if invite.status == 'finished' || invite.status == 'settled'  || invite.status == 'rejected'
+      if invite.status == 'approved'
+        invite.status = 'finished'
+        invite.avail_click = invite.redis_avail_click.value
+        invite.total_click = invite.redis_total_click.value
+      elsif
+        # receive but not apporve  we must delete
+        invite.delete
+      end
+      invite.save!
+    end
+  end
+
   # 提醒上传截图
   def remind_upload
     Rails.logger.campaign_sidekiq.info "-----remind_upload:  ----start-----#{self.inspect}----------"

@@ -114,7 +114,7 @@ class Message < ActiveRecord::Base
 
   def self.generate_push_message(message)
     puts "----generate_push_message"
-    if Rails.env == "test"
+    if Rails.env == "staging" or Rails.env == "development" 
       return
     end
     PushMessage.create_message_push(message)
