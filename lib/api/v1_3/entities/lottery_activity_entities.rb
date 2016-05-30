@@ -37,6 +37,10 @@ module API
             activity.token_number options[:kol]
           end
 
+          expose :winner_self, if: lambda { |activity, opts| opts[:kol] } do |activity, opts|
+            activity.lucky_kol === options[:kol]
+          end
+
           expose :winner_name do |activity|
             activity.lucky_kol.name rescue nil
           end
@@ -50,6 +54,10 @@ module API
           expose :description, :lucky_number, :draw_at
           expose :pictures do |activity|
             activity.posters.map(&:url)
+          end
+
+          expose :winner_self, if: lambda { |activity, opts| opts[:kol] } do |activity, opts|
+            activity.lucky_kol === options[:kol]
           end
 
           expose :winner_name do |activity|

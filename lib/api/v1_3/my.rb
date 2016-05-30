@@ -55,7 +55,7 @@ module API
           orders = activity.orders.where(kol: current_kol).ordered.includes(:tickets)
 
           present :error, 0
-          present :activity, activity, with: API::V1_3::Entities::LotteryActivityEntities::Detail
+          present :activity, activity, with: API::V1_3::Entities::LotteryActivityEntities::Detail, kol: current_kol
           present :orders, orders, with: API::V1_3::Entities::LotteryActivityEntities::ShowOrder, kol: current_kol
           present :token_number, activity.token_number(current_kol)
         end
