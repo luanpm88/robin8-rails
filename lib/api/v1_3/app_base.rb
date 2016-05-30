@@ -10,6 +10,11 @@ module API
       mount API::V1_3::Kols
       mount API::V1_3::Transactions
       mount API::V1_3::Withdraws
+      mount API::V1_3::AnalysisIdentities
+      mount API::V1_3::WeixinReport
+      mount API::V1_3::WeiboReport
+      mount API::V1_3::KolIdentityPrices
+      mount API::V1_3::LotteryActivities
     end
   end
 end

@@ -63,6 +63,17 @@ class UpdateRecruitCampaignPartial extends React.Component{
     initToolTip({placement:'bottom', html: true});
   }
 
+  render_breadcrumb(){
+    return (
+      <ol className="breadcrumb">
+        <li>
+          <i className="caret-arrow left" />
+          <Link to="/brand/">我的主页</Link>
+        </li>
+      </ol>
+    );
+  }
+
   render(){
     const { name, description, img_url, influence_score, start_time, deadline,
           recruit_start_time, recruit_end_time, budget, per_action_budget, recruit_person_count, task_description, address, region, hide_brand_name} = this.props.fields;
