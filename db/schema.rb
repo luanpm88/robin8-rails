@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160530015813) do
+ActiveRecord::Schema.define(version: 20160530081621) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 20160530015813) do
     t.datetime "updated_at",                      null: false
     t.string   "expect_price",        limit: 11
     t.string   "agree_reason",        limit: 255
+    t.string   "remark",              limit: 255
   end
 
   create_table "campaign_categories", force: :cascade do |t|
@@ -498,6 +499,14 @@ ActiveRecord::Schema.define(version: 20160530015813) do
     t.integer  "last_status_id",            limit: 4
   end
 
+  create_table "images", force: :cascade do |t|
+    t.integer  "referable_id",   limit: 4
+    t.string   "referable_type", limit: 255
+    t.string   "avatar",         limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "industries", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.datetime "created_at"
@@ -732,7 +741,7 @@ ActiveRecord::Schema.define(version: 20160530015813) do
     t.integer  "total_click_threshold",  limit: 4
     t.string   "app_platform",           limit: 255
     t.string   "app_version",            limit: 255
-    t.string   "private_token",          limit: 255
+    t.string   "private_token",          limit: 80
     t.string   "device_token",           limit: 255
     t.string   "desc",                   limit: 255
     t.string   "alipay_account",         limit: 255
@@ -759,6 +768,7 @@ ActiveRecord::Schema.define(version: 20160530015813) do
   add_index "kols", ["email"], name: "index_kols_on_email", unique: true, using: :btree
   add_index "kols", ["invite_code"], name: "index_kols_on_invite_code", using: :btree
   add_index "kols", ["mobile_number"], name: "index_kols_on_mobile_number", unique: true, using: :btree
+  add_index "kols", ["private_token"], name: "index_kols_on_private_token", using: :btree
   add_index "kols", ["reset_password_token"], name: "index_kols_on_reset_password_token", unique: true, using: :btree
 
   create_table "kols_lists", force: :cascade do |t|
