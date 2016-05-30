@@ -3,7 +3,7 @@
       <a href="/" class="logo">Robin8</a>
       <% if !mobile_request? %>
         <div class="navbar-action pull-right">
-          <a href="#signinupModal" class="quick-login" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
+          <a href="#signinupModal" class="quick-login" show-after-loading="<%= params[:landing_at] == 'brand' ? true : false %>" data-toggle="modal">品牌登录&nbsp;/&nbsp;注册</a>
         </div>
       <% end %>
     </div>
@@ -174,5 +174,8 @@
   <script type="text/javascript">
     if($("#downloadModal").attr("show-after-loading") == 'true'){
       $("#downloadModal").modal('show');
+    }
+    if($('.quick-login').attr("show-after-loading") == 'true'){
+      $(".quick-login").click()
     }
   </script>
