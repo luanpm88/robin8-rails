@@ -36,9 +36,11 @@ namespace :assets_chores do
     end
   end
 end
+
 unless $*[-1] == "noassets"
   after 'deploy:compile_assets', 'assets_chores:copy_manifest_to_slave'
 end
+
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a
