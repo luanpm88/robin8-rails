@@ -39,3 +39,4 @@ Starting MailCatcher
     nginx proxy_set_header  HTTP_X_FORWARDED_FOR $http_x_forwarded_for;
     init tasks
     init banner
+    weixin
