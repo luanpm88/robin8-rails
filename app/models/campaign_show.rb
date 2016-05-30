@@ -47,6 +47,7 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # openid_ip_reach_max
+    store_key = "openid_max_" + openid.to_s + campaign.id.to_s
     openid_current_count = Rails.cache.read(store_key) || 0
     if openid_current_count > OpenidMaxCount
       return [false, 'openid_reach_max_count']
