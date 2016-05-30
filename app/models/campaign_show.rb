@@ -21,13 +21,13 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'had_no_openid']
     end
 
+    return [false, 'visitor_agent_is_invalid']  if !visitor_agent.include?("MicroMessenger")
+
     if campaign.is_cpa?
       return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
       end
-    else
-
     end
 
     # check_ip?
