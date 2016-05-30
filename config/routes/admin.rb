@@ -70,6 +70,7 @@ Rails.application.routes.draw do
       match '/agree' => 'withdraws#agree', via: [:post]
       match '/reject' => 'withdraws#reject', via: [:post]
     end
+    resources :announcements, except: [:destroy]
     resources :alipay_orders do
       collection do
         post 'search'
@@ -91,6 +92,12 @@ Rails.application.routes.draw do
         match 'send_express' => 'invoice_histories#send_express', via: [:post]
       end
     end
-    resources :announcements, except: [:destroy]
+
+    resources :lottery_activities do
+      member do
+        patch :execute
+      end
+    end
+
   end
 end

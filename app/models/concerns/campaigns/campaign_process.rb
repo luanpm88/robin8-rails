@@ -99,7 +99,7 @@ module Campaigns
           invite.total_click = invite.redis_total_click.value
         elsif
           # receive but not apporve  we must delete
-        invite.delete
+          invite.delete
         end
         invite.save!
       end

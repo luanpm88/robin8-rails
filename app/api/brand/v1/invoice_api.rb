@@ -10,7 +10,7 @@ module Brand
         if @invoice
           present @invoice
         else
-          {'no_invoice': true}
+          { no_invoice: true }
         end
       end
 
