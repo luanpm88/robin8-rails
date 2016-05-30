@@ -1,11 +1,18 @@
 <h1>Kol列表</h1>
 <div class="well">
+ <span>
+   等级[等级A的用户 campaign 有效点击 上限是100
+   等级B用户 有效点击 点击上限是10]
+   被拉黑的用户 不能接活动
+ </span>
+</div>
+
+<div class="well">
   <%= form_tag search_marketing_dashboard_kols_path do %>
     <%= text_field_tag :search_key, nil, :placeholder => "以name、email、mobile_number、id 搜索", class: "search_input" %>
     <%= submit_tag 'Search', :class => 'btn btn-primary' %>
   <% end %>
 </div>
-
 <h5><%= devise_error_messages! %></h5>
 <table class='table table-bordered'>
   <thead>
@@ -18,6 +25,7 @@
       <th>Amount</th>
       <th>Avail Amount</th>
       <th>Source</th>
+      <th>用户等级</th>
       <th>Forbid Campaign Time</th>
       <th>Ops</th>
     </tr>
@@ -26,7 +34,7 @@
   <tbody>
     <% @kols.each do |k| %>
       <tr>
-        <% %w(id name email mobile_number province amount avail_amount utm_source forbid_campaign_time).each do |v| %>
+        <% %w(id name email mobile_number province amount avail_amount utm_source kol_level forbid_campaign_time).each do |v| %>
           <td> <%= k.send v %> </td>
         <% end %>
         <td>

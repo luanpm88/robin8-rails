@@ -26,6 +26,12 @@
               <%= f.text_field :forbid_campaign_time, autofocus: true, class: "form-control datetimepicker",  id: "datetimepicker1" %>
             </div>
 
+            <div class="field form-group datetime" style="position: relative;">
+              <%= f.label "Kol 等级[等级A的用户 campaign 有效点击 上限是100, 等级B用户 有效点击 点击上限是10]" %><br />
+              <%= f.select :kol_level, ["A", "B"], class: "form-control" %>
+            </div>
+
+
             <div class="actions">
               <%= f.submit "保存", class: "btn btn-lg btn-success btn-block" %>
             </div>
