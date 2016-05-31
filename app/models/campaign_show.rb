@@ -23,7 +23,7 @@ class CampaignShow < ActiveRecord::Base
 
     return [false, 'visitor_agent_is_invalid']  if !visitor_agent.include?("MicroMessenger")
 
-    if campaign.is_cpa?
+    if campaign.is_cpa_type?
       return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
@@ -65,7 +65,7 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # check_useragent?  &&   visitor_referer
-    return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa?
+    return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa_type?
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)
     # check kol's five_click_threshold
