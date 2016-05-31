@@ -33,6 +33,8 @@ class Transaction < ActiveRecord::Base
         '人工提现'
       when 'withdraw'
         '提现'
+      when 'lettory_activity'
+        '夺宝活动'
       when RewardTask::CheckIn
         '签到'
       when RewardTask::InviteFriend
