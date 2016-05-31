@@ -44,14 +44,14 @@ module IdentityAnalysis
         else
           return ['account_success', cookies , redirect_url]
         end
-      elsif response["base_resp"].present? && response["base_resp"]["ret"] == '200027'
+      elsif response["base_resp"].present? && (response["base_resp"]["ret"].to_s == '200027' || response["base_resp"]["ret"].to_s == '200008')
         return [['error', 'verify_code']]
       else
         return [['error', 'account_wrong']]
       end
     end
 
-    def verify_code_url(username)
+    def self.verify_code_url(username)
       "https://mp.weixin.qq.com/cgi-bin/verifycode?username=#{username}&r=#{Time.now.to_i}"
     end
 

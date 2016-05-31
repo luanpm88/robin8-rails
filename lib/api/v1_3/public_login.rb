@@ -20,7 +20,7 @@ module API
               present :detail, '账户错误'
             elsif res[1] == 'verify_code'
               present :detail, '验证码错误'
-              present :imgcode_url, Analysis::PublicLogin.verify_code_url(params[:username])
+              present :imgcode_url, IdentityAnalysis::PublicLogin.verify_code_url(params[:username])
             end
           else
             present :error, 0
