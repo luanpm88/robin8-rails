@@ -31,16 +31,14 @@ set :rbenv_ruby, '2.2.0'
 
 namespace :assets_chores do
   desc 'copy manifest.json from master to slave'
-  task :copy_manifest_to_slave do
-    on roles(:master) do
-      execute "scp /home/deployer/apps/robin8/shared/public/assets/manifest.json deployer@139.196.169.53:/home/deployer/apps/robin8/shared/public/assets/manifest.json"
+  task :pull_manifest_from_master do
+    on roles(:slave) do
+      execute "scp deployer@139.196.14.144:/home/deployer/robin8_assets/assets/manifest.json #{Dir.pwd}/public/assets/manifest.json"
     end
   end
 end
 
-unless $*[-1] == "noassets"
-  after 'deploy:compile_assets', 'assets_chores:copy_manifest_to_slave'
-end
+after 'deploy:sync_assets', 'assets_chores:pull_manifest_from_master'
 
 # Custom SSH Options
 # ==================
