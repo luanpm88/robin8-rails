@@ -69,7 +69,7 @@
       <img src="<%= @campaign_invites[i].screenshot %>" alt="screenshot" />
       <div class="admin-campaign-title">活动名称: <%= @campaign_invites[i].campaign.name[0...15] %>... </div>
       <div>
-        <label>kol_id : <%= link_to @campaign_invites[i].kol_id, "/marketing_dashboard/kols/#{@campaign_invites[i].kol_id}", :target => "_blank"%></label>
+        <label>kol_id : <%= link_to @campaign_invites[i].kol_id, "/marketing_dashboard/kols/#{@campaign_invites[i].kol_id}/edit", :target => "_blank"%></label>
         <label>campaign_id : <%= link_to @campaign_invites[i].campaign_id, "/marketing_dashboard/campaigns/#{@campaign_invites[i].campaign_id}", :target => "_blank"%></label>
       </div>
       <div>活动结束时间: <%= @campaign_invites[i].campaign.deadline %></div>
@@ -81,7 +81,11 @@
         <label>活动类型: <%= @campaign_invites[i].campaign_type %></label>
       </div>
       <div>
-        <labe>是否作弊: <%= @campaign_invites[i].campaign_observer_status%></label>
+        <labe>是否作弊: <%= @campaign_invites[i].campaign_observer_status%> 
+        </label>
+        <% if @campaign_invites[i].observer_status == 2%>
+          <button class="show-reject-reason btn btn-success" data-observer-text="<%=  @campaign_invites[i].observer_text %>">详情</button>
+        <% end %>
       </div>
       <div>
         <label><%= check_box_tag "campaign_invites_ids[]", @campaign_invites[i].id %></label>
@@ -168,6 +172,10 @@ $(function(){
         }
       });
   });
+
+  $('.show-reject-reason').click(function(){
+    alert($(this).attr("data-observer-text"));
+  })
 
   $(".agree-one").click(function(){
     var agree_ids = new Array();

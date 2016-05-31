@@ -21,13 +21,12 @@ class CampaignShow < ActiveRecord::Base
       return [false, 'had_no_openid']
     end
 
+    return [false, 'visitor_agent_is_invalid']  if !visitor_agent.include?("MicroMessenger")
     if campaign.is_cpa_type?
       return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
       end
-    else
-
     end
 
     # check_ip?
@@ -47,6 +46,7 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # openid_ip_reach_max
+    store_key = "openid_max_" + openid.to_s + campaign.id.to_s
     openid_current_count = Rails.cache.read(store_key) || 0
     if openid_current_count > OpenidMaxCount
       return [false, 'openid_reach_max_count']
@@ -64,7 +64,10 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # check_useragent?  &&   visitor_referer
+<<<<<<< HEAD
     return [false, 'visitor_agent_is_invalid']  if visitor_agent.blank?
+=======
+>>>>>>> master2_dev
     return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa_type?
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)

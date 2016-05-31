@@ -65,38 +65,38 @@ class FinancialRechargePartial extends React.Component {
   }
 
   recharge() {
-    // ======
-    // const { alipayRecharge } = this.props.actions;
-    const credits = this.refs.priceInput.value;
-    // ======
+    // // ======
+    // // const { alipayRecharge } = this.props.actions;
+    // const credits = this.refs.priceInput.value;
+    // // ======
 
 
-    // const price = this.refs.priceInput.value;
-    // // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元  选项框和input不可共存
-    // let checked_price = "";
-    // let credits = "";
-    // if (this.refs.price_500.style.borderColor === "rgb(40, 182, 187)") {
-    //   checked_price = '500';
-    // } else if (this.refs.price_1000.style.borderColor === "rgb(40, 182, 187)") {
-    //   checked_price = '1000';
-    // } else if (this.refs.price_2000.style.borderColor === "rgb(40, 182, 187)") {
-    //   checked_price = '2000';
-    // }
-    // if (validator.isNull(price) && validator.isNull(checked_price)) {
-    //   $(".error-tips p").hide();
-    //   $(".must-input-or-check").show();
-    //   return ;
-    // } else if (!validator.isNull(price) && validator.isNull(checked_price)) {
-    //   credits = price;
-    // } else if (validator.isNull(price) && !validator.isNull(checked_price)) {
-    //   credits = checked_price;
-    // } else if(!validator.isNull(price) && !validator.isNull(checked_price)) {
-    //   return ;
-    // }
-    //
-    // if(validator.isNull(credits) || !validator.isInt(credits, {min: 500})) {
-    //   return ;
-    // }
+    const price = this.refs.priceInput.value;
+    // 判断金额是否符合要求: 金额必须存在 金额为整数  大于500元  选项框和input不可共存
+    let checked_price = "";
+    let credits = "";
+    if (this.refs.price_500.style.borderColor === "rgb(40, 182, 187)") {
+      checked_price = '500';
+    } else if (this.refs.price_1000.style.borderColor === "rgb(40, 182, 187)") {
+      checked_price = '1000';
+    } else if (this.refs.price_2000.style.borderColor === "rgb(40, 182, 187)") {
+      checked_price = '2000';
+    }
+    if (validator.isNull(price) && validator.isNull(checked_price)) {
+      $(".error-tips p").hide();
+      $(".must-input-or-check").show();
+      return ;
+    } else if (!validator.isNull(price) && validator.isNull(checked_price)) {
+      credits = price;
+    } else if (validator.isNull(price) && !validator.isNull(checked_price)) {
+      credits = checked_price;
+    } else if(!validator.isNull(price) && !validator.isNull(checked_price)) {
+      return ;
+    }
+
+    if(validator.isNull(credits) || !validator.isInt(credits, {min: 500})) {
+      return ;
+    }
 
     if(this.refs.invoice_checkbox.checked) {
       this.setState({checkInvoice: true})
@@ -106,8 +106,6 @@ class FinancialRechargePartial extends React.Component {
     this.setState({credits: credits});
     this.setState({showRechargeModal: true});
 
-
-    // alipayRecharge(credits);
   }
 
   render_avatar() {
@@ -191,7 +189,6 @@ class FinancialRechargePartial extends React.Component {
                 </div>
               </div>
 
-              <OfflineRecharge />
 
             </div>
           </div>

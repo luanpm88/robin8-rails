@@ -14,9 +14,15 @@
 # This can be used to drop a more detailed server definition into the
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
-
-server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
-set :branch, 'QA'
+if $*.include? "new_qa"
+  server '139.196.44.225', user: 'deployer', roles: %w{web app db master}
+  set :branch, 'alipay_master_cn'
+  set :server_name, '139.196.44.225'
+else
+  server '139.196.36.27', user: 'deployer', roles: %w{web app db master}
+  set :branch, 'QA'
+  set :server_name, 'robin8-staging.cn'
+end
 
 set :unicorn_env, "staging"
 set :unicorn_rack_env, "staging"

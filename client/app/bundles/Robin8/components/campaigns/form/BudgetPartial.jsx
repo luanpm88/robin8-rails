@@ -66,8 +66,7 @@ export default class BudgetPartial extends React.Component {
             </div>
             <p className="stat">最低费用<strong className="stat-num">100</strong>元</p>
             <ShowError field={budget}/>
-            <div><a href="/contact?from=recharge" className="budget-show-error" target="_blank">账户余额不足, 请充值</a></div>
-
+            <div><a href="/brand/financial/recharge" className="budget-show-error" target="_blank">账户余额不足, 请充值</a></div>
           </div>
         </div>
       </div>
