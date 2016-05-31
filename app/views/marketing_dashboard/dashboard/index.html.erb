@@ -58,7 +58,7 @@
             <i class="fa fa-shopping-cart fa-5x"></i>
           </div>
           <div class="col-xs-9 text-right">
-            <div class="huge"><%= CampaignInvite.where(:img_status => :pending).count %></div>
+            <div class="huge"><%= CampaignInvite.where(:img_status => :pending).where("screenshot is not NULL").count %></div>
             <div>待审核的截图个数</div>
           </div>
         </div>

@@ -55,6 +55,12 @@ set :ssh_options, {:forward_agent => true}
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
+# Default value for whenever roles list
+set :whenever_roles, %w{ master }
+
+# Default value for sidekiq roles
+set :sidekiq_role, %w{ master }
+
 namespace :deploy do
   task :upload_localization do
     on roles(:app)  do
@@ -138,9 +144,18 @@ end
 
 desc "noassets"
 task :noassets do
-  if $*[-1] == "noassets"
+  if $*.include? "noassets"
     puts '-'*80
     puts "本次部署采用noassets方式, 使用的是上一次部署的assets 文件, 请确保你没有修改assets 资源！！"
+    puts '-'*80
+  end
+end
+
+desc "new_qa"
+task :new_qa do
+  if $*.include? "new_qa"
+    puts '-'*80
+    puts "部署在新的测试环境"
     puts '-'*80
   end
 end

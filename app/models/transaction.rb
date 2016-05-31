@@ -3,14 +3,18 @@ class Transaction < ActiveRecord::Base
   belongs_to :opposite, :polymorphic => true
   belongs_to :item, :polymorphic => true
 
+  validates :trade_no, allow_nil: true, allow_blank: true, uniqueness: true
+
   scope :recent, ->(_start,_end){ where(:created_at => _start.beginning_of_day.._end.end_of_day) }
   scope :created_desc, -> {order('created_at desc')}
   scope :tasks, ->{where("subject in ('check_in', 'invite_friend', 'complete_info')")}
 
+  after_create :generate_trade_no
+
   # kol 和braand 行为有差异  现落到各自model
   # scope :income, -> {where(:direct => 'income')}
   # scope :withdraw, -> {where(:direct => 'payout')}
-  validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw withdraw check_in invite_friend complete_info)
+  validates_inclusion_of :subject, in: %w(campaign manual_recharge manaual_recharge manual_withdraw alipay_recharge withdraw check_in invite_friend complete_info favorable_comment lettory_activity)
 
   # subject
   # manual_recharge manual_withdraw
@@ -52,6 +56,10 @@ class Transaction < ActiveRecord::Base
       when 'unfrozen'
         then '解冻'
     end
+  end
+
+  def generate_trade_no
+    self.update_attributes(trade_no: Time.current.strftime("%Y%m%d%H%M%S") + (1..9).to_a.sample(4).join)
   end
 
 

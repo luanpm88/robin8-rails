@@ -71,5 +71,33 @@ Rails.application.routes.draw do
       match '/reject' => 'withdraws#reject', via: [:post]
     end
     resources :announcements, except: [:destroy]
+    resources :alipay_orders do
+      collection do
+        post 'search'
+      end
+    end
+
+    resources :transactions do
+      collection do
+        get 'search'
+      end
+    end
+
+    resources :invoice_histories do
+      collection do
+        get 'search'
+      end
+      member do
+        get 'send'
+        match 'send_express' => 'invoice_histories#send_express', via: [:post]
+      end
+    end
+
+    resources :lottery_activities do
+      member do
+        patch :execute
+      end
+    end
+
   end
 end

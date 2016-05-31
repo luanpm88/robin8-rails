@@ -1,33 +1,33 @@
 class CampaignShow < ActiveRecord::Base
-  CookieTimeout = Rails.env.production? ? 45.minutes : 30.seconds
-  IpTimeout = Rails.env.production? ? 1.minutes : 10.seconds
+  CookieTimeout = Rails.env.production? ? 30.minutes : 20.seconds
+  OpenidTimeout = Rails.env.production? ? 30.minutes : 20.seconds
+  OpenidMaxCount = 3
+  IpTimeout = Rails.env.production? ? 30.seconds : 10.seconds
+  IpMaxCount = Rails.env.production? ? 20 : 2
 
   scope :valid, ->{ where(:status => 1) }
   scope :by_date, ->(datetime) { where("created_at >= '#{datetime}' and created_at < '#{datetime + 1.day}'") }
   scope :today, -> {where(:created_at => Time.now.beginning_of_day..Time.now.end_of_day)}
 
   # 检查 campaign status
-  def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, options={})
+  def self.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, request_uri, openid, options={})
     now = Time.now
+
+    if visitor_ip.start_with?("101.226.103.6") ||  visitor_ip.start_with?("101.226.103.7")
+      return [false, 'wechat_crawler']
+    end
+
+    if openid.blank?  && options[:step] != 2
+      return [false, 'had_no_openid']
+    end
+
+    return [false, 'visitor_agent_is_invalid']  if !visitor_agent.include?("MicroMessenger")
 
     if campaign.is_cpa_type?
       return [false, 'is_first_step_of_cpa_campaign'] if options[:step] != 2
       if options[:step] == 2 and campaign_invite.blank?
         return [false, "the_first_step_not_exist_of_cpa_campaign"]
       end
-    end
-
-    if visitor_ip.start_with?("101.226.103.6") ||  visitor_ip.start_with?("101.226.103.7")
-      return [false, 'wechat_crawler']
-    end
-
-      # check_cookie?
-    store_key = visitor_cookies.to_s + campaign.id.to_s
-    if Rails.cache.read(store_key)
-      Rails.logger.error store_key
-      return [false, 'cookies_visit_fre']
-    else
-      Rails.cache.write(store_key, now, :expires_in => CookieTimeout)
     end
 
     # check_ip?
@@ -38,8 +38,33 @@ class CampaignShow < ActiveRecord::Base
       Rails.cache.write(store_key, now, :expires_in => IpTimeout)
     end
 
+      # check_openid?
+    store_key = openid.to_s + campaign.id.to_s
+    if Rails.cache.read(store_key)
+      return [false, 'openid_visit_fre']
+    else
+      Rails.cache.write(store_key, now, :expires_in => OpenidTimeout)
+    end
+
+    # openid_ip_reach_max
+    store_key = "openid_max_" + openid.to_s + campaign.id.to_s
+    openid_current_count = Rails.cache.read(store_key) || 0
+    if openid_current_count > OpenidMaxCount
+      return [false, 'openid_reach_max_count']
+    else
+      Rails.cache.write(store_key, openid_current_count + 1, :expired_at => campaign.deadline)
+    end
+
+    # check_ip_reach_max
+    store_key = Date.today.to_s + visitor_ip.to_s
+    ip_current_count = Rails.cache.read(store_key) || 0
+    if ip_current_count > IpMaxCount
+      return [false, 'ip_reach_max_count']
+    else
+      Rails.cache.write(store_key, ip_current_count + 1, :expires_in => 24.hours)
+    end
+
     # check_useragent?  &&   visitor_referer
-    return [false, 'visitor_agent_is_invalid']  if visitor_agent.blank?
     return [false, 'visitor_referer_exist']  if visitor_referer.present? and !campaign.is_cpa_type?
 
     kol = Kol.fetch_kol(campaign_invite.kol_id)
@@ -66,10 +91,10 @@ class CampaignShow < ActiveRecord::Base
     end
 
     # check visitor ip
-    ip_score = IpScore.fetch_ip_score(visitor_ip)
-    if ip_score.to_i < 60
-      return [false, "ip_score_low"]
-    end
+    # ip_score = IpScore.fetch_ip_score(visitor_ip)
+    # if ip_score.to_i < 50
+    #   return [false, "ip_score_low"]
+    # end
 
       # check campaign status
     if campaign.status == 'executed'  ||  campaign.status == 'settled'
@@ -80,7 +105,7 @@ class CampaignShow < ActiveRecord::Base
   end
 
   #TODO campaign  campaign_invite store in redis
-  def self.add_click(uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, options={})
+  def self.add_click(uuid, visitor_cookies, visitor_ip, visitor_agent, visitor_referer, proxy_ips, request_uri, openid, options={})
     options.symbolize_keys!
 
     info = JSON.parse(Base64.decode64(uuid))   rescue {}
@@ -106,10 +131,12 @@ class CampaignShow < ActiveRecord::Base
 
     return false if campaign_invite.nil?  ||  campaign.nil?   || ["running", "pending", "rejected"].include?(campaign_invite.try(:status))
 
-    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer,  options)
+    visitor_ip = proxy_ips.split(",").first || visitor_ip
+    status, remark = CampaignShow.is_valid?(campaign, campaign_invite, uuid, visitor_cookies, visitor_ip, visitor_agent,visitor_referer, proxy_ips, request_uri, openid, options)
     CampaignShow.create!(:kol_id => info['kol_id'] || campaign_invite.kol_id, :campaign_id => info['campaign_id'] || campaign.id, :visitor_cookie => visitor_cookies,
-                        :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip,
-                        :visitor_agent => visitor_agent, :visitor_referer => visitor_referer, :other_options => options.inspect, :proxy_ips => proxy_ips)
+                        :visit_time => Time.now, :status => status, :remark => remark, :visitor_ip => visitor_ip, :request_url => request_uri,
+                        :visitor_agent => visitor_agent, :visitor_referer => visitor_referer, :other_options => options.inspect, :proxy_ips => proxy_ips,
+                        :openid => openid)
     Rails.logger.campaign_show_sidekiq.info "---------CampaignShow add_click: --uuid:#{uuid}---status:#{status}----remark:#{remark}---cid: #{campaign.id} --cinvite_id:#{campaign_invite.id}"
     campaign_invite.add_click(status,remark)
     campaign.add_click(status)

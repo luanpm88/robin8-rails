@@ -1,5 +1,6 @@
 class BrandController < ApplicationController
   before_action :authenticate_user!
+  before_action :redirect_alipay_request, only: :index
   layout 'brand'
   def index
     @brand_home_props = { brand: current_user }
@@ -38,6 +39,12 @@ class BrandController < ApplicationController
     sign_out current_user if current_user
     sign_in User.find_by(id: params[:user_id])
     cookies[:is_super_vistor] = { value: true, expires: 5.minutes.from_now}
+  end
+
+  def redirect_alipay_request
+    if params.keys.include?('buyer_id') and params.keys.include?('trade_no') and params.keys.include?('trade_status') and params.keys.include?('sign')
+      redirect_to '/brand/financial/recharge'
+    end
   end
 
 end
