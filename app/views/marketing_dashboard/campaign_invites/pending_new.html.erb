@@ -65,6 +65,7 @@
     <%= will_paginate @campaign_invites, :class => "pull-right"%>
   </div>
   <% @campaign_invites.size.times do |i| %>
+    <% next unless @campaign_invites[i] %>
     <div class="item">
       <img src="<%= @campaign_invites[i].screenshot %>" alt="screenshot" />
       <div class="admin-campaign-title">活动名称: <%= @campaign_invites[i].campaign.name[0...15] %>... </div>
