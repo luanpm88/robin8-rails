@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160530015813) do
+ActiveRecord::Schema.define(version: 20160530081621) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -47,17 +47,14 @@ ActiveRecord::Schema.define(version: 20160530015813) do
     t.string   "reset_password_token",   limit: 191
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,                            default: 0,     null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_super_admin",         limit: 1,                            default: false
-    t.decimal  "amount",                             precision: 15, scale: 2, default: 0.0
-    t.decimal  "frozen_amount",                      precision: 15, scale: 2, default: 0.0
-    t.decimal  "avail_amount",                       precision: 15, scale: 2, default: 0.0
+    t.boolean  "is_super_admin",         limit: 1,   default: false
   end
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
@@ -80,11 +77,11 @@ ActiveRecord::Schema.define(version: 20160530015813) do
   add_index "alerts", ["stream_id"], name: "index_alerts_on_stream_id", using: :btree
 
   create_table "alipay_orders", force: :cascade do |t|
-    t.string   "trade_no",        limit: 255
+    t.string   "trade_no",        limit: 191
     t.string   "alipay_trade_no", limit: 255
     t.decimal  "credits",                     precision: 8, scale: 2
     t.string   "status",          limit: 255,                         default: "pending"
-    t.string   "user_id",         limit: 255
+    t.integer  "user_id",         limit: 4
     t.datetime "created_at",                                                              null: false
     t.datetime "updated_at",                                                              null: false
     t.decimal  "tax",                         precision: 8, scale: 2, default: 0.0
@@ -294,14 +291,14 @@ ActiveRecord::Schema.define(version: 20160530015813) do
     t.datetime "deadline"
     t.decimal  "budget",                                precision: 10
     t.integer  "user_id",              limit: 4
-    t.datetime "created_at",                                                                     null: false
-    t.datetime "updated_at",                                                                     null: false
+    t.datetime "created_at",                                                           null: false
+    t.datetime "updated_at",                                                           null: false
     t.integer  "release_id",           limit: 4
     t.text     "concepts",             limit: 16777215
     t.text     "summaries",            limit: 16777215
     t.text     "hashtags",             limit: 16777215
     t.string   "content_type",         limit: 255
-    t.boolean  "non_cash",             limit: 1,                                 default: false
+    t.boolean  "non_cash",             limit: 1,                       default: false
     t.string   "short_description",    limit: 255
     t.text     "url",                  limit: 65535
     t.float    "per_action_budget",    limit: 53
@@ -309,8 +306,8 @@ ActiveRecord::Schema.define(version: 20160530015813) do
     t.text     "message",              limit: 65535
     t.string   "status",               limit: 255
     t.integer  "max_action",           limit: 4
-    t.integer  "avail_click",          limit: 4,                                 default: 0
-    t.integer  "total_click",          limit: 4,                                 default: 0
+    t.integer  "avail_click",          limit: 4,                       default: 0
+    t.integer  "total_click",          limit: 4,                       default: 0
     t.string   "finish_remark",        limit: 255
     t.string   "img_url",              limit: 255
     t.datetime "actual_deadline_time"
@@ -319,9 +316,8 @@ ActiveRecord::Schema.define(version: 20160530015813) do
     t.datetime "recruit_start_time"
     t.datetime "recruit_end_time"
     t.string   "address",              limit: 255
-    t.boolean  "hide_brand_name",      limit: 1,                                 default: false
-    t.boolean  "end_apply_check",      limit: 1,                                 default: false
-    t.decimal  "service_fee",                           precision: 8,  scale: 2, default: 0.0
+    t.boolean  "hide_brand_name",      limit: 1,                       default: false
+    t.boolean  "end_apply_check",      limit: 1,                       default: false
   end
 
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
@@ -1132,7 +1128,6 @@ ActiveRecord::Schema.define(version: 20160530015813) do
     t.integer  "position",      limit: 4
     t.string   "task_name",     limit: 255
     t.string   "task_type",     limit: 255
-    t.integer  "limit",         limit: 4
     t.string   "logo",          limit: 255
     t.boolean  "enable",        limit: 1,   default: true
     t.datetime "created_at",                               null: false
