@@ -32,7 +32,7 @@ class AlipayOrder < ActiveRecord::Base
 
   def save_alipay_trade_no(alipay_trade_no)
     Rails.logger.alipay.info "-------- 进入save_alipay_trade_no方法 保存支付宝订单号到alipay_order  ---alipay_id:#{self.id} ----alipay_trade_no: #{alipay_trade_no} --------------"
-    update_attributes!(alipay_trade_no: alipay_trade_no) unless self.ailipay_trade_no
+    update_attributes!(alipay_trade_no: alipay_trade_no) unless self.alipay_trade_no
   end
 
   def save_trade_no_to_transaction(trade_no)
@@ -50,7 +50,7 @@ class AlipayOrder < ActiveRecord::Base
   def increase_user_appliable_credits
     Rails.logger.alipay.info "-------- 进入increase_user_appliable_credits方法 增加用户可提现金额  ---alipay_id:#{self.id}  --------------"
     @transaction = self.get_transaction
-    Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 获取不到对应transaction  --------------"
+    Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 成功获取到对应transaction  --------------"
     @transaction.account.increment!(:appliable_credits, (tax + credits))
     Rails.logger.alipay.info "--------  ---alipay_id:#{self.id} ---- 添加可提现金额成功  --------------"
   end
