@@ -20,7 +20,12 @@ class LotteryDrawWorker
       number_b_issue = ""
       begin
         # 接口来自 http://www.opencai.net/apifree/
-        rest = JSON.parse(RestClient.get(Rails.application.secrets[:lottery][:api_url]))
+        res = RestClient::Request.execute(:method => :get,
+                                  :url => Rails.application.secrets[:lottery][:api_url],
+                                  :timeout => 5,
+                                  :open_timeout => 5)
+
+        rest = JSON.parse(res)
         raise "获取网络上彩票开奖号码数据解析异常" unless rest["data"] and rest["data"].size > 0
         data = rest["data"].first
         number_b = data["opencode"].split(",").join("").to_i
