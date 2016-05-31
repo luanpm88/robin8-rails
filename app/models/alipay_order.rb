@@ -32,7 +32,7 @@ class AlipayOrder < ActiveRecord::Base
 
   def save_alipay_trade_no(alipay_trade_no)
     Rails.logger.alipay.info "-------- 进入save_alipay_trade_no方法 保存支付宝订单号到alipay_order  ---alipay_id:#{self.id} ----alipay_trade_no: #{alipay_trade_no} --------------"
-    update_attributes!(alipay_trade_no: alipay_trade_no) unless self.ailipay_trade_no
+    update_attributes!(alipay_trade_no: alipay_trade_no) unless self.alipay_trade_no
   end
 
   def save_trade_no_to_transaction(trade_no)
